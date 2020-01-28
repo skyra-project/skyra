@@ -67,7 +67,6 @@ export default class extends SkyraCommand {
 
 		// Build up the ship canvas
 		const attachment = await new Canvas(224, 88)
-			.save()
 			// Add base image
 			.addImage(darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 224, 88)
 			// Add avatar image with side-offsets of 12px, a Height x Width of 64x64px and bevel radius of 10
@@ -76,7 +75,6 @@ export default class extends SkyraCommand {
 			.addImage(this.heartIcon!, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.addBeveledImage(avatarSecondUser, 148, 12, 64, 64, 10)
-			.restore()
 			.toBufferAsync();
 
 		// Return the lovely message

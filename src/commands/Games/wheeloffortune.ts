@@ -12,7 +12,7 @@ export default class extends SkyraCommand {
 			cooldown: 10,
 			description: language => language.tget('COMMAND_WHEELOFFORTUNE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_WHEELOFFORTUNE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS', 'ATTACH_FILES'],
+			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<50|100|200|500|1000|2000|5000|10000>'
 		});

@@ -28,7 +28,6 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		const fortniteUser = await this.fetchAPI(message, user, platform);
-		console.log(fortniteUser);
 
 		await this.buildDisplay(message, fortniteUser).start(response, message.author.id);
 		return response;

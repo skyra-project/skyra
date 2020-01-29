@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_FORTNITE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_FORTNITE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<xbox|psn|pc:default> <user:...string>',
+			usage: '[xbox|psn|pc:default] <user:...string>',
 			usageDelim: ' '
 		});
 	}
@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(TITLES.TITLE(user.epicUserHandle))
-				.setURL(encodeURI(`https://fortnitetracker.com/profile/${user.platformName}/${user.epicUserHandle}`))
+				.setURL(encodeURI(`https://fortnitetrcker.com/profile/${user.platformName}/${user.epicUserHandle}`))
 				.setColor(getColor(message))
 		);
 

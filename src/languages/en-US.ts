@@ -763,7 +763,7 @@ export default class extends Language {
 			SQUADS: '**_Squads_**',
 			WINS: count => `Wins: **\`${count}\`**`,
 			KILLS: count => `Kills: **\`${count}\`**`,
-			KDR: count => `KDR: **\`${parseFloat(count) * 100}%\`**`,
+			KDR: count => `KDR: **\`${count}%\`**`,
 			MATCHES_PLAYED: count => `Matches played: **\`${count}\`**`,
 			TOP_1S: count => `Top 1s: **\`${count}\`**`,
 			TOP_3S: count => `Top 3s: **\`${count}\`**`,

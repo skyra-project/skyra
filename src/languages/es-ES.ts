@@ -761,7 +761,7 @@ export default class extends Language {
 			SQUADS: '**_Escuadrones_**',
 			WINS: count => `Victorias: **\`${count}\`**`,
 			KILLS: count => `Matas: **\`${count}\`**`,
-			KDR: count => `Mata / Relación de la muerte: **\`${parseFloat(count) * 100}%\`**`,
+			KDR: count => `Mata / Relación de la muerte: **\`${count}%\`**`,
 			MATCHES_PLAYED: count => `Partidos jugados: **\`${count}\`**`,
 			TOP_1S: count => `Top 1s: **\`${count}\`**`,
 			TOP_3S: count => `Top 3s: **\`${count}\`**`,

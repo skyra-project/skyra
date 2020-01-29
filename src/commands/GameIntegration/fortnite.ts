@@ -41,8 +41,8 @@ export default class extends SkyraCommand {
 				FetchResultTypes.JSON
 			) as Fortnite.FortniteUser;
 
-			if (!fortniteUser.error) return fortniteUser;
-			throw 'err'; // This gets handled in the catch, no reason to get the proper error message here.
+			if (fortniteUser.error) throw 'err'; // This gets handled in the catch, no reason to get the proper error message here.
+			return fortniteUser;
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)

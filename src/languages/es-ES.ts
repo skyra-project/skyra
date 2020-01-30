@@ -2504,7 +2504,7 @@ export default class extends Language {
 			FOOTER: name => `Ayuda de comando para ${name}`
 		},
 		COMMAND_SUPPORT_EMBED_TITLE: username => `¿Necesita ayuda, ${username}?`,
-		COMMAND_SUPPORT_EMBED_DESCRIPTION: `¡Entonces deberías unirte a [Skyra's lounge](https://skyra.pw/join)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.`,
+		COMMAND_SUPPORT_EMBED_DESCRIPTION: `¡Entonces deberías unirte a [Skyra's lounge](https://join.skyra.pw)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.`,
 
 		/**
 		 * ##############

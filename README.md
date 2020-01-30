@@ -1,4 +1,4 @@
-# Skyra [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://skyra.pw/join)
+# Skyra [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://join.skyra.pw)
 
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/kyranet/Skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kyranet/Skyra/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/kyranet/Skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kyranet/Skyra/context:javascript)
@@ -30,8 +30,7 @@ $ yarn start
 $ yarn pm2:start
 ```
 
-> **Note**: Before pushing to the repository, please run `yarn lint` so formatting stays consistent and there are no
-linter warnings.
+> **Note**: Before pushing to the repository, please run `yarn lint` so formatting stays consistent and there are no linter warnings.
 
 ## Story
 
@@ -49,7 +48,7 @@ There have been over 13 rewrites with an active development of over two years, I
 Discord, and in February 2017, I met the Dirigeants team, upon which I started to contribute to Komada, and later, for
 Klasa.
 
-*Who knows, I might write a book someday for Skyra's lore.*
+_Who knows, I might write a book someday for Skyra's lore._
 
 ## Links
 
@@ -80,6 +79,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 
 
 <!----------------- LINKS --------------->
+
 [`Node.js`]:            https://nodejs.org/en/download/current/
 [`PostgreSQL`]:         https://www.postgresql.org/download/
 [`Lavalink`]:           https://github.com/Frederikam/Lavalink
@@ -88,7 +88,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [`config.example.ts`]:  /config.example.ts
 
 [Skyra Invite Link]:    https://skyra.pw/invite
-[Support Server]:       https://skyra.pw/join
+[Support Server]:       https://join.skyra.pw
 [Patreon]:              https://www.patreon.com/kyranet
 [Translation]:          https://skyra.pw/translate
 

@@ -740,6 +740,37 @@ export default class extends Language {
 		},
 		COMMAND_FFXIV_NO_CHARACTER_FOUND: 'Lo siento, pero no pude encontrar un personaje con ese nombre.',
 		COMMAND_FFXIV_NO_ITEM_FOUND: 'Lo siento, pero no pude encontrar un elemento con esa consulta.',
+		COMMAND_FORTNITE_DESCRIPTION: 'Obtiene estadísticas de jugador para un jugador de Fortnite',
+		COMMAND_FORTNITE_EXTENDED: builder.display('fortnite', {
+			extendedHelp: `Este comando recupera estadísticas para cualquier jugador de Fortnite que juegue en PC, Xbox o Playstation`,
+			explainedUsage: [
+				['plataforma', '(opcional, predeterminado a `pc`) Plataforma en la que se reproduce el reproductor, una de` pc`, `xbox` o` psn`.'],
+				['jugador', 'El nombre de usuario de Epic Games del jugador.']
+			],
+			examples: ['ninja', 'pc ninja', 'xbox TTV R1xbox', 'psn TTV IllusionOG']
+		}),
+		COMMAND_FORTNITE_NO_USER: [
+			'Lo siento, pero no pude encontrar un usuario con ese nombre.',
+			'¿Estás seguro de que juegan en la plataforma proporcionada? (PC [predeterminado], Xbox o PSN son compatibles)'
+		].join('\n'),
+		COMMAND_FORTNITE_TITLES: {
+			TITLE: epicUserHandle => `Estadísticas de jugadores de Fortnite para ${epicUserHandle}`,
+			LIFETIME_STATS: '**_Estadísticas de por vida_**',
+			SOLOS: '**_Solos_**',
+			DUOS: '**_Duos_**',
+			SQUADS: '**_Escuadrones_**',
+			WINS: count => `Victorias: **\`${count}\`**`,
+			KILLS: count => `Matas: **\`${count}\`**`,
+			KDR: count => `Mata / Relación de la muerte: **\`${count}%\`**`,
+			MATCHES_PLAYED: count => `Partidos jugados: **\`${count}\`**`,
+			TOP_1S: count => `Top 1s: **\`${count}\`**`,
+			TOP_3S: count => `Top 3s: **\`${count}\`**`,
+			TOP_5S: count => `Top 5s: **\`${count}\`**`,
+			TOP_6S: count => `Top 6s: **\`${count}\`**`,
+			TOP_10S: count => `Top 10s: **\`${count}\`**`,
+			TOP_12S: count => `Top 12s: **\`${count}\`**`,
+			TOP_25S: count => `Top 25s: **\`${count}\`**`
+		},
 
 
 		/**

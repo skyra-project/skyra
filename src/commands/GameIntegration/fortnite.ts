@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_FORTNITE_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_FORTNITE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
-			usage: '[xbox|psn|pc:default] <user:...string>',
+			usage: '<xbox|psn|pc:default> <user:...string>',
 			usageDelim: ' '
 		});
 	}

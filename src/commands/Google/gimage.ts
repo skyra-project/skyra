@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('query', (arg, possible, message) => this.stringArgtype.run(
-			encodeURIComponent(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+')),
+			arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'),
 			possible,
 			message
 		));

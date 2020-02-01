@@ -801,7 +801,8 @@ export default class extends Language {
 					time and a title. When a giveaway has been created, Skyra will send a giveaway message and react to it with 🎉
 					so the members of the server can participate on it. Once the timer ends, Skyra will retrieve all the users who
 					reacted and send the owner of the giveaway a message in direct messages with the winner, and other 10 possible
-					winners (in case of needing to re-roll).`,
+					winners (in case of needing to re-roll).
+					You can also pass a flag of \`--winners=X\`, wherein X is a numbe, to allow multiple people to win this giveaway.`,
 			explainedUsage: [
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
@@ -820,7 +821,10 @@ export default class extends Language {
 		}),
 		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
 		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
-			extendedHelp: `This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.`,
+			extendedHelp: `
+				This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.
+				You can also pass a flag of \`--winners=X\`, wherein X is a numbe, to allow multiple people to win this giveaway.
+			`,
 			explainedUsage: [
 				['schedule', 'The time to wait before starting the giveaway.'],
 				['time', 'The time the giveaway should last.'],

@@ -2794,7 +2794,7 @@ export default class extends Language {
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (winners, title) => `Congratulations ${winners.join(' ')}! You won the giveaway **${title}**`,
 		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: title => `The giveaway **${title}** ended without enough participants.`,
-		GIVEAWAY_SCHEDULED: time => `The giveaway will start at ${time}.`,
+		GIVEAWAY_SCHEDULED: scheduledTime => `The giveaway will start in ${duration(scheduledTime)}.`,
 
 		/**
 		 * ###################

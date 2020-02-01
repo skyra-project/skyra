@@ -1154,7 +1154,7 @@ export interface LanguageKeys {
 	GIVEAWAY_ENDED_TITLE: string;
 	GIVEAWAY_ENDED_MESSAGE: (winners: readonly string[], title: string) => string;
 	GIVEAWAY_ENDED_MESSAGE_NO_WINNER: (title: string) => string;
-	GIVEAWAY_SCHEDULED: (time: string) => string;
+	GIVEAWAY_SCHEDULED: (scheduledTime: number) => string;
 	COMMAND_NICK_SET: (nickname: string) => string;
 	COMMAND_NICK_CLEARED: string;
 	COMMAND_PERMISSIONNODES_HIGHER: string;

@@ -801,7 +801,7 @@ export default class extends Language {
 					so the members of the server can participate on it. Once the timer ends, Skyra will retrieve all the users who
 					reacted and send the owner of the giveaway a message in direct messages with the winner, and other 10 possible
 					winners (in case of needing to re-roll).
-					También puede pasar una bandera de \`--winners=X\`, donde X es un número, para permitir que varias personas ganen este sorteo.`,
+					También puede pasar una bandera de \`--winners=X\`, en la que X es un número, para permitir que varias personas ganen este sorteo.`,
 			explainedUsage: [
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
@@ -822,7 +822,7 @@ export default class extends Language {
 		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
 			extendedHelp: `
 				This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.
-				También puede pasar una bandera de \`--winners=X\`, donde X es un número, para permitir que varias personas ganen este sorteo.
+				También puede pasar una bandera de \`--winners=X\`, en la que X es un número, para permitir que varias personas ganen este sorteo.
 			`,
 			explainedUsage: [
 				['schedule', 'The time to wait before starting the giveaway.'],

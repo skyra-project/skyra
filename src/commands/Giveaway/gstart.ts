@@ -14,6 +14,7 @@ export default class extends SkyraCommand {
 			requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<time:time> <title:...string{,256}>',
+			flagSupport: true,
 			usageDelim: ' '
 		});
 	}
@@ -23,12 +24,14 @@ export default class extends SkyraCommand {
 
 		if (offset < 9500) throw message.language.tget('GIVEAWAY_TIME');
 		if (offset > YEAR) throw message.language.tget('GIVEAWAY_TIME_TOO_LONG');
+
+		const winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
 		await this.client.giveaways.create({
 			channel_id: message.channel.id,
 			ends_at: time.getTime() + 500,
 			guild_id: message.guild!.id,
 			minimum: 1,
-			minimum_winners: 1,
+			minimum_winners: winners,
 			title: cleanMentions(message.guild!, title)
 		});
 	}

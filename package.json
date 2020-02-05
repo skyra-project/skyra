@@ -43,7 +43,7 @@
 		"url": "https://github.com/skyra-project/skyra/issues"
 	},
 	"dependencies": {
-		"@elastic/elasticsearch": "^7.5.0",
+		"@elastic/elasticsearch": "^7.5.1",
 		"@klasa/querybuilder": "^0.0.1",
 		"@klasa/request-handler": "^0.0.3",
 		"@klasa/utils": "^0.0.4",

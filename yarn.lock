@@ -23,10 +23,10 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.3.tgz#af9b1c22ccb2ee5c0cad1e1bd2bc3d82a817b05f"
   integrity sha512-4ek19SmNcPI92942RkuBrZrBK8hg7nG+ae/skkNNDeOaUG+XvxTPkv/jPZVgXwVPDkU5EFsewsI+0n4dTwFvgA==
 
-"@elastic/elasticsearch@^7.5.0":
-  version "7.5.0"
-  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.5.0.tgz#a54b07001e1a3912792bf9f34e6ec6a4fe0aef0c"
-  integrity sha512-ahzu451ppXepQMb3Zr8eFfWn8QR7yCcUWQjU1dS4X63Ctin0GNwwSPertt4WwDkm6MnZ25o932wAEgyMFLwzdA==
+"@elastic/elasticsearch@^7.5.1":
+  version "7.5.1"
+  resolved "https://registry.yarnpkg.com/@elastic/elasticsearch/-/elasticsearch-7.5.1.tgz#2d44d7b7cc4f986560395fb7a582717f7bb20344"
+  integrity sha512-MoZ8/DgwYDf2KaOIVonvPv+ywslacCBHSQwzPjRRzUxs5TD4HTNbaxhhc2S8cjHA1XqT5i7zLepDXbvAYyYDeQ==
   dependencies:
     debug "^4.1.1"
     decompress-response "^4.2.0"

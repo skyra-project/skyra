@@ -274,17 +274,18 @@ export class JsonCommonQuery implements CommonQuery {
 	}
 
 	public async insertRpgGuild(leaderID: string, name: string) {
-		// Retrieve counter
-		let id: number;
-		const meta = await this.provider.get(Databases.RpgGuilds, 'meta') as { id: string } | null;
+		// Retrieve counter from "meta" entry in database
+		let meta = await this.provider.get(Databases.RpgGuilds, 'meta') as RpgGuildMetaEntry | null;
 		if (meta === null) {
-			await this.provider.create(Databases.RpgGuilds, 'meta', {});
-			id = 1;
+			meta = { id: 'meta', counter: 1 };
+			await this.provider.create(Databases.RpgGuilds, 'meta', meta);
 		} else {
-			id = Number(meta);
+			++meta.counter;
+			await this.provider.update(Databases.RpgGuilds, 'meta', meta);
 		}
 
 		// Create the guild data and update information
+		const id = meta.counter;
 		await Promise.all([
 			this.provider.create(Databases.RpgGuilds, `${id}`, {
 				id,
@@ -383,4 +384,9 @@ export class JsonCommonQuery implements CommonQuery {
 		return true;
 	}
 
+}
+
+interface RpgGuildMetaEntry {
+	id: string;
+	counter: number;
 }

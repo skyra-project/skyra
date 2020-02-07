@@ -11,13 +11,14 @@ import { SQL_TABLE_SCHEMA as ModerationTableSchema } from '@lib/types/settings/r
 import { SQL_TABLE_SCHEMA as StarboardTableSchema } from '@lib/types/settings/raw/RawStarboardSettings';
 import { SQL_TABLE_SCHEMA as TwitchStreamSubscrioptionTableSchema } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { SQL_TABLE_SCHEMA as UserTableSchema } from '@lib/types/settings/raw/RawUserSettings';
+import { SQL_TABLE_SCHEMA as GameTableSchema } from '@lib/types/settings/raw/RawGameSettings';
 
 let initialized = false;
 export async function run(provider: PostgresProvider) {
 	if (initialized) return;
 	initialized = true;
 
-	await Promise.all([
+	const tables = [
 		['banners', BannerTableSchema],
 		['clientStorage', ClientTableSchema],
 		['command_counter', CommandCounterTableSchema],
@@ -28,6 +29,18 @@ export async function run(provider: PostgresProvider) {
 		['starboard', StarboardTableSchema],
 		['twitch_stream_subscriptions', TwitchStreamSubscrioptionTableSchema],
 		['users', UserTableSchema],
-		['dashboard_user', DashboardUserTableSchema]
-	].map(([name, schema]) => provider.run(schema).catch(error => console.error(`Failed to create schema for ${name}:`, error))));
+		['dashboard_user', DashboardUserTableSchema],
+		['rpg_game', GameTableSchema]
+	] as const;
+
+	try {
+		const schemas = tables.map(([name, schema]) => `-- ${name}\n${schema}`).join('\n');
+		await provider.run(/* sql */`
+			BEGIN;
+			${schemas}
+			COMMIT;
+		`);
+	} catch (error) {
+		provider.client.console.error(`Failed to create schema:`, error);
+	}
 }

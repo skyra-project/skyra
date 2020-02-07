@@ -6,6 +6,7 @@ import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSett
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 import { JsonProvider } from '@lib/types/util';
 import { Client } from 'discord.js';
 import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
@@ -233,6 +234,23 @@ export class JsonCommonQuery implements CommonQuery {
 		return values.filter(value => value.guild_ids.includes(guildID));
 	}
 
+	public async retrieveRandomItem(luck: number) {
+		const entries = (await this.provider.getAll(Databases.RpgItems) as RawRpgItem[])
+			.sort((a, b) => a.id - b.id);
+
+		const count = entries.reduce((acc, entry) => acc + Number(entry.rarity), 0);
+		const percentage = luck === 0 ? 1 : 1 / luck;
+		const maximum = Math.random() * count * percentage;
+
+		let counter = 0;
+		for (const entry of entries) {
+			counter += Number(entry.rarity);
+			if (counter >= maximum) return entry;
+		}
+
+		return entries[entries.length - 1];
+	}
+
 	public async insertCommandUseCounter(command: string) {
 		const value = await this.provider.get(Databases.CommandCounter, command) as { id: string; uses: number };
 		if (value) await this.provider.update(Databases.CommandCounter, command, { uses: value.uses + 1 });
@@ -253,6 +271,36 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public insertStar(entry: RawStarboardSettings) {
 		return this.provider.create(Databases.Moderation, `${entry.guild_id}.${entry.message_id}`, entry);
+	}
+
+	public async insertRpgGuild(leaderID: string, name: string) {
+		// Retrieve counter from "meta" entry in database
+		let meta = await this.provider.get(Databases.RpgGuilds, 'meta') as RpgGuildMetaEntry | null;
+		if (meta === null) {
+			meta = { id: 'meta', counter: 1 };
+			await this.provider.create(Databases.RpgGuilds, 'meta', meta);
+		} else {
+			++meta.counter;
+			await this.provider.update(Databases.RpgGuilds, 'meta', meta);
+		}
+
+		// Create the guild data and update information
+		const id = meta.counter;
+		await Promise.all([
+			this.provider.create(Databases.RpgGuilds, `${id}`, {
+				id,
+				name,
+				description: null,
+				leader: leaderID,
+				member_limit: 5,
+				win_count: 0,
+				lose_count: 0,
+				money_count: 0,
+				bank_limit: 50000,
+				upgrade: 0
+			}),
+			this.provider.update(Databases.RpgUsers, leaderID, { guild_id: id })
+		]);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {
@@ -336,4 +384,9 @@ export class JsonCommonQuery implements CommonQuery {
 		return true;
 	}
 
+}
+
+interface RpgGuildMetaEntry {
+	id: string;
+	counter: number;
 }

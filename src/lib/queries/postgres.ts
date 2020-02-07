@@ -8,6 +8,7 @@ import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/Raw
 import { Client } from 'discord.js';
 import PostgresProvider from 'src/providers/postgres';
 import { CommonQuery, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -371,6 +372,24 @@ export class PostgresCommonQuery implements CommonQuery {
 		}));
 	}
 
+	public retrieveRandomItem(luck: number) {
+		const { provider } = this;
+		const percentage = luck === 0 ? '' : ` * (1.0 / ${provider.cNumber(luck)})`;
+		return provider.runOne<RawRpgItem>(/* sql */`
+			WITH CTE AS (
+				SELECT RANDOM()${percentage} * (SELECT SUM(rarity) FROM rpg_items) R
+			)
+			SELECT "id", "name", "rarity"
+			FROM (
+				SELECT rpg_items.*, SUM(rarity) OVER (ORDER BY id) S, R
+				FROM rpg_items CROSS JOIN CTE
+			) Q
+			WHERE S >= R
+			ORDER BY id
+			LIMIT 1;
+		`);
+	}
+
 	public insertCommandUseCounter(command: string) {
 		return this.provider.run(/* sql */`
 			INSERT
@@ -429,6 +448,22 @@ export class PostgresCommonQuery implements CommonQuery {
 			INSERT INTO starboard ("enabled", "user_id", "message_id", "channel_id", "guild_id", "star_message_id", "stars")
 			VALUES ($1, $2, $3, $4, $5, $6, $7)
 		`, [entry.enabled, entry.user_id, entry.message_id, entry.channel_id, entry.guild_id, entry.star_message_id, entry.stars]);
+	}
+
+	public insertRpgGuild(leaderID: string, name: string) {
+		const { provider } = this;
+		const cLeader = provider.cString(leaderID);
+		const cName = provider.cString(name);
+		return provider.run(/* sql */`
+			WITH g AS (
+				INSERT INTO rpg_guilds ("name", "leader")
+				VALUES (${cName}, ${cLeader})
+				RETURNING id
+			)
+			UPDATE rpg_users
+				SET guild_id = (SELECT id FROM g)
+				WHERE id = ${cLeader};
+		`);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

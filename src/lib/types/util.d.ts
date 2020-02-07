@@ -1,6 +1,6 @@
 import { Provider, SettingsUpdateResults } from 'klasa';
 
-export type AnyObject = Record<keyof any, unknown> | {};
+export type AnyObject = Record<PropertyKey, unknown> | {};
 
 export type Mutable<T> = {
 	-readonly [P in keyof T]: T[P] extends Array<unknown> | AnyObject | {} ? Mutable<T[P]> : T[P];

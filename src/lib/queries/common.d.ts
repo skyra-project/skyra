@@ -4,6 +4,7 @@ import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import { RawRpgGuild, RawRpgGuildRank, RawRpgClass, RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 
 export interface CommonQuery {
 	deleteUserEntries(userID: string): Promise<unknown>;
@@ -32,11 +33,13 @@ export interface CommonQuery {
 	fetchStarsFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings[]>;
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
+	retrieveRandomItem(luck: number): Promise<RawRpgItem>;
 	insertCommandUseCounter(command: string): Promise<unknown>;
 	insertDashboardUser(entry: RawDashboardUserSettings): Promise<unknown>;
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	insertStar(entry: RawStarboardSettings): Promise<unknown>;
+	insertRpgGuild(leaderID: string, name: string): Promise<unknown>;
 	updateModerationLog(entry: RawModerationSettings): Promise<unknown>;
 	updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null): Promise<unknown>;
 	updateStar(entry: RawStarboardSettings): Promise<unknown>;
@@ -62,6 +65,26 @@ export interface LeaderboardEntry {
 export interface UpsertMemberSettingsReturningDifference {
 	old_value: number | null;
 	new_value: number;
+}
+
+export interface RpgUserEntryItem extends RawRpgItem {
+	durability: string;
+}
+
+export interface RpgUserEntry {
+	id: string;
+	name: string;
+	win_count: string;
+	guild: RawRpgGuild | null;
+	guild_rank: RawRpgGuildRank | null;
+	class: RawRpgClass | null;
+	items: RpgUserEntryItem[];
+	death_count: string;
+	crate_common_count: number;
+	crate_uncommon_count: number;
+	crate_rare_count: number;
+	crate_legendary_count: number;
+	luck: number;
 }
 
 export interface TwitchStreamSubscriptionSettings {

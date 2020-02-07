@@ -2231,9 +2231,9 @@ export default class extends Language {
 		}),
 		COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION: 'Manage the subscriptions for your server.',
 		COMMAND_TWITCHSUBSCRIPTION_EXTENDED: builder.display('twitchSubscription', {
-			extendedHelp: `Manage the subscriptions for this server. The message variables are %TITLE% for the stream's title,
-					%VIEWER_COUNT% for the amount of viewers, %GAME_NAME% for the game's name, %GAME_ID% for the game's ID as
-					seen by Twitch, %LANGUAGE% for the language the stream is in, %USER_ID% for the streamer's ID, and %USER_NAME%
+			extendedHelp: `Manage the subscriptions for this server. The message variables are \`%TITLE%\` for the stream's title,
+			\`%VIEWER_COUNT%\` for the amount of viewers, \`%GAME_NAME%\` for the game's name, \`%GAME_ID%\` for the game's ID as
+					seen by Twitch, \`%LANGUAGE%\` for the language the stream is in, \`%USER_ID%\` for the streamer's ID, and \`%USER_NAME%\`
 					for the streamer's username.`,
 			examples: [
 				'add kyranet #twitch online %USER_NAME% went live | %TITLE%',

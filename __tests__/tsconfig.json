@@ -7,7 +7,6 @@
 		  "@utils/*": ["../src/lib/util/*"],
 		  "@lib/*": ["../src/lib/*"],
 		  "@mocks/*": ["../__mocks__/*"],
-		  "@testlib/*": ["./lib/*"],
 		  "@root/*": ["../src/*"]
 	  }
   },

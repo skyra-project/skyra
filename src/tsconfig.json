@@ -16,7 +16,8 @@
 			"@lib/*": ["lib/*"],
 			"@root/*": ["*"]
 		},
-		"composite": true
+		"composite": true,
+		"declaration": true
 	},
 	"include": [
 		"./**/*"

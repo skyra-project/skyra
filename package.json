@@ -2,7 +2,7 @@
 	"name": "skyra",
 	"version": "5.2.3",
 	"description": "Multipurpose Discord Bot built on Klasa",
-	"main": "dist/src/Skyra.js",
+	"main": "dist/Skyra.js",
 	"scripts": {
 		"pm2:delete": "pm2 delete Skyra",
 		"pm2:logs": "pm2 logs Skyra --lines=200",
@@ -10,7 +10,7 @@
 		"pm2:start": "pm2 start pm2.ecosystem.yml",
 		"pm2:dev": "yarn pm2:start --env development",
 		"pm2:stop": "pm2 stop Skyra",
-		"start": "node dist/src/Skyra.js",
+		"start": "node dist/Skyra.js",
 		"lint": "eslint --ext ts src --fix",
 		"test": "jest",
 		"test:watch": "jest --watch",
@@ -90,8 +90,8 @@
 		"typescript": "^3.7.5"
 	},
 	"_moduleAliases": {
-		"@utils": "dist/src/lib/util",
-		"@lib": "dist/src/lib",
+		"@utils": "dist/lib/util",
+		"@lib": "dist/lib",
 		"@root": "dist"
 	}
 }

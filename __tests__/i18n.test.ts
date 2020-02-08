@@ -11,7 +11,7 @@ import { client } from '@testlib/MockInstances';
  * @param value The object to convert
  * @param prefix The prefix for the key
  */
-export default function objectToTuples<T = Record<string, unknown>>(original: T, prefix = ''): string[] {
+function objectToTuples<T = Record<string, unknown>>(original: T, prefix = ''): string[] {
 	const entries: string[] = [];
 	for (const [key, value] of Object.entries(original)) {
 		if (isObject(value)) {

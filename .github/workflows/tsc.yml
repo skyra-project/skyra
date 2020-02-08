@@ -29,7 +29,7 @@ jobs:
     - name: yarn
       run: yarn --ignore-scripts
     - name: configuration
-      run: cp config.example.ts config.ts
+      run: pushd src && cp config.example.ts config.ts && popd
     - name: tsc
       uses: icrawl/action-tsc@v1
       with:

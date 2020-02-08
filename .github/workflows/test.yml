@@ -11,24 +11,32 @@ jobs:
     name: test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: install node v12
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - name: Cache node modules
-      uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.OS }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          ${{ runner.OS }}-yarn-${{ env.cache-name }}-
-          ${{ runner.OS }}-yarn-
-          ${{ runner.OS }}-
-    - name: yarn
-      run: yarn --ignore-scripts
-    - name: configuration
-      run: pushd src && cp config.example.ts config.ts && popd
-    - name: test
-      run: yarn test
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Install NodeJS v12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Restore CI Cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-12-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup node-canvas Dependencies
+        run: | 
+          sudo apt-get install libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev -y &&
+          yarn global add node-gyp node-pre-gyp
+      - name: Install Dependencies
+        run: yarn
+      - name: Copy Configuration
+        run: |
+          pushd src &&
+          cp config.example.ts config.ts &&
+          popd
+      # - name: Rebuild node-canvas
+      #   run: |
+      #     pushd node_modules/canvas &&
+      #     node-gyp rebuild &&
+      #     popd
+      - name: Run tests
+        run: yarn test

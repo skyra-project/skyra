@@ -3,7 +3,7 @@ name: Build
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
 
 jobs:
@@ -11,26 +11,25 @@ jobs:
     name: tsc
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: install node v12
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12
-    - name: Cache node modules
-      uses: actions/cache@v1
-      with:
-        path: node_modules
-        key: ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ matrix.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          ${{ matrix.os }}-yarn-${{ env.cache-name }}-
-          ${{ matrix.os }}-yarn-
-          ${{ matrix.os }}-
-    - name: yarn
-      run: yarn --ignore-scripts
-    - name: configuration
-      run: pushd src && cp config.example.ts config.ts && popd
-    - name: tsc
-      uses: icrawl/action-tsc@v1
-      with:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Install NodeJS v12
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - name: Restore CI Cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-12-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Dependencies
+        run: yarn --ignore-scripts
+      - name: Copy Configuration
+        run: |
+          pushd src &&
+          cp config.example.ts config.ts &&
+          popd
+      - name: Compile TypeScript
+        uses: icrawl/action-tsc@v1
+        with:
           build: src

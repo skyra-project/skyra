@@ -1,0 +1,24 @@
+{
+	"extends": "../tsconfig.json",
+	"compilerOptions": {
+		"outDir": "../dist",
+		"types": [
+			"node",
+			"node-fetch",
+			"discord.js",
+			"klasa",
+			"klasa-dashboard-hooks"
+		],
+		"rootDir": ".",
+		"baseUrl": ".",
+		"paths": {
+			"@utils/*": ["lib/util/*"],
+			"@lib/*": ["lib/*"],
+			"@root/*": ["*"]
+		},
+		"composite": true
+	},
+	"include": [
+		"./**/*"
+	]
+}

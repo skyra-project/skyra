@@ -1,14 +1,14 @@
-name: Lint
+name: Test
 
 on:
   push:
     branches:
-    - master
+      - master
   pull_request:
 
 jobs:
-  eslint:
-    name: eslint
+  test:
+    name: test
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -28,5 +28,5 @@ jobs:
           ${{ runner.OS }}-
     - name: yarn
       run: yarn --ignore-scripts
-    - name: eslint
-      uses: icrawl/action-eslint@v1
+    - name: test
+      run: yarn test

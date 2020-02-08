@@ -1,0 +1,15 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"outDir": "./test-out"
+	},
+	"include": [
+		"./src/**/*",
+		"./database/**/*",
+		"./config.ts",
+		"./config.example.ts",
+		"./__tests__/**/*",
+		"./__mocks__/**/*",
+		"jest.config.js"
+	]
+}

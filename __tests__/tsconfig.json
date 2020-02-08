@@ -1,0 +1,20 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+	  "noImplicitAny": false,
+	  "baseUrl": ".",
+	  "paths": {
+		  "@utils/*": ["../src/lib/util/*"],
+		  "@lib/*": ["../src/lib/*"],
+		  "@mocks/*": ["../__mocks__/*"],
+		  "@testlib/*": ["./lib/*"],
+		  "@root/*": ["../src/*"]
+	  }
+  },
+  "include": [
+	  "./**/*",
+	  "../__mocks__/**/*",
+	  "../src/**/*"
+  ],
+  "references": [{ "path": "../src" }]
+}

@@ -182,14 +182,14 @@ export default class extends Language {
 		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) => `${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions.join('**, **')}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Cancelado.',
 		INHIBITOR_COOLDOWN: remaining => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
-		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild!.',
-		INHIBITOR_DISABLED_GLOBAL: 'This command has been globally disabled by the bot owner.',
 		INHIBITOR_MISSING_BOT_PERMS: missing => `No tengo los permisos suficientes, me faltan: **${missing}**`,
 		INHIBITOR_NSFW: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		INHIBITOR_PERMISSIONS: 'No tienes permisos para usar este comando',
 		INHIBITOR_REQUIRED_SETTINGS: settings => `El servidor requiere ${settings.length === 1 ? 'el ajuste' : 'los ajustes'} del servidor **${settings.join(', ')}**, y por lo tanto, no puedo ejecutar el comando.`,
 		INHIBITOR_RUNIN: types => `Éste comando sólo está disponible en los canales de ${types}`,
 		INHIBITOR_RUNIN_NONE: name => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
+		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild!.',
+		INHIBITOR_DISABLED_GLOBAL: 'This command has been globally disabled by the bot owner.',
 		COMMAND_BLACKLIST_DESCRIPTION: 'Pone o quita usuarios and servidores de mi lista negra.',
 		COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) => [
 			usersAdded.length ? `**Usuarios Añadidos**\n${codeBlock('', usersAdded.join(', '))}` : '',
@@ -309,6 +309,14 @@ export default class extends Language {
 		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: `Reanuda la canción actual.`,
 		COMMAND_RESUME_SUCCESS: `▶ Reanudado.`,
+		COMMAND_ROLESET_DESCRIPTION: `Gestionar conjuntos de roles únicos.`,
+		COMMAND_ROLESET_CREATED: (name, roles) => `El conjunto de roles único ${name} se ha creado con los siguientes roles: ${roles}`,
+		COMMAND_ROLESET_ADDED: (name, roles) => `El conjunto de roles único ${name} ahora también tiene los siguientes roles: ${roles}.`,
+		COMMAND_ROLESET_INVALID_NAME: name => `No puede eliminar el conjunto de roles único ${name} porque no existe.`,
+		COMMAND_ROLESET_REMOVED: (name, roles) => `El conjunto de roles único ${name} ya no incluirá los siguientes roles:${roles}`,
+		COMMAND_ROLESET_UPDATED: name => `El conjunto de roles único ${name} se ha actualizado.`,
+		COMMAND_SHUFFLE_DESCRIPTION: 'Aleatoriza el orden de las canciones en la cola.',
+		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Canciones aleatorias exitosas de ${amount}.`,
 		COMMAND_SKIP_DESCRIPTION: `Salta la canción actual.`,
 		COMMAND_SKIP_PERMISSIONS: `No puedes ejecutar este comando, debes ser un DJ o un Moderador.`,
 		COMMAND_SKIP_VOTES_VOTED: `Ya has votado para saltar esta canción.`,
@@ -936,6 +944,15 @@ export default class extends Language {
 			],
 			reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
 			examples: ['#general', 'here']
+		}),
+		COMMAND_SETIMAGELOGS_DESCRIPTION: 'Set the image logs channel.',
+		COMMAND_SETIMAGELOGS_EXTENDED: builder.display('setImageLogs', {
+			extendedHelp: `This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with
+					the attachment re-uploaded. All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra.`,
+			explainedUsage: [
+				['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']
+			],
+			examples: ['#image-logs', 'here']
 		}),
 		COMMAND_SETMEMBERLOGS_DESCRIPTION: 'Set the member logs channel.',
 		COMMAND_SETMEMBERLOGS_EXTENDED: builder.display('setMemberLogs', {
@@ -1780,6 +1797,7 @@ export default class extends Language {
 		COMMAND_LEARN_INVALID_GENERATION: generation => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
 		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves.map(move => `\`${move}\``).join('y')} son realmente movimientos?`,
+		COMMAND_LEARN_CANNOT_LEARN: (pokemon, method) => `${pokemon} no tiene datos de aprendizaje para los movimientos dados ${method}`,
 		COMMAND_MOVE_DESCRIPTION: 'Obtiene datos para cualquier movimiento Pokémon usando mi conjunto de datos Pokémon',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: 'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
@@ -2282,6 +2300,16 @@ export default class extends Language {
 			],
 			examples: ['Discord', 'Skyra']
 		}),
+		COMMAND_GIMAGE_DESCRIPTION: 'Encuentra tus imágenes favoritas en Google',
+		COMMAND_GIMAGE_EXTENDED: builder.display('gimage', {
+			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar imágenes para su consulta.
+				Para obtener resultados web regulares, utilice el comando \`gsearch\`.
+				Este comando se ha marcado como NSFW porque es inevitable que cuando consulta contenido explícito, obtendrá resultados explícitos.`,
+			explainedUsage: [
+				['consulta', 'La imagen que quieres encontrar en Google']
+			],
+			examples: ['Discord', 'Skyra']
+		}),
 		COMMAND_LMGTFY_DESCRIPTION: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
 		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
 			explainedUsage: [
@@ -2455,11 +2483,11 @@ export default class extends Language {
 			'SPECIAL': '🎴 Especial'
 		},
 		COMMAND_MANGA_TITLES: {
-			TYPE: 'Tipo',
-			SCORE: 'Puntuación',
 			AGE_RATING: 'Clasificación de edad',
 			FIRST_PUBLISH_DATE: 'Primera fecha de publicación',
-			READ_IT: 'Léelo Aquí:'
+			READ_IT: 'Léelo Aquí:',
+			SCORE: 'Puntuación',
+			TYPE: 'Tipo'
 		},
 		COMMAND_WAIFU_FOOTER: 'Imagen por thiswaifudoesnotexist.net',
 
@@ -2519,12 +2547,12 @@ export default class extends Language {
 		COMMAND_8BALL_NOT_QUESTION: 'Eso no parece ser una pregunta...',
 		COMMAND_8BALL_QUESTIONS: {
 			QUESTION: '?',
-			WHEN: /^¿?cu[áa]ndo/i,
-			WHAT: /^¿?qu[ée]/i,
-			HOW_MUCH: /^¿?cu[áa]nto/i,
-			HOW_MANY: /^¿?cu[áa]nto/i,
-			WHY: /^¿?por qu[ée]/i,
-			WHO: /^¿?qui[ée]n/i
+			WHEN: 'cuando',
+			WHAT: 'qué',
+			HOW_MUCH: 'cuanto',
+			HOW_MANY: 'cuantos',
+			WHY: 'por qué',
+			WHO: 'quien'
 		},
 		COMMAND_8BALL_WHEN: createPick([
 			'Pronto™',
@@ -2628,7 +2656,9 @@ export default class extends Language {
 		COMMAND_GAMES_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
 		COMMAND_GAMES_SELF: 'You must be so sad to play against yourself. Try again with another user.',
 		COMMAND_GAMES_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
+		COMMAND_GAMES_NO_PLAYERS: prefix => `Por favor, especifique algunos homenajes para jugar a los Juegos del Hambre, así: \`${prefix}hg Bob, Mark, Jim, Kyra\``,
 		COMMAND_GAMES_TOO_MANY_OR_FEW: (min, max) => `I am sorry but the amount of players is less than ${min} or greater than ${max}.`,
+		COMMAND_GAMES_REPEAT: 'Lo siento, pero un usuario no puede jugar dos veces.',
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
@@ -2645,19 +2675,20 @@ export default class extends Language {
 					game in which the players first choose a color and then take turns dropping colored discs from the top into a
 					seven-column, ~~six~~ five-row vertically suspended grid.`
 		}),
-		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
+		COMMAND_COINFLIP_DESCRIPTION: '¡Lanza una moneda!',
 		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
-			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
-				If you don't, you lose your wager. Now get those coins flippin'.`,
+			extendedHelp: `Lanza una moneda. Si adivina el lado que aparece, recupera su apuesta, duplicada.
+			Si no lo haces, pierdes tu apuesta. Ahora consigue esas monedas volteando.`,
 			examples: ['50 heads', '200 tails']
 		}),
-		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
-		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
-		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
-		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
-		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
-		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}.` : ''}.`,
-		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
+		COMMAND_COINFLIP_INVALID_COINNAME: arg => `Disculpe, pero ${arg} no es una cara de moneda!`,
+		COMMAND_COINFLIP_COINNAMES: ['Cabezas', 'Cruz'],
+		COMMAND_COINFLIP_WIN_TITLE: '¡Ganaste!',
+		COMMAND_COINFLIP_LOSE_TITLE: 'Perdiste.',
+		COMMAND_COINFLIP_NOGUESS_TITLE: 'Lanzaste una moneda.',
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `La moneda fue lanzada y mostró ${result}. ${wager ? `Adivinaste correctamente y ganaste ${wager} ${SHINY}` : 'Lo entendiste bien'}!`,
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `La moneda fue lanzada y mostró${result}. No adivinaste correctamente ${wager ? `y perdido ${wager} ${SHINY}.` : ''}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `La moneda fue lanzada y mostró ${result}.`,
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Comenzar un juego de Mayor/Menor',
 		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
 			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis
@@ -2707,6 +2738,8 @@ export default class extends Language {
 			],
 			reminder: 'Recibirá al menos 5 veces la cantidad (cerezas / tada) al ganar, y hasta 24 veces (siete, diamante sin piel).'
 		}),
+		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
+		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SLOTMACHINE_CANVAS_TEXT: won => won ? 'Tú ganaste' : 'Tú perdiste',
 		COMMAND_SLOTMACHINE_TITLES: {
 			PREVIOUS: 'Anterior',
@@ -2773,8 +2806,8 @@ export default class extends Language {
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
 		GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,
-		GIVEAWAY_SCHEDULED: scheduledTime => `El sorteo comenzará en ${duration(scheduledTime)}.`,
 		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: title => `The giveaway **${title}** ended without enough participants.`,
+		GIVEAWAY_SCHEDULED: scheduledTime => `El sorteo comenzará en ${duration(scheduledTime)}.`,
 
 		/**
 		 * ###################
@@ -2893,9 +2926,10 @@ export default class extends Language {
 		CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
 		COMMAND_SETIGNORECHANNELS_SET: channel => `Ignoring all command input from ${channel} now.`,
 		COMMAND_SETIGNORECHANNELS_REMOVED: channel => `Listening all command input from ${channel} now.`,
-		COMMAND_SETMEMBERLOGS_SET: channel => `Successfully set the member logs channel to ${channel}.`,
-		COMMAND_SETMESSAGELOGS_SET: channel => `Successfully set the message logs channel to ${channel}.`,
-		COMMAND_SETMODLOGS_SET: channel => `Successfully set the mod logs channel to ${channel}.`,
+		COMMAND_SETIMAGELOGS_SET: channel => `Establezca correctamente el canal de registros de imagen en ${channel}.`,
+		COMMAND_SETMEMBERLOGS_SET: channel => `Establecer correctamente el canal de registros de miembros en ${channel}.`,
+		COMMAND_SETMESSAGELOGS_SET: channel => `Establezca correctamente el canal de registros de mensajes en ${channel}.`,
+		COMMAND_SETMODLOGS_SET: channel => `Establezca con éxito el canal de registros de modificaciones en ${channel}.`,
 		COMMAND_SETPREFIX_SET: prefix => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
 
 		/**
@@ -3010,8 +3044,8 @@ export default class extends Language {
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
-		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,
 		COMMAND_LOCKDOWN_LOCKING: channel => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
+		COMMAND_LOCKDOWN_LOCKED: channel => `The channel ${channel} was already locked.`,
 		COMMAND_LOCKDOWN_UNLOCKED: channel => `The channel ${channel} was not locked.`,
 		COMMAND_LOCKDOWN_OPEN: channel => `The lockdown for the channel ${channel} has been released.`,
 		COMMAND_MUTE_LOWLEVEL: 'I am sorry, there is no Mute role configured. Please ask an Administrator or the Guild Owner to set it up.',
@@ -3189,8 +3223,6 @@ export default class extends Language {
 		COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
 		COMMAND_SCOREBOARD_POSITION: position => `Your placing position is: ${position}`,
 		COMMAND_SETCOLOR: color => `Color changed to ${color}`,
-		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
-		COMMAND_SLOTMACHINES_LOSS: roll => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
 		COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
 		COMMAND_SOCIAL_PROFILE_DELETE: (user, points) => `${GREENTICK} **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
@@ -3719,7 +3751,9 @@ export default class extends Language {
 			`${LOADING} Calibrando lentes...`,
 			`${LOADING} Jugando a Piedra, Papel, Tijeras...`
 		]),
+		SYSTEM_ERROR: '¡Algo pasó!',
 		SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
+		SYSTEM_NOTENOUGH_PARAMETERS: `Lo siento, pero no proporcionaste suficientes parámetros...`,
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,

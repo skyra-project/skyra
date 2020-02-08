@@ -32,7 +32,5 @@ jobs:
       run: cp config.example.ts config.ts
     - name: tsc
       uses: icrawl/action-tsc@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        job-name: tsc
+          build: src

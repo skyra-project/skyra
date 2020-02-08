@@ -1,3 +1,3 @@
-import { createClient } from '@mocks/MockClient';
+import { Client } from 'klasa';
 
-export const client = createClient();
+export const client = new Client();

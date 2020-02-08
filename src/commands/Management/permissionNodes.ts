@@ -1,10 +1,10 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
+import { KeyedMemberTag } from '@root/arguments/membername';
+import { getHighestRole } from '@utils/util';
 import { Role } from 'discord.js';
 import { Command, CommandStore, KlasaMessage } from 'klasa';
-import { KeyedMemberTag } from '@root/src/arguments/membername';
-import { getHighestRole } from '@utils/util';
 
 type Nodes = readonly PermissionsNode[];
 

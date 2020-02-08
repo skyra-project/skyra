@@ -45,7 +45,7 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public async handle(message: KlasaMessage, target: User, reason: string, duration: number | null) {
+	public handle(message: KlasaMessage, target: User, reason: string, duration: number | null) {
 		return message.guild!.security.actions.restrictEmbed({
 			user_id: target.id,
 			moderator_id: message.author.id,

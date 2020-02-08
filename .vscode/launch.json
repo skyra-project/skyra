@@ -6,7 +6,7 @@
 			"request": "launch",
 			"name": "Main - Windows",
 			"args": [
-				"${workspaceFolder}\\dist\\src\\Skyra.js"
+				"${workspaceFolder}\\dist\\Skyra.js"
 			],
 			"protocol": "inspector",
 			"internalConsoleOptions": "openOnSessionStart",

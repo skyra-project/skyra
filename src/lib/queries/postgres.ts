@@ -64,8 +64,7 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, messageID]);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/require-await
-	public async deleteMemberSettings(guildID: string, userID: string) {
+	public deleteMemberSettings(guildID: string, userID: string) {
 		return this.provider.runOne(/* sql */`
 			DELETE
 			FROM members
@@ -138,8 +137,7 @@ export class PostgresCommonQuery implements CommonQuery {
 		`);
 	}
 
-	// eslint-disable-next-line @typescript-eslint/require-await
-	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
+	public purgeTwitchStreamGuildSubscriptions(guildID: string) {
 		return this.provider.runAll<UpdatePurgeTwitchStreamReturning>(/* sql */`
 			UPDATE twitch_stream_subscriptions
 			SET

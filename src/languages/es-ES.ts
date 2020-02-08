@@ -2547,6 +2547,7 @@ export default class extends Language {
 		COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
 		COMMAND_8BALL_NOT_QUESTION: 'Eso no parece ser una pregunta...',
 		COMMAND_8BALL_QUESTIONS: {
+			QUESTION: '?',
 			WHEN: /^¿?cu[áa]ndo/i,
 			WHAT: /^¿?qu[ée]/i,
 			HOW_MUCH: /^¿?cu[áa]nto/i,

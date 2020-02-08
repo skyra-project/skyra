@@ -4,6 +4,7 @@ node_modules/
 .idea/
 *.iml
 /rethinkdb_data/
+coverage/
 
 # Ignore bwd folders
 dist/

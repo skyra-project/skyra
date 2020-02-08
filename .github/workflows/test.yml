@@ -28,5 +28,7 @@ jobs:
           ${{ runner.OS }}-
     - name: yarn
       run: yarn --ignore-scripts
+    - name: configuration
+      run: pushd src && cp config.example.ts config.ts && popd
     - name: test
       run: yarn test

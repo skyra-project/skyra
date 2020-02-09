@@ -8,10 +8,10 @@
 
 ## Development Requirements
 
-- [`Node.js`]: To run the project.
-- [`PostgreSQL`]: (Dev Optional) To store persistent data.
-- [`Lavalink`]: (Dev Optional) Audio server.
-- [`InfluxDB`]: (Dev Optional) Analytics, Statistics, and Audit storage.
+-   [`Node.js`]: To run the project.
+-   [`PostgreSQL`]: (Dev Optional) To store persistent data.
+-   [`Lavalink`]: (Dev Optional) Audio server.
+-   [`InfluxDB`]: (Dev Optional) Analytics, Statistics, and Audit storage.
 
 ## Set-Up
 
@@ -54,14 +54,14 @@ _Who knows, I might write a book someday for Skyra's lore._
 
 **Skyra links**
 
-- [Skyra Invite Link]
-- [Support Server]
-- [Patreon]
-- [Translation]
+-   [Skyra Invite Link]
+-   [Support Server]
+-   [Patreon]
+-   [Translation]
 
 **Framework links**
 
-- [Klasa's Website]
+-   [Klasa's Website]
 
 ## Buy us some donuts
 
@@ -72,29 +72,24 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 
 | Donate With |         QR         |                                                                  Address                                                                  |
 | :---------: | :----------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
-|   Patreon   | ![PatreonImage][]  | [Click Here](https://www.patreon.com/kyranet)                                                                                             |
-|   BitCoin   | ![BitcoinImage][]  | [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)                  |
+|   Patreon   | ![PatreonImage][]  |                                               [Click Here](https://www.patreon.com/kyranet)                                               |
+|   BitCoin   | ![BitcoinImage][]  |         [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)          |
 |  Ethereum   | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
-|  Litecoin   | ![LitecoinImage][] | [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)                 |
-
+|  Litecoin   | ![LitecoinImage][] |         [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)         |
 
 <!----------------- LINKS --------------->
 
-[`Node.js`]:            https://nodejs.org/en/download/current/
-[`PostgreSQL`]:         https://www.postgresql.org/download/
-[`Lavalink`]:           https://github.com/Frederikam/Lavalink
-[`InfluxDB`]:           https://portal.influxdata.com/downloads/
-
-[`config.example.ts`]:  /src/config.example.ts
-
-[Skyra Invite Link]:    https://skyra.pw/invite
-[Support Server]:       https://join.skyra.pw
-[Patreon]:              https://www.patreon.com/kyranet
-[Translation]:          https://skyra.pw/translate
-
-[Klasa's Website]:      https://klasa.js.org
-
-[PatreonImage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
-[BitcoinImage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
-[EthereumImage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
-[LitecoinImage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png
+[`node.js`]:			https://nodejs.org/en/download/current/
+[`postgresql`]:			https://www.postgresql.org/download/
+[`lavalink`]:			https://github.com/Frederikam/Lavalink
+[`influxdb`]:			https://portal.influxdata.com/downloads/
+[`config.example.ts`]:	/src/config.example.ts
+[skyra invite link]:	https://skyra.pw/invite
+[support server]:		https://join.skyra.pw
+[patreon]:				https://www.patreon.com/kyranet
+[translation]:			https://skyra.pw/translate
+[klasa's website]:		https://klasa.js.org
+[patreonimage]:			https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
+[bitcoinimage]:			https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
+[ethereumimage]:		https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
+[litecoinimage]:		https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png

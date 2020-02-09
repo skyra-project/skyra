@@ -5,9 +5,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Main - Windows",
-			"args": [
-				"${workspaceFolder}\\dist\\Skyra.js"
-			],
+			"args": ["${workspaceFolder}\\dist\\Skyra.js"],
 			"protocol": "inspector",
 			"internalConsoleOptions": "openOnSessionStart",
 			"env": {
@@ -20,9 +18,7 @@
 			"type": "node",
 			"request": "launch",
 			"name": "Main - Linux",
-			"args": [
-				"${workspaceFolder}/dist/Skyra.js"
-			],
+			"args": ["${workspaceFolder}/dist/Skyra.js"],
 			"protocol": "inspector",
 			"internalConsoleOptions": "openOnSessionStart",
 			"env": {

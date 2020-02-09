@@ -31,5 +31,4 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 - Everything should follow our ESLint rules as closely as possible, and should pass lint tests even if you must disable a rule for a single line.
 - Everything should follow [Discord Bot Best Practices](https://github.com/meew0/discord-bot-best-practices)
 
-
-[`config.example.ts`]:  /src/config.example.ts
+[`config.example.ts`]: /src/config.example.ts

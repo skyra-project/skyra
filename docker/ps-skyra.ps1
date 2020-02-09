@@ -60,7 +60,7 @@ function Step-Run {
 
 	Process {
 		switch ( $command ) {
-			build { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" build $service }
+			build { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" -f "$($PSScriptRoot)\docker-build.yml" build $service }
 			start { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" up -d $service }
 			logs { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs $service }
 			tail { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs -f $service }

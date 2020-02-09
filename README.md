@@ -79,17 +79,21 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 
 <!----------------- LINKS --------------->
 
-[`node.js`]:			https://nodejs.org/en/download/current/
-[`postgresql`]:			https://www.postgresql.org/download/
-[`lavalink`]:			https://github.com/Frederikam/Lavalink
-[`influxdb`]:			https://portal.influxdata.com/downloads/
-[`config.example.ts`]:	/src/config.example.ts
-[skyra invite link]:	https://skyra.pw/invite
-[support server]:		https://join.skyra.pw
-[patreon]:				https://www.patreon.com/kyranet
-[translation]:			https://skyra.pw/translate
-[klasa's website]:		https://klasa.js.org
-[patreonimage]:			https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
-[bitcoinimage]:			https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
-[ethereumimage]:		https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
-[litecoinimage]:		https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png
+[`node.js`]:            https://nodejs.org/en/download/current/
+[`postgresql`]:         https://www.postgresql.org/download/
+[`lavalink`]:           https://github.com/Frederikam/Lavalink
+[`influxdb`]:           https://portal.influxdata.com/downloads/
+
+[`config.example.ts`]:  /src/config.example.ts
+
+[skyra invite link]:    https://skyra.pw/invite
+[support server]:       https://join.skyra.pw
+[patreon]:              https://www.patreon.com/kyranet
+[translation]:          https://skyra.pw/translate
+
+[klasa's website]:      https://klasa.js.org
+
+[patreonimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
+[bitcoinimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
+[ethereumimage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
+[litecoinimage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png

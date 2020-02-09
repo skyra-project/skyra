@@ -33,10 +33,5 @@ jobs:
           pushd src &&
           cp config.example.ts config.ts &&
           popd
-      # - name: Rebuild node-canvas
-      #   run: |
-      #     pushd node_modules/canvas &&
-      #     node-gyp rebuild &&
-      #     popd
       - name: Run tests
         run: yarn test

@@ -15,7 +15,7 @@
 
 ## Set-Up
 
-Copy and paste the [`config.example.ts`] file and rename it to `config.ts`, then fill it with the precise variables.
+Copy and paste the [`config.example.ts`] file in the `src` directory and rename it to `config.ts`, then fill it with the precise variables.
 Once all development requirements are set up:
 
 ```bash
@@ -85,7 +85,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [`Lavalink`]:           https://github.com/Frederikam/Lavalink
 [`InfluxDB`]:           https://portal.influxdata.com/downloads/
 
-[`config.example.ts`]:  /config.example.ts
+[`config.example.ts`]:  /src/config.example.ts
 
 [Skyra Invite Link]:    https://skyra.pw/invite
 [Support Server]:       https://join.skyra.pw

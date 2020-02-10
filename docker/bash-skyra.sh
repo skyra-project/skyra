@@ -33,7 +33,7 @@ help() {
 		1. Download the latest .jar file from https://ci.fredboat.com/viewLog.html?buildId=lastSuccessful&buildTypeId=Lavalink_Build&tab=artifacts&guest=1
 		2. Drop this .jar file in the 'lavalink' folder
 		3. Duplicate the 'application.example.yml' file and rename it to 'application.yml'
-		4. Set any password in the yaml file and also set the same password in config.ts in the root folder of this project
+		4. Set any password in the yaml file and also set the same password in src/config.ts in the root folder of this project
 
 	${GREEN}Influxdb setup:${NC}\n
 		1. In the influxdb folder, duplicate the 'config.sample.toml' file and rename it to 'config.toml'

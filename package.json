@@ -2,7 +2,7 @@
 	"name": "skyra",
 	"version": "5.2.3",
 	"description": "Multipurpose Discord Bot built on Klasa",
-	"main": "dist/src/Skyra.js",
+	"main": "dist/Skyra.js",
 	"scripts": {
 		"pm2:delete": "pm2 delete Skyra",
 		"pm2:logs": "pm2 logs Skyra --lines=200",
@@ -10,15 +10,15 @@
 		"pm2:start": "pm2 start pm2.ecosystem.yml",
 		"pm2:dev": "yarn pm2:start --env development",
 		"pm2:stop": "pm2 stop Skyra",
-		"start": "node dist/src/Skyra.js",
+		"start": "node dist/Skyra.js",
 		"lint": "eslint --ext ts src --fix",
-		"test": "eslint --ext ts src",
-		"test:lint": "eslint --ext ts src",
-		"update": "rm -rf node_modules && yarn",
-		"build": "tsc -p .",
-		"build-clear": "rm -rf dist && tsc -p .",
+		"test": "jest",
+		"test:watch": "jest --watch",
+		"update": "yarn upgrade-interactive --latest",
+		"build": "tsc -b src",
+		"build-clear": "rm -rf dist && tsc -b src",
 		"build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
-		"watch": "tsc -p . -w",
+		"watch": "tsc -b src -w",
 		"dev": "yarn build && yarn start",
 		"dockerps": "powershell .\\docker\\ps-skyra.ps1",
 		"dockerbash": "bash ./docker/bash-skyra.sh"
@@ -74,6 +74,7 @@
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",
 		"@types/he": "^1.1.0",
+		"@types/jest": "^25.1.2",
 		"@types/module-alias": "^2.0.0",
 		"@types/node": "^13.7.0",
 		"@types/node-fetch": "^2.5.4",
@@ -84,11 +85,13 @@
 		"chokidar": "^3.3.1",
 		"eslint": "^6.8.0",
 		"eslint-config-bamboo": "^3.0.0",
+		"jest": "^25.1.0",
+		"ts-jest": "^25.2.0",
 		"typescript": "^3.7.5"
 	},
 	"_moduleAliases": {
-		"@utils": "dist/src/lib/util",
-		"@lib": "dist/src/lib",
+		"@utils": "dist/lib/util",
+		"@lib": "dist/lib",
 		"@root": "dist"
 	}
 }

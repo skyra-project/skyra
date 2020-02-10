@@ -1,7 +1,7 @@
-import { RawPollSettings } from '@root/src/commands/Tools/poll';
+import { RawPollSettings } from '@root/commands/Tools/poll';
 import { APIErrors } from '@utils/constants';
-import { constants, Task, util } from 'klasa';
 import { resolveOnErrorCodes } from '@utils/util';
+import { constants, Task, util } from 'klasa';
 const TASK_EOL = constants.TIME.DAY * 2;
 
 export default class extends Task {

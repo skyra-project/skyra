@@ -1,9 +1,15 @@
 {
-	"extends": "bamboo",
-	"rules": {
-		"no-throw-literal": 0
-	},
-	"parserOptions": {
-		"project": "./tsconfig.json"
-	}
+  "extends": "bamboo",
+  "rules": {
+	"no-throw-literal": 0,
+	"@typescript-eslint/restrict-plus-operands": 0
+  },
+  "env": {
+    "jest": true,
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  }
 }

@@ -41,7 +41,7 @@ export default class extends ModerationCommand {
 		return null;
 	}
 
-	public async handle(message: KlasaMessage, target: User, reason: string | null, _duration: number | null, modlog: ModerationManagerEntry) {
+	public handle(message: KlasaMessage, target: User, reason: string | null, _duration: number | null, modlog: ModerationManagerEntry) {
 		return message.guild!.security.actions.unWarning({
 			user_id: target.id,
 			moderator_id: message.author.id,

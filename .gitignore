@@ -4,6 +4,7 @@ node_modules/
 .idea/
 *.iml
 /rethinkdb_data/
+coverage/
 
 # Ignore bwd folders
 dist/
@@ -11,6 +12,7 @@ bwd/
 
 # Ignore JavaScript files
 **/*.js
+!jest.config.js
 
 # Ignore the config file (contains sensitive information such as tokens)
 config.ts

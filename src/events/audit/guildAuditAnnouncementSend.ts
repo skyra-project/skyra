@@ -13,7 +13,7 @@ export default class extends AuditEvent {
 		});
 	}
 
-	public async run(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
+	public run(message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string) {
 		return this.writeMeasurement(AuditMeasurements.Announcement,
 			{
 				fields: {

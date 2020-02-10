@@ -309,7 +309,7 @@ export default class extends Language {
 		COMMAND_ROLESET_INVALID_NAME: name => `You can not remove the ${name} unique role set because it does not exist.`,
 		COMMAND_ROLESET_REMOVED: (name, roles) => `The ${name} unique role set will no longer include the following roles: ${roles}`,
 		COMMAND_ROLESET_UPDATED: name => `The ${name} unique role set has been updated.`,
-		COMMAND_SHUFFLE_DESCRIPTION: 'Randomizes the order of the songs in the queue.',
+		COMMAND_SHUFFLE_DESCRIPTION: 'Randomize the order of the songs in the queue.',
 		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Successfully randomized ${amount} songs.`,
 		COMMAND_SKIP_DESCRIPTION: `Skip the current song.`,
 		COMMAND_SKIP_PERMISSIONS: `${REDCROSS} You can't execute this command, you must be a DJ or a Moderator.`,
@@ -1787,8 +1787,8 @@ export default class extends Language {
 			THROUGH_DREAMWORLD: 'through a Dream World capture'
 		},
 		COMMAND_LEARN_INVALID_GENERATION: generation => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
-		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves.map(move => `\`${move}\``).join(' and ')} are actually moves?`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
+		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves.map(move => `\`${move}\``).join(' and ')} are actually moves?`,
 		COMMAND_LEARN_CANNOT_LEARN: (pokemon, method) => `${pokemon} has no learnset data for the given moves ${method}`,
 		COMMAND_MOVE_DESCRIPTION: 'Gets data for any given Pokémon move using my Pokémon dataset',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
@@ -2274,6 +2274,14 @@ export default class extends Language {
 			],
 			examples: ['Antarctica', 'Arizona']
 		}),
+		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
+		COMMAND_CURRENTTIME_TITLES: {
+			CURRENT_TIME: 'Current Time',
+			CURRENT_DATE: 'Current Date',
+			COUNTRY: 'Country',
+			GMT_OFFSET: 'GMT Offset',
+			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+		},
 		COMMAND_GSEARCH_DESCRIPTION: 'Find your favourite things on Google',
 		COMMAND_GSEARCH_EXTENDED: builder.display('gsearch', {
 			extendedHelp: `This command queries the powerful Google Search engine to find websites for your query.
@@ -2293,14 +2301,6 @@ export default class extends Language {
 			],
 			examples: ['Discord', 'Skyra']
 		}),
-		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
-		COMMAND_CURRENTTIME_TITLES: {
-			CURRENT_TIME: 'Current Time',
-			CURRENT_DATE: 'Current Date',
-			COUNTRY: 'Country',
-			GMT_OFFSET: 'GMT Offset',
-			DST: dst => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
-		},
 		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
 		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
 			explainedUsage: [
@@ -2665,14 +2665,6 @@ export default class extends Language {
 					game in which the players first choose a color and then take turns dropping colored discs from the top into a
 					seven-column, ~~six~~ five-row vertically suspended grid.`
 		}),
-		COMMAND_COINFLIP_INVALID_COINNAME: arg => `Excuse me, but ${arg} is not a coin face!`,
-		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
-		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
-		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
-		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
-		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
-		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
-		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
 		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
 			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
@@ -2681,6 +2673,14 @@ export default class extends Language {
 				Now get those coins flippin'.`,
 			examples: ['50 heads', '200 tails']
 		}),
+		COMMAND_COINFLIP_INVALID_COINNAME: arg => `Excuse me, but ${arg} is not a coin face!`,
+		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
+		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
+		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
+		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
+		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: result => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
 		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
 			extendedHelp: `Higher/Lower is a game of luck. I will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis

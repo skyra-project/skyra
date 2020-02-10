@@ -1,7 +1,5 @@
 {
-	"eslint.validate": [
-		"typescript"
-	],
+	"eslint.validate": ["typescript"],
 	"editor.tabSize": 4,
 	"editor.useTabStops": true,
 	"editor.insertSpaces": false,

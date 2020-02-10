@@ -16,7 +16,7 @@ in your text editor or IDE of your choice to ensure builds from GitHub Actions d
 
 To run Skyra locally a few steps should be taken. You can find a more detailed reference in [the README of this repository](https://github.com/skyra-project/skyra) but to list the steps shortly:
 
-1. Copy the `config.example.ts` file and rename it to `config.ts`
+1. Copy the [`config.example.ts`] in the `src` directory file and rename it to `config.ts`
 2. Scroll down to `export const TOKENS = {`
 3. At this section enter your own bot's API token at `BOT_TOKEN`.
 
@@ -30,3 +30,5 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 - Everything should follow [OOP paradigms](https://en.wikipedia.org/wiki/Object-oriented_programming) and generally rely on behaviour over state where possible. This generally helps methods be predictable, keeps the codebase simple and understandable, reduces code duplication through abstraction, and leads to efficiency and therefore scalability.
 - Everything should follow our ESLint rules as closely as possible, and should pass lint tests even if you must disable a rule for a single line.
 - Everything should follow [Discord Bot Best Practices](https://github.com/meew0/discord-bot-best-practices)
+
+[`config.example.ts`]: /src/config.example.ts

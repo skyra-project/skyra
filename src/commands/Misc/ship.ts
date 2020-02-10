@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserSettings } from '@lib/types/settings/UserSettings';
-import { KeyedMemberTag } from '@root/src/arguments/membername';
+import { KeyedMemberTag } from '@root/arguments/membername';
 import { socialFolder } from '@utils/constants';
 import { fetch, FetchResultTypes, getDisplayAvatar, loadImage } from '@utils/util';
 import { Image } from 'canvas';

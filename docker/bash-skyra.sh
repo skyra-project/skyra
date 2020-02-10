@@ -61,7 +61,7 @@ help() {
 }
 
 case $1 in
-	build) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml build ${@:2:99} ;;
+	build) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml -f ${CURRENT_DIR}/docker-build.yml build ${@:2:99} ;;
 	start) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml up -d ${@:2:99} ;;
 	stop) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml stop ${@:2:99} ;;
 	logs) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs ${@:2:99} ;;

@@ -1,26 +1,22 @@
-version: '2'
+version: "3.7"
 services:
-    postgres:
-        container_name: pgsql
-        image: postgres
-        ports:
-        - '5432:5432'
-        env_file:
-            - ./postgres/.env
-    lavalink:
-        build: ./lavalink
-        container_name: lavalink
-        image: skyrabot/lavalink:latest
-        ports:
-        - '2333:2333'
-    pokedex:
-        container_name: pokedex
-        image: favware/graphql-pokemon:latest
-        ports:
-        - '4000:8080'
-    influxdb:
-        build: ./influxdb
-        container_name: influxdb
-        image: skyrabot/influxdb:latest
-        ports:
-        - '8086:8086'
+  postgres:
+    container_name: pgsql
+    image: postgres
+    ports:
+      - "5432:5432"
+  lavalink:
+    container_name: lavalink
+    image: skyrabot/lavalink:latest
+    ports:
+      - "2333:2333"
+  pokedex:
+    container_name: pokedex
+    image: favware/graphql-pokemon:latest
+    ports:
+      - "4000:8080"
+  influxdb:
+    container_name: influxdb
+    image: skyrabot/influxdb:latest
+    ports:
+      - "8086:8086"

@@ -1,0 +1,14 @@
+version: "3.7"
+services:
+  postgres:
+    image: postgres
+    env_file:
+      - ./postgres/.env
+  lavalink:
+    build: ./lavalink
+    image: skyrabot/lavalink:latest
+  pokedex:
+    image: favware/graphql-pokemon:latest
+  influxdb:
+    build: ./influxdb
+    image: skyrabot/influxdb:latest

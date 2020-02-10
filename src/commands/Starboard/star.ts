@@ -1,9 +1,9 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Colors } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { KeyedMemberTag } from '@root/arguments/membername';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
-import { KeyedMemberTag } from '@root/src/arguments/membername';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 

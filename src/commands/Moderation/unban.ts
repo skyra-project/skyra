@@ -36,7 +36,7 @@ export default class extends ModerationCommand {
 		if (prehandled) prehandled.unlock();
 	}
 
-	public async checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
+	public checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
 		if (!prehandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 		return super.checkModeratable(message, target, prehandled);
 	}

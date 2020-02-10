@@ -39,9 +39,7 @@ export default class extends SkyraCommand {
 		}
 
 		const timeReputation = selfSettings.get(UserSettings.TimeReputation);
-		// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 		if (this.busy.has(message.author.id) || timeReputation + Time.Day > now) {
-			// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + Time.Day - now]);
 		}
 

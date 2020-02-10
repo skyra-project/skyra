@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 			usage: '(attachment:attachment)'
 		});
 
-		this.createCustomResolver('attachment', async (arg, possible, msg) => {
+		this.createCustomResolver('attachment', (arg, possible, msg) => {
 			if (msg.attachments.size) {
 				const attachment = msg.attachments.find(att => IMAGE_EXTENSION.test(att.url));
 				if (attachment) return fetch(attachment.url, FetchResultTypes.Buffer);

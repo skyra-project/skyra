@@ -1,31 +1,6 @@
 {
 	"extends": "eslint-config-bamboo",
 	"compilerOptions": {
-		"outDir": "./dist",
-		"target": "es2020",
-		"types": [
-			"node",
-			"node-fetch",
-			"discord.js",
-			"klasa",
-			"klasa-dashboard-hooks"
-		],
-		"baseUrl": ".",
-		"paths": {
-			"@utils/*": ["src/lib/util/*"],
-			"@lib/*": ["src/lib/*"],
-			"@root/*": ["*"]
-		}
-	},
-	"include": [
-		"./src/**/*",
-		"./database/**/*",
-		"./config.ts",
-		"./config.example.ts"
-	],
-	"exclude": [
-		"**/node_modules",
-		"**/dist",
-		"**/coverage"
-	]
+		"target": "es2020"
+	}
 }

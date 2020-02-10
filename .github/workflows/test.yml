@@ -1,4 +1,4 @@
-name: Build
+name: Test
 
 on:
   push:
@@ -7,8 +7,8 @@ on:
   pull_request:
 
 jobs:
-  tsc:
-    name: tsc
+  test:
+    name: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
@@ -22,14 +22,16 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-12-${{ hashFiles('**/yarn.lock') }}
+      - name: Setup node-canvas Dependencies
+        run: | 
+          sudo apt-get install libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev -y &&
+          yarn global add node-gyp node-pre-gyp
       - name: Install Dependencies
-        run: yarn --ignore-scripts
+        run: yarn
       - name: Copy Configuration
         run: |
           pushd src &&
           cp config.example.ts config.ts &&
           popd
-      - name: Compile TypeScript
-        uses: icrawl/action-tsc@v1
-        with:
-          build: src
+      - name: Run tests
+        run: yarn test

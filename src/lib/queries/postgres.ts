@@ -1,14 +1,14 @@
 import { Databases } from '@lib/types/constants/Constants';
 import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import PostgresProvider from '@root/providers/postgres';
 import { Client } from 'discord.js';
-import PostgresProvider from 'src/providers/postgres';
 import { CommonQuery, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
-import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -64,7 +64,7 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, messageID]);
 	}
 
-	public async deleteMemberSettings(guildID: string, userID: string) {
+	public deleteMemberSettings(guildID: string, userID: string) {
 		return this.provider.runOne(/* sql */`
 			DELETE
 			FROM members
@@ -137,7 +137,7 @@ export class PostgresCommonQuery implements CommonQuery {
 		`);
 	}
 
-	public async purgeTwitchStreamGuildSubscriptions(guildID: string) {
+	public purgeTwitchStreamGuildSubscriptions(guildID: string) {
 		return this.provider.runAll<UpdatePurgeTwitchStreamReturning>(/* sql */`
 			UPDATE twitch_stream_subscriptions
 			SET

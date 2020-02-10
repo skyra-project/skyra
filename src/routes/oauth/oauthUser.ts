@@ -40,7 +40,6 @@ export default class extends Route {
 			if (data === null) return response.error(401);
 
 			// If the token expires in a day, refresh
-			// eslint-disable-next-line @typescript-eslint/restrict-plus-operands
 			if (Date.now() + Time.Day > data.expiresAt) {
 				const updated = await this.refreshToken(data.id, data.refreshToken);
 				if (updated !== null) data = updated;

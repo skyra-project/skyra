@@ -58,8 +58,8 @@ export class Board {
 	public check(x: number, y: number): readonly [number, number][] | null {
 		const cell = this.getAt(x, y);
 
-		return this.checkHorizontal(y, cell)
-			|| this.checkVertical(x, y, cell)
+		return this.checkVertical(x, y, cell)
+			|| this.checkHorizontal(y, cell)
 			|| this.checkDiagonalTopLeftToBottomRight(x, y, cell)
 			|| this.checkDiagonalBottomLeftToTopRight(x, y, cell);
 	}

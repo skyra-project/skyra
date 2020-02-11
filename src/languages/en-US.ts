@@ -4217,10 +4217,10 @@ export default class extends Language {
 				? 's'
 				: ''}: ${removed.join(', ')}\n`
 			: ''}${added.length > 0
-				? `Added the role${added.length > 1
-					? 's'
-					: ''}: ${added.join(', ')}`
-				: ''}`,
+			? `Added the role${added.length > 1
+				? 's'
+				: ''}: ${added.join(', ')}`
+			: ''}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
 		EVENTS_NAME_DIFFERENCE: (previous, next) => [

@@ -4230,10 +4230,10 @@ export default class extends Language {
 				? 'Eliminado el rol'
 				: 'Eliminados los roles'}: ${removed.join(', ')}\n`
 			: ''}${added.length > 0
-				? `${added.length === 1
-					? 'Añadido el rol'
-					: 'Añadidos los roles'}: ${added.join(', ')}`
-				: ''}`,
+			? `${added.length === 1
+				? 'Añadido el rol'
+				: 'Añadidos los roles'}: ${added.join(', ')}`
+			: ''}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
 		EVENTS_NAME_DIFFERENCE: (previous, next) => [

@@ -3535,20 +3535,29 @@ export default class extends Language {
 		 * WEEB COMMANDS
 		 */
 
+		COMMAND_WBANG: user => `Ey ${user}... ¡bang!`,
+		COMMAND_WBANGHEAD: '¡Golpeo de cabeza en progreso!',
+		COMMAND_WBITE: user => `¡Mordiendo ${user}!`,
 		COMMAND_WBLUSH: '¡Le/a ruborizaste! 😊',
 		COMMAND_WCRY: user => `Querido ${user}, ¿le/a hiciste llorar? 💔`,
 		COMMAND_WCUDDLE: user => `Ahí va un abracito para tí, ${user} 💞`,
 		COMMAND_WDANCE: '¡Olé! 💃',
+		COMMAND_WGREET: user => `¡Buenas ${user}!`,
 		COMMAND_WHUG: user => `¡Un abrazo! ${user} ❤`,
 		COMMAND_WKISS: user => `¡Un besito! ${user} 💜`,
+		COMMAND_WLEWD: '¡Demasiado lujurioso!',
 		COMMAND_WLICK: user => `Lamiendo ${user} 👅`,
 		COMMAND_WNOM: `Nom, nom, nom! 😊`,
 		COMMAND_WNEKO: `Miau! 🐱`,
 		COMMAND_WPAT: user => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
 		COMMAND_WPOUT: `¿Oh?`,
+		COMMAND_WPUNCH: user => `¡Dando un puñetazo a ${user}!`,
 		COMMAND_WSLAP: user => `¡Abofeteando ${user}!`,
+		COMMAND_WSLEEPY: 'Durmiéndose...',
+		COMMAND_WSMILE: '¡Mostrando una risa radiante!',
 		COMMAND_WSMUG: `\\*Sonríe con superioridad\\*`,
 		COMMAND_WSTARE: user => `Querido ${user}... hay alguien observándote 👀`,
+		COMMAND_WTHUMBSUP: '¡Tienes su pulgar hacia arriba!',
 		COMMAND_WTICKLE: user => `Cosquillitas para tí, ${user}!`,
 
 		/**

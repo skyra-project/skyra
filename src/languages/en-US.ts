@@ -3523,20 +3523,29 @@ export default class extends Language {
 		 * WEEB COMMANDS
 		 */
 
+		COMMAND_WBANG: user => `Hey ${user}... bang!`,
+		COMMAND_WBANGHEAD: 'Head bang in progress!',
+		COMMAND_WBITE: user => `Biting ${user}!`,
 		COMMAND_WBLUSH: 'You made them blush! 😊',
 		COMMAND_WCRY: user => `Dear ${user}, did you make them cry? 💔`,
 		COMMAND_WCUDDLE: user => `Here is a cuddle for you, ${user} 💞`,
 		COMMAND_WDANCE: 'Dancing! 💃',
+		COMMAND_WGREET: user => `Hello there ${user}!`,
 		COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
 		COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
+		COMMAND_WLEWD: 'Too lewd for my tastes!',
 		COMMAND_WLICK: user => `Licking ${user} 👅`,
 		COMMAND_WNOM: `Nom, nom, nom! 😊`,
 		COMMAND_WNEKO: `Nya! 🐱`,
 		COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,
 		COMMAND_WPOUT: `Uh?`,
+		COMMAND_WPUNCH: user => `Punching ${user}!`,
 		COMMAND_WSLAP: user => `Slapping ${user}!`,
+		COMMAND_WSLEEPY: 'Falling asleep...',
+		COMMAND_WSMILE: 'Showing a radiant smile!',
 		COMMAND_WSMUG: `There's a smug face!`,
 		COMMAND_WSTARE: user => `Dear ${user}, somebody is staring at you 👀`,
+		COMMAND_WTHUMBSUP: 'You have their thumbs up!',
 		COMMAND_WTICKLE: user => `Tickles for you, ${user}!`,
 
 		/**

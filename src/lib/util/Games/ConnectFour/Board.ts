@@ -59,7 +59,7 @@ export class Board {
 		const cell = this.getAt(x, y);
 
 		return this.checkVertical(x, y, cell)
-			|| this.checkHorizontal(y, cell)
+			|| this.checkHorizontal(x, y, cell)
 			|| this.checkDiagonalTopLeftToBottomRight(x, y, cell)
 			|| this.checkDiagonalBottomLeftToTopRight(x, y, cell);
 	}
@@ -82,16 +82,39 @@ export class Board {
 		return -1;
 	}
 
-	private checkHorizontal(y: number, cell: Cell) {
+	private checkHorizontal(x: number, y: number, cell: Cell) {
+		/**
+		 * 00__ 10__ 20__ 30__ 40__ 50__ 60__ 70__
+		 * 01__ 11__ 21__ 31__ 41__ 51__ 61__ 71__
+		 * 02__ 12__ 22__ 32__ 42__ 52__ 62__ 72__
+		 * 03__ 13__ 23__ 33__ 43__ 53__ 63__ 73__
+		 * 04__ 14__ 24_o 34_o 44_o 54__ 64__ 74__
+		 * 05__ 15__ 25_x 35_x 45_x 55_x 65__ 75__
+		 *
+		 * Winning: { 25, 35, 45, 55 }
+		 * Assuming last move as 55.
+		 *
+		 * We retrieve the corner for this move:
+		 * lx = x - 3
+		 * rx = x + 3
+		 *
+		 * We iterate from { lx, y } to { rx, y } inclusive, increasing lx by 1.
+		 *
+		 * We will also optimize one case: since this is linear, we don't need to iterate from x - 3 to x + 3, but
+		 * instead, we will iterate from max(x - 3, 0), skipping negatives, to min(x + 3, kColumns - 1), this shortens
+		 * the range from [-3..8] to [0..6].
+		 */
+
 		let count = 0;
-		for (let column = 0; column < kColumns; ++column) {
-			if (this.getAt(column, y) === cell) {
+		const rx = Math.min(x + 3, kColumns - 1);
+		for (let lx = Math.max(x - 3, 0); lx < rx; ++lx) {
+			if (this.getAt(lx, y) === cell) {
 				if (++count === 4) {
 					return [
-						[column - 3, y],
-						[column - 2, y],
-						[column - 1, y],
-						[column, y]
+						[lx - 3, y],
+						[lx - 2, y],
+						[lx - 1, y],
+						[lx, y]
 					] as [number, number][];
 				}
 			} else {
@@ -104,19 +127,33 @@ export class Board {
 
 	private checkVertical(x: number, y: number, cell: Cell) {
 		/**
-		 * 0
-		 * 1
-		 * 2
-		 * 3
-		 * 4
-		 * 5
-		 * kRows (6)
-		 * For a vertical to check out in a table with a height of 6 elements, it needs the kRows - 4 th (2nd in this
-		 * case) cell to be filled.
+		 * 00__ 10__ 20__ 30__ 40__ 50__ 60__ 70__
+		 * 01__ 11__ 21__ 31__ 41__ 51__ 61__ 71__
+		 * 02__ 12__ 22__ 32_x 42__ 52__ 62__ 72__
+		 * 03__ 13__ 23_o 33_x 43__ 53__ 63__ 73__
+		 * 04__ 14__ 24_o 34_x 44__ 54__ 64__ 74__
+		 * 05__ 15__ 25_o 35_x 45__ 55__ 65__ 75__
 		 *
-		 * If there aren't enough rows in the same column to qualify, skip early
+		 * Winning: { 32, 33, 34, 35 }
+		 * Assuming last move as 32.
+		 *
+		 * Vertical check has one advantage versus the other ways: it needs to check three cells below the used cell,
+		 * and nothing more. This is because cells are filled from bottom to top, so we don't need to check the cells
+		 * in the top as they're always empty, thus saving a lot of computational cost.
+		 *
+		 * We retrieve the corner for this move:
+		 * ty = y + 1
+		 * by = y + 3
+		 *
+		 * We will also optimize one case: this needs y + 3 positions to be within the range, so we quickly return null
+		 * when there isn't enough space.
+		 *
+		 * If it has space, we will only check the cells { x, ty } to { x, by } inclusive, { x, y } is not checked
+		 * because it's `cell`'s value.
 		 */
-		if (y > kRows - 4) return null;
+
+		// If there aren't enough rows in the same column to qualify, skip early
+		if (y + 3 >= kRows) return null;
 
 		return this.getAt(x, y + 1) === cell
 			&& this.getAt(x, y + 2) === cell
@@ -140,7 +177,7 @@ export class Board {
 		 * 05_o 15_o 25_o 35_x 45__ 55__ 65__ 75__
 		 *
 		 * Winning: { 02, 13, 24, 35 }
-		 * Assuming last move as 02
+		 * Assuming last move as 02.
 		 *
 		 * We retrieve the corner for this move:
 		 * clx = x - 3
@@ -148,7 +185,7 @@ export class Board {
 		 * crx = x + 3
 		 * cry = y + 3
 		 *
-		 * We iterate from { clx, cly } to { crx, cry } inclusive, increasing by 1 both numbers
+		 * We iterate from { clx, cly } to { crx, cry } inclusive, increasing by 1 both numbers.
 		 */
 
 		let count = 0;
@@ -188,7 +225,7 @@ export class Board {
 		 * 05__ 15__ 25__ 35_x 45_o 55_o 65_o 75__
 		 *
 		 * Winning: { 35, 44, 53, 62 }
-		 * Assuming last move as 62
+		 * Assuming last move as 62.
 		 *
 		 * We retrieve the corner for this move:
 		 * clx = x - 3
@@ -196,7 +233,7 @@ export class Board {
 		 * crx = x + 3
 		 * cry = y - 3
 		 *
-		 * We iterate from { clx, cly } to { crx, cry } inclusive, increasing clx by 1 and decreasing cly by 1
+		 * We iterate from { clx, cly } to { crx, cry } inclusive, increasing clx by 1 and decreasing cly by 1.
 		 */
 
 		let count = 0;

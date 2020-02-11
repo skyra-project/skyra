@@ -113,8 +113,9 @@ export class Board {
 		 * kRows (6)
 		 * For a vertical to check out in a table with a height of 6 elements, it needs the kRows - 4 th (2nd in this
 		 * case) cell to be filled.
-		 */
-		// If there aren't enough rows in the same column to qualify, skip early
+		 *
+		* If there aren't enough rows in the same column to qualify, skip early
+		*/
 		if (y > kRows - 4) return null;
 
 		return this.getAt(x, y + 1) === cell

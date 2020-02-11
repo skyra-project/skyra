@@ -14,6 +14,7 @@ import { InfluxDB } from 'influx';
 import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
+import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import { Events } from './Enums';
 import { EconomyTransactionAction, EconomyTransactionReason } from './influxSchema/Economy';
 import { LanguageKeys } from './Languages';
@@ -69,6 +70,8 @@ declare module 'discord.js' {
 		isStaff: boolean;
 		isMod: boolean;
 		isAdmin: boolean;
+
+		_patch(data: WSGuildMemberUpdate): void;
 	}
 
 	interface User {
@@ -76,6 +79,8 @@ declare module 'discord.js' {
 		fetchRank(): Promise<number>;
 		increaseBalance(amount: number, reason?: EconomyTransactionReason): Promise<void>;
 		decreaseBalance(amount: number, reason?: EconomyTransactionReason): Promise<void>;
+
+		_patch(data: APIUserData): void;
 	}
 
 	interface MessageEmbed {

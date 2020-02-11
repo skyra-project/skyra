@@ -11,8 +11,6 @@ type PostgresOptions = PoolConfig & Record<PropertyKey, unknown>;
 
 export default class extends SQLProvider {
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-	// @ts-ignore 2416
 	public qb = new QueryBuilder({
 		array: type => `${type}[]`,
 		arraySerializer: (values, piece, resolver) =>
@@ -342,8 +340,6 @@ export default class extends SQLProvider {
 		}
 	}
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-	// @ts-ignore 2416
 	protected parseEntry(table: string, raw: Record<string, unknown> | null) {
 		if (!raw) return null;
 

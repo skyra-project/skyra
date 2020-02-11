@@ -20,8 +20,6 @@ export default class extends Event {
 		if (typeof guild === 'undefined') return;
 
 		const member = guild.members.get(data.user.id);
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 2339
 		if (typeof member !== 'undefined') member._patch(data);
 
 		this.handleNicknameChange(guild, data);

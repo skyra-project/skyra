@@ -7,6 +7,7 @@ import { PermissionsManager } from '@lib/structures/PermissionsManager';
 import { StarboardManager } from '@lib/structures/StarboardManager';
 import { MemberTags } from '@utils/Cache/MemberTags';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { WSGuildCreate } from '@lib/types/DiscordAPI';
 
 export class SkyraGuild extends Structures.get('Guild') {
 
@@ -29,6 +30,8 @@ declare module 'discord.js' {
 		readonly permissionsManager: PermissionsManager;
 		readonly music: MusicHandler;
 		readonly memberTags: MemberTags;
+
+		_patch(data: WSGuildCreate & { shardID: number }): void;
 	}
 }
 

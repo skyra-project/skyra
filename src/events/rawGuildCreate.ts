@@ -17,8 +17,6 @@ export default class extends Event {
 		if (guild) {
 			if (!guild.available && !data.unavailable) {
 				// A newly available guild
-				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-				// @ts-ignore 2339
 				guild._patch(data);
 			}
 		} else {

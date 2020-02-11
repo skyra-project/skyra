@@ -24,7 +24,6 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [imageBuffer]: [Buffer]) {
-		console.log(imageBuffer);
 		const imageBuff = new Canvas(512, 512)
 			.addImage(this.bodyImage!, 0, 0)
 			.rotate(-0.4)
@@ -38,7 +37,6 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		const finishedImage = new MessageAttachment(await imageBuff, `peepoLove.png`);
-
 
 		return message.send(finishedImage);
 	}

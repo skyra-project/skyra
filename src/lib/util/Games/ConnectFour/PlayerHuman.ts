@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors, ConnectFourConstants } from '@utils/constants';
+import { APIErrors, ConnectFourConstants, Time } from '@utils/constants';
 import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { resolveEmoji } from '@utils/util';
@@ -20,7 +20,7 @@ export class PlayerHuman extends Player {
 
 	public async start(): Promise<void> {
 		const reaction = await new Promise<string>(resolve => {
-			this.game.llrc!.setTime(60000);
+			this.game.llrc!.setTime(Time.Minute * 5);
 			this.game.llrc!.setEndListener(() => resolve(''));
 			this.game.llrc!.setListener(data => {
 				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(data.emoji.name)) {

@@ -1407,6 +1407,15 @@ export default class extends Language {
 			],
 			examples: ['Jack']
 		}),
+		COMMAND_PEEPOLOVE_DESCRIPTION: "Generates a peepoLove image from a provided image or users' avatar.",
+		COMMAND_PEEPOLOVE_EXTENDED: builder.display('peepolove', {
+			extendedHelp: `Allows you to generate a peepoLove image from an image or avatar. You can upload an image, or
+				Skyra will automatically pick an image in the last 20 messages if there is one. You can tag a user, or say their username, to generate one with their avatar.`,
+			explainedUsage: [
+				['image', `The image that peepo should hug.`]
+			],
+			examples: ['Kyra']
+		}),
 		COMMAND_SLAP_DESCRIPTION: 'Slap another user using the Batman & Robin Meme.',
 		COMMAND_SLAP_EXTENDED: builder.display('slap', {
 			extendedHelp: `The hell are you saying? *Slaps*. This meme is based on a comic from Batman and Robin.`,

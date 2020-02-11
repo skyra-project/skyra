@@ -86,8 +86,6 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		}
 
 		if (Array.isArray(id) && id.length) {
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore 2345
 			return this._cache(await this.guild.client.queries.fetchModerationLogsByCases(this.guild.id, id), CacheActions.None);
 		}
 

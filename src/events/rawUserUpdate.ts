@@ -15,8 +15,7 @@ export default class extends Event {
 
 	public run(data: APIUserData) {
 		const user = this.client.users.get(data.id);
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 2339
+
 		if (user) user._patch(data);
 
 		this.handleUsernameChange(data);

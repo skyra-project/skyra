@@ -12,6 +12,9 @@ bwd/
 
 # Ignore JavaScript files
 **/*.js
+**/*.js.map
+**/*.d.ts
+**/*.tsbuildinfo
 !jest.config.js
 
 # Ignore the config file (contains sensitive information such as tokens)

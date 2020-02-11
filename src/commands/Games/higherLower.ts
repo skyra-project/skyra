@@ -229,14 +229,56 @@ export default class extends SkyraCommand {
 	 * @param previous The number we shouldn't get (usually the number we're comparing against
 	 */
 	private random(previous: number) {
-		if (previous === 0) {
-			return Math.ceil(Math.random() * 100);
-		}
+		// Retrieve a number in the range [0..100)
+		const random = Math.random() * 100;
 
-		const lower = previous === 100 || Math.random() > 0.5;
-		return lower
-			? Math.ceil(Math.random() * previous) - 1
-			: Math.ceil(Math.random() * (100 - previous)) + previous;
+		// Retrieve a number in the range [0..99]
+		const lower = Math.floor(random);
+
+		// Retrieve a number in the range [1..100]
+		const higher = lower + 1;
+
+		/**
+		 * We use both lower (floor(random)) and higher (ceil(random)), the code is done this way to avoid looping
+		 * until we get a random number different to previous, which is costy and has many bad cases, the following
+		 * algorithm has a constant performance cost.
+		 *
+		 * We check if previous equals to the lower bound of the random number, if it does, we pick the next integer,
+		 * otherwise we pick the lower.
+		 *
+		 * @example
+		 * // Different numbers
+		 * random; // 70.4
+		 * 54 === 70 ? 71 : 70; // -> 70
+		 *
+		 * @example
+		 * // Same lower
+		 * random; // -> 55.3
+		 * 55 === 55 ? 56 : 55; // -> 56
+		 *
+		 * @example
+		 * // Lowest boundary
+		 * random; // 0.4
+		 * 0 === 0 ? 1 : 0; // -> 1
+		 *
+		 * @example
+		 * // Low boundary
+		 * random; // 0.4
+		 * 1 === 0 ? 1 : 0; // -> 0
+		 *
+		 * @example
+		 * // Highest boundary
+		 * random; // 99.4
+		 * 100 === 99 ? 100 : 99; // -> 99
+		 *
+		 * @example
+		 * // High boundary
+		 * random; // 99.4
+		 * 99 === 99 ? 100 : 99; // -> 100
+		 */
+		return previous === lower
+			? higher
+			: lower;
 	}
 
 	private calculateWinnings(bet: number, attempts: number) {

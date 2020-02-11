@@ -4,7 +4,6 @@ import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { MessageAttachment } from 'discord.js';
 
 export default class extends SkyraCommand {
 
@@ -15,8 +14,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_SHINDEIRU_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SHINDEIRU_EXTENDED'),
+			description: language => language.tget('COMMAND_PEEPOLOVE_DESCRIPTION'),
+			extendedHelp: language => language.tget('COMMAND_PEEPOLOVE_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text', 'dm'],
 			usage: '<image:image>'
@@ -24,21 +23,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [imageBuffer]: [Buffer]) {
-		const imageBuff = new Canvas(512, 512)
-			.addImage(this.bodyImage!, 0, 0)
+		const buffer = await new Canvas(512, 512)
+			.addImage(this.bodyImage!, 0, 0, 512, 512)
 			.rotate(-0.4)
-			.addImage(imageBuffer, -210, 512 - 241, 330, 330, {
-				type: 'round',
-				radius: 330 / 2,
-				restore: true
-			})
+			.addRoundImage(imageBuffer, -210, 512 - 241, 330, 330, 330 / 2)
 			.rotate(0.4)
-			.addImage(this.handsImage!, 0, 0)
+			.addImage(this.handsImage!, 0, 0, 512, 512)
 			.toBufferAsync();
 
-		const finishedImage = new MessageAttachment(await imageBuff, `peepoLove.png`);
-
-		return message.send(finishedImage);
+		return message.channel.sendFile(buffer, 'peepoLove.png');
 	}
 
 	public async init() {

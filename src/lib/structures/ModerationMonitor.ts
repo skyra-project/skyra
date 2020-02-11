@@ -30,7 +30,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 		const $adder = this.hardPunishmentPath.adder;
 		if (message.guild!.security.adders[$adder] === null) {
-			message.guild!.security.adders[$adder] = new Adder(maximum, duration);
+			message.guild!.security.adders[$adder] = new Adder(maximum, duration, true);
 		}
 
 		try {

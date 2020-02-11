@@ -57,102 +57,11 @@ export class Board {
 
 	public check(x: number, y: number): readonly [number, number][] | null {
 		const cell = this.getAt(x, y);
-		let count: number;
 
-		// Check horizontal - include middle
-		count = 0;
-		for (let c = 0; c < kColumns; ++c) {
-			if (this.getAt(c, y) === cell) {
-				if (++count === 4) {
-					return [
-						[c - 3, y],
-						[c - 2, y],
-						[c - 1, y],
-						[c, y]
-					];
-				}
-			} else {
-				count = 0;
-			}
-		}
-
-		// Check vertical - include middle
-		count = 0;
-		for (let r = 0; r < kRows; ++r) {
-			if (this.getAt(x, r) === cell) {
-				if (++count === 4) {
-					return [
-						[x, r - 3],
-						[x, r - 2],
-						[x, r - 1],
-						[x, r]
-					];
-				}
-			} else {
-				count = 0;
-			}
-		}
-
-		// Check diagonal top-left to bottom-right - include middle
-		count = 0;
-		for (let r = 0; r <= kRows - 4; ++r) {
-			let rPosition = r;
-			for (let c = 0; c < kColumns && rPosition < kRows; ++c, ++rPosition) {
-				if (this.getAt(c, rPosition) === cell) {
-					if (++count === 4) {
-						return [
-							[c - 3, rPosition - 3],
-							[c - 2, rPosition - 2],
-							[c - 1, rPosition - 1],
-							[c, rPosition]
-						];
-					}
-				} else {
-					count = 0;
-				}
-			}
-		}
-
-		// Check diagonal bottom-left to top-right - include middle
-		count = 0;
-		for (let r = kRows - 1; r >= kRows - 4; --r) {
-			let rPosition = r;
-			for (let c = 0; c < kColumns && rPosition < kRows && rPosition >= 0; ++c, --rPosition) {
-				if (this.getAt(c, rPosition) === cell) {
-					if (++count === 4) {
-						return [
-							[c - 3, rPosition + 3],
-							[c - 2, rPosition + 2],
-							[c - 1, rPosition + 1],
-							[c, rPosition]
-						];
-					}
-				} else {
-					count = 0;
-				}
-			}
-		}
-
-		// Check diagonal bottom-left to top-right - after middle
-		count = 0;
-		for (let c = 1; c < kColumns; ++c) {
-			let cPosition = c;
-			for (let r = kRows - 1; r < kRows && cPosition < kColumns && cPosition >= 1; ++cPosition, --r) {
-				if (this.getAt(cPosition, r) === cell) {
-					if (++count === 4) {
-						return [
-							[cPosition - 3, r + 3],
-							[cPosition - 2, r + 2],
-							[cPosition - 1, r + 1],
-							[cPosition, r]
-						];
-					}
-				} else {
-					count = 0;
-				}
-			}
-		}
-		return null;
+		return this.checkVertical(x, y, cell)
+			|| this.checkHorizontal(y, cell)
+			|| this.checkDiagonalTopLeftToBottomRight(x, y, cell)
+			|| this.checkDiagonalBottomLeftToTopRight(x, y, cell);
 	}
 
 	public isTableFull() {
@@ -171,6 +80,150 @@ export class Board {
 			if (this.getAt(x, y) === Cell.Empty) return y;
 		}
 		return -1;
+	}
+
+	private checkHorizontal(y: number, cell: Cell) {
+		let count = 0;
+		for (let column = 0; column < kColumns; ++column) {
+			if (this.getAt(column, y) === cell) {
+				if (++count === 4) {
+					return [
+						[column - 3, y],
+						[column - 2, y],
+						[column - 1, y],
+						[column, y]
+					] as [number, number][];
+				}
+			} else {
+				count = 0;
+			}
+		}
+
+		return null;
+	}
+
+	private checkVertical(x: number, y: number, cell: Cell) {
+		/**
+		 * 0
+		 * 1
+		 * 2
+		 * 3
+		 * 4
+		 * 5
+		 * kRows (6)
+		 * For a vertical to check out in a table with a height of 6 elements, it needs the kRows - 4 th (2nd in this
+		 * case) cell to be filled.
+		 *
+		 * If there aren't enough rows in the same column to qualify, skip early
+		 */
+		if (y > kRows - 4) return null;
+
+		return this.getAt(x, y + 1) === cell
+			&& this.getAt(x, y + 2) === cell
+			&& this.getAt(x, y + 3) === cell
+			? [
+				[x, y],
+				[x, y + 1],
+				[x, y + 2],
+				[x, y + 3]
+			] as [number, number][]
+			: null;
+	}
+
+	private checkDiagonalTopLeftToBottomRight(x: number, y: number, cell: Cell) {
+		/**
+		 * 00__ 10__ 20__ 30__ 40__ 50__ 60__ 70__
+		 * 01__ 11__ 21__ 31__ 41__ 51__ 61__ 71__
+		 * 02_x 12__ 22__ 32__ 42__ 52__ 62__ 72__
+		 * 03_o 13_x 23__ 33__ 43__ 53__ 63__ 73__
+		 * 04_x 14_o 24_x 34_o 44__ 54__ 64__ 74__
+		 * 05_o 15_o 25_o 35_x 45__ 55__ 65__ 75__
+		 *
+		 * Winning: { 02, 13, 24, 35 }
+		 * Assuming last move as 02
+		 *
+		 * We retrieve the corner for this move:
+		 * clx = x - 3
+		 * cly = y - 3
+		 * crx = x + 3
+		 * cry = y + 3
+		 *
+		 * We iterate from { clx, cly } to { crx, cry } inclusive, increasing by 1 both numbers
+		 */
+
+		let count = 0;
+		const crx = x + 3;
+		const cry = y + 3;
+		for (let clx = x - 3, cly = y - 3; clx <= crx && cly <= cry; ++clx, ++cly) {
+			// Watch for boundaries, since we are going from top left, we might find cells in our way, we continue.
+			if (clx < 0 || cly < 0) continue;
+
+			// Watch for boundaries, if one goes to the bottom right, there cannot be more cells, we stop checking.
+			if (clx === kColumns || cly === kRows) return null;
+
+			if (this.getAt(clx, cly) === cell) {
+				if (++count === 4) {
+					return [
+						[clx - 3, cly - 3],
+						[clx - 2, cly - 2],
+						[clx - 1, cly - 1],
+						[clx, cly]
+					] as [number, number][];
+				}
+			} else {
+				count = 0;
+			}
+		}
+
+		return null;
+	}
+
+	private checkDiagonalBottomLeftToTopRight(x: number, y: number, cell: Cell) {
+		/**
+		 * 00__ 10__ 20__ 30__ 40__ 50__ 60__ 70__
+		 * 01__ 11__ 21__ 31__ 41__ 51__ 61__ 71__
+		 * 02__ 12__ 22__ 32__ 42__ 52__ 62_x 72__
+		 * 03__ 13__ 23__ 33__ 43__ 53_x 63_o 73__
+		 * 04__ 14__ 24__ 34__ 44_x 54_o 64_x 74__
+		 * 05__ 15__ 25__ 35_x 45_o 55_o 65_o 75__
+		 *
+		 * Winning: { 35, 44, 53, 62 }
+		 * Assuming last move as 62
+		 *
+		 * We retrieve the corner for this move:
+		 * clx = x - 3
+		 * cly = y + 3
+		 * crx = x + 3
+		 * cry = y - 3
+		 *
+		 * We iterate from { clx, cly } to { crx, cry } inclusive, increasing clx by 1 and decreasing cly by 1
+		 */
+
+		let count = 0;
+		const crx = x + 3;
+		const cry = y + 3;
+		for (let clx = x - 3, cly = y + 3; clx <= crx && cly <= cry; ++clx, --cly) {
+			// Watch for boundaries, since we are going from bottom left, we might find cells in our way, we continue.
+			if (clx < 0 || cly >= kRows) continue;
+
+			// Watch for boundaries, if one goes to the bottom right, there cannot be more cells, we stop checking.
+			if (clx === kColumns || cly < 0) return null;
+
+			if (this.getAt(clx, cly) === cell) {
+				if (++count === 4) {
+					return [
+						[clx - 3, cly + 3],
+						[clx - 2, cly + 2],
+						[clx - 1, cly + 1],
+						[clx, cly]
+					] as [number, number][];
+				}
+			} else {
+				count = 0;
+			}
+		}
+
+		return null;
 	}
 
 	private static renderCell(cell: Cell) {

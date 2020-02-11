@@ -18,10 +18,11 @@ export default class extends Monitor {
 		const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);
 		const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration);
 
-		if (!message.guild!.security.adders.attachments) message.guild!.security.adders.attachments = new Adder(attachmentMaximum, attachmentDuration);
+		const { adders } = message.guild!.security;
+		if (!adders.attachments) adders.attachments = new Adder(attachmentMaximum, attachmentDuration, true);
 
 		try {
-			message.guild!.security.adders.attachments.add(message.author.id, message.attachments.size);
+			adders.attachments.add(message.author.id, message.attachments.size);
 			return;
 		} catch {
 			switch (attachmentAction & 0b111) {

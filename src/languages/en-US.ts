@@ -2425,6 +2425,58 @@ export default class extends Language {
 			],
 			examples: ['@Skyra']
 		}),
+		COMMAND_WBANG_DESCRIPTION: 'Bang 💥🔫!',
+		COMMAND_WBANG_EXTENDED: builder.display('wbang', {
+			extendedHelp: `Shoot a user with a random weeb image!`,
+			explainedUsage: [
+				['user', 'The user to shoot.']
+			],
+			examples: ['@Skyra']
+		}),
+		COMMAND_WBANGHEAD_DESCRIPTION: 'STAHP! I\'m banging my head here!',
+		COMMAND_WBANGHEAD_EXTENDED: builder.display('wbanghead', {
+			extendedHelp: `Bang your head with a random weeb image!`
+		}),
+		COMMAND_WBITE_DESCRIPTION: '*nom nom* you are delicious!',
+		COMMAND_WBITE_EXTENDED: builder.display('wbite', {
+			extendedHelp: `Bite a user with a random weeb image!`,
+			explainedUsage: [
+				['user', 'The user to bite.']
+			],
+			examples: ['@Skyra']
+		}),
+		COMMAND_WGREET_DESCRIPTION: 'Say hi! to another user',
+		COMMAND_WGREET_EXTENDED: builder.display('wgreet', {
+			extendedHelp: `Greet a user with a random weeb image!`,
+			explainedUsage: [
+				['user', 'The user to greet.']
+			],
+			examples: ['@Skyra']
+		}),
+		COMMAND_WLEWD_DESCRIPTION: 'Lewds! Lewds! Lewds!',
+		COMMAND_WLEWD_EXTENDED: builder.display('wlewd', {
+			extendedHelp: `Random lewd weeb image!`
+		}),
+		COMMAND_WPUNCH_DESCRIPTION: '*pow* 👊👊',
+		COMMAND_WPUNCH_EXTENDED: builder.display('wpunch', {
+			extendedHelp: `Punch that annoying user with a random weeb image!`,
+			explainedUsage: [
+				['user', 'The user to punch.']
+			],
+			examples: ['@Skyra']
+		}),
+		COMMAND_WSLEEPY_DESCRIPTION: 'I\'m so sleeeeepy... *yawn*',
+		COMMAND_WSLEEPY_EXTENDED: builder.display('wsleepy', {
+			extendedHelp: `Show how sleepy you are with a random weeb image!`
+		}),
+		COMMAND_WSMILE_DESCRIPTION: 'Huh, because I\'m happy. Clap along if you feel like a room without a roof',
+		COMMAND_WSMILE_EXTENDED: builder.display('wsmile', {
+			extendedHelp: `Show just how happy you are with a random weeb image!`
+		}),
+		COMMAND_WTHUMBSUP_DESCRIPTION: 'Raise your thumb into the air in a magnificent show of approval',
+		COMMAND_WTHUMBSUP_EXTENDED: builder.display('wthumbsup', {
+			extendedHelp: `Raise your thumb with a random weeb image!`
+		}),
 
 		/**
 		 * #################################
@@ -3523,20 +3575,29 @@ export default class extends Language {
 		 * WEEB COMMANDS
 		 */
 
+		COMMAND_WBANG: user => `Hey ${user}... bang!`,
+		COMMAND_WBANGHEAD: 'Head bang in progress!',
+		COMMAND_WBITE: user => `Biting ${user}!`,
 		COMMAND_WBLUSH: 'You made them blush! 😊',
 		COMMAND_WCRY: user => `Dear ${user}, did you make them cry? 💔`,
 		COMMAND_WCUDDLE: user => `Here is a cuddle for you, ${user} 💞`,
 		COMMAND_WDANCE: 'Dancing! 💃',
+		COMMAND_WGREET: user => `Hello there ${user}!`,
 		COMMAND_WHUG: user => `Here is a nice hug for you, ${user} ❤`,
 		COMMAND_WKISS: user => `Here is a kiss for you, ${user} 💜`,
+		COMMAND_WLEWD: 'Too lewd for my tastes!',
 		COMMAND_WLICK: user => `Licking ${user} 👅`,
 		COMMAND_WNOM: `Nom, nom, nom! 😊`,
 		COMMAND_WNEKO: `Nya! 🐱`,
 		COMMAND_WPAT: user => `Gently pats ${user}'s head ❤`,
 		COMMAND_WPOUT: `Uh?`,
+		COMMAND_WPUNCH: user => `Punching ${user}!`,
 		COMMAND_WSLAP: user => `Slapping ${user}!`,
+		COMMAND_WSLEEPY: 'Falling asleep...',
+		COMMAND_WSMILE: 'Showing a radiant smile!',
 		COMMAND_WSMUG: `There's a smug face!`,
 		COMMAND_WSTARE: user => `Dear ${user}, somebody is staring at you 👀`,
+		COMMAND_WTHUMBSUP: 'You have their thumbs up!',
 		COMMAND_WTICKLE: user => `Tickles for you, ${user}!`,
 
 		/**

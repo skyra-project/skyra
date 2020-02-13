@@ -1,7 +1,7 @@
 # Skyra [![Discord](https://discordapp.com/api/guilds/254360814063058944/embed.png)](https://join.skyra.pw)
 
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/kyranet/Skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kyranet/Skyra/alerts/)
-[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/kyranet/Skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kyranet/Skyra/context:javascript)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/skyra-project/skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/skyra/alerts/)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/skyra-project/skyra.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/skyra-project/Skyra/context:javascript)
 [![Discord Bots](https://discordbots.org/api/widget/status/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/servers/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)

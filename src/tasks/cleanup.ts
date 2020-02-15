@@ -25,14 +25,11 @@
  */
 
 import { Events } from '@lib/types/Enums';
+import { Time } from '@utils/constants';
 import { Channel, TextChannel, Util } from 'discord.js';
 import { Task } from 'klasa';
 
-// THRESHOLD equals to 30 minutes in milliseconds:
-//     - 1000 milliseconds = 1 second
-//     - 60 seconds        = 1 minute
-//     - 30 minutes
-const THRESHOLD = 1000 * 60 * 30;
+const THRESHOLD = Time.Minute * 30;
 const EPOCH = 1420070400000;
 const EMPTY = '0000100000000000000000';
 

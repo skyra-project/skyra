@@ -168,12 +168,12 @@
     once "^1.4.0"
     pump "^3.0.0"
 
-"@favware/graphql-pokemon@^1.7.0":
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-1.7.0.tgz#89aa4bfeeb29acbf5c2e43f92222f695c44f9283"
-  integrity sha512-dEpKGLdRjUAX3weybcG0esQTsOlvh83Zx0MCwWYy7V+rbOah1Arr6HjTPPxn0d61kuQXJzQ0sEAbUdpzKZKsCg==
+"@favware/graphql-pokemon@^1.8.0":
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-1.8.0.tgz#b90fd98d6869d0e89bcbc3050f6ab41342bbb754"
+  integrity sha512-Csbeg6YZ+FNA9MJEFt4lcKtn7AFXG3JtLYZcCbQxCf3GM2U6Vbci6WlFSqMk67uJ6xMA9zm2/3lDvSvvXpeAXw==
   dependencies:
-    graphql "^14.5.8"
+    graphql "^14.6.0"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.0.0"
@@ -1883,7 +1883,7 @@ graceful-fs@^4.2.3:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
-graphql@^14.5.8:
+graphql@^14.6.0:
   version "14.6.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.6.0.tgz#57822297111e874ea12f5cd4419616930cd83e49"
   integrity sha512-VKzfvHEKybTKjQVpTFrA5yUq2S9ihcZvfJAtsDBBCuV6wauPu1xl/f9ehgVf0FcEJJs4vz6ysb/ZMkGigQZseg==

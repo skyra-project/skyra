@@ -48,7 +48,7 @@ export default Client.defaultGuildSchema
 		.add('admin', 'Role')
 		.add('auto', 'any', { array: true })
 		.add('initial', 'Role')
-		.add('messageReaction', 'String', { minimum: 17, maximum: 18, configurable: false })
+		.add('messageReaction', 'String', { minimum: 17, maximum: 19, configurable: false })
 		.add('moderator', 'Role')
 		.add('muted', 'Role')
 		.add('restricted-reaction', 'Role')

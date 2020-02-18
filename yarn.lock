@@ -2851,7 +2851,8 @@ klasa-decorators@^0.0.1:
 
 "klasa@github:dirigeants/klasa#sgn":
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/42fdd6d4b8ec1596e26f21e03a415de179b816ba"
+  uid c22698fd2aa4badf0a2085e813162ea64c724b7d
+  resolved "https://codeload.github.com/dirigeants/klasa/tar.gz/c22698fd2aa4badf0a2085e813162ea64c724b7d"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
     "@klasa/settings-gateway" "^0.0.10"

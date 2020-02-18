@@ -11,6 +11,8 @@ const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAG
 
 export default class extends SkyraCommand {
 
+	private kSortCommandsAlphabetically = this.sortCommandsAlphabetically.bind(this);
+
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['commands', 'cmd', 'cmds'],
@@ -110,7 +112,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor(this.client.user?.username, getDisplayAvatar(this.client.user?.id!, this.client.user!))
+			.setAuthor(this.client.user!.username, getDisplayAvatar(this.client.user!.id!, this.client.user!))
 			.setTimestamp()
 			.setFooter(DATA.FOOTER(command.name))
 			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))
@@ -130,13 +132,27 @@ export default class extends SkyraCommand {
 		const commands = new Collection<string, Command[]>();
 		await Promise.all(this.client.commands.map(command => run(command, true)
 			.then(() => {
-				const category = commands.get(command.category);
+				const category = commands.get(command.fullCategory.join(' → '));
 				if (category) category.push(command);
-				else commands.set(command.category, [command]);
+				else commands.set(command.fullCategory.join(' → '), [command]);
 				return null;
 			}).catch(noop)));
 
-		return commands;
+		return commands.sort(this.kSortCommandsAlphabetically);
+	}
+
+	/**
+	 * Sorts a collection alphabetically as based on the keys, rather than the values.
+	 * This is used to ensure that subcategories are listed in the pages right after the main category.
+	 * @param _ The first element for comparison
+	 * @param __ The second element for comparison
+	 * @param firstCategory Key of the first element for comparison
+	 * @param secondCategory Key of the second element for comparison
+	 */
+	private sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: string, secondCategory: string): 1 | -1 | 0 {
+		if (firstCategory > secondCategory) return 1;
+		if (secondCategory > firstCategory) return -1;
+		return 0;
 	}
 
 }

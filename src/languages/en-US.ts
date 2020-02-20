@@ -273,7 +273,7 @@ export default class extends Language {
 		COMMAND_PAUSE_DESCRIPTION: `Pauses the current song.`,
 		COMMAND_PAUSE_SUCCESS: `${GREENTICK} Paused`,
 		COMMAND_PLAY_DESCRIPTION: `Let's start the queue!`,
-		COMMAND_PLAY_END: `Looks like the queue ended here, I hope you enjoyed the session!`,
+		COMMAND_PLAY_END: `It looks like the queue ended here. I hope you enjoyed the session!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `There was a track going on! Playing it back! Now playing: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `${REDCROSS} Hey! The disk is already spinning!`,

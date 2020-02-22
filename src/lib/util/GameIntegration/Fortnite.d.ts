@@ -1267,8 +1267,8 @@ export namespace Fortnite {
 
 	export interface Stats {
 		p2: P2;
-		p10: P10;
-		p9: P9;
+		p10?: P10;
+		p9?: P9;
 		curr_p2: CurrP2;
 		curr_p10: CurrP10;
 		curr_p9: CurrP9;

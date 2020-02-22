@@ -1,13 +1,13 @@
+import { Time } from '@utils/constants';
 import { MessageReaction } from 'discord.js';
 import { KlasaMessage, KlasaUser, ReactionHandler, RichDisplay, RichDisplayRunOptions, util } from 'klasa';
-const FIVE_MINUTES = 60000 * 5;
 
 export class UserRichDisplay extends RichDisplay {
 
 	public async start(message: KlasaMessage, target: string = message.author.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
 		util.mergeDefault({
 			filter: (_: MessageReaction, user: KlasaUser) => user.id === target,
-			time: FIVE_MINUTES
+			time: Time.Minute * 5
 		}, options);
 		if (target) {
 			// Stop the previous display and cache the new one

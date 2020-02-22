@@ -2,6 +2,8 @@
 	"extends": "../tsconfig.json",
 	"compilerOptions": {
 		"noImplicitAny": false,
+		"noEmit": true,
+		"incremental": false,
 		"baseUrl": ".",
 		"paths": {
 			"@utils/*": ["../src/lib/util/*"],

@@ -1,4 +1,3 @@
-import { Client as ElasticClient } from '@elastic/elasticsearch';
 import { SettingsUpdateResults } from '@klasa/settings-gateway';
 import { CommonQuery } from '@lib/queries/common';
 import { GiveawayManager } from '@lib/structures/GiveawayManager';
@@ -10,13 +9,11 @@ import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector'
 import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
-import { InfluxDB } from 'influx';
 import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import { Events } from './Enums';
-import { EconomyTransactionAction, EconomyTransactionReason } from './influxSchema/Economy';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
 
@@ -35,13 +32,11 @@ declare module 'discord.js' {
 		webhookError: Webhook;
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
-		influx: InfluxDB | null;
-		elastic: ElasticClient | null;
 		twitch: Twitch;
 
 		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
-		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number, action: EconomyTransactionAction, reason: EconomyTransactionReason): boolean;
+		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
 		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
@@ -77,8 +72,8 @@ declare module 'discord.js' {
 	interface User {
 		profileLevel: number;
 		fetchRank(): Promise<number>;
-		increaseBalance(amount: number, reason?: EconomyTransactionReason): Promise<void>;
-		decreaseBalance(amount: number, reason?: EconomyTransactionReason): Promise<void>;
+		increaseBalance(amount: number): Promise<void>;
+		decreaseBalance(amount: number): Promise<void>;
 
 		_patch(data: APIUserData): void;
 	}
@@ -140,12 +135,6 @@ declare module 'klasa-dashboard-hooks' {
 		user_id: string;
 	}
 
-}
-
-declare module 'influx' {
-	interface IWriteOptions {
-		[K: string]: unknown;
-	}
 }
 
 interface Fn {

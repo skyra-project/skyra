@@ -6,7 +6,6 @@ import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 import { CanvasColors } from '@lib/types/constants/Constants';
 
 const enum Icons {
@@ -115,8 +114,8 @@ export class Slotmachine {
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
 		await (lost
-			? this.player.decreaseBalance(this.bet, EconomyTransactionReason.Gamble)
-			: this.player.increaseBalance(winnings, EconomyTransactionReason.Gamble));
+			? this.player.decreaseBalance(this.bet)
+			: this.player.increaseBalance(winnings));
 
 		return [await this.render(rolls, darkTheme), amount] as [Buffer, number];
 	}

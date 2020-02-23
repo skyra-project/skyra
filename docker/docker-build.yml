@@ -9,6 +9,3 @@ services:
     image: skyrabot/lavalink:latest
   pokedex:
     image: favware/graphql-pokemon:latest
-  influxdb:
-    build: ./influxdb
-    image: skyrabot/influxdb:latest

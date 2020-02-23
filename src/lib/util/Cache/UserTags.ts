@@ -41,7 +41,8 @@ export class UserTags extends Collection<string, UserTag> {
 		const tag: UserTag = {
 			avatar: user.avatar,
 			username: user.username,
-			discriminator: user.discriminator
+			discriminator: user.discriminator,
+			bot: user.bot || false
 		};
 		super.set(user.id, tag);
 		return tag;
@@ -83,4 +84,5 @@ export interface UserTag {
 	readonly avatar: string | null;
 	readonly username: string;
 	readonly discriminator: string;
+	readonly bot: boolean;
 }

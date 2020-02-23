@@ -84,5 +84,5 @@ export interface UserTag {
 	readonly avatar: string | null;
 	readonly username: string;
 	readonly discriminator: string;
-	readonly bot?: boolean;
+	readonly bot: boolean;
 }

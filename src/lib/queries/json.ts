@@ -15,7 +15,7 @@ export class JsonCommonQuery implements CommonQuery {
 
 	private client: Client;
 	private get provider() {
-		return this.client.providers.get('json') as JsonProvider;
+		return this.client.providers.get(this.client.options.providers.default === 'json' ? 'json' : 'cache') as JsonProvider;
 	}
 
 	public constructor(client: Client) {

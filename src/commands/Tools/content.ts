@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 		const attachments = target.attachments.size
 			? target.attachments.map(att => `📁 <${att.url}>`).join('\n')
 			: '';
-		const content = Util.escapeMarkdown(getContent(target) || '');
+		const content = Util.escapeCodeBlock(getContent(target) || '');
 		return message.sendMessage(`${content}${content && attachments ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
 	}
 

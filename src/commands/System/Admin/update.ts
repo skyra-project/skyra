@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { Emojis } from '@utils/constants';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -23,7 +24,7 @@ export default class extends SkyraCommand {
 		const { stderr } = await util.exec('yarn build')
 			.catch(error => ({ stdout: '', stderr: (error && error.message) || error || '' }));
 		if (stderr.length) throw stderr.trim();
-		return message.channel.send(`✔ Successfully compiled.`);
+		return message.channel.send(`${Emojis.GreenTick} Successfully compiled.`);
 	}
 
 	private async fetch(message: KlasaMessage, branch: string) {
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 		const { stdout, stderr } = await util.exec(`git pull origin ${branch}`);
 
 		// If it's up to date, do nothing
-		if (stdout.includes('Already up-to-date.')) throw '✔ Up to date.';
+		if (/already up(?: |-)to(?: |-)date/i.test(stdout)) throw `${Emojis.GreenTick} Up to date.`;
 
 		// If it was not a successful pull, return the output
 		if (!this.isSuccessfulPull(stdout)) {
@@ -45,7 +46,7 @@ export default class extends SkyraCommand {
 		}
 
 		// For all other cases, return the original output
-		return message.send(util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
+		return message.send(util.codeBlock('prolog', [stdout || Emojis.GreenTick, stderr || Emojis.GreenTick].join('\n-=-=-=-\n')));
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -62,7 +63,7 @@ export default class extends SkyraCommand {
 	private async checkout(message: KlasaMessage, branch: string) {
 		await message.send(`Switching to ${branch}...`);
 		await util.exec(`git checkout ${branch}`);
-		return message.send(`✔ Switched to ${branch}.`);
+		return message.send(`${Emojis.GreenTick} Switched to ${branch}.`);
 	}
 
 	private async isCurrentBranch(branch: string) {

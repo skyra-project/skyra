@@ -42,7 +42,7 @@ export class UserTags extends Collection<string, UserTag> {
 			avatar: user.avatar,
 			username: user.username,
 			discriminator: user.discriminator,
-			bot: user.bot
+			bot: user.bot || false
 		};
 		super.set(user.id, tag);
 		return tag;

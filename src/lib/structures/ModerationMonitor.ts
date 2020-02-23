@@ -48,6 +48,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			&& message.webhookID === null
 			&& message.type === 'DEFAULT'
 			&& message.author.id !== this.client.user!.id
+			&& message.author.bot === false
 			&& message.guild.settings.get(this.keyEnabled)
 			&& this.checkMessageChannel(message.channel as TextChannel)
 			&& this.checkMemberRoles(message.member);

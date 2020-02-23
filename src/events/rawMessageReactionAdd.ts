@@ -1,4 +1,5 @@
 import Collection from '@discordjs/collection';
+import { Colors } from '@lib/types/constants/Constants';
 import { APIUserData, WSMessageReactionAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -8,7 +9,6 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar, resolveEmoji, twemoji } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 
@@ -54,16 +54,19 @@ export default class extends Event {
 	}
 
 	private async handleReactionLogs(data: LLRCData, emoji: string) {
-		if (data.channel.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
+		if (data.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
 
 		this.client.emit(Events.ReactionBlacklist, data, emoji);
-		if (!data.channel.guild.settings.get(GuildSettings.Channels.ReactionLogs)
-			|| (!data.channel.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)) return;
+		if (!data.guild.settings.get(GuildSettings.Channels.ReactionLogs)
+			|| (!data.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)
+		) return;
 
 		if (await this.retrieveCount(data, emoji) > 1) return;
 
 		const userTag = await this.client.userTags.fetch(data.userID);
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.channel.guild, () => new MessageEmbed()
+		if (userTag.bot) return;
+
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () => new MessageEmbed()
 			.setColor(Colors.Green)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
@@ -74,14 +77,14 @@ export default class extends Event {
 				`**Channel**: ${data.channel}`,
 				`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
 			].join('\n'))
-			.setFooter(`${data.channel.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
+			.setFooter(`${data.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
 			.setTimestamp());
 	}
 
 	private async handleStarboard(data: LLRCData, emoji: string) {
 		if (data.channel.nsfw
-			|| data.channel.id === data.channel.guild.settings.get(GuildSettings.Starboard.Channel)
-			|| emoji !== data.channel.guild.settings.get(GuildSettings.Starboard.Emoji)) return;
+			|| data.channel.id === data.guild.settings.get(GuildSettings.Starboard.Channel)
+			|| emoji !== data.guild.settings.get(GuildSettings.Starboard.Emoji)) return;
 
 		try {
 			const channel = data.guild.settings.get(GuildSettings.Starboard.Channel);

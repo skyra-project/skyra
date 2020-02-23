@@ -5,8 +5,6 @@ import { Client as VezaClient } from 'veza';
 import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { InfluxDB } from 'influx';
-import { Client as ElasticClient } from '@elastic/elasticsearch';
 
 // Import all types
 import { Events } from './types/Enums';
@@ -29,14 +27,10 @@ import { enumerable } from './util/util';
 import {
 	CLIENT_SECRET,
 	ENABLE_LAVALINK,
-	ENABLE_ELASTICSEARCH,
 	ENABLE_POSTGRES,
-	ENABLE_INFLUX,
 	EVLYN_PORT,
 	LAVALINK_PASSWORD,
 	PGSQL_DATABASE_PASSWORD,
-	INFLUX_OPTIONS,
-	ELASTICSEARCH_OPTIONS,
 	TOKENS,
 	VERSION,
 	WEBHOOK_ERROR
@@ -56,9 +50,7 @@ import { CommonQuery } from './queries/common';
 import { PostgresCommonQuery } from './queries/postgres';
 import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
-import { SchemaSettingsUpdate, SchemaAnnouncement } from './schemas/Audit';
 import { WebsocketHandler } from './websocket';
-import { SchemaMoneyTransaction, SchemaMoneyPayment } from './schemas/Economy';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -99,14 +91,6 @@ export class SkyraClient extends KlasaClient {
 		: new JsonCommonQuery(this);
 
 	public fsWatcher: FSWatcher | null = null;
-
-	public influx: InfluxDB | null = ENABLE_INFLUX
-		? new InfluxDB({ ...INFLUX_OPTIONS, schema: [SchemaSettingsUpdate, SchemaAnnouncement, SchemaMoneyTransaction, SchemaMoneyPayment] })
-		: null;
-
-	public elastic: ElasticClient | null = ENABLE_ELASTICSEARCH
-		? new ElasticClient(ELASTICSEARCH_OPTIONS)
-		: null;
 
 	/**
 	 * The ConnectFour manager

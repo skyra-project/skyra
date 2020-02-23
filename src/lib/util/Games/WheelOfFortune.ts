@@ -1,3 +1,4 @@
+import { CanvasColors } from '@lib/types/constants/Constants';
 import { ClientSettings } from '@lib/types/settings/ClientSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { socialFolder } from '@utils/constants';
@@ -6,8 +7,6 @@ import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
-import { CanvasColors } from '@lib/types/constants/Constants';
 
 const enum Arrows {
 	UpDiagonalLeft = 0.2,
@@ -91,8 +90,8 @@ export class WheelOfFortune {
 		}
 
 		await (lost
-			? this.player.decreaseBalance(-this.winnings, EconomyTransactionReason.Gamble)
-			: this.player.increaseBalance(this.winnings, EconomyTransactionReason.Gamble));
+			? this.player.decreaseBalance(-this.winnings)
+			: this.player.increaseBalance(this.winnings));
 
 		return [await this.render(this.player.settings.get(UserSettings.DarkTheme)), final] as const;
 	}

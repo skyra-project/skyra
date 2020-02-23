@@ -1,10 +1,9 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Events } from '@lib/types/Enums';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Settings } from 'klasa';
-import { Events } from '@lib/types/Enums';
-import { EconomyTransactionAction, EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 
 export default class extends SkyraCommand {
 
@@ -49,7 +48,7 @@ export default class extends SkyraCommand {
 		const newVault = vault + coins;
 
 		await this.updateBalance(newMoney, newVault, settings);
-		this.client.emit(Events.MoneyTransaction, message.author, coins, money, EconomyTransactionAction.Remove, EconomyTransactionReason.Vault);
+		this.client.emit(Events.MoneyTransaction, message.author, coins, money);
 
 		return message.sendEmbed(this.buildEmbed(message, newMoney, newVault, coins, true));
 	}
@@ -65,7 +64,7 @@ export default class extends SkyraCommand {
 		const newVault = vault - coins;
 
 		await this.updateBalance(newMoney, newVault, settings);
-		this.client.emit(Events.MoneyTransaction, message.author, coins, money, EconomyTransactionAction.Add, EconomyTransactionReason.Vault);
+		this.client.emit(Events.MoneyTransaction, message.author, coins, money);
 
 		return message.sendEmbed(this.buildEmbed(message, newMoney, newVault, coins));
 	}

@@ -15,8 +15,3 @@ services:
     image: favware/graphql-pokemon:latest
     ports:
       - "4000:8080"
-  influxdb:
-    container_name: influxdb
-    image: skyrabot/influxdb:latest
-    ports:
-      - "8086:8086"

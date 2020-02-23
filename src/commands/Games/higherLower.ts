@@ -6,7 +6,6 @@ import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReaction
 import { getColor, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { EconomyTransactionReason } from '@lib/types/influxSchema/Economy';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',
@@ -42,7 +41,7 @@ export default class extends SkyraCommand {
 		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
-		await message.author.decreaseBalance(wager, EconomyTransactionReason.TemporaryClaim);
+		await message.author.decreaseBalance(wager);
 
 		const response = await message.sendLocale('COMMAND_HIGHERLOWER_LOADING');
 		const game: HigherLowerGameData = {
@@ -170,7 +169,7 @@ export default class extends SkyraCommand {
 		// There's a 0.001% chance that a user would lose now only the wager, but also what they would've won in one round less.
 		if ((Math.random()) < 0.0001) {
 			losses += this.calculateWinnings(game.wager, game.turn - 1);
-			await message.author.decreaseBalance(losses, EconomyTransactionReason.Gamble);
+			await message.author.decreaseBalance(losses);
 		}
 
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
@@ -204,7 +203,7 @@ export default class extends SkyraCommand {
 
 		// Calculate and deposit winnings for that game
 		const winnings = this.calculateWinnings(wager, turn - 1);
-		await message.author.increaseBalance(winnings, EconomyTransactionReason.Gamble);
+		await message.author.increaseBalance(winnings);
 
 		// Let the user know we're done!
 		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings), { embed: null });

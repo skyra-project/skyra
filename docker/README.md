@@ -10,20 +10,17 @@ Skyra currently has the following microservices that can be dockerized:
 
 - PostgreSQL Database
   - Service name in docker-compose: `postgres`
-  - Image used: `postgres`
+  - Image used: `skyrabot/postgres:latest`
 - Lavalink
   - Service name in docker-compose: `lavalink`
-  - Image used: `skyrabot/lavalink`
-- Graphql-Pokémon
+  - Image used: `skyrabot/lavalink:latest`
+- GraphQL-Pokémon
   - Service name in docker-compose: `pokedex`
-  - Image used: `favware/graphql-pokemon`
-- InfluxDB
-  - Service name in docker-compose: `influxdb`
-  - Image used: `skyrabot/influxdb`
+  - Image used: `favware/graphql-pokemon:latest`
 
 # Image Configuration
 
-The following steps are required for each image for it to build on your machine
+The following steps are required for each image for it to build on your machine. These images can run just fine without locally building, however for customization such as modifying the default password you need to build the image locally.
 
 ## Lavalink
 
@@ -32,11 +29,7 @@ The following steps are required for each image for it to build on your machine
 3. Duplicate the 'application.example.yml' file and rename it to 'application.yml'
 4. Set any password in the yaml file and also set the same password in config.ts in the root folder of this project
 
-## InfluxDB
-
-1. In the influxdb folder, duplicate the 'config.sample.toml' file and rename it to 'config.toml'
-
 ## Postgres
 
-1. Duplicate the `.env.example` file in the `postgres` folder and name it `.env`
-2. Fill out any desired values or keep the defaults
+1. Duplicate the `Dockerfile.example` file in the `postgres` folder and name it `Dockerfile`
+2. Fill in your desired `POSTGRES_USER`, `POSTGRES_PASSWORD` and `POSTGRES_DB`

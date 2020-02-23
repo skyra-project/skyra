@@ -11,7 +11,6 @@
 -   [`Node.js`]: To run the project.
 -   [`PostgreSQL`]: (Dev Optional) To store persistent data.
 -   [`Lavalink`]: (Dev Optional) Audio server.
--   [`InfluxDB`]: (Dev Optional) Analytics, Statistics, and Audit storage.
 
 ## Set-Up
 
@@ -82,7 +81,6 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [`node.js`]:            https://nodejs.org/en/download/current/
 [`postgresql`]:         https://www.postgresql.org/download/
 [`lavalink`]:           https://github.com/Frederikam/Lavalink
-[`influxdb`]:           https://portal.influxdata.com/downloads/
 
 [`config.example.ts`]:  /src/config.example.ts
 

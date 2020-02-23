@@ -1,7 +1,6 @@
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { User } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
-import { EconomyTransactionReason, EconomyTransactionAction } from '@lib/types/influxSchema/Economy';
 import { Events } from '@lib/types/Enums';
 
 export default class extends Extendable {
@@ -23,16 +22,16 @@ export default class extends Extendable {
 		return rank.position;
 	}
 
-	public async increaseBalance(this: User, amount: number, reason: EconomyTransactionReason = EconomyTransactionReason.NotDefined) {
+	public async increaseBalance(this: User, amount: number) {
 		const current = this.settings.get(UserSettings.Money);
 		await this.settings.update(UserSettings.Money, current + amount);
-		this.client.emit(Events.MoneyTransaction, this, amount, current, EconomyTransactionAction.Add, reason);
+		this.client.emit(Events.MoneyTransaction, this, amount, current);
 	}
 
-	public async decreaseBalance(this: User, amount: number, reason: EconomyTransactionReason = EconomyTransactionReason.NotDefined) {
+	public async decreaseBalance(this: User, amount: number) {
 		const current = this.settings.get(UserSettings.Money);
 		await this.settings.update(UserSettings.Money, current - amount);
-		this.client.emit(Events.MoneyTransaction, this, amount, current, EconomyTransactionAction.Remove, reason);
+		this.client.emit(Events.MoneyTransaction, this, amount, current);
 	}
 
 }

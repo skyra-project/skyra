@@ -6,23 +6,6 @@ function Remove-All-Containers {
 function Show-Help {
 	Write-Host ""
 	Write-Host "Skyra Docker Control Script" -ForegroundColor blue
-	Write-Host "Control Skyra's Docker image with ease" -ForegroundColor cyan
-	Write-Host ""
-	Write-Host "Lavalink Setup" -ForegroundColor green
-	Write-Host "
-1. Download the latest .jar file from https://ci.fredboat.com/viewLog.html?buildId=lastSuccessful&buildTypeId=Lavalink_Build&tab=artifacts&guest=1
-2. Drop this .jar file in the 'lavalink' folder
-3. Duplicate the 'application.example.yml' file and rename it to 'application.yml
-4. Set any password in the yaml file and also set the same password in src/config.ts in the root folder of this project"
-	Write-Host ""
-	Write-Host "Influxdb Setup" -ForegroundColor green
-	Write-Host "
-1. In the influxdb folder, duplicate the 'config.sample.toml' file and rename it to 'config.toml'"
-	Write-Host ""
-	Write-Host "Postgres Setup" -ForegroundColor green
-	Write-Host "
-1. In the postgres folder, duplicate the '.env.example' file and rename it to '.env'
-2. Fill out any desired values or keep the defaults"
 	Write-Host ""
 	Write-Host "Usage" -ForegroundColor yellow
 	Write-Host "
@@ -39,11 +22,6 @@ removeall	Removes all Docker containers - For this command no service is require
 push		Pushes a docker image to Dockerhub
 logs		Shows the logs of a Docker container
 tail		Tails the logs of a Docker container"
-
-	Write-Host ""
-	Write-Host "Report bugs and issues to:" -ForegroundColor yellow
-	Write-Host "Skyra's GitHub, assigning favna and kyranet. https://github.com/skyra-project/skyra/issues/new
-	"
 }
 
 function Step-Run {
@@ -64,7 +42,7 @@ function Step-Run {
 			start { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" up -d $service }
 			logs { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs $service }
 			tail { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs -f $service }
-			push { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" push $service }
+			push { docker push $service }
 			remove { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" rm -fv $service }
 			removeall { Remove-All-Containers }
 			default { Show-Help }

@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { getContent } from '@utils/util';
-import { TextChannel } from 'discord.js';
+import { TextChannel, Util } from 'discord.js';
 import { CommandStore, KlasaMessage, Serializer } from 'klasa';
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
@@ -29,8 +29,8 @@ export default class extends SkyraCommand {
 		const attachments = target.attachments.size
 			? target.attachments.map(att => `📁 <${att.url}>`).join('\n')
 			: '';
-		const content = getContent(target);
-		return message.sendMessage(`${content || ''}${content && attachments ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
+		const content = Util.escapeMarkdown(getContent(target) || '');
+		return message.sendMessage(`${content}${content && attachments ? `\n\n\n=============\n${attachments}` : attachments}`, { code: 'md' });
 	}
 
 }

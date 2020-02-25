@@ -67,7 +67,7 @@
 		"zlib-sync": "^0.1.6"
 	},
 	"devDependencies": {
-		"@discordjs/collection": "^0.1.4",
+		"@discordjs/collection": "^0.1.5",
 		"@favware/graphql-pokemon": "^1.8.0",
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",

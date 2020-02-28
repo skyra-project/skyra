@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '(coin:cointype) <50|100|200|500|1000|2000|5000|10000|cashless:default>',
+			usage: '(coin:cointype) <50|100|200|500|1000|2000|5000|10000|20000|25000|50000|100000|cashless:default>',
 			usageDelim: ' '
 		});
 

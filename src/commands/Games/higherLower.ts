@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
 			runIn: ['text'],
-			usage: '<50|100|200|500|1000|2000|5000|10000>'
+			usage: '<50|100|200|500|1000|2000|5000|10000|20000|25000|50000|100000>'
 		});
 	}
 

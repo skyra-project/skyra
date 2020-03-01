@@ -17,6 +17,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_TOPINVITES_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_TOPINVITES_EXTENDED'),
 			requiredGuildPermissions: ['MANAGE_GUILD'],
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
 	}

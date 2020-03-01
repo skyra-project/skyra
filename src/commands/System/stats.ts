@@ -12,7 +12,8 @@ export default class extends SkyraCommand {
 			bucket: 2,
 			cooldown: 15,
 			description: language => language.tget('COMMAND_STATS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_STATS_EXTENDED')
+			extendedHelp: language => language.tget('COMMAND_STATS_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
 

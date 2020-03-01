@@ -10,7 +10,8 @@ export default class extends SkyraCommand {
 			aliases: ['support-server', 'server'],
 			description: language => language.tget('COMMAND_SUPPORT_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_SUPPORT_EXTENDED'),
-			guarded: true
+			guarded: true,
+			requiredPermissions: ['EMBED_LINKS']
 		});
 
 	}

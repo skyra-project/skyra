@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
 			permissionLevel: PermissionLevels.Moderator,
 			flagSupport: true,
-			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
+			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '[limit:integer{1,100}] [filter:filter|user:user] (position:position) (message:message)',
 			usageDelim: ' '

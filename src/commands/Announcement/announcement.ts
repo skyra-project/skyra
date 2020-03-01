@@ -19,6 +19,7 @@ export default class extends SkyraCommand {
 			extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			requiredGuildPermissions: ['MANAGE_ROLES'],
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<announcement:string{,1900}>'
 		});

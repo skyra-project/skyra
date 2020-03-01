@@ -171,11 +171,11 @@ export default class extends SkyraCommand {
 			await message.author.decreaseBalance(losses);
 		}
 
-		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
-		await game.response.edit(null, new MessageEmbed()
+		const { TITLE, DESCRIPTION, FOOTER, MESSAGE } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
+		await game.response.edit(MESSAGE(losses), new MessageEmbed()
 			.setColor(game.color)
 			.setTitle(TITLE)
-			.setDescription(DESCRIPTION(game.number, losses))
+			.setDescription(DESCRIPTION(game.number))
 			.setFooter(FOOTER));
 
 		game.llrc.end();
@@ -208,7 +208,7 @@ export default class extends SkyraCommand {
 		await message.author.increaseBalance(winnings);
 
 		// Let the user know we're done!
-		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings), { embed: null });
+		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings));
 	}
 
 	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {

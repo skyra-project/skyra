@@ -65,11 +65,12 @@ export default class extends SkyraCommand {
 			response,
 			running: true,
 			turn: 1,
-			number: this.random(0),
+			number: this.random(50),
 			wager,
 			emojis: this.kFirstReactionArray,
 			callback: null,
-			color: getColor(message)
+			color: getColor(message),
+			canceledByChoice: false
 		};
 
 		while (game.running) {
@@ -88,7 +89,7 @@ export default class extends SkyraCommand {
 
 			// Main game logic (at last)
 			const oldNum = game.number;
-			game.number = this.random(game.number);
+			game.number = this.random(oldNum);
 
 			switch (emoji) {
 				case HigherLowerReactions.Higher: {
@@ -101,6 +102,7 @@ export default class extends SkyraCommand {
 				}
 				case HigherLowerReactions.Cancel:
 				case HigherLowerReactions.Cashout: {
+					game.canceledByChoice = true;
 					await this.end(game, message, emoji === HigherLowerReactions.Cashout);
 					game.running = false;
 					break;
@@ -187,12 +189,15 @@ export default class extends SkyraCommand {
 		// Should we need to cash out, proceed to doing that
 		if (cashout) return this.cashout(message, game);
 
-		// Say bye!
-		const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
-		await game.response.edit(null, new MessageEmbed()
-			.setColor(game.color)
-			.setTitle(TITLE)
-			.setDescription(DESCRIPTION(message.author.username)));
+		if (game.canceledByChoice) {
+			// Say bye!
+			const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
+
+			await game.response.edit(null, new MessageEmbed()
+				.setColor(game.color)
+				.setTitle(TITLE)
+				.setDescription(DESCRIPTION(message.author.username)));
+		}
 	}
 
 	private async cashout(message: KlasaMessage, game: HigherLowerGameData) {
@@ -225,14 +230,44 @@ export default class extends SkyraCommand {
 	 * @param previous The number we shouldn't get (usually the number we're comparing against
 	 */
 	private random(previous: number) {
-		if (previous === 0) {
-			return Math.ceil(Math.random() * 100);
-		}
 
-		const lower = previous === 100 || Math.random() > 0.5;
-		return lower
-			? Math.ceil(Math.random() * previous) - 1
-			: Math.ceil(Math.random() * (100 - previous)) + previous;
+		// Check if we're closer to 100 or 0
+		const upperLimitIsClosest = previous > 50;
+
+		// The proximity to the given edge
+		const proximityToEdge = upperLimitIsClosest ? 99 - previous : previous - 1;
+		const range = Math.min(30, proximityToEdge);
+
+		const lower = proximityToEdge < 5
+			// If the proximity is less than 5
+			? upperLimitIsClosest
+				// And we're closer to 100 then return a number in range [previous - 5..99]
+				? this.randomInRange(previous - 5, 99)
+				// Otherwise return a number in range [1..previous + 5]
+				: this.randomInRange(1, previous + 5)
+			// Else get the smaller number between 30 and the proximity to the edge
+			// And return a random number in the range of [previous - range..previous + range]
+			: this.randomInRange(previous - range, previous + range);
+
+		const higher = lower + 1;
+
+		return previous === lower
+			? higher
+			: lower;
+	}
+
+	/**
+	 * Returns a random integer between minimum (inclusive) and maximum (inclusive).
+	 * The value is no lower than min (or the next integer greater than min
+	 * if min isn't an integer) and no greater than max (or the next integer
+	 * lower than max if max isn't an integer).
+	 * @param minimum The minimum boundary for the randomization
+	 * @param maximum The maximum boundary for the randomization
+	 */
+	private randomInRange(minimum: number, maximum: number) {
+		minimum = Math.ceil(minimum);
+		maximum = Math.floor(maximum);
+		return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 	}
 
 	private calculateWinnings(bet: number, attempts: number) {
@@ -251,5 +286,6 @@ interface HigherLowerGameData {
 	wager: number;
 	emojis: readonly HigherLowerReactions[];
 	callback: ((value: HigherLowerReactions | null) => void) | null;
+	canceledByChoice: boolean;
 	color: number;
 }

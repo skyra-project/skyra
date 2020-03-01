@@ -1,23 +1,23 @@
 {
   "extends": "bamboo",
   "rules": {
-    "no-throw-literal": 0,
-    "@typescript-eslint/restrict-plus-operands": 0
+	"no-throw-literal": 0,
+	"@typescript-eslint/restrict-plus-operands": 0
   },
   "env": {
-    "jest": true,
-    "es6": true,
-    "node": true
+	"jest": true,
+	"es6": true,
+	"node": true
   },
   "parserOptions": {
-    "project": "./tsconfig.eslint.json"
+	"project": "./tsconfig.eslint.json"
   },
   "overrides": [
-    {
-      "files": ["src/commands/**/*.ts"],
-      "rules": {
-        "@typescript-eslint/require-await": 0
-      }
-    }
+	{
+	  "files": ["src/commands/**/*.ts"],
+	  "rules": {
+		"@typescript-eslint/require-await": 0
+	  }
+	}
   ]
 }

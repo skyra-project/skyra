@@ -1,17 +1,28 @@
-version: "3.7"
+version: "2.4"
 services:
-  postgres:
-    container_name: pgsql
-    image: postgres
-    ports:
-      - "5432:5432"
-  lavalink:
-    container_name: lavalink
-    image: skyrabot/lavalink:latest
-    ports:
-      - "2333:2333"
   pokedex:
     container_name: pokedex
     image: favware/graphql-pokemon:latest
+    restart: always
     ports:
       - "4000:8080"
+  postgres:
+    container_name: pgsql
+    image: skyrabot/postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  lavalink:
+    container_name: lavalink
+    image: skyrabot/lavalink:latest
+    restart: always
+    ports:
+      - "2333:2333"
+
+volumes:
+  postgres-data:
+    external: true
+  redis-data:
+    external: true

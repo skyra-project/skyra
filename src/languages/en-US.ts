@@ -2,6 +2,7 @@
 import { codeBlock, toTitleCase } from '@klasa/utils';
 import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
+import ShinyWager from '@root/arguments/shinywager';
 import { VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
 import friendlyDuration from '@utils/FriendlyDuration';
@@ -157,6 +158,7 @@ export default class extends Language {
 		RESOLVER_INVALID_FLOAT: name => `${name} must be a valid number.`,
 		RESOLVER_INVALID_GUILD: name => `${name} must be a valid guild id.`,
 		RESOLVER_INVALID_INT: name => `${name} must be an integer.`,
+		RESOLVER_INVALID_WAGER: bet => `I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${ShinyWager.VALID_BET_AMOUNTS.map(amount => `\`${amount}\``).join(', ')}`,
 		RESOLVER_INVALID_LITERAL: name => `Your option did not match the only possibility: ${name}`,
 		RESOLVER_INVALID_MEMBER: name => `${name} must be a mention or valid user id.`,
 		RESOLVER_INVALID_MESSAGE: name => `${name} must be a valid message id.`,

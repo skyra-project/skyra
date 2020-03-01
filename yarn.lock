@@ -376,6 +376,11 @@
   dependencies:
     type-detect "4.0.8"
 
+"@skyra/decorators@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.0.0.tgz#270d6f649ea8cda24b580cabd9c33e7dd6440b04"
+  integrity sha512-mPWYc3pJgqVDrblLN3xZUNNcmmzjBkW3C8X5yvXoksj0ajW/+pnbAi8Jf9RmBBEzWw+9G+qTuGvbLBYQsuz4xA==
+
 "@types/babel__core@^7.1.0":
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.5.tgz#e4d84704b4df868b3ad538365a13da2fa6dbc023"
@@ -2793,11 +2798,6 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   resolved "https://codeload.github.com/kyranet/klasa-dashboard-hooks/tar.gz/74ac1a8503ba09a728948377ea92feeaebf30bd0"
   dependencies:
     node-fetch "^2.6.0"
-
-klasa-decorators@^0.0.1:
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/klasa-decorators/-/klasa-decorators-0.0.1.tgz#c4bcc7dd2b78814b4f625e611f82790ec6061d52"
-  integrity sha512-uCoMz750Lnp0dM8VC787hnRrF9wqWfUrjT7dp+8ihqp6xmtX8ZSXoeK08WJgAhEdEdIDsUG+VMXi9gcG54EZMA==
 
 "klasa@github:dirigeants/klasa#sgn":
   version "0.5.0-dev"

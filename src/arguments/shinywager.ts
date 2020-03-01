@@ -1,0 +1,23 @@
+import { ApplyOptions } from '@skyra/decorators';
+import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
+
+@ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
+export default class ShinyWager extends Argument {
+
+	public run(arg: string, possible: Possible, message: KlasaMessage): number {
+		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', possible.name);
+
+		const number = Number(arg);
+		if (!Number.isInteger(number)) throw message.language.tget('RESOLVER_INVALID_INT', possible.name);
+		if (!ShinyWager.VALID_BET_AMOUNTS.includes(number)) throw message.language.tget('RESOLVER_INVALID_WAGER', number);
+
+		return this.integerArg.run(arg, possible, message);
+	}
+
+	private get integerArg() {
+		return this.store.get('integer')!;
+	}
+
+	public static VALID_BET_AMOUNTS = [50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 25000, 50000, 100000, 500000];
+
+}

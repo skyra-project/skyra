@@ -1,8 +1,8 @@
 {
   "extends": "bamboo",
   "rules": {
-	"no-throw-literal": 0,
-	"@typescript-eslint/restrict-plus-operands": 0
+    "no-throw-literal": 0,
+    "@typescript-eslint/restrict-plus-operands": 0
   },
   "env": {
     "jest": true,
@@ -11,5 +11,13 @@
   },
   "parserOptions": {
     "project": "./tsconfig.eslint.json"
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/commands/**/*.ts"],
+      "rules": {
+        "@typescript-eslint/require-await": 0
+      }
+    }
+  ]
 }

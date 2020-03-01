@@ -46,6 +46,7 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_FLOAT: (name: string) => string;
 	RESOLVER_INVALID_GUILD: (name: string) => string;
 	RESOLVER_INVALID_INT: (name: string) => string;
+	RESOLVER_INVALID_WAGER: (bet: number) => string;
 	RESOLVER_INVALID_LITERAL: (name: string) => string;
 	RESOLVER_INVALID_MEMBER: (name: string) => string;
 	RESOLVER_INVALID_MESSAGE: (name: string) => string;

@@ -1,42 +1,32 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { cleanMentions, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const enum CoinType { Heads, Tails }
+
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['cf'],
+	bucket: 2,
+	cooldown: 7,
+	description: language => language.tget('COMMAND_COINFLIP_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '(coin:cointype) (wager:coinwager)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['cf'],
-			bucket: 2,
-			cooldown: 7,
-			description: language => language.tget('COMMAND_COINFLIP_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_COINFLIP_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '(coin:cointype) <50|100|200|500|1000|2000|5000|10000|20000|25000|50000|100000|500000|cashless:default>',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('cointype', (arg, _possible, message) => {
-			if (!arg) return null;
-			const lArg = arg.toLowerCase();
-			const face = message.language.tget('COMMAND_COINFLIP_COINNAMES').findIndex(coin => coin.toLowerCase() === lArg);
-			if (face === -1) throw message.language.tget('COMMAND_COINFLIP_INVALID_COINNAME', cleanMentions(message.guild!, arg));
-			return face;
-		});
-	}
-
-	public async run(message: KlasaMessage, [guess, bet]: [CoinType | null, string]) {
+	public async run(message: KlasaMessage, [guess, wager]: [CoinType | null, number | 'cashless']) {
 		if (guess === null) return this.noGuess(message);
-		if (bet === 'cashless') return this.cashless(message, guess!);
+		if (wager === 'cashless') return this.cashless(message, guess!);
 
 		await message.author.settings.sync();
-		const wager = Number(bet);
 		const money = message.author.settings.get(UserSettings.Money);
 
 		if (money < wager) {
@@ -54,6 +44,24 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result], wager)));
 	}
 
+	public async init() {
+		this.createCustomResolver('cointype', (arg, _possible, message) => {
+			if (!arg) return null;
+			const lArg = arg.toLowerCase();
+			const face = message.language.tget('COMMAND_COINFLIP_COINNAMES').findIndex(coin => coin.toLowerCase() === lArg);
+			if (face === -1) throw message.language.tget('COMMAND_COINFLIP_INVALID_COINNAME', cleanMentions(message.guild!, arg));
+			return face;
+		});
+
+		this.createCustomResolver('coinwager', (arg, possible, message) => {
+			if (!arg) return 'cashless';
+			return this.shinyWagerArg.run(arg, possible, message);
+		});
+	}
+
+	private get shinyWagerArg() {
+		return this.client.arguments.get('shinywager')!;
+	}
 
 	private cashless(message: KlasaMessage, guess: CoinType) {
 		const result = this.flipCoin();

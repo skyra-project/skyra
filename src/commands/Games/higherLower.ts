@@ -1,11 +1,12 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { getColor, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',
@@ -15,6 +16,16 @@ const enum HigherLowerReactions {
 	Cashout = '%F0%9F%92%B0' // 💰
 }
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['hilo', 'higherlower', 'hl'],
+	bucket: 2,
+	cooldown: 7,
+	description: language => language.tget('COMMAND_HIGHERLOWER_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
+	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
+	runIn: ['text'],
+	usage: '<wager:wager>'
+})
 export default class extends SkyraCommand {
 
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
@@ -22,23 +33,9 @@ export default class extends SkyraCommand {
 	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
 	private readonly kTimer = Time.Minute * 3;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['hilo', 'higherlower', 'hl'],
-			bucket: 2,
-			cooldown: 7,
-			description: language => language.tget('COMMAND_HIGHERLOWER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
-			runIn: ['text'],
-			usage: '<50|100|200|500|1000|2000|5000|10000|20000|25000|50000|100000|500000>'
-		});
-	}
-
-	public async run(message: KlasaMessage, [text]: [string]) {
+	public async run(message: KlasaMessage, [wager]: [number]) {
 		await message.author.settings.sync();
 
-		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
 		await message.author.decreaseBalance(wager);

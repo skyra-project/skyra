@@ -1,10 +1,8 @@
-import { Argument, ArgumentStore, Possible, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
+@ApplyOptions<ArgumentOptions>({ aliases: ['int'] })
 export default class extends Argument {
-
-	public constructor(store: ArgumentStore, file: string[], directory: string) {
-		super(store, file, directory, { aliases: ['int'] });
-	}
 
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', possible.name);

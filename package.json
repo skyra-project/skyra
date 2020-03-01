@@ -57,7 +57,7 @@
 		"he": "^1.2.0",
 		"klasa": "github:dirigeants/klasa#sgn",
 		"klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
-		"klasa-decorators": "^0.0.1",
+		"@skyra/decorators": "^1.0.0",
 		"lavalink": "^2.9.0",
 		"module-alias": "^2.2.2",
 		"node-fetch": "^2.6.0",

@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 					game.callback = null;
 				}
 				try {
-					await this.end(game, message, game.turn > 1);
+					await this.end(game, message);
 				} catch (error) {
 					this.client.emit(Events.Wtf, error);
 				}
@@ -171,25 +171,25 @@ export default class extends SkyraCommand {
 			await message.author.decreaseBalance(losses);
 		}
 
-		const { TITLE, DESCRIPTION, FOOTER, MESSAGE } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
-		await game.response.edit(MESSAGE(losses), new MessageEmbed()
+		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
+		await game.response.edit(null, new MessageEmbed()
 			.setColor(game.color)
 			.setTitle(TITLE)
-			.setDescription(DESCRIPTION(game.number))
+			.setDescription(DESCRIPTION(game.number, losses))
 			.setFooter(FOOTER));
 
 		game.llrc.end();
 		return false;
 	}
 
-	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout: boolean) {
+	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout = false) {
 		// End the LLRC
 		game.llrc.end();
 
 		// Should we need to cash out, proceed to doing that
 		if (cashout) return this.cashout(message, game);
 
-		if (game.canceledByChoice) {
+		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
 			const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
 
@@ -207,8 +207,15 @@ export default class extends SkyraCommand {
 		const winnings = this.calculateWinnings(wager, turn - 1);
 		await message.author.increaseBalance(winnings);
 
+		const { TITLE } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
+		const { DESCRIPTION: FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
+
 		// Let the user know we're done!
-		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings));
+		await game.response.edit(null, new MessageEmbed()
+			.setColor(game.color)
+			.setTitle(TITLE)
+			.setDescription(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings))
+			.setFooter(FOOTER(message.author.username)));
 	}
 
 	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {

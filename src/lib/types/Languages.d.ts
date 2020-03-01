@@ -1108,8 +1108,7 @@ export interface LanguageKeys {
 	};
 	COMMAND_HIGHERLOWER_LOSE: {
 		TITLE: string;
-		DESCRIPTION: (number: number) => string;
-		MESSAGE: (losses: number) => string;
+		DESCRIPTION: (number: number, losses: number) => string;
 		FOOTER: string;
 	};
 	COMMAND_HIGHERLOWER_WIN: {

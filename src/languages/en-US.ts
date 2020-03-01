@@ -2759,8 +2759,7 @@ export default class extends Language {
 		},
 		COMMAND_HIGHERLOWER_LOSE: {
 			TITLE: 'You lost!',
-			DESCRIPTION: number => `You didn't quite get it. The number was ${number}.`,
-			MESSAGE: losses => `You lost ${losses} ${SHINY}`,
+			DESCRIPTION: (number, losses) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}`,
 			FOOTER: 'Better luck next time!'
 		},
 		COMMAND_HIGHERLOWER_WIN: {

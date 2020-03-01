@@ -1,11 +1,10 @@
-version: "3.7"
+version: "2.4"
 services:
+  pokedex:
+    image: favware/graphql-pokemon:latest
   postgres:
-    image: postgres
-    env_file:
-      - ./postgres/.env
+    build: ./postgres
+    image: skyrabot/postgres:latest
   lavalink:
     build: ./lavalink
     image: skyrabot/lavalink:latest
-  pokedex:
-    image: favware/graphql-pokemon:latest

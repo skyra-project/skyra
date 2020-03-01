@@ -160,7 +160,7 @@ export default class extends Language {
 		RESOLVER_INVALID_FLOAT: name => `${name} debe ser un número válido.`,
 		RESOLVER_INVALID_GUILD: name => `${name} debe ser una id de servidor válida.`,
 		RESOLVER_INVALID_INT: name => `${name} debe ser un número entero válido.`,
-		RESOLVER_INVALID_WAGER: bet => `Lo siento, pero ${bet} ${SHINY} es una cantidad no válida para apostar. Puedes apostar uno de ${ShinyWager.VALID_BET_AMOUNTS.map(amount => `\`${amount}\``).join(', ')}`,
+		RESOLVER_INVALID_WAGER: bet => `Lo siento, pero ${bet} ${SHINY} es una cantidad no válida para apostar. Puedes apostar una de las siguientes cantidades ${ShinyWager.VALID_BET_AMOUNTS.map(amount => `\`${amount}\``).join(', ')}`,
 		RESOLVER_INVALID_LITERAL: name => `La opción no coincide con la única posibilidad: ${name}`,
 		RESOLVER_INVALID_MEMBER: name => `${name} debe ser una mención de usuario o una id de usuario válida.`,
 		RESOLVER_INVALID_MESSAGE: name => `${name} debe ser una id de mensaje válida.`,

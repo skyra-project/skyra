@@ -8,7 +8,8 @@ export default class extends MusicCommand {
 		super(store, file, directory, {
 			aliases: ['np', 'nowplaying'],
 			description: language => language.tget('COMMAND_PLAYING_DESCRIPTION'),
-			music: ['QUEUE_NOT_EMPTY', 'VOICE_PLAYING']
+			music: ['QUEUE_NOT_EMPTY', 'VOICE_PLAYING'],
+			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
 

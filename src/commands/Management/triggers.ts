@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',

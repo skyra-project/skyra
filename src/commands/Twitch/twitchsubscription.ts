@@ -34,6 +34,7 @@ export default class extends SkyraCommand {
 			description: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			subcommands: true,
 			usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channelname) (status:status) (content:content)',

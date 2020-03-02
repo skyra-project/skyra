@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 			aliases: ['bank'],
 			description: language => language.tget('COMMAND_VAULT_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_VAULT_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			subcommands: true,
 			usage: '<deposit|withdraw|show:default> (coins:coins)',
 			usageDelim: ' '

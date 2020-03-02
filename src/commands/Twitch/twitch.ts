@@ -20,6 +20,7 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			description: language => language.tget('COMMAND_TWITCH_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_TWITCH_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '<name:string>'
 		});

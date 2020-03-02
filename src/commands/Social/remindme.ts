@@ -17,6 +17,7 @@ export default class extends SkyraCommand {
 			cooldown: 30,
 			description: language => language.tget('COMMAND_REMINDME_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_REMINDME_EXTENDED'),
+			requiredPermissions: ['EMBED_LINKS'],
 			usage: '[list|delete|me] [input:...string]',
 			usageDelim: ' '
 		});

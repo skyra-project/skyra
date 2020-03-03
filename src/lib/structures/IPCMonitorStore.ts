@@ -1,8 +1,9 @@
+import { Constructor } from 'discord.js';
 import { KlasaClient, Store } from 'klasa';
 import { NodeMessage } from 'veza';
 import { IPCMonitor } from './IPCMonitor';
 
-export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<IPCMonitor>> {
+export class IPCMonitorStore extends Store<string, IPCMonitor, Constructor<IPCMonitor>> {
 
 	public constructor(client: KlasaClient) {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
@@ -33,5 +34,3 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<I
 	}
 
 }
-
-type ConstructorType<V> = new (...args: unknown[]) => V;

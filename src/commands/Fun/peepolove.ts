@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['pepelove'],
 			bucket: 2,
 			cooldown: 10,
 			description: language => language.tget('COMMAND_PEEPOLOVE_DESCRIPTION'),
@@ -40,6 +41,5 @@ export default class extends SkyraCommand {
 			readFile(join(assetsFolder, '/images/generation/peepoHands.png'))
 		]);
 	}
-
 
 }

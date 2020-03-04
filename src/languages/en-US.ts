@@ -158,7 +158,7 @@ export default class extends Language {
 		RESOLVER_INVALID_FLOAT: name => `${name} must be a valid number.`,
 		RESOLVER_INVALID_GUILD: name => `${name} must be a valid guild id.`,
 		RESOLVER_INVALID_INT: name => `${name} must be an integer.`,
-		RESOLVER_INVALID_WAGER: bet => `I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${ShinyWager.VALID_BET_AMOUNTS.map(amount => `\`${amount}\``).join(', ')}`,
+		RESOLVER_INVALID_WAGER: bet => `I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${ShinyWager.kValidBetAmounts.map(amount => `\`${amount}\``).join(', ')}`,
 		RESOLVER_INVALID_LITERAL: name => `Your option did not match the only possibility: ${name}`,
 		RESOLVER_INVALID_MEMBER: name => `${name} must be a mention or valid user id.`,
 		RESOLVER_INVALID_MESSAGE: name => `${name} must be a valid message id.`,

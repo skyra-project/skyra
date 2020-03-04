@@ -1,26 +1,25 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['pepelove'],
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_PEEPOLOVE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_PEEPOLOVE_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text', 'dm'],
+	usage: '<image:image>'
+})
 export default class extends SkyraCommand {
 
 	private bodyImage: Buffer | null = null;
 	private handsImage: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_PEEPOLOVE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_PEEPOLOVE_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text', 'dm'],
-			usage: '<image:image>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [imageBuffer]: [Buffer]) {
 		const buffer = await new Canvas(512, 512)
@@ -40,6 +39,5 @@ export default class extends SkyraCommand {
 			readFile(join(assetsFolder, '/images/generation/peepoHands.png'))
 		]);
 	}
-
 
 }

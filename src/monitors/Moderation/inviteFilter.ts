@@ -5,7 +5,7 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
 
-const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d]{2,}/i;
+const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d-]{2,}/i;
 
 export default class extends ModerationMonitor {
 

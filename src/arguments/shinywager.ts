@@ -18,7 +18,7 @@ export default class ShinyWager extends Argument {
 		return this.store.get('integer')!;
 	}
 
-	public static readonly kValidBetAmounts = [50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 25000, 50000, 100000, 500000] as const;
+	public static readonly kValidBetAmounts = [50, 100, 200, 500, 1000, 2000, 5000, 10_000, 20_000, 25_000, 50_000, 100_000, 500_000] as const;
 
 }
 

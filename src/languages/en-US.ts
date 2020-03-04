@@ -1932,7 +1932,7 @@ export default class extends Language {
 				['update <amount> <role>', 'Change the required amount of points for an existing autorole.']
 			],
 			reminder: `The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.`,
-			examples: ['list', 'add \'Trusted Member\' 20000', 'update \'Trusted Member\' 15000', 'remove Trusted Member']
+			examples: ['list', 'add \'Trusted Member\' 20000', 'update \'Trusted Member\' 15000', 'remove \'Trusted Member\'']
 		}),
 
 		COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',

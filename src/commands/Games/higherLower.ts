@@ -1,11 +1,12 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { getColor, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',
@@ -15,6 +16,16 @@ const enum HigherLowerReactions {
 	Cashout = '%F0%9F%92%B0' // 💰
 }
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['hilo', 'higherlower', 'hl'],
+	bucket: 2,
+	cooldown: 7,
+	description: language => language.tget('COMMAND_HIGHERLOWER_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
+	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
+	runIn: ['text'],
+	usage: '<wager:wager>'
+})
 export default class extends SkyraCommand {
 
 	private readonly kFirstReactionArray = [HigherLowerReactions.Higher, HigherLowerReactions.Lower, HigherLowerReactions.Cancel] as const;
@@ -22,23 +33,9 @@ export default class extends SkyraCommand {
 	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
 	private readonly kTimer = Time.Minute * 3;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['hilo', 'higherlower', 'hl'],
-			bucket: 2,
-			cooldown: 7,
-			description: language => language.tget('COMMAND_HIGHERLOWER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_HIGHERLOWER_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
-			runIn: ['text'],
-			usage: '<50|100|200|500|1000|2000|5000|10000|20000|25000|50000|100000>'
-		});
-	}
-
-	public async run(message: KlasaMessage, [text]: [string]) {
+	public async run(message: KlasaMessage, [wager]: [number]) {
 		await message.author.settings.sync();
 
-		const wager = Number(text);
 		const balance = message.author.settings.get(UserSettings.Money);
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
 		await message.author.decreaseBalance(wager);
@@ -60,7 +57,7 @@ export default class extends SkyraCommand {
 					game.callback = null;
 				}
 				try {
-					await this.end(game, message, game.turn > 1);
+					await this.end(game, message);
 				} catch (error) {
 					this.client.emit(Events.Wtf, error);
 				}
@@ -68,11 +65,12 @@ export default class extends SkyraCommand {
 			response,
 			running: true,
 			turn: 1,
-			number: this.random(0),
+			number: this.random(50),
 			wager,
 			emojis: this.kFirstReactionArray,
 			callback: null,
-			color: getColor(message)
+			color: getColor(message),
+			canceledByChoice: false
 		};
 
 		while (game.running) {
@@ -91,7 +89,7 @@ export default class extends SkyraCommand {
 
 			// Main game logic (at last)
 			const oldNum = game.number;
-			game.number = this.random(game.number);
+			game.number = this.random(oldNum);
 
 			switch (emoji) {
 				case HigherLowerReactions.Higher: {
@@ -104,6 +102,7 @@ export default class extends SkyraCommand {
 				}
 				case HigherLowerReactions.Cancel:
 				case HigherLowerReactions.Cashout: {
+					game.canceledByChoice = true;
 					await this.end(game, message, emoji === HigherLowerReactions.Cashout);
 					game.running = false;
 					break;
@@ -166,7 +165,7 @@ export default class extends SkyraCommand {
 	private async loss(game: HigherLowerGameData, message: KlasaMessage) {
 		let losses = game.wager;
 
-		// There's a 0.001% chance that a user would lose now only the wager, but also what they would've won in one round less.
+		// There's a 0.001% chance that a user would lose not only the wager, but also what they would've won in one round less.
 		if ((Math.random()) < 0.0001) {
 			losses += this.calculateWinnings(game.wager, game.turn - 1);
 			await message.author.decreaseBalance(losses);
@@ -183,19 +182,22 @@ export default class extends SkyraCommand {
 		return false;
 	}
 
-	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout: boolean) {
+	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout = false) {
 		// End the LLRC
 		game.llrc.end();
 
 		// Should we need to cash out, proceed to doing that
 		if (cashout) return this.cashout(message, game);
 
-		// Say bye!
-		const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
-		await game.response.edit(null, new MessageEmbed()
-			.setColor(game.color)
-			.setTitle(TITLE)
-			.setDescription(DESCRIPTION(message.author.username)));
+		if (game.canceledByChoice && game.turn === 1) {
+			// Say bye!
+			const { TITLE, DESCRIPTION } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
+
+			await game.response.edit(null, new MessageEmbed()
+				.setColor(game.color)
+				.setTitle(TITLE)
+				.setDescription(DESCRIPTION(message.author.username)));
+		}
 	}
 
 	private async cashout(message: KlasaMessage, game: HigherLowerGameData) {
@@ -205,8 +207,15 @@ export default class extends SkyraCommand {
 		const winnings = this.calculateWinnings(wager, turn - 1);
 		await message.author.increaseBalance(winnings);
 
+		const { TITLE } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
+		const { DESCRIPTION: FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');
+
 		// Let the user know we're done!
-		await game.response.edit(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings), { embed: null });
+		await game.response.edit(null, new MessageEmbed()
+			.setColor(game.color)
+			.setTitle(TITLE)
+			.setDescription(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings))
+			.setFooter(FOOTER(message.author.username)));
 	}
 
 	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
@@ -228,56 +237,44 @@ export default class extends SkyraCommand {
 	 * @param previous The number we shouldn't get (usually the number we're comparing against
 	 */
 	private random(previous: number) {
-		// Retrieve a number in the range [0..100)
-		const random = Math.random() * 100;
 
-		// Retrieve a number in the range [0..99]
-		const lower = Math.floor(random);
+		// Check if we're closer to 100 or 0
+		const upperLimitIsClosest = previous > 50;
 
-		// Retrieve a number in the range [1..100]
+		// The proximity to the given edge
+		const proximityToEdge = upperLimitIsClosest ? 99 - previous : previous - 1;
+		const range = Math.min(30, proximityToEdge);
+
+		const lower = proximityToEdge < 5
+			// If the proximity is less than 5
+			? upperLimitIsClosest
+				// And we're closer to 100 then return a number in range [previous - 5..99]
+				? this.randomInRange(previous - 5, 99)
+				// Otherwise return a number in range [1..previous + 5]
+				: this.randomInRange(1, previous + 5)
+			// Else get the smaller number between 30 and the proximity to the edge
+			// And return a random number in the range of [previous - range..previous + range]
+			: this.randomInRange(previous - range, previous + range);
+
 		const higher = lower + 1;
 
-		/**
-		 * We use both lower (floor(random)) and higher (ceil(random)), the code is done this way to avoid looping
-		 * until we get a random number different to previous, which is costy and has many bad cases, the following
-		 * algorithm has a constant performance cost.
-		 *
-		 * We check if previous equals to the lower bound of the random number, if it does, we pick the next integer,
-		 * otherwise we pick the lower.
-		 *
-		 * @example
-		 * // Different numbers
-		 * random; // 70.4
-		 * 54 === 70 ? 71 : 70; // -> 70
-		 *
-		 * @example
-		 * // Same lower
-		 * random; // -> 55.3
-		 * 55 === 55 ? 56 : 55; // -> 56
-		 *
-		 * @example
-		 * // Lowest boundary
-		 * random; // 0.4
-		 * 0 === 0 ? 1 : 0; // -> 1
-		 *
-		 * @example
-		 * // Low boundary
-		 * random; // 0.4
-		 * 1 === 0 ? 1 : 0; // -> 0
-		 *
-		 * @example
-		 * // Highest boundary
-		 * random; // 99.4
-		 * 100 === 99 ? 100 : 99; // -> 99
-		 *
-		 * @example
-		 * // High boundary
-		 * random; // 99.4
-		 * 99 === 99 ? 100 : 99; // -> 100
-		 */
 		return previous === lower
 			? higher
 			: lower;
+	}
+
+	/**
+	 * Returns a random integer between minimum (inclusive) and maximum (inclusive).
+	 * The value is no lower than min (or the next integer greater than min
+	 * if min isn't an integer) and no greater than max (or the next integer
+	 * lower than max if max isn't an integer).
+	 * @param minimum The minimum boundary for the randomization
+	 * @param maximum The maximum boundary for the randomization
+	 */
+	private randomInRange(minimum: number, maximum: number) {
+		minimum = Math.ceil(minimum);
+		maximum = Math.floor(maximum);
+		return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
 	}
 
 	private calculateWinnings(bet: number, attempts: number) {
@@ -296,5 +293,6 @@ interface HigherLowerGameData {
 	wager: number;
 	emojis: readonly HigherLowerReactions[];
 	callback: ((value: HigherLowerReactions | null) => void) | null;
+	canceledByChoice: boolean;
 	color: number;
 }

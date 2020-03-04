@@ -6,12 +6,12 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
+import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
 import { Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
 import { readFile } from 'fs-nextra';
 import { KlasaGuild, RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
-import { createFunctionInhibitor } from 'klasa-decorators';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { UserTag } from './Cache/UserTags';
 import { APIErrors, BrandingColors, Time } from './constants';
@@ -528,10 +528,6 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 		if (error instanceof DiscordAPIError && codes.includes(error.code)) return null;
 		throw error;
 	}
-}
-
-export function createClassDecorator(fn: Function) {
-	return fn;
 }
 
 /**

@@ -1,9 +1,8 @@
 import { isFunction } from '@klasa/utils';
+import { createMethodDecorator, createClassDecorator } from '@skyra/decorators';
 import assert from 'assert';
 import { Collection, Constructor } from 'discord.js';
 import { RateLimit } from 'klasa';
-import { createMethodDecorator } from 'klasa-decorators';
-import { createClassDecorator } from './util';
 
 export const enum LimitErrors {
 	Ratelimited = 'RATELIMIT'

@@ -148,7 +148,7 @@ export default class extends Language {
 		SETTING_GATEWAY_MISSING_VALUE: (entry, value) => `The value "${value}" cannot be removed from the key "${entry.path}" because it does not exist.`,
 		SETTING_GATEWAY_DUPLICATE_VALUE: (entry, value) => `The value "${value}" cannot be added to the key "${entry.path}" because it was already set.`,
 		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `The settings key "${entry.path}" does not accept the value "${value}".`,
-		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `Provided too few ${name}s. Atleast ${min} ${min === 1 ? 'is' : 'are'} required.`,
+		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `Provided too few ${name}s. At least ${min} ${min === 1 ? 'is' : 'are'} required.`,
 		RESOLVER_INVALID_BOOL: name => `${name} must be true or false.`,
 		RESOLVER_INVALID_CHANNEL: name => `${name} must be a channel tag or valid channel id.`,
 		RESOLVER_INVALID_CUSTOM: (name, type) => `${name} must be a valid ${type}.`,

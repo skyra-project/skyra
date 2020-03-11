@@ -497,10 +497,10 @@
   resolved "https://registry.yarnpkg.com/@types/pg-types/-/pg-types-1.11.5.tgz#1eebbe62b6772fcc75c18957a90f933d155e005b"
   integrity sha512-L8ogeT6vDzT1vxlW3KITTCt+BVXXVkLXfZ/XNm6UqbcJgxf+KPO7yjWx7dQQE8RW07KopL10x2gNMs41+IkMGQ==
 
-"@types/pg@^7.14.1":
-  version "7.14.1"
-  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.14.1.tgz#40358b57c34970f750f6a26e2a5463c9f4758136"
-  integrity sha512-gQgg4bLuykokypx4O1fwEzl5e6UjjyaBtN3znn5zhm0YB9BnKyHDw+e4cQY9rAPzpdM2qpJbn9TNzUazbmTsdw==
+"@types/pg@^7.14.2":
+  version "7.14.2"
+  resolved "https://registry.yarnpkg.com/@types/pg/-/pg-7.14.2.tgz#3ae6012cd50f2601958be157f3419adf3abe4f53"
+  integrity sha512-NpR1myyl/hWKiOjKqjyLUgc7ooJKPOfczZTXYypJfj9O2CYt6MqMdFaSDJ7BO260VVLOA7tC9JiIWMuwPgcQ5g==
   dependencies:
     "@types/node" "*"
     "@types/pg-types" "*"

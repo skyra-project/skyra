@@ -71,7 +71,7 @@
 		"@favware/graphql-pokemon": "^1.8.0",
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",
-		"@types/he": "^1.1.0",
+		"@types/he": "^1.1.1",
 		"@types/jest": "^25.1.4",
 		"@types/module-alias": "^2.0.0",
 		"@types/node": "^13.9.1",

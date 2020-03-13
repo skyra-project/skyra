@@ -63,7 +63,7 @@
 		"node-fetch": "^2.6.0",
 		"pg": "^7.18.2",
 		"veza": "^1.1.0",
-		"ws": "^7.2.2",
+		"ws": "^7.2.3",
 		"zlib-sync": "^0.1.6"
 	},
 	"devDependencies": {

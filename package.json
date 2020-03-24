@@ -78,7 +78,7 @@
 		"@types/node-fetch": "^2.5.5",
 		"@types/pg": "^7.14.3",
 		"@types/ws": "^7.2.3",
-		"@typescript-eslint/eslint-plugin": "^2.24.0",
+		"@typescript-eslint/eslint-plugin": "^2.25.0",
 		"@typescript-eslint/parser": "^2.24.0",
 		"chokidar": "^3.3.1",
 		"eslint": "^6.8.0",

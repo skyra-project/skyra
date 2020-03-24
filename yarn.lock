@@ -2807,10 +2807,10 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-lavalink@^2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.9.0.tgz#2166f93e6550293344a3aaae1d4ccf341c3169d8"
-  integrity sha512-L+GvRgy4KN1HoMYqTTO8IpGlxA0ZxU6jFVqL8MhKv4wwY89v90MUtlSmTGV1Ue3pkkPDXQjTBuie8P2Pgr3TDA==
+lavalink@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/lavalink/-/lavalink-2.10.0.tgz#c2ce02926fc5e957252b407eb4f87dd67dd32378"
+  integrity sha512-3fgyzeHm98rL+S8lMsJKL3pIOkYNVGWLBdkm6U5Sk2KWHGKgKZnmLXWIyvVD3Yqrz4PzER0MWtEk3LknQ4VjCw==
   dependencies:
     backoff "^2.5.0"
     ws "^6.0.0"

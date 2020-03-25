@@ -530,6 +530,8 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 	}
 }
 
+export type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
+
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value

@@ -56,7 +56,10 @@ export namespace Moderation {
 		RestrictedReaction   = 0b00001000,
 		RestrictedEmbed      = 0b00001001,
 		RestrictedAttachment = 0b00001010,
-		RestrictedVoice      = 0b00001011
+		RestrictedVoice      = 0b00001011,
+		Nickname             = 0b00001100,
+		AddRole              = 0b00001101,
+		RemoveRole           = 0b00001110
 	}
 
 	export const enum TypeMetadata {
@@ -107,7 +110,10 @@ export namespace Moderation {
 		FastTemporaryRestrictionEmbed      = TypeVariation.RestrictedEmbed      | TypeMetadata.Temporary | TypeMetadata.Fast,
 		FastTemporaryRestrictionAttachment = TypeVariation.RestrictedAttachment | TypeMetadata.Temporary | TypeMetadata.Fast,
 		FastTemporaryRestrictionVoice      = TypeVariation.RestrictedVoice      | TypeMetadata.Temporary | TypeMetadata.Fast,
-		Prune                              = TypeVariation.Prune
+		Prune                              = TypeVariation.Prune,
+		Nickname                           = TypeVariation.Nickname,
+		AddRole                            = TypeVariation.AddRole,
+		RemoveRole                         = TypeVariation.RemoveRole
 	}
 	/* eslint-enable no-multi-spaces */
 
@@ -147,7 +153,10 @@ export namespace Moderation {
 		[TypeCodes.FastTemporaryRestrictionEmbed, { color: Colors.Lime300, title: 'Temporary Embed Restriction' }],
 		[TypeCodes.FastTemporaryRestrictionAttachment, { color: Colors.Lime300, title: 'Temporary Attachment Restriction' }],
 		[TypeCodes.FastTemporaryRestrictionVoice, { color: Colors.Lime300, title: 'Temporary Voice Restriction' }],
-		[TypeCodes.Prune, { color: Colors.Brown, title: 'Prune' }]
+		[TypeCodes.Prune, { color: Colors.Brown, title: 'Prune' }],
+		[TypeCodes.Nickname, { color: Colors.Lime, title: 'Set Nickname' }],
+		[TypeCodes.AddRole, { color: Colors.Lime, title: 'Added Role' }],
+		[TypeCodes.RemoveRole, { color: Colors.Lime, title: 'Removed Role' }]
 	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
 
 	export const enum TypeVariationAppealNames {

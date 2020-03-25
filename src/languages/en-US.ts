@@ -1562,7 +1562,7 @@ export default class extends Language {
 		COMMAND_KICK_EXTENDED: builder.display('kick', {
 			extendedHelp: `This command requires **${PERMS.KICK_MEMBERS}**, and only members with lower role hierarchy position
 					can be kicked by me. No, the guild's owner cannot be kicked.`,
-			examples: ['@Pete', '@Pete Spamming general chat.']
+			examples: ['@Sarah', '@Sarah Spamming general chat.']
 		}),
 		COMMAND_LOCKDOWN_DESCRIPTION: 'Close the gates for this channel!',
 		COMMAND_LOCKDOWN_EXTENDED: builder.display('lockdown', {
@@ -1578,7 +1578,25 @@ export default class extends Language {
 					can be managed by me. No, the guild's owner cannot be muted. This action can be optionally timed to create
 					a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.
 					The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Pete', '@Pete Spamming all channels', '@Pete Spamming all channels, for 24 hours.']
+			examples: ['@Alphonse', '@Alphonse Spamming all channels', '@Alphonse Spamming all channels, for 24 hours.']
+		}),
+		COMMAND_SETNICKNAME_DESCRIPTION: 'Change the nickname of a user.',
+		COMMAND_SETNICKNAME_EXTENDED: builder.display('setnickname', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+						can be managed by me. No, the guild's owner nickname cannot be changed.`,
+			examples: ['@Pete peeehteeerrr', '@ꓑ𝗲੮ẻ Pete Unmentionable name']
+		}),
+		COMMAND_ADDROLE_DESCRIPTION: 'Adds a role to a user.',
+		COMMAND_ADDROLE_EXTENDED: builder.display('addrole', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+						can be managed by me. No, the guild's owner roles cannot be changed.`,
+			examples: ['@John member', '@John member Make John a member']
+		}),
+		COMMAND_REMOVEROLE_DESCRIPTION: '',
+		COMMAND_REMOVEROLE_EXTENDED: builder.display('', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+						can be managed by me. No, the guild's owner roles cannot be changed.`,
+			examples: ['@Paula member', '@Paula member Remove member permissions from Paula']
 		}),
 		COMMAND_PRUNE_DESCRIPTION: 'Prunes a certain amount of messages w/o filter.',
 		COMMAND_PRUNE_EXTENDED: builder.display('prune', {
@@ -2277,12 +2295,12 @@ export default class extends Language {
 		 * GOOGLE COMMANDS
 		 */
 
-		COMMAND_CURRENTTIME_DESCRIPTION: '',
+		COMMAND_CURRENTTIME_DESCRIPTION: 'Gets the current time in any location on the world',
 		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
 			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
 				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
 			explainedUsage: [
-				['city', 'The locality, governing, country or continent to check the time for.']
+				['location', 'The locality, governing, country or continent to check the time for.']
 			],
 			examples: ['Antarctica', 'Arizona']
 		}),
@@ -4121,6 +4139,15 @@ export default class extends Language {
 		ACTION_RESTRICTED_VOICE_REASON: reason => reason === null
 			? '[Action] Applied Voice Restriction.'
 			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
+		ACTION_SET_NICKNAME: reason => reason === null
+			? '[Action] Set Nickname.'
+			: `[Action] Set Nickname | Reason: ${reason}`,
+		ACTION_ADD_ROLE: reason => reason === null
+			? '[Action] Added Role.'
+			: `[Action] Added Role | Reason: ${reason}`,
+		ACTION_REMOVE_ROLE: reason => reason === null
+			? '[Action] Removed Role.'
+			: `[Action] Removed Role | Reason: ${reason}`,
 		ACTION_REQUIRED_MEMBER: 'The user does not exist or is not in this server.',
 		ACTION_SETUP_MUTE_EXISTS: '**Aborting mute role creation**: There is already one that exists.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Aborting restriction role creation**: There is already one that exists.',

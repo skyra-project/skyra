@@ -1,25 +1,23 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['lock', 'unlock'],
+	cooldown: 5,
+	subcommands: true,
+	description: language => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
+	runIn: ['text'],
+	usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
+	usageDelim: ' ',
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['lock', 'unlock'],
-			cooldown: 5,
-			subcommands: true,
-			description: language => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
-			runIn: ['text'],
-			usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
-			usageDelim: ' ',
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
-		});
-	}
 
 	public auto(message: KlasaMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
 		return message.guild!.security.lockdowns.has(channel.id)

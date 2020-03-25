@@ -1,41 +1,39 @@
 import { isNumber } from '@klasa/utils';
-import { ModerationCommand } from '@lib/structures/ModerationCommand';
+import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { ArgumentTypes } from '@utils/util';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<ModerationCommandOptions>({
+	aliases: ['b'],
+	description: language => language.tget('COMMAND_BAN_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_BAN_EXTENDED'),
+	optionalDuration: true,
+	requiredMember: false,
+	requiredGuildPermissions: ['BAN_MEMBERS']
+})
 export default class extends ModerationCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['b'],
-			description: language => language.tget('COMMAND_BAN_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_BAN_EXTENDED'),
-			optionalDuration: true,
-			requiredMember: false,
-			requiredGuildPermissions: ['BAN_MEMBERS']
-		});
-	}
-
-	public prehandle(message: KlasaMessage) {
+	public prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
-	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
+	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.ban({
-			user_id: target.id,
+			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration,
-			reason
-		}, this.getDays(message), this.getTargetDM(message, target));
+			duration: context.duration,
+			reason: context.reason
+		}, this.getDays(message), this.getTargetDM(message, context.target));
 	}
 
-	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
-		if (prehandled) prehandled.unlock();
+	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
+		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
-		const member = await super.checkModeratable(message, target, prehandled);
+	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Unlock>['checkModeratable']>) {
+		const member = await super.checkModeratable(message, context);
 		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		return member;
 	}

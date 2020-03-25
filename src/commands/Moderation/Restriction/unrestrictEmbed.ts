@@ -1,20 +1,18 @@
-import { ModerationCommand } from '@lib/structures/ModerationCommand';
+import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { ArgumentTypes } from '@utils/util';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<ModerationCommandOptions>({
+	aliases: ['un-restricted-embed', 'ure'],
+	description: language => language.tget('COMMAND_UNRESTRICTEMBED_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_UNRESTRICTEMBED_EXTENDED'),
+	requiredGuildPermissions: ['MANAGE_ROLES']
+})
 export default class extends ModerationCommand {
 
 	private readonly kPath = GuildSettings.Roles.RestrictedEmbed;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['un-restricted-embed', 'ure'],
-			description: language => language.tget('COMMAND_UNRESTRICTEMBED_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_UNRESTRICTEMBED_EXTENDED'),
-			requiredGuildPermissions: ['MANAGE_ROLES']
-		});
-	}
 
 	public inhibit(message: KlasaMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
@@ -26,13 +24,13 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
+	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.unRestrictEmbed({
-			user_id: target.id,
+			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration,
-			reason
-		}, this.getTargetDM(message, target));
+			duration: context.duration,
+			reason: context.reason
+		}, this.getTargetDM(message, context.target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

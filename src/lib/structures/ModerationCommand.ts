@@ -5,7 +5,7 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise } from '@utils/util';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaClient, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -96,36 +96,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	public async checkModeratable(message: KlasaMessage, target: User, _prehandled: T) {
-		if (target.id === message.author.id) {
-			throw message.language.tget('COMMAND_USERSELF');
-		}
-
-		if (target.id === this.client.user!.id) {
-			throw message.language.tget('COMMAND_TOSKYRA');
-		}
-
-		const member = await message.guild!.members.fetch(target.id).catch(() => {
-			if (this.requiredMember) throw message.language.tget('USER_NOT_IN_GUILD');
-			return null;
-		});
-		if (member) {
-			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER_SKYRA');
-			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER');
-		}
-
-		return member;
+		return checkModeratable<T>(message, target, this.requiredMember, this.client, _prehandled);
 	}
 
 	protected getTargetDM(message: KlasaMessage, target: User): ModerationActionsSendOptions {
-		return {
-			moderator: 'no-author' in message.flagArgs
-				? null
-				: (('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay))
-					? message.author
-					: null,
-			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && target.settings.get(UserSettings.ModerationDM)
-		};
+		return getTargetDM(message, target);
 	}
 
 	private resolveOverloads(args: [User[], number | null, string | null] | [User[], string | null]): [User[], number | null, string | null] {
@@ -144,4 +119,39 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	public abstract posthandle(message: KlasaMessage, targets: User[], reason: string | null, prehandled: T): unknown;
 
+}
+
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export async function checkModeratable<T>(message: KlasaMessage, target: User, requiredMember: boolean, client: KlasaClient, _prehandled?: T) {
+	if (target.id === message.author.id) {
+		throw message.language.tget('COMMAND_USERSELF');
+	}
+
+	if (target.id === client.user!.id) {
+		throw message.language.tget('COMMAND_TOSKYRA');
+	}
+
+	const member = await message.guild!.members.fetch(target.id).catch(() => {
+		if (requiredMember) throw message.language.tget('USER_NOT_IN_GUILD');
+		return null;
+	});
+	if (member) {
+		const targetHighestRolePosition = member.roles.highest.position;
+		if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER_SKYRA');
+		if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER');
+	}
+
+	return member;
+}
+
+export function getTargetDM(message: KlasaMessage, target: User): ModerationActionsSendOptions {
+	return {
+		moderator: 'no-author' in message.flagArgs
+			? null
+			: (('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay))
+				? message.author
+				: null,
+		send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && target.settings.get(UserSettings.ModerationDM)
+	};
 }

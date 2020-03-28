@@ -1,25 +1,30 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, getColor, getContent, getImage } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Serializer } from 'klasa';
+import { KlasaMessage, Serializer } from 'klasa';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '[channel:channelname] (message:...message{,10})',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '[channel:channelname] (message:...message{,10})',
-			usageDelim: ' '
-		});
+	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage | KlasaMessage[]]) {
+		if (Array.isArray(remoteMessage)) return this.sendAsDisplay(message, remoteMessage);
+		return this.sendAsEmbed(message, remoteMessage);
+	}
 
+	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
 			const messageUrl = await this.getFromUrl(message, arg);
@@ -31,11 +36,6 @@ export default class extends SkyraCommand {
 			if (m) return m;
 			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
-	}
-
-	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage | KlasaMessage[]]) {
-		if (Array.isArray(remoteMessage)) return this.sendAsDisplay(message, remoteMessage);
-		return this.sendAsEmbed(message, remoteMessage);
 	}
 
 	private sendAsEmbed(message: KlasaMessage, remoteMessage: KlasaMessage) {

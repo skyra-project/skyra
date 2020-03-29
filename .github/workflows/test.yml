@@ -27,7 +27,7 @@ jobs:
           sudo apt-get install libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev -y &&
           yarn global add node-gyp node-pre-gyp
       - name: Install Dependencies
-        run: yarn
+        run: yarn --frozen-lockfile
       - name: Copy Configuration
         run: |
           pushd src &&

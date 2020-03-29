@@ -48,7 +48,10 @@ export function displayEntry(entry: SchemaEntry, value: unknown, guild: Guild) {
 }
 
 export function displayEntrySingle(entry: SchemaEntry, value: unknown, guild: Guild) {
-	return entry.serializer!.stringify(value, guild) || 'Not Set';
+	const entryString = entry.serializer!.stringify(value, guild);
+
+	if (entryString === 'null') return 'Not Set';
+	return entryString;
 }
 
 export function displayEntryMultiple(entry: SchemaEntry, values: readonly unknown[], guild: Guild) {

@@ -1,4 +1,5 @@
 import { ModerationCommand } from '@lib/structures/ModerationCommand';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -14,7 +15,9 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async prehandle() { /* Do nothing */ }
+	public prehandle(message: KlasaMessage) {
+		return message.guild!.settings.get(GuildSettings.Events.MemberRemove) ? { unlock: message.guild!.moderation.createLock() } : null;
+	}
 
 	public handle(message: KlasaMessage, target: User, reason: string | null) {
 		return message.guild!.security.actions.kick({
@@ -24,7 +27,9 @@ export default class extends ModerationCommand {
 		}, this.getTargetDM(message, target));
 	}
 
-	public async posthandle() { /* Do nothing */ }
+	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
+		if (prehandled) prehandled.unlock();
+	}
 
 	public async checkModeratable(message: KlasaMessage, target: User, prehandled: unknown) {
 		const member = await super.checkModeratable(message, target, prehandled);
@@ -32,4 +37,8 @@ export default class extends ModerationCommand {
 		return member;
 	}
 
+}
+
+interface Unlock {
+	unlock(): void;
 }

@@ -239,6 +239,7 @@ export default class extends Language {
 		COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
 		COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
 		COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
+		COMMAND_CONF_SETTING_NOT_SET: 'Not Set',
 		MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 		TEXT_PROMPT_ABORT_OPTIONS: ['abort', 'stop', 'cancel'],
 		COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,

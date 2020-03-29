@@ -241,6 +241,7 @@ export default class extends Language {
 		COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
 		COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
 		COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
+		COMMAND_CONF_SETTING_NOT_SET: 'No Establecido',
 		MESSAGE_PROMPT_TIMEOUT: 'La solicitud no recibió ninguna respuesta a tiempo.',
 		TEXT_PROMPT_ABORT_OPTIONS: ['abortar', 'parar', 'cancelar'],
 		COMMAND_LOAD: (time, type, name) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,

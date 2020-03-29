@@ -120,7 +120,7 @@ export class SettingsMenu {
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
-			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' ').toLowerCase(), { arrayAction: 'add' });
+			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), { arrayAction: 'add' });
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { arrayAction: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
@@ -239,8 +239,8 @@ export class SettingsMenu {
 	private static kFalseyValues = new Set(['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-']);
 
 	public static resolveBooleanValues(valueToSetOrRemove: string) {
-		if (SettingsMenu.kTruthyValues.has(valueToSetOrRemove)) return true;
-		if (SettingsMenu.kFalseyValues.has(valueToSetOrRemove)) return false;
+		if (SettingsMenu.kTruthyValues.has(valueToSetOrRemove.toLowerCase())) return true;
+		if (SettingsMenu.kFalseyValues.has(valueToSetOrRemove.toLowerCase())) return false;
 		return valueToSetOrRemove;
 	}
 

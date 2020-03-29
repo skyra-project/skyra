@@ -1,26 +1,26 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { CustomSearchType, GoogleCSEImageData, queryGoogleCustomSearchAPI, handleNotOK, GoogleResponseCodes } from '@utils/Google';
+import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['googleimage', 'img'],
+	cooldown: 10,
+	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
+	description: language => language.tget('COMMAND_GIMAGE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_GIMAGE_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<query:query>'
+})
 export default class extends SkyraCommand {
 
 	private stringArgtype = this.client.arguments.get('string')!;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['googleimage', 'img', 'i'],
-			cooldown: 10,
-			nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
-			description: language => language.tget('COMMAND_GIMAGE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_GIMAGE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<query:query>'
-		});
-
+	public async init() {
 		this.createCustomResolver('query', (arg, possible, message) => this.stringArgtype.run(
 			arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'),
 			possible,

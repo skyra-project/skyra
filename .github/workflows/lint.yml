@@ -23,6 +23,6 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-12-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
-        run: yarn --ignore-scripts
+        run: yarn --ignore-scripts --frozen-lockfile
       - name: Run ESLint
         uses: icrawl/action-eslint@v1

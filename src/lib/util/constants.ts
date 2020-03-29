@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { Colors } from '@lib/types/constants/Constants';
 import { DEV } from '@root/config';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
-import { Colors } from '@lib/types/constants/Constants';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');

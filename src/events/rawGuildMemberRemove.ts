@@ -4,7 +4,7 @@ import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MemberTag } from '@utils/Cache/MemberTags';
-import { MessageLogsEnum } from '@utils/constants';
+import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
@@ -15,8 +15,6 @@ const enum Matches {
 	MemberName = '%MEMBERNAME%',
 	MemberTag = '%MEMBERTAG%'
 }
-
-const FIFTEEN_SECONDS = 15 * 1000;
 
 export default class extends Event {
 
@@ -45,22 +43,34 @@ export default class extends Event {
 	private async handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
 		const memberTag = guild.memberTags.get(data.user.id);
 
-		const isKicked = await this.hasBeenKicked(guild, data);
+		const isModerationAction = await this.isModerationAction(guild, data);
+
+		const footer = isModerationAction.kicked
+			? guild.language.tget('EVENTS_GUILDMEMBERKICKED')
+			: isModerationAction.banned
+				? guild.language.tget('EVENTS_GUILDMEMBERBANNED')
+				: isModerationAction.softbanned
+					? guild.language.tget('EVENTS_GUILDMEMBERSOFTBANNED')
+					: guild.language.tget('EVENTS_GUILDMEMBERREMOVE');
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag)))
-			.setFooter(isKicked ? guild.language.tget('EVENTS_GUILDMEMBERKICKED') : guild.language.tget('EVENTS_GUILDMEMBERREMOVE'))
+			.setFooter(footer)
 			.setTimestamp());
 	}
 
-	private async hasBeenKicked(guild: SkyraGuild, data: WSGuildMemberRemove) {
-		const timeOfKick = Date.now();
+	private async isModerationAction(guild: SkyraGuild, data: WSGuildMemberRemove) {
 		await guild.moderation.waitLock();
 
-		return guild.moderation
-			.some(entry => (timeOfKick - entry.createdTimestamp > FIFTEEN_SECONDS) && entry.flattenedUser === data.user.id);
+		const latestEntryForUser = guild.moderation.fetchLatestForUser(data.user.id);
+
+		return {
+			kicked: latestEntryForUser.isType(Moderation.TypeCodes.Kick),
+			banned: latestEntryForUser.isType(Moderation.TypeCodes.Ban),
+			softbanned: latestEntryForUser.isType(Moderation.TypeCodes.Softban)
+		} as const;
 	}
 
 	private processJoinedTimestamp(memberTag: MemberTag | undefined) {

@@ -4239,6 +4239,8 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Joined Discord**: ${duration(time, 2)} ago.`,
 		EVENTS_GUILDMEMBERREMOVE: 'User Left',
 		EVENTS_GUILDMEMBERKICKED: 'User Kicked',
+		EVENTS_GUILDMEMBERBANNED: 'User Banned',
+		EVENTS_GUILDMEMBERSOFTBANNED: 'User Softbanned',
 		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) => `${mention} | **Joined Server**: ${time === -1
 			? 'Unknown'
 			: `${duration(time, 2)} ago`}.`,

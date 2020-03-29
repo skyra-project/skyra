@@ -19,9 +19,9 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 })
 export default class extends SkyraCommand {
 
-	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage | KlasaMessage[]]) {
-		if (Array.isArray(remoteMessage)) return this.sendAsDisplay(message, remoteMessage);
-		return this.sendAsEmbed(message, remoteMessage);
+	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage[]]) {
+		if (remoteMessage.length === 1) return this.sendAsEmbed(message, remoteMessage[0]);
+		return this.sendAsDisplay(message, remoteMessage);
 	}
 
 	public async init() {
@@ -39,16 +39,7 @@ export default class extends SkyraCommand {
 	}
 
 	private sendAsEmbed(message: KlasaMessage, remoteMessage: KlasaMessage) {
-		const embed = new MessageEmbed()
-			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128 }))
-			.setColor(getColor(message))
-			.setImage(getImage(remoteMessage)!)
-			.setTimestamp(remoteMessage.createdAt);
-
-		const content = getContent(remoteMessage);
-		if (content) embed.setDescription(`[${message.language.tget('JUMPTO')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
-
-		return message.sendEmbed(embed);
+		return message.sendEmbed(this.buildEmbed(message, remoteMessage));
 	}
 
 	private async sendAsDisplay(message: KlasaMessage, remoteMessages: KlasaMessage[]) {
@@ -60,22 +51,26 @@ export default class extends SkyraCommand {
 			.setColor(getColor(message)));
 
 		for (const remoteMessage of remoteMessages) {
-			const content = getContent(remoteMessage);
-
-			display.addPage((embed: MessageEmbed) => {
-				embed
-					.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128 }))
-					.setImage(getImage(remoteMessage)!)
-					.setTimestamp(remoteMessage.createdAt);
-
-				if (content) embed.setDescription(`[${message.language.tget('JUMPTO')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
-
-				return embed;
-			});
+			display.addPage((embed: MessageEmbed) => this.buildEmbed(message, remoteMessage, embed));
 		}
 
 		await display.start(response, message.author.id);
 		return response;
+	}
+
+	private buildEmbed(message: KlasaMessage, remoteMessage: KlasaMessage, embed?: MessageEmbed) {
+		const content = getContent(remoteMessage);
+
+		if (embed === undefined) embed = new MessageEmbed().setColor(getColor(message));
+
+		embed
+			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128 }))
+			.setImage(getImage(remoteMessage)!)
+			.setTimestamp(remoteMessage.createdAt);
+
+		if (content) embed.setDescription(`[${message.language.tget('JUMPTO')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
+
+		return embed;
 	}
 
 	private async getFromUrl(message: KlasaMessage, url: string) {

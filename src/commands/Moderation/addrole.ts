@@ -5,6 +5,7 @@ import { Role, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
+	aliases: ['ar'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_ADDROLE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_ADDROLE_EXTENDED'),

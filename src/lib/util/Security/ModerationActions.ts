@@ -282,7 +282,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
 		const moderationLog = this.guild.moderation.create(options);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', moderationLog.reason) });
+			.patch({ data: { mute: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -291,7 +291,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
 		const moderationLog = this.guild.moderation.create(options);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', moderationLog.reason) });
+			.patch({ data: { mute: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -300,7 +300,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
 		const moderationLog = this.guild.moderation.create(options);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { channel: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', moderationLog.reason) });
+			.patch({ data: { channel_id: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}

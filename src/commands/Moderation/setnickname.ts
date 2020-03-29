@@ -21,7 +21,7 @@ export default class extends ModerationCommand {
 	private kStringArgtype = this.client.arguments.get('string')!;
 
 	public async init() {
-		this.createCustomResolver('nickname', (arg, possible, message) => arg ?? this.kStringArgtype.run(arg, possible, message));
+		this.createCustomResolver('nickname', (arg, possible, message) => arg ? this.kStringArgtype.run(arg, possible, message) : '');
 	}
 
 	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext & { nickname: string } {

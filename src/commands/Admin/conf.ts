@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 
 	public async set(message: KlasaMessage, [key, valueToSet]: string[]) {
 		try {
-			const [update] = await message.guild!.settings.update(key, valueToSet, {
+			const [update] = await message.guild!.settings.update(key, SettingsMenu.resolveBooleanValues(valueToSet.toLowerCase()), {
 				arrayAction: 'add',
 				onlyConfigurable: true,
 				extraContext: { author: message.author.id }

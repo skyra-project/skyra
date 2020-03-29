@@ -120,7 +120,7 @@ export class SettingsMenu {
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
-			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), { arrayAction: 'add' });
+			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' ').toLowerCase(), { arrayAction: 'add' });
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { arrayAction: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
@@ -197,11 +197,11 @@ export class SettingsMenu {
 		}
 	}
 
-	private async tryUpdate(value: unknown, options: SettingsFolderUpdateOptions = {}) {
+	private async tryUpdate(value: string | null, options: SettingsFolderUpdateOptions = {}) {
 		try {
 			const updated = await (value === null
 				? this.message.guild!.settings.reset(this.schema.path, { ...options, extraContext: { author: this.message.author.id } })
-				: this.message.guild!.settings.update(this.schema.path, value, { ...options, extraContext: { author: this.message.author.id } }));
+				: this.message.guild!.settings.update(this.schema.path, SettingsMenu.resolveBooleanValues(value), { ...options, extraContext: { author: this.message.author.id } }));
 			if (updated.length === 0) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
 		} catch (error) {
 			this.errorMessage = String(error);
@@ -233,6 +233,15 @@ export class SettingsMenu {
 				.catch(error => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();
+	}
+
+	private static kTruthyValues = new Set(['true', 't', 'yes', 'y', 'on', 'enable', 'enabled', '1', ' +']);
+	private static kFalseyValues = new Set(['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-']);
+
+	public static resolveBooleanValues(valueToSetOrRemove: string) {
+		if (SettingsMenu.kTruthyValues.has(valueToSetOrRemove)) return true;
+		if (SettingsMenu.kFalseyValues.has(valueToSetOrRemove)) return false;
+		return valueToSetOrRemove;
 	}
 
 }

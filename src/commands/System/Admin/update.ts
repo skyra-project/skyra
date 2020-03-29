@@ -17,14 +17,22 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
 		await this.fetch(message, branch);
+		await this.updateDependencies(message);
 		await this.compile(message);
 	}
 
 	private async compile(message: KlasaMessage) {
 		const { stderr } = await util.exec('yarn build')
-			.catch(error => ({ stdout: '', stderr: (error && error.message) || error || '' }));
+			.catch(error => ({ stdout: '', stderr: error?.message || error || '' }));
 		if (stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully compiled.`);
+	}
+
+	private async updateDependencies(message: KlasaMessage) {
+		const { stderr } = await util.exec('yarn install --frozen-lockfile')
+			.catch(error => ({ stdout: '', stderr: error?.message || error || '' }));
+		if (stderr.length) throw stderr.trim();
+		return message.channel.send(`${Emojis.GreenTick} Successfully update dependencies.`);
 	}
 
 	private async fetch(message: KlasaMessage, branch: string) {

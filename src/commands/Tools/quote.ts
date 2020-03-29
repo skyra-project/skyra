@@ -20,7 +20,7 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage[]]) {
-		if (remoteMessage.length === 1) return this.sendAsEmbed(message, remoteMessage[0]);
+		if (remoteMessage.length === 1) return message.sendEmbed(this.buildEmbed(message, remoteMessage[0]));
 		return this.sendAsDisplay(message, remoteMessage);
 	}
 
@@ -36,10 +36,6 @@ export default class extends SkyraCommand {
 			if (m) return m;
 			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		});
-	}
-
-	private sendAsEmbed(message: KlasaMessage, remoteMessage: KlasaMessage) {
-		return message.sendEmbed(this.buildEmbed(message, remoteMessage));
 	}
 
 	private async sendAsDisplay(message: KlasaMessage, remoteMessages: KlasaMessage[]) {

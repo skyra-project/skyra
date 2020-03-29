@@ -1,19 +1,17 @@
-import { ModerationCommand } from '@lib/structures/ModerationCommand';
+import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { ArgumentTypes } from '@utils/util';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<ModerationCommandOptions>({
+	aliases: ['ub'],
+	description: language => language.tget('COMMAND_UNBAN_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_UNBAN_EXTENDED'),
+	requiredMember: false,
+	requiredPermissions: ['BAN_MEMBERS']
+})
 export default class extends ModerationCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['ub'],
-			description: language => language.tget('COMMAND_UNBAN_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_UNBAN_EXTENDED'),
-			requiredMember: false,
-			requiredPermissions: ['BAN_MEMBERS']
-		});
-	}
 
 	public async prehandle(message: KlasaMessage) {
 		const bans = await message.guild!.fetchBans()
@@ -23,22 +21,22 @@ export default class extends ModerationCommand {
 		throw message.language.tget('GUILD_BANS_EMPTY');
 	}
 
-	public handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null) {
+	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.unBan({
-			user_id: target.id,
+			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration,
-			reason
-		}, this.getTargetDM(message, target));
+			duration: context.duration,
+			reason: context.reason
+		}, this.getTargetDM(message, context.target));
 	}
 
-	public posthandle(_: KlasaMessage, __: User[], ___: string, prehandled: Unlock) {
-		if (prehandled) prehandled.unlock();
+	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
+		if (preHandled) preHandled.unlock();
 	}
 
-	public checkModeratable(message: KlasaMessage, target: User, prehandled: Unlock) {
-		if (!prehandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
-		return super.checkModeratable(message, target, prehandled);
+	public checkModeratable(...[message, { preHandled, target, ...context }]: ArgumentTypes<ModerationCommand<Unlock>['checkModeratable']>) {
+		if (!preHandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
+		return super.checkModeratable(message, { preHandled, target, ...context });
 	}
 
 }

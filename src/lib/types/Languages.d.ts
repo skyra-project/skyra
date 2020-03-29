@@ -700,6 +700,12 @@ export interface LanguageKeys {
 	COMMAND_HISTORY_EXTENDED: string;
 	COMMAND_MUTES_DESCRIPTION: string;
 	COMMAND_MUTES_EXTENDED: string;
+	COMMAND_SETNICKNAME_DESCRIPTION: string;
+	COMMAND_SETNICKNAME_EXTENDED: string;
+	COMMAND_ADDROLE_DESCRIPTION: string;
+	COMMAND_ADDROLE_EXTENDED: string;
+	COMMAND_REMOVEROLE_DESCRIPTION: string;
+	COMMAND_REMOVEROLE_EXTENDED: string;
 	COMMAND_MODERATIONS_DESCRIPTION: string;
 	COMMAND_MODERATIONS_EXTENDED: string;
 	COMMAND_WARNINGS_DESCRIPTION: string;
@@ -1678,6 +1684,9 @@ export interface LanguageKeys {
 	ACTION_RESTRICTED_EMBED_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_ATTACHMENT_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_VOICE_REASON: (reason: string | null) => string;
+	ACTION_SET_NICKNAME: (reason: string | null) => string;
+	ACTION_ADD_ROLE: (reason: string | null) => string;
+	ACTION_REMOVE_ROLE: (reason: string | null) => string;
 	ACTION_SETUP_MUTE_EXISTS: string;
 	ACTION_SETUP_RESTRICTION_EXISTS: string;
 	ACTION_SETUP_TOO_MANY_ROLES: string;

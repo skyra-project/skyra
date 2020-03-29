@@ -7,7 +7,7 @@ import { Mutable } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors, Moderation } from '@utils/constants';
 import { api } from '@utils/Models/Api';
-import { Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User, DiscordAPIError } from 'discord.js';
+import { DiscordAPIError, Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export const enum ModerationSetupRestriction {
@@ -179,6 +179,44 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
+	public async setNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Nickname);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		await api(this.guild.client)
+			.guilds(this.guild.id)
+			.members(rawOptions.user_id)
+			.patch({ data: { nick: nickname }, reason: this.guild.language.tget('ACTION_SET_NICKNAME', moderationLog.reason) });
+
+		return (await moderationLog.create())!;
+	}
+
+	public async addRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.AddRole);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		await api(this.guild.client)
+			.guilds(this.guild.id)
+			.members(rawOptions.user_id)
+			.roles(role.id)
+			.put({ reason: this.guild.language.tget('ACTION_ADD_ROLE', moderationLog.reason) });
+
+		return (await moderationLog.create())!;
+	}
+
+	public async removeRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.RemoveRole);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		await api(this.guild.client)
+			.guilds(this.guild.id)
+			.members(rawOptions.user_id)
+			.roles(role.id)
+			.delete({ reason: this.guild.language.tget('ACTION_REMOVE_ROLE', moderationLog.reason) });
+
+		return (await moderationLog.create())!;
+	}
+
 	public async mute(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyMute(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id);
 		const extraData = await this.muteUser(rawOptions);
@@ -244,7 +282,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceMute);
 		const moderationLog = this.guild.moderation.create(options);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', moderationLog.reason) });
+			.patch({ data: { mute: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -253,7 +291,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnVoiceMute);
 		const moderationLog = this.guild.moderation.create(options);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { deaf: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', moderationLog.reason) });
+			.patch({ data: { mute: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -262,7 +300,7 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.VoiceKick);
 		const moderationLog = this.guild.moderation.create(options);
 		await api(this.guild.client).guilds(this.guild.id).members(options.user_id)
-			.patch({ data: { channel: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', moderationLog.reason) });
+			.patch({ data: { channel_id: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}

@@ -1,25 +1,25 @@
 import { codeBlock } from '@klasa/utils';
+import { MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
+
+@ApplyOptions<MusicCommandOptions>({
+	aliases: ['dh'],
+	cooldown: 5,
+	description: language => language.tget('COMMAND_DEHOIST_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_DEHOIST_EXTENDED'),
+	runIn: ['text'],
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
+})
 export default class extends SkyraCommand {
 
 	private kLowestCode = 'A'.charCodeAt(0);
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['dh'],
-			cooldown: 5,
-			description: language => language.tget('COMMAND_DEHOIST_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DEHOIST_EXTENDED'),
-			runIn: ['text'],
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		let counter = 0;

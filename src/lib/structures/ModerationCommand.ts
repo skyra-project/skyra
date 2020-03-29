@@ -9,7 +9,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
-interface ModerationCommandOptions extends SkyraCommandOptions {
+export interface ModerationCommandOptions extends SkyraCommandOptions {
 	requiredMember?: boolean;
 	optionalDuration?: boolean;
 }
@@ -33,7 +33,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			permissionLevel: PermissionLevels.Moderator,
 			requiredMember: false,
 			runIn: ['text'],
-			usage: options.optionalDuration
+			usage: options.usage ?? options.optionalDuration
 				? '<users:...user{,10}> [duration:timespan] [reason:...string]'
 				: '<users:...user{,10}> [reason:...string]',
 			usageDelim: ' '
@@ -43,17 +43,19 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		this.optionalDuration = options.optionalDuration!;
 	}
 
-	public async run(message: KlasaMessage, args: [User[], number | null, string | null] | [User[], string | null]) {
-		const [targets, duration, reason] = this.resolveOverloads(args);
+	public async run(message: KlasaMessage, args: readonly unknown[]) {
+		const resolved = this.resolveOverloads(args);
 
-		const prehandled = await this.prehandle(message, targets, reason);
+		const preHandled = await this.prehandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
 		const errored = [] as Array<{ error: Error; target: User }>;
 
+		const { targets, ...handledRaw } = resolved;
 		for (const target of new Set(targets)) {
 			try {
-				await this.checkModeratable(message, target, prehandled);
-				const log = await this.handle(message, target, reason, duration, prehandled);
+				const handled = { ...handledRaw, target, preHandled };
+				await this.checkModeratable(message, handled);
+				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
 				errored.push({ error, target });
@@ -61,7 +63,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		}
 
 		try {
-			await this.posthandle(message, targets, reason, prehandled);
+			await this.posthandle(message, { ...resolved, preHandled });
 		} catch {
 			// noop
 		}
@@ -95,19 +97,29 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public async checkModeratable(message: KlasaMessage, target: User, _prehandled: T) {
-		if (target.id === message.author.id) {
+	protected prehandle(message: KlasaMessage, context: CommandContext): Promise<T> | T {
+		return null as unknown as T;
+	}
+
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	protected posthandle(message: KlasaMessage, context: PostHandledCommandContext<T>): unknown {
+		return null;
+	}
+
+	protected async checkModeratable(message: KlasaMessage, context: HandledCommandContext<T>) {
+		if (context.target.id === message.author.id) {
 			throw message.language.tget('COMMAND_USERSELF');
 		}
 
-		if (target.id === this.client.user!.id) {
+		if (context.target.id === this.client.user!.id) {
 			throw message.language.tget('COMMAND_TOSKYRA');
 		}
 
-		const member = await message.guild!.members.fetch(target.id).catch(() => {
+		const member = await message.guild!.members.fetch(context.target.id).catch(() => {
 			if (this.requiredMember) throw message.language.tget('USER_NOT_IN_GUILD');
 			return null;
 		});
+
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
 			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.tget('COMMAND_ROLE_HIGHER_SKYRA');
@@ -128,20 +140,37 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		};
 	}
 
-	private resolveOverloads(args: [User[], number | null, string | null] | [User[], string | null]): [User[], number | null, string | null] {
+	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext {
 		if (this.optionalDuration) {
-			const typed = args as [User[], number | null, string | null];
-			return [typed[0], typed[1] || null, typed[2] || null];
+			return {
+				targets: targets as User[],
+				duration: args[0] as number | null,
+				reason: args[1] as string | null
+			};
 		}
 
-		const typed = args as [User[], string | null];
-		return [typed[0], null, typed[1] || null];
+		return {
+			targets: targets as User[],
+			duration: null,
+			reason: args[0] as string | null
+		};
 	}
 
-	public abstract prehandle(message: KlasaMessage, targets: User[], reason: string | null): Promise<T> | T;
+	protected abstract handle(message: KlasaMessage, context: HandledCommandContext<T>): Promise<ModerationManagerEntry> | ModerationManagerEntry;
 
-	public abstract handle(message: KlasaMessage, target: User, reason: string | null, duration: number | null, prehandled: T): Promise<ModerationManagerEntry> | ModerationManagerEntry;
+}
 
-	public abstract posthandle(message: KlasaMessage, targets: User[], reason: string | null, prehandled: T): unknown;
+export interface CommandContext {
+	targets: User[];
+	duration: number | null;
+	reason: string | null;
+}
 
+export interface HandledCommandContext<T = unknown> extends Pick<CommandContext, 'duration' | 'reason'> {
+	target: User;
+	preHandled: T;
+}
+
+export interface PostHandledCommandContext<T = unknown> extends CommandContext {
+	preHandled: T;
 }

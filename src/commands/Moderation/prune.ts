@@ -1,32 +1,32 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { Filter, Position } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { APIErrors, Moderation } from '@utils/constants';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandStore, constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa';
+import { constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['p', 'purge', 'nuke', 'sweep'],
+	cooldown: 5,
+	description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
+	permissionLevel: PermissionLevels.Moderator,
+	flagSupport: true,
+	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '[limit:integer{1,100}] [filter:filter|user:user] (position:position) (message:message)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
 	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['p', 'purge', 'nuke', 'sweep'],
-			cooldown: 5,
-			description: language => language.tget('COMMAND_PRUNE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_PRUNE_EXTENDED'),
-			permissionLevel: PermissionLevels.Moderator,
-			flagSupport: true,
-			requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '[limit:integer{1,100}] [filter:filter|user:user] (position:position) (message:message)',
-			usageDelim: ' '
-		});
-
+	public async init() {
 		this.createCustomResolver('filter', (argument, _possible, message) => {
 			if (!argument) return undefined;
 			const filter = message.language.tget('COMMAND_PRUNE_FILTERS').get(argument.toLowerCase());

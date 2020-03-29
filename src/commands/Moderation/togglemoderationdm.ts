@@ -1,17 +1,15 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserSettings } from '@lib/types/settings/UserSettings';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_TOGGLEMODERATIONDM_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TOGGLEMODERATIONDM_EXTENDED')
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_TOGGLEMODERATIONDM_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TOGGLEMODERATIONDM_EXTENDED')
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		await message.author.settings.sync();

@@ -56,7 +56,7 @@ export default class extends Event {
 	}
 
 	private async hasBeenKicked(guild: SkyraGuild, data: WSGuildMemberRemove) {
-		const timeOfKick = new Date().getTime();
+		const timeOfKick = Date.now();
 		await guild.moderation.waitLock();
 
 		return guild.moderation

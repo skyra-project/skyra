@@ -4222,6 +4222,7 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD_RAID: 'RAID Detectado',
 		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
 		EVENTS_GUILDMEMBERREMOVE: 'Usuario Salió',
+		EVENTS_GUILDMEMBERKICKED: 'Usuario pateado',
 		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) => `${mention} | **Se Unió al Servidor**: ${time === -1
 			? 'Desconocido'
 			: `Hace ${duration(time, 2)}`}.`,

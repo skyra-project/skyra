@@ -1,12 +1,13 @@
+import { SkyraGuild } from '@lib/extensions/SkyraGuild';
+import { Colors } from '@lib/types/constants/Constants';
 import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum } from '@utils/constants';
+import { getDisplayAvatar } from '@utils/util';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
-import { MemberTag } from '@utils/Cache/MemberTags';
-import { getDisplayAvatar } from '@utils/util';
 
 const enum Matches {
 	Guild = '%GUILD%',
@@ -14,6 +15,8 @@ const enum Matches {
 	MemberName = '%MEMBERNAME%',
 	MemberTag = '%MEMBERTAG%'
 }
+
+const FIFTEEN_SECONDS = 15 * 1000;
 
 export default class extends Event {
 
@@ -23,7 +26,7 @@ export default class extends Event {
 		super(store, file, directory, { name: 'GUILD_MEMBER_REMOVE', emitter: store.client.ws });
 	}
 
-	public run(data: WSGuildMemberRemove) {
+	public async run(data: WSGuildMemberRemove) {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
@@ -33,20 +36,31 @@ export default class extends Event {
 		this.handleFarewellMessage(guild, data.user);
 
 		if (guild.settings.get(GuildSettings.Events.MemberRemove)) {
-			this.handleMemberLog(guild, data);
+			await this.handleMemberLog(guild, data);
 		}
 
 		guild.memberTags.delete(data.user.id);
 	}
 
-	private handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
+	private async handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
 		const memberTag = guild.memberTags.get(data.user.id);
+
+		const isKicked = await this.hasBeenKicked(guild, data);
+
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag)))
-			.setFooter(guild.language.tget('EVENTS_GUILDMEMBERREMOVE'))
+			.setFooter(isKicked ? guild.language.tget('EVENTS_GUILDMEMBERKICKED') : guild.language.tget('EVENTS_GUILDMEMBERREMOVE'))
 			.setTimestamp());
+	}
+
+	private async hasBeenKicked(guild: SkyraGuild, data: WSGuildMemberRemove) {
+		const timeOfKick = Date.now();
+		await guild.moderation.waitLock();
+
+		return guild.moderation
+			.some(entry => (timeOfKick - entry.createdTimestamp > FIFTEEN_SECONDS) && entry.flattenedUser === data.user.id);
 	}
 
 	private processJoinedTimestamp(memberTag: MemberTag | undefined) {

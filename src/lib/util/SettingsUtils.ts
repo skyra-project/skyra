@@ -48,7 +48,9 @@ export function displayEntry(entry: SchemaEntry, value: unknown, guild: Guild) {
 }
 
 export function displayEntrySingle(entry: SchemaEntry, value: unknown, guild: Guild) {
-	return entry.serializer!.stringify(value, guild) || 'Not Set';
+	return value === null
+		? guild.language.tget('COMMAND_CONF_SETTING_NOT_SET')
+		: entry.serializer!.stringify(value, guild);
 }
 
 export function displayEntryMultiple(entry: SchemaEntry, values: readonly unknown[], guild: Guild) {

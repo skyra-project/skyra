@@ -122,6 +122,7 @@ export interface LanguageKeys {
 	COMMAND_CONF_SERVER: (key: string, list: string) => string;
 	COMMAND_CONF_USER_DESCRIPTION: string;
 	COMMAND_CONF_USER: (key: string, list: string) => string;
+	COMMAND_CONF_SETTING_NOT_SET: string;
 	MESSAGE_PROMPT_TIMEOUT: string;
 	TEXT_PROMPT_ABORT_OPTIONS: readonly string[];
 	COMMAND_LOAD: (time: string, type: string, name: string) => string;

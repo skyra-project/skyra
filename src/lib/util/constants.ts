@@ -187,6 +187,10 @@ export namespace Moderation {
 		title: string;
 	}
 
+	export interface Unlock {
+		unlock(): void;
+	}
+
 }
 
 export namespace Mime {

@@ -66,7 +66,9 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		}
 	}
 
-	public fetchLatestForUser(userId: string) {
+	public getLatestLogForUser(userId: string) {
+		if (this.size === 0) return null;
+
 		const minimumTime = Date.now() - (15 * Time.Second);
 		return this.reduce<ModerationManagerEntry>((prev, curr) => curr.flattenedUser === userId
 			? prev === null

@@ -2,6 +2,7 @@ import { isNumber } from '@klasa/utils';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { Moderation } from '@utils/constants';
 import { ArgumentTypes } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
@@ -29,7 +30,7 @@ export default class extends ModerationCommand {
 		}, this.getDays(message), this.getTargetDM(message, context.target));
 	}
 
-	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
+	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {
 		if (preHandled) preHandled.unlock();
 	}
 
@@ -50,8 +51,4 @@ export default class extends ModerationCommand {
 		return 0;
 	}
 
-}
-
-interface Unlock {
-	unlock(): void;
 }

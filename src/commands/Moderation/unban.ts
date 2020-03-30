@@ -1,6 +1,7 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { Moderation } from '@utils/constants';
 import { ArgumentTypes } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
@@ -30,18 +31,13 @@ export default class extends ModerationCommand {
 		}, this.getTargetDM(message, context.target));
 	}
 
-	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
+	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public checkModeratable(...[message, { preHandled, target, ...context }]: ArgumentTypes<ModerationCommand<Unlock>['checkModeratable']>) {
+	public checkModeratable(...[message, { preHandled, target, ...context }]: ArgumentTypes<ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']>) {
 		if (!preHandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 		return super.checkModeratable(message, { preHandled, target, ...context });
 	}
 
-}
-
-interface Unlock {
-	bans: string[];
-	unlock(): void;
 }

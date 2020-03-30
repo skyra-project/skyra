@@ -61,16 +61,24 @@ export default class extends Event {
 			.setTimestamp());
 	}
 
-	private async isModerationAction(guild: SkyraGuild, data: WSGuildMemberRemove) {
+	private async isModerationAction(guild: SkyraGuild, data: WSGuildMemberRemove): Promise<IsModerationAction> {
 		await guild.moderation.waitLock();
 
-		const latestEntryForUser = guild.moderation.fetchLatestForUser(data.user.id);
+		const latestLogForUser = guild.moderation.getLatestLogForUser(data.user.id);
+
+		if (latestLogForUser === null) {
+			return {
+				kicked: false,
+				banned: false,
+				softbanned: false
+			};
+		}
 
 		return {
-			kicked: latestEntryForUser.isType(Moderation.TypeCodes.Kick),
-			banned: latestEntryForUser.isType(Moderation.TypeCodes.Ban),
-			softbanned: latestEntryForUser.isType(Moderation.TypeCodes.Softban)
-		} as const;
+			kicked: latestLogForUser.isType(Moderation.TypeCodes.Kick),
+			banned: latestLogForUser.isType(Moderation.TypeCodes.Ban),
+			softbanned: latestLogForUser.isType(Moderation.TypeCodes.Softban)
+		};
 	}
 
 	private processJoinedTimestamp(memberTag: MemberTag | undefined) {
@@ -106,4 +114,10 @@ export default class extends Event {
 		});
 	}
 
+}
+
+interface IsModerationAction {
+	readonly kicked: boolean;
+	readonly banned: boolean;
+	readonly softbanned: boolean;
 }

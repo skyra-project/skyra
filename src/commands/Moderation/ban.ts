@@ -50,7 +50,3 @@ export default class extends ModerationCommand {
 	}
 
 }
-
-interface Unlock {
-	unlock(): void;
-}

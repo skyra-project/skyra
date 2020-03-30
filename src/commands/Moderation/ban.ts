@@ -2,6 +2,7 @@ import { isNumber } from '@klasa/utils';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { Moderation } from '@utils/constants';
 import { ArgumentTypes } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
@@ -28,11 +29,11 @@ export default class extends ModerationCommand {
 		}, this.getDays(message), this.getTargetDM(message, context.target));
 	}
 
-	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Unlock>['posthandle']>) {
+	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Unlock>['checkModeratable']>) {
+	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
 		if (member && !member.bannable) throw message.language.tget('COMMAND_BAN_NOT_BANNABLE');
 		return member;

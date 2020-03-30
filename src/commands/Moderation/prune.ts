@@ -4,6 +4,7 @@ import { Filter, Position } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { APIErrors, Moderation } from '@utils/constants';
+import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import { constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa';
@@ -25,6 +26,8 @@ export default class extends SkyraCommand {
 	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
+	private readonly kInviteRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d-]{2,}/i;
+	private readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
 
 	public async init() {
 		this.createCustomResolver('filter', (argument, _possible, message) => {
@@ -78,7 +81,7 @@ export default class extends SkyraCommand {
 
 		// Send prune logs and reply to the channel
 		floatPromise(this, this.sendPruneLogs(message, filtered, filteredKeys));
-		return message.sendLocale('COMMAND_PRUNE', [filteredKeys.length, limit]);
+		return Reflect.has(message.flagArgs, 'silent') ? null : message.alert(message.language.tget('COMMAND_PRUNE', filteredKeys.length, limit));
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
@@ -93,8 +96,8 @@ export default class extends SkyraCommand {
 			case Filter.Author: return (mes: Message) => mes.author.id === message.author.id;
 			case Filter.Bots: return (mes: Message) => mes.author.bot;
 			case Filter.Humans: return (mes: Message) => mes.author.id === message.author.id;
-			case Filter.Invites: return (mes: Message) => /(discord\.(gg|li|me|io)|discordapp\.com\/invite)\/\w+/.test(mes.content);
-			case Filter.Links: return (mes: Message) => /https?:\/\/[^ /.]+\.[^ /.]+/.test(mes.content);
+			case Filter.Invites: return (mes: Message) => this.kInviteRegExp.test(mes.content);
+			case Filter.Links: return (mes: Message) => this.kLinkRegExp.test(mes.content);
 			case Filter.Skyra: return (mes: Message) => mes.author.id === this.client.user!.id;
 			case Filter.User: return (mes: Message) => mes.author.id === user!.id;
 			default: return () => true;

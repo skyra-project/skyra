@@ -1602,7 +1602,8 @@ export default class extends Language {
 		COMMAND_PRUNE_DESCRIPTION: 'Prunes a certain amount of messages w/o filter.',
 		COMMAND_PRUNE_EXTENDED: builder.display('prune', {
 			extendedHelp: `This command deletes the given amount of messages given a filter within the last 100 messages sent
-					in the channel the command has been run.`,
+					in the channel the command has been run. Optionally, you can add \`--silent\` to tell Skyra not to send a
+					response message.`,
 			explainedUsage: [
 				['Messages', 'The amount of messages to prune.'],
 				['Filter', 'The filter to apply.'],

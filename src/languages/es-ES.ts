@@ -4252,8 +4252,8 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
 		EVENTS_GUILDMEMBERREMOVE: 'Usuario Salió',
 		EVENTS_GUILDMEMBERKICKED: 'Usuario Pateado',
-		EVENTS_GUILDMEMBERBANNED: 'Usuario Prohibido',
-		EVENTS_GUILDMEMBERSOFTBANNED: 'Usuario Softbanned',
+		EVENTS_GUILDMEMBERBANNED: 'Usuario Baneado',
+		EVENTS_GUILDMEMBERSOFTBANNED: 'Usuario Levemente Baneado',
 		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) => `${mention} | **Se Unió al Servidor**: ${time === -1
 			? 'Desconocido'
 			: `Hace ${duration(time, 2)}`}.`,

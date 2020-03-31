@@ -144,7 +144,7 @@ export function compareEmoji(emoji: string, matching: string | EmojiObjectPartia
 	}
 
 	return emojiExecResult[2] === matching.name.replace(/~\d+/, '') // name
-			&& emojiExecResult[3] === matching.id; // id
+		&& emojiExecResult[3] === matching.id; // id
 }
 
 export function oneToTen(level: number) {
@@ -431,13 +431,22 @@ export function createReferPromise<T>() {
  * @example
  * parseRange('23..25');
  * // -> [23, 24, 25]
+ * @example
+ * parseRange('1..3,23..25');
+ * // -> [1, 2, 3, 23, 24, 25]
  */
 export function parseRange(input: string): number[] {
-	const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(input) || [input, input, input];
-	let min = Number(smin);
-	let max = Number(smax);
-	if (min > max) [max, min] = [min, max];
-	return Array.from({ length: max - min + 1 }, (_, index) => min + index);
+	const set = new Set<number>();
+	for (const subset of input.split(',')) {
+		const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(subset) || [subset, subset, subset];
+		let min = Number(smin);
+		let max = Number(smax);
+		if (min > max) [max, min] = [min, max];
+
+		for (let i = min; i <= max; ++i) set.add(i);
+	}
+
+	return [...set];
 }
 
 /**

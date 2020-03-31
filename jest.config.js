@@ -2,7 +2,7 @@ module.exports = {
 	displayName: 'unit test',
 	preset: 'ts-jest',
 	testEnvironment: 'node',
-	testMatch: ['<rootDir>/__tests__/*.test.ts'],
+	testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
 	moduleNameMapper: {
 		'^@utils/(.*)$': '<rootDir>/src/lib/util/$1',
 		'^@lib/(.*)$': '<rootDir>/src/lib/$1',

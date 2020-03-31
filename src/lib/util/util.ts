@@ -438,12 +438,12 @@ export function createReferPromise<T>() {
 export function parseRange(input: string): number[] {
 	const set = new Set<number>();
 	for (const subset of input.split(',')) {
-		const [, smin, smax] = /(\d+)\.{2,}(\d+)/.exec(subset) || [subset, subset, subset];
+		const [, smin, smax] = /(\d+) *\.{2,} *(\d+)/.exec(subset) || [subset, subset, subset];
 		let min = Number(smin);
 		let max = Number(smax);
 		if (min > max) [max, min] = [min, max];
 
-		for (let i = min; i <= max; ++i) set.add(i);
+		for (let i = Math.max(1, min); i <= max; ++i) set.add(i);
 	}
 
 	return [...set];

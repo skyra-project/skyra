@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
-import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
-import { Guild, TextChannel, DiscordAPIError } from 'discord.js';
-import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import { Time } from '@utils/constants';
+import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
+import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
+import { ModerationManagerEntry } from './ModerationManagerEntry';
 
 enum CacheActions {
 	None,
@@ -63,6 +64,17 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			if (error instanceof DiscordAPIError) throw error;
 			return this.fetchChannelMessages(--remainingRetries);
 		}
+	}
+
+	public getLatestLogForUser(userId: string) {
+		if (this.size === 0) return null;
+
+		const minimumTime = Date.now() - (15 * Time.Second);
+		return this.reduce<ModerationManagerEntry>((prev, curr) => curr.flattenedUser === userId
+			? prev === null
+				? curr.createdTimestamp >= minimumTime ? curr : prev
+				: curr.createdTimestamp > prev.createdTimestamp ? curr : prev
+			: prev, undefined);
 	}
 
 	public create(data: ModerationManagerCreateData) {

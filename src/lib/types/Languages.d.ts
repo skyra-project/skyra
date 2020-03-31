@@ -1753,6 +1753,8 @@ export interface LanguageKeys {
 	EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention: string, time: number) => string;
 	EVENTS_GUILDMEMBERREMOVE: string;
 	EVENTS_GUILDMEMBERKICKED: string;
+	EVENTS_GUILDMEMBERBANNED: string;
+	EVENTS_GUILDMEMBERSOFTBANNED: string;
 	EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention: string, time: number) => string;
 	EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous: string, current: string) => string;
 	EVENTS_GUILDMEMBER_ADDED_NICKNAME: (previous: string, current: string) => string;

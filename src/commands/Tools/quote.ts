@@ -1,7 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
 import { cutText, getColor, getContent, getImage } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, Serializer } from 'klasa';
@@ -14,15 +12,10 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
-	usage: '[channel:channelname] (message:...message{,10})',
+	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
-	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage[]]) {
-		if (remoteMessage.length === 1) return message.sendEmbed(this.buildEmbed(message, remoteMessage[0]));
-		return this.sendAsDisplay(message, remoteMessage);
-	}
 
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
@@ -38,35 +31,17 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async sendAsDisplay(message: KlasaMessage, remoteMessages: KlasaMessage[]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
-
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
-
-		for (const remoteMessage of remoteMessages) {
-			display.addPage((embed: MessageEmbed) => this.buildEmbed(message, remoteMessage, embed));
-		}
-
-		await display.start(response, message.author.id);
-		return response;
-	}
-
-	private buildEmbed(message: KlasaMessage, remoteMessage: KlasaMessage, embed?: MessageEmbed) {
-		const content = getContent(remoteMessage);
-
-		if (embed === undefined) embed = new MessageEmbed().setColor(getColor(message));
-
-		embed
+	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage]) {
+		const embed = new MessageEmbed()
 			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128 }))
+			.setColor(getColor(message))
 			.setImage(getImage(remoteMessage)!)
 			.setTimestamp(remoteMessage.createdAt);
 
+		const content = getContent(remoteMessage);
 		if (content) embed.setDescription(`[${message.language.tget('JUMPTO')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
-		return embed;
+		return message.sendEmbed(embed);
 	}
 
 	private async getFromUrl(message: KlasaMessage, url: string) {

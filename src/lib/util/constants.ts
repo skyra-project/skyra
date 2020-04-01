@@ -22,7 +22,15 @@ export const enum Emojis {
 	GreenTick = '<:greenTick:637706251253317669>',
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
-	Shiny = '<:shiny:612364146792726539>'
+	Shiny = '<:shiny:612364146792726539>',
+	ArrowTL = '<:ArrowTL:694594285625933854>',
+	ArrowT = '<:ArrowT:694594285487652954>',
+	ArrowTR = '<:ArrowTR:694594285412155393>',
+	ArrowL = '<:ArrowL:694594285521207436>',
+	ArrowR = '<:ArrowR:694594285466812486>',
+	ArrowBL = '<:ArrowBL:694594285118685259>',
+	ArrowB = '<:ArrowB:694594285269680179>',
+	ArrowBR = '<:ArrowBR:694594285445578792>',
 }
 
 export namespace ConnectFourConstants {

@@ -1,21 +1,21 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_REASON_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_REASON_EXTENDED'),
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<range:range{,50}> <reason:...string>',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_REASON_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_REASON_EXTENDED'),
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<range:range{,50}> <reason:...string>',
-			usageDelim: ' '
-		});
-
+	public async init() {
 		this.createCustomResolver('range', async (arg, possible, message) => {
 			if (arg === 'latest') return [await message.guild!.moderation.count()];
 			return this.client.arguments.get('range')!.run(arg, possible, message);

@@ -1620,8 +1620,13 @@ export default class extends Language {
 		}),
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
 		COMMAND_REASON_EXTENDED: builder.display('reason', {
-			extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.`,
-			examples: ['420 Spamming all channels', '419..421 Bad memes', 'latest Woops, I did a mistake!']
+			extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.
+						If you want to modify multiple cases at once you provide a range.
+						For example \`1..3\` for the \`<range>\` will edit cases 1, 2, and 3.
+						Alternatively you can also give ranges with commas:
+						\`1,3..6\` will result in cases 1, 3, 4, 5, and 6
+						\`1,2,3\` will result in cases 1, 2, and 3`,
+			examples: ['420 Spamming all channels', '419..421 Bad memes', '1..3,4,7..9 Posting NSFW', 'latest Woops, I did a mistake!']
 		}),
 		COMMAND_RESTRICTATTACHMENT_DESCRIPTION: 'Restrict a user from sending attachments in all channels.',
 		COMMAND_RESTRICTATTACHMENT_EXTENDED: builder.display('restrictAttachment', {
@@ -3156,7 +3161,7 @@ export default class extends Language {
 		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: (entries, newReason) => [
 			`${GREENTICK} Updated ${entries.length} case${entries.length === 1 ? '' : 's'}`,
-			` └─ Set ${entries.length === 1 ? 'its reason' : 'their reasons'} to ${newReason}`
+			` └─ **Set ${entries.length === 1 ? 'its reason' : 'their reasons'} to:** ${newReason}`
 		].join('\n'),
 		COMMAND_TOGGLEMODERATIONDM_TOGGLED: value => value
 			? `${GREENTICK} Successfully enabled moderation DMs.`

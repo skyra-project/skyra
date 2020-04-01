@@ -180,19 +180,19 @@ export class ModerationActions {
 	}
 
 	public async setNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Nickname);
+		const oldName = this.guild.memberTags.get(rawOptions.user_id)?.nickname || '';
+		const options = ModerationActions.fillOptions({ ...rawOptions, extra_data: { oldName } }, Moderation.TypeCodes.SetNickname);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(rawOptions.user_id)
 			.patch({ data: { nick: nickname }, reason: this.guild.language.tget('ACTION_SET_NICKNAME', moderationLog.reason) });
-
 		return (await moderationLog.create())!;
 	}
 
 	public async addRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.AddRole);
+		const options = ModerationActions.fillOptions({ ...rawOptions, extra_data: { role } }, Moderation.TypeCodes.AddRole);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api(this.guild.client)
@@ -200,12 +200,11 @@ export class ModerationActions {
 			.members(rawOptions.user_id)
 			.roles(role.id)
 			.put({ reason: this.guild.language.tget('ACTION_ADD_ROLE', moderationLog.reason) });
-
 		return (await moderationLog.create())!;
 	}
 
 	public async removeRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.RemoveRole);
+		const options = ModerationActions.fillOptions({ ...rawOptions, extra_data: { role } }, Moderation.TypeCodes.RemoveRole);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		await api(this.guild.client)

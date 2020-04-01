@@ -37,7 +37,8 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.setNickname({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			reason: context.reason
+			reason: context.reason,
+			duration: context.duration
 		}, context.nickname, this.getTargetDM(message, context.target));
 	}
 

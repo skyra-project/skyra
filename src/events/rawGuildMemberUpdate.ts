@@ -8,6 +8,7 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore, KlasaGuild } from 'klasa';
+import { arrayStrictEquals } from '@klasa/utils';
 
 export default class extends Event {
 
@@ -62,7 +63,7 @@ export default class extends Event {
 		}
 
 		// If role arrays are identical then skip role log
-		if (this.arrayEquality(previous.roles, next.roles)) shouldSendRoleLog = false;
+		if (arrayStrictEquals(previous.roles, next.roles)) shouldSendRoleLog = false;
 
 		if (shouldSendRoleLog) {
 			// Get the names of each role for logging
@@ -129,29 +130,6 @@ export default class extends Event {
 
 		await api(this.client).guilds(guild.id).members(data.user.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
-	}
-
-	/**
-	 * Checks if Arrays are identical
-	 * Based on {@link https://stackoverflow.com/a/16436975/9635150}
-	 */
-	private arrayEquality(arr1: readonly string[], arr2: readonly string[]) {
-		// If they are literally identical just return true
-		if (arr1 === arr2) return true;
-
-		// If either of the arrays are null in runtime return false
-		// eslint-disable-next-line no-eq-null
-		if (arr1 == null || arr2 == null) return false;
-
-		// If the arrays are not of the same length, they will not be identical
-		if (arr1.length !== arr2.length) return false;
-
-		// Compare each entry of the arrays
-		for (let i = 0; i < arr1.length; ++i) {
-			if (arr1[i] !== arr2[i]) return false;
-		}
-
-		return true;
 	}
 
 }

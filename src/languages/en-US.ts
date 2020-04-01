@@ -4267,6 +4267,11 @@ export default class extends Language {
 			`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`,
 			`**Next**: ${next === null ? 'Unset' : `\`${next}\``}`
 		].join('\n'),
+		EVENTS_ROLE_DIFFERENCE: (previous, next) => [
+			`**Previous**: ${previous ?? 'No Roles'}`,
+			`**Next**: ${next ?? 'No Roles'}`
+		].join('\n'),
+		EVENTS_ROLE_UPDATE: 'Roles Edited',
 		EVENTS_MESSAGE_UPDATE: 'Message Edited',
 		EVENTS_MESSAGE_DELETE: 'Message Deleted',
 		EVENTS_REACTION: 'Reaction Added',

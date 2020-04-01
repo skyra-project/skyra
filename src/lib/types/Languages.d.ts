@@ -363,6 +363,7 @@ export interface LanguageKeys {
 	SETTINGS_EVENTS_BANREMOVE: string;
 	SETTINGS_EVENTS_MEMBERADD: string;
 	SETTINGS_EVENTS_MEMBERNAMEUPDATE: string;
+	SETTINGS_EVENTS_MEMBERROLEUPDATE: string;
 	SETTINGS_EVENTS_MEMBERREMOVE: string;
 	SETTINGS_EVENTS_MESSAGEDELETE: string;
 	SETTINGS_EVENTS_MESSAGEEDIT: string;
@@ -1763,6 +1764,8 @@ export interface LanguageKeys {
 	EVENTS_NICKNAME_UPDATE: string;
 	EVENTS_USERNAME_UPDATE: string;
 	EVENTS_NAME_DIFFERENCE: (previous: string | null, next: string | null) => string;
+	EVENTS_ROLE_DIFFERENCE: (previous: string | null, next: string | null) => string;
+	EVENTS_ROLE_UPDATE: string;
 	EVENTS_MESSAGE_UPDATE: string;
 	EVENTS_MESSAGE_DELETE: string;
 	EVENTS_REACTION: string;

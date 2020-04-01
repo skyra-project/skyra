@@ -1,3 +1,4 @@
+import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -7,7 +8,6 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore, KlasaGuild } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 
@@ -22,32 +22,63 @@ export default class extends Event {
 		const member = guild.members.get(data.user.id);
 		if (typeof member !== 'undefined') member._patch(data);
 
-		this.handleNicknameChange(guild, data);
+		this.handleMemberChange(guild, data);
 		floatPromise(this, this.handleRoleSets(guild, data));
 	}
 
-	private handleNicknameChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
-		// Get the current nickname, compare them both, if they are different, it changed
+	private handleMemberChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
+
+		// Look up which logs should be send in the guild database
+		let shouldLogNickname = guild.settings.get(GuildSettings.Events.MemberNicknameUpdate);
+		let shouldSendRoleLog = guild.settings.get(GuildSettings.Events.MemberRoleUpdate);
+
+		// Get the currently stored dataset
 		const previous = guild.memberTags.get(data.user.id);
+
+		// Setup the next stored dataset
 		const next: MemberTag = {
 			nickname: data.nick || null,
 			joinedAt: typeof previous === 'undefined' ? null : previous.joinedAt,
 			roles: data.roles
 		};
 
-		// Get the previous nickname
+		// Store the next data set in the MemberTags store
 		guild.memberTags.set(data.user.id, next);
 
-		// If the previous was unset or it's the same as the next one, skip
-		if (typeof previous === 'undefined' || previous.nickname === next.nickname) return;
+		// If the previous was unset then skip all
+		if (typeof previous === 'undefined') return;
 
-		// TODO(kyranet): Role Change Logs
-		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
+		// If nicknames are identical then skip nickname log
+		if (previous.nickname === next.nickname) shouldLogNickname = false;
+
+		if (shouldLogNickname) {
+			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(Colors.Yellow)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.nickname, next.nickname))
 				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
+				.setTimestamp());
+		}
+
+		// If role arrays are identical then skip role log
+		if (this.arrayEquality(previous.roles, next.roles)) shouldSendRoleLog = false;
+
+		if (shouldSendRoleLog) {
+			// Get the names of each role for logging
+			const previousRoleNames = previous.roles.length
+				? previous.roles.map(previousRoleId => `\`${guild.roles.get(previousRoleId)!.name}\``).join(', ')
+				: null;
+			const nextRoleNames = next.roles.length
+				? next.roles.map(nextRoleId => `\`${guild.roles.get(nextRoleId)!.name}\``).join(', ')
+				: null;
+
+			// Set the Role change log
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
+				.setColor(Colors.Yellow)
+				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
+				.setDescription(guild.language.tget('EVENTS_ROLE_DIFFERENCE', previousRoleNames, nextRoleNames))
+				.setFooter(guild.language.tget('EVENTS_ROLE_UPDATE'))
 				.setTimestamp());
 		}
 	}
@@ -98,6 +129,29 @@ export default class extends Event {
 
 		await api(this.client).guilds(guild.id).members(data.user.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
+	}
+
+	/**
+	 * Checks if Arrays are identical
+	 * Based on {@link https://stackoverflow.com/a/16436975/9635150}
+	 */
+	private arrayEquality(arr1: readonly string[], arr2: readonly string[]) {
+		// If they are literally identical just return true
+		if (arr1 === arr2) return true;
+
+		// If either of the arrays are null in runtime return false
+		// eslint-disable-next-line no-eq-null
+		if (arr1 == null || arr2 == null) return false;
+
+		// If the arrays are not of the same length, they will not be identical
+		if (arr1.length !== arr2.length) return false;
+
+		// Compare each entry of the arrays
+		for (let i = 0; i < arr1.length; ++i) {
+			if (arr1[i] !== arr2[i]) return false;
+		}
+
+		return true;
 	}
 
 }

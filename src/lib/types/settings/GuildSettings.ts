@@ -39,6 +39,7 @@ export namespace GuildSettings {
 		export const MemberAdd = T<boolean>('events.memberAdd');
 		export const MemberRemove = T<boolean>('events.memberRemove');
 		export const MemberNicknameUpdate = T<boolean>('events.memberNameUpdate');
+		export const MemberRoleUpdate = T<boolean>('events.memberRoleUpdate');
 		export const MessageDelete = T<boolean>('events.messageDelete');
 		export const MessageEdit = T<boolean>('events.messageEdit');
 		export const Twemoji = T<number>('events.twemoji-reactions');

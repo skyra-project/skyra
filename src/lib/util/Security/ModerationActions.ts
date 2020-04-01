@@ -187,7 +187,18 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(rawOptions.user_id)
-			.patch({ data: { nick: nickname }, reason: this.guild.language.tget('ACTION_SET_NICKNAME', moderationLog.reason) });
+			.patch({ data: { nick: nickname }, reason: this.guild.language.tget('ACTION_SET_NICKNAME', moderationLog.reason, nickname) });
+		return (await moderationLog.create())!;
+	}
+
+	public async unsetNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnSetNickname);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		await api(this.guild.client)
+			.guilds(this.guild.id)
+			.members(rawOptions.user_id)
+			.patch({ data: { nick: nickname }, reason: rawOptions.reason });
 		return (await moderationLog.create())!;
 	}
 
@@ -203,6 +214,18 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
+	public async unAddRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnAddRole);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		await api(this.guild.client)
+			.guilds(this.guild.id)
+			.members(rawOptions.user_id)
+			.roles(role.id)
+			.delete({ reason: rawOptions.reason! });
+		return (await moderationLog.create())!;
+	}
+
 	public async removeRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions({ ...rawOptions, extra_data: { role } }, Moderation.TypeCodes.RemoveRole);
 		const moderationLog = this.guild.moderation.create(options);
@@ -213,6 +236,18 @@ export class ModerationActions {
 			.roles(role.id)
 			.delete({ reason: this.guild.language.tget('ACTION_REMOVE_ROLE', moderationLog.reason) });
 
+		return (await moderationLog.create())!;
+	}
+
+	public async unRemoveRole(rawOptions: ModerationActionOptions, role: Role, sendOptions?: ModerationActionsSendOptions) {
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnRemoveRole);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+		await api(this.guild.client)
+			.guilds(this.guild.id)
+			.members(rawOptions.user_id)
+			.roles(role.id)
+			.put({ reason: rawOptions.reason });
 		return (await moderationLog.create())!;
 	}
 

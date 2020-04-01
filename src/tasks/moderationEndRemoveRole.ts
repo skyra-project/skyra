@@ -7,7 +7,7 @@ export default class extends ModerationTask {
 	protected async handle(guild: Guild, data: ModerationData<{ role: Role }>) {
 		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) return null;
-		await guild.security.actions.addRole({
+		await guild.security.actions.unRemoveRole({
 			moderator_id: CLIENT_ID,
 			user_id: data.userID,
 			reason: `[MODERATION] Role re-added after ${this.client.languages.default.duration(data.duration)}`

@@ -37,7 +37,8 @@ export default class extends Event {
 					[Moderation.SchemaKeys.Case]: entry.case,
 					[Moderation.SchemaKeys.User]: entry.flattenedUser,
 					[Moderation.SchemaKeys.Guild]: entry.manager.guild.id,
-					[Moderation.SchemaKeys.Duration]: entry.duration
+					[Moderation.SchemaKeys.Duration]: entry.duration,
+					[Moderation.SchemaKeys.ExtraData]: entry.extraData
 				}
 			}).catch(error => this.client.emit(Events.Wtf, error));
 		}

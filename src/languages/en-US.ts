@@ -4146,9 +4146,9 @@ export default class extends Language {
 		ACTION_RESTRICTED_VOICE_REASON: reason => reason === null
 			? '[Action] Applied Voice Restriction.'
 			: `[Action] Applied Voice Restriction | Reason: ${reason}`,
-		ACTION_SET_NICKNAME: reason => reason === null
-			? '[Action] Set Nickname.'
-			: `[Action] Set Nickname | Reason: ${reason}`,
+		ACTION_SET_NICKNAME: (reason, nickname) => reason === null
+			? `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`
+			: `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
 		ACTION_ADD_ROLE: reason => reason === null
 			? '[Action] Added Role.'
 			: `[Action] Added Role | Reason: ${reason}`,

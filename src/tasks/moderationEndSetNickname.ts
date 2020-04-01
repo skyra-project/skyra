@@ -5,10 +5,9 @@ import { Guild, Permissions } from 'discord.js';
 export default class extends ModerationTask {
 
 	protected async handle(guild: Guild, data: ModerationData<{ oldName: string }>) {
-		console.log('handling endnickname');
 		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) return null;
-		await guild.security.actions.setNickname({
+		await guild.security.actions.unsetNickname({
 			moderator_id: CLIENT_ID,
 			user_id: data.userID,
 			reason: `[MODERATION] Nickname reverted after ${this.client.languages.default.duration(data.duration)}`

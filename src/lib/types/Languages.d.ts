@@ -1685,7 +1685,7 @@ export interface LanguageKeys {
 	ACTION_RESTRICTED_EMBED_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_ATTACHMENT_REASON: (reason: string | null) => string;
 	ACTION_RESTRICTED_VOICE_REASON: (reason: string | null) => string;
-	ACTION_SET_NICKNAME: (reason: string | null) => string;
+	ACTION_SET_NICKNAME: (reason: string | null, nickname: string) => string;
 	ACTION_ADD_ROLE: (reason: string | null) => string;
 	ACTION_REMOVE_ROLE: (reason: string | null) => string;
 	ACTION_SETUP_MUTE_EXISTS: string;

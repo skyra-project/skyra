@@ -191,7 +191,7 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
-	public async unsetNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
+	public async unSetNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnSetNickname);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);

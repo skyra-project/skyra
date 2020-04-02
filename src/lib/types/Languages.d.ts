@@ -1764,7 +1764,7 @@ export interface LanguageKeys {
 	EVENTS_NICKNAME_UPDATE: string;
 	EVENTS_USERNAME_UPDATE: string;
 	EVENTS_NAME_DIFFERENCE: (previous: string | null, next: string | null) => string;
-	EVENTS_ROLE_DIFFERENCE: (previous: string | null, next: string | null) => string;
+	EVENTS_ROLE_DIFFERENCE: (addedRoles: string[], removedRoles: string[]) => string;
 	EVENTS_ROLE_UPDATE: string;
 	EVENTS_MESSAGE_UPDATE: string;
 	EVENTS_MESSAGE_DELETE: string;

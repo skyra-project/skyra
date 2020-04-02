@@ -45,13 +45,9 @@ export default class extends Event {
 		// If the previous was unset then skip all
 		if (typeof previous === 'undefined') return;
 
-		// Retrieve whether Nickname Logs should be send from Guild Settings
-		let shouldLogNickname = guild.settings.get(GuildSettings.Events.MemberNicknameUpdate);
-
-		// If nicknames are identical then skip nickname log
-		if (previous.nickname === next.nickname) shouldLogNickname = false;
-
-		if (shouldLogNickname) {
+		// Retrieve whether or not nickname logs should be sent from Guild Settings and
+		// whether or not the nicknames are identical.
+		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
 			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(Colors.Yellow)
@@ -61,26 +57,26 @@ export default class extends Event {
 				.setTimestamp());
 		}
 
-		// Retrieve whether Role Logs should be send from Guild Settings
-		let shouldSendRoleLog = guild.settings.get(GuildSettings.Events.MemberRoleUpdate);
+		// Retrieve whether or not role logs should be sent from Guild Settings and
+		// whether or not the roles are the same.
+		if (guild.settings.get(GuildSettings.Events.MemberRoleUpdate) && !arrayStrictEquals(previous.roles, next.roles)) {
+			const addedRoles: string[] = [];
+			const removedRoles: string[] = [];
 
-		// If role arrays are identical then skip role log
-		if (arrayStrictEquals(previous.roles, next.roles)) shouldSendRoleLog = false;
-
-		if (shouldSendRoleLog) {
-			// Get the names of each role for logging
-			const previousRoleNames = previous.roles.length
-				? previous.roles.map(previousRoleId => `\`${guild.roles.get(previousRoleId)!.name}\``).join(', ')
-				: null;
-			const nextRoleNames = next.roles.length
-				? next.roles.map(nextRoleId => `\`${guild.roles.get(nextRoleId)!.name}\``).join(', ')
-				: null;
+			// Check which roles are added and which are removed and
+			// get the names of each role for logging
+			for (const oldRole of previous.roles) {
+				if (!next.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.get(oldRole)?.name || 'Removed Role'}\``);
+			}
+			for (const newRole of next.roles) {
+				if (!previous.roles.includes(newRole)) addedRoles.push(`\`${guild.roles.get(newRole)!.name}\``);
+			}
 
 			// Set the Role change log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(Colors.Yellow)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-				.setDescription(guild.language.tget('EVENTS_ROLE_DIFFERENCE', previousRoleNames, nextRoleNames))
+				.setDescription(guild.language.tget('EVENTS_ROLE_DIFFERENCE', addedRoles, removedRoles))
 				.setFooter(guild.language.tget('EVENTS_ROLE_UPDATE'))
 				.setTimestamp());
 		}

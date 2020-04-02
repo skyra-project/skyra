@@ -4267,9 +4267,9 @@ export default class extends Language {
 			`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`,
 			`**Next**: ${next === null ? 'Unset' : `\`${next}\``}`
 		].join('\n'),
-		EVENTS_ROLE_DIFFERENCE: (previous, next) => [
-			`**Previous**: ${previous ?? 'No Roles'}`,
-			`**Next**: ${next ?? 'No Roles'}`
+		EVENTS_ROLE_DIFFERENCE: (addedRoles, removedRoles) => [
+			addedRoles.length ? `**Added role${addedRoles.length === 1 ? '' : 's'}**: ${addedRoles.join(', ')}` : null,
+			removedRoles.length ? `**Removed role${removedRoles.length === 1 ? '' : 's'}**: ${removedRoles.join(', ')}` : ''
 		].join('\n'),
 		EVENTS_ROLE_UPDATE: 'Roles Edited',
 		EVENTS_MESSAGE_UPDATE: 'Message Edited',

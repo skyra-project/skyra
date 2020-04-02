@@ -29,10 +29,6 @@ export default class extends Event {
 
 	private handleMemberChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
 
-		// Look up which logs should be send in the guild database
-		let shouldLogNickname = guild.settings.get(GuildSettings.Events.MemberNicknameUpdate);
-		let shouldSendRoleLog = guild.settings.get(GuildSettings.Events.MemberRoleUpdate);
-
 		// Get the currently stored dataset
 		const previous = guild.memberTags.get(data.user.id);
 
@@ -49,6 +45,9 @@ export default class extends Event {
 		// If the previous was unset then skip all
 		if (typeof previous === 'undefined') return;
 
+		// Retrieve whether Nickname Logs should be send from Guild Settings
+		let shouldLogNickname = guild.settings.get(GuildSettings.Events.MemberNicknameUpdate);
+
 		// If nicknames are identical then skip nickname log
 		if (previous.nickname === next.nickname) shouldLogNickname = false;
 
@@ -61,6 +60,9 @@ export default class extends Event {
 				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
 				.setTimestamp());
 		}
+
+		// Retrieve whether Role Logs should be send from Guild Settings
+		let shouldSendRoleLog = guild.settings.get(GuildSettings.Events.MemberRoleUpdate);
 
 		// If role arrays are identical then skip role log
 		if (arrayStrictEquals(previous.roles, next.roles)) shouldSendRoleLog = false;

@@ -1,3 +1,4 @@
+import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -7,7 +8,7 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore, KlasaGuild } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
+import { arrayStrictEquals } from '@klasa/utils';
 
 export default class extends Event {
 
@@ -22,32 +23,61 @@ export default class extends Event {
 		const member = guild.members.get(data.user.id);
 		if (typeof member !== 'undefined') member._patch(data);
 
-		this.handleNicknameChange(guild, data);
+		this.handleMemberChange(guild, data);
 		floatPromise(this, this.handleRoleSets(guild, data));
 	}
 
-	private handleNicknameChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
-		// Get the current nickname, compare them both, if they are different, it changed
+	private handleMemberChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
+
+		// Get the currently stored dataset
 		const previous = guild.memberTags.get(data.user.id);
+
+		// Setup the next stored dataset
 		const next: MemberTag = {
 			nickname: data.nick || null,
 			joinedAt: typeof previous === 'undefined' ? null : previous.joinedAt,
 			roles: data.roles
 		};
 
-		// Get the previous nickname
+		// Store the next data set in the MemberTags store
 		guild.memberTags.set(data.user.id, next);
 
-		// If the previous was unset or it's the same as the next one, skip
-		if (typeof previous === 'undefined' || previous.nickname === next.nickname) return;
+		// If the previous was unset then skip all
+		if (typeof previous === 'undefined') return;
 
-		// TODO(kyranet): Role Change Logs
-		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
+		// Retrieve whether or not nickname logs should be sent from Guild Settings and
+		// whether or not the nicknames are identical.
+		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
+			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 				.setColor(Colors.Yellow)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.nickname, next.nickname))
 				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
+				.setTimestamp());
+		}
+
+		// Retrieve whether or not role logs should be sent from Guild Settings and
+		// whether or not the roles are the same.
+		if (guild.settings.get(GuildSettings.Events.MemberRoleUpdate) && !arrayStrictEquals(previous.roles, next.roles)) {
+			const addedRoles: string[] = [];
+			const removedRoles: string[] = [];
+
+			// Check which roles are added and which are removed and
+			// get the names of each role for logging
+			for (const oldRole of previous.roles) {
+				if (!next.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.get(oldRole)?.name || 'Removed Role'}\``);
+			}
+			for (const newRole of next.roles) {
+				if (!previous.roles.includes(newRole)) addedRoles.push(`\`${guild.roles.get(newRole)!.name}\``);
+			}
+
+			// Set the Role change log
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
+				.setColor(Colors.Yellow)
+				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
+				.setDescription(guild.language.tget('EVENTS_ROLE_DIFFERENCE', addedRoles, removedRoles))
+				.setFooter(guild.language.tget('EVENTS_ROLE_UPDATE'))
 				.setTimestamp());
 		}
 	}

@@ -185,6 +185,9 @@ export class ModerationManagerEntry {
 			case Moderation.TypeVariation.RestrictedEmbed: return Moderation.TypeVariationAppealNames.RestrictedEmbed;
 			case Moderation.TypeVariation.RestrictedAttachment: return Moderation.TypeVariationAppealNames.RestrictedAttachment;
 			case Moderation.TypeVariation.RestrictedVoice: return Moderation.TypeVariationAppealNames.RestrictedVoice;
+			case Moderation.TypeVariation.SetNickname: return Moderation.TypeVariationAppealNames.SetNickname;
+			case Moderation.TypeVariation.AddRole: return Moderation.TypeVariationAppealNames.AddRole;
+			case Moderation.TypeVariation.RemoveRole: return Moderation.TypeVariationAppealNames.RemoveRole;
 			default: return null;
 		}
 	}

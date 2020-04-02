@@ -5,9 +5,9 @@ import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions'
 import { Guild, User } from 'discord.js';
 import { Task } from 'klasa';
 
-export abstract class ModerationTask extends Task {
+export abstract class ModerationTask<T = unknown> extends Task {
 
-	public async run(data: ModerationData) {
+	public async run(data: ModerationData<T>) {
 		const guild = this.client.guilds.get(data.guildID);
 		// If the guild is not available, cancel the task.
 		if (typeof guild === 'undefined') return;
@@ -22,13 +22,14 @@ export abstract class ModerationTask extends Task {
 		} catch { /* noop */ }
 	}
 
-	protected async reschedule(data: ModerationData, duration: number) {
+	protected async reschedule(data: ModerationData<T>, duration: number) {
 		await this.client.schedule.create(this.name, Date.now() + duration, {
 			data: {
 				[Moderation.SchemaKeys.Case]: data.caseID,
 				[Moderation.SchemaKeys.Guild]: data.guildID,
 				[Moderation.SchemaKeys.User]: data.userID,
 				[Moderation.SchemaKeys.Duration]: data.duration,
+				[Moderation.SchemaKeys.ExtraData]: data.extraData,
 				scheduleRetryCount: (data.scheduleRetryCount || 0) + 1
 			},
 			catchUp: true
@@ -42,14 +43,15 @@ export abstract class ModerationTask extends Task {
 		};
 	}
 
-	protected abstract handle(guild: Guild, data: ModerationData): unknown;
+	protected abstract handle(guild: Guild, data: ModerationData<T>): unknown;
 
 }
 
-export interface ModerationData {
+export interface ModerationData<T = unknown> {
 	[Moderation.SchemaKeys.Case]: number;
 	[Moderation.SchemaKeys.Guild]: string;
 	[Moderation.SchemaKeys.User]: string;
 	[Moderation.SchemaKeys.Duration]: number;
+	[Moderation.SchemaKeys.ExtraData]: T;
 	scheduleRetryCount?: number;
 }

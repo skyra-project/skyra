@@ -65,7 +65,7 @@ export namespace Moderation {
 		RestrictedEmbed      = 0b00001001,
 		RestrictedAttachment = 0b00001010,
 		RestrictedVoice      = 0b00001011,
-		Nickname             = 0b00001100,
+		SetNickname          = 0b00001100,
 		AddRole              = 0b00001101,
 		RemoveRole           = 0b00001110
 	}
@@ -102,6 +102,9 @@ export namespace Moderation {
 		UnRestrictionEmbed                 = TypeVariation.RestrictedEmbed      | TypeMetadata.Appeal,
 		UnRestrictionAttachment            = TypeVariation.RestrictedAttachment | TypeMetadata.Appeal,
 		UnRestrictionVoice                 = TypeVariation.RestrictedVoice      | TypeMetadata.Appeal,
+		UnSetNickname                      = TypeVariation.SetNickname          | TypeMetadata.Appeal,
+		UnAddRole                          = TypeVariation.AddRole              | TypeMetadata.Appeal,
+		UnRemoveRole                       = TypeVariation.RemoveRole           | TypeMetadata.Appeal,
 		TemporaryWarning                   = TypeVariation.Warning              | TypeMetadata.Temporary,
 		TemporaryMute                      = TypeVariation.Mute                 | TypeMetadata.Temporary,
 		TemporaryBan                       = TypeVariation.Ban                  | TypeMetadata.Temporary,
@@ -110,6 +113,9 @@ export namespace Moderation {
 		TemporaryRestrictionEmbed          = TypeVariation.RestrictedEmbed      | TypeMetadata.Temporary,
 		TemporaryRestrictionAttachment     = TypeVariation.RestrictedAttachment | TypeMetadata.Temporary,
 		TemporaryRestrictionVoice          = TypeVariation.RestrictedVoice      | TypeMetadata.Temporary,
+		TemporarySetNickname               = TypeVariation.SetNickname          | TypeMetadata.Temporary,
+		TemporaryAddRole                   = TypeVariation.AddRole              | TypeMetadata.Temporary,
+		TemporaryRemoveRole                = TypeVariation.RemoveRole           | TypeMetadata.Temporary,
 		FastTemporaryWarning               = TypeVariation.Warning              | TypeMetadata.Temporary | TypeMetadata.Fast,
 		FastTemporaryMute                  = TypeVariation.Mute                 | TypeMetadata.Temporary | TypeMetadata.Fast,
 		FastTemporaryBan                   = TypeVariation.Ban                  | TypeMetadata.Temporary | TypeMetadata.Fast,
@@ -118,8 +124,11 @@ export namespace Moderation {
 		FastTemporaryRestrictionEmbed      = TypeVariation.RestrictedEmbed      | TypeMetadata.Temporary | TypeMetadata.Fast,
 		FastTemporaryRestrictionAttachment = TypeVariation.RestrictedAttachment | TypeMetadata.Temporary | TypeMetadata.Fast,
 		FastTemporaryRestrictionVoice      = TypeVariation.RestrictedVoice      | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporarySetNickname           = TypeVariation.SetNickname          | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryAddRole               = TypeVariation.AddRole              | TypeMetadata.Temporary | TypeMetadata.Fast,
+		FastTemporaryRemoveRole            = TypeVariation.RemoveRole           | TypeMetadata.Temporary | TypeMetadata.Fast,
 		Prune                              = TypeVariation.Prune,
-		Nickname                           = TypeVariation.Nickname,
+		SetNickname                        = TypeVariation.SetNickname,
 		AddRole                            = TypeVariation.AddRole,
 		RemoveRole                         = TypeVariation.RemoveRole
 	}
@@ -145,6 +154,9 @@ export namespace Moderation {
 		[TypeCodes.UnRestrictionEmbed, { color: Colors.LightBlue, title: 'Reverted Embed Restriction' }],
 		[TypeCodes.UnRestrictionAttachment, { color: Colors.LightBlue, title: 'Reverted Attachment Restriction' }],
 		[TypeCodes.UnRestrictionVoice, { color: Colors.LightBlue, title: 'Reverted Voice Restriction' }],
+		[TypeCodes.UnSetNickname, { color: Colors.LightBlue, title: 'Reverted Set Nickname' }],
+		[TypeCodes.UnAddRole, { color: Colors.LightBlue, title: 'Reverted Add Role' }],
+		[TypeCodes.UnRemoveRole, { color: Colors.LightBlue, title: 'Reverted Remove Role' }],
 		[TypeCodes.TemporaryWarning, { color: Colors.Yellow300, title: 'Temporary Warning' }],
 		[TypeCodes.TemporaryMute, { color: Colors.Amber300, title: 'Temporary Mute' }],
 		[TypeCodes.TemporaryBan, { color: Colors.Red300, title: 'Temporary Ban' }],
@@ -153,6 +165,9 @@ export namespace Moderation {
 		[TypeCodes.TemporaryRestrictionEmbed, { color: Colors.Lime300, title: 'Temporary Embed Restriction' }],
 		[TypeCodes.TemporaryRestrictionAttachment, { color: Colors.Lime300, title: 'Temporary Attachment Restriction' }],
 		[TypeCodes.TemporaryRestrictionVoice, { color: Colors.Lime300, title: 'Temporary Voice Restriction' }],
+		[TypeCodes.TemporarySetNickname, { color: Colors.Lime300, title: 'Temporary Set Nickname' }],
+		[TypeCodes.TemporaryAddRole, { color: Colors.Lime300, title: 'Temporarily Added Role' }],
+		[TypeCodes.TemporaryRemoveRole, { color: Colors.Lime300, title: 'Temporarily Removed Role' }],
 		[TypeCodes.FastTemporaryWarning, { color: Colors.Yellow300, title: 'Temporary Warning' }],
 		[TypeCodes.FastTemporaryMute, { color: Colors.Amber300, title: 'Temporary Mute' }],
 		[TypeCodes.FastTemporaryBan, { color: Colors.Red300, title: 'Temporary Ban' }],
@@ -161,8 +176,11 @@ export namespace Moderation {
 		[TypeCodes.FastTemporaryRestrictionEmbed, { color: Colors.Lime300, title: 'Temporary Embed Restriction' }],
 		[TypeCodes.FastTemporaryRestrictionAttachment, { color: Colors.Lime300, title: 'Temporary Attachment Restriction' }],
 		[TypeCodes.FastTemporaryRestrictionVoice, { color: Colors.Lime300, title: 'Temporary Voice Restriction' }],
+		[TypeCodes.FastTemporarySetNickname, { color: Colors.Lime300, title: 'Temporary Set Nickname' }],
+		[TypeCodes.FastTemporaryAddRole, { color: Colors.Lime300, title: 'Temporarily Added Role' }],
+		[TypeCodes.FastTemporaryRemoveRole, { color: Colors.Lime300, title: 'Temporarily Removed Role' }],
 		[TypeCodes.Prune, { color: Colors.Brown, title: 'Prune' }],
-		[TypeCodes.Nickname, { color: Colors.Lime, title: 'Set Nickname' }],
+		[TypeCodes.SetNickname, { color: Colors.Lime, title: 'Set Nickname' }],
 		[TypeCodes.AddRole, { color: Colors.Lime, title: 'Added Role' }],
 		[TypeCodes.RemoveRole, { color: Colors.Lime, title: 'Removed Role' }]
 	]) as ReadonlyMap<TypeCodes, ModerationTypeAssets>;
@@ -175,7 +193,10 @@ export namespace Moderation {
 		RestrictedReaction = 'moderationEndRestrictionReaction',
 		RestrictedEmbed = 'moderationEndRestrictionEmbed',
 		RestrictedAttachment = 'moderationEndRestrictionAttachment',
-		RestrictedVoice = 'moderationEndRestrictionVoice'
+		RestrictedVoice = 'moderationEndRestrictionVoice',
+		SetNickname = 'moderationEndSetNickname',
+		AddRole = 'moderationEndAddRole',
+		RemoveRole = 'moderationEndRemoveRole'
 	}
 
 	export const enum SchemaKeys {

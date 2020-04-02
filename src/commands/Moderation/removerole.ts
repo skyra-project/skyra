@@ -31,7 +31,8 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.removeRole({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			reason: context.reason
+			reason: context.reason,
+			duration: context.duration
 		}, context.role, this.getTargetDM(message, context.target));
 	}
 

@@ -46,6 +46,7 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_FLOAT: (name: string) => string;
 	RESOLVER_INVALID_GUILD: (name: string) => string;
 	RESOLVER_INVALID_INT: (name: string) => string;
+	RESOLVER_INVALID_INVITE: (name: string) => string;
 	RESOLVER_INVALID_WAGER: (bet: number) => string;
 	RESOLVER_INVALID_LITERAL: (name: string) => string;
 	RESOLVER_INVALID_MEMBER: (name: string) => string;
@@ -57,6 +58,7 @@ export interface LanguageKeys {
 	RESOLVER_INVALID_TIME: (name: string) => string;
 	RESOLVER_INVALID_URL: (name: string) => string;
 	RESOLVER_INVALID_USER: (name: string) => string;
+	RESOLVER_INVALID_SNOWFLAKE: (name: string) => string;
 	RESOLVER_STRING_SUFFIX: string;
 	RESOLVER_MINMAX_EXACTLY: (name: string, min: number) => string;
 	RESOLVER_MINMAX_BOTH: (name: string, min: number, max: number, inclusive: boolean) => string;

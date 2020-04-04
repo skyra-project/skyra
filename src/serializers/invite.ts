@@ -10,7 +10,7 @@ export default class extends Serializer {
 
 		const { code } = parsed.groups!;
 		const invite = await this.client.invites.fetch(code);
-		if (invite === null || !Reflect.has(invite, 'guild')) throw language.tget('RESOLVER_INVALID_INVITE', entry.key);
+		if (invite === null || !Reflect.has(invite, 'guildID')) throw language.tget('RESOLVER_INVALID_INVITE', entry.key);
 		return code;
 	}
 

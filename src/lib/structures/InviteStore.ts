@@ -1,8 +1,8 @@
 import Collection from '@discordjs/collection';
-import { resolveOnErrorCodes } from '@utils/util';
-import { api } from '@utils/Models/Api';
+import { APIGuildInviteData } from '@lib/types/DiscordAPI';
 import { APIErrors, Time } from '@utils/constants';
-import { APIInviteData } from '@lib/types/DiscordAPI';
+import { api } from '@utils/Models/Api';
+import { resolveOnErrorCodes } from '@utils/util';
 import { Client } from 'discord.js';
 
 export class InviteStore extends Collection<string, InviteCodeEntry> {
@@ -22,7 +22,7 @@ export class InviteStore extends Collection<string, InviteCodeEntry> {
 		const previous = this.get(code);
 		if (typeof previous !== 'undefined') return previous;
 
-		const data = await resolveOnErrorCodes(api(this.client).invites(code).get(), APIErrors.UnknownInvite) as APIInviteData | null;
+		const data = await resolveOnErrorCodes(api(this.client).invites(code).get(), APIErrors.UnknownInvite) as APIGuildInviteData | null;
 		if (data === null) {
 			const resolved: InviteCodeEntry = { valid: false, fetchedAt: Date.now() };
 			this.set(code, resolved);
@@ -31,7 +31,7 @@ export class InviteStore extends Collection<string, InviteCodeEntry> {
 
 		const resolved: InviteCodeEntry = {
 			valid: true,
-			guildID: 'guild' in data ? data.guild.id : null,
+			guildID: Reflect.has(data, 'guild') ? data.guild.id : null,
 			fetchedAt: Date.now()
 		};
 		this.set(code, resolved);

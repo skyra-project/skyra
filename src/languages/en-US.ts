@@ -1964,7 +1964,7 @@ export default class extends Language {
 		COMMAND_BALANCE_EXTENDED: builder.display('balance', {
 			extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
 		}),
-		COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
+		COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}'s.`,
 		COMMAND_DAILY_EXTENDED: builder.display('daily', {
 			extendedHelp: `Shiiiiny!`,
 			reminder: [
@@ -2006,7 +2006,7 @@ export default class extends Language {
 				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
 			]
 		}),
-		COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}.`,
+		COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}'s.`,
 		COMMAND_PAY_EXTENDED: builder.display('pay', {
 			extendedHelp: `Businessmen! Today is payday!`,
 			explainedUsage: [
@@ -2808,7 +2808,7 @@ export default class extends Language {
 			extendedHelp: `Enough discussion, let the games begin!`,
 			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
 		}),
-		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
+		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100 ${SHINY}'s you ain't winning this round.`,
 		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
 			extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
 					(Scottish English), the slots (Canadian and American English), poker machine/pokies (Australian English and

@@ -45,6 +45,7 @@
 	"dependencies": {
 		"@klasa/querybuilder": "^0.0.1",
 		"@klasa/request-handler": "^0.0.3",
+		"@klasa/snowflake": "^0.0.1",
 		"@klasa/utils": "^0.0.4",
 		"@skyra/decorators": "^1.0.0",
 		"canvas": "^2.6.1",

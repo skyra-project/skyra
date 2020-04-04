@@ -367,6 +367,11 @@
     "@klasa/request-handler" "^0.0.3"
     "@klasa/utils" "^0.0.4"
 
+"@klasa/snowflake@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@klasa/snowflake/-/snowflake-0.0.1.tgz#f64b2f49a5023a4e4e617b12d2fffb601d29992a"
+  integrity sha512-elUPFvucXTle1ZsI4RchlpuiWqBcMoCdaNBzYKKOUElzwKiv+BcKh1a4znYuw2V1cnPg0GVZYkgOiH5AGP5c5g==
+
 "@klasa/utils@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.1.tgz#af20aa4ea24fdd83c41e9afb07f829194dea6363"

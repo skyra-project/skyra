@@ -1,11 +1,20 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { floatPromise } from '@utils/util';
+import { floatPromise, resolveOnErrorCodes } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
+import { api } from '@utils/Models/Api';
+import { APIInviteData } from '@lib/types/DiscordAPI';
+import { APIErrors } from '@utils/constants';
+import { Events } from '@lib/types/Enums';
 
-const kRegExp = /(discord\.(gg|io|me|li)\/|discordapp\.com\/invite\/)[\w\d-]{2,}/i;
+const enum CodeType {
+	DiscordGG,
+	DiscordIO,
+	DiscordME,
+	DiscordPlus
+}
 
 export default class extends ModerationMonitor {
 
@@ -21,13 +30,38 @@ export default class extends ModerationMonitor {
 		adderDuration: GuildSettings.Selfmod.Invites.ThresholdDuration
 	};
 
+	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus)\/|discordapp\.com\/invite\/)(?<code>[\w\d-]{2,})/gi;
+	private readonly kInviteCache = new Map<string, InviteCodeEntry>();
+
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)
 			&& message.content.length > 0;
 	}
 
-	protected preProcess(message: KlasaMessage) {
-		return kRegExp.test(message.content) ? 1 : null;
+	protected async preProcess(message: KlasaMessage) {
+		let value: RegExpExecArray | null;
+		const promises: Promise<boolean>[] = [];
+		const scanned = new Set<string>();
+		while ((value = this.kInviteRegExp.exec(message.content)) !== null) {
+			const { code, source } = value.groups!;
+
+			// Get from cache, else fetch it from API.
+			const identifier = this.getCodeIdentifier(source, code);
+			if (identifier === null) continue;
+
+			// If it has already been scanned, skip
+			const key = `${source}${code}`;
+			if (scanned.has(key)) continue;
+			scanned.add(key);
+
+			promises.push(identifier === CodeType.DiscordGG
+				? this.fetchIfAllowedInvite(message, code)
+				: Promise.resolve(false));
+		}
+
+		const resolved = await Promise.all(promises);
+		const counter = resolved.reduce((acc, v) => acc + (v ? 0 : 1), 0);
+		return counter === 0 ? null : counter;
 	}
 
 	protected onDelete(message: KlasaMessage) {
@@ -46,4 +80,70 @@ export default class extends ModerationMonitor {
 			.setTimestamp();
 	}
 
+	private async fetchIfAllowedInvite(message: KlasaMessage, code: string) {
+		// Ignored codes take short-circuit.
+		if (message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredCodes).includes(code)) return true;
+
+		const data = this.kInviteCache.get(code) || await this.fetchInviteFromApi(code);
+		data.lastAccessed = Date.now();
+
+		// Invalid invites should not be deleted.
+		if (!data.valid) return true;
+
+		// Invites from white-listed guilds should be allowed.
+		if (data.guildID !== null && message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredGuilds).includes(data.guildID)) return true;
+
+		// Any other invite should not be allowed.
+		return false;
+	}
+
+	private async fetchInviteFromApi(code: string) {
+		const data = await resolveOnErrorCodes(api(this.client).invites(code).get(), APIErrors.UnknownInvite) as APIInviteData | null;
+		if (data === null) return this.getInvalidEntry(code);
+
+		const resolved: InviteCodeEntry = {
+			valid: true,
+			guildID: 'guild' in data ? data.guild.id : null,
+			lastAccessed: Date.now()
+		};
+		this.kInviteCache.set(code, resolved);
+		return resolved;
+	}
+
+	private getInvalidEntry(code: string) {
+		const resolved: InviteCodeEntry = { valid: false, lastAccessed: Date.now() };
+		this.kInviteCache.set(code, resolved);
+		return resolved;
+	}
+
+	private getCodeIdentifier(source: string, code: string): CodeType | null {
+		switch (source.toLowerCase()) {
+			case 'discordapp.com/invite/':
+			case 'discord.gg/':
+				return CodeType.DiscordGG;
+			case 'discord.io/':
+				return CodeType.DiscordIO;
+			case 'discord.me/':
+				return CodeType.DiscordME;
+			case 'discord.plus/':
+				return CodeType.DiscordPlus;
+			default:
+				this.client.emit(Events.Wtf, `Unrecognized source ${source} with code ${code}.`);
+				return null;
+		}
+	}
+
+}
+
+type InviteCodeEntry = (InviteCodeInvalidEntry | InviteCodeValidEntry) & {
+	lastAccessed: number;
+};
+
+interface InviteCodeInvalidEntry {
+	valid: false;
+}
+
+interface InviteCodeValidEntry {
+	valid: true;
+	guildID: string | null;
 }

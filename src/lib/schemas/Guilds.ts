@@ -112,6 +112,8 @@ export default Client.defaultGuildSchema
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'minimum': 0, 'maximum': 120000, 'configurable': false }))
 		.add('invites', invites => invites
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredCodes', 'String', { array: true, configurable: false, minimum: 17, maximum: 19 })
+			.add('ignoredGuilds', 'String', { array: true, configurable: false, minimum: 17, maximum: 19 })
 			.add('ignoredRoles', 'Role', { array: true })
 			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })

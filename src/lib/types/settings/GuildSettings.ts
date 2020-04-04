@@ -137,6 +137,8 @@ export namespace GuildSettings {
 
 		export namespace Invites {
 			export const Enabled = T<boolean>('selfmod.invites.enabled');
+			export const IgnoredCodes = T<string[]>('selfmod.invites.ignoredCodes');
+			export const IgnoredGuilds = T<string[]>('selfmod.invites.ignoredGuilds');
 			export const IgnoredRoles = T<string[]>('selfmod.invites.ignoredRoles');
 			export const IgnoredChannels = T<string[]>('selfmod.invites.ignoredChannels');
 			export const SoftAction = T<number>('selfmod.invites.softAction');

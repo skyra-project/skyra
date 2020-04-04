@@ -16,6 +16,7 @@ import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import { Events } from './Enums';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
+import { InviteStore } from '@lib/structures/InviteStore';
 
 declare module 'discord.js' {
 
@@ -24,6 +25,7 @@ declare module 'discord.js' {
 		leaderboard: Leaderboard;
 		ipcMonitors: IPCMonitorStore;
 		giveaways: GiveawayManager;
+		invites: InviteStore;
 		connectFour: ConnectFourManager;
 		lavalink: Lavalink | null;
 		userTags: UserTags;

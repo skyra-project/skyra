@@ -277,3 +277,50 @@ export interface OauthData {
 	scope: string;
 	token_type: string;
 }
+
+export type APIInviteData = APIGroupInviteData | APIGuildInviteData;
+
+export interface APIGroupInviteData {
+	code: string;
+	inviter: APIInviterData;
+	channel: InviteGroupChannel;
+}
+
+export interface InviteGroupChannel {
+	id: string;
+	name: string;
+	type: number;
+	icon: null;
+}
+
+export interface APIInviterData {
+	id: string;
+	username: string;
+	avatar: string;
+	discriminator: string;
+}
+
+export interface APIGuildInviteData {
+	code: string;
+	guild: APIInviteGuildData;
+	channel: APIInviteGuildChannelData;
+	inviter: APIInviterData;
+}
+
+export interface APIInviteGuildChannelData {
+	id: string;
+	name: string;
+	type: number;
+}
+
+export interface APIInviteGuildData {
+	id: string;
+	name: string;
+	splash: null;
+	banner: null;
+	description: null;
+	icon: string;
+	features: any[];
+	verification_level: number;
+	vanity_url_code: null;
+}

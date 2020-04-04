@@ -49,7 +49,7 @@ export default Client.defaultGuildSchema
 		.add('admin', 'Role')
 		.add('auto', 'any', { array: true })
 		.add('initial', 'Role')
-		.add('messageReaction', 'String', { minimum: 17, maximum: 19, configurable: false })
+		.add('messageReaction', 'Snowflake', { configurable: false })
 		.add('moderator', 'Role')
 		.add('muted', 'Role')
 		.add('restricted-reaction', 'Role')
@@ -112,6 +112,8 @@ export default Client.defaultGuildSchema
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'minimum': 0, 'maximum': 120000, 'configurable': false }))
 		.add('invites', invites => invites
 			.add('enabled', 'Boolean', { 'default': false })
+			.add('ignoredCodes', 'Invite', { array: true })
+			.add('ignoredGuilds', 'Snowflake', { array: true })
 			.add('ignoredRoles', 'Role', { array: true })
 			.add('ignoredChannels', 'TextChannel', { array: true })
 			.add('softAction', 'Integer', { 'default': 0, 'configurable': false })

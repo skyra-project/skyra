@@ -102,6 +102,8 @@ export interface RawGuildSettings {
 	'selfmod.newlines.thresholdMaximum': number;
 	'selfmod.newlines.thresholdDuration': number;
 	'selfmod.invites.enabled': boolean;
+	'selfmod.invites.ignoredCodes': string[];
+	'selfmod.invites.ignoredGuilds': string[];
 	'selfmod.invites.ignoredRoles': string[];
 	'selfmod.invites.ignoredChannels': string[];
 	'selfmod.invites.softAction': number;
@@ -258,6 +260,8 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"selfmod.newlines.thresholdMaximum"    SMALLINT       DEFAULT 10                 NOT NULL,
 		"selfmod.newlines.thresholdDuration"   INTEGER        DEFAULT 60000              NOT NULL,
 		"selfmod.invites.enabled"              BOOLEAN        DEFAULT FALSE              NOT NULL,
+		"selfmod.invites.ignoredCodes"         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"selfmod.invites.ignoredGuilds"        VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.invites.ignoredRoles"         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.invites.ignoredChannels"      VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"selfmod.invites.softAction"           SMALLINT       DEFAULT 0                  NOT NULL,

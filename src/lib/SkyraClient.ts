@@ -51,6 +51,7 @@ import { PostgresCommonQuery } from './queries/postgres';
 import { JsonCommonQuery } from './queries/json';
 import { initClean } from './util/clean';
 import { WebsocketHandler } from './websocket';
+import { InviteStore } from './structures/InviteStore';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -82,6 +83,11 @@ export class SkyraClient extends KlasaClient {
 	 * The webhook to use for the error event
 	 */
 	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
+
+	/**
+	 * The invite store
+	 */
+	public invites: InviteStore = new InviteStore(this);
 
 	/**
 	 * The common queries for the database

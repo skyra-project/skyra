@@ -1,8 +1,4 @@
 import { Serializer, SerializerUpdateContext } from 'klasa';
-import { api } from '@utils/Models/Api';
-import { resolveOnErrorCodes } from '@utils/util';
-import { APIErrors } from '@utils/constants';
-import { APIInviteData } from '@lib/types/DiscordAPI';
 
 export default class extends Serializer {
 
@@ -13,9 +9,9 @@ export default class extends Serializer {
 		if (parsed === null) throw language.tget('RESOLVER_INVALID_INVITE', entry.key);
 
 		const { code } = parsed.groups!;
-		const invite = await resolveOnErrorCodes(api(this.client).invites(code).get(), APIErrors.UnknownInvite) as APIInviteData | null;
+		const invite = await this.client.invites.fetch(code);
 		if (invite === null || !Reflect.has(invite, 'guild')) throw language.tget('RESOLVER_INVALID_INVITE', entry.key);
-		return invite.code;
+		return code;
 	}
 
 }

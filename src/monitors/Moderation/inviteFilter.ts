@@ -1,12 +1,9 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
-import { api } from '@utils/Models/Api';
-import { APIInviteData } from '@lib/types/DiscordAPI';
-import { APIErrors } from '@utils/constants';
 import { Events } from '@lib/types/Enums';
 
 const enum CodeType {
@@ -31,7 +28,6 @@ export default class extends ModerationMonitor {
 	};
 
 	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus)\/|discordapp\.com\/invite\/)(?<code>[\w\d-]{2,})/gi;
-	private readonly kInviteCache = new Map<string, InviteCodeEntry>();
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)
@@ -84,36 +80,22 @@ export default class extends ModerationMonitor {
 		// Ignored codes take short-circuit.
 		if (message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredCodes).includes(code)) return true;
 
-		const data = this.kInviteCache.get(code) || await this.fetchInviteFromApi(code);
-		data.lastAccessed = Date.now();
+		const data = await this.client.invites.fetch(code);
 
 		// Invalid invites should not be deleted.
 		if (!data.valid) return true;
 
+		// Invites that don't have a guild should be deleted.
+		if (data.guildID === null) return false;
+
+		// Invites that point to the own server should be allowed.
+		if (data.guildID === message.guild!.id) return true;
+
 		// Invites from white-listed guilds should be allowed.
-		if (data.guildID !== null && message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredGuilds).includes(data.guildID)) return true;
+		if (message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredGuilds).includes(data.guildID)) return true;
 
 		// Any other invite should not be allowed.
 		return false;
-	}
-
-	private async fetchInviteFromApi(code: string) {
-		const data = await resolveOnErrorCodes(api(this.client).invites(code).get(), APIErrors.UnknownInvite) as APIInviteData | null;
-		if (data === null) return this.getInvalidEntry(code);
-
-		const resolved: InviteCodeEntry = {
-			valid: true,
-			guildID: 'guild' in data ? data.guild.id : null,
-			lastAccessed: Date.now()
-		};
-		this.kInviteCache.set(code, resolved);
-		return resolved;
-	}
-
-	private getInvalidEntry(code: string) {
-		const resolved: InviteCodeEntry = { valid: false, lastAccessed: Date.now() };
-		this.kInviteCache.set(code, resolved);
-		return resolved;
 	}
 
 	private getCodeIdentifier(source: string, code: string): CodeType | null {
@@ -133,17 +115,4 @@ export default class extends ModerationMonitor {
 		}
 	}
 
-}
-
-type InviteCodeEntry = (InviteCodeInvalidEntry | InviteCodeValidEntry) & {
-	lastAccessed: number;
-};
-
-interface InviteCodeInvalidEntry {
-	valid: false;
-}
-
-interface InviteCodeValidEntry {
-	valid: true;
-	guildID: string | null;
 }

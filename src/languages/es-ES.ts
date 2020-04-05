@@ -3436,6 +3436,29 @@ export default class extends Language {
 			ESRB: 'ESRB'
 		},
 		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Gratis',
+		COMMAND_HOROSCOPE_DESCRIPTION: 'Obtén tu último horóscopo',
+		COMMAND_HOROSCOPE_EXTENDED: builder.display('horoscope', {
+			extendedHelp: 'Obtiene el horóscopo de un signo solar dado de The Astrologer de Kelli Fox.',
+			explainedUsage: [
+				['sunsign', 'El signo solar para el que quieres obtener el horóscopo'],
+				['today|tomorrow|yesterday', '(Opcional, el valor predeterminado es "today") Si desea obtener el horóscopo de yesterday o de tomorrow, puede especificarlo.']
+			],
+			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
+		}),
+		COMMAND_HOROSCOPE_INVALID_SUNSIGN: sign => `${sign} es un signo solar no válido, ¿tal vez intente con ${createPick([
+			'capricorn', 'aquarius', 'pisces', 'aries', 'taurus',
+			'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio',
+			'sagittarius'
+		])()}`,
+		COMMAND_HOROSCOPE_TITLES: {
+			DAILY_HOROSCOPE: sign => `Horóscopo diario para ${sign}`,
+			METADATA_TITLE: 'Metadatos',
+			METADATA: (intensity, keywords, mood) => ([
+				`**Intensidad:** ${intensity}`,
+				`**Palabras clave:** ${keywords}`,
+				`**Estado animico:** ${mood}`
+			].join('\n'))
+		},
 		COMMAND_IGDB_DESCRIPTION: 'Busca en IGDB (Internet Game Database) tus juegos favoritos',
 		COMMAND_IGDB_EXTENDED: builder.display('igdb', {
 			extendedHelp: 'Este comando consulta la API IGDB para mostrar datos de sus juegos favoritos.',

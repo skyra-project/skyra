@@ -16,6 +16,8 @@ const enum ClashOfClansFetchCategories {
 export default class extends SkyraCommand {
 
 	private readonly kPlayerTagRegex = /#[A-Z0-9]{3,}/;
+	private readonly kStringArg = this.client.arguments.get('string')!;
+	private readonly kSpreadStringArg = this.client.arguments.get('...string')!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -31,25 +33,17 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('tagOrName', (arg, possible, message, [action]) => {
 			if (action === 'clan') {
-				return this.spreadStringArgument.run(arg, possible, message);
+				return this.kSpreadStringArg.run(arg, possible, message);
 			}
 
 			if (action === 'player') {
-				if (this.kPlayerTagRegex.test(arg)) return this.stringArgument.run(arg, possible, message);
+				if (this.kPlayerTagRegex.test(arg)) return this.kStringArg.run(arg, possible, message);
 
 				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
 			}
 
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
 		});
-	}
-
-	private get stringArgument() {
-		return this.client.arguments.get('string')!;
-	}
-
-	private get spreadStringArgument() {
-		return this.client.arguments.get('...string')!;
 	}
 
 	public async clan(message: KlasaMessage, [clan]: [string]) {

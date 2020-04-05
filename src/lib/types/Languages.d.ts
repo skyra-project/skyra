@@ -843,6 +843,14 @@ export interface LanguageKeys {
 		ESRB: 'ESRB';
 	};
 	COMMAND_ESHOP_PRICE: (price: number) => string;
+	COMMAND_HOROSCOPE_DESCRIPTION: string;
+	COMMAND_HOROSCOPE_EXTENDED: string;
+	COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign: string) => string;
+	COMMAND_HOROSCOPE_TITLES: {
+		DAILY_HOROSCOPE: (sign: string) => string;
+		METADATA_TITLE: string;
+		METADATA (intensity: string, keywords: string, mood: string): string;
+	};
 	COMMAND_IGDB_DESCRIPTION: string;
 	COMMAND_IGDB_EXTENDED: string;
 	COMMAND_IGDB_TITLES: {

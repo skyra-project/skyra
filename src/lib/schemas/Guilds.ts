@@ -39,6 +39,7 @@ export default Client.defaultGuildSchema
 		.add('greeting', 'String', { maximum: 2000 })
 		.add('join-dm', 'String', { maximum: 1500 })
 		.add('ignoreChannels', 'TextChannel', { array: true })
+		.add('announcement-embed', 'Boolean', { 'default': false })
 		.add('moderation-dm', 'Boolean', { 'default': false })
 		.add('moderation-reason-display', 'Boolean', { 'default': true })
 		.add('moderation-message-display', 'Boolean', { 'default': true })

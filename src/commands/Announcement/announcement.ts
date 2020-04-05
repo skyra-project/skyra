@@ -68,7 +68,6 @@ export default class extends SkyraCommand {
 		if (previous) {
 			try {
 				const resultMessage = await previous.edit(content) as KlasaMessage;
-				// TODO(Quantum): Implement event
 				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, content);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
@@ -76,7 +75,6 @@ export default class extends SkyraCommand {
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
 					this.messages.set(message, resultMessage);
 				} else {
-					// TODO(Quantum): Implement event
 					this.client.emit(Events.GuildAnnouncementError, message, channel, role, content, error);
 					throw error;
 				}

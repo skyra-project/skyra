@@ -470,11 +470,42 @@ export function roundNumber(num: number | string, scale = 0) {
 }
 
 /**
- * Clean all mentions from a content
- * @param guild The message for context
+ * Clean all mentions from a body of text
+ * @param guild The guild for context
  * @param input The input to clean
+ * @returns The input cleaned of mentions
  */
 export function cleanMentions(guild: Guild, input: string) {
+	return input
+		.replace(/@(here|everyone)/g, '@\u200B$1')
+		.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+			switch (type) {
+				case '@':
+				case '@!': {
+					const tag = guild.client.userTags.get(id);
+					return tag ? `@${tag.username}` : match;
+				}
+				case '@&': {
+					const role = guild.roles.get(id);
+					return role ? `@${role.name}` : match;
+				}
+				case '#': {
+					const channel = guild.channels.get(id);
+					return channel ? `#${channel.name}` : match;
+				}
+				default: return match;
+			}
+		});
+}
+
+/**
+ * Extracts mentions from a body of text
+ * @remark Preserves the mentions in the content, if you want to remove them use [cleanMentions](./#L478)
+ * @param guild The message for context
+ * @param input The input extract mentions from
+ * @returns an array of mentions
+ */
+export function extractMentions(guild: Guild, input: string) {
 	return input
 		.replace(/@(here|everyone)/g, '@\u200B$1')
 		.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {

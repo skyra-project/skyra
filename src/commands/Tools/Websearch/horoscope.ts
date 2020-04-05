@@ -46,7 +46,6 @@ export default class extends SkyraCommand {
 
 }
 
-
 interface SunSignResponse {
 	date: string;
 	horoscope: string;

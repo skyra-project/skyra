@@ -15,11 +15,10 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 
 	private readonly kSunSigns = new Set(['capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius']);
-	private readonly kStringArg = this.client.arguments.get('string')!;
 
 	public async init() {
-		this.createCustomResolver('sunsign', (arg, possible, message) => {
-			if (this.kSunSigns.has(arg.toLowerCase())) return this.kStringArg.run(arg, possible, message);
+		this.createCustomResolver('sunsign', (arg, _, message) => {
+			if (this.kSunSigns.has(arg.toLowerCase())) return arg;
 
 			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg);
 		});

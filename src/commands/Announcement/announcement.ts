@@ -1,29 +1,28 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { APIErrors } from '@utils/constants';
-import { announcementCheck, getColor } from '@utils/util';
+import { announcementCheck, extractMentions, getColor } from '@utils/util';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['announce'],
+	bucket: 6,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	requiredGuildPermissions: ['MANAGE_ROLES'],
+	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<announcement:string{,1900}>',
+	flagSupport: true
+})
 export default class extends SkyraCommand {
 
 	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['announce'],
-			bucket: 6,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<announcement:string{,1900}>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
 		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);
@@ -48,10 +47,7 @@ export default class extends SkyraCommand {
 	private ask(message: KlasaMessage, content: string) {
 		try {
 			return message.ask(message.language.tget('COMMAND_ANNOUNCEMENT_PROMPT'), {
-				embed: new MessageEmbed()
-					.setColor(getColor(message))
-					.setDescription(content)
-					.setTimestamp()
+				embed: this.buildEmbed(message, content)
 			});
 		} catch {
 			return false;
@@ -63,15 +59,22 @@ export default class extends SkyraCommand {
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
+		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? null : extractMentions(content).join(' ');
+		const shouldSendAsEmbed = message.guildSettings.get(GuildSettings.Messages.AnnouncementEmbed);
+
 		// Retrieve last announcement if there was one
 		const previous = this.messages.get(message);
 		if (previous) {
 			try {
-				const resultMessage = await previous.edit(content) as KlasaMessage;
+				const resultMessage = shouldSendAsEmbed
+					? await previous.edit(mentions, this.buildEmbed(message, content))
+					: await previous.edit(content);
 				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, content);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
-					const resultMessage = await channel.send(content) as KlasaMessage;
+					const resultMessage = shouldSendAsEmbed
+						? await channel.sendEmbed(this.buildEmbed(message, content), mentions)
+						: await channel.send(content) as KlasaMessage;
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
 					this.messages.set(message, resultMessage);
 				} else {
@@ -80,12 +83,21 @@ export default class extends SkyraCommand {
 				}
 			}
 		} else {
-			const resultMessage = await channel.send(content) as KlasaMessage;
+			const resultMessage = shouldSendAsEmbed
+				? await channel.sendEmbed(this.buildEmbed(message, content), mentions)
+				: await channel.send(content) as KlasaMessage;
 			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
 			this.messages.set(message, resultMessage);
 		}
 
 		if (!mentionable) await role.edit({ mentionable: false });
+	}
+
+	private buildEmbed(message: KlasaMessage, content: string) {
+		return new MessageEmbed()
+			.setColor(getColor(message))
+			.setDescription(content)
+			.setTimestamp();
 	}
 
 }

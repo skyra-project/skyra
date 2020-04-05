@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
-import { APIErrors } from '@utils/constants';
-import { announcementCheck, extractMentions, getColor } from '@utils/util';
+import { APIErrors, BrandingColors } from '@utils/constants';
+import { announcementCheck, extractMentions } from '@utils/util';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 	private ask(message: KlasaMessage, header: string, announcement: string) {
 		try {
 			return message.ask(message.language.tget('COMMAND_ANNOUNCEMENT_PROMPT'), {
-				embed: this.buildEmbed(message, announcement, header)
+				embed: this.buildEmbed(announcement, header)
 			});
 		} catch {
 			return false;
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 				const resultMessage = shouldSendAsEmbed
 					? await previous.edit(
 						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions),
-						this.buildEmbed(message, announcement)
+						this.buildEmbed(announcement)
 					)
 					: await previous.edit(`${header}:\n${announcement}`);
 				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 					const resultMessage = shouldSendAsEmbed
 						? await channel.sendEmbed(
-							this.buildEmbed(message, announcement),
+							this.buildEmbed(announcement),
 							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
 						)
 						: await channel.send(`${header}:\n${announcement}`) as KlasaMessage;
@@ -91,7 +91,7 @@ export default class extends SkyraCommand {
 		} else {
 			const resultMessage = shouldSendAsEmbed
 				? await channel.sendEmbed(
-					this.buildEmbed(message, announcement),
+					this.buildEmbed(announcement),
 					message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
 				)
 				: await channel.send(`${header}:\n${announcement}`) as KlasaMessage;
@@ -102,9 +102,9 @@ export default class extends SkyraCommand {
 		if (!mentionable) await role.edit({ mentionable: false });
 	}
 
-	private buildEmbed(message: KlasaMessage, announcement: string, header = '') {
+	private buildEmbed(announcement: string, header = '') {
 		return new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(BrandingColors.Primary)
 			.setDescription(`${header ? `${header}\n` : ''}${announcement}`)
 			.setTimestamp();
 	}

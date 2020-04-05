@@ -36,6 +36,7 @@ export interface RawGuildSettings {
 	'messages.greeting': string | null;
 	'messages.join-dm': string | null;
 	'messages.ignoreChannels': string[];
+	'messages.announcement-embed': boolean;
 	'messages.moderation-dm': boolean;
 	'messages.moderation-reason-display': boolean;
 	'messages.moderation-message-display': boolean;
@@ -194,6 +195,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"messages.greeting"                    VARCHAR(2000),
 		"messages.join-dm"                     VARCHAR(1500),
 		"messages.ignoreChannels"              VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
+		"messages.announcement-embed"          BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"messages.moderation-dm"               BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"messages.moderation-reason-display"   BOOLEAN        DEFAULT TRUE               NOT NULL,
 		"messages.moderation-message-display"  BOOLEAN        DEFAULT TRUE               NOT NULL,

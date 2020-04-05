@@ -470,9 +470,10 @@ export function roundNumber(num: number | string, scale = 0) {
 }
 
 /**
- * Clean all mentions from a content
- * @param guild The message for context
+ * Clean all mentions from a body of text
+ * @param guild The guild for context
  * @param input The input to clean
+ * @returns The input cleaned of mentions
  */
 export function cleanMentions(guild: Guild, input: string) {
 	return input
@@ -496,6 +497,14 @@ export function cleanMentions(guild: Guild, input: string) {
 			}
 		});
 }
+
+/**
+ * Extracts mentions from a body of text
+ * @remark Preserves the mentions in the content, if you want to remove them use `cleanMentions`
+ * @param input The input extract mentions from
+ * @returns an array of mentions
+ */
+export const extractMentions = (input: string) => input.match(/@(?:here|everyone)|<(@[!&]?)(\d{17,19})>/g) ?? [];
 
 /**
  * Creates an array picker function

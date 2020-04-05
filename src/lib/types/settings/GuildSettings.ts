@@ -50,6 +50,7 @@ export namespace GuildSettings {
 		export const Greeting = T<string>('messages.greeting');
 		export const JoinDM = T<string>('messages.join-dm');
 		export const IgnoreChannels = T<readonly string[]>('messages.ignoreChannels');
+		export const AnnouncementEmbed = T<boolean>('messages.announcement-embed');
 		export const ModerationDM = T<boolean>('messages.moderation-dm');
 		export const ModerationReasonDisplay = T<boolean>('messages.moderation-reason-display');
 		export const ModerationMessageDisplay = T<boolean>('messages.moderation-message-display');

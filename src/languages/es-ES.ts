@@ -117,6 +117,19 @@ function ordinal(cardinal: number) {
 	}
 }
 
+function list(values: readonly string[]) {
+	switch (values.length) {
+		case 0: return '';
+		case 1: return values[0];
+		case 2: return `${values[0]} y ${values[1]}`;
+		default: {
+			const trail = values.slice(0, -1);
+			const head = values[values.length - 1];
+			return `${trail.join(', ')} y ${head}`;
+		}
+	}
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -130,6 +143,7 @@ export default class extends Language {
 
 	public duration = duration;
 	public ordinal = ordinal;
+	public list = list;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416
@@ -543,7 +557,10 @@ export default class extends Language {
 				Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
 				being mentioned by at everyone/here. To avoid this, Skyra gives you the option of creating a subscriber role,
 				which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
-				Skyra will set the role to be mentionable, post the message, and back to unmentionable.`,
+				Skyra will set the role to be mentionable, post the message, and back to unmentionable.
+				Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
+				option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
+				by providing the \`--excludeMentions\` flag to the announcement.`,
 			explainedUsage: [
 				['announcement', 'The announcement text to post.']
 			],
@@ -2593,10 +2610,11 @@ export default class extends Language {
 		COMMAND_SUBSCRIBE_SUCCESS: role => `Concedido con éxito el rol: **${role}**`,
 		COMMAND_UNSUBSCRIBE_SUCCESS: role => `Removido con éxito el rol: **${role}***`,
 		COMMAND_SUBSCRIBE_NO_CHANNEL: 'Este servidor no tiene un canal de anuncios configurado.',
-		COMMAND_ANNOUNCEMENT: role => `**Nuevo anuncio para** ${role}:`,
+		COMMAND_ANNOUNCEMENT: role => `**Nuevo anuncio para** ${role}`,
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Se ha publicado un nuevo anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, y mencionando a: ${list(mentions)}` : ''}:`,
 
 		/**
 		 * ################

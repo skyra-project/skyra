@@ -1048,6 +1048,7 @@ export interface LanguageKeys {
 	COMMAND_ANNOUNCEMENT_SUCCESS: string;
 	COMMAND_ANNOUNCEMENT_CANCELLED: string;
 	COMMAND_ANNOUNCEMENT_PROMPT: string;
+	COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header: string, mentions: readonly string[]) => string;
 	COMMAND_INVITE: () => string;
 	COMMAND_INFO: string;
 	COMMAND_HELP_DATA: {

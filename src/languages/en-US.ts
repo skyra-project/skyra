@@ -536,7 +536,10 @@ export default class extends Language {
 				Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
 				being mentioned by at everyone/here. To avoid this, Skyra gives you the option of creating a subscriber role,
 				which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
-				Skyra will set the role to be mentionable, post the message, and back to unmentionable.`,
+				Skyra will set the role to be mentionable, post the message, and back to unmentionable.
+				Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
+				option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
+				by providing the \`--excludeMentions\` flag to the announcement.`,
 			explainedUsage: [
 				['announcement', 'The announcement text to post.']
 			],
@@ -2581,10 +2584,11 @@ export default class extends Language {
 		COMMAND_SUBSCRIBE_SUCCESS: role => `Successfully granted the role: **${role}**`,
 		COMMAND_UNSUBSCRIBE_SUCCESS: role => `Successfully removed the role: **${role}**`,
 		COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
-		COMMAND_ANNOUNCEMENT: role => `**New announcement for** ${role}:`,
+		COMMAND_ANNOUNCEMENT: role => `**New announcement for** ${role}`,
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Cancelled the message.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'This will be the message sent in the announcement channel. Are you OK with this?',
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? ` and ${mentions}` : ''}:`,
 
 		/**
 		 * ################

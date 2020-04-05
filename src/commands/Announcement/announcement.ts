@@ -34,32 +34,32 @@ export default class extends SkyraCommand {
 		if (!channel.postable) throw message.language.tget('SYSTEM_CHANNEL_NOT_POSTABLE');
 
 		const role = announcementCheck(message);
-		const content = `${message.language.tget('COMMAND_ANNOUNCEMENT', role.toString())}\n${announcement}`;
+		const header = message.language.tget('COMMAND_ANNOUNCEMENT', role.toString());
 
-		if (await this.ask(message, content)) {
-			await this.send(message, channel, role, content);
+		if (await this.ask(message, header, announcement)) {
+			await this.send(message, channel, role, header, announcement);
 			return message.sendLocale('COMMAND_ANNOUNCEMENT_SUCCESS');
 		}
 
 		return message.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
 	}
 
-	private ask(message: KlasaMessage, content: string) {
+	private ask(message: KlasaMessage, header: string, announcement: string) {
 		try {
 			return message.ask(message.language.tget('COMMAND_ANNOUNCEMENT_PROMPT'), {
-				embed: this.buildEmbed(message, content)
+				embed: this.buildEmbed(message, announcement, header)
 			});
 		} catch {
 			return false;
 		}
 	}
 
-	private async send(message: KlasaMessage, channel: TextChannel, role: Role, content: string) {
+	private async send(message: KlasaMessage, channel: TextChannel, role: Role, header: string, announcement: string) {
 		// If it's not mentionable, set, send/edit, and unset mentionable
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
-		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? null : extractMentions(content).join(' ');
+		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? '' : extractMentions(announcement).join(', ');
 		const shouldSendAsEmbed = message.guildSettings.get(GuildSettings.Messages.AnnouncementEmbed);
 
 		// Retrieve last announcement if there was one
@@ -67,36 +67,45 @@ export default class extends SkyraCommand {
 		if (previous) {
 			try {
 				const resultMessage = shouldSendAsEmbed
-					? await previous.edit(mentions, this.buildEmbed(message, content))
-					: await previous.edit(content);
-				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, content);
+					? await previous.edit(
+						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions),
+						this.buildEmbed(message, announcement)
+					)
+					: await previous.edit(`${header}:\n${announcement}`);
+				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 					const resultMessage = shouldSendAsEmbed
-						? await channel.sendEmbed(this.buildEmbed(message, content), mentions)
-						: await channel.send(content) as KlasaMessage;
-					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
+						? await channel.sendEmbed(
+							this.buildEmbed(message, announcement),
+							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+						)
+						: await channel.send(`${header}:\n${announcement}`) as KlasaMessage;
+					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 					this.messages.set(message, resultMessage);
 				} else {
-					this.client.emit(Events.GuildAnnouncementError, message, channel, role, content, error);
+					this.client.emit(Events.GuildAnnouncementError, message, channel, role, header, announcement, error);
 					throw error;
 				}
 			}
 		} else {
 			const resultMessage = shouldSendAsEmbed
-				? await channel.sendEmbed(this.buildEmbed(message, content), mentions)
-				: await channel.send(content) as KlasaMessage;
-			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, content);
+				? await channel.sendEmbed(
+					this.buildEmbed(message, announcement),
+					message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+				)
+				: await channel.send(`${header}:\n${announcement}`) as KlasaMessage;
+			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 			this.messages.set(message, resultMessage);
 		}
 
 		if (!mentionable) await role.edit({ mentionable: false });
 	}
 
-	private buildEmbed(message: KlasaMessage, content: string) {
+	private buildEmbed(message: KlasaMessage, announcement: string, header = '') {
 		return new MessageEmbed()
 			.setColor(getColor(message))
-			.setDescription(content)
+			.setDescription(`${header ? `${header}\n` : ''}${announcement}`)
 			.setTimestamp();
 	}
 

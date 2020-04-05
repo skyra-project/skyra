@@ -3456,7 +3456,7 @@ export default class extends Language {
 			METADATA: (intensity, keywords, mood) => ([
 				`**Intensidad:** ${intensity}`,
 				`**Palabras clave:** ${keywords}`,
-				`**Estado animico:** ${mood}`
+				`**Estado anímico:** ${mood}`
 			].join('\n'))
 		},
 		COMMAND_IGDB_DESCRIPTION: 'Busca en IGDB (Internet Game Database) tus juegos favoritos',

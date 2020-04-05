@@ -502,7 +502,7 @@ export function cleanMentions(guild: Guild, input: string) {
  * Extracts mentions from a body of text
  * @remark Preserves the mentions in the content, if you want to remove them use `cleanMentions`
  * @param input The input extract mentions from
- * @returns an array of mentions, or `null` if there are no mentions
+ * @returns an array of mentions
  */
 export const extractMentions = (input: string) => input.match(/@(?:here|everyone)|<(@[!&]?)(\d{17,19})>/g) ?? [];
 

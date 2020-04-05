@@ -108,6 +108,7 @@ declare module 'klasa' {
 		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
 		duration(time: number, precision?: number): string;
 		ordinal(cardinal: number): string;
+		list(values: readonly string[]): string;
 
 		get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
 		get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;

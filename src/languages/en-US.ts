@@ -115,6 +115,19 @@ function ordinal(cardinal: number) {
 	}
 }
 
+function list(values: readonly string[]) {
+	switch (values.length) {
+		case 0: return '';
+		case 1: return values[0];
+		case 2: return `${values[0]} and ${values[1]}`;
+		default: {
+			const trail = values.slice(0, -1);
+			const head = values[values.length - 1];
+			return `${trail.join(', ')}, and ${head}`;
+		}
+	}
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -128,6 +141,7 @@ export default class extends Language {
 
 	public duration = duration;
 	public ordinal = ordinal;
+	public list = list;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416
@@ -2588,7 +2602,7 @@ export default class extends Language {
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Cancelled the message.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'This will be the message sent in the announcement channel. Are you OK with this?',
-		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? ` and ${mentions}` : ''}:`,
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, and mentioning: ${list(mentions)}` : ''}:`,
 
 		/**
 		 * ################

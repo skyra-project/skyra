@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
-		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? '' : extractMentions(announcement).join(', ');
+		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? [] : extractMentions(announcement);
 		const shouldSendAsEmbed = message.guildSettings.get(GuildSettings.Messages.AnnouncementEmbed);
 
 		// Retrieve last announcement if there was one

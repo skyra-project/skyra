@@ -19,7 +19,8 @@ export default class extends SkyraCommand {
 
 	public async init() {
 		this.createCustomResolver('sunsign', (arg, _, message) => {
-			if (this.kSunSigns.has(arg.toLowerCase())) return arg.toLowerCase();
+			const lowerCasedArgument = arg.toLowerCase();
+			if (this.kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
 			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg, this.kRandomSunSign());
 		});

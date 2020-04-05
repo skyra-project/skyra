@@ -1,6 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes, getColor, createPick } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -15,16 +15,17 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 
 	private readonly kSunSigns = new Set(['capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius']);
+	private kRandomSunSign = createPick([...this.kSunSigns]);
 
 	public async init() {
 		this.createCustomResolver('sunsign', (arg, _, message) => {
 			if (this.kSunSigns.has(arg.toLowerCase())) return arg;
 
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg);
+			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg, this.kRandomSunSign());
 		});
 	}
 
-	public async run(message: KlasaMessage, [sign, when]: [string, 'today' | 'tomorrow' | 'yesterday']) {
+	public async run(message: KlasaMessage, [sign, when]: [string, 'tomorrow' | 'yesterday' | 'today']) {
 		const { horoscope, date, sunsign, meta: { intensity, keywords, mood } } = await this.fetchAPI(message, sign, when);
 
 		const TITLES = message.language.tget('COMMAND_HOROSCOPE_TITLES');
@@ -40,8 +41,9 @@ export default class extends SkyraCommand {
 		const url = new URL(`https://theastrologer-api.herokuapp.com/api/horoscope/${sunsign}/${when}`);
 
 		return fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign); }) as Promise<SunSignResponse>;
+			.catch(() => { throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign, this.kRandomSunSign()); }) as Promise<SunSignResponse>;
 	}
+
 
 }
 

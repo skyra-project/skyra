@@ -3432,11 +3432,7 @@ export default class extends Language {
 			],
 			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
 		}),
-		COMMAND_HOROSCOPE_INVALID_SUNSIGN: sign => `${sign} is an invalid sun sign, maybe try ${createPick([
-			'capricorn', 'aquarius', 'pisces', 'aries', 'taurus',
-			'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio',
-			'sagittarius'
-		])()}`,
+		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign, maybe) => `${sign} is an invalid sun sign, maybe try ${maybe}}`,
 		COMMAND_HOROSCOPE_TITLES: {
 			DAILY_HOROSCOPE: sign => `Daily horoscope for ${sign}`,
 			METADATA_TITLE: 'Metadata',

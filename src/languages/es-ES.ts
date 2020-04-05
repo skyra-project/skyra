@@ -3445,11 +3445,7 @@ export default class extends Language {
 			],
 			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
 		}),
-		COMMAND_HOROSCOPE_INVALID_SUNSIGN: sign => `${sign} es un signo solar no válido, ¿tal vez intente con ${createPick([
-			'capricorn', 'aquarius', 'pisces', 'aries', 'taurus',
-			'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio',
-			'sagittarius'
-		])()}`,
+		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign, maybe) => `${sign} es un signo solar no válido, ¿tal vez intente con ${maybe}`,
 		COMMAND_HOROSCOPE_TITLES: {
 			DAILY_HOROSCOPE: sign => `Horóscopo diario para ${sign}`,
 			METADATA_TITLE: 'Metadatos',

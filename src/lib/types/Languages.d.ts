@@ -845,7 +845,7 @@ export interface LanguageKeys {
 	COMMAND_ESHOP_PRICE: (price: number) => string;
 	COMMAND_HOROSCOPE_DESCRIPTION: string;
 	COMMAND_HOROSCOPE_EXTENDED: string;
-	COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign: string) => string;
+	COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign: string, maybe: string) => string;
 	COMMAND_HOROSCOPE_TITLES: {
 		DAILY_HOROSCOPE: (sign: string) => string;
 		METADATA_TITLE: string;

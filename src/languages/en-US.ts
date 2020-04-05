@@ -3423,6 +3423,25 @@ export default class extends Language {
 			ESRB: 'ESRB'
 		},
 		COMMAND_ESHOP_PRICE: price => price > 0 ? `$${price} USD` : 'Free',
+		COMMAND_HOROSCOPE_DESCRIPTION: 'Get your latest horoscope',
+		COMMAND_HOROSCOPE_EXTENDED: builder.display('horoscope', {
+			extendedHelp: 'Gets the horoscope for a given sun sign from Kelli Fox\'s The Astrologer.',
+			explainedUsage: [
+				['sunsign', 'The sun sign you want to get the horoscope for'],
+				['today|tomorrow|yesterday', '(Optional, defaults to "today") If you want to get the horoscope of yesterday or tomorrow you can specify that.']
+			],
+			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
+		}),
+		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign, maybe) => `${sign} is an invalid sun sign, maybe try ${maybe}}`,
+		COMMAND_HOROSCOPE_TITLES: {
+			DAILY_HOROSCOPE: sign => `Daily horoscope for ${sign}`,
+			METADATA_TITLE: 'Metadata',
+			METADATA: (intensity, keywords, mood) => ([
+				`**Intensity:** ${intensity}`,
+				`**Keywords:** ${keywords}`,
+				`**Mood:** ${mood}`
+			].join('\n'))
+		},
 		COMMAND_IGDB_DESCRIPTION: 'Searches IGDB (Internet Game Database) for your favourite games',
 		COMMAND_IGDB_EXTENDED: builder.display('igdb', {
 			extendedHelp: 'This command queries the IGDB API to show data on your favourite games.',

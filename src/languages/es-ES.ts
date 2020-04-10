@@ -807,55 +807,55 @@ export default class extends Language {
 			TOP_12S: count => `Top 12s: **\`${count}\`**`,
 			TOP_25S: count => `Top 25s: **\`${count}\`**`
 		},
-		COMMAND_OVERWATCH_DESCRIPTION: `Gets player statistics for an Overwatch player`,
+		COMMAND_OVERWATCH_DESCRIPTION: `Obtiene estadísticas de jugador para un jugador de Overwatch`,
 		COMMAND_OVERWATCH_EXTENDED: builder.display('overwatch', {
 			extendedHelp:
-				`This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation
-				By default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform
-				to \`xbl\` or \`psn\` respectively.
-				\n\nIMPORTANT: **Player names are case sensitive!**`,
+				`Este comando recupera estadísticas para cualquier jugador de Overwatch que juegue en PC, Xbox o Playstation.
+				De manera predeterminada, buscará en los reproductores de PC, si desea comprobar si hay reproductores de
+				Xbox o Playstation, configure la plataforma en \`xbl\` o \`psn\` respectivamente.
+				IMPORTANTE: **¡Los nombres de los jugadores distinguen entre mayúsculas y minúsculas!**`,
 			explainedUsage: [
-				['platform', '(optional, defaults to \`pc\`) Platform the player plays on, one of `pc`, `xbl`, or `psn`'],
-				['player', 'For PC the full blizzard tag, for console the username. Case sensitive!']
+				['platform', '(opcional, predeterminado en \`pc\`) Plataforma en la que se reproduce el reproductor, una de \`pc\`, \`xbl\` o \`psn\`'],
+				['player', 'Para PC, la etiqueta de tormenta de nieve completa, para la consola, el nombre de usuario. ¡Distingue mayúsculas y minúsculas!']
 			],
 			examples: ['ToasterPC#1464', 'xbl Dorus NL gamer', 'psn decoda_24']
 		}),
 		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: playerTag => [
-			`\`${playerTag}\` is an invalid player name`,
-			'For PC it has to be their full Blizzard BattleTag, for example `ToasterPC#1464`.',
-			'For Xbox and Playstation it just has to be their username.'
+			`\`${playerTag}\` es un nombre de jugador no válido`,
+			'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `ToasterPC#1464`.',
+			'Para Xbox y Playstation tiene que ser su nombre de usuario.'
 		].join('\n'),
 		COMMAND_OVERWATCH_QUERY_FAIL: (player, platform) => [
-			`Failed to get data for \`${player}\`, are you sure they play on \`${platform}\`?`,
-			'Also make sure to get the casing right, names are case sensitive.'
+			`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?`,
+			'También asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.'
 		].join('\n'),
-		COMMAND_OVERWATCH_NO_STATS: player => `I found a player with the tag \`${player}\` but no stats were available for them.`,
+		COMMAND_OVERWATCH_NO_STATS: player => `Encontré un jugador con la etiqueta \`${player}\` pero no había estadísticas disponibles para ellos.`,
 		COMMMAND_OVERWATCH_EMBED_DATA: {
-			TITLE: 'Click here for more details on overwatchtracker.com',
-			RATINGS_TITLE: 'Ratings',
-			AUTHOR: name => `Overwatch Player Statistics for ${name}`,
-			PLAYER_LEVEL: level => `**Player level:** ${this.groupDigits(level)}`,
-			PRESTIGE_LEVEL: level => `**Prestige level:** ${this.groupDigits(level)}`,
-			TOTAL_GAMES_WON: gamesWon => `**Total games won:** ${gamesWon ? (this.groupDigits(gamesWon)) : 'None'}`,
+			TITLE: 'Haga clic aquí para obtener más detalles en overwatchtracker.com',
+			RATINGS_TITLE: 'Calificaciones',
+			AUTHOR: name => `Estadísticas de jugador de Overwatch para ${name}`,
+			PLAYER_LEVEL: level => `**Nivel de jugador:** ${this.groupDigits(level)}`,
+			PRESTIGE_LEVEL: level => `**Nivel de prestigio:** ${this.groupDigits(level)}`,
+			TOTAL_GAMES_WON: gamesWon => `**Total de juegos ganados:** ${gamesWon ? (this.groupDigits(gamesWon)) : 'None'}`,
 			RATINGS: ratings => ratings.map(rating => `**${toTitleCase(rating.role)}:** ${this.groupDigits(rating.level)}`).join('\n'),
-			FINAL_BLOWS: finalBlows => `**Final blows:** ${this.groupDigits(finalBlows)}`,
-			DEATHS: deaths => `**Deaths:** ${this.groupDigits(deaths)}`,
-			DAMAGE_DEALT: damageDone => `**Damage dealt:** ${this.groupDigits(damageDone)}`,
-			HEALING: healingDone => `**Healing:** ${this.groupDigits(healingDone)}`,
-			OBJECTIVE_KILLS: objectiveKills => `**Objective kills:** ${this.groupDigits(objectiveKills)}`,
-			SOLO_KILLS: soloKills => `**Solo kills:** ${this.groupDigits(soloKills)}`,
-			PLAY_TIME: timePlayed => `**Playtime:** ${this.duration(timePlayed, 2)}`,
-			GAMES_WON: gamesWon => `**Games won:** ${this.groupDigits(gamesWon)}`,
-			GOLDEN_MEDALS: medalsGold => `**Gold medals earned:** ${this.groupDigits(medalsGold)}`,
-			SILVER_MEDALS: medalsSiver => `**Silver medals earned:** ${this.groupDigits(medalsSiver)}`,
-			BRONZE_MEDALS: medalsBronze => `**Bronze medals earned:** ${this.groupDigits(medalsBronze)}`,
+			FINAL_BLOWS: finalBlows => `**Golpes finales:** ${this.groupDigits(finalBlows)}`,
+			DEATHS: deaths => `**Muertes:** ${this.groupDigits(deaths)}`,
+			DAMAGE_DEALT: damageDone => `**Daño infligido:** ${this.groupDigits(damageDone)}`,
+			HEALING: healingDone => `**Curación:** ${this.groupDigits(healingDone)}`,
+			OBJECTIVE_KILLS: objectiveKills => `**El objetivo mata:** ${this.groupDigits(objectiveKills)}`,
+			SOLO_KILLS: soloKills => `**Solo mata:** ${this.groupDigits(soloKills)}`,
+			PLAY_TIME: timePlayed => `**Tiempo de juego:** ${this.duration(timePlayed, 2)}`,
+			GAMES_WON: gamesWon => `**Juegos ganados:** ${this.groupDigits(gamesWon)}`,
+			GOLDEN_MEDALS: medalsGold => `**Medallas de oro ganadas:** ${this.groupDigits(medalsGold)}`,
+			SILVER_MEDALS: medalsSiver => `**Medallas de plata ganadas:** ${this.groupDigits(medalsSiver)}`,
+			BRONZE_MEDALS: medalsBronze => `**Medallas de bronce ganadas:** ${this.groupDigits(medalsBronze)}`,
 			TOP_HERO: (heroName, timePlayed) => `**${toTitleCase(heroName)}** (${timePlayed})`,
 			HEADERS: {
-				ACCOUNT: '__Account Stats__',
-				QUICKPLAY: '__Quickplay Stats__',
-				COMPETITIVE: '__Competitive Stats__',
-				TOP_HEROES_QUICKPLAY: '__Top Heroes Quickplay__',
-				TOP_HEROES_COMPETITIVE: '__Top Heroes Competitive__'
+				ACCOUNT: '__Estadísticas de cuenta__',
+				QUICKPLAY: '__Estadísticas de Quickplay__',
+				COMPETITIVE: '__Estadísticas competitivas__',
+				TOP_HEROES_QUICKPLAY: '__Mejores héroes juego rápido',
+				TOP_HEROES_COMPETITIVE: '__Mejores héroes competitivos__'
 			}
 		},
 

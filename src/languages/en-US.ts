@@ -803,10 +803,10 @@ export default class extends Language {
 		COMMAND_OVERWATCH_DESCRIPTION: `Gets player statistics for an Overwatch player`,
 		COMMAND_OVERWATCH_EXTENDED: builder.display('overwatch', {
 			extendedHelp:
-				`This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation
+				`This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.
 				By default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform
 				to \`xbl\` or \`psn\` respectively.
-				\n\nIMPORTANT: **Player names are case sensitive!**`,
+				IMPORTANT: **Player names are case sensitive!**`,
 			explainedUsage: [
 				['platform', '(optional, defaults to \`pc\`) Platform the player plays on, one of `pc`, `xbl`, or `psn`'],
 				['player', 'For PC the full blizzard tag, for console the username. Case sensitive!']

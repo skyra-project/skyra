@@ -22,7 +22,6 @@ export default class OverwatchCommand extends SkyraCommand {
 	private kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
 	private kAuthorThumbnail = 'https://cdn.skyra.pw/img/overwatch/logo.png';
 	private kRemoveNullAndUndefined = this.removeNullAndUndefined.bind(this);
-	private kHyphenRegex = /[-]/g;
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -166,7 +165,7 @@ export default class OverwatchCommand extends SkyraCommand {
 	}
 
 	private decodePlayerName(name: string) {
-		return decodeURIComponent(name.replace(this.kHyphenRegex, '#'));
+		return decodeURIComponent(name.replace('-', '#'));
 	}
 
 }

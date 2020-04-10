@@ -3,8 +3,7 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
 /** Identical implementation as restString from Klasa, but for overwatchplayer */
 @ApplyOptions<ArgumentOptions>({
-	name: '...overwatchplayer',
-	aliases: ['...owplayer']
+	name: '...overwatchplayer'
 })
 export default class extends Argument {
 

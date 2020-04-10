@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { Emojis } from '@utils/constants';
+import { cutText } from '@utils/util';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -53,7 +54,7 @@ export default class extends SkyraCommand {
 		}
 
 		// For all other cases, return the original output
-		return message.send(util.codeBlock('prolog', [stdout || Emojis.GreenTick, stderr || Emojis.GreenTick].join('\n-=-=-=-\n')));
+		return message.send(util.codeBlock('prolog', [cutText(stdout, 1950) || Emojis.GreenTick, stderr || Emojis.GreenTick].join('\n-=-=-=-\n')));
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -64,7 +65,7 @@ export default class extends SkyraCommand {
 			throw `Unsuccessful pull, stashing:\n\n${util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'))}`;
 		}
 
-		return message.send(util.codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
+		return message.send(util.codeBlock('prolog', [cutText(stdout, 1950) || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
 	}
 
 	private async checkout(message: KlasaMessage, branch: string) {

@@ -7,6 +7,7 @@ import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { Guild, GuildMember, MessageEmbed, PermissionString, Role, User } from 'discord.js';
 import { ScheduledTask, SchemaEntry } from 'klasa';
 import { Kitsu } from './definitions/Kitsu';
+import { OverwatchRating } from './definitions/Overwatch';
 import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export const enum Position {
@@ -576,6 +577,39 @@ export interface LanguageKeys {
 		TOP_10S: (count: string) => string;
 		TOP_12S: (count: string) => string;
 		TOP_25S: (count: string) => string;
+	};
+	COMMAND_OVERWATCH_DESCRIPTION: string;
+	COMMAND_OVERWATCH_EXTENDED: string;
+	COMMAND_OVERWATCH_INVALID_PLAYER_NAME: (playerTag: string) => string;
+	COMMAND_OVERWATCH_QUERY_FAIL: (player: string, platform: string) => string;
+	COMMAND_OVERWATCH_NO_STATS: (player: string) => string;
+	COMMMAND_OVERWATCH_EMBED_DATA: {
+		TITLE: string;
+		RATINGS_TITLE: string;
+		AUTHOR: (name: string) => string;
+		PLAYER_LEVEL: (level: number) => string;
+		PRESTIGE_LEVEL: (level: number) => string;
+		RATINGS: (ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] }>) => string;
+		TOTAL_GAMES_WON: (gamesWon: number) => string;
+		FINAL_BLOWS: (finalBlows: number) => string;
+		DEATHS: (deaths: number) => string;
+		DAMAGE_DEALT: (damageDone: number) => string;
+		HEALING: (healingDone: number) => string;
+		OBJECTIVE_KILLS: (objectiveKills: number) => string;
+		SOLO_KILLS: (soloKills: number) => string;
+		PLAY_TIME: (timePlayed: number) => string;
+		GAMES_WON: (gamesWon: number) => string;
+		GOLDEN_MEDALS: (medalsGold: number) => string;
+		SILVER_MEDALS: (medalsSilver: number) => string;
+		BRONZE_MEDALS: (medalsBronze: number) => string;
+		TOP_HERO: (heroName: string, timePlayed: string) => string;
+		HEADERS: {
+			ACCOUNT: string;
+			QUICKPLAY: string;
+			COMPETITIVE: string;
+			TOP_HEROES_QUICKPLAY: string;
+			TOP_HEROES_COMPETITIVE: string;
+		};
 	};
 	GAMES_NOT_ENOUGH_MONEY: (money: number) => string;
 	GAMES_CANNOT_HAVE_NEGATIVE_MONEY: string;

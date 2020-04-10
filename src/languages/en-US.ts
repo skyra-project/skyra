@@ -128,6 +128,10 @@ function list(values: readonly string[]) {
 	}
 }
 
+function groupDigits(number: number) {
+	return number.toLocaleString('en-US', { useGrouping: true });
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -142,6 +146,7 @@ export default class extends Language {
 	public duration = duration;
 	public ordinal = ordinal;
 	public list = list;
+	public groupDigits = groupDigits;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416
@@ -768,7 +773,7 @@ export default class extends Language {
 		COMMAND_FORTNITE_EXTENDED: builder.display('fortnite', {
 			extendedHelp: `This command retrieves statistics for any Fortnite player that plays on PC, Xbox or Playstation`,
 			explainedUsage: [
-				['platform', '(optional, defaults to `pc`) Platform the player plays on, one of `pc`, `xbox` or `psn`.'],
+				['platform', '(optional, defaults to `pc`) Platform the player plays on, one of `pc`, `xbox`, or `psn`.'],
 				['player', 'The Epic Games username of the player.']
 			],
 			examples: ['ninja', 'pc ninja', 'xbox TTV R1xbox', 'psn TTV IllusionOG']
@@ -794,6 +799,57 @@ export default class extends Language {
 			TOP_10S: count => `Top 10s: **\`${count}\`**`,
 			TOP_12S: count => `Top 12s: **\`${count}\`**`,
 			TOP_25S: count => `Top 25s: **\`${count}\`**`
+		},
+		COMMAND_OVERWATCH_DESCRIPTION: `Gets player statistics for an Overwatch player`,
+		COMMAND_OVERWATCH_EXTENDED: builder.display('overwatch', {
+			extendedHelp:
+				`This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation
+				By default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform
+				to \`xbl\` or \`psn\` respectively.
+				\n\nIMPORTANT: **Player names are case sensitive!**`,
+			explainedUsage: [
+				['platform', '(optional, defaults to \`pc\`) Platform the player plays on, one of `pc`, `xbl`, or `psn`'],
+				['player', 'For PC the full blizzard tag, for console the username. Case sensitive!']
+			],
+			examples: ['ToasterPC#1464', 'xbl Dorus NL gamer', 'psn decoda_24']
+		}),
+		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: playerTag => [
+			`\`${playerTag}\` is an invalid player name`,
+			'For PC it has to be their full Blizzard BattleTag, for example `ToasterPC#1464`.',
+			'For Xbox and Playstation it just has to be their username.'
+		].join('\n'),
+		COMMAND_OVERWATCH_QUERY_FAIL: (player, platform) => [
+			`Failed to get data for \`${player}\`, are you sure they play on \`${platform}\`?`,
+			'Also make sure to get the casing right, names are case sensitive.'
+		].join('\n'),
+		COMMAND_OVERWATCH_NO_STATS: player => `I found a player with the tag \`${player}\` but no stats were available for them.`,
+		COMMMAND_OVERWATCH_EMBED_DATA: {
+			TITLE: 'Click here for more details on overwatchtracker.com',
+			RATINGS_TITLE: 'Ratings',
+			AUTHOR: name => `Overwatch Player Statistics for ${name}`,
+			PLAYER_LEVEL: level => `**Player level:** ${this.groupDigits(level)}`,
+			PRESTIGE_LEVEL: level => `**Prestige level:** ${this.groupDigits(level)}`,
+			TOTAL_GAMES_WON: gamesWon => `**Total games won:** ${gamesWon ? (this.groupDigits(gamesWon)) : 'None'}`,
+			RATINGS: ratings => ratings.map(rating => `**${toTitleCase(rating.role)}:** ${this.groupDigits(rating.level)}`).join('\n'),
+			FINAL_BLOWS: finalBlows => `**Final blows:** ${this.groupDigits(finalBlows)}`,
+			DEATHS: deaths => `**Deaths:** ${this.groupDigits(deaths)}`,
+			DAMAGE_DEALT: damageDone => `**Damage dealt:** ${this.groupDigits(damageDone)}`,
+			HEALING: healingDone => `**Healing:** ${this.groupDigits(healingDone)}`,
+			OBJECTIVE_KILLS: objectiveKills => `**Objective kills:** ${this.groupDigits(objectiveKills)}`,
+			SOLO_KILLS: soloKills => `**Solo kills:** ${this.groupDigits(soloKills)}`,
+			PLAY_TIME: timePlayed => `**Playtime:** ${this.duration(timePlayed, 2)}`,
+			GAMES_WON: gamesWon => `**Games won:** ${this.groupDigits(gamesWon)}`,
+			GOLDEN_MEDALS: medalsGold => `**Gold medals earned:** ${this.groupDigits(medalsGold)}`,
+			SILVER_MEDALS: medalsSiver => `**Silver medals earned:** ${this.groupDigits(medalsSiver)}`,
+			BRONZE_MEDALS: medalsBronze => `**Bronze medals earned:** ${this.groupDigits(medalsBronze)}`,
+			TOP_HERO: (heroName, timePlayed) => `**${toTitleCase(heroName)}** (${timePlayed})`,
+			HEADERS: {
+				ACCOUNT: '__Account Stats__',
+				QUICKPLAY: '__Quickplay Stats__',
+				COMPETITIVE: '__Competitive Stats__',
+				TOP_HEROES_QUICKPLAY: '__Top Heroes Quickplay__',
+				TOP_HEROES_COMPETITIVE: '__Top Heroes Competitive__'
+			}
 		},
 
 		/**

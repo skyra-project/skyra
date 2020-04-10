@@ -130,6 +130,10 @@ function list(values: readonly string[]) {
 	}
 }
 
+function groupDigits(number: number) {
+	return number.toLocaleString('es-ES', { useGrouping: true });
+}
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -144,6 +148,7 @@ export default class extends Language {
 	public duration = duration;
 	public ordinal = ordinal;
 	public list = list;
+	public groupDigits = groupDigits;
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 	// @ts-ignore:2416

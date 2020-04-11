@@ -18,6 +18,7 @@ services:
     container_name: lavalink
     image: skyrabot/lavalink:latest
     restart: always
+    network_mode: host
     ports:
       - "2333:2333"
 

@@ -73,13 +73,12 @@ export default class extends SkyraCommand {
 		} = this.parseCharacterClasses(character.ClassJobs);
 
 		const TITLES = message.language.tget('COMMAND_FFXIV_CHARACTER_FIELDS');
-		const display = new UserRichDisplay(
+
+		return new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(getColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
-		);
-
-		display
+		)
 			.addPage((embed: MessageEmbed) => embed
 				.setThumbnail(character.Avatar)
 				.setImage(character.Portrait)
@@ -111,8 +110,6 @@ export default class extends SkyraCommand {
 				embed.setTitle(TITLES.DOL_CLASSES);
 				return embed;
 			});
-
-		return display;
 	}
 
 	private buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {

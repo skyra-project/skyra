@@ -6,5 +6,7 @@ services:
     build: ./postgres
     image: skyrabot/postgres:latest
   lavalink:
-    build: ./lavalink
     image: skyrabot/lavalink:latest
+    build:
+      context: ./lavalink
+      network: host

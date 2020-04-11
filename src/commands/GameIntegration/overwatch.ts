@@ -1,6 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { OverwatchDataSet, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
+import { OverwatchDataSet, PlatformUnion, TopHero, OverwatchStatsTypeUnion } from '@lib/types/definitions/Overwatch';
 import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
@@ -19,9 +19,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 })
 export default class OverwatchCommand extends SkyraCommand {
 
-	private kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
-	private kAuthorThumbnail = 'https://cdn.skyra.pw/img/overwatch/logo.png';
-	private kRemoveNullAndUndefined = this.removeNullAndUndefined.bind(this);
+	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
+	private readonly kAuthorThumbnail = 'https://cdn.skyra.pw/img/overwatch/logo.png';
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -40,7 +39,7 @@ export default class OverwatchCommand extends SkyraCommand {
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
-	private async fetchAPI(message: KlasaMessage, player: string, platform: PlatformUnion) {
+	private fetchAPI(message: KlasaMessage, player: string, platform: PlatformUnion) {
 		return fetch(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_OVERWATCH_QUERY_FAIL', this.decodePlayerName(player), platform);
@@ -73,9 +72,7 @@ export default class OverwatchCommand extends SkyraCommand {
 					EMBED_DATA.TOTAL_GAMES_WON(overwatchData.gamesWon)
 				].join('\n'))
 				.addField(EMBED_DATA.RATINGS_TITLE, EMBED_DATA.RATINGS([
-					{ role: ratings.get('damage')!.role, level: ratings.get('damage')!.level },
-					{ role: ratings.get('support')!.role, level: ratings.get('support')!.level },
-					{ role: ratings.get('tank')!.role, level: ratings.get('tank')!.level },
+					...ratings.values(),
 					{ role: 'average', level: overwatchData.rating }
 				])))
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(overwatchData, 'quickPlayStats', EMBED_DATA)))
@@ -93,37 +90,29 @@ export default class OverwatchCommand extends SkyraCommand {
 	 * @param valueExtractor A function that describes where to find the `value` for the `Map`
 	 * @returns a `Map<Key, Value>` of the values, mapped by the given key
 	 */
-	private ratingsToMap<I, K, V>(inputArray: I[], keyExtractor: (_: I) => K, valueExtractor: (_: I) => V): Map<K, V> {
+	private ratingsToMap<I, K, V>(inputArray: readonly I[], keyExtractor: (_: I) => K, valueExtractor: (_: I) => V): Map<K, V> {
 		return inputArray.reduce<Map<K, V>>((accumulator: Map<K, V>, element: I) => accumulator.set(keyExtractor(element), valueExtractor(element)), new Map<K, V>());
 	}
 
 	/** Retrieves the top 5 heroes (name and time played in milliseconds) for either `competitiveStats` or `quickPlayStats` */
-	private getTopHeroes(overwatchData: OverwatchDataSet, type: 'competitiveStats' | 'quickPlayStats'): TopHero[] {
-		return Object.keys(overwatchData[type].topHeroes)
+	private getTopHeroes(overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion): TopHero[] {
+		const overwatchDataType = overwatchData[type];
+
+		return Object.keys(overwatchDataType.topHeroes)
 			.map(hero => {
-				if (Reflect.has(overwatchData[type].topHeroes, hero)) {
-					const timePlayed = overwatchData[type].topHeroes[hero].timePlayed.split(':').map(parseFloat);
-					const seconds = timePlayed.length === 3
-						? Number(timePlayed[0] * 3600) + Number(timePlayed[1] * 60) + Number(timePlayed[0])
-						: Number(timePlayed[0] * 60) + Number(timePlayed[1]);
+				const timePlayed = overwatchDataType.topHeroes[hero].timePlayed.split(':').map(parseFloat);
+				const seconds = timePlayed.length === 3
+					? Number(timePlayed[0] * 3600) + Number(timePlayed[1] * 60) + Number(timePlayed[0])
+					: Number(timePlayed[0] * 60) + Number(timePlayed[1]);
 
-					return { hero, time: seconds * Time.Second };
-				}
-
-				return undefined;
+				return { hero, time: seconds * Time.Second };
 			})
-			.filter(this.kRemoveNullAndUndefined)
 			.sort((a, b) => b.time - a.time)
 			.slice(0, 5);
 	}
 
-	/** Removes `null` and `undefined` from an array in a TypeScript-safe way */
-	private removeNullAndUndefined<TValue>(value: TValue | null | undefined): value is TValue {
-		return value !== null && value !== undefined;
-	}
-
 	/** Extracts statistics from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private extractStats(overwatchData: OverwatchDataSet, type: 'competitiveStats' | 'quickPlayStats', EMBED_DATA: LanguageKeys['COMMMAND_OVERWATCH_EMBED_DATA']) {
+	private extractStats(overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, EMBED_DATA: LanguageKeys['COMMMAND_OVERWATCH_EMBED_DATA']) {
 		const {
 			careerStats: {
 				allHeroes: {
@@ -155,7 +144,7 @@ export default class OverwatchCommand extends SkyraCommand {
 	}
 
 	/** Extracts top heroes from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private extractTopHeroes(overwatchData: OverwatchDataSet, type: 'competitiveStats' | 'quickPlayStats', EMBED_DATA: LanguageKeys['COMMMAND_OVERWATCH_EMBED_DATA']) {
+	private extractTopHeroes(overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, EMBED_DATA: LanguageKeys['COMMMAND_OVERWATCH_EMBED_DATA']) {
 		const topHeroes = this.getTopHeroes(overwatchData, type);
 
 		return [

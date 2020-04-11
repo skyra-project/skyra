@@ -7,6 +7,10 @@ export interface LavalinkEvent {
 	guildId: string;
 }
 
+export interface LavalinkStartEvent extends LavalinkEvent {
+	track: string;
+}
+
 export interface LavalinkEndEvent extends LavalinkEvent {
 	track: string;
 	reason: string;
@@ -46,6 +50,10 @@ export interface LavalinkDestroyEvent extends LavalinkEvent {
  */
 export function isTrackEndEvent(x: LavalinkEvent): x is LavalinkEndEvent {
 	return x.type === 'TrackEndEvent';
+}
+
+export function isTrackStartEvent(x: LavalinkEvent): x is LavalinkStartEvent {
+	return x.type === 'TrackStartEvent';
 }
 
 /**

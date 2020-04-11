@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { isDestroy, isPlayerUpdate, isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent } from '@utils/LavalinkUtils';
+import { isDestroy, isPlayerUpdate, isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent, isTrackStartEvent } from '@utils/LavalinkUtils';
 import { Colors, Event, EventStore } from 'klasa';
 
 export default class extends Event {
@@ -20,6 +20,10 @@ export default class extends Event {
 
 		if (isTrackEndEvent(payload)) {
 			return this.client.emit(Events.LavalinkEnd, manager, payload);
+		}
+
+		if (isTrackStartEvent(payload)) {
+			return this.client.emit(Events.LavalinkStart, manager, payload);
 		}
 
 		if (isTrackExceptionEvent(payload)) {

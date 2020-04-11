@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { LavalinkEvent } from '@utils/LavalinkUtils';
+import { LavalinkDestroyEvent } from '@utils/LavalinkUtils';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
@@ -11,7 +11,7 @@ export default class extends Event {
 		});
 	}
 
-	public run(payload: LavalinkEvent) {
+	public run(payload: LavalinkDestroyEvent) {
 		const manager = this.client.guilds.get(payload.guildId)?.music || null;
 		return this.client.emit(Events.LavalinkDestroy, manager, payload);
 	}

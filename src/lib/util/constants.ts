@@ -7,7 +7,7 @@ import { join } from 'path';
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
 export const socialFolder = join(assetsFolder, 'images', 'social');
-export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'assets');
+export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'skyra.pw', 'cdn');
 
 export const enum Time {
 	Millisecond = 1,

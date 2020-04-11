@@ -12,8 +12,8 @@ export default class extends Event {
 	}
 
 	public run(payload: LavalinkDestroyEvent) {
-		const manager = this.client.guilds.get(payload.guildId)?.music || null;
-		return this.client.emit(Events.LavalinkDestroy, manager, payload);
+		const manager = this.client.guilds.get(payload.guildId)?.music;
+		if (typeof manager !== 'undefined') this.client.emit(Events.LavalinkDestroy, manager, payload);
 	}
 
 }

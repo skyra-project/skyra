@@ -16,7 +16,8 @@ export default class extends Event {
 	public run(payload: LavalinkEvent) {
 		if (typeof payload.guildId !== 'string') return;
 
-		const manager = this.client.guilds.get(payload.guildId)?.music || null;
+		const manager = this.client.guilds.get(payload.guildId)?.music;
+		if (typeof manager === 'undefined') return;
 
 		if (isTrackEndEvent(payload)) {
 			return this.client.emit(Events.LavalinkEnd, manager, payload);

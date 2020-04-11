@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { isDestroy, isPlayerUpdate, isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent } from '@utils/LavalinkUtils';
+import { isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent, isTrackStartEvent } from '@utils/LavalinkUtils';
 import { Colors, Event, EventStore } from 'klasa';
 
 export default class extends Event {
@@ -16,10 +16,15 @@ export default class extends Event {
 	public run(payload: LavalinkEvent) {
 		if (typeof payload.guildId !== 'string') return;
 
-		const manager = this.client.guilds.get(payload.guildId)?.music || null;
+		const manager = this.client.guilds.get(payload.guildId)?.music;
+		if (typeof manager === 'undefined') return;
 
 		if (isTrackEndEvent(payload)) {
 			return this.client.emit(Events.LavalinkEnd, manager, payload);
+		}
+
+		if (isTrackStartEvent(payload)) {
+			return this.client.emit(Events.LavalinkStart, manager, payload);
 		}
 
 		if (isTrackExceptionEvent(payload)) {
@@ -32,14 +37,6 @@ export default class extends Event {
 
 		if (isWebSocketClosedEvent(payload)) {
 			return this.client.emit(Events.LavalinkWebsocketClosed, manager, payload);
-		}
-
-		if (isPlayerUpdate(payload)) {
-			return this.client.emit(Events.LavalinkPlayerUpdate, manager, payload);
-		}
-
-		if (isDestroy(payload)) {
-			return this.client.emit(Events.LavalinkDestroy, manager, payload);
 		}
 
 		this.client.emit(Events.Wtf, `${this.kHeader} OP code not recognized: ${payload.op}`);

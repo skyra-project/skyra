@@ -14,7 +14,7 @@ export default class extends Event {
 			await manager.player.play(manager.song.track);
 			manager.position = 0;
 			manager.lastUpdate = 0;
-			this.client.emit(Events.MusicSongReplay, this, manager.song);
+			this.client.emit(Events.MusicSongReplay, manager, manager.song);
 			return;
 		}
 
@@ -32,8 +32,6 @@ export default class extends Event {
 			try {
 				manager.song = manager.queue.shift()!;
 				await manager.player.play(manager.song.track);
-
-				this.client.emit(Events.MusicSongPlay, manager, manager.song);
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
 			}

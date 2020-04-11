@@ -7,6 +7,10 @@ export interface LavalinkEvent {
 	guildId: string;
 }
 
+export interface LavalinkStartEvent extends LavalinkEvent {
+	track: string;
+}
+
 export interface LavalinkEndEvent extends LavalinkEvent {
 	track: string;
 	reason: string;
@@ -38,6 +42,14 @@ export interface LavalinkPlayerUpdateEvent extends LavalinkEvent {
 
 export interface LavalinkDestroyEvent extends LavalinkEvent {
 	type: never;
+}
+
+/**
+ * Check if it's a start event
+ * @param x The event to check
+ */
+export function isTrackStartEvent(x: LavalinkEvent): x is LavalinkStartEvent {
+	return x.type === 'TrackStartEvent';
 }
 
 /**
@@ -78,12 +90,4 @@ export function isWebSocketClosedEvent(x: LavalinkEvent): x is LavalinkWebSocket
  */
 export function isPlayerUpdate(x: LavalinkEvent): x is LavalinkPlayerUpdateEvent {
 	return x.op === 'playerUpdate';
-}
-
-/**
- * Check if it's a destroy event
- * @param x The event to check
- */
-export function isDestroy(x: LavalinkEvent): x is LavalinkDestroyEvent {
-	return x.op === 'destroy';
 }

@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { isDestroy, isPlayerUpdate, isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent, isTrackStartEvent } from '@utils/LavalinkUtils';
+import { isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent, isTrackStartEvent } from '@utils/LavalinkUtils';
 import { Colors, Event, EventStore } from 'klasa';
 
 export default class extends Event {
@@ -36,14 +36,6 @@ export default class extends Event {
 
 		if (isWebSocketClosedEvent(payload)) {
 			return this.client.emit(Events.LavalinkWebsocketClosed, manager, payload);
-		}
-
-		if (isPlayerUpdate(payload)) {
-			return this.client.emit(Events.LavalinkPlayerUpdate, manager, payload);
-		}
-
-		if (isDestroy(payload)) {
-			return this.client.emit(Events.LavalinkDestroy, manager, payload);
 		}
 
 		this.client.emit(Events.Wtf, `${this.kHeader} OP code not recognized: ${payload.op}`);

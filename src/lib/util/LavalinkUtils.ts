@@ -45,15 +45,19 @@ export interface LavalinkDestroyEvent extends LavalinkEvent {
 }
 
 /**
+ * Check if it's a start event
+ * @param x The event to check
+ */
+export function isTrackStartEvent(x: LavalinkEvent): x is LavalinkStartEvent {
+	return x.type === 'TrackStartEvent';
+}
+
+/**
  * Check if it's an end event
  * @param x The event to check
  */
 export function isTrackEndEvent(x: LavalinkEvent): x is LavalinkEndEvent {
 	return x.type === 'TrackEndEvent';
-}
-
-export function isTrackStartEvent(x: LavalinkEvent): x is LavalinkStartEvent {
-	return x.type === 'TrackStartEvent';
 }
 
 /**
@@ -86,12 +90,4 @@ export function isWebSocketClosedEvent(x: LavalinkEvent): x is LavalinkWebSocket
  */
 export function isPlayerUpdate(x: LavalinkEvent): x is LavalinkPlayerUpdateEvent {
 	return x.op === 'playerUpdate';
-}
-
-/**
- * Check if it's a destroy event
- * @param x The event to check
- */
-export function isDestroy(x: LavalinkEvent): x is LavalinkDestroyEvent {
-	return x.op === 'destroy';
 }

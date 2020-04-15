@@ -14,6 +14,7 @@ export default class extends Event {
 		manager.lastUpdate = 0;
 		manager.song = song;
 		manager.systemPaused = false;
+		manager.manuallyPlaying = false;
 
 		if (channel) {
 			const name = Util.escapeMarkdown(await this.fetchDisplayName(manager, song.requester));

@@ -5,7 +5,7 @@ import { Event } from 'klasa';
 export default class extends Event {
 
 	public run(manager: MusicHandler) {
-		this.client.emit(Events.MusicSongPlay, manager, manager.song);
+		if (!manager.manuallyPlaying) this.client.emit(Events.MusicSongPlay, manager, manager.song);
 	}
 
 }

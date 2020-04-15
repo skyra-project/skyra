@@ -22,6 +22,11 @@ export class MusicHandler {
 	@enumerable(false)
 	public systemPaused = false;
 
+	/**
+	 * Whether or not the MusicHandler started playing music with {@see MusicHandler#play}. This property tells
+	 * lavalink's start track event to not fire the {@see Client#musicSongPlay} event.
+	 */
+	public manuallyPlaying = false;
 	public queue: Song[] = [];
 	public volume = 100;
 	public replay = false;
@@ -134,6 +139,7 @@ export class MusicHandler {
 		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
 		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
+		this.manuallyPlaying = true;
 		this.song = this.queue.shift()!;
 		await this.player.play(this.song.track);
 

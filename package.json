@@ -53,7 +53,7 @@
 		"confusables": "^1.0.0",
 		"diff": "^4.0.2",
 		"discord.js": "github:discordjs/discord.js#fe7df708e44e0280dfaf0f8e457b154781bb5140",
-		"emoji-regex": "^8.0.0",
+		"emoji-regex": "^9.0.0",
 		"fs-nextra": "^0.4.7",
 		"gifencoder": "^2.0.1",
 		"he": "^1.2.0",

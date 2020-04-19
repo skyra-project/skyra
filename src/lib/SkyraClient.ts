@@ -25,13 +25,9 @@ import { enumerable } from './util/util';
 
 // Import all configuration
 import {
-	CLIENT_SECRET,
 	ENABLE_LAVALINK,
 	ENABLE_POSTGRES,
 	EVLYN_PORT,
-	LAVALINK_PASSWORD,
-	PGSQL_DATABASE_PASSWORD,
-	TOKENS,
 	VERSION,
 	WEBHOOK_ERROR
 } from '@root/config';
@@ -49,7 +45,6 @@ import './setup/Canvas';
 import { CommonQuery } from './queries/common';
 import { PostgresCommonQuery } from './queries/postgres';
 import { JsonCommonQuery } from './queries/json';
-import { initClean } from './util/clean';
 import { WebsocketHandler } from './websocket';
 import { InviteStore } from './structures/InviteStore';
 
@@ -162,13 +157,6 @@ export class SkyraClient extends KlasaClient {
 	public static defaultMemberSchema = new Schema()
 		.add('points', 'Number', { configurable: false });
 
-}
-
-{
-	const raw = Object.values(TOKENS)
-		.concat([CLIENT_SECRET, LAVALINK_PASSWORD, PGSQL_DATABASE_PASSWORD, WEBHOOK_ERROR.token])
-		.filter(value => typeof value === 'string' && value !== '');
-	initClean([...new Set(raw)]);
 }
 
 SkyraClient.use(DashboardClient);

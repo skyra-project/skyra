@@ -2,6 +2,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { WATCH_FILES } from '@root/config';
+import { clean } from '@utils/initClean';
 import { floatPromise } from '@utils/util';
 import { watch } from 'chokidar';
 import { KlasaMessage, Piece, Stopwatch, Task } from 'klasa';
@@ -54,6 +55,7 @@ export default class extends Task {
 		}
 
 		this.client.emit(Events.Verbose, `[${store}] ${name} was updated. ${log}`);
+		clean();
 	}
 
 	public init() {

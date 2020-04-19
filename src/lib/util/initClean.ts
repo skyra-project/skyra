@@ -5,6 +5,4 @@ const raw = Object.values(TOKENS)
 	.concat([CLIENT_SECRET, LAVALINK_PASSWORD, PGSQL_DATABASE_PASSWORD, WEBHOOK_ERROR.token])
 	.filter(value => typeof value === 'string' && value !== '');
 
-export const clean = () => initClean([...new Set(raw)]);
-
-clean();
+initClean([...new Set(raw)]);

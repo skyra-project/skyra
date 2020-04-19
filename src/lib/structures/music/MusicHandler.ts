@@ -130,14 +130,13 @@ export class MusicHandler {
 		return this;
 	}
 
-	public async play(context: MusicHandlerRequestContext | null = null) {
+	public async play() {
 		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
 		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
 		this.song = this.queue.shift()!;
 		await this.player.play(this.song.track);
 
-		this.client.emit(Events.MusicSongPlay, this, this.song, context);
 		return this;
 	}
 

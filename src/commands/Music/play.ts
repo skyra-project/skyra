@@ -39,7 +39,7 @@ export default class extends MusicCommand {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
 		} else {
 			music.channelID = message.channel.id;
-			await music.play(this.getContext(message));
+			await music.play();
 		}
 	}
 

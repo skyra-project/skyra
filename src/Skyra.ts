@@ -1,4 +1,5 @@
 import 'module-alias/register';
+import '@utils/initClean';
 import { SkyraClient } from '@lib/SkyraClient';
 import { CLIENT_OPTIONS, TOKENS } from '@root/config';
 import { inspect } from 'util';

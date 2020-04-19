@@ -54,6 +54,7 @@ export default class extends Task {
 		}
 
 		this.client.emit(Events.Verbose, `[${store}] ${name} was updated. ${log}`);
+		await import('@utils/initClean');
 	}
 
 	public init() {

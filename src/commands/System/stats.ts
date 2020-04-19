@@ -1,8 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { getColor, roundNumber } from '@utils/util';
 import { version } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { loadavg, uptime } from 'os';
-import { getColor } from '@utils/util';
+import { cpus, uptime } from 'os';
 
 export default class extends SkyraCommand {
 
@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 	private get usageStatistics(): StatsUsage {
 		const usage = process.memoryUsage();
 		return {
-			CPU_LOAD: loadavg().map(load => Math.round(load * 10000) / 100) as [number, number, number],
+			CPU_LOAD: cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100),
 			RAM_TOTAL: `${Math.round(100 * (usage.heapTotal / 1048576)) / 100}MB`,
 			RAM_USED: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
 		};
@@ -65,7 +65,7 @@ export interface StatsUptime {
 }
 
 export interface StatsUsage {
-	CPU_LOAD: [number, number, number];
+	CPU_LOAD: number[];
 	RAM_TOTAL: string;
 	RAM_USED: string;
 }

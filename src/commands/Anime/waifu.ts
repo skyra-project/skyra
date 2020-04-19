@@ -5,12 +5,11 @@ import { CommandStore, KlasaMessage } from 'klasa';
 
 /**
  * Faces were generated with
- * - 𝜓=0.7 for images #0–60,000 (high quality but low diversity).
- * - 𝜓=1.0 for #60,001–70,000 (low quality, high diversity).
- * - 𝜓=0.6 for #70,001–100,000 for a mix of good & interesting faces.
- * Images #100,000–#199,999 were generated using a dataset of more loosely cropped faces for a more 'portrait' look, and 𝜓=0.5.
+ * - 𝜓=0.8 for images #0–50,000 (medium quality/medium diversity).
+ * - 𝜓=0.6 for #50,001–75,000 (high quality, low diversity).
+ * - 𝜓=1.1 for #75,001–100,000 (low quality, high diversity) for a mix of good & interesting faces.
  */
-const kMaximum = 199999;
+const kMaximum = 100000;
 
 
 export default class extends SkyraCommand {

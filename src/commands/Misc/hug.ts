@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -30,15 +30,27 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		if (user.id === message.author.id) user = this.client.user!;
 
-		const [hugged, hugger] = await Promise.all([
+		const [man, woman] = await Promise.all([
 			fetchAvatar(user, 256),
 			fetchAvatar(message.author, 256)
 		]);
 
 		return new Canvas(660, 403)
 			.addImage(this.template!, 0, 0, 660, 403)
-			.addImage(hugger, 124, 92, 109, 109, { type: 'round', radius: 54, restore: true })
-			.addImage(hugged, 233, 57, 98, 98, { type: 'round', radius: 49, restore: true })
+
+			// Draw the woman
+			.save()
+			.setTransform(-1, 0, 0, 1, 178, 146)
+			.rotate(radians(33.50))
+			.addCircularImage(woman, 0, 0, 54)
+			.restore()
+
+			// Draw the man
+			.translate(282, 106)
+			.rotate(radians(28.42))
+			.addCircularImage(man, 0, 0, 49)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 

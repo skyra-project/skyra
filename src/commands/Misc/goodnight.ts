@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -12,6 +12,7 @@ export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
+			aliases: ['night'],
 			bucket: 2,
 			cooldown: 30,
 			description: language => language.tget('COMMAND_GOODNIGHT_DESCRIPTION'),
@@ -37,8 +38,20 @@ export default class extends SkyraCommand {
 
 		return new Canvas(500, 322)
 			.addImage(this.template!, 0, 0, 636, 366)
-			.addImage(kisser, 315, 25, 146, 146, { type: 'round', radius: 73, restore: true })
-			.addImage(child, 350, 170, 110, 110, { type: 'round', radius: 55, restore: true })
+
+			// Draw the mother
+			.save()
+			.translate(388, 98)
+			.rotate(radians(41.89))
+			.addCircularImage(kisser, 0, 0, 73)
+			.restore()
+
+			// Draw the kid
+			.setTransform(-1, 0, 0, 1, 405, 225)
+			.rotate(radians(-27.98))
+			.addCircularImage(child, 0, 0, 55)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 

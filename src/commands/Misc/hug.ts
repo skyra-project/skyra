@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			.restore()
 
 			// Draw the man
-			.translate(282, 106)
+			.translate(292, 96)
 			.rotate(radians(28.42))
 			.addCircularImage(man, 0, 0, 49)
 

@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CLIENT_ID } from '@root/config';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -43,8 +43,19 @@ export default class extends SkyraCommand {
 
 		return new Canvas(569, 327)
 			.addImage(this.template!, 0, 0, 569, 327)
-			.addImage(chasedAvatar, 118, 27, 52, 52, { type: 'round', radius: 26, restore: true })
-			.addImage(chaserAvatar, 368, 34, 50, 50, { type: 'round', radius: 25, restore: true })
+			.setTransform(-1, 0, 0, 1, 0, 0)
+
+			// Draw chased avatar
+			.save()
+			.translate(-144, 51)
+			.rotate(radians(16.12))
+			.addCircularImage(chasedAvatar, 0, 0, 26)
+			.restore()
+
+			// Draw chaser avatar
+			.translate(-391, 62)
+			.rotate(radians(12.26))
+			.addCircularImage(chaserAvatar, 0, 0, 25)
 			.toBufferAsync();
 	}
 

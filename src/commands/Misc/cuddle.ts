@@ -51,6 +51,7 @@ export default class extends SkyraCommand {
 			.rotate(radians(35.28))
 			.addCircularImage(woman, 0, 0, 69)
 
+			// Draw the buffer
 			.toBufferAsync();
 	}
 

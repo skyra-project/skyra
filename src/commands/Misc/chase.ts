@@ -56,6 +56,8 @@ export default class extends SkyraCommand {
 			.translate(-391, 62)
 			.rotate(radians(12.26))
 			.addCircularImage(chaserAvatar, 0, 0, 25)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 

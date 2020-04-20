@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
@@ -9,16 +9,17 @@ import { join } from 'path';
 
 const imageCoordinates = [
 	[
-		{ center: [211, 53], radius: 18 },
-		{ center: [136, 237], radius: 53 },
-		{ center: [130, 385], radius: 34 }
+		// Tony
+		{ center: [211, 53], radius: 18, rotation: radians(-9.78), flip: true },
+		{ center: [136, 237], radius: 53, rotation: radians(24.27), flip: true },
+		{ center: [130, 385], radius: 34, rotation: radians(17.35), flip: true }
 	], [
-		{ center: [35, 25], radius: 22 },
-		{ center: [326, 67], radius: 50 },
-		{ center: [351, 229], radius: 43 },
-		{ center: [351, 390], radius: 40 }
+		// Cpt America
+		{ center: [326, 67], radius: 50, rotation: radians(-32.47), flip: true },
+		{ center: [351, 229], radius: 43, rotation: radians(-8.53), flip: false },
+		{ center: [351, 390], radius: 40, rotation: radians(-9.21), flip: false }
 	]
-];
+] as const;
 
 export default class extends SkyraCommand {
 
@@ -64,18 +65,23 @@ export default class extends SkyraCommand {
 		})));
 
 		/* Initialize Canvas */
-		const canvas = new Canvas(500, 500)
-			.addImage(this.template!, 0, 0, 500, 500);
+		return new Canvas(500, 500)
+			.addImage(this.template!, 0, 0, 500, 500)
+			.process(canvas => {
+				for (const index of [0, 1]) {
+					const image = images[index];
+					const coordinates = imageCoordinates[index];
 
-		for (const index of [0, 1]) {
-			const image = images[index];
-			const coordinates = imageCoordinates[index];
-			for (const coordinate of coordinates) {
-				canvas.addCircularImage(image, coordinate.center[0], coordinate.center[1], coordinate.radius);
-			}
-		}
-
-		return canvas.toBuffer();
+					for (const { center, rotation, radius, flip } of coordinates) {
+						canvas
+							.setTransform(flip ? -1 : 1, 0, 0, 1, 0, 0)
+							.translate(flip ? -center[0] : center[0], center[1])
+							.rotate(flip ? -rotation : rotation)
+							.addCircularImage(image, 0, 0, radius);
+					}
+				}
+			})
+			.toBufferAsync();
 	}
 
 }

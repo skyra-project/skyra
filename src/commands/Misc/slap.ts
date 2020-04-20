@@ -1,29 +1,27 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CLIENT_ID } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_SLAP_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SLAP_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	spam: true,
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private kTemplate: Buffer | null = null;
 	private readonly skyraID = CLIENT_ID;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_SLAP_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SLAP_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			spam: true,
-			usage: '<user:username>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -45,7 +43,7 @@ export default class extends SkyraCommand {
 
 		/* Initialize Canvas */
 		return new Canvas(950, 475)
-			.addImage(this.template!, 0, 0, 950, 475)
+			.addImage(this.kTemplate!, 0, 0, 950, 475)
 
 			// Draw Batman
 			.save()
@@ -64,7 +62,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/slap.png'));
+		this.kTemplate = await readFile(join(assetsFolder, './images/memes/slap.png'));
 	}
 
 }

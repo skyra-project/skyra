@@ -1,28 +1,26 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_GOOFYTIME_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_GOOFYTIME_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	spam: true,
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_GOOFYTIME_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_GOOFYTIME_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			spam: true,
-			usage: '<user:username>'
-		});
-	}
+	private kTemplate: Buffer | null = null;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -36,7 +34,7 @@ export default class extends SkyraCommand {
 		]);
 
 		return new Canvas(356, 435)
-			.addImage(this.template!, 0, 0, 356, 435)
+			.addImage(this.kTemplate!, 0, 0, 356, 435)
 
 			// Draw Goofy
 			.addCircularImage(goofy, 245, 98, 46)
@@ -51,7 +49,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/goofy.png'));
+		this.kTemplate = await readFile(join(assetsFolder, './images/memes/goofy.png'));
 	}
 
 }

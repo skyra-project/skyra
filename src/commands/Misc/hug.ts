@@ -8,7 +8,7 @@ import { join } from 'path';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private kTemplate: Buffer | null = null;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -30,32 +30,32 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		if (user.id === message.author.id) user = this.client.user!;
 
-		const [man, woman] = await Promise.all([
+		const [hugged, hugger] = await Promise.all([
 			fetchAvatar(user, 256),
 			fetchAvatar(message.author, 256)
 		]);
 
 		return new Canvas(660, 403)
-			.addImage(this.template!, 0, 0, 660, 403)
+			.addImage(this.kTemplate!, 0, 0, 660, 403)
 
 			// Draw the woman
 			.save()
 			.setTransform(-1, 0, 0, 1, 178, 146)
 			.rotate(radians(33.50))
-			.addCircularImage(woman, 0, 0, 54)
+			.addCircularImage(hugger, 0, 0, 54)
 			.restore()
 
 			// Draw the man
 			.translate(292, 96)
 			.rotate(radians(28.42))
-			.addCircularImage(man, 0, 0, 49)
+			.addCircularImage(hugged, 0, 0, 49)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/hug.png'));
+		this.kTemplate = await readFile(join(assetsFolder, './images/memes/hug.png'));
 	}
 
 }

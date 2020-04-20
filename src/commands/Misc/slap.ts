@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CLIENT_ID } from '@root/config';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, slapper] = [message.author, user];
 		else [selectedUser, slapper] = [user, message.author];
 
-		const [Slapped, Slapper] = await Promise.all([
+		const [robin, batman] = await Promise.all([
 			fetchAvatar(selectedUser, 256),
 			fetchAvatar(slapper, 256)
 		]);
@@ -46,13 +46,25 @@ export default class extends SkyraCommand {
 		/* Initialize Canvas */
 		return new Canvas(950, 475)
 			.addImage(this.template!, 0, 0, 950, 475)
-			.addImage(Slapper, 410, 107, 131, 131, { type: 'round', radius: 66, restore: true })
-			.addImage(Slapped, 159, 180, 169, 169, { type: 'round', radius: 85, restore: true })
+
+			// Draw Batman
+			.save()
+			.setTransform(-1, 0, 0, 1, 476, 173)
+			.rotate(radians(-13.96))
+			.addCircularImage(batman, 0, 0, 79)
+			.restore()
+
+			// Draw Robin
+			.translate(244, 265)
+			.rotate(radians(-24.53))
+			.addCircularImage(robin, 0, 0, 93)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/imageSlap.png'));
+		this.template = await readFile(join(assetsFolder, './images/memes/slap.png'));
 	}
 
 }

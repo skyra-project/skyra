@@ -1,29 +1,28 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CLIENT_ID } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['deletethis'],
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_DELETTHIS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_DELETTHIS_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	spam: true,
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private kTemplate: Buffer | null = null;
 	private readonly skyraID = CLIENT_ID;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['deletethis'],
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_DELETTHIS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DELETTHIS_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			usage: '<user:username>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -31,32 +30,39 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		let selectedUser: KlasaUser;
-		let hammerer: KlasaUser;
+		let target: KlasaUser;
+		let author: KlasaUser;
 		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
-		if (user === message.author) [selectedUser, hammerer] = [message.author, this.client.user!];
-		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, hammerer] = [message.author, user];
-		else [selectedUser, hammerer] = [user, message.author];
+		if (user === message.author) [target, author] = [message.author, this.client.user!];
+		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [target, author] = [message.author, user];
+		else [target, author] = [user, message.author];
 
-		const [Hammered, Hammerer] = await Promise.all([
-			fetchAvatar(selectedUser, 256),
-			fetchAvatar(hammerer, 256)
+		const [hammered, hammerer] = await Promise.all([
+			fetchAvatar(target, 256),
+			fetchAvatar(author, 256)
 		]);
 
-		/* Initialize Canvas */
 		return new Canvas(650, 471)
-			.addImage(this.template!, 0, 0, 650, 471)
-			.rotate(0.4)
-			.addImage(Hammerer, 297, -77, 154, 154, { type: 'round', radius: 77, restore: true })
-			.resetTransformation()
-			.rotate(0.46)
-			.addImage(Hammered, 495, -77, 154, 154, { type: 'round', radius: 77 })
-			.resetTransformation()
+			.addImage(this.kTemplate!, 0, 0, 650, 471)
+
+			// Draw the guy with the hammer
+			.save()
+			.translate(341, 135)
+			.rotate(radians(21.80))
+			.addCircularImage(hammerer, 0, 0, 77)
+			.restore()
+
+			// Draw the who's getting the hammer
+			.setTransform(-1, 0, 0, 1, 511, 231)
+			.rotate(radians(-25.40))
+			.addCircularImage(hammered, 0, 0, 77)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/DeletThis.png'));
+		this.kTemplate = await readFile(join(assetsFolder, './images/memes/DeletThis.png'));
 	}
 
 }

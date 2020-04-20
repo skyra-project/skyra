@@ -14,6 +14,7 @@ import { join } from 'path';
 	extendedHelp: language => language.tget('COMMAND_PEEPOLOVE_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text', 'dm'],
+	spam: true,
 	usage: '<image:image>'
 })
 export default class extends SkyraCommand {

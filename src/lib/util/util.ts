@@ -49,6 +49,10 @@ export interface ReferredPromise<T> {
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export function noop() { }
 
+export function radians(degrees: number) {
+	return degrees * Math.PI / 180;
+}
+
 export function showSeconds(duration: number) {
 	if (!isNumber(duration)) return '00:00';
 	const seconds = Math.floor(duration / Time.Second) % 60;

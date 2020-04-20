@@ -1,27 +1,26 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['pray'],
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_F_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_F_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	spam: true,
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['pray'],
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_F_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_F_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			usage: '[user:username]'
-		});
-	}
+	private kTemplate: Buffer | null = null;
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
@@ -34,13 +33,20 @@ export default class extends SkyraCommand {
 		const praised = await fetchAvatar(user, 256);
 
 		return new Canvas(960, 540)
-			.addImage(praised, 349, 87, 109, 109)
-			.addImage(this.template!, 0, 0, 960, 540)
+			// Draw the avatar
+			.setTransform(1, -0.1, 0.1, 1, 342, 88)
+			.addImage(praised, 0, 0, 109, 109)
+
+			// Draw the template
+			.resetTransformation()
+			.addImage(this.kTemplate!, 0, 0, 960, 540)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/f.png'));
+		this.kTemplate = await readFile(join(assetsFolder, './images/memes/f.png'));
 	}
 
 }

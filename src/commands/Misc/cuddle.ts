@@ -14,6 +14,7 @@ import { join } from 'path';
 	extendedHelp: language => language.tget('COMMAND_CUDDLE_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
+	spam: true,
 	usage: '<user:username>'
 })
 export default class extends SkyraCommand {

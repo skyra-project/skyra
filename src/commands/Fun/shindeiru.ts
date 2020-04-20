@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -42,9 +42,26 @@ export default class extends SkyraCommand {
 
 		return new Canvas(500, 668)
 			.addImage(this.template!, 0, 0, 500, 668)
-			.addImage(theDeadOne, 96, 19, 113, 113, { type: 'round', radius: 56.5, restore: true })
-			.addImage(theAliveOne, 310, 135, 128, 128, { type: 'round', radius: 64, restore: true })
-			.addImage(theDeadOne, 109, 364, 256, 256, { type: 'round', radius: 128, restore: true })
+			// Draw the dead guy about to attack
+			.save()
+			.translate(162, 77)
+			.rotate(radians(8.58))
+			.addCircularImage(theDeadOne, 0, 0, 56.5)
+			.restore()
+
+			// Draw Kenshiro
+			.save()
+			.translate(384, 218)
+			.rotate(radians(11.13))
+			.addCircularImage(theAliveOne, 0, 0, 64)
+			.restore()
+
+			// Draw the dead guy saying nani
+			.translate(260, 514)
+			.rotate(radians(8.24))
+			.addCircularImage(theDeadOne, 0, 0, 128)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 

@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { readFile } from 'fs-nextra';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -37,8 +37,16 @@ export default class extends SkyraCommand {
 
 		return new Canvas(356, 435)
 			.addImage(this.template!, 0, 0, 356, 435)
-			.addImage(goofy, 199, 52, 92, 92, { type: 'round', radius: 46, restore: true })
-			.addImage(goofied, 95, 296, 50, 50, { type: 'round', radius: 25, restore: true })
+
+			// Draw Goofy
+			.addCircularImage(goofy, 245, 98, 46)
+
+			// Draw the kid in the floor
+			.translate(120, 321)
+			.rotate(radians(-45))
+			.addCircularImage(goofied, 0, 0, 25)
+
+			// Draw the buffer
 			.toBufferAsync();
 	}
 

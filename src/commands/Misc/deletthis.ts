@@ -54,8 +54,7 @@ export default class extends SkyraCommand {
 			.restore()
 
 			// Draw the who's getting the hammer
-			.setTransform(-1, 0, 0, 1, 0, 0)
-			.translate(-511, 231)
+			.setTransform(-1, 0, 0, 1, 511, 231)
 			.rotate(radians(-25.40))
 			.addCircularImage(hammered, 0, 0, 77)
 

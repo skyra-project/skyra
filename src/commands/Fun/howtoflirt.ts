@@ -74,8 +74,7 @@ export default class extends SkyraCommand {
 
 					for (const { center, rotation, radius, flip } of coordinates) {
 						canvas
-							.setTransform(flip ? -1 : 1, 0, 0, 1, 0, 0)
-							.translate(flip ? -center[0] : center[0], center[1])
+							.setTransform(flip ? -1 : 1, 0, 0, 1, center[0], center[1])
 							.rotate(flip ? -rotation : rotation)
 							.addCircularImage(image, 0, 0, radius);
 					}

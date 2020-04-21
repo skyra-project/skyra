@@ -30,9 +30,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async updateDependencies(message: KlasaMessage) {
-		const { stderr } = await util.exec('yarn install --frozen-lockfile')
+		await util.exec('yarn install --frozen-lockfile')
 			.catch(error => ({ stdout: '', stderr: error?.message || error || '' }));
-		if (stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully updated dependencies.`);
 	}
 

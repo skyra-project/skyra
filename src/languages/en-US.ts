@@ -5,7 +5,7 @@ import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/Guild
 import ShinyWager from '@root/arguments/shinywager';
 import { VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
-import friendlyDuration from '@utils/FriendlyDuration';
+import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LanguageHelp } from '@utils/LanguageHelp';
 import { createPick, inlineCodeblock } from '@utils/util';
@@ -24,32 +24,32 @@ const builder = new LanguageHelp()
 	.setReminder('⏰ | ***Reminder***');
 const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
 
-const TIMES = {
-	YEAR: {
+const TIMES: DurationFormatAssetsTime = {
+	[TimeTypes.Year]: {
 		1: 'year',
 		DEFAULT: 'years'
 	},
-	MONTH: {
+	[TimeTypes.Month]: {
 		1: 'month',
 		DEFAULT: 'months'
 	},
-	WEEK: {
+	[TimeTypes.Week]: {
 		1: 'week',
 		DEFAULT: 'weeks'
 	},
-	DAY: {
+	[TimeTypes.Day]: {
 		1: 'day',
 		DEFAULT: 'days'
 	},
-	HOUR: {
+	[TimeTypes.Hour]: {
 		1: 'hour',
 		DEFAULT: 'hours'
 	},
-	MINUTE: {
+	[TimeTypes.Minute]: {
 		1: 'minute',
 		DEFAULT: 'minutes'
 	},
-	SECOND: {
+	[TimeTypes.Second]: {
 		1: 'second',
 		DEFAULT: 'seconds'
 	}

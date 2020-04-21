@@ -23,8 +23,9 @@ export default class extends SkyraCommand {
 	}
 
 	private async compile(message: KlasaMessage) {
-		await util.exec('yarn build')
+		const { stderr } = await util.exec('yarn build')
 			.catch(error => ({ stdout: '', stderr: error?.message || error || '' }));
+		if (stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully compiled.`);
 	}
 

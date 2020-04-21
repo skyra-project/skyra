@@ -1,21 +1,19 @@
 import { codeBlock, exec, sleep } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { Emojis } from '@utils/constants';
 import { cutText } from '@utils/util';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['pull'],
+	description: 'Update the bot',
+	guarded: true,
+	permissionLevel: PermissionLevels.BotOwner,
+	usage: '[branch:string]'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['pull'],
-			description: 'Update the bot',
-			guarded: true,
-			permissionLevel: PermissionLevels.BotOwner,
-			usage: '[branch:string]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
 		await this.fetch(message, branch);

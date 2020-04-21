@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 				`**${TITLES.CURRENT_TIME}**: ${timeData.formatted.split(' ')[1]}`,
 				`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
 				`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
-				`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
+				`**${TITLES.GMT_OFFSET}**: ${this.parseGMTOffset(message, timeData.gmtOffset)}`,
 				`${TITLES.DST(Number(timeData.dst))}`
 			].join('\n')));
 	}
@@ -47,6 +47,14 @@ export default class extends SkyraCommand {
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
 		return await fetch(url, FetchResultTypes.JSON)
 			.catch(() => { throw message.language.tget('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND'); }) as TimeResult;
+	}
+
+	private parseGMTOffset(message: KlasaMessage, offset: number): string {
+		if (offset < 0) {
+			return `-${message.language.duration(offset * 1000 * -1)}`;
+		}
+
+		return message.language.duration(offset * 1000);
 	}
 
 }

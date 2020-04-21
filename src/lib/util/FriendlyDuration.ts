@@ -1,7 +1,7 @@
 /**
  * The supported time types
  */
-const enum TimeTypes {
+export const enum TimeTypes {
 	Second = 'SECOND',
 	Minute = 'MINUTE',
 	Hour = 'HOUR',
@@ -32,6 +32,8 @@ const kTimeDurations: readonly [TimeTypes, number][] = [
  */
 export default function(duration: number, assets: DurationFormatAssetsTime, precision = 7) {
 	const output: string[] = [];
+	const negative = duration < 0;
+	if (negative) duration *= -1;
 
 	for (const [type, timeDuration] of kTimeDurations) {
 		const substraction = duration / timeDuration;
@@ -45,7 +47,7 @@ export default function(duration: number, assets: DurationFormatAssetsTime, prec
 		if (output.length >= precision) break;
 	}
 
-	return output.join(' ') || addUnit(0, assets.SECOND);
+	return `${negative ? '-' : ''}${output.join(' ') || addUnit(0, assets.SECOND)}`;
 }
 
 /**
@@ -62,7 +64,7 @@ interface DurationFormatAssetsUnit extends Record<number, string> {
 	DEFAULT: string;
 }
 
-interface DurationFormatAssetsTime {
+export interface DurationFormatAssetsTime {
 	[TimeTypes.Second]: DurationFormatAssetsUnit;
 	[TimeTypes.Minute]: DurationFormatAssetsUnit;
 	[TimeTypes.Hour]: DurationFormatAssetsUnit;

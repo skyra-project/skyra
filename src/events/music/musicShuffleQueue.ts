@@ -13,7 +13,7 @@ export default class extends Event {
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicShuffleQueue, data: manager.queue });
+			subscription.send({ action: OutgoingWebsocketAction.MusicShuffleQueue, data: { queue: manager.queue.map(q => q.toJSON()) } });
 		}
 	}
 

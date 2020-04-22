@@ -2,6 +2,7 @@ import { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { SubscriptionName } from '@lib/websocket/types';
+import { flattedMusicHandler } from '@utils/Models/ApiTransform';
 import { enumerable } from '@utils/util';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -206,14 +207,7 @@ export class MusicHandler {
 	}
 
 	public toJSON() {
-		const { voiceChannel } = this;
-		return {
-			voiceChannel: voiceChannel === null ? null : voiceChannel.id,
-			song: this.song,
-			position: this.position,
-			status: this.player.status,
-			queue: this.queue
-		};
+		return flattedMusicHandler(this);
 	}
 
 }

@@ -7,7 +7,7 @@ export default class extends Event {
 
 	public run(manager: MusicHandler, song: Song) {
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongReplay, data: song });
+			subscription.send({ action: OutgoingWebsocketAction.MusicSongReplay, data: { song: song.toJSON() } });
 		}
 	}
 

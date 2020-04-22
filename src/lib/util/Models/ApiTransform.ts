@@ -1,3 +1,5 @@
+import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Song } from '@lib/structures/music/Song';
 import { Channel, DMChannel, Guild, GuildChannel, GuildFeatures, GuildMember, NewsChannel, PermissionOverwrites, Role, TextChannel, User, VoiceChannel } from 'discord.js';
 
 // #region Guild
@@ -271,3 +273,62 @@ export interface FlattenedMember {
 }
 
 // #endregion Member
+
+// #region Music
+
+export function flattenSong(song: Song): FlattenedSong {
+	return {
+		id: song.id,
+		track: song.track,
+		requester: song.requester,
+		identifier: song.identifier,
+		seekable: song.seekable,
+		author: song.author,
+		duration: song.duration,
+		stream: song.stream,
+		position: song.position,
+		title: song.title,
+		url: song.url,
+		skips: [...song.skips.values()]
+	};
+}
+
+export interface FlattenedSong {
+	id: string;
+	track: string;
+	requester: string;
+	identifier: string;
+	seekable: boolean;
+	author: string;
+	duration: number;
+	stream: boolean;
+	position: number;
+	title: string;
+	url: string;
+	skips: string[];
+}
+
+export function flattedMusicHandler(handler: MusicHandler): FlattenedMusicHandler {
+	const { voiceChannel } = handler;
+	return {
+		voiceChannel: voiceChannel === null ? null : voiceChannel.id,
+		song: handler.song === null ? null : handler.song.toJSON(),
+		position: handler.position,
+		status: handler.player.status,
+		queue: handler.queue.map(q => q.toJSON()),
+		volume: handler.volume,
+		replay: handler.replay
+	};
+}
+
+export interface FlattenedMusicHandler {
+	voiceChannel: string | null;
+	song: FlattenedSong | null;
+	position: number;
+	status: number;
+	replay: boolean;
+	volume: number;
+	queue: readonly FlattenedSong[];
+}
+
+// #endregion Music

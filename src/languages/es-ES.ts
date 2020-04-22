@@ -3303,7 +3303,7 @@ export default class extends Language {
 		COMMAND_SOCIAL_REMOVE: (user, amount, removed) => `${GREENTICK} Successfully removed ${removed} point${removed === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
 		COMMAND_SOCIAL_UNCHANGED: user => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
 		COMMAND_SOCIAL_RESET: user => `${GREENTICK} The user ${user} got his points removed.`,
-		COMMAND_BANNER_MISSING: 'You must specify a banner id to buy.',
+		COMMAND_BANNER_MISSING: type => `You must specify a banner id to ${type}.`,
 		COMMAND_BANNER_NOTEXISTS: prefix => `This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
 		COMMAND_BANNER_USERLIST_EMPTY: prefix => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,
 		COMMAND_BANNER_RESET_DEFAULT: 'You are already using the default banner.',

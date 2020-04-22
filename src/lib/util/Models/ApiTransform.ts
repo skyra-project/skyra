@@ -308,7 +308,7 @@ export interface FlattenedSong {
 	skips: string[];
 }
 
-export function flattedMusicHandler(handler: MusicHandler): FlattenedMusicHandler {
+export function flattenMusicHandler(handler: MusicHandler): FlattenedMusicHandler {
 	const { voiceChannel } = handler;
 	return {
 		voiceChannel: voiceChannel === null ? null : voiceChannel.id,

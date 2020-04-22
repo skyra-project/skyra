@@ -1,44 +1,34 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Databases } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_BANNER_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_BANNER_EXTENDED'),
+	requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<buy|reset|set|show:default> (banner:banner)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
 	private readonly banners: Map<string, BannerCache> = new Map();
 	private readonly listPrompt = this.definePrompt('<all|user>');
 	private display: UserRichDisplay | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_BANNER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_BANNER_EXTENDED'),
-			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<buy|reset|set|show:default> (banner:banner)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('banner', (arg, _, message, [type]) => {
-			if (type === 'show' || type === 'reset') return undefined;
-			if (!arg) throw message.language.tget('COMMAND_BANNER_MISSING');
-			const banner = this.banners.get(arg);
-			if (banner) return banner;
-			throw message.language.tget('COMMAND_BANNER_NOTEXISTS', message.guild!.settings.get(GuildSettings.Prefix));
-		});
-	}
 
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList));
@@ -98,6 +88,14 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
+		this.createCustomResolver('banner', (arg, _, message, [type]) => {
+			if (type === 'show' || type === 'reset') return undefined;
+			if (!arg) throw message.language.tget('COMMAND_BANNER_MISSING', type);
+			const banner = this.banners.get(arg);
+			if (banner) return banner;
+			throw message.language.tget('COMMAND_BANNER_NOTEXISTS', message.guild!.settings.get(GuildSettings.Prefix));
+		});
+
 		const banners = await this.client.providers.default!.getAll(Databases.Banners) as RawBannerSettings[];
 		const display = new UserRichDisplay(new MessageEmbed().setColor(BrandingColors.Primary));
 		for (const banner of banners) {

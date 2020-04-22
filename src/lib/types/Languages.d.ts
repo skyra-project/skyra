@@ -1449,7 +1449,7 @@ export interface LanguageKeys {
 	COMMAND_SOCIAL_REMOVE: (user: string, amount: number, removed: number) => string;
 	COMMAND_SOCIAL_UNCHANGED: (user: string) => string;
 	COMMAND_SOCIAL_RESET: (user: string) => string;
-	COMMAND_BANNER_MISSING: string;
+	COMMAND_BANNER_MISSING: (type: string) => string;
 	COMMAND_BANNER_NOTEXISTS: (prefix: string) => string;
 	COMMAND_BANNER_USERLIST_EMPTY: (prefix: string) => string;
 	COMMAND_BANNER_RESET_DEFAULT: string;

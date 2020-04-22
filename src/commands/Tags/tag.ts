@@ -12,6 +12,7 @@ import { MessageEmbed } from 'discord.js';
 import { ApplyOptions, requiresPermission } from '@skyra/decorators';
 
 @ApplyOptions<CommandOptions>({
+	aliases: ['tags'],
 	description: language => language.tget('COMMAND_TAG_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_TAG_EXTENDED'),
 	runIn: ['text'],

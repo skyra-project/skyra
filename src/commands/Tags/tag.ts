@@ -10,6 +10,7 @@ import { chunk } from '@klasa/utils';
 import { BrandingColors } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { ApplyOptions, requiresPermission } from '@skyra/decorators';
+import { PermissionLevels } from '@lib/types/Enums';
 
 @ApplyOptions<CommandOptions>({
 	aliases: ['tags'],
@@ -23,7 +24,7 @@ import { ApplyOptions, requiresPermission } from '@skyra/decorators';
 })
 export default class extends SkyraCommand {
 
-	@requiresPermission(4, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
 	public async add(message: KlasaMessage, [tagName, content]: [string, string]) {
 		// Check for permissions and content length
 		if (!content) throw message.language.tget('COMMAND_TAG_CONTENT_REQUIRED');
@@ -39,7 +40,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, cutText(content, 1850)]);
 	}
 
-	@requiresPermission(4, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
 	public async remove(message: KlasaMessage, [tagName]: [string]) {
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.Tags);
@@ -54,7 +55,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TAG_REMOVED', [tagName]);
 	}
 
-	@requiresPermission(4, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
 	public async edit(message: KlasaMessage, [tagName, content]: [string, string]) {
 		if (!content) throw message.language.tget('COMMAND_TAG_CONTENT_REQUIRED');
 

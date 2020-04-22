@@ -16,7 +16,7 @@ export default class extends Event {
 		manager.reset();
 
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongSkip, data: { id: song.id } });
+			subscription.send({ action: OutgoingWebsocketAction.MusicSongSkip, data: { queue: manager.queue.map(s => s.toJSON()) } });
 		}
 	}
 

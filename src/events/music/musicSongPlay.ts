@@ -21,7 +21,13 @@ export default class extends Event {
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongPlay, data: song });
+			subscription.send({
+				action: OutgoingWebsocketAction.MusicSongPlay,
+				data: {
+					song: song.toJSON(),
+					queue: manager.queue.map(s => s.toJSON())
+				}
+			});
 		}
 	}
 

@@ -69,7 +69,7 @@ export default class DashboardWebsocketUser {
 			const guild = this.client.guilds.get(musicSubscription.guild_id);
 			if (!guild) continue;
 
-			this.send({ action: OutgoingWebsocketAction.MusicSync, data: guild.music });
+			this.send({ action: OutgoingWebsocketAction.MusicSync, data: guild.music.toJSON() });
 		}
 	}
 

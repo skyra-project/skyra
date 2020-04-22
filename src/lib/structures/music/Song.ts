@@ -1,3 +1,4 @@
+import { flattenSong } from '@utils/Models/ApiTransform';
 import { cleanMentions, enumerable, showSeconds } from '@utils/util';
 import { Util } from 'discord.js';
 import { Track } from 'lavalink';
@@ -68,6 +69,10 @@ export class Song {
 
 	public toString(): string {
 		return `<${this.url}>`;
+	}
+
+	public toJSON() {
+		return flattenSong(this);
 	}
 
 	private static counter = 0;

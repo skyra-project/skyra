@@ -14,7 +14,7 @@ export default class extends Event {
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicConnect, data: { id: voiceChannel.id } });
+			subscription.send({ action: OutgoingWebsocketAction.MusicConnect, data: { voiceChannel: voiceChannel.id } });
 		}
 	}
 

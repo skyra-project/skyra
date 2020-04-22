@@ -1,3 +1,5 @@
+import { FlattenedMusicHandler } from '@utils/Models/ApiTransform';
+
 export const enum IncomingWebsocketAction {
 	Authenticate = 'AUTHENTICATE',
 	MusicQueueUpdate = 'MUSIC_QUEUE_UPDATE',
@@ -79,7 +81,7 @@ export interface IncomingWebsocketMessage {
 
 export interface OutgoingWebsocketMessage {
 	action?: OutgoingWebsocketAction;
-	data?: unknown;
+	data?: Partial<FlattenedMusicHandler>;
 	error?: string;
 	success?: boolean;
 }

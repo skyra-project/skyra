@@ -2626,14 +2626,15 @@ export default class extends Language {
 			`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
 			synopsis
 		].join('\n'),
-		COMMAND_ANIME_TITLES: {
+		COMMAND_ANIME_EMBED_DATA: {
 			TYPE: 'Tipo',
 			SCORE: 'Puntuación',
 			EPISODES: 'Episodio(s)',
 			EPISODE_LENGTH: 'Duración del episodio',
 			AGE_RATING: 'Clasificación de edad',
 			FIRST_AIR_DATE: 'Primera fecha de emisión',
-			WATCH_IT: 'Míralo Aquí:'
+			WATCH_IT: 'Míralo Aquí:',
+			STILL_AIRING: 'Aún se transmite'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
@@ -2648,12 +2649,13 @@ export default class extends Language {
 			'ONE-SHOT': '☄ Cameo',
 			'SPECIAL': '🎴 Especial'
 		},
-		COMMAND_MANGA_TITLES: {
+		COMMAND_MANGA_EMBED_DATA: {
 			AGE_RATING: 'Clasificación de edad',
 			FIRST_PUBLISH_DATE: 'Primera fecha de publicación',
 			READ_IT: 'Léelo Aquí:',
 			SCORE: 'Puntuación',
-			TYPE: 'Tipo'
+			TYPE: 'Tipo',
+			NONE: 'Ninguno'
 		},
 		COMMAND_WAIFU_FOOTER: 'Imagen por thiswaifudoesnotexist.net',
 

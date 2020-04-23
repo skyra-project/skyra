@@ -2614,14 +2614,15 @@ export default class extends Language {
 			`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
 			synopsis
 		].join('\n'),
-		COMMAND_ANIME_TITLES: {
+		COMMAND_ANIME_EMBED_DATA: {
 			TYPE: 'Type',
 			SCORE: 'Score',
 			EPISODES: 'Episode(s)',
 			EPISODE_LENGTH: 'Episode length',
 			AGE_RATING: 'Age rating',
 			FIRST_AIR_DATE: 'First air date',
-			WATCH_IT: 'Watch it here:'
+			WATCH_IT: 'Watch it here:',
+			STILL_AIRING: 'Still airing'
 		},
 		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
@@ -2636,12 +2637,13 @@ export default class extends Language {
 			'ONE-SHOT': '☄ One Shot',
 			'SPECIAL': '🎴 Special'
 		},
-		COMMAND_MANGA_TITLES: {
+		COMMAND_MANGA_EMBED_DATA: {
 			AGE_RATING: 'Age Rating',
 			FIRST_PUBLISH_DATE: 'First published on',
 			READ_IT: 'Read it here:',
 			SCORE: 'Score',
-			TYPE: 'Subtype'
+			TYPE: 'Subtype',
+			NONE: 'None'
 		},
 		COMMAND_WAIFU_FOOTER: 'Powered by thiswaifudoesnotexist.net',
 

@@ -1,7 +1,8 @@
 export const kWordStartBoundary = String.raw`(?<=^|\W)`;
 export const kWordEndBoundary = String.raw`(?=$|\W)`;
 export const kWordBoundaryWildcard = '*';
-export const kWordReplacer = /\w(?=(\w)?)/g;
+export const kWordReplacer = /.(?=(.)?)/g;
+export const kRegExpSymbols = /[-/\\^$*+?.()|[\]{}]/;
 
 export const enum WordBoundary {
 	None,
@@ -63,5 +64,9 @@ export function processWordBoundaries(word: string) {
 }
 
 export function processWordPattern(word: string) {
-	return word.replace(kWordReplacer, (letter, nextWord) => `${letter}+${nextWord ? '\\W*' : ''}`);
+	return word.replace(kWordReplacer, (letter, nextWord) => `${processLetter(letter)}+${nextWord ? '\\W*' : ''}`);
+}
+
+export function processLetter(letter: string) {
+	return kRegExpSymbols.test(letter) ? `\\${letter}` : letter;
 }

@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 	}
 
 	private buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const titles = message.language.tget('COMMAND_ANIME_TITLES');
+		const embedData = message.language.tget('COMMAND_ANIME_EMBED_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
 			.setFooter('© kitsu.io'));
@@ -75,13 +75,13 @@ export default class extends SkyraCommand {
 				.setURL(animeURL)
 				.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
 				.setThumbnail(entry.posterImage?.original || '')
-				.addField(titles.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
-				.addField(titles.SCORE, score, true)
-				.addField(titles.EPISODES, entry.episodeCount ? entry.episodeCount : 'Still airing', true)
-				.addField(titles.EPISODE_LENGTH, message.language.duration(entry.episodeLength * 60 * 1000), true)
-				.addField(titles.AGE_RATING, entry.ageRating, true)
-				.addField(titles.FIRST_AIR_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate * 1000), true)
-				.addField(titles.WATCH_IT, `**[${title}](${animeURL})**`));
+				.addField(embedData.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
+				.addField(embedData.SCORE, score, true)
+				.addField(embedData.EPISODES, entry.episodeCount ? entry.episodeCount : embedData.STILL_AIRING, true)
+				.addField(embedData.EPISODE_LENGTH, message.language.duration(entry.episodeLength * 60 * 1000), true)
+				.addField(embedData.AGE_RATING, entry.ageRating, true)
+				.addField(embedData.FIRST_AIR_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate * 1000), true)
+				.addField(embedData.WATCH_IT, `**[${title}](${animeURL})**`));
 		}
 		return display;
 	}

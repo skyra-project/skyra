@@ -883,7 +883,7 @@ export interface LanguageKeys {
 	COMMAND_HOROSCOPE_TITLES: {
 		DAILY_HOROSCOPE: (sign: string) => string;
 		METADATA_TITLE: string;
-		METADATA (intensity: string, keywords: string, mood: string): string;
+		METADATA(intensity: string, keywords: string, mood: string): string;
 	};
 	COMMAND_IGDB_DESCRIPTION: string;
 	COMMAND_IGDB_EXTENDED: string;
@@ -1048,7 +1048,7 @@ export interface LanguageKeys {
 	};
 	COMMAND_ANIME_INVALID_CHOICE: string;
 	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
-	COMMAND_ANIME_TITLES: {
+	COMMAND_ANIME_EMBED_DATA: {
 		TYPE: string;
 		SCORE: string;
 		EPISODES: string;
@@ -1056,14 +1056,16 @@ export interface LanguageKeys {
 		AGE_RATING: string;
 		FIRST_AIR_DATE: string;
 		WATCH_IT: string;
+		STILL_AIRING: string;
 	};
 	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
-	COMMAND_MANGA_TITLES: {
+	COMMAND_MANGA_EMBED_DATA: {
 		TYPE: string;
 		SCORE: string;
 		AGE_RATING: string;
 		FIRST_PUBLISH_DATE: string;
 		READ_IT: string;
+		NONE: string;
 	};
 	COMMAND_MANGA_TYPES: {
 		'MANGA': string;

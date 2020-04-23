@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 	}
 
 	private buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const titles = message.language.tget('COMMAND_MANGA_TITLES');
+		const embedData = message.language.tget('COMMAND_MANGA_EMBED_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
 			.setFooter('© kitsu.io'));
@@ -75,11 +75,11 @@ export default class extends SkyraCommand {
 				.setURL(mangaURL)
 				.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
 				.setThumbnail(entry.posterImage.original)
-				.addField(titles.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
-				.addField(titles.SCORE, score, true)
-				.addField(titles.AGE_RATING, entry.ageRating ? entry.ageRating : 'None', true)
-				.addField(titles.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
-				.addField(titles.READ_IT, `**[${title}](${mangaURL})**`));
+				.addField(embedData.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
+				.addField(embedData.SCORE, score, true)
+				.addField(embedData.AGE_RATING, entry.ageRating ? entry.ageRating : embedData.NONE, true)
+				.addField(embedData.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
+				.addField(embedData.READ_IT, `**[${title}](${mangaURL})**`));
 		}
 		return display;
 	}

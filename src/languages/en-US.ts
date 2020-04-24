@@ -1871,13 +1871,16 @@ export default class extends Language {
 		COMMAND_LEARN_EXTENDED: builder.display('learn', {
 			extendedHelp: `
 				Uses a fuzzy search to also match against near-matches.
+				Moves split on every \`, \` (comma space) and you can provide
+				as many moves as you wish.
 				You can provide a flag of \`--shiny\` to get the shiny sprite.
 			`,
 			explainedUsage: [
+				['generation', '(Optional), The generation for which to check the data'],
 				['pokemon', 'The Pokémon whose learnset you want to check'],
 				['move', 'The move(s) you want to check for']
 			],
-			examples: ['dragonite "dragon dance"', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny', 'pikachu "thunderbolt,thunder"']
+			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		}),
 		COMMAND_LEARN_METHOD_TYPES: {
 			BY_LEVEL_UP: level => `by level up at level ${level}`,

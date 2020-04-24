@@ -1,33 +1,34 @@
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['learnset', 'learnall'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_LEARN_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_LEARN_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '[generation:generation] <pokemon:string> <moves:...string> ',
+	usageDelim: ' ',
+	flagSupport: true
+})
 export default class Learn extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['learnset', 'learnall'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_LEARN_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_LEARN_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<pokemon:string> <move:moves> [generation:generation]',
-			usageDelim: ' ',
-			flagSupport: true
-		});
+	private kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
+	private kClientIntegerArg = this.client.arguments.get('integer')!;
 
-		this.createCustomResolver('moves', arg => arg.toLowerCase().split(','));
-
-		this.createCustomResolver('generation', (arg, _, message) => {
-			if (['1', '2', '3', '4', '5', '6', '7', '8'].includes(arg)) return this.client.arguments.get('integer')!.run(arg, _, message);
+	public async init() {
+		this.createCustomResolver('generation', (arg, possible, message) => {
+			if (this.kPokemonGenerations.has(arg)) return this.kClientIntegerArg.run(arg, possible, message);
 			throw message.language.tget('COMMAND_LEARN_INVALID_GENERATION', arg);
 		});
 	}
 
-	public async run(message: KlasaMessage, [pokemon, moves, generation]: [string, string[], number]) {
-		const learnset = await this.fetchAPI(message, pokemon, moves, generation);
+	public async run(message: KlasaMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
+		const learnset = await this.fetchAPI(message, pokemon, moves.split(', '), generation);
 		let levelUpMoves: string[] = [];
 		let vctMoves: string[] = [];
 		let tutorMoves: string[] = [];
@@ -118,8 +119,7 @@ export default class Learn extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, pokemon: string, moves: string[], generation: number) {
 		try {
-			const apiParsedMoves = `[${moves.map(move => `"${move}"`).join(',')}]`;
-			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy(pokemon, apiParsedMoves, generation));
+			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy, { pokemon, moves, generation });
 			return data.getPokemonLearnsetByFuzzy;
 		} catch {
 			throw message.language.tget('COMMAND_LEARN_QUERY_FAILED', pokemon, moves);

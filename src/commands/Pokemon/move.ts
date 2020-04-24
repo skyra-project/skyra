@@ -1,21 +1,19 @@
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_MOVE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MOVE_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<move:str>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_MOVE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MOVE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<move:str>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [move]: [string]) {
 		const moveDetails = await this.fetchAPI(message, move.toLowerCase());
@@ -45,7 +43,7 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, move: string) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy(move));
+			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
 			throw message.language.tget('COMMAND_MOVE_QUERY_FAIL', move);

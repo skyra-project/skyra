@@ -1,23 +1,23 @@
 import { TypeEntry, Types } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['matchup', 'weakness', 'advantage'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_TYPE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TYPE_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<types:type{2}>'
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['matchup', 'weakness', 'advantage'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_TYPE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TYPE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<types:type{2}>'
-		});
-
+	public async init() {
 		this.createCustomResolver('type', (arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [types]: [string[]]) {
+	public async run(message: KlasaMessage, [types]: [Types[]]) {
 		const typeMatchups = await this.fetchAPI(message, types);
 
 		const embedTranslations = message.language.tget('COMMAND_TYPE_EMBED_DATA');
@@ -63,9 +63,9 @@ export default class extends SkyraCommand {
 			].join(' | ')));
 	}
 
-	private async fetchAPI(message: KlasaMessage, types: string[]) {
+	private async fetchAPI(message: KlasaMessage, types: Types[]) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup(types));
+			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
 			throw message.language.tget('COMMAND_TYPE_QUERY_FAIL', types);

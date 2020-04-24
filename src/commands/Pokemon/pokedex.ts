@@ -1,9 +1,10 @@
 import { DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 enum BaseStats {
 	hp = 'HP',
@@ -14,19 +15,16 @@ enum BaseStats {
 	speed = 'SPE'
 }
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['pokemon', 'dex'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_POKEDEX_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<pokemon:str>',
+	flagSupport: true
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['pokemon', 'dex'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_POKEDEX_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<pokemon:str>',
-			flagSupport: true
-		});
-	}
 
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
@@ -103,7 +101,7 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, pokemon: string) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy(pokemon));
+			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
 			throw message.language.tget('COMMAND_POKEDEX_QUERY_FAIL', pokemon);

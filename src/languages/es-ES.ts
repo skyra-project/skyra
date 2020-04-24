@@ -1881,13 +1881,16 @@ export default class extends Language {
 		COMMAND_LEARN_EXTENDED: builder.display('learn', {
 			extendedHelp: `
 				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Los movimientos se dividen en cada \`,\` (espacio de coma)
+				y puede proporcionar tantos movimientos como desee.
 				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
 			`,
 			explainedUsage: [
+				['generation', '(Opcional), la generación para la cual verificar los datos'],
 				['pokemon', 'El Pokémon cuyo conjunto de aprendizaje quieres comprobar'],
 				['movimiento', 'Los movimientos que desea verificar']
 			],
-			examples: ['dragonite "dragon dance"', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny', 'pikachu "thunderbolt,thunder"']
+			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		}),
 		COMMAND_LEARN_METHOD_TYPES: {
 			BY_LEVEL_UP: level => `por subir de nivel en el nivel ${level}`,

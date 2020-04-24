@@ -1,5 +1,4 @@
 import { TypeEntry, Types } from '@favware/graphql-pokemon';
-import { toTitleCase } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
@@ -17,6 +16,12 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 
+	private kPokemonTypes = new Set([
+		'bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying',
+		'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic',
+		'rock', 'steel', 'water'
+	]);
+
 	public async init() {
 		this.createCustomResolver('type', (arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
@@ -24,7 +29,7 @@ export default class extends SkyraCommand {
 			if (arg.length > 2) throw message.language.tget('COMMAND_TYPE_TOO_MANY_TYPES');
 
 			for (const type of arg) {
-				if (!(toTitleCase(type) in Types)) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
+				if (!(this.kPokemonTypes.has(type))) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
 			}
 
 			return arg;

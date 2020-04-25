@@ -1,5 +1,5 @@
 import { Time } from '@utils/constants';
-import { Client, MessageEmbed, MessageReaction, TextChannel } from 'discord.js';
+import { Client, MessageEmbed, MessageReaction, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, KlasaUser, ReactionHandler, RichDisplay, RichDisplayRunOptions, util } from 'klasa';
 
 export class UserRichDisplay extends RichDisplay {
@@ -29,8 +29,8 @@ export class UserRichDisplay extends RichDisplay {
 	}
 
 	private setAuthorizedFooter(client: Client, channel: TextChannel) {
-		const permissionsForClient = (channel.permissionsFor(client.user!)!);
-		if (permissionsForClient.has('ADD_REACTIONS') && permissionsForClient.has('MANAGE_MESSAGES')) {
+		const priviledged = channel.permissionsFor(client.user!)?.has(UserRichDisplay.kPermissions) ?? false;
+		if (priviledged) {
 			for (let i = 1; i <= this.pages.length; i++) this.pages[i - 1].setFooter(`${this.footerPrefix}${i}/${this.pages.length}${this.footerSuffix}`);
 			if (this.infoPage) this.infoPage.setFooter('ℹ');
 		}
@@ -38,5 +38,9 @@ export class UserRichDisplay extends RichDisplay {
 
 	public static readonly handlers: Map<string, ReactionHandler> = new Map();
 
+	private static readonly kPermissions = new Permissions([
+		Permissions.FLAGS.ADD_REACTIONS,
+		Permissions.FLAGS.MANAGE_MESSAGES
+	]).freeze();
 
 }

@@ -1881,8 +1881,8 @@ export default class extends Language {
 		COMMAND_LEARN_EXTENDED: builder.display('learn', {
 			extendedHelp: `
 				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
-				Los movimientos se dividen en cada \`,\` (espacio de coma)
-				y puede proporcionar tantos movimientos como desee.
+				Los movimientos se dividen en cada \`, \` (coma y espacio)
+				y puedes proporcionar tantos movimientos como desee.
 				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
 			`,
 			explainedUsage: [

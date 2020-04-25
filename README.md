@@ -56,7 +56,6 @@ _Who knows, I might write a book someday for Skyra's lore._
 -   [Skyra Invite Link]
 -   [Support Server]
 -   [Patreon]
--   [Translation]
 
 **Framework links**
 
@@ -87,7 +86,6 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [skyra invite link]:    https://skyra.pw/invite
 [support server]:       https://join.skyra.pw
 [patreon]:              https://www.patreon.com/kyranet
-[translation]:          https://skyra.pw/translate
 
 [klasa's website]:      https://klasa.js.org
 

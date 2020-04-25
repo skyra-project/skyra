@@ -227,26 +227,16 @@ export interface LanguageKeys {
 	COMMAND_LEARN_DESCRIPTION: string;
 	COMMAND_LEARN_EXTENDED: string;
 	COMMAND_LEARN_METHOD_TYPES: {
-		BY_LEVEL_UP: (level: number) => string;
-		THROUGH_EVENT: string;
-		FROM_TUTOR: string;
-		AS_EGGMOVE: string;
-		THROUGH_VIRTUALCONSOLE_TRANSFER: string;
-		WITH_TM: string;
-		THROUGH_DREAMWORLD: string;
-	};
-	COMMAND_LEARN_EMBED_TITLES: {
-		BY_LEVEL_UP: string;
-		THROUGH_EVENT: string;
-		FROM_TUTOR: string;
-		AS_EGGMOVE: string;
-		THROUGH_VIRTUALCONSOLE_TRANSFER: string;
-		WITH_TM: string;
-		THROUGH_DREAMWORLD: string;
+		levelUpMoves: (level: number) => string;
+		eventMoves: (level: number) => string;
+		tutorMoves: (level: number) => string;
+		eggMoves: (level: number) => string;
+		virtualTransferMoves: (level: number) => string;
+		tmMoves: (level: number) => string;
+		dreamworldMoves: (level: number) => string;
 	};
 	COMMAND_LEARN_INVALID_GENERATION: (generation: string) => string;
 	COMMAND_LEARN_METHOD: (generation: number, pokemon: string, move: string, method: string) => string;
-	COMMAND_LEARN_CANNOT_LEARN: (pokemon: string, method: string) => string;
 	COMMAND_LEARN_QUERY_FAILED: (pokemon: string, moves: string[]) => string;
 	COMMAND_MOVE_DESCRIPTION: string;
 	COMMAND_MOVE_EXTENDED: string;
@@ -285,7 +275,6 @@ export interface LanguageKeys {
 		BASE_STATS_TOTAL: string;
 		FLAVOUR_TEXT: string;
 		EXTERNAL_RESOURCES: string;
-		NONE: string;
 	};
 	COMMAND_POKEDEX_QUERY_FAIL: (pokemon: string) => string;
 	COMMAND_TYPE_DESCRIPTION: string;

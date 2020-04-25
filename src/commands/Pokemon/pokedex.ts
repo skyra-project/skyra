@@ -1,7 +1,9 @@
-import { DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
+import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
+import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -27,76 +29,13 @@ enum BaseStats {
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
+		const response = await message.sendEmbed(new MessageEmbed()
+			.setDescription(message.language.tget('SYSTEM_LOADING'))
+			.setColor(BrandingColors.Secondary));
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
 
-		// Parse abilities
-		const abilities: string[] = [];
-		for (const [type, ability] of Object.entries(pokeDetails.abilities)) {
-			if (!ability) continue;
-			abilities.push(type === 'hidden' ? `*${ability}*` : ability);
-		}
-
-		// Parse base stats
-		const baseStats: string[] = [];
-		for (const [stat, value] of Object.entries(pokeDetails.baseStats)) {
-			baseStats.push(`${BaseStats[stat as keyof Omit<StatsEntry, '__typename'>]}: **${value}**`);
-		}
-
-		// Set evochain if there are no evolutions
-		let evoChain = `**${toTitleCase(pokeDetails.species)} ${pokeDetails.evolutionLevel ? `(${pokeDetails.evolutionLevel})` : ''}**`;
-		if (!pokeDetails.evolutions?.length && !pokeDetails.preevolutions?.length) {
-			evoChain += ' (No Evolutions)';
-		}
-
-		// Parse pre-evolutions and add to evochain
-		if (pokeDetails.preevolutions?.length) {
-			const { evolutionLevel } = pokeDetails.preevolutions[0];
-			evoChain = this.parseEvoChain(pokeDetails.preevolutions[0].species, evolutionLevel, evoChain, false);
-
-			// If the direct pre-evolution has another pre-evolution (charizard -> charmeleon -> charmander)
-			if (pokeDetails.preevolutions[0].preevolutions?.length) {
-				evoChain = this.parseEvoChain(pokeDetails.preevolutions[0].preevolutions[0].species, null, evoChain, false);
-			}
-		}
-
-		// Parse evolution chain and add to evochain
-		if (pokeDetails.evolutions?.length) {
-			evoChain = this.parseEvoChain(pokeDetails.evolutions[0].species, pokeDetails.evolutions[0].evolutionLevel, evoChain);
-
-			// In case there are multiple evolutionary paths
-			const otherFormeEvos = pokeDetails.evolutions.slice(1);
-			if (otherFormeEvos.length) {
-				evoChain = `${evoChain}, ${otherFormeEvos.map(oevo => `\`${oevo.species}\` (${oevo.evolutionLevel})`).join(', ')}`;
-			}
-
-			// If the direct evolution has another evolution (charmander -> charmeleon -> charizard)
-			if (pokeDetails.evolutions[0].evolutions?.length) {
-				evoChain = this.parseEvoChain(pokeDetails.evolutions[0].evolutions[0].species, pokeDetails.evolutions[0].evolutions[0].evolutionLevel, evoChain);
-			}
-		}
-
-		const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(resolveColour(pokeDetails.color))
-			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, POKEMON_EMBED_THUMBNAIL)
-			.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite)
-			.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)
-			.addField(embedTranslations.ABILITIES, abilities.join(', '), true)
-			.addField(embedTranslations.GENDER_RATIO, this.parseGenderRatio(pokeDetails.gender), true)
-			.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
-			.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
-			.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
-			.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true)
-			.addField(embedTranslations.OTHER_FORMES, pokeDetails.otherFormes?.join(', ') || embedTranslations.NONE, true)
-			.addBlankField(true)
-			.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
-			.addField(embedTranslations.BASE_STATS, `${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`)
-			.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
-			.addField(embedTranslations.EXTERNAL_RESOURCES, [
-				`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
-				`[Serebii](${pokeDetails.serebiiPage})`,
-				`[Smogon](${pokeDetails.smogonPage})`
-			].join(' | ')));
+		await this.buildDisplay(message, pokeDetails).start(response, message.author.id);
+		return response;
 	}
 
 	private async fetchAPI(message: KlasaMessage, pokemon: string) {
@@ -108,19 +47,147 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private parseEvoChain(species: DexDetails['species'], level: DexDetails['evolutionLevel'], evoChain: string, isEvo = true) {
+	/**
+	 * Constructs a link in the evolution chain
+	 * @param species Name of the pokemon that the evolution goes to
+	 * @param level Level the evolution happens
+	 * @param evoChain The current evolution chain
+	 * @param isEvo Whether this is an evolution or pre-evolution
+	 */
+	private constructEvoLink(species: DexDetails['species'], level: DexDetails['evolutionLevel'], evoChain: string, isEvo = true) {
 		if (isEvo) {
 			return `${evoChain} → \`${toTitleCase(species)}\` ${level ? `(${level})` : ''}`;
 		}
 		return `\`${toTitleCase(species)}\` ${level ? `(${level})` : ''} → ${evoChain}`;
 	}
 
+	/**
+	 * Parse the gender ratios to an embeddable format
+	 */
 	private parseGenderRatio(genderRatio: GenderEntry) {
 		if (genderRatio.male === '0%' && genderRatio.female === '0%') {
 			return 'Genderless';
 		}
 
 		return `${genderRatio.male} ♂ | ${genderRatio.female} ♀`;
+	}
+
+	/**
+	 * Parses abilities to an embeddable format
+	 * @remark required to distuingish hidden abilities from regular abilities
+	 * @returns an array of abilities
+	 */
+	private getAbilities(abilitiesData: AbilitiesEntry): string[] {
+		const abilities: string[] = [];
+		for (const [type, ability] of Object.entries(abilitiesData)) {
+			if (!ability) continue;
+			abilities.push(type === 'hidden' ? `*${ability}*` : ability);
+		}
+
+		return abilities;
+	}
+
+	/**
+	 * Parses base stats to an embeddable format
+	 * @returns an array of stats with their keys and values
+	 */
+	private getBaseStats(statsData: StatsEntry): string[] {
+		const baseStats: string[] = [];
+		for (const [stat, value] of Object.entries(statsData)) {
+			baseStats.push(`${BaseStats[stat as keyof Omit<StatsEntry, '__typename'>]}: **${value}**`);
+		}
+
+		return baseStats;
+	}
+
+	/**
+	 * Parses the evolution chain to an embeddable formaet
+	 * @returns The evolution chain for the Pokémon
+	 */
+	private getEvoChain(pokeDetails: DexDetails): string {
+		// Set evochain if there are no evolutions
+		let evoChain = `**${toTitleCase(pokeDetails.species)} ${pokeDetails.evolutionLevel ? `(${pokeDetails.evolutionLevel})` : ''}**`;
+		if (!pokeDetails.evolutions?.length && !pokeDetails.preevolutions?.length) {
+			evoChain += ' (No Evolutions)';
+		}
+
+		// Parse pre-evolutions and add to evochain
+		if (pokeDetails.preevolutions?.length) {
+			const { evolutionLevel } = pokeDetails.preevolutions[0];
+			evoChain = this.constructEvoLink(pokeDetails.preevolutions[0].species, evolutionLevel, evoChain, false);
+
+			// If the direct pre-evolution has another pre-evolution (charizard -> charmeleon -> charmander)
+			if (pokeDetails.preevolutions[0].preevolutions?.length) {
+				evoChain = this.constructEvoLink(pokeDetails.preevolutions[0].preevolutions[0].species, null, evoChain, false);
+			}
+		}
+
+		// Parse evolution chain and add to evochain
+		if (pokeDetails.evolutions?.length) {
+			evoChain = this.constructEvoLink(pokeDetails.evolutions[0].species, pokeDetails.evolutions[0].evolutionLevel, evoChain);
+
+			// In case there are multiple evolutionary paths
+			const otherFormeEvos = pokeDetails.evolutions.slice(1);
+			if (otherFormeEvos.length) {
+				evoChain = `${evoChain}, ${otherFormeEvos.map(oevo => `\`${oevo.species}\` (${oevo.evolutionLevel})`).join(', ')}`;
+			}
+
+			// If the direct evolution has another evolution (charmander -> charmeleon -> charizard)
+			if (pokeDetails.evolutions[0].evolutions?.length) {
+				evoChain = this.constructEvoLink(pokeDetails.evolutions[0].evolutions[0].species, pokeDetails.evolutions[0].evolutions[0].evolutionLevel, evoChain);
+			}
+		}
+
+		return evoChain;
+	}
+
+	private buildDisplay(message: KlasaMessage, pokeDetails: DexDetails) {
+		const abilities = this.getAbilities(pokeDetails.abilities);
+		const baseStats = this.getBaseStats(pokeDetails.baseStats);
+		const evoChain = this.getEvoChain(pokeDetails);
+		const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
+
+		return new UserRichDisplay(new MessageEmbed()
+			.setColor(resolveColour(pokeDetails.color))
+			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite))
+			.addPage((embed: MessageEmbed) => embed
+				.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)
+				.addField(embedTranslations.ABILITIES, abilities.join(', '), true)
+				.addField(embedTranslations.GENDER_RATIO, this.parseGenderRatio(pokeDetails.gender), true)
+				.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
+				.addField(embedTranslations.BASE_STATS, `${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`)
+
+				.addField(embedTranslations.EXTERNAL_RESOURCES, [
+					`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
+					`[Serebii](${pokeDetails.serebiiPage})`,
+					`[Smogon](${pokeDetails.smogonPage})`
+				].join(' | ')))
+			.addPage((embed: MessageEmbed) => {
+				embed
+					.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
+					.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
+					.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true);
+
+				if (pokeDetails.otherFormes) {
+					embed.addField(embedTranslations.OTHER_FORMES, pokeDetails.otherFormes.join(', '), true);
+				}
+
+				return embed.addField(embedTranslations.EXTERNAL_RESOURCES, [
+					`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
+					`[Serebii](${pokeDetails.serebiiPage})`,
+					`[Smogon](${pokeDetails.smogonPage})`
+				].join(' | '));
+			})
+			.addPage((embed: MessageEmbed) => embed
+				.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
+				.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
+
+				.addField(embedTranslations.EXTERNAL_RESOURCES, [
+					`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
+					`[Serebii](${pokeDetails.serebiiPage})`,
+					`[Smogon](${pokeDetails.smogonPage})`
+				].join(' | ')));
 	}
 
 }

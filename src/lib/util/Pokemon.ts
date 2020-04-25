@@ -219,8 +219,12 @@ export const getPokemonFlavorTextsByFuzzy = /* GraphQL */ `
 ${FlavorTextFragment}
 
 query($pokemon: String!) {
-    getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 take: 12 reverse: true) {
-        sprite num species color
+    getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 reverse: true) {
+        sprite
+		shinySprite
+		num
+		species
+		color
         ...flavortexts
     }
 }`;

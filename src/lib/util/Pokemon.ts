@@ -263,8 +263,7 @@ query($move: String!) {
   getMoveDetailsByFuzzy(move: $move, skip: 0, take: 1) {
     ...moves
   }
-}
-`;
+}`;
 
 export const getTypeMatchup = /* GraphQL */`
 ${TypeMatchupFragment}

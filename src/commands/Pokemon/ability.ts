@@ -1,22 +1,20 @@
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['abilities', 'pokeability'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_ABILITY_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ABILITY_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<ability:str>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['abilities', 'pokeability'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_ABILITY_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ABILITY_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<ability:str>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [ability]: [string]) {
 		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
@@ -35,7 +33,7 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, ability: string) {
 		try {
-			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy(ability));
+			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
 			throw message.language.tget('COMMAND_ABILITY_QUERY_FAIL', ability);

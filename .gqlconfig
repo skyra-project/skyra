@@ -1,0 +1,14 @@
+/* .gqlconfig */
+{
+  schema: {
+    files: "node_modules/@favware/graphql-pokemon/generated/ts/graphql-pokemon.graphql"
+  },
+  query: {
+    files: [ /* define file paths which you'd like the gql parser to watch and give autocomplete suggestions for */
+      {
+        match: 'src/lib/util/*.ts', // match multiple extensions
+        parser: ['EmbeddedQueryParser', { startTag: '/* GraphQL */ `', endTag: '`' }], // parse any query inside gql template literal
+      },
+    ],
+  },
+}	

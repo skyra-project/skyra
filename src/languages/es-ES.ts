@@ -1881,36 +1881,29 @@ export default class extends Language {
 		COMMAND_LEARN_EXTENDED: builder.display('learn', {
 			extendedHelp: `
 				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
+				Los movimientos se dividen en cada \`, \` (coma y espacio)
+				y puedes proporcionar tantos movimientos como desee.
 				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
 			`,
 			explainedUsage: [
+				['generation', '(Opcional), la generación para la cual verificar los datos'],
 				['pokemon', 'El Pokémon cuyo conjunto de aprendizaje quieres comprobar'],
 				['movimiento', 'Los movimientos que desea verificar']
 			],
-			examples: ['dragonite "dragon dance"', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny', 'pikachu "thunderbolt,thunder"']
+			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		}),
 		COMMAND_LEARN_METHOD_TYPES: {
-			BY_LEVEL_UP: level => `por subir de nivel en el nivel ${level}`,
-			THROUGH_EVENT: 'a través de un evento',
-			FROM_TUTOR: 'de un tutor de movimiento',
-			AS_EGGMOVE: 'como un movimiento de huevo',
-			THROUGH_VIRTUALCONSOLE_TRANSFER: 'al transfiriendo desde juegos de consola virtual',
-			WITH_TM: 'utilizando un Máquina Técnico o Disco Técnico',
-			THROUGH_DREAMWORLD: 'a través de una captura de Pokémon Dream World'
-		},
-		COMMAND_LEARN_EMBED_TITLES: {
-			BY_LEVEL_UP: 'Por subir de nivel',
-			THROUGH_EVENT: 'A través de un evento',
-			FROM_TUTOR: 'De un tutor de movimiento',
-			AS_EGGMOVE: 'Como un movimiento de huevo',
-			THROUGH_VIRTUALCONSOLE_TRANSFER: 'Al transferir desde juegos de consola virtual',
-			WITH_TM: 'Mediante el uso de una Máquina Técnica o Disco Técnico',
-			THROUGH_DREAMWORLD: 'A través de una captura de Dream World'
+			levelUpMoves: level => `por subir de nivel en el nivel ${level}`,
+			eventMoves: () => 'a través de un evento',
+			tutorMoves: () => 'de un tutor de movimiento',
+			eggMoves: () => 'como un movimiento de huevo',
+			virtualTransferMoves: () => 'al transfiriendo desde juegos de consola virtual',
+			tmMoves: () => 'utilizando un Máquina Técnico o Disco Técnico',
+			dreamworldMoves: () => 'a través de una captura de Pokémon Dream World'
 		},
 		COMMAND_LEARN_INVALID_GENERATION: generation => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
 		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves.map(move => `\`${move}\``).join('y')} son realmente movimientos?`,
-		COMMAND_LEARN_CANNOT_LEARN: (pokemon, method) => `${pokemon} no tiene datos de aprendizaje para los movimientos dados ${method}`,
 		COMMAND_MOVE_DESCRIPTION: 'Obtiene datos para cualquier movimiento Pokémon usando mi conjunto de datos Pokémon',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: 'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
@@ -1962,8 +1955,7 @@ export default class extends Language {
 			BASE_STATS: 'Puntos de base',
 			BASE_STATS_TOTAL: 'TDPB',
 			FLAVOUR_TEXT: 'Entrada de Pokédex',
-			EXTERNAL_RESOURCES: 'Recursos externos',
-			NONE: 'Ninguno'
+			EXTERNAL_RESOURCES: 'Recursos externos'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Da los emparejamientos de tipos para uno o dos tipos de Pokémon.',

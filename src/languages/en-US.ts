@@ -1871,36 +1871,29 @@ export default class extends Language {
 		COMMAND_LEARN_EXTENDED: builder.display('learn', {
 			extendedHelp: `
 				Uses a fuzzy search to also match against near-matches.
+				Moves split on every \`, \` (comma space) and you can provide
+				as many moves as you wish.
 				You can provide a flag of \`--shiny\` to get the shiny sprite.
 			`,
 			explainedUsage: [
+				['generation', '(Optional), The generation for which to check the data'],
 				['pokemon', 'The Pokémon whose learnset you want to check'],
 				['move', 'The move(s) you want to check for']
 			],
-			examples: ['dragonite "dragon dance"', 'pikachu thunderbolt', 'pikachu thunderbolt --shiny', 'pikachu "thunderbolt,thunder"']
+			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		}),
 		COMMAND_LEARN_METHOD_TYPES: {
-			BY_LEVEL_UP: level => `by level up at level ${level}`,
-			THROUGH_EVENT: 'through an event',
-			FROM_TUTOR: 'from a move tutor',
-			AS_EGGMOVE: 'as an eggmove',
-			THROUGH_VIRTUALCONSOLE_TRANSFER: 'by transfering from virtual console games',
-			WITH_TM: 'by using a technical machine or technical record',
-			THROUGH_DREAMWORLD: 'through a Dream World capture'
-		},
-		COMMAND_LEARN_EMBED_TITLES: {
-			BY_LEVEL_UP: 'By Level Up',
-			THROUGH_EVENT: 'Through an event',
-			FROM_TUTOR: 'From a Move Tutor',
-			AS_EGGMOVE: 'As an eggmove',
-			THROUGH_VIRTUALCONSOLE_TRANSFER: 'By transfering from virtual console games',
-			WITH_TM: 'By using a Technical Machine or Technical Record',
-			THROUGH_DREAMWORLD: 'through a Dream World capture'
+			levelUpMoves: level => `by level up at level ${level}`,
+			eventMoves: () => 'through an event',
+			tutorMoves: () => 'from a move tutor',
+			eggMoves: () => 'as an eggmove',
+			virtualTransferMoves: () => 'by transfering from virtual console games',
+			tmMoves: () => 'by using a technical machine or technical record',
+			dreamworldMoves: () => 'through a Dream World capture'
 		},
 		COMMAND_LEARN_INVALID_GENERATION: generation => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
 		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves.map(move => `\`${move}\``).join(' and ')} are actually moves?`,
-		COMMAND_LEARN_CANNOT_LEARN: (pokemon, method) => `${pokemon} has no learnset data for the given moves ${method}`,
 		COMMAND_MOVE_DESCRIPTION: 'Gets data for any given Pokémon move using my Pokémon dataset',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
@@ -1952,8 +1945,7 @@ export default class extends Language {
 			BASE_STATS: 'Base stats',
 			BASE_STATS_TOTAL: 'BST',
 			FLAVOUR_TEXT: 'Pokdex entry',
-			EXTERNAL_RESOURCES: 'External resources',
-			NONE: 'None'
+			EXTERNAL_RESOURCES: 'External resources'
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',

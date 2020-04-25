@@ -1,8 +1,8 @@
-import { Abilities, Items, Moves, Pokemon, Query } from '@favware/graphql-pokemon';
+import { Query, QueryGetAbilityDetailsByFuzzyArgs, QueryGetItemDetailsByFuzzyArgs, QueryGetMoveDetailsByFuzzyArgs, QueryGetPokemonDetailsByFuzzyArgs, QueryGetPokemonLearnsetByFuzzyArgs, QueryGetTypeMatchupArgs } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '@root/config';
 import { fetch, FetchMethods, FetchResultTypes } from './util';
 
-const AbilityFragment = `
+const AbilityFragment = /* GraphQL */ `
 fragment ability on AbilityEntry {
     desc
     shortDesc
@@ -12,7 +12,7 @@ fragment ability on AbilityEntry {
     smogonPage
 }`;
 
-const AbilitiesFragment = `
+const AbilitiesFragment = /* GraphQL */ `
 fragment abilities on AbilitiesEntry {
     first
     second
@@ -20,7 +20,7 @@ fragment abilities on AbilitiesEntry {
     special
 }`;
 
-const StatsFragment = `
+const StatsFragment = /* GraphQL */ `
 fragment stats on StatsEntry {
     hp
     attack
@@ -30,19 +30,19 @@ fragment stats on StatsEntry {
     speed
 }`;
 
-const GendersFragment = `
+const GendersFragment = /* GraphQL */ `
 fragment genders on GenderEntry {
   male
   female
 }`;
 
-const FlavorsFrament = `
+const FlavorsFrament = /* GraphQL */ `
 fragment flavors on FlavorEntry {
   game
   flavor
 }`;
 
-const FlavorTextFragment = `
+const FlavorTextFragment = /* GraphQL */ `
 ${FlavorsFrament}
 fragment flavortexts on DexDetails {
     flavorTexts {
@@ -50,7 +50,7 @@ fragment flavortexts on DexDetails {
     }
 }`;
 
-const DexDetailsFragment = `
+const DexDetailsFragment = /* GraphQL */ `
 ${AbilitiesFragment}
 ${StatsFragment}
 ${GendersFragment}
@@ -87,7 +87,7 @@ fragment dexdetails on DexDetails {
     }
 }`;
 
-const EvolutionsFragment = `
+const EvolutionsFragment = /* GraphQL */ `
 ${DexDetailsFragment}
 
 fragment evolutions on DexDetails {
@@ -105,7 +105,7 @@ fragment evolutions on DexDetails {
       }
 }`;
 
-const ItemsFragment = `
+const ItemsFragment = /* GraphQL */ `
 fragment items on ItemEntry {
     desc
     name
@@ -117,20 +117,20 @@ fragment items on ItemEntry {
     generationIntroduced
 }`;
 
-const LearnsetLevelupMoveFragment = `
+const LearnsetLevelupMoveFragment = /* GraphQL */ `
 fragment learnsetLevelupMove on LearnsetLevelUpMove {
     name
     generation
     level
 }`;
 
-const LearnsetMoveFragment = `
+const LearnsetMoveFragment = /* GraphQL */ `
 fragment learnsetMove on LearnsetMove {
     name
     generation
 }`;
 
-const LearnsetFragment = `
+const LearnsetFragment = /* GraphQL */ `
 ${LearnsetLevelupMoveFragment}
 ${LearnsetMoveFragment}
 
@@ -163,7 +163,7 @@ fragment learnset on LearnsetEntry {
     }
 }`;
 
-const MoveFragment = `
+const MoveFragment = /* GraphQL */ `
 fragment moves on MoveEntry {
     name
     shortDesc
@@ -184,7 +184,7 @@ fragment moves on MoveEntry {
     desc
 }`;
 
-const TypeEntryFragment = `
+const TypeEntryFragment = /* GraphQL */ `
 fragment typeEntry on TypeEntry {
     doubleEffectiveTypes
     effectiveTypes
@@ -194,7 +194,7 @@ fragment typeEntry on TypeEntry {
     effectlessTypes
 }`;
 
-const TypeMatchupFragment = `
+const TypeMatchupFragment = /* GraphQL */ `
 ${TypeEntryFragment}
 
 fragment typesMatchups on TypeMatchups {
@@ -206,77 +206,78 @@ fragment typesMatchups on TypeMatchups {
     }
 }`;
 
-export const getPokemonDetailsByFuzzy = (pokemon: string | Pokemon) => `
+export const getPokemonDetailsByFuzzy = /* GraphQL */ `
 ${EvolutionsFragment}
-
-{
-    getPokemonDetailsByFuzzy(pokemon: \"${pokemon}\" skip: 0 take: 1 reverse: true) {
+query($pokemon: String!)  {
+	getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 take: 1 reverse: true) {
         ...dexdetails
         ...evolutions
     }
 }`;
 
-export const getPokemonFlavorTextsByFuzzy = (pokemon: string | Pokemon) => `
+export const getPokemonFlavorTextsByFuzzy = /* GraphQL */ `
 ${FlavorTextFragment}
-{
-    getPokemonDetailsByFuzzy(pokemon: \"${pokemon}\" skip: 0 take: 12 reverse: true) {
+
+query($pokemon: String!) {
+    getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 reverse: true) {
         sprite
-        num
-        species
-        color
+		shinySprite
+		num
+		species
+		color
         ...flavortexts
     }
 }`;
 
-export const getAbilityDetailsByFuzzy = (ability: string | Abilities) => `
+export const getAbilityDetailsByFuzzy = /* GraphQL */ `
 ${AbilityFragment}
 
-{
-    getAbilityDetailsByFuzzy(ability: \"${ability}\" skip: 0 take: 1) {
-      ...ability
-    }
+query($ability: String!) {
+  getAbilityDetailsByFuzzy(ability: $ability skip: 0 take: 1 ) {
+    ...ability
+  }
 }`;
 
-export const getItemDetailsByFuzzy = (items: string | Items) => `
+export const getItemDetailsByFuzzy = /* GraphQL */ `
 ${ItemsFragment}
 
-{
-    getItemDetailsByFuzzy(item: \"${items}\" skip: 0 take: 1) {
+query($item: String!) {
+    getItemDetailsByFuzzy(item: $item skip: 0 take: 1) {
         ...items
     }
 }`;
 
-export const getPokemonLearnsetByFuzzy = (pokemon: string, moves: string, generation?: number) => `
+export const getPokemonLearnsetByFuzzy = /* GraphQL */`
 ${LearnsetFragment}
 
-{
-    getPokemonLearnsetByFuzzy(pokemon: \"${pokemon}\" moves: ${moves} generation: ${generation || 8}) {
+query($pokemon: String! $moves: [String!]! $generation: Int) {
+    getPokemonLearnsetByFuzzy(pokemon: $pokemon moves: $moves generation: $generation) {
       ...learnset
     }
 }`;
 
-export const getMoveDetailsByFuzzy = (move: string | Moves) => `
+export const getMoveDetailsByFuzzy = /* GraphQL */ `
 ${MoveFragment}
 
-{
-    getMoveDetailsByFuzzy(move: \"${move}\" skip: 0 take: 1) {
-        ...moves
-    }
+query($move: String!) {
+  getMoveDetailsByFuzzy(move: $move, skip: 0, take: 1) {
+    ...moves
+  }
 }`;
 
-export const getTypeMatchup = (types: string[]) => `
+export const getTypeMatchup = /* GraphQL */`
 ${TypeMatchupFragment}
 
-{
-    getTypeMatchup(types: ${types}) {
-        ...typesMatchups
-    }
+query($types: [Types!]!) {
+  getTypeMatchup(types: $types) {
+    ...typesMatchups
+  }
 }`;
 
 export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
 export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
 
-export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string) {
+export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string, variables: GraphQLQueryVariables<R>) {
 	try {
 		return fetch(POKEMON_GRAPHQL_API_URL, {
 			method: FetchMethods.Post,
@@ -284,7 +285,8 @@ export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(que
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify({
-				query
+				query,
+				variables
 			})
 		}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<R>>;
 	} catch (error) {
@@ -334,4 +336,27 @@ export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'
 	data: Record<K, Omit<Query[K], '__typename'>>;
 }
 
-export type GraphQLQueryReturnTypes = keyof Omit<Query, '__typename'>;
+export type GraphQLQueryReturnTypes = keyof Pick<
+Query,
+| 'getAbilityDetailsByFuzzy'
+| 'getItemDetailsByFuzzy'
+| 'getMoveDetailsByFuzzy'
+| 'getPokemonDetailsByFuzzy'
+| 'getPokemonLearnsetByFuzzy'
+| 'getTypeMatchup'
+>;
+
+type GraphQLQueryVariables<R extends GraphQLQueryReturnTypes> =
+	R extends 'getAbilityDetailsByFuzzy'
+		? QueryGetAbilityDetailsByFuzzyArgs
+		: R extends 'getItemDetailsByFuzzy'
+			? QueryGetItemDetailsByFuzzyArgs
+			: R extends 'getMoveDetailsByFuzzy'
+				? QueryGetMoveDetailsByFuzzyArgs
+				: R extends 'getPokemonDetailsByFuzzy'
+					? QueryGetPokemonDetailsByFuzzyArgs
+					: R extends 'getPokemonLearnsetByFuzzy'
+						? QueryGetPokemonLearnsetByFuzzyArgs
+						: R extends 'getTypeMatchup'
+							? QueryGetTypeMatchupArgs
+							: never;

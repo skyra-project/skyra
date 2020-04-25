@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
 			.setColor(getColor(message))
 			.setThumbnail('https://i.imgur.com/CcIZZsa.png'))
-			.setFooterSuffix('© Urban Dictionary');
+			.setFooterSuffix(' - © Urban Dictionary');
 
 		for (const result of results) {
 			const definition = this.content(result.definition, result.permalink, message.language);

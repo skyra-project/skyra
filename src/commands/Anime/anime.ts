@@ -60,8 +60,8 @@ export default class extends SkyraCommand {
 	private buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
 		const embedData = message.language.tget('COMMAND_ANIME_EMBED_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
-			.setFooter('© kitsu.io'));
+			.setColor(getColor(message)))
+			.setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
 			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);

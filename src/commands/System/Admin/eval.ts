@@ -1,29 +1,27 @@
 import { codeBlock, isThenable, sleep } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { clean } from '@utils/clean';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
-import { CommandStore, KlasaMessage, Stopwatch, Type } from 'klasa';
+import { KlasaMessage, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['ev'],
+	description: language => language.tget('COMMAND_EVAL_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_EVAL_EXTENDED'),
+	guarded: true,
+	permissionLevel: PermissionLevels.BotOwner,
+	usage: '<expression:str>',
+	flagSupport: true
+})
 export default class extends SkyraCommand {
 
-	private readonly timeout = 60000;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['ev'],
-			description: language => language.tget('COMMAND_EVAL_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_EVAL_EXTENDED'),
-			guarded: true,
-			permissionLevel: PermissionLevels.BotOwner,
-			usage: '<expression:str>',
-			flagSupport: true
-		});
-	}
+	private readonly kTimeout = 60000;
 
 	public async run(message: KlasaMessage, [code]: [string]) {
-		const flagTime = 'no-timeout' in message.flagArgs ? 'wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.timeout : Infinity;
+		const flagTime = 'no-timeout' in message.flagArgs ? 'wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.kTimeout : Infinity;
 		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 
@@ -110,7 +108,11 @@ export default class extends SkyraCommand {
 	private async handleMessage(message: KlasaMessage, options: InternalEvalOptions, { success, result, time, footer, language }: InternalEvalResults): Promise<KlasaMessage | KlasaMessage[] | null> {
 		switch (options.sendAs) {
 			case 'file': {
-				if (message.channel.attachable) return message.channel.sendFile(Buffer.from(result), 'output.txt', message.language.tget('COMMAND_EVAL_OUTPUT_FILE', time, footer));
+				if (message.channel.attachable) {
+					return message.channel.sendFile(
+						Buffer.from(result), 'output.txt', message.language.tget('COMMAND_EVAL_OUTPUT_FILE', time, footer)
+					);
+				}
 				await this.getTypeOutput(message, options);
 				return this.handleMessage(message, options, { success, result, time, footer, language });
 			}
@@ -131,7 +133,7 @@ export default class extends SkyraCommand {
 			case 'none':
 				return null;
 			default: {
-				if (result.length > 2000) {
+				if (result.length > 1980) {
 					await this.getTypeOutput(message, options);
 					return this.handleMessage(message, options, { success, result, time, footer, language });
 				}
@@ -147,7 +149,7 @@ export default class extends SkyraCommand {
 		if (!options.hastebinUnavailable) _options.push('hastebin');
 		let _choice: { content: string };
 		do {
-			_choice = await message.prompt(`Choose one of the following options: ${_options.join(', ')}`).catch(() => ({ content: 'none' }));
+			_choice = await message.prompt(message.language.tget('COMMAND_EVAL_CHOOSE_OUTPUT', _options)).catch(() => ({ content: 'none' }));
 		}
 		while (!_options.concat('none', 'abort').includes(_choice.content));
 		options.sendAs = _choice.content.toLowerCase();

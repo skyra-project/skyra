@@ -115,15 +115,15 @@ function ordinal(cardinal: number) {
 	}
 }
 
-function list(values: readonly string[]) {
+function list(values: readonly string[], conjuction: 'and' | 'or') {
 	switch (values.length) {
 		case 0: return '';
 		case 1: return values[0];
-		case 2: return `${values[0]} and ${values[1]}`;
+		case 2: return `${values[0]} ${conjuction} ${values[1]}`;
 		default: {
 			const trail = values.slice(0, -1);
 			const head = values[values.length - 1];
-			return `${trail.join(', ')}, and ${head}`;
+			return `${trail.join(', ')}, ${conjuction} ${head}`;
 		}
 	}
 }
@@ -2258,6 +2258,9 @@ export default class extends Language {
 		}),
 		COMMAND_CONTENT_DESCRIPTION: 'Get messages\' raw content.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
+		COMMAND_CONTENT_OUTPUT_FILE: 'Sent the result as a file.',
+		COMMAND_CONTENT_OUTPUT_HASTEBIN: url => `Sent the result to hastebin: ${url}`,
+		COMMAND_CONTENT_CHOOSE_OUTPUT: options => `Choose one of the following options: ${this.list(options, 'or')}`,
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
 		COMMAND_EMOTES_DESCRIPTION: 'Shows all custom emotes available on this server',
@@ -2652,7 +2655,7 @@ export default class extends Language {
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Cancelled the message.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'This will be the message sent in the announcement channel. Are you OK with this?',
-		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, and mentioning: ${list(mentions)}` : ''}:`,
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, and mentioning: ${list(mentions, 'and')}` : ''}:`,
 
 		/**
 		 * ################
@@ -3401,6 +3404,7 @@ export default class extends Language {
 		COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
 		COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
 		COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
+		COMMAND_EVAL_CHOOSE_OUTPUT: options => `Choose one of the following options: ${this.list(options, 'or')}`,
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 

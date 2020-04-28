@@ -117,15 +117,15 @@ function ordinal(cardinal: number) {
 	}
 }
 
-function list(values: readonly string[]) {
+function list(values: readonly string[], conjunction: 'y' | 'o') {
 	switch (values.length) {
 		case 0: return '';
 		case 1: return values[0];
-		case 2: return `${values[0]} y ${values[1]}`;
+		case 2: return `${values[0]} ${conjunction} ${values[1]}`;
 		default: {
 			const trail = values.slice(0, -1);
 			const head = values[values.length - 1];
-			return `${trail.join(', ')} y ${head}`;
+			return `${trail.join(', ')} ${conjunction} ${head}`;
 		}
 	}
 }
@@ -2268,6 +2268,9 @@ export default class extends Language {
 		}),
 		COMMAND_CONTENT_DESCRIPTION: 'Obtener el contenido sin formato de los mensajes.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
+		COMMAND_CONTENT_OUTPUT_FILE: 'Envió el resultado como un archivo.',
+		COMMAND_CONTENT_OUTPUT_HASTEBIN: url => `Envió el resultado a hastebin: ${url}`,
+		COMMAND_CONTENT_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 		COMMAND_EMOJI_DESCRIPTION: 'Obtén información sobre un emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
 		COMMAND_EMOTES_DESCRIPTION: 'Muestra todos los gestos personalizados disponibles en este servidor.',
@@ -2664,7 +2667,7 @@ export default class extends Language {
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Se ha publicado un nuevo anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
-		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, y mencionando a: ${list(mentions)}` : ''}:`,
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, y mencionando a: ${list(mentions, 'y')}` : ''}:`,
 
 		/**
 		 * ################
@@ -3414,6 +3417,7 @@ export default class extends Language {
 		COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
 		COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
 		COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
+		COMMAND_EVAL_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 

@@ -117,15 +117,15 @@ function ordinal(cardinal: number) {
 	}
 }
 
-function list(values: readonly string[]) {
+function list(values: readonly string[], conjunction: 'y' | 'o') {
 	switch (values.length) {
 		case 0: return '';
 		case 1: return values[0];
-		case 2: return `${values[0]} y ${values[1]}`;
+		case 2: return `${values[0]} ${conjunction} ${values[1]}`;
 		default: {
 			const trail = values.slice(0, -1);
 			const head = values[values.length - 1];
-			return `${trail.join(', ')} y ${head}`;
+			return `${trail.join(', ')} ${conjunction} ${head}`;
 		}
 	}
 }
@@ -2664,7 +2664,7 @@ export default class extends Language {
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Se ha publicado un nuevo anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
-		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, y mencionando a: ${list(mentions)}` : ''}:`,
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, y mencionando a: ${list(mentions, 'y')}` : ''}:`,
 
 		/**
 		 * ################
@@ -3410,10 +3410,6 @@ export default class extends Language {
 
 		COMMAND_EVAL_TIMEOUT: seconds => `TIMEOUT: Took longer than ${seconds} seconds.`,
 		COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 
@@ -4315,6 +4311,11 @@ export default class extends Language {
 		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
 		SYSTEM_CANNOT_ACCESS_CHANNEL: 'Lo siento, pero no tienes permiso para ver ese canal.',
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT: (output, time, type) => `**Salida**:${output}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE: (time, type) => `Enviado el resultado a la consola.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: (time, type) => `Enviado el resultado como un archivo.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) => `Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
+		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 
 		JUMPTO: 'Salta al Mensaje ►',
 

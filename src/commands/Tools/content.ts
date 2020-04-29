@@ -1,6 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { fetch, FetchMethods, FetchResultTypes, getContent } from '@utils/util';
+import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
+import { getContent } from '@utils/util';
 import { TextChannel, Util } from 'discord.js';
 import { KlasaMessage, Serializer } from 'klasa';
 
@@ -34,67 +35,15 @@ export default class extends SkyraCommand {
 		const content = Util.escapeCodeBlock(getContent(target) || '');
 
 		const sendAs = message.flagArgs.output || message.flagArgs['output-to'] || (message.flagArgs.log ? 'log' : null);
-		return this.handleMessage(message, content, { sendAs, targetId: target.id, hastebinUnavailable: false, url: null, attachments });
+		return handleMessage<Partial<ContentExtraData>>(message, {
+			sendAs,
+			attachments,
+			content,
+			targetId: target.id,
+			hastebinUnavailable: false,
+			url: null,
+			canLogToConsole: false
+		});
 	}
 
-	private async handleMessage(message: KlasaMessage, content: string, options: HandleMessageData): Promise<KlasaMessage | KlasaMessage[] | null> {
-		switch (options.sendAs) {
-			case 'file': {
-				if (message.channel.attachable) {
-					return message.channel.sendFile(
-						Buffer.from(content), `${options.targetId}.txt`, message.language.tget('COMMAND_CONTENT_OUTPUT_FILE')
-					);
-				}
-
-				await this.getTypeOutput(message, options);
-				return this.handleMessage(message, content, options);
-			}
-			case 'haste':
-			case 'hastebin': {
-				if (!options.url) options.url = await this.getHaste(content).catch(() => null);
-				if (options.url) return message.sendLocale('COMMAND_CONTENT_OUTPUT_HASTEBIN', [options.url]);
-				options.hastebinUnavailable = true;
-				await this.getTypeOutput(message, options);
-				return this.handleMessage(message, content, options);
-			}
-			case 'abort':
-			case 'none':
-				return null;
-			default: {
-				if (content.length > 1980) {
-					await this.getTypeOutput(message, options);
-					return this.handleMessage(message, content, options);
-				}
-				return message.sendMessage(
-					`${content}${content && options.attachments ? `\n\n\n=============\n${options.attachments}` : options.attachments}`, { code: 'md' }
-				);
-			}
-		}
-	}
-
-	private async getHaste(evalResult: string) {
-		const { key } = await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: evalResult }, FetchResultTypes.JSON) as { key: string };
-		return `https://hasteb.in/${key}.md`;
-	}
-
-	private async getTypeOutput(message: KlasaMessage, options: HandleMessageData) {
-		const _options = ['none', 'abort'];
-		if (message.channel.attachable) _options.push('file');
-		if (!options.hastebinUnavailable) _options.push('hastebin');
-		let _choice: { content: string };
-		do {
-			_choice = await message.prompt(message.language.tget('COMMAND_CONTENT_CHOOSE_OUTPUT', _options)).catch(() => ({ content: 'none' }));
-		}
-		while (!_options.concat('none', 'abort').includes(_choice.content));
-		options.sendAs = _choice.content.toLowerCase();
-	}
-
-}
-
-interface HandleMessageData {
-	sendAs: string | null;
-	targetId: string;
-	attachments: string;
-	hastebinUnavailable: boolean;
-	url: string | null;
 }

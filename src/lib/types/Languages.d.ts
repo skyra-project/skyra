@@ -849,9 +849,6 @@ export interface LanguageKeys {
 	COMMAND_COLOR_EXTENDED: string;
 	COMMAND_CONTENT_DESCRIPTION: string;
 	COMMAND_CONTENT_EXTENDED: string;
-	COMMAND_CONTENT_OUTPUT_FILE: string;
-	COMMAND_CONTENT_OUTPUT_HASTEBIN: (url: string) => string;
-	COMMAND_CONTENT_CHOOSE_OUTPUT: (options: string[]) => string;
 	COMMAND_EMOJI_DESCRIPTION: string;
 	COMMAND_EMOJI_EXTENDED: string;
 	COMMAND_ESHOP_DESCRIPTION: string;
@@ -1528,11 +1525,6 @@ export interface LanguageKeys {
 	COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal: string, id: string, stars: number) => string;
 	COMMAND_EVAL_TIMEOUT: (seconds: number) => string;
 	COMMAND_EVAL_ERROR: (time: string, output: string, type: string) => string;
-	COMMAND_EVAL_OUTPUT: (time: string, output: string, type: string) => string;
-	COMMAND_EVAL_OUTPUT_CONSOLE: (time: string, type: string) => string;
-	COMMAND_EVAL_OUTPUT_FILE: (time: string, type: string) => string;
-	COMMAND_EVAL_OUTPUT_HASTEBIN: (time: string, url: string, type: string) => string;
-	COMMAND_EVAL_CHOOSE_OUTPUT: (options: string[]) => string;
 	COMMAND_FEEDBACK: string;
 	COMMAND_STATS: (color: number, stats: StatsGeneral, uptime: StatsUptime, usage: StatsUsage) => MessageEmbed;
 	COMMAND_TAG_PERMISSIONLEVEL: string;
@@ -1770,6 +1762,11 @@ export interface LanguageKeys {
 	SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied: readonly string[]) => string;
 	SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted: number, exceptions: string, author: string, role: string) => string;
 	SYSTEM_CANNOT_ACCESS_CHANNEL: string;
+	SYSTEM_EXCEEDED_LENGTH_OUTPUT: (output: string, time?: string, type?: string) => string;
+	SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE: (time?: string, type?: string) => string;
+	SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: (time?: string, type?: string) => string;
+	SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url: string, time?: string, type?: string) => string;
+	SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: (output: string[]) => string;
 	JUMPTO: string;
 	RESOLVER_INVALID_CHANNELNAME: (name: string) => string;
 	RESOLVER_CHANNEL_NOT_IN_GUILD: string;

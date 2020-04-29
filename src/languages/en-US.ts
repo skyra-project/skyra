@@ -2258,9 +2258,6 @@ export default class extends Language {
 		}),
 		COMMAND_CONTENT_DESCRIPTION: 'Get messages\' raw content.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
-		COMMAND_CONTENT_OUTPUT_FILE: 'Sent the result as a file.',
-		COMMAND_CONTENT_OUTPUT_HASTEBIN: url => `Sent the result to hastebin: ${url}`,
-		COMMAND_CONTENT_CHOOSE_OUTPUT: options => `Choose one of the following options: ${this.list(options, 'or')}`,
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
 		COMMAND_EMOTES_DESCRIPTION: 'Shows all custom emotes available on this server',
@@ -3400,11 +3397,6 @@ export default class extends Language {
 
 		COMMAND_EVAL_TIMEOUT: seconds => `TIMEOUT: Took longer than ${seconds} seconds.`,
 		COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
-		COMMAND_EVAL_CHOOSE_OUTPUT: options => `Choose one of the following options: ${this.list(options, 'or')}`,
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 
@@ -4306,6 +4298,11 @@ export default class extends Language {
 		SYSTEM_QUERY_FAIL: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 		SYSTEM_NO_RESULTS: 'I wasn\'t able to find any results for that query',
 		SYSTEM_CANNOT_ACCESS_CHANNEL: 'I am sorry, but you do not have permission to see that channel.',
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT: (output, time, type) => `**Output**:${output}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: (time, type) => `Sent the result as a file.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) => `Sent the result to hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: options => `Choose one of the following options: ${this.list(options, 'or')}`,
 
 		JUMPTO: 'Jump to Message ►',
 

@@ -2268,9 +2268,6 @@ export default class extends Language {
 		}),
 		COMMAND_CONTENT_DESCRIPTION: 'Obtener el contenido sin formato de los mensajes.',
 		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
-		COMMAND_CONTENT_OUTPUT_FILE: 'Enviado el resultado como un archivo.',
-		COMMAND_CONTENT_OUTPUT_HASTEBIN: url => `Enviado el resultado a hastebin: ${url}`,
-		COMMAND_CONTENT_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 		COMMAND_EMOJI_DESCRIPTION: 'Obtén información sobre un emoji.',
 		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
 		COMMAND_EMOTES_DESCRIPTION: 'Muestra todos los gestos personalizados disponibles en este servidor.',
@@ -3413,11 +3410,6 @@ export default class extends Language {
 
 		COMMAND_EVAL_TIMEOUT: seconds => `TIMEOUT: Took longer than ${seconds} seconds.`,
 		COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT: (time, output, type) => `**Output**:${output}\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_CONSOLE: (time, type) => `Sent the result to console.\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_FILE: (time, type) => `Sent the result as a file.\n**Type**:${type}\n${time}`,
-		COMMAND_EVAL_OUTPUT_HASTEBIN: (time, url, type) => `Sent the result to hastebin: ${url}\n**Type**:${type}\n${time}\n`,
-		COMMAND_EVAL_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 
@@ -4319,6 +4311,11 @@ export default class extends Language {
 		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
 		SYSTEM_CANNOT_ACCESS_CHANNEL: 'Lo siento, pero no tienes permiso para ver ese canal.',
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT: (output, time, type) => `**Salida**:${output}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE: (time, type) => `Enviado el resultado a la consola.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: (time, type) => `Enviado el resultado como un archivo.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) => `Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
+		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 
 		JUMPTO: 'Salta al Mensaje ►',
 

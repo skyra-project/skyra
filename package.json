@@ -69,7 +69,7 @@
 	},
 	"devDependencies": {
 		"@discordjs/collection": "^0.1.5",
-		"@favware/graphql-pokemon": "^3.0.1",
+		"@favware/graphql-pokemon": "^3.0.3",
 		"@playlyfe/gql": "^2.6.2",
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",

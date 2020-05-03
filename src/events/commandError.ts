@@ -4,7 +4,6 @@ import { inlineCodeblock } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage, util } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
-import 'node-fetch';
 
 const BLACKLISTED_CODES = [
 	// Unknown Channel

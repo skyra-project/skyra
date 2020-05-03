@@ -2265,22 +2265,6 @@ export default class extends Language {
 			extendedHelp: 'The list of emotes is split per 50 emotes'
 		}),
 		COMMAND_EMOTES_TITLE: 'Emotes in',
-		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
-		COMMAND_POLL_EXTENDED: builder.display('poll', {
-			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
-					votes (users can't vote twice nor two different options). You can customize the available options for the
-					user and it features role and user whitelist. At the end of the poll, Skyra will DM you the results with a
-					chart, make sure to have your DMs opened! After the vote concludes (they require time), you can retrieve the
-					results for 24 hours before it gets unaccesible.`,
-			examples: [
-				'create Should I create the #anime channel? --options="yes,no,definitely"',
-				'list',
-				'vote jfutdsxsb yes',
-				'result jfutdsxsb',
-				'remove jfutdsxsb'
-			],
-			reminder: 'Skyra will prompt you for user and role whitelist, you can omit it by including `--no-prompt` in your message or specify them with `--users="id1,id2..." and --roles="id1,id2..."`. If you want something simpler, use the `spoll` command.'
-		}),
 		COMMAND_PRICE_DESCRIPTION: 'Convert the currency with this tool.',
 		COMMAND_PRICE_EXTENDED: builder.display('price', {}),
 		COMMAND_QUOTE_DESCRIPTION: 'Quote another person\'s message.',
@@ -2301,8 +2285,8 @@ export default class extends Language {
 		}),
 		COMMAND_SEARCH_DESCRIPTION: 'Search things from the Internet with DuckDuckGo.',
 		COMMAND_SEARCH_EXTENDED: builder.display('search', {}),
-		COMMAND_SPOLL_DESCRIPTION: 'Simplified reaction-based poll.',
-		COMMAND_SPOLL_EXTENDED: builder.display('spoll', {
+		COMMAND_POLL_DESCRIPTION: 'Simplified reaction-based poll.',
+		COMMAND_POLL_EXTENDED: builder.display('spoll', {
 			extendedHelp: `spoll stands for "simplified poll". You may want to use this command if you don't want to deal the
 					complexity of the other command. Simplified Polls do not track the users who vote nor it filters, it merely reacts
 					to your message with three emojis and let the users vote.`,
@@ -3600,30 +3584,6 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'No user score',
 			NO_GENRES: 'None on TheMovieDB'
 		},
-		COMMAND_POLL_MISSING_TITLE: 'You must write a title.',
-		COMMAND_POLL_TIME: 'When should the poll end? Duration and Date formats are allowed for this operation.',
-		COMMAND_POLL_WANT_USERS: 'Do you want to include a users whitelist?',
-		COMMAND_POLL_FIRSTUSER: 'Alright! Write a list of all users you want to whitelist from the poll separating their names or mentions by comma.',
-		COMMAND_POLL_WANT_ROLES: 'Before creating the poll, do you want to whitelist roles?',
-		COMMAND_POLL_FIRSTROLE: 'Alright! Write a list of all roles you want to whitelist from the poll separating their names or mentions by comma.',
-		COMMAND_POLL_CREATE: (title, roles, users, options, time, id) => [
-			`Successfully created a poll.`,
-			`Title    : '${title}'`,
-			`Roles    : ${roles ? roles.join(' | ') : 'None'}`,
-			`Users    : ${users ? users.join(' | ') : 'None'}`,
-			`Options  : ${options ? options.join(' | ') : 'None'}`,
-			`Duration : ${duration(time)}`,
-			`ID       : ${id}`
-		].join('\n'),
-		COMMAND_POLL_LIST_EMPTY: 'I could not find an active poll for this guild!.',
-		COMMAND_POLL_NOTEXISTS: 'The poll you want to retrieve either expired or does not exist.',
-		COMMAND_POLL_NOTMANAGEABLE: 'This poll is protected and cannot be managed by anybody that is not the author nor a guild administrator.',
-		COMMAND_POLL_REMOVE: 'Successfully removed the selected poll.',
-		COMMAND_POLL_INVALID_OPTION: options => `Invalid option. Choose one of the following: ${options}.`,
-		COMMAND_POLL_ALREADY_VOTED: 'You have already voted to this poll!',
-		COMMAND_POLL_VOTE: 'Successfully voted! Selfdestructing this message in 10 seconds!',
-		COMMAND_POLL_MISSING_ID: 'You need to provide me the poll\'s ID!',
-		COMMAND_POLL_EMPTY_VOTES: 'Unfortunately, nobody has voted in this poll.',
 		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `${fromAmount} ${fromCurrency} is worth ${toAmount} ${toCurrency}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 		COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',

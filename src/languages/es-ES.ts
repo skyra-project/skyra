@@ -818,11 +818,11 @@ export default class extends Language {
 				['platform', '(opcional, predeterminado en \`pc\`) Plataforma en la que se reproduce el reproductor, una de \`pc\`, \`xbl\` o \`psn\`'],
 				['player', 'Para PC, la etiqueta de tormenta de nieve completa, para la consola, el nombre de usuario. ¡Distingue mayúsculas y minúsculas!']
 			],
-			examples: ['ToasterPC#1464', 'xbl Dorus NL gamer', 'psn decoda_24']
+			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
 		}),
 		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: playerTag => [
 			`\`${playerTag}\` es un nombre de jugador no válido`,
-			'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `ToasterPC#1464`.',
+			'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `MagicPants#112369`.',
 			'Para Xbox y Playstation tiene que ser su nombre de usuario.'
 		].join('\n'),
 		COMMAND_OVERWATCH_QUERY_FAIL: (player, platform) => [
@@ -833,11 +833,12 @@ export default class extends Language {
 		COMMMAND_OVERWATCH_EMBED_DATA: {
 			TITLE: 'Haga clic aquí para obtener más detalles en overwatchtracker.com',
 			RATINGS_TITLE: 'Calificaciones',
+			NO_AVERAGE: 'No hay suficientes datos para determinar el promedio.',
 			AUTHOR: name => `Estadísticas de jugador de Overwatch para ${name}`,
 			PLAYER_LEVEL: level => `**Nivel de jugador:** ${this.groupDigits(level)}`,
 			PRESTIGE_LEVEL: level => `**Nivel de prestigio:** ${this.groupDigits(level)}`,
 			TOTAL_GAMES_WON: gamesWon => `**Total de juegos ganados:** ${gamesWon ? (this.groupDigits(gamesWon)) : 'None'}`,
-			RATINGS: ratings => ratings.map(rating => `**${toTitleCase(rating.role)}:** ${this.groupDigits(rating.level)}`).join('\n'),
+			RATINGS: ratings => ratings.map(rating => `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`).join('\n'),
 			FINAL_BLOWS: finalBlows => `**Golpes finales:** ${this.groupDigits(finalBlows)}`,
 			DEATHS: deaths => `**Muertes:** ${this.groupDigits(deaths)}`,
 			DAMAGE_DEALT: damageDone => `**Daño infligido:** ${this.groupDigits(damageDone)}`,

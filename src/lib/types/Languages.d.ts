@@ -575,10 +575,11 @@ export interface LanguageKeys {
 	COMMMAND_OVERWATCH_EMBED_DATA: {
 		TITLE: string;
 		RATINGS_TITLE: string;
+		NO_AVERAGE: string;
 		AUTHOR: (name: string) => string;
 		PLAYER_LEVEL: (level: number) => string;
 		PRESTIGE_LEVEL: (level: number) => string;
-		RATINGS: (ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] }>) => string;
+		RATINGS: (ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] | string }>) => string;
 		TOTAL_GAMES_WON: (gamesWon: number) => string;
 		FINAL_BLOWS: (finalBlows: number) => string;
 		DEATHS: (deaths: number) => string;

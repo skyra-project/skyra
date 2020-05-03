@@ -123,7 +123,7 @@ export default Client.defaultGuildSchema
 			.add('thresholdMaximum', 'Integer', { 'default': 10, 'minimum': 0, 'maximum': 60, 'configurable': false })
 			.add('thresholdDuration', 'Integer', { 'default': 60000, 'minimum': 0, 'maximum': 120000, 'configurable': false }))
 		.add('filter', filter => filter
-			.add('raw', 'String', { array: true, configurable: false })
+			.add('raw', 'String', { array: true, maximum: 32, configurable: false })
 			.add('enabled', 'Boolean', { 'default': false })
 			.add('ignoredRoles', 'Role', { array: true })
 			.add('ignoredChannels', 'TextChannel', { array: true })

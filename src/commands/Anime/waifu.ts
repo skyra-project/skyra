@@ -1,7 +1,8 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 /**
  * Faces were generated with
@@ -11,16 +12,12 @@ import { CommandStore, KlasaMessage } from 'klasa';
  */
 const kMaximum = 100000;
 
-
+@ApplyOptions<SkyraCommandOptions>({
+	description: language => language.tget('COMMAND_WAIFU_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_WAIFU_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS']
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_WAIFU_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_WAIFU_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS']
-		});
-	}
 
 	public run(message: KlasaMessage) {
 		const url = `https://thiswaifudoesnotexist.net/example-${Math.floor(Math.random() * kMaximum)}.jpg`;

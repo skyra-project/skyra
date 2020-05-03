@@ -68,12 +68,20 @@ export default class extends SkyraCommand {
 			throw message.language.tget('SYSTEM_PARSE_ERROR');
 		}
 
-		if (parsed.error === 403) {
-			if (parsed.reason === 'private') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_PRIVATE');
-			if (parsed.reason === 'quarantined') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_QUARANTINED');
-		} else if (parsed.error === 404) {
-			if (!('reason' in parsed)) throw message.language.tget('COMMAND_RANDREDDIT_ERROR_NOT_FOUND');
-			if (parsed.reason === 'banned') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_BANNED');
+		switch (parsed.error) {
+			case 403: {
+				if (parsed.reason === 'private') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_PRIVATE');
+				if (parsed.reason === 'quarantined') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_QUARANTINED');
+				break;
+			}
+			case 404: {
+				if (!('reason' in parsed)) throw message.language.tget('COMMAND_RANDREDDIT_ERROR_NOT_FOUND');
+				if (parsed.reason === 'banned') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_BANNED');
+				break;
+			}
+			case 500: {
+				throw message.language.tget('SYSTEM_EXTERNAL_SERVER_ERROR');
+			}
 		}
 
 		throw error;
@@ -81,7 +89,7 @@ export default class extends SkyraCommand {
 
 }
 
-type RedditError = RedditNotFound | RedditBanned | RedditForbidden | RedditQuarantined;
+type RedditError = RedditNotFound | RedditBanned | RedditForbidden | RedditQuarantined | RedditServerError;
 
 interface RedditForbidden {
 	reason: 'private';
@@ -106,4 +114,9 @@ interface RedditBanned {
 	reason: 'banned';
 	message: 'Not Found';
 	error: 404;
+}
+
+interface RedditServerError {
+	message: 'Internal Server Error';
+	error: 500;
 }

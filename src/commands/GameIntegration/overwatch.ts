@@ -54,7 +54,7 @@ export default class OverwatchCommand extends SkyraCommand {
 		platform: PlatformUnion
 	) {
 		const EMBED_DATA = message.language.tget('COMMMAND_OVERWATCH_EMBED_DATA');
-		const ratings = this.ratingsToMap(overwatchData.ratings, r => r.role, r => r);
+		const ratings = this.ratingsToMap(overwatchData.ratings ?? [], r => r.role, r => r);
 
 		return new UserRichDisplay(
 			new MessageEmbed()
@@ -73,7 +73,7 @@ export default class OverwatchCommand extends SkyraCommand {
 				].join('\n'))
 				.addField(EMBED_DATA.RATINGS_TITLE, EMBED_DATA.RATINGS([
 					...ratings.values(),
-					{ role: 'average', level: overwatchData.rating }
+					{ role: 'average', level: overwatchData.rating === 0 ? EMBED_DATA.NO_AVERAGE : overwatchData.rating }
 				])))
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(overwatchData, 'quickPlayStats', EMBED_DATA)))
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(overwatchData, 'competitiveStats', EMBED_DATA)))

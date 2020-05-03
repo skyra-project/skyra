@@ -32,7 +32,7 @@ export interface OverwatchDataSet {
 	prestigeIcon: string;
 	private: boolean;
 	rating: number;
-	ratings: OverwatchRating[];
+	ratings: OverwatchRating[] | null;
 	competitiveStats: StatsGroup;
 	quickPlayStats: StatsGroup;
 }

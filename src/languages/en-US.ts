@@ -811,11 +811,11 @@ export default class extends Language {
 				['platform', '(optional, defaults to \`pc\`) Platform the player plays on, one of `pc`, `xbl`, or `psn`'],
 				['player', 'For PC the full blizzard tag, for console the username. Case sensitive!']
 			],
-			examples: ['ToasterPC#1464', 'xbl Dorus NL gamer', 'psn decoda_24']
+			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
 		}),
 		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: playerTag => [
 			`\`${playerTag}\` is an invalid player name`,
-			'For PC it has to be their full Blizzard BattleTag, for example `ToasterPC#1464`.',
+			'For PC it has to be their full Blizzard BattleTag, for example `MagicPants#112369`.',
 			'For Xbox and Playstation it just has to be their username.'
 		].join('\n'),
 		COMMAND_OVERWATCH_QUERY_FAIL: (player, platform) => [
@@ -826,11 +826,12 @@ export default class extends Language {
 		COMMMAND_OVERWATCH_EMBED_DATA: {
 			TITLE: 'Click here for more details on overwatchtracker.com',
 			RATINGS_TITLE: 'Ratings',
+			NO_AVERAGE: 'Not enough data to determine average.',
 			AUTHOR: name => `Overwatch Player Statistics for ${name}`,
 			PLAYER_LEVEL: level => `**Player level:** ${this.groupDigits(level)}`,
 			PRESTIGE_LEVEL: level => `**Prestige level:** ${this.groupDigits(level)}`,
 			TOTAL_GAMES_WON: gamesWon => `**Total games won:** ${gamesWon ? (this.groupDigits(gamesWon)) : 'None'}`,
-			RATINGS: ratings => ratings.map(rating => `**${toTitleCase(rating.role)}:** ${this.groupDigits(rating.level)}`).join('\n'),
+			RATINGS: ratings => ratings.map(rating => `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`).join('\n'),
 			FINAL_BLOWS: finalBlows => `**Final blows:** ${this.groupDigits(finalBlows)}`,
 			DEATHS: deaths => `**Deaths:** ${this.groupDigits(deaths)}`,
 			DAMAGE_DEALT: damageDone => `**Damage dealt:** ${this.groupDigits(damageDone)}`,

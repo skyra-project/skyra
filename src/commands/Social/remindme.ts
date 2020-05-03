@@ -73,6 +73,8 @@ export default class extends SkyraCommand {
 			if (!arg) return Actions.List;
 
 			switch (arg.toLowerCase()) {
+				case 's':
+				case 'show':
 				case 'a':
 				case 'all':
 				case 'l':

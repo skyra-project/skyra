@@ -4,6 +4,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
+import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 
 export default class extends Event {
 
@@ -14,6 +15,11 @@ export default class extends Event {
 	public async run(data: WSMessageDelete): Promise<void> {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.channels.has(data.channel_id)) return;
+
+		await this.handleStarboard(guild, data);
+	}
+
+	private async handleStarboard(guild: SkyraGuild, data: WSMessageDelete) {
 		guild.starboard.delete(data.id);
 
 		// Delete entry from starboard if it exists

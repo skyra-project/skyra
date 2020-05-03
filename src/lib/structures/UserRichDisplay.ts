@@ -21,8 +21,16 @@ export class UserRichDisplay extends RichDisplay {
 		}
 
 		this.setAuthorizedFooter(message.client, message.channel as TextChannel);
-		const handler = (await super.run(message, options))
-			.once('end', () => UserRichDisplay.handlers.delete(target));
+
+		const handler = await super.run(message, options);
+		const messageID = handler.message.id;
+
+		handler.once('end', () => {
+			UserRichDisplay.messages.delete(messageID);
+			UserRichDisplay.handlers.delete(target);
+		});
+
+		UserRichDisplay.messages.set(messageID, handler);
 		UserRichDisplay.handlers.set(target, handler);
 
 		return handler;
@@ -36,7 +44,8 @@ export class UserRichDisplay extends RichDisplay {
 		}
 	}
 
-	public static readonly handlers: Map<string, ReactionHandler> = new Map();
+	public static readonly messages = new Map<string, ReactionHandler>();
+	public static readonly handlers = new Map<string, ReactionHandler>();
 
 	private static readonly kPermissions = new Permissions([
 		Permissions.FLAGS.ADD_REACTIONS,

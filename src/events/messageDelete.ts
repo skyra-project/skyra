@@ -5,14 +5,21 @@ import { cutText, getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 
 export default class extends Event {
 
 	public run(message: KlasaMessage) {
 		if (message.partial || !message.guild || message.author.bot) return;
 
+		this.handleUserRichDisplay(message);
 		this.handleMessageLogs(message);
 		this.handleSnipeMessage(message);
+	}
+
+	private handleUserRichDisplay(message: KlasaMessage) {
+		const handler = UserRichDisplay.messages.get(message.id);
+		if (handler) handler.stop();
 	}
 
 	private handleMessageLogs(message: KlasaMessage) {

@@ -1,26 +1,26 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Kitsu } from '@lib/types/definitions/Kitsu';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchMethods, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_MANGA_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MANGA_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<mangaName:string>'
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_MANGA_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MANGA_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<mangaName:string>'
-		});
-	}
+	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: KlasaMessage, [mangaName]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -74,11 +74,11 @@ export default class extends SkyraCommand {
 				.setTitle(title)
 				.setURL(mangaURL)
 				.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
-				.setThumbnail(entry.posterImage.original)
+				.setThumbnail(entry.posterImage?.original || '')
 				.addField(embedData.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
 				.addField(embedData.SCORE, score, true)
 				.addField(embedData.AGE_RATING, entry.ageRating ? entry.ageRating : embedData.NONE, true)
-				.addField(embedData.FIRST_PUBLISH_DATE, new Timestamp('MMMM d YYYY').display(entry.startDate), true)
+				.addField(embedData.FIRST_PUBLISH_DATE, this.kTimestamp.display(entry.startDate * 1000), true)
 				.addField(embedData.READ_IT, `**[${title}](${mangaURL})**`));
 		}
 		return display;

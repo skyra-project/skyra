@@ -1,37 +1,38 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { BrandingColors, Time } from '@utils/constants';
 import { cutText, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, Duration, KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
+import { KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
 
+const enum Actions {
+	List = 'list',
+	Create = 'create',
+	Delete = 'delete'
+}
+
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['remind', 'reminder'],
+	bucket: 2,
+	subcommands: true,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_REMINDME_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_REMINDME_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<action:action> (value:idOrDuration) (description:description)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 	private readonly kReminderTaskName = 'reminder';
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['remind', 'reminder'],
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_REMINDME_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_REMINDME_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '[list|delete|me] [input:...string]',
-			usageDelim: ' '
-		});
-	}
-
-	public async run(message: KlasaMessage, [action, data]: [string, string]) {
-		if (!data || action === 'list') return this.list(message);
-		if (action === 'delete') return this.delete(message, data);
-
-		const { time, title } = await this.parseInput(message, data);
-		const task = await this.client.schedule.create(this.kReminderTaskName, Date.now() + time!, {
+	public async create(message: KlasaMessage, [duration, description]: [number, string]) {
+		const task = await this.client.schedule.create(this.kReminderTaskName, Date.now() + duration, {
 			catchUp: true,
 			data: {
-				content: title,
+				content: description,
 				user: message.author.id
 			}
 		});
@@ -55,8 +56,7 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	public async delete(message: KlasaMessage, id: string) {
-		if (!id) throw message.language.tget('COMMAND_REMINDME_DELETE_INVALID_PARAMETERS');
+	public async delete(message: KlasaMessage, [id]: [string]) {
 		let selectedTask: ScheduledTask | null = null;
 		for (const task of this.client.schedule.tasks) {
 			if (task.id !== id) continue;
@@ -68,46 +68,48 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_REMINDME_DELETE', [selectedTask]);
 	}
 
-	public async parseInput(message: KlasaMessage, input: string) {
-		const parsed: { time: number | null; title: string | null } = {
-			time: null,
-			title: null
-		};
+	public async init() {
+		this.createCustomResolver('action', (arg, _possible, message) => {
+			if (!arg) return Actions.List;
 
-		if (/^in\s/.test(input)) {
-			const indexOfTitle = input.lastIndexOf(' to ');
-			parsed.time = new Duration(input.slice(3, indexOfTitle > -1 ? indexOfTitle : undefined)).offset;
-			parsed.title = indexOfTitle > -1 ? input.slice(indexOfTitle + 4) : 'Something, you did not tell me what to remind you.';
-		} else {
-			const indexOfTime = input.lastIndexOf(' in ');
-			parsed.title = input.slice(/^to\s/.test(input) ? 3 : 0, indexOfTime > -1 ? indexOfTime : undefined);
-
-			if (indexOfTime !== -1) {
-				parsed.time = new Duration(input.slice(indexOfTime + 4)).offset;
+			switch (arg.toLowerCase()) {
+				case 'a':
+				case 'all':
+				case 'l':
+				case 'list': return Actions.List;
+				case 'r':
+				case 'rm':
+				case 'remove':
+				case 'd':
+				case 'del':
+				case 'delete': return Actions.Delete;
+				case 'c':
+				case 'create': message.args.splice(message.params.length, 0, undefined!);
+				// Fallback
+				case 'me':
+				default: return Actions.Create;
 			}
-		}
+		});
 
-		if (!util.isNumber(parsed.time) || parsed.time < 59500 || parsed.time > (Time.Year * 5)) {
-			parsed.time = await this.askTime(message, message.language.tget('COMMAND_REMINDME_INPUT_PROMPT'));
-		}
+		this.createCustomResolver('idOrDuration', (arg, possible, message, [action]: Actions[]) => {
+			switch (action) {
+				case Actions.List: return undefined;
+				case Actions.Delete: {
+					if (!arg) throw message.language.tget('COMMAND_REMINDME_DELETE_NO_ID');
+					return this.client.arguments.get('string')!.run(arg, { ...possible, max: 9, min: 9 }, message);
+				}
+				case Actions.Create: {
+					if (!arg) throw message.language.tget('COMMAND_REMINDME_CREATE_NO_DURATION');
+					return this.client.arguments.get('timespan')!.run(arg, { ...possible, min: Time.Minute }, message);
+				}
+			}
+		});
 
-		return parsed;
-	}
-
-	public async askTime(message: KlasaMessage, alert: string) {
-		await message.sendMessage(alert);
-
-		let time: number;
-		let attempts = 0;
-		do {
-			const messages = await message.channel.awaitMessages(msg => msg.author === message.author, { time: 30000, max: 1 });
-			if (!messages.size) throw null;
-			time = new Duration(messages.first()!.content).offset;
-			attempts++;
-		} while (time < 60000 && attempts < 5);
-
-		if (!time || time < 60000) throw message.language.tget('COMMAND_REMINDME_SHORT_TIME');
-		return time;
+		this.createCustomResolver('description', (arg, possible, message, [action]: Actions[]) => {
+			if (action !== Actions.Create) return undefined;
+			if (!arg) return message.language.tget('COMMAND_REMINDME_CREATE_NO_DESCRIPTION');
+			return this.client.arguments.get('...string')!.run(arg, { ...possible, max: 1024 }, message);
+		});
 	}
 
 }

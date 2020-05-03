@@ -2106,8 +2106,9 @@ export default class extends Language {
 		COMMAND_REMINDME_EXTENDED: builder.display('remindme', {
 			extendedHelp: `This command allows you to set, delete and list reminders.`,
 			explainedUsage: [
-				['title', 'What you want me to remind you.'],
-				['time', 'The time the reminder should last. If not provided, Skyra will ask for it in a prompt.']
+				['action', 'The action, one of "list", "delete", or "create"/"me". Defaults to "list".'],
+				['idOrDuration', 'Dependent of action; "list" → ignored; "delete" → reminder ID; else → duration.'],
+				['description', '(Optional) Dependent of action, this is only read when creating a new reminder.']
 			],
 			examples: [
 				'me in 6h to fix this command.',
@@ -3359,15 +3360,11 @@ export default class extends Language {
 			EXPERIENCE: 'Experiencia',
 			LEVEL: 'Nivel'
 		},
-		COMMAND_REMINDME_INPUT: 'You must tell me what you want me to remind you and when.',
-		COMMAND_REMINDME_INPUT_PROMPT: 'How long should your new reminder last?',
-		COMMAND_REMINDME_TIME: 'Your reminder must be at least one minute long.',
-		COMMAND_REMINDME_SHORT_TIME: 'You did not give me a duration of at least one minute long. Cancelling prompt.',
 		COMMAND_REMINDME_CREATE: id => `A reminder with ID \`${id}\` has been created.`,
-		COMMAND_REMINDME_DELETE_PARAMS: ['delete', 'remove'],
-		COMMAND_REMINDME_DELETE_INVALID_PARAMETERS: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
+		COMMAND_REMINDME_CREATE_NO_DURATION: 'You must tell me what you want me to remind you and when.',
+		COMMAND_REMINDME_CREATE_NO_DESCRIPTION: 'Algo, no me dijiste qué.',
+		COMMAND_REMINDME_DELETE_NO_ID: 'To delete a previously created reminder, you must type \'delete\' followed by the ID.',
 		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time.getTime() - Date.now())}** has been successfully deleted.`,
-		COMMAND_REMINDME_LIST_PARAMS: ['list', 'all'],
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
 		COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',

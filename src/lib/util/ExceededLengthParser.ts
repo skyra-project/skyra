@@ -45,7 +45,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(message: KlasaM
 				);
 			}
 			return message.sendMessage(message.language.tget(options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR',
-				options.time!, codeBlock(options.language!, options.result!), options.footer));
+				codeBlock(options.language!, options.result!), options.time!, options.footer));
 		}
 	}
 }

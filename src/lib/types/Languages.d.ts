@@ -1754,6 +1754,7 @@ export interface LanguageKeys {
 	SYSTEM_FETCHBANS_FAIL: string;
 	SYSTEM_LOADING: () => string;
 	SYSTEM_ERROR: string;
+	SYSTEM_DISCORD_ABORTERROR: string;
 	SYSTEM_QUERY_FAIL: string;
 	SYSTEM_NO_RESULTS: string;
 	SYSTEM_MESSAGE_NOT_FOUND: string;

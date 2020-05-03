@@ -4290,6 +4290,7 @@ export default class extends Language {
 			`${LOADING} Playing rock, scissors, paper...`
 		]),
 		SYSTEM_ERROR: 'Something happened!',
+		SYSTEM_DISCORD_ABORTERROR: 'I had a small network error when messaging Discord, please run this command again!',
 		SYSTEM_MESSAGE_NOT_FOUND: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 		SYSTEM_NOTENOUGH_PARAMETERS: `I am sorry, but you did not provide enough parameters...`,
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels} to ${role}...`,

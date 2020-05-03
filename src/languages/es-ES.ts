@@ -4264,6 +4264,7 @@ export default class extends Language {
 			`${LOADING} Jugando a Piedra, Papel, Tijeras...`
 		]),
 		SYSTEM_ERROR: '¡Algo pasó!',
+		SYSTEM_DISCORD_ABORTERROR: 'He tenido un pequeño error de red al mandar un mensaje a Discord, ¡por favor ejecuta el comando de nuevo!',
 		SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
 		SYSTEM_NOTENOUGH_PARAMETERS: `Lo siento, pero no proporcionaste suficientes parámetros...`,
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,

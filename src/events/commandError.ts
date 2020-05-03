@@ -15,32 +15,44 @@ const BLACKLISTED_CODES = [
 export default class extends Event {
 
 	public async run(message: KlasaMessage, command: Command, _: string[], error: string | Error) {
+		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
 			try {
-				await message.alert(message.language.tget('EVENTS_ERROR_STRING', message.author.toString(), error));
+				return await message.alert(message.language.tget('EVENTS_ERROR_STRING', message.author.toString(), error));
 			} catch (err) {
-				this.client.emit(Events.ApiError, err);
+				return this.client.emit(Events.ApiError, err);
 			}
-		} else {
-			await this._sendErrorChannel(message, command, error);
+		}
 
-			// Extract useful information about the DiscordAPIError
-			if (error instanceof DiscordAPIError || error instanceof HTTPError) {
-				if (BLACKLISTED_CODES.includes(error.code)) return;
-				this.client.emit(Events.ApiError, error);
-			} else {
-				this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
-			}
-
-			// Emit where the error was emitted
-			this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error}`);
+		// If the error was an AbortError, tell the user to re-try:
+		if (error.name === 'AbortError') {
+			this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 			try {
-				await message.alert(this.client.options.owners.includes(message.author.id)
-					? util.codeBlock('js', error.stack!)
-					: message.language.tget('EVENTS_ERROR_WTF'));
+				return await message.alert(message.language.tget('SYSTEM_DISCORD_ABORTERROR'));
 			} catch (err) {
-				this.client.emit(Events.ApiError, err);
+				return this.client.emit(Events.ApiError, err);
 			}
+		}
+
+		// Else send a detailed message:
+		await this._sendErrorChannel(message, command, error);
+
+		// Extract useful information about the DiscordAPIError
+		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
+			if (BLACKLISTED_CODES.includes(error.code)) return;
+			this.client.emit(Events.ApiError, error);
+		} else {
+			this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
+		}
+
+		// Emit where the error was emitted
+		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error}`);
+		try {
+			await message.alert(this.client.options.owners.includes(message.author.id)
+				? util.codeBlock('js', error.stack!)
+				: message.language.tget('EVENTS_ERROR_WTF'));
+		} catch (err) {
+			this.client.emit(Events.ApiError, err);
 		}
 	}
 

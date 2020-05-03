@@ -1,42 +1,32 @@
 import { codeBlock, toTitleCase } from '@klasa/utils';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
 import { Permissions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, SettingsFolder } from 'klasa';
+import { KlasaMessage, SettingsFolder } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
 
-const MENU_REQUIREMENTS = Permissions.resolve([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]);
-
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['settings', 'config', 'configs', 'configuration'],
+	description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
+	guarded: true,
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['settings', 'config', 'configs', 'configuration'],
-			description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
-			guarded: true,
-			permissionLevel: PermissionLevels.Administrator,
-			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',
-			usageDelim: ' '
-		});
-
-		this
-			.createCustomResolver('key', (arg, _possible, message, [action]: string[]) => {
-				if (['show', 'menu'].includes(action) || arg) return arg || '';
-				throw message.language.tget('COMMAND_CONF_NOKEY');
-			})
-			.createCustomResolver('value', (arg, possible, message, [action]: string[]) => {
-				if (!['set', 'remove'].includes(action)) return null;
-				if (arg) return this.client.arguments.get('...string')!.run(arg, possible, message);
-				throw message.language.tget('COMMAND_CONF_NOVALUE');
-			});
-	}
+	private readonly kMenuRequirements = Permissions.resolve([
+		Permissions.FLAGS.ADD_REACTIONS,
+		Permissions.FLAGS.MANAGE_MESSAGES,
+		Permissions.FLAGS.EMBED_LINKS
+	]);
 
 	public menu(message: KlasaMessage) {
-		if (!(message.channel as TextChannel).permissionsFor(this.client.user!.id)!.has(MENU_REQUIREMENTS)) {
+		if (!(message.channel as TextChannel).permissionsFor(this.client.user!.id)!.has(this.kMenuRequirements)) {
 			throw message.language.tget('COMMAND_CONF_MENU_NOPERMISSIONS');
 		}
 		return new SettingsMenu(message).init();
@@ -93,9 +83,19 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	public init() {
+	public async init() {
 		initConfigurableSchema(this.client.gateways.get('guilds')!.schema);
-		return Promise.resolve();
+
+		this.createCustomResolver('key', (arg, _possible, message, [action]: string[]) => {
+			if (['show', 'menu'].includes(action) || arg) return arg || '';
+			throw message.language.tget('COMMAND_CONF_NOKEY');
+		});
+
+		this.createCustomResolver('value', (arg, possible, message, [action]: string[]) => {
+			if (!['set', 'remove'].includes(action)) return null;
+			if (arg) return this.client.arguments.get('...string')!.run(arg, possible, message);
+			throw message.language.tget('COMMAND_CONF_NOVALUE');
+		});
 	}
 
 }

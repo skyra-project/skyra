@@ -240,10 +240,10 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.5.tgz#1781c620b4c88d619bd0373a1548e5a6025e3d3a"
   integrity sha512-CU1q0UXQUpFNzNB7gufgoisDHP7n+T3tkqTsp3MNUkVJ5+hS3BCvME8uCXAUFlz+6T2FbTCu75A+yQ7HMKqRKw==
 
-"@favware/graphql-pokemon@^3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-3.0.3.tgz#9a78cc9850a7f2bc7dc62e977b77aeca70184743"
-  integrity sha512-6WXJlcm4DHHOoheewSkIa3dMrrVVYF0yrY86NVa5Rq7NGrEYvV2va25XSdX6yWySbS3Ju/W1DKKa6yCg5cRV+Q==
+"@favware/graphql-pokemon@^3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-3.1.0.tgz#fd73edabc989db001a0d726bc16fe9ae9b132340"
+  integrity sha512-/z1ZJRIwRBHf3bLVFeHTMUnOh2OYmQIHaibGTTaYCqMio5OIcAOm5lTruoOSr6bJ/Ezz5YLuPitFyfMV3C3GYw==
   dependencies:
     graphql "^14.6.0"
 

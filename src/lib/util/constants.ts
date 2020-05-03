@@ -258,8 +258,10 @@ export const enum APIErrors {
 	MaximumRoles = 30005,
 	MaximumReactions = 30010,
 	MaximumChannels = 30013,
+	MaximumAttachments = 30015,
 	MaximumInvites = 30016,
 	Unauthorized = 40001,
+	UserUnverified = 40002,
 	UserBanned = 40007,
 	MissingAccess = 50001,
 	InvalidAccountType = 50002,
@@ -297,6 +299,6 @@ export const clientOptions: KlasaClientOptions = {
 };
 
 export const enum BrandingColors {
-	Primary = 0x5C71BD,
+	Primary = 0x1e88e5,
 	Secondary = 0xFF9D01
 }

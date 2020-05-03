@@ -3,6 +3,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
+	aliases: ['spoll'],
 	cooldown: 5,
 	description: language => language.tget('COMMAND_POLL_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_POLL_EXTENDED'),

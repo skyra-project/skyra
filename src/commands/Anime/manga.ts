@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 				.setTitle(title)
 				.setURL(mangaURL)
 				.setDescription(message.language.tget('COMMAND_MANGA_OUTPUT_DESCRIPTION', entry, synopsis))
-				.setThumbnail(entry.posterImage?.original ?? '')
+				.setThumbnail(entry.posterImage?.original || '')
 				.addField(embedData.TYPE, message.language.tget('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
 				.addField(embedData.SCORE, score, true)
 				.addField(embedData.AGE_RATING, entry.ageRating ? entry.ageRating : embedData.NONE, true)

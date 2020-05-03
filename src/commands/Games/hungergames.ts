@@ -1,31 +1,28 @@
 import { isFunction } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { cleanMentions } from '@utils/util';
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
+import { KlasaMessage, Language, util } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
 
-const EMOJIS = ['🇳', '🇾'];
-
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['hunger-games', 'hg'],
+	cooldown: 0,
+	description: language => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
+	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '<user:string{2,50}> [...]',
+	usageDelim: ',',
+	flagSupport: true
+})
 export default class extends SkyraCommand {
 
-	public playing: Set<string> = new Set();
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['hunger-games', 'hg'],
-			cooldown: 0,
-			description: language => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '[user:string{2,50}] [...]',
-			usageDelim: ',',
-			flagSupport: true
-		});
-	}
+	public readonly playing: Set<string> = new Set();
+	public readonly kEmojis = ['🇳', '🇾'];
 
 	public async run(message: KlasaMessage, tributes: string[] = []) {
 		const autoFilled = message.flagArgs.autofill;
@@ -44,7 +41,7 @@ export default class extends SkyraCommand {
 		const filtered = new Set(tributes);
 		if (filtered.size !== tributes.length) throw message.language.tget('COMMAND_GAMES_REPEAT');
 		if (this.playing.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');
-		if (tributes.length < 4 || tributes.length > 48) throw message.language.tget('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
+		if (filtered.size < 4 || filtered.size > 48) throw message.language.tget('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value?: boolean) => void) | null = null;
@@ -56,7 +53,7 @@ export default class extends SkyraCommand {
 				if (!isFunction(resolve)
 					// Run the collector inhibitor
 					|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
-				resolve(Boolean(EMOJIS.indexOf(reaction.emoji.name)));
+				resolve(Boolean(this.kEmojis.indexOf(reaction.emoji.name)));
 				resolve = null;
 			}, () => {
 				if (isFunction(resolve)) resolve(false);
@@ -119,7 +116,7 @@ export default class extends SkyraCommand {
 		if (reaction.messageID !== gameMessage.id) return true;
 
 		// If the emoji reacted is not valid, inhibit
-		if (!EMOJIS.includes(reaction.emoji.name)) return true;
+		if (!this.kEmojis.includes(reaction.emoji.name)) return true;
 
 		// If the user who reacted is the author, don't inhibit
 		if (reaction.userID === message.author.id) return false;

@@ -4303,6 +4303,7 @@ export default class extends Language {
 		SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: (time, type) => `Sent the result as a file.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
 		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) => `Sent the result to hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
 		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: options => `Choose one of the following options: ${this.list(options, 'or')}`,
+		SYSTEM_EXTERNAL_SERVER_ERROR: 'The external service we use could not process our message. Please try again later.',
 
 		JUMPTO: 'Jump to Message ►',
 

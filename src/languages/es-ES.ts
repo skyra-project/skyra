@@ -2276,22 +2276,6 @@ export default class extends Language {
 			extendedHelp: 'La lista de emotes se divide por 50 emotes..'
 		}),
 		COMMAND_EMOTES_TITLE: 'Emotes en',
-		COMMAND_POLL_DESCRIPTION: 'Manage polls.',
-		COMMAND_POLL_EXTENDED: builder.display('poll', {
-			extendedHelp: `The poll command creates a poll and tracks any vote, whilst also offering filters and unique
-					votes (users can't vote twice nor two different options). You can customize the available options for the
-					user and it features role and user whitelist. At the end of the poll, Skyra will DM you the results with a
-					chart, make sure to have your DMs opened! After the vote concludes (they require time), you can retrieve the
-					results for 24 hours before it gets unaccesible.`,
-			examples: [
-				'create Should I create the #anime channel? --options="yes,no,definitely"',
-				'list',
-				'vote jfutdsxsb yes',
-				'result jfutdsxsb',
-				'remove jfutdsxsb'
-			],
-			reminder: 'Skyra will prompt you for user and role whitelist, you can omit it by including `--no-prompt` in your message or specify them with `--users="id1,id2..." and --roles="id1,id2..."`. If you want something simpler, use the `spoll` command.'
-		}),
 		COMMAND_PRICE_DESCRIPTION: 'Convert the currency with this tool.',
 		COMMAND_PRICE_EXTENDED: builder.display('price', {}),
 		COMMAND_QUOTE_DESCRIPTION: 'Quote another person\'s message.',
@@ -2312,8 +2296,8 @@ export default class extends Language {
 		}),
 		COMMAND_SEARCH_DESCRIPTION: 'Search things from the Internet with DuckDuckGo.',
 		COMMAND_SEARCH_EXTENDED: builder.display('search', {}),
-		COMMAND_SPOLL_DESCRIPTION: 'Simplified reaction-based poll.',
-		COMMAND_SPOLL_EXTENDED: builder.display('spoll', {
+		COMMAND_POLL_DESCRIPTION: 'Simplified reaction-based poll.',
+		COMMAND_POLL_EXTENDED: builder.display('spoll', {
 			extendedHelp: `spoll stands for "simplified poll". You may want to use this command if you don't want to deal the
 					complexity of the other command. Simplified Polls do not track the users who vote nor it filters, it merely reacts
 					to your message with three emojis and let the users vote.`,
@@ -3614,30 +3598,6 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
 			NO_GENRES: 'Ninguno en TheMovieDB'
 		},
-		COMMAND_POLL_MISSING_TITLE: 'Debes escribir un título.',
-		COMMAND_POLL_TIME: '¿Cuándo quieres que termine la encuesta? Los formatos de duración y fechas están permitidas para esta operación.',
-		COMMAND_POLL_WANT_USERS: '¿Quieres incluir una lista blanca de usuarios?',
-		COMMAND_POLL_FIRSTUSER: '¡De acuerdo! Escribe una lista de todos los usuarios que quieras incluir en la lista blanca, separando sus nombres, menciones, o id de usuario por coma.',
-		COMMAND_POLL_WANT_ROLES: 'Antes de crear la encuesta, ¿quieres incluir una lista blanca de roles?',
-		COMMAND_POLL_FIRSTROLE: '¡De acuerdo! Escribe una lista de todos los roles que quieras incluir en la lista blanca, separando sus nombres, menciones, o id de rol por coma.',
-		COMMAND_POLL_CREATE: (title, roles, users, options, time, id) => [
-			`He creado la encuesta con éxito.`,
-			`Título   : '${title}'`,
-			`Roles    : ${roles ? roles.join(' | ') : 'Ninguno'}`,
-			`Usuarios : ${users ? users.join(' | ') : 'Ninguno'}`,
-			`Opciones : ${options ? options.join(' | ') : 'Ninguno'}`,
-			`Duración : ${duration(time)}`,
-			`ID       : ${id}`
-		].join('\n'),
-		COMMAND_POLL_LIST_EMPTY: `${REDCROSS} No pude encontrar una encuesta activa para este servidor.`,
-		COMMAND_POLL_NOTEXISTS: `${REDCROSS} La encuesta que quieres obtener no existe o ha expirado.`,
-		COMMAND_POLL_NOTMANAGEABLE: `${REDCROSS} Esta encuesta está protegida y sólo puede ser modificada por su autor o por un administrador de este servidor.`,
-		COMMAND_POLL_REMOVE: `${GREENTICK} Eliminada la encuesta con éxito.`,
-		COMMAND_POLL_INVALID_OPTION: options => `${REDCROSS} Opción inválida. Por favor, elige una de las siguientes opciones: ${options}.`,
-		COMMAND_POLL_ALREADY_VOTED: `${REDCROSS} ¡Ya votaste en esta encuesta!`,
-		COMMAND_POLL_VOTE: `${GREENTICK} ¡Votado con éxito! Autodestruyendo mensaje en 10 segundos...`,
-		COMMAND_POLL_MISSING_ID: '¡Necesitas la id de la encuesta!',
-		COMMAND_POLL_EMPTY_VOTES: 'Infortunadamente, nadie ha votado en la encuesta.',
 		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `${fromAmount} ${fromCurrency} vale ${toAmount} ${toCurrency}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
 		COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',

@@ -3325,6 +3325,7 @@ export default class extends Language {
 		COMMAND_MARRY_AUTHOR_TAKEN: 'You are already married. Is your love big enough for two people?',
 		COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: user => `Cancelling. Your commitment to ${user} is admirable.`,
 		COMMAND_MARRY_TAKEN: spousesCount => `This user is already married to ${spousesCount === 1 ? 'someone' : `${spousesCount} people`}. Would you like to join their harem?`,
+		COMMAND_MARRY_ALREADY_MARRIED: user => `Ya estás casado/a con ${user}, ¿no te acuerdas?`,
 		COMMAND_MARRY_MULTIPLE_CANCEL: `Cancelling. Don't worry, you'll find someone you don't have to share!`,
 		COMMAND_MARRY_PETITION: (author, user) => `Fresh pair of eyes! ${author} is proposing to ${user}! 💞 Reply with **yes** to accept!`,
 		COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was a hard decision?',

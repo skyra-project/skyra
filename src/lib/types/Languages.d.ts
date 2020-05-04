@@ -1472,6 +1472,7 @@ export interface LanguageKeys {
 	COMMAND_MARRY_AUTHOR_TAKEN: string;
 	COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: (user: string) => string;
 	COMMAND_MARRY_TAKEN: (spousesCount: number) => string;
+	COMMAND_MARRY_ALREADY_MARRIED: (user: User) => string;
 	COMMAND_MARRY_MULTIPLE_CANCEL: string;
 	COMMAND_MARRY_PETITION: (author: string, user: string) => string;
 	COMMAND_MARRY_NOREPLY: string;

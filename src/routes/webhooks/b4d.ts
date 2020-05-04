@@ -1,14 +1,12 @@
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import { TOKENS } from '@root/config';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ApplyOptions } from '@skyra/decorators';
 
+@ApplyOptions<RouteOptions>({ route: 'webhooks/b4d' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'webhooks/b4d' });
-	}
 
 	public async post(request: ApiRequest, response: ApiResponse) {
 		if (request.headers.authorization !== TOKENS.WEBHOOK_B4D) return response.forbidden();

@@ -454,6 +454,18 @@ export function parseRange(input: string): number[] {
 }
 
 /**
+ * Parses an URL, returns null if invalid.
+ * @param url The url to parse
+ */
+export function parseURL(url: string) {
+	try {
+		return new URL(url);
+	} catch {
+		return null;
+	}
+}
+
+/**
  * Properly rounds up or down a number.
  * Also supports strinsgs using an exponent to indicate large or small numbers.
  * @param num The number to round off

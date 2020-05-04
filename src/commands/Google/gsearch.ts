@@ -2,7 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GooleCSEItem, queryGoogleCustomSearchAPI, handleNotOK, GoogleResponseCodes } from '@utils/Google';
-import { getColor } from '@utils/util';
+import { getColor, parseURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 				.setTitle(item.title)
 				.setURL(item.link)
 				.setDescription(item.snippet)
-				.setImage(item.pagemap?.cse_image?.[0].src || ''));
+				.setImage(item.pagemap?.cse_image?.find(image => parseURL(image.src))?.src || ''));
 		}
 
 		return display;

@@ -57,7 +57,7 @@ export default class extends Event {
 	private handleMemberLog(guild: Guild, member: GuildMember, asset: MessageLogMetaData) {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
 			.setColor(asset.color)
-			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL())
+			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp))
 			.setFooter(guild.language.tget(asset.title))
 			.setTimestamp());

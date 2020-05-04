@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL()));
+			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })));
 
 		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${this.kTimestamp.display(task.time)}\` - ${cutText(task.data.content, 40)}`), 10);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));

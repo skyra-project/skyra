@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(COLORS[index])
-			.setAuthor(target.username, target.displayAvatarURL())
+			.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans)));
 	}
 
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL())
+			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size)));
 
 		// Fetch usernames

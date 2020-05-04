@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 		if (!output.length) throw message.language.tget('COMMAND_TRIGGERS_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(getColor(message)));
 
 		for (const page of util.chunk(output, 10)) {

@@ -284,7 +284,7 @@ export class ModerationManagerEntry {
 			.setColor(this.color)
 			.setAuthor(`${moderator.username}#${moderator.discriminator}`, getDisplayAvatar(moderatorID, moderator))
 			.setDescription(description)
-			.setFooter(`Case ${this.case}`, this.client.user!.displayAvatarURL({ size: 128 }))
+			.setFooter(`Case ${this.case}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(this.createdTimestamp);
 	}
 

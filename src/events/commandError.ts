@@ -78,7 +78,7 @@ export default class extends Event {
 			await this.client.webhookError.send(new MessageEmbed()
 				.setDescription(output)
 				.setColor(Colors.Red)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 64 }), message.url)
+				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
 				.setTimestamp());
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);

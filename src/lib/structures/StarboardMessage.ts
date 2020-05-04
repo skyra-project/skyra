@@ -92,7 +92,7 @@ export class StarboardMessage {
 		}
 		if (!this.message) return null;
 		return new MessageEmbed()
-			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL())
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(this.color)
 			.setDescription(this.content)
 			.setTimestamp(this.message.createdAt)

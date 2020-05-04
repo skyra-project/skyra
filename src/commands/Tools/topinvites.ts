@@ -49,8 +49,8 @@ export default class extends SkyraCommand {
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) => embed
-				.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL())
-				.setThumbnail(invite.inviter.displayAvatarURL())
+				.setAuthor(invite.inviter.tag, invite.inviter.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setThumbnail(invite.inviter.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 				.setDescription([
 					`**${embedData.USES}**: ${this.resolveUses(invite.uses, invite.maxUses)}`,
 					`**${embedData.LINK}**: [${invite.code}](${invite.url})`,

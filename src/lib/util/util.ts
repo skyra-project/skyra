@@ -554,6 +554,29 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 
 export type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
 
+export interface BidirectionalReplaceOptions<T> {
+	onMatch(match: RegExpExecArray): T;
+	outMatch(content: string, previous: number, next: number): T;
+}
+
+export function bidirectionalReplace<T>(regex: RegExp, content: string, options: BidirectionalReplaceOptions<T>) {
+	const results: T[] = [];
+	let previous = 0;
+	let match: RegExpExecArray | null = null;
+
+	while ((match = regex.exec(content)) !== null) {
+		if (previous !== match.index) {
+			results.push(options.outMatch(content.slice(previous, match.index), previous, match.index));
+		}
+
+		previous = regex.lastIndex;
+		results.push(options.onMatch(match));
+	}
+
+	if (previous < content.length) results.push(options.outMatch(content.slice(previous), previous, content.length));
+	return results;
+}
+
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.
  * @param value

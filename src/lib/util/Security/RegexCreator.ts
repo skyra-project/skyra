@@ -1,3 +1,5 @@
+import { bidirectionalReplace } from '@utils/util';
+
 export const kWordStartBoundary = String.raw`(?<=^|\W)`;
 export const kWordEndBoundary = String.raw`(?=$|\W)`;
 export const kWordBoundaryWildcard = '*';
@@ -21,16 +23,16 @@ export function create(words: readonly string[]) {
 		const boundaries = processWordBoundaries(word);
 		switch (boundaries) {
 			case WordBoundary.None:
-				noBoundArray.push(processWordPattern(word));
+				noBoundArray.push(processWordPatternWithGroups(word));
 				break;
 			case WordBoundary.Start:
-				startBoundArray.push(processWordPattern(word.slice(1)));
+				startBoundArray.push(processWordPatternWithGroups(word.slice(1)));
 				break;
 			case WordBoundary.End:
-				endBoundArray.push(processWordPattern(word.slice(0, -1)));
+				endBoundArray.push(processWordPatternWithGroups(word.slice(0, -1)));
 				break;
 			case WordBoundary.Both:
-				bothBoundArray.push(processWordPattern(word.slice(1, -1)));
+				bothBoundArray.push(processWordPatternWithGroups(word.slice(1, -1)));
 				break;
 		}
 	}
@@ -61,6 +63,23 @@ export function processWordBoundaries(word: string) {
 			? WordBoundary.End
 			// Does not have wildcards
 			: WordBoundary.None;
+}
+
+export function processWordPatternWithGroups(word: string) {
+	return bidirectionalReplace(/\[(.+)\]/g, word, {
+		onMatch: match => `[${processGroup(match[1])}]`,
+		outMatch: match => processWordPattern(match)
+	}).join('');
+}
+
+export function processGroup(group: string) {
+	const output = [processLetter(group[0])];
+	for (let i = 1, m = group.length - 1; i < m; ++i) {
+		const char = group[i];
+		output.push(char === '-' ? char : processLetter(char));
+	}
+
+	return output.join('');
 }
 
 export function processWordPattern(word: string) {

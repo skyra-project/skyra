@@ -29,7 +29,8 @@ import {
 	ENABLE_POSTGRES,
 	EVLYN_PORT,
 	VERSION,
-	WEBHOOK_ERROR
+	WEBHOOK_ERROR,
+	WEBHOOK_FEEDBACK
 } from '@root/config';
 
 // Import all extensions and schemas
@@ -78,6 +79,11 @@ export class SkyraClient extends KlasaClient {
 	 * The webhook to use for the error event
 	 */
 	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
+
+	/**
+	 * The webhook to use for feedbacks
+	 */
+	public webhookFeedback: Webhook | null = WEBHOOK_FEEDBACK ? new Webhook(this, WEBHOOK_FEEDBACK) : null;
 
 	/**
 	 * The invite store

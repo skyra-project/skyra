@@ -33,8 +33,8 @@ export default class extends Event {
 			// Iterate over each subscription
 			for (const subscription of subscriptions[1]) {
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
-				if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
-				if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
+				// if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
+				// if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
 				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.

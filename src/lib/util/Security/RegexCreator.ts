@@ -5,6 +5,8 @@ export const kWordEndBoundary = String.raw`(?=$|\W)`;
 export const kWordBoundaryWildcard = '*';
 export const kWordReplacer = /.(?=(.)?)/g;
 export const kRegExpSymbols = /[-/\\^$*+?.()|[\]{}]/;
+export const kPatternGroupReplacer = /\[(.+)\](?=(.)?)/g;
+export const kGroupRangeReplacer = /(.)-(.)/g;
 
 export const enum WordBoundary {
 	None,
@@ -66,14 +68,14 @@ export function processWordBoundaries(word: string) {
 }
 
 export function processWordPatternsWithGroups(word: string) {
-	return bidirectionalReplace(/\[(.+)\](?=(.)?)/g, word, {
+	return bidirectionalReplace(kPatternGroupReplacer, word, {
 		onMatch: match => `${processGroup(match[1])}+${match[2] ? '\\W*' : ''}`,
 		outMatch: (match, _, next) => `${processWordPattern(match)}${next === word.length ? '' : '\\W*'}`
 	}).join('');
 }
 
 export function processGroup(group: string) {
-	const output = bidirectionalReplace(/(.)-(.)/g, group, {
+	const output = bidirectionalReplace(kGroupRangeReplacer, group, {
 		// Given a-b
 		// If a === b
 		onMatch: match => match[1] === match[2]

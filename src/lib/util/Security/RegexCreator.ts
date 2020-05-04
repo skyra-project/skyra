@@ -1,8 +1,12 @@
+import { bidirectionalReplace } from '@utils/util';
+
 export const kWordStartBoundary = String.raw`(?<=^|\W)`;
 export const kWordEndBoundary = String.raw`(?=$|\W)`;
 export const kWordBoundaryWildcard = '*';
 export const kWordReplacer = /.(?=(.)?)/g;
 export const kRegExpSymbols = /[-/\\^$*+?.()|[\]{}]/;
+export const kPatternGroupReplacer = /\[(.+)\](?=(.)?)/g;
+export const kGroupRangeReplacer = /(.)-(.)/g;
 
 export const enum WordBoundary {
 	None,
@@ -21,16 +25,16 @@ export function create(words: readonly string[]) {
 		const boundaries = processWordBoundaries(word);
 		switch (boundaries) {
 			case WordBoundary.None:
-				noBoundArray.push(processWordPattern(word));
+				noBoundArray.push(processWordPatternsWithGroups(word));
 				break;
 			case WordBoundary.Start:
-				startBoundArray.push(processWordPattern(word.slice(1)));
+				startBoundArray.push(processWordPatternsWithGroups(word.slice(1)));
 				break;
 			case WordBoundary.End:
-				endBoundArray.push(processWordPattern(word.slice(0, -1)));
+				endBoundArray.push(processWordPatternsWithGroups(word.slice(0, -1)));
 				break;
 			case WordBoundary.Both:
-				bothBoundArray.push(processWordPattern(word.slice(1, -1)));
+				bothBoundArray.push(processWordPatternsWithGroups(word.slice(1, -1)));
 				break;
 		}
 	}
@@ -61,6 +65,32 @@ export function processWordBoundaries(word: string) {
 			? WordBoundary.End
 			// Does not have wildcards
 			: WordBoundary.None;
+}
+
+export function processWordPatternsWithGroups(word: string) {
+	return bidirectionalReplace(kPatternGroupReplacer, word, {
+		onMatch: match => `${processGroup(match[1])}+${match[2] ? '\\W*' : ''}`,
+		outMatch: (match, _, next) => `${processWordPattern(match)}${next === word.length ? '' : '\\W*'}`
+	}).join('');
+}
+
+export function processGroup(group: string) {
+	const output = bidirectionalReplace(kGroupRangeReplacer, group, {
+		// Given a-b
+		// If a === b
+		onMatch: match => match[1] === match[2]
+			// and a === -
+			? match[1] === '-'
+				// then optimize to -
+				? '\\-'
+				// else optimize to a-
+				: `${processLetter(match[1])}\\-`
+			// otherwise a-b
+			: `${processLetter(match[1])}-${processLetter(match[2])}`,
+		outMatch: match => [...match].map(processLetter).join('')
+	});
+
+	return `[${output.join('')}]`;
 }
 
 export function processWordPattern(word: string) {

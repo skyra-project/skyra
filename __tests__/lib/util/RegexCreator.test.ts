@@ -1,4 +1,4 @@
-import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary } from '@utils/Security/RegexCreator';
+import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary, processGroup, processWordPatternsWithGroups } from '@utils/Security/RegexCreator';
 
 describe('RegexCreator', () => {
 	describe('processLetter', () => {
@@ -26,6 +26,82 @@ describe('RegexCreator', () => {
 
 		test('GIVEN /b THEN returns \\/+\\W*b+', () => {
 			expect(processWordPattern('/b')).toStrictEqual('\\/+\\W*b+');
+		});
+	});
+
+	describe('processGroup', () => {
+		test('GIVEN a THEN returns a', () => {
+			expect(processGroup('a')).toStrictEqual('[a]');
+		});
+
+		test('GIVEN a-b THEN returns [a-b]', () => {
+			expect(processGroup('a-b')).toStrictEqual('[a-b]');
+		});
+
+		test('GIVEN -b THEN returns [\\-b]', () => {
+			expect(processGroup('-b')).toStrictEqual('[\\-b]');
+		});
+
+		test('GIVEN b- THEN returns [b\\-]', () => {
+			expect(processGroup('b-')).toStrictEqual('[b\\-]');
+		});
+
+		test('GIVEN --- THEN return \\-', () => {
+			expect(processGroup('---')).toStrictEqual('[\\-]');
+		});
+
+		test('GIVEN a-b-z THEN return [a-b\\-z]', () => {
+			expect(processGroup('a-b-z')).toStrictEqual('[a-b\\-z]');
+		});
+
+		test('GIVEN ?a THEN return [\\?a]', () => {
+			expect(processGroup('?a')).toStrictEqual('[\\?a]');
+		});
+
+		test('GIVEN ?:a THEN return [\\?:a]', () => {
+			expect(processGroup('?:a')).toStrictEqual('[\\?:a]');
+		});
+
+		test('GIVEN ?:*a-b-z0-9. THEN return [\\?:\\*a-b\\-z0-9\\.]', () => {
+			expect(processGroup('?:*a-b-z0-9.')).toStrictEqual('[\\?:\\*a-b\\-z0-9\\.]');
+		});
+
+		test('GIVEN ?=*a-b-z0-9. THEN return [\\?=\\*a-b\\-z0-9\\.]', () => {
+			expect(processGroup('?=*a-b-z0-9.')).toStrictEqual('[\\?=\\*a-b\\-z0-9\\.]');
+		});
+
+		test('GIVEN ?!*a-b-z0-9. THEN return [\\?!\\*a-b\\-z0-9\\.]', () => {
+			expect(processGroup('?!*a-b-z0-9.')).toStrictEqual('[\\?!\\*a-b\\-z0-9\\.]');
+		});
+
+		test('GIVEN ^?:*a-b-z0-9{0,2}.*$ THEN return [\\^\\?:\\*a-b\\-z0-9\\{0,2\\}\\.\\*\\$]', () => {
+			expect(processGroup('^?:*a-b-z0-9{0,2}.*$')).toStrictEqual('[\\^\\?:\\*a-b\\-z0-9\\{0,2\\}\\.\\*\\$]');
+		});
+	});
+
+	describe('processWordPatternsWithGroups', () => {
+		test('GIVEN a THEN returns a+', () => {
+			expect(processWordPatternsWithGroups('a')).toStrictEqual('a+');
+		});
+
+		test('GIVEN ab THEN returns a+\\W*b+', () => {
+			expect(processWordPatternsWithGroups('ab')).toStrictEqual('a+\\W*b+');
+		});
+
+		test('GIVEN [a-b] THEN returns [a-b]+', () => {
+			expect(processWordPatternsWithGroups('[a-b]')).toStrictEqual('[a-b]+');
+		});
+
+		test('GIVEN / THEN returns \\/+', () => {
+			expect(processWordPatternsWithGroups('/')).toStrictEqual('\\/+');
+		});
+
+		test('GIVEN /b THEN returns \\/+\\W*b+', () => {
+			expect(processWordPatternsWithGroups('/b')).toStrictEqual('\\/+\\W*b+');
+		});
+
+		test('GIVEN [a-b]c THEN returns [a-b]+\\W*c+', () => {
+			expect(processWordPatternsWithGroups('[a-b]c')).toStrictEqual('[a-b]+\\W*c+');
 		});
 	});
 
@@ -58,6 +134,10 @@ describe('RegexCreator', () => {
 
 		test("GIVEN ['a', 'b'] THEN returns (?<=^|\\W)(?:a+|b+)(?=$|\\W)", () => {
 			expect(create(['a', 'b'])).toStrictEqual('(?<=^|\\W)(?:a+|b+)(?=$|\\W)');
+		});
+
+		test("GIVEN ['[a-b]c', 'd'] THEN returns (?<=^|\\W)(?:[a-b]+\\W*c+|d+)(?=$|\\W)", () => {
+			expect(create(['[a-b]c', 'd'])).toStrictEqual('(?<=^|\\W)(?:[a-b]+\\W*c+|d+)(?=$|\\W)');
 		});
 
 		test("GIVEN ['a', '*b'] THEN returns (?<=^|\\W)(?:a+)(?=$|\\W)|(?:b+)(?=$|\\W)", () => {

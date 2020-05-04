@@ -3235,7 +3235,7 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 "klasa-dashboard-hooks@github:kyranet/klasa-dashboard-hooks#master":
   version "0.0.1-dev"
-  resolved "https://codeload.github.com/kyranet/klasa-dashboard-hooks/tar.gz/74ac1a8503ba09a728948377ea92feeaebf30bd0"
+  resolved "https://codeload.github.com/kyranet/klasa-dashboard-hooks/tar.gz/1166e9170ac0ce87540ce3332040c3ffdbcf860b"
   dependencies:
     node-fetch "^2.6.0"
 

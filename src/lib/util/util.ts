@@ -8,9 +8,9 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
-import { Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
+import { Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable, PermissionResolvable, TextChannel } from 'discord.js';
 import { readFile } from 'fs-nextra';
-import { KlasaGuild, RateLimitManager, util } from 'klasa';
+import { KlasaGuild, RateLimitManager, util, KlasaMessage } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { UserTag } from './Cache/UserTags';
@@ -596,6 +596,19 @@ export function enumerable(value: boolean) {
 		});
 	};
 }
+
+export const requiredPermissions = (permissionsResolvable: PermissionResolvable) => {
+	const resolved = Permissions.resolve(permissionsResolvable);
+	return createFunctionInhibitor((message: KlasaMessage) => {
+		const missing = (message.channel as TextChannel).permissionsFor(message.client.user!.id)?.missing(resolved, false) ?? [];
+		if (missing.length) {
+			const permissions = message.language.PERMISSIONS;
+			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', missing.map(permission => permissions[permission]).join(', '));
+		}
+
+		return true;
+	});
+};
 
 export const authenticated = createFunctionInhibitor(
 	(request: ApiRequest) => {

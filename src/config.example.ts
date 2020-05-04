@@ -164,5 +164,6 @@ export const TOKENS = {
 	WOLFRAM_KEY: '',
 	CLASH_OF_CLANS_KEY: '',
 	XIVAPI_KEY: '',
-	FORTNITE_KEY: ''
+	FORTNITE_KEY: '',
+	WEBHOOK_B4D: ''
 };

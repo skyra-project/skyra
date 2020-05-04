@@ -16,6 +16,10 @@ export default class ApiResponse extends ServerResponse {
 		return typeof data === 'string' ? this.text(data) : this.json(data);
 	}
 
+	public noContent() {
+		return this.status(204).end();
+	}
+
 	public badRequest(data: unknown = STATUS_CODES[400]) {
 		this.status(400);
 		return typeof data === 'string' ? this.text(data) : this.json(data);

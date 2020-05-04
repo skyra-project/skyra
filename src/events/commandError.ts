@@ -63,13 +63,13 @@ export default class extends Event {
 				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
 				`${inlineCodeblock('Path      ::')} ${error.path}`,
 				`${inlineCodeblock('Code      ::')} ${error.code}`,
-				`${inlineCodeblock('Arguments ::')} ${message.params.length ? `[\`${message.params.join('`, `')}\`]` : 'Not Supplied'}`,
+				`${inlineCodeblock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
 				`${inlineCodeblock('Error     ::')} ${util.codeBlock('js', error.stack || error)}`
 			].join('\n');
 		} else {
 			output = [
 				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
-				`${inlineCodeblock('Arguments ::')} ${message.params.length ? `[\`${message.params.join('`, `')}\`]` : 'Not Supplied'}`,
+				`${inlineCodeblock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
 				`${inlineCodeblock('Error     ::')} ${util.codeBlock('js', error.stack || error)}`
 			].join('\n');
 		}

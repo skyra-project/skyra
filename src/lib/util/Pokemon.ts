@@ -87,20 +87,27 @@ fragment dexdetails on DexDetails {
     }
 }`;
 
+const EvolutionsDataFragment = /* GraphQL */ `
+fragment evolutionsData on DexDetails {
+    species
+    evolutionLevel
+}`;
+
 const EvolutionsFragment = /* GraphQL */ `
 ${DexDetailsFragment}
+${EvolutionsDataFragment}
 
 fragment evolutions on DexDetails {
     evolutions {
-        ...dexdetails
+        ...evolutionsData
         evolutions {
-          ...dexdetails
+          ...evolutionsData
         }
       }
       preevolutions {
-        ...dexdetails
+        ...evolutionsData
         preevolutions {
-          ...dexdetails
+          ...evolutionsData
         }
       }
 }`;
@@ -289,7 +296,7 @@ export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(que
 				variables
 			})
 		}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<R>>;
-	} catch (error) {
+	} catch {
 		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
 		throw 'query_failed';
 	}

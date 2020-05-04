@@ -1,4 +1,4 @@
-import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary, processGroup } from '@utils/Security/RegexCreator';
+import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary, processGroup, processWordPatternsWithGroups } from '@utils/Security/RegexCreator';
 
 describe('RegexCreator', () => {
 	describe('processLetter', () => {
@@ -79,6 +79,32 @@ describe('RegexCreator', () => {
 		});
 	});
 
+	describe('processWordPatternsWithGroups', () => {
+		test('GIVEN a THEN returns a+', () => {
+			expect(processWordPatternsWithGroups('a')).toStrictEqual('a+');
+		});
+
+		test('GIVEN ab THEN returns a+\\W*b+', () => {
+			expect(processWordPatternsWithGroups('ab')).toStrictEqual('a+\\W*b+');
+		});
+
+		test('GIVEN [a-b] THEN returns [a-b]+', () => {
+			expect(processWordPatternsWithGroups('[a-b]')).toStrictEqual('[a-b]+');
+		});
+
+		test('GIVEN / THEN returns \\/+', () => {
+			expect(processWordPatternsWithGroups('/')).toStrictEqual('\\/+');
+		});
+
+		test('GIVEN /b THEN returns \\/+\\W*b+', () => {
+			expect(processWordPatternsWithGroups('/b')).toStrictEqual('\\/+\\W*b+');
+		});
+
+		test('GIVEN [a-b]c THEN returns [a-b]+\\W*c+', () => {
+			expect(processWordPatternsWithGroups('[a-b]c')).toStrictEqual('[a-b]+\\W*c+');
+		});
+	});
+
 	describe('processWordBoundaries', () => {
 		test('GIVEN a THEN returns WordBoundary.None', () => {
 			expect(processWordBoundaries('a')).toStrictEqual(WordBoundary.None);
@@ -108,6 +134,10 @@ describe('RegexCreator', () => {
 
 		test("GIVEN ['a', 'b'] THEN returns (?<=^|\\W)(?:a+|b+)(?=$|\\W)", () => {
 			expect(create(['a', 'b'])).toStrictEqual('(?<=^|\\W)(?:a+|b+)(?=$|\\W)');
+		});
+
+		test("GIVEN ['[a-b]c', 'd'] THEN returns (?<=^|\\W)(?:[a-b]+\\W*c+|d+)(?=$|\\W)", () => {
+			expect(create(['[a-b]c', 'd'])).toStrictEqual('(?<=^|\\W)(?:[a-b]+\\W*c+|d+)(?=$|\\W)');
 		});
 
 		test("GIVEN ['a', '*b'] THEN returns (?<=^|\\W)(?:a+)(?=$|\\W)|(?:b+)(?=$|\\W)", () => {

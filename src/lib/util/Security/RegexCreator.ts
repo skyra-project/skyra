@@ -23,16 +23,16 @@ export function create(words: readonly string[]) {
 		const boundaries = processWordBoundaries(word);
 		switch (boundaries) {
 			case WordBoundary.None:
-				noBoundArray.push(processWordPatternWithGroups(word));
+				noBoundArray.push(processWordPatternsWithGroups(word));
 				break;
 			case WordBoundary.Start:
-				startBoundArray.push(processWordPatternWithGroups(word.slice(1)));
+				startBoundArray.push(processWordPatternsWithGroups(word.slice(1)));
 				break;
 			case WordBoundary.End:
-				endBoundArray.push(processWordPatternWithGroups(word.slice(0, -1)));
+				endBoundArray.push(processWordPatternsWithGroups(word.slice(0, -1)));
 				break;
 			case WordBoundary.Both:
-				bothBoundArray.push(processWordPatternWithGroups(word.slice(1, -1)));
+				bothBoundArray.push(processWordPatternsWithGroups(word.slice(1, -1)));
 				break;
 		}
 	}
@@ -65,7 +65,7 @@ export function processWordBoundaries(word: string) {
 			: WordBoundary.None;
 }
 
-export function processWordPatternWithGroups(word: string) {
+export function processWordPatternsWithGroups(word: string) {
 	return bidirectionalReplace(/\[(.+)\](?=(.)?)/g, word, {
 		onMatch: match => `${processGroup(match[1])}+${match[2] ? '\\W*' : ''}`,
 		outMatch: (match, _, next) => `${processWordPattern(match)}${next === word.length ? '' : '\\W*'}`

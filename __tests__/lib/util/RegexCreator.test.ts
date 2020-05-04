@@ -1,4 +1,4 @@
-import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary } from '@utils/Security/RegexCreator';
+import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary, processGroup } from '@utils/Security/RegexCreator';
 
 describe('RegexCreator', () => {
 	describe('processLetter', () => {
@@ -26,6 +26,56 @@ describe('RegexCreator', () => {
 
 		test('GIVEN /b THEN returns \\/+\\W*b+', () => {
 			expect(processWordPattern('/b')).toStrictEqual('\\/+\\W*b+');
+		});
+	});
+
+	describe('processGroup', () => {
+		test('GIVEN a THEN returns a', () => {
+			expect(processGroup('a')).toStrictEqual('[a]');
+		});
+
+		test('GIVEN a-b THEN returns [a-b]', () => {
+			expect(processGroup('a-b')).toStrictEqual('[a-b]');
+		});
+
+		test('GIVEN -b THEN returns [\\-b]', () => {
+			expect(processGroup('-b')).toStrictEqual('[\\-b]');
+		});
+
+		test('GIVEN b- THEN returns [b\\-]', () => {
+			expect(processGroup('b-')).toStrictEqual('[b\\-]');
+		});
+
+		test('GIVEN --- THEN return \\-', () => {
+			expect(processGroup('---')).toStrictEqual('[\\-]');
+		});
+
+		test('GIVEN a-b-z THEN return [a-b\\-z]', () => {
+			expect(processGroup('a-b-z')).toStrictEqual('[a-b\\-z]');
+		});
+
+		test('GIVEN ?a THEN return [\\?a]', () => {
+			expect(processGroup('?a')).toStrictEqual('[\\?a]');
+		});
+
+		test('GIVEN ?:a THEN return [\\?:a]', () => {
+			expect(processGroup('?:a')).toStrictEqual('[\\?:a]');
+		});
+
+		test('GIVEN ?:*a-b-z0-9. THEN return [\\?:\\*a-b\\-z0-9\\.]', () => {
+			expect(processGroup('?:*a-b-z0-9.')).toStrictEqual('[\\?:\\*a-b\\-z0-9\\.]');
+		});
+
+		test('GIVEN ?=*a-b-z0-9. THEN return [\\?=\\*a-b\\-z0-9\\.]', () => {
+			expect(processGroup('?=*a-b-z0-9.')).toStrictEqual('[\\?=\\*a-b\\-z0-9\\.]');
+		});
+
+		test('GIVEN ?!*a-b-z0-9. THEN return [\\?!\\*a-b\\-z0-9\\.]', () => {
+			expect(processGroup('?!*a-b-z0-9.')).toStrictEqual('[\\?!\\*a-b\\-z0-9\\.]');
+		});
+
+		test('GIVEN ^?:*a-b-z0-9{0,2}.*$ THEN return [\\^\\?:\\*a-b\\-z0-9\\{0,2\\}\\.\\*\\$]', () => {
+			expect(processGroup('^?:*a-b-z0-9{0,2}.*$')).toStrictEqual('[\\^\\?:\\*a-b\\-z0-9\\{0,2\\}\\.\\*\\$]');
 		});
 	});
 

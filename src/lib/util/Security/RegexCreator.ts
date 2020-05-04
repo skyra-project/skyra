@@ -66,20 +66,29 @@ export function processWordBoundaries(word: string) {
 }
 
 export function processWordPatternWithGroups(word: string) {
-	return bidirectionalReplace(/\[(.+)\]/g, word, {
-		onMatch: match => `[${processGroup(match[1])}]`,
-		outMatch: match => processWordPattern(match)
+	return bidirectionalReplace(/\[(.+)\](?=(.)?)/g, word, {
+		onMatch: match => `${processGroup(match[1])}+${match[2] ? '\\W*' : ''}`,
+		outMatch: (match, _, next) => `${processWordPattern(match)}${next === word.length ? '' : '\\W*'}`
 	}).join('');
 }
 
 export function processGroup(group: string) {
-	const output = [processLetter(group[0])];
-	for (let i = 1, m = group.length - 1; i < m; ++i) {
-		const char = group[i];
-		output.push(char === '-' ? char : processLetter(char));
-	}
+	const output = bidirectionalReplace(/(.)-(.)/g, group, {
+		// Given a-b
+		// If a === b
+		onMatch: match => match[1] === match[2]
+			// and a === -
+			? match[1] === '-'
+				// then optimize to -
+				? '\\-'
+				// else optimize to a-
+				: `${processLetter(match[1])}\\-`
+			// otherwise a-b
+			: `${processLetter(match[1])}-${processLetter(match[2])}`,
+		outMatch: match => [...match].map(processLetter).join('')
+	});
 
-	return output.join('');
+	return `[${output.join('')}]`;
 }
 
 export function processWordPattern(word: string) {

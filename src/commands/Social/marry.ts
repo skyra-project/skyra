@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 		const users = message.author.settings.get(UserSettings.Marry);
 		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
-		const usernames = await Promise.all(users.map(user => this.client.userTags.fetchUsername(user)));
+		const usernames = await Promise.all(users.map(async user => `${this.client.userTags.fetchUsername(user)} (${user})`));
 		return message.sendLocale('COMMAND_MARRY_WITH', [usernames]);
 	}
 
@@ -65,6 +65,10 @@ export default class extends SkyraCommand {
 
 		// settings is already sync by the monitors.
 		const spouses = author.settings.get(UserSettings.Marry);
+		if (spouses.includes(user.id)) {
+			throw message.language.tget('COMMAND_MARRY_ALREADY_MARRIED', user);
+		}
+
 		const targetsSpouses = user.settings.get(UserSettings.Marry);
 
 		// Warn if starting polygamy:

@@ -1,7 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { BrandingColors, Time } from '@utils/constants';
-import { cutText, getColor } from '@utils/util';
+import { cutText, getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
 import { ApplyOptions } from '@skyra/decorators';
@@ -13,13 +13,12 @@ const enum Actions {
 }
 
 @ApplyOptions<SkyraCommandOptions>({
-	aliases: ['remind', 'reminder'],
+	aliases: ['remind', 'reminder', 'reminders'],
 	bucket: 2,
 	subcommands: true,
 	cooldown: 30,
 	description: language => language.tget('COMMAND_REMINDME_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_REMINDME_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<action:action> (value:idOrDuration) (description:description)',
 	usageDelim: ' '
 })
@@ -40,6 +39,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_REMINDME_CREATE', [task.id]);
 	}
 
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tasks = this.client.schedule.tasks.filter(task => task.data && task.data.user === message.author.id);
 		if (!tasks.length) return message.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
@@ -84,10 +84,12 @@ export default class extends SkyraCommand {
 				case 'del':
 				case 'delete': return Actions.Delete;
 				case 'c':
-				case 'create': message.args.splice(message.params.length, 0, undefined!);
-				// Fallback
-				case 'me':
-				default: return Actions.Create;
+				case 'create':
+				case 'me': return Actions.Create;
+				default: {
+					message.args.splice(message.params.length, 0, undefined!);
+					return Actions.Create;
+				}
 			}
 		});
 

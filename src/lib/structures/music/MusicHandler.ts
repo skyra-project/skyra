@@ -191,6 +191,11 @@ export class MusicHandler {
 	}
 
 	public async manageableFor(message: KlasaMessage) {
+		const { listeners } = this;
+
+		// If the member is the only listener, they receive full permissions on them.
+		if (listeners.length === 0 && listeners[0] === message.author.id) return true;
+		// If the member is a DJ, queues are always manageable for them.
 		if (message.member!.isDJ) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
 		if ((this.song ? this.song.requester === message.author.id : true) && this.queue.every(song => song.requester === message.author.id)) return true;

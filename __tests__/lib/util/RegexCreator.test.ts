@@ -103,6 +103,14 @@ describe('RegexCreator', () => {
 		test('GIVEN [a-b]c THEN returns [a-b]+\\W*c+', () => {
 			expect(processWordPatternsWithGroups('[a-b]c')).toStrictEqual('[a-b]+\\W*c+');
 		});
+
+		test('GIVEN a[b-c]d[ef]g THEN returns a+\\W*[b-c]+\\W*d+\\W*[ef]+\\W*g+', () => {
+			expect(processWordPatternsWithGroups('a[b-c]d[ef]g')).toStrictEqual('a+\\W*[b-c]+\\W*d+\\W*[ef]+\\W*g+');
+		});
+
+		test('GIVEN [ab][c-e][]] THEN returns [ab]+\\W*[c-e]+\\W*\\[+\\W*\\]+\\W*\\]+', () => {
+			expect(processWordPatternsWithGroups('[ab][c-e][]]')).toStrictEqual('[ab]+\\W*[c-e]+\\W*\\[+\\W*\\]+\\W*\\]+');
+		});
 	});
 
 	describe('processWordBoundaries', () => {
@@ -138,6 +146,10 @@ describe('RegexCreator', () => {
 
 		test("GIVEN ['[a-b]c', 'd'] THEN returns (?<=^|\\W)(?:[a-b]+\\W*c+|d+)(?=$|\\W)", () => {
 			expect(create(['[a-b]c', 'd'])).toStrictEqual('(?<=^|\\W)(?:[a-b]+\\W*c+|d+)(?=$|\\W)');
+		});
+
+		test("GIVEN ['a[b-c]d[ef]g'] THEN returns (?<=^|\\W)(?:a+\\W*[b-c]+\\W*d+\\W*[ef]+\\W*g+)(?=$|\\W)", () => {
+			expect(create(['a[b-c]d[ef]g'])).toStrictEqual('(?<=^|\\W)(?:a+\\W*[b-c]+\\W*d+\\W*[ef]+\\W*g+)(?=$|\\W)');
 		});
 
 		test("GIVEN ['a', '*b'] THEN returns (?<=^|\\W)(?:a+)(?=$|\\W)|(?:b+)(?=$|\\W)", () => {

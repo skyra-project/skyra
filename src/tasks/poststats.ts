@@ -11,7 +11,7 @@ const header = b.format('[POST STATS   ]');
 enum Lists {
 	BotsForDiscord = 'botsfordiscord.com',
 	DiscordBotList = 'discordbotlist.com',
-	DiscordBotsOrg = 'discordbots.org',
+	TopGG = 'top.gg',
 	DiscordBotsGG = 'discord.bots.gg',
 	BotsOnDiscord = 'bots.ondiscord.xyz'
 }
@@ -25,8 +25,8 @@ export default class extends Task {
 		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
 
 		const results = (await Promise.all([
-			this.query(`https://discordbots.org/api/bots/${this.client.user!.id}/stats`,
-				`{"server_count":${guilds}}`, TOKENS.DISCORD_BOT_ORG, Lists.DiscordBotsOrg),
+			this.query(`https://top.gg/api/bots/${this.client.user!.id}/stats`,
+				`{"server_count":${guilds}}`, TOKENS.TOP_GG, Lists.TopGG),
 			this.query(`https://discord.bots.gg/api/v1/bots/${this.client.user!.id}/stats`,
 				`{"guildCount":${guilds}}`, TOKENS.DISCORD_BOTS, Lists.DiscordBotsGG),
 			this.query(`https://botsfordiscord.com/api/bot/${this.client.user!.id}`,

@@ -5,7 +5,7 @@ export const kWordEndBoundary = String.raw`(?=$|\W)`;
 export const kWordBoundaryWildcard = '*';
 export const kWordReplacer = /.(?=(.)?)/g;
 export const kRegExpSymbols = /[-/\\^$*+?.()|[\]{}]/;
-export const kPatternGroupReplacer = /\[(.+)\](?=(.)?)/g;
+export const kPatternGroupReplacer = /\[([^\]]+)\](?=(.)?)/g;
 export const kGroupRangeReplacer = /(.)-(.)/g;
 
 export const enum WordBoundary {

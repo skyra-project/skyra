@@ -12,8 +12,8 @@ export default class extends Route {
 	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
-		this.client.console.log('Getting a challenge to Twitch API request is:');
-		this.client.console.debug(request);
+		this.client.console.log('Receiving a post from Twitch API, request body is:');
+		this.client.console.debug(request.body);
 		this.client.console.log('\n======\nAnd request headers are: ');
 		this.client.console.debug(request.headers);
 
@@ -27,8 +27,8 @@ export default class extends Route {
 
 	// Stream Changed
 	public post(request: ApiRequest, response: ApiResponse) {
-		this.client.console.log('Receiving a post from Twitch API, request is:');
-		this.client.console.debug(request);
+		this.client.console.log('Receiving a post from Twitch API, request body is:');
+		this.client.console.debug(request.body);
 		this.client.console.log('\n======\nAnd request headers are: ');
 		this.client.console.debug(request.headers);
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');

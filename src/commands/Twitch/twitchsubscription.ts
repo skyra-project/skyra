@@ -1,15 +1,16 @@
 import { chunk } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Databases } from '@lib/types/constants/Constants';
 import { TwitchKrakenChannelSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
 import { getColor } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const enum Type {
 	Add = 'add',
@@ -26,21 +27,20 @@ type Entry = NotificationsStreamsTwitchStreamer;
 
 const $KEY = GuildSettings.Notifications.Streams.Twitch.Streamers;
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
+	description: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['twitch-subscription', 't-subscription', 't-sub'],
-			description: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channelname) (status:status) (content:content)',
-			usageDelim: ' '
-		});
-
+	public async init() {
 		this
 			.createCustomResolver('streamer', async (argument, _possible, message, [type]) => {
 				if (!argument) {
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 				if (type === Type.Show || type === Type.Reset) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
 
-				return this.client.arguments.get('textChannel')!.run(argument, possible, message);
+				return this.client.arguments.get('channelname')!.run(argument, possible, message);
 			})
 			.createCustomResolver('status', (argument, _possible, message, [type]) => {
 				if (type === Type.Show || type === Type.Reset) return undefined;

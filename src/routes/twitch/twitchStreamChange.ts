@@ -35,7 +35,7 @@ export default class extends Route {
 		if (data.length === 0) {
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {
-			this.client.emit(Events.TwitchStreamOnline, data, response);
+			this.client.emit(Events.TwitchStreamOnline, data[0], response);
 		}
 	}
 

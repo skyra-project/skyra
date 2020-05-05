@@ -15,7 +15,7 @@ import { ApplyOptions } from '@skyra/decorators';
 	extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
-	usage: '<user:string{2,50}> [...]',
+	usage: '[user:string{,50}] [...]',
 	usageDelim: ',',
 	flagSupport: true
 })

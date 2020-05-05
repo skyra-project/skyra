@@ -12,6 +12,7 @@ export default class extends Route {
 
 	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {
+		const challenge = request.query['hub.challenge'] as string | undefined;
 		switch (request.query['hub.mode']) {
 			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge || 'ok');
 			case 'unsubscribe':

@@ -2339,7 +2339,7 @@ export default class extends Language {
 				[this.list(['add', 'remove', 'reset', 'show'], 'or'), 'The subcommand to trigger.'],
 				['streamer', 'The Twitch username of the streamer to get notifications for.'],
 				['channel', 'A channel tag or ID of a Discord channel where to post the notifications in.'],
-				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(this.language.COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES, 'or')}.`],
+				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(['online', 'offline'], 'or')}.`],
 				['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
 			],
 			examples: [

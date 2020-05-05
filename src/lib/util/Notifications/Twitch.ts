@@ -4,6 +4,7 @@ import { Mime, Time } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
+import { RequestInit } from 'node-fetch';
 
 export const enum ApiVersion {
 	Kraken,
@@ -75,7 +76,7 @@ export class Twitch {
 		const search: string[] = [];
 		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
 		for (const name of names) search.push(`name=${encodeURIComponent(name)}`);
-		return this._performApiGETRequest(`games?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixGameSearchResult>>;
+		return this._performApiGETRequest(`games?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>;
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
@@ -120,8 +121,14 @@ export class Twitch {
 	}
 
 	private async _performApiGETRequest<T>(path: string, api: ApiVersion = ApiVersion.Kraken): Promise<T> {
-		const result = await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, this.kFetchOptions, FetchResultTypes.JSON) as unknown as T;
-		return result;
+		const fetchOptions: RequestInit = {
+			...this.kFetchOptions,
+			headers: {
+				...this.kFetchOptions.headers,
+				Authorization: `Bearer ${await this.fetchBearer()}`
+			}
+		};
+		return await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, fetchOptions, FetchResultTypes.JSON) as unknown as T;
 	}
 
 	private async _generateBearerToken() {

@@ -4,9 +4,11 @@ import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from 'klasa';
+import { Event, Language } from 'klasa';
 
 export default class extends Event {
+
+	private readonly kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
@@ -34,16 +36,18 @@ export default class extends Event {
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				// Retrieve the message and transform it, if no embed, return the basic message.
-				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data);
-				if (subscription.embed === null) {
-					floatPromise(this, channel.send(message));
-					break;
+				// If the message could not be retrieved then skip this notification.
+				if (subscription.message) {
+					// Transform the message
+					const message = this.transformText(subscription.message, data);
+
+					if (subscription.embed) {
+						floatPromise(this, channel.sendEmbed(this.buildEmbed(message, guild.language)));
+					} else {
+						floatPromise(this, channel.send(message));
+					}
 				}
 
-				// Construct a message embed and send it.
-				const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data)));
-				floatPromise(this, channel.send(message, embed));
 				break;
 			}
 		}
@@ -58,6 +62,14 @@ export default class extends Event {
 				default: return match;
 			}
 		});
+	}
+
+	private buildEmbed(message: string, i18n: Language) {
+		return new MessageEmbed()
+			.setColor(this.kTwitchBrandingColour)
+			.setDescription(message)
+			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
+			.setTimestamp();
 	}
 
 }

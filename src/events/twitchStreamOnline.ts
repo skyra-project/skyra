@@ -6,8 +6,11 @@ import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/N
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
+import * as util from 'util';
 
 export default class extends Event {
+
+	// private kThumbnailReplacerRegex = /({width}|{height})/i;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// All streams should have a game_id.
@@ -18,6 +21,8 @@ export default class extends Event {
 		if (streamer === null) return response.error('No streamer could be found in the database.');
 
 		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);
+		this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'Logging game data');
+		this.client.console.debug(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(game, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guild_ids) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
@@ -41,16 +46,20 @@ export default class extends Event {
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				// Retrieve the message and transform it, if no embed, return the basic message.
+				// Retrieve the message and transform it, if the message could not be retrieved then skip this notification.
 				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, game);
-				if (subscription.embed === null) {
-					floatPromise(this, channel.send(message));
+				if (message === undefined) break;
+
+				this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'PARSED MESSAGE');
+				this.client.console.debug(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(JSON.parse(message), { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
+
+				if (subscription.embed) {
+					// Construct a message embed and send it.
+					floatPromise(this, channel.sendEmbed(this.buildEmbed(JSON.parse(message))));
 					break;
 				}
 
-				// Construct a message embed and send it.
-				const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data, game)));
-				floatPromise(this, channel.send(message, embed));
+				floatPromise(this, channel.send(message));
 				break;
 			}
 		}
@@ -74,8 +83,31 @@ export default class extends Event {
 		});
 	}
 
+	// FIXME: Implement
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	private buildEmbed(_data: any) {
+		const embed = new MessageEmbed();
+		// 	.setThumbnail(notification.thumbnail_url.replace(this.kThumbnailReplacerRegex, '128'))
+		// 	.setTitle(`Streaming: `)
+		// 	.setTimestamp(new Date(notification.started_at));
+
+		// if (parsedMessage !== undefined) embed.setDescription(parsedMessage);
+
+		return embed;
+	}
+
 	private escapeText(text: string) {
 		return text.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
 	}
 
 }
+
+// type TwitchOnlineEmbedData =
+// 	& Omit<PostStreamBodyData, 'id' | 'viewer_count'>
+// 	& Omit<TwitchHelixGameSearchResult, 'id'>
+// 	& {
+// 		stream_id: string;
+// 		game_id: string;
+// 		game_name: string;
+// 		viewer_count: string;
+// 	};

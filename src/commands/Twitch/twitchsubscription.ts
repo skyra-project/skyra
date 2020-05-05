@@ -36,7 +36,8 @@ const $KEY = GuildSettings.Notifications.Streams.Twitch.Streamers;
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<add|remove|reset|show:default> (streamer:streamer) (channel:channel) (status:status) (content:content)',
-	usageDelim: ' '
+	usageDelim: ' ',
+	flagSupport: true
 })
 export default class extends SkyraCommand {
 
@@ -82,7 +83,7 @@ export default class extends SkyraCommand {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
-			embed: null,
+			embed: Boolean(message.flagArgs.embed),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
 			message: content,

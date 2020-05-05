@@ -275,7 +275,7 @@ export interface NotificationsStreamsTwitchStreamer {
 	channel: string;
 	author: string;
 	message: string | null;
-	embed: string | null;
+	embed: boolean;
 	status: NotificationsStreamsTwitchEventStatus;
 	gamesBlacklist: readonly string[];
 	gamesWhitelist: readonly string[];

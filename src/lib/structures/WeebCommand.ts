@@ -17,8 +17,6 @@ export abstract class WeebCommand extends SkyraCommand {
 	 */
 	public responseName: keyof LanguageKeys;
 
-	private readonly requiresUser = Boolean(this.usage.parsedUsage.length);
-
 	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
 		super(store, file, directory, util.mergeDefault({
 			bucket: 2,
@@ -36,14 +34,14 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
 
-		const { url } = await fetch(query, {
+		const { url } = await fetch<WeebCommandResult>(query, {
 			headers: {
 				'Authorization': `Wolke ${TOKENS.WEEB_SH_KEY}`,
 				'User-Agent': `Skyra/${VERSION}`
 			}
-		}, FetchResultTypes.JSON) as WeebCommandResult;
+		}, FetchResultTypes.JSON);
 
-		return message.sendMessage(this.requiresUser
+		return message.sendMessage(Boolean(this.usage.parsedUsage.length)
 			? message.language.tget(this.responseName as LanguageKeysComplex, params![0].username)
 			: message.language.tget(this.responseName as LanguageKeysSimple),
 		{

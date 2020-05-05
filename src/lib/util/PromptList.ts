@@ -28,8 +28,8 @@ async function ask(message: Message, list: readonly string[]) {
 	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS');
 	const promptFilter = (m: Message) => m.author === message.author
 		&& (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
-	let response: Message | null;
-	let n: number;
+	let response: Message | null = null;
+	let n: number | undefined = undefined;
 	let attempts = 0;
 	do {
 		if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [codeblock, attempts, kAttempts]);
@@ -48,7 +48,7 @@ async function ask(message: Message, list: readonly string[]) {
 	} while (response && attempts++ < kAttempts);
 
 	if (!response || attempts >= kAttempts) throw null;
-	return (n! | 0) - 1;
+	return (n ?? 0) - 1;
 }
 
 function *resolve(data: PromptListResolvable, maxLength: number): Iterable<string> {

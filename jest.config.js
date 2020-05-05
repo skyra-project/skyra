@@ -2,6 +2,7 @@ module.exports = {
 	displayName: 'unit test',
 	preset: 'ts-jest',
 	testEnvironment: 'node',
+	testRunner: 'jest-circus/runner',
 	testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
 	moduleNameMapper: {
 		'^@utils/(.*)$': '<rootDir>/src/lib/util/$1',

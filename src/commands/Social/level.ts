@@ -3,7 +3,7 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			readFile(join(THEMES_FOLDER, `${themeLevel}.png`)),
+			fsp.readFile(join(THEMES_FOLDER, `${themeLevel}.png`)),
 			fetchAvatar(user, 256)
 		]);
 

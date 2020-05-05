@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/unbound-method */
+/* eslint-disable @typescript-eslint/unbound-method, @typescript-eslint/no-invalid-this */
 import { codeBlock, toTitleCase } from '@klasa/utils';
 import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
@@ -150,8 +150,7 @@ export default class extends Language {
 	public list = list;
 	public groupDigits = groupDigits;
 
-	// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-	// @ts-ignore:2416
+	// @ts-expect-error:2416
 	public language: LanguageKeys = {
 		/**
 		 * ################################

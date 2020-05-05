@@ -1,23 +1,24 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
+import { RequestHandler } from '@klasa/request-handler';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
 import { GuildMember, Role } from 'discord.js';
 import { KlasaGuild } from 'klasa';
-import { RequestHandler } from '@klasa/request-handler';
-import { resolveOnErrorCodes } from '@utils/util';
 
 export class MemberTags extends Collection<string, MemberTag> {
 
 	public readonly guild: KlasaGuild;
 	private kFetchAllPromise: Promise<void> | null = null;
-	private readonly kRequestHandler = new RequestHandler<string, GuildMember>(
-		this.requestHandlerGet.bind(this),
-		this.requestHandlerGetAll.bind(this)
-	);
+	private readonly kRequestHandler: RequestHandler<string, GuildMember>;
 
 	public constructor(guild: KlasaGuild) {
 		super();
 		this.guild = guild;
+		this.kRequestHandler = new RequestHandler<string, GuildMember>(
+			this.requestHandlerGet.bind(this),
+			this.requestHandlerGetAll.bind(this)
+		);
 	}
 
 	public create(member: GuildMember) {

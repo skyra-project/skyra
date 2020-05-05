@@ -49,7 +49,7 @@ export namespace Kitsu {
 		small?: string;
 		medium?: string;
 		large?: string;
-		original: string;
+		original?: string;
 		meta: {
 			dimensions: {
 				large: KitsuPosterImageDimensions;

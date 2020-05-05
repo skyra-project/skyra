@@ -3,7 +3,7 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, streamToBuffer } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import GIFEncoder = require('gifencoder');
@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(350, 393);
 
 		const buffers = [this.template, await fetchAvatar(user, 512)];
-		const [imgTitle, imgTriggered] = buffers.map(buffer => {
+		const [imgTitle, imgTriggered] = buffers.map((buffer: Buffer | null) => {
 			const image = new Image(128, 128);
 			image.src = buffer!;
 			return image;
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/triggered.png'));
+		this.template = await fsp.readFile(join(assetsFolder, './images/memes/triggered.png'));
 	}
 
 }

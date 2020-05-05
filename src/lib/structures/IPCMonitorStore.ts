@@ -6,8 +6,7 @@ import { IPCMonitor } from './IPCMonitor';
 export class IPCMonitorStore extends Store<string, IPCMonitor, Constructor<IPCMonitor>> {
 
 	public constructor(client: KlasaClient) {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 2345
+		// @ts-expect-error 2345
 		super(client, 'ipcMonitors', IPCMonitor);
 	}
 

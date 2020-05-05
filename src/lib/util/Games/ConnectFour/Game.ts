@@ -63,7 +63,7 @@ export class Game {
 
 	public stop() {
 		this.stopped = true;
-		if (this.llrc!.endListener) this.llrc!.endListener();
+		if (this.llrc?.endListener) this.llrc.endListener();
 	}
 
 	public async run() {

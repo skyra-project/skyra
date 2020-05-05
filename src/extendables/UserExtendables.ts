@@ -1,7 +1,7 @@
+import { Events } from '@lib/types/Enums';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { User } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
-import { Events } from '@lib/types/Enums';
 
 export default class extends Extendable {
 
@@ -9,6 +9,7 @@ export default class extends Extendable {
 		super(store, file, directory, { appliesTo: [User] });
 	}
 
+	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
 	public get profileLevel(this: User) {
 		return Math.floor(0.2 * Math.sqrt(this.settings.get(UserSettings.Points)));
 	}

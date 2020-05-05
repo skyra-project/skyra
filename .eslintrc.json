@@ -1,8 +1,12 @@
 {
 	"extends": "bamboo",
 	"rules": {
-		"no-throw-literal": 0,
-		"@typescript-eslint/restrict-plus-operands": 0
+		"@typescript-eslint/no-throw-literal": 0,
+		"@typescript-eslint/restrict-plus-operands": 0,
+		// TODO -kyra/favna-  check if/when these can be enabled again
+		"@typescript-eslint/no-unnecessary-condition": 0,
+		"@typescript-eslint/naming-convention": 0,
+		"@typescript-eslint/camelcase": 0
 	},
 	"env": {
 		"jest": true,

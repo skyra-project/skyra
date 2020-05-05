@@ -4,7 +4,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -29,8 +29,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async generate(message: KlasaMessage, user: KlasaUser) {
-		let selectedUser: KlasaUser;
-		let slapper: KlasaUser;
+		let selectedUser: KlasaUser | undefined = undefined;
+		let slapper: KlasaUser | undefined = undefined;
 		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
 		if (user === message.author) [selectedUser, slapper] = [message.author, this.client.user!];
 		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [selectedUser, slapper] = [message.author, user];
@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.kTemplate = await readFile(join(assetsFolder, './images/memes/slap.png'));
+		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/slap.png'));
 	}
 
 }

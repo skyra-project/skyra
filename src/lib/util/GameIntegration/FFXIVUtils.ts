@@ -16,11 +16,11 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 		const url = new URL(`${FFXIV_BASE_URL}/character/${id}`);
 		url.searchParams.append('extended', '1');
 
-		return await fetch(url, {
+		return await fetch<FFXIV.CharacterResult>(url, {
 			method: FetchMethods.Post,
 			headers: FFXIV_HEADERS,
 			body: FFXIV_PAYLOAD
-		}, FetchResultTypes.JSON) as Promise<FFXIV.CharacterResult>;
+		}, FetchResultTypes.JSON);
 	} catch {
 		throw i18n.tget('COMMAND_FFXIV_NO_CHARACTER_FOUND');
 	}
@@ -31,11 +31,11 @@ export async function searchCharacter(i18n: Language, name: string) {
 		const url = new URL(`${FFXIV_BASE_URL}/character/search`);
 		url.searchParams.append('name', name);
 
-		return await fetch(url, {
+		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(url, {
 			method: FetchMethods.Post,
 			headers: FFXIV_HEADERS,
 			body: FFXIV_PAYLOAD
-		}, FetchResultTypes.JSON) as Promise<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>;
+		}, FetchResultTypes.JSON);
 	} catch {
 		throw i18n.tget('COMMAND_FFXIV_NO_CHARACTER_FOUND');
 	}
@@ -45,7 +45,7 @@ export async function searchItem(i18n: Language, item: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/search`);
 
-		return await fetch(url, {
+		return await fetch<FFXIV.SearchResponse<FFXIV.ItemSearchResult>>(url, {
 			method: FetchMethods.Post,
 			headers: FFXIV_HEADERS,
 			body: JSON.stringify({
@@ -66,7 +66,7 @@ export async function searchItem(i18n: Language, item: string) {
 					size: 10
 				}
 			})
-		}, FetchResultTypes.JSON) as Promise<FFXIV.SearchResponse<FFXIV.ItemSearchResult>>;
+		}, FetchResultTypes.JSON);
 	} catch {
 		throw i18n.tget('COMMAND_FFXIV_NO_ITEM_FOUND');
 	}

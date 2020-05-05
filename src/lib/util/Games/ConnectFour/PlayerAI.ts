@@ -42,7 +42,7 @@ export class PlayerAI extends Player {
 		const { board } = this.game;
 		if (isMaximisingPlayer) {
 			let bestMove = -kPoints;
-			let win: boolean;
+			let win: boolean | undefined = undefined;
 			for (let x = 0; x < kColumns; ++x) {
 				if (board.isLineFull(x)) continue;
 				board.save();
@@ -63,7 +63,7 @@ export class PlayerAI extends Player {
 		}
 
 		let bestMove = kPoints;
-		let win: boolean;
+		let win: boolean | undefined = undefined;
 		for (let x = 0; x < kColumns; ++x) {
 			if (board.isLineFull(x)) continue;
 			board.save();

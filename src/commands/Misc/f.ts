@@ -3,7 +3,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.kTemplate = await readFile(join(assetsFolder, './images/memes/f.png'));
+		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/f.png'));
 	}
 
 }

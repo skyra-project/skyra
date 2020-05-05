@@ -36,23 +36,29 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private fetchAPI(message: KlasaMessage, movie: string, year?: string) {
-		const url = new URL('https://api.themoviedb.org/3/search/movie');
-		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
-		url.searchParams.append('query', movie);
+	private async fetchAPI(message: KlasaMessage, movie: string, year?: string) {
+		try {
+			const url = new URL('https://api.themoviedb.org/3/search/movie');
+			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+			url.searchParams.append('query', movie);
 
-		if (year) url.searchParams.append('year', year);
+			if (year) url.searchParams.append('year', year);
 
-		return fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbMovieList>;
+			return await fetch<Tmdb.TmdbMovieList>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
-	private fetchMovieData(message: KlasaMessage, movieId: number) {
-		const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
-		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+	private async fetchMovieData(message: KlasaMessage, movieId: number) {
+		try {
+			const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
+			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
-		return fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbMovie>;
+			return await fetch<Tmdb.TmdbMovie>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
 	private async buildDisplay(movies: Tmdb.TmdbMovieList['results'], message: KlasaMessage) {

@@ -46,23 +46,26 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private fetchAPI(message: KlasaMessage, game: string) {
-		return fetch(API_URL, {
-			method: FetchMethods.Post,
-			headers: {
-				'user-key': TOKENS.INTERNETGAMEDATABASE_KEY
-			},
-			body: [
-				`search: "${game}";`,
-				'fields name, url, summary, rating, involved_companies.developer,',
-				'involved_companies.company.name, genres.name, release_dates.date,',
-				'platforms.name, cover.url, age_ratings.rating, age_ratings.category;',
-				'where age_ratings != n;',
-				'limit 10;',
-				'offset 0;'
-			].join('')
-		}, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Game[]>;
+	private async fetchAPI(message: KlasaMessage, game: string) {
+		try {
+			return await fetch<Game[]>(API_URL, {
+				method: FetchMethods.Post,
+				headers: {
+					'user-key': TOKENS.INTERNETGAMEDATABASE_KEY
+				},
+				body: [
+					`search: "${game}";`,
+					'fields name, url, summary, rating, involved_companies.developer,',
+					'involved_companies.company.name, genres.name, release_dates.date,',
+					'platforms.name, cover.url, age_ratings.rating, age_ratings.category;',
+					'where age_ratings != n;',
+					'limit 10;',
+					'offset 0;'
+				].join('')
+			}, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
 	private buildDisplay(entries: Game[], message: KlasaMessage) {

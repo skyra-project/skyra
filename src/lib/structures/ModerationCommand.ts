@@ -1,11 +1,10 @@
-import { mergeDefault } from '@klasa/utils';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise } from '@utils/util';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, util } from 'klasa';
 import { ModerationManagerEntry } from './ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -27,7 +26,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public optionalDuration: boolean;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
-		super(store, file, directory, mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
+		super(store, file, directory, util.mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
 			flagSupport: true,
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
@@ -85,7 +84,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			if (errored.length) {
-				const users = errored.map(({ error, target }) => `- ${target.tag} → ${error}`);
+				const users = errored.map(({ error, target }) => `- ${target.tag} → ${error.stack || error.message}`);
 				output.push(message.language.tget('COMMAND_MODERATION_FAILED', users));
 			}
 

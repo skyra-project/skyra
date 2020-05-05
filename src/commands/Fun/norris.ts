@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const data = await fetch('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON) as NorrisResultOk;
+		const data = await fetch<NorrisResultOk>('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON);
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
 			.setTitle(message.language.tget('COMMAND_NORRIS_OUTPUT'))

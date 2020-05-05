@@ -42,6 +42,7 @@ export class Twitch {
 	private readonly kTwitchRequestHeaders = {
 		'Content-Type': Mime.Types.ApplicationJson,
 		'Accept': Mime.Types.ApplicationJson,
+		// eslint-disable-next-line @typescript-eslint/no-invalid-this
 		'Client-ID': this.$clientID
 	};
 
@@ -107,12 +108,12 @@ export class Twitch {
 	}
 
 	private async _performApiGETRequest<T>(path: string): Promise<T> {
-		return await fetch(`${this.BASE_URL_HELIX}${path}`, {
+		return fetch<T>(`${this.BASE_URL_HELIX}${path}`, {
 			headers: {
 				...this.kTwitchRequestHeaders,
 				Authorization: `Bearer ${await this.fetchBearer()}`
 			}
-		}, FetchResultTypes.JSON) as unknown as T;
+		}, FetchResultTypes.JSON);
 	}
 
 	private async _generateBearerToken() {
@@ -120,7 +121,7 @@ export class Twitch {
 		url.searchParams.append('client_secret', this.$clientSecret);
 		url.searchParams.append('client_id', this.$clientID);
 		url.searchParams.append('grant_type', 'client_credentials');
-		const respone = await fetch(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON) as OauthResponse;
+		const respone = await fetch<OauthResponse>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
 		const expires = Date.now() + (respone.expires_in * 1000);
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;

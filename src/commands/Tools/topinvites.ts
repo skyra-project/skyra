@@ -1,26 +1,23 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { getColor } from '@utils/util';
 import { Invite, MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['topinvs'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_TOPINVITES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TOPINVITES_EXTENDED'),
+	requiredGuildPermissions: ['MANAGE_GUILD'],
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text']
+})
 export default class extends SkyraCommand {
 
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
-	private kFilterInvites = this.filterInvites.bind(this);
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['topinvs'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_TOPINVITES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TOPINVITES_EXTENDED'),
-			requiredGuildPermissions: ['MANAGE_GUILD'],
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text']
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -29,7 +26,7 @@ export default class extends SkyraCommand {
 
 		const invites = await message.guild!.fetchInvites();
 		const topTen = invites
-			.filter(this.kFilterInvites)
+			.filter(invite => invite.uses! > 0 && invite.inviter !== null)
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
@@ -62,10 +59,6 @@ export default class extends SkyraCommand {
 		}
 
 		return display;
-	}
-
-	private filterInvites(invite: Invite) {
-		return invite.uses! > 0 && invite.inviter !== null;
 	}
 
 	private resolveUses(uses: Invite['uses'], maxUses: Invite['maxUses']) {

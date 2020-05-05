@@ -18,8 +18,8 @@ export default class extends SkyraCommand {
 	private readonly kInternalMessageCacheTTL = 120000;
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
-	private readonly kBoundUseUpperCase = this.useUpperCase.bind(this);
-	private readonly kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
+	private readonly kBoundUseUpperCase: (wordBank: WordBank) => string;
+	private readonly kProcess: (message: KlasaMessage, markov: Markov) => MessageEmbed;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -31,16 +31,19 @@ export default class extends SkyraCommand {
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
 			usage: '[channel:channelname{2}] [user:username]'
 		});
+
+		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
+		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 
-	public async run(message: KlasaMessage, args: [TextChannel?, User?]) {
+	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
 		// Send loading message
 		await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		return message.sendEmbed(this.kProcess(message, await this.retrieveMarkov(message, ...args)));
+		return message.sendEmbed(this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
 	}
 
 	private processRelease(message: KlasaMessage, markov: Markov) {
@@ -60,7 +63,7 @@ export default class extends SkyraCommand {
 			.setFooter(message.language.tget('COMMAND_MARKOV_TIMER', time.toString()));
 	}
 
-	private async retrieveMarkov(message: KlasaMessage, channel: TextChannel = message.channel as TextChannel, user: User | undefined) {
+	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
@@ -78,7 +81,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchMessages(channel: TextChannel, user: User | undefined) {
-		let messageBank: Collection<string, Message>;
+		let messageBank: Collection<string, Message> | undefined = undefined;
 
 		// Check the cache first to speed up and reduce API queries
 		const cachedMessageBank = this.kInternalMessageCache.get(channel);
@@ -97,7 +100,7 @@ export default class extends SkyraCommand {
 	}
 
 	private useUpperCase(wordBank: WordBank) {
-		let code: number;
+		let code = 0;
 		const filtered: string[] = [];
 		for (const key of wordBank.keys()) {
 			code = key.charCodeAt(0);

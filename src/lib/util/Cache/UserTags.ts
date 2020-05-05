@@ -1,20 +1,21 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
+import { RequestHandler } from '@klasa/request-handler';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { User } from 'discord.js';
 import { KlasaClient } from 'klasa';
-import { RequestHandler } from '@klasa/request-handler';
 
 export class UserTags extends Collection<string, UserTag> {
 
 	public readonly client: KlasaClient;
-	private readonly kRequestHandler = new RequestHandler<string, APIUserData>(
-		this.requestHandlerGet.bind(this),
-		this.requestHandlerGetAll.bind(this)
-	);
+	private readonly kRequestHandler: RequestHandler<string, APIUserData>;
 
 	public constructor(client: KlasaClient) {
 		super();
 		this.client = client;
+		this.kRequestHandler = new RequestHandler<string, APIUserData>(
+			this.requestHandlerGet.bind(this),
+			this.requestHandlerGetAll.bind(this)
+		);
 	}
 
 	public getFirstKeyFromUserName(username: string) {

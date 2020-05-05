@@ -37,13 +37,11 @@ export default class extends Monitor {
 		try {
 			await this.client.inhibitors.run(message, message.command!);
 			try {
-				// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-				// @ts-ignore 2341
+				// @ts-expect-error 2341
 				await message.prompter!.run();
 				try {
 					const subcommand = message.command!.subcommands ? message.params.shift() : undefined;
-					// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-					// @ts-ignore 7053
+					// @ts-expect-error 7053
 					const commandRun = subcommand ? message.command![subcommand](message, message.params) : message.command!.run(message, message.params);
 					timer.stop();
 					const response = await commandRun;

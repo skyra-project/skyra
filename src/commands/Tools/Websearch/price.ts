@@ -23,9 +23,9 @@ export default class extends SkyraCommand {
 		url.searchParams.append('fsym', fromCurrency);
 		url.searchParams.append('tsyms', toCurrency);
 
-		const body = await fetch(url, {
+		const body = await fetch<CryptoCompareResultOk | CryptoCompareResultError>(url, {
 			headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
-		}, FetchResultTypes.JSON) as CryptoCompareResultOk | CryptoCompareResultError;
+		}, FetchResultTypes.JSON);
 
 		if (body.Response === 'Error') throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		return message.sendLocale('COMMAND_PRICE_CURRENCY', [fromCurrency, amount, toCurrency, roundNumber(amount * (body as CryptoCompareResultOk)[toCurrency], 2)]);

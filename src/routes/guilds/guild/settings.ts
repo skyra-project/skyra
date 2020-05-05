@@ -37,7 +37,7 @@ export default class extends Route {
 	@authenticated
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as { guild_id: string; data: Record<Keys, unknown> | [Keys, unknown][] };
+		const requestBody = request.body as { guild_id: string; data: Record<Keys, unknown> | [Keys, unknown][] | undefined };
 
 		if (!requestBody.guild_id || !requestBody.data || requestBody.guild_id !== request.params.guild) {
 			return response.error(400);

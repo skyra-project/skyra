@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { image } = await fetch(url, FetchResultTypes.JSON) as FoxResultOk;
+		const { image } = await fetch<FoxResultOk>(url, FetchResultTypes.JSON);
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
 			.setImage(image)

@@ -22,7 +22,7 @@ export default class extends Route {
 			return response.noContent();
 		} catch (error) {
 			this.client.emit('error', error);
-			return response.error(error.message || 'Unknown error');
+			return response.error(error.message ?? 'Unknown error');
 		}
 	}
 

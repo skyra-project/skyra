@@ -12,8 +12,8 @@ export default class extends Extendable {
 	public splitFields(this: MessageEmbed, contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 
-		let title: string;
-		let content: string | string[];
+		let title: string | undefined = undefined;
+		let content: string | string[] | undefined = undefined;
 		if (typeof rawContent === 'undefined') {
 			title = ZWS;
 			content = contentOrTitle;
@@ -28,8 +28,8 @@ export default class extends Extendable {
 			return this;
 		}
 
-		let x: number;
-		let slice: string;
+		let x: number | undefined = undefined;
+		let slice: string | undefined = undefined;
 		while (content.length) {
 			if (content.length < 1024) {
 				this.fields.push({ name: title, value: content, inline: false });

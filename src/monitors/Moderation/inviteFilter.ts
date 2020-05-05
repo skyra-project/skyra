@@ -36,7 +36,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected async preProcess(message: KlasaMessage) {
-		let value: RegExpExecArray | null;
+		let value: RegExpExecArray | null = null;
 		const promises: Promise<boolean>[] = [];
 		const scanned = new Set<string>();
 		while ((value = this.kInviteRegExp.exec(message.content)) !== null) {

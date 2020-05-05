@@ -43,7 +43,7 @@ export default class extends Task {
 			}
 		}
 
-		let log: string;
+		let log = '';
 		const reload = this.client.commands.get('reload') as Reload;
 		if (piece === null) {
 			await reload.everything(fakeMessage);
@@ -79,8 +79,8 @@ export default class extends Task {
 
 		const reloadStore = async (path: string) => {
 			const name = basename(path);
-			const store = path.split(sep).find(dir => this.client.pieceStores.has(dir)) || null;
-			const piece = store ? this.client.pieceStores.get(store).get(name.replace(extname(name), '')) || null : null;
+			const store = path.split(sep).find(dir => this.client.pieceStores.has(dir)) ?? null;
+			const piece = store ? this.client.pieceStores.get(store).get(name.replace(extname(name), '')) ?? null : null;
 
 
 			if (!piece) {

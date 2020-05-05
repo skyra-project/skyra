@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [guess, wager]: [CoinType | null, number | 'cashless']) {
 		if (guess === null) return this.noGuess(message);
-		if (wager === 'cashless') return this.cashless(message, guess!);
+		if (wager === 'cashless') return this.cashless(message, guess);
 
 		await message.author.settings.sync();
 		const money = message.author.settings.get(UserSettings.Money);

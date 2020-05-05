@@ -3,7 +3,7 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { socialFolder } from '@utils/constants';
 import { fetch, fetchAvatar, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
 		if (badgeSet.length) {
 			const badges = await Promise.all(badgeSet.map(name =>
-				readFile(join(BADGES_FOLDER, `${name}.png`))));
+				fsp.readFile(join(BADGES_FOLDER, `${name}.png`))));
 
 			canvas.addImage(this.panel!, 600, 0, 100, 391);
 			let position = 20;

@@ -25,7 +25,7 @@
  */
 import { regExpEsc } from '@klasa/utils';
 
-let sensitivePattern: string | RegExp;
+let sensitivePattern: string | RegExp | undefined = undefined;
 const zws = String.fromCharCode(8203);
 
 /**

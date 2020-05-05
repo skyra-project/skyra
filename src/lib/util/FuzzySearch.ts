@@ -22,9 +22,9 @@ export class FuzzySearch<K extends string, V> {
 		const lowcquery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
-		let lowerCaseName: string;
-		let current: string;
-		let distance: number;
+		let lowerCaseName: string | undefined = undefined;
+		let current: string | undefined = undefined;
+		let distance: number | undefined = undefined;
 		let almostExacts = 0;
 		for (const [id, entry] of this.collection.entries()) {
 			if (!this.filter(entry)) continue;

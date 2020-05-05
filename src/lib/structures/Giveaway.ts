@@ -1,3 +1,4 @@
+import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 import { CLIENT_ID } from '@root/config';
@@ -8,7 +9,6 @@ import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
 import { GiveawayManager } from './GiveawayManager';
-import { Colors } from '@lib/types/constants/Constants';
 
 enum States {
 	Running,
@@ -197,8 +197,7 @@ export class Giveaway {
 			.setDescription(description)
 			.setFooter(footer)
 			.setTimestamp(this.endsAt)
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore 2341
+			// @ts-expect-error 2341
 			._apiTransform();
 	}
 

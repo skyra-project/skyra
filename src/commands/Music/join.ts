@@ -17,7 +17,7 @@ export default class extends MusicCommand {
 		const { channel } = message.member!.voice;
 		if (!channel) throw message.language.tget('COMMAND_JOIN_NO_VOICECHANNEL');
 
-		let skyraVoiceChannel: VoiceChannel;
+		let skyraVoiceChannel: VoiceChannel | undefined = undefined;
 		if (message.guild!.music.playing && (skyraVoiceChannel = message.guild!.music.voiceChannel!)) {
 			if (channel.id === skyraVoiceChannel.id) throw message.language.tget('COMMAND_JOIN_VOICE_SAME');
 			throw message.language.tget('COMMAND_JOIN_VOICE_DIFFERENT');

@@ -45,7 +45,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(message: KlasaM
 				);
 			}
 			return message.sendMessage(message.language.tget(options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR',
-				codeBlock(options.language!, options.result!), options.time!, options.footer));
+				codeBlock(options.language!, options.result!), options.time, options.footer));
 		}
 	}
 }
@@ -56,7 +56,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 
 	if (message.channel.attachable) _options.push('file');
 	if (!options.hastebinUnavailable) _options.push('hastebin');
-	let _choice: { content: string };
+	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message.prompt(message.language.tget('SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT', _options)).catch(() => ({ content: 'none' }));
 	}
@@ -65,7 +65,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 }
 
 async function getHaste(result: string, language = 'js') {
-	const { key } = await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON) as { key: string };
+	const { key } = await fetch<{ key: string }>('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON);
 	return `https://hasteb.in/${key}.${language}`;
 }
 

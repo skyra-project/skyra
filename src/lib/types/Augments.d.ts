@@ -1,6 +1,7 @@
 import { SettingsUpdateResults } from '@klasa/settings-gateway';
 import { CommonQuery } from '@lib/queries/common';
 import { GiveawayManager } from '@lib/structures/GiveawayManager';
+import { InviteStore } from '@lib/structures/InviteStore';
 import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
 import { UserTags } from '@utils/Cache/UserTags';
 import { ConnectFourManager } from '@utils/Games/ConnectFourManager';
@@ -11,12 +12,12 @@ import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
 import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
+import { PoolConfig } from 'pg';
 import { Client as VezaClient } from 'veza';
 import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import { Events } from './Enums';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
-import { InviteStore } from '@lib/structures/InviteStore';
 
 declare module 'discord.js' {
 
@@ -60,6 +61,7 @@ declare module 'discord.js' {
 
 	interface TextChannel {
 		sniped: Message | null;
+		toString(): string;
 	}
 
 	interface GuildMember {
@@ -127,9 +129,16 @@ declare module 'klasa' {
 	}
 
 	interface Argument {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 1070
+		// @ts-expect-error 1070
 		abstract run<T>(arg: string | undefined, possible: Possible, message: KlasaMessage, filter?: (entry: T) => boolean): any;
+	}
+
+	type PostgresOptions = Omit<PoolConfig, 'stream' | 'ssl'> & Record<PropertyKey, unknown>;
+
+	export interface ProvidersOptions extends Record<string, any> {
+		default?: 'postgres' | 'cache' | 'json' | string;
+		json: { baseDirectory: string };
+		postgres: PostgresOptions;
 	}
 
 }

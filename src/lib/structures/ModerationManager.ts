@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
@@ -142,8 +141,16 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	): Collection<number, ModerationManagerEntry> | ModerationManagerEntry | null {
 		if (!entries) return null;
 
+		function removeNullAndUndefined<TValue>(value: TValue | null | undefined): value is TValue {
+			return value !== null && value !== undefined;
+		}
+
 		const parsedEntries = Array.isArray(entries)
-			? entries.map(entry => entry instanceof ModerationManagerEntry ? entry : new ModerationManagerEntry(this, entry!))
+			? entries.map(entry => entry instanceof ModerationManagerEntry
+				? entry
+				: entry === null
+					? null
+					: new ModerationManagerEntry(this, entry)).filter(removeNullAndUndefined)
 			: [entries instanceof ModerationManagerEntry ? entries : new ModerationManagerEntry(this, entries)];
 
 		for (const entry of parsedEntries) {
@@ -151,9 +158,13 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		}
 
 		switch (type) {
-			case CacheActions.Fetch: this._count = super.size;
+			case CacheActions.Fetch:
+				this._count = super.size;
 				break;
-			case CacheActions.Insert: this._count!++;
+			case CacheActions.Insert:
+				this._count!++;
+				break;
+			case CacheActions.None:
 				break;
 		}
 

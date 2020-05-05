@@ -3,7 +3,7 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		/* Global leaderboard */
 		const rank = await user.fetchRank();
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			readFile(join(THEMES_FOLDER, `${themeProfile}.png`)),
+			fsp.readFile(join(THEMES_FOLDER, `${themeProfile}.png`)),
 			fetchAvatar(user, 256)
 		]);
 
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(badgeSet.length ? 700 : 640, 391);
 		if (badgeSet.length) {
 			const badges = await Promise.all(badgeSet.map(name =>
-				readFile(join(BADGES_FOLDER, `${name}.png`))));
+				fsp.readFile(join(BADGES_FOLDER, `${name}.png`))));
 
 			canvas.addImage(darkTheme ? this.darkThemeDock! : this.lightThemeDock!, 600, 0, 100, 391);
 			let position = 20;

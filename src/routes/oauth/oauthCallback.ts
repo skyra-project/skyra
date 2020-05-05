@@ -39,7 +39,7 @@ export default class extends Route {
 			return;
 		}
 
-		const oauthUser = this.store.get('oauthUser') as unknown as OauthUser;
+		const oauthUser = this.store.get('oauthUser') as OauthUser | undefined;
 
 		if (!oauthUser) {
 			response.error(500);

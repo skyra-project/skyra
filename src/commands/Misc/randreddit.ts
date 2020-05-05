@@ -54,14 +54,14 @@ export default class extends SkyraCommand {
 
 	private async fetchData(message: KlasaMessage, reddit: string) {
 		try {
-			return await fetch(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON) as Reddit.Response<'posts'>;
+			return await fetch<Reddit.Response<'posts'>>(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON);
 		} catch (error) {
 			this.handleError(message, error);
 		}
 	}
 
 	private handleError(message: KlasaMessage, error: Error): never {
-		let parsed: RedditError;
+		let parsed: RedditError | undefined = undefined;
 		try {
 			parsed = JSON.parse(error.message) as RedditError;
 		} catch {

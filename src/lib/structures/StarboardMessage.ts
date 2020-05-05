@@ -289,8 +289,8 @@ export class StarboardMessage {
 			this.enabled = Boolean(data.enabled);
 			this.existenceStatus = true;
 
-			const channel = this.manager.starboardChannel!;
-			if (data.star_message_id) {
+			const channel = this.manager.starboardChannel;
+			if (channel !== null && data.star_message_id) {
 				await channel.messages.fetch(data.star_message_id)
 					.then(message => { this.starMessage = message; })
 					.catch(() => undefined);
@@ -317,7 +317,7 @@ export class StarboardMessage {
 				if (error.code === APIErrors.UnknownMessage) await this.edit({ star_message_id: null, enabled: false });
 			}
 		} else {
-			const promise = this.manager.starboardChannel!.send(content, this.embed!)
+			const promise = this.manager.starboardChannel?.send(content, this.embed!)
 				.then(message => { this.starMessage = message; })
 				.catch(error => {
 					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
@@ -327,8 +327,11 @@ export class StarboardMessage {
 					this.client.emit(Events.Wtf, error);
 				})
 				.finally(() => this.manager.syncMessageMap.delete(this));
-			this.manager.syncMessageMap.set(this, promise);
-			await promise;
+
+			if (promise) {
+				this.manager.syncMessageMap.set(this, promise);
+				await promise;
+			}
 		}
 	}
 

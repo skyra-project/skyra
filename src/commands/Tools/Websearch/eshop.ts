@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 	}
 
 	private fetchAPI(message: KlasaMessage, gameName: string) {
-		return fetch(API_URL, {
+		return fetch<EshopResult>(API_URL, {
 			method: FetchMethods.Post,
 			headers: {
 				'Content-Type': 'application/json',
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 				}
 			)
 		}, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<EshopResult>;
+			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); });
 	}
 
 	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {

@@ -1,5 +1,6 @@
 import { HardPunishment, ModerationEvent } from '@lib/structures/ModerationEvent';
-import { SelfModeratorBitField, SelfModeratorHardActionFlags } from '@lib/structures/SelfModeratorBitField';
+import { SelfModeratorBitField } from '@lib/structures/SelfModeratorBitField';
+import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Adder } from '@utils/Adder';
@@ -8,7 +9,6 @@ import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar, twemoji } from '@utils/util';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
-import { Colors } from '@lib/types/constants/Constants';
 
 type ArgumentType = [LLRCData, string];
 
@@ -16,7 +16,7 @@ export default class extends ModerationEvent<ArgumentType> {
 
 	protected keyEnabled: string = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: string = GuildSettings.Selfmod.Reactions.SoftAction;
-	protected hardPunishmentPath: HardPunishment = {
+	protected hardPunishmentPath: HardPunishment<typeof GuildSettings.Selfmod.Reactions.HardAction> = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
 		adder: 'reactions',
@@ -25,7 +25,7 @@ export default class extends ModerationEvent<ArgumentType> {
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		if (!data.guild.settings.get(this.keyEnabled) as boolean
+		if (!data.guild.settings.get(this.keyEnabled)
 			|| data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).length === 0
 			|| data.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(data.channel.id)) return;
 
@@ -43,10 +43,10 @@ export default class extends ModerationEvent<ArgumentType> {
 		if (this.hardPunishmentPath === null) return;
 
 		const maximum = data.guild.settings.get(this.hardPunishmentPath.adderMaximum) as number;
-		if (!maximum) return this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action) as SelfModeratorHardActionFlags);
+		if (!maximum) return this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action));
 
 		const duration = data.guild.settings.get(this.hardPunishmentPath.adderDuration) as number;
-		if (!duration) return this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action) as SelfModeratorHardActionFlags);
+		if (!duration) return this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action));
 
 		const $adder = this.hardPunishmentPath.adder;
 		if (data.guild.security.adders[$adder] === null) {
@@ -57,7 +57,7 @@ export default class extends ModerationEvent<ArgumentType> {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
 			data.guild.security.adders[$adder]!.add(data.userID, points);
 		} catch {
-			await this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action) as SelfModeratorHardActionFlags);
+			await this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action));
 		}
 	}
 

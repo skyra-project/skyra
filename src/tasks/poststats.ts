@@ -45,12 +45,12 @@ export default class extends Task {
 			if (!token) return null;
 			await fetch(url, {
 				body,
-				headers: { 'Content-Type': 'application/json', 'Authorization': token },
+				headers: { 'content-type': 'application/json', 'authorization': token },
 				method: 'POST'
 			}, FetchResultTypes.Result);
 			return g.format(list);
 		} catch (error) {
-			const reason = typeof error === 'object' ? error.status || error.code || '' : error;
+			const reason = typeof error === 'object' ? error.status ?? error.code ?? null : error;
 			return `${r.format(list)}${reason ? ` [${r.format(reason)}]` : ''}`;
 		}
 	}

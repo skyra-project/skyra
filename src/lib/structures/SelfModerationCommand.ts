@@ -128,6 +128,8 @@ export abstract class SelfModerationCommand extends Command {
 			case AKeys.ThresholdDuration: {
 				this.manageAdder(message);
 			}
+			case AKeys.HardActionDuration:
+				break;
 		}
 
 		return message.sendLocale(SelfModerationCommand.getLanguageKey(action), [value]);

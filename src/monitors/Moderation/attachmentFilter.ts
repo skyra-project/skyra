@@ -34,25 +34,25 @@ export default class extends Monitor {
 				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 					floatPromise(this, message.guild!.security.actions.kick({
 						user_id: message.author.id,
-						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					})));
 					break;
 				case 0b010: await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 					floatPromise(this, message.guild!.security.actions.mute({
 						user_id: message.author.id,
-						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					})));
 					break;
 				case 0b011: await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 					floatPromise(this, message.guild!.security.actions.softBan({
 						user_id: message.author.id,
-						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					}, 1)));
 					break;
 				case 0b100: await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 					floatPromise(this, message.guild!.security.actions.ban({
 						user_id: message.author.id,
-						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					}, 0)));
 					break;
 			}

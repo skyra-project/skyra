@@ -31,7 +31,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected preProcess(message: KlasaMessage) {
-		let match: RegExpExecArray | null;
+		let match: RegExpExecArray | null = null;
 
 		const urls = new Set<string>();
 		const whitelist = message.guild!.settings.get(GuildSettings.Selfmod.Links.Whitelist);

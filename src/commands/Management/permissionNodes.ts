@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 		if (!this.checkPermissions(message, target)) throw message.language.tget('COMMAND_PERMISSIONNODES_HIGHER');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const nodes = message.guild!.settings.get(key) as Nodes;
+		const nodes = message.guild!.settings.get(key);
 		const nodeIndex = nodes.findIndex(n => n.id === target.id);
 		if (nodeIndex === -1) {
 			const node: Nodes[number] = {
@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 		if (!this.checkPermissions(message, target)) throw message.language.tget('COMMAND_PERMISSIONNODES_HIGHER');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const nodes = message.guild!.settings.get(key) as Nodes;
+		const nodes = message.guild!.settings.get(key);
 		const nodeIndex = nodes.findIndex(n => n.id === target.id);
 		if (nodeIndex === -1) throw message.language.tget('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 		if (!this.checkPermissions(message, target)) throw message.language.tget('COMMAND_PERMISSIONNODES_HIGHER');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const nodes = message.guild!.settings.get(key) as Nodes;
+		const nodes = message.guild!.settings.get(key);
 		const nodeIndex = nodes.findIndex(n => n.id === target.id);
 		if (nodeIndex === -1) throw message.language.tget('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
@@ -112,7 +112,7 @@ export default class extends SkyraCommand {
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const nodes = message.guild!.settings.get(key) as Nodes;
+		const nodes = message.guild!.settings.get(key);
 		const node = nodes.find(n => n.id === target.id);
 		if (typeof node === 'undefined') throw message.language.tget('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 

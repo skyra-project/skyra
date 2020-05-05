@@ -41,8 +41,8 @@ export class RGB implements ColorHandler {
 		const b = this.b / 255;
 		const max = Math.max(r, g, b);
 		const min = Math.min(r, g, b);
-		let h: number;
-		let s: number;
+		let h: number | undefined = undefined;
+		let s: number | undefined = undefined;
 		const l = (max + min) / 2;
 
 		if (max === min) {

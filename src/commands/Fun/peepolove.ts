@@ -2,7 +2,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
@@ -36,8 +36,8 @@ export default class extends SkyraCommand {
 
 	public async init() {
 		[this.bodyImage, this.handsImage] = await Promise.all([
-			readFile(join(assetsFolder, '/images/generation/peepoBody.png')),
-			readFile(join(assetsFolder, '/images/generation/peepoHands.png'))
+			fsp.readFile(join(assetsFolder, '/images/generation/peepoBody.png')),
+			fsp.readFile(join(assetsFolder, '/images/generation/peepoHands.png'))
 		]);
 	}
 

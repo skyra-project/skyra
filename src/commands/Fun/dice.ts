@@ -38,8 +38,8 @@ export default class extends SkyraCommand {
 	}
 
 	private roll(message: KlasaMessage, pattern: string | number) {
-		let amount: number;
-		let dice: number;
+		let amount: number | undefined = undefined;
+		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
 			if (!isNumber(pattern) || pattern <= 0) throw message.language.tget('RESOLVER_INVALID_INT', 'dice');
@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 			if (dice < 3 || dice > 1024) throw message.language.tget('COMMAND_DICE_SIDES_ERROR');
 
 			if (results[3].length > 0) {
-				let modifierResults: RegExpExecArray | null;
+				let modifierResults: RegExpExecArray | null = null;
 				while ((modifierResults = this.kDice20TrailRegExp.exec(results[3]))) {
 					if (modifierResults[1] === '+') {
 						modifier += Number(modifierResults[2]);

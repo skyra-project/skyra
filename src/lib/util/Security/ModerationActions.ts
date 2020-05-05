@@ -690,7 +690,7 @@ export class ModerationActions {
 		const stickyRoles = guildStickyRoles[stickyRolesIndex];
 		if (stickyRoles.roles.includes(roleID)) return;
 
-		const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+		const clone = this.customDeepClone<StickyRole, Mutable<StickyRole>>(stickyRoles);
 		clone.roles.push(roleID);
 		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, {
 			arrayIndex: stickyRolesIndex,
@@ -709,7 +709,7 @@ export class ModerationActions {
 
 		if (stickyRoles.roles.length > 1) {
 			// If there are more than one role, remove the muted one and update the entry keeping the rest.
-			const clone = deepClone(stickyRoles) as Mutable<StickyRole>;
+			const clone = this.customDeepClone<StickyRole, Mutable<StickyRole>>(stickyRoles);
 			clone.roles.splice(roleIndex, 1);
 			await this.guild.settings.update(GuildSettings.StickyRoles, clone, {
 				arrayIndex: stickyRolesIndex,
@@ -802,6 +802,10 @@ export class ModerationActions {
 
 		// Filter all logs by valid and by type of mute (isType will include temporary and invisible).
 		return logs.filter(log => !log.invalidated && log.isType(type) && extra(log)).last();
+	}
+
+	private customDeepClone<T, R extends T>(source: T) {
+		return deepClone<T>(source) as R;
 	}
 
 	private static getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {

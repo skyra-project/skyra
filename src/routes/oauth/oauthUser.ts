@@ -20,9 +20,9 @@ export default class extends Route {
 	}
 
 	public async api(token: string) {
-		const oauthUser = await fetch('https://discordapp.com/api/users/@me', {
+		const oauthUser = await fetch<RawOauthUser>('https://discordapp.com/api/users/@me', {
 			headers: { Authorization: `Bearer ${token}` }
-		}, FetchResultTypes.JSON) as RawOauthUser;
+		}, FetchResultTypes.JSON);
 		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
 	}
 
@@ -68,7 +68,11 @@ export default class extends Route {
 		if (user === null) return null;
 
 		const guilds: OauthFlattenedGuild[] = [];
-		const oauthGuilds = await fetch('https://discordapp.com/api/users/@me/guilds', { headers: { Authorization: token } }, FetchResultTypes.JSON) as RawOauthGuild[];
+		const oauthGuilds = await fetch<RawOauthGuild[]>(
+			'https://discordapp.com/api/users/@me/guilds',
+			{ headers: { Authorization: token } },
+			FetchResultTypes.JSON
+		);
 
 		for (const oauthGuild of oauthGuilds) {
 			const guild = this.client.guilds.get(oauthGuild.id);
@@ -119,7 +123,7 @@ export default class extends Route {
 	private async refreshToken(id: string, refreshToken: string) {
 		try {
 			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
-			const data = await fetch('https://discordapp.com/api/v6/oauth2/token', {
+			const data = await fetch<OauthData>('https://discordapp.com/api/v6/oauth2/token', {
 				method: 'POST',
 				body: stringify({
 					client_id: this.client.options.clientID,
@@ -132,7 +136,7 @@ export default class extends Route {
 				headers: {
 					'Content-Type': Mime.Types.ApplicationFormUrlEncoded
 				}
-			}, FetchResultTypes.JSON) as OauthData;
+			}, FetchResultTypes.JSON);
 
 			const expiresAt = Date.now() + data.expires_in;
 			await this.client.providers.default!.update(Databases.DashboardUsers, id, {

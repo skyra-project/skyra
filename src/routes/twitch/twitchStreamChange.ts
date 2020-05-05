@@ -14,8 +14,8 @@ export default class extends Route {
 		const challenge = request.query['hub.challenge'] as string | undefined;
 		this.client.console.log('Getting a challenge to Twitch API request is:');
 		this.client.console.debug(request);
-		this.client.console.log('\n======\nAnd response is: ');
-		this.client.console.debug(response);
+		this.client.console.log('\n======\nAnd request headers are: ');
+		this.client.console.debug(request.headers);
 
 		switch (request.query['hub.mode']) {
 			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge || 'ok');
@@ -29,8 +29,8 @@ export default class extends Route {
 	public post(request: ApiRequest, response: ApiResponse) {
 		this.client.console.log('Receiving a post from Twitch API, request is:');
 		this.client.console.debug(request);
-		this.client.console.log('\n======\nAnd response is: ');
-		this.client.console.debug(response);
+		this.client.console.log('\n======\nAnd request headers are: ');
+		this.client.console.debug(request.headers);
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];

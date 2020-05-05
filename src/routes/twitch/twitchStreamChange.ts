@@ -5,7 +5,6 @@ import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
-import { inspect } from 'util';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export default class extends Route {
@@ -23,9 +22,6 @@ export default class extends Route {
 
 	// Stream Changed
 	public post(request: ApiRequest, response: ApiResponse) {
-		this.client.console.log('Receiving a post from Twitch API, request body is:');
-		this.client.console.debug(inspect(request.body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
-
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];

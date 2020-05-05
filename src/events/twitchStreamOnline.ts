@@ -12,7 +12,8 @@ export default class extends Event {
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		try {
-			this.client.console.debug('>>> RUNNING TWITCH ONLINE EVENT');
+			this.client.console.debug('>>> RUNNING TWITCH ONLINE EVENT, DATA IN ONLINE EVENT:');
+			console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(data, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 
 			// All streams should have a game_id.
 			if (typeof data.game_id === 'undefined') return response.error('"game_id" field is not defined.');

@@ -2341,10 +2341,18 @@ export default class extends Language {
 		}),
 		COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION: 'Manage the subscriptions for your server.',
 		COMMAND_TWITCHSUBSCRIPTION_EXTENDED: builder.display('twitchSubscription', {
-			extendedHelp: `Manage the subscriptions for this server. The message variables are \`%TITLE%\` for the stream's title,
-			\`%VIEWER_COUNT%\` for the amount of viewers, \`%GAME_NAME%\` for the game's name, \`%GAME_ID%\` for the game's ID as
-					seen by Twitch, \`%LANGUAGE%\` for the language the stream is in, \`%USER_ID%\` for the streamer's ID, and \`%USER_NAME%\`
-					for the streamer's username.`,
+			extendedHelp: `
+				Manage the subscriptions for this server.
+				For online events you can put some variables in the message that will get replaced with Twitch data:
+				- \`%TITLE%\` for the stream's title
+				- \`%VIEWER_COUNT%\` for the amount of current viewers,
+				- \`%GAME_NAME%\` for the title being streamed
+				- \`%GAME_ID%\` for the game's ID as seen by Twitch
+				- \`%LANGUAGE%\` for the language the stream is in
+				- \`%USER_ID%\` for the streamer's ID as seen by Twitch
+				- and \`%USER_NAME%\` for the Streamer's twitch username.
+				
+				For Offline events none of these variables are available, as Twitch does not give us that data.`,
 			explainedUsage: [
 				[this.list(['add', 'remove', 'reset', 'show'], 'o'), 'The subcommand to trigger.'],
 				['streamer', 'The Twitch username of the streamer to get notifications for.'],

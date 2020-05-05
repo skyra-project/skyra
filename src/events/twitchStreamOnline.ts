@@ -6,7 +6,6 @@ import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/N
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
-import * as util from 'util';
 
 export default class extends Event {
 

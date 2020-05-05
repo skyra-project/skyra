@@ -5,6 +5,7 @@ import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
+import { inspect } from 'util';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export default class extends Route {
@@ -13,7 +14,7 @@ export default class extends Route {
 	public get(request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
 		this.client.console.log('Receiving a post from Twitch API, request body is:');
-		this.client.console.debug(request.body);
+		this.client.console.debug(inspect(request.body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 		this.client.console.log('\n======\nAnd request headers are: ');
 		this.client.console.debug(request.headers);
 
@@ -28,7 +29,7 @@ export default class extends Route {
 	// Stream Changed
 	public post(request: ApiRequest, response: ApiResponse) {
 		this.client.console.log('Receiving a post from Twitch API, request body is:');
-		this.client.console.debug(request.body);
+		this.client.console.debug(inspect(request.body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 		this.client.console.log('\n======\nAnd request headers are: ');
 		this.client.console.debug(request.headers);
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');

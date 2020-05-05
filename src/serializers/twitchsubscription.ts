@@ -25,8 +25,8 @@ export default class extends Serializer {
 	private validateStreamer(data: NotificationsStreamsTwitchStreamer) {
 		return typeof data.channel === 'string'
 			&& typeof data.author === 'string'
-			&& (typeof data.message === 'string' || data.message === null)
-			&& (typeof data.embed === 'string' || data.embed === null)
+			&& (typeof data.message === 'string' || data.message === null || data.message === undefined)
+			&& (typeof data.embed === 'boolean')
 			&& typeof data.status === 'number'
 			&& typeof data.createdAt === 'number'
 			&& Array.isArray(data.gamesWhitelist)

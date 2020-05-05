@@ -1807,4 +1807,7 @@ export interface LanguageKeys {
 	CONST_MONITOR_MESSAGEFILTER: string;
 	CONST_MONITOR_NEWLINEFILTER: string;
 	UNKNOWN_USER: string;
+	NOTIFICATIONS_TWITCH_NO_GAME_NAME: string;
+	NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName: string, gameName: string | undefined) => string;
+	NOTIFICATION_TWITCH_EMBED_FOOTER: string;
 }

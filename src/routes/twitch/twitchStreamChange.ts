@@ -2,19 +2,16 @@ import { isObject } from '@klasa/utils';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
+@ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'twitch/stream_change/:id' });
-	}
 
 	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
-
 		switch (request.query['hub.mode']) {
 			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge || 'ok');
 			case 'unsubscribe':
@@ -38,7 +35,7 @@ export default class extends Route {
 		if (data.length === 0) {
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {
-			this.client.emit(Events.TwitchStreamOnline, data, response);
+			this.client.emit(Events.TwitchStreamOnline, data[0], response);
 		}
 	}
 
@@ -53,7 +50,7 @@ export interface PostStreamBodyData {
 	id: string;
 	language: string;
 	started_at: string;
-	tag_ids: string | null;
+	tag_ids: string[] | null;
 	thumbnail_url: string;
 	title: string;
 	type: string;

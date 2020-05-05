@@ -4,9 +4,11 @@ import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from 'klasa';
+import { Event, Language } from 'klasa';
 
 export default class extends Event {
+
+	private kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
@@ -34,16 +36,17 @@ export default class extends Event {
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				// Retrieve the message and transform it, if no embed, return the basic message.
+				// Retrieve the message and transform it, if the message could not be retrieved then skip this notification.
 				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data);
-				if (subscription.embed === null) {
-					floatPromise(this, channel.send(message));
+				if (message === undefined) break;
+
+				if (subscription.embed) {
+					floatPromise(this, channel.sendEmbed(this.buildEmbed(message, guild.language)));
 					break;
 				}
 
-				// Construct a message embed and send it.
-				const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data)));
-				floatPromise(this, channel.send(message, embed));
+				// Send the message without embed
+				floatPromise(this, channel.send(message));
 				break;
 			}
 		}
@@ -58,6 +61,14 @@ export default class extends Event {
 				default: return match;
 			}
 		});
+	}
+
+	private buildEmbed(message: string, i18n: Language) {
+		return new MessageEmbed()
+			.setColor(this.kTwitchBrandingColour)
+			.setDescription(message)
+			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
+			.setTimestamp();
 	}
 
 }

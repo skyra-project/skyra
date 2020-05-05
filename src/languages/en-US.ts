@@ -2331,20 +2331,40 @@ export default class extends Language {
 		}),
 		COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION: 'Manage the subscriptions for your server.',
 		COMMAND_TWITCHSUBSCRIPTION_EXTENDED: builder.display('twitchSubscription', {
-			extendedHelp: `Manage the subscriptions for this server. The message variables are \`%TITLE%\` for the stream's title,
-			\`%VIEWER_COUNT%\` for the amount of viewers, \`%GAME_NAME%\` for the game's name, \`%GAME_ID%\` for the game's ID as
-					seen by Twitch, \`%LANGUAGE%\` for the language the stream is in, \`%USER_ID%\` for the streamer's ID, and \`%USER_NAME%\`
-					for the streamer's username.`,
+			extendedHelp: `
+				Manage the subscriptions for this server.
+				__Online Notifications__
+				For content, the best way is writing \`--embed\`, the notifications will then show up in MessageEmbeds
+				with all available data. Alternatively you can set your own content and it will post as a regular message.
+				This content can contain some parameters that will be replaced with Twitch data:
+				- \`%TITLE%\` for the stream's title
+				- \`%VIEWER_COUNT%\` for the amount of current viewers,
+				- \`%GAME_NAME%\` for the title being streamed
+				- \`%GAME_ID%\` for the game's ID as seen by Twitch
+				- \`%LANGUAGE%\` for the language the stream is in
+				- \`%USER_ID%\` for the streamer's ID as seen by Twitch
+				- and \`%USER_NAME%\` for the Streamer's twitch username.
+
+				__Offline Notifications__
+				For offline events none of the variables above are available and you'll have to write your own content.
+				You can still use the \`--embed\` flag for the notification to show in a nice Twitch-purple MessageEmbed.`,
+			explainedUsage: [
+				[this.list(['add', 'remove', 'reset', 'show'], 'or'), 'The subcommand to trigger.'],
+				['streamer', 'The Twitch username of the streamer to get notifications for.'],
+				['channel', 'A Discord channel where to post the notifications in.'],
+				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(['online', 'offline'], 'or')}.`],
+				['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
+			],
 			examples: [
-				'add kyranet #twitch online %USER_NAME% went live | %TITLE%',
+				'add favna #twitch online --embed',
+				'add favna #twitch online %USER_NAME% went live | %TITLE%',
 				'remove kyranet #twitch online',
 				'reset kyranet',
 				'reset',
 				'show kyranet',
-				'show',
-				''
+				'show'
 			]
-		}),
+		}, true),
 		COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
 		COMMAND_WIKIPEDIA_EXTENDED: builder.display('wikipedia', {}),
 		COMMAND_YOUTUBE_DESCRIPTION: 'Search something through YouTube.',
@@ -4093,6 +4113,15 @@ export default class extends Language {
 		SERIALIZER_PERMISSION_NODE_SECURITY_OWNER: 'You cannot set permission overrides on the server owner.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: command => `For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
+
+		/**
+		 * #################################
+		 * #        NOTIFICATIONS          #
+		 * #################################
+		 */
+		NOTIFICATIONS_TWITCH_NO_GAME_NAME: '*Game name not set*',
+		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName, gameName) => `${userName} is now live${gameName ? ` - Streaming ${gameName}!` : `!`}`,
+		NOTIFICATION_TWITCH_EMBED_FOOTER: 'Skyra Twitch Notifications',
 
 		/**
 		 * #################################

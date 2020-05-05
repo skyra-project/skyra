@@ -32,6 +32,7 @@ declare module 'discord.js' {
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: VezaClient;
 		webhookError: Webhook;
+		webhookFeedback: Webhook | null;
 		fsWatcher: FSWatcher | null;
 		queries: CommonQuery;
 		twitch: Twitch;

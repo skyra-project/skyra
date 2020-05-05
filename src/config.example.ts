@@ -126,6 +126,8 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	}
 };
 
+export const WEBHOOK_FEEDBACK: APIWebhookData | null = null;
+
 export const WEBHOOK_ERROR: APIWebhookData = {
 	avatar: '33f84e7a6a5596bafb2b56d218ee8c8d',
 	channel_id: '648663012345118741',

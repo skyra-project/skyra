@@ -1,42 +1,34 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { MessageEmbed } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
+import { ApplyOptions } from '@skyra/decorators';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['suggest'],
+	bucket: 2,
+	cooldown: 20,
+	description: language => language.tget('COMMAND_FEEDBACK_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_FEEDBACK_EXTENDED'),
+	guarded: true,
+	usage: '<message:string{8,1900}>'
+})
 export default class extends SkyraCommand {
 
-	private channel: TextChannel | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['suggest'],
-			bucket: 2,
-			cooldown: 20,
-			description: language => language.tget('COMMAND_FEEDBACK_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FEEDBACK_EXTENDED'),
-			guarded: true,
-			usage: '<message:string{8,1900}>'
-		});
-	}
-
 	public async run(message: KlasaMessage, [feedback]: [string]) {
-		const embed = new MessageEmbed()
+		if (message.deletable) message.nuke().catch(() => null);
+
+		await this.client.webhookFeedback!.send(new MessageEmbed()
 			.setColor(Colors.Green)
 			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
 			.setDescription(feedback)
 			.setFooter(`${message.author.id} | Feedback`)
-			.setTimestamp();
-
-		if (message.deletable) message.nuke().catch(() => null);
-
-		await this.channel!.send({ embed });
+			.setTimestamp());
 		return message.alert(message.language.tget('COMMAND_FEEDBACK'));
 	}
 
-	public init() {
-		// TODO(kyranet): This should be replaced with a webhook
-		this.channel = this.client.channels.get('257561807500214273') as TextChannel;
-		return Promise.resolve();
+	public async init() {
+		if (this.client.webhookFeedback === null) this.disable();
 	}
 
 }

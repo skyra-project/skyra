@@ -4292,6 +4292,7 @@ export default class extends Language {
 		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) => `Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
 		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 		SYSTEM_EXTERNAL_SERVER_ERROR: 'El servicio externo que utilizamos no pudo procesar nuestro mensaje, por favor, inténtelo de nuevo más tarde.',
+		SYSTEM_TWITCH_NO_GAME_NAME: '*Nombre del juego no establecido*',
 
 		JUMPTO: 'Salta al Mensaje ►',
 

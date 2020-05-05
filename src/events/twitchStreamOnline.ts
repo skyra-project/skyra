@@ -5,7 +5,7 @@ import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from 'klasa';
+import { Event, Language } from 'klasa';
 import * as util from 'util';
 
 export default class extends Event {
@@ -38,8 +38,10 @@ export default class extends Event {
 			// Iterate over each subscription
 			for (const subscription of subscriptions[1]) {
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
-				// if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
-				// if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
+				if (game !== undefined) {
+					if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
+					if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
+				}
 				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.
@@ -47,7 +49,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// Retrieve the message and transform it, if the message could not be retrieved then skip this notification.
-				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, game);
+				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, guild.language, game);
 				if (message === undefined) break;
 
 				this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'PARSED MESSAGE');
@@ -67,13 +69,15 @@ export default class extends Event {
 		return response.ok();
 	}
 
-	private transformText(source: string, notification: PostStreamBodyData, game: TwitchHelixGameSearchResult) {
+	private transformText(source: string, notification: PostStreamBodyData, i18n: Language, game?: TwitchHelixGameSearchResult) {
 		return source.replace(TWITCH_REPLACEABLES_REGEX, match => {
 			switch (match) {
 				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
 				case TWITCH_REPLACEABLES_MATCHES.TITLE: return this.escapeText(notification.title);
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count.toString();
-				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game.name;
+				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
+					if (game !== undefined) return game.name;
+					return i18n.tget('SYSTEM_TWITCH_NO_GAME_NAME');
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE: return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID: return notification.game_id;
 				case TWITCH_REPLACEABLES_MATCHES.USER_ID: return notification.user_id;

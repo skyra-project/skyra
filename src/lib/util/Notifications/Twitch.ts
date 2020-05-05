@@ -76,7 +76,7 @@ export class Twitch {
 		const search: string[] = [];
 		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
 		for (const name of names) search.push(`name=${encodeURIComponent(name)}`);
-		return this._performApiGETRequest(`games?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixGameSearchResult>>;
+		return this._performApiGETRequest(`games?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>;
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {

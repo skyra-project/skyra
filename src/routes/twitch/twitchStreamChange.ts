@@ -2,14 +2,12 @@ import { isObject } from '@klasa/utils';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
+@ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'twitch/stream_change/:id' });
-	}
 
 	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {

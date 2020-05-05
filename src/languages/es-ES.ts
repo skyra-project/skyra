@@ -2369,7 +2369,7 @@ export default class extends Language {
 				'show',
 				''
 			]
-		}),
+		}, true),
 		COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
 		COMMAND_WIKIPEDIA_EXTENDED: builder.display('wikipedia', {}),
 		COMMAND_YOUTUBE_DESCRIPTION: 'Search something through YouTube.',

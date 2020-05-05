@@ -28,6 +28,8 @@ Furthermore, Skyra has not been build with the idea of self hosting in mind and 
 
 All this said, if you really are going to self-host Skyra please take heed, she ***will absolutely not*** run on services such as [Glitch] or [Heroku]. You ***will need*** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
 
+Sidenote, if you really think you're clever enough to self host then you're probably also smart enough to write your own bot.
+
 ## Story
 
 **A bit of story**: Skyra, formerly known as kyraBOT (renamed in the middle of March of 2017), is a multipurpose Discord

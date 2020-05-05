@@ -8,7 +8,7 @@ import { Event, Language } from 'klasa';
 
 export default class extends Event {
 
-	private kTwitchBrandingColour = 0x6441a4;
+	private readonly kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
@@ -36,17 +36,18 @@ export default class extends Event {
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				// Retrieve the message and transform it, if the message could not be retrieved then skip this notification.
-				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data);
-				if (message === undefined) break;
+				// If the message could not be retrieved then skip this notification.
+				if (subscription.message) {
+					// Transform the message
+					const message = this.transformText(subscription.message, data);
 
-				if (subscription.embed) {
-					floatPromise(this, channel.sendEmbed(this.buildEmbed(message, guild.language)));
-					break;
+					if (subscription.embed) {
+						floatPromise(this, channel.sendEmbed(this.buildEmbed(message, guild.language)));
+					} else {
+						floatPromise(this, channel.send(message));
+					}
 				}
 
-				// Send the message without embed
-				floatPromise(this, channel.send(message));
 				break;
 			}
 		}

@@ -9,8 +9,8 @@ import { Event, Language } from 'klasa';
 
 export default class extends Event {
 
-	private kTwitchImageReplacerRegex = /({width}|{height})/gi;
-	private kTwitchBrandingColour = 0x6441a4;
+	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
+	private readonly kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// All streams should have a game_id.
@@ -46,21 +46,19 @@ export default class extends Event {
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				if (subscription.embed) {
-					// Retrieve the message and transform it into a JSON object, if the message could not be retrieved then skip this notification.
-					const embedData = subscription.message === null ? undefined : this.transformTextToObject(data, game);
-					if (embedData === undefined) break;
+				// If the message could not be retrieved then skip this notification.
+				if (subscription.message) {
+					if (subscription.embed) {
+						const embedData = this.transformTextToObject(data, game);
 
-					// Construct a message embed and send it.
-					floatPromise(this, channel.sendEmbed(this.buildEmbed(embedData, guild.language)));
-					break;
+						// Construct a message embed and send it.
+						floatPromise(this, channel.sendEmbed(this.buildEmbed(embedData, guild.language)));
+					} else {
+						const message = this.transformTextToString(subscription.message, data, guild.language, game);
+						floatPromise(this, channel.send(message));
+					}
 				}
 
-				// Retrieve the message and transform it into text, if the message could not be retrieved then skip this notification.
-				const message = subscription.message === null ? undefined : this.transformTextToString(subscription.message, data, guild.language, game);
-				if (message === undefined) break;
-
-				floatPromise(this, channel.send(message));
 				break;
 			}
 		}

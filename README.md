@@ -6,7 +6,6 @@
 [![Discord Bots](https://discordbots.org/api/widget/servers/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 
-
 ## Developing on Skyra
 
 ### Requirements
@@ -16,6 +15,18 @@
 -   [`Lavalink`]: (Dev Optional) Audio server.
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
+
+## A note to aspiring developers who want to self host Skyra
+
+We are not supportive of the idea of people self hosting Skyra as we put a very high priority on providing the best experience we can for our end-users. This image of Skyra will be diminished if people self-host her as they will not use identical architecture to what we do and likely not put in the same amount of effort as we do. If Skyra is lacking a feature you'd like to see, please refer to the developing guidelines above and if you can add that feature it will be in Skyra to stay.
+
+Furthermore, Skyra has not been build with the idea of self hosting in mind and she makes use of many services that you will need to maintain in a production environment for full functionality. For example
+- Skyra uses many external API's for which you would have to create API keys
+- Skyra uses Lavalink as music module, this means you need to host your own instance of Lavalink (a Java application)
+- While Skyra can work with a JSON based database, it is extremely ill-advised to do so in production. Instead in production you should be using PostgreSQL, another thing to host yourself.
+- Skyra requires [evelyn] in order to run properly, this means you will also need to host this Node.JS application on the same network as Skyra
+
+All this said, if you really are going to self-host Skyra please take heed, she ***will absolutely not*** run on services such as [Glitch] or [Heroku]. You ***will need*** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
 
 ## Story
 
@@ -64,21 +75,25 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 
 <!----------------- LINKS --------------->
 
-[`node.js`]:            https://nodejs.org/en/download/current/
-[`postgresql`]:         https://www.postgresql.org/download/
-[`lavalink`]:           https://github.com/Frederikam/Lavalink
+[`node.js`]:                         https://nodejs.org/en/download/current/
+[`postgresql`]:                      https://www.postgresql.org/download/
+[`lavalink`]:                        https://github.com/Frederikam/Lavalink
 
 [Set-Up - Refer to CONTRIBUTING.md]: /.github/CONTRIBUTING.md
-[`config.example.ts`]:  /src/config.example.ts
+[Evln]:                              https://github.com/kyranet/Evlyn
+[Glitch]:                            https://glitch.com/
+[Heroku]:                            https://www.heroku.com/
+[Netcup]:                            https://www.netcup.eu/
+[DigitalOcean]:                      https://www.digitalocean.com/
 
-[skyra invite link]:    https://skyra.pw/invite
-[support server]:       https://join.skyra.pw
-[patreon]:              https://www.patreon.com/kyranet
+[skyra invite link]:                 https://skyra.pw/invite
+[support server]:                    https://join.skyra.pw
+[patreon]:                           https://www.patreon.com/kyranet
 
-[klasa's website]:      https://klasa.js.org
+[klasa's website]:                   https://klasa.js.org
 
-[patreonimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
-[paypalimage]:          https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/paypal.png
-[bitcoinimage]:         https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
-[ethereumimage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
-[litecoinimage]:        https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png
+[patreonimage]:                      https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/patreon.png
+[paypalimage]:                       https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/paypal.png
+[bitcoinimage]:                      https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
+[ethereumimage]:                     https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
+[litecoinimage]:                     https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png

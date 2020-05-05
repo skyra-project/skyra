@@ -2345,6 +2345,13 @@ export default class extends Language {
 			\`%VIEWER_COUNT%\` for the amount of viewers, \`%GAME_NAME%\` for the game's name, \`%GAME_ID%\` for the game's ID as
 					seen by Twitch, \`%LANGUAGE%\` for the language the stream is in, \`%USER_ID%\` for the streamer's ID, and \`%USER_NAME%\`
 					for the streamer's username.`,
+			explainedUsage: [
+				[this.list(['add', 'remove', 'reset', 'show'], 'o'), 'The subcommand to trigger.'],
+				['streamer', 'The Twitch username of the streamer to get notifications for.'],
+				['channel', 'A channel tag or ID of a Discord channel where to post the notifications in.'],
+				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(this.language.COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES, 'o')}.`],
+				['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
+			],
 			examples: [
 				'add kyranet #twitch online %USER_NAME% went live | %TITLE%',
 				'remove kyranet #twitch online',

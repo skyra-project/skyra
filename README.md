@@ -24,7 +24,7 @@ Furthermore, Skyra has not been build with the idea of self hosting in mind and 
 - Skyra uses many external API's for which you would have to create API keys
 - Skyra uses Lavalink as music module, this means you need to host your own instance of Lavalink (a Java application)
 - While Skyra can work with a JSON based database, it is extremely ill-advised to do so in production. Instead in production you should be using PostgreSQL, another thing to host yourself.
-- Skyra requires [evelyn] in order to run properly, this means you will also need to host this Node.JS application on the same network as Skyra
+- Skyra requires [Evlyn] in order to run properly, this means you will also need to host this Node.JS application on the same network as Skyra
 
 All this said, if you really are going to self-host Skyra please take heed, she ***will absolutely not*** run on services such as [Glitch] or [Heroku]. You ***will need*** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
 
@@ -82,7 +82,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [`lavalink`]:                        https://github.com/Frederikam/Lavalink
 
 [Set-Up - Refer to CONTRIBUTING.md]: /.github/CONTRIBUTING.md
-[Evln]:                              https://github.com/kyranet/Evlyn
+[Evlyn]:                             https://github.com/kyranet/Evlyn
 [Glitch]:                            https://glitch.com/
 [Heroku]:                            https://www.heroku.com/
 [Netcup]:                            https://www.netcup.eu/

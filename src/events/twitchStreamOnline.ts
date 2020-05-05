@@ -19,7 +19,9 @@ export default class extends Event {
 			if (typeof data.game_id === 'undefined') return response.error('"game_id" field is not defined.');
 
 			// Fetch the streamer, and if it could not be found, return error.
-			const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
+			const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.user_id);
+			this.client.console.debug('>>> Checking for streamers:');
+			console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(streamer, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 			if (streamer === null) return response.error('No streamer could be found in the database.');
 
 			const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);

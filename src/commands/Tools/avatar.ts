@@ -1,5 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor, getDisplayAvatar } from '@utils/util';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
@@ -24,9 +24,9 @@ export default class extends SkyraCommand {
 		if (!user.avatar) throw message.language.tget('COMMAND_AVATAR_NONE');
 
 		return message.sendEmbed(new MessageEmbed()
-			.setAuthor(user.tag, getDisplayAvatar(user.id, user, { size: 128 }))
+			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(getColor(message))
-			.setImage(getDisplayAvatar(user.id, user, { size: 2048 })));
+			.setImage(user.displayAvatarURL({ size: 2048, format: 'png', dynamic: true })));
 	}
 
 }

@@ -21,7 +21,7 @@ export default class extends Event {
 			// Fetch the streamer, and if it could not be found, return error.
 			const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.user_id);
 			this.client.console.debug('>>> Checking for streamers:');
-			console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(streamer, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
+			this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(streamer, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 			if (streamer === null) return response.error('No streamer could be found in the database.');
 
 			const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);

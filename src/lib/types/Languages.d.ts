@@ -1749,7 +1749,6 @@ export interface LanguageKeys {
 	SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url: string, time?: string, type?: string) => string;
 	SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: (output: string[]) => string;
 	SYSTEM_EXTERNAL_SERVER_ERROR: string;
-	SYSTEM_TWITCH_NO_GAME_NAME: string;
 	JUMPTO: string;
 	RESOLVER_INVALID_CHANNELNAME: (name: string) => string;
 	RESOLVER_CHANNEL_NOT_IN_GUILD: string;
@@ -1808,4 +1807,7 @@ export interface LanguageKeys {
 	CONST_MONITOR_MESSAGEFILTER: string;
 	CONST_MONITOR_NEWLINEFILTER: string;
 	UNKNOWN_USER: string;
+	NOTIFICATIONS_TWITCH_NO_GAME_NAME: string;
+	NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName: string, gameName: string | undefined) => string;
+	NOTIFICATION_TWITCH_EMBED_FOOTER: string;
 }

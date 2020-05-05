@@ -71,8 +71,15 @@ export default class extends SkyraCommand {
 				if (index === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS');
 				return index;
 			})
-			.createCustomResolver('content', (argument, possible, message, [type]) => {
-				if (type === Type.Show || type === Type.Reset || type === Type.Remove) return undefined;
+			.createCustomResolver('content', (argument, possible, message, [type,,,status]) => {
+				// If the subcommand is Show, Reset, or Remove
+				if (
+					type === Type.Show || 
+					type === Type.Reset ||
+					 type === Type.Remove || 
+					 // or if the command is Add, the flagArgs include --embed and the status is online then allow no content
+					(type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
+					) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
 				return this.client.arguments.get('...string')!.run(argument, possible, message);
 			});
@@ -256,9 +263,9 @@ export default class extends SkyraCommand {
 
 		// Fetch all usernames and map them by their id.
 		const ids = guildSubscriptions.map(subscriptions => subscriptions[0]);
-		const profiles = await this.client.twitch.fetchUsersByLogin(ids);
+		const profiles = await this.client.twitch.fetchUsers(ids, []);
 		const names = new Map<string, string>();
-		for (const profile of profiles.users) names.set(profile._id, profile.display_name);
+		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
 
 		// Print all entries for this guild.
 		const statuses = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS');

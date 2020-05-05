@@ -4,9 +4,11 @@ import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event } from 'klasa';
+import { Event, Language } from 'klasa';
 
 export default class extends Event {
+
+	private kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
@@ -39,8 +41,7 @@ export default class extends Event {
 				if (message === undefined) break;
 
 				if (subscription.embed) {
-					// Construct a message embed and send it.
-					floatPromise(this, channel.sendEmbed(this.buildEmbed(JSON.parse(message))));
+					floatPromise(this, channel.sendEmbed(this.buildEmbed(message, guild.language)));
 					break;
 				}
 
@@ -62,10 +63,12 @@ export default class extends Event {
 		});
 	}
 
-	// FIXME: Implement
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	private buildEmbed(_data: any) {
-		return new MessageEmbed();
+	private buildEmbed(message: string, i18n: Language) {
+		return new MessageEmbed()
+			.setColor(this.kTwitchBrandingColour)
+			.setDescription(message)
+			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
+			.setTimestamp()
 	}
 
 }

@@ -6,11 +6,11 @@ import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/N
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, Language } from 'klasa';
-import * as util from 'util';
 
 export default class extends Event {
 
-	// private kThumbnailReplacerRegex = /({width}|{height})/i;
+	private kTwitchImageReplacerRegex = /({width}|{height})/gi;
+	private kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// All streams should have a game_id.
@@ -21,8 +21,6 @@ export default class extends Event {
 		if (streamer === null) return response.error('No streamer could be found in the database.');
 
 		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);
-		this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'Logging game data');
-		this.client.console.debug(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(game, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guild_ids) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
@@ -48,18 +46,19 @@ export default class extends Event {
 				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
-				// Retrieve the message and transform it, if the message could not be retrieved then skip this notification.
-				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, guild.language, game);
-				if (message === undefined) break;
-
-				this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'PARSED MESSAGE');
-				this.client.console.debug(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(JSON.parse(message), { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
-				this.client.console.debug(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'LOGGING SUBSCRIPTION', util.inspect(subscription, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 				if (subscription.embed) {
+					// Retrieve the message and transform it into a JSON object, if the message could not be retrieved then skip this notification.
+					const embedData = subscription.message === null ? undefined : this.transformTextToObject(data, game);
+					if (embedData === undefined) break;
+
 					// Construct a message embed and send it.
-					floatPromise(this, channel.sendEmbed(this.buildEmbed(JSON.parse(message))));
+					floatPromise(this, channel.sendEmbed(this.buildEmbed(embedData, guild.language)));
 					break;
 				}
+
+				// Retrieve the message and transform it into text, if the message could not be retrieved then skip this notification.
+				const message = subscription.message === null ? undefined : this.transformTextToString(subscription.message, data, guild.language, game);
+				if (message === undefined) break;
 
 				floatPromise(this, channel.send(message));
 				break;
@@ -69,13 +68,13 @@ export default class extends Event {
 		return response.ok();
 	}
 
-	private transformText(source: string, notification: PostStreamBodyData, i18n: Language, game?: TwitchHelixGameSearchResult) {
+	private transformTextToString(source: string, notification: PostStreamBodyData, i18n: Language, game?: TwitchHelixGameSearchResult) {
 		return source.replace(TWITCH_REPLACEABLES_REGEX, match => {
 			switch (match) {
 				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
 				case TWITCH_REPLACEABLES_MATCHES.TITLE: return this.escapeText(notification.title);
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count.toString();
-				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game?.name ?? i18n.tget('SYSTEM_TWITCH_NO_GAME_NAME');
+				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game?.name ?? i18n.tget('NOTIFICATIONS_TWITCH_NO_GAME_NAME');
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE: return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID: return notification.game_id;
 				case TWITCH_REPLACEABLES_MATCHES.USER_ID: return notification.user_id;
@@ -85,17 +84,32 @@ export default class extends Event {
 		});
 	}
 
-	// FIXME: Implement
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	private buildEmbed(_data: any) {
-		const embed = new MessageEmbed();
-		// 	.setThumbnail(notification.thumbnail_url.replace(this.kThumbnailReplacerRegex, '128'))
-		// 	.setTitle(`Streaming: `)
-		// 	.setTimestamp(new Date(notification.started_at));
+	private transformTextToObject(notification: PostStreamBodyData, game?: TwitchHelixGameSearchResult): TwitchOnlineEmbedData {
+		return {
+			user_name: notification.user_name,
+			title: notification.title,
+			started_at: new Date(notification.started_at),
+			viewer_count: notification.viewer_count.toString(),
+			language: notification.language,
+			thumbnail_url: notification.thumbnail_url.replace(this.kTwitchImageReplacerRegex, '128'),
+			type: notification.type,
+			game_name: game?.name,
+			box_art_url: game?.box_art_url?.replace(this.kTwitchImageReplacerRegex, '1024'),
+			tag_ids: notification.tag_ids,
+			user_id: notification.user_id
+		}
+	}
 
-		// if (parsedMessage !== undefined) embed.setDescription(parsedMessage);
-
-		return embed;
+	private buildEmbed(data: TwitchOnlineEmbedData, i18n: Language) {
+		return new MessageEmbed()
+			.setThumbnail(data.thumbnail_url)
+			.setTitle(data.title)
+			.setURL(`https://twitch.tv/${data.user_name}`)
+			.setDescription(i18n.tget('NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION', data.user_name, data.game_name))
+			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
+			.setTimestamp(data.started_at)
+			.setColor(this.kTwitchBrandingColour)
+			.setImage(data.box_art_url ?? '');
 	}
 
 	private escapeText(text: string) {
@@ -104,12 +118,11 @@ export default class extends Event {
 
 }
 
-// type TwitchOnlineEmbedData =
-// 	& Omit<PostStreamBodyData, 'id' | 'viewer_count'>
-// 	& Omit<TwitchHelixGameSearchResult, 'id'>
-// 	& {
-// 		stream_id: string;
-// 		game_id: string;
-// 		game_name: string;
-// 		viewer_count: string;
-// 	};
+type TwitchOnlineEmbedData =
+	& Omit<PostStreamBodyData, 'id' | 'viewer_count' | 'started_at' | 'game_id'>
+	& Omit<Partial<TwitchHelixGameSearchResult>, 'id' | 'name'>
+	& {
+		viewer_count: string;
+		started_at: Date;
+		game_name: string | undefined;
+	};

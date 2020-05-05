@@ -2343,7 +2343,10 @@ export default class extends Language {
 		COMMAND_TWITCHSUBSCRIPTION_EXTENDED: builder.display('twitchSubscription', {
 			extendedHelp: `
 				Manage the subscriptions for this server.
-				For online events you can put some variables in the message that will get replaced with Twitch data:
+				__Online Notifications__
+				For content, the best way is writing \`--embed\`, the notifications will then show up in MessageEmbeds
+				with all available data. Alternatively you can set your own content and it will post as a regular message.
+				This content can contain some parameters that will be replaced with Twitch data:
 				- \`%TITLE%\` for the stream's title
 				- \`%VIEWER_COUNT%\` for the amount of current viewers,
 				- \`%GAME_NAME%\` for the title being streamed
@@ -2351,23 +2354,25 @@ export default class extends Language {
 				- \`%LANGUAGE%\` for the language the stream is in
 				- \`%USER_ID%\` for the streamer's ID as seen by Twitch
 				- and \`%USER_NAME%\` for the Streamer's twitch username.
-				
-				For Offline events none of these variables are available, as Twitch does not give us that data.`,
+
+				__Offline Notifications__
+				For offline events none of the variables above are available and you'll have to write your own content.
+				You can still use the \`--embed\` flag for the notification to show in a nice Twitch-purple MessageEmbed.`,
 			explainedUsage: [
 				[this.list(['add', 'remove', 'reset', 'show'], 'o'), 'The subcommand to trigger.'],
 				['streamer', 'The Twitch username of the streamer to get notifications for.'],
-				['channel', 'A channel tag or ID of a Discord channel where to post the notifications in.'],
+				['channel', 'A Discord channel where to post the notifications in.'],
 				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(['online', 'offline'], 'o')}.`],
 				['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
 			],
 			examples: [
-				'add kyranet #twitch online %USER_NAME% went live | %TITLE%',
+				'add favna #twitch online --embed',
+				'add favna #twitch online %USER_NAME% went live | %TITLE%',
 				'remove kyranet #twitch online',
 				'reset kyranet',
 				'reset',
 				'show kyranet',
 				'show',
-				''
 			]
 		}, true),
 		COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
@@ -4124,6 +4129,15 @@ export default class extends Language {
 
 		/**
 		 * #################################
+		 * #        NOTIFICATIONS          #
+		 * #################################
+		 */
+		NOTIFICATIONS_TWITCH_NO_GAME_NAME: '*Nombre del juego no establecido*',
+		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName, gameName) => `${userName} ya está en vivo${gameName ? ` - ¡transmitiendo ${gameName}!` : `!`}`,
+		NOTIFICATION_TWITCH_EMBED_FOOTER: 'Skyra Twitch Notificaciones',
+
+		/**
+		 * #################################
 		 * #             UTILS             #
 		 * #################################
 		 */
@@ -4292,7 +4306,6 @@ export default class extends Language {
 		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) => `Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
 		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: options => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
 		SYSTEM_EXTERNAL_SERVER_ERROR: 'El servicio externo que utilizamos no pudo procesar nuestro mensaje, por favor, inténtelo de nuevo más tarde.',
-		SYSTEM_TWITCH_NO_GAME_NAME: '*Nombre del juego no establecido*',
 
 		JUMPTO: 'Salta al Mensaje ►',
 

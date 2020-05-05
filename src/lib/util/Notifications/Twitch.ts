@@ -128,8 +128,7 @@ export class Twitch {
 				Authorization: `Bearer ${await this.fetchBearer()}`
 			}
 		};
-		const result = await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, fetchOptions, FetchResultTypes.JSON) as unknown as T;
-		return result;
+		return await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, fetchOptions, FetchResultTypes.JSON) as unknown as T;			
 	}
 
 	private async _generateBearerToken() {

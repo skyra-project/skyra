@@ -47,8 +47,8 @@ export default class extends Event {
 				break;
 			}
 		}
-		return response.ok();
 
+		return response.ok();
 	}
 
 	private transformText(str: string, notification: PostStreamBodyData) {

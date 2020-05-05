@@ -3244,7 +3244,7 @@ export default class extends Language {
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
 		COMMAND_MODERATION_DM: (guild, title, reason, pDuration, moderator) => new MessageEmbed()
-			.setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128 }))
+			.setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription([
 				`**❯ Server**: ${guild}`,
 				`**❯ Type**: ${title}`,
@@ -3618,13 +3618,13 @@ export default class extends Language {
 				? `Hace ${timestamp.displayUTC(member.joinedTimestamp)}\n${duration(Date.now() - member.joinedTimestamp, 2)}`
 				: 'Desconocido', true)
 			.addField('Fecha Creación', `${timestamp.displayUTC(member.user.createdAt)}\nHace ${duration(Date.now() - member.user.createdTimestamp, 2)}`, true)
-			.setFooter(`ID: ${member.id}`, this.client.user!.displayAvatarURL()),
+			.setFooter(`ID: ${member.id}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })),
 		COMMAND_WHOIS_MEMBER_ROLES: amount => amount === 1 ? 'Rol [1]' : `Roles [${amount}]`,
 		COMMAND_WHOIS_MEMBER_PERMISSIONS: 'Permisos Clave',
 		COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: 'Todos los Permisos',
 		COMMAND_WHOIS_USER: user => new MessageEmbed()
 			.addField('Fecha Creación', `${timestamp.displayUTC(user.createdAt)}\nHace ${duration(Date.now() - user.createdTimestamp, 2)}`)
-			.setFooter(`ID: ${user.id}`, this.client.user!.displayAvatarURL()),
+			.setFooter(`ID: ${user.id}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })),
 		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
 		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
 		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',

@@ -30,7 +30,7 @@ export default class extends Event {
 		const channel = message.channel as TextChannel;
 		this.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
 			.setColor(Colors.Red)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL())
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(cutText(getContent(message) || '', 1900))
 			.setFooter(`${message.language.tget('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
 			.setImage(getImage(message)!)

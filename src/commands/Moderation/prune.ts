@@ -133,7 +133,7 @@ export default class extends SkyraCommand {
 			// Send the message to the prune logs channel.
 			await channel.sendMessage('', {
 				embed: new MessageEmbed()
-					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 64 }))
+					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 					.setDescription(message.language.tget('COMMAND_PRUNE_LOG_MESSAGE', message.channel.toString(), message.author.toString(), messages.size))
 					.setColor(this.kColor)
 					.setTimestamp(),

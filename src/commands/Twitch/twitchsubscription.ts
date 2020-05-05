@@ -223,7 +223,7 @@ export default class extends SkyraCommand {
 		// Create the pages and the URD to display them.
 		const pages = chunk(content, 10);
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(getColor(message)));
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 

@@ -48,7 +48,7 @@ export default class extends ModerationMonitor {
 		return new MessageEmbed()
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_WORDFILTER')}`)
 			.setTimestamp();
 	}

@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 
 		await this.client.webhookFeedback!.send(new MessageEmbed()
 			.setColor(Colors.Green)
-			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(feedback)
 			.setFooter(`${message.author.id} | Feedback`)
 			.setTimestamp());

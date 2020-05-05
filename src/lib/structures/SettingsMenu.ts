@@ -26,7 +26,7 @@ export class SettingsMenu {
 		this.schema = this.message.client.gateways.get('guilds')!.schema;
 		this.oldSettings = this.message.guild!.settings.clone();
 		this.embed = new MessageEmbed()
-			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128 }))
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(getColor(this.message));
 	}
 

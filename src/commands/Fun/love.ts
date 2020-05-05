@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL())
+			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setThumbnail('https://twemoji.maxcdn.com/2/72x72/1f49e.png')
 			.setDescription([
 				`💗 **${user.tag}**`,

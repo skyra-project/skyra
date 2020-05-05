@@ -3,7 +3,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { BrandingColors } from '@utils/constants';
-import { getColor, getDisplayAvatar, noop } from '@utils/util';
+import { getColor, noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, CommandStore, KlasaMessage } from 'klasa';
 
@@ -112,7 +112,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(getColor(message))
-			.setAuthor(this.client.user!.username, getDisplayAvatar(this.client.user!.id!, this.client.user!))
+			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
 			.setFooter(DATA.FOOTER(command.name))
 			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))

@@ -17,7 +17,7 @@ export default class extends Event {
 
 		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
 			.setColor(Colors.Amber)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL(), message.url)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
 			.splitFields(diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(message.content))
 				.map(result => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
 				.join(' '))

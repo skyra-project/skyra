@@ -1,8 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { BrandingColors } from '@utils/constants';
-import { GuildMember, Role, MessageEmbed, Permissions, PermissionString } from 'discord.js';
+import { GuildMember, MessageEmbed, Permissions, PermissionString, Role } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { getDisplayAvatar } from '@utils/util';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
@@ -49,18 +48,18 @@ export default class extends SkyraCommand {
 	private user(message: KlasaMessage, user: KlasaUser) {
 		return message.language.tget('COMMAND_WHOIS_USER', user)
 			.setColor(BrandingColors.Secondary)
-			.setAuthor(user.tag, getDisplayAvatar(user.id, user, { size: 128 }))
+			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(user.toString())
-			.setThumbnail(getDisplayAvatar(user.id, user, { size: 256 }))
+			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 			.setTimestamp();
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
 		const embed = message.language.tget('COMMAND_WHOIS_MEMBER', member)
 			.setColor(member.displayColor || BrandingColors.Secondary)
-			.setAuthor(member.user.tag, getDisplayAvatar(member.id, member.user, { size: 128 }))
+			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(member.toString())
-			.setThumbnail(getDisplayAvatar(member.id, member.user, { size: 256 }))
+			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 			.setTimestamp();
 
 		this.applyMemberRoles(message, member, embed);

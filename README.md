@@ -6,30 +6,16 @@
 [![Discord Bots](https://discordbots.org/api/widget/servers/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 [![Discord Bots](https://discordbots.org/api/widget/upvotes/266624760782258186.svg?noavatar=true)](https://discordbots.org/bot/266624760782258186)
 
-## Development Requirements
+
+## Developing on Skyra
+
+### Requirements
 
 -   [`Node.js`]: To run the project.
 -   [`PostgreSQL`]: (Dev Optional) To store persistent data.
 -   [`Lavalink`]: (Dev Optional) Audio server.
 
-## Set-Up
-
-Copy and paste the [`config.example.ts`] file in the `src` directory and rename it to `config.ts`, then fill it with the precise variables.
-Once all development requirements are set up:
-
-```bash
-# Lints and format all the code:
-$ yarn lint
-
-# Run Skyra in development mode:
-$ yarn start
-
-# Run Skyra in production mode, requires
-# Lavalink and PostgreSQL to be running:
-$ yarn pm2:start
-```
-
-> **Note**: Before pushing to the repository, please run `yarn lint` so formatting stays consistent and there are no linter warnings.
+### [Set-Up - Refer to CONTRIBUTING.md]
 
 ## Story
 
@@ -82,6 +68,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [`postgresql`]:         https://www.postgresql.org/download/
 [`lavalink`]:           https://github.com/Frederikam/Lavalink
 
+[Set-Up - Refer to CONTRIBUTING.md]: /.github/CONTRIBUTING.md
 [`config.example.ts`]:  /src/config.example.ts
 
 [skyra invite link]:    https://skyra.pw/invite

@@ -245,7 +245,6 @@ export const TLDs = [
 	'chintai',
 	'christmas',
 	'chrome',
-	'chrysler',
 	'church',
 	'ci',
 	'cipriani',
@@ -359,7 +358,6 @@ export const TLDs = [
 	'do',
 	'docs',
 	'doctor',
-	'dodge',
 	'dog',
 	'domains',
 	'dot',
@@ -693,12 +691,10 @@ export const TLDs = [
 	'kz',
 	'la',
 	'lacaixa',
-	'ladbrokes',
 	'lamborghini',
 	'lamer',
 	'lancaster',
 	'lancia',
-	'lancome',
 	'land',
 	'landrover',
 	'lanxess',
@@ -719,7 +715,6 @@ export const TLDs = [
 	'lexus',
 	'lgbt',
 	'li',
-	'liaison',
 	'lidl',
 	'life',
 	'lifeinsurance',
@@ -738,6 +733,7 @@ export const TLDs = [
 	'lixil',
 	'lk',
 	'llc',
+	'llp',
 	'loan',
 	'loans',
 	'locker',
@@ -820,7 +816,6 @@ export const TLDs = [
 	'monash',
 	'money',
 	'monster',
-	'mopar',
 	'mormon',
 	'mortgage',
 	'moscow',
@@ -828,7 +823,6 @@ export const TLDs = [
 	'motorcycles',
 	'mov',
 	'movie',
-	'movistar',
 	'mp',
 	'mq',
 	'mr',
@@ -847,7 +841,6 @@ export const TLDs = [
 	'mz',
 	'na',
 	'nab',
-	'nadex',
 	'nagoya',
 	'name',
 	'nationwide',
@@ -1149,7 +1142,6 @@ export const TLDs = [
 	'spreadbetting',
 	'sr',
 	'srl',
-	'srt',
 	'ss',
 	'st',
 	'stada',
@@ -1202,7 +1194,6 @@ export const TLDs = [
 	'tech',
 	'technology',
 	'tel',
-	'telefonica',
 	'temasek',
 	'tennis',
 	'teva',
@@ -1262,7 +1253,6 @@ export const TLDs = [
 	'ua',
 	'ubank',
 	'ubs',
-	'uconnect',
 	'ug',
 	'uk',
 	'unicom',
@@ -1296,7 +1286,6 @@ export const TLDs = [
 	'virgin',
 	'visa',
 	'vision',
-	'vistaprint',
 	'viva',
 	'vivo',
 	'vlaanderen',
@@ -1315,7 +1304,6 @@ export const TLDs = [
 	'walter',
 	'wang',
 	'wanggou',
-	'warman',
 	'watch',
 	'watches',
 	'weather',
@@ -1401,7 +1389,6 @@ export const TLDs = [
 	'ею', // xn--e1a4c
 	'ポイント', // xn--eckvdtc9d
 	'新闻', // xn--efvy88h
-	'工行', // xn--estv75g
 	'家電', // xn--fct429k
 	'كوم', // xn--fhbei
 	'中文网', // xn--fiq228c5hs
@@ -1450,6 +1437,7 @@ export const TLDs = [
 	'بھارت', // xn--mgbbh1a71e
 	'المغرب', // xn--mgbc0a9azcg
 	'ابوظبي', // xn--mgbca7dzdo
+	'البحرين', // xn--mgbcpq6gpa1a
 	'السعودية', // xn--mgberp4a5d4ar
 	'ڀارت', // xn--mgbgu82a
 	'كاثوليك', // xn--mgbi4ecexp
@@ -1475,6 +1463,7 @@ export const TLDs = [
 	'珠宝', // xn--pbt977c
 	'تونس', // xn--pgbs0dh
 	'大拿', // xn--pssy2u
+	'ລາວ', // xn--q7ce6a
 	'みんな', // xn--q9jyb4c
 	'グーグル', // xn--qcka1pmc
 	'ευ', // xn--qxa6a

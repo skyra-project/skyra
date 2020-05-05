@@ -12,12 +12,6 @@ export default class extends Route {
 
 	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {
-		const challenge = request.query['hub.challenge'] as string | undefined;
-		this.client.console.log('Receiving a post from Twitch API, request body is:');
-		this.client.console.debug(inspect(request.body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
-		this.client.console.log('\n======\nAnd request headers are: ');
-		this.client.console.debug(request.headers);
-
 		switch (request.query['hub.mode']) {
 			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge || 'ok');
 			case 'unsubscribe':
@@ -30,8 +24,7 @@ export default class extends Route {
 	public post(request: ApiRequest, response: ApiResponse) {
 		this.client.console.log('Receiving a post from Twitch API, request body is:');
 		this.client.console.debug(inspect(request.body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
-		this.client.console.log('\n======\nAnd request headers are: ');
-		this.client.console.debug(request.headers);
+
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];
@@ -60,7 +53,7 @@ export interface PostStreamBodyData {
 	id: string;
 	language: string;
 	started_at: string;
-	tag_ids: string | null;
+	tag_ids: string[] | null;
 	thumbnail_url: string;
 	title: string;
 	type: string;

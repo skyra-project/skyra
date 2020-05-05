@@ -6,6 +6,7 @@ import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/N
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
+import * as util from 'util';
 
 export default class extends Event {
 
@@ -31,14 +32,20 @@ export default class extends Event {
 				await guild.settings.sync();
 				const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers)
 					.find(([id]) => id === streamer.id);
+				this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'Got subscriptions from settings');
+				this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, util.inspect(subscriptions, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 				if (typeof subscriptions === 'undefined') continue;
 
+				this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'About to iterate over subscriptions');
 				// Iterate over each subscription
 				for (const subscription of subscriptions[1]) {
+					this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'Looping over subscriptions');
 					if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
+					this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'Passed the online status check');
 					// if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
 					// if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
 					if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
+					this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'Passed dripping the notification');
 
 					// Retrieve the channel, then check if it exists or if it's postable.
 					const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
@@ -46,7 +53,9 @@ export default class extends Event {
 
 					// Retrieve the message and transform it, if no embed, return the basic message.
 					const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, game);
+					this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'build up the message: ', message);
 					if (subscription.embed === null) {
+						this.client.console.log(`TWITCHSTREAMONLINE.TS [${new Date().toISOString()}]`, 'about to send the message');
 						floatPromise(this, channel.send(message));
 						break;
 					}

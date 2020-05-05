@@ -10,52 +10,59 @@ import { Event } from 'klasa';
 export default class extends Event {
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
-		// All streams should have a game_id.
-		if (typeof data.game_id === 'undefined') return response.error('"game_id" field is not defined.');
+		try {
+			this.client.console.debug('>>> RUNNING TWITCH ONLINE EVENT');
 
-		// Fetch the streamer, and if it could not be found, return error.
-		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
-		if (streamer === null) return response.error('No streamer could be found in the database.');
+			// All streams should have a game_id.
+			if (typeof data.game_id === 'undefined') return response.error('"game_id" field is not defined.');
 
-		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);
-		// Iterate over all the guilds that are subscribed to the streamer.
-		for (const guildID of streamer.guild_ids) {
-			// Retrieve the guild, if not found, skip to the next loop cycle.
-			const guild = this.client.guilds.get(guildID);
-			if (typeof guild === 'undefined') continue;
+			// Fetch the streamer, and if it could not be found, return error.
+			const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
+			if (streamer === null) return response.error('No streamer could be found in the database.');
 
-			// Synchronize the settings, then retrieve to all of its subscriptions
-			await guild.settings.sync();
-			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers)
-				.find(([id]) => id === streamer.id);
-			if (typeof subscriptions === 'undefined') continue;
+			const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);
+			// Iterate over all the guilds that are subscribed to the streamer.
+			for (const guildID of streamer.guild_ids) {
+				// Retrieve the guild, if not found, skip to the next loop cycle.
+				const guild = this.client.guilds.get(guildID);
+				if (typeof guild === 'undefined') continue;
 
-			// Iterate over each subscription
-			for (const subscription of subscriptions[1]) {
-				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
-				// if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
-				// if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
-				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
+				// Synchronize the settings, then retrieve to all of its subscriptions
+				await guild.settings.sync();
+				const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers)
+					.find(([id]) => id === streamer.id);
+				if (typeof subscriptions === 'undefined') continue;
 
-				// Retrieve the channel, then check if it exists or if it's postable.
-				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
-				if (typeof channel === 'undefined' || !channel.postable) continue;
+				// Iterate over each subscription
+				for (const subscription of subscriptions[1]) {
+					if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
+					// if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
+					// if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
+					if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
-				// Retrieve the message and transform it, if no embed, return the basic message.
-				const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, game);
-				if (subscription.embed === null) {
-					floatPromise(this, channel.send(message));
+					// Retrieve the channel, then check if it exists or if it's postable.
+					const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
+					if (typeof channel === 'undefined' || !channel.postable) continue;
+
+					// Retrieve the message and transform it, if no embed, return the basic message.
+					const message = subscription.message === null ? undefined : this.transformText(subscription.message, data, game);
+					if (subscription.embed === null) {
+						floatPromise(this, channel.send(message));
+						break;
+					}
+
+					// Construct a message embed and send it.
+					const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data, game)));
+					floatPromise(this, channel.send(message, embed));
 					break;
 				}
-
-				// Construct a message embed and send it.
-				const embed = new MessageEmbed(JSON.parse(this.transformText(subscription.embed, data, game)));
-				floatPromise(this, channel.send(message, embed));
-				break;
 			}
-		}
 
-		return response.ok();
+			return response.ok();
+		} catch (error) {
+			this.client.console.error('>>>> TWITCH ONLINE CRASHED, ERROR:');
+			this.client.console.error(error);
+		}
 	}
 
 	private transformText(source: string, notification: PostStreamBodyData, game: TwitchHelixGameSearchResult) {

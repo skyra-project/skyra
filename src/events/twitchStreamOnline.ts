@@ -75,9 +75,7 @@ export default class extends Event {
 				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
 				case TWITCH_REPLACEABLES_MATCHES.TITLE: return this.escapeText(notification.title);
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count.toString();
-				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
-					if (game !== undefined) return game.name;
-					return i18n.tget('SYSTEM_TWITCH_NO_GAME_NAME');
+				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game?.name ??  i18n.tget('SYSTEM_TWITCH_NO_GAME_NAME');
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE: return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID: return notification.game_id;
 				case TWITCH_REPLACEABLES_MATCHES.USER_ID: return notification.user_id;

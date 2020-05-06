@@ -11,13 +11,15 @@ import { KlasaMessage } from 'klasa';
 	description: 'Update the bot',
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	usage: '[branch:string]'
+	usage: '[branch:string]',
+	flagSupport: true
 })
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
 		await this.fetch(message, branch);
 		await this.updateDependencies(message);
+		await this.cleanDist(message);
 		await this.compile(message);
 	}
 
@@ -25,6 +27,14 @@ export default class extends SkyraCommand {
 		const { stderr, code } = await this.exec('yarn build');
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully compiled.`);
+	}
+
+	private async cleanDist(message: KlasaMessage) {
+		if (message.flagArgs.fullRebuild) {
+			const { stderr, code } = await this.exec('rm -rf ./dist');
+			if (code !== 0 && stderr.length) throw stderr.trim();
+			return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
+		}
 	}
 
 	private async updateDependencies(message: KlasaMessage) {
@@ -52,7 +62,7 @@ export default class extends SkyraCommand {
 		}
 
 		// For all other cases, return the original output
-		return message.send(codeBlock('prolog', [cutText(stdout, 1950) || Emojis.GreenTick, stderr || Emojis.GreenTick].join('\n-=-=-=-\n')));
+		return message.send(codeBlock('prolog', [this.cutText(stdout, stderr) || Emojis.GreenTick, this.cutText(stderr, stdout) || Emojis.GreenTick].join('\n-=-=-=-\n')));
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -63,7 +73,7 @@ export default class extends SkyraCommand {
 			throw `Unsuccessful pull, stashing:\n\n${codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'))}`;
 		}
 
-		return message.send(codeBlock('prolog', [cutText(stdout, 1950) || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
+		return message.send(codeBlock('prolog', [this.cutText(stdout, stderr) || '✔', this.cutText(stderr, stdout) || '✔'].join('\n-=-=-=-\n')));
 	}
 
 	private async checkout(message: KlasaMessage, branch: string) {
@@ -96,6 +106,11 @@ export default class extends SkyraCommand {
 		} catch (error) {
 			return { stdout: '', stderr: error?.message || error || '', code: error.code ?? 1 };
 		}
+	}
+
+	private cutText(input: string, ...extraInput: string[]) {
+		const cutLength = extraInput.length ? 1950 / extraInput.length : 1950;
+		return cutText(input, cutLength);
 	}
 
 }

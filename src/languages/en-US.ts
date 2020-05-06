@@ -2785,7 +2785,7 @@ export default class extends Language {
 		COMMAND_CHOICE_DUPLICATES: words => `Why would I accept duplicated words? '${words}'.`,
 		COMMAND_DICE_OUTPUT: result => `You rolled the dice! You got: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'Amount of rolls must be a number between 1 and 1024.',
-		COMMAND_DICE_SIDES_ERROR: 'Amount of sides must be a number between 4 and 1024.',
+		COMMAND_DICE_SIDES_ERROR: 'Amount of sides must be a number between 3 and 1024.',
 		// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
 		COMMAND_ESCAPEROPE_OUTPUT: user => `**${user}** used **Escape Rope**`,
 		COMMAND_LOVE_LESS45: 'Try again next time...',

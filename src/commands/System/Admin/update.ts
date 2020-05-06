@@ -2,9 +2,11 @@ import { codeBlock, exec, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { Emojis } from '@utils/constants';
+import { Emojis, rootFolder } from '@utils/constants';
 import { cutText } from '@utils/util';
+import { rmdir } from 'fs-nextra';
 import { KlasaMessage } from 'klasa';
+import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pull'],
@@ -31,8 +33,7 @@ export default class extends SkyraCommand {
 
 	private async cleanDist(message: KlasaMessage) {
 		if (message.flagArgs.fullRebuild) {
-			const { stderr, code } = await this.exec('rm -rf ./dist');
-			if (code !== 0 && stderr.length) throw stderr.trim();
+			await rmdir(resolve(rootFolder, 'dist'));
 			return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
 		}
 	}

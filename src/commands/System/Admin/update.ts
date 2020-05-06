@@ -4,7 +4,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Emojis, rootFolder } from '@utils/constants';
 import { cutText } from '@utils/util';
-import { rmdir } from 'fs-nextra';
+import { remove } from 'fs-nextra';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
 
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 
 	private async cleanDist(message: KlasaMessage) {
 		if (message.flagArgs.fullRebuild) {
-			await rmdir(resolve(rootFolder, 'dist'));
+			await remove(resolve(rootFolder, 'dist'));
 			return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
 		}
 	}

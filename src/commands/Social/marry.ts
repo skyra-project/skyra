@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 		const users = message.author.settings.get(UserSettings.Marry);
 		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
-		const usernames = await Promise.all(users.map(async user => `${this.client.userTags.fetchUsername(user)} (${user})`));
+		const usernames = await Promise.all(users.map(async user => `${await this.client.userTags.fetchUsername(user)} (${user})`));
 		return message.sendLocale('COMMAND_MARRY_WITH', [usernames]);
 	}
 

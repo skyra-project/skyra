@@ -10,9 +10,16 @@ export default class extends Event {
 
 	public run(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
 		return Promise.all([
+			this.cancelTask(old, entry),
 			this.sendMessage(old, entry),
 			this.scheduleDuration(old, entry)
 		]);
+	}
+
+	private async cancelTask(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+		// If the task was invalidated or had its duration set to null, delete any pending task
+		if ((!old.invalidated && entry.invalidated)
+			|| (old.duration !== null && entry.duration === null)) await entry.task?.delete();
 	}
 
 	private async sendMessage(old: ModerationManagerEntry, entry: ModerationManagerEntry) {

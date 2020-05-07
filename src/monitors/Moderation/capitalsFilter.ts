@@ -23,6 +23,7 @@ const OFFSET = 0b100000;
 
 export default class extends ModerationMonitor {
 
+	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_CAPITALS';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Capitals.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Capitals.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Capitals.IgnoredRoles;

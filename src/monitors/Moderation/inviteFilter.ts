@@ -15,6 +15,7 @@ const enum CodeType {
 
 export default class extends ModerationMonitor {
 
+	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_INVITES';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Invites.IgnoredRoles;

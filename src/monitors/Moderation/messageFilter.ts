@@ -7,6 +7,7 @@ import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends ModerationMonitor {
 
+	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_MESSAGES';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Messages.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Messages.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Messages.IgnoredRoles;

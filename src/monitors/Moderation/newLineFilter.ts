@@ -9,6 +9,7 @@ const NEW_LINE = '\n';
 
 export default class extends ModerationMonitor {
 
+	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_NEWLINES';
 	protected readonly keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.NewLines.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.NewLines.IgnoredRoles;

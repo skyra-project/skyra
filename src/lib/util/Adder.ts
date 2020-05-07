@@ -1,3 +1,22 @@
+export class AdderError extends Error {
+
+	/**
+	 * The amount of pointsthe adder reached when it threw this error.
+	 */
+	public readonly amount: number;
+
+	/**
+	 * Constructs an AdderError instance.
+	 * @param message The message to be passed to the Error constructor
+	 * @param amount The amount of points the adder reached when it threw this error
+	 */
+	public constructor(message: string, amount: number) {
+		super(message);
+		this.amount = amount;
+	}
+
+}
+
 export class Adder<T> extends Array<{ id: T; end: number }> {
 
 	/**
@@ -47,7 +66,7 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 		// If maximum, throw.
 		if (amount >= this.maximum) {
 			if (this.autoRemove) this.remove(id);
-			throw new Error('Limit Reached');
+			throw new AdderError('Limit Reached', amount);
 		}
 
 		return amount;

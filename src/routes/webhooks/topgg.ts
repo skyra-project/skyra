@@ -5,7 +5,7 @@ import { TOKENS } from '@root/config';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<RouteOptions>({ name: 'webhooks/b4d', route: 'webhooks/b4d' })
+@ApplyOptions<RouteOptions>({ name: 'webhooks/topgg', route: 'webhooks/topgg' })
 export default class extends Route {
 
 	public async post(request: ApiRequest, response: ApiResponse) {
@@ -16,7 +16,7 @@ export default class extends Route {
 		try {
 			const user = await this.client.users.fetch(body.user);
 			const settings = await user.settings.sync();
-			const payment = body.votes.totalVotes % 5 === 0 ? 1200 : 400;
+			const payment = body.isWeekend ? 600 : 400;
 
 			await settings.increase(UserSettings.Money, payment);
 			return response.noContent();
@@ -29,16 +29,9 @@ export default class extends Route {
 }
 
 interface Body {
-	user: string;
 	bot: string;
-	votes: BodyVotes;
-	type: 'vote' | 'test';
-}
-
-interface BodyVotes {
-	totalVotes: number;
-	votes24: number;
-	votesMonth: number;
-	hasVoted: string[];
-	hasVoted24: string[];
+	user: string;
+	type: 'upvote' | 'test';
+	isWeekend: boolean;
+	query?: string;
 }

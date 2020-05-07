@@ -1100,7 +1100,7 @@ export interface LanguageKeys {
 	COMMAND_DICE_OUTPUT: (result: number) => string;
 	COMMAND_DICE_ROLLS_ERROR: string;
 	COMMAND_DICE_SIDES_ERROR: string;
-	COMMAND_ESCAPEROPE_OUTPUT: (user: string, gifUrl: string) => string;
+	COMMAND_ESCAPEROPE_OUTPUT: (user: User) => string;
 	COMMAND_LOVE_LESS45: string;
 	COMMAND_LOVE_LESS75: string;
 	COMMAND_LOVE_LESS100: string;

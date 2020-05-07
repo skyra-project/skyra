@@ -2786,7 +2786,7 @@ export default class extends Language {
 		COMMAND_DICE_OUTPUT: result => `You rolled the dice! You got: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'Amount of rolls must be a number between 1 and 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'Amount of sides must be a number between 3 and 1024.',
-		COMMAND_ESCAPEROPE_OUTPUT: (user, gifUrl) => `**${user}** used **Escape Rope**\n${gifUrl}`,
+		COMMAND_ESCAPEROPE_OUTPUT: user => `**${user}** used **Escape Rope**`,
 		COMMAND_LOVE_LESS45: 'Try again next time...',
 		COMMAND_LOVE_LESS75: 'Good enough!',
 		COMMAND_LOVE_LESS100: 'Good match!',

@@ -1,5 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
+import { getColor } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -15,7 +17,15 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		if (message.deletable) await message.nuke().catch(() => null);
-		return message.sendLocale('COMMAND_ESCAPEROPE_OUTPUT', [message.author, this.kEscapeGif]);
+
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(getColor(message))
+			.setImage(this.kEscapeGif)
+			.setDescription(message.language.tget('COMMAND_ESCAPEROPE_OUTPUT', message.author))
+			.setAuthor(
+				message.member?.displayName ?? message.author.username,
+				message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			));
 	}
 
 }

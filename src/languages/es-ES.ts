@@ -2798,7 +2798,7 @@ export default class extends Language {
 		COMMAND_DICE_OUTPUT: result => `¡Lanzaste el dado! Obteniste: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'La cantidad de lanzamientos debe ser un número entre 1 y 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'La cantidad de lados debe ser un número entre 3 y 1024.',
-		COMMAND_ESCAPEROPE_OUTPUT: (user, gifUrl) => `**${user}** usó **Cuerda Huída**\n${gifUrl}`,
+		COMMAND_ESCAPEROPE_OUTPUT: user => `**${user}** usó **Cuerda Huída**`,
 		COMMAND_LOVE_LESS45: 'Prueba de nuevo la próxima vez...',
 		COMMAND_LOVE_LESS75: '¡Bastante bien!',
 		COMMAND_LOVE_LESS100: '¡Haríais una gran pareja!',

@@ -328,10 +328,39 @@ export default class extends Language {
 		COMMAND_RESUME_DESCRIPTION: `Resumes the current song.`,
 		COMMAND_RESUME_SUCCESS: `▶ Resumed.`,
 		COMMAND_ROLESET_DESCRIPTION: `Manage unique role sets.`,
+		COMMAND_ROLESET_EXTENDED: builder.display('roleset', {
+			extendedHelp: `A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles \`Africa\`, \`America\`, \`Asia\`, and \`Europe\`, and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:
+
+					- When somebody claims a role via the \`Skyra, roles\`.
+					- When somebody claims a role via reaction roles.
+					- When somebody receives a role from another bot or manually.`,
+			explainedUsage: [
+				['add', 'Create a new roleset or add a role to an existing one.'],
+				['remove', 'Remove a role from an existing roleset.'],
+				['reset', 'Removes all roles from a roleset or if not specified, all rolesets.'],
+				['list', 'Lists all rolesets.'],
+				['auto', 'Adds or removes a roleset.']
+			],
+			examples: [
+				'add regions America',
+				'add regions Africa America Asia Europe',
+				'remove regions America',
+				'reset',
+				'reset regions',
+				'list',
+				'regions America',
+				'regions Africa America Asia Europe'
+			],
+			reminder: 'This command can add and/or remove multiple roles at the same time.'
+		}, true),
 		COMMAND_ROLESET_CREATED: (name, roles) => `The ${name} unique role set has been created with the following roles: ${roles}`,
 		COMMAND_ROLESET_ADDED: (name, roles) => `The ${name} unique role set now has the following roles as well: ${roles}.`,
 		COMMAND_ROLESET_INVALID_NAME: name => `You can not remove the ${name} unique role set because it does not exist.`,
 		COMMAND_ROLESET_REMOVED: (name, roles) => `The ${name} unique role set will no longer include the following roles: ${roles}`,
+		COMMAND_ROLESET_RESET_EMPTY: `${REDCROSS} There are no rolesets configured in this groupo.`,
+		COMMAND_ROLESET_RESET_ALL: `${GREENTICK} Successfully removed all rolesets.`,
+		COMMAND_ROLESET_RESET_NOT_EXISTS: name => `${REDCROSS} The roleset \`${name}\` does not exist in this server's configuration.`,
+		COMMAND_ROLESET_RESET_GROUP: name => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server's configuration.`,
 		COMMAND_ROLESET_UPDATED: name => `The ${name} unique role set has been updated.`,
 		COMMAND_SHUFFLE_DESCRIPTION: 'Randomize the order of the songs in the queue.',
 		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Successfully randomized ${amount} songs.`,

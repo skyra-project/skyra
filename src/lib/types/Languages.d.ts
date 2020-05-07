@@ -183,10 +183,15 @@ export interface LanguageKeys {
 	COMMAND_RESUME_DESCRIPTION: string;
 	COMMAND_RESUME_SUCCESS: string;
 	COMMAND_ROLESET_DESCRIPTION: string;
+	COMMAND_ROLESET_EXTENDED: string;
 	COMMAND_ROLESET_CREATED: (name: string, roles: readonly string[]) => string;
 	COMMAND_ROLESET_ADDED: (name: string, roles: readonly string[]) => string;
 	COMMAND_ROLESET_INVALID_NAME: (name: string) => string;
 	COMMAND_ROLESET_REMOVED: (name: string, roles: readonly string[]) => string;
+	COMMAND_ROLESET_RESET_EMPTY: string;
+	COMMAND_ROLESET_RESET_ALL: string;
+	COMMAND_ROLESET_RESET_NOT_EXISTS: (name: string) => string;
+	COMMAND_ROLESET_RESET_GROUP: (name: string) => string;
 	COMMAND_ROLESET_UPDATED: (name: string) => string;
 	COMMAND_SHUFFLE_DESCRIPTION: string;
 	COMMAND_SHUFFLE_SUCCESS: (amount: number) => string;

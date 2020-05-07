@@ -1,33 +1,24 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['rs'],
+	description: language => language.tget('COMMAND_ROLESET_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ROLESET_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	requiredPermissions: [],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|reset|list|auto:default> (name:name) (role:rolenames)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['rs'],
-			description: language => language.tget('COMMAND_ROLESET_DESCRIPTION'),
-			permissionLevel: PermissionLevels.Administrator,
-			requiredPermissions: [],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|list|auto:default> (name:name) (role:rolenames)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver(`name`, (arg, possible, message, [subcommand]) => {
-			if (!arg && subcommand === 'list') return undefined;
-			return this.client.arguments.get('string')!.run(arg, possible, message);
-		});
-
-		this.createCustomResolver(`rolenames`, (arg, possible, message, [subcommand]) => {
-			if (!arg && subcommand === 'list') return undefined;
-			return this.client.arguments.get('rolenames')!.run(arg, possible, message);
-		});
-	}
+	private readonly kIgnoredRoleNameSubCommand = ['list', 'reset'];
 
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: KlasaMessage, [name, roles]: [string, Role[]]) {
@@ -76,6 +67,28 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_ROLESET_REMOVED', [name, roles.map(role => role.name).join(', ')]);
 	}
 
+	public async reset(message: KlasaMessage, [name]: [string?]) {
+		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
+		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
+		if (allRolesets.length === 0) throw message.language.tget('COMMAND_ROLESET_RESET_EMPTY');
+
+		if (!name) {
+			await message.guild!.settings.reset(GuildSettings.Roles.UniqueRoleSets, {
+				extraContext: { author: message.author.id }
+			});
+			return message.sendLocale('COMMAND_ROLESET_RESET_ALL');
+		}
+
+		const arrayIndex = allRolesets.findIndex(roleset => roleset.name === name);
+		if (arrayIndex === -1) throw message.language.tget('COMMAND_ROLESET_RESET_NOT_EXISTS', name);
+
+		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, allRolesets[arrayIndex], {
+			arrayAction: 'remove', arrayIndex,
+			extraContext: { author: message.author.id }
+		});
+		return message.sendLocale('COMMAND_ROLESET_RESET_GROUP', [name]);
+	}
+
 	// This subcommand will run if a user doesnt type add or remove. The bot will then add AND remove based on whether that role is in the set already.
 	public async auto(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
@@ -111,6 +124,19 @@ export default class extends SkyraCommand {
 		if (!allRolesets.length) return message.send('You have no rolesets.');
 		const list = allRolesets.map(set => `💠 **${set.name}**: ${set.roles.map(id => message.guild!.roles.get(id)!.name).join(', ')}`);
 		return message.send(list);
+	}
+
+	public async init() {
+		this.createCustomResolver('name', (arg, possible, message, [subcommand]) => {
+			if (subcommand === 'list') return undefined;
+			if (!arg && subcommand === 'reset') return undefined;
+			return this.client.arguments.get('string')!.run(arg, possible, message);
+		});
+
+		this.createCustomResolver('rolenames', (arg, possible, message, [subcommand]) => {
+			if (this.kIgnoredRoleNameSubCommand.includes(subcommand)) return undefined;
+			return this.client.arguments.get('rolenames')!.run(arg, possible, message);
+		});
 	}
 
 }

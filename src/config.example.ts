@@ -167,5 +167,6 @@ export const TOKENS = {
 	CLASH_OF_CLANS_KEY: '',
 	XIVAPI_KEY: '',
 	FORTNITE_KEY: '',
-	WEBHOOK_B4D: ''
+	WEBHOOK_B4D: '',
+	WEBHOOK_TOPGG: ''
 };

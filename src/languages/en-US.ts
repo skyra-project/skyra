@@ -3716,6 +3716,27 @@ export default class extends Language {
 		CONST_MONITOR_MESSAGEFILTER: 'Too Many Message Duplicates',
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		CONST_MONITOR_REACTIONFILTER: 'Filtered Reaction',
+		MODERATION_MONITOR_ATTACHMENTS: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered attachment filter, no threshold.'
+			: `[Auto-Moderation] Triggered attachment filter, reached ${amount} out of ${maximum} infractions.`,
+		MODERATION_MONITOR_CAPITALS: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered capital filter, no threshold.'
+			: `[Auto-Moderation] Triggered capital filter, reached ${amount} out of ${maximum} infractions.`,
+		MODERATION_MONITOR_INVITES: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered invite filter, no threshold.'
+			: `[Auto-Moderation] Triggered invite filter, reached ${amount} out of ${maximum} infractions.`,
+		MODERATION_MONITOR_LINKS: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered link filter, no threshold.'
+			: `[Auto-Moderation] Triggered link filter, reached ${amount} out of ${maximum} infractions.`,
+		MODERATION_MONITOR_MESSAGES: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered duplicated message filter, no threshold.'
+			: `[Auto-Moderation] Triggered duplicated message filter, reached ${amount} out of ${maximum} infractions.`,
+		MODERATION_MONITOR_NEWLINES: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered newline filter, no threshold.'
+			: `[Auto-Moderation] Triggered newline filter, reached ${amount} out of ${maximum} infractions.`,
+		MODERATION_MONITOR_WORDS: (amount, maximum) => maximum === 0
+			? '[Auto-Moderation] Triggered word filter, no threshold.'
+			: `[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
 		MONITOR_NOINVITE: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
 		MONITOR_NOLINK: user => `${REDCROSS} Hey ${user}, you are not allowed to post links here!`,
 		MONITOR_WORDFILTER_DM: filtered => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,

@@ -1,3 +1,13 @@
+export class AdderError extends Error {
+
+	public amount: number;
+	public constructor(message: string, amount: number) {
+		super(message);
+		this.amount = amount;
+	}
+
+}
+
 export class Adder<T> extends Array<{ id: T; end: number }> {
 
 	/**
@@ -47,7 +57,7 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 		// If maximum, throw.
 		if (amount >= this.maximum) {
 			if (this.autoRemove) this.remove(id);
-			throw new Error('Limit Reached');
+			throw new AdderError('Limit Reached', amount);
 		}
 
 		return amount;

@@ -1631,6 +1631,13 @@ export interface LanguageKeys {
 	CONST_MONITOR_CAPSFILTER: string;
 	CONST_MONITOR_ATTACHMENTFILTER: string;
 	CONST_MONITOR_REACTIONFILTER: string;
+	MODERATION_MONITOR_ATTACHMENTS: (amount: number, maximum: number) => string;
+	MODERATION_MONITOR_CAPITALS: (amount: number, maximum: number) => string;
+	MODERATION_MONITOR_INVITES: (amount: number, maximum: number) => string;
+	MODERATION_MONITOR_LINKS: (amount: number, maximum: number) => string;
+	MODERATION_MONITOR_MESSAGES: (amount: number, maximum: number) => string;
+	MODERATION_MONITOR_NEWLINES: (amount: number, maximum: number) => string;
+	MODERATION_MONITOR_WORDS: (amount: number, maximum: number) => string;
 	MONITOR_NOINVITE: (user: string) => string;
 	MONITOR_NOLINK: (user: string) => string;
 	MONITOR_WORDFILTER_DM: (filtered: string) => string;

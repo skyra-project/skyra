@@ -1,12 +1,13 @@
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CustomGet } from '@lib/types/settings/Shared';
-import { Adder } from '@utils/Adder';
+import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { LanguageKeysComplex } from '@lib/types/Augments';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
@@ -23,21 +24,21 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		if (this.hardPunishmentPath === null) return;
 
 		const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum);
-		if (!maximum) return this.processHardPunishment(message);
+		if (!maximum) return this.processHardPunishment(message, 0, 0);
 
 		const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration);
-		if (!duration) return this.processHardPunishment(message);
+		if (!duration) return this.processHardPunishment(message, 0, 0);
 
 		const $adder = this.hardPunishmentPath.adder;
 		if (message.guild!.security.adders[$adder] === null) {
 			message.guild!.security.adders[$adder] = new Adder(maximum, duration, true);
 		}
 
+		const points = typeof preProcessed === 'number' ? preProcessed : 1;
 		try {
-			const points = typeof preProcessed === 'number' ? preProcessed : 1;
 			message.guild!.security.adders[$adder]!.add(message.author.id, points);
-		} catch {
-			await this.processHardPunishment(message);
+		} catch (error) {
+			await this.processHardPunishment(message, (error as AdderError).amount, maximum);
 		}
 	}
 
@@ -60,61 +61,61 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) this.onLog(message, preProcessed);
 	}
 
-	protected async processHardPunishment(message: KlasaMessage) {
+	protected async processHardPunishment(message: KlasaMessage, points: number, maximum: number) {
 		const action = message.guild!.settings.get(this.hardPunishmentPath!.action);
 		switch (action) {
 			case SelfModeratorHardActionFlags.Warning:
-				await this.onWarning(message);
+				await this.onWarning(message, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.Kick:
-				await this.onKick(message);
+				await this.onKick(message, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.Mute:
-				await this.onMute(message);
+				await this.onMute(message, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.SoftBan:
-				await this.onSoftBan(message);
+				await this.onSoftBan(message, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.Ban:
-				await this.onBan(message);
+				await this.onBan(message, points, maximum);
 				break;
 		}
 	}
 
-	protected async onWarning(message: KlasaMessage) {
+	protected async onWarning(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.warning({
 			user_id: message.author.id,
-			reason: '[Auto-Moderation] Threshold Reached.',
+			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
 			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}));
 	}
 
-	protected async onKick(message: KlasaMessage) {
+	protected async onKick(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.kick({
 			user_id: message.author.id,
-			reason: '[Auto-Moderation] Threshold Reached.'
+			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 		}));
 	}
 
-	protected async onMute(message: KlasaMessage) {
+	protected async onMute(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.mute({
 			user_id: message.author.id,
-			reason: '[Auto-Moderation] Threshold Reached.',
+			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
 			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}));
 	}
 
-	protected async onSoftBan(message: KlasaMessage) {
+	protected async onSoftBan(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.softBan({
 			user_id: message.author.id,
-			reason: '[Auto-Moderation] Threshold Reached.'
+			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 		}, 1));
 	}
 
-	protected async onBan(message: KlasaMessage) {
+	protected async onBan(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.ban({
 			user_id: message.author.id,
-			reason: '[Auto-Moderation] Threshold Reached.',
+			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
 			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}, 0));
 	}
@@ -134,6 +135,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
 	protected abstract softPunishmentPath: CustomGet<string, number>;
 	protected abstract hardPunishmentPath: HardPunishment | null;
+	protected abstract reasonLanguageKey: LanguageKeysComplex;
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
 	protected abstract onAlert(message: KlasaMessage, value: T): unknown;

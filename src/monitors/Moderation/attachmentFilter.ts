@@ -1,6 +1,6 @@
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { Adder } from '@utils/Adder';
+import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
@@ -11,50 +11,53 @@ const { FLAGS } = Permissions;
 
 export default class extends Monitor {
 
+	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_ATTACHMENTS';
+
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const attachmentAction = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction);
-		const attachmentMaximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);
-		const attachmentDuration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration);
+		const action = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction);
+		const maximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);
+		const duration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration);
 
 		const { adders } = message.guild!.security;
-		if (!adders.attachments) adders.attachments = new Adder(attachmentMaximum, attachmentDuration, true);
+		if (!adders.attachments) adders.attachments = new Adder(maximum, duration, true);
 
 		try {
 			adders.attachments.add(message.author.id, message.attachments.size);
 			return;
-		} catch {
-			switch (attachmentAction & 0b111) {
+		} catch (error) {
+			const points = (error as AdderError).amount;
+			switch (action & 0b111) {
 				case 0b000: await this.actionAndSend(message, Moderation.TypeCodes.Warn, () => null);
 					break;
 				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 					floatPromise(this, message.guild!.security.actions.kick({
 						user_id: message.author.id,
-						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 					})));
 					break;
 				case 0b010: await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 					floatPromise(this, message.guild!.security.actions.mute({
 						user_id: message.author.id,
-						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 					})));
 					break;
 				case 0b011: await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 					floatPromise(this, message.guild!.security.actions.softBan({
 						user_id: message.author.id,
-						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 					}, 1)));
 					break;
 				case 0b100: await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 					floatPromise(this, message.guild!.security.actions.ban({
 						user_id: message.author.id,
-						reason: '[Auto-Moderation] AttachmentFilter: Threshold Reached.'
+						reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 					}, 0)));
 					break;
 			}
 			// noinspection JSBitwiseOperatorUsage
-			if (attachmentAction & 0b1000) {
+			if (action & 0b1000) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () => new MessageEmbed()
 					.setColor(Colors.Red)
 					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

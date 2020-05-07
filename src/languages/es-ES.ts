@@ -2828,7 +2828,6 @@ export default class extends Language {
 		COMMAND_DICE_OUTPUT: result => `¡Lanzaste el dado! Obteniste: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'La cantidad de lanzamientos debe ser un número entre 1 y 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'La cantidad de lados debe ser un número entre 3 y 1024.',
-		// https://bulbapedia.bulbagarden.net/wiki/Escape_Rope
 		COMMAND_ESCAPEROPE_OUTPUT: user => `**${user}** usó **Cuerda Huída**`,
 		COMMAND_LOVE_LESS45: 'Prueba de nuevo la próxima vez...',
 		COMMAND_LOVE_LESS75: '¡Bastante bien!',

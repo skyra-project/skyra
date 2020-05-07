@@ -1,3 +1,5 @@
+import { arrayStrictEquals } from '@klasa/utils';
+import { LanguageKeysComplex, LanguageKeysSimple } from '@lib/types/Augments';
 import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
@@ -7,8 +9,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { Event, EventStore, KlasaGuild } from 'klasa';
-import { arrayStrictEquals } from '@klasa/utils';
+import { Event, EventStore, KlasaGuild, Language } from 'klasa';
 
 export default class extends Event {
 
@@ -49,12 +50,8 @@ export default class extends Event {
 		// whether or not the nicknames are identical.
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
 			// Send the Nickname log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-				.setColor(Colors.Yellow)
-				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-				.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.nickname, next.nickname))
-				.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
-				.setTimestamp());
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+				this.buildEmbed(data, guild.language, 'EVENTS_NAME_DIFFERENCE', 'EVENTS_NICKNAME_UPDATE', previous.nickname, next.nickname));
 		}
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and
@@ -73,12 +70,8 @@ export default class extends Event {
 			}
 
 			// Set the Role change log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-				.setColor(Colors.Yellow)
-				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-				.setDescription(guild.language.tget('EVENTS_ROLE_DIFFERENCE', addedRoles, removedRoles))
-				.setFooter(guild.language.tget('EVENTS_ROLE_UPDATE'))
-				.setTimestamp());
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+				this.buildEmbed(data, guild.language, 'EVENTS_ROLE_DIFFERENCE', 'EVENTS_ROLE_UPDATE', addedRoles, removedRoles));
 		}
 	}
 
@@ -128,6 +121,15 @@ export default class extends Event {
 
 		await api(this.client).guilds(guild.id).members(data.user.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
+	}
+
+	private buildEmbed(data: WSGuildMemberUpdate, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, ...descriptionData: any[]) {
+		return new MessageEmbed()
+			.setColor(Colors.Yellow)
+			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
+			.setDescription(i18n.tget(descriptionKey, ...descriptionData as [string, string | undefined]))
+			.setFooter(i18n.tget(footerKey))
+			.setTimestamp();
 	}
 
 }

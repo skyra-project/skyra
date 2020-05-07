@@ -5,7 +5,6 @@ export class Markov {
 
 	private readonly wordBank: WordBank = new Map();
 	private readonly normalizeFn: MarkovNormalizer;
-	private readonly parseBy = /[.?\n]/g;
 	private sentence = '';
 
 	public constructor(normalizeFn: MarkovNormalizer = word => word.replace(/\.$/g, '')) {
@@ -26,7 +25,7 @@ export class Markov {
 		return this.sentence;
 	}
 
-	public parse(text = '', parseBy = this.parseBy) {
+	public parse(text = '', parseBy = Markov.kParseBy) {
 		for (const line of text.split(parseBy)) {
 			const words = Markov.retrieveWords(line);
 
@@ -77,9 +76,10 @@ export class Markov {
 				};
 				return this;
 			}
-			case 'number':
-				this.endFn = () => this.countWords() > (fnEnd as number);
+			case 'number': {
+				this.endFn = () => this.countWords() > fnEnd;
 				return this;
+			}
 			default: throw new TypeError('Expected either a function, string, number, or undefined.');
 		}
 	}
@@ -88,14 +88,15 @@ export class Markov {
 	private endFn: MarkovEndFunction = () => this.countWords() > 7;
 
 	private countWords() {
-		let count = 0;
-		for (let index = -2; index !== -1; index = this.sentence.indexOf(' ', index + 1)) count++;
-		return count;
+		return this.sentence.split(Markov.kWordSeparator).length;
 	}
+
+	private static readonly kParseBy = /[?\n]|\.\s+/g;
+	private static readonly kWordSeparator = /[, ]/g;
 
 	private static retrieveWords(line: string) {
 		const words: string[] = [];
-		for (const word of line.split(' ')) {
+		for (const word of line.split(Markov.kWordSeparator)) {
 			const trimmed = word.trim();
 			if (trimmed.length > 0) words.push(trimmed);
 		}

@@ -2097,13 +2097,14 @@ export default class extends Language {
 		COMMAND_REMINDME_EXTENDED: builder.display('remindme', {
 			extendedHelp: `This command allows you to set, delete and list reminders.`,
 			explainedUsage: [
-				['action', 'The action, one of "list", "delete", or "create"/"me". Defaults to "list".'],
-				['idOrDuration', 'Dependent of action; "list" → ignored; "delete" → reminder ID; else → duration.'],
+				['action', 'The action, one of "list", "show", "delete", or "create"/"me". Defaults to "list".'],
+				['idOrDuration', 'Dependent of action; "list" → ignored; "delete"/"show" → reminder ID; else → duration.'],
 				['description', '(Optional) Dependent of action, this is only read when creating a new reminder.']
 			],
 			examples: [
 				'me 6h to fix this command.',
 				'list',
+				'show jedbcuywb',
 				'delete jedbcuywb'
 			]
 		}),
@@ -3359,6 +3360,7 @@ export default class extends Language {
 		COMMAND_REMINDME_DELETE_NO_ID: 'You must give a valid ID, you can get them using the `list` sub-command.',
 		COMMAND_REMINDME_DELETE: task => `The reminder with ID \`${task.id}\` and with a remaining time of **${duration(task.time.getTime() - Date.now())}** has been successfully deleted.`,
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
+		COMMAND_REMINDME_SHOW_FOOTER: id => `ID: ${id} | Ends at:`,
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
 		COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',
 

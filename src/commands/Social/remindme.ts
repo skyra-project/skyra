@@ -8,8 +8,16 @@ import { ApplyOptions } from '@skyra/decorators';
 
 const enum Actions {
 	List = 'list',
+	Show = 'show',
 	Create = 'create',
 	Delete = 'delete'
+}
+
+interface ReminderScheduledTask extends ScheduledTask {
+	data: {
+		description: string;
+		user: string;
+	};
 }
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -56,16 +64,18 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	public async delete(message: KlasaMessage, [id]: [string]) {
-		let selectedTask: ScheduledTask | null = null;
-		for (const task of this.client.schedule.tasks) {
-			if (task.id !== id) continue;
-			if (task.taskName !== this.kReminderTaskName || !task.data || task.data.user !== message.author.id) break;
-			selectedTask = task;
-		}
-		if (!selectedTask) throw message.language.tget('COMMAND_REMINDME_NOTFOUND');
-		await selectedTask.delete();
-		return message.sendLocale('COMMAND_REMINDME_DELETE', [selectedTask]);
+	public async show(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(getColor(message))
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setDescription(task.data)
+			.setFooter(message.language.tget('COMMAND_REMINDME_SHOW_FOOTER', task.id))
+			.setTimestamp(task.time));
+	}
+
+	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
+		await task.delete();
+		return message.sendLocale('COMMAND_REMINDME_DELETE', [task]);
 	}
 
 	public async init() {
@@ -83,6 +93,8 @@ export default class extends SkyraCommand {
 				case 'd':
 				case 'del':
 				case 'delete': return Actions.Delete;
+				case 's':
+				case 'show': return Actions.Show;
 				case 'c':
 				case 'create':
 				case 'me': return Actions.Create;
@@ -93,12 +105,19 @@ export default class extends SkyraCommand {
 			}
 		});
 
-		this.createCustomResolver('idOrDuration', (arg, possible, message, [action]: Actions[]) => {
+		this.createCustomResolver('idOrDuration', async (arg, possible, message, [action]: Actions[]) => {
 			switch (action) {
 				case Actions.List: return undefined;
+				case Actions.Show:
 				case Actions.Delete: {
 					if (!arg) throw message.language.tget('COMMAND_REMINDME_DELETE_NO_ID');
-					return this.client.arguments.get('string')!.run(arg, { ...possible, max: 9, min: 9 }, message);
+					const id = await this.client.arguments.get('string')!.run(arg, { ...possible, max: 9, min: 9 }, message);
+					for (const task of this.client.schedule.tasks) {
+						if (task.id !== id) continue;
+						if (task.taskName !== this.kReminderTaskName || !task.data || task.data.user !== message.author.id) break;
+						return task;
+					}
+					throw message.language.tget('COMMAND_REMINDME_NOTFOUND');
 				}
 				case Actions.Create: {
 					if (!arg) throw message.language.tget('COMMAND_REMINDME_CREATE_NO_DURATION');

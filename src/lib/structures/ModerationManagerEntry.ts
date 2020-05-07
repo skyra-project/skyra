@@ -6,8 +6,9 @@ import { CLIENT_ID } from '@root/config';
 import { Moderation, Time } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { Duration } from 'klasa';
+import { Duration, ScheduledTask } from 'klasa';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
+import { ModerationData } from './ModerationTask';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
 const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
@@ -215,6 +216,12 @@ export class ModerationManagerEntry {
 		return true;
 	}
 
+	public get task() {
+		return this.guild.client.schedule.tasks.find((value: ScheduleModerationTask) => value.data
+			&& value.data.caseID === this.case
+			&& value.data.guildID === this.guild.id);
+	}
+
 	public isType(type: Moderation.TypeCodes) {
 		return this.type === type
 			|| this.type === (type | Moderation.TypeMetadata.Temporary)
@@ -383,3 +390,7 @@ export class ModerationManagerEntry {
 }
 
 type ModerationManagerUpdateDataWithType = Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'type'>;
+
+interface ScheduleModerationTask extends ScheduledTask {
+	data: ModerationData;
+}

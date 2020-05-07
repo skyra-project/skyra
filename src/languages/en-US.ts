@@ -333,11 +333,11 @@ export default class extends Language {
 
 					- When somebody claims a role via the \`Skyra, roles\`.
 					- When somebody claims a role via reaction roles.
-					- When somebody receives a role from another bot or manually.`,
+					- When somebody receives a role either manually or from another bot.`,
 			explainedUsage: [
 				['add', 'Create a new roleset or add a role to an existing one.'],
 				['remove', 'Remove a role from an existing roleset.'],
-				['reset', 'Removes all roles from a roleset or if not specified, all rolesets.'],
+				['reset', 'Removes all roles from a roleset or, if not specified, all existing rolesets.'],
 				['list', 'Lists all rolesets.'],
 				['auto', 'Adds or removes a roleset.']
 			],
@@ -359,8 +359,8 @@ export default class extends Language {
 		COMMAND_ROLESET_REMOVED: (name, roles) => `The ${name} unique role set will no longer include the following roles: ${roles}`,
 		COMMAND_ROLESET_RESET_EMPTY: `${REDCROSS} There are no rolesets configured in this groupo.`,
 		COMMAND_ROLESET_RESET_ALL: `${GREENTICK} Successfully removed all rolesets.`,
-		COMMAND_ROLESET_RESET_NOT_EXISTS: name => `${REDCROSS} The roleset \`${name}\` does not exist in this server's configuration.`,
-		COMMAND_ROLESET_RESET_GROUP: name => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server's configuration.`,
+		COMMAND_ROLESET_RESET_NOT_EXISTS: name => `${REDCROSS} The roleset \`${name}\` does not exist in this server.`,
+		COMMAND_ROLESET_RESET_GROUP: name => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server.`,
 		COMMAND_ROLESET_UPDATED: name => `The ${name} unique role set has been updated.`,
 		COMMAND_SHUFFLE_DESCRIPTION: 'Randomize the order of the songs in the queue.',
 		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Successfully randomized ${amount} songs.`,

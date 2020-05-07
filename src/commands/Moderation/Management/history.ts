@@ -35,6 +35,7 @@ export default class extends SkyraCommand {
 		let kicks = 0;
 		let bans = 0;
 		for (const log of logs.values()) {
+			if (log.invalidated) continue;
 			switch (log.typeVariation) {
 				case Moderation.TypeVariation.Ban:
 				case Moderation.TypeVariation.Softban: bans++;
@@ -60,7 +61,7 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		const entries = await message.guild!.moderation.fetch(target.id);
+		const entries = (await message.guild!.moderation.fetch(target.id)).filter(log => !log.invalidated);
 		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
@@ -87,8 +88,7 @@ export default class extends SkyraCommand {
 		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdAt + entry.duration) - Date.now();
 		const formattedModerator = users.get(entry.flattenedModerator);
 		const formattedReason = entry.reason || 'None';
-		const formattedAppeal = entry.appealType ? ' (Appealed)' : '';
-		const formattedTitle = `**${entry.title}${formattedAppeal}**\n`;
+		const formattedTitle = `**${entry.title}**\n`;
 		const formattedDuration = entry.appealType
 			? ''
 			: remainingTime === null

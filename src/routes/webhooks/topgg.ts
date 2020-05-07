@@ -9,14 +9,14 @@ import { ApplyOptions } from '@skyra/decorators';
 export default class extends Route {
 
 	public async post(request: ApiRequest, response: ApiResponse) {
-		if (request.headers.authorization !== TOKENS.WEBHOOK_B4D) return response.forbidden();
+		if (request.headers.authorization !== TOKENS.WEBHOOK_TOPGG) return response.forbidden();
 		if (!request.body) return response.badRequest();
 
 		const body = request.body as Body;
 		try {
 			const user = await this.client.users.fetch(body.user);
 			const settings = await user.settings.sync();
-			const payment = body.isWeekend ? 600 : 400;
+			const payment = body.isWeekend ? 800 : 400;
 
 			await settings.increase(UserSettings.Money, payment);
 			return response.noContent();

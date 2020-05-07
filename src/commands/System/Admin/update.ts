@@ -110,7 +110,7 @@ export default class extends SkyraCommand {
 	}
 
 	private cutText(input: string, ...extraInput: string[]) {
-		const cutLength = extraInput.length ? 1950 / extraInput.length : 1950;
+		const cutLength = extraInput.length ? 1950 / (extraInput.length + 1) : 1950;
 		return cutText(input, cutLength);
 	}
 

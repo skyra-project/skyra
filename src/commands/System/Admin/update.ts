@@ -2,22 +2,26 @@ import { codeBlock, exec, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { Emojis } from '@utils/constants';
+import { Emojis, rootFolder } from '@utils/constants';
 import { cutText } from '@utils/util';
+import { remove } from 'fs-nextra';
 import { KlasaMessage } from 'klasa';
+import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pull'],
 	description: 'Update the bot',
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	usage: '[branch:string]'
+	usage: '[branch:string]',
+	flagSupport: true
 })
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
 		await this.fetch(message, branch);
 		await this.updateDependencies(message);
+		await this.cleanDist(message);
 		await this.compile(message);
 	}
 
@@ -25,6 +29,13 @@ export default class extends SkyraCommand {
 		const { stderr, code } = await this.exec('yarn build');
 		if (code !== 0 && stderr.length) throw stderr.trim();
 		return message.channel.send(`${Emojis.GreenTick} Successfully compiled.`);
+	}
+
+	private async cleanDist(message: KlasaMessage) {
+		if (message.flagArgs.fullRebuild) {
+			await remove(resolve(rootFolder, 'dist'));
+			return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
+		}
 	}
 
 	private async updateDependencies(message: KlasaMessage) {
@@ -52,7 +63,7 @@ export default class extends SkyraCommand {
 		}
 
 		// For all other cases, return the original output
-		return message.send(codeBlock('prolog', [cutText(stdout, 1950) || Emojis.GreenTick, stderr || Emojis.GreenTick].join('\n-=-=-=-\n')));
+		return message.send(codeBlock('prolog', [cutText(stdout, 1800) || Emojis.GreenTick, cutText(stderr, 100) || Emojis.GreenTick].join('\n-=-=-=-\n')));
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -63,7 +74,7 @@ export default class extends SkyraCommand {
 			throw `Unsuccessful pull, stashing:\n\n${codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'))}`;
 		}
 
-		return message.send(codeBlock('prolog', [cutText(stdout, 1950) || '✔', stderr || '✔'].join('\n-=-=-=-\n')));
+		return message.send(codeBlock('prolog', [cutText(stdout, 1800) || '✔', cutText(stderr, 100) || '✔'].join('\n-=-=-=-\n')));
 	}
 
 	private async checkout(message: KlasaMessage, branch: string) {

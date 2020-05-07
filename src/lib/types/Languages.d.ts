@@ -1493,6 +1493,7 @@ export interface LanguageKeys {
 	COMMAND_REMINDME_DELETE_NO_ID: string;
 	COMMAND_REMINDME_DELETE: (task: ScheduledTask) => string;
 	COMMAND_REMINDME_LIST_EMPTY: string;
+	COMMAND_REMINDME_SHOW_FOOTER: (id: string) => string;
 	COMMAND_REMINDME_INVALID_ID: string;
 	COMMAND_REMINDME_NOTFOUND: string;
 	COMMAND_REPUTATION_TIME: (remaining: number) => string;

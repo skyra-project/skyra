@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 		}
 
 		// For all other cases, return the original output
-		return message.send(codeBlock('prolog', [this.cutText(stdout, stderr) || Emojis.GreenTick, this.cutText(stderr, stdout) || Emojis.GreenTick].join('\n-=-=-=-\n')));
+		return message.send(codeBlock('prolog', [cutText(stdout, 1800) || Emojis.GreenTick, cutText(stderr, 100) || Emojis.GreenTick].join('\n-=-=-=-\n')));
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 			throw `Unsuccessful pull, stashing:\n\n${codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'))}`;
 		}
 
-		return message.send(codeBlock('prolog', [this.cutText(stdout, stderr) || '✔', this.cutText(stderr, stdout) || '✔'].join('\n-=-=-=-\n')));
+		return message.send(codeBlock('prolog', [cutText(stdout, 1800) || '✔', cutText(stderr, 100) || '✔'].join('\n-=-=-=-\n')));
 	}
 
 	private async checkout(message: KlasaMessage, branch: string) {
@@ -107,11 +107,6 @@ export default class extends SkyraCommand {
 		} catch (error) {
 			return { stdout: '', stderr: error?.message || error || '', code: error.code ?? 1 };
 		}
-	}
-
-	private cutText(input: string, ...extraInput: string[]) {
-		const cutLength = extraInput.length ? 1950 / (extraInput.length + 1) : 1950;
-		return cutText(input, cutLength);
 	}
 
 }

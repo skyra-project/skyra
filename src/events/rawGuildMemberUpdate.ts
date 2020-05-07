@@ -123,7 +123,7 @@ export default class extends Event {
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
 	}
 
-	private buildEmbed(data: WSGuildMemberUpdate, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, ...descriptionData: any[]) {
+	private buildEmbed(data: WSGuildMemberUpdate, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, ...descriptionData: readonly unknown[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))

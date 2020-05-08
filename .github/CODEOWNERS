@@ -37,8 +37,3 @@
 /src/lib/util/GameIntegration/FFXIVUtils.ts @quantumlytangled
 /src/lib/util/Notifications/ @quantumlytangled
 /src/routes/twitch/twitchStreamChange.ts @quantumlytangled
-
-# Magna
-/src/lib/structures/api/ @gc
-/src/middlewares/ @gc
-/src/routes/ @gc

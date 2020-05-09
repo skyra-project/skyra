@@ -1,50 +1,32 @@
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
 import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const enum ClashOfClansFetchCategories {
 	PLAYERS = 'players',
 	CLANS = 'clans'
 }
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['coc'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_CLASHOFCLANS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_CLASHOFCLANS_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	subcommands: true,
+	usage: '<player|clan:default> <query:tagOrName>',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
 	private readonly kPlayerTagRegex = /#[A-Z0-9]{3,}/;
-	private readonly kStringArg = this.client.arguments.get('string')!;
-	private readonly kSpreadStringArg = this.client.arguments.get('...string')!;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['coc'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_CLASHOFCLANS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_CLASHOFCLANS_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			subcommands: true,
-			usage: '<player|clan:default> <query:tagOrName>',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('tagOrName', (arg, possible, message, [action]) => {
-			if (action === 'clan') {
-				return this.kSpreadStringArg.run(arg, possible, message);
-			}
-
-			if (action === 'player') {
-				if (this.kPlayerTagRegex.test(arg)) return this.kStringArg.run(arg, possible, message);
-
-				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
-			}
-
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
-		});
-	}
 
 	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -65,6 +47,21 @@ export default class extends SkyraCommand {
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(message, player, ClashOfClansFetchCategories.PLAYERS);
 
 		return message.send(this.buildPlayerEmbed(message, playerData));
+	}
+
+	public async init() {
+		this.createCustomResolver('tagOrName', (arg, possible, message, [action]) => {
+			if (action === 'clan') {
+				return this.client.arguments.get('...string')!.run(arg, possible, message);
+			}
+
+			if (action === 'player') {
+				if (this.kPlayerTagRegex.test(arg)) return arg;
+				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
+			}
+
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		});
 	}
 
 	private async fetchAPI<C extends ClashOfClansFetchCategories>(message: KlasaMessage, query: string, category: ClashOfClansFetchCategories) {
@@ -135,11 +132,12 @@ export default class extends SkyraCommand {
 					clan.location
 						? `**${TITLES.LOCATION_NAME}**: ${clan.location.isCountry ? `:flag_${clan.location.countryCode.toLowerCase()}:` : ''} ${clan.location.name}`
 						: null,
-					`**${TITLES.WAR_FREQUENCY}**: ${clan.warFrequency}`,
+					// Adding TITLES.UNKNOWN in here in case the API changes the designation for war frequency
+					`**${TITLES.WAR_FREQUENCY}**: ${TITLES.WAR_FREQUENCY_DESCR[clan.warFrequency] ?? TITLES.UNKNOWN}`,
 					`**${TITLES.WAR_WIN_STREAK}**: ${clan.warWinStreak}`,
 					`**${TITLES.WAR_WINS}**: ${clan.warWins}`,
-					`**${TITLES.WAR_TIES}**: ${clan.warTies}`,
-					`**${TITLES.WAR_LOSSES}**: ${clan.warLosses}`,
+					`**${TITLES.WAR_TIES}**: ${clan.warTies ?? TITLES.UNKNOWN}`,
+					`**${TITLES.WAR_LOSSES}**: ${clan.warLosses ?? TITLES.UNKNOWN}`,
 					`**${TITLES.WAR_LOG_PUBLIC}**: ${TITLES.WAR_LOG_PUBLIC_DESCR(clan.isWarLogPublic)}`
 				].filter(val => val !== null).join('\n')));
 		}

@@ -31,12 +31,12 @@ export namespace ClashOfClans {
 		memberList: MemberList[];
 		tag: string;
 		requiredTrophies: number;
-		warFrequency: string;
+		warFrequency: 'moreThanOncePerWeek' | 'unknown' | 'always' | 'oncePerWeek' | 'lessThanOncePerWeek';
 		clanLevel: number;
 		warWinStreak: number;
 		warWins: number;
-		warTies: number;
-		warLosses: number;
+		warTies?: number;
+		warLosses?: number;
 		isWarLogPublic: boolean;
 		clanPoints: number;
 		clanVersusPoints: number;

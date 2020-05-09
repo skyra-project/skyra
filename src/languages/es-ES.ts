@@ -761,6 +761,14 @@ export default class extends Language {
 			WAR_TIES: 'Lazos de guerra total',
 			WAR_LOSSES: 'Pérdidas de guerra totales',
 			WAR_LOG_PUBLIC: '¿El registro de guerra es público?',
+			UNKNOWN: 'Desconocido',
+			WAR_FREQUENCY_DESCR: {
+				moreThanOncePerWeek: 'Más de una vez por semana',
+				always: 'Siempre',
+				lessThanOncePerWeek: 'Menos de una vez por semana',
+				oncePerWeek: 'Una vez por semana',
+				unknown: 'Desconocido'
+			},
 			WAR_LOG_PUBLIC_DESCR: isWarLogPublic => isWarLogPublic ? 'Si' : 'No'
 		},
 		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `Lo siento, \`${playertag}\` no es una etiqueta de jugador de Choque de clanes válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,

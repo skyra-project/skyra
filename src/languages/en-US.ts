@@ -754,6 +754,14 @@ export default class extends Language {
 			WAR_TIES: 'Total war ties',
 			WAR_LOSSES: 'Total war losses',
 			WAR_LOG_PUBLIC: 'War log is public?',
+			UNKNOWN: 'Unknown',
+			WAR_FREQUENCY_DESCR: {
+				moreThanOncePerWeek: 'More than once per week',
+				always: 'Always',
+				lessThanOncePerWeek: 'Less than once per week',
+				oncePerWeek: 'Once per week',
+				unknown: 'Unknown'
+			},
 			WAR_LOG_PUBLIC_DESCR: isWarLogPublic => isWarLogPublic ? 'Yes' : 'No'
 		},
 		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: playertag => `I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,

@@ -515,6 +515,14 @@ export interface LanguageKeys {
 		WAR_TIES: string;
 		WAR_LOSSES: string;
 		WAR_LOG_PUBLIC: string;
+		UNKNOWN: string;
+		WAR_FREQUENCY_DESCR: {
+			moreThanOncePerWeek: string;
+			unknown: string;
+			always: string;
+			oncePerWeek: string;
+			lessThanOncePerWeek: string;
+		};
 		WAR_LOG_PUBLIC_DESCR: (isWarLogPublic: boolean) => string;
 	};
 	COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: (playertag: string) => string;

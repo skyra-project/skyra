@@ -1,5 +1,6 @@
 import { MusicBitField } from '@lib/structures/MusicBitField';
 import { MusicCommand } from '@lib/structures/MusicCommand';
+import { isTextBasedChannel } from '@utils/util';
 import { Command, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
 
 const { FLAGS } = MusicBitField;
@@ -16,7 +17,7 @@ export default class extends Inhibitor {
 		if (!(command instanceof MusicCommand) || !command.music.bitfield) return;
 
 		// MusicCommands only run in text channels
-		if (message.channel.type !== 'text') return;
+		if (!isTextBasedChannel(message.channel)) return;
 
 		// Checks for empty queue
 		if (command.music.has(FLAGS.QUEUE_NOT_EMPTY) && !message.guild!.music.canPlay) {

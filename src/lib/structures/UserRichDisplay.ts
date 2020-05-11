@@ -1,6 +1,7 @@
+import { mergeDefault } from '@klasa/utils';
 import { Time } from '@utils/constants';
-import { Client, MessageEmbed, MessageReaction, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, KlasaUser, ReactionHandler, RichDisplay, RichDisplayRunOptions, util } from 'klasa';
+import { Client, DMChannel, MessageEmbed, MessageReaction, Permissions, TextChannel } from 'discord.js';
+import { KlasaMessage, KlasaUser, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
 
 export class UserRichDisplay extends RichDisplay {
 
@@ -10,7 +11,7 @@ export class UserRichDisplay extends RichDisplay {
 	}
 
 	public async start(message: KlasaMessage, target: string = message.author.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
-		util.mergeDefault({
+		mergeDefault({
 			filter: (_: MessageReaction, user: KlasaUser) => user.id === target,
 			time: Time.Minute * 5
 		}, options);
@@ -20,7 +21,7 @@ export class UserRichDisplay extends RichDisplay {
 			if (display) display.stop();
 		}
 
-		this.setAuthorizedFooter(message.client, message.channel as TextChannel);
+		this.setAuthorizedFooter(message.client, message.channel);
 
 		const handler = await super.run(message, options);
 		const messageID = handler.message.id;
@@ -36,8 +37,15 @@ export class UserRichDisplay extends RichDisplay {
 		return handler;
 	}
 
-	private setAuthorizedFooter(client: Client, channel: TextChannel) {
-		const priviledged = channel.permissionsFor(client.user!)?.has(UserRichDisplay.kPermissions) ?? false;
+	private isDmChannel(channel: TextChannel | DMChannel): channel is DMChannel {
+		return channel.type === 'dm';
+	}
+
+	private setAuthorizedFooter(client: Client, channel: TextChannel | DMChannel) {
+		const priviledged = this.isDmChannel(channel)
+			? true
+			: channel.permissionsFor(client.user!)?.has(UserRichDisplay.kPermissions) ?? false;
+
 		if (priviledged) {
 			for (let i = 1; i <= this.pages.length; i++) this.pages[i - 1].setFooter(`${this.footerPrefix}${i}/${this.pages.length}${this.footerSuffix}`);
 			if (this.infoPage) this.infoPage.setFooter('ℹ');

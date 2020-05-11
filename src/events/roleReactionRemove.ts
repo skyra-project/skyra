@@ -8,6 +8,8 @@ import { Event } from 'klasa';
 export default class extends Event {
 
 	public async run(channel: TextChannel, data: WSMessageReactionRemove) {
+		// If the channel is not a text channel then stop processing
+		if (channel.type !== 'text') return;
 		// Role reactions only apply on the roles channel
 		const channelRoles = channel.guild.settings.get(GuildSettings.Channels.Roles);
 		if (!channelRoles) return;

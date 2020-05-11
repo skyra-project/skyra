@@ -11,7 +11,7 @@ export default class extends Event {
 
 	public run(data: WSMessageReactionRemove) {
 		const channel = this.client.channels.get(data.channel_id) as TextChannel;
-		if (!channel || !channel.readable) return;
+		if (!channel || !channel.readable || channel.type !== 'text') return;
 		this.client.emit(Events.RoleReactionRemove, channel, data);
 	}
 

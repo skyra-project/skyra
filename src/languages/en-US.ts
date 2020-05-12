@@ -278,6 +278,28 @@ export default class extends Language {
 		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `${name} accepts a range of maximum ${maximum} ${maximum === 1 ? 'number' : 'numbers'}`,
 
 		COMMAND_ADD_DESCRIPTION: `Adds a song the the queue.`,
+		COMMAND_ADD_EXTENDED: builder.display('add', {
+			extendedHelp: [
+				`Add songs to the playing queue and prepare for musical enjoyment!
+					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
+				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
+				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
+				'- To play from Mixer give me the URL of a Mixer streamer, I\'m sorry but I cannot (yet) play Mixer VOD\'s.',
+				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
+			].join('\n'),
+			explainedUsage: [
+				['song', 'The song to queue. Can be either a URL or a video/song title.']
+			],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			]
+		}, true),
 		COMMAND_ADD_PLAYLIST: amount => `${GREENTICK} Added **${amount}** ${amount === 1 ? 'song' : 'songs'} to the queue 🎶`,
 		COMMAND_ADD_SONG: title => `${GREENTICK} Added **${title}** to the queue 🎶`,
 		COMMAND_CLEAR_DESCRIPTION: `Clears the queue list.`,
@@ -296,7 +318,31 @@ export default class extends Language {
 		COMMAND_LEAVE_SUCCESS: channel => `${GREENTICK} Successfully left the voice channel ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: `Pauses the current song.`,
 		COMMAND_PAUSE_SUCCESS: `${GREENTICK} Paused`,
-		COMMAND_PLAY_DESCRIPTION: `Let's start the queue!`,
+		COMMAND_PLAY_DESCRIPTION: `Let me be your DJ and play you some tunes!`,
+		COMMAND_PLAY_EXTENDED: builder.display('play', {
+			extendedHelp: [
+				`Queue some music and allow me to start jamming out to your enjoyment.
+				When using this command I will automatically join your voice channel and start playing the first song in my queue.
+					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
+				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
+				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
+				'- To play from Mixer give me the URL of a Mixer streamer, I\'m sorry but I cannot (yet) play Mixer VOD\'s.',
+				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
+			].join('\n'),
+			explainedUsage: [
+				['song', 'The song to play. Can be either a URL or a video/song title.']
+			],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			],
+			reminder: 'Before you can use this command you should join a voice channel!'
+		}, true),
 		COMMAND_PLAY_END: `It looks like the queue ended here. I hope you enjoyed the session!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `There was a track going on! Playing it back! Now playing: ${song}!`,

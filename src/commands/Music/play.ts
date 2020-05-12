@@ -1,19 +1,16 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 import { Track } from 'lavalink';
 
+@ApplyOptions<MusicCommandOptions>({
+	description: language => language.tget('COMMAND_PLAY_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_PLAY_EXTENDED'),
+	music: ['USER_VOICE_CHANNEL'],
+	usage: '(song:song)',
+	flagSupport: true
+})
 export default class extends MusicCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_PLAY_DESCRIPTION'),
-			music: ['USER_VOICE_CHANNEL'],
-			usage: '(song:song)',
-			flagSupport: true
-		});
-
-		this.createCustomResolver('song', (arg, possible, message) => arg ? this.client.arguments.get('song')!.run(arg, possible, message) : null);
-	}
 
 	public async run(message: KlasaMessage, [songs]: [Track[]]) {
 		const { music } = message.guild!;

@@ -284,7 +284,7 @@ export default class extends Language {
 					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
 				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
 				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
-				'- To play from Mixer give me the URL of a Mixer streamer, I\'m sorry but I cannot (yet) play Mixer VOD\'s.',
+				'- To play from Mixer give me the URL of a Mixer streamer, I\'m sorry but I cannot (yet) play Mixer VODs.',
 				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
 			].join('\n'),
 			explainedUsage: [

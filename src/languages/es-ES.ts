@@ -280,6 +280,28 @@ export default class extends Language {
 		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `El argumento ${name} acepta un rango de máximo ${maximum} ${maximum === 1 ? 'número' : 'números'}`,
 
 		COMMAND_ADD_DESCRIPTION: `Añade una canción a la cola.`,
+		COMMAND_ADD_EXTENDED: builder.display('add', {
+			extendedHelp: [
+				`¡Agregue canciones a la lista de reproducción y prepárese para el disfrute musical!
+					Puedo jugar desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
+				'- Para jugar desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
+				'- Para jugar desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluye `--sc` o` --soundcloud` en tu mensaje.',
+				'- Para jugar desde Mixer, dame la URL de un Streamer de Mixer, lo siento pero no puedo (todavía) reproducir VOD de Mixer.',
+				'- Para jugar desde Bandcamp, Twitch o Vimeo, solo dame una URL a un video o lista de reproducción en esas fuentes.'
+			].join('\n'),
+			explainedUsage: [
+				['song', 'La canción para hacer cola. Puede ser una URL o un título de video / canción.']
+			],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			]
+		}, true),
 		COMMAND_ADD_PLAYLIST: amount => amount === 1
 			? `🎵 Añadida **una** canción a la cola 🎶`
 			: `🎵 Añadidas **${amount}** canciones a la cola 🎶`,
@@ -303,6 +325,30 @@ export default class extends Language {
 		COMMAND_PAUSE_DESCRIPTION: `Pausa la canción actual.`,
 		COMMAND_PAUSE_SUCCESS: '⏸ Pausado.',
 		COMMAND_PLAY_DESCRIPTION: `¡Empecemos la cola!`,
+		COMMAND_PLAY_EXTENDED: builder.display('play', {
+			extendedHelp: [
+				`Ponga música en cola y permítame comenzar a improvisar para su disfrute.
+				Cuando use este comando, me uniré automáticamente a su canal de voz y comenzaré a reproducir la primera canción en mi cola.
+					Puedo jugar desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
+				'- Para jugar desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
+				'- Para jugar desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluye `--sc` o` --soundcloud` en tu mensaje.',
+				'- Para jugar desde Mixer, dame la URL de un Streamer de Mixer, lo siento pero no puedo (todavía) reproducir VOD de Mixer.',
+				'- Para jugar desde Bandcamp, Twitch o Vimeo, solo dame una URL a un video o lista de reproducción en esas fuentes.'
+			].join('\n'),
+			explainedUsage: [
+				['song', 'La canción para hacer cola. Puede ser una URL o un título de video / canción.']
+			],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			],
+			reminder: 'Before you can use this command you should join a voice channel!'
+		}, true),
 		COMMAND_PLAY_END: `⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,

@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { isTextBasedChannel } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (channel.type !== 'text') throw message.language.tget('CONFIGURATION_TEXTCHANNEL_REQUIRED');
+		else if (!isTextBasedChannel(channel)) throw message.language.tget('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 		const oldLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
 		await message.guild!.settings.update(GuildSettings.DisabledChannels, channel, {
 			extraContext: { author: message.author.id }

@@ -6,7 +6,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
-import { floatPromise, getDisplayAvatar, resolveEmoji, twemoji } from '@utils/util';
+import { floatPromise, getDisplayAvatar, isTextBasedChannel, resolveEmoji, twemoji } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -22,7 +22,7 @@ export default class extends Event {
 
 	public run(raw: WSMessageReactionAdd) {
 		const channel = this.client.channels.get(raw.channel_id) as TextChannel | undefined;
-		if (!channel || channel.type !== 'text' || !channel.readable) return;
+		if (!channel || !isTextBasedChannel(channel) || !channel.readable) return;
 
 		const data: LLRCData = {
 			channel,

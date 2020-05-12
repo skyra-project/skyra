@@ -20,6 +20,7 @@ const enum ClashOfClansFetchCategories {
 	description: language => language.tget('COMMAND_CLASHOFCLANS_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_CLASHOFCLANS_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
 	usageDelim: ' '

@@ -8,9 +8,9 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET } from '@root/config';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
-import { Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable, PermissionResolvable, TextChannel } from 'discord.js';
+import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, PermissionResolvable, Permissions, Role, TextChannel, User, UserResolvable } from 'discord.js';
 import { readFile } from 'fs-nextra';
-import { KlasaGuild, RateLimitManager, util, KlasaMessage } from 'klasa';
+import { KlasaGuild, KlasaMessage, RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { UserTag } from './Cache/UserTags';
@@ -688,6 +688,15 @@ export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
 	}
 
 	return highest;
+}
+
+/**
+ * Checks whether a channel is either a guild text channel, guild news channel or guild store channel
+ * This ensures the channel is *not* a DM / group DM / unknown / something else
+ * @param channel The channel to validate
+ */
+export function isTextBasedChannel(channel: Channel) {
+	return channel.type === 'text' || channel.type === 'news';
 }
 
 export interface UtilOneToTenEntry {

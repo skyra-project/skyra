@@ -1,13 +1,15 @@
 import { WSMessageReactionRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { resolveEmoji } from '@utils/util';
+import { isTextBasedChannel, resolveEmoji } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
 
 	public async run(channel: TextChannel, data: WSMessageReactionRemove) {
+		// If the channel is not a text channel then stop processing
+		if (!isTextBasedChannel(channel)) return;
 		// Role reactions only apply on the roles channel
 		const channelRoles = channel.guild.settings.get(GuildSettings.Channels.Roles);
 		if (!channelRoles) return;

@@ -1,6 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { cutText, getColor, getContent, getImage } from '@utils/util';
+import { cutText, getColor, getContent, getImage, isTextBasedChannel } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, Serializer } from 'klasa';
 
@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 			const messageUrl = await this.getFromUrl(message, arg);
 			if (messageUrl) return messageUrl;
 
-			if (channel.type !== 'text') throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
+			if (!isTextBasedChannel(channel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MESSAGE', 'Message');
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;

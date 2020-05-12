@@ -696,7 +696,7 @@ export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
  * @param channel The channel to validate
  */
 export function isTextBasedChannel(channel: Channel) {
-	return channel.type === 'text' || channel.type === 'news' || channel.type === 'store';
+	return channel.type === 'text' || channel.type === 'news';
 }
 
 export interface UtilOneToTenEntry {

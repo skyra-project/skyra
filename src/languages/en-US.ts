@@ -579,20 +579,31 @@ export default class extends Language {
 
 		COMMAND_ANNOUNCEMENT_DESCRIPTION: 'Send new announcements, mentioning the announcement role.',
 		COMMAND_ANNOUNCEMENT_EXTENDED: builder.display('announcement', {
-			extendedHelp: `This command requires an announcement channel (**channels.announcement** in the configuration command)
-				which tells Skyra where she should post the announcement messages. Question is, is this command needed?
-				Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
-				being mentioned by at everyone/here. To avoid this, Skyra gives you the option of creating a subscriber role,
-				which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
-				Skyra will set the role to be mentionable, post the message, and back to unmentionable.
-				Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
-				option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
-				by providing the \`--excludeMentions\` flag to the announcement.`,
+			extendedHelp: [
+				`This command requires an announcement channel (**channels.announcement** in the configuration command)
+					which tells Skyra where she should post the announcement messages.`,
+				'',
+				`Question is, is this command needed? Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
+					being mentioned by at everyone/here.`,
+				'',
+				`To avoid this, Skyra gives you the option of creating a subscriber role,
+					which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
+					Skyra will set the role to be mentionable, post the message, and back to unmentionable.`,
+				'',
+				`Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
+					option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
+					by providing the \`--excludeMentions\` flag to the announcement.`
+			].join('\n'),
 			explainedUsage: [
 				['announcement', 'The announcement text to post.']
 			],
-			examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!']
-		}),
+			examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!'],
+			reminder: `If you want to edit the message you send in an announcement,
+				just edit the message you used to have Skyra send that announcement.
+				Skyra will then edit the message she sent previously. She can do this
+				up to 15 minutes after the initial announcement, so be sure to not wait
+				long!`
+		}, true),
 		COMMAND_SUBSCRIBE_DESCRIPTION: `Subscribe to this server's announcements.`,
 		COMMAND_SUBSCRIBE_EXTENDED: builder.display('subscribe', {
 			extendedHelp: `This command serves the purpose of **giving** you the subscriber role, which must be configured by the

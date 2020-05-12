@@ -280,6 +280,28 @@ export default class extends Language {
 		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `El argumento ${name} acepta un rango de máximo ${maximum} ${maximum === 1 ? 'número' : 'números'}`,
 
 		COMMAND_ADD_DESCRIPTION: `Añade una canción a la cola.`,
+		COMMAND_ADD_EXTENDED: builder.display('add', {
+			extendedHelp: [
+				`¡Agregue canciones a la lista de reproducción y prepárese para el concierto!
+					Puedo reproducir desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
+				'- Para reproducir desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
+				'- Para reproducir desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluya `--sc` o` --soundcloud` en su mensaje.',
+				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
+				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.'
+			].join('\n'),
+			explainedUsage: [
+				['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']
+			],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			]
+		}, true),
 		COMMAND_ADD_PLAYLIST: amount => amount === 1
 			? `🎵 Añadida **una** canción a la cola 🎶`
 			: `🎵 Añadidas **${amount}** canciones a la cola 🎶`,
@@ -303,6 +325,30 @@ export default class extends Language {
 		COMMAND_PAUSE_DESCRIPTION: `Pausa la canción actual.`,
 		COMMAND_PAUSE_SUCCESS: '⏸ Pausado.',
 		COMMAND_PLAY_DESCRIPTION: `¡Empecemos la cola!`,
+		COMMAND_PLAY_EXTENDED: builder.display('play', {
+			extendedHelp: [
+				`Ponga música en cola y permítame comenzar a improvisar para su disfrute.
+				Cuando use este comando, me uniré automáticamente a su canal de voz y comenzaré a reproducir la primera canción en la cola.
+					Puedo reproducir desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
+				'- Para reproducir desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
+				'- Para reproducir desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluya `--sc` o` --soundcloud` en su mensaje.',
+				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
+				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.'
+			].join('\n'),
+			explainedUsage: [
+				['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']
+			],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			],
+			reminder: 'Before you can use this command you should join a voice channel!'
+		}, true),
 		COMMAND_PLAY_END: `⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!`,
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
@@ -586,20 +632,31 @@ export default class extends Language {
 
 		COMMAND_ANNOUNCEMENT_DESCRIPTION: 'Send new announcements, mentioning the announcement role.',
 		COMMAND_ANNOUNCEMENT_EXTENDED: builder.display('announcement', {
-			extendedHelp: `This command requires an announcement channel (**channels.announcement** in the configuration command)
-				which tells Skyra where she should post the announcement messages. Question is, is this command needed?
-				Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
-				being mentioned by at everyone/here. To avoid this, Skyra gives you the option of creating a subscriber role,
-				which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
-				Skyra will set the role to be mentionable, post the message, and back to unmentionable.
-				Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
-				option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
-				by providing the \`--excludeMentions\` flag to the announcement.`,
+			extendedHelp: [
+				`This command requires an announcement channel (**channels.announcement** in the configuration command)
+					which tells Skyra where she should post the announcement messages.`,
+				'',
+				`Question is, is this command needed? Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
+					being mentioned by at everyone/here.`,
+				'',
+				`To avoid this, Skyra gives you the option of creating a subscriber role,
+					which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
+					Skyra will set the role to be mentionable, post the message, and back to unmentionable.`,
+				'',
+				`Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
+					option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
+					by providing the \`--excludeMentions\` flag to the announcement.`
+			].join('\n'),
 			explainedUsage: [
 				['announcement', 'The announcement text to post.']
 			],
-			examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!']
-		}),
+			examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!'],
+			reminder: `If you want to edit the message you send in an announcement,
+				just edit the message you used to have Skyra send that announcement.
+				Skyra will then edit the message she sent previously. She can do this
+				up to 15 minutes after the initial announcement, so be sure to not wait
+				long!`
+		}, true),
 		COMMAND_SUBSCRIBE_DESCRIPTION: `Subscribe to this server's announcements.`,
 		COMMAND_SUBSCRIBE_EXTENDED: builder.display('subscribe', {
 			extendedHelp: `This command serves the purpose of **giving** you the subscriber role, which must be configured by the

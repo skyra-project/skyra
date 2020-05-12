@@ -135,6 +135,7 @@ export interface LanguageKeys {
 	ARGUMENT_RANGE_INVALID: (name: string) => string;
 	ARGUMENT_RANGE_MAX: (name: string, maximum: number) => string;
 	COMMAND_ADD_DESCRIPTION: string;
+	COMMAND_ADD_EXTENDED: string;
 	COMMAND_ADD_PLAYLIST: (amount: number) => string;
 	COMMAND_ADD_SONG: (title: string) => string;
 	COMMAND_CLEAR_DESCRIPTION: string;
@@ -154,6 +155,7 @@ export interface LanguageKeys {
 	COMMAND_PAUSE_DESCRIPTION: string;
 	COMMAND_PAUSE_SUCCESS: string;
 	COMMAND_PLAY_DESCRIPTION: string;
+	COMMAND_PLAY_EXTENDED: string;
 	COMMAND_PLAY_END: string;
 	COMMAND_PLAY_NEXT: (title: string, requester: string) => string;
 	COMMAND_PLAY_QUEUE_PAUSED: (song: string) => string;

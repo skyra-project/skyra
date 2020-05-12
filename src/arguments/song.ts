@@ -19,7 +19,7 @@ export default class extends Argument {
 		if (parsedURL) {
 			tracks = await this.fetchSongs(message, remainingUserEntries, arg);
 			returnAll = parsedURL.playlist;
-		} else if (('sc' in message.flagArgs) || ('soundcloud' in message.flagArgs)) {
+		} else if (Reflect.has(message.flagArgs, 'sc') || Reflect.has(message.flagArgs, 'soundcloud')) {
 			tracks = await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`);
 			returnAll = false;
 			soundcloud = false;

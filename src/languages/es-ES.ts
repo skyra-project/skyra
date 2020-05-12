@@ -282,15 +282,15 @@ export default class extends Language {
 		COMMAND_ADD_DESCRIPTION: `Añade una canción a la cola.`,
 		COMMAND_ADD_EXTENDED: builder.display('add', {
 			extendedHelp: [
-				`¡Agregue canciones a la lista de reproducción y prepárese para el disfrute musical!
-					Puedo jugar desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
-				'- Para jugar desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
-				'- Para jugar desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluye `--sc` o` --soundcloud` en tu mensaje.',
-				'- Para jugar desde Mixer, dame la URL de un Streamer de Mixer, lo siento pero no puedo (todavía) reproducir VOD de Mixer.',
-				'- Para jugar desde Bandcamp, Twitch o Vimeo, solo dame una URL a un video o lista de reproducción en esas fuentes.'
+				`¡Agregue canciones a la lista de reproducción y prepárese para el concierto!
+					Puedo reproducir desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
+				'- Para reproducir desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
+				'- Para reproducir desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluya `--sc` o` --soundcloud` en su mensaje.',
+				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
+				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.'
 			].join('\n'),
 			explainedUsage: [
-				['song', 'La canción para hacer cola. Puede ser una URL o un título de video / canción.']
+				['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']
 			],
 			examples: [
 				'The Pokémon Theme song',
@@ -328,15 +328,15 @@ export default class extends Language {
 		COMMAND_PLAY_EXTENDED: builder.display('play', {
 			extendedHelp: [
 				`Ponga música en cola y permítame comenzar a improvisar para su disfrute.
-				Cuando use este comando, me uniré automáticamente a su canal de voz y comenzaré a reproducir la primera canción en mi cola.
-					Puedo jugar desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
-				'- Para jugar desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
-				'- Para jugar desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluye `--sc` o` --soundcloud` en tu mensaje.',
-				'- Para jugar desde Mixer, dame la URL de un Streamer de Mixer, lo siento pero no puedo (todavía) reproducir VOD de Mixer.',
-				'- Para jugar desde Bandcamp, Twitch o Vimeo, solo dame una URL a un video o lista de reproducción en esas fuentes.'
+				Cuando use este comando, me uniré automáticamente a su canal de voz y comenzaré a reproducir la primera canción en la cola.
+					Puedo reproducir desde YouTube, Bandcamp, SoundCloud, Twitch, Vimeo o Mixer.`,
+				'- Para reproducir desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
+				'- Para reproducir desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluya `--sc` o` --soundcloud` en su mensaje.',
+				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
+				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.'
 			].join('\n'),
 			explainedUsage: [
-				['song', 'La canción para hacer cola. Puede ser una URL o un título de video / canción.']
+				['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']
 			],
 			examples: [
 				'The Pokémon Theme song',

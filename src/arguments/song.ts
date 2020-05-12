@@ -5,7 +5,8 @@ import { Track } from 'lavalink';
 export default class extends Argument {
 
 	public async run(arg: string, _: Possible, message: KlasaMessage) {
-		if (!arg || !message.guild) return null;
+		if (!arg) throw message.language.tget('MUSICMANAGER_FETCH_NO_ARGUMENTS');
+		if (!message.guild) return null;
 
 		const remainingUserEntries = this.getRemainingUserEntries(message);
 		if (remainingUserEntries === 0) throw message.language.tget('MUSICMANAGER_TOO_MANY_SONGS');

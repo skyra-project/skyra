@@ -12,7 +12,6 @@ import { Track } from 'lavalink';
 export default class extends MusicCommand {
 
 	public run(message: KlasaMessage, [songs]: [Track[]]) {
-		if (!songs) throw message.language.tget('MUSICMANAGER_FETCH_NO_ARGUMENTS');
 		message.guild!.music.add(message.author.id, songs, this.getContext(message));
 	}
 

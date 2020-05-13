@@ -1,60 +1,46 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { Colors } from '@lib/types/constants/Constants';
-import { TwitchKrakenUserFollowersChannelResults } from '@lib/types/definitions/Twitch';
-import { TOKENS } from '@root/config';
-import { Mime } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
-const kFetchOptions = {
-	headers: {
-		'Accept': Mime.Types.ApplicationTwitchV5Json,
-		'Client-ID': TOKENS.TWITCH_CLIENT_ID
-	}
-} as const;
-
+@ApplyOptions<SkyraCommandOptions>({
+	description: language => language.tget('COMMAND_FOLLOWAGE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_FOLLOWAGE_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<user:string{1,20}> <channel:string{1,20}>',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_FOLLOWAGE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FOLLOWAGE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<user:string{1,20}> <channel:string{1,20}>',
-			usageDelim: ' '
-		});
-	}
-
 	public async run(message: KlasaMessage, [userName, channelName]: [string, string]) {
+		// Get the User objects for the user and channel names
 		const [user, channel] = await this.retrieveResults(message, userName, channelName);
-		const followerData = await this.retrieveFollowage(message, user._id, channel._id);
-		const followingSince = new Date(followerData.created_at).getTime();
+
+		// Check if the user follows that channel
+		const { data } = await this.client.twitch.fetchUserFollowage(user.id, channel.id);
+
+		// If the user doesn't follow then the data length will be 0
+		if (data.length === 0) throw message.language.tget('COMMAND_FOLLOWAGE_NOT_FOLLOWING');
+
+		// Otherwise we can parse the data
+		const followingSince = new Date(data[0].followed_at).getTime();
 		const followingFor = Date.now() - followingSince;
+
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(Number(followerData.channel.profile_banner_background_color) || Colors.DeepPurple)
-			.setAuthor(message.language.tget('COMMAND_FOLLOWAGE', user.display_name, channel.display_name, followingFor), followerData.channel.logo));
+			.setColor(this.client.twitch.brandingColour)
+			.setAuthor(message.language.tget('COMMAND_FOLLOWAGE', user.display_name, channel.display_name, followingFor), channel.profile_image_url)
+			.setTimestamp());
 	}
 
 	private async retrieveResults(message: KlasaMessage, user: string, channel: string) {
 		try {
-			const results = await this.client.twitch.fetchUsersByLogin([user, channel]);
-			if (!results || results._total < 2) throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
+			const { data } = await this.client.twitch.fetchUsers([], [user, channel]);
+			if (!data || data.length < 2) throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
 
-			return results.users;
+			return data;
 		} catch (err) {
 			throw message.language.tget('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
-		}
-	}
-
-	private async retrieveFollowage(message: KlasaMessage, userID: string, channelID: string) {
-		try {
-			return await fetch(`https://api.twitch.tv/kraken/users/${userID}/follows/channels/${channelID}`, kFetchOptions, FetchResultTypes.JSON) as TwitchKrakenUserFollowersChannelResults;
-		} catch (error) {
-			const parsed = JSON.parse(error.message) as { error: string; status: number; message: string };
-			if (parsed.status === 404) throw message.language.tget('COMMAND_FOLLOWAGE_NOT_FOLLOWING');
-			throw error;
 		}
 	}
 

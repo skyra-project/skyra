@@ -110,6 +110,7 @@ declare module 'klasa' {
 		duration(time: number, precision?: number): string;
 		ordinal(cardinal: number): string;
 		list(values: readonly string[], conjunction: string): string;
+		groupDigits(number: number): string;
 
 		get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
 		get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;

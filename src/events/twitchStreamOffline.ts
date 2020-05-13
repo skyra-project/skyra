@@ -35,7 +35,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// If the message could not be retrieved then skip this notification.
-				if (subscription.message) {
+				if (subscription.message !== null) {
 					// Transform the message
 					const message = this.transformText(subscription.message, data);
 

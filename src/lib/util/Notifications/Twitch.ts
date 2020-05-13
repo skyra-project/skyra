@@ -1,6 +1,6 @@
 import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUserFollowsResult, TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
-import { Time } from '@utils/constants';
+import { Time, Mime } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
@@ -37,6 +37,13 @@ export class Twitch {
 
 	@enumerable(false)
 	private readonly $webhookSecret = TOKENS.TWITCH_WEBHOOK_SECRET;
+
+	@enumerable(false)
+	private readonly kTwitchRequestHeaders = {
+		'Content-Type': Mime.Types.ApplicationJson,
+		'Accept': Mime.Types.ApplicationJson,
+		'Client-ID': this.$clientID,
+	}
 
 	public streamNotificationDrip(id: string) {
 		try {
@@ -86,11 +93,11 @@ export class Twitch {
 				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
 				'hub.mode': action,
 				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
-				'hub.lease_seconds': (9 * Time.Day) / Time.Second,
+				'hub.lease_seconds': (10 * Time.Day) / Time.Second,
 				'hub.secret': this.$webhookSecret
 			}),
 			headers: {
-				'Client-ID': this.$clientID,
+				...this.kTwitchRequestHeaders,
 				'Authorization': `Bearer ${await this.fetchBearer()}`
 			},
 			method: FetchMethods.Post
@@ -102,7 +109,7 @@ export class Twitch {
 	private async _performApiGETRequest<T>(path: string): Promise<T> {
 		return await fetch(`${this.BASE_URL_HELIX}${path}`, {
 			headers: {
-				'Client-ID': this.$clientID,
+				...this.kTwitchRequestHeaders,
 				'Authorization': `Bearer ${await this.fetchBearer()}`
 			}
 		}, FetchResultTypes.JSON) as unknown as T;

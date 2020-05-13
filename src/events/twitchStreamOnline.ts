@@ -46,7 +46,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// If the message could not be retrieved then skip this notification.
-				if (subscription.message) {
+				if (subscription.message !== null) {
 					if (subscription.embed) {
 						const embedData = this.transformTextToObject(data, game);
 

@@ -22,7 +22,7 @@ const enum Type {
 type Streamer = TwitchHelixUsersSearchResult;
 type Channel = TextChannel;
 type Status = NotificationsStreamsTwitchEventStatus;
-type Content = string;
+type Content = string | undefined;
 type Entry = NotificationsStreamsTwitchStreamer;
 
 const $KEY = GuildSettings.Notifications.Streams.Twitch.Streamers;
@@ -90,10 +90,14 @@ export default class extends SkyraCommand {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
-			embed: Boolean(message.flagArgs.embed),
+			embed: Reflect.has(message.flagArgs, 'embed'),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: content,
+			message: content
+				? content
+				: Reflect.has(message.flagArgs, 'embed')
+					? ''
+					: null,
 			status
 		};
 

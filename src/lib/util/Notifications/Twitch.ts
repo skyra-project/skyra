@@ -1,6 +1,6 @@
 import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUserFollowsResult, TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
-import { Time, Mime } from '@utils/constants';
+import { Mime, Time } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
@@ -42,8 +42,8 @@ export class Twitch {
 	private readonly kTwitchRequestHeaders = {
 		'Content-Type': Mime.Types.ApplicationJson,
 		'Accept': Mime.Types.ApplicationJson,
-		'Client-ID': this.$clientID,
-	}
+		'Client-ID': this.$clientID
+	};
 
 	public streamNotificationDrip(id: string) {
 		try {
@@ -69,7 +69,7 @@ export class Twitch {
 	}
 
 	public async fetchUserFollowage(userId: string, channelId: string) {
-		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userId}&to_id=${channelId}`)
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userId}&to_id=${channelId}`);
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
@@ -93,12 +93,12 @@ export class Twitch {
 				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
 				'hub.mode': action,
 				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
-				'hub.lease_seconds': (10 * Time.Day) / Time.Second,
+				'hub.lease_seconds': (9 * Time.Day) / Time.Second,
 				'hub.secret': this.$webhookSecret
 			}),
 			headers: {
 				...this.kTwitchRequestHeaders,
-				'Authorization': `Bearer ${await this.fetchBearer()}`
+				Authorization: `Bearer ${await this.fetchBearer()}`
 			},
 			method: FetchMethods.Post
 		}, FetchResultTypes.Result);
@@ -110,7 +110,7 @@ export class Twitch {
 		return await fetch(`${this.BASE_URL_HELIX}${path}`, {
 			headers: {
 				...this.kTwitchRequestHeaders,
-				'Authorization': `Bearer ${await this.fetchBearer()}`
+				Authorization: `Bearer ${await this.fetchBearer()}`
 			}
 		}, FetchResultTypes.JSON) as unknown as T;
 	}

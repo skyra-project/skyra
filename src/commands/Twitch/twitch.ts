@@ -39,8 +39,8 @@ export default class extends SkyraCommand {
 	private parseAffiliateProgram(message: KlasaMessage, type: 'affiliate' | 'partner' | '') {
 		const options = message.language.tget('COMMAND_TWITCH_AFFILIATE_STATUS');
 		switch (type) {
-			case 'affiliate': return options.AFFILIATED
-			case 'partner': return options.PARTNERED
+			case 'affiliate': return options.AFFILIATED;
+			case 'partner': return options.PARTNERED;
 			case '':
 			default:
 				return false;

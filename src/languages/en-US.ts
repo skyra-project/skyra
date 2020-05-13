@@ -3739,7 +3739,7 @@ export default class extends Language {
 		},
 		COMMAND_TWITCH_MATURITY: (mature: boolean) => mature ? 'This is a mature channel.' : 'This channel is safe for everyone.',
 		COMMAND_TWITCH_PARTNERSHIP: affiliateStatus => affiliateStatus === false ? 'This channel is not part of the Twitch affiliate program.' : affiliateStatus,
-		COMMAND_TWITCH_AFFILIATE_STATUS: { 
+		COMMAND_TWITCH_AFFILIATE_STATUS: {
 			AFFILIATED: 'This is an affiliated channel.',
 			PARTNERED: 'This is a partnered channel.'
 		},

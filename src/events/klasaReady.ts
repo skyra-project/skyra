@@ -43,7 +43,7 @@ export default class extends Event {
 	private async initTwitchRefreshSubscriptionsTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'twitchRefreshSubscriptions')) {
-			await this.client.schedule.create('twitchRefreshSubscriptions', '0 2 * * *');
+			await this.client.schedule.create('twitchRefreshSubscriptions', '@daily');
 		}
 	}
 

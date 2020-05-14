@@ -38,7 +38,7 @@ export default class extends Task {
 					// Push the promises into the array of promises to resolve
 					promises.push(
 						this.client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(error => this.client.emit(Events.Wtf, error)),
-						this.client.queries.upsertTwitchStreamSubscription(subscription.id, null).catch(error => this.client.emit(Events.Wtf, error))
+						this.client.queries.upsertTwitchStreamSubscription(subscription.id).catch(error => this.client.emit(Events.Wtf, error))
 					);
 				}
 			}

@@ -48,7 +48,7 @@ export interface CommonQuery {
 	upsertIncrementMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettingsDifference(guildID: string, userID: string, points: number): Promise<UpsertMemberSettingsReturningDifference>;
-	upsertTwitchStreamSubscription(streamerID: string, guildIDs: string | null): Promise<boolean>;
+	upsertTwitchStreamSubscription(streamerID: string, guildID?: string): Promise<boolean>;
 }
 
 export interface DashboardUser {

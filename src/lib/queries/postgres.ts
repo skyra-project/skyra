@@ -592,7 +592,7 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string | null) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID?: string) {
 		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
 			INSERT
 			INTO twitch_stream_subscriptions ("id", "is_streaming", "expires_at", "guild_ids")
@@ -603,7 +603,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				SET guild_ids = ARRAY_CAT(twitch_stream_subscriptions.guild_ids, $4),
 					expires_at = $3
 			RETURNING guild_ids;
-		`, [streamerID, false, Date.now() + (Time.Day * 8), guildID === null ? [] : [guildID]]);
+		`, [streamerID, false, Date.now() + (Time.Day * 8), guildID === undefined ? [] : [guildID]]);
 		return returned.guild_ids.length === 1;
 	}
 

@@ -372,11 +372,11 @@ export class JsonCommonQuery implements CommonQuery {
 		};
 	}
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string | null) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID?: string) {
 		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
 		if (value) {
 			// When updating Twitch subscriptions the GuildID is passed as `null`
-			const guild_ids = guildID === null ? value.guild_ids : value.guild_ids.concat(guildID);
+			const guild_ids = guildID === undefined ? value.guild_ids : value.guild_ids.concat(guildID);
 			await this.provider.update(
 				Databases.TwitchStreamSubscriptions, streamerID,
 				{ ...value, expires_at: Date.now() + (Time.Day * 8), guild_ids }

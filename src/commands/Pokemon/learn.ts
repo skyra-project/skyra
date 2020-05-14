@@ -34,9 +34,11 @@ export default class Learn extends SkyraCommand {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
-		const learnsetData = await this.fetchAPI(message, pokemon, moves.split(', '), generation);
 
-		await this.buildDisplay(message, learnsetData, generation, moves.split(', ')).start(response, message.author.id);
+		const movesList = moves.split(', ');
+		const learnsetData = await this.fetchAPI(message, pokemon, movesList, generation);
+
+		await this.buildDisplay(message, learnsetData, generation, movesList).start(response, message.author.id);
 		return response;
 	}
 

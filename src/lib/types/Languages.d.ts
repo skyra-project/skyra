@@ -245,6 +245,8 @@ export interface LanguageKeys {
 	COMMAND_LEARN_INVALID_GENERATION: (generation: string) => string;
 	COMMAND_LEARN_METHOD: (generation: number, pokemon: string, move: string, method: string) => string;
 	COMMAND_LEARN_QUERY_FAILED: (pokemon: string, moves: string[]) => string;
+	COMMAND_LEARN_CANNOT_LEARN: (pokemon: string, moves: string[]) => string;
+	COMMAND_LEARN_TITLE: (pokemon: string, generation: number) => string;
 	COMMAND_MOVE_DESCRIPTION: string;
 	COMMAND_MOVE_EXTENDED: string;
 	COMMAND_MOVE_EMBED_DATA: {

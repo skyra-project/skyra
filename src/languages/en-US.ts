@@ -1989,6 +1989,8 @@ export default class extends Language {
 		COMMAND_LEARN_INVALID_GENERATION: generation => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
 		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves.map(move => `\`${move}\``).join(' and ')} are actually moves?`,
+		COMMAND_LEARN_CANNOT_LEARN: (pokemon, moves) => `Looks like ${toTitleCase(pokemon)} cannot learn ${this.list(moves, 'or')}`,
+		COMMAND_LEARN_TITLE: (pokemon, generation) => `Learnset data for ${toTitleCase(pokemon)} in generation ${generation}`,
 		COMMAND_MOVE_DESCRIPTION: 'Gets data for any given Pokémon move using my Pokémon dataset',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',

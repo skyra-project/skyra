@@ -36,7 +36,7 @@ export default class Learn extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 		const learnsetData = await this.fetchAPI(message, pokemon, moves.split(', '), generation);
 
-		await this.buildDisplay(message, learnsetData).start(response, message.author.id);
+		await this.buildDisplay(message, learnsetData, generation, moves.split(', ')).start(response, message.author.id);
 		return response;
 	}
 
@@ -53,10 +53,11 @@ export default class Learn extends SkyraCommand {
 		return message.language.tget('COMMAND_LEARN_METHOD', generation, pokemon, move, method);
 	}
 
-	private buildDisplay(message: KlasaMessage, learnsetData: LearnsetEntry) {
+	private buildDisplay(message: KlasaMessage, learnsetData: LearnsetEntry, generation: number, moves: string[]) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(resolveColour(learnsetData.color))
 			.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setTitle(message.language.tget('COMMAND_LEARN_TITLE', learnsetData.species, generation))
 			.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite));
 
 		const methodTypes = message.language.tget('COMMAND_LEARN_METHOD_TYPES');
@@ -66,6 +67,11 @@ export default class Learn extends SkyraCommand {
 				key.endsWith('Moves')
 				&& (value as LearnsetLevelUpMove[]).length
 			)) as [keyof typeof methodTypes, LearnsetLevelUpMove[]][];
+
+		if (learnableMethods.length === 0) {
+			return display.addPage((embed: MessageEmbed) => embed
+				.setDescription(message.language.tget('COMMAND_LEARN_CANNOT_LEARN', learnsetData.species, moves)));
+		}
 
 		for (const [methodName, methodData] of learnableMethods) {
 			const method = methodData.map(move => this.parseMove(

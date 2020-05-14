@@ -1999,6 +1999,8 @@ export default class extends Language {
 		COMMAND_LEARN_INVALID_GENERATION: generation => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
 		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
 		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves.map(move => `\`${move}\``).join('y')} son realmente movimientos?`,
+		COMMAND_LEARN_CANNOT_LEARN: (pokemon, moves) => `Looks like ${toTitleCase(pokemon)} cannot learn ${this.list(moves, 'o')}`,
+		COMMAND_LEARN_TITLE: (pokemon, generation) => `Learnset data for ${toTitleCase(pokemon)} in generation ${generation}`,
 		COMMAND_MOVE_DESCRIPTION: 'Obtiene datos para cualquier movimiento Pokémon usando mi conjunto de datos Pokémon',
 		COMMAND_MOVE_EXTENDED: builder.display('move', {
 			extendedHelp: 'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',

@@ -4,9 +4,8 @@ import ApiResponse from '@lib/structures/api/ApiResponse';
 import { Databases } from '@lib/types/constants/Constants';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { REDIRECT_URI, SCOPE } from '@root/config';
-import { MemberTag } from '@utils/Cache/MemberTags';
+import { canManage } from '@utils/API';
 import { Mime, Time } from '@utils/constants';
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '@utils/Models/ApiTransform';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '@utils/util';
@@ -106,7 +105,7 @@ export default class extends Route {
 			guilds.push({
 				...serialized,
 				permissions: oauthGuild.permissions,
-				manageable: this.getManageable(id, oauthGuild, guild),
+				manageable: await this.getManageable(id, oauthGuild, guild),
 				skyraIsIn: typeof guild !== 'undefined'
 			});
 		}
@@ -156,43 +155,14 @@ export default class extends Route {
 		}
 	}
 
-	private getManageable(id: string, oauthGuild: RawOauthGuild, guild: Guild | undefined) {
+	private async getManageable(id: string, oauthGuild: RawOauthGuild, guild: Guild | undefined) {
 		if (oauthGuild.owner) return true;
 		if (typeof guild === 'undefined') return new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD);
 
-		const roleID = guild.settings.get(GuildSettings.Roles.Admin);
-		const memberTag = guild.memberTags.get(id);
+		const member = await guild.members.fetch(id).catch(() => null);
+		if (!member) return false;
 
-		// MemberTag must always exist:
-		return typeof memberTag !== 'undefined'
-			// If Roles.Admin is not configured, check MANAGE_GUILD, else check if the member has the role.
-			&& (roleID === null ? new Permissions(oauthGuild.permissions).has(Permissions.FLAGS.MANAGE_GUILD) : memberTag.roles.includes(roleID))
-			// Check if despite of having permissions, user permission nodes do not deny them.
-			&& this.allowedPermissionsNodeUser(guild, id)
-			// Check if despite of having permissions, role permission nodes do not deny them.
-			&& this.allowedPermissionsNodeRole(guild, memberTag);
-	}
-
-	private allowedPermissionsNodeUser(guild: Guild, userID: string) {
-		const permissionNodeRoles = guild.settings.get(GuildSettings.Permissions.Users);
-		for (const node of permissionNodeRoles) {
-			if (node.id !== userID) continue;
-			if (node.allow.includes('settings')) return true;
-			if (node.deny.includes('settings')) return false;
-		}
-
-		return true;
-	}
-
-	private allowedPermissionsNodeRole(guild: Guild, memberTag: MemberTag) {
-		// Assume sorted data
-		for (const [id, node] of guild.permissionsManager.entries()) {
-			if (!memberTag.roles.includes(id)) continue;
-			if (node.allow.has('settings')) return true;
-			if (node.deny.has('settings')) return false;
-		}
-
-		return true;
+		return canManage(guild, member);
 	}
 
 }

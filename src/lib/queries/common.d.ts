@@ -1,10 +1,10 @@
 import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import { RawRpgClass, RawRpgGuild, RawRpgGuildRank, RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawRpgGuild, RawRpgGuildRank, RawRpgClass, RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 
 export interface CommonQuery {
 	deleteUserEntries(userID: string): Promise<unknown>;
@@ -33,6 +33,7 @@ export interface CommonQuery {
 	fetchStarsFromUser(guildID: string, userID: string, minimum: number): Promise<RawStarboardSettings[]>;
 	fetchTwitchStreamSubscription(streamerID: string): Promise<TwitchStreamSubscriptionSettings | null>;
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
+	fetchAllTwitchStreams(): Promise<TwitchStreamSubscriptionSettings[]>;
 	retrieveRandomItem(luck: number): Promise<RawRpgItem>;
 	insertCommandUseCounter(command: string): Promise<unknown>;
 	insertDashboardUser(entry: RawDashboardUserSettings): Promise<unknown>;
@@ -47,7 +48,7 @@ export interface CommonQuery {
 	upsertIncrementMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettings(guildID: string, userID: string, points: number): Promise<number>;
 	upsertMemberSettingsDifference(guildID: string, userID: string, points: number): Promise<UpsertMemberSettingsReturningDifference>;
-	upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds?: number): Promise<boolean>;
+	upsertTwitchStreamSubscription(streamerID: string, guildIDs: string | null): Promise<boolean>;
 }
 
 export interface DashboardUser {

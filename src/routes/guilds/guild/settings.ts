@@ -3,12 +3,10 @@ import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { RawGuildSettings } from '@lib/types/settings/raw/RawGuildSettings';
+import { canManage } from '@utils/API';
 import { authenticated, ratelimit } from '@utils/util';
-import { Permissions } from 'discord.js';
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import { inspect } from 'util';
-
-const { FLAGS: { MANAGE_GUILD } } = Permissions;
 
 type Keys = keyof RawGuildSettings;
 
@@ -31,8 +29,7 @@ export default class extends Route {
 		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		const canManage = member.permissions.has(MANAGE_GUILD);
-		if (!canManage) return response.error(401);
+		if (!canManage(guild, member)) return response.error(403);
 
 		return response.json(guild.settings.toJSON());
 	}
@@ -52,8 +49,7 @@ export default class extends Route {
 		const member = await botGuild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		const canManage = member.permissions.has(MANAGE_GUILD);
-		if (!canManage) return response.error(401);
+		if (!canManage(botGuild, member)) return response.error(403);
 
 		const entries = Array.isArray(requestBody.data) ? requestBody.data : objectToTuples(requestBody.data) as [Keys, unknown][];
 		if (entries.some(([key]) => this.kBlacklist.includes(key))) return response.error(400);

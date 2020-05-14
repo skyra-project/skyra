@@ -23,8 +23,8 @@ export function allowedPermissionsNodeUser(guild: Guild, userID: string) {
 	const permissionNodeRoles = guild.settings.get(GuildSettings.Permissions.Users);
 	for (const node of permissionNodeRoles) {
 		if (node.id !== userID) continue;
-		if (node.allow.includes('settings')) return true;
-		if (node.deny.includes('settings')) return false;
+		if (node.allow.includes('conf')) return true;
+		if (node.deny.includes('conf')) return false;
 	}
 
 	return true;
@@ -34,8 +34,8 @@ export function allowedPermissionsNodeRole(guild: Guild, memberTag: MemberTag) {
 	// Assume sorted data
 	for (const [id, node] of guild.permissionsManager.entries()) {
 		if (!memberTag.roles.includes(id)) continue;
-		if (node.allow.has('settings')) return true;
-		if (node.deny.has('settings')) return false;
+		if (node.allow.has('conf')) return true;
+		if (node.deny.has('conf')) return false;
 	}
 
 	return true;

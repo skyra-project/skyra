@@ -64,7 +64,7 @@ export default class extends Event {
 
 	private buildEmbed(message: string, i18n: Language) {
 		return new MessageEmbed()
-			.setColor(this.client.twitch.brandingColour)
+			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setDescription(message)
 			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
 			.setTimestamp();

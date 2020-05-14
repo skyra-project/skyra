@@ -15,40 +15,41 @@ export default class extends Task {
 		// Retrieve all the Twitch subscriptions
 		const allSubscriptions = await this.client.queries.fetchAllTwitchStreams();
 
-		// If there are no subscriptions then don't start the process of resubbing
-		if (allSubscriptions.length) {
-			// Set a constant of the current time
-			const currentDate = Date.now();
+		// If there are no subscriptions then just exit early
+		if (allSubscriptions.length === 0) return;
 
-			// Initialize a set of promises that should be resolved;
-			const promises: Promise<Response | boolean>[] = [];
+		// Set a constant of the current time
+		const currentDate = Date.now();
 
-			// A simple ticker to track how many subs were updated for logging
-			let updatedSubsTicker = 0;
+		// Initialize a set of promises that should be resolved;
+		const promises: Promise<Response | boolean>[] = [];
 
-			// Loop over all subscriptions
-			for (const subscription of allSubscriptions) {
+		// A simple ticker to track how many subs were updated for logging
+		let updatedSubsTicker = 0;
 
-				// If the subscription has an expiry date that's before the current date then queue that subscription for refreshing
-				if (subscription.expires_at < currentDate) {
+		// Loop over all subscriptions
+		for (const subscription of allSubscriptions) {
 
-					// Increase the updated subcriptions ticker by 1
-					updatedSubsTicker++;
+			// If the subscription has an expiry date that's before the current date then queue that subscription for refreshing
+			if (subscription.expires_at < currentDate) {
 
-					// Queue the updating by pushing the promise into the promises array
-					promises.push(
-						this.client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(error => this.client.emit(Events.Wtf, error)),
-						this.client.queries.upsertTwitchStreamSubscription(subscription.id).catch(error => this.client.emit(Events.Wtf, error))
-					);
-				}
+				// Increase the updated subcriptions ticker by 1
+				updatedSubsTicker++;
+
+				// Queue the updating by pushing the promise into the promises array
+				promises.push(
+					this.client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(error => this.client.emit(Events.Wtf, error)),
+					this.client.queries.upsertTwitchStreamSubscription(subscription.id).catch(error => this.client.emit(Events.Wtf, error))
+				);
 			}
-
-			// Await all the promises
-			await Promise.all(promises);
-
-			// ST = Subscriptions Total; SU = Subscriptions Updated
-			this.client.emit(Events.Verbose, `${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubsTicker} [SU] ]`);
 		}
+
+		// Await all the promises
+		await Promise.all(promises);
+
+		// ST = Subscriptions Total; SU = Subscriptions Updated
+		this.client.emit(Events.Verbose, `${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubsTicker} [SU] ]`);
+
 	}
 
 }

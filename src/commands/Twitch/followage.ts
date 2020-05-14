@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		const followingFor = Date.now() - followingSince;
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(this.client.twitch.brandingColour)
+			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setAuthor(message.language.tget('COMMAND_FOLLOWAGE', user.display_name, channel.display_name, followingFor), channel.profile_image_url)
 			.setTimestamp());
 	}

@@ -21,7 +21,7 @@ export class Twitch {
 
 	public readonly ratelimitsStreams = new RateLimitManager(1, Twitch.RATELIMIT_COOLDOWN);
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
-	public readonly brandingColour = 0x6441A4;
+	public readonly BRANDING_COLOUR = 0x6441A4;
 
 	@enumerable(false)
 	private BEARER: TwitchHelixBearerToken = {

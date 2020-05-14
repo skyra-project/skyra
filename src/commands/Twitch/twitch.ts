@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 		const titles = message.language.tget('COMMAND_TWITCH_TITLES');
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(this.client.twitch.brandingColour)
+			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setAuthor(channel.display_name, 'https://cdn.skyra.pw/img/twitch/logo.png', `https://twitch.tv/${channel.login}`)
 			.setTitle(titles.CLICK_TO_VISIT)
 			.setURL(`https://twitch.tv/${channel.login}`)

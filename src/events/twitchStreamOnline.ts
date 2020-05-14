@@ -105,7 +105,7 @@ export default class extends Event {
 			.setDescription(i18n.tget('NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION', data.user_name, data.game_name))
 			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
 			.setTimestamp(data.started_at)
-			.setColor(this.client.twitch.brandingColour)
+			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');
 	}
 

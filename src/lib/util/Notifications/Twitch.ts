@@ -1,15 +1,9 @@
-import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUsersSearchResult, TwitchKrakenChannelSearchResults } from '@lib/types/definitions/Twitch';
+import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUserFollowsResult, TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { Mime, Time } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
-import { RequestInit } from 'node-fetch';
-
-export const enum ApiVersion {
-	Kraken,
-	Helix
-}
 
 export const enum TwitchHooksAction {
 	Subscribe = 'subscribe',
@@ -27,7 +21,7 @@ export class Twitch {
 
 	public readonly ratelimitsStreams = new RateLimitManager(1, Twitch.RATELIMIT_COOLDOWN);
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
-	public readonly BASE_URL_KRAKEN = 'https://api.twitch.tv/kraken/';
+	public readonly BRANDING_COLOUR = 0x6441A4;
 
 	@enumerable(false)
 	private BEARER: TwitchHelixBearerToken = {
@@ -45,12 +39,11 @@ export class Twitch {
 	private readonly $webhookSecret = TOKENS.TWITCH_WEBHOOK_SECRET;
 
 	@enumerable(false)
-	private readonly kFetchOptions = {
-		headers: {
-			'Accept': Mime.Types.ApplicationTwitchV5Json,
-			'Client-ID': this.$clientID
-		}
-	} as const;
+	private readonly kTwitchRequestHeaders = {
+		'Content-Type': Mime.Types.ApplicationJson,
+		'Accept': Mime.Types.ApplicationJson,
+		'Client-ID': this.$clientID
+	};
 
 	public streamNotificationDrip(id: string) {
 		try {
@@ -61,22 +54,22 @@ export class Twitch {
 		}
 	}
 
-	public async fetchUsersByLogin(logins: readonly string[]) {
-		return this._performApiGETRequest(`users?login=${this._formatMultiEntries(logins, true)}`) as Promise<TwitchKrakenChannelSearchResults>;
-	}
-
 	public async fetchUsers(ids: readonly string[] = [], logins: readonly string[] = []) {
 		const search: string[] = [];
 		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
 		for (const login of logins) search.push(`login=${encodeURIComponent(login)}`);
-		return this._performApiGETRequest(`users?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixUsersSearchResult>>;
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUsersSearchResult>>(`users?${search.join('&')}`);
 	}
 
 	public async fetchGame(ids: readonly string[] = [], names: readonly string[] = []) {
 		const search: string[] = [];
 		for (const id of ids) search.push(`id=${encodeURIComponent(id)}`);
 		for (const name of names) search.push(`name=${encodeURIComponent(name)}`);
-		return this._performApiGETRequest(`games?${search.join('&')}`, ApiVersion.Helix) as Promise<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>;
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>(`games?${search.join('&')}`);
+	}
+
+	public async fetchUserFollowage(userId: string, channelId: string) {
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userId}&to_id=${channelId}`);
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
@@ -104,8 +97,8 @@ export class Twitch {
 				'hub.secret': this.$webhookSecret
 			}),
 			headers: {
-				'Authorization': `Bearer ${await this.fetchBearer()}`,
-				'Content-Type': Mime.Types.ApplicationJson
+				...this.kTwitchRequestHeaders,
+				Authorization: `Bearer ${await this.fetchBearer()}`
 			},
 			method: FetchMethods.Post
 		}, FetchResultTypes.Result);
@@ -113,22 +106,13 @@ export class Twitch {
 		return response;
 	}
 
-	private _formatMultiEntries(data: readonly string[], replaceEncode = false) {
-		const raw = data.map(encodeURIComponent).join(',');
-		return replaceEncode
-			? raw.replace(/%20/g, '&20')
-			: raw;
-	}
-
-	private async _performApiGETRequest<T>(path: string, api: ApiVersion = ApiVersion.Kraken): Promise<T> {
-		const fetchOptions: RequestInit = {
-			...this.kFetchOptions,
+	private async _performApiGETRequest<T>(path: string): Promise<T> {
+		return await fetch(`${this.BASE_URL_HELIX}${path}`, {
 			headers: {
-				...this.kFetchOptions.headers,
+				...this.kTwitchRequestHeaders,
 				Authorization: `Bearer ${await this.fetchBearer()}`
 			}
-		};
-		return await fetch(`${api === ApiVersion.Kraken ? this.BASE_URL_KRAKEN : this.BASE_URL_HELIX}${path}`, fetchOptions, FetchResultTypes.JSON) as unknown as T;
+		}, FetchResultTypes.JSON) as unknown as T;
 	}
 
 	private async _generateBearerToken() {

@@ -1,72 +1,3 @@
-export interface TwitchKrakenChannelSearchResults {
-	_total: number;
-	users: TwitchKrakenChannelSearchResult[];
-}
-
-export interface TwitchKrakenChannelSearchResult {
-	_id: string;
-	bio: null | string;
-	created_at: Date;
-	display_name: string;
-	logo: null | string;
-	name: string;
-	type: string;
-	updated_at: Date;
-}
-
-export interface TwitchKrakenChannelResult {
-	_id: string;
-	broadcaster_language: string;
-	broadcaster_software: string;
-	broadcaster_type: string;
-	created_at: Date;
-	description: string;
-	display_name: string;
-	followers: number;
-	game: string;
-	language: string;
-	logo: string;
-	mature: boolean;
-	name: string;
-	partner: boolean;
-	privacy_options_enabled: boolean;
-	private_video: boolean;
-	profile_banner_background_color: null;
-	profile_banner: string;
-	status: string;
-	updated_at: Date;
-	url: string;
-	video_banner: string;
-	views: number;
-}
-
-export interface TwitchKrakenUserFollowersChannelResults {
-	created_at: Date;
-	notifications: boolean;
-	channel: TwitchKrakenUserFollowersChannelResultsChannel;
-}
-
-export interface TwitchKrakenUserFollowersChannelResultsChannel {
-	_id: number;
-	broadcaster_language: string;
-	created_at: Date;
-	display_name: string;
-	followers: number;
-	game: string;
-	language: string;
-	logo: string;
-	mature: boolean;
-	name: string;
-	partner: boolean;
-	profile_banner_background_color: string;
-	profile_banner: string;
-	status: string;
-	updated_at: Date;
-	url: string;
-	video_banner: string;
-	views: number;
-}
-
 export interface TwitchHelixBearerToken {
 	TOKEN: string | null;
 	EXPIRE: number | null;
@@ -106,4 +37,17 @@ export interface TwitchHelixUsersSearchResult {
 	offline_image_url: string;
 	view_count: number;
 	email?: string;
+}
+
+export interface TwitchHelixUserFollowsResult {
+	/** The ID of the user following a streamer */
+	from_id: string;
+	/** The name of the user following a streamer */
+	from_name: string;
+	/** The ID of the channel that the user follows */
+	to_id: string;
+	/** The name of the channel that the user follows */
+	to_name: string;
+	/** In the format of YYYY-MM-DD[T]HH:mm:ssZ, so can be parsed to a Date */
+	followed_at: string;
 }

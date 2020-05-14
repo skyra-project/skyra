@@ -3734,11 +3734,15 @@ export default class extends Language {
 		COMMAND_TWITCH_TITLES: {
 			FOLLOWERS: 'Followers',
 			VIEWS: 'Views',
-			MATURE: 'Mature',
+			CLICK_TO_VISIT: 'Click to go to streamer\'s channel',
 			PARTNER: 'Partner'
 		},
 		COMMAND_TWITCH_MATURITY: (mature: boolean) => mature ? 'This is a mature channel.' : 'This channel is safe for everyone.',
-		COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => partner ? 'This is a partnered channel.' : 'This channel is not partnered yet.',
+		COMMAND_TWITCH_PARTNERSHIP: affiliateStatus => affiliateStatus === false ? 'This channel is not part of the Twitch affiliate program.' : affiliateStatus,
+		COMMAND_TWITCH_AFFILIATE_STATUS: {
+			AFFILIATED: 'This is an affiliated channel.',
+			PARTNERED: 'This is a partnered channel.'
+		},
 		COMMAND_TWITCH_CREATED_AT: 'Created At:',
 		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER: `${REDCROSS} You must input the streamer's name to subscribe.`,
 		COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND: `${REDCROSS} Sorry, I could not find the streamer, are you sure you wrote it correctly?`,

@@ -1,50 +1,50 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { Colors } from '@lib/types/constants/Constants';
-import { TwitchKrakenChannelResult } from '@lib/types/definitions/Twitch';
-import { TOKENS } from '@root/config';
-import { Mime } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
-const kFetchOptions = {
-	headers: {
-		'Accept': Mime.Types.ApplicationTwitchV5Json,
-		'Client-ID': TOKENS.TWITCH_CLIENT_ID
-	}
-} as const;
-
+@ApplyOptions<SkyraCommandOptions>({
+	description: language => language.tget('COMMAND_TWITCH_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TWITCH_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<name:string>'
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_TWITCH_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TWITCH_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<name:string>'
-		});
+	public async run(message: KlasaMessage, [name]: [string]) {
+		const { data: channelData } = await this.client.twitch.fetchUsers([], [name]);
+		if (channelData.length === 0) throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
+		const channel = channelData[0];
+
+		const { total: followersTotal } = await this.client.twitch.fetchUserFollowage('', channel.id);
+
+		const titles = message.language.tget('COMMAND_TWITCH_TITLES');
+
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(this.client.twitch.BRANDING_COLOUR)
+			.setAuthor(channel.display_name, 'https://cdn.skyra.pw/img/twitch/logo.png', `https://twitch.tv/${channel.login}`)
+			.setTitle(titles.CLICK_TO_VISIT)
+			.setURL(`https://twitch.tv/${channel.login}`)
+			.setDescription(channel.description)
+			.setThumbnail(channel.profile_image_url)
+			.addField(titles.FOLLOWERS, message.language.groupDigits(followersTotal), true)
+			.addField(titles.VIEWS, message.language.groupDigits(channel.view_count), true)
+			.addField(
+				titles.PARTNER,
+				message.language.tget('COMMAND_TWITCH_PARTNERSHIP', this.parseAffiliateProgram(message, channel.broadcaster_type))
+			));
 	}
 
-	public async run(message: KlasaMessage, [name]: [string]) {
-		const results = await this.client.twitch.fetchUsersByLogin([name]);
-		if (results._total === 0) throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
-
-		const channel = await fetch(`https://api.twitch.tv/kraken/channels/${results.users[0]._id}`, kFetchOptions, FetchResultTypes.JSON) as TwitchKrakenChannelResult;
-		const titles = message.language.tget('COMMAND_TWITCH_TITLES');
-		const embed = new MessageEmbed()
-			.setColor(channel.profile_banner_background_color || Colors.DeepPurple)
-			.setAuthor(channel.display_name, 'https://i.imgur.com/OQwQ8z0.jpg', channel.url)
-			.setThumbnail(channel.logo)
-			.addField(titles.FOLLOWERS, channel.followers.toLocaleString(), true)
-			.addField(titles.VIEWS, channel.views.toLocaleString(), true)
-			.addField(titles.MATURE, message.language.tget('COMMAND_TWITCH_MATURITY', channel.mature))
-			.addField(titles.PARTNER, message.language.tget('COMMAND_TWITCH_PARTNERSHIP', channel.partner), true)
-			.setFooter(message.language.tget('COMMAND_TWITCH_CREATED_AT'))
-			.setTimestamp(new Date(channel.created_at).getTime());
-
-		if (channel.status) embed.setDescription(channel.status);
-		return message.sendEmbed(embed);
+	private parseAffiliateProgram(message: KlasaMessage, type: 'affiliate' | 'partner' | '') {
+		const options = message.language.tget('COMMAND_TWITCH_AFFILIATE_STATUS');
+		switch (type) {
+			case 'affiliate': return options.AFFILIATED;
+			case 'partner': return options.PARTNERED;
+			case '':
+			default:
+				return false;
+		}
 	}
 
 }

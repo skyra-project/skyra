@@ -2,7 +2,7 @@ import { chunk } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Databases } from '@lib/types/constants/Constants';
-import { TwitchKrakenChannelSearchResult } from '@lib/types/definitions/Twitch';
+import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
@@ -19,10 +19,10 @@ const enum Type {
 	Show = 'show'
 }
 
-type Streamer = TwitchKrakenChannelSearchResult;
+type Streamer = TwitchHelixUsersSearchResult;
 type Channel = TextChannel;
 type Status = NotificationsStreamsTwitchEventStatus;
-type Content = string;
+type Content = string | undefined;
 type Entry = NotificationsStreamsTwitchStreamer;
 
 const $KEY = GuildSettings.Notifications.Streams.Twitch.Streamers;
@@ -43,16 +43,16 @@ export default class extends SkyraCommand {
 
 	public async init() {
 		this
-			.createCustomResolver('streamer', async (argument, _possible, message, [type]) => {
+			.createCustomResolver('streamer', async (argument, _, message, [type]) => {
 				if (!argument) {
 					if (type === Type.Show || type === Type.Reset) return undefined;
 					throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER');
 				}
 
 				try {
-					const { users } = await this.client.twitch.fetchUsersByLogin([argument]);
-					if (users.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
-					return users[0];
+					const { data } = await this.client.twitch.fetchUsers([], [argument]);
+					if (data.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
+					return data[0];
 				} catch {
 					throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
 				}
@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 
 				return this.client.arguments.get('textchannelname')!.run(argument, possible, message);
 			})
-			.createCustomResolver('status', (argument, _possible, message, [type]) => {
+			.createCustomResolver('status', (argument, _, message, [type]) => {
 				if (type === Type.Show || type === Type.Reset) return undefined;
 				if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS');
 
@@ -90,21 +90,25 @@ export default class extends SkyraCommand {
 			author: message.author.id,
 			channel: channel.id,
 			createdAt: Date.now(),
-			embed: Boolean(message.flagArgs.embed),
+			embed: Reflect.has(message.flagArgs, 'embed'),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: content,
+			message: content
+				? content
+				: Reflect.has(message.flagArgs, 'embed')
+					? ''
+					: null,
 			status
 		};
 
 		// Retrieve all subscriptions for the guild,
 		// then retrieve the index of the entry if the guild already subscribed to them.
 		const subscriptions = message.guild!.settings.get($KEY);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
 
 		// If the subscription could not be found, we create a new one, otherwise we patch it by creating a new tuple.
 		if (subscriptionIndex === -1) {
-			const subscription: NotificationsStreamTwitch = [streamer._id, [entry]];
+			const subscription: NotificationsStreamTwitch = [streamer.id, [entry]];
 			await message.guild!.settings.update($KEY, [subscription], {
 				arrayAction: 'add',
 				extraContext: { author: message.author.id }
@@ -112,8 +116,8 @@ export default class extends SkyraCommand {
 
 			// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 			// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
-			if (await this.client.queries.upsertTwitchStreamSubscription(streamer._id, message.guild!.id)) {
-				await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Subscribe);
+			if (await this.client.queries.upsertTwitchStreamSubscription(streamer.id, message.guild!.id)) {
+				await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
 			}
 		} else {
 			// Retrieve the subscription.
@@ -139,7 +143,7 @@ export default class extends SkyraCommand {
 		// Retrieve all subscriptions for the guild,
 		// then retrieve the index of the entry if the guild already subscribed to them.
 		const subscriptions = message.guild!.settings.get($KEY);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
 
 		// If the subscription could not be found, throw.
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED');
@@ -160,9 +164,9 @@ export default class extends SkyraCommand {
 			});
 
 			// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
-			if (await this.client.queries.deleteTwitchStreamSubscription(streamer._id, message.guild!.id)) {
-				await this.client.providers.default!.delete(Databases.TwitchStreamSubscriptions, streamer._id);
-				await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Unsubscribe);
+			if (await this.client.queries.deleteTwitchStreamSubscription(streamer.id, message.guild!.id)) {
+				await this.client.providers.default!.delete(Databases.TwitchStreamSubscriptions, streamer.id);
+				await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
 			}
 		} else {
 			// Create a clone of the array, remove the one we want to get rid of, create a clone of the subscription, and update.
@@ -198,7 +202,7 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS', [entries]);
 		}
 
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer._id);
+		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED');
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
@@ -209,9 +213,9 @@ export default class extends SkyraCommand {
 		});
 
 		// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
-		if (await this.client.queries.deleteTwitchStreamSubscription(streamer._id, message.guild!.id)) {
-			await this.client.providers.default!.delete(Databases.TwitchStreamSubscriptions, streamer._id);
-			await this.client.twitch.subscriptionsStreamHandle(streamer._id, TwitchHooksAction.Unsubscribe);
+		if (await this.client.queries.deleteTwitchStreamSubscription(streamer.id, message.guild!.id)) {
+			await this.client.providers.default!.delete(Databases.TwitchStreamSubscriptions, streamer.id);
+			await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
 		}
 
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS', [streamer.display_name, entries]);
@@ -243,7 +247,7 @@ export default class extends SkyraCommand {
 	private showSingle(message: KlasaMessage, streamer: Streamer) {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get($KEY);
-		const subscriptions = guildSubscriptions.find(entry => entry[0] === streamer._id);
+		const subscriptions = guildSubscriptions.find(entry => entry[0] === streamer.id);
 		if (typeof subscriptions === 'undefined') throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED');
 
 		// Print all entries for this guild for this streamer.

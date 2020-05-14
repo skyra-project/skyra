@@ -1587,11 +1587,15 @@ export interface LanguageKeys {
 	COMMAND_TWITCH_TITLES: {
 		FOLLOWERS: string;
 		VIEWS: string;
-		MATURE: string;
+		CLICK_TO_VISIT: string;
 		PARTNER: string;
 	};
 	COMMAND_TWITCH_MATURITY: (mature: boolean) => string;
-	COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => string;
+	COMMAND_TWITCH_PARTNERSHIP: (affiliateStatus: string | false) => string;
+	COMMAND_TWITCH_AFFILIATE_STATUS: {
+		AFFILIATED: string;
+		PARTNERED: string;
+	};
 	COMMAND_TWITCH_CREATED_AT: string;
 	COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER: string;
 	COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND: string;

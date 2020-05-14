@@ -3740,18 +3740,22 @@ export default class extends Language {
 		COMMAND_WHOIS_USER: user => new MessageEmbed()
 			.addField('Fecha Creación', `${timestamp.displayUTC(user.createdAt)}\nHace ${duration(Date.now() - user.createdTimestamp, 2)}`)
 			.setFooter(`ID: ${user.id}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })),
-		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
+		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} ha estado siguiendo ${channel} durante ${duration(time, 2)}.`,
 		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
 		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',
 		COMMAND_TWITCH_NO_ENTRIES: 'There are no entries, are you sure you wrote the user name correctly?',
 		COMMAND_TWITCH_TITLES: {
 			FOLLOWERS: 'Followers',
 			VIEWS: 'Views',
-			MATURE: 'Mature',
+			CLICK_TO_VISIT: 'Click to go to streamer\'s channel',
 			PARTNER: 'Partner'
 		},
 		COMMAND_TWITCH_MATURITY: (mature: boolean) => mature ? 'This is a mature channel.' : 'This channel is safe for everyone.',
-		COMMAND_TWITCH_PARTNERSHIP: (partner: boolean) => partner ? 'This is a partnered channel.' : 'This channel is not partnered yet.',
+		COMMAND_TWITCH_PARTNERSHIP: affiliateStatus => affiliateStatus === false ? 'This channel is not part of the Twitch affiliate program.' : affiliateStatus,
+		COMMAND_TWITCH_AFFILIATE_STATUS: {
+			AFFILIATED: 'This is an affiliated channel.',
+			PARTNERED: 'This is a partnered channel.'
+		},
 		COMMAND_TWITCH_CREATED_AT: 'Created At:',
 		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER: `${REDCROSS} Debes darme el nombre de un canal para subscribirte.`,
 		COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND: `${REDCROSS} Perdona, pero no pude encontrar el canal, ¿lo escribiste bien?`,

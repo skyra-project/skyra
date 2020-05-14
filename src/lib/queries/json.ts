@@ -1,13 +1,14 @@
 import { Databases } from '@lib/types/constants/Constants';
 import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
 import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
-import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
 import { JsonProvider } from '@lib/types/util';
+import { Time } from '@utils/constants';
 import { Client } from 'discord.js';
 import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
@@ -234,6 +235,10 @@ export class JsonCommonQuery implements CommonQuery {
 		return values.filter(value => value.guild_ids.includes(guildID));
 	}
 
+	public async fetchAllTwitchStreams() {
+		return await this.provider.getAll(Databases.TwitchStreamSubscriptions) as TwitchStreamSubscriptionSettings[];
+	}
+
 	public async retrieveRandomItem(luck: number) {
 		const entries = (await this.provider.getAll(Databases.RpgItems) as RawRpgItem[])
 			.sort((a, b) => a.id - b.id);
@@ -367,18 +372,23 @@ export class JsonCommonQuery implements CommonQuery {
 		};
 	}
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds = 864000) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID?: string) {
 		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
 		if (value) {
-			const guild_ids = value.guild_ids.concat(guildID);
-			await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, { ...value, guild_ids });
+			// When updating Twitch subscriptions the GuildID is passed as `undefined`
+			const guild_ids = guildID === undefined ? value.guild_ids : value.guild_ids.concat(guildID);
+			await this.provider.update(
+				Databases.TwitchStreamSubscriptions, streamerID,
+				{ ...value, expires_at: Date.now() + (Time.Day * 8), guild_ids }
+			);
 			return guild_ids.length === 1;
 		}
 
 		await this.provider.create(Databases.TwitchStreamSubscriptions, streamerID, {
 			id: streamerID,
 			is_streaming: false,
-			expires_at: (expireSeconds - 1) * 1000,
+			expires_at: Date.now() + (Time.Day * 8),
+			// When inserting new Twitch subscriptions a GuildID is always given
 			guild_ids: [guildID]
 		});
 		return true;

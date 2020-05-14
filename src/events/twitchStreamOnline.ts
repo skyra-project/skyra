@@ -10,7 +10,6 @@ import { Event, Language } from 'klasa';
 export default class extends Event {
 
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
-	private readonly kTwitchBrandingColour = 0x6441a4;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// All streams should have a game_id.
@@ -47,7 +46,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// If the message could not be retrieved then skip this notification.
-				if (subscription.message) {
+				if (subscription.message !== null) {
 					if (subscription.embed) {
 						const embedData = this.transformTextToObject(data, game);
 
@@ -106,7 +105,7 @@ export default class extends Event {
 			.setDescription(i18n.tget('NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION', data.user_name, data.game_name))
 			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
 			.setTimestamp(data.started_at)
-			.setColor(this.kTwitchBrandingColour)
+			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');
 	}
 

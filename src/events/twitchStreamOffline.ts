@@ -8,8 +8,6 @@ import { Event, Language } from 'klasa';
 
 export default class extends Event {
 
-	private readonly kTwitchBrandingColour = 0x6441a4;
-
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
 		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
@@ -37,7 +35,7 @@ export default class extends Event {
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// If the message could not be retrieved then skip this notification.
-				if (subscription.message) {
+				if (subscription.message !== null) {
 					// Transform the message
 					const message = this.transformText(subscription.message, data);
 
@@ -66,7 +64,7 @@ export default class extends Event {
 
 	private buildEmbed(message: string, i18n: Language) {
 		return new MessageEmbed()
-			.setColor(this.kTwitchBrandingColour)
+			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setDescription(message)
 			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
 			.setTimestamp();

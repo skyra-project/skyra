@@ -18,6 +18,7 @@ export default class extends Event {
 			]);
 			await this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
 			await this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));
+			await this.initTwitchRefreshSubscriptionsTask().catch(error => this.client.emit(Events.Wtf, error));
 		} catch (error) {
 			this.client.console.wtf(error);
 		}
@@ -36,6 +37,13 @@ export default class extends Event {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'cleanup')) {
 			await this.client.schedule.create('cleanup', '*/10 * * * *', {});
+		}
+	}
+
+	private async initTwitchRefreshSubscriptionsTask() {
+		const { tasks } = this.client.schedule;
+		if (!tasks.some(task => task.taskName === 'twitchRefreshSubscriptions')) {
+			await this.client.schedule.create('twitchRefreshSubscriptions', '@daily');
 		}
 	}
 

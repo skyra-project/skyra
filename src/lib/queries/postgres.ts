@@ -7,8 +7,9 @@ import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSett
 import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
 import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import PostgresProvider from '@root/providers/postgres';
+import { Time } from '@utils/constants';
 import { Client } from 'discord.js';
-import { CommonQuery, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import { CommonQuery, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -369,7 +370,20 @@ export class PostgresCommonQuery implements CommonQuery {
 			is_streaming: entry.is_streaming,
 			expires_at: Number(entry.expires_at),
 			guild_ids: entry.guild_ids
-		}));
+		})) as TwitchStreamSubscriptionSettings[];
+	}
+
+	public async fetchAllTwitchStreams() {
+		const entries = await this.provider.runAll<RawTwitchStreamSubscriptionSettings>(/* sql */`
+			SELECT *
+			FROM twitch_stream_subscriptions;
+		`);
+		return entries.map(entry => ({
+			id: entry.id,
+			is_streaming: entry.is_streaming,
+			expires_at: Number(entry.expires_at),
+			guild_ids: entry.guild_ids
+		})) as TwitchStreamSubscriptionSettings[];
 	}
 
 	public retrieveRandomItem(luck: number) {
@@ -578,7 +592,7 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 
-	public async upsertTwitchStreamSubscription(streamerID: string, guildID: string, expireSeconds = 864000) {
+	public async upsertTwitchStreamSubscription(streamerID: string, guildID?: string) {
 		const returned = await this.provider.runOne<UpsertTwitchStreamReturning>(/* sql */`
 			INSERT
 			INTO twitch_stream_subscriptions ("id", "is_streaming", "expires_at", "guild_ids")
@@ -586,9 +600,10 @@ export class PostgresCommonQuery implements CommonQuery {
 			ON CONFLICT (id)
 			DO
 				UPDATE
-				SET guild_ids = ARRAY_CAT(twitch_stream_subscriptions.guild_ids, $4)
+				SET guild_ids = ARRAY_CAT(twitch_stream_subscriptions.guild_ids, $4),
+					expires_at = $3
 			RETURNING guild_ids;
-		`, [streamerID, false, (expireSeconds - 1) * 1000, [guildID]]);
+		`, [streamerID, false, Date.now() + (Time.Day * 8), guildID === undefined ? [] : [guildID]]);
 		return returned.guild_ids.length === 1;
 	}
 

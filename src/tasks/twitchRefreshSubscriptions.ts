@@ -29,13 +29,13 @@ export default class extends Task {
 			// Loop over all subscriptions
 			for (const subscription of allSubscriptions) {
 
-				// If the subscription has an expiry date that's before the current date then queue that streamer for refreshing
+				// If the subscription has an expiry date that's before the current date then queue that subscription for refreshing
 				if (subscription.expires_at < currentDate) {
 
-					// Increase the subs ticker by 1
+					// Increase the updated subcriptions ticker by 1
 					updatedSubsTicker++;
 
-					// Push the promises into the array of promises to resolve
+					// Queue the updating by pushing the promise into the promises array
 					promises.push(
 						this.client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe).catch(error => this.client.emit(Events.Wtf, error)),
 						this.client.queries.upsertTwitchStreamSubscription(subscription.id).catch(error => this.client.emit(Events.Wtf, error))
@@ -45,6 +45,7 @@ export default class extends Task {
 
 			// Await all the promises
 			await Promise.all(promises);
+
 			// ST = Subscriptions Total; SU = Subscriptions Updated
 			this.client.emit(Events.Verbose, `${header} [ ${allSubscriptions.length} [ST] ] [ ${updatedSubsTicker} [SU] ]`);
 		}

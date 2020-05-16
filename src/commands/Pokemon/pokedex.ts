@@ -18,7 +18,7 @@ enum BaseStats {
 }
 
 @ApplyOptions<SkyraCommandOptions>({
-	aliases: ['pokemon', 'dex'],
+	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_POKEDEX_EXTENDED'),

@@ -19,7 +19,8 @@ export default class extends Monitor {
 	};
 
 	public run(message: KlasaMessage) {
-		if (!message.command) return;
+		if (!message.commandText) return undefined;
+		if (!message.command) return undefined;
 
 		const { type } = message.channel;
 		const shard = message.guild ? message.guild.shardID : 0;

@@ -3,9 +3,11 @@
 server: # REST and WS server
   port: 2333
   address: 0.0.0.0
+
 spring:
   main:
     banner-mode: log
+
 lavalink:
   server:
     password: ""
@@ -16,10 +18,12 @@ lavalink:
       twitch: true
       vimeo: true
       mixer: true
-      http: true
+      http: false
       local: false
     bufferDurationMs: 400
-    youtubePlaylistLoadLimit: 25
+    youtubePlaylistLoadLimit: 6
+    youtubeSearchEnabled: true
+    soundcloudSearchEnabled: true
     gc-warnings: true
 
 metrics:

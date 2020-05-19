@@ -102,6 +102,7 @@ export default class extends ModerationMonitor {
 	private getCodeIdentifier(source: string, code: string): CodeType | null {
 		switch (source.toLowerCase()) {
 			case 'discordapp.com/invite/':
+			case 'discord.com/invite/':
 			case 'discord.gg/':
 				return CodeType.DiscordGG;
 			case 'discord.io/':

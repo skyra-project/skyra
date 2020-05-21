@@ -99,3 +99,5 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 [bitcoinimage]:                      https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/bitcoin.png
 [ethereumimage]:                     https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/ethereum.png
 [litecoinimage]:                     https://raw.githubusercontent.com/skyra-project/Skyra/master/assets/github/litecoin.png
+
+I did this pr just to steal PR#1000

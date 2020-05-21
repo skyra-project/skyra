@@ -2364,7 +2364,7 @@ export default class extends Language {
 			extendedHelp: 'The list of emotes is split per 50 emotes'
 		}),
 		COMMAND_EMOTES_TITLE: 'Emotes in',
-		COMMAND_PRICE_DESCRIPTION: 'Convert the currency with this tool.',
+		COMMAND_PRICE_DESCRIPTION: 'Convert between currencies with this command.',
 		COMMAND_PRICE_EXTENDED: builder.display('price', {}),
 		COMMAND_QUOTE_DESCRIPTION: 'Quote another person\'s message.',
 		COMMAND_QUOTE_EXTENDED: builder.display('quote', {}),
@@ -3700,7 +3700,7 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'No user score',
 			NO_GENRES: 'None on TheMovieDB'
 		},
-		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `${fromAmount} ${fromCurrency} is worth ${toAmount} ${toCurrency}.`,
+		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `**${fromAmount}** ${fromCurrency} is worth **${toAmount}** ${toCurrency}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 		COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
 		COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',

@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		}, FetchResultTypes.JSON) as CryptoCompareResultOk | CryptoCompareResultError;
 
 		if (body.Response === 'Error') throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
-		return message.sendLocale('COMMAND_PRICE_CURRENCY', [fromCurrency, amount, toCurrency, amount * (body as CryptoCompareResultOk)[toCurrency]]);
+		return message.sendLocale('COMMAND_PRICE_CURRENCY', [fromCurrency, amount, toCurrency, (amount * (body as CryptoCompareResultOk)[toCurrency]).toFixed(2)]);
 	}
 
 }

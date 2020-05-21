@@ -286,7 +286,7 @@ export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png
 
 export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string, variables: GraphQLQueryVariables<R>) {
 	try {
-		return fetch(POKEMON_GRAPHQL_API_URL, {
+		return fetch<GraphQLPokemonResponse<R>>(POKEMON_GRAPHQL_API_URL, {
 			method: FetchMethods.Post,
 			headers: {
 				'Content-Type': 'application/json'
@@ -295,7 +295,7 @@ export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(que
 				query,
 				variables
 			})
-		}, FetchResultTypes.JSON) as Promise<GraphQLPokemonResponse<R>>;
+		}, FetchResultTypes.JSON);
 	} catch {
 		// No need to throw anything specific here, it is caught off in the commands' fetchAPI method.
 		throw 'query_failed';

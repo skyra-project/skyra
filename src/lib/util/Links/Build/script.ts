@@ -1,4 +1,4 @@
-import { writeFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import fetch from 'node-fetch';
 import { join } from 'path';
 import { toUnicode } from 'punycode';
@@ -22,7 +22,7 @@ async function main() {
 		return lLine === parsed ? `\t'${parsed}'${delimiter}` : `\t'${parsed}'${delimiter} // ${lLine}`;
 	}).join('\n');
 
-	await writeFile(join(__dirname, '..', 'TLDs.ts'), header + content + footer);
+	await fsp.writeFile(join(__dirname, '..', 'TLDs.ts'), header + content + footer);
 }
 
 main().catch(error => console.error(error));

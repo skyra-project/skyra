@@ -6,6 +6,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 
+	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private rolePrompt = this.definePrompt('<role:rolename>');
 
 	public constructor(store: CommandStore, file: string[], directory: string) {

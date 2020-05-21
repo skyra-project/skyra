@@ -25,7 +25,7 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	const url = new URL(GOOGLE_MAPS_API_URL);
 	url.searchParams.append('address', location);
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
-	const { results, status } = await fetch(url, FetchResultTypes.JSON) as GoogleMapsResultOk;
+	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
 	if (status !== GoogleResponseCodes.Ok) throw message.language.tget(handleNotOK(status, message.client));
 	if (results.length === 0) throw message.language.tget('GOOGLE_ERROR_ZERO_RESULTS');
@@ -48,7 +48,7 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 		url.searchParams.append('safe', nsfwAllowed ? 'off' : 'active');
 		if (type === CustomSearchType.Image) url.searchParams.append('searchType', 'image');
 
-		return await fetch(url, FetchResultTypes.JSON) as GoogleSearchResult<T>;
+		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch {
 		throw message.language.tget(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
 	}

@@ -85,7 +85,8 @@ export class JsonCommonQuery implements CommonQuery {
 	}
 
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
-		const entry = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		const entry = await this.provider.get<RawTwitchStreamSubscriptionSettings>(Databases.TwitchStreamSubscriptions, streamerID);
+		if (!entry) return false;
 		entry.guild_ids = entry.guild_ids.filter(value => value !== guildID);
 		await this.provider.update(Databases.TwitchStreamSubscriptions, streamerID, entry);
 		return entry.guild_ids.length === 0;
@@ -322,7 +323,7 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public async upsertDecrementMemberSettings(guildID: string, userID: string, points: number) {
 		const id = `${guildID}.${userID}`;
-		const previous = await this.provider.get(Databases.Members, id) as RawMemberSettings;
+		const previous = await this.provider.get<RawMemberSettings>(Databases.Members, id);
 		const patched: RawMemberSettings = {
 			guild_id: guildID,
 			user_id: userID,
@@ -335,7 +336,7 @@ export class JsonCommonQuery implements CommonQuery {
 
 	public async upsertIncrementMemberSettings(guildID: string, userID: string, points: number) {
 		const id = `${guildID}.${userID}`;
-		const previous = await this.provider.get(Databases.Members, id) as RawMemberSettings;
+		const previous = await this.provider.get<RawMemberSettings>(Databases.Members, id);
 		const patched: RawMemberSettings = {
 			guild_id: guildID,
 			user_id: userID,
@@ -373,7 +374,7 @@ export class JsonCommonQuery implements CommonQuery {
 	}
 
 	public async upsertTwitchStreamSubscription(streamerID: string, guildID?: string) {
-		const value = await this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as RawTwitchStreamSubscriptionSettings;
+		const value = await this.provider.get<RawTwitchStreamSubscriptionSettings>(Databases.TwitchStreamSubscriptions, streamerID);
 		if (value) {
 			// When updating Twitch subscriptions the GuildID is passed as `undefined`
 			const guild_ids = guildID === undefined ? value.guild_ids : value.guild_ids.concat(guildID);

@@ -93,7 +93,7 @@ export default class extends Provider {
 		const resolvedEntry = resolvedTable.get(entry);
 		if (typeof resolvedEntry === 'undefined') return Promise.reject(new Error(ErrorMessages.EntryNotExists));
 
-		const resolved = this.parseUpdateInput(data) as Record<PropertyKey, unknown>;
+		const resolved = this.parseUpdateInput(data);
 		const merged = mergeObjects({ ...resolvedEntry }, resolved);
 		resolvedTable.set(entry, merged);
 

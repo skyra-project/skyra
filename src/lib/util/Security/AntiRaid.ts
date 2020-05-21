@@ -115,6 +115,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 					? member.roles.has(initialRole)
 					: true
 				) {
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 					return { done: false, value: member as GuildMember };
 				}
 

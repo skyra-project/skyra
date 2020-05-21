@@ -14,13 +14,14 @@ import { KlasaMessage } from 'klasa';
 	description: language => language.tget('COMMAND_LEARN_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_LEARN_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
-	usage: '[generation:generation] <pokemon:string> <moves:...string> ',
+	usage: '(generation:generation) <pokemon:string> <moves:...string> ',
 	usageDelim: ' ',
 	flagSupport: true
 })
 export default class Learn extends SkyraCommand {
 
 	private kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
+	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private kClientIntegerArg = this.client.arguments.get('integer')!;
 
 	public async init() {

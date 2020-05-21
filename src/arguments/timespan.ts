@@ -1,4 +1,4 @@
-import { Argument, KlasaMessage, Possible, Duration, util } from 'klasa';
+import { Argument, Duration, KlasaMessage, Possible, util } from 'klasa';
 
 export default class extends Argument {
 
@@ -10,8 +10,8 @@ export default class extends Argument {
 		}
 
 		const { min, max } = possible;
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 2341
+
+		// @ts-expect-error 2341
 		return Argument.minOrMax(this.client, duration.offset, min, max, possible, message, '') ? duration.offset : null;
 	}
 

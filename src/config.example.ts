@@ -3,9 +3,8 @@
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
-import { KlasaClientOptions } from 'klasa';
+import { KlasaClientOptions, PostgresOptions } from 'klasa';
 import { resolve } from 'path';
-import { PoolConfig } from 'pg';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -27,7 +26,7 @@ export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 export const PGSQL_DATABASE_NAME = '';
 export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
-export const PGSQL_DATABASE_OPTIONS: PoolConfig = {
+export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
 	user: PGSQL_DATABASE_USER

@@ -35,11 +35,11 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, user: string, platform: platform) {
 		try {
-			const fortniteUser = await fetch(
+			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
 				{ headers: { 'TRN-Api-Key': TOKENS.FORTNITE_KEY } },
 				FetchResultTypes.JSON
-			) as Fortnite.FortniteUser;
+			);
 
 			if (fortniteUser.error) throw 'err'; // This gets handled in the catch, no reason to get the proper error message here.
 			return fortniteUser;

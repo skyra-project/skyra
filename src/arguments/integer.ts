@@ -11,8 +11,8 @@ export default class extends Argument {
 		if (!Number.isInteger(number)) throw message.language.get('RESOLVER_INVALID_INT', possible.name);
 
 		const { min, max } = possible;
-		// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-		// @ts-ignore 2341
+
+		// @ts-expect-error 2341
 		return Argument.minOrMax(this.client, number, min, max, possible, message, '') ? number : null;
 	}
 

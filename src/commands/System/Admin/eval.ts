@@ -61,16 +61,16 @@ export default class extends SkyraCommand {
 	// Eval the input
 	private async eval(message: KlasaMessage, code: string) {
 		const stopwatch = new Stopwatch();
-		let success: boolean;
-		let syncTime: string;
-		let asyncTime: string;
-		let result: unknown;
+		let success: boolean | undefined = undefined;
+		let syncTime: string | undefined = undefined;
+		let asyncTime: string | undefined = undefined;
+		let result: unknown | undefined = undefined;
 		let thenable = false;
-		let type: Type;
+		let type: Type | undefined = undefined;
 		try {
 			if (message.flagArgs.async) code = `(async () => {\n${code}\n})();`;
-			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-			// @ts-ignore 6133
+
+			// @ts-expect-error 6133
 			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			const msg = message;
 			// eslint-disable-next-line no-eval
@@ -85,8 +85,8 @@ export default class extends SkyraCommand {
 			}
 			success = true;
 		} catch (error) {
-			if (!syncTime!) syncTime = stopwatch.toString();
-			if (thenable && !asyncTime!) asyncTime = stopwatch.toString();
+			if (!syncTime) syncTime = stopwatch.toString();
+			if (thenable && !asyncTime) asyncTime = stopwatch.toString();
 			if (!type!) type = new Type(error);
 			result = error;
 			success = false;
@@ -103,7 +103,7 @@ export default class extends SkyraCommand {
 						showHidden: Boolean(message.flagArgs.showHidden)
 					});
 		}
-		return { success, type: type!, time: this.formatTime(syncTime!, asyncTime!), result: clean(result as string) };
+		return { success, type: type!, time: this.formatTime(syncTime, asyncTime ?? ''), result: clean(result as string) };
 	}
 
 	private formatTime(syncTime: string, asyncTime: string) {

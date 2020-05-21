@@ -100,12 +100,13 @@ export default class extends Event {
 		// If the user does not have multiple roles from any set cancel
 		if (!hasMultipleRolesInOneSet) return;
 
-		const auditLogs = await api(this.client).guilds(guild.id)['audit-logs'].get({
+
+		const auditLogs = await api(this.client).guilds(guild.id)['audit-logs'].get<AuditLogResult>({
 			query: {
 				limit: 10,
 				action_type: 25
 			}
-		}) as AuditLogResult;
+		});
 
 		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== this.client.user!.id
 			&& e.target_id === data.user.id

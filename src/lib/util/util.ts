@@ -9,7 +9,7 @@ import { CLIENT_SECRET } from '@root/config';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
 import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, PermissionResolvable, Permissions, Role, TextChannel, User, UserResolvable } from 'discord.js';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { KlasaGuild, KlasaMessage, RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
@@ -71,7 +71,7 @@ export function showSeconds(duration: number) {
  * @param path The path to the image to load
  */
 export async function loadImage(path: string) {
-	const buffer = await readFile(path);
+	const buffer = await fsp.readFile(path);
 	const image = new Image();
 	image.src = buffer;
 	return image;
@@ -183,7 +183,7 @@ export function cutText(str: string, length: number) {
 }
 
 export function iteratorAt<T>(iterator: IterableIterator<T>, position: number) {
-	let result: IteratorResult<T>;
+	let result: IteratorResult<T> | null = null;
 	while (position-- > 0) {
 		result = iterator.next();
 		if (result.done) return null;
@@ -194,7 +194,7 @@ export function iteratorAt<T>(iterator: IterableIterator<T>, position: number) {
 }
 
 export function iteratorRange<T>(iterator: IterableIterator<T>, position: number, offset: number) {
-	let result: IteratorResult<T>;
+	let result: IteratorResult<T> | null = null;
 	while (position-- > 0) {
 		result = iterator.next();
 		if (result.done) return [];
@@ -256,15 +256,15 @@ export const enum FetchMethods {
 	Delete = 'DELETE'
 }
 
-export async function fetch(url: URL | string, type: FetchResultTypes.JSON): Promise<unknown>;
-export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.JSON): Promise<unknown>;
+export async function fetch<R>(url: URL | string, type: FetchResultTypes.JSON): Promise<R>;
+export async function fetch<R>(url: URL | string, options: RequestInit, type: FetchResultTypes.JSON): Promise<R>;
 export async function fetch(url: URL | string, type: FetchResultTypes.Buffer): Promise<Buffer>;
 export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Buffer): Promise<Buffer>;
 export async function fetch(url: URL | string, type: FetchResultTypes.Text): Promise<string>;
 export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Text): Promise<string>;
 export async function fetch(url: URL | string, type: FetchResultTypes.Result): Promise<Response>;
 export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Result): Promise<Response>;
-export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes): Promise<Response | Buffer | string | unknown>;
+export async function fetch<R>(url: URL | string, options: RequestInit, type: FetchResultTypes): Promise<Response | Buffer | string | R>;
 export async function fetch(url: URL | string, options: RequestInit | FetchResultTypes, type?: FetchResultTypes) {
 	if (typeof options === 'undefined') {
 		options = {};
@@ -276,7 +276,7 @@ export async function fetch(url: URL | string, options: RequestInit | FetchResul
 		type = FetchResultTypes.JSON;
 	}
 
-	const result: Response = await nodeFetch(url, options as RequestInit);
+	const result: Response = await nodeFetch(url, options);
 	if (!result.ok) throw new Error(await result.text());
 
 	switch (type) {
@@ -307,7 +307,7 @@ export async function fetchReactionUsers(client: Client, channelID: string, mess
 			.channels(channelID)
 			.messages(messageID)
 			.reactions(reaction)
-			.get({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } }) as APIUserData[];
+			.get<APIUserData[]>({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } });
 		for (const user of rawUsers) users.add(user.id);
 	} while (rawUsers.length === 100);
 
@@ -418,8 +418,8 @@ export function getDisplayAvatar(id: string, user: UserTag | User | APIUserData,
  * Create a referred promise
  */
 export function createReferPromise<T>() {
-	let resolve: (value?: T) => void;
-	let reject: (error?: Error) => void;
+	let resolve: ((value?: T) => void) | undefined = undefined;
+	let reject: ((error?: Error) => void) | undefined = undefined;
 	const promise: Promise<T> = new Promise((res, rej) => {
 		resolve = res;
 		reject = rej;

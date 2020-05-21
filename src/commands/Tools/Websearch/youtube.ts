@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('safeSearch', 'strict');
 		url.searchParams.append('q', input);
 		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
-		const data = await fetch(url, FetchResultTypes.JSON) as YouTubeResultOk;
+		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
 		const result = data.items[index];
 
 		if (!result) {
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 				: 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
 		}
 
-		let output: string;
+		let output = '';
 		switch (result.id.kind) {
 			case 'youtube#channel': output = `https://youtube.com/channel/${result.id.channelId}`;
 				break;

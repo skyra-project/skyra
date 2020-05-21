@@ -76,11 +76,11 @@ export default class extends SkyraCommand {
 				url.href += encodeURIComponent(query);
 			}
 
-			return await fetch(url, {
+			return await fetch<C extends ClashOfClansFetchCategories.CLANS ? ClashOfClans.ClansResponse : ClashOfClans.Player>(url, {
 				headers: {
 					Authorization: `Bearer ${TOKENS.CLASH_OF_CLANS_KEY}`
 				}
-			}, FetchResultTypes.JSON) as Promise<C extends ClashOfClansFetchCategories.CLANS ? ClashOfClans.ClansResponse : ClashOfClans.Player>;
+			}, FetchResultTypes.JSON);
 		} catch (err) {
 			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget(`COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL`, query);
 			else throw message.language.tget(`COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL`, query);

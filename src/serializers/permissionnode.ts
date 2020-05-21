@@ -15,7 +15,7 @@ export default class extends Serializer {
 		if (!Array.isArray(data.deny)) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID');
 
 		// Check for target validity
-		let target: GuildMember | Role;
+		let target: GuildMember | Role | undefined = undefined;
 		if (entry.key === 'roles') {
 			const role = guild.roles.get(data.id);
 			if (!role) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID_TARGET');

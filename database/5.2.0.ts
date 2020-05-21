@@ -136,8 +136,7 @@
  * 			commandUses: entry.commandUses || 0,
  * 			guildBlacklist: entry.guildBlacklist || [],
  * 			userBlacklist: entry.userBlacklist || [],
- * 			// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
- * 			// @ts-ignore 2339
+ * 			// @ts-expect-error 2339
  * 			schedules: (entry.schedules || []).map(schedule => typeof schedule.time === 'number' ? schedule : ({ ...schedule, time: schedule.time.epoch_time * 1000 })),
  * 			boosts_guilds: entry.boosts?.guilds || [],
  * 			boosts_users: entry.boosts?.users || []

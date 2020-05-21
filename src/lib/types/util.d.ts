@@ -15,8 +15,8 @@ export class JsonProvider extends Provider {
 	public hasTable(table: string): Promise<boolean>;
 	public create(table: string, entry: string, data: object): Promise<unknown>;
 	public delete(table: string, entry: string): Promise<unknown>;
-	public get(table: string, entry: string): Promise<object | null>;
-	public getAll(table: string, entries?: readonly string[]): Promise<object[]>;
+	public get<T = object>(table: string, entry: string): Promise<T | null>;
+	public getAll<T = object>(table: string, entries?: readonly string[]): Promise<T[]>;
 	public getKeys(table: string): Promise<string[]>;
 	public has(table: string, entry: string): Promise<boolean>;
 	public update(table: string, entry: string, data: object | SettingsUpdateResults): Promise<unknown>;

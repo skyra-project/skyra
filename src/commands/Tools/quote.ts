@@ -45,15 +45,15 @@ export default class extends SkyraCommand {
 	}
 
 	private async getFromUrl(message: KlasaMessage, url: string) {
-		let parsed: URL;
+		let parsed: URL | undefined = undefined;
 		try {
 			parsed = new URL(url);
 		} catch {
 			return null;
 		}
 
-		// Only discordapp.com urls are allowed.
-		if (/^(beta\.|canary\.)?discordapp\.com$/g.test(parsed.hostname)) return null;
+		// Only discordapp.com and discord.com urls are allowed.
+		if (/^(ptb\.|canary\.)?discord(?:app)?\.com$/g.test(parsed.hostname)) return null;
 
 		const extract = MESSAGE_LINK_REGEXP.exec(parsed.pathname);
 		if (!extract) return null;

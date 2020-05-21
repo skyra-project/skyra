@@ -45,8 +45,8 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lat', lat.toString());
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
-		return await fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND'); }) as TimeResult;
+		return fetch<TimeResult>(url, FetchResultTypes.JSON)
+			.catch(() => { throw message.language.tget('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND'); });
 	}
 
 }

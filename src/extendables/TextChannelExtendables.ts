@@ -9,6 +9,7 @@ export default class extends Extendable {
 		super(store, file, directory, { appliesTo: [TextChannel] });
 	}
 
+	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
 	public set sniped(this: TextChannel, value: Message | null) {
 		const previous = snipes.get(this);
 		if (typeof previous !== 'undefined') this.client.clearTimeout(previous.timeout);
@@ -25,6 +26,7 @@ export default class extends Extendable {
 		}
 	}
 
+	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
 	public get sniped(this: TextChannel) {
 		const current = snipes.get(this);
 		return typeof current === 'undefined' ? null : current.message;

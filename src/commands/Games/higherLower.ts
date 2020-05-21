@@ -107,6 +107,8 @@ export default class extends SkyraCommand {
 					game.running = false;
 					break;
 				}
+				case HigherLowerReactions.Ok:
+					break;
 			}
 
 			if (game.running) game.turn++;

@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
 import { Canvas } from 'canvas-constructor';
-import { readFile } from 'fs-nextra';
+import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await readFile(join(assetsFolder, './images/memes/TheSearch.png'));
+		this.template = await fsp.readFile(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 
 }

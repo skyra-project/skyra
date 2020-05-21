@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const body = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON) as DuckDuckGoResultOk;
+		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
 
 		if (body.Heading.length === 0) {
 			throw message.language.tget('COMMAND_DUCKDUCKGO_NOTFOUND');

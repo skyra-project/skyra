@@ -67,17 +67,17 @@ function min(d0: number, d1: number, d2: number, bx: number, ay: number): number
 function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: number): number {
 	let x = 0;
 	let y = 0;
-	let d0: number;
-	let d1: number;
-	let d2: number;
-	let d3: number;
-	let dd: number;
-	let dy: number;
-	let ay: number;
-	let bx0: number;
-	let bx1: number;
-	let bx2: number;
-	let bx3: number;
+	let d0: number | undefined = undefined;
+	let d1: number | undefined = undefined;
+	let d2: number | undefined = undefined;
+	let d3: number | undefined = undefined;
+	let dd: number | undefined = undefined;
+	let dy: number | undefined = undefined;
+	let ay: number | undefined = undefined;
+	let bx0: number | undefined = undefined;
+	let bx1: number | undefined = undefined;
+	let bx2: number | undefined = undefined;
+	let bx3: number | undefined = undefined;
 
 	const vector: number[] = [];
 

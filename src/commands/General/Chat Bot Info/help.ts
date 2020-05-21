@@ -9,9 +9,21 @@ import { Command, CommandStore, KlasaMessage } from 'klasa';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
-export default class extends SkyraCommand {
+/**
+ * Sorts a collection alphabetically as based on the keys, rather than the values.
+ * This is used to ensure that subcategories are listed in the pages right after the main category.
+ * @param _ The first element for comparison
+ * @param __ The second element for comparison
+ * @param firstCategory Key of the first element for comparison
+ * @param secondCategory Key of the second element for comparison
+ */
+function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: string, secondCategory: string): 1 | -1 | 0 {
+	if (firstCategory > secondCategory) return 1;
+	if (secondCategory > firstCategory) return -1;
+	return 0;
+}
 
-	private kSortCommandsAlphabetically = this.sortCommandsAlphabetically.bind(this);
+export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -138,21 +150,7 @@ export default class extends SkyraCommand {
 				return null;
 			}).catch(noop)));
 
-		return commands.sort(this.kSortCommandsAlphabetically);
-	}
-
-	/**
-	 * Sorts a collection alphabetically as based on the keys, rather than the values.
-	 * This is used to ensure that subcategories are listed in the pages right after the main category.
-	 * @param _ The first element for comparison
-	 * @param __ The second element for comparison
-	 * @param firstCategory Key of the first element for comparison
-	 * @param secondCategory Key of the second element for comparison
-	 */
-	private sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: string, secondCategory: string): 1 | -1 | 0 {
-		if (firstCategory > secondCategory) return 1;
-		if (secondCategory > firstCategory) return -1;
-		return 0;
+		return commands.sort(sortCommandsAlphabetically);
 	}
 
 }

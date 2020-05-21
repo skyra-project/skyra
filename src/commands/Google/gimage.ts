@@ -18,10 +18,8 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 
-	private stringArgtype = this.client.arguments.get('string')!;
-
 	public async init() {
-		this.createCustomResolver('query', (arg, possible, message) => this.stringArgtype.run(
+		this.createCustomResolver('query', (arg, possible, message) => this.client.arguments.get('string')!.run(
 			arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'),
 			possible,
 			message

@@ -36,23 +36,29 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private fetchAPI(message: KlasaMessage, show: string, year?: string) {
-		const url = new URL('https://api.themoviedb.org/3/search/tv');
-		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
-		url.searchParams.append('query', show);
+	private async fetchAPI(message: KlasaMessage, show: string, year?: string) {
+		try {
+			const url = new URL('https://api.themoviedb.org/3/search/tv');
+			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+			url.searchParams.append('query', show);
 
-		if (year) url.searchParams.append('first_air_date_year', year);
+			if (year) url.searchParams.append('first_air_date_year', year);
 
-		return fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbSeriesList>;
+			return fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
-	private fetchShowData(message: KlasaMessage, serieId: number) {
-		const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
-		url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
+	private async fetchShowData(message: KlasaMessage, serieId: number) {
+		try {
+			const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
+			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
-		return fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Tmdb.TmdbSerie>;
+			return fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
 	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage) {

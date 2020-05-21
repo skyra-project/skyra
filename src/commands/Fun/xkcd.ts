@@ -26,8 +26,8 @@ export default class extends SkyraCommand {
 				: input;
 
 		const comicNumber = await this.getNumber(query, message.language);
-		const comic = await fetch(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); }) as XkcdResultOk;
+		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON)
+			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); });
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(getColor(message))

@@ -9,7 +9,7 @@ export default class extends Inhibitor {
 	private impliedPermissions = new Permissions(515136).freeze();
 
 	public run(message: KlasaMessage, command: Command) {
-		let missing: PermissionString[];
+		let missing: PermissionString[] | undefined = undefined;
 
 		// If the message was sent in a guild channel, check for channel permissions.
 		if (message.guild) {

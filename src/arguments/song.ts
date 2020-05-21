@@ -13,8 +13,8 @@ export default class extends Argument {
 
 		arg = arg.replace(/^<(.+)>$/g, '$1');
 		const parsedURL = this.parseURL(arg);
-		let returnAll: boolean;
-		let tracks: Track[];
+		let returnAll = false;
+		let tracks: Track[] = [];
 		let soundcloud = true;
 		if (parsedURL) {
 			tracks = await this.fetchSongs(message, remainingUserEntries, arg);

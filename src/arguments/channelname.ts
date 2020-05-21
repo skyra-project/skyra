@@ -13,7 +13,7 @@ export default class extends Argument {
 
 	public resolveChannel(query: string, guild: KlasaGuild) {
 		const channelID = CHANNEL_REGEXP.exec(query);
-		return (channelID !== null && guild.channels.get(channelID[1])) || null;
+		return (channelID !== null && guild.channels.get(channelID[1])) ?? null;
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {

@@ -16,8 +16,9 @@ export default class extends Extendable {
 		return rank.position;
 	}
 
+	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
 	public get isDJ(this: GuildMember) {
-		const djRole = this.guild!.settings.get(GuildSettings.Roles.Dj);
+		const djRole = this.guild.settings.get(GuildSettings.Roles.Dj);
 
 		return (this.roles.has(djRole) || this.isStaff);
 	}
@@ -26,15 +27,17 @@ export default class extends Extendable {
 		return this.isAdmin || this.isMod;
 	}
 
+	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
 	public get isAdmin(this: GuildMember) {
-		const adminRole = this.guild!.settings.get(GuildSettings.Roles.Admin);
+		const adminRole = this.guild.settings.get(GuildSettings.Roles.Admin);
 
 		if (this.roles.has(adminRole)) return true;
 		return this.permissions.has(Permissions.FLAGS.MANAGE_GUILD);
 	}
 
+	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
 	public get isMod(this: GuildMember) {
-		const moderatorRole = this.guild!.settings.get(GuildSettings.Roles.Moderator);
+		const moderatorRole = this.guild.settings.get(GuildSettings.Roles.Moderator);
 
 		if (this.roles.has(moderatorRole)) return true;
 		return this.permissions.has(Permissions.FLAGS.BAN_MEMBERS);

@@ -17,13 +17,14 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends ModerationCommand {
 
+	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private rolePrompt = this.definePrompt('<role:rolename>');
 
 	public async inhibit(message: KlasaMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedEmbed);
-		const role = (id && message.guild!.roles.get(id)) || null;
+		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
 			if (!await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)) throw message.language.tget('COMMAND_RESTRICT_LOWLEVEL');
 			if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {

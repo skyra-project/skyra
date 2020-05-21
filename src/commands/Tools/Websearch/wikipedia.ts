@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('exsectionformat', 'plain');
 		url.searchParams.append('exlimit', '1');
 		url.searchParams.append('titles', this.parseURL(input));
-		const text = await fetch(url, FetchResultTypes.JSON) as WikipediaResultOk;
+		const text = await fetch<WikipediaResultOk>(url, FetchResultTypes.JSON);
 
 		if (text.query.pageids[0] === '-1') {
 			throw message.language.tget('COMMAND_WIKIPEDIA_NOTFOUND');

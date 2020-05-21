@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 	}
 
 	private fetchAPI(message: KlasaMessage, animeName: string) {
-		return fetch(API_URL, {
+		return fetch<Kitsu.KitsuResult>(API_URL, {
 			method: FetchMethods.Post,
 			headers: {
 				'Content-Type': 'application/json',
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 				}
 			)
 		}, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<Kitsu.KitsuResult>;
+			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); });
 	}
 
 	private buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 				.setTitle(title)
 				.setURL(animeURL)
 				.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
-				.setThumbnail(entry.posterImage?.original || '')
+				.setThumbnail(entry.posterImage?.original ?? '')
 				.addField(embedData.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
 				.addField(embedData.SCORE, score, true)
 				.addField(embedData.EPISODES, entry.episodeCount ? entry.episodeCount : embedData.STILL_AIRING, true)

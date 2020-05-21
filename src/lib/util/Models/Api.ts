@@ -1088,11 +1088,11 @@ interface ApiWebhooksWebhookTokenGitHub {
 }
 
 interface ApiMethods {
-	get(data?: { query?: Record<string, string | number | undefined> }): Promise<unknown>;
-	post(data: unknown): Promise<unknown>;
-	put(data?: unknown): Promise<unknown>;
-	patch(data: unknown): Promise<unknown>;
-	delete(data?: { reason?: string }): Promise<unknown>;
+	get<T extends unknown>(data?: { query?: Record<string, string | number | undefined> }): Promise<T>;
+	post<T extends unknown>(data: unknown): Promise<T>;
+	put<T extends unknown>(data?: unknown): Promise<T>;
+	patch<T extends unknown>(data: unknown): Promise<T>;
+	delete<T extends unknown>(data?: { reason?: string }): Promise<T>;
 }
 
 type R<T> = Exclude<keyof T, keyof ApiMethods>;

@@ -111,7 +111,7 @@ export class SettingsMenu {
 		// In case of messages that do not have a content, like attachments, ignore
 		if (!message.content) return;
 
-		this.llrc!.setTime(TIMEOUT);
+		this.llrc?.setTime(TIMEOUT);
 		this.errorMessage = null;
 		if (isSchemaFolder(this.schema)) {
 			const schema = this.schema.get(message.content);
@@ -133,9 +133,9 @@ export class SettingsMenu {
 
 	private async onReaction(reaction: LLRCData): Promise<void> {
 		if (reaction.userID !== this.message.author.id) return;
-		this.llrc!.setTime(TIMEOUT);
+		this.llrc?.setTime(TIMEOUT);
 		if (reaction.emoji.name === EMOJIS.STOP) {
-			this.llrc!.end();
+			this.llrc?.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, reaction.userID));
 			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
@@ -155,7 +155,7 @@ export class SettingsMenu {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === APIErrors.UnknownMessage) {
 					this.response = null;
-					this.llrc!.end();
+					this.llrc?.end();
 					return this;
 				}
 
@@ -176,7 +176,7 @@ export class SettingsMenu {
 		} catch (error) {
 			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 				this.response = null;
-				this.llrc!.end();
+				this.llrc?.end();
 			} else {
 				this.message.client.emit(Events.ApiError, error);
 			}
@@ -190,7 +190,7 @@ export class SettingsMenu {
 		} catch (error) {
 			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 				this.response = null;
-				this.llrc!.end();
+				this.llrc?.end();
 			} else {
 				this.message.client.emit(Events.ApiError, error);
 			}

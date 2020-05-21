@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);
 
-		let result;
+		let result: string | undefined = undefined;
 		if (estimatedPercentage < 45) {
 			result = message.language.tget('COMMAND_LOVE_LESS45');
 		} else if (estimatedPercentage < 75) {

@@ -1,9 +1,9 @@
+import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { rootFolder } from '@utils/constants';
 import { inlineCodeblock } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage, util } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
 
 const BLACKLISTED_CODES = [
 	// Unknown Channel
@@ -46,7 +46,7 @@ export default class extends Event {
 		}
 
 		// Emit where the error was emitted
-		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error}`);
+		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
 			await message.alert(this.client.options.owners.includes(message.author.id)
 				? util.codeBlock('js', error.stack!)
@@ -57,7 +57,7 @@ export default class extends Event {
 	}
 
 	private async _sendErrorChannel(message: KlasaMessage, command: Command, error: Error) {
-		let output: string;
+		let output: string | undefined = undefined;
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			output = [
 				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,

@@ -32,18 +32,21 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private fetchAPI(message: KlasaMessage, song: string) {
-		const url = new URL('https://itunes.apple.com/search');
-		url.searchParams.append('country', 'US');
-		url.searchParams.append('entity', 'song');
-		url.searchParams.append('explicit', 'no');
-		url.searchParams.append('lang', message.language.name.toLowerCase());
-		url.searchParams.append('limit', '10');
-		url.searchParams.append('media', 'music');
-		url.searchParams.append('term', song);
+	private async fetchAPI(message: KlasaMessage, song: string) {
+		try {
+			const url = new URL('https://itunes.apple.com/search');
+			url.searchParams.append('country', 'US');
+			url.searchParams.append('entity', 'song');
+			url.searchParams.append('explicit', 'no');
+			url.searchParams.append('lang', message.language.name.toLowerCase());
+			url.searchParams.append('limit', '10');
+			url.searchParams.append('media', 'music');
+			url.searchParams.append('term', song);
 
-		return fetch(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); }) as Promise<ITunesResult>;
+			return await fetch<AppleItunesResult>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
 	private buildDisplay(entries: ItunesData[], message: KlasaMessage) {
@@ -106,7 +109,7 @@ interface ItunesData {
 	wrapperType: 'track' | string;
 }
 
-interface ITunesResult {
+interface AppleItunesResult {
 	results: ItunesData[];
 	resultCount: number;
 }

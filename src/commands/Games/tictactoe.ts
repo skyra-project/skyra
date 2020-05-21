@@ -67,16 +67,17 @@ export default class extends SkyraCommand {
 	}
 
 	private _game(message: KlasaMessage, players: KlasaUser[], board: number[]) {
-		let timeout: NodeJS.Timeout;
+		let timeout: NodeJS.Timeout | undefined = undefined;
 		let turn = 0;
-		let chosen: number;
-		let winner: number | null;
-		let player: KlasaUser;
+		let chosen: number | undefined = undefined;
+		let winner: number | null | undefined = undefined;
+		let player: KlasaUser | undefined = undefined;
 		let blocked = true;
+
 		return new Promise<number | null>((resolve, reject) => {
 			// Make the collectors
 			const collector = message.createReactionCollector((reaction, user) => !blocked
-				&& user.id === player.id
+				&& user.id === player?.id
 				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
 				&& board[chosen] === 0);
 
@@ -103,10 +104,10 @@ export default class extends SkyraCommand {
 				blocked = true;
 
 				// Clear the timeout
-				clearTimeout(timeout);
+				clearTimeout(timeout as NodeJS.Timeout);
 
 				// Set the piece
-				board[chosen] = (turn % 2) + 1;
+				board[chosen as number] = (turn % 2) + 1;
 
 				// If there is a winner, resolve with it
 				winner = this.checkBoard(board);

@@ -26,8 +26,9 @@ const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 })
 export default class extends SkyraCommand {
 
-	private readonly banners: Map<string, BannerCache> = new Map();
+	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private readonly listPrompt = this.definePrompt('<all|user>');
+	private readonly banners: Map<string, BannerCache> = new Map();
 	private display: UserRichDisplay | null = null;
 
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
@@ -37,7 +38,7 @@ export default class extends SkyraCommand {
 		const money = message.author.settings.get(UserSettings.Money);
 		if (money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', money, banner.price);
 
-		const accepted = await this._prompt(message, banner);
+		const accepted = await this.prompt(message, banner);
 		if (!accepted) throw message.language.tget('COMMAND_BANNER_PAYMENT_CANCELLED');
 
 		if (money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', money, banner.price);
@@ -84,7 +85,7 @@ export default class extends SkyraCommand {
 
 	public async show(message: KlasaMessage) {
 		const [response] = await this.listPrompt.createPrompt(message).run(message.language.tget('COMMAND_BANNER_PROMPT'));
-		return response === 'all' ? this._buyList(message) : this._userList(message);
+		return response === 'all' ? this.buyList(message) : this.userList(message);
 	}
 
 	public async init() {
@@ -117,11 +118,11 @@ export default class extends SkyraCommand {
 		this.display = display;
 	}
 
-	private _buyList(message: KlasaMessage) {
-		return this._runDisplay(message, this.display!);
+	private buyList(message: KlasaMessage) {
+		return this.runDisplay(message, this.display);
 	}
 
-	private _userList(message: KlasaMessage) {
+	private userList(message: KlasaMessage) {
 		const prefix = message.guild!.settings.get(GuildSettings.Prefix);
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList));
 		if (!banners.size) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', prefix);
@@ -137,16 +138,18 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		return this._runDisplay(message, display);
+		return this.runDisplay(message, display);
 	}
 
-	private async _runDisplay(message: KlasaMessage, display: UserRichDisplay) {
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
-		await display.start(response, message.author.id);
-		return response;
+	private async runDisplay(message: KlasaMessage, display: UserRichDisplay | null) {
+		if (display !== null) {
+			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
+			await display.start(response, message.author.id);
+			return response;
+		}
 	}
 
-	private async _prompt(message: KlasaMessage, banner: BannerCache) {
+	private async prompt(message: KlasaMessage, banner: BannerCache) {
 		const embed = new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
 			.setDescription([

@@ -6,9 +6,11 @@ export class Markov {
 	private readonly wordBank: WordBank = new Map();
 	private readonly normalizeFn: MarkovNormalizer;
 	private sentence = '';
+	private endFn: MarkovEndFunction;
 
 	public constructor(normalizeFn: MarkovNormalizer = word => word.replace(/\.$/g, '')) {
 		this.normalizeFn = normalizeFn;
+		this.endFn = () => this.countWords() > 7;
 	}
 
 	public process() {
@@ -16,7 +18,7 @@ export class Markov {
 		if (!currentWord) return '';
 
 		this.sentence = currentWord;
-		let word: WordBankValue | undefined;
+		let word: WordBankValue | undefined = undefined;
 		while (typeof (word = this.wordBank.get(currentWord)) !== 'undefined' && !this.endFn()) {
 			currentWord = pickByWeights(word)!;
 			this.sentence += ` ${currentWord}`;
@@ -85,7 +87,6 @@ export class Markov {
 	}
 
 	private startFn: MarkovStartFunction = (wordList: WordBank) => iteratorAt(wordList.keys(), Math.floor(Math.random() * wordList.size))!;
-	private endFn: MarkovEndFunction = () => this.countWords() > 7;
 
 	private countWords() {
 		return this.sentence.split(Markov.kWordSeparator).length;

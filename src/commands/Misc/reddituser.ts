@@ -81,10 +81,10 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchAbout(user: string, message: KlasaMessage) {
-		const { data } = await fetch(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON)
+		const { data } = await fetch<Reddit.Response<'about'>>(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
-			}) as Reddit.Response<'about'>;
+			});
 		return data;
 	}
 
@@ -101,10 +101,10 @@ export default class extends SkyraCommand {
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
-		const { data } = await fetch(url, FetchResultTypes.JSON)
+		const { data } = await fetch<Reddit.Response<'comments'>>(url, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
-			}) as Reddit.Response<'comments'>;
+			});
 
 		for (const child of data.children) {
 			dataElements.push(child.data);
@@ -128,10 +128,10 @@ export default class extends SkyraCommand {
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
-		const { data } = await fetch(url, FetchResultTypes.JSON)
+		const { data } = await fetch<Reddit.Response<'posts'>>(url, FetchResultTypes.JSON)
 			.catch(() => {
 				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
-			}) as Reddit.Response<'posts'>;
+			});
 
 		for (const child of data.children) {
 			dataElements.push(child.data);
@@ -222,7 +222,7 @@ export default class extends SkyraCommand {
 		const subreddits = new Collection<string, { name: string; count: number }>();
 
 		for (const contribution of contributions) {
-			const count = (subreddits.get(contribution.subreddit)?.count || 0) + 1;
+			const count = (subreddits.get(contribution.subreddit)?.count ?? 0) + 1;
 			subreddits.set(contribution.subreddit, { name: contribution.subreddit, count });
 		}
 

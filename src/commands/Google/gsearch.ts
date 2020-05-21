@@ -1,26 +1,24 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { CustomSearchType, GooleCSEItem, queryGoogleCustomSearchAPI, handleNotOK, GoogleResponseCodes } from '@utils/Google';
+import { CustomSearchType, GoogleResponseCodes, GooleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
 import { getColor, parseURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['google', 'googlesearch', 'g', 'search'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_GSEARCH_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_GSEARCH_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<query:query>'
+})
 export default class extends SkyraCommand {
 
-	private stringArgtype = this.client.arguments.get('string')!;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['google', 'googlesearch', 'g', 'search'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_GSEARCH_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_GSEARCH_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<query:query>'
-		});
-
-		this.createCustomResolver('query', (arg, possible, message) => this.stringArgtype.run(
+	public async init() {
+		this.createCustomResolver('query', (arg, possible, message) => this.client.arguments.get('string')!.run(
 			arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'),
 			possible,
 			message

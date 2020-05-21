@@ -20,8 +20,8 @@ export default class extends SkyraCommand {
 		// Escape all markdown
 		user = Util.escapeMarkdown(user);
 
-		let ratewaifu;
-		let rate;
+		let ratewaifu: string | undefined = undefined;
+		let rate: number | undefined = undefined;
 
 		if (/^(you|yourself|skyra)$/i.test(user)) {
 			rate = 100;

@@ -25,7 +25,7 @@ export default class extends Route {
 	@ratelimit(5, 1000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const user = await this.client.users.fetch(request.auth!.user_id);
-		if (!user) return response.error(500);
+		if (user === undefined) return response.error(500);
 
 		await user.settings.sync();
 		return response.json(user.settings.toJSON());
@@ -37,7 +37,7 @@ export default class extends Route {
 		const requestBody = request.body as { data: Record<Keys, unknown> | [Keys, unknown][] };
 
 		const user = await this.client.users.fetch(request.auth!.user_id);
-		if (!user) return response.error(500);
+		if (user === undefined) return response.error(500);
 
 		const entries = Array.isArray(requestBody.data) ? requestBody.data : objectToTuples(requestBody.data) as [Keys, unknown][];
 		if (entries.some(([key]) => !this.kWhitelist.includes(key))) return response.error(400);

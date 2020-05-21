@@ -30,6 +30,8 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 			case SelfModeratorHardActionFlags.Ban:
 				await this.onBan(guild, userID);
 				break;
+			case SelfModeratorHardActionFlags.None:
+				break;
 		}
 	}
 
@@ -88,8 +90,8 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 
 }
 
-export interface HardPunishment {
-	action: string;
+export interface HardPunishment<A = string> {
+	action: A;
 	actionDuration: string;
 	adder: keyof GuildSecurity['adders'];
 	adderMaximum: string;

@@ -105,6 +105,10 @@ export default class extends SkyraCommand {
 					message.guild!.security.adders.attachments = new Adder(attachmentMaximum, attachmentDuration);
 				}
 			}
+			case 'action':
+			case 'logs':
+			case 'expire':
+				break;
 		}
 		return message.sendLocale(language, [value]);
 	}

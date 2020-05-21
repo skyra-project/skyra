@@ -80,7 +80,7 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 	public remove(id: T) {
 		let deleted = 0;
 		let i = 0;
-		let entry: { id: T; end: number };
+		let entry: { id: T; end: number } | undefined = undefined;
 
 		while (i < this.length) {
 			entry = this[i];

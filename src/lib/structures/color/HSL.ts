@@ -35,9 +35,9 @@ export class HSL implements ColorHandler {
 		const s = this.s / 100;
 		const l = this.l / 100;
 		/* Parse HSL to RGB */
-		let r: number;
-		let g: number;
-		let b: number;
+		let r: number | undefined = undefined;
+		let g: number | undefined = undefined;
+		let b: number | undefined = undefined;
 
 		if (s === 0) {
 			/* Achromatic */

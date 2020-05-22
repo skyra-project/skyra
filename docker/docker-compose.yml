@@ -15,15 +15,26 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
   lavalink:
+    # network_mode: host
     container_name: lavalink
     image: skyrabot/lavalink:latest
     restart: always
-    network_mode: host
     ports:
       - "2333:2333"
+  grafana:
+    # network_mode: host
+    container_name: grafana
+    image: grafana/grafana:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment: 
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,cloudflare-app
+    volumes:
+      - grafana-data:/var/lib/grafana
 
 volumes:
   postgres-data:
     external: true
-  redis-data:
+  grafana-data:
     external: true

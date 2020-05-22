@@ -26,10 +26,12 @@ export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 export const PGSQL_DATABASE_NAME = '';
 export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
+export const PGSQL_DATABASE_PORT = 5432;
 export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
-	user: PGSQL_DATABASE_USER
+	user: PGSQL_DATABASE_USER,
+	port: PGSQL_DATABASE_PORT
 };
 
 export const VERSION = '5.2.3 Nirom';

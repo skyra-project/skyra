@@ -5,7 +5,7 @@ import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
-import { CLIENT_SECRET } from '@root/config';
+import { CLIENT_SECRET, TOKENS } from '@root/config';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
 import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, PermissionResolvable, Permissions, Role, TextChannel, User, UserResolvable } from 'discord.js';
@@ -628,6 +628,16 @@ export const authenticated = createFunctionInhibitor(
 		request.auth = Util.decrypt(request.headers.authorization, CLIENT_SECRET);
 		return !(!request.auth!.user_id || !request.auth!.token);
 
+	},
+	(_request: ApiRequest, response: ApiResponse) => {
+		response.error(403);
+	}
+);
+
+export const grafanaAuthenticated = createFunctionInhibitor(
+	(request: ApiRequest) => {
+		if (!request.headers['x-grafana-auth']) return false;
+		return request.headers['x-grafana-auth'] === TOKENS.GRAFANA_AUTH;
 	},
 	(_request: ApiRequest, response: ApiResponse) => {
 		response.error(403);

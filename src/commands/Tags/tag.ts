@@ -1,78 +1,99 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { cutText, getColor } from '@utils/util';
-import { KlasaMessage, CommandOptions } from 'klasa';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { chunk } from '@klasa/utils';
-import { BrandingColors } from '@utils/constants';
-import { MessageEmbed } from 'discord.js';
-import { ApplyOptions, requiresPermission } from '@skyra/decorators';
+import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
+import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions, requiresPermission } from '@skyra/decorators';
+import { parse as parseColour } from '@utils/Color';
+import { BrandingColors } from '@utils/constants';
+import { cutText, getColor } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { CommandOptions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<CommandOptions>({
-	aliases: ['tags'],
+	aliases: ['tags', 'customcommand', 'copypasta'],
 	description: language => language.tget('COMMAND_TAG_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_TAG_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
+	flagSupport: true,
 	requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
-	usage: '<add|remove|edit|source|list|show:default> (tag:tagname) [content:...string]',
+	usage: '<add|remove|edit|source|list|reset|show:default> (tag:tagname) [content:...string]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
 
+	// Based on HEX regex from @utils/Color
+	private kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
+
+	public async init() {
+		this.createCustomResolver('tagname', (arg, possible, message, [action]) => {
+			if (action === 'list' || action === 'reset') return undefined;
+			if (!arg) throw message.language.tget('RESOLVER_INVALID_STRING', possible.name);
+			return arg.toLowerCase();
+		});
+
+		return Promise.resolve();
+	}
+
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
-	public async add(message: KlasaMessage, [tagName, content]: [string, string]) {
+	public async add(message: KlasaMessage, [id, content]: [string, string]) {
 		// Check for permissions and content length
 		if (!content) throw message.language.tget('COMMAND_TAG_CONTENT_REQUIRED');
 
 		// Get tags, and if it does not exist, throw
-		const tags = message.guild!.settings.get(GuildSettings.Tags);
-		if (tags.some(([name]) => name === tagName)) throw message.language.tget('COMMAND_TAG_EXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, [...tags, [tagName, content]], {
-			arrayAction: 'overwrite',
+		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
+		if (tags.some(command => command.id === id)) throw message.language.tget('COMMAND_TAG_EXISTS', id);
+		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
+			arrayAction: 'add',
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_TAG_ADDED', [tagName, cutText(content, 1850)]);
+		return message.sendLocale('COMMAND_TAG_ADDED', [id, cutText(content, 1850)]);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
-	public async remove(message: KlasaMessage, [tagName]: [string]) {
+	public async remove(message: KlasaMessage, [id]: [string]) {
 		// Get tags, and if it does not exist, throw
-		const tags = message.guild!.settings.get(GuildSettings.Tags);
+		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 
-		const tag = tags.find(([name]) => name === tagName);
-		if (!tag) throw message.language.tget('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, [tag], {
+		const tag = tags.find(command => command.id === id);
+		if (!tag) throw message.language.tget('COMMAND_TAG_NOTEXISTS', id);
+		await message.guild!.settings.update(GuildSettings.CustomCommands, tag, {
 			arrayAction: 'remove',
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_TAG_REMOVED', [tagName]);
+		return message.sendLocale('COMMAND_TAG_REMOVED', [id]);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
-	public async edit(message: KlasaMessage, [tagName, content]: [string, string]) {
+	public async reset(message: KlasaMessage) {
+		await message.guild!.settings.reset(GuildSettings.CustomCommands);
+		return message.sendLocale('COMMAND_TAG_RESET');
+	}
+
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	public async edit(message: KlasaMessage, [id, content]: [string, string]) {
 		if (!content) throw message.language.tget('COMMAND_TAG_CONTENT_REQUIRED');
 
 		// Get tags, and if it does not exist, throw
-		const tags = message.guild!.settings.get(GuildSettings.Tags);
-		const index = tags.findIndex(([name]) => name === tagName);
-		if (index === -1) throw message.language.tget('COMMAND_TAG_NOTEXISTS', tagName);
-		await message.guild!.settings.update(GuildSettings.Tags, [[tagName, content]], {
+		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
+		const index = tags.findIndex(command => command.id === id);
+		if (index === -1) throw message.language.tget('COMMAND_TAG_NOTEXISTS', id);
+		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayIndex: index,
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_TAG_EDITED', [tagName, cutText(content, 1000)]);
+		return message.sendLocale('COMMAND_TAG_EDITED', [id, cutText(content, 1000)]);
 	}
 
 	public async list(message: KlasaMessage) {
-		const tags = message.guild!.settings.get(GuildSettings.Tags);
+		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		if (!tags.length) throw message.language.tget('COMMAND_TAG_LIST_EMPTY');
 
 		const response = await message.send(new MessageEmbed()
@@ -86,7 +107,7 @@ export default class extends SkyraCommand {
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {
-			const description = `\`${page.map(([name]) => `${prefix}${name}`).join('`, `')}\``;
+			const description = `\`${page.map(command => `${prefix}${command.id}`).join('`, `')}\``;
 			display.addPage((embed: MessageEmbed) => embed.setDescription(description));
 		}
 
@@ -96,27 +117,45 @@ export default class extends SkyraCommand {
 	}
 
 	public show(message: KlasaMessage, [tagName]: [string]) {
-		const tags = message.guild!.settings.get(GuildSettings.Tags);
-		const tag = tags.find(([name]) => name === tagName);
-		return tag ? message.sendMessage(tag[1]) : null;
+		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
+		const tag = tags.find(command => command.id === tagName);
+		return tag
+			? tag.embed
+				? message.sendEmbed(new MessageEmbed()
+					.setDescription(tag.content)
+					.setColor(tag.color))
+				: message.sendMessage(tag.content)
+			: null;
 	}
 
 	public source(message: KlasaMessage, [tagName]: [string]) {
-		const tags = message.guild!.settings.get(GuildSettings.Tags);
-		const tag = tags.find(([name]) => name === tagName);
-		return tag ? message.sendCode('', tag[1]) : null;
+		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
+		const tag = tags.find(command => command.id === tagName);
+		return tag ? message.sendCode('md', tag.content) : null;
 	}
 
-	public init() {
-		this.createCustomResolver('tagname', (arg, possible, message, [action]) => {
-			if (action === 'list') return undefined;
-			if (!arg) throw message.language.tget('RESOLVER_INVALID_STRING', possible.name);
-			if (arg.includes('`') || arg.includes('\u200B')) throw message.language.tget('COMMAND_TAG_NAME_NOTALLOWED');
-			if (arg.length > 50) throw message.language.tget('COMMAND_TAG_NAME_TOOLONG');
-			return arg.toLowerCase();
-		});
+	private createTag(message: KlasaMessage, id: string, content: string): CustomCommand {
+		return {
+			id,
+			content,
+			embed: Reflect.has(message.flagArgs, 'embed'),
+			color: Reflect.has(message.flagArgs, 'embed') ? this.parseColour(message) : 0,
+			args: []
+		};
+	}
 
-		return Promise.resolve();
+	private parseColour(message: KlasaMessage) {
+		let colour = message.flagArgs.color ?? message.flagArgs.colour;
+
+		if (typeof colour === 'undefined') return 0;
+		if (Number(colour)) return Math.floor(Number(colour));
+		if (typeof colour === 'string' && this.kHexlessRegex.test(colour)) colour = `#${colour}`;
+
+		try {
+			return parseColour(colour).b10.value;
+		} catch (err) {
+			return 0;
+		}
 	}
 
 }

@@ -2314,31 +2314,6 @@ export default class extends Language {
 		}),
 
 		/**
-		 * #############
-		 * TAGS COMMANDS
-		 */
-
-		COMMAND_TAG_DESCRIPTION: `Manage this guilds' tags.`,
-		COMMAND_TAG_EXTENDED: builder.display('tag', {
-			extendedHelp: `What are tags? Tags are chunk of texts stored under a name, which allows you, for example,
-					you can do \`Skyra, tag rule1\` and get a response with what the rule number one of your server is.
-					Besides that, tags are also used for memes, who doesn't like memes?`,
-			explainedUsage: [
-				['action', 'The action to perform: **add** to add new tags, **remove** to delete them, and **edit** to edit them.'],
-				['tag', `The tag's name.`],
-				['contents', 'Required for the actions **add** and **edit**, specifies the content for the tag.']
-			],
-			examples: [
-				'add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
-				'edit rule1 Just be respectful with the others.',
-				'rule1',
-				'source rule1',
-				'remove rule1',
-				'list'
-			]
-		}),
-
-		/**
 		 * ##############
 		 * TOOLS COMMANDS
 		 */
@@ -3537,6 +3512,39 @@ export default class extends Language {
 		 * TAGS COMMANDS
 		 */
 
+		COMMAND_TAG_DESCRIPTION: `Manage this guilds' tags.`,
+		COMMAND_TAG_EXTENDED: builder.display('tag', {
+			extendedHelp: [
+				'Tags, also known as custom commands, can give you a chunk of text stored under a specific name.',
+				'For example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`',
+				'When adding tags you can customize the final look by adding flags to the tag content (these won\'t show up in the tag itself!):',
+				'❯ Add `--embed` to have Skyra send the tag embedded.',
+				'The content will be in the description, so you can use all the markdown you wish. for example, adding \[masked links\]\(https://skyra.pw\).',
+				'❯ Add `--color=<a color>` or `--colour=<a colour>` to have Skyra colourize the embed. Does nothing unless also specifying \`--embed\`.',
+				'Colours can be RGB, HSL, HEX or Decimal.'
+			].join('\n'),
+			explainedUsage: [
+				['action', `The action to perform: ${this.list([
+					'`add` to add new tags',
+					'`remove` to delete a tag',
+					'`edit` to edit a tag',
+					'`source` to get the source of a tag',
+					'`list` to list all known tags',
+					'`show` to show a tag'
+				], 'o')}.`],
+				['tag', `The tag's name.`],
+				['contents', 'Required for the actions `add` and `edit`, specifies the content for the tag.']
+			],
+			examples: [
+				'add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
+				'add rule1 --embed --color=#1E88E5 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
+				'edit rule1 Just be respectful with the others.',
+				'rule1',
+				'source rule1',
+				'remove rule1',
+				'list'
+			]
+		}, true),
 		COMMAND_TAG_PERMISSIONLEVEL: 'Debe ser miembro del personal, moderador o administrador para poder administrar las etiquetas.',
 		COMMAND_TAG_NAME_NOTALLOWED: 'Un nombre de etiqueta puede no tener un acento grave ni caracteres invisibles.',
 		COMMAND_TAG_NAME_TOOLONG: 'El nombre de una etiqueta debe tener 50 caracteres o menos.',
@@ -3554,6 +3562,7 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_TAG_LIST_EMPTY: 'La lista de etiquetas para este servidor está vacía.',
 		COMMAND_TAG_LIST: tags => `${(tags.length === 1 ? 'Hay 1 etiqueta:' : `Hay ${tags.length} etiquetas: `)}${tags.join(', ')}`,
+		COMMAND_TAG_RESET: 'Todas las etiquetas se han eliminado con éxito de este servidor.',
 
 		/**
 		 * ##############
@@ -4241,6 +4250,7 @@ export default class extends Language {
 		SERIALIZER_PERMISSION_NODE_INVALID: 'Invalid data.',
 		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
 		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: command => `The command \`${command}\` does not exist or is invalid.`,
+		SERIALIZER_CUSTOM_COMMAND_INVALID: 'Invalid custom command data.',
 		SERIALIZER_TWITCH_SUBSCRIPTION_INVALID: 'Invalid data.',
 		SERIALIZER_TWITCH_SUBSCRIPTION_INVALID_STREAMER: 'Invalid data streamer.',
 		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: command => `You have set \`${command}\` twice, either allow it, or deny it.`,

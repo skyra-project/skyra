@@ -15,8 +15,8 @@ export default class extends Event {
 
 		command = command.toLowerCase();
 
-		const tags = message.guild.settings.get(GuildSettings.Tags);
-		const tag = tags.some(t => t[0] === command);
+		const tags = message.guild.settings.get(GuildSettings.CustomCommands);
+		const tag = tags.some(t => t.id === command);
 		if (tag) return this.runTag(message, command);
 
 		const aliases = message.guild.settings.get(GuildSettings.Trigger.Alias);

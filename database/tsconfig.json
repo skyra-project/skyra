@@ -1,0 +1,19 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./build",
+    "baseUrl": ".",
+    "composite": true,
+	"sourceMap": false,
+	"esModuleInterop": true,
+	"module": "CommonJS",
+    "paths": {
+      "@utils/*": ["../src/lib/util/*"],
+      "@lib/*": ["../src/lib/*"],
+      "@root/*": ["../src/*"],
+      "@dist/*": ["../dist/*"]
+    }
+  },
+  "include": ["*.ts"],
+  "references": [{ "path": "../src" }]
+}

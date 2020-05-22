@@ -5,7 +5,7 @@ export interface RawGuildSettings {
 	'disableNaturalPrefix': boolean;
 	'disabledCommands': string[];
 	'commandUses': number;
-	'tags': object[];
+	'custom-commands': object[];
 	'permissions.users': object[];
 	'permissions.roles': object[];
 	'channels.announcements': string | null;
@@ -164,7 +164,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"disableNaturalPrefix"                 BOOLEAN        DEFAULT FALSE              NOT NULL,
 		"disabledCommands"                     VARCHAR(32)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,
 		"commandUses"                          INTEGER        DEFAULT 0                  NOT NULL,
-		"tags"                                 JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
+		"custom-commands"                      JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"permissions.users"                    JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"permissions.roles"                    JSON[]         DEFAULT ARRAY[]::JSON[]    NOT NULL,
 		"channels.announcements"               VARCHAR(19),

@@ -4,7 +4,7 @@ import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageEmbed, TextChannel, Util } from 'discord.js';
 import { Event, Language } from 'klasa';
 
 export default class extends Event {
@@ -110,7 +110,7 @@ export default class extends Event {
 	}
 
 	private escapeText(text: string) {
-		return text.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+		return Util.escapeMarkdown(text.replace(/\\/g, '\\\\').replace(/"/g, '\\"'));
 	}
 
 }

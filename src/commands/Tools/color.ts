@@ -5,6 +5,7 @@ import { Canvas } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 /* Color limiter */
+const rL = (color: number) => color / 255;
 const cL = (color: number) => Math.max(Math.min(color, 255), 0);
 const sCL = (color: number) => color >= 128 ? 0 : 255;
 
@@ -48,7 +49,7 @@ export default class extends SkyraCommand {
 		this.processFrame(canvas.context, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)));
 
 		/* Complementary */
-		const thisLum = sCL(luminance(255 - red, 255 - green, 255 - blue));
+		const thisLum = sCL(luminance(rL(255 - red), rL(255 - green), rL(255 - blue)));
 		return canvas
 			.setColor(`rgb(${255 - red}, ${255 - green}, ${255 - blue})`)
 			.addRect(5, 365, 360, 20)
@@ -61,7 +62,7 @@ export default class extends SkyraCommand {
 	public processFrame(ctx: CanvasRenderingContext2D, x: number, y: number, red: number, green: number, blue: number) {
 		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
 		ctx.fillRect(x, y, 120, 120);
-		const thisLum = sCL(luminance(red, green, blue));
+		const thisLum = sCL(luminance(rL(red), rL(green), rL(blue)));
 		ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
 		ctx.fillText(
 			hexConcat(red, green, blue),

@@ -31,7 +31,7 @@ export default class extends Task {
 				`{"guildCount":${guilds}}`, TOKENS.DISCORD_BOTS, Lists.DiscordBotsGG),
 			this.query(`https://botsfordiscord.com/api/bot/${this.client.user!.id}`,
 				`{"server_count":${guilds}}`, TOKENS.BOTS_FOR_DISCORD_KEY, Lists.BotsForDiscord),
-			this.query(`https://discordbotlist.com/api/bots/${this.client.user!.id}/stats`,
+			this.query(`https://discordbotlist.com/api/v1/bots/${this.client.user!.id}/stats`,
 				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList),
 			this.query(`https://bots.ondiscord.xyz/bot-api/bots/${this.client.user!.id}/guilds`,
 				`{"guildCount":${guilds}}`, TOKENS.BOTS_ON_DISCORD_KEY, Lists.BotsOnDiscord)

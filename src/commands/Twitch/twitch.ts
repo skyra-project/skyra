@@ -13,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [name]: [string]) {
-		const { data: channelData } = await this.client.twitch.fetchUsers([], [name]);
+		const { data: channelData } = await this.fetchUsers(message, [name]);
 		if (channelData.length === 0) throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
 		const channel = channelData[0];
 
@@ -44,6 +44,14 @@ export default class extends SkyraCommand {
 			case '':
 			default:
 				return false;
+		}
+	}
+
+	private async fetchUsers(message: KlasaMessage, usernames: string[]) {
+		try {
+			return await this.client.twitch.fetchUsers([], usernames);
+		} catch {
+			throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
 		}
 	}
 

@@ -7,7 +7,7 @@ export namespace GuildSettings {
 
 	export const CommandUses = T<number>('commandUses');
 	export const Prefix = T<string>('prefix');
-	export const Tags = T<readonly [string, string][]>('tags');
+	export const CustomCommands = T<CustomCommand[]>('custom-commands');
 
 	export namespace Permissions {
 		export const Users = T<readonly PermissionsNode[]>('permissions.users');
@@ -228,6 +228,14 @@ export interface PermissionsNode {
 	id: string;
 	allow: string[];
 	deny: string[];
+}
+
+export interface CustomCommand {
+	id: string;
+	embed: boolean;
+	color: number;
+	content: string;
+	args: string[];
 }
 
 export interface DisabledCommandChannel {

@@ -7,7 +7,7 @@ import { CommandStore, KlasaMessage } from 'klasa';
 /* Color limiter */
 const rL = (color: number) => color / 255;
 const cL = (color: number) => Math.max(Math.min(color, 255), 0);
-const sCL = (color: number) => color >= 128 ? 0 : 255;
+const sCL = (color: number) => color >= 0.5 ? 0 : 255;
 
 export default class extends SkyraCommand {
 
@@ -62,8 +62,9 @@ export default class extends SkyraCommand {
 	public processFrame(ctx: CanvasRenderingContext2D, x: number, y: number, red: number, green: number, blue: number) {
 		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
 		ctx.fillRect(x, y, 120, 120);
-		const thisLum = sCL(luminance(rL(red), rL(green), rL(blue)));
-		ctx.fillStyle = `rgb(${thisLum}, ${thisLum}, ${thisLum})`;
+		const lum = luminance(rL(red), rL(green), rL(blue));
+		const textColor = sCL(lum);
+		ctx.fillStyle = `rgb(${textColor}, ${textColor}, ${textColor})`;
 		ctx.fillText(
 			hexConcat(red, green, blue),
 			10 + x,

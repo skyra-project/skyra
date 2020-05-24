@@ -84,7 +84,7 @@ export default class extends Event {
 	private transformTextToObject(notification: PostStreamBodyData, game?: TwitchHelixGameSearchResult): TwitchOnlineEmbedData {
 		return {
 			user_name: notification.user_name,
-			title: notification.title,
+			title: this.escapeText(notification.title),
 			started_at: new Date(notification.started_at),
 			viewer_count: notification.viewer_count.toString(),
 			language: notification.language,

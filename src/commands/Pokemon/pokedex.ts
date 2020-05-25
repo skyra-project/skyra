@@ -1,6 +1,6 @@
 import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -17,7 +17,7 @@ enum BaseStats {
 	speed = 'SPE'
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
@@ -26,7 +26,7 @@ enum BaseStats {
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

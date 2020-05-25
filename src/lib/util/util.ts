@@ -615,7 +615,7 @@ export const requiredPermissions = (permissionsResolvable: PermissionResolvable)
 		const missing = (message.channel as TextChannel).permissionsFor(message.client.user!.id)?.missing(resolved, false) ?? [];
 		if (missing.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', missing.map(permission => permissions[permission]).join(', '));
+			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', message.language.list(missing.map(permission => permissions[permission]), 'and'));
 		}
 
 		return true;

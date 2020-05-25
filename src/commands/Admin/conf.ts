@@ -2,10 +2,10 @@ import { codeBlock, toTitleCase } from '@klasa/utils';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
-import { Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, SettingsFolder } from 'klasa';
 import { ApplyOptions } from '@skyra/decorators';
+import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
+import { requiredPermissions } from '@utils/util';
+import { KlasaMessage, SettingsFolder } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
@@ -20,16 +20,8 @@ import { ApplyOptions } from '@skyra/decorators';
 })
 export default class extends SkyraCommand {
 
-	private readonly kMenuRequirements = Permissions.resolve([
-		Permissions.FLAGS.ADD_REACTIONS,
-		Permissions.FLAGS.MANAGE_MESSAGES,
-		Permissions.FLAGS.EMBED_LINKS
-	]);
-
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public menu(message: KlasaMessage) {
-		if (!(message.channel as TextChannel).permissionsFor(this.client.user!.id)!.has(this.kMenuRequirements)) {
-			throw message.language.tget('COMMAND_CONF_MENU_NOPERMISSIONS');
-		}
 		return new SettingsMenu(message).init();
 	}
 

@@ -12,6 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 	description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
+	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',

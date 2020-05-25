@@ -205,7 +205,7 @@ export default class extends Language {
 		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) => `${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions.join('**, **')}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Cancelado.',
 		INHIBITOR_COOLDOWN: remaining => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
-		INHIBITOR_MISSING_BOT_PERMS: missing => `No tengo los permisos suficientes, me faltan: **${missing}**`,
+		INHIBITOR_MISSING_BOT_PERMS: missing => `No tengo los permisos suficientes, me faltan: ${this.list(missing, 'y')}`,
 		INHIBITOR_NSFW: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		INHIBITOR_PERMISSIONS: 'No tienes permisos para usar este comando',
 		INHIBITOR_REQUIRED_SETTINGS: settings => `El servidor requiere ${settings.length === 1 ? 'el ajuste' : 'los ajustes'} del servidor **${settings.join(', ')}**, y por lo tanto, no puedo ejecutar el comando.`,

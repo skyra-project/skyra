@@ -203,7 +203,7 @@ export default class extends Language {
 		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) => `${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **${cancelOptions.join('**, **')}** to cancel this prompt.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
 		INHIBITOR_COOLDOWN: remaining => `You have just used this command. You can use this command again in ${duration(remaining)}.`,
-		INHIBITOR_MISSING_BOT_PERMS: missing => `Insufficient permissions, missing: **${missing}**`,
+		INHIBITOR_MISSING_BOT_PERMS: missing => `Insufficient permissions, missing: ${this.list(missing, 'and')}`,
 		INHIBITOR_NSFW: 'You may not use NSFW commands in this channel.',
 		INHIBITOR_PERMISSIONS: 'You do not have permission to use this command',
 		INHIBITOR_REQUIRED_SETTINGS: settings => `The guild is missing the **${settings.join(', ')}** guild setting${settings.length === 1 ? '' : 's'} and thus the command cannot run.`,

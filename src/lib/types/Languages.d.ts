@@ -74,7 +74,7 @@ export interface LanguageKeys {
 	MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag: string, name: string, time: string, cancelOptions: readonly string[]) => string;
 	MONITOR_COMMAND_HANDLER_ABORTED: string;
 	INHIBITOR_COOLDOWN: (remaining: number) => string;
-	INHIBITOR_MISSING_BOT_PERMS: (missing: string) => string;
+	INHIBITOR_MISSING_BOT_PERMS: (missing: string[]) => string;
 	INHIBITOR_NSFW: string;
 	INHIBITOR_PERMISSIONS: string;
 	INHIBITOR_REQUIRED_SETTINGS: (settings: readonly string[]) => string;

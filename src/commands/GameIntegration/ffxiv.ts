@@ -1,26 +1,23 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
 import { getColor } from '@utils/util';
 import { EmbedField, MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Language } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['finalfantasy'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_FFXIV_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FFXIV_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			subcommands: true,
-			usage: '(item|character:default) <search:...string> ',
-			usageDelim: ' '
-		});
-	}
+@ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['finalfantasy'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_FFXIV_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_FFXIV_EXTENDED'),
+	subcommands: true,
+	usage: '(item|character:default) <search:...string> ',
+	usageDelim: ' '
+})
+export default class extends RichDisplayCommand {
 
 	public async character(message: KlasaMessage, [name]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

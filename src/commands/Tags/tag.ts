@@ -9,7 +9,7 @@ import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings'
 import { ApplyOptions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
 import { BrandingColors } from '@utils/constants';
-import { cutText, getColor } from '@utils/util';
+import { cutText, getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandOptions, KlasaMessage } from 'klasa';
 
@@ -20,7 +20,7 @@ import { CommandOptions, KlasaMessage } from 'klasa';
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
-	requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
+	requiredPermissions: ['MANAGE_MESSAGES'],
 	usage: '<add|remove|edit|source|list|reset|show:default> (tag:tagname) [content:...string]',
 	usageDelim: ' '
 })
@@ -35,8 +35,6 @@ export default class extends SkyraCommand {
 			if (!arg) throw message.language.tget('RESOLVER_INVALID_STRING', possible.name);
 			return arg.toLowerCase();
 		});
-
-		return Promise.resolve();
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
@@ -92,6 +90,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TAG_EDITED', [id, cutText(content, 1000)]);
 	}
 
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		if (!tags.length) throw message.language.tget('COMMAND_TAG_LIST_EMPTY');
@@ -116,6 +115,7 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
+	@requiredPermissions(['EMBED_LINKS'])
 	public show(message: KlasaMessage, [tagName]: [string]) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		const tag = tags.find(command => command.id === tagName);

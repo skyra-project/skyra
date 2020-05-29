@@ -1,32 +1,29 @@
 import Collection from '@discordjs/collection';
 import { chunk } from '@klasa/utils';
 import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
-import { getColor } from '@utils/util';
+import { getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 
 const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
+	permissionLevel: PermissionLevels.Moderator,
+	runIn: ['text'],
+	usage: '<details|overview:default> [user:username]',
+	usageDelim: ' ',
+	subcommands: true
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<details|overview:default> [user:username]',
-			usageDelim: ' ',
-			subcommands: true
-		});
-	}
 
 	public async overview(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const logs = await message.guild!.moderation.fetch(target.id);
@@ -56,6 +53,7 @@ export default class extends SkyraCommand {
 			.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans)));
 	}
 
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))

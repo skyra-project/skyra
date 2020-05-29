@@ -1,23 +1,20 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_ITUNES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ITUNES_EXTENDED'),
+	usage: '<song:str>'
+})
+export default class extends RichDisplayCommand {
 
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_ITUNES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ITUNES_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<song:str>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [song]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

@@ -1,12 +1,13 @@
 import { isNumber } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
 import { cutText, fetch, FetchMethods, FetchResultTypes, getColor, roundNumber } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
 
 const API_URL = 'https://api-v3.igdb.com/games';
 
@@ -18,20 +19,16 @@ function isIgdbCompany(company: unknown): company is Company {
 	return (company as Company).id !== undefined;
 }
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_IGDB_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_IGDB_EXTENDED'),
+	usage: '<game:str>'
+})
+export default class extends RichDisplayCommand {
 
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 	private urlRegex = /https?:/i;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_IGDB_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_IGDB_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<game:str>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

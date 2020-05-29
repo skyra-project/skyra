@@ -1,11 +1,12 @@
 import { isFunction, isNumber } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { getColor, noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { Command, CommandStore, KlasaMessage } from 'klasa';
+import { Command, KlasaMessage } from 'klasa';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
 
@@ -23,18 +24,16 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	return 0;
 }
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['commands', 'cmd', 'cmds'],
+	description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
+	guarded: true,
+	usage: '(Command:command|page:integer|category:category)',
+	flagSupport: true
+})
+export default class extends RichDisplayCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['commands', 'cmd', 'cmds'],
-			description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
-			guarded: true,
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '(Command:command|page:integer|category:category)',
-			flagSupport: true
-		});
-
+	public async init() {
 		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg) return undefined;
 			return this.client.arguments.get('commandname')!.run(arg, possible, message);

@@ -1,27 +1,25 @@
 import { Collection } from '@discordjs/collection';
 import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser, util } from 'klasa';
+import { KlasaMessage, KlasaUser, util } from 'klasa';
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MODERATIONS_EXTENDED'),
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
-			runIn: ['text'],
-			usage: '<mutes|warnings|all:default> [user:username]'
-		});
-	}
+@ApplyOptions<RichDisplayCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MODERATIONS_EXTENDED'),
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['MANAGE_MESSAGES'],
+	runIn: ['text'],
+	usage: '<mutes|warnings|all:default> [user:username]'
+})
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'all', KlasaUser?]) {
 		const response = await message.sendEmbed(new MessageEmbed()

@@ -1,28 +1,27 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { displayEmoji, getColor, resolveEmoji } from '@utils/util';
+import { ApplyOptions } from '@skyra/decorators';
+import { displayEmoji, getColor, requiredPermissions, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { KlasaMessage, util } from 'klasa';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',
-			usageDelim: ' '
-		});
-
+	public async init() {
 		this.createCustomResolver('type', (arg, _, msg, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
@@ -81,6 +80,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TRIGGERS_ADD');
 	}
 
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public show(message: KlasaMessage) {
 		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias);
 		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes);

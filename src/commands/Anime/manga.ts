@@ -1,4 +1,4 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Kitsu } from '@lib/types/definitions/Kitsu';
 import { TOKENS } from '@root/config';
@@ -11,14 +11,13 @@ import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
 	description: language => language.tget('COMMAND_MANGA_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_MANGA_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<mangaName:string>'
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
 

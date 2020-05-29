@@ -1,6 +1,6 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { OverwatchDataSet, PlatformUnion, TopHero, OverwatchStatsTypeUnion } from '@lib/types/definitions/Overwatch';
+import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
 import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
@@ -8,16 +8,15 @@ import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ow'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_OVERWATCH_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_OVERWATCH_EXTENDED'),
-	requiredGuildPermissions: ['EMBED_LINKS'],
 	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
 	usageDelim: ' '
 })
-export default class OverwatchCommand extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
 	private readonly kAuthorThumbnail = 'https://cdn.skyra.pw/img/overwatch/logo.png';

@@ -1,26 +1,26 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FuzzySearch } from '@utils/FuzzySearch';
 import { getColor } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	cooldown: 5,
+	description: language => language.tget('COMMAND_ROLES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ROLES_EXTENDED'),
+	requiredGuildPermissions: ['MANAGE_ROLES'],
+	requiredPermissions: ['MANAGE_MESSAGES'],
+	runIn: ['text'],
+	usage: '(roles:rolenames)'
+})
+export default class extends RichDisplayCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: language => language.tget('COMMAND_ROLES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ROLES_EXTENDED'),
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '(roles:rolenames)'
-		});
-
+	public async init() {
 		this.createCustomResolver('rolenames', async (arg, _, message) => {
 			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 			if (!rolesPublic.length) return null;
@@ -113,7 +113,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(output.join('\n'));
 	}
 
-	public async list(message: KlasaMessage, publicRoles: readonly string[]) {
+	private async list(message: KlasaMessage, publicRoles: readonly string[]) {
 		const remove: string[] = [];
 		const roles: string[] = [];
 		for (const roleID of publicRoles) {

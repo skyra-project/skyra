@@ -1,28 +1,25 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchMethods, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { CommandStore, KlasaMessage, Timestamp, util } from 'klasa';
+import { KlasaMessage, Timestamp, util } from 'klasa';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_ESHOP_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_ESHOP_EXTENDED'),
+	usage: '<gameName:string>'
+})
+export default class extends RichDisplayCommand {
 
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_ESHOP_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_ESHOP_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<gameName:string>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

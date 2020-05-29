@@ -1,26 +1,23 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { Fortnite } from '@utils/GameIntegration/Fortnite';
 import { fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_FORTNITE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_FORTNITE_EXTENDED'),
+	usage: '<xbox|psn|pc:default> <user:...string>',
+	usageDelim: ' '
+})
+export default class extends RichDisplayCommand {
 
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_FORTNITE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FORTNITE_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<xbox|psn|pc:default> <user:...string>',
-			usageDelim: ' '
-		});
-	}
 
 	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

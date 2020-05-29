@@ -8,7 +8,7 @@ import { GuildSettings, NotificationsStreamsTwitchEventStatus, NotificationsStre
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
-import { getColor } from '@utils/util';
+import { getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -221,6 +221,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS', [streamer.display_name, entries]);
 	}
 
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		// Create the response message.
 		const response = await message.sendEmbed(new MessageEmbed()

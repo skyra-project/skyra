@@ -1,25 +1,25 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Reddit } from '@lib/types/definitions/Reddit';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['redditor'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_REDDITUSER_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_REDDITUSER_EXTENDED'),
+	usage: '<user:user>'
+})
+export default class extends RichDisplayCommand {
 
 	private joinedRedditTimestamp = new Timestamp('MMMM d YYYY');
 	private usernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['redditor'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_REDDITUSER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_REDDITUSER_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<user:user>'
-		});
-
+	public async init() {
 		this.createCustomResolver('user', (arg, _possible, message) => {
 			if (!this.usernameRegex.test(arg)) throw message.language.tget('COMMAND_REDDITUSER_INVALID_USER', arg);
 			arg = arg.replace(/^\/?u\//, '');
@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [string]) {
-		await message.sendEmbed(new MessageEmbed()
+		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
@@ -36,6 +36,11 @@ export default class extends SkyraCommand {
 		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
 		comments.sort((a, b) => b.score - a.score);
 
+		await this.buildDisplay(message, about, comments, posts).start(response, message.author.id);
+		return response;
+	}
+
+	private buildDisplay(message: KlasaMessage, about: Reddit.AboutDataElement, comments: Reddit.CommentDataElement[], posts: Reddit.PostDataElement[]) {
 		const titles = message.language.tget('COMMAND_REDDITUSER_TITLES');
 		const fieldsData = message.language.tget('COMMAND_REDDITUSER_DATA');
 		const [bestComment] = comments;
@@ -43,37 +48,40 @@ export default class extends SkyraCommand {
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
 		const complexityLevels = message.language.tget('COMMAND_REDDITUSER_COMPLEXITY_LEVELS');
 
-		const embed = new MessageEmbed()
-			.setTitle(fieldsData.OVERVIEW_FOR(about.name))
-			.setURL(`https://www.reddit.com${about.subreddit.url}`)
-			.setColor(getColor(message))
-			.setDescription(fieldsData.JOINED_REDDIT(this.joinedRedditTimestamp.displayUTC(about.created)))
-			.setThumbnail(about.icon_img)
-			.setFooter(fieldsData.DATA_AVAILABLE_FOR)
-			.addField(titles.LINK_KARMA, about.link_karma, true)
-			.addField(titles.COMMENT_KARMA, about.comment_karma, true)
-			.addField(titles.TOTAL_COMMENTS, comments.length, true)
-			.addField(titles.TOTAL_SUBMISSIONS, posts.length, true)
-			.addField(titles.COMMENT_CONTROVERSIALITY, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
-			.addField(titles.TEXT_COMPLEXITY, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
-			.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_SUBMISSIONS})`, this.calculateTopContribution(posts), true)
-			.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true)
-			.addField(titles.BEST_COMMENT,
-				[
-					`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
-					`${message.language.duration((Date.now() - (bestComment.created * 1000)), 3)} ago`,
-					`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
-					cutText(bestComment.body, 900)
-				].join('\n'))
-			.addField(titles.WORST_COMMENT,
-				[
-					`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
-					`${message.language.duration((Date.now() - (worstComment.created * 1000)), 3)} ago`,
-					`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
-					cutText(worstComment.body, 900)
-				].join('\n'));
-
-		return message.sendEmbed(embed);
+		return new UserRichDisplay(
+			new MessageEmbed()
+				.setTitle(fieldsData.OVERVIEW_FOR(about.name))
+				.setURL(`https://www.reddit.com${about.subreddit.url}`)
+				.setColor(getColor(message))
+				.setThumbnail(about.icon_img)
+		)
+			.addPage((embed: MessageEmbed) => embed
+				.setDescription(fieldsData.JOINED_REDDIT(this.joinedRedditTimestamp.displayUTC(about.created * 1000)))
+				.addField(titles.LINK_KARMA, about.link_karma, true)
+				.addField(titles.COMMENT_KARMA, about.comment_karma, true)
+				.addField(titles.TOTAL_COMMENTS, comments.length, true)
+				.addField(titles.TOTAL_SUBMISSIONS, posts.length, true)
+				.addField(titles.COMMENT_CONTROVERSIALITY, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
+				.addField(titles.TEXT_COMPLEXITY, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true))
+			.addPage((embed: MessageEmbed) => embed
+				.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_SUBMISSIONS})`, this.calculateTopContribution(posts), true)
+				.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true))
+			.addPage((embed: MessageEmbed) => embed
+				.addField(`__${titles.BEST_COMMENT}__`,
+					[
+						`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
+						`${message.language.duration((Date.now() - (bestComment.created * 1000)), 3)} ago`,
+						`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
+						cutText(bestComment.body, 900)
+					].join('\n'))
+				.addField(`__${titles.WORST_COMMENT}__`,
+					[
+						`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
+						`${message.language.duration((Date.now() - (worstComment.created * 1000)), 3)} ago`,
+						`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
+						cutText(worstComment.body, 900)
+					].join('\n')))
+			.setFooterSuffix(` • ${fieldsData.DATA_AVAILABLE_FOR}`);
 	}
 
 	private async fetchData(user: string, message: KlasaMessage) {

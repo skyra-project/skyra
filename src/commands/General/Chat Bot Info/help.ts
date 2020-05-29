@@ -1,5 +1,5 @@
 import { isFunction, isNumber } from '@klasa/utils';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
@@ -8,7 +8,9 @@ import { getColor, noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
 
-const PERMISSIONS_RICHDISPLAY = new Permissions([Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS]);
+const PERMISSIONS_RICHDISPLAY = new Permissions([
+	Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.READ_MESSAGE_HISTORY
+]);
 
 /**
  * Sorts a collection alphabetically as based on the keys, rather than the values.
@@ -24,14 +26,14 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 	return 0;
 }
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['commands', 'cmd', 'cmds'],
 	description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
 	guarded: true,
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
 })
-export default class extends RichDisplayCommand {
+export default class extends SkyraCommand {
 
 	public async init() {
 		this.createCustomResolver('command', (arg, possible, message) => {

@@ -12,7 +12,7 @@ export abstract class RichDisplayCommand extends SkyraCommand {
 				...options,
 				// Add all requiredPermissions set in the command, along with the permissions required for UserRichDisplay
 				requiredPermissions: [
-					...options.requiredPermissions as PermissionResolvable[], 'ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY'
+					...(options.requiredPermissions as PermissionResolvable[] | undefined ?? []), 'ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY'
 				]
 			}
 		);

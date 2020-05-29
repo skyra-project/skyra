@@ -1,26 +1,23 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
+import { KlasaMessage, Language, util } from 'klasa';
 
 const ZWS = '\u200B';
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['ud', 'urbandictionary'],
-			cooldown: 15,
-			description: language => language.tget('COMMAND_URBAN_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_URBAN_EXTENDED'),
-			nsfw: true,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<query:string>'
-		});
-	}
+@ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['ud', 'urbandictionary'],
+	cooldown: 15,
+	description: language => language.tget('COMMAND_URBAN_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_URBAN_EXTENDED'),
+	nsfw: true,
+	runIn: ['text'],
+	usage: '<query:string>'
+})
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

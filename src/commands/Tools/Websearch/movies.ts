@@ -1,27 +1,24 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
 
-export default class extends SkyraCommand {
+@ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['movie', 'tmdb'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_MOVIES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MOVIES_EXTENDED'),
+	usage: '<movie:str> [year:str]',
+	usageDelim: 'y:'
+})
+export default class extends RichDisplayCommand {
 
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['movie', 'tmdb'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_MOVIES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MOVIES_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<movie:str> [year:str]',
-			usageDelim: 'y:'
-		});
-	}
 
 	public async run(message: KlasaMessage, [movie, year]: [string, string?]) {
 		const response = await message.sendEmbed(new MessageEmbed()

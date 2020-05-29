@@ -1,4 +1,4 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
@@ -6,16 +6,15 @@ import { getColor } from '@utils/util';
 import { Invite, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_TOPINVITES_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_TOPINVITES_EXTENDED'),
 	requiredGuildPermissions: ['MANAGE_GUILD'],
-	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text']
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
 

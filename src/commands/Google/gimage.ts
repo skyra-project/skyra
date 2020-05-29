@@ -1,4 +1,4 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -7,16 +7,15 @@ import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
 	description: language => language.tget('COMMAND_GIMAGE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_GIMAGE_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<query:query>'
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	public async init() {
 		this.createCustomResolver('query', (arg, possible, message) => this.client.arguments.get('string')!.run(

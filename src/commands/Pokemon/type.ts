@@ -1,5 +1,5 @@
 import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -8,15 +8,14 @@ import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['matchup', 'weakness', 'advantage'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_TYPE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_TYPE_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<types:type{2}>'
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	private kPokemonTypes = new Set([
 		'bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying',

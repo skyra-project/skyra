@@ -1,22 +1,20 @@
 import { chunk } from '@klasa/utils';
-import { MusicCommand } from '@lib/structures/MusicCommand';
+import { Song } from '@lib/structures/music/Song';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
+import { BrandingColors } from '@utils/constants';
 import { getColor, showSeconds } from '@utils/util';
 import { MessageEmbed, Util } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { BrandingColors } from '@utils/constants';
-import { Song } from '@lib/structures/music/Song';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	aliases: ['q'],
+	description: language => language.tget('COMMAND_QUEUE_DESCRIPTION'),
+	music: ['QUEUE_NOT_EMPTY'],
+	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
+})
 export default class extends MusicCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['q'],
-			description: language => language.tget('COMMAND_QUEUE_DESCRIPTION'),
-			music: ['QUEUE_NOT_EMPTY'],
-			requiredPermissions: ['EMBED_LINKS']
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		const { queue, song } = message.guild!.music;

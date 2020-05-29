@@ -1,6 +1,6 @@
 import { MoveEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -9,14 +9,13 @@ import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
 	description: language => language.tget('COMMAND_MOVE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_MOVE_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<move:str>'
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [move]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

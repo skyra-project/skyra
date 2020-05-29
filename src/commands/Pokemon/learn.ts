@@ -1,6 +1,6 @@
 import { LearnsetEntry, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -8,25 +8,22 @@ import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['learnset', 'learnall'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_LEARN_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_LEARN_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	usage: '(generation:generation) <pokemon:string> <moves:...string> ',
 	usageDelim: ' ',
 	flagSupport: true
 })
-export default class Learn extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	private kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
-	// eslint-disable-next-line @typescript-eslint/no-invalid-this
-	private kClientIntegerArg = this.client.arguments.get('integer')!;
 
 	public async init() {
 		this.createCustomResolver('generation', (arg, possible, message) => {
-			if (this.kPokemonGenerations.has(arg)) return this.kClientIntegerArg.run(arg, possible, message);
+			if (this.kPokemonGenerations.has(arg)) return this.client.arguments.get('integer')!.run(arg, possible, message);
 			throw message.language.tget('COMMAND_LEARN_INVALID_GENERATION', arg);
 		});
 	}

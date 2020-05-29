@@ -1,23 +1,20 @@
 import { chunk } from '@klasa/utils';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['emojis'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_EMOTES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_EMOTES_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text']
-		});
-	}
+@ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['emojis'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_EMOTES_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_EMOTES_EXTENDED'),
+	runIn: ['text']
+})
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(new MessageEmbed()

@@ -6,7 +6,7 @@ import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
-import { getColor } from '@utils/util';
+import { getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -18,7 +18,7 @@ const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 	cooldown: 10,
 	description: language => language.tget('COMMAND_BANNER_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_BANNER_EXTENDED'),
-	requiredPermissions: ['MANAGE_MESSAGES', 'EMBED_LINKS'],
+	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<buy|reset|set|show:default> (banner:banner)',
@@ -31,6 +31,7 @@ export default class extends SkyraCommand {
 	private readonly banners: Map<string, BannerCache> = new Map();
 	private display: UserRichDisplay | null = null;
 
+	@requiredPermissions(['EMBED_LINKS'])
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
 		const banners = new Set(message.author.settings.get(UserSettings.BannerList));
 		if (banners.has(banner.id)) throw message.language.tget('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix), banner.id);
@@ -83,6 +84,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 
+	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: KlasaMessage) {
 		const [response] = await this.listPrompt.createPrompt(message).run(message.language.tget('COMMAND_BANNER_PROMPT'));
 		return response === 'all' ? this.buyList(message) : this.userList(message);

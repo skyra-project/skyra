@@ -1,5 +1,5 @@
 import { toTitleCase } from '@klasa/utils';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
@@ -14,18 +14,17 @@ const enum ClashOfClansFetchCategories {
 	CLANS = 'clans'
 }
 
-@ApplyOptions<SkyraCommandOptions>({
+@ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_CLASHOFCLANS_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_CLASHOFCLANS_EXTENDED'),
-	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	private readonly kPlayerTagRegex = /#[A-Z0-9]{3,}/;
 

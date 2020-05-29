@@ -60,15 +60,15 @@ export default class extends SkyraCommand {
 			.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true)
 			.addField(titles.BEST_COMMENT,
 				[
-					`${bestComment.subreddit} - **${bestComment.score}**`,
-					`${message.language.duration((Date.now() - bestComment.created) * 1000)} ago`,
+					`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
+					`${message.language.duration((Date.now() - (bestComment.created * 1000)), 3)} ago`,
 					`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
 					cutText(bestComment.body, 900)
 				].join('\n'))
 			.addField(titles.WORST_COMMENT,
 				[
-					`${worstComment.subreddit} - **${worstComment.score}**`,
-					`${message.language.duration((Date.now() - worstComment.created) * 1000)} ago`,
+					`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
+					`${message.language.duration((Date.now() - (worstComment.created * 1000)), 3)} ago`,
 					`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
 					cutText(worstComment.body, 900)
 				].join('\n'));

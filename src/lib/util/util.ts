@@ -499,7 +499,7 @@ export function cleanMentions(guild: Guild, input: string) {
 				case '@':
 				case '@!': {
 					const tag = guild.client.userTags.get(id);
-					return tag ? `@${tag.username}` : match;
+					return tag ? `@${tag.username}` : `<${type}\u200B${id}>`;
 				}
 				case '@&': {
 					const role = guild.roles.get(id);
@@ -507,9 +507,9 @@ export function cleanMentions(guild: Guild, input: string) {
 				}
 				case '#': {
 					const channel = guild.channels.get(id);
-					return channel ? `#${channel.name}` : match;
+					return channel ? `#${channel.name}` : `<${type}\u200B${id}>`;
 				}
-				default: return match;
+				default: return `<${type}\u200B${id}>`;
 			}
 		});
 }

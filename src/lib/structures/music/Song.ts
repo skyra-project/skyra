@@ -31,7 +31,7 @@ export class Song {
 	/**
 	 * @param queue The queue that manages this song.
 	 * @param data The retrieved data.
-	 * @param requester The user that requested this song.
+	 * @param requester The user ID that requested this song.
 	 */
 	public constructor(queue: MusicHandler, data: Track, requester: string) {
 		this.id = Song.generateID(requester);
@@ -59,12 +59,14 @@ export class Song {
 		return showSeconds(this.duration);
 	}
 
-	public async fetchRequester() {
-		try {
-			return await this.queue.client.users.fetch(this.requester);
-		} catch {
-			return null;
-		}
+	public async fetchRequesterName() {
+		const nickname = await this.queue.guild.memberTags.fetch(this.requester)
+			.then(member => member?.nickname)
+			.catch(() => null);
+		const display = nickname ?? await this.queue.client.userTags.fetch(this.requester)
+			.then(user => user.username)
+			.catch(() => this.queue.guild.language.tget('UNKNOWN_USER'));
+		return Util.escapeMarkdown(cleanMentions(this.queue.guild, display));
 	}
 
 	public toString(): string {

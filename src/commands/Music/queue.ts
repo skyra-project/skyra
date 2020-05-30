@@ -5,7 +5,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { getColor, showSeconds } from '@utils/util';
-import { MessageEmbed, Util } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
@@ -28,7 +28,7 @@ export default class extends MusicCommand {
 		// Format the song entries
 		const songFields = await Promise.all(queue.map((song, position) => this.generateSongField(message, position, song)));
 		const totalDuration = this.calculateTotalDuration(queue);
-		const nowPlayingDescription = message.language.tget('COMMAND_QUEUE_NOWPLAYING', song.friendlyDuration, song.safeTitle, song.url, await this.displayUsername(song));
+		const nowPlayingDescription = message.language.tget('COMMAND_QUEUE_NOWPLAYING', song.friendlyDuration, song.safeTitle, song.url, await song.fetchRequesterName());
 		const totalDescription = message.language.tget('COMMAND_QUEUE_TOTAL', queue.length, showSeconds(totalDuration));
 
 		// Generate the pages with 5 songs each
@@ -48,13 +48,8 @@ export default class extends MusicCommand {
 	}
 
 	private async generateSongField(message: KlasaMessage, position: number, song: Song) {
-		const username = await this.displayUsername(song);
+		const username = await song.fetchRequesterName();
 		return message.language.tget('COMMAND_QUEUE_LINE', position + 1, song.friendlyDuration, song.safeTitle, song.url, username);
-	}
-
-	private async displayUsername(song: Song) {
-		const user = await song.fetchRequester();
-		return user === null ? 'Anonymous' : Util.escapeMarkdown(user.username);
 	}
 
 	private calculateTotalDuration(songs: Song[]) {

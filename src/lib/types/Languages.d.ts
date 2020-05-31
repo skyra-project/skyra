@@ -1562,7 +1562,7 @@ export interface LanguageKeys {
 	COMMAND_EMOTES_DESCRIPTION: string;
 	COMMAND_EMOTES_EXTENDED: string;
 	COMMAND_EMOTES_TITLE: string;
-	COMMAND_PRICE_CURRENCY: (fromCurrency: string, fromAmount: number, toCurrency: string, toAmount: number) => string;
+	COMMAND_PRICE_CURRENCY: (fromCurrency: string, fromAmount: number, worths: string[]) => string;
 	COMMAND_PRICE_CURRENCY_NOT_FOUND: string;
 	COMMAND_QUOTE_MESSAGE: string;
 	COMMAND_ROLES_LIST_EMPTY: string;

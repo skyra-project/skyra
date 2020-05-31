@@ -3729,7 +3729,7 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
 			NO_GENRES: 'Ninguno en TheMovieDB'
 		},
-		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `**${fromAmount}** ${fromCurrency} vale **${toAmount}** ${toCurrency}.`,
+		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, worths) => `**${fromAmount}** ${fromCurrency.toUpperCase()} vale ${this.list(worths, 'y')}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
 		COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',
 		COMMAND_ROLES_LIST_EMPTY: '¡Este servidor no tiene ningún rol público!',

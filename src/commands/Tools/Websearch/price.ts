@@ -1,5 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { TOKENS } from '@root/config';
+import { TOKENS, NAME, VERSION } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
@@ -12,48 +12,50 @@ import { KlasaMessage } from 'klasa';
 	description: language => language.tget('COMMAND_PRICE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_PRICE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
-	usage: '<from:string> <to:string> [amount:integer]',
+	usage: '[amount:integer] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
 
-	public async run(message: KlasaMessage, [fromCurrency, toCurrency, amount = 1]: [string, string, number]) {
+	public async run(message: KlasaMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
 		await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		fromCurrency = fromCurrency.toUpperCase();
-		toCurrency = toCurrency.toUpperCase();
+		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
 
-		const result = await this.fetchAPI(message, fromCurrency, toCurrency);
-
-		return message.sendEmbed(this.buildEmbed(message, result, fromCurrency, toCurrency, amount));
+		return message.sendEmbed(this.buildEmbed(message, result, fromCurrency, amount));
 	}
 
-	private async fetchAPI(message: KlasaMessage, fromCurrency: string, toCurrency: string): Promise<CryptoCompareResultOk> {
+	private async fetchAPI(message: KlasaMessage, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
 		try {
 			const url = new URL('https://min-api.cryptocompare.com/data/price');
-			url.searchParams.append('fsym', fromCurrency);
-			url.searchParams.append('tsyms', toCurrency);
-			url.searchParams.append('extraParams', 'SkyraApp');
+			url.searchParams.append('fsym', fromCurrency.toUpperCase());
+			url.searchParams.append('tsyms', toCurrency.join(',').toUpperCase());
+			url.searchParams.append('extraParams', `${NAME} ${VERSION} Discord Bot`);
 
 			const body = await fetch<CryptoCompareResultOk | CryptoCompareResultError>(url, {
 				headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
 			}, FetchResultTypes.JSON);
 
-			if (body.Response === 'Error') throw undefined; // Error is handled in the catch
+			console.log(`PRICE.TS [${new Date().toISOString()}]`, require('util').inspect(body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
+
+			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
 			throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		}
 	}
 
-	private buildEmbed(message: KlasaMessage, result: CryptoCompareResultOk, fromCurrency: string, toCurrency: string, amount: number): MessageEmbed {
+	private buildEmbed(message: KlasaMessage, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number): MessageEmbed {
+		const worths: string[] = [];
+		for (const [currency, toAmount] of Object.entries(result)) {
+			worths.push(`**${roundNumber(fromAmount * toAmount, 2)}** ${currency}`);
+		}
+
 		return new MessageEmbed()
 			.setColor(getColor(message))
-			.setDescription(
-				message.language.tget('COMMAND_PRICE_CURRENCY', fromCurrency, amount, toCurrency, roundNumber(amount * result[toCurrency], 2))
-			)
+			.setDescription(message.language.tget('COMMAND_PRICE_CURRENCY', fromCurrency, fromAmount, worths))
 			.setTimestamp();
 	}
 

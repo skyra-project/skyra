@@ -270,7 +270,7 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.5.tgz#1781c620b4c88d619bd0373a1548e5a6025e3d3a"
   integrity sha512-CU1q0UXQUpFNzNB7gufgoisDHP7n+T3tkqTsp3MNUkVJ5+hS3BCvME8uCXAUFlz+6T2FbTCu75A+yQ7HMKqRKw==
 
-"@favware/graphql-pokemon@^4.0.0":
+"@favware/graphql-pokemon@^4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-4.0.1.tgz#8c7f6676cca8a804197b5032a17b229898ce51fd"
   integrity sha512-FwqT07DvzBrx5NQrBP6NG85Qg1ZAI55srCd/eBLq2LGyewb/BL3n4XwZc1Oma9+KWHnJn5zKSNveQtwjhVVb7Q==
@@ -667,7 +667,7 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.0.4":
+"@types/node@*", "@types/node@^14.0.6":
   version "14.0.6"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.6.tgz#f9e178b2da31a4b0ec60b64649e244c31ce18daf"
   integrity sha512-FbNmu4F67d3oZMWBV6Y4MaPER+0EpE9eIYf2yaHhCWovc1dlXCZkqGX4NLHfVVr6umt20TNBdRzrNJIzIKfdbw==

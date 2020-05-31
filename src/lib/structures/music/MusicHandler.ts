@@ -125,9 +125,9 @@ export class MusicHandler {
 
 	public async leave(context: MusicHandlerRequestContext | null = null) {
 		const { voiceChannel } = this;
-		if (this.playing) await this.player.pause(true);
 		await this.player.leave();
 		this.client.emit(Events.MusicLeave, this, voiceChannel, context);
+		this.song = null;
 		return this;
 	}
 

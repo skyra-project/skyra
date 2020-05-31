@@ -14,13 +14,13 @@ export default class ApiRequest extends IncomingMessage {
 
 }
 
-export default interface ApiRequest {
+export default interface ApiRequest<T = unknown> {
 	originalUrl: string;
 	path: string;
 	search: string;
 	query: Record<string, string | string[]>;
 	params: Record<string, string>;
-	body?: unknown;
+	body?: T;
 	length?: number;
 	auth?: UserAuthObject;
 }

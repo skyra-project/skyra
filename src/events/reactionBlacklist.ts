@@ -83,7 +83,7 @@ export default class extends ModerationEvent<ArgumentType> {
 			.setColor(Colors.Red)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
-				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`
+				? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
 				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
 			.setDescription(`[${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
 			.setFooter(`${data.channel.name} | ${data.guild.language.tget('CONST_MONITOR_REACTIONFILTER')}`)

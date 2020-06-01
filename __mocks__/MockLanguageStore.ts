@@ -8,6 +8,6 @@ export class MockLanguageStore extends InternalLanguageStore {
 
 }
 
-export function createLanguageStore(client: Client, name: string, holds: any): InternalLanguageStore {
+export function createLanguageStore(...[client, name, holds]: ConstructorParameters<typeof MockLanguageStore>): InternalLanguageStore {
 	return new MockLanguageStore(client, name, holds) as InternalLanguageStore;
 }

@@ -70,7 +70,7 @@ export default class extends Event {
 			.setColor(Colors.Green)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
 			.setThumbnail(data.emoji.id === null
-				? `https://twemoji.maxcdn.com/v/12.1.4/72x72/${twemoji(data.emoji.name)}.png`
+				? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
 				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
 			.setDescription([
 				`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,

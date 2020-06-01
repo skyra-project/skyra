@@ -35,6 +35,7 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 export const VERSION = '5.4.1 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
+	shards: 'auto',
 	commandEditing: true,
 	commandLogging: false,
 	console: {

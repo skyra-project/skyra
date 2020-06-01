@@ -2,12 +2,13 @@ import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
-import { Time } from '@utils/constants';
+import { Mime, Time } from '@utils/constants';
 import { ratelimit } from '@utils/util';
 import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import OauthUser from './oauthUser';
+import type OauthUser from './oauthUser';
+import { stringify } from 'querystring';
 
 export default class extends Route {
 
@@ -26,11 +27,16 @@ export default class extends Route {
 		const url = new URL('https://discordapp.com/api/oauth2/token');
 		url.searchParams.append('grant_type', 'authorization_code');
 		url.searchParams.append('redirect_uri', requestBody.redirect_uri);
-		url.searchParams.append('code', requestBody.code);
 
 		const res = await fetch(url, {
-			headers: { Authorization: `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}` },
-			method: 'POST'
+			method: 'POST',
+			body: stringify({
+				code: requestBody.code
+			}),
+			headers: {
+				'Authorization': `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}`,
+				'Content-Type': Mime.Types.ApplicationFormUrlEncoded
+			}
 		});
 
 		if (!res.ok) {

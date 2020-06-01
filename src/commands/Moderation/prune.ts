@@ -18,7 +18,7 @@ import { constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa
 	flagSupport: true,
 	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
 	runIn: ['text'],
-	usage: '[limit:integer{1,100}] [filter:filter|user:user] (position:position) (message:message)',
+	usage: '<limit:integer{1,100}> [filter:filter|user:user] (position:position) (message:message)',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [limit = 50, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, KlasaMessage]) {
+	public async run(message: KlasaMessage, [limit, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, KlasaMessage]) {
 		// This can happen for a large variety of situations:
 		// - Invalid limit (less than 1 or more than 100).
 		// - Invalid filter

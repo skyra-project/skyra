@@ -1413,7 +1413,7 @@ export default class extends Language {
 		COMMAND_NEWLINEMODE_DESCRIPTION: 'Manage the behaviour for the new line filter system.',
 		COMMAND_NEWLINEMODE_EXTENDED: builder.display('newLineMode', {
 			extendedHelp: `The newLineMode command manages the behaviour of the new line filter system.
-				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.minimum <number>\``,
+				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.maximum <number>\``,
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],

@@ -6,9 +6,9 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { SuggestionData } from '@lib/types/definitions/Suggestion';
 
 const enum SuggestionsColors {
-	Accepted = '4CB02C',
-	Considered = 'CFA08D',
-	Denied = 'F90505'
+	Accepted = 0x4CB02C,
+	Considered = 0xCFA08D,
+	Denied = 0xF90505
 }
 
 export default class extends SkyraCommand {

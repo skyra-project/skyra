@@ -55,6 +55,7 @@ export default Client.defaultGuildSchema
 		.add('muted', 'Role')
 		.add('restricted-reaction', 'Role')
 		.add('restricted-embed', 'Role')
+		.add('restricted-emoji', 'Role')
 		.add('restricted-attachment', 'Role')
 		.add('restricted-voice', 'Role')
 		.add('public', 'Role', { array: true })

@@ -456,15 +456,15 @@ export class PostgresCommonQuery implements CommonQuery {
 				"type
 			)
 			VALUES (
-				${provider.cNumber(entry.case_id)}
-				${provider.cNullableNumber(entry.created_at)}
-				${provider.cNullableNumber(entry.duration)}
-				${provider.cNullableJson(entry.extra_data)}
-				${provider.cString(entry.guild_id)}
-				${provider.cNullableString(entry.moderator_id)}
-				${provider.cNullableString(entry.reason)}
-				${provider.cNullableString(entry.image_url)}
-				${provider.cString(entry.user_id)}
+				${provider.cNumber(entry.case_id)},
+				${provider.cNullableNumber(entry.created_at)},
+				${provider.cNullableNumber(entry.duration)},
+				${provider.cNullableJson(entry.extra_data)},
+				${provider.cString(entry.guild_id)},
+				${provider.cNullableString(entry.moderator_id)},
+				${provider.cNullableString(entry.reason)},
+				${provider.cNullableString(entry.image_url)},
+				${provider.cString(entry.user_id)},
 				${provider.cNumber(entry.type)}
 			)
 		`);

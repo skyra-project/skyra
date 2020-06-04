@@ -184,9 +184,10 @@ export class ModerationManagerEntry {
 			case Moderation.TypeVariation.Mute: return Moderation.TypeVariationAppealNames.Mute;
 			case Moderation.TypeVariation.Ban: return Moderation.TypeVariationAppealNames.Ban;
 			case Moderation.TypeVariation.VoiceMute: return Moderation.TypeVariationAppealNames.VoiceMute;
+			case Moderation.TypeVariation.RestrictedAttachment: return Moderation.TypeVariationAppealNames.RestrictedAttachment;
 			case Moderation.TypeVariation.RestrictedReaction: return Moderation.TypeVariationAppealNames.RestrictedReaction;
 			case Moderation.TypeVariation.RestrictedEmbed: return Moderation.TypeVariationAppealNames.RestrictedEmbed;
-			case Moderation.TypeVariation.RestrictedAttachment: return Moderation.TypeVariationAppealNames.RestrictedAttachment;
+			case Moderation.TypeVariation.RestrictedEmoji: return Moderation.TypeVariationAppealNames.RestrictedEmoji;
 			case Moderation.TypeVariation.RestrictedVoice: return Moderation.TypeVariationAppealNames.RestrictedVoice;
 			case Moderation.TypeVariation.SetNickname: return Moderation.TypeVariationAppealNames.SetNickname;
 			case Moderation.TypeVariation.AddRole: return Moderation.TypeVariationAppealNames.AddRole;

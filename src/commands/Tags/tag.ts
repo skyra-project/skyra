@@ -1,7 +1,7 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
-import { chunk } from '@klasa/utils';
+import { chunk, codeBlock } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -131,7 +131,7 @@ export default class extends SkyraCommand {
 	public source(message: KlasaMessage, [tagName]: [string]) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		const tag = tags.find(command => command.id === tagName);
-		return tag ? message.sendCode('md', tag.content) : null;
+		return tag ? message.sendMessage(codeBlock('md', tag.content)) : null;
 	}
 
 	private createTag(message: KlasaMessage, id: string, content: string): CustomCommand {

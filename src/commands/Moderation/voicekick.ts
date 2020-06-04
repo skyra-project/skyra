@@ -1,6 +1,6 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes } from '@utils/util';
+import { ArgumentTypes, getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vk'],
@@ -17,7 +17,8 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.voiceKick({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			reason: context.reason
+			reason: context.reason,
+			image_url: getImage(message)
 		}, this.getTargetDM(message, context.target));
 	}
 

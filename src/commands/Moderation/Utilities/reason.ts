@@ -2,6 +2,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
+import { getImage } from '@utils/util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -26,11 +27,13 @@ export default class extends SkyraCommand {
 		const entries = await message.guild!.moderation.fetch(cases);
 		if (!entries.size) throw message.language.tget(cases.length === 1 ? 'MODERATION_CASE_NOT_EXISTS' : 'MODERATION_CASES_NOT_EXIST');
 
+		const imageURL = getImage(message);
 		await this.client.queries.updateModerationLogReasonBulk(message.guild!.id, entries.map(ml => ml.case!), reason);
 		await message.guild!.moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
 			entry.setReason(reason);
+			if (imageURL) entry.setImageURL(imageURL);
 			this.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 

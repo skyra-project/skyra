@@ -1,7 +1,7 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes } from '@utils/util';
+import { ArgumentTypes, getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['w', 'warning'],
@@ -19,8 +19,9 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.warning({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration: context.duration,
-			reason: context.reason
+			reason: context.reason,
+			image_url: getImage(message),
+			duration: context.duration
 		}, this.getTargetDM(message, context.target));
 	}
 

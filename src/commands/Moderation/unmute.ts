@@ -1,7 +1,7 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes } from '@utils/util';
+import { ArgumentTypes, getImage } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
@@ -28,8 +28,8 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.unMute({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration: context.duration,
-			reason: context.reason
+			reason: context.reason,
+			image_url: getImage(message)
 		}, this.getTargetDM(message, context.target));
 	}
 

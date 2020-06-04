@@ -441,20 +441,33 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public insertModerationLog(entry: RawModerationSettings) {
-		return this.provider.run(/* sql */`
-			INSERT INTO moderation ("case_id", "created_at", "duration", "extra_data", "guild_id", "moderator_id", "reason", "user_id", "type")
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
-		`, [
-			entry.case_id,
-			entry.created_at,
-			entry.duration,
-			entry.extra_data === null ? null : JSON.stringify(entry.extra_data),
-			entry.guild_id,
-			entry.moderator_id,
-			entry.reason,
-			entry.user_id,
-			entry.type
-		]);
+		const { provider } = this;
+		return provider.run(/* sql */`
+			INSERT INTO moderation (
+				"case_id",
+				"created_at",
+				"duration",
+				"extra_data",
+				"guild_id",
+				"moderator_id",
+				"reason",
+				"image_url",
+				"user_id",
+				"type
+			)
+			VALUES (
+				${provider.cNumber(entry.case_id)}
+				${provider.cNullableNumber(entry.created_at)}
+				${provider.cNullableNumber(entry.duration)}
+				${provider.cNullableJson(entry.extra_data)}
+				${provider.cString(entry.guild_id)}
+				${provider.cNullableString(entry.moderator_id)}
+				${provider.cNullableString(entry.reason)}
+				${provider.cNullableString(entry.image_url)}
+				${provider.cString(entry.user_id)}
+				${provider.cNumber(entry.type)}
+			)
+		`);
 	}
 
 	public insertStar(entry: RawStarboardSettings) {
@@ -481,26 +494,20 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {
+		const { provider } = this;
 		return this.provider.run(/* sql */`
 			UPDATE moderation
 			SET
-				"type"         = $1,
-				"reason"       = $2,
-				"duration"     = $3,
-				"moderator_id" = $4,
-				"extra_data"   = $5
+				"type"         = ${provider.cNumber(entry.type)},
+				"reason"       = ${provider.cNullableString(entry.reason)},
+				"image_url"    = ${provider.cNullableString(entry.image_url)},
+				"duration"     = ${provider.cNullableNumber(entry.duration)},
+				"moderator_id" = ${provider.cNullableString(entry.moderator_id)},
+				"extra_data"   = ${provider.cNullableJson(entry.extra_data)}
 			WHERE
-				"guild_id" = $6 AND
-				"case_id"  = $7
-		`, [
-			entry.type,
-			entry.reason,
-			entry.duration,
-			entry.moderator_id,
-			entry.extra_data === null ? null : JSON.stringify(entry.extra_data),
-			entry.guild_id,
-			entry.case_id
-		]);
+				"guild_id"     = ${provider.cString(entry.guild_id)} AND
+				"case_id"      = ${provider.cNumber(entry.case_id)}
+		`);
 	}
 
 	public updateModerationLogReasonBulk(guildID: string, cases: readonly number[], reason: string | null) {

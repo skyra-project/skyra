@@ -3,7 +3,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
-import { ArgumentTypes } from '@utils/util';
+import { ArgumentTypes, getImage } from '@utils/util';
 import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -49,8 +49,9 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.restrictVoice({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration: context.duration,
-			reason: context.reason
+			reason: context.reason,
+			image_url: getImage(message),
+			duration: context.duration
 		}, this.getTargetDM(message, context.target));
 	}
 

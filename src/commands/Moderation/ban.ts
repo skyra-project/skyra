@@ -3,7 +3,7 @@ import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/Mod
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
-import { ArgumentTypes } from '@utils/util';
+import { ArgumentTypes, getImage } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
@@ -25,6 +25,7 @@ export default class extends ModerationCommand {
 			user_id: context.target.id,
 			moderator_id: message.author.id,
 			duration: context.duration,
+			image_url: getImage(message),
 			reason: context.reason
 		}, this.getDays(message), this.getTargetDM(message, context.target));
 	}

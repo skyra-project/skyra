@@ -9,7 +9,7 @@ import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings'
 import { ApplyOptions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
 import { BrandingColors } from '@utils/constants';
-import { cutText, getColor, requiredPermissions } from '@utils/util';
+import { cutText, codeBlock, getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandOptions, KlasaMessage } from 'klasa';
 
@@ -131,7 +131,7 @@ export default class extends SkyraCommand {
 	public source(message: KlasaMessage, [tagName]: [string]) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		const tag = tags.find(command => command.id === tagName);
-		return tag ? message.sendCode('md', tag.content) : null;
+		return tag ? message.sendMessage(codeBlock('md', tag.content)) : null;
 	}
 
 	private createTag(message: KlasaMessage, id: string, content: string): CustomCommand {

@@ -116,7 +116,6 @@ export default class extends SkyraCommand {
 				id
 			};
 		});
-
 	}
 
 	private async getAuthor(message: KlasaMessage, hideAuthor: boolean) {

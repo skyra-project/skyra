@@ -2349,7 +2349,15 @@ export default class extends Language {
 		}),
 		COMMAND_EMOTES_TITLE: 'Emotes en',
 		COMMAND_PRICE_DESCRIPTION: 'Convert the currency with this tool.',
-		COMMAND_PRICE_EXTENDED: builder.display('price', {}),
+		COMMAND_PRICE_EXTENDED: builder.display('price', {
+			extendedHelp: 'Convert between any two currencies, even if they are cryptocurrencies.',
+			explainedUsage: [
+				['from', 'The currency to convert from'],
+				['to', 'The currency to convert to'],
+				['amount', 'The amount to convert, will default to 1']
+			],
+			examples: ['EUR USD', 'USD EUR 5', 'USD BAT 10']
+		}),
 		COMMAND_QUOTE_DESCRIPTION: 'Quote another person\'s message.',
 		COMMAND_QUOTE_EXTENDED: builder.display('quote', {}),
 		COMMAND_ROLES_DESCRIPTION: 'List all public roles from a guild, or claim/unclaim them.',
@@ -3721,7 +3729,7 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
 			NO_GENRES: 'Ninguno en TheMovieDB'
 		},
-		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `${fromAmount} ${fromCurrency} vale ${toAmount} ${toCurrency}.`,
+		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, worths) => `**${fromAmount}** ${fromCurrency.toUpperCase()} vale ${this.list(worths, 'y')}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
 		COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',
 		COMMAND_ROLES_LIST_EMPTY: '¡Este servidor no tiene ningún rol público!',

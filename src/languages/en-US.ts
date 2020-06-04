@@ -2339,7 +2339,15 @@ export default class extends Language {
 		}),
 		COMMAND_EMOTES_TITLE: 'Emotes in',
 		COMMAND_PRICE_DESCRIPTION: 'Convert between currencies with this command.',
-		COMMAND_PRICE_EXTENDED: builder.display('price', {}),
+		COMMAND_PRICE_EXTENDED: builder.display('price', {
+			extendedHelp: 'Convert between any two currencies, even if they are cryptocurrencies.',
+			explainedUsage: [
+				['from', 'The currency to convert from'],
+				['to', 'The currency to convert to'],
+				['amount', 'The amount to convert, will default to 1']
+			],
+			examples: ['EUR USD', 'USD EUR 5', 'USD BAT 10']
+		}),
 		COMMAND_QUOTE_DESCRIPTION: 'Quote another person\'s message.',
 		COMMAND_QUOTE_EXTENDED: builder.display('quote', {}),
 		COMMAND_ROLES_DESCRIPTION: 'List all public roles from a guild, or claim/unclaim them.',
@@ -3708,7 +3716,7 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'No user score',
 			NO_GENRES: 'None on TheMovieDB'
 		},
-		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, toCurrency, toAmount) => `**${fromAmount}** ${fromCurrency} is worth **${toAmount}** ${toCurrency}.`,
+		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, worths) => `**${fromAmount}** ${fromCurrency.toUpperCase()} is worth ${this.list(worths, 'and')}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: 'There was an error, please make sure you specified an appropriate coin and currency.',
 		COMMAND_QUOTE_MESSAGE: 'It is very weird, but said message does not have a content nor a image.',
 		COMMAND_ROLES_LIST_EMPTY: 'This server does not have a role listed as a public role.',

@@ -287,18 +287,26 @@ export class ModerationManagerEntry {
 		]);
 
 		const prefix = this.manager.guild.settings.get(GuildSettings.Prefix);
-		const formattedDuration = this.duration ? `\n❯ **Expires In**: ${this.client.languages.default.duration(this.duration)}` : '';
-		const description = [
-			`❯ **Type**: ${this.title}`,
-			`❯ **User:** ${userTag.username}#${userTag.discriminator} (${userID})`,
-			`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}${formattedDuration}`
-		].join('\n');
+		const formattedDuration = this.duration ? this.manager.guild.language.tget('MODERATION_LOG_EXPIRES_IN', this.duration) : '';
+		const description = this.manager.guild.language.tget('MODERATION_LOG_DESCRIPTION', {
+			type: this.title,
+			userName: userTag.username,
+			userDiscriminator: userTag.discriminator,
+			userId: userID,
+			reason: this.reason,
+			prefix,
+			caseId: this.case,
+			formattedDuration
+		});
 
 		const embed = new MessageEmbed()
 			.setColor(this.color)
 			.setAuthor(`${moderator.username}#${moderator.discriminator}`, getDisplayAvatar(moderatorID, moderator))
 			.setDescription(description)
-			.setFooter(`Case ${this.case}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setFooter(
+				this.manager.guild.language.tget('MODERATION_LOG_FOOTER', this.case),
+				this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+			)
 			.setTimestamp(this.createdTimestamp);
 
 		if (this.imageURL) embed.setImage(this.imageURL);

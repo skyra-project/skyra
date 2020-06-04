@@ -1,14 +1,15 @@
-import { Song } from '@lib/structures/music/Song';
-import { HungerGamesGame } from '@root/commands/Games/hungergames';
-import { LevelTitles } from '@root/commands/Social/level';
-import { ProfileTitles } from '@root/commands/Social/profile';
-import { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
-import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
-import { Guild, GuildMember, MessageEmbed, PermissionString, Role, User } from 'discord.js';
-import { ScheduledTask, SchemaEntry } from 'klasa';
-import { Kitsu } from './definitions/Kitsu';
-import { OverwatchRating } from './definitions/Overwatch';
-import { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import type { Song } from '@lib/structures/music/Song';
+import type { HungerGamesGame } from '@root/commands/Games/hungergames';
+import type { LevelTitles } from '@root/commands/Social/level';
+import type { ProfileTitles } from '@root/commands/Social/profile';
+import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
+import type { Moderation } from '@utils/constants';
+import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import type { Guild, GuildMember, MessageEmbed, PermissionString, Role, User } from 'discord.js';
+import type { ScheduledTask, SchemaEntry } from 'klasa';
+import type { Kitsu } from './definitions/Kitsu';
+import type { OverwatchRating } from './definitions/Overwatch';
+import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export const enum Position {
 	Before,
@@ -1793,6 +1794,9 @@ export interface LanguageKeys {
 	RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT: string;
 	LISTIFY_PAGE: (page: number, pageCount: number, results: string) => string;
 	MODERATION_LOG_APPEALED: string;
+	MODERATION_LOG_EXPIRES_IN: (duration: number) => string;
+	MODERATION_LOG_DESCRIPTION: (data: Moderation.ModerationManagerDescriptionData) => string;
+	MODERATION_LOG_FOOTER: (caseId: number | null) => string;
 	MODERATION_CASE_NOT_EXISTS: string;
 	MODERATION_CASES_NOT_EXIST: string;
 	GUILD_SETTINGS_CHANNELS_MOD: string;

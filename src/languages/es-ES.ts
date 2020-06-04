@@ -4,7 +4,7 @@ import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import ShinyWager from '@root/arguments/shinywager';
 import { VERSION } from '@root/config';
-import { Emojis } from '@utils/constants';
+import { Emojis, Moderation } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LanguageHelp } from '@utils/LanguageHelp';
@@ -4469,6 +4469,15 @@ export default class extends Language {
 		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} Lo siento, pero el caso de moderación ha expirado o no se puede temporizar.`,
+		MODERATION_LOG_EXPIRES_IN: duration => `\n❯ **Caduca en**: ${this.duration(duration)}`,
+		MODERATION_LOG_DESCRIPTION: ({ caseId, formattedDuration, prefix, reason, type, userDiscriminator, userId, userName }: Moderation.ModerationManagerDescriptionData) => (
+			[
+				`❯ **Tipo**: ${type}`,
+				`❯ **Usuario:** ${userName}#${userDiscriminator} (${userId})`,
+				`❯ **Razón:** ${reason || `Por favor use \`${prefix}reason ${caseId} <razón>\` para establecer la razón.`}${formattedDuration}`
+			].join('\n')
+		),
+		MODERATION_LOG_FOOTER: caseId => `Caso ${caseId ?? ''}`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
 

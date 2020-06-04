@@ -4464,7 +4464,7 @@ export default class extends Language {
 				`❯ **Reason:** ${reason || `Please use \`${prefix}reason ${caseID} <reason>\` to set the reason.`}${formattedDuration}`
 			].join('\n')
 		),
-		MODERATION_LOG_FOOTER: caseID => `Case ${caseID ?? ''}`,
+		MODERATION_LOG_FOOTER: caseID => `Case ${caseID}`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
 

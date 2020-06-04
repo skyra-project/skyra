@@ -1796,7 +1796,7 @@ export interface LanguageKeys {
 	MODERATION_LOG_APPEALED: string;
 	MODERATION_LOG_EXPIRES_IN: (duration: number) => string;
 	MODERATION_LOG_DESCRIPTION: (data: Moderation.ModerationManagerDescriptionData) => string;
-	MODERATION_LOG_FOOTER: (caseID: number | null) => string;
+	MODERATION_LOG_FOOTER: (caseID: number) => string;
 	MODERATION_CASE_NOT_EXISTS: string;
 	MODERATION_CASES_NOT_EXIST: string;
 	GUILD_SETTINGS_CHANNELS_MOD: string;

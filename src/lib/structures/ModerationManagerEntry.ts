@@ -304,7 +304,7 @@ export class ModerationManagerEntry {
 			.setAuthor(`${moderator.username}#${moderator.discriminator}`, getDisplayAvatar(moderatorID, moderator))
 			.setDescription(description)
 			.setFooter(
-				this.manager.guild.language.tget('MODERATION_LOG_FOOTER', this.case),
+				this.manager.guild.language.tget('MODERATION_LOG_FOOTER', this.case as number),
 				this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

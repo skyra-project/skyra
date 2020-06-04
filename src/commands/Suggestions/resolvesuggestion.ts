@@ -94,7 +94,6 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('suggestion', async (arg, _, message: KlasaMessage): Promise<SuggestionData> => {
 			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
 			const channel = this.client.channels.get(channelID) as TextChannel;
-
 			const id = Number(arg);
 			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALIDID');
 

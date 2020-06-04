@@ -53,7 +53,7 @@ export function radians(degrees: number) {
 	return degrees * Math.PI / 180;
 }
 
-export function showSeconds(duration: number) {
+export function showSeconds(duration: number): string {
 	if (!isNumber(duration)) return '00:00';
 	const seconds = Math.floor(duration / Time.Second) % 60;
 	const minutes = Math.floor(duration / Time.Minute) % 60;
@@ -70,7 +70,7 @@ export function showSeconds(duration: number) {
  * Load an image by its path
  * @param path The path to the image to load
  */
-export async function loadImage(path: string) {
+export async function loadImage(path: string): Promise<Image> {
 	const buffer = await fsp.readFile(path);
 	const image = new Image();
 	image.src = buffer;
@@ -81,7 +81,7 @@ export async function loadImage(path: string) {
  * Read a stream and resolve to a buffer
  * @param stream The readable stream to read
  */
-export async function streamToBuffer(stream: NodeJS.ReadableStream) {
+export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buffer> {
 	const data: Buffer[] = [];
 	for await (const buffer of stream) data.push(buffer as Buffer);
 	return Buffer.concat(data);
@@ -102,11 +102,11 @@ export function announcementCheck(message: Message) {
 	return role;
 }
 
-interface EmojiObject extends EmojiObjectPartial {
+export interface EmojiObject extends EmojiObjectPartial {
 	animated: boolean;
 }
 
-interface EmojiObjectPartial {
+export interface EmojiObjectPartial {
 	name: string;
 	id: string | null;
 }
@@ -115,7 +115,7 @@ interface EmojiObjectPartial {
  * Resolve an emoji
  * @param emoji The emoji to resolve
  */
-export function resolveEmoji(emoji: string | EmojiObject) {
+export function resolveEmoji(emoji: string | EmojiObject): string | null {
 	if (typeof emoji === 'string') {
 		if (REGEX_FCUSTOM_EMOJI.test(emoji)) return emoji.slice(1, -1);
 		if (REGEX_PCUSTOM_EMOJI.test(emoji)) return emoji;
@@ -128,11 +128,11 @@ export function resolveEmoji(emoji: string | EmojiObject) {
 	return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name);
 }
 
-export function displayEmoji(emoji: string) {
+export function displayEmoji(emoji: string): string {
 	return REGEX_PARSED_FCUSTOM_EMOJI.test(emoji) ? `<${emoji}>` : decodeURIComponent(emoji);
 }
 
-export function compareEmoji(emoji: string, matching: string | EmojiObjectPartial) {
+export function compareEmoji(emoji: string, matching: string | EmojiObjectPartial): boolean {
 	const emojiExecResult = REGEX_CUSTOM_EMOJI_PARTS.exec(emoji);
 	// emojiExecResult is only `null` when it's not a custom emoji, thus we'll compare with resolveEmoji
 	if (emojiExecResult === null) return emoji === resolveEmoji(typeof matching === 'string' ? matching : { animated: false, ...matching });
@@ -151,7 +151,7 @@ export function compareEmoji(emoji: string, matching: string | EmojiObjectPartia
 		&& emojiExecResult[3] === matching.id; // id
 }
 
-export function oneToTen(level: number) {
+export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	level |= 0;
 	if (level < 0) level = 0;
 	else if (level > 10) level = 10;
@@ -554,7 +554,7 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 
 	let value: unknown = object;
 	for (const key of path) {
-		value = (value as Record<string, unknown>)[key];
+		value = Reflect.get(value as Record<string, unknown>, key);
 		if (value === null || value === undefined) return value;
 	}
 	return value;

@@ -9,6 +9,7 @@ export interface RawModerationSettings {
 	guild_id: string;
 	moderator_id: string | null;
 	reason: string | null;
+	image_url: string | null;
 	user_id: string;
 	type: Moderation.TypeCodes;
 }
@@ -22,6 +23,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"guild_id"     VARCHAR(19)   NOT NULL,
 		"moderator_id" VARCHAR(19),
 		"reason"       VARCHAR(2000),
+		"image_url"    VARCHAR(2000),
 		"user_id"      VARCHAR(19),
 		"type"         SMALLINT      NOT NULL,
 		CONSTRAINT moderation_guild_case_idx PRIMARY KEY("guild_id", "case_id"),

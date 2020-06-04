@@ -4,14 +4,13 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
 import { CLIENT_ID } from '@root/config';
 import { Moderation, Time } from '@utils/constants';
-import { getDisplayAvatar } from '@utils/util';
+import { getDisplayAvatar, parseURL } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { Duration, ScheduledTask } from 'klasa';
 import { ModerationManager, ModerationManagerInsertData, ModerationManagerUpdateData } from './ModerationManager';
 import { ModerationData } from './ModerationTask';
 
 const kTimeout = Symbol('ModerationManagerTimeout');
-const regexParse = /,? *(?:for|time:?) ((?: ?(?:and|,)? ?\d{1,4} ?\w+)+)\.?$/i;
 
 export class ModerationManagerEntry {
 
@@ -21,6 +20,7 @@ export class ModerationManagerEntry {
 	public extraData!: object | null;
 	public moderator!: string | User | null;
 	public reason!: string | null;
+	public imageURL!: string | null;
 	public type!: Moderation.TypeCodes;
 	public user!: string | User;
 	public createdAt: number | null;
@@ -35,7 +35,8 @@ export class ModerationManagerEntry {
 			.setExtraData(data.extra_data || null)
 			.setUser(data.user_id)
 			.setModerator(data.moderator_id || null)
-			.setReason(data.reason || null);
+			.setReason(data.reason || null)
+			.setImageURL(data.image_url || null);
 		this.createdAt = data.created_at || null;
 	}
 
@@ -48,6 +49,7 @@ export class ModerationManagerEntry {
 			&& this.duration === other.duration
 			&& this.extraData === other.extraData
 			&& this.reason === other.reason
+			&& this.imageURL === other.imageURL
 			&& this.flattenedUser === other.flattenedUser
 			&& this.flattenedModerator === other.flattenedModerator;
 	}
@@ -241,6 +243,9 @@ export class ModerationManagerEntry {
 			reason: typeof data.reason === 'undefined'
 				? this.reason
 				: data.reason || null,
+			image_url: typeof data.image_url === 'undefined'
+				? this.imageURL
+				: data.image_url,
 			extra_data: typeof data.extra_data === 'undefined'
 				? this.extraData
 				: data.extra_data,
@@ -253,6 +258,7 @@ export class ModerationManagerEntry {
 		this.duration = flattened.duration;
 		this.moderator = flattened.moderator_id;
 		this.reason = flattened.reason;
+		this.imageURL = flattened.image_url;
 		this.extraData = flattened.extra_data;
 		this.type = flattened.type;
 		this.client.emit(Events.ModerationEntryEdit, clone, this);
@@ -287,12 +293,15 @@ export class ModerationManagerEntry {
 			`❯ **Reason:** ${this.reason || `Please use \`${prefix}reason ${this.case} to claim.\``}${formattedDuration}`
 		].join('\n');
 
-		return new MessageEmbed()
+		const embed = new MessageEmbed()
 			.setColor(this.color)
 			.setAuthor(`${moderator.username}#${moderator.discriminator}`, getDisplayAvatar(moderatorID, moderator))
 			.setDescription(description)
 			.setFooter(`Case ${this.case}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(this.createdTimestamp);
+
+		if (this.imageURL) embed.setImage(this.imageURL);
+		return embed;
 	}
 
 	public setCase(value: number | null) {
@@ -325,18 +334,19 @@ export class ModerationManagerEntry {
 	}
 
 	public setReason(value?: string | null) {
-		if (!value) return this;
-		value = value.trim();
-
-		if (value && this.duration === null && this.temporable) {
-			const match = regexParse.exec(value);
-			if (match) {
-				this.setDuration(match[1]);
-				value = value.slice(0, match.index);
-			}
+		if (value) {
+			const trimmed = value.trim();
+			value = trimmed.length === 0 ? null : trimmed;
+		} else {
+			value = null;
 		}
 
-		this.reason = value.length ? value : null;
+		this.reason = value;
+		return this;
+	}
+
+	public setImageURL(value?: string | null) {
+		this.imageURL = (value && parseURL(value)?.href) ?? null;
 		return this;
 	}
 
@@ -375,6 +385,7 @@ export class ModerationManagerEntry {
 			guild_id: this.manager.guild.id,
 			moderator_id: this.flattenedModerator,
 			reason: this.reason,
+			image_url: this.imageURL,
 			type: this.type,
 			user_id: this.flattenedUser,
 			created_at: this.createdAt
@@ -389,7 +400,7 @@ export class ModerationManagerEntry {
 
 }
 
-type ModerationManagerUpdateDataWithType = Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'type'>;
+type ModerationManagerUpdateDataWithType = Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'image_url' | 'type'>;
 
 interface ScheduleModerationTask extends ScheduledTask {
 	data: ModerationData;

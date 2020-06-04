@@ -186,7 +186,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 
 }
 
-export type ModerationManagerUpdateData = Partial<Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason'>>;
+export type ModerationManagerUpdateData = Partial<Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'image_url'>>;
 export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guild_id'>;
 export type ModerationManagerInsertData = Pick<RawModerationSettings, 'guild_id' | 'user_id' | 'type'>
-& Partial<Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'created_at' | 'case_id'>>;
+& Partial<Pick<RawModerationSettings, 'duration' | 'extra_data' | 'moderator_id' | 'reason' | 'image_url' | 'created_at' | 'case_id'>>;

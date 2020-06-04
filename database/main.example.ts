@@ -1,6 +1,6 @@
 import moduleAlias from 'module-alias';
 import { resolve } from 'path';
-import migration from './5.4.0';
+import migration from './5.4.1';
 const PROJECT_ROOT = resolve(__dirname, '..', '..');
 moduleAlias.addPath(resolve(PROJECT_ROOT, 'src'));
 moduleAlias.addAliases({

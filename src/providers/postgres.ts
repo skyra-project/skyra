@@ -288,9 +288,17 @@ export default class extends SQLProvider {
 		return `"${escaped}"`;
 	}
 
+	public cNullableString(value: string | null) {
+		return value === null ? 'NULL' : this.cString(value);
+	}
+
 	public cString(value: string) {
 		const escaped = value.replace(/'/g, "''");
 		return `'${escaped}'`;
+	}
+
+	public cNullableNumber(value: number | bigint | null) {
+		return value === null ? 'NULL' : this.cNumber(value);
 	}
 
 	public cNumber(value: number | bigint) {
@@ -307,6 +315,10 @@ export default class extends SQLProvider {
 
 	public cArray(value: readonly unknown[]) {
 		return `ARRAY[${value.map(this.cUnknown.bind(this)).join(', ')}]`;
+	}
+
+	public cNullableJson(value: AnyObject | null) {
+		return value === null ? 'NULL' : this.cJson(value);
 	}
 
 	public cJson(value: AnyObject) {

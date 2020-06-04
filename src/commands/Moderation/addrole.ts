@@ -3,6 +3,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Role, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ar'],
@@ -32,6 +33,7 @@ export default class extends ModerationCommand {
 			user_id: context.target.id,
 			moderator_id: message.author.id,
 			reason: context.reason,
+			image_url: getImage(message),
 			duration: context.duration
 		}, context.role, this.getTargetDM(message, context.target));
 	}

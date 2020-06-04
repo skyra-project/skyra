@@ -3,7 +3,7 @@ import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
-import { floatPromise } from '@utils/util';
+import { floatPromise, getImage } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
@@ -40,7 +40,8 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.unWarning({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			reason: context.reason
+			reason: context.reason,
+			image_url: getImage(message)
 		}, context.modlog.case!, this.getTargetDM(message, context.target));
 	}
 

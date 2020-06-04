@@ -28,7 +28,6 @@ export default class extends ModerationCommand {
 		return message.guild!.security.actions.unRestrictVoice({
 			user_id: context.target.id,
 			moderator_id: message.author.id,
-			duration: context.duration,
 			reason: context.reason
 		}, this.getTargetDM(message, context.target));
 	}

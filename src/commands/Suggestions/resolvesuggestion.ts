@@ -1,10 +1,10 @@
-import type { KlasaMessage } from 'klasa';
-import { MessageEmbed, TextChannel } from 'discord.js';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { ApplyOptions } from '@skyra/decorators';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import type { KlasaMessage } from 'klasa';
 
 const enum SuggestionsColors {
 	Accepted = 0x4CB02C,
@@ -68,14 +68,14 @@ export default class extends SkyraCommand {
 
 		if (shouldDM && messageContent !== null) {
 			try {
-				await suggestionData.author!.send(messageContent, { embed: newEmbed! });
+				await suggestionData.author!.send(messageContent, { embed: newEmbed });
 			} catch {
 				await message.channel.sendLocale('COMMAND_RESOLVESUGGESTION_DM_FAIL');
 			}
 		}
 
 		shouldRepostSuggestion
-			? await suggestionData.message.channel.send(messageContent, { embed: newEmbed! })
+			? await suggestionData.message.channel.send(messageContent, { embed: newEmbed })
 			: await suggestionData.message.edit(newEmbed);
 
 		return message.sendLocale('COMMAND_RESOLVESUGGESTION_SUCCESS', [suggestionData.id]);
@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return true;
 
-		const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
+		const channelID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
 		if (channelID !== null) return false;
 		await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
 		return true;

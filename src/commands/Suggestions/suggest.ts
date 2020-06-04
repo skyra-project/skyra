@@ -1,10 +1,10 @@
-import type { KlasaMessage } from 'klasa';
-import { MessageEmbed, TextChannel } from 'discord.js';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { BrandingColors } from '@utils/constants';
 import { PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { BrandingColors } from '@utils/constants';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import type { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,

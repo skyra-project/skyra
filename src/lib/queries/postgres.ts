@@ -119,14 +119,14 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public deleteSuggestion(guildID: string, suggestionID: number) {
-		const { provider } = this;
-		return this.provider.run(/* sql */`
+		return this.provider.runOne(/* sql */`
 			DELETE
 			FROM suggestions
 			WHERE
-				"guild_id" = ${provider.cString(guildID)} AND
-				"id"       = ${provider.cNumber(suggestionID)};
-		`);
+				"guild_id" = $1 AND
+				"id"       = $2;
+			RETURNING *;
+		`, [guildID, suggestionID]);
 	}
 
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
@@ -367,24 +367,22 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public fetchSuggestions(guildID: string) {
-		const { provider } = this;
 		return this.provider.runAll<RawSuggestionSettings>(/* sql */`
 			SELECT *
 			FROM suggestions
 			WHERE
-				"guild_id" = ${provider.cString(guildID)};
-		`);
+				"guild_id" = $1;
+		`, [guildID]);
 	}
 
 	public fetchSuggestion(guildID: string, suggestionID: number) {
-		const { provider } = this;
 		return this.provider.runOne<RawSuggestionSettings>(/* sql */`
 			SELECT *
 			FROM suggestions
 			WHERE
-				"guild_id" = ${provider.cString(guildID)} AND
-				"id"       = ${provider.cNumber(suggestionID)};
-		`);
+				"guild_id" = $1 AND
+				"id"       = $2;
+		`, [guildID, suggestionID]);
 	}
 
 	public async fetchTwitchStreamSubscription(streamerID: string) {
@@ -540,20 +538,10 @@ export class PostgresCommonQuery implements CommonQuery {
 	}
 
 	public insertSuggestion(entry: RawSuggestionSettings) {
-		const { provider } = this;
 		return this.provider.run(/* sql */`
-			INSERT INTO suggestions (
-				"id",
-				"message_id",
-				"guild_id",
-				"author_id"
-			) VALUES (
-				${provider.cNumber(entry.id)},
-				${provider.cString(entry.message_id)},
-				${provider.cString(entry.guild_id)},
-				${provider.cString(entry.author_id)}
-			);
-	`);
+			INSERT INTO suggestions ("id", "message_id", "guild_id", "author_id")
+			VALUES ($1, $2, $3, $4);
+		`, [entry.id, entry.message_id, entry.guild_id, entry.author_id]);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

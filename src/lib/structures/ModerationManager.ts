@@ -107,7 +107,9 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 	}
 
 	public async count() {
-		if (this._count === null) await this.fetch();
+		if (this._count === null) {
+			this._count = await this.client.queries.fetchModerationCurrentCaseID(this.guild.id);
+		}
 		return this._count!;
 	}
 
@@ -157,16 +159,7 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 			super.set(entry.case!, entry);
 		}
 
-		switch (type) {
-			case CacheActions.Fetch:
-				this._count = super.size;
-				break;
-			case CacheActions.Insert:
-				this._count!++;
-				break;
-			case CacheActions.None:
-				break;
-		}
+		if (type === CacheActions.Insert) ++this._count!;
 
 		if (!this._timer) {
 			this._timer = setInterval(() => {

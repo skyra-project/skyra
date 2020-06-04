@@ -216,6 +216,19 @@ export class PostgresCommonQuery implements CommonQuery {
 		`, [guildID, userID]) as Promise<RawMemberSettings | null>;
 	}
 
+	public async fetchModerationCurrentCaseID(guildID: string) {
+		const { provider } = this;
+		const entry = await this.provider.runOne(/* sql */ `
+			SELECT MAX(case_id)
+			FROM moderation
+			WHERE
+				"guild_id" = ${provider.cString(guildID)}
+			LIMIT 1;
+		`) as { max: number | null };
+
+		return entry.max === null ? 0 : entry.max;
+	}
+
 	public async fetchModerationLogByCase(guildID: string, caseNumber: number) {
 		const { provider } = this;
 		const entry = await this.provider.runOne(/* sql */ `

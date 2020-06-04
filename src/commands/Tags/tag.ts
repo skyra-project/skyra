@@ -1,7 +1,7 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
-import { chunk, codeBlock } from '@klasa/utils';
+import { chunk } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -9,7 +9,7 @@ import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings'
 import { ApplyOptions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
 import { BrandingColors } from '@utils/constants';
-import { cutText, getColor, requiredPermissions } from '@utils/util';
+import { cutText, codeBlock, getColor, requiredPermissions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandOptions, KlasaMessage } from 'klasa';
 

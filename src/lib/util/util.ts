@@ -536,6 +536,11 @@ export function createPick<T>(array: T[]): () => T {
 	return () => array[Math.floor(Math.random() * length)];
 }
 
+export function codeBlock(language: string, input: string) {
+	if (input.length === 0) return '```\u200B```';
+	return `\`\`\`${language}\n${input.replace(/```/, '`\u200B``').replace(/`$/g, '`\u200B')}\`\`\``;
+}
+
 export function inlineCodeblock(input: string) {
 	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, '`\u200B')}\``;
 }

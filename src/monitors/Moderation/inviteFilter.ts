@@ -78,7 +78,7 @@ export default class extends ModerationMonitor {
 	}
 
 	private async scanLink(message: KlasaMessage, url: string, code: string) {
-		return (await this.fetchIfAllowedInvite(message, code)) ? url : null;
+		return (await this.fetchIfAllowedInvite(message, code)) ? null : url;
 	}
 
 	private async fetchIfAllowedInvite(message: KlasaMessage, code: string) {

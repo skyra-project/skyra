@@ -96,7 +96,6 @@ export default class extends SkyraCommand {
 			const channel = this.client.channels.get(channelID) as TextChannel;
 			const id = Number(arg);
 			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALIDID');
-
 			const suggestionData = await this.client.queries.fetchSuggestion(message.guild!.id, id);
 			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_IDNOTFOUND');
 			const suggestionMessage = await channel.messages.fetch(suggestionData.message_id);

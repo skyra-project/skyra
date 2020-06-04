@@ -132,6 +132,7 @@ function groupDigits(number: number) {
 	return number.toLocaleString('en-US', { useGrouping: true });
 }
 
+
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;
@@ -3854,7 +3855,8 @@ export default class extends Language {
 		MODERATION_MONITOR_WORDS: (amount, maximum) => maximum === 0
 			? '[Auto-Moderation] Triggered word filter, no threshold.'
 			: `[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
-		MONITOR_NOINVITE: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
+		MONITOR_INVITE_FILTER_ALERT: user => `${REDCROSS} Dear ${user}, invite links aren't allowed here.`,
+		MONITOR_INVITE_FILTER_LOG: links => `**Links**: ${list(links, 'and')}`,
 		MONITOR_NOLINK: user => `${REDCROSS} Hey ${user}, you are not allowed to post links here!`,
 		MONITOR_WORDFILTER_DM: filtered => `Shush! You said some words that are not allowed in the server! But since you took a moment to write the message, I will post it here:\n${filtered}`,
 		MONITOR_CAPSFILTER_DM: message => `Speak lower! I know you need to express your thoughts. There is the message I deleted:${message}`,

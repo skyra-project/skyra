@@ -37,7 +37,7 @@ export default class extends ModerationMonitor {
 
 	protected async preProcess(message: KlasaMessage) {
 		let value: RegExpExecArray | null = null;
-		const promises: Promise<boolean>[] = [];
+		const promises: Promise<string | null>[] = [];
 		const scanned = new Set<string>();
 		while ((value = this.kInviteRegExp.exec(message.content)) !== null) {
 			const { code, source } = value.groups!;
@@ -52,13 +52,12 @@ export default class extends ModerationMonitor {
 			scanned.add(key);
 
 			promises.push(identifier === CodeType.DiscordGG
-				? this.fetchIfAllowedInvite(message, code)
-				: Promise.resolve(false));
+				? this.scanLink(message, key, code)
+				: Promise.resolve(key));
 		}
 
-		const resolved = await Promise.all(promises);
-		const counter = resolved.reduce((acc, v) => acc + (v ? 0 : 1), 0);
-		return counter === 0 ? null : counter;
+		const resolved = (await Promise.all(promises)).filter(invite => invite !== null) as string[];
+		return resolved.length === 0 ? null : resolved;
 	}
 
 	protected onDelete(message: KlasaMessage) {
@@ -66,15 +65,20 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.tget('MONITOR_NOINVITE', message.author.toString())));
+		floatPromise(this, message.alert(message.language.tget('MONITOR_INVITE_FILTER_ALERT', message.author.toString())));
 	}
 
-	protected onLogMessage(message: KlasaMessage) {
+	protected onLogMessage(message: KlasaMessage, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setDescription(message.language.tget('MONITOR_INVITE_FILTER_LOG', links))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_INVITELINK')}`)
 			.setTimestamp();
+	}
+
+	private async scanLink(message: KlasaMessage, url: string, code: string) {
+		return (await this.fetchIfAllowedInvite(message, code)) ? null : url;
 	}
 
 	private async fetchIfAllowedInvite(message: KlasaMessage, code: string) {

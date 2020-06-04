@@ -13,6 +13,7 @@ import { KlasaMessage } from 'klasa';
 export const enum ModerationSetupRestriction {
 	Reaction = 'roles.restricted-reaction',
 	Embed = 'roles.restricted-embed',
+	Emoji = 'roles.restricted-emoji',
 	Attachment = 'roles.restricted-attachment',
 	Voice = 'roles.restricted-voice'
 }
@@ -21,6 +22,7 @@ const enum RoleDataKey {
 	Muted,
 	Reaction,
 	Embed,
+	Emoji,
 	Attachment,
 	Voice
 }
@@ -45,6 +47,13 @@ const kRoleDataOptions = new Map<RoleDataKey, RoleData>([
 		hoist: false,
 		mentionable: false,
 		name: 'Restricted Embed',
+		permissions: []
+	}],
+	[RoleDataKey.Emoji, {
+		color: 0x000000,
+		hoist: false,
+		mentionable: false,
+		name: 'Restricted Emoji',
 		permissions: []
 	}],
 	[RoleDataKey.Reaction, {
@@ -114,6 +123,21 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 				EMBED_LINKS: false
 			},
 			permissions: new Permissions(['EMBED_LINKS'])
+		},
+		voice: null
+	}],
+	[RoleDataKey.Emoji, {
+		category: {
+			options: {
+				USE_EXTERNAL_EMOJIS: false
+			},
+			permissions: new Permissions(['USE_EXTERNAL_EMOJIS'])
+		},
+		text: {
+			options: {
+				USE_EXTERNAL_EMOJIS: false
+			},
+			permissions: new Permissions(['USE_EXTERNAL_EMOJIS'])
 		},
 		voice: null
 	}],
@@ -367,6 +391,28 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
+	public async restrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionAttachment);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+
+		await this.cancelLastLogTaskFromUser(options.user_id, Moderation.TypeCodes.RestrictionAttachment);
+		return (await moderationLog.create())!;
+	}
+
+	public async unRestrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionAttachment);
+		const moderationLog = this.guild.moderation.create(options);
+		await this.sendDM(moderationLog, sendOptions);
+
+		await this.cancelLastLogTaskFromUser(options.user_id, Moderation.TypeCodes.RestrictionAttachment);
+		return (await moderationLog.create())!;
+	}
+
 	public async restrictReaction(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
 		await this.addStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
 		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedReaction);
@@ -411,25 +457,25 @@ export class ModerationActions {
 		return (await moderationLog.create())!;
 	}
 
-	public async restrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		await this.addStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
-		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionAttachment);
+	public async restrictEmoji(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.addStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedEmoji);
+		await this.addRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedEmoji);
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.RestrictionEmoji);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.user_id, Moderation.TypeCodes.RestrictionAttachment);
+		await this.cancelLastLogTaskFromUser(options.user_id, Moderation.TypeCodes.RestrictionEmoji);
 		return (await moderationLog.create())!;
 	}
 
-	public async unRestrictAttachment(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		await this.removeStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
-		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedAttachment);
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionAttachment);
+	public async unRestrictEmoji(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
+		await this.removeStickyRestriction(rawOptions.moderator_id || CLIENT_ID, rawOptions.user_id, GuildSettings.Roles.RestrictedEmoji);
+		await this.removeRestrictionRole(rawOptions.user_id, GuildSettings.Roles.RestrictedEmoji);
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnRestrictionEmoji);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.user_id, Moderation.TypeCodes.RestrictionAttachment);
+		await this.cancelLastLogTaskFromUser(options.user_id, Moderation.TypeCodes.RestrictionEmoji);
 		return (await moderationLog.create())!;
 	}
 
@@ -812,6 +858,7 @@ export class ModerationActions {
 		switch (key) {
 			case ModerationSetupRestriction.Attachment: return RoleDataKey.Attachment;
 			case ModerationSetupRestriction.Embed: return RoleDataKey.Embed;
+			case ModerationSetupRestriction.Emoji: return RoleDataKey.Emoji;
 			case ModerationSetupRestriction.Reaction: return RoleDataKey.Reaction;
 			case ModerationSetupRestriction.Voice: return RoleDataKey.Voice;
 		}

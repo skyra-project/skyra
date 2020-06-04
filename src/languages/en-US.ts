@@ -514,9 +514,10 @@ export default class extends Language {
 		SETTINGS_ROLES_PUBLIC: 'The public roles, they will be given with no cost to any user using the `roles` command.',
 		SETTINGS_ROLES_REMOVEINITIAL: 'Whether the claim of a public role should remove the initial one too.',
 		SETTINGS_ROLES_RESTRICTED_ATTACHMENT: 'The role that is used for the restrictAttachment moderation command',
-		SETTINGS_ROLES_RESTRICTED_EMBED: 'The role that is used for the restrictEmbed moderation command',
+		SETTINGS_ROLES_RESTRICTED_EMBED: 'The role that is used for the restrictEmbed moderation command.',
+		SETTINGS_ROLES_RESTRICTED_EMOJI: 'The role that is used for the restrictEmoji moderation command.',
 		SETTINGS_ROLES_RESTRICTED_REACTION: 'The role that is used for the restrictReaction moderation command.',
-		SETTINGS_ROLES_RESTRICTED_VOICE: 'The role that is used for the restrictVoice moderation command',
+		SETTINGS_ROLES_RESTRICTED_VOICE: 'The role that is used for the restrictVoice moderation command.',
 		SETTINGS_ROLES_SUBSCRIBER: 'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
 		SETTINGS_SELFMOD_ATTACHMENT: 'Whether or not the attachment filter is enabled.',
 		SETTINGS_SELFMOD_ATTACHMENTMAXIMUM: 'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
@@ -1801,36 +1802,40 @@ export default class extends Language {
 		COMMAND_RESTRICTATTACHMENT_EXTENDED: builder.display('restrictAttachment', {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
-					the reverted restriction.
-					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+					a temporary restriction.
+					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Sending weird images', '@Pete 24h Sending NSFW images']
 		}),
 		COMMAND_RESTRICTEMBED_DESCRIPTION: 'Restrict a user from attaching embeds in all channels.',
 		COMMAND_RESTRICTEMBED_EXTENDED: builder.display('restrictEmbed', {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
-					the reverted restriction.
-					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+					a temporary restriction.
+					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Sending weird links', '@Pete 24h Posted a spam link']
+		}),
+		COMMAND_RESTRICTEMOJI_DESCRIPTION: 'Restrict a user from using external emojis in all channels.',
+		COMMAND_RESTRICTEMOJI_EXTENDED: builder.display('restrictEmoji', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
+					a temporary restriction.
+					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			examples: ['@Pete', '@Pete Spamming external emojis', '@Pete 24h Posted cringe']
 		}),
 		COMMAND_RESTRICTREACTION_DESCRIPTION: 'Restrict a user from reacting to messages in all channels.',
 		COMMAND_RESTRICTREACTION_EXTENDED: builder.display('restrictReaction', {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
-					the reverted restriction.
-					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+					a temporary restriction.
+					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Spamming reactions', '@Pete 24h Posting weird reactions']
 		}),
 		COMMAND_RESTRICTVOICE_DESCRIPTION: 'Restrict a user from joining any voice channel.',
 		COMMAND_RESTRICTVOICE_EXTENDED: builder.display('restrictVoice', {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction. This action saves a member's roles temporarily and will be granted to the user after
-					the reverted restriction.
-					The reaction role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+					a temporary restriction.
+					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Earraping in general voice channels', '@Pete 24h Making weird noises']
 		}),
 		COMMAND_SOFTBAN_DESCRIPTION: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
@@ -1867,6 +1872,11 @@ export default class extends Language {
 		}),
 		COMMAND_UNRESTRICTEMBED_DESCRIPTION: 'Remove the embed restriction from one or more users.',
 		COMMAND_UNRESTRICTEMBED_EXTENDED: builder.display('unRestrictEmbed', {
+			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			examples: ['@Pete']
+		}),
+		COMMAND_UNRESTRICTEMOJI_DESCRIPTION: 'Remove the external emoji restriction from one or more users.',
+		COMMAND_UNRESTRICTEMOJI_EXTENDED: builder.display('unRestrictEmoji', {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
 		}),

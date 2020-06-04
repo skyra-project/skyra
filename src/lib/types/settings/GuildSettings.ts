@@ -69,6 +69,7 @@ export namespace GuildSettings {
 		export const Muted = T<string>('roles.muted');
 		export const RestrictedReaction = T<string>('roles.restricted-reaction');
 		export const RestrictedEmbed = T<string>('roles.restricted-embed');
+		export const RestrictedEmoji = T<string>('roles.restricted-emoji');
 		export const RestrictedAttachment = T<string>('roles.restricted-attachment');
 		export const RestrictedVoice = T<string>('roles.restricted-voice');
 		export const Public = T<readonly string[]>('roles.public');

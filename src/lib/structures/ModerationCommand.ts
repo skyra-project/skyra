@@ -47,7 +47,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 		const preHandled = await this.prehandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
-		const errored = [] as Array<{ error: Error; target: User }>;
+		const errored = [] as Array<{ error: Error | string; target: User }>;
 
 		const { targets, ...handledRaw } = resolved;
 		for (const target of new Set(targets)) {
@@ -84,7 +84,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			if (errored.length) {
-				const users = errored.map(({ error, target }) => `- ${target.tag} → ${error.stack || error.message}`);
+				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.stack || error.message}`);
 				output.push(message.language.tget('COMMAND_MODERATION_FAILED', users));
 			}
 

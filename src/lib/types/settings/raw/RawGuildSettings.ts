@@ -51,6 +51,7 @@ export interface RawGuildSettings {
 	'roles.muted': string | null;
 	'roles.restricted-reaction': string | null;
 	'roles.restricted-embed': string | null;
+	'roles.restricted-emoji': string | null;
 	'roles.restricted-attachment': string | null;
 	'roles.restricted-voice': string | null;
 	'roles.public': string[];
@@ -210,6 +211,7 @@ export const SQL_TABLE_SCHEMA = /* sql */`
 		"roles.muted"                          VARCHAR(19),
 		"roles.restricted-reaction"            VARCHAR(19),
 		"roles.restricted-embed"               VARCHAR(19),
+		"roles.restricted-emoji"               VARCHAR(19),
 		"roles.restricted-attachment"          VARCHAR(19),
 		"roles.restricted-voice"               VARCHAR(19),
 		"roles.public"                         VARCHAR(19)[]  DEFAULT ARRAY[]::VARCHAR[] NOT NULL,

@@ -100,7 +100,6 @@ export default class extends SkyraCommand {
 
 			const suggestionData = await this.client.queries.fetchSuggestion(message.guild!.id, id);
 			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_IDNOTFOUND');
-
 			const suggestionMessage = await channel.messages.fetch(suggestionData.message_id);
 			if (typeof suggestionMessage === 'undefined') {
 				await this.client.queries.deleteSuggestion(message.guild!.id, id);

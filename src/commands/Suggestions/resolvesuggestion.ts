@@ -103,7 +103,6 @@ export default class extends SkyraCommand {
 				await this.client.queries.deleteSuggestion(message.guild!.id, id);
 				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND');
 			}
-
 			const suggestionAuthor = await this.client.users.fetch(suggestionData.author_id).catch(() => null);
 			return {
 				message: suggestionMessage,

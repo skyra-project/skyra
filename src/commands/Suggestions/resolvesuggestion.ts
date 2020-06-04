@@ -1,6 +1,6 @@
-import type { KlasaMessage, CommandOptions } from 'klasa';
+import type { KlasaMessage } from 'klasa';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { SuggestionData } from '@lib/types/definitions/Suggestion';
@@ -12,7 +12,7 @@ const enum SuggestionsColors {
 	Denied = 0xF90505
 }
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['resu'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_RESOLVESUGGESTION_DESCRIPTION'),

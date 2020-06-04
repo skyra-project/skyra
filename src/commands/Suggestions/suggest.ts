@@ -1,12 +1,12 @@
-import type { KlasaMessage, CommandOptions } from 'klasa';
+import type { KlasaMessage } from 'klasa';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { BrandingColors } from '@utils/constants';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
 	description: language => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_SUGGEST_EXTENDED'),

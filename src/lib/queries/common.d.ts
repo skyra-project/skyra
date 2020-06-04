@@ -22,6 +22,7 @@ export interface CommonQuery {
 	fetchLeaderboardGlobal(): Promise<LeaderboardEntry[]>;
 	fetchLeaderboardLocal(guildID: string): Promise<LeaderboardEntry[]>;
 	fetchMemberSettings(guildID: string, userID: string): Promise<RawMemberSettings | null>;
+	fetchModerationCurrentCaseID(guildID: string): Promise<number>;
 	fetchModerationLogByCase(guildID: string, caseNumber: number): Promise<RawModerationSettings | null>;
 	fetchModerationLogsByCases(guildID: string, caseNumbers: readonly number[]): Promise<RawModerationSettings[]>;
 	fetchModerationLogsByGuild(guildID: string): Promise<RawModerationSettings[]>;

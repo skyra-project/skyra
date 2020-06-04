@@ -271,6 +271,22 @@ export class JsonCommonQuery implements CommonQuery {
 		return this.provider.create(Databases.Giveaway, `${entry.guild_id}.${entry.message_id}`, entry);
 	}
 
+	public async fetchModerationCurrentCaseID(guildID: string) {
+		const prefix = `${guildID}.`;
+		const length = guildID.length + 1;
+
+		let highest: null | number = null;
+		for (const key of await this.provider.getKeys(Databases.Moderation)) {
+			if (!key.startsWith(prefix)) continue;
+			const caseID = Number(key.slice(length));
+			if (Number.isNaN(caseID)) continue;
+
+			if (highest === null || caseID > highest) highest = caseID;
+		}
+
+		return highest === null ? 0 : highest;
+	}
+
 	public insertModerationLog(entry: RawModerationSettings) {
 		return this.provider.create(Databases.Moderation, `${entry.guild_id}.${entry.case_id}`, entry);
 	}

@@ -108,7 +108,6 @@ export default class extends SkyraCommand {
 			}
 
 			const suggestionAuthor = await this.client.users.fetch(suggestionData.author_id).catch(() => null);
-
 			return {
 				message: suggestionMessage,
 				author: suggestionAuthor,

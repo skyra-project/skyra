@@ -32,7 +32,7 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	user: PGSQL_DATABASE_USER
 };
 
-export const VERSION = '5.2.3 Nirom';
+export const VERSION = '5.4.1 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	commandEditing: true,

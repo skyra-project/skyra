@@ -1830,7 +1830,9 @@ export default class extends Language {
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Pete', '@Pete Spamming external emojis', '@Pete 24h Posted cringe']
+			examples: ['@Pete', '@Pete Spamming external emojis', '@Pete 24h Posted cringe'],
+			reminder: `This will only prevent the usage of external emojis and so will have no effect for non-nitro users,
+			your own server's emojis and regular build in twemojis can still be used by members with this role.`
 		}),
 		COMMAND_RESTRICTREACTION_DESCRIPTION: 'Restrict a user from reacting to messages in all channels.',
 		COMMAND_RESTRICTREACTION_EXTENDED: builder.display('restrictReaction', {

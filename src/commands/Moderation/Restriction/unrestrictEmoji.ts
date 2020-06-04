@@ -5,7 +5,7 @@ import { ArgumentTypes } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
-	aliases: ['un-restricted-emoji', 'uree'],
+	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
 	description: language => language.tget('COMMAND_UNRESTRICTEMOJI_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_UNRESTRICTEMOJI_EXTENDED'),
 	requiredGuildPermissions: ['MANAGE_ROLES']

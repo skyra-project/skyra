@@ -1,4 +1,4 @@
-import { expectCalledStrict, expectReturnedStrict } from '@testutils';
+import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
@@ -79,7 +79,7 @@ describe('Utils', () => {
 
 	describe('loadImage', () => {
 		test('GIVEN valid path THEN sets buffer to image src', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', '__mocks__', 'image.png');
+			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
 
 			const image = await utils.loadImage(filePath);
 
@@ -90,7 +90,7 @@ describe('Utils', () => {
 
 	describe('streamToBuffer', () => {
 		test('GIVEN path to file THEN converts to Buffer', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', '__mocks__', 'image.png');
+			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
 			const readStream = createReadStream(filePath);
 			const buffer = await utils.streamToBuffer(readStream);
 

@@ -1,6 +1,6 @@
+import English from '@root/languages/en-US';
 import { Client } from 'klasa';
 import { createLanguageStore } from './MockLanguageStore';
-import English from '../src/languages/en-US';
 
 export const client = new Client();
 

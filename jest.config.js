@@ -3,18 +3,17 @@ module.exports = {
 	preset: 'ts-jest',
 	testEnvironment: 'node',
 	testRunner: 'jest-circus/runner',
-	testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
+	testMatch: ['<rootDir>/tests/**/*.test.ts'],
 	moduleNameMapper: {
 		'^@utils/(.*)$': '<rootDir>/src/lib/util/$1',
 		'^@lib/(.*)$': '<rootDir>/src/lib/$1',
 		'^@root/(.*)$': '<rootDir>/src/$1',
-		'^@mocks/(.*)$': '<rootDir>/__mocks__/$1',
-		'^@testutils$': '<rootDir>/__tests__/testutils.ts'
+		'^@mocks/(.*)$': '<rootDir>/tests/mocks/$1'
 	},
-	setupFilesAfterEnv: ['<rootDir>/__tests__/jest.setup.ts'],
+	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	globals: {
 		'ts-jest': {
-			tsConfig: '<rootDir>/__tests__/tsconfig.json'
+			tsConfig: '<rootDir>/tests/tsconfig.json'
 		}
 	},
 	coveragePathIgnorePatterns: [
@@ -35,7 +34,7 @@ module.exports = {
 		'<rootDir>/src/config.ts',
 		'<rootDir>/src/config.example.ts',
 		'<rootDir>/src/Skyra.ts',
-		'<rootDir>/__tests__/testutils.ts',
+		'<rootDir>/tests/testutils.ts',
 		'<rootDir>/src/lib/structures',
 		'<rootDir>/src/lib/util/Models'
 	]

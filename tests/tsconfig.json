@@ -1,0 +1,17 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "noImplicitAny": false,
+    "noEmit": true,
+    "incremental": false,
+    "baseUrl": ".",
+    "paths": {
+      "@utils/*": ["../src/lib/util/*"],
+      "@lib/*": ["../src/lib/*"],
+      "@mocks/*": ["./mocks/*"],
+      "@root/*": ["../src/*"]
+    }
+  },
+  "include": [".", "../src/**/*"],
+  "references": [{ "path": "../src" }]
+}

@@ -1,4 +1,7 @@
-import { create, processWordBoundaries, processWordPattern, processLetter, WordBoundary, processGroup, processWordPatternsWithGroups } from '@utils/Security/RegexCreator';
+import {
+	create, processGroup, processLetter, processWordBoundaries,
+	processWordPattern, processWordPatternsWithGroups, WordBoundary
+} from '@utils/Security/RegexCreator';
 
 describe('RegexCreator', () => {
 	describe('processLetter', () => {

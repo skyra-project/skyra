@@ -11,7 +11,7 @@
 		"pm2:dev": "yarn pm2:start --env development",
 		"pm2:stop": "pm2 stop Skyra",
 		"start": "node dist/Skyra.js",
-		"lint": "eslint --ext ts src --fix",
+		"lint": "eslint src tests --ext ts --fix",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"update": "yarn upgrade-interactive --latest",

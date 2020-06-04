@@ -4470,10 +4470,10 @@ export default class extends Language {
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} Lo siento, pero el caso de moderación ha expirado o no se puede temporizar.`,
 		MODERATION_LOG_EXPIRES_IN: duration => `\n❯ **Caduca en**: ${this.duration(duration)}`,
-		MODERATION_LOG_DESCRIPTION: ({ caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID: userId, userName }: Moderation.ModerationManagerDescriptionData) => (
+		MODERATION_LOG_DESCRIPTION: ({ caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID, userName }: Moderation.ModerationManagerDescriptionData) => (
 			[
 				`❯ **Tipo**: ${type}`,
-				`❯ **Usuario:** ${userName}#${userDiscriminator} (${userId})`,
+				`❯ **Usuario:** ${userName}#${userDiscriminator} (${userID})`,
 				`❯ **Razón:** ${reason || `Por favor use \`${prefix}reason ${caseID} <razón>\` para establecer la razón.`}${formattedDuration}`
 			].join('\n')
 		),

@@ -69,8 +69,8 @@ export class Twitch {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixGameSearchResult | undefined>>(`games?${search.join('&')}`);
 	}
 
-	public async fetchUserFollowage(userId: string, channelId: string) {
-		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userId}&to_id=${channelId}`);
+	public async fetchUserFollowage(userID: string, channelID: string) {
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userID}&to_id=${channelID}`);
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {

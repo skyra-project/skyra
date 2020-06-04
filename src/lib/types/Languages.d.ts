@@ -5,7 +5,7 @@ import type { ProfileTitles } from '@root/commands/Social/profile';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
 import type { Moderation } from '@utils/constants';
 import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
-import type { Guild, GuildMember, MessageEmbed, PermissionString, Role, User, TextChannel } from 'discord.js';
+import type { Guild, GuildMember, MessageEmbed, PermissionString, Role, TextChannel, User } from 'discord.js';
 import type { ScheduledTask, SchemaEntry } from 'klasa';
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';

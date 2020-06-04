@@ -1,16 +1,16 @@
 import { Databases } from '@lib/types/constants/Constants';
-import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
-import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
-import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
-import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
-import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
-import { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
-import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import type { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import type { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
+import type { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import type { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import type { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import type { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import type { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import PostgresProvider from '@root/providers/postgres';
 import { Time } from '@utils/constants';
-import { Client } from 'discord.js';
-import { CommonQuery, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import type { Client } from 'discord.js';
+import type { CommonQuery, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class PostgresCommonQuery implements CommonQuery {
 

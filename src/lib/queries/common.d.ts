@@ -1,11 +1,11 @@
-import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
-import { RawRpgClass, RawRpgGuild, RawRpgGuildRank, RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
-import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
-import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
-import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
-import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import type { RawRpgClass, RawRpgGuild, RawRpgGuildRank, RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
+import type { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import type { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import type { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import type { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import type { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 
 export interface CommonQuery {
 	deleteUserEntries(userID: string): Promise<unknown>;

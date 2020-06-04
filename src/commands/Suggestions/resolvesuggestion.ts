@@ -1,5 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { SuggestionData } from '@lib/types/definitions/Suggestion';
+import type { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';

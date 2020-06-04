@@ -1,17 +1,17 @@
 import { Databases } from '@lib/types/constants/Constants';
-import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
-import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
-import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
-import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
-import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
-import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+import type { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import type { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
+import type { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import type { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import type { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import type { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import type { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import type { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
 import { JsonProvider } from '@lib/types/util';
 import { Time } from '@utils/constants';
-import { Client } from 'discord.js';
-import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
-import { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { Client } from 'discord.js';
+import type { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class JsonCommonQuery implements CommonQuery {
 

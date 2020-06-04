@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
-import { KlasaUser } from 'klasa';
+import type { Message } from 'discord.js';
+import type { KlasaUser } from 'klasa';
 
 export interface SuggestionData {
 	author: KlasaUser | null;

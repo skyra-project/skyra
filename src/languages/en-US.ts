@@ -132,7 +132,6 @@ function groupDigits(number: number) {
 	return number.toLocaleString('en-US', { useGrouping: true });
 }
 
-
 export default class extends Language {
 
 	public PERMISSIONS = PERMS;

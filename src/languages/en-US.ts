@@ -4457,14 +4457,14 @@ export default class extends Language {
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.`,
 		MODERATION_LOG_EXPIRES_IN: duration => `\n❯ **Expires In**: ${this.duration(duration)}`,
-		MODERATION_LOG_DESCRIPTION: ({ caseId, formattedDuration, prefix, reason, type, userDiscriminator, userId, userName }: Moderation.ModerationManagerDescriptionData) => (
+		MODERATION_LOG_DESCRIPTION: ({ caseID: caseId, formattedDuration, prefix, reason, type, userDiscriminator, userID: userId, userName }: Moderation.ModerationManagerDescriptionData) => (
 			[
 				`❯ **Type**: ${type}`,
 				`❯ **User:** ${userName}#${userDiscriminator} (${userId})`,
 				`❯ **Reason:** ${reason || `Please use \`${prefix}reason ${caseId} <reason>\` to set the reason.`}${formattedDuration}`
 			].join('\n')
 		),
-		MODERATION_LOG_FOOTER: caseId => `Case ${caseId ?? ''}`,
+		MODERATION_LOG_FOOTER: caseID => `Case ${caseID ?? ''}`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
 

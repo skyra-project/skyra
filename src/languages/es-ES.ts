@@ -4470,14 +4470,14 @@ export default class extends Language {
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} Lo siento, pero el caso de moderación ha expirado o no se puede temporizar.`,
 		MODERATION_LOG_EXPIRES_IN: duration => `\n❯ **Caduca en**: ${this.duration(duration)}`,
-		MODERATION_LOG_DESCRIPTION: ({ caseId, formattedDuration, prefix, reason, type, userDiscriminator, userId, userName }: Moderation.ModerationManagerDescriptionData) => (
+		MODERATION_LOG_DESCRIPTION: ({ caseID: caseId, formattedDuration, prefix, reason, type, userDiscriminator, userID: userId, userName }: Moderation.ModerationManagerDescriptionData) => (
 			[
 				`❯ **Tipo**: ${type}`,
 				`❯ **Usuario:** ${userName}#${userDiscriminator} (${userId})`,
 				`❯ **Razón:** ${reason || `Por favor use \`${prefix}reason ${caseId} <razón>\` para establecer la razón.`}${formattedDuration}`
 			].join('\n')
 		),
-		MODERATION_LOG_FOOTER: caseId => `Caso ${caseId ?? ''}`,
+		MODERATION_LOG_FOOTER: caseID => `Caso ${caseID}`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
 

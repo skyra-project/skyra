@@ -231,10 +231,10 @@ export namespace Moderation {
 		type: string;
 		userName: string;
 		userDiscriminator: string;
-		userId: string;
+		userID: string;
 		reason: string | null;
 		prefix: string;
-		caseId: number | null;
+		caseID: number | null;
 		formattedDuration: string;
 	}
 

@@ -292,10 +292,10 @@ export class ModerationManagerEntry {
 			type: this.title,
 			userName: userTag.username,
 			userDiscriminator: userTag.discriminator,
-			userId: userID,
+			userID,
 			reason: this.reason,
 			prefix,
-			caseId: this.case,
+			caseID: this.case,
 			formattedDuration
 		});
 

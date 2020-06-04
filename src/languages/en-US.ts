@@ -4,7 +4,7 @@ import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import ShinyWager from '@root/arguments/shinywager';
 import { VERSION } from '@root/config';
-import { Emojis, Moderation } from '@utils/constants';
+import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LanguageHelp } from '@utils/LanguageHelp';
@@ -4457,7 +4457,7 @@ export default class extends Language {
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.`,
 		MODERATION_LOG_EXPIRES_IN: duration => `\n❯ **Expires In**: ${this.duration(duration)}`,
-		MODERATION_LOG_DESCRIPTION: ({ caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID, userName }: Moderation.ModerationManagerDescriptionData) => (
+		MODERATION_LOG_DESCRIPTION: ({ caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID, userName }) => (
 			[
 				`❯ **Type**: ${type}`,
 				`❯ **User:** ${userName}#${userDiscriminator} (${userID})`,

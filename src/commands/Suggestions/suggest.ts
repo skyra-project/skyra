@@ -19,8 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
-		console.log('vibecheck passed');
-		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel) as string;
+		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
 
 
 		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel;
@@ -30,7 +29,7 @@ export default class extends SkyraCommand {
 		// Post the suggestion
 		const suggestionsMessage = await suggestionsChannel.send(new MessageEmbed()
 			.setColor(BrandingColors.Primary)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128 })!)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })!)
 			.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
 			.setDescription(suggestion));
 
@@ -58,12 +57,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async inhibit(message: KlasaMessage): Promise<boolean> {
-		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
+		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 		const suggestionID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
-		console.log('before vibecheck');
 		if (suggestionID !== null) return true;
-		console.log('YOU FAILED THE VIBECHECK');
 		return this.setChannel(message);
 	}
 

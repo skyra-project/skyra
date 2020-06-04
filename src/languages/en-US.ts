@@ -2277,7 +2277,7 @@ export default class extends Language {
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
 			extendedHelp: `This command marks a suggestion as accepted, considered, or denied.
 			It also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
-			Also, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`,
+			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`,
 			examples: [
 				'1 accept Thank you for your suggestion!',
 				'1 a Thank you for your suggestion!',
@@ -3551,7 +3551,7 @@ export default class extends Language {
 			CONSIDER: (author, guild) => `${author} cosnsidered this suggestion in ${guild}:`,
 			DENY: (author, guild) => `${author} denied this suggestion in ${guild}:`
 		},
-		COMMAND_RESOLVESUGGESTION_DM_FAIL: 'I couldn\'t DM the user. Are his DMs closed?',
+		COMMAND_RESOLVESUGGESTION_DM_FAIL: 'I couldn\'t DM the user. Are their DMs closed?',
 		COMMAND_RESOLVESUGGESTION_SUCCESS: id => `Successfully resolved suggestion \`${id}\`!`,
 
 		/**

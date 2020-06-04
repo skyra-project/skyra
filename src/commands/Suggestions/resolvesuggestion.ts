@@ -90,7 +90,6 @@ export default class extends SkyraCommand {
 		await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
 		return true;
 	}
-
 	public async init() {
 		this.createCustomResolver('suggestion', async (arg, _, message: KlasaMessage): Promise<SuggestionData> => {
 			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;

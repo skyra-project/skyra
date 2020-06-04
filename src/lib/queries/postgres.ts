@@ -453,7 +453,7 @@ export class PostgresCommonQuery implements CommonQuery {
 				"reason",
 				"image_url",
 				"user_id",
-				"type
+				"type"
 			)
 			VALUES (
 				${provider.cNumber(entry.case_id)},

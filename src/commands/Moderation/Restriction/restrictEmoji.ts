@@ -8,7 +8,7 @@ import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
-	aliases: ['restrict-external-emoji', 'restricted-emoji', 'restricted-external-emoji', 'ree'],
+	aliases: ['restrict-external-emoji', 'restricted-emoji', 'restricted-external-emoji', 'ree', 'restrict-emojis'],
 	description: language => language.tget('COMMAND_RESTRICTEMOJI_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_RESTRICTEMOJI_EXTENDED'),
 	optionalDuration: true,

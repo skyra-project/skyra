@@ -1,22 +1,20 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import type { KlasaMessage, CommandOptions } from 'klasa';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { BrandingColors } from '@utils/constants';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 
+@ApplyOptions<CommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SUGGEST_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<suggestion:string>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SUGGEST_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<suggestion:string{3,2000}>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;

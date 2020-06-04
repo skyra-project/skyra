@@ -1,9 +1,10 @@
-import { CommandStore, KlasaMessage } from 'klasa';
+import type { KlasaMessage, CommandOptions } from 'klasa';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { SuggestionData } from '@lib/types/definitions/Suggestion';
+import { ApplyOptions } from '@skyra/decorators';
 
 const enum SuggestionsColors {
 	Accepted = 0x4CB02C,
@@ -11,47 +12,19 @@ const enum SuggestionsColors {
 	Denied = 0xF90505
 }
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['resu'],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_RESOLVESUGGESTION_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_RESOLVESUGGESTION_EXTENDED'),
+	flagSupport: true,
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:...string]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['resu'],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_RESOLVESUGGESTION_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_RESOLVESUGGESTION_EXTENDED'),
-			flagSupport: true,
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:...string]',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('suggestion', async (arg, _, message: KlasaMessage): Promise<SuggestionData> => {
-			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
-			const channel = this.client.channels.get(channelID) as TextChannel;
-
-			const id = Number(arg);
-			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALIDID');
-
-			const suggestionData = await this.client.queries.fetchSuggestion(message.guild!.id, id);
-			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_IDNOTFOUND');
-
-			const suggestionMessage = await channel.messages.fetch(suggestionData.message_id);
-			if (typeof suggestionMessage === 'undefined') {
-				await this.client.queries.deleteSuggestion(message.guild!.id, id);
-				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND');
-			}
-
-			const suggestionAuthor = await this.client.users.fetch(suggestionData.author_id).catch(() => null);
-
-			return {
-				message: suggestionMessage,
-				author: suggestionAuthor,
-				id
-			};
-		});
-	}
 
 	public async run(message: KlasaMessage, [suggestionData, action, comment]: [SuggestionData, string, string | undefined]) {
 		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = [
@@ -116,6 +89,34 @@ export default class extends SkyraCommand {
 		if (channelID !== null) return false;
 		await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
 		return true;
+	}
+
+	public async init() {
+		this.createCustomResolver('suggestion', async (arg, _, message: KlasaMessage): Promise<SuggestionData> => {
+			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
+			const channel = this.client.channels.get(channelID) as TextChannel;
+
+			const id = Number(arg);
+			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALIDID');
+
+			const suggestionData = await this.client.queries.fetchSuggestion(message.guild!.id, id);
+			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_IDNOTFOUND');
+
+			const suggestionMessage = await channel.messages.fetch(suggestionData.message_id);
+			if (typeof suggestionMessage === 'undefined') {
+				await this.client.queries.deleteSuggestion(message.guild!.id, id);
+				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND');
+			}
+
+			const suggestionAuthor = await this.client.users.fetch(suggestionData.author_id).catch(() => null);
+
+			return {
+				message: suggestionMessage,
+				author: suggestionAuthor,
+				id
+			};
+		});
+
 	}
 
 	private async getAuthor(message: KlasaMessage, hideAuthor: boolean) {

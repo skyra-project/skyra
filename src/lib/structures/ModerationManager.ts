@@ -65,11 +65,11 @@ export class ModerationManager extends Collection<number, ModerationManagerEntry
 		}
 	}
 
-	public getLatestLogForUser(userId: string) {
+	public getLatestLogForUser(userID: string) {
 		if (this.size === 0) return null;
 
 		const minimumTime = Date.now() - (15 * Time.Second);
-		return this.reduce<ModerationManagerEntry>((prev, curr) => curr.flattenedUser === userId
+		return this.reduce<ModerationManagerEntry>((prev, curr) => curr.flattenedUser === userID
 			? prev === null
 				? curr.createdTimestamp >= minimumTime ? curr : prev
 				: curr.createdTimestamp > prev.createdTimestamp ? curr : prev

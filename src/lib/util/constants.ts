@@ -227,6 +227,17 @@ export namespace Moderation {
 		title: string;
 	}
 
+	export interface ModerationManagerDescriptionData {
+		type: string;
+		userName: string;
+		userDiscriminator: string;
+		userID: string;
+		reason: string | null;
+		prefix: string;
+		caseID: number | null;
+		formattedDuration: string;
+	}
+
 	export interface Unlock {
 		unlock(): void;
 	}

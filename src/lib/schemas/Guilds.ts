@@ -1,5 +1,6 @@
 import { Time, Emojis } from '@utils/constants';
 import { Client } from 'klasa';
+import { resolveEmoji } from '@utils/util';
 
 export default Client.defaultGuildSchema
 	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })
@@ -180,8 +181,8 @@ export default Client.defaultGuildSchema
 		.add('channel', 'TextChannel')
 		.add('id', 'integer', { 'minimum': 1, 'default': 1, 'configurable': false })
 		.add('emojis', folder => folder
-			.add('upvote', 'Emoji', { 'default': Emojis.ArrowT })
-			.add('downvote', 'Emoji', { 'default': Emojis.ArrowB }))
+			.add('upvote', 'Emoji', { 'default': resolveEmoji(Emojis.ArrowT) })
+			.add('downvote', 'Emoji', { 'default': resolveEmoji(Emojis.ArrowB) }))
 		.add('on-action', folder => folder
 			.add('dm', 'Boolean', { 'default': false })
 			.add('repost', 'Boolean', { 'default': true })

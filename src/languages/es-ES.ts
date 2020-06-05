@@ -2286,7 +2286,7 @@ export default class extends Language {
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
 			extendedHelp: `Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada
 			También se puede configurar para enviar un mensaje directo al autor con respecto al estado de su recomendación, con la configuración \`suggestions.on-action.dm\`.
-			Además, en caso de que desee preservar el anonimato, puede ocultar su nombre utilizando la configuración \`suggestions.on-action\`, que puede anularse con las \`--hide-author\` y \`--show-author\` banderas`,
+			Además, en caso de que desee preservar el anonimato, puede ocultar su nombre utilizando la configuración \`suggestions.on-action\`, que puede anteponerse con las señales \`--hide-author\` y \`--show-author\`.`,
 			examples: [
 				'1 accept ¡Gracias por su recomendación!',
 				'1 a ¡Gracias por su recomendación!',

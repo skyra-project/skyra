@@ -4,7 +4,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import type { KlasaMessage, Usage } from 'klasa';
+import type { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,

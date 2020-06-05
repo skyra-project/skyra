@@ -2269,12 +2269,12 @@ export default class extends Language {
 				['suggestion', 'Your suggestion']
 			],
 			examples: [
-				"Let's make a music channel"
+				"Let's make a music channel!"
 			],
-			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command'
+			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command.'
 		}),
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
-		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolveSuggestion', {
 			extendedHelp: `This command marks a suggestion as accepted, considered, or denied.
 			It also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
 			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`,
@@ -3523,11 +3523,11 @@ export default class extends Language {
 		COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal, id, stars) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 
 		/**
-		 * ##################
+		 * ####################
 		 * SUGGESTIONS COMMANDS
 		 */
-		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup.`,
-		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup. Would you like to set up a channel now?`,
+		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up.`,
+		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
 		COMMAND_SUGGEST_CHANNEL_INVALID: 'Didn\'t receive a valid channel mention. Aborting...',

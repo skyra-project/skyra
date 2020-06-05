@@ -2267,7 +2267,7 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ##################
+		 * ####################
 		 * SUGGESTIONS COMMANDS
 		 */
 
@@ -2290,8 +2290,8 @@ export default class extends Language {
 			examples: [
 				'1 accept ¡Gracias por su recomendación!',
 				'1 a ¡Gracias por su recomendación!',
-				'1 consider Hmm ... podemos hacer esto, pero es una prioridad realmente baja',
-				'1 c Hmm ... podemos hacer esto, pero es una prioridad realmente baja',
+				'1 consider Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
+				'1 c Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
 				'1 deny De ninguna manera de que esto suceda.',
 				'1 d De ninguna manera de que esto suceda.'
 			]

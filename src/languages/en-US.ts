@@ -559,12 +559,12 @@ export default class extends Language {
 		SETTINGS_STARBOARD_CHANNEL: 'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
-		SETTINGS_SUGGESTIONS_CHANNEL: 'The channel where suggestions will be sent',
-		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'The upvote emoji Skyra reacts with on every suggestion',
-		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'The downvote emoji Skyra reacts with on every suggestion',
-		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'If this setting is enabled, Skyra will DM the suggestion\'s author every time it is updated',
-		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'If this setting is enabled, Skyra will repost the suggestion\'s message every time it is updated. If it is disabled, it will edit the original message',
-		SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: 'This setting allows you to update suggestions anonymously. It will substitute the updater\'s name with either `An administrator` or `A moderator`, according to their permission level',
+		SETTINGS_SUGGESTIONS_CHANNEL: 'The channel where suggestions will be sent.',
+		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'The upvote emoji Skyra reacts with on every suggestion.',
+		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'The downvote emoji Skyra reacts with on every suggestion.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'If this setting is enabled, Skyra will DM the suggestion\'s author every time it is updated.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'If this setting is enabled, Skyra will repost the suggestion\'s message every time it is updated. If it is disabled, it will edit the original message.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: 'This setting allows you to update suggestions anonymously. It will substitute the updater\'s name with either `An administrator` or `A moderator`, according to their permission level.',
 
 
 		/**
@@ -2258,18 +2258,18 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ##################
+		 * ####################
 		 * SUGGESTIONS COMMANDS
 		 */
 
-		COMMAND_SUGGEST_DESCRIPTION: 'Hey admins! Please do this and that...',
+		COMMAND_SUGGEST_DESCRIPTION: 'Posts a suggestion for the server.',
 		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
-			extendedHelp: 'Posts a suggestion to the server\'s suggestion channel',
+			extendedHelp: `Posts a suggestion to the server's suggestion channel, if configured.`,
 			explainedUsage: [
 				['suggestion', 'Your suggestion']
 			],
 			examples: [
-				'let\'s make a music channel'
+				"Let's make a music channel"
 			],
 			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command'
 		}),
@@ -3527,12 +3527,12 @@ export default class extends Language {
 		 * SUGGESTIONS COMMANDS
 		 */
 		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup.`,
-		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup. Would you like to set-up a channel now?`,
+		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been setup. Would you like to set up a channel now?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
-		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel. You have 30 seconds.',
+		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
 		COMMAND_SUGGEST_CHANNEL_INVALID: 'Didn\'t receive a valid channel mention. Aborting...',
 		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
-		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted to the ${channel} channel`,
+		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted to the ${channel} channel!`,
 
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: 'That\'s not a valid suggestion ID!',
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: 'Couldn\'t find the suggestion\'s message. To prevent clutter, I have removed it from the database.',

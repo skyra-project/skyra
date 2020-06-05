@@ -3543,12 +3543,12 @@ export default class extends Language {
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',
 		COMMAND_RESOLVESUGGESTION_ACTIONS: {
 			ACCEPT: author => `${author} accepted this suggestion:`,
-			CONSIDER: author => `${author} cosnsidered this suggestion:`,
+			CONSIDER: author => `${author} considered this suggestion:`,
 			DENY: author => `${author} denied this suggestion:`
 		},
 		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
 			ACCEPT: (author, guild) => `${author} accepted this suggestion in ${guild}:`,
-			CONSIDER: (author, guild) => `${author} cosnsidered this suggestion in ${guild}:`,
+			CONSIDER: (author, guild) => `${author} considered this suggestion in ${guild}:`,
 			DENY: (author, guild) => `${author} denied this suggestion in ${guild}:`
 		},
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: 'I couldn\'t DM the user. Are their DMs closed?',

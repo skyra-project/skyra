@@ -3526,9 +3526,9 @@ export default class extends Language {
 			reminder: `Suggestions also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
 			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`
 		}),
-		COMMAND_RESOLVESUGGESTION_INVALID_ID: '${REDCROSS} That\'s not a valid suggestion ID!',
+		COMMAND_RESOLVESUGGESTION_INVALID_ID: `${REDCROSS} That\'s not a valid suggestion ID!`,
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,
-		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: '${REDCROSS} Couldn\'t find a suggestion with that ID',
+		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: `${REDCROSS} Couldn\'t find a suggestion with that ID`,
 		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'No comment was provided.',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'An administrator',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',

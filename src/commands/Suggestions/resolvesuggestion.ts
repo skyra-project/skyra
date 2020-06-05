@@ -119,8 +119,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async getAuthor(message: KlasaMessage, hideAuthor: boolean) {
-		if ('show-author' in message.flagArgs || 'showAuthor' in message.flagArgs) return message.author.tag;
-		if ('hide-author' in message.flagArgs || 'hideAuthor' in message.flagArgs || hideAuthor) {
+		if (Reflect.has(message.flagArgs, 'show-author') || Reflect.has(message.flagArgs, 'showAuthor')) return message.author.tag;
+		if (Reflect.has(message.flagArgs, 'hide-author') || Reflect.has(message.flagArgs, 'hideAuthor') || hideAuthor) {
 			return await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)
 				? message.language.tget('COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN')
 				: message.language.tget('COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR');

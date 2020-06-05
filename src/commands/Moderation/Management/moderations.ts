@@ -5,12 +5,14 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
+import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
 	description: language => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
@@ -18,11 +20,11 @@ import { KlasaMessage, KlasaUser } from 'klasa';
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
-	usage: '<mutes|warnings|all:default> [user:username]'
+	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {
 
-	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'all', KlasaUser?]) {
+	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', KlasaUser?]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
@@ -41,10 +43,11 @@ export default class extends RichDisplayCommand {
 
 		// Set up the formatter
 		const durationDisplay = message.language.duration.bind(message.language);
-		const displayName = action === 'all';
+		const shouldDisplayName = action === 'all';
+		const i18n = message.language.tget('COMMAND_MODERATIONS_ENTRY_DATA');
 		const format = target
-			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)
-			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
+			? this.displayModerationLogFromModerators.bind(this, i18n, usernames, durationDisplay, shouldDisplayName)
+			: this.displayModerationLogFromUsers.bind(this, i18n, usernames, durationDisplay, shouldDisplayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
@@ -90,7 +93,7 @@ export default class extends RichDisplayCommand {
 		return moderators;
 	}
 
-	private getFilter(type: 'mutes' | 'warnings' | 'all', target: KlasaUser | undefined) {
+	private getFilter(type: 'mutes' | 'warnings' | 'warns' | 'all', target: KlasaUser | undefined) {
 		switch (type) {
 			case 'mutes':
 				return target
@@ -98,12 +101,14 @@ export default class extends RichDisplayCommand {
 						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute)
 						&& !entry.invalidated && !entry.appealType;
+			case 'warns':
 			case 'warnings':
 				return target
 					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
 						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
 						&& !entry.invalidated && !entry.appealType;
+			case 'all':
 			default:
 				return target
 					? (entry: ModerationEntity) => entry.duration !== null

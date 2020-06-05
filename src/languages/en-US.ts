@@ -1688,6 +1688,11 @@ export default class extends Language {
 					appealed.`,
 			examples: ['', '@Pete']
 		}),
+		COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) => `This user has ${
+			warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${
+			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
+			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
+			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
 		COMMAND_MODERATIONS_DESCRIPTION: 'List all running moderation logs from this guild.',
 		COMMAND_MODERATIONS_EXTENDED: builder.display('moderations', {
 			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
@@ -1699,6 +1704,17 @@ export default class extends Language {
 				'warnings'
 			]
 		}),
+		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
+		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
+			? 'There is 1 entry.'
+			: `There are ${amount} entries.`,
+		COMMAND_MODERATIONS_ENTRY_DATA: {
+			TITLE: (shouldDisplayName, entry) => shouldDisplayName ? `Case \`${entry.case}\` | ${entry.title}` : `Case \`${entry.case}\``,
+			VALUE: (isExpired, formattedValue) => isExpired ? `~~${formattedValue.replace(/(^)?~~($)?/g, (_, start, end) => `${start ? '\u200B' : ''}~\u200B~${end ? '\u200B' : ''}`)}~~` : formattedValue,
+			FORMATTED_DURATION: (remainingTime, isExpired) => remainingTime === null ? '' : isExpired ? `\nExpired ${duration(-remainingTime)} ago.` : `\nExpires in: ${duration(remainingTime)}`,
+			FORMATTED_VALUE: (userOrModerator, userOrModeratorValue, formattedReason, formattedDuration) => `${userOrModerator === 'user' ? `User` : `Moderator`}: **${userOrModeratorValue}**.\n${formattedReason}${formattedDuration}`,
+			REASON_NONE: 'None'
+		},
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
 		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
@@ -3286,21 +3302,6 @@ export default class extends Language {
 		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
-
-		/**
-		 * ##############################
-		 * MODERATION/MANAGEMENT COMMANDS
-		 */
-
-		COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) => `This user has ${
-			warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${
-			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
-			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
-			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
-		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
-			? 'There is 1 entry.'
-			: `There are ${amount} entries.`,
 
 		/**
 		 * #############################

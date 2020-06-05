@@ -10,6 +10,7 @@ import type { ScheduledTask, SchemaEntry } from 'klasa';
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import type { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 
 export const enum Position {
 	Before,
@@ -754,22 +755,13 @@ export interface LanguageKeys {
 	COMMAND_TRIGGERED_EXTENDED: string;
 	COMMAND_UPVOTE_DESCRIPTION: string;
 	COMMAND_UPVOTE_EXTENDED: string;
-	COMMAND_VAPORWAVE_DESCRIPTION: string;
-	COMMAND_VAPORWAVE_EXTENDED: string;
-	COMMAND_HISTORY_DESCRIPTION: string;
-	COMMAND_HISTORY_EXTENDED: string;
-	COMMAND_MUTES_DESCRIPTION: string;
-	COMMAND_MUTES_EXTENDED: string;
+
 	COMMAND_SETNICKNAME_DESCRIPTION: string;
 	COMMAND_SETNICKNAME_EXTENDED: string;
 	COMMAND_ADDROLE_DESCRIPTION: string;
 	COMMAND_ADDROLE_EXTENDED: string;
 	COMMAND_REMOVEROLE_DESCRIPTION: string;
 	COMMAND_REMOVEROLE_EXTENDED: string;
-	COMMAND_MODERATIONS_DESCRIPTION: string;
-	COMMAND_MODERATIONS_EXTENDED: string;
-	COMMAND_WARNINGS_DESCRIPTION: string;
-	COMMAND_WARNINGS_EXTENDED: string;
 	COMMAND_ARCHIVE_DESCRIPTION: string;
 	COMMAND_ARCHIVE_EXTENDED: string;
 	COMMAND_CASE_DESCRIPTION: string;
@@ -1394,10 +1386,29 @@ export interface LanguageKeys {
 	COMMAND_SNIPE_EMPTY: string;
 	COMMAND_SNIPE_TITLE: string;
 	COMMAND_UPVOTE_MESSAGE: string;
+	COMMAND_VAPORWAVE_DESCRIPTION: string;
+	COMMAND_VAPORWAVE_EXTENDED: string;
 	COMMAND_VAPORWAVE_OUTPUT: (str: string) => string;
+
+	COMMAND_HISTORY_DESCRIPTION: string;
+	COMMAND_HISTORY_EXTENDED: string;
 	COMMAND_HISTORY_FOOTER: (warnings: number, mutes: number, kicks: number, bans: number) => string;
+	COMMAND_MODERATIONS_DESCRIPTION: string;
+	COMMAND_MODERATIONS_EXTENDED: string;
 	COMMAND_MODERATIONS_EMPTY: string;
 	COMMAND_MODERATIONS_AMOUNT: (amount: number) => string;
+	COMMAND_MODERATIONS_ENTRY_DATA: {
+		TITLE: (shouldDisplayName: boolean, entry: ModerationManagerEntry) => string;
+		VALUE: (isExpired: boolean, formattedValue: string) => string;
+		FORMATTED_DURATION: (remainingTime: number | null, isExpired: boolean) => string;
+		FORMATTED_VALUE: (userOrModeration: 'user' | 'moderator', userOrModeratorValue: string, formattedReason: string, formattedDuration: string) => string;
+		REASON_NONE: string;
+	};
+	COMMAND_MUTES_DESCRIPTION: string;
+	COMMAND_MUTES_EXTENDED: string;
+	COMMAND_WARNINGS_DESCRIPTION: string;
+	COMMAND_WARNINGS_EXTENDED: string;
+
 	COMMAND_PERMISSIONS: (username: string, id: string) => string;
 	COMMAND_PERMISSIONS_ALL: string;
 	COMMAND_RAID_DISABLED: string;

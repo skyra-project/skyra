@@ -2258,37 +2258,6 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ####################
-		 * SUGGESTIONS COMMANDS
-		 */
-
-		COMMAND_SUGGEST_DESCRIPTION: 'Posts a suggestion for the server.',
-		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
-			extendedHelp: `Posts a suggestion to the server's suggestion channel, if configured.`,
-			explainedUsage: [
-				['suggestion', 'Your suggestion']
-			],
-			examples: [
-				"Let's make a music channel!"
-			],
-			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command.'
-		}),
-		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
-		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
-			extendedHelp: `This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.
-			It also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
-			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`,
-			examples: [
-				'1 accept Thank you for your suggestion!',
-				'1 a Thank you for your suggestion!',
-				'1 consider Hmm... we may do this, but it\'s really low priority',
-				'1 c Hmm... we may do this, but it\'s really low priority',
-				'1 deny There is no way this is going to happen.',
-				'1 d There is no way this is going to happen.'
-			]
-		}),
-
-		/**
 		 * ###############
 		 * SYSTEM COMMANDS
 		 */
@@ -3526,12 +3495,39 @@ export default class extends Language {
 		 * ####################
 		 * SUGGESTIONS COMMANDS
 		 */
+		COMMAND_SUGGEST_DESCRIPTION: 'Posts a suggestion for the server.',
+		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
+			extendedHelp: `Posts a suggestion to the server's suggestion channel, if configured.`,
+			explainedUsage: [
+				['suggestion', 'Your suggestion']
+			],
+			examples: [
+				"Let's make a music channel!"
+			],
+			reminder: 'You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command.'
+		}),
+
 		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up.`,
 		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
 		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
+
+		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
+		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+			extendedHelp: `This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.`,
+			examples: [
+				'1 accept Thank you for your suggestion!',
+				'1 a Thank you for your suggestion!',
+				'1 consider Hmm... we may do this, but it\'s really low priority',
+				'1 c Hmm... we may do this, but it\'s really low priority',
+				'1 deny There is no way this is going to happen.',
+				'1 d There is no way this is going to happen.'
+			],
+			reminder: `Suggestions also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
+			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`
+		}),
 
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: 'That\'s not a valid suggestion ID!',
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,

@@ -2267,37 +2267,6 @@ export default class extends Language {
 		}),
 
 		/**
-		 * ####################
-		 * SUGGESTIONS COMMANDS
-		 */
-
-		COMMAND_SUGGEST_DESCRIPTION: 'Manda una sugerencia para el servidor.',
-		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
-			extendedHelp: 'Publica una recomendación en el canal de recomendaciones del servidor',
-			explainedUsage: [
-				['suggestion', 'Su recomendación']
-			],
-			examples: [
-				'Crear un canal de música.'
-			],
-			reminder: 'Necesita tener configurado un canal de sugerencias para que este comando funcione. Si eres un administrador, te preguntaré si quieres configurarlo al momento de su uso.'
-		}),
-		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Modifica el estado de la sugerencia.',
-		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
-			extendedHelp: `Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada
-			También se puede configurar para enviar un mensaje directo al autor con respecto al estado de su recomendación, con la configuración \`suggestions.on-action.dm\`.
-			Además, en caso de que desee preservar el anonimato, puede ocultar su nombre utilizando la configuración \`suggestions.on-action\`, que puede anteponerse con las señales \`--hide-author\` y \`--show-author\`.`,
-			examples: [
-				'1 accept ¡Gracias por su recomendación!',
-				'1 a ¡Gracias por su recomendación!',
-				'1 consider Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
-				'1 c Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
-				'1 deny De ninguna manera de que esto suceda.',
-				'1 d De ninguna manera de que esto suceda.'
-			]
-		}),
-
-		/**
 		 * ###############
 		 * SYSTEM COMMANDS
 		 */
@@ -3538,6 +3507,19 @@ export default class extends Language {
 		 * ####################
 		 * SUGGESTIONS COMMANDS
 		 */
+
+		COMMAND_SUGGEST_DESCRIPTION: 'Manda una sugerencia para el servidor.',
+		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
+			extendedHelp: 'Publica una recomendación en el canal de recomendaciones del servidor',
+			explainedUsage: [
+				['suggestion', 'Su recomendación']
+			],
+			examples: [
+				'Crear un canal de música.'
+			],
+			reminder: 'Debe tener una configuración de canal de sugerencias para que este comando funcione. Si eres un administrador, se le dará la opción de hacerlo al invocar el comando.'
+		}),
+
 		COMMAND_SUGGEST_NOSETUP: username => `Lo siento ${username}, pero no los administradores no han configurado un canal de texto para las sugerencias.`,
 		COMMAND_SUGGEST_NOSETUP_ASK: username => `Lo siento ${username}, pero no se ha configurado un canal de texto para las sugerencias... ¿Quieres hacerlo ahora?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: '¡Entendido! Puede usar este comando si cambia de opinión.',
@@ -3545,6 +3527,21 @@ export default class extends Language {
 		COMMAND_SUGGEST_TITLE: id => `Recomendación #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,
 
+
+		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Modifica el estado de la sugerencia.',
+		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+			extendedHelp: `Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada`,
+			examples: [
+				'1 accept ¡Gracias por su recomendación!',
+				'1 a ¡Gracias por su recomendación!',
+				'1 consider Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
+				'1 c Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
+				'1 deny De ninguna manera de que esto suceda.',
+				'1 d De ninguna manera de que esto suceda.'
+			],
+			reminder: `Se puede configurar para enviar un mensaje directo al autor con respecto al estado de su recomendación, con la configuración \`suggestions.on-action.dm\`.
+			Además, en caso de que desee preservar el anonimato, puede ocultar su nombre utilizando la configuración \`suggestions.on-action\`, que puede anteponerse con las señales \`--hide-author\` y \`--show-author\`.`
+		}),
 
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: `${REDCROSS} ¡Eso no era un número! Por favor vuelva a ejecutar el comando pero con el numerito del título de la sugerencia.`,
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} No pude recuperar la sugerencia ya que su mensaje ha sido eliminado.`,

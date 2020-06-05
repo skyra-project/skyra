@@ -3506,14 +3506,12 @@ export default class extends Language {
 			],
 			reminder: 'You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command.'
 		}),
-
 		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up.`,
 		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
 		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
-
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
 			extendedHelp: `This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.`,
@@ -3528,11 +3526,9 @@ export default class extends Language {
 			reminder: `Suggestions also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
 			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`
 		}),
-
-		COMMAND_RESOLVESUGGESTION_INVALID_ID: 'That\'s not a valid suggestion ID!',
+		COMMAND_RESOLVESUGGESTION_INVALID_ID: '${REDCROSS} That\'s not a valid suggestion ID!',
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,
-		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: 'Couldn\'t find a suggestion with that ID',
-
+		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: '${REDCROSS} Couldn\'t find a suggestion with that ID',
 		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'No comment was provided.',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'An administrator',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',

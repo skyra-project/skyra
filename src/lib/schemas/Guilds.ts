@@ -185,5 +185,5 @@ export default Client.defaultGuildSchema
 			.add('downvote', 'Emoji', { 'default': resolveEmoji(Emojis.ArrowB) }))
 		.add('on-action', folder => folder
 			.add('dm', 'Boolean', { 'default': false })
-			.add('repost', 'Boolean', { 'default': true })
+			.add('repost', 'Boolean', { 'default': false })
 			.add('hide-author', 'Boolean', { 'default': false })));

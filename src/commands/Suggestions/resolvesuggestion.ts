@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 			? await suggestionData.message.channel.send(messageContent, { embed: newEmbed })
 			: await suggestionData.message.edit(newEmbed);
 
-		return message.sendLocale('COMMAND_RESOLVESUGGESTION_SUCCESS', [suggestionData.id]);
+		return message.sendLocale('COMMAND_RESOLVESUGGESTION_SUCCESS', [suggestionData.id, action]);
 	}
 
 	public async inhibit(message: KlasaMessage) {

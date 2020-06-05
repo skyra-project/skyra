@@ -3547,7 +3547,8 @@ export default class extends Language {
 			DENY: (author, guild) => `${author} denied this suggestion in ${guild}:`
 		},
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} I wasn\'t able to send the author a DM. Are their DMs closed?`,
-		COMMAND_RESOLVESUGGESTION_SUCCESS: id => `Successfully resolved suggestion \`${id}\`!`,
+		COMMAND_RESOLVESUGGESTION_SUCCESS: (id, action) =>
+			`${GREENTICK} Successfully ${action === 'a' || action === 'accept' ? 'accepted' : action === 'd' || action === 'deny' ? 'denied' : 'considered'} suggestion \`${id}\`!`,
 
 		/**
 		 * ###############

@@ -1568,7 +1568,7 @@ export interface LanguageKeys {
 		DENY: (author: string, guild: string) => string;
 	};
 	COMMAND_RESOLVESUGGESTION_DM_FAIL: string;
-	COMMAND_RESOLVESUGGESTION_SUCCESS: (id: string) => string;
+	COMMAND_RESOLVESUGGESTION_SUCCESS: (id: string, action: 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c') => string;
 	COMMAND_STAR_NOSTARS: string;
 	COMMAND_STAR_STATS: string;
 	COMMAND_STAR_STATS_DESCRIPTION: (messages: number, stars: number) => string;

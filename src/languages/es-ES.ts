@@ -3561,7 +3561,8 @@ export default class extends Language {
 			DENY: (author, guild) => `${author} ha negado su sugerencia en ${guild}:`
 		},
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: 'No pude enviar el mensaje directo al usuario. ¿Están cerrados sus mensajes directos?',
-		COMMAND_RESOLVESUGGESTION_SUCCESS: id => `${GREENTICK} Recomendación \`${id}\` resuelta con éxito!`,
+		COMMAND_RESOLVESUGGESTION_SUCCESS: (id, action) =>
+			`${GREENTICK} Recomendación \`${id}\` ${action === 'a' || action === 'accept' ? 'aceptada' : action === 'd' || action === 'deny' ? 'denegada' : 'considerada'} con éxito!`,
 
 		/**
 		 * ###############

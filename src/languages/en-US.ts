@@ -2273,7 +2273,7 @@ export default class extends Language {
 			],
 			reminder: 'You need to have setup a suggestions channel for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command'
 		}),
-		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Mark a suggestion as accepted, considered, or even denied',
+		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
 			extendedHelp: `This command marks a suggestion as accepted, considered, or denied.
 			It also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.

@@ -3530,7 +3530,6 @@ export default class extends Language {
 		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
-		COMMAND_SUGGEST_CHANNEL_INVALID: 'Didn\'t receive a valid channel mention. Aborting...',
 		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
 

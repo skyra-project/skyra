@@ -3542,13 +3542,12 @@ export default class extends Language {
 		COMMAND_SUGGEST_NOSETUP_ASK: username => `Lo siento ${username}, pero no se ha configurado un canal de texto para las sugerencias... ¿Quieres hacerlo ahora?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: '¡Entendido! Puede usar este comando si cambia de opinión.',
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Mencione el canal de texto o escriba su nombre o ID que en el que quiere que se publiquen las sugerencias.',
-		COMMAND_SUGGEST_CHANNEL_INVALID: 'No recibí una mención de canal válida. Anulando...',
 		COMMAND_SUGGEST_TITLE: id => `Recomendación #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,
 
 
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: `${REDCROSS} ¡Eso no era un número! Por favor vuelva a ejecutar el comando pero con el numerito del título de la sugerencia.`,
-		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: 'No se pudo encontrar el mensaje de la recomendación. Para evitar el desorden, he eliminado la recomendación de la base de datos.',
+		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} No pude recuperar la sugerencia ya que su mensaje ha sido eliminado.`,
 		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: `${REDCROSS} ¡No pude encontrar la recomendación! ¿Estás seguro/a de que no te confundiste de numerito?`,
 
 		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'Ningún comentario.',

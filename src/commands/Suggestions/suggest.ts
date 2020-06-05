@@ -16,7 +16,7 @@ import type { KlasaMessage, Usage } from 'klasa';
 })
 export default class extends SkyraCommand {
 
-	private kChannelPrompt: Usage;
+	private kChannelPrompt!: Usage;
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;

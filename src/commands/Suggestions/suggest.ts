@@ -59,7 +59,6 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
 
 		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [suggestionsChannel]);
-
 	}
 
 	public async inhibit(message: KlasaMessage): Promise<boolean> {

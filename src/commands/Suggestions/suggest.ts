@@ -17,7 +17,8 @@ import type { KlasaMessage, Usage } from 'klasa';
 })
 export default class extends SkyraCommand {
 
-	private kChannelPrompt!: Usage;
+	// eslint-disable-next-line @typescript-eslint/no-invalid-this
+	private kChannelPrompt = this.definePrompt('<channel:textchannel>');
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		// If including a flag of `--global` then revert to legacy behaviour of sending feedback
@@ -67,10 +68,6 @@ export default class extends SkyraCommand {
 		const suggestionID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
 		if (suggestionID === null) return this.setChannel(message);
 		return false;
-	}
-
-	public async init() {
-		this.kChannelPrompt = this.definePrompt('<channel:textchannel>');
 	}
 
 	private async setChannel(message: KlasaMessage) {

@@ -21,7 +21,7 @@ const enum SuggestionsColors {
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
-	usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:...string]',
+	usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:comment]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
@@ -36,7 +36,6 @@ export default class extends SkyraCommand {
 
 		let newEmbed = new MessageEmbed();
 		let messageContent = '';
-		if (typeof comment === 'undefined') comment = message.language.tget('COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT');
 
 		const author = await this.getAuthor(message, shouldHideAuthor);
 		const actions = message.language.tget('COMMAND_RESOLVESUGGESTION_ACTIONS');
@@ -92,7 +91,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.createCustomResolver('suggestion', async (arg, _, message: KlasaMessage): Promise<SuggestionData> => {
+		this.createCustomResolver('suggestion', async (arg, _, message): Promise<SuggestionData> => {
 			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
 			if (!channelID) throw message.language.tget('COMMAND_SUGGEST_NOSETUP', message.author.username);
 			const channel = this.client.channels.get(channelID) as TextChannel;
@@ -111,6 +110,11 @@ export default class extends SkyraCommand {
 				author: suggestionAuthor,
 				id
 			};
+		});
+
+		this.createCustomResolver('comment', (arg, possible, message) => {
+			if (typeof arg === 'undefined') return message.language.tget('COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT');
+			return this.client.arguments.get('...string')!.run(arg, possible, message);
 		});
 	}
 

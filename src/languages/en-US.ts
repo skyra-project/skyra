@@ -3534,11 +3534,11 @@ export default class extends Language {
 		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted to the ${channel} channel`,
 
-		COMMAND_RESOLVESUGGESTION_INVALIDID: 'That\'s not a valid suggestion ID!',
-		COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND: 'Couldn\'t find the suggestion\'s message. To prevent clutter, I have removed it from the database.',
-		COMMAND_RESOLVESUGGESTION_IDNOTFOUND: 'Couldn\'t find a suggestion with that ID',
+		COMMAND_RESOLVESUGGESTION_INVALID_ID: 'That\'s not a valid suggestion ID!',
+		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: 'Couldn\'t find the suggestion\'s message. To prevent clutter, I have removed it from the database.',
+		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: 'Couldn\'t find a suggestion with that ID',
 
-		COMMAND_RESOLVESUGGESTION_DEFAULTCOMMENT: 'No comment was provided.',
+		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'No comment was provided.',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'An administrator',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',
 		COMMAND_RESOLVESUGGESTION_ACTIONS: {

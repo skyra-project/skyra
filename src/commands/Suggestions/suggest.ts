@@ -19,7 +19,6 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
 
-
 		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel;
 		// Get the next suggestion ID
 		const suggestionID = message.guild!.settings.get(GuildSettings.Suggestions.AscendingID);
@@ -27,7 +26,7 @@ export default class extends SkyraCommand {
 		// Post the suggestion
 		const suggestionsMessage = await suggestionsChannel.send(new MessageEmbed()
 			.setColor(BrandingColors.Primary)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })!)
+			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true }))
 			.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
 			.setDescription(suggestion));
 

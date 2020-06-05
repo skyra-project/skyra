@@ -32,11 +32,11 @@ export default class extends SkyraCommand {
 			message.guild!.settings.get(GuildSettings.Suggestions.OnAction.HideAuthor),
 			message.guild!.settings.get(GuildSettings.Suggestions.OnAction.RepostMessage)
 		];
-		const suggestion = suggestionData.message.embeds[0];
+		const [suggestion] = suggestionData.message.embeds;
 
 		let newEmbed = new MessageEmbed();
 		let messageContent = '';
-		if (typeof comment === 'undefined') comment = message.language.tget('COMMAND_RESOLVESUGGESTION_DEFAULTCOMMENT');
+		if (typeof comment === 'undefined') comment = message.language.tget('COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT');
 
 		const author = await this.getAuthor(message, shouldHideAuthor);
 		const actions = message.language.tget('COMMAND_RESOLVESUGGESTION_ACTIONS');
@@ -93,16 +93,17 @@ export default class extends SkyraCommand {
 
 	public async init() {
 		this.createCustomResolver('suggestion', async (arg, _, message: KlasaMessage): Promise<SuggestionData> => {
-			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
+			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
+			if (!channelID) throw message.language.tget('COMMAND_SUGGEST_NOSETUP', message.author.username);
 			const channel = this.client.channels.get(channelID) as TextChannel;
 			const id = Number(arg);
-			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALIDID');
+			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALID_ID');
 			const suggestionData = await this.client.queries.fetchSuggestion(message.guild!.id, id);
-			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_IDNOTFOUND');
+			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
 			const suggestionMessage = await channel.messages.fetch(suggestionData.message_id);
 			if (typeof suggestionMessage === 'undefined') {
 				await this.client.queries.deleteSuggestion(message.guild!.id, id);
-				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND');
+				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND');
 			}
 			const suggestionAuthor = await this.client.users.fetch(suggestionData.author_id).catch(() => null);
 			return {

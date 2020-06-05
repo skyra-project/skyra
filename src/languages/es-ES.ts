@@ -3547,11 +3547,11 @@ export default class extends Language {
 		COMMAND_SUGGEST_SUCCESS: channel => `¡Gracias por su recomendación! Se ha publicado en el canal ${channel}`,
 
 
-		COMMAND_RESOLVESUGGESTION_INVALIDID: '¡Esto no es un recomendación ID valido!',
-		COMMAND_RESOLVESUGGESTION_MESSAGENOTFOUND: 'No se pudo encontrar el mensaje de la recomendación. Para evitar el desorden, he eliminado la recomendación de la base de datos.',
-		COMMAND_RESOLVESUGGESTION_IDNOTFOUND: 'No se pudo encontrar una recomendación con eso ID',
+		COMMAND_RESOLVESUGGESTION_INVALID_ID: '¡Esto no es un recomendación ID valido!',
+		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: 'No se pudo encontrar el mensaje de la recomendación. Para evitar el desorden, he eliminado la recomendación de la base de datos.',
+		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: 'No se pudo encontrar una recomendación con eso ID',
 
-		COMMAND_RESOLVESUGGESTION_DEFAULTCOMMENT: 'Ningún comentario',
+		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'Ningún comentario',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'Un administrador',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'Un moderador',
 		COMMAND_RESOLVESUGGESTION_ACTIONS: {

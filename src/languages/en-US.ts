@@ -3535,7 +3535,7 @@ export default class extends Language {
 		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
 
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: 'That\'s not a valid suggestion ID!',
-		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: 'Couldn\'t find the suggestion\'s message. To prevent clutter, I have removed it from the database.',
+		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,
 		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: 'Couldn\'t find a suggestion with that ID',
 
 		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'No comment was provided.',

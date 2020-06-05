@@ -4,7 +4,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import type { KlasaMessage } from 'klasa';
+import type { KlasaMessage, Usage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
@@ -15,6 +15,8 @@ import type { KlasaMessage } from 'klasa';
 	usage: '<suggestion:string>'
 })
 export default class extends SkyraCommand {
+
+	private kChannelPrompt: Usage;
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
@@ -61,6 +63,10 @@ export default class extends SkyraCommand {
 		return false;
 	}
 
+	public async init() {
+		this.kChannelPrompt = this.definePrompt('<channel:textchannel>');
+	}
+
 	private async setChannel(message: KlasaMessage) {
 
 		// If the user doesn't have the rights to change guild configuration, do not proceed
@@ -78,7 +84,12 @@ export default class extends SkyraCommand {
 		}
 
 		// Get the channel
-		const channel = (await message.prompt(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'))).mentions.channels.first() || null;
+		const channel = await this.kChannelPrompt.createPrompt(message, {
+			target: message.author,
+			limit: 1,
+			time: 30000
+		}).run<TextChannel>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
+
 		if (!channel || channel.guild.id !== message.guild!.id) {
 			await message.sendLocale('COMMAND_SUGGEST_CHANNEL_INVALID');
 			return true;

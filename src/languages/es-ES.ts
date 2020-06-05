@@ -566,11 +566,11 @@ export default class extends Language {
 		SETTINGS_STARBOARD_CHANNEL: 'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
-		SETTINGS_SUGGESTIONS_CHANNEL: 'El canal donde se enviarán las recomendaciones.',
+		SETTINGS_SUGGESTIONS_CHANNEL: 'El canal donde se enviarán las sugerencias.',
 		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'El emoji utilizado para votar a favor en las reacciones de las sugerencias.',
 		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'El emoji utilizado para votar en contra en las reacciones de las sugerencias.',
-		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'Si esta opción está habilitada, enviaré un mensaje directo al autor de la recomendación cada vez que ésta se modifique.',
-		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'Si esta opción está habilitada, volveré a publicar el mensaje de la recomendación cada vez que se ésta se modifique. En caso opuesto editaré el mensaje original.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'Si esta opción está habilitada, enviaré un mensaje directo al autor de la sugerencia cada vez que ésta se modifique.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'Si esta opción está habilitada, volveré a publicar el mensaje de la sugerencia cada vez que se ésta se modifique. En caso opuesto editaré el mensaje original.',
 		SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: 'Esta configuración le permite actualizar recomendaciónes anónimamente. Sustituirá el nombre del editor con `Un administrador` o` Un moderador`, de acuerdo con su nivel de permisos.',
 
 		/**
@@ -2284,7 +2284,7 @@ export default class extends Language {
 		}),
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Modifica el estado de la sugerencia.',
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
-			extendedHelp: `Este comando marca una recomendación como aceptada, considerada o denegada.
+			extendedHelp: `Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada
 			También se puede configurar para enviar un mensaje directo al autor con respecto al estado de su recomendación, con la configuración \`suggestions.on-action.dm\`.
 			Además, en caso de que desee preservar el anonimato, puede ocultar su nombre utilizando la configuración \`suggestions.on-action\`, que puede anularse con las \`--hide-author\` y \`--show-author\` banderas`,
 			examples: [

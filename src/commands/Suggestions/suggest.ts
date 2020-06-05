@@ -57,34 +57,35 @@ export default class extends SkyraCommand {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 		const suggestionID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
-		if (suggestionID !== null) return true;
-		return this.setChannel(message);
+		if (suggestionID === null) return this.setChannel(message);
+		return false;
 	}
 
 	private async setChannel(message: KlasaMessage) {
-		const resMessage = await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
 
 		// If the user doesn't have the rights to change guild configuration, do not proceed
 		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
-		if (!manageable) return true;
+		if (!manageable) {
+			await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
+			return true;
+		}
 
 		// Ask the user if they want to setup a channel
 		const setup = await message.ask({ content: message.language.tget('COMMAND_SUGGEST_NOSETUP_ASK', message.author.username) });
 		if (!setup) {
-			await resMessage.edit(message.language.tget('COMMAND_SUGGEST_NOSETUP_ABORT'));
+			await message.sendLocale('COMMAND_SUGGEST_NOSETUP_ABORT');
 			return true;
 		}
 
 		// Get the channel
 		const channel = (await message.prompt(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'))).mentions.channels.first() || null;
 		if (!channel || channel.guild.id !== message.guild!.id) {
-			await resMessage.edit(message.language.tget('COMMAND_SUGGEST_CHANNEL_INVALID'));
+			await message.sendLocale('COMMAND_SUGGEST_CHANNEL_INVALID');
 			return true;
 		}
 
 		// Update settings
 		await message.guild!.settings.update(GuildSettings.Suggestions.SuggestionsChannel, channel);
-		await resMessage.nuke();
 		await message.sendLocale('COMMAND_CONF_MENU_SAVED');
 
 		return true;

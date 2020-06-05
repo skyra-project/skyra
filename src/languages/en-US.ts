@@ -2275,7 +2275,7 @@ export default class extends Language {
 		}),
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
-			extendedHelp: `This command marks a suggestion as accepted, considered, or denied.
+			extendedHelp: `This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.
 			It also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
 			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`,
 			examples: [
@@ -3532,7 +3532,7 @@ export default class extends Language {
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
 		COMMAND_SUGGEST_CHANNEL_INVALID: 'Didn\'t receive a valid channel mention. Aborting...',
 		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
-		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted to the ${channel} channel!`,
+		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
 
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: 'That\'s not a valid suggestion ID!',
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: 'Couldn\'t find the suggestion\'s message. To prevent clutter, I have removed it from the database.',
@@ -3551,7 +3551,7 @@ export default class extends Language {
 			CONSIDER: (author, guild) => `${author} considered this suggestion in ${guild}:`,
 			DENY: (author, guild) => `${author} denied this suggestion in ${guild}:`
 		},
-		COMMAND_RESOLVESUGGESTION_DM_FAIL: 'I couldn\'t DM the user. Are their DMs closed?',
+		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} I wasn\'t able to send the author a DM. Are their DMs closed?`,
 		COMMAND_RESOLVESUGGESTION_SUCCESS: id => `Successfully resolved suggestion \`${id}\`!`,
 
 		/**

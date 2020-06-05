@@ -2273,7 +2273,7 @@ export default class extends Language {
 
 		COMMAND_SUGGEST_DESCRIPTION: '¡Hola administradores! Por favor, haz esto y aquello...',
 		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
-			extendedHelp: 'Publica una recomendación en el canal de recomendaciónes del servidor',
+			extendedHelp: 'Publica una recomendación en el canal de recomendaciones del servidor',
 			explainedUsage: [
 				['suggestion', 'Su recomendación']
 			],

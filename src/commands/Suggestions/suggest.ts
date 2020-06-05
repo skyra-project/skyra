@@ -12,13 +12,19 @@ import type { KlasaMessage, Usage } from 'klasa';
 	extendedHelp: language => language.tget('COMMAND_SUGGEST_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
-	usage: '<suggestion:string>'
+	usage: '<suggestion:string>',
+	flagSupport: true
 })
 export default class extends SkyraCommand {
 
 	private kChannelPrompt!: Usage;
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
+		// If including a flag of `--global` then revert to legacy behaviour of sending feedback
+		if (Reflect.has(message.flagArgs, 'global')) {
+			return this.client.commands.get('feedback')!.run(message, [suggestion]);
+		}
+
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
 
 		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel;
@@ -53,11 +59,12 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
 
 		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [suggestionsChannel]);
+
 	}
 
 	public async inhibit(message: KlasaMessage): Promise<boolean> {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
-		if (message.command !== this || message.guild === null) return false;
+		if (message.command !== this || message.guild === null || Reflect.has(message.flagArgs, 'global')) return false;
 		const suggestionID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
 		if (suggestionID === null) return this.setChannel(message);
 		return false;

@@ -1,16 +1,17 @@
 import { Databases } from '@lib/types/constants/Constants';
-import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
-import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
-import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
-import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
-import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
-import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
-import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
+import type { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import type { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
+import type { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import type { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import type { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import type { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import type { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import type { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
 import { JsonProvider } from '@lib/types/util';
 import { Time } from '@utils/constants';
-import { Client } from 'discord.js';
-import { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import type { Client } from 'discord.js';
+import type { CommonQuery, LeaderboardEntry, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class JsonCommonQuery implements CommonQuery {
 
@@ -82,6 +83,10 @@ export class JsonCommonQuery implements CommonQuery {
 
 		await Promise.all(values.map(value => this.provider.delete(Databases.Starboard, `${guildID}.${value.message_id}`)));
 		return values;
+	}
+
+	public deleteSuggestion(guildID: string, suggestionID: number) {
+		return this.provider.delete(Databases.Suggestions, `${guildID}.${suggestionID}`);
 	}
 
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
@@ -227,6 +232,10 @@ export class JsonCommonQuery implements CommonQuery {
 		return values[index];
 	}
 
+	public async fetchSuggestion(guildID: string, suggestionID: number) {
+		return this.provider.get(Databases.Suggestions, `${guildID}.${suggestionID}`) as Promise<RawSuggestionSettings | null>;
+	}
+
 	public fetchTwitchStreamSubscription(streamerID: string) {
 		return this.provider.get(Databases.TwitchStreamSubscriptions, streamerID) as Promise<TwitchStreamSubscriptionSettings | null>;
 	}
@@ -323,6 +332,10 @@ export class JsonCommonQuery implements CommonQuery {
 			}),
 			this.provider.update(Databases.RpgUsers, leaderID, { guild_id: id })
 		]);
+	}
+
+	public insertSuggestion(entry: RawSuggestionSettings) {
+		return this.provider.create(Databases.Suggestions, `${entry.guild_id}.${entry.id}`, entry);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

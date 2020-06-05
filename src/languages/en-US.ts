@@ -559,6 +559,13 @@ export default class extends Language {
 		SETTINGS_STARBOARD_CHANNEL: 'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
+		SETTINGS_SUGGESTIONS_CHANNEL: 'The channel where suggestions will be sent.',
+		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'The upvote emoji Skyra reacts with on every suggestion.',
+		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'The downvote emoji Skyra reacts with on every suggestion.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'If this setting is enabled, Skyra will DM the suggestion\'s author every time it is updated.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'If this setting is enabled, Skyra will repost the suggestion\'s message every time it is updated. If it is disabled, it will edit the original message.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: 'This setting allows you to update suggestions anonymously. It will substitute the updater\'s name with either `An administrator` or `A moderator`, according to their permission level.',
+
 
 		/**
 		 * ################
@@ -3483,6 +3490,61 @@ export default class extends Language {
 		COMMAND_STAR_TOPSTARRED_DESCRIPTION: (medal, id, stars) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 		COMMAND_STAR_TOPRECEIVERS: 'Top Star Receivers',
 		COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal, id, stars) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+
+		/**
+		 * ####################
+		 * SUGGESTIONS COMMANDS
+		 */
+		COMMAND_SUGGEST_DESCRIPTION: 'Posts a suggestion for the server.',
+		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
+			extendedHelp: `Posts a suggestion to the server's suggestion channel, if configured.`,
+			explainedUsage: [
+				['suggestion', 'Your suggestion']
+			],
+			examples: [
+				"Let's make a music channel!"
+			],
+			reminder: 'You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command.'
+		}),
+		COMMAND_SUGGEST_NOSETUP: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up.`,
+		COMMAND_SUGGEST_NOSETUP_ASK: username => `I'm sorry ${username}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?`,
+		COMMAND_SUGGEST_NOSETUP_ABORT: 'Alright then. Aborted creating a new suggestion.',
+		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
+		COMMAND_SUGGEST_TITLE: id => `Suggestion #${id}`,
+		COMMAND_SUGGEST_SUCCESS: channel => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
+		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
+		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+			extendedHelp: `This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.`,
+			examples: [
+				'1 accept Thank you for your suggestion!',
+				'1 a Thank you for your suggestion!',
+				'1 consider Hmm... we may do this, but it\'s really low priority',
+				'1 c Hmm... we may do this, but it\'s really low priority',
+				'1 deny There is no way this is going to happen.',
+				'1 d There is no way this is going to happen.'
+			],
+			reminder: `Suggestions also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
+			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`
+		}),
+		COMMAND_RESOLVESUGGESTION_INVALID_ID: `${REDCROSS} That\'s not a valid suggestion ID!`,
+		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,
+		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: `${REDCROSS} Couldn\'t find a suggestion with that ID`,
+		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'No comment was provided.',
+		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'An administrator',
+		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',
+		COMMAND_RESOLVESUGGESTION_ACTIONS: {
+			ACCEPT: author => `${author} accepted this suggestion:`,
+			CONSIDER: author => `${author} considered this suggestion:`,
+			DENY: author => `${author} denied this suggestion:`
+		},
+		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
+			ACCEPT: (author, guild) => `${author} accepted this suggestion in ${guild}:`,
+			CONSIDER: (author, guild) => `${author} considered this suggestion in ${guild}:`,
+			DENY: (author, guild) => `${author} denied this suggestion in ${guild}:`
+		},
+		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} I wasn\'t able to send the author a DM. Are their DMs closed?`,
+		COMMAND_RESOLVESUGGESTION_SUCCESS: (id, action) =>
+			`${GREENTICK} Successfully ${action === 'a' || action === 'accept' ? 'accepted' : action === 'd' || action === 'deny' ? 'denied' : 'considered'} suggestion \`${id}\`!`,
 
 		/**
 		 * ###############

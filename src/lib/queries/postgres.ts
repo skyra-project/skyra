@@ -1,15 +1,16 @@
 import { Databases } from '@lib/types/constants/Constants';
-import { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
-import { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
-import { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
-import { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
-import { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
-import { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
-import { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
+import type { RawDashboardUserSettings } from '@lib/types/settings/raw/RawDashboardUserSettings';
+import type { RawRpgItem } from '@lib/types/settings/raw/RawGameSettings';
+import type { RawGiveawaySettings } from '@lib/types/settings/raw/RawGiveawaySettings';
+import type { RawMemberSettings } from '@lib/types/settings/raw/RawMemberSettings';
+import type { RawModerationSettings } from '@lib/types/settings/raw/RawModerationSettings';
+import type { RawStarboardSettings } from '@lib/types/settings/raw/RawStarboardSettings';
+import type { RawSuggestionSettings } from '@lib/types/settings/raw/RawSuggestionsSettings';
+import type { RawTwitchStreamSubscriptionSettings } from '@lib/types/settings/raw/RawTwitchStreamSubscriptionSettings';
 import PostgresProvider from '@root/providers/postgres';
 import { Time } from '@utils/constants';
-import { Client } from 'discord.js';
-import { CommonQuery, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
+import type { Client } from 'discord.js';
+import type { CommonQuery, TwitchStreamSubscriptionSettings, UpdatePurgeTwitchStreamReturning, UpsertMemberSettingsReturningDifference } from './common';
 
 export class PostgresCommonQuery implements CommonQuery {
 
@@ -115,6 +116,17 @@ export class PostgresCommonQuery implements CommonQuery {
 				"message_id" IN ('${messageIDs.join("', '")}')
 			RETURNING *;
 		`, [guildID]);
+	}
+
+	public deleteSuggestion(guildID: string, suggestionID: number) {
+		return this.provider.runOne(/* sql */`
+			DELETE
+			FROM suggestions
+			WHERE
+				"guild_id" = $1 AND
+				"id"       = $2;
+			RETURNING *;
+		`, [guildID, suggestionID]);
 	}
 
 	public async deleteTwitchStreamSubscription(streamerID: string, guildID: string) {
@@ -354,6 +366,25 @@ export class PostgresCommonQuery implements CommonQuery {
 		`);
 	}
 
+	public fetchSuggestions(guildID: string) {
+		return this.provider.runAll<RawSuggestionSettings>(/* sql */`
+			SELECT *
+			FROM suggestions
+			WHERE
+				"guild_id" = $1;
+		`, [guildID]);
+	}
+
+	public fetchSuggestion(guildID: string, suggestionID: number) {
+		return this.provider.runOne<RawSuggestionSettings>(/* sql */`
+			SELECT *
+			FROM suggestions
+			WHERE
+				"guild_id" = $1 AND
+				"id"       = $2;
+		`, [guildID, suggestionID]);
+	}
+
 	public async fetchTwitchStreamSubscription(streamerID: string) {
 		const entry = await this.provider.runOne<RawTwitchStreamSubscriptionSettings>(/* sql */`
 			SELECT *
@@ -504,6 +535,13 @@ export class PostgresCommonQuery implements CommonQuery {
 				SET guild_id = (SELECT id FROM g)
 				WHERE id = ${cLeader};
 		`);
+	}
+
+	public insertSuggestion(entry: RawSuggestionSettings) {
+		return this.provider.run(/* sql */`
+			INSERT INTO suggestions ("id", "message_id", "guild_id", "author_id")
+			VALUES ($1, $2, $3, $4);
+		`, [entry.id, entry.message_id, entry.guild_id, entry.author_id]);
 	}
 
 	public updateModerationLog(entry: RawModerationSettings) {

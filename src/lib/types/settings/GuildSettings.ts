@@ -223,6 +223,20 @@ export namespace GuildSettings {
 		export const AllowStreams = T<boolean>('music.allow-streams');
 	}
 
+	export namespace Suggestions {
+		export const AscendingID = T<number>('suggestions.id');
+		export const SuggestionsChannel = T<string | null>('suggestions.channel');
+		export namespace VotingEmojis {
+			export const UpvoteEmoji = T<string>('suggestions.emojis.upvote');
+			export const DownvoteEmoji = T<string>('suggestions.emojis.downvote');
+		}
+		export namespace OnAction {
+			export const DM = T<boolean>('suggestions.on-action.dm');
+			export const RepostMessage = T<boolean>('suggestions.on-action.repost');
+			export const HideAuthor = T<boolean>('suggestions.on-action.hide-author');
+		}
+	}
+
 }
 
 export interface PermissionsNode {

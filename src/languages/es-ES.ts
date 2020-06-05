@@ -566,6 +566,12 @@ export default class extends Language {
 		SETTINGS_STARBOARD_CHANNEL: 'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
+		SETTINGS_SUGGESTIONS_CHANNEL: 'El canal donde se enviarán las sugerencias.',
+		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'El emoji utilizado para votar a favor en las reacciones de las sugerencias.',
+		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'El emoji utilizado para votar en contra en las reacciones de las sugerencias.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_DM: 'Si esta opción está habilitada, enviaré un mensaje directo al autor de la sugerencia cada vez que ésta se modifique.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: 'Si esta opción está habilitada, volveré a publicar el mensaje de la sugerencia cada vez que se ésta se modifique. En caso opuesto editaré el mensaje original.',
+		SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: 'Esta configuración le permite actualizar recomendaciónes anónimamente. Sustituirá el nombre del editor con `Un administrador` o` Un moderador`, de acuerdo con su nivel de permisos.',
 
 		/**
 		 * ################
@@ -3496,6 +3502,62 @@ export default class extends Language {
 		COMMAND_STAR_TOPSTARRED_DESCRIPTION: (medal, id, stars) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 		COMMAND_STAR_TOPRECEIVERS: 'Top Star Receivers',
 		COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal, id, stars) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+
+		/**
+		 * ####################
+		 * SUGGESTIONS COMMANDS
+		 */
+
+		COMMAND_SUGGEST_DESCRIPTION: 'Manda una sugerencia para el servidor.',
+		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
+			extendedHelp: 'Publica una recomendación en el canal de recomendaciones del servidor',
+			explainedUsage: [
+				['suggestion', 'Su recomendación']
+			],
+			examples: [
+				'Crear un canal de música.'
+			],
+			reminder: 'Debe tener una configuración de canal de sugerencias para que este comando funcione. Si eres un administrador, se le dará la opción de hacerlo al invocar el comando.'
+		}),
+		COMMAND_SUGGEST_NOSETUP: username => `Lo siento ${username}, pero no los administradores no han configurado un canal de texto para las sugerencias.`,
+		COMMAND_SUGGEST_NOSETUP_ASK: username => `Lo siento ${username}, pero no se ha configurado un canal de texto para las sugerencias... ¿Quieres hacerlo ahora?`,
+		COMMAND_SUGGEST_NOSETUP_ABORT: '¡Entendido! Puede usar este comando si cambia de opinión.',
+		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Mencione el canal de texto o escriba su nombre o ID que en el que quiere que se publiquen las sugerencias.',
+		COMMAND_SUGGEST_TITLE: id => `Recomendación #${id}`,
+		COMMAND_SUGGEST_SUCCESS: channel => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,
+		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Modifica el estado de la sugerencia.',
+		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+			extendedHelp: `Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada`,
+			examples: [
+				'1 accept ¡Gracias por su recomendación!',
+				'1 a ¡Gracias por su recomendación!',
+				'1 consider Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
+				'1 c Hmm... podemos hacer esto, pero es una prioridad realmente baja.',
+				'1 deny De ninguna manera de que esto suceda.',
+				'1 d De ninguna manera de que esto suceda.'
+			],
+			reminder: `Se puede configurar para enviar un mensaje directo al autor con respecto al estado de su recomendación, con la configuración \`suggestions.on-action.dm\`.
+			Además, en caso de que desee preservar el anonimato, puede ocultar su nombre utilizando la configuración \`suggestions.on-action\`, que puede anteponerse con las señales \`--hide-author\` y \`--show-author\`.`
+		}),
+		COMMAND_RESOLVESUGGESTION_INVALID_ID: `${REDCROSS} ¡Eso no era un número! Por favor vuelva a ejecutar el comando pero con el numerito del título de la sugerencia.`,
+		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} No pude recuperar la sugerencia ya que su mensaje ha sido eliminado.`,
+		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: `${REDCROSS} ¡No pude encontrar la recomendación! ¿Estás seguro/a de que no te confundiste de numerito?`,
+		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'Ningún comentario.',
+		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'Un administrador',
+		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'Un moderador',
+		COMMAND_RESOLVESUGGESTION_ACTIONS: {
+			ACCEPT: author => `${author} ha aceptado esta sugerencia:`,
+			CONSIDER: author => `${author} ha considerado esta sugerencia:`,
+			DENY: author => `${author} ha negado esta sugerencia:`
+		},
+		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
+			ACCEPT: (author, guild) => `${author} ha aceptado su sugerencia en ${guild}:`,
+			CONSIDER: (author, guild) => `${author} ha considerado su sugerencia en ${guild}:`,
+			DENY: (author, guild) => `${author} ha negado su sugerencia en ${guild}:`
+		},
+		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} No pude enviar el mensaje directo al usuario. ¿Están cerrados sus mensajes directos?`,
+		COMMAND_RESOLVESUGGESTION_SUCCESS: (id, action) =>
+			`${GREENTICK} Recomendación \`${id}\` ${action === 'a' || action === 'accept' ? 'aceptada' : action === 'd' || action === 'deny' ? 'denegada' : 'considerada'} con éxito!`,
 
 		/**
 		 * ###############

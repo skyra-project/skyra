@@ -5,7 +5,6 @@ import { Colors } from '@lib/types/constants/Constants';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
-	aliases: ['suggest'],
 	bucket: 2,
 	cooldown: 20,
 	description: language => language.tget('COMMAND_FEEDBACK_DESCRIPTION'),

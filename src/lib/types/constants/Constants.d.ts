@@ -15,6 +15,7 @@ export const enum Databases {
 	RpgUsers = 'rpg_users',
 	Starboard = 'starboard',
 	TwitchStreamSubscriptions = 'twitch_stream_subscriptions',
+	Suggestions = 'suggestions',
 	Users = 'users'
 }
 

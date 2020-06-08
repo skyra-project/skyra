@@ -281,7 +281,7 @@ query($types: [Types!]!) {
   }
 }`;
 
-export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://favware.tech/api';
+export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
 export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
 
 export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string, variables: GraphQLQueryVariables<R>) {

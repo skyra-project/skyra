@@ -35,10 +35,10 @@ export default class extends SkyraCommand {
 
 	private async resolveMessage(message: KlasaMessage, rawTarget: KlasaMessage | undefined) {
 		const target = rawTarget
-			// If rawMessage is defined then we also check for colour
-			? this.validatePossibleMessage(rawTarget) ? rawTarget : null
-			// If rawTarget was undefined then we fetch it from the API and we don't check embed colour
-			: (await message.channel.messages.fetch({ limit: 100 })).find(msg => this.validateMessage(msg)) || null;
+			// If rawMessage is defined then we check everything sans the colour
+			? this.validateMessage(rawTarget) ? rawTarget : null
+			// If rawTarget was undefined then we fetch it from the API and we check embed colour
+			: (await message.channel.messages.fetch({ limit: 100 })).find(msg => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as KlasaMessage;
 		throw message.language.tget('COMMAND_GIVEAWAYREROLL_INVALID');
 	}

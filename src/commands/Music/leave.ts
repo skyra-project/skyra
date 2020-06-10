@@ -14,4 +14,10 @@ export default class extends MusicCommand {
 		await message.guild!.music.leave(this.getContext(message));
 	}
 
+	/** Inhibit leave until #1015 is finished and merged  */
+	public async inhibit(message: KlasaMessage) {
+		await message.sendLocale('INHIBITOR_DISABLED_GLOBAL');
+		return true;
+	}
+
 }

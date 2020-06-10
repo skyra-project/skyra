@@ -12,12 +12,21 @@ export default class extends Event {
 	public async run() {
 		try {
 			await Promise.all([
+				// Initialize Slotmachine data
 				Slotmachine.init().catch(error => this.client.emit(Events.Wtf, error)),
+				// Initialize WheelOfFortune data
 				WheelOfFortune.init().catch(error => this.client.emit(Events.Wtf, error)),
-				this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error))
+				// Initialize giveaways
+				this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error)),
+				// Update guild permission managers
+				this.client.guilds.map(guild => guild.permissionsManager.update())
 			]);
+
+			// Setup the cleanup task
 			await this.initCleanupTask().catch(error => this.client.emit(Events.Wtf, error));
+			// Setup the stat updating task
 			await this.initPostStatsTask().catch(error => this.client.emit(Events.Wtf, error));
+			// Setup the Twitch subscriptions refresh task
 			await this.initTwitchRefreshSubscriptionsTask().catch(error => this.client.emit(Events.Wtf, error));
 		} catch (error) {
 			this.client.console.wtf(error);

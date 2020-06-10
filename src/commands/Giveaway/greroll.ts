@@ -1,5 +1,6 @@
 import { Giveaway, GiveawayEmoji } from '@lib/structures/Giveaway';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors } from '@utils/constants';
@@ -7,13 +8,12 @@ import { fetchReactionUsers } from '@utils/util';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { FetchError } from 'node-fetch';
-import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends SkyraCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			aliases: ['gr'],
+			aliases: ['gr', 'groll'],
 			description: language => language.tget('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
 			extendedHelp: language => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
@@ -35,8 +35,10 @@ export default class extends SkyraCommand {
 
 	private async resolveMessage(message: KlasaMessage, rawTarget: KlasaMessage | undefined) {
 		const target = rawTarget
+			// If rawMessage is defined then we check everything sans the colour
 			? this.validateMessage(rawTarget) ? rawTarget : null
-			: (await message.channel.messages.fetch({ limit: 100 })).find(msg => this.validateMessage(msg)) || null;
+			// If rawTarget was undefined then we fetch it from the API and we check embed colour
+			: (await message.channel.messages.fetch({ limit: 100 })).find(msg => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as KlasaMessage;
 		throw message.language.tget('COMMAND_GIVEAWAYREROLL_INVALID');
 	}
@@ -69,12 +71,21 @@ export default class extends SkyraCommand {
 		}
 	}
 
+	/**
+	 * Validates that this message is a message from Skyra and is a giveaway
+	 */
 	private validateMessage(message: Message) {
 		return message.author !== null
 			&& message.author.id === CLIENT_ID
 			&& message.embeds.length === 1
-			&& message.embeds[0].color === Colors.Red
 			&& message.reactions.has(GiveawayEmoji);
+	}
+
+	/**
+	 * Validates that this is a Skyra giveaway and that it has ended
+	 */
+	private validatePossibleMessage(message: Message) {
+		return this.validateMessage(message) && message.embeds[0].color === Colors.Red;
 	}
 
 }

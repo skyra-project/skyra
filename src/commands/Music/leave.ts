@@ -15,9 +15,8 @@ export default class extends MusicCommand {
 	}
 
 	/** Inhibit leave until #1015 is finished and merged  */
-	public async inhibit(message: KlasaMessage) {
-		await message.sendLocale('INHIBITOR_DISABLED_GLOBAL');
-		return true;
+	public inhibit(message: KlasaMessage) {
+		throw message.language.tget('INHIBITOR_DISABLED_GLOBAL');
 	}
 
 }

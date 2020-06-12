@@ -79,13 +79,16 @@ export default class extends RichDisplayCommand {
 				.setTitle(game.name)
 				.setURL(game.url || '')
 				.setThumbnail(coverImg)
-				.setDescription(this.resolveSummary(game.summary, fieldsData.NO_SUMMARY))
-				.addField(titles.USER_SCORE, userRating)
-				.addField(titles.AGE_RATING, this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS))
-				.addField(titles.RELEASE_DATE, this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE))
-				.addField(titles.GENRES, this.resolveGenres(game.genres, fieldsData.NO_GENRES))
-				.addField(titles.DEVELOPERS, this.resolveDevelopers(game.involved_companies, fieldsData.NO_DEVELOPERS))
-				.addField(titles.PLATFORMS, this.resolvePlatforms(game.platforms, fieldsData.NO_PLATFORMS)));
+				.setDescription([
+					this.resolveSummary(game.summary, fieldsData.NO_SUMMARY),
+					'',
+					`**${titles.USER_SCORE}**: ${userRating}`,
+					`**${titles.AGE_RATING}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS)}`,
+					`**${titles.RELEASE_DATE}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE)}`,
+					`**${titles.GENRES}**: ${this.resolveGenres(game.genres, fieldsData.NO_GENRES)}`,
+					`**${titles.DEVELOPERS}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.NO_DEVELOPERS)}`,
+					`**${titles.PLATFORMS}**: ${this.resolvePlatforms(game.platforms, fieldsData.NO_PLATFORMS)}`
+				].join('\n')));
 		}
 
 		return display;

@@ -5,10 +5,10 @@ import { Databases } from '@lib/types/constants/Constants';
 import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
-import { getColor, requiredPermissions } from '@utils/util';
+import { getColor } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 

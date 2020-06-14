@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { ApplyOptions } from '@skyra/decorators';
-import { displayEmoji, getColor, requiredPermissions, resolveEmoji } from '@utils/util';
+import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
+import { displayEmoji, getColor, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
 

@@ -1,8 +1,8 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
-import { cutText, getColor, requiredPermissions } from '@utils/util';
+import { cutText, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
 

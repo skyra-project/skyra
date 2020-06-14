@@ -4,9 +4,9 @@ import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
-import { getColor, requiredPermissions } from '@utils/util';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 

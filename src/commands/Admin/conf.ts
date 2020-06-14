@@ -2,9 +2,8 @@ import { codeBlock, toTitleCase } from '@klasa/utils';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
-import { requiredPermissions } from '@utils/util';
 import { KlasaMessage, SettingsFolder } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({

@@ -4,9 +4,9 @@ import { Databases } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
 import { UserSettings } from '@lib/types/settings/UserSettings';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
-import { getColor, requiredPermissions } from '@utils/util';
+import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 

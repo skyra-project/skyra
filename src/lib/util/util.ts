@@ -569,7 +569,7 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 	}
 }
 
-export type ArgumentTypes<F extends Function> = F extends (...args: infer A) => any ? A : never;
+export type ArgumentTypes<F extends (...args: any[]) => unknown> = F extends (...args: infer A) => any ? A : never;
 
 export interface BidirectionalReplaceOptions<T> {
 	onMatch(match: RegExpExecArray): T;

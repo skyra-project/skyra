@@ -1,4 +1,5 @@
 export namespace FFXIV {
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	export interface SearchResponse<T extends object> {
 		Pagination: Pagination;
 		Results: T[];

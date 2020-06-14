@@ -3,7 +3,7 @@ export interface RawClientSettings {
 	'commandUses': number;
 	'userBlacklist': readonly string[];
 	'guildBlacklist': readonly string[];
-	'schedules': readonly object[];
+	'schedules': readonly Record<string, unknown>[];
 	'boosts_guilds': readonly string[];
 	'boosts_users': readonly string[];
 }

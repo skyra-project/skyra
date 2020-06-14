@@ -30,7 +30,7 @@ const kTimeDurations: readonly [TimeTypes, number][] = [
  * @param duration The duration in milliseconds to parse and display
  * @param assets The language assets
  */
-export default function(duration: number, assets: DurationFormatAssetsTime, precision = 7) {
+export default (duration: number, assets: DurationFormatAssetsTime, precision = 7) => {
 	const output: string[] = [];
 	const negative = duration < 0;
 	if (negative) duration *= -1;
@@ -48,7 +48,7 @@ export default function(duration: number, assets: DurationFormatAssetsTime, prec
 	}
 
 	return `${negative ? '-' : ''}${output.join(' ') || addUnit(0, assets.SECOND)}`;
-}
+};
 
 /**
  * Adds an unit, if non zero

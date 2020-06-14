@@ -6,7 +6,18 @@
 		// TODO -kyra/favna-  check if/when these can be enabled again
 		"@typescript-eslint/no-unnecessary-condition": 0,
 		"@typescript-eslint/naming-convention": 0,
-		"@typescript-eslint/camelcase": 0
+		"@typescript-eslint/no-unsafe-member-access": 0,
+		"@typescript-eslint/no-unsafe-call": 0,
+		"@typescript-eslint/explicit-module-boundary-types": 0,
+		"@typescript-eslint/no-unsafe-assignment": 0,
+		"@typescript-eslint/no-unsafe-return": 0,
+		"@typescript-eslint/ban-ts-comment": ["error", {
+			"ts-expect-error": "allow-with-description",
+			"ts-ignore": true,
+			"ts-nocheck": true,
+			"ts-check": true,
+			"minimumDescriptionLength": 3
+		}]
 	},
 	"env": {
 		"jest": true,

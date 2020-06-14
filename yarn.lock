@@ -270,10 +270,10 @@
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.5.tgz#1781c620b4c88d619bd0373a1548e5a6025e3d3a"
   integrity sha512-CU1q0UXQUpFNzNB7gufgoisDHP7n+T3tkqTsp3MNUkVJ5+hS3BCvME8uCXAUFlz+6T2FbTCu75A+yQ7HMKqRKw==
 
-"@favware/graphql-pokemon@^4.0.1":
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-4.0.1.tgz#8c7f6676cca8a804197b5032a17b229898ce51fd"
-  integrity sha512-FwqT07DvzBrx5NQrBP6NG85Qg1ZAI55srCd/eBLq2LGyewb/BL3n4XwZc1Oma9+KWHnJn5zKSNveQtwjhVVb7Q==
+"@favware/graphql-pokemon@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-4.0.2.tgz#311fecf4d641222a1efa6cfa283d53fc0c34ec54"
+  integrity sha512-kmv7pSeQrrj5byMrUpkYReSdXg6Q4rsjxMVNPVXts80aD6ARcFzrHNYloCE4nVQvlJDoTjFlW7OeFvXM9GCSMw==
   dependencies:
     graphql "^15.0.0"
 
@@ -549,10 +549,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skyra/decorators@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.0.0.tgz#270d6f649ea8cda24b580cabd9c33e7dd6440b04"
-  integrity sha512-mPWYc3pJgqVDrblLN3xZUNNcmmzjBkW3C8X5yvXoksj0ajW/+pnbAi8Jf9RmBBEzWw+9G+qTuGvbLBYQsuz4xA==
+"@skyra/decorators@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.1.0.tgz#bf42dad78a83394f207ab0ea1f8dcb3845be24d2"
+  integrity sha512-JbtoXE672h9QsOGcKOpVq+dQ6Fo4vbvMF7qIjVD2CqhS9wD8Sno3Oi3FNJWD9/7eAQFcnCWc8S9fXukP+qh4PA==
 
 "@types/babel__core@^7.1.7":
   version "7.1.8"
@@ -672,10 +672,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.9.tgz#43896ab87fc82bda1dfd600cdf44a0c8a64e11d2"
   integrity sha512-0sCTiXKXELOBxvZLN4krQ0FPOAA7ij+6WwvD0k/PHd9/KAkr4dXel5J9fh6F4x1FwAQILqAWkmpeuS6mjf1iKA==
 
-"@types/node@^14.0.11":
-  version "14.0.11"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.11.tgz#61d4886e2424da73b7b25547f59fdcb534c165a3"
-  integrity sha512-lCvvI24L21ZVeIiyIUHZ5Oflv1hhHQ5E1S25IRlKIXaRkVgmXpJMI3wUJkmym2bTbCe+WoIibQnMVAU3FguaOg==
+"@types/node@^14.0.13":
+  version "14.0.13"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.13.tgz#ee1128e881b874c371374c1f72201893616417c9"
+  integrity sha512-rouEWBImiRaSJsVA+ITTFM6ZxibuAlTuNOCyxVbwreu6k6+ujs7DfnU9o+PShFhET78pMBl3eH+AGSI5eOTkPA==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"
@@ -5023,9 +5023,9 @@ yargs@^7.0.1:
     y18n "^3.2.1"
     yargs-parser "5.0.0-security.0"
 
-zlib-sync@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/zlib-sync/-/zlib-sync-0.1.6.tgz#9136ba8b66a75485fefe51aa68f9b49a5ae420eb"
-  integrity sha512-B2XGrhlXs/izEks+705vn/aL+nWyPgnS1glyCeH8wgZdOvztRn3ZEdqclj6GoJSeA/iRSqaTlznG2KO1M/GuWg==
+zlib-sync@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/zlib-sync/-/zlib-sync-0.1.7.tgz#b0b24f9428e434943e306ad586428ef8baf3ed60"
+  integrity sha512-UmciU6ZrIwtwPC8noMzq+kGMdiWwNRZ3wC0SbED4Ew5Ikqx14MqDPRs/Pbk+3rZPh5SzsOgUBs1WRE0iieddpg==
   dependencies:
     nan "^2.14.0"

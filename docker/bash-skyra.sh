@@ -48,6 +48,7 @@ logs) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs ${@:2:99
 tail) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml logs -f ${@:2:99} ;;
 push) docker push ${@:2:99} ;;
 remove) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml rm -fv ${@:2:99} ;;
+update) docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml pull ${@:2:99} && docker-compose -p skyra -f ${CURRENT_DIR}/docker-compose.yml up -d --force-recreate ${@:2:99} ;;
 removeall) removeAllContainers ;;
 *) help ;;
 esac

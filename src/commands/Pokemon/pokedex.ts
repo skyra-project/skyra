@@ -147,7 +147,13 @@ export default class extends RichDisplayCommand {
 		const evoChain = this.getEvoChain(pokeDetails);
 		const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
 
-		return new UserRichDisplay(new MessageEmbed()
+		const externalResourceData = [
+			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
+			`[Serebii](${pokeDetails.serebiiPage})`,
+			`[Smogon](${pokeDetails.smogonPage})`
+		].join(' | ');
+
+		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(resolveColour(pokeDetails.color))
 			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, POKEMON_EMBED_THUMBNAIL)
 			.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite))
@@ -158,36 +164,44 @@ export default class extends RichDisplayCommand {
 				.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
 				.addField(embedTranslations.BASE_STATS, `${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`)
 
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
-					`[Serebii](${pokeDetails.serebiiPage})`,
-					`[Smogon](${pokeDetails.smogonPage})`
-				].join(' | ')))
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData))
 			.addPage((embed: MessageEmbed) => {
 				embed
 					.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
 					.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
 					.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true);
 
-				if (pokeDetails.otherFormes) {
-					embed.addField(embedTranslations.OTHER_FORMES, pokeDetails.otherFormes.join(', '), true);
-				}
-
-				return embed.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
-					`[Serebii](${pokeDetails.serebiiPage})`,
-					`[Smogon](${pokeDetails.smogonPage})`
-				].join(' | '));
+				return embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData);
 			})
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
 				.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
 
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
-					`[Serebii](${pokeDetails.serebiiPage})`,
-					`[Smogon](${pokeDetails.smogonPage})`
-				].join(' | ')));
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData));
+
+		// If there are any cosmetic formes or other formes then add a page for them
+		// If the pokémon doesn't have the formes then the API will default them to `null`
+		if (pokeDetails.cosmeticFormes || pokeDetails.otherFormes) {
+			display.addPage((embed: MessageEmbed) => {
+				// If the pokémon has other formes
+				if (pokeDetails.otherFormes) {
+					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.FORMES_LIST(pokeDetails.otherFormes));
+				}
+
+				// If the pokémon has cosmetic formes
+				if (pokeDetails.cosmeticFormes) {
+					embed
+						.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.FORMES_LIST(pokeDetails.cosmeticFormes!));
+				}
+
+				// Add the external resource field
+				embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData);
+
+				return embed;
+			});
+		}
+
+		return display;
 	}
 
 }

@@ -420,4 +420,38 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('gql', () => {
+		test('GIVEN gql tag THEN returns unmodified code', () => {
+			expect(utils.gql`
+			fragment one on two {
+				one
+				two
+			}`).toEqual(`
+			fragment one on two {
+				one
+				two
+			}`);
+		});
+
+		test('GIVEN nested gql tag THEN returns unmodified code', () => {
+			const nestableCode = utils.gql`
+				fragment two on three {
+					three
+					four
+				}`;
+
+			expect(utils.gql`
+			${nestableCode}
+			fragment one on two {
+				one
+				two
+			}`).toEqual(`
+			${nestableCode}
+			fragment one on two {
+				one
+				two
+			}`);
+		});
+	});
+
 });

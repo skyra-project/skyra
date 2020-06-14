@@ -2044,7 +2044,8 @@ export default class extends Language {
 			explainedUsage: [
 				['pokemon', 'The Pokémon for which you want to find data']
 			],
-			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny'],
+			reminder: 'If there are any "Other forme(s)" on the optional fourth page, those can be requested as well. Cosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex.'
 		}),
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Type(s)',
@@ -2055,12 +2056,14 @@ export default class extends Language {
 			HEIGHT: 'Height',
 			WEIGHT: 'Weight',
 			EGG_GROUPS: 'Egg group(s)',
-			OTHER_FORMES: 'Other forme(s)',
 			EVOLUTIONARY_LINE: 'Evolutionary line',
 			BASE_STATS: 'Base stats',
 			BASE_STATS_TOTAL: 'BST',
 			FLAVOUR_TEXT: 'Pokdex entry',
-			EXTERNAL_RESOURCES: 'External resources'
+			EXTERNAL_RESOURCES: 'External resources',
+			OTHER_FORMES_TITLE: 'Other forme(s)',
+			COSMETIC_FORMES_TITLE: 'Cosmetic Formes',
+			FORMES_LIST: formes => this.list(formes, 'and')
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',

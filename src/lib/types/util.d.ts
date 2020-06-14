@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import { Provider, SettingsUpdateResults } from 'klasa';
 
 export type AnyObject = Record<PropertyKey, unknown> | {};

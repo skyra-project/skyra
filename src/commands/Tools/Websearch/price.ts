@@ -1,5 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { TOKENS, NAME, VERSION } from '@root/config';
+import { NAME, TOKENS, VERSION } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
@@ -37,8 +37,6 @@ export default class extends SkyraCommand {
 			const body = await fetch<CryptoCompareResultOk | CryptoCompareResultError>(url, {
 				headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
 			}, FetchResultTypes.JSON);
-
-			console.log(`PRICE.TS [${new Date().toISOString()}]`, require('util').inspect(body, { showHidden: true, depth: Infinity, maxArrayLength: Infinity }));
 
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;

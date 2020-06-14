@@ -115,7 +115,7 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public lavalink: Lavalink | null = ENABLE_LAVALINK
 		? new Lavalink({
-			send: (guildID: string, packet: object) => {
+			send: (guildID: string, packet: Record<string, unknown>) => {
 				const guild = this.guilds.get(guildID);
 				if (guild) this.ws.shards.get(guild.shardID)!.send(packet);
 				else throw new Error('attempted to send a packet on the wrong shard');

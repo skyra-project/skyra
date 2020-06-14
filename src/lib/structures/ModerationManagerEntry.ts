@@ -17,6 +17,7 @@ export class ModerationManagerEntry {
 	public manager: ModerationManager;
 	public case!: number | null;
 	public duration!: number | null;
+	// eslint-disable-next-line @typescript-eslint/ban-types
 	public extraData!: object | null;
 	public moderator!: string | User | null;
 	public reason!: string | null;
@@ -332,7 +333,7 @@ export class ModerationManagerEntry {
 		return this;
 	}
 
-	public setExtraData(value: object | null) {
+	public setExtraData(value: Record<string, unknown> | null) {
 		this.extraData = value;
 		return this;
 	}

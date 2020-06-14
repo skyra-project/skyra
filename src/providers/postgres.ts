@@ -94,13 +94,13 @@ export default class extends SQLProvider {
 
 	/* Row methods */
 
-	public async getAll(table: string, entries: readonly string[] = []): Promise<object[]> {
+	public async getAll(table: string, entries: readonly string[] = []): Promise<Record<string, unknown>[]> {
 		const filter = entries.length ? ` WHERE id IN ('${entries.join("', '")}')` : '';
 		const results = await this.runAll(/* sql */`
 			SELECT *
 			FROM ${this.cIdentifier(table)}${filter};
 		`);
-		return results.map(output => this.parseEntry(table, output) as object);
+		return results.map(output => this.parseEntry(table, output) as Record<string, unknown>);
 	}
 
 	public async getKeys(table: string): Promise<string[]> {
@@ -138,7 +138,7 @@ export default class extends SQLProvider {
 		return Boolean(result);
 	}
 
-	public create(table: string, id: string, data: object | SettingsUpdateResults) {
+	public create(table: string, id: string, data: Record<string, unknown> | SettingsUpdateResults) {
 		const { keys, values } = this.parseTupleUpdateInput(data);
 
 		// Push the id to the inserts.
@@ -152,7 +152,7 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public update(table: string, id: string, data: object | SettingsUpdateResults) {
+	public update(table: string, id: string, data: Record<string, unknown> | SettingsUpdateResults) {
 		const { keys, values } = this.parseTupleUpdateInput(data);
 		const resolvedValues = this.cValues(table, keys, values);
 		return this.pgsql!.query(/* sql */`
@@ -162,7 +162,7 @@ export default class extends SQLProvider {
 		`);
 	}
 
-	public replace(table: string, id: string, data: object | SettingsUpdateResults) {
+	public replace(table: string, id: string, data: Record<string, unknown> | SettingsUpdateResults) {
 		return this.update(table, id, data);
 	}
 

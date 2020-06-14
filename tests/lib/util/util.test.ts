@@ -64,7 +64,7 @@ describe('Utils', () => {
 
 	describe('showSeconds', () => {
 		test('GIVEN duration of string THEN returns 00:00', () => {
-			// @ts-expect-error
+			// @ts-expect-error Testing the error case
 			expect(utils.showSeconds('I am your father')).toEqual('00:00');
 		});
 

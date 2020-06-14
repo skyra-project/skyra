@@ -11,7 +11,7 @@ const enum ErrorMessages {
 
 export default class extends Provider {
 
-	private tables = new Map<string, Map<string, object>>();
+	private tables = new Map<string, Map<string, Record<string, unknown>>>();
 
 	public init() {
 		if (ENABLE_POSTGRES) this.unload();
@@ -34,7 +34,7 @@ export default class extends Provider {
 		return Promise.resolve(this.tables.has(table));
 	}
 
-	public create(table: string, entry: string, data: object) {
+	public create(table: string, entry: string, data: Record<string, unknown>) {
 		const resolvedTable = this.tables.get(table);
 		if (typeof resolvedTable === 'undefined') return Promise.reject(new Error(ErrorMessages.TableNotExists));
 		if (resolvedTable.has(entry)) return Promise.reject(new Error(ErrorMessages.EntryExists));
@@ -64,7 +64,7 @@ export default class extends Provider {
 			return Promise.resolve([...resolvedTable.values()]);
 		}
 
-		const values: object[] = [];
+		const values: Record<string, unknown>[] = [];
 		for (const [key, value] of resolvedTable.entries()) {
 			if (entries.includes(key)) values.push(value);
 		}
@@ -86,7 +86,7 @@ export default class extends Provider {
 			: Promise.resolve(resolvedTable.has(entry));
 	}
 
-	public update(table: string, entry: string, data: object) {
+	public update(table: string, entry: string, data: Record<string, unknown>) {
 		const resolvedTable = this.tables.get(table);
 		if (typeof resolvedTable === 'undefined') return Promise.reject(new Error(ErrorMessages.TableNotExists));
 
@@ -100,7 +100,7 @@ export default class extends Provider {
 		return Promise.resolve();
 	}
 
-	public replace(table: string, entry: string, data: object) {
+	public replace(table: string, entry: string, data: Record<string, unknown>) {
 		const resolvedTable = this.tables.get(table);
 
 		if (typeof resolvedTable === 'undefined') return Promise.reject(new Error(ErrorMessages.TableNotExists));

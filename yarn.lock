@@ -549,10 +549,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skyra/decorators@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.1.0.tgz#bf42dad78a83394f207ab0ea1f8dcb3845be24d2"
-  integrity sha512-JbtoXE672h9QsOGcKOpVq+dQ6Fo4vbvMF7qIjVD2CqhS9wD8Sno3Oi3FNJWD9/7eAQFcnCWc8S9fXukP+qh4PA==
+"@skyra/decorators@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.0.0.tgz#270d6f649ea8cda24b580cabd9c33e7dd6440b04"
+  integrity sha512-mPWYc3pJgqVDrblLN3xZUNNcmmzjBkW3C8X5yvXoksj0ajW/+pnbAi8Jf9RmBBEzWw+9G+qTuGvbLBYQsuz4xA==
 
 "@types/babel__core@^7.1.7":
   version "7.1.8"

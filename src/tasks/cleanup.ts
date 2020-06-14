@@ -34,7 +34,7 @@ const EPOCH = 1420070400000;
 const EMPTY = '0000100000000000000000';
 
 // The header with the console colours
-const HEADER = `\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m`;
+const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
 
 /**
  * @version 2.0.0

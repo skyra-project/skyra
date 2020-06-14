@@ -81,8 +81,8 @@ export default class extends RichDisplayCommand {
 				}
 			}, FetchResultTypes.JSON);
 		} catch (err) {
-			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget(`COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL`, query);
-			else throw message.language.tget(`COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL`, query);
+			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', query);
+			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', query);
 		}
 	}
 

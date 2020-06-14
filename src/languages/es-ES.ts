@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/unbound-method, @typescript-eslint/no-invalid-this */
+/* eslint-disable @typescript-eslint/no-invalid-this */
 import { codeBlock, toTitleCase } from '@klasa/utils';
 import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
@@ -278,7 +278,7 @@ export default class extends Language {
 		ARGUMENT_RANGE_INVALID: (name: string) => `${name} debe ser un número o un rango de números.`,
 		ARGUMENT_RANGE_MAX: (name: string, maximum: number) => `El argumento ${name} acepta un rango de máximo ${maximum} ${maximum === 1 ? 'número' : 'números'}`,
 
-		COMMAND_ADD_DESCRIPTION: `Añade una canción a la cola.`,
+		COMMAND_ADD_DESCRIPTION: 'Añade una canción a la cola.',
 		COMMAND_ADD_EXTENDED: builder.display('add', {
 			extendedHelp: [
 				`¡Agregue canciones a la lista de reproducción y prepárese para el concierto!
@@ -302,28 +302,28 @@ export default class extends Language {
 			]
 		}, true),
 		COMMAND_ADD_PLAYLIST: amount => amount === 1
-			? `🎵 Añadida **una** canción a la cola 🎶`
+			? '🎵 Añadida **una** canción a la cola 🎶'
 			: `🎵 Añadidas **${amount}** canciones a la cola 🎶`,
 		COMMAND_ADD_SONG: title => `🎵 Añadida la canción **${title}** a la cola 🎶`,
-		COMMAND_CLEAR_DESCRIPTION: `Borra las canciones de la cola.`,
-		COMMAND_CLEAR_DENIED: `¡No puedes ejecutar este comando mientras que hayan más de 4 usuarios! ¡Debes ser el Dj de esta fiesta!`,
+		COMMAND_CLEAR_DESCRIPTION: 'Borra las canciones de la cola.',
+		COMMAND_CLEAR_DENIED: '¡No puedes ejecutar este comando mientras que hayan más de 4 usuarios! ¡Debes ser el Dj de esta fiesta!',
 		COMMAND_CLEAR_SUCCESS: amount => amount === 1
-			? `🗑 Una canción fue borrada de la cola.`
+			? '🗑 Una canción fue borrada de la cola.'
 			: `🗑 ${amount} canciones fueron borradas de la cola.`,
-		COMMAND_JOIN_DESCRIPTION: `Unirse al canal de voz del autor del mensaje.`,
-		COMMAND_JOIN_NO_MEMBER: `Lo siento, pero Discord no me ha mandado la información necesaria que necesito para saber en qué canal de voz estás conectado/a...`,
-		COMMAND_JOIN_NO_VOICECHANNEL: `No estás conectado/a a un canal de voz.`,
+		COMMAND_JOIN_DESCRIPTION: 'Unirse al canal de voz del autor del mensaje.',
+		COMMAND_JOIN_NO_MEMBER: 'Lo siento, pero Discord no me ha mandado la información necesaria que necesito para saber en qué canal de voz estás conectado/a...',
+		COMMAND_JOIN_NO_VOICECHANNEL: 'No estás conectado/a a un canal de voz.',
 		COMMAND_JOIN_SUCCESS: channel => `Me he conectado con éxito al canal de voz ${channel}`,
-		COMMAND_JOIN_VOICE_DIFFERENT: `Lo siento, pero estoy reproduciendo música en otro canal de voz. ¡Intenta de nuevo más tarde o únete a ellos!`,
-		COMMAND_JOIN_VOICE_FULL: `No puedo unirme a tu canal de voz, está lleno... ¡echa a alguien con las botas o haz espacio para mí!`,
-		COMMAND_JOIN_VOICE_NO_CONNECT: `No tengo suficientes permisos para unirme a tu canal de voz, necesito el permiso para conectarme a canales de voz.`,
-		COMMAND_JOIN_VOICE_NO_SPEAK: `Puedo conectarme... pero no hablar. Por favor dame permisos para hablar.`,
-		COMMAND_JOIN_VOICE_SAME: `¡Sube el volumen! ¡Ya estoy reproduciendo música ahí!`,
-		COMMAND_LEAVE_DESCRIPTION: `Desconecta del canal de voz.`,
+		COMMAND_JOIN_VOICE_DIFFERENT: 'Lo siento, pero estoy reproduciendo música en otro canal de voz. ¡Intenta de nuevo más tarde o únete a ellos!',
+		COMMAND_JOIN_VOICE_FULL: 'No puedo unirme a tu canal de voz, está lleno... ¡echa a alguien con las botas o haz espacio para mí!',
+		COMMAND_JOIN_VOICE_NO_CONNECT: 'No tengo suficientes permisos para unirme a tu canal de voz, necesito el permiso para conectarme a canales de voz.',
+		COMMAND_JOIN_VOICE_NO_SPEAK: 'Puedo conectarme... pero no hablar. Por favor dame permisos para hablar.',
+		COMMAND_JOIN_VOICE_SAME: '¡Sube el volumen! ¡Ya estoy reproduciendo música ahí!',
+		COMMAND_LEAVE_DESCRIPTION: 'Desconecta del canal de voz.',
 		COMMAND_LEAVE_SUCCESS: channel => `Me he desconectado con éxito del canal de voz ${channel}`,
-		COMMAND_PAUSE_DESCRIPTION: `Pausa la canción actual.`,
+		COMMAND_PAUSE_DESCRIPTION: 'Pausa la canción actual.',
 		COMMAND_PAUSE_SUCCESS: '⏸ Pausado.',
-		COMMAND_PLAY_DESCRIPTION: `¡Empecemos la cola!`,
+		COMMAND_PLAY_DESCRIPTION: '¡Empecemos la cola!',
 		COMMAND_PLAY_EXTENDED: builder.display('play', {
 			extendedHelp: [
 				`Ponga música en cola y permítame comenzar a improvisar para su disfrute.
@@ -348,38 +348,38 @@ export default class extends Language {
 			],
 			reminder: 'Before you can use this command you should join a voice channel!'
 		}, true),
-		COMMAND_PLAY_END: `⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!`,
+		COMMAND_PLAY_END: '⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!',
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
-		COMMAND_PLAY_QUEUE_PLAYING: `¡Ey! ¡El disco ya está girando!`,
-		COMMAND_PLAYING_DESCRIPTION: `Obtén información de la canción actual.`,
+		COMMAND_PLAY_QUEUE_PLAYING: '¡Ey! ¡El disco ya está girando!',
+		COMMAND_PLAYING_DESCRIPTION: 'Obtén información de la canción actual.',
 		COMMAND_PLAYING_DURATION: time => `**Duración**: ${time}`,
-		COMMAND_PLAYING_QUEUE_EMPTY: `¿Es conmigo? Porque no hay nada en reproducción...`,
-		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.`,
-		COMMAND_REPEAT_DESCRIPTION: `Se alterna repitiendo la canción actual.`,
-		COMMAND_REPEAT_SUCCESS: enabled => enabled ? `This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!` : `En realidad, también me estaba cansando de esto, pero no quería decir nada.`,
-		COMMAND_QUEUE_DESCRIPTION: `Check the queue list.`,
-		COMMAND_QUEUE_EMPTY: `The session is over, add some songs to the queue, you can for example do \`Skyra, add Imperial March\`, and... *dumbrolls*!`,
-		COMMAND_QUEUE_LAST: `There are no more songs! After the one playing is over, the session will end!`,
+		COMMAND_PLAYING_QUEUE_EMPTY: '¿Es conmigo? Porque no hay nada en reproducción...',
+		COMMAND_PLAYING_QUEUE_NOT_PLAYING: 'Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.',
+		COMMAND_REPEAT_DESCRIPTION: 'Se alterna repitiendo la canción actual.',
+		COMMAND_REPEAT_SUCCESS: enabled => enabled ? 'This is your JAM isn\'t it? No te preocupes, repetiremos esto una y otra vez!' : 'En realidad, también me estaba cansando de esto, pero no quería decir nada.',
+		COMMAND_QUEUE_DESCRIPTION: 'Check the queue list.',
+		COMMAND_QUEUE_EMPTY: 'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
+		COMMAND_QUEUE_LAST: 'There are no more songs! After the one playing is over, the session will end!',
 		COMMAND_QUEUE_TITLE: guildname => `Music queue for ${guildname}`,
 		COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
 		COMMAND_QUEUE_NOWPLAYING: (duration, title, url, requester) => `\`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
-		COMMAND_REMOVE_DESCRIPTION: `Elimina una canción de la lista de cola.`,
-		COMMAND_REMOVE_INDEX_INVALID: `Mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...`,
+		COMMAND_REMOVE_DESCRIPTION: 'Elimina una canción de la lista de cola.',
+		COMMAND_REMOVE_INDEX_INVALID: 'Mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
 		COMMAND_REMOVE_INDEX_OUT: amount => `He intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
 		COMMAND_REMOVE_DENIED: [
-			`Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o`,
-			`grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!`
+			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
+			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'
 		].join(' '),
 		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.safeTitle}**, pedida por **${song.requester}**, de la cola.`,
 		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
 		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
-		COMMAND_RESUME_DESCRIPTION: `Reanuda la canción actual.`,
-		COMMAND_RESUME_SUCCESS: `▶ Reanudado.`,
-		COMMAND_ROLESET_DESCRIPTION: `Gestionar conjuntos de roles únicos.`,
+		COMMAND_RESUME_DESCRIPTION: 'Reanuda la canción actual.',
+		COMMAND_RESUME_SUCCESS: '▶ Reanudado.',
+		COMMAND_ROLESET_DESCRIPTION: 'Gestionar conjuntos de roles únicos.',
 		COMMAND_ROLESET_EXTENDED: builder.display('roleset', {
 			extendedHelp: `A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles \`Africa\`, \`America\`, \`Asia\`, and \`Europe\`, and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:
 
@@ -416,43 +416,43 @@ export default class extends Language {
 		COMMAND_ROLESET_UPDATED: name => `El conjunto de roles único ${name} se ha actualizado.`,
 		COMMAND_SHUFFLE_DESCRIPTION: 'Aleatoriza el orden de las canciones en la cola.',
 		COMMAND_SHUFFLE_SUCCESS: amount => `${GREENTICK} Canciones aleatorias exitosas de ${amount}.`,
-		COMMAND_SKIP_DESCRIPTION: `Salta la canción actual.`,
-		COMMAND_SKIP_PERMISSIONS: `No puedes ejecutar este comando, debes ser un DJ o un Moderador.`,
-		COMMAND_SKIP_VOTES_VOTED: `Ya has votado para saltar esta canción.`,
+		COMMAND_SKIP_DESCRIPTION: 'Salta la canción actual.',
+		COMMAND_SKIP_PERMISSIONS: 'No puedes ejecutar este comando, debes ser un DJ o un Moderador.',
+		COMMAND_SKIP_VOTES_VOTED: 'Ya has votado para saltar esta canción.',
 		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votos: ${amount} de ${needed}`,
 		COMMAND_SKIP_SUCCESS: title => `⏭ Saltada la canción ${title}.`,
-		COMMAND_PLAYING_TIME_DESCRIPTION: `Revisa cuánto tiempo falta para terminar la canción.`,
-		COMMAND_PLAYING_TIME_QUEUE_EMPTY: `¿Es conmigo? La cola está vacía...`,
-		COMMAND_PLAYING_TIME_STREAM: `La canción actual es un directo, no tiene tiempo restante.`,
+		COMMAND_PLAYING_TIME_DESCRIPTION: 'Revisa cuánto tiempo falta para terminar la canción.',
+		COMMAND_PLAYING_TIME_QUEUE_EMPTY: '¿Es conmigo? La cola está vacía...',
+		COMMAND_PLAYING_TIME_STREAM: 'La canción actual es un directo, no tiene tiempo restante.',
 		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
-		COMMAND_VOLUME_DESCRIPTION: `Controla el volumen para la canción.`,
+		COMMAND_VOLUME_DESCRIPTION: 'Controla el volumen para la canción.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
 
-		INHIBITOR_MUSIC_QUEUE_EMPTY: `¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
-		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: `¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!`,
-		INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: `¡El disco ya está pausado! ¡Vuelve de vuelta cuando quieras encender la fiesta de nuevo!`,
-		INHIBITOR_MUSIC_NOT_PLAYING_STOPPED: `¡La cola está vacía! ¡Estoy muy segura que no está reproduciendo nada!`,
-		INHIBITOR_MUSIC_NOT_PAUSED_PLAYING: `¡El disco ya está girando y la fiesta está en marcha hasta que termine la noche!`,
-		INHIBITOR_MUSIC_NOT_PAUSED_STOPPED: `¡La cola está vacía! ¡Lo tomaré como que la fiesta está tranquila!`,
-		INHIBITOR_MUSIC_DJ_MEMBER: `¡Creo que esto es algo que sólo un moderador o un administrador de la fiesta pueden hacer!`,
-		INHIBITOR_MUSIC_USER_VOICE_CHANNEL: `¡Ey! Necesito que te unas a un canal de voz antes para usar este comando!`,
-		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: `Temo que necesito estar en un canal de voz antes de poder usar este comando, ¡por favor muéstreme el camino!`,
-		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: `¡Hey! Parece que no estamos en el mismo canal de voz, ¡por favor únete conmigo!`,
+		INHIBITOR_MUSIC_QUEUE_EMPTY: '¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!',
+		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: '¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!',
+		INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: '¡El disco ya está pausado! ¡Vuelve de vuelta cuando quieras encender la fiesta de nuevo!',
+		INHIBITOR_MUSIC_NOT_PLAYING_STOPPED: '¡La cola está vacía! ¡Estoy muy segura que no está reproduciendo nada!',
+		INHIBITOR_MUSIC_NOT_PAUSED_PLAYING: '¡El disco ya está girando y la fiesta está en marcha hasta que termine la noche!',
+		INHIBITOR_MUSIC_NOT_PAUSED_STOPPED: '¡La cola está vacía! ¡Lo tomaré como que la fiesta está tranquila!',
+		INHIBITOR_MUSIC_DJ_MEMBER: '¡Creo que esto es algo que sólo un moderador o un administrador de la fiesta pueden hacer!',
+		INHIBITOR_MUSIC_USER_VOICE_CHANNEL: '¡Ey! Necesito que te unas a un canal de voz antes para usar este comando!',
+		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: 'Temo que necesito estar en un canal de voz antes de poder usar este comando, ¡por favor muéstreme el camino!',
+		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: '¡Hey! Parece que no estamos en el mismo canal de voz, ¡por favor únete conmigo!',
 
 		MUSICMANAGER_FETCH_NO_ARGUMENTS: '¡Necesito que me des el nombre de una canción!',
-		MUSICMANAGER_FETCH_NO_MATCHES: `Lo siento, ¡pero no he sido capaz de encontrar la canción que querías`,
-		MUSICMANAGER_FETCH_LOAD_FAILED: `Lo siento, ¡pero no he podido cargar esta canción! Por si acaso, ¡intenta con otra canción!`,
+		MUSICMANAGER_FETCH_NO_MATCHES: 'Lo siento, ¡pero no he sido capaz de encontrar la canción que querías',
+		MUSICMANAGER_FETCH_LOAD_FAILED: 'Lo siento, ¡pero no he podido cargar esta canción! Por si acaso, ¡intenta con otra canción!',
 		MUSICMANAGER_TOO_MANY_SONGS: `${REDCROSS} ¡Ah, estás agregando más canciones de las permitidas!`,
-		MUSICMANAGER_SETVOLUME_SILENT: `Woah, ¡podrías simplemente salir del canal de voz si quieres silencio!`,
-		MUSICMANAGER_SETVOLUME_LOUD: `Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!`,
-		MUSICMANAGER_PLAY_NO_VOICECHANNEL: `¿Dónde se suponía que tenía que reproducir la música? ¡No estoy conectada a ningún canal de voz!`,
-		MUSICMANAGER_PLAY_NO_SONGS: `¡No hay más canciones en la cola!`,
-		MUSICMANAGER_PLAY_PLAYING: `Los discos están girando, ¿no los escuchas?`,
-		MUSICMANAGER_PLAY_DISCONNECTION: `¡Fuí desconectada a la fuerza por Discord!`,
+		MUSICMANAGER_SETVOLUME_SILENT: 'Woah, ¡podrías simplemente salir del canal de voz si quieres silencio!',
+		MUSICMANAGER_SETVOLUME_LOUD: 'Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!',
+		MUSICMANAGER_PLAY_NO_VOICECHANNEL: '¿Dónde se suponía que tenía que reproducir la música? ¡No estoy conectada a ningún canal de voz!',
+		MUSICMANAGER_PLAY_NO_SONGS: '¡No hay más canciones en la cola!',
+		MUSICMANAGER_PLAY_PLAYING: 'Los discos están girando, ¿no los escuchas?',
+		MUSICMANAGER_PLAY_DISCONNECTION: '¡Fuí desconectada a la fuerza por Discord!',
 		MUSICMANAGER_ERROR: error => `¡Algo pasó!\n${error}`,
 		MUSICMANAGER_STUCK: milliseconds => `${LOADING} Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en: ${duration(milliseconds)}!`,
-		MUSICMANAGER_CLOSE: `¡Oops, parece que he tenido un pequeño problemita con Discord!`,
+		MUSICMANAGER_CLOSE: '¡Oops, parece que he tenido un pequeño problemita con Discord!',
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
 		COMMAND_CONF_MENU_RENDER_AT_FOLDER: path => `Currently at: \\📁 ${path}`,
@@ -602,7 +602,7 @@ export default class extends Language {
 		}),
 		COMMAND_SHIBE_DESCRIPTION: 'Cute shibes!',
 		COMMAND_SHIBE_EXTENDED: builder.display('shibe', {
-			extendedHelp: `Everyone loves shibes, I shall love them aswell! They're so adorable ❤.`
+			extendedHelp: 'Everyone loves shibes, I shall love them aswell! They\'re so adorable ❤.'
 		}),
 
 		/**
@@ -612,17 +612,17 @@ export default class extends Language {
 
 		COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
 		COMMAND_ANIME_EXTENDED: builder.display('anime', {
-			extendedHelp: `This command queries Kitsu.io to show data for the anime you request.`,
+			extendedHelp: 'This command queries Kitsu.io to show data for the anime you request.',
 			explainedUsage: [
-				['query', `The anime's name you are looking for.`]
+				['query', 'The anime\'s name you are looking for.']
 			],
 			examples: ['One Piece']
 		}),
 		COMMAND_MANGA_DESCRIPTION: 'Search your favourite manga by title with this command.',
 		COMMAND_MANGA_EXTENDED: builder.display('manga', {
-			extendedHelp: `This command queries Kitsu.io to show data for the manga you request.`,
+			extendedHelp: 'This command queries Kitsu.io to show data for the manga you request.',
 			explainedUsage: [
-				['query', `The manga's name you are looking for.`]
+				['query', 'The manga\'s name you are looking for.']
 			],
 			examples: ['Stone Ocean', 'One Piece']
 		}),
@@ -663,14 +663,14 @@ export default class extends Language {
 				up to 15 minutes after the initial announcement, so be sure to not wait
 				long!`
 		}, true),
-		COMMAND_SUBSCRIBE_DESCRIPTION: `Subscribe to this server's announcements.`,
+		COMMAND_SUBSCRIBE_DESCRIPTION: 'Subscribe to this server\'s announcements.',
 		COMMAND_SUBSCRIBE_EXTENDED: builder.display('subscribe', {
 			extendedHelp: `This command serves the purpose of **giving** you the subscriber role, which must be configured by the
 				server's administrators. When a moderator or administrator use the **announcement** command, you
 					will be mentioned. This feature is meant to replace everyone/here tags and mention only the interested
 					users.`
 		}),
-		COMMAND_UNSUBSCRIBE_DESCRIPTION: `Unsubscribe from this server's announcements.`,
+		COMMAND_UNSUBSCRIBE_DESCRIPTION: 'Unsubscribe from this server\'s announcements.',
 		COMMAND_UNSUBSCRIBE_EXTENDED: builder.display('unsubscribe', {
 			extendedHelp: `This command serves the purpose of **removing** you the subscriber role, which must be configured by the
 					server's administrators. When a moderator or administrator use the **announcement** command, you
@@ -685,7 +685,7 @@ export default class extends Language {
 
 		COMMAND_8BALL_DESCRIPTION: 'Skyra will read the Holy Bible to find the correct answer for your question.',
 		COMMAND_8BALL_EXTENDED: builder.display('8ball', {
-			extendedHelp: `This command provides you a random question based on your questions' type. Be careful, it may be too smart.`,
+			extendedHelp: 'This command provides you a random question based on your questions\' type. Be careful, it may be too smart.',
 			explainedUsage: [
 				['question', 'The Holy Question']
 			],
@@ -703,13 +703,13 @@ export default class extends Language {
 		}),
 		COMMAND_CHANGEMYMIND_DESCRIPTION: 'Skyra is the best, change my mind.',
 		COMMAND_CHANGEMYMIND_EXTENDED: builder.display('changeMyMind', {
-			extendedHelp: `I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.`,
+			extendedHelp: 'I still think I\'m the best, change my mind. I make a photo with your avatar and some text in some paper.',
 			explainedUsage: [
 				['text', 'The phrase you want.']
 			],
 			examples: ['Skyra is the best bot in this server']
 		}),
-		COMMAND_DICE_DESCRIPTION: `Roll the dice using d20 syntax.`,
+		COMMAND_DICE_DESCRIPTION: 'Roll the dice using d20 syntax.',
 		COMMAND_DICE_EXTENDED: builder.display('dice', {
 			extendedHelp: `The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice
 				can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once.
@@ -748,7 +748,7 @@ export default class extends Language {
 					message given the content of the messages in the channel.`,
 			examples: ['']
 		}),
-		COMMAND_NORRIS_DESCRIPTION: `Enjoy your day reading Chuck Norris' jokes.`,
+		COMMAND_NORRIS_DESCRIPTION: 'Enjoy your day reading Chuck Norris\' jokes.',
 		COMMAND_NORRIS_EXTENDED: builder.display('norris', {
 			extendedHelp: `Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone?
 					Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io
@@ -878,7 +878,7 @@ export default class extends Language {
 		COMMAND_FFXIV_NO_ITEM_FOUND: 'Lo siento, pero no pude encontrar un elemento con esa consulta.',
 		COMMAND_FORTNITE_DESCRIPTION: 'Obtiene estadísticas de jugador para un jugador de Fortnite',
 		COMMAND_FORTNITE_EXTENDED: builder.display('fortnite', {
-			extendedHelp: `Este comando recupera estadísticas para cualquier jugador de Fortnite que juegue en PC, Xbox o Playstation`,
+			extendedHelp: 'Este comando recupera estadísticas para cualquier jugador de Fortnite que juegue en PC, Xbox o Playstation',
 			explainedUsage: [
 				['plataforma', '(opcional, predeterminado a `pc`) Plataforma en la que se reproduce el reproductor, una de` pc`, `xbox` o` psn`.'],
 				['jugador', 'El nombre de usuario de Epic Games del jugador.']
@@ -907,7 +907,7 @@ export default class extends Language {
 			TOP_12S: count => `Top 12s: **\`${count}\`**`,
 			TOP_25S: count => `Top 25s: **\`${count}\`**`
 		},
-		COMMAND_OVERWATCH_DESCRIPTION: `Obtiene estadísticas de jugador para un jugador de Overwatch`,
+		COMMAND_OVERWATCH_DESCRIPTION: 'Obtiene estadísticas de jugador para un jugador de Overwatch',
 		COMMAND_OVERWATCH_EXTENDED: builder.display('overwatch', {
 			extendedHelp:
 				`Este comando recupera estadísticas para cualquier jugador de Overwatch que juegue en PC, Xbox o Playstation.
@@ -966,9 +966,9 @@ export default class extends Language {
 		 * GENERAL COMMANDS
 		 */
 
-		COMMAND_SUPPORT_DESCRIPTION: `Muestra instrucciones de soporte`,
+		COMMAND_SUPPORT_DESCRIPTION: 'Muestra instrucciones de soporte',
 		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
-			extendedHelp: `Le brinda un enlace a *Skyra's Lounge*, el lugar indicado para todo lo relacionado conmigo.`
+			extendedHelp: 'Le brinda un enlace a *Skyra\'s Lounge*, el lugar indicado para todo lo relacionado conmigo.'
 		}),
 
 		/**
@@ -1006,7 +1006,7 @@ export default class extends Language {
 			],
 			examples: ['', '633939404745998346', '5', '5 633939404745998346']
 		}),
-		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: `Schedule a giveaway to start at a certain time.`,
+		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: 'Schedule a giveaway to start at a certain time.',
 		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
 			extendedHelp: `
 				This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.
@@ -1025,12 +1025,12 @@ export default class extends Language {
 		 * MANAGEMENT COMMANDS
 		 */
 
-		COMMAND_NICK_DESCRIPTION: `Change Skyra's nickname for this guild!.`,
+		COMMAND_NICK_DESCRIPTION: 'Change Skyra\'s nickname for this guild!.',
 		COMMAND_NICK_EXTENDED: builder.display('nick', {
-			extendedHelp: `This command allows you to change Skyra's nickname easily for the guild!.`,
+			extendedHelp: 'This command allows you to change Skyra\'s nickname easily for the guild!.',
 			reminder: `This command requires the **${PERMS.CHANGE_NICKNAME}** permission. Make sure Skyra has it.`,
 			explainedUsage: [
-				['nick', `The new nickname. If you don't put any, it'll reset it instead.`]
+				['nick', 'The new nickname. If you don\'t put any, it\'ll reset it instead.']
 			],
 			examples: ['SkyNET', 'Assistant', '']
 		}),
@@ -1055,7 +1055,7 @@ export default class extends Language {
 			],
 			reminder: 'The server owner cannot have any actions, nor the `everyone` role can have allowed commands.'
 		}),
-		COMMAND_TRIGGERS_DESCRIPTION: `Set custom triggers for your guild!.`,
+		COMMAND_TRIGGERS_DESCRIPTION: 'Set custom triggers for your guild!.',
 		COMMAND_TRIGGERS_EXTENDED: builder.display('triggers', {
 			extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild!. A trigger is
 					a piece that can active other functions. For example, the aliases are triggers that get executed when the command does not
@@ -1063,7 +1063,7 @@ export default class extends Language {
 					that matches with the input.`,
 			reminder: `This command requires the **${PERMS.ADD_REACTIONS}** permission so it can test reactions. Make sure Skyra has it.`,
 			explainedUsage: [
-				['list', `List all current triggers.`],
+				['list', 'List all current triggers.'],
 				['add <type> <input> <output>', 'Add a new trigger given a type, input and output.'],
 				['remove <type> <input>', 'Remove a trigger given the type and input.']
 			],
@@ -1077,7 +1077,7 @@ export default class extends Language {
 
 		COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION: 'Manage per-channel autodelete timer.',
 		COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED: builder.display('manageCommandAutodelete', {
-			extendedHelp: `This command manages this guild's per-channel command autodelete timer, it serves well to leave a channel clean from commands.`,
+			extendedHelp: 'This command manages this guild\'s per-channel command autodelete timer, it serves well to leave a channel clean from commands.',
 			explainedUsage: [
 				['show', 'Show the autodelete timer for all channels.'],
 				['add [channel] <command>', 'Add an autodelete timer for the specified channel.'],
@@ -1180,7 +1180,7 @@ export default class extends Language {
 			explainedUsage: [
 				['prefix', `The prefix to set. Default one in Skyra is "${this.client.options.prefix}".`]
 			],
-			reminder: `Your prefix should only contain characters everyone can write and type.`,
+			reminder: 'Your prefix should only contain characters everyone can write and type.',
 			examples: ['&', '=']
 		}),
 		COMMAND_SETROLECHANNEL_DESCRIPTION: 'Set the role channel for role reactions.',
@@ -1259,7 +1259,7 @@ export default class extends Language {
 				['role', 'The role to add or remove.']
 			],
 			examples: ['add Skyra Goddess', 'show Skyra', 'remove Skyra Goddess', 'reset Skyra'],
-			reminder: `The member's roles will not be modified by this command, you need to add or remove them.`
+			reminder: 'The member\'s roles will not be modified by this command, you need to add or remove them.'
 		}),
 
 		/**
@@ -1269,7 +1269,7 @@ export default class extends Language {
 
 		COMMAND_MANAGEATTACHMENTS_DESCRIPTION: 'Manage attachment management in this guild!.',
 		COMMAND_MANAGEATTACHMENTS_EXTENDED: builder.display('manageAttachments', {
-			extendedHelp: `This command manages the attachment management for me in this guild!.`,
+			extendedHelp: 'This command manages the attachment management for me in this guild!.',
 			examples: ['maximum 25', 'duration 1m', 'action mute', 'logs y', 'enable', 'disable'],
 			explainedUsage: [
 				['maximum <maximum>', 'The maximum amount of attachments allowed.'],
@@ -1349,7 +1349,7 @@ export default class extends Language {
 		}),
 		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behaviour for the invite link filter.',
 		COMMAND_INVITEMODE_EXTENDED: builder.display('inviteMode', {
-			extendedHelp: `The inviteMode command manages the behaviour of the word filter system.`,
+			extendedHelp: 'The inviteMode command manages the behaviour of the word filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1375,7 +1375,7 @@ export default class extends Language {
 		}),
 		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behaviour for the link filter.',
 		COMMAND_LINKMODE_EXTENDED: builder.display('linkMode', {
-			extendedHelp: `The linkMode command manages the behaviour of the link system.`,
+			extendedHelp: 'The linkMode command manages the behaviour of the link system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1401,7 +1401,7 @@ export default class extends Language {
 		}),
 		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behaviour for the message filter system.',
 		COMMAND_MESSAGEMODE_EXTENDED: builder.display('messageMode', {
-			extendedHelp: `The messageMode command manages the behaviour of the message filter system.`,
+			extendedHelp: 'The messageMode command manages the behaviour of the message filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1454,7 +1454,7 @@ export default class extends Language {
 		}),
 		COMMAND_REACTIONMODE_DESCRIPTION: 'Manage the behaviour for the reaction filter system.',
 		COMMAND_REACTIONMODE_EXTENDED: builder.display('reactionMode', {
-			extendedHelp: `The reactionMode command manages the behaviour of the reaction filter system.`,
+			extendedHelp: 'The reactionMode command manages the behaviour of the reaction filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1513,18 +1513,18 @@ export default class extends Language {
 		}),
 		COMMAND_GOODNIGHT_DESCRIPTION: 'Give somebody a nice Good Night!',
 		COMMAND_GOODNIGHT_EXTENDED: builder.display('goodnight', {
-			extendedHelp: `Let me draw you giving a goodnight kiss to the person who is going to sleep! Who doesn't like goodnight kisses?`,
+			extendedHelp: 'Let me draw you giving a goodnight kiss to the person who is going to sleep! Who doesn\'t like goodnight kisses?',
 			explainedUsage: [
 				['user', 'The user to give the goodnight kiss.']
 			],
 			examples: ['Jake', 'DefinitivelyNotSleeping']
 		}),
-		COMMAND_GOOFYTIME_DESCRIPTION: `It's Goofy time!`,
+		COMMAND_GOOFYTIME_DESCRIPTION: 'It\'s Goofy time!',
 		COMMAND_GOOFYTIME_EXTENDED: builder.display('goofytime', {
 			extendedHelp: `IT'S GOOFY TIME! *Screams loudly in the background* NO, DAD! NO! This is a command based on the Goofy Time meme,
 					what else would it be?`,
 			explainedUsage: [
-				['user', `The user who will say IT'S GOOFY TIME!`]
+				['user', 'The user who will say IT\'S GOOFY TIME!']
 			],
 			examples: ['TotallyNotADaddy']
 		}),
@@ -1537,7 +1537,7 @@ export default class extends Language {
 			],
 			examples: ['Bear']
 		}),
-		COMMAND_INEEDHEALING_DESCRIPTION: `*Genji's voice* I NEED HEALING!`,
+		COMMAND_INEEDHEALING_DESCRIPTION: '*Genji\'s voice* I NEED HEALING!',
 		COMMAND_INEEDHEALING_EXTENDED: builder.display('ineedhealing', {
 			extendedHelp: `Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES! You know it,
 				it's a cool cyborg ninja that looks like a XBOX and is always yelling "I NEED HEALING" loudly during the entire match.
@@ -1549,7 +1549,7 @@ export default class extends Language {
 		}),
 		COMMAND_RANDREDDIT_DESCRIPTION: 'Recupera una publicación aleatoria de Reddit.',
 		COMMAND_RANDREDDIT_EXTENDED: builder.display('randreddit', {
-			extendedHelp: `Esto es en realidad algo así como una ruleta rusa, puedes obtener un buen meme, pero también puedes obtener un meme terrible.`,
+			extendedHelp: 'Esto es en realidad algo así como una ruleta rusa, puedes obtener un buen meme, pero también puedes obtener un meme terrible.',
 			explainedUsage: [
 				['reddit', 'El reddit para mirar.']
 			],
@@ -1557,7 +1557,7 @@ export default class extends Language {
 		}),
 		COMMAND_REDDITUSER_DESCRIPTION: 'Recupere estadísticas para un usuario de Reddit.',
 		COMMAND_REDDITUSER_EXTENDED: builder.display('reddituser', {
-			extendedHelp: `Obtiene estadísticas de cualquier usuario de Reddit`,
+			extendedHelp: 'Obtiene estadísticas de cualquier usuario de Reddit',
 			explainedUsage: [
 				['usuario', 'El usuario de reddit para mirar.']
 			],
@@ -1578,7 +1578,7 @@ export default class extends Language {
 		},
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
 		COMMAND_CHASE_EXTENDED: builder.display('chase', {
-			extendedHelp: `Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!`,
+			extendedHelp: 'Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!',
 			explainedUsage: [
 				['pinger', 'The user who you want to chase.']
 			],
@@ -1590,7 +1590,7 @@ export default class extends Language {
 				and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words,
 				which makes the opponent reply with "nani?" (what?).`,
 			explainedUsage: [
-				['user', `The person you're telling that phrase to.`]
+				['user', 'The person you\'re telling that phrase to.']
 			],
 			examples: ['Jack']
 		}),
@@ -1600,18 +1600,18 @@ export default class extends Language {
 				Skyra automáticamente buscará una imagen en los últimos 20 mensajes si hay uno. Puedes mencionar a un
 				usuario para utilizar su avatar.`,
 			explainedUsage: [
-				['image', `The image that peepo should hug.`]
+				['image', 'The image that peepo should hug.']
 			],
 			examples: ['Jack']
 		}),
 		COMMAND_SLAP_DESCRIPTION: 'Slap another user using the Batman & Robin Meme.',
 		COMMAND_SLAP_EXTENDED: builder.display('slap', {
-			extendedHelp: `The hell are you saying? *Slaps*. This meme is based on a comic from Batman and Robin.`,
+			extendedHelp: 'The hell are you saying? *Slaps*. This meme is based on a comic from Batman and Robin.',
 			explainedUsage: [
 				['user', 'The user you wish to slap.']
 			],
 			examples: ['Jake'],
-			reminder: `You try to slap me and I'll slap you instead.`
+			reminder: 'You try to slap me and I\'ll slap you instead.'
 		}),
 		COMMAND_SNIPE_DESCRIPTION: 'Retrieve the last deleted message from a channel',
 		COMMAND_SNIPE_EXTENDED: builder.display('snipe', {
@@ -1620,7 +1620,7 @@ export default class extends Language {
 		}),
 		COMMAND_THESEARCH_DESCRIPTION: 'Are we the only one in the universe, this man on earth probably knows.',
 		COMMAND_THESEARCH_EXTENDED: builder.display('thesearch', {
-			extendedHelp: `One man on Earth probably knows if there is intelligent life, ask and you shall receive an answer.`,
+			extendedHelp: 'One man on Earth probably knows if there is intelligent life, ask and you shall receive an answer.',
 			explainedUsage: [
 				['answer', 'The sentence that will reveal the truth.']
 			],
@@ -1714,14 +1714,14 @@ export default class extends Language {
 		}),
 		COMMAND_CASE_DESCRIPTION: 'Get the information from a case given its index.',
 		COMMAND_CASE_EXTENDED: builder.display('case', {
-			extendedHelp: ``
+			extendedHelp: ''
 		}),
-		COMMAND_SLOWMODE_DESCRIPTION: `Set the channel's slowmode value in seconds.`,
+		COMMAND_SLOWMODE_DESCRIPTION: 'Set the channel\'s slowmode value in seconds.',
 		COMMAND_SLOWMODE_EXTENDED: builder.display('slowmode', {
 			extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per
 					user to any value between 0 and 120 seconds.`,
 			examples: ['0', 'reset', '4'],
-			reminder: `To reset a channel's ratelimit per user, you can use either 0 or 'reset'.`
+			reminder: 'To reset a channel\'s ratelimit per user, you can use either 0 or \'reset\'.'
 		}),
 
 		/**
@@ -1930,7 +1930,7 @@ export default class extends Language {
 					then quickly deleted.`,
 			examples: ['@Pete', '@Pete Spamming all channels']
 		}),
-		COMMAND_VUNMUTE_DESCRIPTION: `Get somebody's microphone back so they can talk.`,
+		COMMAND_VUNMUTE_DESCRIPTION: 'Get somebody\'s microphone back so they can talk.',
 		COMMAND_VUNMUTE_EXTENDED: builder.display('vunmute', {
 			extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
 					can be un-silenced by me. No, the guild's owner cannot be un-silenced.`,
@@ -2110,7 +2110,7 @@ export default class extends Language {
 
 		COMMAND_SOCIAL_DESCRIPTION: 'Configure this guild\'s member points.',
 		COMMAND_SOCIAL_EXTENDED: builder.display('social', {
-			extendedHelp: `This command allows for updating other members' points.`,
+			extendedHelp: 'This command allows for updating other members\' points.',
 			explainedUsage: [
 				['set <user> <amount>', 'Sets an amount of points to the user.'],
 				['add <user> <amount>', 'Adds an amount of points to the user.'],
@@ -2121,7 +2121,7 @@ export default class extends Language {
 		}),
 		COMMAND_BANNER_DESCRIPTION: 'Configure the banner for your profile.',
 		COMMAND_BANNER_EXTENDED: builder.display('banner', {
-			extendedHelp: `Banners are vertical in Skyra, they decorate your profile card.`,
+			extendedHelp: 'Banners are vertical in Skyra, they decorate your profile card.',
 			explainedUsage: [
 				['list', '(Default) Lists all available banners.'],
 				['reset', 'Set your displayed banner to default.'],
@@ -2132,7 +2132,7 @@ export default class extends Language {
 		}),
 		COMMAND_TOGGLEDARKMODE_DESCRIPTION: 'Toggle between light and dark templates for your profile and rank cards.',
 		COMMAND_TOGGLEDARKMODE_EXTENDED: builder.display('toggleDarkMode', {
-			extendedHelp: `This command lets you toggle the template used to generate your profile.`,
+			extendedHelp: 'This command lets you toggle the template used to generate your profile.',
 			examples: ['']
 		}),
 
@@ -2147,7 +2147,7 @@ export default class extends Language {
 				['remove <role>', 'Remove an autorole from the list.'],
 				['update <amount> <role>', 'Change the required amount of points for an existing autorole.']
 			],
-			reminder: `The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.`,
+			reminder: 'The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.',
 			examples: ['list', 'add \'Trusted Member\' 20000', 'update \'Trusted Member\' 15000', 'remove \'Trusted Member\'']
 		}),
 
@@ -2157,7 +2157,7 @@ export default class extends Language {
 		}),
 		COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}.`,
 		COMMAND_DAILY_EXTENDED: builder.display('daily', {
-			extendedHelp: `Shiiiiny!`,
+			extendedHelp: 'Shiiiiny!',
 			reminder: [
 				'Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.',
 				'You can claim dailies once every 12 hours.'
@@ -2172,7 +2172,7 @@ export default class extends Language {
 		}),
 		COMMAND_LEVEL_DESCRIPTION: 'Check your global level.',
 		COMMAND_LEVEL_EXTENDED: builder.display('level', {
-			extendedHelp: `How much until the next level?`,
+			extendedHelp: 'How much until the next level?',
 			explainedUsage: [
 				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
 			]
@@ -2184,7 +2184,7 @@ export default class extends Language {
 		}),
 		COMMAND_MARRY_DESCRIPTION: 'Marry somebody!',
 		COMMAND_MARRY_EXTENDED: builder.display('marry', {
-			extendedHelp: `Marry your waifu!`,
+			extendedHelp: 'Marry your waifu!',
 			explainedUsage: [
 				['user', '(Optional) The user to marry with. If not given, the command will tell you who are you married with.']
 			],
@@ -2192,14 +2192,14 @@ export default class extends Language {
 		}),
 		COMMAND_MYLEVEL_DESCRIPTION: 'Check your local level.',
 		COMMAND_MYLEVEL_EXTENDED: builder.display('mylevel', {
-			extendedHelp: `How much until next auto role? How many points do I have in this guild?`,
+			extendedHelp: 'How much until next auto role? How many points do I have in this guild?',
 			explainedUsage: [
 				['user', '(Optional) The user\'s profile to show. Defaults to the message\'s author!.']
 			]
 		}),
 		COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}.`,
 		COMMAND_PAY_EXTENDED: builder.display('pay', {
-			extendedHelp: `Businessmen! Today is payday!`,
+			extendedHelp: 'Businessmen! Today is payday!',
 			explainedUsage: [
 				['money', `Amount of ${SHINY} to pay, you must have the amount you are going to pay.`],
 				['user', 'The targeted user to pay. (Must be mention/id)']
@@ -2218,7 +2218,7 @@ export default class extends Language {
 		}),
 		COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
 		COMMAND_REMINDME_EXTENDED: builder.display('remindme', {
-			extendedHelp: `This command allows you to set, delete and list reminders.`,
+			extendedHelp: 'This command allows you to set, delete and list reminders.',
 			explainedUsage: [
 				['action', 'The action, one of "list", "show", "delete", or "create"/"me". Defaults to "list".'],
 				['idOrDuration', 'Dependent of action; "list" → ignored; "delete"/"show" → reminder ID; else → duration.'],
@@ -2244,7 +2244,7 @@ export default class extends Language {
 		}),
 		COMMAND_SETCOLOR_DESCRIPTION: 'Change your user profile\'s color.',
 		COMMAND_SETCOLOR_EXTENDED: builder.display('setColor', {
-			extendedHelp: `The setColor command sets a color for your profile.`,
+			extendedHelp: 'The setColor command sets a color for your profile.',
 			explainedUsage: [
 				['color', 'A color resolvable.']
 			],
@@ -2263,7 +2263,7 @@ export default class extends Language {
 
 		COMMAND_STAR_DESCRIPTION: 'Get a random starred message from the database or the star leaderboard.',
 		COMMAND_STAR_EXTENDED: builder.display('star', {
-			extendedHelp: `This command shows a random starred message or the starboard usage and leaderboard for this server.`
+			extendedHelp: 'This command shows a random starred message or the starboard usage and leaderboard for this server.'
 		}),
 
 		/**
@@ -2298,11 +2298,11 @@ export default class extends Language {
 		}, true),
 		COMMAND_EXEC_DESCRIPTION: 'Execute Order 66.',
 		COMMAND_EXEC_EXTENDED: builder.display('exec', {
-			extendedHelp: `You better not know about this.`
+			extendedHelp: 'You better not know about this.'
 		}),
-		COMMAND_SETAVATAR_DESCRIPTION: `Set Skyra's avatar.`,
+		COMMAND_SETAVATAR_DESCRIPTION: 'Set Skyra\'s avatar.',
 		COMMAND_SETAVATAR_EXTENDED: builder.display('setAvatar', {
-			extendedHelp: `This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.`
+			extendedHelp: 'This command changes Skyra\'s avatar. You can send a URL or upload an image attachment to the channel.'
 		}),
 		COMMAND_DONATE_DESCRIPTION: 'Get information about how to donate to keep Skyra alive longer.',
 		COMMAND_DONATE_EXTENDED: builder.display('donate', {
@@ -2319,16 +2319,16 @@ export default class extends Language {
 		}),
 		COMMAND_ECHO_DESCRIPTION: 'Make Skyra send a message to this (or another) channel.',
 		COMMAND_ECHO_EXTENDED: builder.display('echo', {
-			extendedHelp: `This should be very obvious...`
+			extendedHelp: 'This should be very obvious...'
 		}),
-		COMMAND_FEEDBACK_DESCRIPTION: `Send a feedback message to the bot's owner.`,
+		COMMAND_FEEDBACK_DESCRIPTION: 'Send a feedback message to the bot\'s owner.',
 		COMMAND_FEEDBACK_EXTENDED: builder.display('feedback', {
 			extendedHelp: `This command sends a message to a feedback channel where the bot's owner can read. You'll be replied
 					as soon as an update comes.`
 		}),
 		COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
 		COMMAND_STATS_EXTENDED: builder.display('stats', {
-			extendedHelp: `This should be very obvious...`
+			extendedHelp: 'This should be very obvious...'
 		}),
 
 		/**
@@ -2336,16 +2336,16 @@ export default class extends Language {
 		 * TOOLS COMMANDS
 		 */
 
-		COMMAND_AVATAR_DESCRIPTION: `View somebody's avatar in full size.`,
+		COMMAND_AVATAR_DESCRIPTION: 'View somebody\'s avatar in full size.',
 		COMMAND_AVATAR_EXTENDED: builder.display('avatar', {
-			extendedHelp: `As this command's name says, it shows somebody's avatar.`,
+			extendedHelp: 'As this command\'s name says, it shows somebody\'s avatar.',
 			explainedUsage: [
-				['user', `(Optional) A user mention. Defaults to the author if the input is invalid or not given.`]
+				['user', '(Optional) A user mention. Defaults to the author if the input is invalid or not given.']
 			]
 		}),
 		COMMAND_COLOR_DESCRIPTION: 'Display some awesome colours.',
 		COMMAND_COLOR_EXTENDED: builder.display('color', {
-			extendedHelp: `The color command displays a set of colours with nearest tones given a difference between 1 and 255..`,
+			extendedHelp: 'The color command displays a set of colours with nearest tones given a difference between 1 and 255..',
 			explainedUsage: [
 				['color', 'A color resolvable.']
 			],
@@ -2417,7 +2417,7 @@ export default class extends Language {
 		},
 		COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
 		COMMAND_URBAN_EXTENDED: builder.display('urban', {
-			extendedHelp: `What does "spam" mean?`,
+			extendedHelp: 'What does "spam" mean?',
 			explainedUsage: [
 				['Word', 'The word or phrase you want to get the definition from.'],
 				['Page', 'Defaults to 1, the page you wish to read.']
@@ -2428,12 +2428,12 @@ export default class extends Language {
 		COMMAND_WHOIS_EXTENDED: builder.display('whois', {}),
 		COMMAND_FOLLOWAGE_DESCRIPTION: 'Check how long a Twitch user has been following a channel.',
 		COMMAND_FOLLOWAGE_EXTENDED: builder.display('followage', {
-			extendedHelp: `Just... that.`,
+			extendedHelp: 'Just... that.',
 			examples: ['dallas cohhcarnage']
 		}),
 		COMMAND_TWITCH_DESCRIPTION: 'Check the information about a Twitch profile.',
 		COMMAND_TWITCH_EXTENDED: builder.display('twitch', {
-			extendedHelp: `Really, just that.`,
+			extendedHelp: 'Really, just that.',
 			examples: ['riotgames']
 		}),
 		COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION: 'Manage the subscriptions for your server.',
@@ -2549,11 +2549,11 @@ export default class extends Language {
 
 		COMMAND_WBLUSH_DESCRIPTION: 'Blush with a weeb picture!',
 		COMMAND_WBLUSH_EXTENDED: builder.display('wblush', {
-			extendedHelp: `Blush with a random weeb image!`
+			extendedHelp: 'Blush with a random weeb image!'
 		}),
 		COMMAND_WCRY_DESCRIPTION: 'Cry to somebody with a weeb picture!',
 		COMMAND_WCRY_EXTENDED: builder.display('wcry', {
-			extendedHelp: `Cry with a random weeb image!`,
+			extendedHelp: 'Cry with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to cry to.']
 			],
@@ -2561,7 +2561,7 @@ export default class extends Language {
 		}),
 		COMMAND_WCUDDLE_DESCRIPTION: 'Cuddle somebody with a weeb picture!',
 		COMMAND_WCUDDLE_EXTENDED: builder.display('wcuddle', {
-			extendedHelp: `Unlike the original cuddle command, this one displays random weeb images, enjoy!`,
+			extendedHelp: 'Unlike the original cuddle command, this one displays random weeb images, enjoy!',
 			explainedUsage: [
 				['user', 'The user to cuddle with.']
 			],
@@ -2569,11 +2569,11 @@ export default class extends Language {
 		}),
 		COMMAND_WDANCE_DESCRIPTION: 'Dance with a weeb picture!',
 		COMMAND_WDANCE_EXTENDED: builder.display('wdance', {
-			extendedHelp: `Dance with a random weeb image!`
+			extendedHelp: 'Dance with a random weeb image!'
 		}),
 		COMMAND_WHUG_DESCRIPTION: 'Hug somebody with a weeb picture!',
 		COMMAND_WHUG_EXTENDED: builder.display('whug', {
-			extendedHelp: `Unlike the original hug command, this one displays random weeb images, enjoy!`,
+			extendedHelp: 'Unlike the original hug command, this one displays random weeb images, enjoy!',
 			explainedUsage: [
 				['user', 'The user to give the hug.']
 			],
@@ -2581,7 +2581,7 @@ export default class extends Language {
 		}),
 		COMMAND_WKISS_DESCRIPTION: 'Kiss somebody with a weeb picture!',
 		COMMAND_WKISS_EXTENDED: builder.display('wkiss', {
-			extendedHelp: `Kiss somebody with a random weeb image!`,
+			extendedHelp: 'Kiss somebody with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to give the kiss to.']
 			],
@@ -2589,7 +2589,7 @@ export default class extends Language {
 		}),
 		COMMAND_WLICK_DESCRIPTION: 'Lick somebody with a weeb picture!',
 		COMMAND_WLICK_EXTENDED: builder.display('wlick', {
-			extendedHelp: `Lick somebody with a random weeb image!`,
+			extendedHelp: 'Lick somebody with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to lick.']
 			],
@@ -2597,7 +2597,7 @@ export default class extends Language {
 		}),
 		COMMAND_WNOM_DESCRIPTION: 'Nom nom with a 🍞!',
 		COMMAND_WNOM_EXTENDED: builder.display('wnom', {
-			extendedHelp: `Nom nom nom! Wha~... I'm busy eating!`
+			extendedHelp: 'Nom nom nom! Wha~... I\'m busy eating!'
 		}),
 		COMMAND_WNEKO_DESCRIPTION: 'Human kittens!',
 		COMMAND_WNEKO_EXTENDED: builder.display('wneko', {
@@ -2606,7 +2606,7 @@ export default class extends Language {
 		}),
 		COMMAND_WPAT_DESCRIPTION: 'Pats somebody\'s head!',
 		COMMAND_WPAT_EXTENDED: builder.display('wpat', {
-			extendedHelp: `Pat somebody's head with a random weeb image!`,
+			extendedHelp: 'Pat somebody\'s head with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to pat with.']
 			],
@@ -2614,11 +2614,11 @@ export default class extends Language {
 		}),
 		COMMAND_WPOUT_DESCRIPTION: 'I feel somebody... mad',
 		COMMAND_WPOUT_EXTENDED: builder.display('wpout', {
-			extendedHelp: `Show your expression with a random weeb image!`
+			extendedHelp: 'Show your expression with a random weeb image!'
 		}),
 		COMMAND_WSLAP_DESCRIPTION: 'Slap somebody with a weeb picture!',
 		COMMAND_WSLAP_EXTENDED: builder.display('wslap', {
-			extendedHelp: `Unlike the original slap command, this one displays random weeb images, enjoy!`,
+			extendedHelp: 'Unlike the original slap command, this one displays random weeb images, enjoy!',
 			explainedUsage: [
 				['user', 'The user to slap.']
 			],
@@ -2626,11 +2626,11 @@ export default class extends Language {
 		}),
 		COMMAND_WSMUG_DESCRIPTION: 'Smug',
 		COMMAND_WSMUG_EXTENDED: builder.display('wsmug', {
-			extendedHelp: `Just an anime smug face!`
+			extendedHelp: 'Just an anime smug face!'
 		}),
 		COMMAND_WSTARE_DESCRIPTION: '*Stares*',
 		COMMAND_WSTARE_EXTENDED: builder.display('wstare', {
-			extendedHelp: `*Still stares at you*`,
+			extendedHelp: '*Still stares at you*',
 			explainedUsage: [
 				['user', 'The user to stare at.']
 			],
@@ -2638,7 +2638,7 @@ export default class extends Language {
 		}),
 		COMMAND_WTICKLE_DESCRIPTION: 'Give tickles to somebody with a weeb picture!',
 		COMMAND_WTICKLE_EXTENDED: builder.display('wtickle', {
-			extendedHelp: `Tickle somebody!`,
+			extendedHelp: 'Tickle somebody!',
 			explainedUsage: [
 				['user', 'The user to tickle.']
 			],
@@ -2646,7 +2646,7 @@ export default class extends Language {
 		}),
 		COMMAND_WBANG_DESCRIPTION: 'Bang 💥🔫!',
 		COMMAND_WBANG_EXTENDED: builder.display('wbang', {
-			extendedHelp: `Shoot a user with a random weeb image!`,
+			extendedHelp: 'Shoot a user with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to shoot.']
 			],
@@ -2654,11 +2654,11 @@ export default class extends Language {
 		}),
 		COMMAND_WBANGHEAD_DESCRIPTION: 'STAHP! I\'m banging my head here!',
 		COMMAND_WBANGHEAD_EXTENDED: builder.display('wbanghead', {
-			extendedHelp: `Bang your head with a random weeb image!`
+			extendedHelp: 'Bang your head with a random weeb image!'
 		}),
 		COMMAND_WBITE_DESCRIPTION: '*nom nom* you are delicious!',
 		COMMAND_WBITE_EXTENDED: builder.display('wbite', {
-			extendedHelp: `Bite a user with a random weeb image!`,
+			extendedHelp: 'Bite a user with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to bite.']
 			],
@@ -2666,7 +2666,7 @@ export default class extends Language {
 		}),
 		COMMAND_WGREET_DESCRIPTION: 'Say hi! to another user',
 		COMMAND_WGREET_EXTENDED: builder.display('wgreet', {
-			extendedHelp: `Greet a user with a random weeb image!`,
+			extendedHelp: 'Greet a user with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to greet.']
 			],
@@ -2674,11 +2674,11 @@ export default class extends Language {
 		}),
 		COMMAND_WLEWD_DESCRIPTION: 'Lewds! Lewds! Lewds!',
 		COMMAND_WLEWD_EXTENDED: builder.display('wlewd', {
-			extendedHelp: `Random lewd weeb image!`
+			extendedHelp: 'Random lewd weeb image!'
 		}),
 		COMMAND_WPUNCH_DESCRIPTION: '*pow* 👊👊',
 		COMMAND_WPUNCH_EXTENDED: builder.display('wpunch', {
-			extendedHelp: `Punch that annoying user with a random weeb image!`,
+			extendedHelp: 'Punch that annoying user with a random weeb image!',
 			explainedUsage: [
 				['user', 'The user to punch.']
 			],
@@ -2686,15 +2686,15 @@ export default class extends Language {
 		}),
 		COMMAND_WSLEEPY_DESCRIPTION: 'I\'m so sleeeeepy... *yawn*',
 		COMMAND_WSLEEPY_EXTENDED: builder.display('wsleepy', {
-			extendedHelp: `Show how sleepy you are with a random weeb image!`
+			extendedHelp: 'Show how sleepy you are with a random weeb image!'
 		}),
 		COMMAND_WSMILE_DESCRIPTION: 'Huh, because I\'m happy. Clap along if you feel like a room without a roof',
 		COMMAND_WSMILE_EXTENDED: builder.display('wsmile', {
-			extendedHelp: `Show just how happy you are with a random weeb image!`
+			extendedHelp: 'Show just how happy you are with a random weeb image!'
 		}),
 		COMMAND_WTHUMBSUP_DESCRIPTION: 'Raise your thumb into the air in a magnificent show of approval',
 		COMMAND_WTHUMBSUP_EXTENDED: builder.display('wblush', {
-			extendedHelp: `Raise your thumb with a random weeb image!`
+			extendedHelp: 'Raise your thumb with a random weeb image!'
 		}),
 
 		/**
@@ -2714,7 +2714,7 @@ export default class extends Language {
 			OVA: '📼 Animación de Vídeo Original',
 			SPECIAL: '🎴 Especial'
 		},
-		COMMAND_ANIME_INVALID_CHOICE: `¡Esa opción no es válida! Selecciona otra opción, por favor.`,
+		COMMAND_ANIME_INVALID_CHOICE: '¡Esa opción no es válida! Selecciona otra opción, por favor.',
 		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) => [
 			`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
 			`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
@@ -2800,7 +2800,7 @@ export default class extends Language {
 			FOOTER: name => `Ayuda de comando para ${name}`
 		},
 		COMMAND_SUPPORT_EMBED_TITLE: username => `¿Necesita ayuda, ${username}?`,
-		COMMAND_SUPPORT_EMBED_DESCRIPTION: `¡Entonces deberías unirte a [Skyra's lounge](https://join.skyra.pw)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.`,
+		COMMAND_SUPPORT_EMBED_DESCRIPTION: '¡Entonces deberías unirte a [Skyra\'s lounge](https://join.skyra.pw)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.',
 
 		/**
 		 * ##############
@@ -2959,7 +2959,7 @@ export default class extends Language {
 			¡Pero ten cuidado! ¡Cuanto más lejos vayas, más posibilidades tendrás de perderlo todo!`
 		}),
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Comenzar un nuevo juego de Mayor/Meno`,
-		COMMAND_HIGHERLOWER_NEWROUND: `Bien. Comenzando una nueva ronda`,
+		COMMAND_HIGHERLOWER_NEWROUND: 'Bien. Comenzando una nueva ronda',
 		COMMAND_HIGHERLOWER_EMBED: {
 			TITLE: turn => `¿Mayor o menor? | Turno ${turn}`,
 			DESCRIPTION: number => `Su número es ${number}. ¿Será el siguiente mayor o menor?`,
@@ -2987,7 +2987,7 @@ export default class extends Language {
 		COMMAND_HUNGERGAMES_WINNER: winner => `And the winner is... ${winner}!`,
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
 		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
-			extendedHelp: `Enough discussion, let the games begin!`,
+			extendedHelp: 'Enough discussion, let the games begin!',
 			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
 		}),
 		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100${SHINY} you ain't winning this round.`,
@@ -3207,7 +3207,7 @@ export default class extends Language {
 		COMMAND_STICKYROLES_REMOVE: user => `Successfully removed the specified role from ${user}.`,
 		COMMAND_STICKYROLES_ADD_EXISTS: user => `The user ${user} already had the specified role as sticky.`,
 		COMMAND_STICKYROLES_ADD: user => `Successfully added the specified role as sticky to ${user}.`,
-		COMMAND_STICKYROLES_SHOW_EMPTY: `There are no sticky roles to show.`,
+		COMMAND_STICKYROLES_SHOW_EMPTY: 'There are no sticky roles to show.',
 		COMMAND_STICKYROLES_SHOW_SINGLE: (user, roles) => `Sticky Role(s) for **${user}**: \`${roles.join('`, `')}\`.`,
 
 		/**
@@ -3294,7 +3294,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_SLOWMODE_SET: cooldown => cooldown === 0
-			? `The cooldown for this channel has been reset.`
+			? 'The cooldown for this channel has been reset.'
 			: `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
@@ -3303,7 +3303,7 @@ export default class extends Language {
 			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
 			DESCRIPTION_WITHERRORS: (users, errored) => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted. We also tried to dehoist an additional ${errored} member${users > 1 ? 's' : ''}, but they errored out`,
 			DESCRIPTION: users => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`,
-			FIELD_ERROR_TITLE: `The users we encountered an error for:`
+			FIELD_ERROR_TITLE: 'The users we encountered an error for:'
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: channel => `The channel ${channel} is now locked.`,
@@ -3417,7 +3417,7 @@ export default class extends Language {
 		COMMAND_DAILY_TIME: time => `El siguiente pago está disponible en: ${duration(time)}`,
 		COMMAND_DAILY_TIME_SUCCESS: amount => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 		COMMAND_DAILY_GRACE: remaining => [
-			`¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.`,
+			'¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.',
 			`Tiempo restante: ${duration(remaining)}`
 		].join('\n'),
 		COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) => `¡Dinero dinero! ¡Has recibido ${amount}${SHINY}! Siguiente pago en: ${duration(remaining)}`,
@@ -3442,7 +3442,7 @@ export default class extends Language {
 		COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: user => `Cancelling. Your commitment to ${user} is admirable.`,
 		COMMAND_MARRY_TAKEN: spousesCount => `This user is already married to ${spousesCount === 1 ? 'someone' : `${spousesCount} people`}. Would you like to join their harem?`,
 		COMMAND_MARRY_ALREADY_MARRIED: user => `Ya estás casado/a con ${user}, ¿no te acuerdas?`,
-		COMMAND_MARRY_MULTIPLE_CANCEL: `Cancelling. Don't worry, you'll find someone you don't have to share!`,
+		COMMAND_MARRY_MULTIPLE_CANCEL: 'Cancelling. Don\'t worry, you\'ll find someone you don\'t have to share!',
 		COMMAND_MARRY_PETITION: (author, user) => `Fresh pair of eyes! ${author} is proposing to ${user}! 💞 Reply with **yes** to accept!`,
 		COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was a hard decision?',
 		COMMAND_MARRY_DENIED: 'O-oh... The user rejected your proposal! 💔',
@@ -3527,7 +3527,7 @@ export default class extends Language {
 		COMMAND_SUGGEST_SUCCESS: channel => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Modifica el estado de la sugerencia.',
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
-			extendedHelp: `Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada`,
+			extendedHelp: 'Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada',
 			examples: [
 				'1 accept ¡Gracias por su recomendación!',
 				'1 a ¡Gracias por su recomendación!',
@@ -3594,7 +3594,7 @@ export default class extends Language {
 		 * TAGS COMMANDS
 		 */
 
-		COMMAND_TAG_DESCRIPTION: `Manage this guilds' tags.`,
+		COMMAND_TAG_DESCRIPTION: 'Manage this guilds\' tags.',
 		COMMAND_TAG_EXTENDED: builder.display('tag', {
 			extendedHelp: [
 				'Tags, also known as custom commands, can give you a chunk of text stored under a specific name.',
@@ -3614,7 +3614,7 @@ export default class extends Language {
 					'`list` to list all known tags',
 					'`show` to show a tag'
 				], 'o')}.`],
-				['tag', `The tag's name.`],
+				['tag', 'The tag\'s name.'],
 				['contents', 'Required for the actions `add` and `edit`, specifies the content for the tag.']
 			],
 			examples: [
@@ -3671,9 +3671,9 @@ export default class extends Language {
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
 		COMMAND_ESHOP_DESCRIPTION: 'Solicite información para cualquier tienda digital estadounidense de Nintendo',
 		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
-			extendedHelp: `Este comando consulta a Nintendo of America para mostrar los datos del juego que solicitas.`,
+			extendedHelp: 'Este comando consulta a Nintendo of America para mostrar los datos del juego que solicitas.',
 			explainedUsage: [
-				['Solicitud', `El nombre del juego que estás buscando..`]
+				['Solicitud', 'El nombre del juego que estás buscando..']
 			],
 			examples: ['Breath of the Wild', 'Pokémon', 'Splatoon']
 		}),
@@ -3870,7 +3870,7 @@ export default class extends Language {
 		COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} You wanted to see all subscriptions from this streamer, but there are none!`,
 		COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS: ['Online', 'Offline'],
 		COMMAND_TWITCHSUBSCRIPTION_SHOW_EMPTY: `${REDCROSS} There are no subscriptions, who will be the first?`,
-		COMMAND_TWITCHSUBSCRIPTION_SHOW_UNKNOWN_USER: `Unknown`,
+		COMMAND_TWITCHSUBSCRIPTION_SHOW_UNKNOWN_USER: 'Unknown',
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
@@ -3892,15 +3892,15 @@ export default class extends Language {
 		COMMAND_WKISS: user => `¡Un besito! ${user} 💜`,
 		COMMAND_WLEWD: '¡Demasiado lujurioso!',
 		COMMAND_WLICK: user => `Lamiendo ${user} 👅`,
-		COMMAND_WNOM: `Nom, nom, nom! 😊`,
-		COMMAND_WNEKO: `Miau! 🐱`,
+		COMMAND_WNOM: 'Nom, nom, nom! 😊',
+		COMMAND_WNEKO: 'Miau! 🐱',
 		COMMAND_WPAT: user => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
-		COMMAND_WPOUT: `¿Oh?`,
+		COMMAND_WPOUT: '¿Oh?',
 		COMMAND_WPUNCH: user => `¡Dando un puñetazo a ${user}!`,
 		COMMAND_WSLAP: user => `¡Abofeteando ${user}!`,
 		COMMAND_WSLEEPY: 'Durmiéndose...',
 		COMMAND_WSMILE: '¡Mostrando una risa radiante!',
-		COMMAND_WSMUG: `\\*Sonríe con superioridad\\*`,
+		COMMAND_WSMUG: '\\*Sonríe con superioridad\\*',
 		COMMAND_WSTARE: user => `Querido ${user}... hay alguien observándote 👀`,
 		COMMAND_WTHUMBSUP: '¡Tienes su pulgar hacia arriba!',
 		COMMAND_WTICKLE: user => `Cosquillitas para tí, ${user}!`,
@@ -3956,7 +3956,7 @@ export default class extends Language {
 			'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
 		].join('\n'),
 		MONITOR_NMS_MODLOG: threshold => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
-		MONITOR_NMS_ALERT: `Ten cuidado con mencionar otra vez más, estás a punto de ser expulsado por exceder el límite de spam de menciones de este servidor.`,
+		MONITOR_NMS_ALERT: 'Ten cuidado con mencionar otra vez más, estás a punto de ser expulsado por exceder el límite de spam de menciones de este servidor.',
 		MONITOR_SOCIAL_ACHIEVEMENT: '¡Felicidades %MEMBER! ¡Has logrado el rol %ROLE%!',
 
 		/**
@@ -3974,354 +3974,354 @@ export default class extends Language {
 		 */
 
 		HG_BLOODBATH: [
-			`{1} grabs a shovel.`,
-			`{1} grabs a backpack and retreats.`,
-			`{1} and {2} fight for a bag. {1} gives up and retreats.`,
-			`{1} and {2} fight for a bag. {2} gives up and retreats.`,
-			`{1} finds a bow, some arrows, and a quiver.`,
-			`{1} runs into the cornucopia and hides.`,
-			`{1} takes a handful of throwing knives.`,
-			`{1} rips a mace out of {2}'s hands.`,
-			`{1} finds a canteen full of water.`,
-			`{1} stays at the cornucopia for resources.`,
-			`{1} gathers as much food as they can.`,
-			`{1} grabs a sword.`,
-			`{1} takes a spear from inside the cornucopia.`,
-			`{1} finds a bag full of explosives.`,
-			`{1} clutches a first aid kit and runs away.`,
-			`{1} takes a sickle from inside the cornucopia.`,
-			`{1}, {2}, and {3} work together to get as many supplies as possible.`,
-			`{1} runs away with a lighter and some rope.`,
-			`{1} snatches a bottle of alcohol and a rag.`,
-			`{1} finds a backpack full of camping equipment.`,
-			`{1} grabs a backpack, not realizing it is empty.`,
-			`{1} breaks {2}'s nose for a basket of bread.`,
-			`{1}, {2}, {3}, and {4} share everything they gathered before running.`,
-			`{1} retrieves a trident from inside the cornucopia.`,
-			`{1} grabs a jar of fishing bait while {2} gets fishing gear.`,
-			`{1} scares {2} away from the cornucopia.`,
-			`{1} grabs a shield leaning on the cornucopia.`,
-			`{1} snatches a pair of sais.`,
-			`{1} grabs a lone pair of pants.`,
-			`{1T} steps off their podium too soon and blows up.`,
-			`{1} throws a knife into {2T}'s head.`,
-			`{1T} accidently steps on a landmine.`,
-			`{1} catches {2T} off guard and kills them.`,
-			`{1} and {2} work together to drown {3T}.`,
-			`{1} strangles {2T} after engaging in a fist fight.`,
-			`{1} shoots an arrow into {2T}'s head.`,
-			`{1T} cannot handle the circumstances and commits suicide.`,
-			`{1} bashes {2T}'s head against a rock several times.`,
-			`{1} snaps {2T}'s neck.`,
-			`{1} decapitates {2T} with a sword.`,
-			`{1} spears {2T} in the abdomen.`,
-			`{1} sets {2T} on fire with a molotov.`,
-			`{1T} falls into a pit and dies.`,
-			`{1} stabs {2T} while their back is turned.`,
-			`{1} severely injures {2T}, but puts them out of their misery.`,
-			`{1} severely injures {2T} and leaves them to die.`,
-			`{1} bashes {2T}'s head in with a mace.`,
-			`{1} pushes {2T} off a cliff during a knife fight.`,
-			`{1} throws a knife into {2T}'s chest.`,
-			`{1T} is unable to convince {2} to not kill them.`,
-			`{1} convinces {2T} to not kill them, only to kill {2T} instead.`,
-			`{1T} falls into a frozen lake and drowns.`,
-			`{1}, {2}, and {3T} start fighting, but {2} runs away as {1} kills {3T}.`,
-			`{1} kills {2T} with their own weapon.`,
-			`{1} overpowers {2T}, killing them.`,
-			`{1} sets an explosive off, killing {2T}.`,
-			`{1} sets an explosive off, killing {2T}, and {3T}.`,
-			`{1} sets an explosive off, killing {2T}, {3T}, and {4T}.`,
-			`{1} sets an explosive off, killing {2T}, {3T}, {4T} and {5T}.`,
-			`{1} kills {2T} as they try to run.`,
-			`{1T} and {2T} threaten a double suicide. It fails and they die.`,
-			`{1T}, {2T}, {3T}, and {4T} form a suicide pact, killing themselves.`,
-			`{1} kills {2T} with a hatchet.`,
-			`{1} and {2} fight {3T} and {4T}. {1} and {2} survive.`,
-			`{1T} and {2T} fight {3} and {4}. {3} and {4} survive.`,
-			`{1T} attacks {2}, but {3} protects them, killing {1T}.`,
-			`{1} severely slices {2T} with a sword.`,
-			`{1} strangles {2T} with a rope.`,
-			`{1} kills {2T} for their supplies.`,
-			`{1} shoots an arrow at {2}, but misses and kills {3T} instead.`,
-			`{1} shoots a poisonous blow dart into {2T}'s neck, slowly killing them.`,
-			`{1} stabs {2T} with a tree branch.`,
-			`{1} stabs {2T} in the back with a trident.`,
-			`{1}, {2T}, and {3T} get into a fight. {1} triumphantly kills them both.`,
-			`{1T}, {2}, and {3T} get into a fight. {2} triumphantly kills them both.`,
-			`{1T}, {2T}, and {3} get into a fight. {3} triumphantly kills them both.`,
-			`{1} finds {2T} hiding in the cornucopia and kills them.`,
-			`{1T} finds {2} hiding in the cornucopia, but {2} kills them.`,
-			`{1} kills {2T} with a sickle.`,
-			`{1} and {2T} fight for a bag. {1} strangles {2T} with the straps and runs.`,
-			`{1T} and {2} fight for a bag. {2} strangles {1T} with the straps and runs.`,
-			`{1} repeatedly stabs {2T} to death with sais.`,
-			`{1T} trips over while running from the cornucopia, and is killed by {2}.`,
-			`{1} trips over while running from the cornucopia, {2} picks them up, they run off together.`,
-			`{1} aims an arrow at {2}'s head and shoots, {3T} jumps in the way and sacrifies their life to save them.`
+			'{1} grabs a shovel.',
+			'{1} grabs a backpack and retreats.',
+			'{1} and {2} fight for a bag. {1} gives up and retreats.',
+			'{1} and {2} fight for a bag. {2} gives up and retreats.',
+			'{1} finds a bow, some arrows, and a quiver.',
+			'{1} runs into the cornucopia and hides.',
+			'{1} takes a handful of throwing knives.',
+			'{1} rips a mace out of {2}\'s hands.',
+			'{1} finds a canteen full of water.',
+			'{1} stays at the cornucopia for resources.',
+			'{1} gathers as much food as they can.',
+			'{1} grabs a sword.',
+			'{1} takes a spear from inside the cornucopia.',
+			'{1} finds a bag full of explosives.',
+			'{1} clutches a first aid kit and runs away.',
+			'{1} takes a sickle from inside the cornucopia.',
+			'{1}, {2}, and {3} work together to get as many supplies as possible.',
+			'{1} runs away with a lighter and some rope.',
+			'{1} snatches a bottle of alcohol and a rag.',
+			'{1} finds a backpack full of camping equipment.',
+			'{1} grabs a backpack, not realizing it is empty.',
+			'{1} breaks {2}\'s nose for a basket of bread.',
+			'{1}, {2}, {3}, and {4} share everything they gathered before running.',
+			'{1} retrieves a trident from inside the cornucopia.',
+			'{1} grabs a jar of fishing bait while {2} gets fishing gear.',
+			'{1} scares {2} away from the cornucopia.',
+			'{1} grabs a shield leaning on the cornucopia.',
+			'{1} snatches a pair of sais.',
+			'{1} grabs a lone pair of pants.',
+			'{1T} steps off their podium too soon and blows up.',
+			'{1} throws a knife into {2T}\'s head.',
+			'{1T} accidently steps on a landmine.',
+			'{1} catches {2T} off guard and kills them.',
+			'{1} and {2} work together to drown {3T}.',
+			'{1} strangles {2T} after engaging in a fist fight.',
+			'{1} shoots an arrow into {2T}\'s head.',
+			'{1T} cannot handle the circumstances and commits suicide.',
+			'{1} bashes {2T}\'s head against a rock several times.',
+			'{1} snaps {2T}\'s neck.',
+			'{1} decapitates {2T} with a sword.',
+			'{1} spears {2T} in the abdomen.',
+			'{1} sets {2T} on fire with a molotov.',
+			'{1T} falls into a pit and dies.',
+			'{1} stabs {2T} while their back is turned.',
+			'{1} severely injures {2T}, but puts them out of their misery.',
+			'{1} severely injures {2T} and leaves them to die.',
+			'{1} bashes {2T}\'s head in with a mace.',
+			'{1} pushes {2T} off a cliff during a knife fight.',
+			'{1} throws a knife into {2T}\'s chest.',
+			'{1T} is unable to convince {2} to not kill them.',
+			'{1} convinces {2T} to not kill them, only to kill {2T} instead.',
+			'{1T} falls into a frozen lake and drowns.',
+			'{1}, {2}, and {3T} start fighting, but {2} runs away as {1} kills {3T}.',
+			'{1} kills {2T} with their own weapon.',
+			'{1} overpowers {2T}, killing them.',
+			'{1} sets an explosive off, killing {2T}.',
+			'{1} sets an explosive off, killing {2T}, and {3T}.',
+			'{1} sets an explosive off, killing {2T}, {3T}, and {4T}.',
+			'{1} sets an explosive off, killing {2T}, {3T}, {4T} and {5T}.',
+			'{1} kills {2T} as they try to run.',
+			'{1T} and {2T} threaten a double suicide. It fails and they die.',
+			'{1T}, {2T}, {3T}, and {4T} form a suicide pact, killing themselves.',
+			'{1} kills {2T} with a hatchet.',
+			'{1} and {2} fight {3T} and {4T}. {1} and {2} survive.',
+			'{1T} and {2T} fight {3} and {4}. {3} and {4} survive.',
+			'{1T} attacks {2}, but {3} protects them, killing {1T}.',
+			'{1} severely slices {2T} with a sword.',
+			'{1} strangles {2T} with a rope.',
+			'{1} kills {2T} for their supplies.',
+			'{1} shoots an arrow at {2}, but misses and kills {3T} instead.',
+			'{1} shoots a poisonous blow dart into {2T}\'s neck, slowly killing them.',
+			'{1} stabs {2T} with a tree branch.',
+			'{1} stabs {2T} in the back with a trident.',
+			'{1}, {2T}, and {3T} get into a fight. {1} triumphantly kills them both.',
+			'{1T}, {2}, and {3T} get into a fight. {2} triumphantly kills them both.',
+			'{1T}, {2T}, and {3} get into a fight. {3} triumphantly kills them both.',
+			'{1} finds {2T} hiding in the cornucopia and kills them.',
+			'{1T} finds {2} hiding in the cornucopia, but {2} kills them.',
+			'{1} kills {2T} with a sickle.',
+			'{1} and {2T} fight for a bag. {1} strangles {2T} with the straps and runs.',
+			'{1T} and {2} fight for a bag. {2} strangles {1T} with the straps and runs.',
+			'{1} repeatedly stabs {2T} to death with sais.',
+			'{1T} trips over while running from the cornucopia, and is killed by {2}.',
+			'{1} trips over while running from the cornucopia, {2} picks them up, they run off together.',
+			'{1} aims an arrow at {2}\'s head and shoots, {3T} jumps in the way and sacrifies their life to save them.'
 		].map(HungerGamesUsage.create),
 		HG_DAY: [
-			`{1} goes hunting.`,
-			`{1} injures themself.`,
-			`{1} explores the arena.`,
-			`{1} scares {2} off.`,
-			`{1} diverts {2}'s attention and runs away.`,
-			`{1} stalks {2}.`,
-			`{1} fishes.`,
-			`{1} camouflauges themself in the bushes.`,
-			`{1} steals from {2} while they aren't looking.`,
-			`{1} makes a wooden spear.`,
-			`{1} discovers a cave.`,
-			`{1} attacks {2}, but they manage to escape.`,
-			`{1} chases {2}.`,
-			`{1} runs away from {2}.`,
-			`{1} collects fruit from a tree.`,
-			`{1} receives a hatchet from an unknown sponsor.`,
-			`{1} receives clean water from an unknown sponsor.`,
-			`{1} receives medical supplies from an unknown sponsor.`,
-			`{1} receives fresh food from an unknown sponsor.`,
-			`{1} searches for a water source.`,
-			`{1} defeats {2} in a fight, but spares their life.`,
-			`{1} and {2} work together for the day.`,
-			`{1} begs for {2} to kill them. They refuse, keeping {1} alive.`,
-			`{1} tries to sleep through the entire day.`,
-			`{1}, {2}, {3}, and {4} raid {5}'s camp while they are hunting.`,
-			`{1} constructs a shack.`,
-			`{1} overhears {2} and {3} talking in the distance.`,
-			`{1} practices their archery.`,
-			`{1} thinks about home.`,
-			`{1} is pricked by thorns while picking berries.`,
-			`{1} tries to spear fish with a trident.`,
-			`{1} searches for firewood.`,
-			`{1} and {2} split up to search for resources.`,
-			`{1} picks flowers.`,
-			`{1} tends to {2}'s wounds.`,
-			`{1} sees smoke rising in the distance, but decides not to investigate.`,
-			`{1} sprains their ankle while running away from {2}.`,
-			`{1} makes a slingshot.`,
-			`{1} travels to higher ground.`,
-			`{1} discovers a river.`,
-			`{1} hunts for other tributes.`,
-			`{1} and {2} hunt for other tributes.`,
-			`{1}, {2}, and {3} hunt for other tributes.`,
-			`{1}, {2}, {3}, and {4} hunt for other tributes.`,
-			`{1}, {2}, {3}, {4}, and {5} hunt for other tributes.`,
-			`{1} receives an explosive from an unknown sponsor.`,
-			`{1} questions their sanity.`,
-			`{1} forces {2} to eat pant.`,
-			`{1} forces {2T} to eat pant. {2T} chokes and dies.`,
-			`{1} catches {2T} off guard and kills them.`,
-			`{1} throws a knife into {2T}'s head.`,
-			`{1T} begs for {2} to kill them. They reluctantly oblige, killing {1T}.`,
-			`{1} and {2} work together to drown {3T}.`,
-			`{1} strangles {2T} after engaging in a fist fight.`,
-			`{1} shoots an arrow into {2T}'s head.`,
-			`{1T} bleeds out due to untreated injuries.`,
-			`{1T} cannot handle the circumstances and commits suicide.`,
-			`{1} bashes {2T}'s head against a rock several times.`,
-			`{1T} unknowingly eats toxic berries.`,
-			`{1} silently snaps {2T}'s neck.`,
-			`{1} taints {2T}'s food, killing them.`,
-			`{1} decapitates {2T} with a sword.`,
-			`{1T} dies from an infection.`,
-			`{1} spears {2T} in the abdomen.`,
-			`{1} sets {2T} on fire with a molotov.`,
-			`{1T} falls into a pit and dies.`,
-			`{1} stabs {2T} while their back is turned.`,
-			`{1} severely injures {2T}, but puts them out of their misery.`,
-			`{1} severely injures {2T} and leaves them to die.`,
-			`{1} bashes {2T}'s head in with a mace.`,
-			`{1T} attempts to climb a tree, but falls to their death.`,
-			`{1} pushes {2T} off a cliff during a knife fight.`,
-			`{1} throws a knife into {2T}'s chest.`,
-			`{1}'s trap kills {2T}.`,
-			`{1} kills {2T} while they are resting.`,
-			`{1T} is unable to convince {2} to not kill them.`,
-			`{1} convinces {2T} to not kill them, only to kill {2T} instead.`,
-			`{1T} falls into a frozen lake and drowns.`,
-			`{1}, {2}, and {3T} start fighting, but {2} runs away as {1} kills {3T}.`,
-			`{1} kills {2T} with their own weapon.`,
-			`{1} overpowers {2T}, killing them.`,
-			`{1} sets an explosive off, killing {2T}.`,
-			`{1} sets an explosive off, killing {2T}, and {3T}.`,
-			`{1} sets an explosive off, killing {2T}, {3T}, and {4T}.`,
-			`{1} sets an explosive off, killing {2T}, {3T}, {4T} and {5T}.`,
-			`{1} kills {2T} as they try to run.`,
-			`{1T} and {2T} threaten a double suicide. It fails and they die.`,
-			`{1T}, {2T}, {3T}, and {4T} form a suicide pact, killing themselves.`,
-			`{1T} dies from hypothermia.`,
-			`{1T} dies from hunger.`,
-			`{1T} dies from thirst.`,
-			`{1} kills {2T} with a hatchet.`,
-			`{1} and {2} fight {3T} and {4T}. {1} and {2} survive.`,
-			`{1T} and {2T} fight {3} and {4}. {3} and {4} survive.`,
-			`{1T} dies trying to escape the arena.`,
-			`{1T} dies of dysentery.`,
-			`{1T} accidently detonates a land mine while trying to arm it.`,
-			`{1T} attacks {2}, but {3} protects them, killing {1T}.`,
-			`{1} ambushes {2T} and kills them.`,
-			`{1T} accidently steps on a landmine.`,
-			`{1} severely slices {2T} with a sword.`,
-			`{1} strangles {2T} with a rope.`,
-			`{1} kills {2T} for their supplies.`,
-			`{1} shoots an arrow at {2}, but misses and kills {3T} instead.`,
-			`{1} shoots a poisonous blow dart into {2T}'s neck, slowly killing them.`,
-			`{1}, {2}, and {3} successfully ambush and kill {4T}, {5T}, and {6T}.`,
-			`{1T}, {2T}, and {3T} unsuccessfully ambush {4}, {5}, and {6}, who kill them instead.`,
-			`{1} stabs {2T} with a tree branch.`,
-			`{1} forces {2} to kill {3T} or {4}. They decide to kill {3T}.`,
-			`{1} forces {2} to kill {3} or {4T}. They decide to kill {4T}.`,
-			`{1} forces {2T} to kill {3} or {4}. They refuse to kill, so {1} kills them instead.`,
-			`{1T} poisons {2}'s drink, but mistakes it for their own and dies.`,
-			`{1} poisons {2T}'s drink. They drink it and die.`,
-			`{1} stabs {2T} in the back with a trident.`,
-			`{1T} attempts to climb a tree, but falls on {2T}, killing them both.`,
-			`{1}, {2T}, and {3T} get into a fight. {1} triumphantly kills them both.`,
-			`{1T}, {2}, and {3T} get into a fight. {2} triumphantly kills them both.`,
-			`{1T}, {2T}, and {3} get into a fight. {3} triumphantly kills them both.`,
-			`{1} kills {2T} with a sickle.`,
-			`{1}, {2}, {3}, {4}, and {5} track down and kill {6T}.`,
-			`{1}, {2}, {3}, and {4} track down and kill {5T}.`,
-			`{1}, {2}, and {3} track down and kill {4T}.`,
-			`{1} and {2} track down and kill {3T}.`,
-			`{1} tracks down and kills {2T}.`,
-			`{1} repeatedly stabs {2T} to death with sais.`,
-			`{1} doodles in the dirt.`,
-			`{1} chases a butterfly.`,
-			`{1T} falls off a cliff, and is impaled by a stick.`,
-			`{1} runs into {2}, they decide to team up.`,
-			`{1} sees {2} through the trees, and plans on killing them.`,
-			`{1} sneaks up behind {2T}, and snaps their neck.`,
-			`{1T} challenges {2} to a fight, and promptly dies.`,
-			`{1} murders their partner, {2T}, to have more supplies for themself.`
+			'{1} goes hunting.',
+			'{1} injures themself.',
+			'{1} explores the arena.',
+			'{1} scares {2} off.',
+			'{1} diverts {2}\'s attention and runs away.',
+			'{1} stalks {2}.',
+			'{1} fishes.',
+			'{1} camouflauges themself in the bushes.',
+			'{1} steals from {2} while they aren\'t looking.',
+			'{1} makes a wooden spear.',
+			'{1} discovers a cave.',
+			'{1} attacks {2}, but they manage to escape.',
+			'{1} chases {2}.',
+			'{1} runs away from {2}.',
+			'{1} collects fruit from a tree.',
+			'{1} receives a hatchet from an unknown sponsor.',
+			'{1} receives clean water from an unknown sponsor.',
+			'{1} receives medical supplies from an unknown sponsor.',
+			'{1} receives fresh food from an unknown sponsor.',
+			'{1} searches for a water source.',
+			'{1} defeats {2} in a fight, but spares their life.',
+			'{1} and {2} work together for the day.',
+			'{1} begs for {2} to kill them. They refuse, keeping {1} alive.',
+			'{1} tries to sleep through the entire day.',
+			'{1}, {2}, {3}, and {4} raid {5}\'s camp while they are hunting.',
+			'{1} constructs a shack.',
+			'{1} overhears {2} and {3} talking in the distance.',
+			'{1} practices their archery.',
+			'{1} thinks about home.',
+			'{1} is pricked by thorns while picking berries.',
+			'{1} tries to spear fish with a trident.',
+			'{1} searches for firewood.',
+			'{1} and {2} split up to search for resources.',
+			'{1} picks flowers.',
+			'{1} tends to {2}\'s wounds.',
+			'{1} sees smoke rising in the distance, but decides not to investigate.',
+			'{1} sprains their ankle while running away from {2}.',
+			'{1} makes a slingshot.',
+			'{1} travels to higher ground.',
+			'{1} discovers a river.',
+			'{1} hunts for other tributes.',
+			'{1} and {2} hunt for other tributes.',
+			'{1}, {2}, and {3} hunt for other tributes.',
+			'{1}, {2}, {3}, and {4} hunt for other tributes.',
+			'{1}, {2}, {3}, {4}, and {5} hunt for other tributes.',
+			'{1} receives an explosive from an unknown sponsor.',
+			'{1} questions their sanity.',
+			'{1} forces {2} to eat pant.',
+			'{1} forces {2T} to eat pant. {2T} chokes and dies.',
+			'{1} catches {2T} off guard and kills them.',
+			'{1} throws a knife into {2T}\'s head.',
+			'{1T} begs for {2} to kill them. They reluctantly oblige, killing {1T}.',
+			'{1} and {2} work together to drown {3T}.',
+			'{1} strangles {2T} after engaging in a fist fight.',
+			'{1} shoots an arrow into {2T}\'s head.',
+			'{1T} bleeds out due to untreated injuries.',
+			'{1T} cannot handle the circumstances and commits suicide.',
+			'{1} bashes {2T}\'s head against a rock several times.',
+			'{1T} unknowingly eats toxic berries.',
+			'{1} silently snaps {2T}\'s neck.',
+			'{1} taints {2T}\'s food, killing them.',
+			'{1} decapitates {2T} with a sword.',
+			'{1T} dies from an infection.',
+			'{1} spears {2T} in the abdomen.',
+			'{1} sets {2T} on fire with a molotov.',
+			'{1T} falls into a pit and dies.',
+			'{1} stabs {2T} while their back is turned.',
+			'{1} severely injures {2T}, but puts them out of their misery.',
+			'{1} severely injures {2T} and leaves them to die.',
+			'{1} bashes {2T}\'s head in with a mace.',
+			'{1T} attempts to climb a tree, but falls to their death.',
+			'{1} pushes {2T} off a cliff during a knife fight.',
+			'{1} throws a knife into {2T}\'s chest.',
+			'{1}\'s trap kills {2T}.',
+			'{1} kills {2T} while they are resting.',
+			'{1T} is unable to convince {2} to not kill them.',
+			'{1} convinces {2T} to not kill them, only to kill {2T} instead.',
+			'{1T} falls into a frozen lake and drowns.',
+			'{1}, {2}, and {3T} start fighting, but {2} runs away as {1} kills {3T}.',
+			'{1} kills {2T} with their own weapon.',
+			'{1} overpowers {2T}, killing them.',
+			'{1} sets an explosive off, killing {2T}.',
+			'{1} sets an explosive off, killing {2T}, and {3T}.',
+			'{1} sets an explosive off, killing {2T}, {3T}, and {4T}.',
+			'{1} sets an explosive off, killing {2T}, {3T}, {4T} and {5T}.',
+			'{1} kills {2T} as they try to run.',
+			'{1T} and {2T} threaten a double suicide. It fails and they die.',
+			'{1T}, {2T}, {3T}, and {4T} form a suicide pact, killing themselves.',
+			'{1T} dies from hypothermia.',
+			'{1T} dies from hunger.',
+			'{1T} dies from thirst.',
+			'{1} kills {2T} with a hatchet.',
+			'{1} and {2} fight {3T} and {4T}. {1} and {2} survive.',
+			'{1T} and {2T} fight {3} and {4}. {3} and {4} survive.',
+			'{1T} dies trying to escape the arena.',
+			'{1T} dies of dysentery.',
+			'{1T} accidently detonates a land mine while trying to arm it.',
+			'{1T} attacks {2}, but {3} protects them, killing {1T}.',
+			'{1} ambushes {2T} and kills them.',
+			'{1T} accidently steps on a landmine.',
+			'{1} severely slices {2T} with a sword.',
+			'{1} strangles {2T} with a rope.',
+			'{1} kills {2T} for their supplies.',
+			'{1} shoots an arrow at {2}, but misses and kills {3T} instead.',
+			'{1} shoots a poisonous blow dart into {2T}\'s neck, slowly killing them.',
+			'{1}, {2}, and {3} successfully ambush and kill {4T}, {5T}, and {6T}.',
+			'{1T}, {2T}, and {3T} unsuccessfully ambush {4}, {5}, and {6}, who kill them instead.',
+			'{1} stabs {2T} with a tree branch.',
+			'{1} forces {2} to kill {3T} or {4}. They decide to kill {3T}.',
+			'{1} forces {2} to kill {3} or {4T}. They decide to kill {4T}.',
+			'{1} forces {2T} to kill {3} or {4}. They refuse to kill, so {1} kills them instead.',
+			'{1T} poisons {2}\'s drink, but mistakes it for their own and dies.',
+			'{1} poisons {2T}\'s drink. They drink it and die.',
+			'{1} stabs {2T} in the back with a trident.',
+			'{1T} attempts to climb a tree, but falls on {2T}, killing them both.',
+			'{1}, {2T}, and {3T} get into a fight. {1} triumphantly kills them both.',
+			'{1T}, {2}, and {3T} get into a fight. {2} triumphantly kills them both.',
+			'{1T}, {2T}, and {3} get into a fight. {3} triumphantly kills them both.',
+			'{1} kills {2T} with a sickle.',
+			'{1}, {2}, {3}, {4}, and {5} track down and kill {6T}.',
+			'{1}, {2}, {3}, and {4} track down and kill {5T}.',
+			'{1}, {2}, and {3} track down and kill {4T}.',
+			'{1} and {2} track down and kill {3T}.',
+			'{1} tracks down and kills {2T}.',
+			'{1} repeatedly stabs {2T} to death with sais.',
+			'{1} doodles in the dirt.',
+			'{1} chases a butterfly.',
+			'{1T} falls off a cliff, and is impaled by a stick.',
+			'{1} runs into {2}, they decide to team up.',
+			'{1} sees {2} through the trees, and plans on killing them.',
+			'{1} sneaks up behind {2T}, and snaps their neck.',
+			'{1T} challenges {2} to a fight, and promptly dies.',
+			'{1} murders their partner, {2T}, to have more supplies for themself.'
 		].map(HungerGamesUsage.create),
 		HG_NIGHT: [
-			`{1} starts a fire.`,
-			`{1} sets up camp for the night.`,
-			`{1} loses sight of where they are.`,
-			`{1} climbs a tree to rest.`,
-			`{1} goes to sleep.`,
-			`{1} and {2} tell stories about themselves to each other.`,
-			`{1}, {2}, {3}, and {4} sleep in shifts.`,
-			`{1}, {2}, and {3} sleep in shifts.`,
-			`{1} and {2} sleep in shifts.`,
-			`{1} tends to their wounds.`,
-			`{1} sees a fire, but stays hidden.`,
-			`{1} screams for help.`,
-			`{1} stays awake all night.`,
-			`{1} passes out from exhaustion.`,
-			`{1} cooks their food before putting their fire out.`,
-			`{1} and {2} run into each other and decide to truce for the night.`,
-			`{1} fends {2}, {3}, and {4} away from their fire.`,
-			`{1}, {2}, and {3} discuss the games and what might happen in the morning.`,
-			`{1} cries themself to sleep.`,
-			`{1} tries to treat their infection.`,
-			`{1} and {2} talk about the tributes still alive.`,
-			`{1} is awoken by nightmares.`,
-			`{1} and {2} huddle for warmth.`,
-			`{1} thinks about winning.`,
-			`{1}, {2}, {3}, and {4} tell each other ghost stories to lighten the mood.`,
-			`{1} looks at the night sky.`,
-			`{1} defeats {2} in a fight, but spares their life.`,
-			`{1} begs for {2} to kill them. They refuse, keeping {1} alive.`,
-			`{1} destroys {2}'s supplies while they are asleep.`,
-			`{1}, {2}, {3}, {4}, and {5} sleep in shifts.`,
-			`{1} lets {2} into their shelter.`,
-			`{1} receives a hatchet from an unknown sponsor.`,
-			`{1} receives clean water from an unknown sponsor.`,
-			`{1} receives medical supplies from an unknown sponsor.`,
-			`{1} receives fresh food from an unknown sponsor.`,
-			`{1} tries to sing themself to sleep.`,
-			`{1} attempts to start a fire, but is unsuccessful.`,
-			`{1} thinks about home.`,
-			`{1} tends to {2}'s wounds.`,
-			`{1} quietly hums.`,
-			`{1}, {2}, and {3} cheerfully sing songs together.`,
-			`{1} is unable to start a fire and sleeps without warmth.`,
-			`{1} and {2} hold hands.`,
-			`{1} convinces {2} to snuggle with them.`,
-			`{1} receives an explosive from an unknown sponsor.`,
-			`{1} questions their sanity.`,
-			`{1} forces {2} to eat pant.`,
-			`{1} forces {2T} to eat pant. {2T} chokes and dies.`,
-			`{1} catches {2T} off guard and kills them.`,
-			`{1} throws a knife into {2T}'s head.`,
-			`{1T} begs for {2} to kill them. They reluctantly oblige, killing {1T}.`,
-			`{1} and {2} work together to drown {3T}.`,
-			`{1} strangles {2T} after engaging in a fist fight.`,
-			`{1} shoots an arrow into {2T}'s head.`,
-			`{1T} bleeds out due to untreated injuries.`,
-			`{1T} cannot handle the circumstances and commits suicide.`,
-			`{1} bashes {2T}'s head against a rock several times.`,
-			`{1T} unknowingly eats toxic berries.`,
-			`{1} silently snaps {2T}'s neck.`,
-			`{1} taints {2T}'s food, killing them.`,
-			`{1} decapitates {2T} with a sword.`,
-			`{1T} dies from an infection.`,
-			`{1} spears {2T} in the abdomen.`,
-			`{1} sets {2T} on fire with a molotov.`,
-			`{1T} falls into a pit and dies.`,
-			`{1} stabs {2T} while their back is turned.`,
-			`{1} severely injures {2T}, but puts them out of their misery.`,
-			`{1} severely injures {2T} and leaves them to die.`,
-			`{1} bashes {2T}'s head in with a mace.`,
-			`{1T} attempts to climb a tree, but falls to their death.`,
-			`{1} pushes {2T} off a cliff during a knife fight.`,
-			`{1} throws a knife into {2T}'s chest.`,
-			`{1}'s trap kills {2T}.`,
-			`{1} kills {2T} while they are sleeping.`,
-			`{1T} is unable to convince {2} to not kill them.`,
-			`{1} convinces {2T} to not kill them, only to kill {2T} instead.`,
-			`{1T} falls into a frozen lake and drowns.`,
-			`{1}, {2}, and {3T} start fighting, but {2} runs away as {1} kills {3T}.`,
-			`{1} kills {2T} with their own weapon.`,
-			`{1} overpowers {2T}, killing them.`,
-			`{1} sets an explosive off, killing {2T}.`,
-			`{1} sets an explosive off, killing {2T}, and {3T}.`,
-			`{1} sets an explosive off, killing {2T}, {3T}, and {4T}.`,
-			`{1} sets an explosive off, killing {2T}, {3T}, {4T} and {5T}.`,
-			`{1} kills {2T} as they try to run.`,
-			`{1T} and {2T} threaten a double suicide. It fails and they die.`,
-			`{1T}, {2T}, {3T}, and {4T} form a suicide pact, killing themselves.`,
-			`{1T} dies from hypothermia.`,
-			`{1T} dies from hunger.`,
-			`{1T} dies from thirst.`,
-			`{1} kills {2T} with a hatchet.`,
-			`{1} and {2} fight {3T} and {4T}. {1} and {2} survive.`,
-			`{1T} and {2T} fight {3} and {4}. {3} and {4} survive.`,
-			`{1T} dies trying to escape the arena.`,
-			`{1T} dies of dysentery.`,
-			`{1T} accidently detonates a land mine while trying to arm it.`,
-			`{1T} attacks {2}, but {3} protects them, killing {1T}.`,
-			`{1} ambushes {2T} and kills them.`,
-			`{1T} accidently steps on a landmine.`,
-			`{1} severely slices {2T} with a sword.`,
-			`{1} strangles {2T} with a rope.`,
-			`{1} kills {2T} for their supplies.`,
-			`{1} shoots an arrow at {2}, but misses and kills {3T} instead.`,
-			`{1} shoots a poisonous blow dart into {2T}'s neck, slowly killing them.`,
-			`{1}, {2}, and {3} successfully ambush and kill {4T}, {5T}, and {6T}.`,
-			`{1T}, {2T}, and {3T} unsuccessfully ambush {4}, {5}, and {6}, who kill them instead.`,
-			`{1} stabs {2T} with a tree branch.`,
-			`{1} forces {2} to kill {3T} or {4}. They decide to kill {3T}.`,
-			`{1} forces {2} to kill {3} or {4T}. They decide to kill {4T}.`,
-			`{1} forces {2T} to kill {3} or {4}. They refuse to kill, so {1} kills them instead.`,
-			`{1T} poisons {2}'s drink, but mistakes it for their own and dies.`,
-			`{1} poisons {2T}'s drink. They drink it and die.`,
-			`{1} stabs {2T} in the back with a trident.`,
-			`{1T} attempts to climb a tree, but falls on {2T}, killing them both.`,
-			`{1}, {2T}, and {3T} get into a fight. {1} triumphantly kills them both.`,
-			`{1T}, {2}, and {3T} get into a fight. {2} triumphantly kills them both.`,
-			`{1T}, {2T}, and {3} get into a fight. {3} triumphantly kills them both.`,
-			`{1} kills {2T} with a sickle.`,
-			`{1}, {2}, {3}, {4}, and {5} track down and kill {6T}.`,
-			`{1}, {2}, {3}, and {4} track down and kill {5T}.`,
-			`{1}, {2}, and {3} track down and kill {4T}.`,
-			`{1} and {2} track down and kill {3T}.`,
-			`{1} tracks down and kills {2T}.`,
-			`{1} repeatedly stabs {2T} to death with sais.`,
-			`{1} writes in their journal.`,
-			`{1} watches {2} sitting at their campfire, and considers killing them.`
+			'{1} starts a fire.',
+			'{1} sets up camp for the night.',
+			'{1} loses sight of where they are.',
+			'{1} climbs a tree to rest.',
+			'{1} goes to sleep.',
+			'{1} and {2} tell stories about themselves to each other.',
+			'{1}, {2}, {3}, and {4} sleep in shifts.',
+			'{1}, {2}, and {3} sleep in shifts.',
+			'{1} and {2} sleep in shifts.',
+			'{1} tends to their wounds.',
+			'{1} sees a fire, but stays hidden.',
+			'{1} screams for help.',
+			'{1} stays awake all night.',
+			'{1} passes out from exhaustion.',
+			'{1} cooks their food before putting their fire out.',
+			'{1} and {2} run into each other and decide to truce for the night.',
+			'{1} fends {2}, {3}, and {4} away from their fire.',
+			'{1}, {2}, and {3} discuss the games and what might happen in the morning.',
+			'{1} cries themself to sleep.',
+			'{1} tries to treat their infection.',
+			'{1} and {2} talk about the tributes still alive.',
+			'{1} is awoken by nightmares.',
+			'{1} and {2} huddle for warmth.',
+			'{1} thinks about winning.',
+			'{1}, {2}, {3}, and {4} tell each other ghost stories to lighten the mood.',
+			'{1} looks at the night sky.',
+			'{1} defeats {2} in a fight, but spares their life.',
+			'{1} begs for {2} to kill them. They refuse, keeping {1} alive.',
+			'{1} destroys {2}\'s supplies while they are asleep.',
+			'{1}, {2}, {3}, {4}, and {5} sleep in shifts.',
+			'{1} lets {2} into their shelter.',
+			'{1} receives a hatchet from an unknown sponsor.',
+			'{1} receives clean water from an unknown sponsor.',
+			'{1} receives medical supplies from an unknown sponsor.',
+			'{1} receives fresh food from an unknown sponsor.',
+			'{1} tries to sing themself to sleep.',
+			'{1} attempts to start a fire, but is unsuccessful.',
+			'{1} thinks about home.',
+			'{1} tends to {2}\'s wounds.',
+			'{1} quietly hums.',
+			'{1}, {2}, and {3} cheerfully sing songs together.',
+			'{1} is unable to start a fire and sleeps without warmth.',
+			'{1} and {2} hold hands.',
+			'{1} convinces {2} to snuggle with them.',
+			'{1} receives an explosive from an unknown sponsor.',
+			'{1} questions their sanity.',
+			'{1} forces {2} to eat pant.',
+			'{1} forces {2T} to eat pant. {2T} chokes and dies.',
+			'{1} catches {2T} off guard and kills them.',
+			'{1} throws a knife into {2T}\'s head.',
+			'{1T} begs for {2} to kill them. They reluctantly oblige, killing {1T}.',
+			'{1} and {2} work together to drown {3T}.',
+			'{1} strangles {2T} after engaging in a fist fight.',
+			'{1} shoots an arrow into {2T}\'s head.',
+			'{1T} bleeds out due to untreated injuries.',
+			'{1T} cannot handle the circumstances and commits suicide.',
+			'{1} bashes {2T}\'s head against a rock several times.',
+			'{1T} unknowingly eats toxic berries.',
+			'{1} silently snaps {2T}\'s neck.',
+			'{1} taints {2T}\'s food, killing them.',
+			'{1} decapitates {2T} with a sword.',
+			'{1T} dies from an infection.',
+			'{1} spears {2T} in the abdomen.',
+			'{1} sets {2T} on fire with a molotov.',
+			'{1T} falls into a pit and dies.',
+			'{1} stabs {2T} while their back is turned.',
+			'{1} severely injures {2T}, but puts them out of their misery.',
+			'{1} severely injures {2T} and leaves them to die.',
+			'{1} bashes {2T}\'s head in with a mace.',
+			'{1T} attempts to climb a tree, but falls to their death.',
+			'{1} pushes {2T} off a cliff during a knife fight.',
+			'{1} throws a knife into {2T}\'s chest.',
+			'{1}\'s trap kills {2T}.',
+			'{1} kills {2T} while they are sleeping.',
+			'{1T} is unable to convince {2} to not kill them.',
+			'{1} convinces {2T} to not kill them, only to kill {2T} instead.',
+			'{1T} falls into a frozen lake and drowns.',
+			'{1}, {2}, and {3T} start fighting, but {2} runs away as {1} kills {3T}.',
+			'{1} kills {2T} with their own weapon.',
+			'{1} overpowers {2T}, killing them.',
+			'{1} sets an explosive off, killing {2T}.',
+			'{1} sets an explosive off, killing {2T}, and {3T}.',
+			'{1} sets an explosive off, killing {2T}, {3T}, and {4T}.',
+			'{1} sets an explosive off, killing {2T}, {3T}, {4T} and {5T}.',
+			'{1} kills {2T} as they try to run.',
+			'{1T} and {2T} threaten a double suicide. It fails and they die.',
+			'{1T}, {2T}, {3T}, and {4T} form a suicide pact, killing themselves.',
+			'{1T} dies from hypothermia.',
+			'{1T} dies from hunger.',
+			'{1T} dies from thirst.',
+			'{1} kills {2T} with a hatchet.',
+			'{1} and {2} fight {3T} and {4T}. {1} and {2} survive.',
+			'{1T} and {2T} fight {3} and {4}. {3} and {4} survive.',
+			'{1T} dies trying to escape the arena.',
+			'{1T} dies of dysentery.',
+			'{1T} accidently detonates a land mine while trying to arm it.',
+			'{1T} attacks {2}, but {3} protects them, killing {1T}.',
+			'{1} ambushes {2T} and kills them.',
+			'{1T} accidently steps on a landmine.',
+			'{1} severely slices {2T} with a sword.',
+			'{1} strangles {2T} with a rope.',
+			'{1} kills {2T} for their supplies.',
+			'{1} shoots an arrow at {2}, but misses and kills {3T} instead.',
+			'{1} shoots a poisonous blow dart into {2T}\'s neck, slowly killing them.',
+			'{1}, {2}, and {3} successfully ambush and kill {4T}, {5T}, and {6T}.',
+			'{1T}, {2T}, and {3T} unsuccessfully ambush {4}, {5}, and {6}, who kill them instead.',
+			'{1} stabs {2T} with a tree branch.',
+			'{1} forces {2} to kill {3T} or {4}. They decide to kill {3T}.',
+			'{1} forces {2} to kill {3} or {4T}. They decide to kill {4T}.',
+			'{1} forces {2T} to kill {3} or {4}. They refuse to kill, so {1} kills them instead.',
+			'{1T} poisons {2}\'s drink, but mistakes it for their own and dies.',
+			'{1} poisons {2T}\'s drink. They drink it and die.',
+			'{1} stabs {2T} in the back with a trident.',
+			'{1T} attempts to climb a tree, but falls on {2T}, killing them both.',
+			'{1}, {2T}, and {3T} get into a fight. {1} triumphantly kills them both.',
+			'{1T}, {2}, and {3T} get into a fight. {2} triumphantly kills them both.',
+			'{1T}, {2T}, and {3} get into a fight. {3} triumphantly kills them both.',
+			'{1} kills {2T} with a sickle.',
+			'{1}, {2}, {3}, {4}, and {5} track down and kill {6T}.',
+			'{1}, {2}, {3}, and {4} track down and kill {5T}.',
+			'{1}, {2}, and {3} track down and kill {4T}.',
+			'{1} and {2} track down and kill {3T}.',
+			'{1} tracks down and kills {2T}.',
+			'{1} repeatedly stabs {2T} to death with sais.',
+			'{1} writes in their journal.',
+			'{1} watches {2} sitting at their campfire, and considers killing them.'
 		].map(HungerGamesUsage.create),
 
 		/**
@@ -4347,7 +4347,7 @@ export default class extends Language {
 		 * #################################
 		 */
 		NOTIFICATIONS_TWITCH_NO_GAME_NAME: '*Nombre del juego no establecido*',
-		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName, gameName) => `${userName} ya está en vivo${gameName ? ` - ¡transmitiendo ${gameName}!` : `!`}`,
+		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName, gameName) => `${userName} ya está en vivo${gameName ? ` - ¡transmitiendo ${gameName}!` : '!'}`,
 		NOTIFICATION_TWITCH_EMBED_FOOTER: 'Skyra Twitch Notificaciones',
 
 		/**
@@ -4377,14 +4377,14 @@ export default class extends Language {
 			: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
 		SELF_MODERATION_COMMAND_SHOW: (kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration) => [
 			`Enabled      : ${kEnabled}`,
-			`Action`,
+			'Action',
 			` - Alert     : ${kAlert}`,
 			` - Log       : ${kLog}`,
 			` - Delete    : ${kDelete}`,
-			`Punishment`,
+			'Punishment',
 			` - Type      : ${kHardAction}`,
 			` - Duration  : ${hardActionDuration ? 'Permanent' : duration(hardActionDuration)}`,
-			`Threshold`,
+			'Threshold',
 			` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
 			` - Duration  : ${thresholdDuration ? duration(thresholdDuration) : 'Unset'}`
 		].join('\n'),
@@ -4459,9 +4459,9 @@ export default class extends Language {
 		ACTION_SETUP_MUTE_EXISTS: '**Cancelando la creación del rol de silenciado**: Ya existe un rol de silenciado.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Cancelando la creación del rol de restricción**: Ya existe un rol de restricción.',
 		ACTION_SETUP_TOO_MANY_ROLES: '**Cancelando la creación del rol**: Hay 250 roles en este servidor, necesitas borrar uno.',
-		ACTION_SHARED_ROLE_SETUP_EXISTING: `I could not find a configured role. Do you want to configure an existing one?`,
-		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: `Please give me the name of the role you want to use for further actions of this type.`,
-		ACTION_SHARED_ROLE_SETUP_NEW: `Do you want me to create a new role and configure it automatically?`,
+		ACTION_SHARED_ROLE_SETUP_EXISTING: 'I could not find a configured role. Do you want to configure an existing one?',
+		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: 'Please give me the name of the role you want to use for further actions of this type.',
+		ACTION_SHARED_ROLE_SETUP_NEW: 'Do you want me to create a new role and configure it automatically?',
 		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) => `${LOADING} Can I modify ${
 			channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
 			permissions.length === 1 ? 'permission' : 'permissions'}: \`${permissions.join('`, `')}\`?`,
@@ -4507,7 +4507,7 @@ export default class extends Language {
 		SYSTEM_ERROR: '¡Algo pasó!',
 		SYSTEM_DISCORD_ABORTERROR: 'He tenido un pequeño error de red al mandar un mensaje a Discord, ¡por favor ejecuta el comando de nuevo!',
 		SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
-		SYSTEM_NOTENOUGH_PARAMETERS: `Lo siento, pero no proporcionaste suficientes parámetros...`,
+		SYSTEM_NOTENOUGH_PARAMETERS: 'Lo siento, pero no proporcionaste suficientes parámetros...',
 		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
 		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: denied => denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : '',
 		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) => `Permisos aplicados para ${accepted} ${accepted === 1 ? 'canal' : 'canales'}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
@@ -4613,7 +4613,7 @@ export default class extends Language {
 		EVENTS_ERROR_STRING: (mention, message) => `Querido ${mention}, ${message}`,
 
 		CONST_USERS: 'Usuarios',
-		UNKNOWN_USER: `Usuario desconocido.`
+		UNKNOWN_USER: 'Usuario desconocido.'
 	};
 
 	public async init() {

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/unified-signatures */
 import { Client } from 'discord.js';
 
 export function api(client: Client) {

@@ -8,13 +8,13 @@ import { KlasaGuild } from 'klasa';
 
 export class MemberTags extends Collection<string, MemberTag> {
 
-	public readonly guild: KlasaGuild;
+	public readonly kGuild: KlasaGuild;
 	private kFetchAllPromise: Promise<void> | null = null;
 	private readonly kRequestHandler: RequestHandler<string, GuildMember>;
 
 	public constructor(guild: KlasaGuild) {
 		super();
-		this.guild = guild;
+		this.kGuild = guild;
 		this.kRequestHandler = new RequestHandler<string, GuildMember>(
 			this.requestHandlerGet.bind(this),
 			this.requestHandlerGetAll.bind(this)
@@ -28,12 +28,12 @@ export class MemberTags extends Collection<string, MemberTag> {
 			roles: this.getRawRoles(member)
 		};
 		super.set(member.id, tag);
-		this.guild.client.userTags.create(member.user);
+		this.kGuild.client.userTags.create(member.user);
 		return tag;
 	}
 
 	public getFirstKeyFromUserName(username: string) {
-		for (const [key, value] of this.guild.client.userTags) {
+		for (const [key, value] of this.kGuild.client.userTags) {
 			if (username === value.username) return key;
 		}
 
@@ -45,7 +45,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 		if (pieces.length !== 2 || pieces[1].length !== 4) return;
 
 		const [username, discriminator] = pieces;
-		for (const [key, value] of this.guild.client.userTags) {
+		for (const [key, value] of this.kGuild.client.userTags) {
 			if (username === value.username && discriminator === value.discriminator) return key;
 		}
 
@@ -74,7 +74,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 	public mapUsernames() {
 		const output = new Collection<string, string>();
 		for (const key of this.keys()) {
-			const userTag = this.guild.client.userTags.get(key);
+			const userTag = this.kGuild.client.userTags.get(key);
 			if (typeof userTag !== 'undefined') output.set(key, userTag.username);
 		}
 
@@ -86,7 +86,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 		if (skyraHighestRole === null) throw new Error('Unreachable.');
 
 		const skyraPosition = skyraHighestRole.position;
-		const nonManageableRoles = this.guild.roles.filter(role => role.position >= skyraPosition);
+		const nonManageableRoles = this.kGuild.roles.filter(role => role.position >= skyraPosition);
 		if (nonManageableRoles.size === 0) {
 			yield *this.entries();
 		} else {
@@ -103,7 +103,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 
 	private async fetchAll() {
 		try {
-			const members = await this.guild.members.fetch();
+			const members = await this.kGuild.members.fetch();
 			for (const member of members.values()) this.create(member);
 		} finally {
 			this.kFetchAllPromise = null;
@@ -111,12 +111,13 @@ export class MemberTags extends Collection<string, MemberTag> {
 	}
 
 	private getRawRoles(member: GuildMember) {
+		// eslint-disable-next-line @typescript-eslint/naming-convention
 		const casted = member as unknown as { _roles: string[] } & GuildMember;
 		return casted._roles;
 	}
 
 	private getSkyraHighestRole() {
-		const guildSelfMember = this.guild.me;
+		const guildSelfMember = this.kGuild.me;
 		if (guildSelfMember !== null) return guildSelfMember.roles.highest;
 
 		const rawGuildSelfMember = this.get(CLIENT_ID);
@@ -124,7 +125,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 
 		let highest: Role | null = null;
 		for (const roleID of rawGuildSelfMember.roles) {
-			const role = this.guild.roles.get(roleID);
+			const role = this.kGuild.roles.get(roleID);
 			if (typeof role === 'undefined') continue;
 
 			if (highest === null || highest.position < role.position) highest = role;
@@ -134,14 +135,14 @@ export class MemberTags extends Collection<string, MemberTag> {
 	}
 
 	private requestHandlerGet(id: string) {
-		return this.guild.members.fetch(id);
+		return this.kGuild.members.fetch(id);
 	}
 
 	private requestHandlerGetAll(ids: readonly string[]) {
 		// TODO(kyranet): Modify this line to the following:
 		// return this.guild.members.fetch({ user: ids });
 		// Once https://github.com/discordjs/discord.js/pull/3562 lands
-		return Promise.all(ids.map(id => this.guild.members.fetch(id)));
+		return Promise.all(ids.map(id => this.kGuild.members.fetch(id)));
 	}
 
 }

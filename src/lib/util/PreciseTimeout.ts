@@ -4,7 +4,7 @@
  */
 export class PreciseTimeout {
 
-	private readonly endsAt: number;
+	private readonly kEndsAt: number;
 	private stopped = false;
 	private resolve: (() => void) | null = null;
 	private timeout: NodeJS.Timeout | null = null;
@@ -14,7 +14,7 @@ export class PreciseTimeout {
 	 * @param time The time in milliseconds to run
 	 */
 	public constructor(time: number) {
-		this.endsAt = Date.now() + time;
+		this.kEndsAt = Date.now() + time;
 	}
 
 	/**
@@ -24,7 +24,7 @@ export class PreciseTimeout {
 		if (this.stopped) return false;
 
 		const cb = () => {
-			if (Date.now() + 10 >= this.endsAt) this.stopped = true;
+			if (Date.now() + 10 >= this.kEndsAt) this.stopped = true;
 			this.resolve!();
 			this.resolve = null;
 		};
@@ -32,7 +32,7 @@ export class PreciseTimeout {
 		while (!this.stopped) {
 			await new Promise<void>(resolve => {
 				this.resolve = resolve;
-				this.timeout = setTimeout(cb, Date.now() - this.endsAt + 10);
+				this.timeout = setTimeout(cb, Date.now() - this.kEndsAt + 10);
 			});
 		}
 

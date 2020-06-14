@@ -22,7 +22,6 @@
  * 		password: connection.password,
  * 		database: connection.database
  * 	});
- * 	// eslint-disable-next-line @typescript-eslint/unbound-method
  * 	pgsql.on('error', console.error);
  * 	const dbconnection = await pgsql.connect();
  * 	await processQueries(pgsql);

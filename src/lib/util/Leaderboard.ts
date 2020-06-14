@@ -1,8 +1,6 @@
 import { Client, Collection } from 'discord.js';
 import { PreciseTimeout } from './PreciseTimeout';
-
-const SECOND = 1000;
-const MINUTE = SECOND * 60;
+import { Time } from './constants';
 
 /**
  * The Leaderboard singleton class in charge of storing local and global leaderboards
@@ -18,17 +16,17 @@ export class Leaderboard {
 	/**
 	 * The cached global leaderboard
 	 */
-	private readonly users: Collection<string, LeaderboardUser> = new Collection();
+	private readonly kUsers: Collection<string, LeaderboardUser> = new Collection();
 
 	/**
 	 * The cached collection for local leaderboards
 	 */
-	private readonly guilds: Collection<string, Collection<string, LeaderboardUser>> = new Collection();
+	private readonly kGuilds: Collection<string, Collection<string, LeaderboardUser>> = new Collection();
 
 	/**
 	 * The timeouts object
 	 */
-	private readonly timeouts: LeaderboardTimeouts = {
+	private readonly kTimeouts: LeaderboardTimeouts = {
 		guilds: new Collection(),
 		users: null
 	};
@@ -36,7 +34,7 @@ export class Leaderboard {
 	/**
 	 * The temporal promises
 	 */
-	private readonly _tempPromises: LeaderboardPromises = {
+	private readonly kTempPromises: LeaderboardPromises = {
 		guilds: new Collection(),
 		users: null
 	};
@@ -47,14 +45,14 @@ export class Leaderboard {
 
 	public async fetch(guild?: string) {
 		if (guild) {
-			if (this._tempPromises.guilds.has(guild)) await this._tempPromises.guilds.get(guild);
-			else if (!this.guilds.has(guild)) await this._syncMembers(guild);
-			return this.guilds.get(guild)!;
+			if (this.kTempPromises.guilds.has(guild)) await this.kTempPromises.guilds.get(guild);
+			else if (!this.kGuilds.has(guild)) await this.syncMembers(guild);
+			return this.kGuilds.get(guild)!;
 		}
 
-		if (this._tempPromises.users) await this._tempPromises.users;
-		else if (this.users.size === 0) await this._syncUsers();
-		return this.users;
+		if (this.kTempPromises.users) await this.kTempPromises.users;
+		else if (this.kUsers.size === 0) await this.syncUsers();
+		return this.kUsers;
 	}
 
 	/**
@@ -69,7 +67,7 @@ export class Leaderboard {
 	 * Clear the guilds cache
 	 */
 	public clearGuilds(): void {
-		for (const timeout of this.timeouts.guilds.values()) {
+		for (const timeout of this.kTimeouts.guilds.values()) {
 			timeout.stop();
 		}
 	}
@@ -78,8 +76,8 @@ export class Leaderboard {
 	 * Clear the user leaderboard cache
 	 */
 	public clearUsers(): void {
-		if (this.timeouts.users) {
-			this.timeouts.users.stop();
+		if (this.kTimeouts.users) {
+			this.kTimeouts.users.stop();
 		}
 	}
 
@@ -87,80 +85,80 @@ export class Leaderboard {
 	 * Sync the leaderboard for the selected guild
 	 * @param guild A guild id
 	 */
-	private async _syncMembers(guild: string): Promise<void> {
+	private async syncMembers(guild: string): Promise<void> {
 		// If it's still on timeout, reset it
-		if (this.timeouts.guilds.has(guild)) {
-			this.timeouts.guilds.get(guild)!.stop();
+		if (this.kTimeouts.guilds.has(guild)) {
+			this.kTimeouts.guilds.get(guild)!.stop();
 		}
 		// It's not deleting the entry as the previous run will resolve
 
 		// Get the sorted data from the db
-		const promise = new Promise<void>(resolve => this._createMemberSyncHandle(guild).then(resolve));
+		const promise = new Promise<void>(resolve => this.createMemberSyncHandle(guild).then(resolve));
 
-		this._tempPromises.guilds.set(guild, promise);
+		this.kTempPromises.guilds.set(guild, promise);
 		await promise;
 
 		// Set the timeout for the refresh
-		const timeout = new PreciseTimeout(MINUTE * 10);
-		this.timeouts.guilds.set(guild, timeout);
+		const timeout = new PreciseTimeout(Time.Minute * 10);
+		this.kTimeouts.guilds.set(guild, timeout);
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
 		timeout.run().then(() => {
-			this.timeouts.guilds.delete(guild);
-			this.guilds.get(guild)!.clear();
-			this.guilds.delete(guild);
+			this.kTimeouts.guilds.delete(guild);
+			this.kGuilds.get(guild)!.clear();
+			this.kGuilds.delete(guild);
 		});
 	}
 
-	private async _createMemberSyncHandle(guild: string) {
+	private async createMemberSyncHandle(guild: string) {
 		const data = await this.client.queries.fetchLeaderboardLocal(guild);
 
 		// Clear the leaderboards for said guild
-		if (this.guilds.has(guild)) this.guilds.get(guild)!.clear();
-		else this.guilds.set(guild, new Collection());
+		if (this.kGuilds.has(guild)) this.kGuilds.get(guild)!.clear();
+		else this.kGuilds.set(guild, new Collection());
 
 		// Get the store and initialize the position number, then save all entries
-		const store = this.guilds.get(guild)!;
+		const store = this.kGuilds.get(guild)!;
 		let i = 0;
 		for (const entry of data) {
 			store.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
 		}
 
-		this._tempPromises.guilds.delete(guild);
+		this.kTempPromises.guilds.delete(guild);
 	}
 
 	/**
 	 * Sync the global leaderboard
 	 */
-	private async _syncUsers(): Promise<void> {
-		const promise = new Promise<void>(resolve => this._createUserSyncHandle().then(resolve));
-		await (this._tempPromises.users = promise);
+	private async syncUsers(): Promise<void> {
+		const promise = new Promise<void>(resolve => this.createUserSyncHandle().then(resolve));
+		await (this.kTempPromises.users = promise);
 
 		// If it's still on timeout, reset it
 		this.clearUsers();
 
 		// Set the timeout for the refresh
-		this.timeouts.users = new PreciseTimeout(MINUTE * 15);
+		this.kTimeouts.users = new PreciseTimeout(Time.Minute * 15);
 
 		// eslint-disable-next-line @typescript-eslint/no-floating-promises
-		this.timeouts.users.run().then(() => {
-			this.timeouts.users = null;
-			this.users.clear();
+		this.kTimeouts.users.run().then(() => {
+			this.kTimeouts.users = null;
+			this.kUsers.clear();
 		});
 	}
 
-	private async _createUserSyncHandle() {
+	private async createUserSyncHandle() {
 		// Get the sorted data from the db
 		const data = await this.client.queries.fetchLeaderboardGlobal();
 
 		// Get the store and initialize the position number, then save all entries
-		this.users.clear();
+		this.kUsers.clear();
 		let i = 0;
 		for (const entry of data) {
-			this.users.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
+			this.kUsers.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
 		}
 
-		this._tempPromises.users = null;
+		this.kTempPromises.users = null;
 	}
 
 }

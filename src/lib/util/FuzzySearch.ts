@@ -8,14 +8,14 @@ type FuzzySearchFilter<V> = (value: V) => boolean;
 
 export class FuzzySearch<K extends string, V> {
 
-	private readonly collection: Collection<K, V>;
-	private readonly access: FuzzySearchAccess<V>;
-	private readonly filter: FuzzySearchFilter<V>;
+	private readonly kCollection: Collection<K, V>;
+	private readonly kAccess: FuzzySearchAccess<V>;
+	private readonly kFilter: FuzzySearchFilter<V>;
 
 	public constructor(collection: Collection<K, V>, access: FuzzySearchAccess<V>, filter: FuzzySearchFilter<V> = () => true) {
-		this.collection = collection;
-		this.access = access;
-		this.filter = filter;
+		this.kCollection = collection;
+		this.kAccess = access;
+		this.kFilter = filter;
 	}
 
 	public run(message: Message, query: string, threshold = 5) {
@@ -26,10 +26,10 @@ export class FuzzySearch<K extends string, V> {
 		let current: string | undefined = undefined;
 		let distance: number | undefined = undefined;
 		let almostExacts = 0;
-		for (const [id, entry] of this.collection.entries()) {
-			if (!this.filter(entry)) continue;
+		for (const [id, entry] of this.kCollection.entries()) {
+			if (!this.kFilter(entry)) continue;
 
-			current = this.access(entry);
+			current = this.kAccess(entry);
 			lowerCaseName = current.toLowerCase();
 
 			// If lowercase result, go next
@@ -71,7 +71,7 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length > 10) results.length = 10;
 
 		const { content: n } = await message.prompt(message.language.tget('FUZZYSEARCH_MATCHES', results.length - 1,
-			util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.access(result)}`).join('\n'))));
+			util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))));
 		if (n.toLowerCase() === 'abort') return null;
 		const parsed = Number(n);
 		if (!Number.isSafeInteger(parsed)) throw message.language.tget('FUZZYSEARCH_INVALID_NUMBER');

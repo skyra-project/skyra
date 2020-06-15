@@ -6,12 +6,12 @@ import { KlasaClient } from 'klasa';
 
 export class UserTags extends Collection<string, UserTag> {
 
-	public readonly client: KlasaClient;
+	public readonly kClient: KlasaClient;
 	private readonly kRequestHandler: RequestHandler<string, APIUserData>;
 
 	public constructor(client: KlasaClient) {
 		super();
-		this.client = client;
+		this.kClient = client;
 		this.kRequestHandler = new RequestHandler<string, APIUserData>(
 			this.requestHandlerGet.bind(this),
 			this.requestHandlerGetAll.bind(this)
@@ -72,7 +72,7 @@ export class UserTags extends Collection<string, UserTag> {
 	}
 
 	private requestHandlerGet(id: string) {
-		return this.client.users.fetch(id);
+		return this.kClient.users.fetch(id);
 	}
 
 	private requestHandlerGetAll(ids: readonly string[]) {

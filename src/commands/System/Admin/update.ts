@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 	private async stash(message: KlasaMessage) {
 		await message.send('Unsuccessful pull, stashing...');
 		await sleep(1000);
-		const { stdout, stderr } = await this.exec(`git stash`);
+		const { stdout, stderr } = await this.exec('git stash');
 		if (!this.isSuccessfulStash(stdout + stderr)) {
 			throw `Unsuccessful pull, stashing:\n\n${codeBlock('prolog', [stdout || '✔', stderr || '✔'].join('\n-=-=-=-\n'))}`;
 		}

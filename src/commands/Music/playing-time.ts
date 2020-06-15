@@ -13,7 +13,7 @@ export default class extends MusicCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		if (message.guild!.music.song === null) throw `Uhm... I think I missed something... oh yeah, I'm not playing anything.`;
+		if (message.guild!.music.song === null) throw 'Uhm... I think I missed something... oh yeah, I\'m not playing anything.';
 		return (message.guild!.music.song.stream
 			? message.sendLocale('COMMAND_PLAYING_TIME_STREAM')
 			: message.sendLocale('COMMAND_PLAYING_TIME_REMAINING', [showSeconds(message.guild!.music.trackRemaining)]));

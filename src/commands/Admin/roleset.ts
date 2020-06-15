@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 				arrayAction: 'add',
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale(`COMMAND_ROLESET_CREATED`, [name, roles.map(role => role.name).join(', ')]);
+			return message.sendLocale('COMMAND_ROLESET_CREATED', [name, roles.map(role => role.name).join(', ')]);
 		}
 
 		// The set does exist so we want to only ADD new roles in
@@ -114,7 +114,7 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale(`COMMAND_ROLESET_UPDATED`, [name]);
+		return message.sendLocale('COMMAND_ROLESET_UPDATED', [name]);
 	}
 
 	// This subcommand will show the user a list of role sets and each role in that set.

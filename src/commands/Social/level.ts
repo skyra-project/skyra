@@ -107,7 +107,7 @@ export default class extends SkyraCommand {
 				.clearPixels(10, 10, 186, 154)
 				.addCircle(103, 87, 70)
 				.resetShadows()
-				.setColor(`#E8E8E8`)
+				.setColor('#E8E8E8')
 				.addBeveledRect(340, 85, 267, 11, 4)
 				.toBufferAsync(),
 			new Canvas(640, 174)
@@ -121,7 +121,7 @@ export default class extends SkyraCommand {
 				.clearPixels(10, 10, 186, 154)
 				.addCircle(103, 87, 70)
 				.resetShadows()
-				.setColor(`#2C2F33`)
+				.setColor('#2C2F33')
 				.addBeveledRect(340, 85, 267, 11, 4)
 				.toBufferAsync()
 		]);

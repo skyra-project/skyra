@@ -137,7 +137,7 @@ export default class extends SkyraCommand {
 			.clearPixels(10, 10, 186, 371)
 			.addCircle(103, 103, 70.5)
 			.resetShadows()
-			.setColor(`#f2f2f2`)
+			.setColor('#f2f2f2')
 			.addRect(226, 355, 366, 7)
 			.toBufferAsync();
 

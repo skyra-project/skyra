@@ -43,6 +43,6 @@ export async function run(provider: PostgresProvider) {
 			COMMIT;
 		`);
 	} catch (error) {
-		provider.client.console.error(`Failed to create schema:`, error);
+		provider.client.console.error('Failed to create schema:', error);
 	}
 }

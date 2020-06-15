@@ -1619,7 +1619,7 @@ escape-string-regexp@^2.0.0:
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-2.0.0.tgz#a30304e99daa32e23b2fd20f51babd07cffca344"
   integrity sha512-UpzcLCXolUWcNu5HtVMHYdXJjArjsF9C0aNnquZYY4uW/Vu0miy5YoWvbV345HauVvcAUnpRuhMMcqTcGOY2+w==
 
-eslint-config-bamboo@^5.0.0:
+eslint-config-bamboo@^5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/eslint-config-bamboo/-/eslint-config-bamboo-5.1.0.tgz#9427be366f60056231c80649063e97b1749a8805"
   integrity sha512-UOeq82PrVv//6VkgCQa5sOMOuIAQvtjCTSSV/imTrEE78ygBA/ojBgV3s6/enrctRWIKoDsc73YGQgLa63iaEA==

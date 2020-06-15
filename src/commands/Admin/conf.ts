@@ -34,7 +34,6 @@ export default class extends SkyraCommand {
 		}
 
 		return message.sendLocale('COMMAND_CONF_SERVER', [
-			// eslint-disable-next-line @typescript-eslint/unbound-method
 			key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '',
 			codeBlock('asciidoc', displayFolder(value as SettingsFolder))
 		]);

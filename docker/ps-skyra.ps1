@@ -44,6 +44,7 @@ function Step-Run {
 			tail { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs -f $service }
 			push { docker push $service }
 			remove { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" rm -fv $service }
+			update { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" pull $service; docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" up -d --force-recreate $service }
 			removeall { Remove-All-Containers }
 			default { Show-Help }
 		}

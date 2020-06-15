@@ -2053,7 +2053,8 @@ export default class extends Language {
 			explainedUsage: [
 				['Pokémon', 'El Pokémon para el que quieres encontrar datos']
 			],
-			examples: ['dragonite', 'pikachu']
+			examples: ['dragonite', 'pikachu'],
+			reminder: 'Si hay algún "Otro (s) formulario (s)" en la cuarta página opcional, también se pueden solicitar. Las formas cosméticas en esa página enumeran cambios puramente cosméticos y estos no tienen entradas separadas en la Pokédex.'
 		}),
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Tipo(s)',
@@ -2064,12 +2065,14 @@ export default class extends Language {
 			HEIGHT: 'Altura',
 			WEIGHT: 'Peso',
 			EGG_GROUPS: 'Grupo (s) de huevo',
-			OTHER_FORMES: 'Otras formas',
 			EVOLUTIONARY_LINE: 'Línea evolutiva',
 			BASE_STATS: 'Puntos de base',
 			BASE_STATS_TOTAL: 'TDPB',
 			FLAVOUR_TEXT: 'Entrada de Pokédex',
-			EXTERNAL_RESOURCES: 'Recursos externos'
+			EXTERNAL_RESOURCES: 'Recursos externos',
+			OTHER_FORMES_TITLE: 'Otras formas',
+			COSMETIC_FORMES_TITLE: 'Formas cosméticas',
+			FORMES_LIST: formes => this.list(formes, 'y')
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: pokemon => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Da los emparejamientos de tipos para uno o dos tipos de Pokémon.',

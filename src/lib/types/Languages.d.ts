@@ -279,12 +279,14 @@ export interface LanguageKeys {
 		HEIGHT: string;
 		WEIGHT: string;
 		EGG_GROUPS: string;
-		OTHER_FORMES: string;
 		EVOLUTIONARY_LINE: string;
 		BASE_STATS: string;
 		BASE_STATS_TOTAL: string;
 		FLAVOUR_TEXT: string;
 		EXTERNAL_RESOURCES: string;
+		OTHER_FORMES_TITLE: string;
+		COSMETIC_FORMES_TITLE: string;
+		FORMES_LIST: (formes: readonly string[]) => string;
 	};
 	COMMAND_POKEDEX_QUERY_FAIL: (pokemon: string) => string;
 	COMMAND_TYPE_DESCRIPTION: string;

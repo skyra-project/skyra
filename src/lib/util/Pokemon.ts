@@ -1,26 +1,25 @@
 import { Query, QueryGetAbilityDetailsByFuzzyArgs, QueryGetItemDetailsByFuzzyArgs, QueryGetMoveDetailsByFuzzyArgs, QueryGetPokemonDetailsByFuzzyArgs, QueryGetPokemonLearnsetByFuzzyArgs, QueryGetTypeMatchupArgs } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '@root/config';
-import { fetch, FetchMethods, FetchResultTypes } from './util';
+import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
 
-const AbilityFragment = /* GraphQL */ `
-fragment ability on AbilityEntry {
-    desc
-    shortDesc
-    name
-    bulbapediaPage
-    serebiiPage
-    smogonPage
+const FlavorsFrament = gql`
+fragment flavors on FlavorEntry {
+  game
+  flavor
 }`;
 
-const AbilitiesFragment = /* GraphQL */ `
+export const getPokemonDetailsByFuzzy = gql`
+
+${FlavorsFrament}
+
 fragment abilities on AbilitiesEntry {
     first
+	
     second
     hidden
     special
-}`;
+}
 
-const StatsFragment = /* GraphQL */ `
 fragment stats on StatsEntry {
     hp
     attack
@@ -28,33 +27,12 @@ fragment stats on StatsEntry {
     specialattack
     specialdefense
     speed
-}`;
+}
 
-const GendersFragment = /* GraphQL */ `
 fragment genders on GenderEntry {
   male
   female
-}`;
-
-const FlavorsFrament = /* GraphQL */ `
-fragment flavors on FlavorEntry {
-  game
-  flavor
-}`;
-
-const FlavorTextFragment = /* GraphQL */ `
-${FlavorsFrament}
-fragment flavortexts on DexDetails {
-    flavorTexts {
-        ...flavors
-    }
-}`;
-
-const DexDetailsFragment = /* GraphQL */ `
-${AbilitiesFragment}
-${StatsFragment}
-${GendersFragment}
-${FlavorsFrament}
+}
 
 fragment dexdetails on DexDetails {
     num
@@ -76,6 +54,7 @@ fragment dexdetails on DexDetails {
     height
     weight
     otherFormes
+	cosmeticFormes
     sprite
     shinySprite
     smogonTier
@@ -85,17 +64,12 @@ fragment dexdetails on DexDetails {
     flavorTexts {
         ...flavors
     }
-}`;
+}
 
-const EvolutionsDataFragment = /* GraphQL */ `
 fragment evolutionsData on DexDetails {
     species
     evolutionLevel
-}`;
-
-const EvolutionsFragment = /* GraphQL */ `
-${DexDetailsFragment}
-${EvolutionsDataFragment}
+}
 
 fragment evolutions on DexDetails {
     evolutions {
@@ -110,9 +84,55 @@ fragment evolutions on DexDetails {
           ...evolutionsData
         }
       }
+}
+
+query getPokemonDetails ($pokemon: String!)  {
+	getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 take: 1 reverse: true) {
+        ...dexdetails
+        ...evolutions
+    }
 }`;
 
-const ItemsFragment = /* GraphQL */ `
+export const getPokemonFlavorTextsByFuzzy = gql`
+
+${FlavorsFrament}
+
+fragment flavortexts on DexDetails {
+    flavorTexts {
+        ...flavors
+    }
+}
+
+query getPokemonFlavors ($pokemon: String!) {
+    getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 reverse: true) {
+        sprite
+		shinySprite
+		num
+		species
+		color
+        ...flavortexts
+    }
+}`;
+
+export const getAbilityDetailsByFuzzy = gql`
+
+fragment ability on AbilityEntry {
+    desc
+    shortDesc
+    name
+    bulbapediaPage
+    serebiiPage
+    smogonPage
+}
+
+query getAbilityDetails ($ability: String!) {
+  getAbilityDetailsByFuzzy(ability: $ability skip: 0 take: 1 ) {
+    ...ability
+  }
+}`;
+
+export const getItemDetailsByFuzzy = gql`
+
 fragment items on ItemEntry {
     desc
     name
@@ -122,24 +142,25 @@ fragment items on ItemEntry {
     sprite
     isNonstandard
     generationIntroduced
+}
+
+query getItemDetails ($item: String!) {
+    getItemDetailsByFuzzy(item: $item skip: 0 take: 1) {
+        ...items
+    }
 }`;
 
-const LearnsetLevelupMoveFragment = /* GraphQL */ `
+export const getPokemonLearnsetByFuzzy = gql`
+
 fragment learnsetLevelupMove on LearnsetLevelUpMove {
     name
     generation
     level
-}`;
-
-const LearnsetMoveFragment = /* GraphQL */ `
+}
 fragment learnsetMove on LearnsetMove {
     name
     generation
-}`;
-
-const LearnsetFragment = /* GraphQL */ `
-${LearnsetLevelupMoveFragment}
-${LearnsetMoveFragment}
+}
 
 fragment learnset on LearnsetEntry {
     num
@@ -168,9 +189,16 @@ fragment learnset on LearnsetEntry {
     dreamworldMoves {
         ...learnsetMove
     }
+}
+
+query getLearnsetDetails ($pokemon: String! $moves: [String!]! $generation: Int) {
+    getPokemonLearnsetByFuzzy(pokemon: $pokemon moves: $moves generation: $generation) {
+      ...learnset
+    }
 }`;
 
-const MoveFragment = /* GraphQL */ `
+export const getMoveDetailsByFuzzy = gql`
+
 fragment moves on MoveEntry {
     name
     shortDesc
@@ -189,9 +217,16 @@ fragment moves on MoveEntry {
     isZ
     isGMax
     desc
+}
+
+query getMoveDetails ($move: String!) {
+  getMoveDetailsByFuzzy(move: $move, skip: 0, take: 1) {
+    ...moves
+  }
 }`;
 
-const TypeEntryFragment = /* GraphQL */ `
+export const getTypeMatchup = gql`
+
 fragment typeEntry on TypeEntry {
     doubleEffectiveTypes
     effectiveTypes
@@ -199,10 +234,7 @@ fragment typeEntry on TypeEntry {
     resistedTypes
     doubleResistedTypes
     effectlessTypes
-}`;
-
-const TypeMatchupFragment = /* GraphQL */ `
-${TypeEntryFragment}
+}
 
 fragment typesMatchups on TypeMatchups {
     attacking {
@@ -211,71 +243,9 @@ fragment typesMatchups on TypeMatchups {
     defending {
       ...typeEntry
     }
-}`;
+}
 
-export const getPokemonDetailsByFuzzy = /* GraphQL */ `
-${EvolutionsFragment}
-query($pokemon: String!)  {
-	getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 take: 1 reverse: true) {
-        ...dexdetails
-        ...evolutions
-    }
-}`;
-
-export const getPokemonFlavorTextsByFuzzy = /* GraphQL */ `
-${FlavorTextFragment}
-
-query($pokemon: String!) {
-    getPokemonDetailsByFuzzy(pokemon: $pokemon skip: 0 reverse: true) {
-        sprite
-		shinySprite
-		num
-		species
-		color
-        ...flavortexts
-    }
-}`;
-
-export const getAbilityDetailsByFuzzy = /* GraphQL */ `
-${AbilityFragment}
-
-query($ability: String!) {
-  getAbilityDetailsByFuzzy(ability: $ability skip: 0 take: 1 ) {
-    ...ability
-  }
-}`;
-
-export const getItemDetailsByFuzzy = /* GraphQL */ `
-${ItemsFragment}
-
-query($item: String!) {
-    getItemDetailsByFuzzy(item: $item skip: 0 take: 1) {
-        ...items
-    }
-}`;
-
-export const getPokemonLearnsetByFuzzy = /* GraphQL */`
-${LearnsetFragment}
-
-query($pokemon: String! $moves: [String!]! $generation: Int) {
-    getPokemonLearnsetByFuzzy(pokemon: $pokemon moves: $moves generation: $generation) {
-      ...learnset
-    }
-}`;
-
-export const getMoveDetailsByFuzzy = /* GraphQL */ `
-${MoveFragment}
-
-query($move: String!) {
-  getMoveDetailsByFuzzy(move: $move, skip: 0, take: 1) {
-    ...moves
-  }
-}`;
-
-export const getTypeMatchup = /* GraphQL */`
-${TypeMatchupFragment}
-
-query($types: [Types!]!) {
+query getTypeMatchups ($types: [Types!]!) {
   getTypeMatchup(types: $types) {
     ...typesMatchups
   }

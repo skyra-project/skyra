@@ -2,6 +2,7 @@ import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/gr
 import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
@@ -147,6 +148,29 @@ export default class extends RichDisplayCommand {
 		const evoChain = this.getEvoChain(pokeDetails);
 		const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
 
+		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
+		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
+	}
+
+	private parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
+		return new UserRichDisplay(new MessageEmbed()
+			.setColor(resolveColour(pokeDetails.color))
+			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite))
+			.addPage((embed: MessageEmbed) => embed
+				.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)
+				.addField(embedTranslations.ABILITIES, abilities.join(', '), true)
+				.addField(embedTranslations.GENDER_RATIO, this.parseGenderRatio(pokeDetails.gender), true)
+				.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
+				.addField(embedTranslations.BASE_STATS, `${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`))
+			.addPage((embed: MessageEmbed) => embed
+				.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
+				.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
+				.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true)
+				.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true));
+	}
+
+	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
 			`[Serebii](${pokeDetails.serebiiPage})`,
@@ -204,4 +228,13 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
+}
+
+interface PokemonToDisplayArgs {
+	message: KlasaMessage;
+	pokeDetails: DexDetails;
+	abilities: string[];
+	baseStats: string[];
+	evoChain: string;
+	embedTranslations: LanguageKeys['COMMAND_POKEDEX_EMBED_DATA'];
 }

@@ -57,7 +57,10 @@ export default class extends RichDisplayCommand {
 		const users = message.author.settings.get(UserSettings.Marry);
 		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
-		const usernames = chunk(await Promise.all(users.map(async user => `${await this.client.userTags.fetchUsername(user)} (${user})`)), 10);
+		const usernames = chunk(await Promise.all(users.map(async user => {
+			const [userId] = await this.client.userTags.fetchEntry(user);
+			return `<@${userId}>`;
+		})), 20);
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message)));

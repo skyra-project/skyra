@@ -3,8 +3,10 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel } from 'discord.js';
 import type { KlasaMessage } from 'klasa';
+
+const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'] as BitFieldResolvable<PermissionString>;
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
@@ -94,8 +96,15 @@ export default class extends SkyraCommand {
 		}).run<TextChannel>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
 
 		if (!channel || channel.guild.id !== message.guild!.id) {
-			await message.sendLocale('COMMAND_SUGGEST_CHANNEL_INVALID');
+			await message.sendLocale('RESOLVER_INVALID_CHANNELNAME');
 			return true;
+		}
+
+		const missingPermissions = await this.missingBotPermissions(message);
+
+		if (missingPermissions.length) {
+			const permissions = message.language.PERMISSIONS;
+			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', missingPermissions.map(permission => permissions[permission]));
 		}
 
 		// Update settings
@@ -103,6 +112,15 @@ export default class extends SkyraCommand {
 		await message.sendLocale('COMMAND_CONF_MENU_SAVED');
 
 		return true;
+	}
+
+	private async missingBotPermissions(message: KlasaMessage) {
+		const textChannel = message.channel as TextChannel;
+		const permissions = textChannel.permissionsFor(message.guild!.me!);
+		if (!permissions) throw 'Failed to fetch permissions.';
+		const missing = permissions.missing(requiredChannelPermissions, false);
+
+		return missing;
 	}
 
 }

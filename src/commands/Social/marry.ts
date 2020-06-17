@@ -3,7 +3,6 @@ import { UserSettings } from '@lib/types/settings/UserSettings';
 import assert from 'assert';
 import { DMChannel, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
-import { cutText } from '@utils/util';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';
@@ -15,7 +14,7 @@ enum YesNoAnswer {
 }
 
 async function askYesNo(channel: TextChannel | DMChannel, user: KlasaUser, question: string): Promise<YesNoAnswer> {
-	await channel.send(cutText(question, 1950));
+	await channel.send(question);
 	const messages = await channel.awaitMessages(msg => msg.author.id === user.id, { time: 60000, max: 1 });
 	if (!messages.size) return YesNoAnswer.Timeout;
 

@@ -50,7 +50,7 @@ export default class extends RichDisplayCommand {
 				.addField('Example', example)
 				.addField('Author', result.author || 'UrbanDictionary User')
 				.addField('👍', `${result.thumbs_up}`, true)
-				.addField('👍', `${result.thumbs_down}`, true));
+				.addField('👎', `${result.thumbs_down}`, true));
 		}
 
 		return display;

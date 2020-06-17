@@ -1,12 +1,13 @@
 import { chunk } from '@klasa/utils';
-import { RichDisplayCommand } from '@lib/structures/RichDisplayCommand';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { getColor } from '@utils/util';
 import assert from 'assert';
 import { DMChannel, MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';
@@ -28,22 +29,20 @@ async function askYesNo(channel: TextChannel | DMChannel, user: KlasaUser, quest
 		: YesNoAnswer.ImplicitNo;
 }
 
+@ApplyOptions<RichDisplayCommandOptions>({
+	cooldown: 30,
+	description: language => language.tget('COMMAND_MARRY_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MARRY_EXTENDED'),
+	runIn: ['text'],
+	usage: '(user:username)'
+})
+@CreateResolvers([
+	['username', (arg, possible, msg) => {
+		if (!arg) return undefined;
+		return msg.client.arguments.get('username')!.run(arg, possible, msg);
+	}]
+])
 export default class extends RichDisplayCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 30,
-			description: language => language.tget('COMMAND_MARRY_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MARRY_EXTENDED'),
-			runIn: ['text'],
-			usage: '(user:username)'
-		});
-
-		this.createCustomResolver('username', (arg, possible, msg) => {
-			if (!arg) return undefined;
-			return this.client.arguments.get('username')!.run(arg, possible, msg);
-		});
-	}
 
 	public run(message: KlasaMessage, [user]: [KlasaUser | undefined]) {
 		return user ? this.marry(message, user) : this.display(message);

@@ -1,7 +1,11 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { chunk } from '@klasa/utils';
+import { RichDisplayCommand } from '@lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { UserSettings } from '@lib/types/settings/UserSettings';
+import { BrandingColors } from '@utils/constants';
+import { getColor } from '@utils/util';
 import assert from 'assert';
-import { DMChannel, TextChannel } from 'discord.js';
+import { DMChannel, MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
@@ -24,7 +28,7 @@ async function askYesNo(channel: TextChannel | DMChannel, user: KlasaUser, quest
 		: YesNoAnswer.ImplicitNo;
 }
 
-export default class extends SkyraCommand {
+export default class extends RichDisplayCommand {
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -42,18 +46,32 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage, [user]: [KlasaUser | undefined]) {
-		return user ? this._marry(message, user) : this._display(message);
+		return user ? this.marry(message, user) : this.display(message);
 	}
 
-	public async _display(message: KlasaMessage) {
+	private async display(message: KlasaMessage) {
+		const response = await message.sendEmbed(new MessageEmbed()
+			.setDescription(message.language.tget('SYSTEM_LOADING'))
+			.setColor(BrandingColors.Secondary));
+
 		const users = message.author.settings.get(UserSettings.Marry);
 		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
-		const usernames = await Promise.all(users.map(async user => `${await this.client.userTags.fetchUsername(user)} (${user})`));
-		return message.sendLocale('COMMAND_MARRY_WITH', [usernames]);
+		const usernames = chunk(await Promise.all(users.map(async user => `${await this.client.userTags.fetchUsername(user)} (${user})`)), 10);
+
+		const display = new UserRichDisplay(new MessageEmbed()
+			.setColor(getColor(message)));
+
+		for (const usernameChunk of usernames) {
+			display.addPage((embed: MessageEmbed) => embed
+				.setDescription(message.language.tget('COMMAND_MARRY_WITH', usernameChunk)));
+		}
+
+		await display.start(response, message.author.id);
+		return response;
 	}
 
-	public async _marry(message: KlasaMessage, user: KlasaUser) {
+	private async marry(message: KlasaMessage, user: KlasaUser) {
 		const { author, channel, language } = message;
 
 		switch (user.id) {
@@ -65,6 +83,7 @@ export default class extends SkyraCommand {
 
 		// settings is already sync by the monitors.
 		const spouses = author.settings.get(UserSettings.Marry);
+		this.client.console.log('spouses: ', spouses);
 		if (spouses.includes(user.id)) {
 			throw message.language.tget('COMMAND_MARRY_ALREADY_MARRIED', user);
 		}
@@ -74,7 +93,7 @@ export default class extends SkyraCommand {
 		// Warn if starting polygamy:
 		// Check if the author is already monogamous.
 		if (spouses.length === 1) {
-			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN'));
+			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN', author));
 			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.userTags.fetchUsername(spouses[0])]);
 			// Check if the author's first potential spouse is already married.
 		} else if (spouses.length === 0 && targetsSpouses.length > 0) {
@@ -82,7 +101,7 @@ export default class extends SkyraCommand {
 			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_MULTIPLE_CANCEL');
 		}
 
-		const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author.username, user.username));
+		const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author, user));
 		switch (answer) {
 			case YesNoAnswer.Timeout: return message.sendLocale('COMMAND_MARRY_NOREPLY');
 			case YesNoAnswer.ImplicitNo: return message.sendLocale('COMMAND_MARRY_DENIED');

@@ -51,8 +51,8 @@ export default class extends RichDisplayCommand {
 					.setURL(item.link)
 					.setDescription(item.snippet);
 
-				const imageUrl = item.pagemap?.cse_image?.find(image => parseURL(image.src))?.src ?? '';
-				if (IMAGE_EXTENSION.test(imageUrl)) {
+				const imageUrl = item.pagemap?.cse_image?.find(image => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? '';
+				if (imageUrl) {
 					embed.setImage(imageUrl);
 				}
 

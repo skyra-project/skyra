@@ -53,8 +53,11 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [firstUser, secondUser]: [KeyedMemberTag, KeyedMemberTag]) {
 		// We need the UserTags to resolve the avatar and username
-		const firstUserTag = this.client.userTags.get(firstUser.id)!;
-		const secondUserTag = this.client.userTags.get(secondUser.id)!;
+		let firstUserTag = this.client.userTags.get(firstUser.id);
+		let secondUserTag = this.client.userTags.get(secondUser.id);
+
+		if (!firstUserTag) firstUserTag = { avatar: null, discriminator: '0001', bot: false, username: '' };
+		if (!secondUserTag) secondUserTag = { avatar: null, discriminator: '0001', bot: false, username: '' };
 
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([

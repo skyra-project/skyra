@@ -1,5 +1,6 @@
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { decode } from 'he';
 import { Reddit } from '@lib/types/definitions/Reddit';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -72,14 +73,14 @@ export default class extends RichDisplayCommand {
 						`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
 						`${message.language.duration((Date.now() - (bestComment.created * 1000)), 3)} ago`,
 						`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
-						cutText(bestComment.body, 900)
+						decode(bestComment.body)
 					].join('\n'), 1020))
 				.addField(`__${titles.WORST_COMMENT}__`,
 					cutText([
 						`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
 						`${message.language.duration((Date.now() - (worstComment.created * 1000)), 3)} ago`,
 						`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
-						cutText(worstComment.body, 900)
+						decode(worstComment.body)
 					].join('\n'), 1020)))
 			.setFooterSuffix(` • ${fieldsData.DATA_AVAILABLE_FOR}`);
 	}

@@ -1558,12 +1558,16 @@ export default class extends Language {
 		}),
 		COMMAND_SHIP_DESCRIPTION: 'Ships 2 members',
 		COMMAND_SHIP_EXTENDED: builder.display('ship', {
-			extendedHelp: 'This commands generates a ship name between two users and creates more love in the world',
+			extendedHelp: `
+				This commands generates a ship name between two users and creates more love in the world.
+				Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.
+			`,
 			explainedUsage: [
 				['firstUser', 'The first user to ship'],
 				['secondUser', 'The second user to ship']
 			],
-			examples: ['romeo juliet']
+			examples: ['romeo juliet'],
+			reminder: 'If I cannot find either given user then I will pick someone randomly.'
 		}),
 		COMMAND_SHIP_DATA: {
 			TITLE: (romeoUsername, julietUsername) => `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,

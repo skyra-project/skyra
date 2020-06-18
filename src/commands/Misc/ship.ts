@@ -1,34 +1,28 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserSettings } from '@lib/types/settings/UserSettings';
 import { KeyedMemberTag } from '@root/arguments/membername';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { socialFolder } from '@utils/constants';
 import { fetch, FetchResultTypes, getDisplayAvatar, loadImage } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
-export default class extends SkyraCommand {
-
-	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
-	private lightThemeTemplate: Buffer | null = null;
-	private darkThemeTemplate: Buffer | null = null;
-	private heartIcon: Image | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: language => language.tget('COMMAND_SHIP_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SHIP_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			usage: '(firstUser:user) (secondUser:user)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('user', (arg, possible, message, [firstUser]: KeyedMemberTag[]) => {
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: language => language.tget('COMMAND_SHIP_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SHIP_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	usage: '(firstUser:user) (secondUser:user)',
+	usageDelim: ' '
+})
+@CreateResolvers([
+	[
+		'user', (arg, possible, message, [firstUser]: KeyedMemberTag[]) => {
 			if (!arg) {
 				// Prefer self if there is already a firstUser, that is not self
 				if (firstUser !== undefined && firstUser.id !== message.author.id) return { id: message.author.id };
@@ -43,21 +37,21 @@ export default class extends SkyraCommand {
 				return { id: ids[0] };
 			}
 
-			return this.memberNameArgument.run(arg, possible, message);
-		});
-	}
+			return message.client.arguments.get('membername')!.run(arg, possible, message);
+		}
+	]
+])
+export default class extends SkyraCommand {
 
-	private get memberNameArgument() {
-		return this.client.arguments.get('membername')!;
-	}
+	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
+	private lightThemeTemplate: Buffer | null = null;
+	private darkThemeTemplate: Buffer | null = null;
+	private heartIcon: Image | null = null;
 
 	public async run(message: KlasaMessage, [firstUser, secondUser]: [KeyedMemberTag, KeyedMemberTag]) {
 		// We need the UserTags to resolve the avatar and username
-		let firstUserTag = this.client.userTags.get(firstUser.id);
-		let secondUserTag = this.client.userTags.get(secondUser.id);
-
-		if (!firstUserTag) firstUserTag = { avatar: null, discriminator: '0001', bot: false, username: '' };
-		if (!secondUserTag) secondUserTag = { avatar: null, discriminator: '0001', bot: false, username: '' };
+		const firstUserTag = this.client.userTags.get(firstUser.id) ?? this.fetchRandomUserTag(message);
+		const secondUserTag = this.client.userTags.get(secondUser.id) ?? this.fetchRandomUserTag(message);
 
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([
@@ -131,6 +125,10 @@ export default class extends SkyraCommand {
 		} catch (error) {
 			throw `Could not download the profile avatar: ${error}`;
 		}
+	}
+
+	private fetchRandomUserTag(message: KlasaMessage) {
+		return this.client.userTags.get(message.guild!.memberTags.randomKey())!;
 	}
 
 }

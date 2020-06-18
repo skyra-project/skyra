@@ -85,7 +85,6 @@ export default class extends RichDisplayCommand {
 
 		// settings is already sync by the monitors.
 		const spouses = author.settings.get(UserSettings.Marry);
-		this.client.console.log('spouses: ', spouses);
 		if (spouses.includes(user.id)) {
 			throw message.language.tget('COMMAND_MARRY_ALREADY_MARRIED', user);
 		}

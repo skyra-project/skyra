@@ -15,6 +15,24 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/${id}`);
 		url.searchParams.append('extended', '1');
+		url.searchParams.append('data', 'CJ');
+		url.searchParams.append('columns', [
+			'Character.Name',
+			'Character.Avatar',
+			'Character.ID',
+			'Character.Portrait',
+			'Character.Server',
+			'Character.DC',
+			'Character.Tribe.Name',
+			'Character.GenderID',
+			'Character.Nameday',
+			'Character.GuardianDeity.Name',
+			'Character.Town.Name',
+			'Character.GrandCompany.Company.Name',
+			'Character.GrandCompany.Rank.Name',
+			'Character.ClassJobs.*.Job.Abbreviation',
+			'Character.ClassJobs.*.Level'
+		].join(','));
 
 		return await fetch<FFXIV.CharacterResult>(url, {
 			method: FetchMethods.Post,

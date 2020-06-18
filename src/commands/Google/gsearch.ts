@@ -3,7 +3,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GoogleResponseCodes, GooleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
-import { getColor, parseURL } from '@utils/util';
+import { getColor, IMAGE_EXTENSION, parseURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -45,11 +45,19 @@ export default class extends RichDisplayCommand {
 			.setColor(getColor(message)));
 
 		for (const item of items) {
-			display.addPage((embed: MessageEmbed) => embed
-				.setTitle(item.title)
-				.setURL(item.link)
-				.setDescription(item.snippet)
-				.setImage(item.pagemap?.cse_image?.find(image => parseURL(image.src))?.src || ''));
+			display.addPage((embed: MessageEmbed) => {
+				embed
+					.setTitle(item.title)
+					.setURL(item.link)
+					.setDescription(item.snippet);
+
+				const imageUrl = item.pagemap?.cse_image?.find(image => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? '';
+				if (imageUrl) {
+					embed.setImage(imageUrl);
+				}
+
+				return embed;
+			});
 		}
 
 		return display;

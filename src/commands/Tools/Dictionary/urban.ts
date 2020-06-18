@@ -6,8 +6,6 @@ import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language, util } from 'klasa';
 
-const ZWS = '\u200B';
-
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
@@ -36,11 +34,6 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	public content(definition: string, permalink: string, i18n: Language) {
-		if (definition.length < 750) return definition;
-		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
-	}
-
 	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
@@ -49,18 +42,23 @@ export default class extends RichDisplayCommand {
 			.setFooterSuffix(' - © Urban Dictionary');
 
 		for (const result of results) {
-			const definition = this.content(result.definition, result.permalink, message.language);
-			const example = result.example ? this.content(result.example, result.permalink, message.language) : 'None';
+			const definition = this.parseDefinition(result.definition, result.permalink, message.language);
+			const example = result.example ? this.parseDefinition(result.example, result.permalink, message.language) : 'None';
 			display.addPage((embed: MessageEmbed) => embed
 				.setURL(result.permalink)
 				.setDescription(definition)
 				.addField('Example', example)
-				.addField('Author', result.author)
-				.addField(ZWS, `\\👍 ${result.thumbs_up}`, true)
-				.addField(ZWS, `\\👎 ${result.thumbs_down}`, true));
+				.addField('Author', result.author || 'UrbanDictionary User')
+				.addField('👍', `${result.thumbs_up}`, true)
+				.addField('👎', `${result.thumbs_down}`, true));
 		}
 
 		return display;
+	}
+
+	private parseDefinition(definition: string, permalink: string, i18n: Language) {
+		if (definition.length < 750) return definition;
+		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
 
 }

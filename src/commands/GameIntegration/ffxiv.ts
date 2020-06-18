@@ -71,7 +71,7 @@ export default class extends RichDisplayCommand {
 
 		const TITLES = message.language.tget('COMMAND_FFXIV_CHARACTER_FIELDS');
 
-		return new UserRichDisplay(
+		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(getColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
@@ -87,26 +87,43 @@ export default class extends RichDisplayCommand {
 				.addField(TITLES.CITY_STATE, character.Town.Name, true)
 				.addField(TITLES.GRAND_COMPANY, character.GrandCompany.Company?.Name || TITLES.NONE, true)
 				.addField(TITLES.RANK, character.GrandCompany.Rank?.Name || TITLES.NONE, true)
-				.addBlankField(true))
-			.addPage((embed: MessageEmbed) => embed
-				.setTitle(TITLES.DOW_DOM_CLASSES)
-				.addField(`${SubCategoryEmotes.Tank} ${TITLES.TANK}`, tankClassValues.join('\n'), true)
-				.addField(`${SubCategoryEmotes.Healer} ${TITLES.HEALER}`, healerClassValues.join('\n'), true)
-				.addField(`${SubCategoryEmotes.Melee} ${TITLES.MELEEDPS}`, meleeDPSClassValues.join('\n'), true)
-				.addField(`${SubCategoryEmotes.phRange} ${TITLES.PHYSICALRANGEDDPS}`, phRangedDPSClassValues.join('\n'), true)
-				.addField(`${SubCategoryEmotes.magRange} ${TITLES.MAGICALRANGEDDPS}`, magRangedDPSClassValues.join('\n'), true))
-			.addPage((embed: MessageEmbed) => {
+				.addBlankField(true));
+
+		if (
+			tankClassValues.length || healerClassValues.length || meleeDPSClassValues.length
+			|| phRangedDPSClassValues.length || magRangedDPSClassValues.length
+		) {
+			display.addPage((embed: MessageEmbed) => {
+				embed.setTitle(TITLES.DOW_DOM_CLASSES);
+
+				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${TITLES.TANK}`, tankClassValues.join('\n'), true);
+				if (healerClassValues.length) embed.addField(`${SubCategoryEmotes.Healer} ${TITLES.HEALER}`, healerClassValues.join('\n'), true);
+				if (meleeDPSClassValues.length) embed.addField(`${SubCategoryEmotes.Melee} ${TITLES.MELEEDPS}`, meleeDPSClassValues.join('\n'), true);
+				if (phRangedDPSClassValues.length) embed.addField(`${SubCategoryEmotes.phRange} ${TITLES.PHYSICALRANGEDDPS}`, phRangedDPSClassValues.join('\n'), true);
+				if (magRangedDPSClassValues.length) embed.addField(`${SubCategoryEmotes.magRange} ${TITLES.MAGICALRANGEDDPS}`, magRangedDPSClassValues.join('\n'), true);
+				return embed;
+			});
+		}
+
+		if (discipleOfTheHandJobs.length) {
+			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheHandJobs;
 				embed
 					.setTitle(TITLES.DOH_CLASSES)
 					.addBlankField(true);
 				return embed;
-			})
-			.addPage((embed: MessageEmbed) => {
+			});
+		}
+
+		if (discipleOfTheLandJobs.length) {
+			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheLandJobs;
 				embed.setTitle(TITLES.DOL_CLASSES);
 				return embed;
 			});
+		}
+
+		return display;
 	}
 
 	private buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {

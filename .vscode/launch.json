@@ -4,20 +4,7 @@
 		{
 			"type": "node",
 			"request": "launch",
-			"name": "Main - Windows",
-			"args": ["${workspaceFolder}\\dist\\Skyra.js"],
-			"protocol": "inspector",
-			"internalConsoleOptions": "openOnSessionStart",
-			"env": {
-				"NODE_ENV": "development"
-			},
-			"console": "internalConsole",
-			"outputCapture": "std"
-		},
-		{
-			"type": "node",
-			"request": "launch",
-			"name": "Main - Linux",
+			"name": "Debugger",
 			"args": ["${workspaceFolder}/dist/Skyra.js"],
 			"protocol": "inspector",
 			"internalConsoleOptions": "openOnSessionStart",

@@ -50,8 +50,10 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [firstUser, secondUser]: [KeyedMemberTag, KeyedMemberTag]) {
 		// We need the UserTags to resolve the avatar and username
-		const firstUserTag = this.client.userTags.get(firstUser.id) ?? this.fetchRandomUserTag(message);
-		const secondUserTag = this.client.userTags.get(secondUser.id) ?? this.fetchRandomUserTag(message);
+		const [firstUserTag, secondUserTag] = await Promise.all([
+			this.client.userTags.fetch(firstUser.id),
+			this.client.userTags.fetch(secondUser.id)
+		]);
 
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([
@@ -125,10 +127,6 @@ export default class extends SkyraCommand {
 		} catch (error) {
 			throw `Could not download the profile avatar: ${error}`;
 		}
-	}
-
-	private fetchRandomUserTag(message: KlasaMessage) {
-		return this.client.userTags.get(message.guild!.memberTags.randomKey())!;
 	}
 
 }

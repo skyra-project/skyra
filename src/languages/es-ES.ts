@@ -2030,9 +2030,9 @@ export default class extends Language {
 			],
 			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova'],
 			reminder: `
-				Movimiento Z se puede mostrar la potencia para los movimientos de la Generación 8 porque se calcula con una tabla de conversión.
-				Si Pokémon alguna vez devuelve Movimientos Z al juego, este sería su poder teórico, sin embargo,
-				tal como está, Movimiento Z son ** NO ** en la Generación 8.`
+				Los Movimientos Z muestran la potencia para los movimientos en la Octava Generación ya que son calculados con una tabla de conversión.
+				Si Pokémon añade los Movimientos Z al juego, éstos serían sus niveles de poder teóricos. Sin embargo,
+				al día de escritura, los Movimientos Z NO están disponibles en la Octava Generación.`
 		}),
 		COMMAND_MOVE_EMBED_DATA: {
 			MOVE: 'Movimiento',

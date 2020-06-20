@@ -2019,7 +2019,11 @@ export default class extends Language {
 			explainedUsage: [
 				['move', 'The move for which you want to find data']
 			],
-			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova']
+			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova'],
+			reminder: `
+				Z-Move power may be shown for Generation 8 moves because it is calculated with a conversion table.
+				If Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands
+				Z-Moves are **NOT** in Generation 8.`
 		}),
 		COMMAND_MOVE_EMBED_DATA: {
 			MOVE: 'Move',
@@ -2036,7 +2040,9 @@ export default class extends Language {
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in Generation 8',
 			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Yes' : 'No',
 			EXTERNAL_RESOURCES: 'External Resources',
-			NONE: 'None'
+			NONE: 'None',
+			MAX_MOVE_POWER: 'Base power as MAX move (Dynamax)',
+			Z_MOVE_POWER: 'Base power as Z-Move (Z-Crystal)'
 		},
 		COMMAND_MOVE_QUERY_FAIL: (move: string) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Gets data for any given Pokémon using my Pokémon dataset.',

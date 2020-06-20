@@ -38,8 +38,13 @@ export default class extends RichDisplayCommand {
 
 	private buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
 		const embedTranslations = message.language.tget('COMMAND_MOVE_EMBED_DATA');
+		const externalSources = [
+			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
+			`[Serebii](${moveData.serebiiPage})`,
+			`[Smogon](${moveData.smogonPage})`
+		].join(' | ');
 
-		return new UserRichDisplay(new MessageEmbed()
+		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
 			.setAuthor(`${embedTranslations.MOVE} - ${toTitleCase(moveData.name)}`, POKEMON_EMBED_THUMBNAIL)
 			.setDescription(moveData.desc || moveData.shortDesc))
@@ -48,30 +53,30 @@ export default class extends RichDisplayCommand {
 				.addField(embedTranslations.BASE_POWER, moveData.basePower, true)
 				.addField(embedTranslations.PP, moveData.pp, true)
 				.addField(embedTranslations.ACCURACY, `${moveData.accuracy}%`, true)
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
-					`[Serebii](${moveData.serebiiPage})`,
-					`[Smogon](${moveData.smogonPage})`
-				].join(' | ')))
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.CATEGORY, moveData.category, true)
 				.addField(embedTranslations.PRIORITY, moveData.priority, true)
 				.addField(embedTranslations.TARGET, moveData.target, true)
 				.addField(embedTranslations.CONTEST_CONDITION, moveData.contestType ?? embedTranslations.NONE, true)
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
-					`[Serebii](${moveData.serebiiPage})`,
-					`[Smogon](${moveData.smogonPage})`
-				].join(' | ')))
-			.addPage((embed: MessageEmbed) => embed
-				.addField(embedTranslations.Z_CRYSTAL, moveData.isZ ?? embedTranslations.NONE, true)
-				.addField(embedTranslations.GMAX_POKEMON, moveData.isGMax ?? embedTranslations.NONE)
-				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(moveData.isNonstandard !== 'Past'))
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
-					`[Serebii](${moveData.serebiiPage})`,
-					`[Smogon](${moveData.smogonPage})`
-				].join(' | ')));
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources));
+
+		// If the move has zMovePower or maxMovePower then squeeze it in between as a page
+		if (moveData.zMovePower || moveData.maxMovePower) {
+			display.addPage((embed: MessageEmbed) => {
+				if (moveData.maxMovePower) embed.addField(embedTranslations.MAX_MOVE_POWER, moveData.maxMovePower);
+				if (moveData.zMovePower) embed.addField(embedTranslations.Z_MOVE_POWER, moveData.zMovePower);
+
+				embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources);
+				return embed;
+			});
+		}
+
+		return display.addPage((embed: MessageEmbed) => embed
+			.addField(embedTranslations.Z_CRYSTAL, moveData.isZ ?? embedTranslations.NONE, true)
+			.addField(embedTranslations.GMAX_POKEMON, moveData.isGMax ?? embedTranslations.NONE)
+			.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(moveData.isNonstandard !== 'Past'))
+			.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources));
 	}
 
 }

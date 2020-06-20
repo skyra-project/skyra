@@ -217,6 +217,8 @@ fragment moves on MoveEntry {
     isZ
     isGMax
     desc
+	maxMovePower
+	zMovePower
 }
 
 query getMoveDetails ($move: String!) {

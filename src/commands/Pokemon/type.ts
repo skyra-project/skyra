@@ -78,6 +78,11 @@ export default class extends RichDisplayCommand {
 
 	private buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
 		const embedTranslations = message.language.tget('COMMAND_TYPE_EMBED_DATA');
+		const externalSources = [
+			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
+			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
+			`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
+		].join(' | ');
 
 		return new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
@@ -92,11 +97,7 @@ export default class extends RichDisplayCommand {
 					'',
 					`${typeMatchups.attacking.effectlessTypes.length ? `${embedTranslations.DOES_NOT_AFFECT}: ${this.parseRegularMatchup(typeMatchups.attacking.effectlessTypes)}` : ''}`
 				].join('\n'))
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
-					`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
-					`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
-				].join(' | ')))
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.DEFENSIVE, [
 					`${embedTranslations.VULNERABLE_TO}: ${this.parseEffectiveMatchup(typeMatchups.defending.doubleEffectiveTypes, typeMatchups.defending.effectiveTypes)}`,
@@ -107,11 +108,7 @@ export default class extends RichDisplayCommand {
 					'',
 					`${typeMatchups.defending.effectlessTypes.length ? `${embedTranslations.NOT_AFFECTED_BY}: ${this.parseRegularMatchup(typeMatchups.defending.effectlessTypes)}` : ''}`
 				].join('\n'))
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
-					`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
-					`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
-				].join(' | ')));
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources));
 	}
 
 }

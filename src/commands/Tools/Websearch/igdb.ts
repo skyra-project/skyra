@@ -55,7 +55,6 @@ export default class extends RichDisplayCommand {
 					'fields name, url, summary, rating, involved_companies.developer,',
 					'involved_companies.company.name, genres.name, release_dates.date,',
 					'platforms.name, cover.url, age_ratings.rating, age_ratings.category;',
-					'where age_ratings != n;',
 					'limit 10;',
 					'offset 0;'
 				].join('')

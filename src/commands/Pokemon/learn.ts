@@ -2,11 +2,13 @@ import { LearnsetEntry, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+
+const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['learnset', 'learnall'],
@@ -17,16 +19,15 @@ import { KlasaMessage } from 'klasa';
 	usageDelim: ' ',
 	flagSupport: true
 })
-export default class extends RichDisplayCommand {
-
-	private kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
-
-	public async init() {
-		this.createCustomResolver('generation', (arg, possible, message) => {
-			if (this.kPokemonGenerations.has(arg)) return this.client.arguments.get('integer')!.run(arg, possible, message);
+@CreateResolvers([
+	[
+		'generation', (arg, possible, message) => {
+			if (kPokemonGenerations.has(arg)) return message.client.arguments.get('integer')!.run(arg, possible, message);
 			throw message.language.tget('COMMAND_LEARN_INVALID_GENERATION', arg);
-		});
-	}
+		}
+	]
+])
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

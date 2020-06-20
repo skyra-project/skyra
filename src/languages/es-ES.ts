@@ -2028,7 +2028,11 @@ export default class extends Language {
 			explainedUsage: [
 				['movimiento', 'El movimiento para el que desea buscar datos']
 			],
-			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova']
+			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova'],
+			reminder: `
+				Los Movimientos Z muestran la potencia para los movimientos en la Octava Generación ya que son calculados con una tabla de conversión.
+				Si Pokémon añade los Movimientos Z al juego, éstos serían sus niveles de poder teóricos. Sin embargo,
+				al día de escritura, los Movimientos Z NO están disponibles en la Octava Generación.`
 		}),
 		COMMAND_MOVE_EMBED_DATA: {
 			MOVE: 'Movimiento',
@@ -2045,7 +2049,9 @@ export default class extends Language {
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
 			AVAILABLE_IN_GENERATION_8_DATA: available => available ? 'Sí' : 'No',
 			EXTERNAL_RESOURCES: 'Recursos externos',
-			NONE: 'Ninguno'
+			NONE: 'Ninguno',
+			MAX_MOVE_POWER: 'Potencia base como Movimiento Dinamax (Dinamax)',
+			Z_MOVE_POWER: 'Potencia base como Movimiento Z (Cristal Z)'
 		},
 		COMMAND_MOVE_QUERY_FAIL: (move: string) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Obtiene datos de cualquier Pokémon usando mi conjunto de datos Pokémon.',

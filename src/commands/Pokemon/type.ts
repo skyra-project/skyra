@@ -1,12 +1,18 @@
 import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
 import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+
+const kPokemonTypes = new Set([
+	'bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying',
+	'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic',
+	'rock', 'steel', 'water'
+]);
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['matchup', 'weakness', 'advantage'],
@@ -15,27 +21,22 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: language => language.tget('COMMAND_TYPE_EXTENDED'),
 	usage: '<types:type{2}>'
 })
-export default class extends RichDisplayCommand {
-
-	private kPokemonTypes = new Set([
-		'bug', 'dark', 'dragon', 'electric', 'fairy', 'fighting', 'fire', 'flying',
-		'ghost', 'grass', 'ground', 'ice', 'normal', 'poison', 'psychic',
-		'rock', 'steel', 'water'
-	]);
-
-	public async init() {
-		this.createCustomResolver('type', (arg: string | string[], _, message) => {
+@CreateResolvers([
+	[
+		'type', (arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
 			if (arg.length > 2) throw message.language.tget('COMMAND_TYPE_TOO_MANY_TYPES');
 
 			for (const type of arg) {
-				if (!(this.kPokemonTypes.has(type))) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
+				if (!(kPokemonTypes.has(type))) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
 			}
 
 			return arg;
-		});
-	}
+		}
+	]
+])
+export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [types]: [Types[]]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -78,6 +79,11 @@ export default class extends RichDisplayCommand {
 
 	private buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
 		const embedTranslations = message.language.tget('COMMAND_TYPE_EMBED_DATA');
+		const externalSources = [
+			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
+			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
+			`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
+		].join(' | ');
 
 		return new UserRichDisplay(new MessageEmbed()
 			.setColor(getColor(message))
@@ -92,11 +98,7 @@ export default class extends RichDisplayCommand {
 					'',
 					`${typeMatchups.attacking.effectlessTypes.length ? `${embedTranslations.DOES_NOT_AFFECT}: ${this.parseRegularMatchup(typeMatchups.attacking.effectlessTypes)}` : ''}`
 				].join('\n'))
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
-					`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
-					`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
-				].join(' | ')))
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.DEFENSIVE, [
 					`${embedTranslations.VULNERABLE_TO}: ${this.parseEffectiveMatchup(typeMatchups.defending.doubleEffectiveTypes, typeMatchups.defending.effectiveTypes)}`,
@@ -107,11 +109,7 @@ export default class extends RichDisplayCommand {
 					'',
 					`${typeMatchups.defending.effectlessTypes.length ? `${embedTranslations.NOT_AFFECTED_BY}: ${this.parseRegularMatchup(typeMatchups.defending.effectlessTypes)}` : ''}`
 				].join('\n'))
-				.addField(embedTranslations.EXTERNAL_RESOURCES, [
-					`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
-					`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
-					`[Smogon](http://www.smogon.com/dex/sm/types/${types[0]})`
-				].join(' | ')));
+				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources));
 	}
 
 }

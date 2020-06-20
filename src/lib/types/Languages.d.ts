@@ -266,6 +266,8 @@ export interface LanguageKeys {
 		AVAILABLE_IN_GENERATION_8_DATA: (available: boolean) => string;
 		EXTERNAL_RESOURCES: string;
 		NONE: string;
+		MAX_MOVE_POWER: string;
+		Z_MOVE_POWER: string;
 	};
 	COMMAND_MOVE_QUERY_FAIL: (move: string) => string;
 	COMMAND_POKEDEX_DESCRIPTION: string;

@@ -24,6 +24,7 @@ export default class extends SkyraCommand {
 			if (randomDogData && randomDogData.status === 'success') {
 				// Just in case the image is not a valid image url then fallthrough to the catch
 				if (!IMAGE_EXTENSION.test(randomDogData.message)) throw '💥';
+
 				embed.setImage(randomDogData.message);
 			}
 		} catch {

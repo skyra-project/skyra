@@ -61,7 +61,7 @@ _Who knows, I might write a book someday for Skyra's lore._
 
 -   [Klasa's Website]
 
-## Buy us some donuts
+## Buy us some doughnuts
 
 Skyra Project is open source and always will be, even if we don't get donations. That said, we know there are amazing people who
 may still want to donate just to show their appreciation. Thanks you very much in advance!

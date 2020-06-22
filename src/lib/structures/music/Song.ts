@@ -1,8 +1,8 @@
 import { flattenSong } from '@utils/Models/ApiTransform';
 import { cleanMentions, enumerable, showSeconds } from '@utils/util';
-import { Util } from 'discord.js';
 import { Track } from 'lavalink';
 import { MusicHandler } from './MusicHandler';
+import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 
 export class Song {
 
@@ -52,7 +52,7 @@ export class Song {
 	 * The cleaned and escaped title
 	 */
 	public get safeTitle() {
-		return cleanMentions(this.queue.guild, Util.escapeMarkdown(this.title));
+		return cleanMentions(this.queue.guild, escapeMarkdown(this.title));
 	}
 
 	public get friendlyDuration(): string {
@@ -66,7 +66,7 @@ export class Song {
 		const display = nickname ?? await this.queue.client.userTags.fetch(this.requester)
 			.then(user => user.username)
 			.catch(() => this.queue.guild.language.tget('UNKNOWN_USER'));
-		return Util.escapeMarkdown(cleanMentions(this.queue.guild, display));
+		return escapeMarkdown(cleanMentions(this.queue.guild, display));
 	}
 
 	public toString(): string {

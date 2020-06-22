@@ -1,6 +1,5 @@
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { MusicCommand } from '@lib/structures/MusicCommand';
-import { Snowflake } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends MusicCommand {
@@ -28,7 +27,7 @@ export default class extends MusicCommand {
 		await music.skip(this.getContext(message));
 	}
 
-	public handleSkips(musicManager: MusicHandler, user: Snowflake): string | false {
+	public handleSkips(musicManager: MusicHandler, user: string): string | false {
 		const song = musicManager.song || musicManager.queue[0];
 		if (song.skips.has(user)) return musicManager.guild.language.tget('COMMAND_SKIP_VOTES_VOTED');
 		song.skips.add(user);

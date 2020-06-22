@@ -1828,6 +1828,7 @@ export interface LanguageKeys {
 	JUMPTO: string;
 	RESOLVER_INVALID_CHANNELNAME: (name: string) => string;
 	RESOLVER_CHANNEL_NOT_IN_GUILD: string;
+	RESOLVER_CHANNEL_NOT_IN_GUILD_SUBCOMMAND: (command: string, subcommand: string) => string;
 	RESOLVER_INVALID_ROLENAME: (name: string) => string;
 	RESOLVER_INVALID_USERNAME: (name: string) => string;
 	RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT: string;

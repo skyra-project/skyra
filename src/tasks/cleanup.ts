@@ -28,7 +28,7 @@ import { Events } from '@lib/types/Enums';
 import { Time } from '@utils/constants';
 import { Channel, TextChannel } from 'discord.js';
 import { Task } from 'klasa';
-import { binaryToID } from '@utils/External/binaryToID';
+import { Snowflake } from '@klasa/snowflake';
 
 const THRESHOLD = Time.Minute * 30;
 const EPOCH = 1420070400000;
@@ -43,7 +43,8 @@ const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
 export default class extends Task {
 
 	public run() {
-		const OLD_SNOWFLAKE = binaryToID(((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY);
+		const binary = ((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY;
+		const OLD_SNOWFLAKE = new Snowflake(binary).toString();
 		let presences = 0;
 		let guildMembers = 0;
 		let lastMessages = 0;

@@ -2,7 +2,8 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { diffWordsWithSpace } from 'diff';
-import { MessageEmbed, TextChannel, Util } from 'discord.js';
+import { MessageEmbed, TextChannel } from 'discord.js';
+import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { Event, KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
 
@@ -18,7 +19,7 @@ export default class extends Event {
 		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
 			.setColor(Colors.Amber)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
-			.splitFields(diffWordsWithSpace(Util.escapeMarkdown(old.content), Util.escapeMarkdown(message.content))
+			.splitFields(diffWordsWithSpace(escapeMarkdown(old.content), escapeMarkdown(message.content))
 				.map(result => result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value)
 				.join(' '))
 			.setFooter(`${message.language.tget('EVENTS_MESSAGE_UPDATE')} | ${(message.channel as TextChannel).name}`)

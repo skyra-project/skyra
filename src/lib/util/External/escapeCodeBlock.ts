@@ -16,8 +16,8 @@
 
 /**
  * Escapes code block markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ * @param string - text
+ * @returns The code block content to escape
  */
 
 export function escapeCodeBlock(text: string) {

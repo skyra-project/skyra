@@ -15,13 +15,11 @@
 */
 
 /**
-   * Escapes code block markdown in a string.
-   * @param {string} text Content to escape
-   * @returns {string}
-*/
+ * Escapes code block markdown in a string.
+ * @param {string} text Content to escape
+ * @returns {string}
+ */
 
 export function escapeCodeBlock(text: string) {
 	return text.replace(/```/g, '\\`\\`\\`');
 }
-
-export default escapeCodeBlock;

@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { oneToTen } from '@utils/util';
-import { Util } from 'discord.js';
+import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user]: [string]) {
 		// Escape all markdown
-		user = Util.escapeMarkdown(user);
+		user = escapeMarkdown(user);
 
 		let ratewaifu: string | undefined = undefined;
 		let rate: number | undefined = undefined;

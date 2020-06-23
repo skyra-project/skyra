@@ -15,75 +15,69 @@
  */
 
 /**
- * Escapes any Discord-flavour markdown in a string.
- * @param object - What types of markdown to escape
- * @returns The markdown block to escape
+ * The escape markdown options.
  */
 export interface EscapeMarkdownOptions {
 	/**
-	 * Whether or not to escape codeblocks.
-	 * @param boolean
+	 * Whether or not to escape codeblocks
 	 * @default true
 	 */
 	codeBlock?: boolean;
 
 	/**
-	 * Whether or not to escape inline codes.
-	 * @param boolean
+	 * Whether or not to escape inline codes
 	 * @default true
 	 */
 	inlineCode?: boolean;
 
 	/**
-	 * Whether or not to escape bold text.
-	 * @param boolean
+	 * Whether or not to escape bold text
 	 * @default true
 	 */
 	bold?: boolean;
 
-	 /**
-	 * Whether or not to escape italic text.
-	 * @param boolean
-	 * @default true
-	 */
+	/**
+	* Whether or not to escape italic text
+	* @default true
+	*/
 	italic?: boolean;
 
 	/**
-	 * Whether or not to escape underline text.
-	 * @param boolean
+	 * Whether or not to escape underline text
 	 * @default true
 	 */
 	underline?: boolean;
 
 	/**
-	 * Whether or not to escape strikethrough text.
-	 * @param boolean
+	 * Whether or not to escape strikethrough text
 	 * @default true
 	 */
 	strikethrough?: boolean;
 
 	/**
-	 * Whether or not to escape spoiler text.
-	 * @param boolean
+	 * Whether or not to escape spoiler text
 	 * @default true
 	 */
 	spoiler?: boolean;
 
 	/**
-	 * Whether or not to escape codeblock content.
-	 * @param boolean
+	 * Whether or not to escape codeblock content
 	 * @default true
 	 */
 	codeBlockContent?: boolean;
 
 	/**
-	 * Whether or not to escape inline code content.
-	 * @param boolean
+	 * Whether or not to escape inline code content
 	 * @default true
 	 */
 	inlineCodeContent?: boolean;
 }
 
+/**
+ * Escapes any Discord-flavour markdown in a string
+ * @param text Content to escape
+ * @param options What types of markdown to escape, see {@link EscapeMarkdownOptions}
+ */
 export function escapeMarkdown(
 	text: string,
 	{
@@ -142,9 +136,8 @@ export function escapeMarkdown(
 }
 
 /**
- * Escapes bold markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes bold markdown in a string
+ * @param text Content to escape
  */
 export function escapeBold(text: string): string {
 	let i = 0;
@@ -155,9 +148,8 @@ export function escapeBold(text: string): string {
 }
 
 /**
- * Escapes italic markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes italic markdown in a string
+ * @param text Content to escape
  */
 export function escapeItalic(text: string): string {
 	let i = 0;
@@ -168,9 +160,8 @@ export function escapeItalic(text: string): string {
 }
 
 /**
- * Escapes underline markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes underline markdown in a string
+ * @param text Content to escape
  */
 export function escapeUnderline(text: string): string {
 	let i = 0;
@@ -181,37 +172,32 @@ export function escapeUnderline(text: string): string {
 }
 
 /**
- * Escapes inline code markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes inline code markdown in a string
+ * @param text Content to escape
  */
-
 export function escapeInlineCode(text: string): string {
 	return text.replace(/(?<=^|[^`])`(?=[^`]|$)/g, '\\`');
 }
 
 /**
- * Escapes spoiler markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes spoiler markdown in a string
+ * @param text Content to escape
  */
 export function escapeSpoiler(text: string): string {
 	return text.replace(/\|\|/g, '\\|\\|');
 }
 
 /**
- * Escapes strikethrough markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes strikethrough markdown in a string
+ * @param text Content to escape
  */
 export function escapeStrikethrough(text: string): string {
 	return text.replace(/~~/g, '\\~\\~');
 }
 
 /**
- * Escapes code block markdown in a string.
- *
- * @param text - Content to escape
+ * Escapes code block markdown in a string
+ * @param text Content to escape
  */
 export function escapeCodeBlock(text: string) {
 	return text.replace(/```/g, '\\`\\`\\`');

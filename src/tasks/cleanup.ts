@@ -41,7 +41,7 @@ const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
 export default class extends Task {
 
 	public run() {
-		const OLD_SNOWFLAKE = Snowflake.generate(Date.now() - THRESHOLD);
+		const OLD_SNOWFLAKE = Snowflake.generate(Date.now() - THRESHOLD).toString();
 		let presences = 0;
 		let guildMembers = 0;
 		let lastMessages = 0;
@@ -58,7 +58,7 @@ export default class extends Task {
 			for (const [id, member] of guild.members) {
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
-				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE.toString()) continue;
+				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
 				guild.members.delete(id);
 				guildMembers++;
 			}
@@ -74,7 +74,7 @@ export default class extends Task {
 
 		// Per-User sweeper
 		for (const user of this.client.users.values()) {
-			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE.toString()) continue;
+			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE) continue;
 			this.client.users.delete(user.id);
 			users++;
 		}

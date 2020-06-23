@@ -31,8 +31,6 @@ import { Task } from 'klasa';
 import { Snowflake } from '@klasa/snowflake';
 
 const THRESHOLD = Time.Minute * 30;
-const EPOCH = 1420070400000;
-const EMPTY = '0000100000000000000000';
 
 // The header with the console colours
 const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
@@ -43,8 +41,8 @@ const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
 export default class extends Task {
 
 	public run() {
-		const binary = ((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY;
-		const OLD_SNOWFLAKE = new Snowflake(binary).toString();
+		// const binary = ((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY;
+		const OLD_SNOWFLAKE = Snowflake.generate(Date.now() - THRESHOLD);
 		let presences = 0;
 		let guildMembers = 0;
 		let lastMessages = 0;
@@ -61,7 +59,7 @@ export default class extends Task {
 			for (const [id, member] of guild.members) {
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
-				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
+				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE.toString()) continue;
 				guild.members.delete(id);
 				guildMembers++;
 			}
@@ -77,7 +75,7 @@ export default class extends Task {
 
 		// Per-User sweeper
 		for (const user of this.client.users.values()) {
-			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE) continue;
+			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE.toString()) continue;
 			this.client.users.delete(user.id);
 			users++;
 		}

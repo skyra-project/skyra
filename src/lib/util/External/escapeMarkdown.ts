@@ -16,7 +16,7 @@
 
 /**
  * Escapes any Discord-flavour markdown in a string.
- * @param object - [options=\{\}] What types of markdown to escape
+ * @param object - What types of markdown to escape
  * @returns The markdown block to escape
  */
 export interface EscapeMarkdownOptions {
@@ -96,7 +96,7 @@ export function escapeMarkdown(
 		spoiler = true,
 		codeBlockContent = true,
 		inlineCodeContent = true
-	} = {}
+	}: EscapeMarkdownOptions
 ): string {
 	if (!codeBlockContent) {
 		return text
@@ -146,7 +146,7 @@ export function escapeMarkdown(
  *
  * @param text - Content to escape
  */
-export function escapeBold(text: string) {
+export function escapeBold(text: string): string {
 	let i = 0;
 	return text.replace(/\*\*(\*)?/g, (_, match) => {
 		if (match) return ++i % 2 ? `${match}\\*\\*` : `\\*\\*${match}`;
@@ -159,7 +159,7 @@ export function escapeBold(text: string) {
  *
  * @param text - Content to escape
  */
-export function escapeItalic(text: string) {
+export function escapeItalic(text: string): string {
 	let i = 0;
 	return text = text.replace(/(?<=^|[^*])\*([^*]|\*\*|$)/g, (_, match) => {
 		if (match === '**' || match === '__') return ++i % 2 ? `\\*${match}` : `${match}\\*`;
@@ -172,7 +172,7 @@ export function escapeItalic(text: string) {
  *
  * @param text - Content to escape
  */
-export function escapeUnderline(text: string) {
+export function escapeUnderline(text: string): string {
 	let i = 0;
 	return text.replace(/__(_)?/g, (_, match) => {
 		if (match) return ++i % 2 ? `${match}\\_\\_` : `\\_\\_${match}`;
@@ -186,7 +186,7 @@ export function escapeUnderline(text: string) {
  * @param text - Content to escape
  */
 
-export function escapeInlineCode(text: string) {
+export function escapeInlineCode(text: string): string {
 	return text.replace(/(?<=^|[^`])`(?=[^`]|$)/g, '\\`');
 }
 
@@ -195,7 +195,7 @@ export function escapeInlineCode(text: string) {
  *
  * @param text - Content to escape
  */
-export function escapeSpoiler(text: string) {
+export function escapeSpoiler(text: string): string {
 	return text.replace(/\|\|/g, '\\|\\|');
 }
 
@@ -204,7 +204,7 @@ export function escapeSpoiler(text: string) {
  *
  * @param text - Content to escape
  */
-export function escapeStrikethrough(text: string) {
+export function escapeStrikethrough(text: string): string {
 	return text.replace(/~~/g, '\\~\\~');
 }
 

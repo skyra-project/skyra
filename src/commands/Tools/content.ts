@@ -3,7 +3,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { getContent } from '@utils/util';
 import { TextChannel } from 'discord.js';
-import { escapeCodeBlock } from '@utils/External/escapeCodeBlock';
+import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
 import { KlasaMessage, Serializer } from 'klasa';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;

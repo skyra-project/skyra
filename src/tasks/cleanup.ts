@@ -41,7 +41,6 @@ const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
 export default class extends Task {
 
 	public run() {
-		// const binary = ((Date.now() - THRESHOLD) - EPOCH).toString(2).padStart(42, '0') + EMPTY;
 		const OLD_SNOWFLAKE = Snowflake.generate(Date.now() - THRESHOLD);
 		let presences = 0;
 		let guildMembers = 0;

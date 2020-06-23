@@ -18,7 +18,7 @@ export default class extends MusicCommand {
 	public inhibit(message: KlasaMessage) {
 		throw message.language.tget('INHIBITOR_DISABLED_GLOBAL');
 		// eslint-disable-next-line no-unreachable
-		return true;
+		return true; // lgtm [js/unreachable-statement]
 	}
 
 }

@@ -2,7 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { getContent } from '@utils/util';
-import { TextChannel, Util } from 'discord.js';
+import { TextChannel } from 'discord.js';
+import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
 import { KlasaMessage, Serializer } from 'klasa';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
@@ -32,7 +33,7 @@ export default class extends SkyraCommand {
 		const attachments = target.attachments.size
 			? target.attachments.map(att => `📁 <${att.url}>`).join('\n')
 			: '';
-		const content = Util.escapeCodeBlock(getContent(target) || '');
+		const content = escapeCodeBlock(getContent(target) || '');
 
 		const sendAs = message.flagArgs.output || message.flagArgs['output-to'] || (message.flagArgs.log ? 'log' : null);
 		return handleMessage<Partial<ContentExtraData>>(message, {

@@ -16,20 +16,73 @@
 
 /**
  * Escapes any Discord-flavour markdown in a string.
- * @param {string} text Content to escape
- * @param {Object} [options={}] What types of markdown to escape
- * @param {boolean} [options.codeBlock=true] Whether to escape code blocks or not
- * @param {boolean} [options.inlineCode=true] Whether to escape inline code or not
- * @param {boolean} [options.bold=true] Whether to escape bolds or not
- * @param {boolean} [options.italic=true] Whether to escape italics or not
- * @param {boolean} [options.underline=true] Whether to escape underlines or not
- * @param {boolean} [options.strikethrough=true] Whether to escape strikethroughs or not
- * @param {boolean} [options.spoiler=true] Whether to escape spoilers or not
- * @param {boolean} [options.codeBlockContent=true] Whether to escape text inside code blocks or not
- * @param {boolean} [options.inlineCodeContent=true] Whether to escape text inside inline code or not
- * @returns {string}
+ * @param object - [options=\{\}] What types of markdown to escape
+ * @returns The markdown block to escape
  */
-import { escapeCodeBlock } from '@utils/External/escapeCodeBlock';
+export interface EscapeMarkdownOptions {
+	/**
+	 * Whether or not to escape codeblocks.
+	 * @param boolean
+	 * @default true
+	 */
+	codeBlock?: boolean;
+
+	/**
+	 * Whether or not to escape inline codes.
+	 * @param boolean
+	 * @default true
+	 */
+	inlineCode?: boolean;
+
+	/**
+	 * Whether or not to escape bold text.
+	 * @param boolean
+	 * @default true
+	 */
+	bold?: boolean;
+
+	 /**
+	 * Whether or not to escape italic text.
+	 * @param boolean
+	 * @default true
+	 */
+	italic?: boolean;
+
+	/**
+	 * Whether or not to escape underline text.
+	 * @param boolean
+	 * @default true
+	 */
+	underline?: boolean;
+
+	/**
+	 * Whether or not to escape strikethrough text.
+	 * @param boolean
+	 * @default true
+	 */
+	strikethrough?: boolean;
+
+	/**
+	 * Whether or not to escape spoiler text.
+	 * @param boolean
+	 * @default true
+	 */
+	spoiler?: boolean;
+
+	/**
+	 * Whether or not to escape codeblock content.
+	 * @param boolean
+	 * @default true
+	 */
+	codeBlockContent?: boolean;
+
+	/**
+	 * Whether or not to escape inline code content.
+	 * @param boolean
+	 * @default true
+	 */
+	inlineCodeContent?: boolean;
+}
 
 export function escapeMarkdown(
 	text: string,
@@ -41,8 +94,8 @@ export function escapeMarkdown(
 		underline = true,
 		strikethrough = true,
 		spoiler = true,
-	  codeBlockContent = true,
-	  inlineCodeContent = true
+		codeBlockContent = true,
+		inlineCodeContent = true
 	} = {}
 ): string {
 	if (!codeBlockContent) {
@@ -90,10 +143,10 @@ export function escapeMarkdown(
 
 /**
  * Escapes bold markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ *
+ * @param text - Content to escape
  */
-function escapeBold(text: string) {
+export function escapeBold(text: string) {
 	let i = 0;
 	return text.replace(/\*\*(\*)?/g, (_, match) => {
 		if (match) return ++i % 2 ? `${match}\\*\\*` : `\\*\\*${match}`;
@@ -103,10 +156,10 @@ function escapeBold(text: string) {
 
 /**
  * Escapes italic markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ *
+ * @param text - Content to escape
  */
-function escapeItalic(text: string) {
+export function escapeItalic(text: string) {
 	let i = 0;
 	return text = text.replace(/(?<=^|[^*])\*([^*]|\*\*|$)/g, (_, match) => {
 		if (match === '**' || match === '__') return ++i % 2 ? `\\*${match}` : `${match}\\*`;
@@ -116,10 +169,10 @@ function escapeItalic(text: string) {
 
 /**
  * Escapes underline markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ *
+ * @param text - Content to escape
  */
-function escapeUnderline(text: string) {
+export function escapeUnderline(text: string) {
 	let i = 0;
 	return text.replace(/__(_)?/g, (_, match) => {
 		if (match) return ++i % 2 ? `${match}\\_\\_` : `\\_\\_${match}`;
@@ -129,28 +182,37 @@ function escapeUnderline(text: string) {
 
 /**
  * Escapes inline code markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ *
+ * @param text - Content to escape
  */
 
-function escapeInlineCode(text: string) {
+export function escapeInlineCode(text: string) {
 	return text.replace(/(?<=^|[^`])`(?=[^`]|$)/g, '\\`');
 }
 
 /**
  * Escapes spoiler markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ *
+ * @param text - Content to escape
  */
-function escapeSpoiler(text: string) {
+export function escapeSpoiler(text: string) {
 	return text.replace(/\|\|/g, '\\|\\|');
 }
 
 /**
  * Escapes strikethrough markdown in a string.
- * @param {string} text Content to escape
- * @returns {string}
+ *
+ * @param text - Content to escape
  */
-function escapeStrikethrough(text: string) {
+export function escapeStrikethrough(text: string) {
 	return text.replace(/~~/g, '\\~\\~');
+}
+
+/**
+ * Escapes code block markdown in a string.
+ *
+ * @param text - Content to escape
+ */
+export function escapeCodeBlock(text: string) {
+	return text.replace(/```/g, '\\`\\`\\`');
 }

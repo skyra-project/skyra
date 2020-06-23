@@ -76,22 +76,37 @@ export interface EscapeMarkdownOptions {
 /**
  * Escapes any Discord-flavour markdown in a string
  * @param text Content to escape
- * @param options What types of markdown to escape, see {@link EscapeMarkdownOptions}
+ * @param options What types of markdown to escape. Any undefined options are defaulted to `true`
  */
 export function escapeMarkdown(
 	text: string,
-	{
-		codeBlock = true,
-		inlineCode = true,
-		bold = true,
-		italic = true,
-		underline = true,
-		strikethrough = true,
-		spoiler = true,
-		codeBlockContent = true,
-		inlineCodeContent = true
-	}: EscapeMarkdownOptions
+	options: Partial<EscapeMarkdownOptions> = {
+		codeBlock: true,
+		inlineCode: true,
+		bold: true,
+		italic: true,
+		underline: true,
+		strikethrough: true,
+		spoiler: true,
+		codeBlockContent: true,
+		inlineCodeContent: true
+	}
 ): string {
+
+	// If a partial object is passed then we should still set the values of the other properties
+	if (!Reflect.has(options, 'codeBlock')) options.codeBlock = true;
+	if (!Reflect.has(options, 'inlineCode')) options.inlineCode = true;
+	if (!Reflect.has(options, 'bold')) options.bold = true;
+	if (!Reflect.has(options, 'italic')) options.italic = true;
+	if (!Reflect.has(options, 'underline')) options.underline = true;
+	if (!Reflect.has(options, 'strikethrough')) options.strikethrough = true;
+	if (!Reflect.has(options, 'spoiler')) options.spoiler = true;
+	if (!Reflect.has(options, 'codeBlockContent')) options.codeBlockContent = true;
+	if (!Reflect.has(options, 'inlineCodeContent')) options.inlineCodeContent = true;
+
+	// Destructure the values out of the object, which is now safe to do as every value has been set somewhere
+	const { codeBlock, inlineCode, bold, italic, underline, strikethrough, spoiler, codeBlockContent, inlineCodeContent } = options;
+
 	if (!codeBlockContent) {
 		return text
 			.split('```')

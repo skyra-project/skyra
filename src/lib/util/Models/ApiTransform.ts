@@ -314,7 +314,8 @@ export function flattenMusicHandler(handler: MusicHandler): FlattenedMusicHandle
 		voiceChannel: voiceChannel === null ? null : voiceChannel.id,
 		song: handler.song === null ? null : handler.song.toJSON(),
 		position: handler.position,
-		status: handler.player.status,
+		playing: handler.playing ?? false,
+		paused: handler.paused ?? false,
 		queue: handler.queue.map(q => q.toJSON()),
 		volume: handler.volume,
 		replay: handler.replay
@@ -325,7 +326,8 @@ export interface FlattenedMusicHandler {
 	voiceChannel: string | null;
 	song: FlattenedSong | null;
 	position: number;
-	status: number;
+	playing: boolean;
+	paused: boolean;
 	replay: boolean;
 	volume: number;
 	queue: readonly FlattenedSong[];

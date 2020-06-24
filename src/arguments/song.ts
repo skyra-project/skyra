@@ -1,6 +1,6 @@
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Argument, KlasaMessage, Possible } from 'klasa';
-import { Track } from 'lavalink';
+import type { TrackData } from 'lavacord';
 
 export default class extends Argument {
 
@@ -17,7 +17,7 @@ export default class extends Argument {
 		arg = arg.replace(/^<(.+)>$/g, '$1');
 		const parsedURL = this.parseURL(arg);
 		let returnAll = false;
-		let tracks: Track[] = [];
+		let tracks: TrackData[] = [];
 		let soundcloud = true;
 		if (parsedURL) {
 			tracks = await this.fetchSongs(message, remainingUserEntries, arg);
@@ -63,7 +63,7 @@ export default class extends Argument {
 		return Math.max(0, maximumEntriesPerUser - userEntries);
 	}
 
-	private filter(message: KlasaMessage, remainingUserEntries: number, tracks: Track[]) {
+	private filter(message: KlasaMessage, remainingUserEntries: number, tracks: TrackData[]) {
 		if (message.member!.isDJ) return tracks.slice(0, remainingUserEntries);
 
 		const maximumDuration = message.guild!.settings.get(GuildSettings.Music.MaximumDuration);

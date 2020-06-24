@@ -1,38 +1,30 @@
-/**
- * The basic lavalink node
- */
-export interface LavalinkEvent {
+import { LavalinkEvent as RawLLEvent } from 'lavacord';
+
+export interface LavalinkEvent extends RawLLEvent {
 	op: string;
-	type?: string;
 	guildId: string;
 }
 
-export interface LavalinkStartEvent extends LavalinkEvent {
-	track: string;
-}
-
-export interface LavalinkEndEvent extends LavalinkEvent {
-	track: string;
-	reason: string;
-}
-
 export interface LavalinkExceptionEvent extends LavalinkEvent {
+	op: 'TrackExceptionEvent';
 	track: string;
 	error: string;
 }
 
 export interface LavalinkStuckEvent extends LavalinkEvent {
+	op: 'TrackStuckEvent';
 	track: string;
 	thresholdMs: number;
 }
 
 export interface LavalinkWebSocketClosedEvent extends LavalinkEvent {
+	op: 'WebSocketClosedEvent';
 	code: number;
-	reason: string;
 	byRemote: boolean;
 }
 
 export interface LavalinkPlayerUpdateEvent extends LavalinkEvent {
+	op: 'playerUpdate';
 	type: never;
 	state: {
 		time: number;
@@ -40,32 +32,8 @@ export interface LavalinkPlayerUpdateEvent extends LavalinkEvent {
 	};
 }
 
-export interface LavalinkDestroyEvent extends LavalinkEvent {
+export interface LavalinkCloseEvent extends LavalinkEvent {
 	type: never;
-}
-
-/**
- * Check if it's a start event
- * @param x The event to check
- */
-export function isTrackStartEvent(x: LavalinkEvent): x is LavalinkStartEvent {
-	return x.type === 'TrackStartEvent';
-}
-
-/**
- * Check if it's an end event
- * @param x The event to check
- */
-export function isTrackEndEvent(x: LavalinkEvent): x is LavalinkEndEvent {
-	return x.type === 'TrackEndEvent';
-}
-
-/**
- * Check if it's an exception event
- * @param x The event to check
- */
-export function isTrackExceptionEvent(x: LavalinkEvent): x is LavalinkExceptionEvent {
-	return x.type === 'TrackExceptionEvent';
 }
 
 /**
@@ -82,12 +50,4 @@ export function isTrackStuckEvent(x: LavalinkEvent): x is LavalinkStuckEvent {
  */
 export function isWebSocketClosedEvent(x: LavalinkEvent): x is LavalinkWebSocketClosedEvent {
 	return x.type === 'WebSocketClosedEvent';
-}
-
-/**
- * Check if it's a player update event
- * @param x The event to check
- */
-export function isPlayerUpdate(x: LavalinkEvent): x is LavalinkPlayerUpdateEvent {
-	return x.op === 'playerUpdate';
 }

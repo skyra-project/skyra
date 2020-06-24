@@ -20,12 +20,17 @@ export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
 export const REDIRECT_URI = 'http://localhost:3000/oauth/callback';
 export const SCOPE = 'identify guilds';
-export const LAVALINK_PASSWORD = '';
 export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
 export const PGSQL_DATABASE_NAME = '';
 export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
+
+export const LAVALINK_HOST = 'localhost';
+export const LAVALINK_PORT = '2333';
+export const LAVALINK_PASSWORD = 'skyra';
+
+// TODO: Remove this object when moving to TypeORM
 export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
@@ -84,14 +89,14 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		'TYPING_START',
 		'USER_UPDATE'
 	],
-	lavalink: {
-		hosts: {
-			rest: 'http://IP:REST_PORT',
-			ws: 'ws://IP:WS_PORT'
-		},
-		password: LAVALINK_PASSWORD,
-		userID: CLIENT_ID
-	},
+	lavalink: [
+		{
+			id: CLIENT_ID,
+			host: LAVALINK_HOST,
+			port: LAVALINK_PORT,
+			password: LAVALINK_PASSWORD
+		}
+	],
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,

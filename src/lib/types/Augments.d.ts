@@ -7,11 +7,12 @@ import { UserTags } from '@utils/Cache/UserTags';
 import { ConnectFourManager } from '@utils/Games/ConnectFourManager';
 import { Leaderboard } from '@utils/Leaderboard';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Twitch } from '@utils/Notifications/Twitch';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
-import { BaseNodeOptions, Node as Lavalink } from 'lavalink';
+import { LavalinkNodeOptions } from 'lavacord';
 import { PoolConfig } from 'pg';
 import { Client as VezaClient } from 'veza';
 import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
@@ -28,7 +29,7 @@ declare module 'discord.js' {
 		giveaways: GiveawayManager;
 		invites: InviteStore;
 		connectFour: ConnectFourManager;
-		lavalink: Lavalink | null;
+		lavalink: LavalinkManager;
 		userTags: UserTags;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: VezaClient;
@@ -98,7 +99,7 @@ declare module 'klasa' {
 			role?: number;
 			everyone?: number;
 		};
-		lavalink?: BaseNodeOptions;
+		lavalink?: LavalinkNodeOptions[];
 	}
 
 	interface PieceDefaults {

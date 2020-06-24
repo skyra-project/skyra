@@ -109,9 +109,6 @@ export default class extends SkyraCommand {
 	}
 
 	private decodeSnowflake(snowflake: string) {
-
-		// @ts-expect-error 2737
-		// eslint-disable-next-line no-undef
 		return (BigInt(snowflake) >> 22n) + 1420070400000n;
 	}
 

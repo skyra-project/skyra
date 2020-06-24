@@ -1,31 +1,48 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 import { Permissions, VoiceChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 const { FLAGS } = Permissions;
 
+@ApplyOptions<MusicCommandOptions>({
+	aliases: ['connect'],
+	description: language => language.tget('COMMAND_JOIN_DESCRIPTION')
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['connect'],
-			description: language => language.tget('COMMAND_JOIN_DESCRIPTION'),
-			music: ['USER_VOICE_CHANNEL']
-		});
-	}
-
+	@requireUserInVoiceChannel()
 	public async run(message: KlasaMessage) {
+		// Get the voice channel the member is in
 		const { channel } = message.member!.voice;
+
+		// If the member is not in a voice channel then throw
 		if (!channel) throw message.language.tget('COMMAND_JOIN_NO_VOICECHANNEL');
 
-		let skyraVoiceChannel: VoiceChannel | undefined = undefined;
-		if (message.guild!.music.playing && (skyraVoiceChannel = message.guild!.music.voiceChannel!)) {
-			if (channel.id === skyraVoiceChannel.id) throw message.language.tget('COMMAND_JOIN_VOICE_SAME');
-			throw message.language.tget('COMMAND_JOIN_VOICE_DIFFERENT');
+		// Check if the bot is already playing in this guild
+		if (message.guild!.music.playing) {
+			throw message.language.tget(
+				channel.id === message.guild!.music.voiceChannel!.id
+					? 'COMMAND_JOIN_VOICE_SAME'
+					: 'COMMAND_JOIN_VOICE_DIFFERENT'
+			);
 		}
+
+		// Ensure Skyra has the correct permissions to play music
 		this.resolvePermissions(message, channel);
 
+		// Set the ChannelID to the current channel
 		message.guild!.music.channelID = message.channel.id;
-		await message.guild!.music.connect(channel, this.getContext(message));
+
+		// Check if the MusicHandler already has a voice channel and a player is present
+		if (message.guild!.music.voiceChannel && message.guild!.music.player) {
+			// Switch voice channels
+			await message.guild!.music.switch(channel, this.getContext(message));
+		} else {
+			// Connect to Lavalink and join the voice channel
+			await message.guild!.music.connect(channel, this.getContext(message));
+		}
+
 	}
 
 	public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

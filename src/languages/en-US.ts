@@ -314,6 +314,20 @@ export default class extends Language {
 		COMMAND_JOIN_VOICE_NO_SPEAK: `${REDCROSS} I can connect... but not speak. Please turn on this permission so I can emit music.`,
 		COMMAND_JOIN_VOICE_SAME: `${REDCROSS} Turn on your volume! I am playing music there!`,
 		COMMAND_LEAVE_DESCRIPTION: 'Leaves the voice channel.',
+		COMMAND_LEAVE_EXTENDED: builder.display('leave', {
+			extendedHelp: `Use this command to have Skyra leave the current voice channel.
+			By default I will leave the channel, forget about the currently playing song, but leave the queue intact.
+			This means that once you do \`Skyra, play\` after the leave command, I will continue playing with the first song that was on the queue before I left.
+
+			This default behaviour can be modified with flags:
+			\`--removeall\` or \`--ra\` to follow the default behavior as well clear the queue, next time you want me to start playing you will have to build a new queue`,
+			examples: [
+				'leave',
+				'leave --removeall',
+				'leave --ra',
+				'leave --soft'
+			]
+		}, true),
 		COMMAND_LEAVE_SUCCESS: channel => `${GREENTICK} Successfully left the voice channel ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: 'Pauses the current song.',
 		COMMAND_PAUSE_SUCCESS: `${GREENTICK} Paused`,
@@ -346,6 +360,7 @@ export default class extends Language {
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `There was a track going on! Playing it back! Now playing: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `${REDCROSS} Hey! The disk is already spinning!`,
+		COMMAND_PLAY_QUEUE_EMPTY: 'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
 		COMMAND_PLAYING_DESCRIPTION: 'Get information from the current song.',
 		COMMAND_PLAYING_DURATION: time => `**Duration**: ${time}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: `${REDCROSS} Are you speaking to me? Because my deck is empty...`,
@@ -355,11 +370,15 @@ export default class extends Language {
 			? 'This is your JAM isn\'t it? Don\'t you worry, we will repeat this on and on and on!'
 			: 'I was actually getting tired of this too, but I didn\'t want to say anything.',
 		COMMAND_QUEUE_DESCRIPTION: 'Check the queue list.',
-		COMMAND_QUEUE_EMPTY: 'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
 		COMMAND_QUEUE_LAST: 'There are no more songs! After the one playing is over, the session will end!',
 		COMMAND_QUEUE_TITLE: guildname => `Music queue for ${guildname}`,
 		COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
-		COMMAND_QUEUE_NOWPLAYING: (duration, title, url, requester) => `\`${duration}\` | [${title}](${url}) │ Requester: **${requester}**.`,
+		COMMAND_QUEUE_NOWPLAYING: ({ duration, title, url, requester, timeRemaining }) => [
+			duration ? `\`${duration}\`` : 'Live Stream',
+			`[${title}](${url})`,
+			`Requester: **${requester}**`,
+			timeRemaining ? `🕰 Time remaining: ${timeRemaining}.` : null
+		].filter(Boolean).join(' | '),
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
@@ -416,22 +435,18 @@ export default class extends Language {
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Check how much time is left for the song to end.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: 'Are you speaking to me? Because my deck is empty...',
-		COMMAND_PLAYING_TIME_STREAM: 'The current song is a stream, it doesn\'t have any remaining time.',
-		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Time remaining: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: 'Manage the volume for current song.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
 
-		INHIBITOR_MUSIC_QUEUE_EMPTY: 'The queue\'s empty! The session will start as soon as we have some songs queued.',
-		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: 'The queue\'s almost empty! Please add some to keep the spirit of this session still up!',
-		INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: 'The queue\'s paused! Come back when you want to fire the session up again!',
-		INHIBITOR_MUSIC_NOT_PLAYING_STOPPED: 'The queue\'s empty! I\'m pretty sure it\'s not playing anything!',
-		INHIBITOR_MUSIC_NOT_PAUSED_PLAYING: 'The queue\'s playing and the session is still up \'till the night ends!',
-		INHIBITOR_MUSIC_NOT_PAUSED_STOPPED: 'The queue\'s empty! I\'ll take that as the session is chill!',
-		INHIBITOR_MUSIC_DJ_MEMBER: 'I believe this is something only a moderator or a deejay of this session is supposed to do!',
-		INHIBITOR_MUSIC_USER_VOICE_CHANNEL: 'Hey, I need you to join a voice channel before I can run this command!',
-		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: 'I am afraid I need to be in a voice channel to operate this command, please show me the way!',
-		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: 'Hey! It looks like you\'re not in the same voice channel as me! Please come join me!',
+		INHIBITOR_MUSIC_QUEUE_EMPTY: `${REDCROSS} The queue\'s empty! The session will start as soon as we have some songs queued.`,
+		INHIBITOR_MUSIC_NOT_PLAYING: `${REDCROSS} Hmm, doesn't look like I'm playing anything right now.`,
+		INHIBITOR_MUSIC_PAUSED: `${REDCROSS} The queue's playing and the session is still up 'till the night ends!`,
+		INHIBITOR_MUSIC_DJ_MEMBER: `${REDCROSS} I believe this is something only a moderator or a deejay of this session is supposed to do!`,
+		INHIBITOR_MUSIC_USER_VOICE_CHANNEL: `${REDCROSS} Hey, I need you to join a voice channel before I can run this command!`,
+		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: `${REDCROSS} I am afraid I need to be in a voice channel to operate this command, please show me the way!`,
+		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: `${REDCROSS} Hey! It looks like you\'re not in the same voice channel as me! Please come join me!`,
+		INHIBITOR_MUSIC_NOTHING_PLAYING: `${REDCROSS} Looks like nothing is playing right now, how about you start the party 🎉?`,
 
 		MUSICMANAGER_FETCH_NO_ARGUMENTS: 'I need you to give me the name of a song!',
 		MUSICMANAGER_FETCH_NO_MATCHES: 'I\'m sorry but I wasn\'t able to find the track!',
@@ -439,13 +454,9 @@ export default class extends Language {
 		MUSICMANAGER_TOO_MANY_SONGS: `${REDCROSS} Woah there, you are adding more songs than allowed!`,
 		MUSICMANAGER_SETVOLUME_SILENT: 'Woah, you can just leave the voice channel if you want silence!',
 		MUSICMANAGER_SETVOLUME_LOUD: 'I\'ll be honest, an airplane\'s nacelle would be less noisy than this!',
-		MUSICMANAGER_PLAY_NO_VOICECHANNEL: 'Where am I supposed to play the music? I am not in a voice channel!',
 		MUSICMANAGER_PLAY_NO_SONGS: 'No songs left in the queue!',
 		MUSICMANAGER_PLAY_PLAYING: 'Decks\' spinning, can\'t you hear it?',
-		MUSICMANAGER_PLAY_DISCONNECTION: 'I got disconnected forcefully!',
-		MUSICMANAGER_ERROR: error => `Something happened!\n${error}`,
 		MUSICMANAGER_STUCK: milliseconds => `${LOADING} Hold on, I got a little problem, I'll be back in: ${duration(milliseconds)}!`,
-		MUSICMANAGER_CLOSE: 'Whoops, looks like I got a little problem with Discord!',
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
 		COMMAND_CONF_MENU_RENDER_AT_FOLDER: path => `Currently at: \\📁 ${path}`,
@@ -1281,7 +1292,7 @@ export default class extends Language {
 
 		COMMAND_CAPITALSMODE_DESCRIPTION: 'Manage this guild\'s flags for the caps filter.',
 		COMMAND_CAPITALSMODE_EXTENDED: builder.display('capitalsMode', {
-			extendedHelp: `The capitalsMode command manages the behaviour of the caps system.
+			extendedHelp: `The capitalsMode command manages the behavior of the caps system.
 				The minimum amount of characters before filtering can be set with \`Skyra, settings set selfmod.capitals.minimum <number>\`.
 				The percentage of uppercase letters can be set with \`Skyra, settings set selfmod.capitals.maximum <number>\`.`,
 			explainedUsage: [
@@ -1315,7 +1326,7 @@ export default class extends Language {
 		}),
 		COMMAND_FILTERMODE_DESCRIPTION: 'Manage this server\'s word filter modes.',
 		COMMAND_FILTERMODE_EXTENDED: builder.display('filterMode', {
-			extendedHelp: `The filterMode command manages the behaviour of the word filter system.
+			extendedHelp: `The filterMode command manages the behavior of the word filter system.
 				Run \`Skyra, help filter\` for how to add words.`,
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
@@ -1340,9 +1351,9 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
-		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behaviour for the invite link filter.',
+		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behavior for the invite link filter.',
 		COMMAND_INVITEMODE_EXTENDED: builder.display('inviteMode', {
-			extendedHelp: 'The inviteMode command manages the behaviour of the word filter system.',
+			extendedHelp: 'The inviteMode command manages the behavior of the word filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1366,9 +1377,9 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
-		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behaviour for the link filter.',
+		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behavior for the link filter.',
 		COMMAND_LINKMODE_EXTENDED: builder.display('linkMode', {
-			extendedHelp: 'The linkMode command manages the behaviour of the link system.',
+			extendedHelp: 'The linkMode command manages the behavior of the link system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1392,9 +1403,9 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
-		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behaviour for the message filter system.',
+		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behavior for the message filter system.',
 		COMMAND_MESSAGEMODE_EXTENDED: builder.display('messageMode', {
-			extendedHelp: 'The messageMode command manages the behaviour of the message filter system.',
+			extendedHelp: 'The messageMode command manages the behavior of the message filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1418,9 +1429,9 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
-		COMMAND_NEWLINEMODE_DESCRIPTION: 'Manage the behaviour for the new line filter system.',
+		COMMAND_NEWLINEMODE_DESCRIPTION: 'Manage the behavior for the new line filter system.',
 		COMMAND_NEWLINEMODE_EXTENDED: builder.display('newLineMode', {
-			extendedHelp: `The newLineMode command manages the behaviour of the new line filter system.
+			extendedHelp: `The newLineMode command manages the behavior of the new line filter system.
 				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.maximum <number>\``,
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
@@ -1445,9 +1456,9 @@ export default class extends Language {
 				'threshold-duration 30s'
 			]
 		}),
-		COMMAND_REACTIONMODE_DESCRIPTION: 'Manage the behaviour for the reaction filter system.',
+		COMMAND_REACTIONMODE_DESCRIPTION: 'Manage the behavior for the reaction filter system.',
 		COMMAND_REACTIONMODE_EXTENDED: builder.display('reactionMode', {
-			extendedHelp: 'The reactionMode command manages the behaviour of the reaction filter system.',
+			extendedHelp: 'The reactionMode command manages the behavior of the reaction filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],

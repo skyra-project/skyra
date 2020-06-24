@@ -3,10 +3,10 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { SubscriptionName } from '@lib/websocket/types';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
-import { enumerable } from '@utils/util';
+import { enumerable, fetch, FetchResultTypes } from '@utils/util';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { LoadType, Status, Track } from 'lavalink';
+import { LoadType, TrackData, TrackResponse } from 'lavacord';
 import { Song } from './Song';
 
 export class MusicHandler {
@@ -29,13 +29,12 @@ export class MusicHandler {
 	public song: Song | null = null;
 
 	public get player() {
-		return this.client.lavalink!.players.get(this.guild.id);
+		return this.client.lavalink.players.get(this.guild.id);
 	}
 
 	public get canPlay() { return Boolean(this.song || this.queue.length); }
-	public get playing() { return this.player.status === Status.PLAYING; }
-	public get paused() { return this.player.status === Status.PAUSED; }
-	public get ended() { return this.player.status === Status.ENDED; }
+	public get playing() { return this.player?.playing; }
+	public get paused() { return this.player?.paused; }
 
 	public get channel() {
 		return (this.channelID && this.client.channels.get(this.channelID) as TextChannel) || null;
@@ -77,7 +76,7 @@ export class MusicHandler {
 		this.guild = guild;
 	}
 
-	public add(user: string, song: Track[], context: MusicHandlerRequestContext | null = null) {
+	public add(user: string, song: TrackData[], context: MusicHandlerRequestContext | null = null) {
 		const parsedSongs = song.map(info => new Song(this, info, user));
 		this.queue.push(...parsedSongs);
 		this.client.emit(Events.MusicAdd, this, parsedSongs, context);
@@ -85,7 +84,7 @@ export class MusicHandler {
 	}
 
 	public async fetch(song: string) {
-		const response = await this.client.lavalink!.load(song);
+		const response = await this.getSongs(song);
 		if (response.loadType === LoadType.NO_MATCHES) throw this.guild.language.tget('MUSICMANAGER_FETCH_NO_MATCHES');
 		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild.language.tget('MUSICMANAGER_FETCH_LOAD_FAILED');
 		return response.tracks;
@@ -102,7 +101,7 @@ export class MusicHandler {
 	public async setVolume(volume: number, context: MusicHandlerRequestContext | null = null) {
 		if (volume <= 0) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
 		if (volume > 200) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
-		await this.player.setVolume(volume);
+		await this.player!.volume(volume);
 		this.client.emit(Events.MusicSongVolumeUpdate, this, this.volume, volume, context);
 		this.volume = volume;
 		return this;
@@ -118,32 +117,67 @@ export class MusicHandler {
 	}
 
 	public async connect(voiceChannel: VoiceChannel, context: MusicHandlerRequestContext | null = null) {
-		await this.player.join(voiceChannel.id, { deaf: true });
+		// Join channel and initiate the player for this guild
+		await this.client.lavalink.join(
+			{ guild: voiceChannel.guild.id, channel: voiceChannel.id, node: this.client.lavalink.idealNodes[0].id },
+			{ selfdeaf: true }
+		);
+
+		if (this.player) {
+			// Handle all the player events
+			this.player
+				.on('playerUpdate', data => this.client.emit(Events.LavalinkPlayerUpdate, this, data))
+				.on('start', data => this.client.emit(Events.LavalinkStart, this, data))
+				.on('error', data => this.client.emit(Events.LavalinkException, this, data))
+				.on('end', data => this.client.emit(Events.LavalinkEnd, this, data));
+		}
+
+		// Emit that we connected to the websocket
 		this.client.emit(Events.MusicConnect, this, voiceChannel, context);
 		return this;
 	}
 
+	public async switch(voiceChannel: VoiceChannel, context: MusicHandlerRequestContext | null = null) {
+		// Switch voice channels
+		await this.player!.switchChannel(voiceChannel.id, { selfdeaf: true });
+		this.client.emit(Events.MusicSwitch, this, voiceChannel, context);
+		return this;
+	}
+
 	public async leave(context: MusicHandlerRequestContext | null = null) {
-		const { voiceChannel } = this;
-		if (this.playing) await this.player.pause(true);
-		await this.player.leave();
-		this.client.emit(Events.MusicLeave, this, voiceChannel, context);
+		// If a player is present
+		if (this.player) {
+			const { voiceChannel } = this;
+			// Then leave the channel, which also destroys the entire session
+			await this.client.lavalink.leave(voiceChannel!.guild.id);
+
+			// Also reset all the local data (except queue, which is kept for follow-up sessions)
+			this.reset();
+
+			// Emit that we left to the websocket
+			this.client.emit(Events.MusicLeave, this, voiceChannel, context);
+		}
+
 		return this;
 	}
 
 	public async play() {
-		if (!this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
-		if (this.playing) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
+		// If there is no queue then tell the user they should add some songs
+		if (!this.queue || !this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
+		// If we're already playing then tell the user that they can listen right now
+		if (this.playing && !this.paused) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
+		// Set the song to the first entry of the queue
 		this.song = this.queue.shift()!;
-		await this.player.play(this.song.track);
+		// And play it
+		await this.player!.play(this.song.track);
 
 		return this;
 	}
 
 	public async pause(systemPaused = false, context: MusicHandlerRequestContext | null = null) {
-		if (!this.paused) {
-			await this.player.pause(true);
+		if (this.playing && !this.paused) {
+			await this.player!.pause(true);
 			this.systemPaused = systemPaused;
 			this.client.emit(Events.MusicSongPause, this, context);
 		}
@@ -151,8 +185,9 @@ export class MusicHandler {
 	}
 
 	public async resume(context: MusicHandlerRequestContext | null = null) {
-		if (!this.playing) {
-			await this.player.pause(false);
+		if (this.playing && this.paused) {
+			await this.player!.pause(false);
+			await this.player!.resume();
 			this.client.emit(Events.MusicSongResume, this, context);
 		}
 		return this;
@@ -160,7 +195,10 @@ export class MusicHandler {
 
 	public async skip(context: MusicHandlerRequestContext | null = null) {
 		if (this.song !== null) {
-			await this.player.stop();
+			// Stop playing current track, this will trigger TrackEndEven on Lavalink
+			await this.player!.stop();
+
+			// Emit to the websocket that we skipped a song
 			this.client.emit(Events.MusicSongSkip, this, this.song, context);
 		}
 		return this;
@@ -213,6 +251,19 @@ export class MusicHandler {
 
 	public toJSON() {
 		return flattenMusicHandler(this);
+	}
+
+	private getSongs(search: string) {
+		const node = this.client.lavalink.idealNodes[0];
+
+		const llUrl = new URL(`http://${node.host}:${node.port}/loadtracks`);
+		llUrl.searchParams.append('identifier', search);
+
+		return fetch<TrackResponse>(llUrl, {
+			headers: {
+				authorization: node.password
+			}
+		}, FetchResultTypes.JSON);
 	}
 
 }

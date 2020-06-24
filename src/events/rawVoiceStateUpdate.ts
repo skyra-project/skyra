@@ -1,6 +1,7 @@
 import { Events } from '@lib/types/Enums';
+import { ENABLE_LAVALINK } from '@root/config';
 import { Event, EventStore } from 'klasa';
-import { VoiceStateUpdate } from 'lavalink';
+import { VoiceStateUpdate } from 'lavacord';
 
 export default class extends Event {
 
@@ -10,14 +11,14 @@ export default class extends Event {
 
 	public async run(data: VoiceStateUpdate): Promise<void> {
 		try {
-			await this.client.lavalink!.voiceStateUpdate(data);
+			await this.client.lavalink.voiceStateUpdate(data);
 		} catch (error) {
 			this.client.emit(Events.Error, error);
 		}
 	}
 
 	public init() {
-		if (!this.client.lavalink) this.disable();
+		if (!ENABLE_LAVALINK) this.disable();
 		return Promise.resolve();
 	}
 

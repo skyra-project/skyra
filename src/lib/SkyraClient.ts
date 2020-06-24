@@ -2,7 +2,7 @@
 // Import all dependencies
 import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
 import { Colors } from '@klasa/console';
-import { Node as Lavalink } from 'lavalink';
+import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
 import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
@@ -27,7 +27,6 @@ import { enumerable } from './util/util';
 
 // Import all configuration
 import {
-	ENABLE_LAVALINK,
 	ENABLE_POSTGRES,
 	EVLYN_PORT,
 	VERSION,
@@ -114,16 +113,7 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: Lavalink | null = ENABLE_LAVALINK
-		? new Lavalink({
-			send: (guildID: string, packet: Record<string, unknown>) => {
-				const guild = this.guilds.get(guildID);
-				if (guild) this.ws.shards.get(guild.shardID)!.send(packet);
-				else throw new Error('attempted to send a packet on the wrong shard');
-			},
-			...this.options.lavalink
-		})
-		: null;
+	public lavalink: LavalinkManager = new LavalinkManager(this, this.options.lavalink);
 
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
@@ -156,10 +146,6 @@ export class SkyraClient extends KlasaClient {
 		if (!this.options.dev) {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
-		}
-
-		if (this.lavalink !== null) {
-			this.lavalink.once('open', () => this.console.verbose(`${new Colors({ text: 'magenta' }).format('[LAVALINK]')} Connected.`));
 		}
 	}
 

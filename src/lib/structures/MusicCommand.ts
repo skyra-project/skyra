@@ -1,27 +1,17 @@
-import { mergeDefault } from '@klasa/utils';
-import { BitFieldResolvable, TextChannel } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
+import { ENABLE_LAVALINK } from '@root/config';
+import { TextChannel } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { MusicHandlerRequestContext } from './music/MusicHandler';
-import { MusicBitField, MusicBitFieldString } from './MusicBitField';
-import { SkyraCommand } from './SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
 
-	/**
-	 * Whether this command requires an active VoiceConnection or not
-	 */
-	public music: MusicBitField;
-
 	protected constructor(store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
-		// By nature, music commands only run in VoiceChannels, which are in Guilds.
-		mergeDefault({ runIn: ['text'], requireMusic: 0 }, options);
-
-		super(store, file, directory, options);
-		this.music = new MusicBitField(options.music);
+		super(store, file, directory, { ...options, runIn: ['text'] });
 	}
 
 	public init() {
-		if (!this.client.lavalink) this.disable();
+		if (!ENABLE_LAVALINK) this.disable();
 		return Promise.resolve();
 	}
 
@@ -34,6 +24,4 @@ export abstract class MusicCommand extends SkyraCommand {
 /**
  * The music command options
  */
-export interface MusicCommandOptions extends CommandOptions {
-	music?: BitFieldResolvable<MusicBitFieldString>;
-}
+export type MusicCommandOptions = SkyraCommandOptions;

@@ -9,12 +9,10 @@ fragment flavors on FlavorEntry {
 }`;
 
 export const getPokemonDetailsByFuzzy = gql`
-
 ${FlavorsFrament}
 
 fragment abilities on AbilitiesEntry {
     first
-	
     second
     hidden
     special
@@ -94,7 +92,6 @@ query getPokemonDetails ($pokemon: String!)  {
 }`;
 
 export const getPokemonFlavorTextsByFuzzy = gql`
-
 ${FlavorsFrament}
 
 fragment flavortexts on DexDetails {

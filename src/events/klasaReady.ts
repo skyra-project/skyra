@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { ENABLE_LAVALINK } from '@root/config';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
 import { Event, EventStore } from 'klasa';
@@ -19,7 +20,9 @@ export default class extends Event {
 				// Initialize giveaways
 				this.client.giveaways.init().catch(error => this.client.emit(Events.Wtf, error)),
 				// Update guild permission managers
-				this.client.guilds.map(guild => guild.permissionsManager.update())
+				this.client.guilds.map(guild => guild.permissionsManager.update()),
+				// Connect Lavalink if configured to do so
+				this.connectLavalink()
 			]);
 
 			// Setup the cleanup task
@@ -53,6 +56,12 @@ export default class extends Event {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'twitchRefreshSubscriptions')) {
 			await this.client.schedule.create('twitchRefreshSubscriptions', '@daily');
+		}
+	}
+
+	private async connectLavalink() {
+		if (ENABLE_LAVALINK) {
+			await this.client.lavalink.connect();
 		}
 	}
 

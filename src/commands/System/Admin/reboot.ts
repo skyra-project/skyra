@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
+import { ENABLE_LAVALINK } from '@root/config';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -16,12 +17,17 @@ export default class extends SkyraCommand {
 		await message.sendLocale('COMMAND_REBOOT').catch(err => this.client.emit(Events.ApiError, err));
 
 		try {
+			if (ENABLE_LAVALINK) {
+				// Disconnects everything, basically destorying the manager
+				// Stops all players, leaves all voice channels then disconnects all LavalinkNodes
+				await this.client.lavalink.disconnect();
+			}
+
 			this.client.destroy();
 			await Promise.all(this.client.providers.map(provider => provider.shutdown()));
 		} catch { }
 
-		process.exit();
-		return null;
+		process.exit(0);
 	}
 
 }

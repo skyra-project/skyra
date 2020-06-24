@@ -10,6 +10,7 @@ export const enum OutgoingWebsocketAction {
 	Authenticate = 'AUTHENTICATE',
 	MusicAdd = 'MUSIC_ADD',
 	MusicConnect = 'MUSIC_CONNECT',
+	MusicSwitch = 'MUSIC_SWITCH',
 	MusicLeave = 'MUSIC_LEAVE',
 	MusicPrune = 'MUSIC_PRUNE',
 	MusicRemove = 'MUSIC_REMOVE',

@@ -3,7 +3,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 
 const MAXIMUM_TIME = Time.Hour * 6;
 
@@ -19,19 +19,20 @@ const MAXIMUM_TIME = Time.Hour * 6;
 	runIn: ['text'],
 	usage: '<reset|off|seconds:integer|cooldown:cooldown>'
 })
+@CreateResolvers([
+	[
+		'cooldown', async (arg, possible, message) =>
+			message.client.arguments.get('timespan')!.run(arg, possible, message)
+	]
+])
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [cooldown]: ['reset' | 'off' | number]) {
 		if (cooldown === 'reset' || cooldown === 'off' || cooldown < 0) cooldown = 0;
 		else if (cooldown > MAXIMUM_TIME) throw message.language.get('COMMAND_SLOWMODE_TOO_LONG');
 		const channel = message.channel as TextChannel;
-		await channel.setRateLimitPerUser(cooldown);
-		return message.sendLocale('COMMAND_SLOWMODE_SET', [cooldown * 1000]);
-	}
-
-	public async init() {
-		this.createCustomResolver('cooldown', async (arg, possible, message) =>
-			(await this.client.arguments.get('timespan')!.run(arg, possible, message)) / 1000);
+		await channel.setRateLimitPerUser(cooldown / 1000);
+		return message.sendLocale('COMMAND_SLOWMODE_SET', [cooldown]);
 	}
 
 }

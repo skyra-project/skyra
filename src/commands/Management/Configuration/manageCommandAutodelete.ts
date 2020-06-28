@@ -1,44 +1,47 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { KlasaMessage, util } from 'klasa';
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<show|add|remove|reset> (channel:channel) (duration:timespan)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('channel', async (arg, possible, msg, [type]) => {
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<show|add|remove|reset> (channel:channel) (duration:timespan)',
+	usageDelim: ' '
+})
+@CreateResolvers([
+	[
+		'channel', async (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
-			if (!arg) return msg.channel;
-			const channel = await this.client.arguments.get('channelname')!.run(arg, possible, msg);
+			if (!arg) return message.channel;
+			const channel = await message.client.arguments.get('channelname')!.run(arg, _, message);
 			if (channel.type === 'text') return channel;
-			throw msg.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
-		}).createCustomResolver('timespan', (arg, possible, msg, [type]) => type === 'add'
-			? this.client.arguments.get('timespan')!.run(arg, possible, msg)
-			: undefined);
-	}
+			throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
+		}
+	],
+	[
+		'timespan', (arg, _, message, [type]) => type === 'add'
+			? message.client.arguments.get('timespan')!.run(arg, _, message)
+			: undefined
+	]
+])
+export default class extends SkyraCommand {
 
 	public async show(message: KlasaMessage) {
 		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete);
 		if (!commandAutodelete.length) throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
 
 		const list: string[] = [];
-		const { duration } = message.language;
 		for (const entry of commandAutodelete) {
 			const channel = this.client.channels.get(entry[0]) as TextChannel;
-			if (channel) list.push(`${channel.name.padEnd(26)} :: ${duration(entry[1] / 60000)}`);
+			if (channel) list.push(`${channel.name.padEnd(26)} :: ${message.language.duration(entry[1] / 60000)}`);
 		}
 		if (!list.length) throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
 		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [util.codeBlock('asciidoc', list.join('\n'))]);

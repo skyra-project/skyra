@@ -469,6 +469,14 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@klasa/console@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@klasa/console/-/console-0.0.3.tgz#fbcf5e6cb22897168cff7606bff09f8c4f13219a"
+  integrity sha512-liZ83AqQd2K4NpqLIsSrelLL03o1jrKoC9vE5gltq6VyQ0QbjpbWnx4Mn9Ksx0elnO2mih33cnm5IXh0VoOCkA==
+  dependencies:
+    "@klasa/timestamp" "^0.0.1"
+    "@klasa/utils" "^0.0.8"
+
 "@klasa/querybuilder@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/querybuilder/-/querybuilder-0.0.1.tgz#66d2b99cb919933ec0fdc43f697590d9b57d0c82"
@@ -495,6 +503,11 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/snowflake/-/snowflake-0.0.1.tgz#f64b2f49a5023a4e4e617b12d2fffb601d29992a"
   integrity sha512-elUPFvucXTle1ZsI4RchlpuiWqBcMoCdaNBzYKKOUElzwKiv+BcKh1a4znYuw2V1cnPg0GVZYkgOiH5AGP5c5g==
+
+"@klasa/timestamp@^0.0.1":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@klasa/timestamp/-/timestamp-0.0.1.tgz#f7e2171438563affc1e082e9ff6cb013468062a1"
+  integrity sha512-Oreeh+YawFcLvF5SWREBYQie8Net+KihA15ZRG8hOPYqCLRkkeRcf1xrPUdZelsXFGKV3lqpbdTvhyGOau92mA==
 
 "@klasa/utils@^0.0.1":
   version "0.0.1"

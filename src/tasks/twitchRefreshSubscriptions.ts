@@ -1,6 +1,7 @@
 import { Events } from '@lib/types/Enums';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
-import { Colors, Task } from 'klasa';
+import { Task } from 'klasa';
+import { Colors } from '@klasa/console';
 import { Response } from 'node-fetch';
 
 const b = new Colors({ text: 'lightblue' });

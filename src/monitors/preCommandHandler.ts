@@ -1,5 +1,6 @@
 import { ApplyOptions } from '@skyra/decorators';
-import { Colors, KlasaMessage, Monitor, MonitorOptions } from 'klasa';
+import { KlasaMessage, Monitor, MonitorOptions } from 'klasa';
+import { Colors } from '@klasa/console';
 
 @ApplyOptions<MonitorOptions>({
 	ignoreBots: false,

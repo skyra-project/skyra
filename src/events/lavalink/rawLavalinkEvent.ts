@@ -1,6 +1,7 @@
 import { Events } from '@lib/types/Enums';
 import { isTrackEndEvent, isTrackExceptionEvent, isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent, isTrackStartEvent } from '@utils/LavalinkUtils';
-import { Colors, Event, EventStore } from 'klasa';
+import { Event, EventStore } from 'klasa';
+import { Colors } from '@klasa/console';
 
 export default class extends Event {
 

@@ -1,7 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { TOKENS } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
-import { Colors, Task } from 'klasa';
+import { Task } from 'klasa';
+import { Colors } from '@klasa/console';
 
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });

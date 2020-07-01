@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
-import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util, Colors } from 'klasa';
+import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
+import { Colors } from '@klasa/console';
 import { Node as Lavalink } from 'lavalink';
 import { Client as VezaClient } from 'veza';
 import { Webhook } from 'discord.js';

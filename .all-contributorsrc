@@ -181,6 +181,15 @@
       "contributions": [
         "infra"
       ]
+    },
+    {
+      "login": "gc",
+      "name": "GC",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/30398469?v=4",
+      "profile": "https://github.com/gc",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7

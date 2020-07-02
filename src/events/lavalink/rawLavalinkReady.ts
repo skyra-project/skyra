@@ -1,5 +1,6 @@
+import { Colors } from '@klasa/console';
 import { ApplyOptions } from '@skyra/decorators';
-import { Colors, Event, EventOptions } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ emitter: 'lavalink', event: 'ready' })
 export default class extends Event {

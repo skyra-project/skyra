@@ -102,6 +102,9 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/YorkAARGH"><img src="https://avatars1.githubusercontent.com/u/20838878?v=4?s=100" width="100px;" alt=""/><br /><sub><b>York</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=YorkAARGH" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ImmortalSnake"><img src="https://avatars0.githubusercontent.com/u/47276574?v=4?s=100" width="100px;" alt=""/><br /><sub><b>ImmortalSnake</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=ImmortalSnake" title="Code">💻</a></td>
   </tr>
+  <tr>
+    <td align="center"><a href="https://skyra.pw/"><img src="https://avatars0.githubusercontent.com/u/61647701?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Skyra</b></sub></a><br /><a href="#infra-NM-EEA-Y" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a></td>
+  </tr>
 </table>
 
 <!-- markdownlint-enable -->

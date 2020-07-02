@@ -1,16 +1,16 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireDj, requireMusicPlaying } from '@utils/Music/Decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	description: language => language.tget('COMMAND_SEEK_DESCRIPTION'),
+	usage: '<position:timespan>'
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_SEEK_DESCRIPTION'),
-			music: ['QUEUE_NOT_EMPTY', 'VOICE_PLAYING', 'DJ_MEMBER'],
-			usage: '<position:timespan>'
-		});
-	}
-
+	@requireDj()
+	@requireMusicPlaying()
 	public async run(message: KlasaMessage, [timespan]: [number]) {
 		await message.guild!.music.seek(timespan, this.getContext(message));
 	}

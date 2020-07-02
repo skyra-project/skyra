@@ -1,17 +1,19 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '@utils/Music/Decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	aliases: ['vol'],
+	description: language => language.tget('COMMAND_VOLUME_DESCRIPTION'),
+	usage: '[volume:number]'
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['vol'],
-			description: language => language.tget('COMMAND_VOLUME_DESCRIPTION'),
-			music: ['SAME_VOICE_CHANNEL', 'VOICE_PLAYING'],
-			usage: '[volume:number]'
-		});
-	}
-
+	@requireUserInVoiceChannel()
+	@requireSkyraInVoiceChannel()
+	@requireSameVoiceChannel()
+	@requireMusicPlaying()
 	public async run(message: KlasaMessage, [volume]: [number]) {
 		const { music } = message.guild!;
 		const previousVolume = music.volume;

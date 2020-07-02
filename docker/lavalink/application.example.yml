@@ -10,7 +10,7 @@ spring:
 
 lavalink:
   server:
-    password: ""
+    password: "skyra"
     sources:
       youtube: true
       bandcamp: true

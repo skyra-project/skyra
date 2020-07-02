@@ -1,24 +1,25 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireDj, requireSkyraInVoiceChannel } from '@utils/Music/Decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	description: language => language.tget('COMMAND_LEAVE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_LEAVE_EXTENDED'),
+	flagSupport: true
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_LEAVE_DESCRIPTION'),
-			music: ['SKYRA_VOICE_CHANNEL', 'DJ_MEMBER', 'SAME_VOICE_CHANNEL']
-		});
-	}
-
+	@requireSkyraInVoiceChannel()
+	@requireDj()
 	public async run(message: KlasaMessage) {
+		// Do a full leave and disconnect
 		await message.guild!.music.leave(this.getContext(message));
-	}
 
-	/** Inhibit leave until #1015 is finished and merged  */
-	public inhibit(message: KlasaMessage) {
-		throw message.language.tget('INHIBITOR_DISABLED_GLOBAL');
-		// eslint-disable-next-line no-unreachable
-		return true; // lgtm [js/unreachable-statement]
+		// If --removeall or --ra was provided then also clear the queue
+		if (Reflect.has(message.flagArgs, 'removeall') || Reflect.has(message.flagArgs, 'ra')) {
+			message.guild!.music.queue = [];
+		}
 	}
 
 }

@@ -1,6 +1,6 @@
 {
 	"extends": "eslint-config-bamboo",
 	"compilerOptions": {
-		"target": "ES2019"
+		"target": "ESNext"
 	}
 }

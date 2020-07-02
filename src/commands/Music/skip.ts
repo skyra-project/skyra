@@ -1,17 +1,16 @@
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireSongPresent } from '@utils/Music/Decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	description: language => language.tget('COMMAND_SKIP_DESCRIPTION'),
+	usage: '[force]'
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_SKIP_DESCRIPTION'),
-			music: ['QUEUE_NOT_EMPTY'],
-			usage: '[force]'
-		});
-	}
-
+	@requireSongPresent()
 	public async run(message: KlasaMessage, [force = false]: [boolean]) {
 		const { music } = message.guild!;
 

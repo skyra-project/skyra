@@ -11,7 +11,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (manager.replay && manager.song !== null) {
-			await manager.player.play(manager.song.track);
+			await manager.player?.play(manager.song.track);
 			manager.position = 0;
 			manager.lastUpdate = 0;
 			this.client.emit(Events.MusicSongReplay, manager, manager.song);
@@ -26,12 +26,13 @@ export default class extends Event {
 
 		manager.reset();
 		if (manager.queue.length === 0) {
-			await manager.player.leave();
-			if (channel) floatPromise(this, channel.sendLocale('COMMAND_PLAY_END'));
+			floatPromise(this, channel!.sendLocale('COMMAND_PLAY_END'));
+			await this.client.lavalink.leave(channel!.guild.id);
 		} else {
 			try {
+				this.client.console.debug('going to next song...');
 				manager.song = manager.queue.shift()!;
-				await manager.player.play(manager.song.track);
+				await manager.player?.play(manager.song.track);
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
 			}

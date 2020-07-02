@@ -1,8 +1,8 @@
+import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { flattenSong } from '@utils/Models/ApiTransform';
 import { cleanMentions, enumerable, showSeconds } from '@utils/util';
-import { Track } from 'lavalink';
+import { TrackData } from 'lavacord';
 import { MusicHandler } from './MusicHandler';
-import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 
 export class Song {
 
@@ -33,7 +33,7 @@ export class Song {
 	 * @param data The retrieved data.
 	 * @param requester The user ID that requested this song.
 	 */
-	public constructor(queue: MusicHandler, data: Track, requester: string) {
+	public constructor(queue: MusicHandler, data: TrackData, requester: string) {
 		this.id = Song.generateID(requester);
 		this.queue = queue;
 		this.track = data.track;

@@ -9,7 +9,7 @@ export default class extends Event {
 		super(store, file, directory, { name: 'GUILD_CREATE', emitter: store.client.ws });
 	}
 
-	public run(data: WSGuildCreate & { shardID: number }, shardID: number) {
+	public async run(data: WSGuildCreate & { shardID: number }, shardID: number) {
 		// Early sweep presences
 		data.presences = [];
 
@@ -29,6 +29,8 @@ export default class extends Event {
 		}
 
 		this.processSweep(guild);
+
+		await Promise.all(data.voice_states.map(state => this.client.lavalink.voiceStateUpdate({ ...state, guild_id: data.id })));
 	}
 
 	private processSweep(guild: KlasaGuild) {

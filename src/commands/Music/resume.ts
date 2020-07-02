@@ -1,15 +1,17 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireMusicPaused, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '@utils/Music/Decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	description: language => language.tget('COMMAND_RESUME_DESCRIPTION')
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_RESUME_DESCRIPTION'),
-			music: ['VOICE_PAUSED', 'SAME_VOICE_CHANNEL']
-		});
-	}
-
+	@requireUserInVoiceChannel()
+	@requireSkyraInVoiceChannel()
+	@requireSameVoiceChannel()
+	@requireMusicPaused()
 	public async run(message: KlasaMessage) {
 		await message.guild!.music.resume(this.getContext(message));
 	}

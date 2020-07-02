@@ -7,8 +7,6 @@ import WebSocket, { Server } from 'ws';
 import { CloseCodes } from './types';
 import WebsocketUser from './WebsocketUser';
 
-// TODO (Magnaboy): Should we timeout connections? disconnect after X period?
-
 export class WebsocketHandler {
 
 	public wss: Server;

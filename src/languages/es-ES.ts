@@ -320,6 +320,21 @@ export default class extends Language {
 		COMMAND_JOIN_VOICE_NO_SPEAK: 'Puedo conectarme... pero no hablar. Por favor dame permisos para hablar.',
 		COMMAND_JOIN_VOICE_SAME: '¡Sube el volumen! ¡Ya estoy reproduciendo música ahí!',
 		COMMAND_LEAVE_DESCRIPTION: 'Desconecta del canal de voz.',
+		COMMAND_LEAVE_EXTENDED: builder.display('leave', {
+			extendedHelp: `Use este comando para que Skyra deje el canal de voz actual.
+			Por defecto, dejaré el canal, me olvidaré de la canción que se está reproduciendo actualmente,
+			ero dejaré la cola intacta. Esto significa que una vez que hagas Skyra, \`play\`
+			después del comando de salida, continuaré tocando con la primera canción que estaba en la cola antes de irme.
+
+			Este comportamiento predeterminado se puede modificar con banderas:
+			\`--removeall\` o \`--ra\` para seguir el comportamiento predeterminado, así como borrar la cola, la próxima vez que quieras que comience a jugar tendrás que crear una nueva cola`,
+			examples: [
+				'leave',
+				'leave --removeall',
+				'leave --ra',
+				'leave --soft'
+			]
+		}, true),
 		COMMAND_LEAVE_SUCCESS: channel => `Me he desconectado con éxito del canal de voz ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: 'Pausa la canción actual.',
 		COMMAND_PAUSE_SUCCESS: '⏸ Pausado.',
@@ -352,6 +367,7 @@ export default class extends Language {
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: song => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: '¡Ey! ¡El disco ya está girando!',
+		COMMAND_PLAY_QUEUE_EMPTY: 'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
 		COMMAND_PLAYING_DESCRIPTION: 'Obtén información de la canción actual.',
 		COMMAND_PLAYING_DURATION: time => `**Duración**: ${time}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: '¿Es conmigo? Porque no hay nada en reproducción...',
@@ -359,11 +375,15 @@ export default class extends Language {
 		COMMAND_REPEAT_DESCRIPTION: 'Se alterna repitiendo la canción actual.',
 		COMMAND_REPEAT_SUCCESS: enabled => enabled ? 'This is your JAM isn\'t it? No te preocupes, repetiremos esto una y otra vez!' : 'En realidad, también me estaba cansando de esto, pero no quería decir nada.',
 		COMMAND_QUEUE_DESCRIPTION: 'Check the queue list.',
-		COMMAND_QUEUE_EMPTY: 'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
 		COMMAND_QUEUE_LAST: 'There are no more songs! After the one playing is over, the session will end!',
 		COMMAND_QUEUE_TITLE: guildname => `Music queue for ${guildname}`,
 		COMMAND_QUEUE_LINE: (position, duration, title, url, requester) => `**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
-		COMMAND_QUEUE_NOWPLAYING: (duration, title, url, requester) => `\`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
+		COMMAND_QUEUE_NOWPLAYING: ({ duration, title, url, requester, timeRemaining }) => [
+			duration ? `\`${duration}\`` : 'Live Stream',
+			`[${title}](${url})`,
+			`Requester: **${requester}**`,
+			timeRemaining ? `🕰 Tiempo restante: ${timeRemaining}.` : null
+		].filter(Boolean).join(' | '),
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
@@ -423,22 +443,18 @@ export default class extends Language {
 		COMMAND_SKIP_SUCCESS: title => `⏭ Saltada la canción ${title}.`,
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Revisa cuánto tiempo falta para terminar la canción.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: '¿Es conmigo? La cola está vacía...',
-		COMMAND_PLAYING_TIME_STREAM: 'La canción actual es un directo, no tiene tiempo restante.',
-		COMMAND_PLAYING_TIME_REMAINING: time => `🕰 Tiempo restante: ${time}`,
 		COMMAND_VOLUME_DESCRIPTION: 'Controla el volumen para la canción.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
 
-		INHIBITOR_MUSIC_QUEUE_EMPTY: '¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!',
-		INHIBITOR_MUSIC_QUEUE_EMPTY_PLAYING: '¡La cola está sin discos! ¡Añade algunas canciones para mantener el alma de la fiesta!',
-		INHIBITOR_MUSIC_NOT_PLAYING_PAUSED: '¡El disco ya está pausado! ¡Vuelve de vuelta cuando quieras encender la fiesta de nuevo!',
-		INHIBITOR_MUSIC_NOT_PLAYING_STOPPED: '¡La cola está vacía! ¡Estoy muy segura que no está reproduciendo nada!',
-		INHIBITOR_MUSIC_NOT_PAUSED_PLAYING: '¡El disco ya está girando y la fiesta está en marcha hasta que termine la noche!',
-		INHIBITOR_MUSIC_NOT_PAUSED_STOPPED: '¡La cola está vacía! ¡Lo tomaré como que la fiesta está tranquila!',
-		INHIBITOR_MUSIC_DJ_MEMBER: '¡Creo que esto es algo que sólo un moderador o un administrador de la fiesta pueden hacer!',
-		INHIBITOR_MUSIC_USER_VOICE_CHANNEL: '¡Ey! Necesito que te unas a un canal de voz antes para usar este comando!',
-		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: 'Temo que necesito estar en un canal de voz antes de poder usar este comando, ¡por favor muéstreme el camino!',
-		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: '¡Hey! Parece que no estamos en el mismo canal de voz, ¡por favor únete conmigo!',
+		INHIBITOR_MUSIC_QUEUE_EMPTY: `${REDCROSS} ¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
+		INHIBITOR_MUSIC_NOT_PLAYING: `${REDCROSS} Hmm, no parece que esté jugando nada ahora.`,
+		INHIBITOR_MUSIC_PAUSED: `${REDCROSS} ¡El disco ya está girando y la fiesta está en marcha hasta que termine la noche!`,
+		INHIBITOR_MUSIC_DJ_MEMBER: `${REDCROSS} ¡Creo que esto es algo que sólo un moderador o un administrador de la fiesta pueden hacer!`,
+		INHIBITOR_MUSIC_USER_VOICE_CHANNEL: `${REDCROSS} ¡Ey! Necesito que te unas a un canal de voz antes para usar este comando!`,
+		INHIBITOR_MUSIC_BOT_VOICE_CHANNEL: `${REDCROSS} Temo que necesito estar en un canal de voz antes de poder usar este comando, ¡por favor muéstreme el camino!`,
+		INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL: `${REDCROSS} ¡Hey! Parece que no estamos en el mismo canal de voz, ¡por favor únete conmigo!`,
+		INHIBITOR_MUSIC_NOTHING_PLAYING: `${REDCROSS} Parece que no hay nada en este momento, ¿qué tal si comienzas la fiesta 🎉?`,
 
 		MUSICMANAGER_FETCH_NO_ARGUMENTS: '¡Necesito que me des el nombre de una canción!',
 		MUSICMANAGER_FETCH_NO_MATCHES: 'Lo siento, ¡pero no he sido capaz de encontrar la canción que querías',
@@ -446,13 +462,9 @@ export default class extends Language {
 		MUSICMANAGER_TOO_MANY_SONGS: `${REDCROSS} ¡Ah, estás agregando más canciones de las permitidas!`,
 		MUSICMANAGER_SETVOLUME_SILENT: 'Woah, ¡podrías simplemente salir del canal de voz si quieres silencio!',
 		MUSICMANAGER_SETVOLUME_LOUD: 'Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!',
-		MUSICMANAGER_PLAY_NO_VOICECHANNEL: '¿Dónde se suponía que tenía que reproducir la música? ¡No estoy conectada a ningún canal de voz!',
 		MUSICMANAGER_PLAY_NO_SONGS: '¡No hay más canciones en la cola!',
 		MUSICMANAGER_PLAY_PLAYING: 'Los discos están girando, ¿no los escuchas?',
-		MUSICMANAGER_PLAY_DISCONNECTION: '¡Fuí desconectada a la fuerza por Discord!',
-		MUSICMANAGER_ERROR: error => `¡Algo pasó!\n${error}`,
 		MUSICMANAGER_STUCK: milliseconds => `${LOADING} Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en: ${duration(milliseconds)}!`,
-		MUSICMANAGER_CLOSE: '¡Oops, parece que he tenido un pequeño problemita con Discord!',
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
 		COMMAND_CONF_MENU_RENDER_AT_FOLDER: path => `Currently at: \\📁 ${path}`,

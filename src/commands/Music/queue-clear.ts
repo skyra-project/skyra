@@ -1,16 +1,16 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { requireDj, requireQueueNotEmpty } from '@utils/Music/Decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<MusicCommandOptions>({
+	aliases: ['qc', 'clear'],
+	description: language => language.tget('COMMAND_CLEAR_DESCRIPTION')
+})
 export default class extends MusicCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['qc', 'clear'],
-			description: language => language.tget('COMMAND_CLEAR_DESCRIPTION'),
-			music: ['QUEUE_NOT_EMPTY', 'DJ_MEMBER']
-		});
-	}
-
+	@requireQueueNotEmpty()
+	@requireDj()
 	public run(message: KlasaMessage) {
 		message.guild!.music.prune(this.getContext(message));
 	}

@@ -21,6 +21,12 @@ services:
     restart: always
     ports:
       - "2333:2333"
+  saelem:
+    container_name: saelem
+    image: docker.pkg.github.com/skyra-project/saelem/saelem:master
+    restart: always
+    ports:
+      - "8284:8080"
 
 volumes:
   postgres-data:

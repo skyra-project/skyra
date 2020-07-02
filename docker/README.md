@@ -18,8 +18,13 @@ Skyra currently has the following microservices that can be dockerized:
   - Service name in docker-compose: `pokedex`
   - Image used: `docker.pkg.github.com/favware/graphql-pokemon/graphql-pokemon:master`
   - For more information see [favware/graphql-pokemon]
+- Saelem
+  - Service name in docker-compose: `saelem`
+  - Image used: `docker.pkg.github.com/skyra-project/saelem/saelem:master`
+  - For more information see [skyra-project/saelem]
 
 <!-- Link dump -->
 
 [skyra-project/docker-images]: https://github.com/skyra-project/docker-images
 [favware/graphql-pokemon]:     https://github.com/favware/graphql-pokemon
+[skyra-project/saelem]:        https://github.com/skyra-project/saelem

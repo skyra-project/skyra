@@ -1,9 +1,9 @@
 import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
+import { getImage } from '@utils/util';
 import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sn'],
@@ -32,14 +32,14 @@ export default class extends ModerationCommand {
 		};
 	}
 
-	protected handle(message: KlasaMessage, context: HandledCommandContext & { nickname: string }) {
+	protected async handle(message: KlasaMessage, context: HandledCommandContext & { nickname: string }) {
 		return message.guild!.security.actions.setNickname({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			reason: context.reason,
-			image_url: getImage(message),
+			imageURL: getImage(message),
 			duration: context.duration
-		}, context.nickname, this.getTargetDM(message, context.target));
+		}, context.nickname, await this.getTargetDM(message, context.target));
 	}
 
 }

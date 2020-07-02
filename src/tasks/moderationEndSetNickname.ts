@@ -8,10 +8,10 @@ export default class extends ModerationTask {
 		const me = guild.me === null ? await guild.members.fetch(CLIENT_ID) : guild.me;
 		if (!me.permissions.has(Permissions.FLAGS.MANAGE_NICKNAMES)) return null;
 		await guild.security.actions.unSetNickname({
-			moderator_id: CLIENT_ID,
-			user_id: data.userID,
+			moderatorID: CLIENT_ID,
+			userID: data.userID,
 			reason: `[MODERATION] Nickname reverted after ${this.client.languages.default.duration(data.duration)}`
-		}, data.extraData.oldName, this.getTargetDM(guild, await this.client.users.fetch(data.userID)));
+		}, data.extraData.oldName, await this.getTargetDM(guild, await this.client.users.fetch(data.userID)));
 		return null;
 	}
 

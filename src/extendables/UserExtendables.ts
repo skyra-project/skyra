@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { User } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 
@@ -7,11 +7,6 @@ export default class extends Extendable {
 
 	public constructor(store: ExtendableStore, file: string[], directory: string) {
 		super(store, file, directory, { appliesTo: [User] });
-	}
-
-	// @ts-expect-error 2784 https://github.com/microsoft/TypeScript/issues/36883
-	public get profileLevel(this: User) {
-		return Math.floor(0.2 * Math.sqrt(this.settings.get(UserSettings.Points)));
 	}
 
 	public async fetchRank(this: User) {
@@ -24,14 +19,36 @@ export default class extends Extendable {
 	}
 
 	public async increaseBalance(this: User, amount: number) {
-		const current = this.settings.get(UserSettings.Money);
-		await this.settings.update(UserSettings.Money, current + amount);
+		const { users } = await DbSet.connect();
+
+		let current = 0;
+		await users.lock([this.id], async id => {
+			const user = await users.ensure(id);
+
+			current = user.money;
+			user.money -= amount;
+			await user.save();
+
+			return user.points;
+		});
+
 		this.client.emit(Events.MoneyTransaction, this, amount, current);
 	}
 
 	public async decreaseBalance(this: User, amount: number) {
-		const current = this.settings.get(UserSettings.Money);
-		await this.settings.update(UserSettings.Money, current - amount);
+		const { users } = await DbSet.connect();
+
+		let current = 0;
+		await users.lock([this.id], async id => {
+			const user = await users.ensure(id);
+
+			current = user.money;
+			user.money -= amount;
+			await user.save();
+
+			return user.points;
+		});
+
 		this.client.emit(Events.MoneyTransaction, this, amount, current);
 	}
 

@@ -20,14 +20,14 @@ export default class extends ModerationCommand {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
-	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
+	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.ban({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			duration: context.duration,
-			image_url: getImage(message),
+			imageURL: getImage(message),
 			reason: context.reason
-		}, this.getDays(message), this.getTargetDM(message, context.target));
+		}, this.getDays(message), await this.getTargetDM(message, context.target));
 	}
 
 	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {

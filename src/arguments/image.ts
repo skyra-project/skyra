@@ -1,6 +1,5 @@
-import { Possible, Argument, KlasaMessage } from 'klasa';
-import { fetch, getImage, FetchResultTypes, fetchAvatar } from '@utils/util';
-
+import { fetch, fetchAvatar, FetchResultTypes, getImage } from '@utils/util';
+import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
 

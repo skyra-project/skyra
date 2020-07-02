@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		// Resolve the amount of winners the giveaway will have
 		const winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
 		// This creates an single time task to start the giveaway
-		await this.client.schedule.create('giveaway', schedule.getTime(), {
+		await this.client.schedules.add('giveaway', schedule.getTime(), {
 			data: {
 				channel_id: message.channel.id,
 				ends_at: duration.getTime() + scheduleOffset + 500,

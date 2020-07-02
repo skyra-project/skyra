@@ -1,9 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
-import { UserSettings } from '@lib/types/settings/UserSettings';
-import { getColor } from '@utils/util';
+import { UserEntity } from '@orm/entities/UserEntity';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Settings } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 
@@ -19,14 +19,12 @@ export default class extends SkyraCommand {
 		});
 
 		this.createCustomResolver('coins', async (arg, possible, message, [action]) => {
-			await message.author.settings.sync();
-
 			if (action === 'show') return undefined;
 
 			if (arg === 'all') {
-				return action === 'deposit'
-					? message.author.settings.get(UserSettings.Money)
-					: message.author.settings.get(UserSettings.Vault);
+				const { users } = await DbSet.connect();
+				const user = await users.ensureProfile(message.author.id);
+				return action === 'deposit' ? user.money : user.profile.vault;
 			}
 			const coins = Number(arg);
 			if (coins && coins >= 0) return this.integerArgument.run(arg, possible, message);
@@ -39,59 +37,62 @@ export default class extends SkyraCommand {
 	}
 
 	public async deposit(message: KlasaMessage, [coins]: [number]) {
-		const { money, vault, settings } = await this.getVaultAndMoney(message);
+		const { users } = await DbSet.connect();
+		return users.lock([message.author.id], async id => {
+			const settings = await users.ensureProfile(id);
 
-		if (coins !== undefined && money < coins) {
-			throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_MONEY', money);
-		}
+			const { money } = settings;
+			const { vault } = settings.profile;
 
-		const newMoney = money - coins;
-		const newVault = vault + coins;
+			if (coins !== undefined && money < coins) {
+				throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_MONEY', money);
+			}
 
-		await this.updateBalance(newMoney, newVault, settings);
-		this.client.emit(Events.MoneyTransaction, message.author, coins, money);
+			const newMoney = money - coins;
+			const newVault = vault + coins;
 
-		return message.sendEmbed(this.buildEmbed(message, newMoney, newVault, coins, true));
+			await this.updateBalance(newMoney, newVault, settings);
+			this.client.emit(Events.MoneyTransaction, message.author, coins, money);
+
+			return message.sendEmbed(await this.buildEmbed(message, newMoney, newVault, coins, true));
+		});
 	}
 
 	public async withdraw(message: KlasaMessage, [coins]: [number]) {
-		const { money, vault, settings } = await this.getVaultAndMoney(message);
+		const { users } = await DbSet.connect();
+		return users.lock([message.author.id], async id => {
+			const settings = await users.ensureProfile(id);
 
-		if (coins !== undefined && vault < coins) {
-			throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_IN_VAULT', vault);
-		}
+			const { money } = settings;
+			const { vault } = settings.profile;
 
-		const newMoney = money + coins;
-		const newVault = vault - coins;
+			if (coins !== undefined && vault < coins) {
+				throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_IN_VAULT', vault);
+			}
 
-		await this.updateBalance(newMoney, newVault, settings);
-		this.client.emit(Events.MoneyTransaction, message.author, coins, money);
+			const newMoney = money + coins;
+			const newVault = vault - coins;
 
-		return message.sendEmbed(this.buildEmbed(message, newMoney, newVault, coins));
+			await this.updateBalance(newMoney, newVault, settings);
+			this.client.emit(Events.MoneyTransaction, message.author, coins, money);
+
+			return message.sendEmbed(await this.buildEmbed(message, newMoney, newVault, coins));
+		});
 	}
 
 	public async show(message: KlasaMessage) {
-		const { money, vault } = await this.getVaultAndMoney(message);
-
-		return message.sendEmbed(this.buildEmbed(message, money, vault));
+		const { users } = await DbSet.connect();
+		const settings = await users.ensureProfile(message.author.id);
+		return message.sendEmbed(await this.buildEmbed(message, settings.money, settings.profile.vault));
 	}
 
-	private async getVaultAndMoney(message: KlasaMessage) {
-		const { settings } = message.author;
-
-		await settings.sync();
-
-		const money = settings.get(UserSettings.Money);
-		const vault = settings.get(UserSettings.Vault);
-
-		return { money, vault, settings };
+	private updateBalance(money: number, vault: number, settings: UserEntity) {
+		settings.money = money;
+		settings.profile!.vault = vault;
+		return settings.save();
 	}
 
-	private updateBalance(money: number, vault: number, settings: Settings) {
-		return settings.update([[UserSettings.Money, money], [UserSettings.Vault, vault]]);
-	}
-
-	private buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
+	private async buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
 		const {
 			ACCOUNT_MONEY, ACCOUNT_VAULT,
 			DEPOSITED_DESCRIPTION, WITHDREW_DESCRIPTION,
@@ -105,7 +106,7 @@ export default class extends SkyraCommand {
 			: SHOW_DESCRIPTION;
 
 		return new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setDescription(description)
 			.addField(ACCOUNT_MONEY, money, true)
 			.addField(ACCOUNT_VAULT, vault, true);

@@ -158,7 +158,7 @@ export interface RawGuildSettings {
 }
 
 export const SQL_TABLE_SCHEMA = /* sql */`
-	CREATE TABLE IF NOT EXISTS guilds (
+	CREATE TABLE IF NOT EXISTS guild (
 		"id"                                   VARCHAR(19)                              NOT NULL,
 		"prefix"                               VARCHAR(10)    DEFAULT 's!'               NOT NULL,
 		"language"                             VARCHAR(5)     DEFAULT 'en-US'            NOT NULL,

@@ -6,6 +6,7 @@ export const enum Events {
 	CommandUnknown = 'commandUnknown',
 	CoreSettingsDelete = 'coreSettingsDelete',
 	CoreSettingsUpdate = 'coreSettingsUpdate',
+	Database = 'database',
 	Debug = 'debug',
 	Disconnect = 'disconnect',
 	Error = 'error',

@@ -1,8 +1,8 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
-import { getColor } from '@utils/util';
 import { Invite, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -31,16 +31,16 @@ export default class extends RichDisplayCommand {
 
 		if (topTen.length === 0) throw message.language.tget('COMMAND_TOPINVITES_NO_INVITES');
 
-		const display = this.buildDisplay(message, topTen);
+		const display = await this.buildDisplay(message, topTen);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
+	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', message.guild!))
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 		const embedData = message.language.tget('COMMAND_TOPINVITES_EMBED_DATA');
 
 		for (const invite of invites) {

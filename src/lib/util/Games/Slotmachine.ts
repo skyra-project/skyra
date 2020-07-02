@@ -1,12 +1,12 @@
-import { ClientSettings } from '@lib/types/settings/ClientSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
+import { DbSet } from '@lib/structures/DbSet';
+import { CanvasColors } from '@lib/types/constants/Constants';
+import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
 import { loadImage } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
-import { CanvasColors } from '@lib/types/constants/Constants';
 
 const enum Icons {
 	Cherry,
@@ -80,17 +80,13 @@ export class Slotmachine {
 	/** The message that ran this instance */
 	private message: Message;
 
-	public constructor(message: Message, amount: number) {
+	/** The player's settings */
+	private settings: UserEntity;
+
+	public constructor(message: Message, amount: number, settings: UserEntity) {
 		this.message = message;
 		this.bet = amount;
-	}
-
-	/** The boost */
-	private get boost() {
-		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users);
-		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds);
-		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
-			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
+		this.settings = settings;
 	}
 
 	/** The player */
@@ -99,17 +95,14 @@ export class Slotmachine {
 	}
 
 	public async run() {
-		const { settings } = this.player;
 		const rolls = this.roll();
 		this.calculate(rolls);
 
-		const money = settings.get(UserSettings.Money);
 		const lost = this.winnings === 0;
-		const winnings = (this.winnings * this.boost) - this.bet;
-		const darkTheme = settings.get(UserSettings.DarkTheme);
+		const winnings = (this.winnings * await this.fetchBoost()) - this.bet;
 		const amount = lost
-			? money - this.bet
-			: money + winnings;
+			? this.settings.money - this.bet
+			: this.settings.money + winnings;
 
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
@@ -117,7 +110,7 @@ export class Slotmachine {
 			? this.player.decreaseBalance(this.bet)
 			: this.player.increaseBalance(winnings));
 
-		return [await this.render(rolls, darkTheme), amount] as [Buffer, number];
+		return [await this.render(rolls, this.settings.profile!.darkTheme), amount] as [Buffer, number];
 	}
 
 	private async render(rolls: readonly Icons[], darkTheme: boolean) {
@@ -150,6 +143,15 @@ export class Slotmachine {
 		})));
 
 		return canvas.toBufferAsync();
+	}
+
+	/** The boost */
+	private async fetchBoost() {
+		const { clients } = await DbSet.connect();
+		const settings = await clients.ensure();
+
+		return (this.message.guild && settings.guildBoost.includes(this.message.guild.id) ? 1.5 : 1)
+			* (settings.userBoost.includes(this.message.author.id) ? 1.5 : 1);
 	}
 
 	private calculate(roll: readonly Icons[]) {

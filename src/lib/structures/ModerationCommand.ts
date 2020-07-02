@@ -1,11 +1,11 @@
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
+import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
-import { ModerationManagerEntry } from './ModerationManagerEntry';
+import { DbSet } from './DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export interface ModerationCommandOptions extends SkyraCommandOptions {
@@ -46,7 +46,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const resolved = this.resolveOverloads(args);
 
 		const preHandled = await this.prehandle(message, resolved);
-		const processed = [] as Array<{ log: ModerationManagerEntry; target: User }>;
+		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
 		const { targets, ...handledRaw } = resolved;
@@ -75,9 +75,9 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
 			const output: string[] = [];
 			if (processed.length) {
-				const logReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? processed[0].log.reason : null;
-				const sorted = processed.sort((a, b) => a.log.case! - b.log.case!);
-				const cases = sorted.map(({ log }) => log.case as number);
+				const logReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? processed[0].log.reason! : null;
+				const sorted = processed.sort((a, b) => a.log.caseID - b.log.caseID);
+				const cases = sorted.map(({ log }) => log.caseID);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				output.push(message.language.tget('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));
@@ -128,14 +128,14 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return member;
 	}
 
-	protected getTargetDM(message: KlasaMessage, target: User): ModerationActionsSendOptions {
+	protected async getTargetDM(message: KlasaMessage, target: User): Promise<ModerationActionsSendOptions> {
 		return {
 			moderator: 'no-author' in message.flagArgs
 				? null
 				: (('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay))
 					? message.author
 					: null,
-			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && target.settings.get(UserSettings.ModerationDM)
+			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && await DbSet.fetchModerationDirectMessageEnabled(target.id)
 		};
 	}
 
@@ -155,7 +155,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		};
 	}
 
-	protected abstract handle(message: KlasaMessage, context: HandledCommandContext<T>): Promise<ModerationManagerEntry> | ModerationManagerEntry;
+	protected abstract handle(message: KlasaMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
 
 }
 

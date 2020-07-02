@@ -7,8 +7,8 @@ export default class extends Inhibitor {
 		// If the message was sent in a guild, the command isn't guarded (they are all 0, and
 		// cannot be denied), and the permission level is lower than 9, run the permission nodes.
 		if (message.guild && message.author.id !== message.guild.ownerID && !command.guarded && command.permissionLevel < 9) {
-			if (this.runUser(message, command) === false) return false;
-			if (this.runRole(message, command) === false) return false;
+			if (!this.runUser(message, command)) return false;
+			if (!this.runRole(message, command)) return false;
 		}
 
 		const { broke, permission } = await this.client.permissionLevels.run(message, command.permissionLevel);

@@ -36,5 +36,5 @@ services:
 volumes:
   postgres-data:
     external: true
-  grafana-data:
-    external: true
+#   grafana-data:
+#     external: true

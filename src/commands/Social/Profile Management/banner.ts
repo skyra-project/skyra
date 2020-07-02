@@ -1,14 +1,13 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { Databases } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { RawBannerSettings } from '@lib/types/settings/raw/RawBannerSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
+import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { getManager } from 'typeorm';
 
 const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
 
@@ -33,54 +32,63 @@ export default class extends SkyraCommand {
 
 	@requiredPermissions(['EMBED_LINKS'])
 	public async buy(message: KlasaMessage, [banner]: [BannerCache]) {
-		const banners = new Set(message.author.settings.get(UserSettings.BannerList));
+		const { users } = await DbSet.connect();
+		const author = await users.ensureProfile(message.author.id);
+		const banners = new Set(author.profile.banners);
 		if (banners.has(banner.id)) throw message.language.tget('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix), banner.id);
 
-		const money = message.author.settings.get(UserSettings.Money);
-		if (money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', money, banner.price);
+		if (author.money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', author.money, banner.price);
 
 		const accepted = await this.prompt(message, banner);
 		if (!accepted) throw message.language.tget('COMMAND_BANNER_PAYMENT_CANCELLED');
 
-		if (money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', money, banner.price);
+		if (author.money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', author.money, banner.price);
 
-		banners.add(banner.id);
+		await getManager().transaction(async em => {
+			const existingbannerAuthor = await em.findOne(UserEntity, banner.author);
+			if (existingbannerAuthor) {
+				existingbannerAuthor.money += banner.price * 0.1;
+				await em.save(existingbannerAuthor);
+			} else {
+				await em.insert(UserEntity, {
+					id: banner.author,
+					money: banner.price * 0.1
+				});
+			}
 
-		const user = await this.client.users.fetch(banner.author);
-		await user.settings.sync();
-
-		await Promise.all([
-			message.author.settings.update([[UserSettings.Money, money - banner.price], [UserSettings.BannerList, [...banners]]], {
-				arrayAction: 'overwrite',
-				extraContext: { author: message.author.id }
-			}),
-			user.settings.increase(UserSettings.Money, banner.price * 0.1, {
-				extraContext: { author: message.author.id }
-			})
-		]);
+			banners.add(banner.id);
+			author.profile.banners = [...banners];
+			await em.save(author);
+		});
 
 		return message.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
 	}
 
 	public async reset(message: KlasaMessage) {
-		const banners = message.author.settings.get(UserSettings.BannerList);
-		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
-		if (message.author.settings.get(UserSettings.ThemeProfile) === '0001') throw message.language.tget('COMMAND_BANNER_RESET_DEFAULT');
+		const { users } = await DbSet.connect();
+		await users.lock([message.author.id], async id => {
+			const user = await users.ensureProfile(id);
+			if (!user.profile.banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
+			if (user.profile.bannerProfile === '0001') throw message.language.tget('COMMAND_BANNER_RESET_DEFAULT');
 
-		await message.author.settings.update(UserSettings.ThemeProfile, '0001', {
-			extraContext: { author: message.author.id }
+			user.profile.bannerProfile = '0001';
+			return user.save();
 		});
+
 		return message.sendLocale('COMMAND_BANNER_RESET');
 	}
 
 	public async set(message: KlasaMessage, [banner]: [BannerCache]) {
-		const banners = message.author.settings.get(UserSettings.BannerList);
-		if (!banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
-		if (!banners.includes(banner.id)) throw message.language.tget('COMMAND_BANNER_SET_NOT_BOUGHT');
+		const { users } = await DbSet.connect();
+		await users.lock([message.author.id], async id => {
+			const user = await users.ensureProfile(id);
+			if (!user.profile.banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
+			if (!user.profile.banners.includes(banner.id)) throw message.language.tget('COMMAND_BANNER_SET_NOT_BOUGHT');
 
-		await message.author.settings.update(UserSettings.ThemeProfile, banner.id, {
-			extraContext: { author: message.author.id }
+			user.profile.bannerProfile = banner.id;
+			return user.save();
 		});
+
 		return message.sendLocale('COMMAND_BANNER_SET', [banner.title]);
 	}
 
@@ -99,11 +107,12 @@ export default class extends SkyraCommand {
 			throw message.language.tget('COMMAND_BANNER_NOTEXISTS', message.guild!.settings.get(GuildSettings.Prefix));
 		});
 
-		const banners = await this.client.providers.default!.getAll(Databases.Banners) as RawBannerSettings[];
+		const { banners } = await DbSet.connect();
+		const entries = await banners.find();
 		const display = new UserRichDisplay(new MessageEmbed().setColor(BrandingColors.Primary));
-		for (const banner of banners) {
+		for (const banner of entries) {
 			this.banners.set(banner.id, {
-				author: banner.author_id,
+				author: banner.authorID,
 				authorName: null,
 				id: banner.id,
 				group: banner.group,
@@ -124,12 +133,14 @@ export default class extends SkyraCommand {
 		return this.runDisplay(message, this.display);
 	}
 
-	private userList(message: KlasaMessage) {
+	private async userList(message: KlasaMessage) {
 		const prefix = message.guild!.settings.get(GuildSettings.Prefix);
-		const banners = new Set(message.author.settings.get(UserSettings.BannerList));
+		const { users } = await DbSet.connect();
+		const user = await users.ensureProfile(message.author.id);
+		const banners = new Set(user.profile.banners);
 		if (!banners.size) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', prefix);
 
-		const display = new UserRichDisplay(new MessageEmbed().setColor(getColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {

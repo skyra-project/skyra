@@ -1502,6 +1502,8 @@ export interface LanguageKeys {
 	COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: (user: string) => string;
 	COMMAND_MARRY_TAKEN: (spousesCount: number) => string;
 	COMMAND_MARRY_ALREADY_MARRIED: (user: User) => string;
+	COMMAND_MARRY_AUTHOR_TOO_MANY: (limit: number) => string;
+	COMMAND_MARRY_TARGET_TOO_MANY: (limit: number) => string;
 	COMMAND_MARRY_MULTIPLE_CANCEL: string;
 	COMMAND_MARRY_PETITION: (author: User, user: User) => string;
 	COMMAND_MARRY_NOREPLY: string;
@@ -1804,6 +1806,7 @@ export interface LanguageKeys {
 	SYSTEM_FETCHBANS_FAIL: string;
 	SYSTEM_LOADING: () => string;
 	SYSTEM_ERROR: string;
+	SYSTEM_DATABASE_ERROR: string;
 	SYSTEM_DISCORD_ABORTERROR: string;
 	SYSTEM_QUERY_FAIL: string;
 	SYSTEM_NO_RESULTS: string;

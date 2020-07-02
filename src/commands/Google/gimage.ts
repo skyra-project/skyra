@@ -1,9 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -35,15 +35,15 @@ export default class extends RichDisplayCommand {
 
 		if (!items || !items.length) throw message.language.tget(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
-		const display = this.buildDisplay(message, items);
+		const display = await this.buildDisplay(message, items);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(message: KlasaMessage, items: GoogleCSEImageData[]) {
+	private async buildDisplay(message: KlasaMessage, items: GoogleCSEImageData[]) {
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
 			display.addPage((embed: MessageEmbed) => embed

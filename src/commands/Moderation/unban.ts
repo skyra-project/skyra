@@ -22,14 +22,14 @@ export default class extends ModerationCommand {
 		throw message.language.tget('GUILD_BANS_EMPTY');
 	}
 
-	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
+	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.unBan({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			reason: context.reason,
-			image_url: getImage(message),
+			imageURL: getImage(message),
 			duration: context.duration
-		}, this.getTargetDM(message, context.target));
+		}, await this.getTargetDM(message, context.target));
 	}
 
 	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {

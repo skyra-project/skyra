@@ -1,11 +1,11 @@
-import { Collection } from '@discordjs/collection';
-import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
+import { Cache } from '@klasa/cache';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser, util } from 'klasa';
 
@@ -31,7 +31,7 @@ export default class extends RichDisplayCommand {
 		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size)));
 
@@ -53,38 +53,38 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationManagerEntry) {
-		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdAt + entry.duration) - Date.now();
-		const formattedModerator = users.get(entry.flattenedModerator);
+	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
+		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const formattedModerator = users.get(entry.moderatorID!);
 		const formattedReason = entry.reason || 'None';
 		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
 		const formattedTitle = displayName ? `**${entry.title}**\n` : '';
-		return `${formattedTitle}Case \`${entry.case}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
+		return `${formattedTitle}Case \`${entry.caseID}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
 	}
 
-	private displayModerationLogFromUsers(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationManagerEntry) {
-		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdAt + entry.duration) - Date.now();
-		const formattedUser = users.get(entry.flattenedUser);
+	private displayModerationLogFromUsers(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
+		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const formattedUser = users.get(entry.userID!);
 		const formattedReason = entry.reason || 'None';
 		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
 		const formattedTitle = displayName ? `**${entry.title}**\n` : '';
-		return `${formattedTitle}Case \`${entry.case}\`. User: **${formattedUser}**.\n${formattedReason}${formattedDuration}`;
+		return `${formattedTitle}Case \`${entry.caseID}\`. User: **${formattedUser}**.\n${formattedReason}${formattedDuration}`;
 	}
 
-	private async fetchAllUsers(entries: Collection<number, ModerationManagerEntry>) {
+	private async fetchAllUsers(entries: Cache<number, ModerationEntity>) {
 		const users = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
-			const id = entry.flattenedUser;
-			if (!users.has(id)) users.set(id, await this.client.userTags.fetchUsername(id));
+			const id = entry.userID!;
+			if (!users.has(id)) users.set(id, (await entry.fetchUser()).username);
 		}
 		return users;
 	}
 
-	private async fetchAllModerators(entries: Collection<number, ModerationManagerEntry>) {
+	private async fetchAllModerators(entries: Cache<number, ModerationEntity>) {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
-			const id = entry.flattenedModerator;
-			if (!moderators.has(id)) moderators.set(id, await this.client.userTags.fetchUsername(id));
+			const id = entry.moderatorID!;
+			if (!moderators.has(id)) moderators.set(id, (await entry.fetchModerator()).username);
 		}
 		return moderators;
 	}
@@ -93,21 +93,21 @@ export default class extends RichDisplayCommand {
 		switch (type) {
 			case 'mutes':
 				return target
-					? (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Mute)
-						&& !entry.invalidated && !entry.appealType && entry.flattenedUser === target.id
-					: (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Mute)
+					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute)
+						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute)
 						&& !entry.invalidated && !entry.appealType;
 			case 'warnings':
 				return target
-					? (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Warn)
-						&& !entry.invalidated && !entry.appealType && entry.flattenedUser === target.id
-					: (entry: ModerationManagerEntry) => entry.isType(Moderation.TypeCodes.Warn)
+					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warn)
+						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warn)
 						&& !entry.invalidated && !entry.appealType;
 			default:
 				return target
-					? (entry: ModerationManagerEntry) => entry.duration !== null
-						&& !entry.invalidated && !entry.appealType && entry.flattenedUser === target.id
-					: (entry: ModerationManagerEntry) => entry.duration !== null
+					? (entry: ModerationEntity) => entry.duration !== null
+						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.duration !== null
 						&& !entry.invalidated && !entry.appealType;
 		}
 	}

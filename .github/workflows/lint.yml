@@ -13,15 +13,15 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@v2
-      - name: Install NodeJS v12
+      - name: Install NodeJS v14
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 14
       - name: Restore CI Cache
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.os }}-12-${{ hashFiles('**/yarn.lock') }}
+          key: ${{ runner.os }}-14-${{ hashFiles('**/yarn.lock') }}
       - name: Install Dependencies
         run: yarn --ignore-scripts --frozen-lockfile
       - name: Run ESLint

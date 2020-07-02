@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -19,12 +19,12 @@ const kMaximum = 100000;
 })
 export default class extends SkyraCommand {
 
-	public run(message: KlasaMessage) {
+	public async run(message: KlasaMessage) {
 		const url = `https://thiswaifudoesnotexist.net/example-${Math.floor(Math.random() * kMaximum)}.jpg`;
 		return message.sendEmbed(new MessageEmbed()
 			.setTitle('→')
 			.setURL(url)
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setImage(url)
 			.setFooter(message.language.tget('COMMAND_WAIFU_FOOTER'))
 			.setTimestamp());

@@ -1,45 +1,34 @@
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
+import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
 import { Moderation } from '@utils/constants';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';
 import { Task } from 'klasa';
+import { DbSet } from './DbSet';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 
-	public async run(data: ModerationData<T>) {
+	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
 		const guild = this.client.guilds.get(data.guildID);
 		// If the guild is not available, cancel the task.
-		if (typeof guild === 'undefined') return;
+		if (typeof guild === 'undefined') return { type: ResponseType.Ignore };
 
 		// If the guild is not available, re-schedule the task by creating
 		// another with the same data but happening 20 seconds later.
-		if (!guild.available) return this.reschedule(data, 20000);
+		if (!guild.available) return { type: ResponseType.Delay, value: 20000 };
 
 		// Run the abstract handle function.
 		try {
 			await this.handle(guild, data);
 		} catch { /* noop */ }
+
+		return { type: ResponseType.Finished };
 	}
 
-	protected async reschedule(data: ModerationData<T>, duration: number) {
-		await this.client.schedule.create(this.name, Date.now() + duration, {
-			data: {
-				[Moderation.SchemaKeys.Case]: data.caseID,
-				[Moderation.SchemaKeys.Guild]: data.guildID,
-				[Moderation.SchemaKeys.User]: data.userID,
-				[Moderation.SchemaKeys.Duration]: data.duration,
-				[Moderation.SchemaKeys.ExtraData]: data.extraData,
-				scheduleRetryCount: (data.scheduleRetryCount || 0) + 1
-			},
-			catchUp: true
-		});
-	}
-
-	protected getTargetDM(guild: Guild, target: User): ModerationActionsSendOptions {
+	protected async getTargetDM(guild: Guild, target: User): Promise<ModerationActionsSendOptions> {
 		return {
 			moderator: null,
-			send: guild.settings.get(GuildSettings.Messages.ModerationDM) && target.settings.get(UserSettings.ModerationDM)
+			send: guild.settings.get(GuildSettings.Messages.ModerationDM) && await DbSet.fetchModerationDirectMessageEnabled(target.id)
 		};
 	}
 

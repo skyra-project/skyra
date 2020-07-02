@@ -1,4 +1,5 @@
 import ApiResponse from '@lib/structures/api/ApiResponse';
+import { DbSet } from '@lib/structures/DbSet';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
@@ -10,11 +11,12 @@ export default class extends Event {
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
-		const streamer = await this.client.queries.fetchTwitchStreamSubscription(data.id);
-		if (streamer === null) return response.error('No streamer could be found in the database.');
+		const { twitchStreamSubscriptions } = await DbSet.connect();
+		const streamer = await twitchStreamSubscriptions.findOne({ id: data.id });
+		if (!streamer) return response.error('No streamer could be found in the database.');
 
 		// Iterate over all the guilds that are subscribed to the streamer.
-		for (const guildID of streamer.guild_ids) {
+		for (const guildID of streamer.guildIds) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
 			const guild = this.client.guilds.get(guildID);
 			if (typeof guild === 'undefined') continue;

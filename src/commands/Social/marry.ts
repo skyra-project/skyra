@@ -1,13 +1,13 @@
 import { chunk } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { getColor } from '@utils/util';
 import assert from 'assert';
 import { DMChannel, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';
@@ -53,17 +53,18 @@ export default class extends RichDisplayCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		const users = message.author.settings.get(UserSettings.Marry);
-		if (users.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
+		const { users } = await DbSet.connect();
+		const spouses = await users.fetchSpouses(message.author.id);
+		if (spouses.length === 0) return message.sendLocale('COMMAND_MARRY_NOTTAKEN');
 
 		const usernames = chunk(
 			await Promise.all(
-				users.map(async user => `${await this.client.userTags.fetchUsername(user)} (${user})`)
+				spouses.map(async user => `${await this.client.userTags.fetchUsername(user)} (\`${user}\`)`)
 			), 20
 		);
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const usernameChunk of usernames) {
 			display.addPage((embed: MessageEmbed) => embed
@@ -78,45 +79,62 @@ export default class extends RichDisplayCommand {
 		const { author, channel, language } = message;
 
 		switch (user.id) {
-			case this.client.user!.id: return message.sendLocale('COMMAND_MARRY_SKYRA');
+			case CLIENT_ID: return message.sendLocale('COMMAND_MARRY_SKYRA');
 			case SNEYRA_ID: return message.sendLocale('COMMAND_MARRY_SNEYRA');
 			case author.id: return message.sendLocale('COMMAND_MARRY_SELF');
 		}
 		if (user.bot) return message.sendLocale('COMMAND_MARRY_BOTS');
 
-		// settings is already sync by the monitors.
-		const spouses = author.settings.get(UserSettings.Marry);
-		if (spouses.includes(user.id)) {
-			throw message.language.tget('COMMAND_MARRY_ALREADY_MARRIED', user);
-		}
+		const { users, clients } = await DbSet.connect();
+		const clientSettings = await clients.findOne(CLIENT_ID);
+		const premiumUsers = clientSettings?.userBoost ?? [];
+		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
+			// Retrieve the author's spouses
+			const spouses = await users.fetchSpouses(authorID);
+			if (spouses.includes(targetID)) {
+				throw message.language.tget('COMMAND_MARRY_ALREADY_MARRIED', user);
+			}
 
-		const targetsSpouses = user.settings.get(UserSettings.Marry);
+			// Check if the author can marry another user
+			const authorLimit = premiumUsers.includes(authorID) ? 20 : 10;
+			if (spouses.length >= authorLimit) {
+				throw message.language.tget('COMMAND_MARRY_AUTHOR_TOO_MANY', authorLimit);
+			}
 
-		// Warn if starting polygamy:
-		// Check if the author is already monogamous.
-		if (spouses.length === 1) {
-			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN', author));
-			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.userTags.fetchUsername(spouses[0])]);
-			// Check if the author's first potential spouse is already married.
-		} else if (spouses.length === 0 && targetsSpouses.length > 0) {
-			const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_TAKEN', targetsSpouses.length));
-			if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_MULTIPLE_CANCEL');
-		}
+			// Retrieve the target's spouses
+			const targetSpouses = await users.fetchSpouses(targetID);
 
-		const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author, user));
-		switch (answer) {
-			case YesNoAnswer.Timeout: return message.sendLocale('COMMAND_MARRY_NOREPLY');
-			case YesNoAnswer.ImplicitNo: return message.sendLocale('COMMAND_MARRY_DENIED');
-			case YesNoAnswer.Yes: break;
-			default: assert.fail('unreachable');
-		}
+			// Check if the target can marry another user
+			const targetLimit = premiumUsers.includes(targetID) ? 20 : 10;
+			if (targetSpouses.length >= targetLimit) {
+				throw message.language.tget('COMMAND_MARRY_TARGET_TOO_MANY', targetLimit);
+			}
 
-		await Promise.all([
-			author.settings.update(UserSettings.Marry, user, { arrayAction: 'add', extraContext: { author: message.author.id } }),
-			user.settings.update(UserSettings.Marry, author, { arrayAction: 'add', extraContext: { author: message.author.id } })
-		]);
+			// Warn if starting polygamy:
+			// Check if the author is already monogamous.
+			if (spouses.length === 1) {
+				const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN', author));
+				if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.userTags.fetchUsername(spouses[0])]);
+				// Check if the author's first potential spouse is already married.
+			} else if (spouses.length === 0 && targetSpouses.length > 0) {
+				const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_TAKEN', targetSpouses.length));
+				if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_MULTIPLE_CANCEL');
+			}
 
-		return message.sendLocale('COMMAND_MARRY_ACCEPTED', [author, user]);
+			const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author, user));
+			switch (answer) {
+				case YesNoAnswer.Timeout: return message.sendLocale('COMMAND_MARRY_NOREPLY');
+				case YesNoAnswer.ImplicitNo: return message.sendLocale('COMMAND_MARRY_DENIED');
+				case YesNoAnswer.Yes: break;
+				default: assert.fail('unreachable');
+			}
+
+			const settings = await users.ensure(authorID, { relations: ['spouses'] });
+			settings.spouses = (settings.spouses ?? []).concat(await users.ensure(targetID));
+			await settings.save();
+
+			return message.sendLocale('COMMAND_MARRY_ACCEPTED', [author, user]);
+		});
 	}
 
 }

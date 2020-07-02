@@ -3468,6 +3468,8 @@ export default class extends Language {
 		COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: user => `Cancelling. Your commitment to ${user} is admirable.`,
 		COMMAND_MARRY_TAKEN: spousesCount => `This user is already married to ${spousesCount === 1 ? 'someone' : `${spousesCount} people`}. Would you like to join their harem?`,
 		COMMAND_MARRY_ALREADY_MARRIED: user => `You are already married with ${user}, did you forget it?`,
+		COMMAND_MARRY_AUTHOR_TOO_MANY: limit => `${REDCROSS} Ya estás casado con demasiadas personas, ¡tu límite de casamientos es ${limit}!`,
+		COMMAND_MARRY_TARGET_TOO_MANY: limit => `${REDCROSS} La persona a la que intentas casarte ya está casada con demasiadas personas, ¡su límite de casamientos es ${limit}!`,
 		COMMAND_MARRY_MULTIPLE_CANCEL: 'Cancelling. Don\'t worry, you\'ll find someone you don\'t have to share!',
 		COMMAND_MARRY_PETITION: (author, user) => `Fresh pair of eyes! ${author.username} is proposing to ${user.username}! 💞 <@${user.id}>, reply with **yes** to accept!`,
 		COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was a hard decision?',
@@ -4530,7 +4532,8 @@ export default class extends Language {
 			`${LOADING} Calibrando lentes...`,
 			`${LOADING} Jugando a Piedra, Papel, Tijeras...`
 		]),
-		SYSTEM_ERROR: '¡Algo pasó!',
+		SYSTEM_ERROR: `¡Algo malo sucedio! Inténtalo de nuevo, o si el problema continúa, únete al servidor de soporte (sugerencia: usa \`Skyra, support\`)`,
+		SYSTEM_DATABASE_ERROR: `¡No pude conseguir eso en mi base de datos! Inténtalo de nuevo, o si el problema continúa, únete al servidor de soporte (sugerencia: usa \`Skyra, support\`)`,
 		SYSTEM_DISCORD_ABORTERROR: 'He tenido un pequeño error de red al mandar un mensaje a Discord, ¡por favor ejecuta el comando de nuevo!',
 		SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
 		SYSTEM_NOTENOUGH_PARAMETERS: 'Lo siento, pero no proporcionaste suficientes parámetros...',

@@ -1,8 +1,8 @@
 import { toTitleCase } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 
 		const embedTranslations = message.language.tget('COMMAND_ITEM_EMEBED_DATA');
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, POKEMON_EMBED_THUMBNAIL)
 			.setThumbnail(itemDetails.sprite)
 			.setDescription(itemDetails.desc)

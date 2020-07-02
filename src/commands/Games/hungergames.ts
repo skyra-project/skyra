@@ -2,11 +2,11 @@ import { isFunction } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { cleanMentions } from '@utils/util';
 import { KlasaMessage, Language, util } from 'klasa';
-import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],

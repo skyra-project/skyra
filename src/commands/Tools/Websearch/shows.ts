@@ -1,10 +1,11 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
+import { cutText, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -62,7 +63,7 @@ export default class extends RichDisplayCommand {
 		const titles = message.language.tget('COMMAND_SHOWS_TITLES');
 		const fieldsData = message.language.tget('COMMAND_SHOWS_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		const showData = await Promise.all(shows.map(show => this.fetchShowData(message, show.id)));
 

@@ -100,7 +100,7 @@ export default class extends Event {
 			// Process the starboard
 			const { starboard } = data.guild;
 			const sMessage = await starboard.fetch(data.channel, data.messageID, data.userID);
-			if (sMessage) await sMessage.add(data.userID);
+			if (sMessage) await sMessage.increment(data.userID);
 		} catch (error) {
 			this.client.emit(Events.ApiError, error);
 		}

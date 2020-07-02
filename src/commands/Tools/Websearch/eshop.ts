@@ -1,9 +1,10 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { cutText, fetch, FetchMethods, FetchResultTypes, getColor } from '@utils/util';
+import { cutText, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage, Timestamp, util } from 'klasa';
@@ -29,45 +30,48 @@ export default class extends RichDisplayCommand {
 		const { results: entries } = await this.fetchAPI(message, gameName);
 		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
 
-		const display = this.buildDisplay(entries[0].hits, message);
+		const display = await this.buildDisplay(entries[0].hits, message);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private fetchAPI(message: KlasaMessage, gameName: string) {
-		return fetch<EshopResult>(API_URL, {
-			method: FetchMethods.Post,
-			headers: {
-				'Content-Type': Mime.Types.ApplicationJson,
-				'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
-				'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
-			},
-			body: JSON.stringify(
-				{
-					requests: [
-						{
-							indexName: 'noa_aem_game_en_us',
-							params: stringify({
-								facetFilters: [
-									'type:game'
-								],
-								hitsPerPage: 10,
-								maxValuesPerFacet: 30,
-								page: 0,
-								query: gameName
-							})
-						}
-					]
-				}
-			)
-		}, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); });
+	private async fetchAPI(message: KlasaMessage, gameName: string) {
+		try {
+			return fetch<EshopResult>(API_URL, {
+				method: FetchMethods.Post,
+				headers: {
+					'Content-Type': Mime.Types.ApplicationJson,
+					'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
+					'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
+				},
+				body: JSON.stringify(
+					{
+						requests: [
+							{
+								indexName: 'noa_aem_game_en_us',
+								params: stringify({
+									facetFilters: [
+										'type:game'
+									],
+									hitsPerPage: 10,
+									maxValuesPerFacet: 30,
+									page: 0,
+									query: gameName
+								})
+							}
+						]
+					}
+				)
+			}, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
 	}
 
-	private buildDisplay(entries: EShopHit[], message: KlasaMessage) {
+	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_ESHOP_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);

@@ -1,8 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
+import { cutText, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language, util } from 'klasa';
 
@@ -28,16 +29,16 @@ export default class extends RichDisplayCommand {
 		);
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const display = this.buildDisplay(list, message, query);
+		const display = await this.buildDisplay(list, message, query);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
+	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail('https://i.imgur.com/CcIZZsa.png'))
 			.setFooterSuffix(' - © Urban Dictionary');
 

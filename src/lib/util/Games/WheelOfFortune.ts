@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
-import { ClientSettings } from '@lib/types/settings/ClientSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
+import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
 import { loadImage } from '@utils/util';
 import { Image } from 'canvas';
@@ -62,29 +62,25 @@ export class WheelOfFortune {
 	/** The message that ran this instance */
 	public message: Message;
 
+	/** The player's settings */
+	public settings: UserEntity;
+
 	/** The player */
 	public get player() {
 		return this.message.author;
 	}
 
-	public constructor(message: Message, amount: number) {
+	public constructor(message: Message, amount: number, settings: UserEntity) {
 		this.message = message;
 		this.amount = amount;
-	}
-
-	public get boost() {
-		const userBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Users);
-		const guildBoosts = this.player.client.settings!.get(ClientSettings.Boosts.Guilds);
-		return (this.message.guild && guildBoosts.includes(this.message.guild.id) ? 1.5 : 1)
-			* (userBoosts.includes(this.message.author.id) ? 1.5 : 1);
+		this.settings = settings;
 	}
 
 	public async run() {
-		this.calculate();
+		await this.calculate();
 
 		const lost = this.winnings < 0;
-		const money = this.player.settings.get(UserSettings.Money);
-		const final = money + this.winnings;
+		const final = this.settings.money + this.winnings;
 		if (lost && final < 0) {
 			throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 		}
@@ -93,10 +89,19 @@ export class WheelOfFortune {
 			? this.player.decreaseBalance(-this.winnings)
 			: this.player.increaseBalance(this.winnings));
 
-		return [await this.render(this.player.settings.get(UserSettings.DarkTheme)), final] as const;
+		return [await this.render(this.settings.profile!.darkTheme), final] as const;
 	}
 
-	private calculate() {
+	/** The boost */
+	private async fetchBoost() {
+		const { clients } = await DbSet.connect();
+		const settings = await clients.ensure();
+
+		return (this.message.guild && settings.guildBoost.includes(this.message.guild.id) ? 1.5 : 1)
+			* (settings.userBoost.includes(this.message.author.id) ? 1.5 : 1);
+	}
+
+	private async calculate() {
 		this.spin = Math.floor(Math.random() * WheelOfFortune.kMultipliers.length);
 
 		// The multiplier to apply
@@ -104,7 +109,7 @@ export class WheelOfFortune {
 
 		// The winnings
 		this.winnings = multiplier >= 1
-			? (this.amount * multiplier * this.boost) - this.amount
+			? (this.amount * multiplier * await this.fetchBoost()) - this.amount
 			: (this.amount * multiplier) - this.amount;
 	}
 

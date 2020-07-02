@@ -1,3 +1,4 @@
+import { Colors } from '@lib/types/constants/Constants';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -5,7 +6,6 @@ import { MessageLogsEnum } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
 
 export default class extends Event {
 

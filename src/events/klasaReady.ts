@@ -1,4 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
+import { CommandCounterEntity } from '@orm/entities/CommandCounterEntity';
 import { ENABLE_LAVALINK } from '@root/config';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
@@ -22,7 +24,9 @@ export default class extends Event {
 				// Update guild permission managers
 				this.client.guilds.map(guild => guild.permissionsManager.update()),
 				// Connect Lavalink if configured to do so
-				this.connectLavalink()
+				this.connectLavalink(),
+				// Ensure the existence of all command uses entries
+				this.initCommandUses()
 			]);
 
 			// Setup the cleanup task
@@ -37,25 +41,25 @@ export default class extends Event {
 	}
 
 	private async initPostStatsTask() {
-		const { tasks } = this.client.schedule;
-		if (!tasks.some(task => task.taskName === 'poststats')) {
-			await this.client.schedule.create('poststats', '*/15 * * * *', {});
+		const { queue } = this.client.schedules;
+		if (!queue.some(task => task.taskID === 'poststats')) {
+			await this.client.schedules.add('poststats', '*/15 * * * *', {});
 		}
 	}
 
 	// If this task is not being run, let's create the
 	// ScheduledTask and make it run every 10 minutes.
 	private async initCleanupTask() {
-		const { tasks } = this.client.schedule;
-		if (!tasks.some(task => task.taskName === 'cleanup')) {
-			await this.client.schedule.create('cleanup', '*/10 * * * *', {});
+		const { queue } = this.client.schedules;
+		if (!queue.some(task => task.taskID === 'cleanup')) {
+			await this.client.schedules.add('cleanup', '*/10 * * * *', {});
 		}
 	}
 
 	private async initTwitchRefreshSubscriptionsTask() {
-		const { tasks } = this.client.schedule;
-		if (!tasks.some(task => task.taskName === 'twitchRefreshSubscriptions')) {
-			await this.client.schedule.create('twitchRefreshSubscriptions', '@daily');
+		const { queue } = this.client.schedules;
+		if (!queue.some(task => task.taskID === 'twitchRefreshSubscriptions')) {
+			await this.client.schedules.add('twitchRefreshSubscriptions', '@daily');
 		}
 	}
 
@@ -63,6 +67,17 @@ export default class extends Event {
 		if (ENABLE_LAVALINK) {
 			await this.client.lavalink.connect();
 		}
+	}
+
+	private async initCommandUses() {
+		const { commandCounters } = await DbSet.connect();
+		const entries = await commandCounters.find();
+
+		const missing = this.client.commands
+			.filter(command => !entries.some(entry => entry.id === command.name))
+			.map(command => new CommandCounterEntity().setID(command.name));
+
+		if (missing.length) await commandCounters.insert(missing);
 	}
 
 }

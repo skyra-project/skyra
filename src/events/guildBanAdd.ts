@@ -9,7 +9,7 @@ export default class extends Event {
 		if (!guild.available || !guild.settings.get(GuildSettings.Events.BanAdd)) return;
 		await guild.moderation.waitLock();
 		await guild.moderation.create({
-			user_id: user.id,
+			userID: user.id,
 			type: Moderation.TypeCodes.Ban
 		}).create();
 	}

@@ -1,9 +1,9 @@
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
-import { Route, RouteOptions } from 'klasa-dashboard-hooks';
+import { DbSet } from '@lib/structures/DbSet';
 import { TOKENS } from '@root/config';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/topgg', route: 'webhooks/topgg' })
 export default class extends Route {
@@ -14,11 +14,14 @@ export default class extends Route {
 
 		const body = request.body as Body;
 		try {
-			const user = await this.client.users.fetch(body.user);
-			const settings = await user.settings.sync();
-			const payment = body.isWeekend ? 800 : 400;
+			const { users } = await DbSet.connect();
+			await users.lock([body.user], async id => {
+				const user = await users.ensure(id);
 
-			await settings.increase(UserSettings.Money, payment);
+				user.money += body.isWeekend ? 800 : 400;
+				await user.save();
+			});
+
 			return response.noContent();
 		} catch (error) {
 			this.client.emit('error', error);

@@ -1,14 +1,14 @@
 import { Events } from '@lib/types/Enums';
-import { Event } from 'klasa';
-import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { DiscordAPIError, MessageEmbed, TextChannel, Message } from 'discord.js';
-import { APIErrors, Moderation } from '@utils/constants';
+import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
+import { APIErrors, Moderation } from '@utils/constants';
+import { DiscordAPIError, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Event } from 'klasa';
 
 export default class extends Event {
 
-	public run(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+	public run(old: ModerationEntity, entry: ModerationEntity) {
 		return Promise.all([
 			this.cancelTask(old, entry),
 			this.sendMessage(old, entry),
@@ -16,13 +16,13 @@ export default class extends Event {
 		]);
 	}
 
-	private async cancelTask(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+	private async cancelTask(old: ModerationEntity, entry: ModerationEntity) {
 		// If the task was invalidated or had its duration set to null, delete any pending task
 		if ((!old.invalidated && entry.invalidated)
 			|| (old.duration !== null && entry.duration === null)) await entry.task?.delete();
 	}
 
-	private async sendMessage(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+	private async sendMessage(old: ModerationEntity, entry: ModerationEntity) {
 		// Handle invalidation
 		if (!old.invalidated && entry.invalidated) return;
 
@@ -40,16 +40,16 @@ export default class extends Event {
 				: previous.edit(messageEmbed));
 		} catch (error) {
 			if (error instanceof DiscordAPIError && (error.code === APIErrors.MissingAccess || error.code === APIErrors.MissingPermissions)) {
-				await entry.manager.guild.settings.reset(GuildSettings.Channels.ModerationLogs);
+				await entry.guild.settings.reset(GuildSettings.Channels.ModerationLogs);
 			}
 		}
 	}
 
-	private fetchModerationLogMessage(entry: ModerationManagerEntry, channel: TextChannel) {
-		if (entry.case === null) throw new TypeError('UNREACHABLE.');
+	private fetchModerationLogMessage(entry: ModerationEntity, channel: TextChannel) {
+		if (entry.caseID === -1) throw new TypeError('UNREACHABLE.');
 
 		for (const message of channel.messages.values()) {
-			if (this.validateModerationLogMessage(message, entry.case)) return message;
+			if (this.validateModerationLogMessage(message, entry.caseID)) return message;
 		}
 
 		return null;
@@ -97,7 +97,7 @@ export default class extends Event {
 		return typeof timestamp === 'number';
 	}
 
-	private async scheduleDuration(old: ModerationManagerEntry, entry: ModerationManagerEntry) {
+	private async scheduleDuration(old: ModerationEntity, entry: ModerationEntity) {
 		if (old.duration === entry.duration) return;
 
 		const previous = this.retrievePreviousSchedule(entry);
@@ -105,21 +105,21 @@ export default class extends Event {
 
 		const taskName = entry.duration === null ? null : entry.appealTaskName;
 		if (taskName !== null) {
-			await this.client.schedule.create(taskName, entry.duration! + Date.now(), {
+			await this.client.schedules.add(taskName, entry.duration! + Date.now(), {
 				catchUp: true,
 				data: {
-					[Moderation.SchemaKeys.Case]: entry.case,
-					[Moderation.SchemaKeys.User]: entry.flattenedUser,
-					[Moderation.SchemaKeys.Guild]: entry.manager.guild.id,
+					[Moderation.SchemaKeys.Case]: entry.caseID,
+					[Moderation.SchemaKeys.User]: entry.userID,
+					[Moderation.SchemaKeys.Guild]: entry.guildID,
 					[Moderation.SchemaKeys.Duration]: entry.duration
 				}
 			}).catch(error => this.client.emit(Events.Wtf, error));
 		}
 	}
 
-	private retrievePreviousSchedule(entry: ModerationManagerEntry) {
-		return this.client.schedule.tasks.find(task => typeof task.data === 'object' && task.data !== null
-			&& task.data[Moderation.SchemaKeys.Case] === entry.case
+	private retrievePreviousSchedule(entry: ModerationEntity) {
+		return this.client.schedules.queue.find(task => typeof task.data === 'object' && task.data !== null
+			&& task.data[Moderation.SchemaKeys.Case] === entry.caseID
 			&& task.data[Moderation.SchemaKeys.Guild] === entry.guild.id) || null;
 	}
 

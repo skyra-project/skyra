@@ -21,14 +21,14 @@ export default class extends ModerationCommand {
 			: null;
 	}
 
-	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
+	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.softBan({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			duration: context.duration,
 			reason: context.reason,
-			image_url: getImage(message)
-		}, this.getDays(message), this.getTargetDM(message, context.target));
+			imageURL: getImage(message)
+		}, this.getDays(message), await this.getTargetDM(message, context.target));
 	}
 
 	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {

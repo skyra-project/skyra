@@ -1,10 +1,10 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { Colors } from '@lib/types/constants/Constants';
+import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
 
 const enum CodeType {
 	DiscordGG,

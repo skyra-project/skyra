@@ -1,6 +1,6 @@
-import { Time, Emojis } from '@utils/constants';
-import { Client } from 'klasa';
+import { Emojis, Time } from '@utils/constants';
 import { resolveEmoji } from '@utils/util';
+import { Client } from 'klasa';
 
 export default Client.defaultGuildSchema
 	.add('commandUses', 'Integer', { 'default': 0, 'configurable': false })

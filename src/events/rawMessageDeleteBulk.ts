@@ -1,3 +1,4 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { WSMessageDeleteBulk } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -16,17 +17,22 @@ export default class extends Event {
 		if (!guild || !guild.channels.has(data.channel_id)) return;
 		for (const id of data.ids) guild.starboard.delete(id);
 
-
 		// Delete entries from starboard if it exists
 		try {
-			const results = await this.client.queries.deleteStarsReturning(data.guild_id, data.ids);
+			const { starboards } = await DbSet.connect();
+			const results = await starboards.createQueryBuilder()
+				.delete()
+				.where('guild_id = :guild', { guild: data.guild_id })
+				.andWhere('message_id IN (:...ids)', { ids: data.ids })
+				.returning('*')
+				.execute();
 
 			// Get channel
 			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			const filteredResults: string[] = [];
-			for (const result of results) if (result.star_message_id) filteredResults.push(result.star_message_id);
+			for (const result of results.raw) if (result.star_message_id) filteredResults.push(result.star_message_id);
 
 			if (filteredResults.length === 0) return;
 			if (filteredResults.length === 1) {

@@ -17,7 +17,7 @@ export default class extends Serializer {
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
 		if (this.kRegExp.test(data)) {
 			const snowflake = new Snowflake(data);
-			if (this.kMinimum < snowflake.timestamp && snowflake.timestamp < Date.now()) return data;
+			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return data;
 		}
 		throw language.tget('RESOLVER_INVALID_SNOWFLAKE', entry.key);
 	}

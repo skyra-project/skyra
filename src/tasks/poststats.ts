@@ -1,9 +1,9 @@
+import { Colors } from '@klasa/console';
 import { Events } from '@lib/types/Enums';
 import { TOKENS } from '@root/config';
+import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { Task } from 'klasa';
-import { Colors } from '@klasa/console';
-import { Mime } from '@utils/constants';
 
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });

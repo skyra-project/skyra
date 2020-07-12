@@ -1,7 +1,7 @@
 import { Query, QueryGetAbilityDetailsByFuzzyArgs, QueryGetItemDetailsByFuzzyArgs, QueryGetMoveDetailsByFuzzyArgs, QueryGetPokemonDetailsByFuzzyArgs, QueryGetPokemonLearnsetByFuzzyArgs, QueryGetTypeMatchupArgs } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '@root/config';
-import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
 import { Mime } from './constants';
+import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
 
 const FlavorsFrament = gql`
 fragment flavors on FlavorEntry {

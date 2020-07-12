@@ -1,8 +1,8 @@
 import { TOKENS } from '@root/config';
+import { Mime } from '@utils/constants';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { Language } from 'klasa';
 import { FFXIV } from './FFXIVTypings';
-import { Mime } from '@utils/constants';
 
 export const FFXIV_BASE_URL = 'https://xivapi.com';
 const FFXIV_PAYLOAD = JSON.stringify({

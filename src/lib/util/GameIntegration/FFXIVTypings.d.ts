@@ -327,4 +327,5 @@ export namespace FFXIV {
 		Name: string;
 		Points: number;
 	}
+
 }

@@ -71,7 +71,8 @@ export const FFXIVServers = [
 	'Zeromus',
 	'Zodiark',
 	'Spriggan',
-	'Twintania'
+	'Twintania',
+	''
 ];
 
 export const FFXIV_BASE_URL = 'https://xivapi.com';

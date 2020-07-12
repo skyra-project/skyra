@@ -3,6 +3,77 @@ import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { Language } from 'klasa';
 import { FFXIV } from './FFXIVTypings';
 
+export const FFXIVServers = [
+	'Adamantoise',
+	'Aegis',
+	'Alexander',
+	'Anima',
+	'Asura',
+	'Atomos',
+	'Bahamut',
+	'Balmung',
+	'Behemoth',
+	'Belias',
+	'Brynhildr',
+	'Cactuar',
+	'Carbuncle',
+	'Cerberus',
+	'Chocobo',
+	'Coeurl',
+	'Diabolos',
+	'Durandal',
+	'Excalibur',
+	'Exodus',
+	'Faerie',
+	'Famfrit',
+	'Fenrir',
+	'Garuda',
+	'Gilgamesh',
+	'Goblin',
+	'Gungnir',
+	'Hades',
+	'Hyperion',
+	'Ifrit',
+	'Ixion',
+	'Jenova',
+	'Kujata',
+	'Lamia',
+	'Leviathan',
+	'Lich',
+	'Louisoix',
+	'Malboro',
+	'Mandragora',
+	'Masamune',
+	'Mateus',
+	'Midgardsormr',
+	'Moogle',
+	'Odin',
+	'Omega',
+	'Pandaemonium',
+	'Phoenix',
+	'Ragnarok',
+	'Ramuh',
+	'Ridill',
+	'Sargatanas',
+	'Shinryu',
+	'Shiva',
+	'Siren',
+	'Tiamat',
+	'Titan',
+	'Tonberry',
+	'Typhon',
+	'Ultima',
+	'Ultros',
+	'Unicorn',
+	'Valefor',
+	'Yojimbo',
+	'Zalera',
+	'Zeromus',
+	'Zodiark',
+	'Spriggan',
+	'Twintania'
+];
+
 export const FFXIV_BASE_URL = 'https://xivapi.com';
 const FFXIV_PAYLOAD = JSON.stringify({
 	private_key: TOKENS.XIVAPI_KEY
@@ -44,10 +115,14 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 	}
 }
 
-export async function searchCharacter(i18n: Language, name: string) {
+export async function searchCharacter(i18n: Language, name: string, server?: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/search`);
 		url.searchParams.append('name', name);
+		if (server) {
+			if (FFXIVServers.includes(server)) url.searchParams.append('server', server);
+			else throw i18n.tget('COMMAND_FFXIV_INVALID_SERVER');
+		}
 
 		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(url, {
 			method: FetchMethods.Post,

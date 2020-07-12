@@ -879,9 +879,9 @@ export default class extends Language {
 			LEVEL_EQUIP: 'Level equippable',
 			NONE: 'None'
 		},
-		COMMAND_FFXIV_NO_CHARACTER_FOUND: 'I am sorry, but I was unable to find a character with that name.',
-		COMMAND_FFXIV_INVALID_SERVER: 'I am sorry, but an invalid server name was passed. Please remember that it is case-sensitive.',
-		COMMAND_FFXIV_NO_ITEM_FOUND: 'I am sorry, but I was unable to find an item with that query.',
+		COMMAND_FFXIV_NO_CHARACTER_FOUND: `${REDCROSS} I am sorry, but I was unable to find a character with that name.`,
+		COMMAND_FFXIV_INVALID_SERVER: `${REDCROSS} I am sorry, but an invalid server name was passed. Please remember that it is case-sensitive.`,
+		COMMAND_FFXIV_NO_ITEM_FOUND: `${REDCROSS} I am sorry, but I was unable to find an item with that query.`,
 		COMMAND_FORTNITE_DESCRIPTION: 'Gets player statistics for a Fortnite player',
 		COMMAND_FORTNITE_EXTENDED: builder.display('fortnite', {
 			extendedHelp: 'This command retrieves statistics for any Fortnite player that plays on PC, Xbox or Playstation',

@@ -1,8 +1,9 @@
+import { Colors } from '@klasa/console';
 import { Events } from '@lib/types/Enums';
 import { TOKENS } from '@root/config';
+import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { Task } from 'klasa';
-import { Colors } from '@klasa/console';
 
 const r = new Colors({ text: 'red' });
 const g = new Colors({ text: 'green' });
@@ -46,7 +47,7 @@ export default class extends Task {
 			if (!token) return null;
 			await fetch(url, {
 				body,
-				headers: { 'content-type': 'application/json', 'authorization': token },
+				headers: { 'content-type': Mime.Types.ApplicationJson, 'authorization': token },
 				method: 'POST'
 			}, FetchResultTypes.Result);
 			return g.format(list);

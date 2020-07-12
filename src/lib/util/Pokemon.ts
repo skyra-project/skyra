@@ -1,5 +1,6 @@
 import { Query, QueryGetAbilityDetailsByFuzzyArgs, QueryGetItemDetailsByFuzzyArgs, QueryGetMoveDetailsByFuzzyArgs, QueryGetPokemonDetailsByFuzzyArgs, QueryGetPokemonLearnsetByFuzzyArgs, QueryGetTypeMatchupArgs } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '@root/config';
+import { Mime } from './constants';
 import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
 
 const FlavorsFrament = gql`
@@ -258,7 +259,7 @@ export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(que
 		return fetch<GraphQLPokemonResponse<R>>(POKEMON_GRAPHQL_API_URL, {
 			method: FetchMethods.Post,
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': Mime.Types.ApplicationJson
 			},
 			body: JSON.stringify({
 				query,

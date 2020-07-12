@@ -24,7 +24,7 @@ export default class extends RichDisplayCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		const characterDetails = await this.fetchCharacter(message.language, name);
+		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
 
 		await this.buildCharacterDisplay(message, characterDetails.Character).start(response, message.author.id);
 		return response;
@@ -42,8 +42,8 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async fetchCharacter(i18n: Language, name: string) {
-		const searchResult = await searchCharacter(i18n, name);
+	private async fetchCharacter(i18n: Language, name: string, server?: string) {
+		const searchResult = await searchCharacter(i18n, name, server);
 
 		if (!searchResult.Results.length) throw i18n.tget('COMMAND_FFXIV_NO_CHARACTER_FOUND');
 

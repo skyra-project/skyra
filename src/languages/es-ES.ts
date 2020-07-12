@@ -886,9 +886,9 @@ export default class extends Language {
 			LEVEL_EQUIP: 'Nivel equipable',
 			NONE: 'Ninguno'
 		},
-		COMMAND_FFXIV_NO_CHARACTER_FOUND: 'Lo siento, pero no pude encontrar un personaje con ese nombre.',
-		COMMAND_FFXIV_INVALID_SERVER: 'Lo siento, pero el nombre del servidor no es válido. Por favor verifica que está bien escrito con las mayúsculas correctas.',
-		COMMAND_FFXIV_NO_ITEM_FOUND: 'Lo siento, pero no pude encontrar un elemento con esa consulta.',
+		COMMAND_FFXIV_NO_CHARACTER_FOUND: `${REDCROSS} Lo siento, pero no pude encontrar un personaje con ese nombre.`,
+		COMMAND_FFXIV_INVALID_SERVER: `${REDCROSS} Lo siento, pero el nombre del servidor no es válido. Por favor verifica que está bien escrito con las mayúsculas correctas.`,
+		COMMAND_FFXIV_NO_ITEM_FOUND: `${REDCROSS} Lo siento, pero no pude encontrar un elemento con esa consulta.`,
 		COMMAND_FORTNITE_DESCRIPTION: 'Obtiene estadísticas de jugador para un jugador de Fortnite',
 		COMMAND_FORTNITE_EXTENDED: builder.display('fortnite', {
 			extendedHelp: 'Este comando recupera estadísticas para cualquier jugador de Fortnite que juegue en PC, Xbox o Playstation',

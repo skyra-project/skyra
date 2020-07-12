@@ -1,7 +1,7 @@
+import { toTitleCase } from '@klasa/utils';
 import { TOKENS } from '@root/config';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { Language } from 'klasa';
-import { toTitleCase } from '@klasa/utils';
 import { FFXIV } from './FFXIVTypings';
 
 export const FFXIVServers = [

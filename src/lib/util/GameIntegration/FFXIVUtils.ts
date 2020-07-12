@@ -3,7 +3,7 @@ import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { Language } from 'klasa';
 import { FFXIV } from './FFXIVTypings';
 
-export const FFXIVServers = [
+export const FFXIVServers: FFXIV.Servers = [
 	'Adamantoise',
 	'Aegis',
 	'Alexander',
@@ -115,7 +115,7 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 	}
 }
 
-export async function searchCharacter(i18n: Language, name: string, server?: string) {
+export async function searchCharacter(i18n: Language, name: string, server?: FFXIV.Server) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/search`);
 		url.searchParams.append('name', name);

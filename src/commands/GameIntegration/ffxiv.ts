@@ -42,7 +42,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async fetchCharacter(i18n: Language, name: string, server?: string) {
+	private async fetchCharacter(i18n: Language, name: string, server?: FFXIV.Server) {
 		const searchResult = await searchCharacter(i18n, name, server);
 
 		if (!searchResult.Results.length) throw i18n.tget('COMMAND_FFXIV_NO_CHARACTER_FOUND');

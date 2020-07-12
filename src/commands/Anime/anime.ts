@@ -3,7 +3,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Kitsu } from '@lib/types/definitions/Kitsu';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
+import { BrandingColors, Mime } from '@utils/constants';
 import { cutText, fetch, FetchMethods, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
@@ -39,7 +39,7 @@ export default class extends RichDisplayCommand {
 		return fetch<Kitsu.KitsuResult>(API_URL, {
 			method: FetchMethods.Post,
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': Mime.Types.ApplicationJson,
 				'X-Algolia-API-Key': TOKENS.KITSU_KEY,
 				'X-Algolia-Application-Id': TOKENS.KITSU_ID
 			},

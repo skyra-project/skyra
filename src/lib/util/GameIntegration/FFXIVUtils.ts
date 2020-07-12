@@ -2,13 +2,14 @@ import { TOKENS } from '@root/config';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { Language } from 'klasa';
 import { FFXIV } from './FFXIVTypings';
+import { Mime } from '@utils/constants';
 
 export const FFXIV_BASE_URL = 'https://xivapi.com';
 const FFXIV_PAYLOAD = JSON.stringify({
 	private_key: TOKENS.XIVAPI_KEY
 });
 const FFXIV_HEADERS = {
-	'Content-Type': 'application/json'
+	'Content-Type': Mime.Types.ApplicationJson
 };
 
 export async function getCharacterDetails(i18n: Language, id: number) {

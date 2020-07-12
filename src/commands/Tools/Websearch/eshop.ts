@@ -2,7 +2,7 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
+import { BrandingColors, Mime } from '@utils/constants';
 import { cutText, fetch, FetchMethods, FetchResultTypes, getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
@@ -38,7 +38,7 @@ export default class extends RichDisplayCommand {
 		return fetch<EshopResult>(API_URL, {
 			method: FetchMethods.Post,
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': Mime.Types.ApplicationJson,
 				'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
 				'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
 			},

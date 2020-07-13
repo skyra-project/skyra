@@ -9,7 +9,8 @@ export namespace AnalyticsSchema {
 
 	export const enum Actions {
 		Addition = 'addition',
-		Subtraction = 'subtraction'
+		Subtraction = 'subtraction',
+		Sync = 'sync'
 	}
 
 }

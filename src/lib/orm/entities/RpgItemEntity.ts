@@ -48,7 +48,7 @@ export class RpgItemEntity extends BaseEntity {
 	@Column('smallint')
 	public accuracy!: number;
 
-	@Column('jsonb', { 'default': "'{}'::jsonb" })
+	@Column('jsonb', { 'default': () => "'{}'::jsonb" })
 	public effects: unknown = [];
 
 	@OneToMany(() => RpgUserItemEntity, rpgUserItems => rpgUserItems.item)

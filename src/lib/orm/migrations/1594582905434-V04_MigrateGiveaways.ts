@@ -10,9 +10,13 @@ export class V04MigrateGiveaways1594582905434 implements MigrationInterface {
 		const giveawayRawData = revertTransformGiveaways(await queryRunner.query(/* sql */ `SELECT * FROM public.giveaway`));
 		await queryRunner.clearTable('giveaway');
 		await queryRunner.changeColumn('giveaway', 'ends_at', new TableColumn({ name: 'ends_at', type: 'bigint', isNullable: false, comment: 'The date at which the giveaway ends' }));
+
+		// Save the new Giveaway entities to the database
+		const stringifiedData = JSON.stringify(giveawayRawData).replace(/'/g, "''");
 		await queryRunner.query(/* sql */`
-			INSERT INTO public.giveaway (title, guild_id, channel_id, message_id, minimum, minimum_winners, ends_at)
-			VALUES ${giveawayRawData.map(g => `('${g.title.replace(/'/g, "''")}', '${g.guild_id}', '${g.channel_id}', '${g.message_id}', ${g.minimum}, ${g.minimum_winners}, '${g.ends_at}')`).join(', ')};
+			INSERT INTO public.giveaway
+			SELECT * FROM json_populate_recordset(NULL::public.giveaway, '${stringifiedData}')
+			ON CONFLICT DO NOTHING;
 		`);
 	}
 
@@ -57,7 +61,7 @@ function transformGiveaways(dGiveaway: Giveaway[]): TransformedGiveaway[] {
 	return output;
 }
 
-function revertTransformGiveaways(rdGiveaway: Giveaway[]): Giveaway[] {
+function revertTransformGiveaways(rdGiveaway: TransformedGiveaway[]): Giveaway[] {
 	return rdGiveaway.map(ga => ({
 		title: ga.title,
 		ends_at: new Date(ga.ends_at).getTime().toString(),

@@ -387,6 +387,7 @@ export default class extends Language {
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
+		COMMAND_QUEUE_EMPTY: 'parece que nada se está reproduciendo en este momento y la cola está vacía, ¿por qué no inicias el disco?',
 		COMMAND_REMOVE_DESCRIPTION: 'Elimina una canción de la lista de cola.',
 		COMMAND_REMOVE_INDEX_INVALID: 'Mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
 		COMMAND_REMOVE_INDEX_OUT: amount => `He intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,

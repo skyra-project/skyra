@@ -19,6 +19,8 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage) {
 		const { queue, song } = message.guild!.music;
 
+		if (song === null && queue.length === 0) throw message.language.tget('COMMAND_QUEUE_EMPTY');
+
 		// Send the loading message
 		const response = await message.send(new MessageEmbed()
 			.setColor(BrandingColors.Secondary)

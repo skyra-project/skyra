@@ -4,6 +4,8 @@ import type { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { APIErrors } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { KlasaMessage } from 'klasa';
 
@@ -107,8 +109,8 @@ export default class extends SkyraCommand {
 			if (!suggestionData) throw message.language.tget('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
 
 			const channel = this.client.channels.get(channelID) as TextChannel;
-			const suggestionMessage = await channel.messages.fetch(suggestionData.messageID);
-			if (typeof suggestionMessage === 'undefined') {
+			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
+			if (suggestionMessage === null) {
 				await suggestionData.remove();
 				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND');
 			}

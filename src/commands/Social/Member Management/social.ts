@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		if (settings) {
-			const newAmount = Number(settings.points) + amount;
+			const newAmount = settings.points + amount;
 			settings.points = newAmount;
 			await settings.save();
 
@@ -47,11 +47,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async remove(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
-		const connection = await DbSet.connect();
-		const settings = await connection.members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const { members } = await DbSet.connect();
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		if (!settings) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
-		const newAmount = Math.max(Number(settings.points) - amount, 0);
+		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;
 		await settings.save();
 
@@ -62,11 +62,11 @@ export default class extends SkyraCommand {
 		// If sets to zero, it shall reset
 		if (amount === 0) return this.reset(message, [user]);
 
-		const connection = await DbSet.connect();
-		const settings = await connection.members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const { members } = await DbSet.connect();
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		let oldValue = 0;
 		if (settings) {
-			oldValue = Number(settings.points);
+			oldValue = settings.points;
 			settings.points = amount;
 			await settings.save();
 		} else {
@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 			created.userID = user.id;
 			created.guildID = message.guild!.id;
 			created.points = amount;
-			await connection.members.insert(created);
+			await members.insert(created);
 		}
 
 		const variation = amount - oldValue;
@@ -85,7 +85,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
-		await (await DbSet.connect()).members.delete({ userID: user.id, guildID: message.guild!.id });
+		const { members } = await DbSet.connect();
+		await members.delete({ userID: user.id, guildID: message.guild!.id });
 		return message.sendLocale('COMMAND_SOCIAL_RESET', [user.username]);
 	}
 

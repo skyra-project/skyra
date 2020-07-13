@@ -14,7 +14,7 @@ export class RpgClassEntity extends BaseEntity {
 	public id!: number;
 
 	@Column('varchar', { unique: true, length: 20 })
-	public name?: string;
+	public name!: string;
 
 	@Column('double precision', { 'default': 1.0 })
 	public attackMultiplier = 1.0;

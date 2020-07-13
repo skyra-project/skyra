@@ -19,7 +19,7 @@ export class RpgItemEntity extends BaseEntity {
 	public id!: number;
 
 	@Column('enum', { 'default': 'Weapon', 'enum': ['Weapon', 'Shield', 'Disposable', 'Special'] })
-	public type: 'Weapon' | 'Shield' | 'Disposable' | 'Special' = 'Weapon';
+	public type!: 'Weapon' | 'Shield' | 'Disposable' | 'Special';
 
 	@Column('varchar', { length: 50 })
 	public name!: string;
@@ -27,26 +27,26 @@ export class RpgItemEntity extends BaseEntity {
 	@Column('integer')
 	public maximumDurability!: number;
 
-	@Column('smallint', { 'default': 0 })
-	public maximumCooldown = 0;
+	@Column('smallint')
+	public maximumCooldown!: number;
 
-	@Column('double precision', { 'default': 0.0 })
-	public attack = 0.0;
+	@Column('double precision')
+	public attack!: number;
 
-	@Column('double precision', { 'default': 0.0 })
-	public defense = 0.0;
+	@Column('double precision')
+	public defense!: number;
 
-	@Column('double precision', { 'default': 0.0 })
-	public health = 0.0;
+	@Column('double precision')
+	public health!: number;
 
-	@Column('double precision', { 'default': 0.0 })
-	public requiredEnergy = 0.0;
+	@Column('double precision')
+	public requiredEnergy!: number;
 
 	@Column('integer')
 	public rarity!: number;
 
-	@Column('smallint', { 'default': 100 })
-	public accuracy = 100;
+	@Column('smallint')
+	public accuracy!: number;
 
 	@Column('jsonb', { 'default': [] })
 	public effects: unknown = [];

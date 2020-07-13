@@ -17,8 +17,8 @@ export class RpgBattleEntity extends BaseEntity {
 	@Column('boolean')
 	public challengerTurn?: boolean;
 
-	@Column('smallint', { 'default': 0 })
-	public challengerCooldown = 0;
+	@Column('smallint')
+	public challengerCooldown!: number;
 
 	@Column('integer')
 	public challengerHealth?: number;
@@ -26,11 +26,11 @@ export class RpgBattleEntity extends BaseEntity {
 	@Column('integer')
 	public challengerEnergy?: number;
 
-	@Column('jsonb', { 'default': {} })
+	@Column('jsonb')
 	public challengerEffects: unknown = [];
 
-	@Column('smallint', { 'default': 0 })
-	public challengedCooldown = 0;
+	@Column('smallint')
+	public challengedCooldown!: number;
 
 	@Column('integer')
 	public challengedHealth?: number;
@@ -38,10 +38,10 @@ export class RpgBattleEntity extends BaseEntity {
 	@Column('integer')
 	public challengedEnergy?: number;
 
-	@Column('jsonb', { 'default': {} })
+	@Column('jsonb')
 	public challengedEffects: unknown = [];
 
-	@OneToOne(() => RpgUserEntity, rpgUsers => rpgUsers.challengedAt)
+	@OneToOne(() => RpgUserEntity, rpgUsers => rpgUsers.challengedAt, { nullable: false, onDelete: 'CASCADE' })
 	@JoinColumn()
 	public challenged?: RpgUserEntity;
 
@@ -49,7 +49,7 @@ export class RpgBattleEntity extends BaseEntity {
 	@JoinColumn()
 	public challengedWeapon?: RpgUserItemEntity;
 
-	@OneToOne(() => RpgUserEntity, rpgUsers => rpgUsers.challengerAt)
+	@OneToOne(() => RpgUserEntity, rpgUsers => rpgUsers.challengerAt, { nullable: false, onDelete: 'CASCADE' })
 	@JoinColumn()
 	public challenger?: RpgUserEntity;
 

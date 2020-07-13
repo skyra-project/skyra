@@ -16,10 +16,10 @@ export class RpgGuildEntity extends BaseEntity {
 	public id!: number;
 
 	@Column('varchar', { length: 50 })
-	public name?: string;
+	public name!: string;
 
 	@Column('varchar', { nullable: true, length: 200 })
-	public description?: string | null;
+	public description!: string | null;
 
 	@Column('smallint', { 'default': 5 })
 	public memberLimit = 5;

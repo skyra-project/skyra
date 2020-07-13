@@ -10,7 +10,7 @@ export class RpgUserItemEntity extends BaseEntity {
 	@PrimaryGeneratedColumn({ type: 'bigint' })
 	public id!: string;
 
-	@Column('bigint')
+	@Column('integer')
 	public durability!: string;
 
 	@OneToMany(() => RpgBattleEntity, rpgBattles => rpgBattles.challengedWeapon)

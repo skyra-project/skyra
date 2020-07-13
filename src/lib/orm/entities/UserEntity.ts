@@ -1,9 +1,12 @@
 import { kBigIntTransformer } from '@utils/util';
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn, Check } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserProfileEntity } from './UserProfileEntity';
 
+@Check('money >= 0')
+@Check('points >= 0')
+@Check('reputations >= 0')
 @Entity('user', { schema: 'public' })
 export class UserEntity extends BaseEntity {
 

@@ -40,7 +40,7 @@ export default class extends Event {
 	private async initPostStatsTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'poststats')) {
-			await this.client.schedule.create('poststats', '*/10 * * * *', {});
+			await this.client.schedule.create('poststats', '*/15 * * * *', {});
 		}
 	}
 

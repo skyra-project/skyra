@@ -4,13 +4,14 @@ export class V11MigrateRpg1594649287397 implements MigrationInterface {
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		// Drops all tables
-		await queryRunner.dropTable('rpg_battles', true, true, true);
-		await queryRunner.dropTable('rpg_class', true, true, true);
-		await queryRunner.dropTable('rpg_guild_rank', true, true, true);
-		await queryRunner.dropTable('rpg_guilds', true, true, true);
-		await queryRunner.dropTable('rpg_items', true, true, true);
-		await queryRunner.dropTable('rpg_user_items', true, true, true);
-		await queryRunner.dropTable('rpg_users', true, true, true);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_users CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_guilds CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_guild_rank CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_items CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_user_items CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_battles CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_class CASCADE`);
+		await queryRunner.query(/* sql */`DROP TYPE rpg_item_type`);
 
 		await queryRunner.createTable(new Table({
 			name: 'rpg_class',
@@ -88,7 +89,7 @@ export class V11MigrateRpg1594649287397 implements MigrationInterface {
 			],
 			columns: [
 				new TableColumn({ name: 'id', type: 'integer', isGenerated: true, isNullable: false, isPrimary: true }),
-				new TableColumn({ 'name': 'type', 'type': 'enum', 'enum': ['Weapon', 'Shield', 'Disposable', 'Special'], 'isNullable': false }),
+				new TableColumn({ name: 'type', type: 'rpg_item_type_enum', isNullable: false }),
 				new TableColumn({ name: 'name', type: 'varchar', length: '50', isNullable: false }),
 				new TableColumn({ name: 'maximum_durability', type: 'integer', isNullable: false }),
 				new TableColumn({ name: 'maximum_cooldown', type: 'smallint', isNullable: false }),
@@ -98,7 +99,7 @@ export class V11MigrateRpg1594649287397 implements MigrationInterface {
 				new TableColumn({ name: 'required_energy', type: 'double precision', isNullable: false }),
 				new TableColumn({ name: 'rarity', type: 'integer', isNullable: false }),
 				new TableColumn({ name: 'accuracy', type: 'smallint', isNullable: false }),
-				new TableColumn({ 'name': 'effects', 'type': 'jsonb', 'default': [] })
+				new TableColumn({ 'name': 'effects', 'type': 'jsonb', 'default': "'{}'::jsonb" })
 			]
 		}));
 
@@ -261,13 +262,14 @@ export class V11MigrateRpg1594649287397 implements MigrationInterface {
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		// Drops all tables
-		await queryRunner.dropTable('rpg_battle', true, true, true);
-		await queryRunner.dropTable('rpg_class', true, true, true);
-		await queryRunner.dropTable('rpg_guild', true, true, true);
-		await queryRunner.dropTable('rpg_guild_rank', true, true, true);
-		await queryRunner.dropTable('rpg_item', true, true, true);
-		await queryRunner.dropTable('rpg_user', true, true, true);
-		await queryRunner.dropTable('rpg_user_item', true, true, true);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_user CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_guild CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_guild_rank CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_item CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_user_item CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_battle CASCADE`);
+		await queryRunner.query(/* sql */`DROP TABLE rpg_class CASCADE`);
+		await queryRunner.query(/* sql */`DROP TYPE rpg_item_type_enum`);
 	}
 
 }

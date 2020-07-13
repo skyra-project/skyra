@@ -25,9 +25,6 @@ export class V10MigrateTwitchSubscription1594629639526 implements MigrationInter
 			SELECT * FROM json_populate_recordset(NULL::public.twitch_stream_subscription, '${stringifiedSubscriptionData}')
 			ON CONFLICT DO NOTHING;
 		`);
-
-		// TODO (TORM): put in final generated migration once ready
-		// await queryRunner.dropTable('twitch_stream_subscriptions');
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {

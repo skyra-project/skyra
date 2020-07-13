@@ -57,9 +57,6 @@ export class V08MigrateUsers1594625931497 implements MigrationInterface {
 			SELECT * FROM json_populate_recordset(NULL::public.user_profile, '${stringifiedUserProfileData}')
 			ON CONFLICT DO NOTHING;
 		`);
-
-		// TODO (TORM): put in final generated migration once ready
-		// await queryRunner.dropTable('users');
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {

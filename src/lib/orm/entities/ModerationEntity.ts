@@ -25,7 +25,6 @@ export class ModerationEntity extends BaseEntity {
 	@PrimaryColumn('integer')
 	public caseID: number = -1;
 
-	// TODO: Write migration script for bigint -> timestamp without time zone
 	@Column('timestamp without time zone', { 'nullable': true, 'default': () => 'null' })
 	public createdAt: Date | null = null;
 

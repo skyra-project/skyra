@@ -5,9 +5,6 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await this.migrateClient(queryRunner);
-
-		//  TODO (TORM): put in final generated migration once ready
-		// await this.clearOldTables(queryRunner);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
@@ -65,12 +62,6 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 			ON CONFLICT DO NOTHING;
 		`);
 	}
-
-	// private async clearOldTables(queryRunner: QueryRunner): Promise<void> {
-	// 	//  TODO (TORM): put in final generated migration once ready
-	// 	await queryRunner.dropTable('dashboard_users');
-	// 	await queryRunner.dropTable('clientStorage');
-	// }
 
 }
 

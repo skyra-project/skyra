@@ -6,7 +6,7 @@ import { AnalyticsEvent } from '@utils/Tracking/Analytics/structures/AnalyticsEv
 import { EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({
-	event: Events.KlasaReady
+	event: Events.AnalyticsSync
 })
 export default class extends AnalyticsEvent {
 

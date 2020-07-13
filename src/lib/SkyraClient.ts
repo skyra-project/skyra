@@ -103,7 +103,7 @@ export class SkyraClient extends KlasaClient {
 	public fsWatcher: FSWatcher | null = null;
 
 	public analytics: WriteApi | null = ENABLE_INFLUX
-		? new InfluxDB(INFLUX_OPTIONS).getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.ms)
+		? new InfluxDB(INFLUX_OPTIONS).getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s)
 		: null;
 
 	/**

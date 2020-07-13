@@ -1,8 +1,8 @@
-import { Event } from 'klasa';
+import { Point, WriteApi } from '@influxdata/influxdb-client';
 import { ENABLE_INFLUX } from '@root/config';
-import { WriteApi, Point } from '@influxdata/influxdb-client';
-import { enumerable } from '@utils/util';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
+import { enumerable } from '@utils/util';
+import { Event } from 'klasa';
 
 export abstract class AnalyticsEvent extends Event {
 

@@ -4,10 +4,10 @@ import { KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
 import { Colors } from '@klasa/console';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
+import { InfluxDB, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { InfluxDB, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 
 // Import all types
 import { Events } from './types/Enums';

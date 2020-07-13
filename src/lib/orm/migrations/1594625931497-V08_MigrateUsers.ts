@@ -39,6 +39,23 @@ export class V08MigrateUsers1594625931497 implements MigrationInterface {
 			]
 		}));
 
+		await queryRunner.createTable(new Table({
+			name: 'user_cooldown',
+			columns: [
+				new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
+				new TableColumn({ name: 'daily', type: 'timestamp without time zone', isNullable: true }),
+				new TableColumn({ name: 'reputation', type: 'timestamp without time zone', isNullable: true })
+			],
+			foreignKeys: [
+				new TableForeignKey({
+					columnNames: ['user_id'],
+					referencedTableName: 'user',
+					referencedColumnNames: ['id'],
+					onDelete: 'CASCADE'
+				})
+			]
+		}));
+
 		// Get the data from the "users" table and transform it into User and UserProfile entities
 		const { userEntities, userProfileEntities } = transformUser(await queryRunner.query(/* sql */`SELECT * FROM public.users`));
 

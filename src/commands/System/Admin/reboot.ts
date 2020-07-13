@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { ENABLE_LAVALINK } from '@root/config';
+import { ENABLE_LAVALINK, ENABLE_INFLUX } from '@root/config';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -21,6 +21,9 @@ export default class extends SkyraCommand {
 				// Disconnects everything, basically destorying the manager
 				// Stops all players, leaves all voice channels then disconnects all LavalinkNodes
 				await this.client.lavalink.disconnect();
+			}
+			if (ENABLE_INFLUX) {
+				await this.client.analytics!.close();
 			}
 
 			this.client.destroy();

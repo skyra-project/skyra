@@ -1,5 +1,5 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { Events } from '@lib/types/Enums';
+import { Events, Schedules } from '@lib/types/Enums';
 import { CommandCounterEntity } from '@orm/entities/CommandCounterEntity';
 import { ENABLE_LAVALINK } from '@root/config';
 import { Slotmachine } from '@utils/Games/Slotmachine';
@@ -42,8 +42,8 @@ export default class extends Event {
 
 	private async initPostStatsTask() {
 		const { queue } = this.client.schedules;
-		if (!queue.some(task => task.taskID === 'poststats')) {
-			await this.client.schedules.add('poststats', '*/15 * * * *', {});
+		if (!queue.some(task => task.taskID === Schedules.Poststats)) {
+			await this.client.schedules.add(Schedules.Poststats, '*/15 * * * *', {});
 		}
 	}
 
@@ -51,15 +51,15 @@ export default class extends Event {
 	// ScheduledTask and make it run every 10 minutes.
 	private async initCleanupTask() {
 		const { queue } = this.client.schedules;
-		if (!queue.some(task => task.taskID === 'cleanup')) {
-			await this.client.schedules.add('cleanup', '*/10 * * * *', {});
+		if (!queue.some(task => task.taskID === Schedules.Cleanup)) {
+			await this.client.schedules.add(Schedules.Cleanup, '*/10 * * * *', {});
 		}
 	}
 
 	private async initTwitchRefreshSubscriptionsTask() {
 		const { queue } = this.client.schedules;
-		if (!queue.some(task => task.taskID === 'twitchRefreshSubscriptions')) {
-			await this.client.schedules.add('twitchRefreshSubscriptions', '@daily');
+		if (!queue.some(task => task.taskID === Schedules.TwitchRefreshSubscriptions)) {
+			await this.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '@daily');
 		}
 	}
 

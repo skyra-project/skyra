@@ -80,3 +80,10 @@ export const enum PermissionLevels {
 	ServerOwner = 7,
 	BotOwner = 10
 }
+
+export const enum Schedules {
+	DelayedGiveawayCreate = 'delayedGiveawayCreate',
+	Poststats = 'poststats',
+	Cleanup = 'cleanup',
+	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions'
+}

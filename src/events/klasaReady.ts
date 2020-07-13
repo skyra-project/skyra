@@ -40,7 +40,7 @@ export default class extends Event {
 	private async initPostStatsTask() {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'poststats')) {
-			await this.client.schedule.create('poststats', '*/15 * * * *', {});
+			await this.client.schedule.create('poststats', '*/10 * * * *', {});
 		}
 	}
 
@@ -60,17 +60,11 @@ export default class extends Event {
 		}
 	}
 
-	private async initSyncAnalyticsTask() {
-		const { tasks } = this.client.schedule;
-		if (!tasks.some(task => task.taskName === 'syncAnalytics')) {
-			await this.client.schedule.create('syncAnalytics', '*/30 * * * *');
-		}
-	}
-
 	private async initAnalytics() {
 		if (ENABLE_INFLUX) {
-			await this.client.emit(Events.AnalyticsSync);
-			await this.initSyncAnalyticsTask().catch(error => this.client.emit(Events.Wtf, error));
+			await this.client.emit(Events.AnalyticsSync,
+				this.client.guilds.size,
+				this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0));
 		}
 	}
 

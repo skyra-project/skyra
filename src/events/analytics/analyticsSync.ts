@@ -10,27 +10,27 @@ import { EventOptions } from 'klasa';
 })
 export default class extends AnalyticsEvent {
 
-	public run() {
+	public run(guilds: number, users: number) {
 		this.writePoints([
-			this.syncGuilds(),
-			this.syncUsers()
+			this.syncGuilds(guilds),
+			this.syncUsers(users)
 		]);
 
 		return this.analytics.flush();
 	}
 
-	private syncGuilds() {
+	private syncGuilds(value: number) {
 		return new Point('guilds')
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			// TODO: Adjust for traditional sharding
-			.intField('value', this.client.guilds.size);
+			.intField('value', value);
 	}
 
-	private syncUsers() {
+	private syncUsers(value: number) {
 		return new Point('users')
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			// TODO: Adjust for traditional sharding
-			.intField('value', this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0));
+			.intField('value', value);
 	}
 
 }

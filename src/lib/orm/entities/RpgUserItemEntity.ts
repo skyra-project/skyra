@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Check } from 'typeorm';
+import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RpgBattleEntity } from './RpgBattleEntity';
 import { RpgItemEntity } from './RpgItemEntity';
 import { RpgUserEntity } from './RpgUserEntity';

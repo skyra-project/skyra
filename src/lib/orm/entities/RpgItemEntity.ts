@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn, Check } from 'typeorm';
+import { BaseEntity, Check, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RpgUserItemEntity } from './RpgUserItemEntity';
 
 @Check(/* sql */`name <> ''`)

@@ -2,12 +2,12 @@ import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CLIENT_ID } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import assert from 'assert';
 import { DMChannel, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
-import { CLIENT_ID } from '@root/config';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';

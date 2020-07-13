@@ -1,5 +1,5 @@
 import { kBigIntTransformer } from '@utils/util';
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne, Check } from 'typeorm';
+import { BaseEntity, Check, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { UserEntity } from './UserEntity';
 
 @Check('(color >= 0) AND (color <= 16777215)')

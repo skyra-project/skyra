@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn, TableIndex, TableForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn, TableForeignKey, TableIndex } from 'typeorm';
 
 export class V11MigrateRpg1594649287397 implements MigrationInterface {
 

@@ -12,7 +12,7 @@ const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}
 /*
 Since I believe in the competence of this dev team.
 I decided to remove the check for if the bucket exists under "up"
-*/
+ */
 
 
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {

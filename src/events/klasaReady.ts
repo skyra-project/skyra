@@ -45,7 +45,6 @@ export default class extends Event {
 		const { queue } = this.client.schedules;
 		if (!queue.some(task => task.taskID === Schedules.Poststats)) {
 			await this.client.schedules.add(Schedules.Poststats, '*/15 * * * *', {});
-		}
 	}
 
 	// If this task is not being run, let's create the

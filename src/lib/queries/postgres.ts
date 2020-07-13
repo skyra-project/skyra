@@ -448,18 +448,6 @@ export class PostgresCommonQuery implements CommonQuery {
 		`);
 	}
 
-	public insertCommandUseCounter(command: string) {
-		return this.provider.run(/* sql */`
-			INSERT
-			INTO command_counter ("id", "uses")
-			VALUES ($1, 1)
-			ON CONFLICT (id)
-			DO
-				UPDATE
-				SET uses = command_counter.uses + 1;
-		`, [command]);
-	}
-
 	public insertDashboardUser(entry: RawDashboardUserSettings) {
 		const id = this.provider.cString(entry.id);
 		const aToken = this.provider.cString(entry.access_token);

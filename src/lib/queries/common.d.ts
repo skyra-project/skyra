@@ -39,7 +39,6 @@ export interface CommonQuery {
 	fetchTwitchStreamsByGuild(guildID: string): Promise<TwitchStreamSubscriptionSettings[]>;
 	fetchAllTwitchStreams(): Promise<TwitchStreamSubscriptionSettings[]>;
 	retrieveRandomItem(luck: number): Promise<RawRpgItem>;
-	insertCommandUseCounter(command: string): Promise<unknown>;
 	insertDashboardUser(entry: RawDashboardUserSettings): Promise<unknown>;
 	insertGiveaway(entry: RawGiveawaySettings): Promise<unknown>;
 	insertModerationLog(entry: RawModerationSettings): Promise<unknown>;

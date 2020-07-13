@@ -266,12 +266,6 @@ export class JsonCommonQuery implements CommonQuery {
 		return entries[entries.length - 1];
 	}
 
-	public async insertCommandUseCounter(command: string) {
-		const value = await this.provider.get(Databases.CommandCounter, command) as { id: string; uses: number };
-		if (value) await this.provider.update(Databases.CommandCounter, command, { uses: value.uses + 1 });
-		else await this.provider.create(Databases.CommandCounter, command, { uses: 1 });
-	}
-
 	public insertDashboardUser(entry: RawDashboardUserSettings) {
 		return this.provider.create(Databases.DashboardUsers, entry.id, entry);
 	}

@@ -42,6 +42,7 @@ declare module 'discord.js' {
 		twitch: Twitch;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
+		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string, user: string, guild?: string): boolean;
 		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;

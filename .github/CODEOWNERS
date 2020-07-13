@@ -29,7 +29,6 @@
 /src/commands/Twitch/ @quantumlytangled
 /src/events/twitch/ @quantumlytangled
 /src/events/analytics/ @quantumlytangled
-/src/lib/types/Enums.d.ts @quantumlytangled
 /src/lib/types/definitions/Twitch.d.ts @quantumlytangled
 /src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled
 /src/lib/util/GameIntegration/FFXIVTypings.d.ts @quantumlytangled

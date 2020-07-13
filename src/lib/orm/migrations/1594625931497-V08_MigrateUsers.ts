@@ -16,28 +16,27 @@ export class V08MigrateUsers1594625931497 implements MigrationInterface {
 			})
 		);
 
-		await queryRunner.createTable(
-			new Table({
-				name: 'user_profile',
-				columns: [
-					new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
-					new TableColumn({ 'name': 'banners', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-					new TableColumn({ 'name': 'public_badges', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-					new TableColumn({ 'name': 'badges', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-					new TableColumn({ 'name': 'color', 'type': 'integer', 'isNullable': false, 'default': 0 }),
-					new TableColumn({ 'name': 'vault', 'type': 'bigint', 'isNullable': false, 'default': 0 }),
-					new TableColumn({ 'name': 'banner_level', 'type': 'varchar', 'isNullable': false, 'default': '1001' }),
-					new TableColumn({ 'name': 'banner_profile', 'type': 'varchar', 'isNullable': false, 'default': '0001' }),
-					new TableColumn({ 'name': 'dark_theme', 'type': 'boolean', 'isNullable': false, 'default': false })
-				]
-			})
-		);
-
-		await queryRunner.createForeignKey('user_profile', new TableForeignKey({
-			columnNames: ['user_id'],
-			referencedTableName: 'user',
-			referencedColumnNames: ['id'],
-			onDelete: 'CASCADE'
+		await queryRunner.createTable(new Table({
+			name: 'user_profile',
+			columns: [
+				new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
+				new TableColumn({ 'name': 'banners', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
+				new TableColumn({ 'name': 'public_badges', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
+				new TableColumn({ 'name': 'badges', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
+				new TableColumn({ 'name': 'color', 'type': 'integer', 'isNullable': false, 'default': 0 }),
+				new TableColumn({ 'name': 'vault', 'type': 'bigint', 'isNullable': false, 'default': 0 }),
+				new TableColumn({ 'name': 'banner_level', 'type': 'varchar', 'isNullable': false, 'default': '1001' }),
+				new TableColumn({ 'name': 'banner_profile', 'type': 'varchar', 'isNullable': false, 'default': '0001' }),
+				new TableColumn({ 'name': 'dark_theme', 'type': 'boolean', 'isNullable': false, 'default': false })
+			],
+			foreignKeys: [
+				new TableForeignKey({
+					columnNames: ['user_id'],
+					referencedTableName: 'user',
+					referencedColumnNames: ['id'],
+					onDelete: 'CASCADE'
+				})
+			]
 		}));
 
 		// Get the data from the "users" table and transform it into User and UserProfile entities

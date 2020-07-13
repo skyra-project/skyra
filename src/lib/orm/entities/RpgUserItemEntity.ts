@@ -1,8 +1,9 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { RpgBattleEntity } from './RpgBattleEntity';
 import { RpgItemEntity } from './RpgItemEntity';
 import { RpgUserEntity } from './RpgUserEntity';
 
+@Check(/* sql */`"durability" >= 0`)
 @Entity('rpg_user_item', { schema: 'public' })
 export class RpgUserItemEntity extends BaseEntity {
 

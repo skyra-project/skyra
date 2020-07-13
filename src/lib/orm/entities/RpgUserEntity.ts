@@ -1,5 +1,5 @@
 import { kBigIntTransformer } from '@utils/util';
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, Check } from 'typeorm';
 import { RpgBattleEntity } from './RpgBattleEntity';
 import { RpgClassEntity } from './RpgClassEntity';
 import { RpgGuildEntity } from './RpgGuildEntity';
@@ -7,6 +7,17 @@ import { RpgGuildRankEntity } from './RpgGuildRankEntity';
 import { RpgUserItemEntity } from './RpgUserItemEntity';
 import { UserEntity } from './UserEntity';
 
+@Check(/* sql */`win_count >= 0`)
+@Check(/* sql */`death_count >= 0`)
+@Check(/* sql */`crate_common_count >= 0`)
+@Check(/* sql */`crate_uncommon_count >= 0`)
+@Check(/* sql */`crate_rare_count >= 0`)
+@Check(/* sql */`crate_legendary_count >= 0`)
+@Check(/* sql */`attack >= 1`)
+@Check(/* sql */`health >= 1`)
+@Check(/* sql */`agility >= 1`)
+@Check(/* sql */`energy >= 0`)
+@Check(/* sql */`luck >= 0`)
 @Entity('rpg_user', { schema: 'public' })
 export class RpgUserEntity extends BaseEntity {
 

@@ -1,6 +1,12 @@
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 
+@Check(/* sql */`name <> ''`)
+@Check(/* sql */`attack_multiplier >= 0`)
+@Check(/* sql */`defense_multiplier >= 0`)
+@Check(/* sql */`agility_multiplier >= 0`)
+@Check(/* sql */`energy_multiplier >= 0`)
+@Check(/* sql */`luck_multiplier >= 0`)
 @Entity('rpg_class', { schema: 'public' })
 export class RpgClassEntity extends BaseEntity {
 

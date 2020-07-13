@@ -1,7 +1,8 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { RpgGuildEntity } from './RpgGuildEntity';
 import { RpgUserEntity } from './RpgUserEntity';
 
+@Check(/* sql */`name <> ''`)
 @Entity('rpg_guild_rank', { schema: 'public' })
 export class RpgGuildRankEntity extends BaseEntity {
 

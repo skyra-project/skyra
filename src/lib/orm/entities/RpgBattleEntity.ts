@@ -1,7 +1,13 @@
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { RpgUserItemEntity } from './RpgUserItemEntity';
 
+@Check(/* sql */`challenger_cooldown >= 0`)
+@Check(/* sql */`challenger_health >= 0`)
+@Check(/* sql */`challenger_energy >= 0`)
+@Check(/* sql */`challenged_cooldown >= 0`)
+@Check(/* sql */`challenged_health >= 0`)
+@Check(/* sql */`challenged_energy >= 0`)
 @Entity('rpg_battle', { schema: 'public' })
 export class RpgBattleEntity extends BaseEntity {
 

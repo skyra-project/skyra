@@ -1,7 +1,17 @@
-import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, Index, OneToMany, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { RpgUserItemEntity } from './RpgUserItemEntity';
 
-@Index('rpg_item_name_rarity_key', ['name', 'rarity'], { unique: true })
+@Check(/* sql */`name <> ''`)
+@Check(/* sql */`maximum_durability >= 0`)
+@Check(/* sql */`maximum_cooldown >= 0`)
+@Check(/* sql */`attack >= 0`)
+@Check(/* sql */`defense >= 0`)
+@Check(/* sql */`health >= 0`)
+@Check(/* sql */`required_energy >= 0`)
+@Check(/* sql */`rarity >= 1`)
+@Check(/* sql */`accuracy >= 0`)
+@Check(/* sql */`accuracy <= 100`)
+@Index(['name', 'rarity'], { unique: true })
 @Entity('rpg_item', { schema: 'public' })
 export class RpgItemEntity extends BaseEntity {
 

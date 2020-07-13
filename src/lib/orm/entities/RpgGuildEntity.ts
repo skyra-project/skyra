@@ -1,8 +1,14 @@
 import { kBigIntTransformer } from '@utils/util';
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, Check } from 'typeorm';
 import { RpgGuildRankEntity } from './RpgGuildRankEntity';
 import { RpgUserEntity } from './RpgUserEntity';
 
+@Check(/* sql */`member_limit >= 5`)
+@Check(/* sql */`win_count >= 0`)
+@Check(/* sql */`lose_count >= 0`)
+@Check(/* sql */`money_count >= 0`)
+@Check(/* sql */`bank_limit >= 0`)
+@Check(/* sql */`upgrade >= 0`)
 @Entity('rpg_guild', { schema: 'public' })
 export class RpgGuildEntity extends BaseEntity {
 

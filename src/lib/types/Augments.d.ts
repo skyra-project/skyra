@@ -41,6 +41,7 @@ declare module 'discord.js' {
 		queries: CommonQuery;
 		twitch: Twitch;
 
+		emit(event: Events.AnalyticsSync): boolean;
 		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;

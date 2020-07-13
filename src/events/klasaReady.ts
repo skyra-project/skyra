@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { ENABLE_LAVALINK } from '@root/config';
+import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
 import { Event, EventStore } from 'klasa';
@@ -22,7 +22,8 @@ export default class extends Event {
 				// Update guild permission managers
 				this.client.guilds.map(guild => guild.permissionsManager.update()),
 				// Connect Lavalink if configured to do so
-				this.connectLavalink()
+				this.connectLavalink(),
+				this.initAnalytics()
 			]);
 
 			// Setup the cleanup task
@@ -56,6 +57,20 @@ export default class extends Event {
 		const { tasks } = this.client.schedule;
 		if (!tasks.some(task => task.taskName === 'twitchRefreshSubscriptions')) {
 			await this.client.schedule.create('twitchRefreshSubscriptions', '@daily');
+		}
+	}
+
+	private async initSyncAnalyticsTask() {
+		const { tasks } = this.client.schedule;
+		if (!tasks.some(task => task.taskName === 'syncAnalytics')) {
+			await this.client.schedule.create('syncAnalytics', '*/30 * * * *');
+		}
+	}
+
+	private async initAnalytics() {
+		if (ENABLE_INFLUX) {
+			await this.client.emit(Events.AnalyticsSync);
+			await this.initSyncAnalyticsTask().catch(error => this.client.emit(Events.Wtf, error));
 		}
 	}
 

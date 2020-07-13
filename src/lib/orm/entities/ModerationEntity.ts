@@ -313,7 +313,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
 			.setFooter(
-				this.#manager.guild.language.tget('MODERATION_LOG_FOOTER', this.caseID),
+				manager.guild.language.tget('MODERATION_LOG_FOOTER', this.caseID),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

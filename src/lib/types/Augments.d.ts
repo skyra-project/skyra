@@ -1,3 +1,4 @@
+import { WriteApi } from '@influxdata/influxdb-client';
 import { SettingsUpdateResults } from '@klasa/settings-gateway';
 import { InviteStore } from '@lib/structures/InviteStore';
 import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
@@ -19,7 +20,6 @@ import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import { Events } from './Enums';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
-import { WriteApi } from '@influxdata/influxdb-client';
 
 declare module 'discord.js' {
 
@@ -42,7 +42,7 @@ declare module 'discord.js' {
 		fsWatcher: FSWatcher | null;
 		twitch: Twitch;
 
-		emit(event: Events.AnalyticsSync): boolean;
+		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;

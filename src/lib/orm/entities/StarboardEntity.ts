@@ -5,7 +5,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { APIErrors } from '@utils/constants';
 import { cutText, fetchReactionUsers, getImage } from '@utils/util';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
-import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, PrimaryColumn, Check } from 'typeorm';
 
 export const kColors = [
 	0xFFE3AF,
@@ -27,6 +27,7 @@ export const kColors = [
 
 export const kMaxColors = kColors.length - 1;
 
+@Check('stars >= 0')
 @Entity('starboard', { schema: 'public' })
 export class StarboardEntity extends BaseEntity {
 

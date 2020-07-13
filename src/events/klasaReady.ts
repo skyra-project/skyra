@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { Events, Schedules } from '@lib/types/Enums';
 import { CommandCounterEntity } from '@orm/entities/CommandCounterEntity';
-import { ENABLE_LAVALINK } from '@root/config';
+import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
 import { Event, EventStore } from 'klasa';
@@ -27,6 +27,7 @@ export default class extends Event {
 				this.connectLavalink(),
 				// Ensure the existence of all command uses entries
 				this.initCommandUses()
+				this.initAnalytics()
 			]);
 
 			// Setup the cleanup task
@@ -60,6 +61,20 @@ export default class extends Event {
 		const { queue } = this.client.schedules;
 		if (!queue.some(task => task.taskID === Schedules.TwitchRefreshSubscriptions)) {
 			await this.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '@daily');
+		}
+	}
+
+	private async initSyncAnalyticsTask() {
+		const { tasks } = this.client.schedule;
+		if (!tasks.some(task => task.taskName === 'syncAnalytics')) {
+			await this.client.schedule.create('syncAnalytics', '*/30 * * * *');
+		}
+	}
+
+	private async initAnalytics() {
+		if (ENABLE_INFLUX) {
+			await this.client.emit(Events.AnalyticsSync);
+			await this.initSyncAnalyticsTask().catch(error => this.client.emit(Events.Wtf, error));
 		}
 	}
 

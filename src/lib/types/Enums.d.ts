@@ -1,4 +1,5 @@
 export const enum Events {
+	AnalyticsSync = 'analyticsSync',
 	ApiError = 'apiError',
 	CommandError = 'commandError',
 	CommandInhibited = 'commandInhibited',

@@ -20,14 +20,14 @@ export default class extends AnalyticsEvent {
 	}
 
 	private syncGuilds(value: number) {
-		return new Point('guilds')
+		return new Point(AnalyticsSchema.Points.Guilds)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			// TODO: Adjust for traditional sharding
 			.intField('value', value);
 	}
 
 	private syncUsers(value: number) {
-		return new Point('users')
+		return new Point(AnalyticsSchema.Points.Users)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			// TODO: Adjust for traditional sharding
 			.intField('value', value);

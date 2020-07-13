@@ -12,13 +12,13 @@ import { EventOptions } from 'klasa';
 export default class extends AnalyticsEvent {
 
 	public run(guild: Guild) {
-		const guilds = new Point('guilds')
+		const guilds = new Point(AnalyticsSchema.Points.Guilds)
 			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
 			.tag(AnalyticsSchema.Tags.Guild, guild.id)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Subtraction)
 			// TODO: Adjust for traditional sharding
 			.intField('value', this.client.guilds.size);
-		const users = new Point('users')
+		const users = new Point(AnalyticsSchema.Points.Users)
 			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
 			.tag(AnalyticsSchema.Tags.Guild, guild.id)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Subtraction)

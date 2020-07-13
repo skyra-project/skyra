@@ -1,6 +1,7 @@
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { floatPromise } from '@utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
+import { Events } from '@lib/types/Enums';
 
 export default class extends Monitor {
 
@@ -46,15 +47,15 @@ export default class extends Monitor {
 					timer.stop();
 					const response = await commandRun;
 					floatPromise(this, this.client.finalizers.run(message, message.command!, response, timer));
-					this.client.emit('commandSuccess', message, message.command, message.params, response);
+					this.client.emit(Events.CommandSuccess, message, message.command, message.params, response);
 				} catch (error) {
-					this.client.emit('commandError', message, message.command, message.params, error);
+					this.client.emit(Events.CommandError, message, message.command, message.params, error);
 				}
 			} catch (argumentError) {
-				this.client.emit('argumentError', message, message.command, message.params, argumentError);
+				this.client.emit(Events.ArgumentError, message, message.command, message.params, argumentError);
 			}
 		} catch (response) {
-			this.client.emit('commandInhibited', message, message.command, response);
+			this.client.emit(Events.CommandInhibited, message, message.command, response);
 		}
 		if (this.client.options.typing) message.channel.stopTyping();
 	}

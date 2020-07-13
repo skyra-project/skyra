@@ -1,10 +1,12 @@
 export const enum Events {
 	AnalyticsSync = 'analyticsSync',
 	ApiError = 'apiError',
+	ArgumentError = 'argumentError',
 	CommandError = 'commandError',
 	CommandInhibited = 'commandInhibited',
 	CommandSuccess = 'commandSuccess',
 	CommandUnknown = 'commandUnknown',
+	CommandUsageAnalytics = 'commandUsageAnalytics',
 	CoreSettingsDelete = 'coreSettingsDelete',
 	CoreSettingsUpdate = 'coreSettingsUpdate',
 	Database = 'database',

@@ -4,7 +4,8 @@ export namespace AnalyticsSchema {
 		Shard = 'shard',
 		Guild = 'guild_id',
 		Client = 'client_id',
-		Action = 'action'
+		Action = 'action',
+		OriginEvent = 'origin_event'
 	}
 
 	export const enum Actions {

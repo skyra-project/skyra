@@ -1,7 +1,7 @@
 import { Colors } from '@klasa/console';
 import { Events } from '@lib/types/Enums';
 import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
-import { TOKENS } from '@root/config';
+import { ENABLE_INFLUX, TOKENS } from '@root/config';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { Task } from 'klasa';
@@ -26,6 +26,9 @@ export default class extends Task {
 
 		const guilds = this.client.guilds.size.toString();
 		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
+
+		await this.processAnalytics(Number(guilds), Number(users));
+		if (this.client.options.dev) return;
 
 		const results = (await Promise.all([
 			this.query(`https://top.gg/api/bots/${this.client.user!.id}/stats`,
@@ -56,6 +59,12 @@ export default class extends Task {
 		} catch (error) {
 			const reason = typeof error === 'object' ? error.status ?? error.code ?? null : error;
 			return `${r.format(list)}${reason ? ` [${r.format(reason)}]` : ''}`;
+		}
+	}
+
+	private async processAnalytics(guilds: number, users: number) {
+		if (ENABLE_INFLUX) {
+			await this.client.emit(Events.AnalyticsSync, guilds, users);
 		}
 	}
 

@@ -1,34 +1,32 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
 import { promises as fsp } from 'fs';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');
 const BADGES_FOLDER = join(cdnFolder, 'img', 'badges');
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 30,
+	description: language => language.tget('COMMAND_PROFILE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_PROFILE_EXTENDED'),
+	requiredPermissions: ['ATTACH_FILES'],
+	spam: true,
+	usage: '[user:username]'
+})
 export default class extends SkyraCommand {
 
 	private lightThemeTemplate: Buffer | null = null;
 	private darkThemeTemplate: Buffer | null = null;
 	private lightThemeDock: Buffer | null = null;
 	private darkThemeDock: Buffer | null = null;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 30,
-			description: language => language.tget('COMMAND_PROFILE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_PROFILE_EXTENDED'),
-			requiredPermissions: ['ATTACH_FILES'],
-			spam: true,
-			usage: '[user:username]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const output = await this.showProfile(message, user);

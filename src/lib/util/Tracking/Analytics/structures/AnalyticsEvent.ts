@@ -35,7 +35,10 @@ export abstract class AnalyticsEvent extends Event {
 	}
 
 	protected initTags() {
-		this.tags.push([AnalyticsSchema.Tags.Client, this.client.user!.id]);
+		this.tags.push(
+			[AnalyticsSchema.Tags.Client, this.client.user!.id],
+			[AnalyticsSchema.Tags.OriginEvent, this.event]
+		);
 	}
 
 }

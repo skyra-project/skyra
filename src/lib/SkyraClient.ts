@@ -7,6 +7,7 @@ import { Client as VezaClient } from 'veza';
 import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
+import { InfluxDB, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 
 // Import all types
 import { Events } from './types/Enums';
@@ -31,7 +32,11 @@ import {
 	EVLYN_PORT,
 	VERSION,
 	WEBHOOK_ERROR,
-	WEBHOOK_FEEDBACK
+	WEBHOOK_FEEDBACK,
+	ENABLE_INFLUX,
+	INFLUX_OPTIONS,
+	INFLUX_ORG,
+	INFLUX_ORG_ANALYTICS_BUCKET
 } from '@root/config';
 
 // Import all extensions and schemas
@@ -99,6 +104,10 @@ export class SkyraClient extends KlasaClient {
 		: new JsonCommonQuery(this);
 
 	public fsWatcher: FSWatcher | null = null;
+
+	public analytics: WriteApi | null = ENABLE_INFLUX
+		? new InfluxDB(INFLUX_OPTIONS).getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.ms)
+		: null;
 
 	/**
 	 * The ConnectFour manager

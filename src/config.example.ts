@@ -3,6 +3,7 @@
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
+import { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import { KlasaClientOptions, PostgresOptions } from 'klasa';
 import { resolve } from 'path';
 
@@ -10,6 +11,7 @@ export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
 export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.ENABLE_POSTGRES === 'true' : !DEV;
+export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 export const WSS_PORT = 565;
@@ -35,6 +37,15 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
 	user: PGSQL_DATABASE_USER
+};
+
+export const INFLUX_URL = 'http://localhost:9999';
+export const INFLUX_TOKEN = '';
+export const INFLUX_ORG = 'Skyra-Project';
+export const INFLUX_ORG_ANALYTICS_BUCKET = 'analytics';
+export const INFLUX_OPTIONS: InfluxDBClientOptions = {
+	url: INFLUX_URL,
+	token: INFLUX_TOKEN
 };
 
 export const VERSION = '5.4.1 Nirom';

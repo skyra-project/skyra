@@ -19,6 +19,7 @@ import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import { Events } from './Enums';
 import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
+import { WriteApi } from '@influxdata/influxdb-client';
 
 declare module 'discord.js' {
 
@@ -28,6 +29,7 @@ declare module 'discord.js' {
 		ipcMonitors: IPCMonitorStore;
 		giveaways: GiveawayManager;
 		invites: InviteStore;
+		analytics: WriteApi | null;
 		connectFour: ConnectFourManager;
 		lavalink: LavalinkManager;
 		userTags: UserTags;

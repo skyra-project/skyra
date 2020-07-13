@@ -43,6 +43,7 @@
 		"url": "https://github.com/skyra-project/skyra/issues"
 	},
 	"dependencies": {
+		"@influxdata/influxdb-client": "^1.4.0",
 		"@klasa/console": "^0.0.3",
 		"@klasa/querybuilder": "^0.0.1",
 		"@klasa/request-handler": "^0.0.3",

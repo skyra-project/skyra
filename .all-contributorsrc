@@ -102,6 +102,19 @@
       ]
     },
     {
+      "login": "QuantumlyTangled",
+      "name": "Nejc Drobnic",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/7919610?v=4",
+      "profile": "https://quantumlytangled.com/",
+      "contributions": [
+        "code",
+        "translation",
+        "ideas",
+        "doc",
+        "infra"
+      ]
+    },
+    {
       "login": "tech6hutch",
       "name": "Hutch",
       "avatar_url": "https://avatars1.githubusercontent.com/u/25398066?v=4",

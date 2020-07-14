@@ -26,7 +26,7 @@ export default class extends Event {
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				// Ensure the existence of all command uses entries
-				this.initCommandUses()
+				this.initCommandUses(),
 				this.initAnalytics()
 			]);
 
@@ -45,6 +45,7 @@ export default class extends Event {
 		const { queue } = this.client.schedules;
 		if (!queue.some(task => task.taskID === Schedules.Poststats)) {
 			await this.client.schedules.add(Schedules.Poststats, '*/15 * * * *', {});
+		}
 	}
 
 	// If this task is not being run, let's create the

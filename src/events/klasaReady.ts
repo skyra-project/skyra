@@ -27,7 +27,7 @@ export default class extends Event {
 				this.connectLavalink(),
 				// Ensure the existence of all command uses entries
 				this.initCommandUses(),
-                this.initAnalytics()
+        this.initAnalytics()
 			]);
 
 			// Setup the cleanup task

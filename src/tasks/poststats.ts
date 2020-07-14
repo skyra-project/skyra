@@ -22,13 +22,11 @@ enum Lists {
 export default class extends Task {
 
 	public async run(): Promise<PartialResponseValue | null> {
-		if (this.client.options.dev) return { type: ResponseType.Finished };
-
 		const guilds = this.client.guilds.size.toString();
 		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
 
 		await this.processAnalytics(Number(guilds), Number(users));
-		if (this.client.options.dev) return;
+		if (this.client.options.dev) return { type: ResponseType.Finished };
 
 		const results = (await Promise.all([
 			this.query(`https://top.gg/api/bots/${this.client.user!.id}/stats`,

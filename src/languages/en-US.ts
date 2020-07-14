@@ -815,7 +815,11 @@ export default class extends Language {
 
 			CLAN_ROLE: 'Clan role',
 			CLAN_NAME: 'Clan name',
-			LEAGUE_NAME: 'League name'
+			LEAGUE_NAME: 'League name',
+			NO_TOWNHALL_WEAPON_LEVEL: 'Town hall has no weapon level',
+			NO_ROLE: 'This player has no clan role',
+			NO_CLAN: 'This player is not a clan member',
+			NO_LEAGUE: 'This user is not in any league'
 		},
 		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
 			CLAN_LEVEL: 'Clan level',

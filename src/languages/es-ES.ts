@@ -822,7 +822,11 @@ export default class extends Language {
 
 			CLAN_ROLE: 'Papel del clan',
 			CLAN_NAME: 'Nombre del clan',
-			LEAGUE_NAME: 'Nombre de la liga'
+			LEAGUE_NAME: 'Nombre de la liga',
+			NO_TOWNHALL_WEAPON_LEVEL: 'El ayuntamiento no tiene nivel de arma',
+			NO_ROLE: 'Este jugador no tiene rol de clan.',
+			NO_CLAN: 'Este jugador no es miembro del clan.',
+			NO_LEAGUE: 'Este usuario no está en ninguna liga'
 		},
 		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
 			CLAN_LEVEL: 'Nivel de clan',

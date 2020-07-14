@@ -1,5 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cutText, fetch, FetchResultTypes, getColor } from '@utils/util';
+import { cutText, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 
@@ -40,7 +41,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setTitle(content.title)
 			.setURL(pageURL)
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition
 				.replace(/\n{2,}/g, '\n')

@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { parse } from '@utils/Color';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -22,11 +22,14 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const { hex, b10 } = parse(input);
 
-		await message.author.settings.sync();
+		const { users } = await DbSet.connect();
+		await users.lock([message.author.id], async id => {
+			const user = await users.ensureProfile(id);
 
-		await message.author.settings.update(UserSettings.Color, b10.value, {
-			extraContext: { author: message.author.id }
+			user.profile.color = b10.value;
+			return user.save();
 		});
+
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(b10.value)
 			.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

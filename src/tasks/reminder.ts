@@ -1,12 +1,13 @@
-import { Task, Timestamp } from 'klasa';
-import { resolveOnErrorCodes } from '@utils/util';
+import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
 import { APIErrors } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
+import { Task, Timestamp } from 'klasa';
 
 export default class extends Task {
 
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 
-	public async run(data: ReminderTaskData) {
+	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {
 		// Fetch the user to send the message to
 		const user = await resolveOnErrorCodes(
 			this.client.users.fetch(data.user),
@@ -19,6 +20,8 @@ export default class extends Task {
 				APIErrors.CannotMessageUser
 			);
 		}
+
+		return { type: ResponseType.Finished };
 	}
 
 }

@@ -1,10 +1,10 @@
 import { codeBlock } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -45,15 +45,15 @@ export default class extends SkyraCommand {
 
 		// We're done!
 		return response.edit({
-			embed: this.prepareFinalEmbed(message, members.size, counter, errored),
+			embed: await this.prepareFinalEmbed(message, members.size, counter, errored),
 			content: null
 		});
 	}
 
-	private prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
 		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
 		const embed = new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setTitle(embedLanguage.TITLE(message.guild!.memberTags.size));
 
 		let description = embedLanguage.DESCRIPTION(dehoistedMembers);

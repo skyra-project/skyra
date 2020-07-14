@@ -1,5 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor, roundNumber } from '@utils/util';
+import { roundNumber } from '@utils/util';
 import { version } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { cpus, uptime } from 'os';
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		return message.sendLocale('COMMAND_STATS', [getColor(message), this.generalStatistics, this.uptimeStatistics, this.usageStatistics]);
+		return message.sendLocale('COMMAND_STATS', [await DbSet.fetchColor(message), this.generalStatistics, this.uptimeStatistics, this.usageStatistics]);
 	}
 
 	private get generalStatistics(): StatsGeneral {

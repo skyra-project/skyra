@@ -1,10 +1,10 @@
 import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -44,7 +44,8 @@ export default class extends RichDisplayCommand {
 			.setColor(BrandingColors.Secondary));
 		const typeMatchups = await this.fetchAPI(message, types);
 
-		await this.buildDisplay(message, types, typeMatchups).start(response, message.author.id);
+		const display = await this.buildDisplay(message, types, typeMatchups);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -77,7 +78,7 @@ export default class extends RichDisplayCommand {
 		return regularMatchup.map(type => `\`${type}\``).join(', ');
 	}
 
-	private buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
+	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
 		const embedTranslations = message.language.tget('COMMAND_TYPE_EMBED_DATA');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
@@ -86,7 +87,7 @@ export default class extends RichDisplayCommand {
 		].join(' | ');
 
 		return new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR(types)}`, POKEMON_EMBED_THUMBNAIL))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.OFFENSIVE, [

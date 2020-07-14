@@ -1,11 +1,10 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { Time } from '@utils/constants';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
-
-	private readonly busy: Set<string> = new Set();
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -27,36 +26,36 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [check, user]: ['check', KlasaUser]) {
-		const now = Date.now();
-		const selfSettings = await message.author.settings.sync();
-		const extSettings = user ? await user.settings.sync() : null;
+		const date = new Date();
+		const now = date.getTime();
+
+		const { users } = await DbSet.connect();
+		const selfSettings = await users.ensureProfileAndCooldowns(message.author.id);
+		const extSettings = user ? await users.ensureProfile(user.id) : null;
 
 		if (check) {
 			if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
 			return message.sendMessage(message.author === user
-				? message.language.tget('COMMAND_REPUTATIONS_SELF', selfSettings.get(UserSettings.Reputation))
-				: message.language.tget('COMMAND_REPUTATIONS', user.username, extSettings!.get(UserSettings.Reputation)));
+				? message.language.tget('COMMAND_REPUTATIONS_SELF', selfSettings.reputations)
+				: message.language.tget('COMMAND_REPUTATIONS', user.username, extSettings!.reputations));
 		}
 
-		const timeReputation = selfSettings.get(UserSettings.TimeReputation);
-		if (this.busy.has(message.author.id) || timeReputation + Time.Day > now) {
+		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
+
+		if (timeReputation && timeReputation + Time.Day > now) {
 			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + Time.Day - now]);
 		}
 
 		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
 		if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
 		if (user === message.author) throw message.language.tget('COMMAND_REPUTATION_SELF');
-		this.busy.add(message.author.id);
 
-		try {
-			await extSettings!.increase(UserSettings.Reputation, 1);
-			await selfSettings.update(UserSettings.TimeReputation, now);
-		} catch (err) {
-			this.busy.delete(message.author.id);
-			throw err;
-		}
+		await getManager().transaction(async em => {
+			++extSettings!.reputations;
+			selfSettings.cooldowns.reputation = date;
+			await em.save([extSettings, selfSettings]);
+		});
 
-		this.busy.delete(message.author.id);
 		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
 	}
 

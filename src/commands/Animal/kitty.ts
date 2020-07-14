@@ -1,8 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { ApplyOptions } from '@skyra/decorators';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['kitten', 'cat'],
@@ -16,7 +17,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const embed = new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setTimestamp();
 
 		try {

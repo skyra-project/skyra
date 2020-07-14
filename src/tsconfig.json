@@ -1,10 +1,11 @@
 {
-	"extends": "../tsconfig.json",
+	"extends": "../tsconfig.base.json",
 	"compilerOptions": {
 		"outDir": "../dist",
 		"rootDir": ".",
 		"baseUrl": ".",
 		"paths": {
+			"@orm/*": ["lib/orm/*"],
 			"@utils/*": ["lib/util/*"],
 			"@lib/*": ["lib/*"],
 			"@root/*": ["*"]

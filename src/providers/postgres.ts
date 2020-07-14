@@ -2,8 +2,6 @@
 import { QueryBuilder } from '@klasa/querybuilder';
 import { isNumber, makeObject, mergeDefault } from '@klasa/utils';
 import { AnyObject } from '@lib/types/util';
-import { ENABLE_POSTGRES } from '@root/config';
-import { run as databaseInitRun } from '@utils/DatabaseInit';
 import { PostgresOptions, SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLProvider, Type } from 'klasa';
 import { Pool, QueryArrayConfig, QueryArrayResult, QueryConfig, QueryResult, QueryResultRow, Submittable } from 'pg';
 
@@ -32,8 +30,6 @@ export default class extends SQLProvider {
 	public pgsql: Pool | null = null;
 
 	public async init() {
-		if (!ENABLE_POSTGRES) return this.unload();
-
 		const poolOptions = mergeDefault<PostgresOptions, PostgresOptions>({
 			host: 'localhost',
 			port: 5432,
@@ -45,7 +41,7 @@ export default class extends SQLProvider {
 
 		this.pgsql = new Pool(poolOptions);
 		this.pgsql.on('error', err => this.client.emit('error', err));
-		await databaseInitRun(this);
+		return Promise.resolve();
 	}
 
 	public async shutdown() {

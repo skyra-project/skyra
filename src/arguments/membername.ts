@@ -1,6 +1,6 @@
+import { MemberTag } from '@utils/Cache/MemberTags';
 import { FuzzySearch } from '@utils/FuzzySearch';
 import { Argument, KlasaMessage, Possible } from 'klasa';
-import { MemberTag } from '@utils/Cache/MemberTags';
 
 const USER_REGEXP = Argument.regex.userOrMember;
 const USER_TAG = /^\w{1,32}#\d{4}$/;

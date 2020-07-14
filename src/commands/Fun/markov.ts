@@ -1,9 +1,10 @@
 import Collection from '@discordjs/collection';
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { DEV } from '@root/config';
 import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
-import { cutText, getColor, iteratorAt } from '@utils/util';
+import { cutText, iteratorAt } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 
@@ -19,7 +20,7 @@ export default class extends SkyraCommand {
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase: (wordBank: WordBank) => string;
-	private readonly kProcess: (message: KlasaMessage, markov: Markov) => MessageEmbed;
+	private readonly kProcess: (message: KlasaMessage, markov: Markov) => Promise<MessageEmbed>;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -43,23 +44,23 @@ export default class extends SkyraCommand {
 			.setColor(BrandingColors.Secondary));
 
 		// Process the chain
-		return message.sendEmbed(this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
+		return message.sendEmbed(await this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
 	}
 
-	private processRelease(message: KlasaMessage, markov: Markov) {
+	private async processRelease(message: KlasaMessage, markov: Markov) {
 		return new MessageEmbed()
 			.setDescription(cutText(markov.process(), 2000))
-			.setColor(getColor(message));
+			.setColor(await DbSet.fetchColor(message));
 	}
 
-	private processDevelopment(message: KlasaMessage, markov: Markov) {
+	private async processDevelopment(message: KlasaMessage, markov: Markov) {
 		const time = new Stopwatch();
 		const chain = markov.process();
 		time.stop();
 
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setFooter(message.language.tget('COMMAND_MARKOV_TIMER', time.toString()));
 	}
 

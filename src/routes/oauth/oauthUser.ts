@@ -1,7 +1,6 @@
-import { DashboardUser } from '@lib/queries/common';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
-import { Databases } from '@lib/types/constants/Constants';
+import { DbSet } from '@lib/structures/DbSet';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { REDIRECT_URI, SCOPE } from '@root/config';
@@ -35,13 +34,23 @@ export default class extends Route {
 		}
 
 		if (requestBody.action === 'SYNC_USER') {
-			let data = await this.client.queries.fetchDashboardUser(request.auth!.user_id);
-			if (data === null) return response.error(401);
+			const { dashboardUsers } = await DbSet.connect();
+			const data = await dashboardUsers.findOne({ where: { id: request.auth!.user_id }, cache: Time.Minute });
+			if (!data) return response.error(401);
+
+			if (!data.accessToken) {
+				await data.remove();
+				return response.error(401);
+			}
 
 			// If the token expires in a day, refresh
-			if (Date.now() + Time.Day > data.expiresAt) {
-				const updated = await this.refreshToken(data.id, data.refreshToken);
-				if (updated !== null) data = updated;
+			if (Date.now() + Time.Day > data.expiresAt!.getTime()) {
+				const body = await this.refreshToken(data.id!, data.refreshToken!);
+				if (body !== null) {
+					data.accessToken = body.access_token;
+					data.refreshToken = body.refresh_token;
+					data.expiresAt = new Date(Date.now() + (body.expires_in * Time.Second));
+				}
 			}
 
 			try {
@@ -123,7 +132,7 @@ export default class extends Route {
 	private async refreshToken(id: string, refreshToken: string) {
 		try {
 			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
-			const data = await fetch<OauthData>('https://discordapp.com/api/v6/oauth2/token', {
+			return await fetch<OauthData>('https://discordapp.com/api/v6/oauth2/token', {
 				method: 'POST',
 				body: stringify({
 					client_id: this.client.options.clientID,
@@ -137,22 +146,6 @@ export default class extends Route {
 					'Content-Type': Mime.Types.ApplicationFormUrlEncoded
 				}
 			}, FetchResultTypes.JSON);
-
-			const expiresAt = Date.now() + data.expires_in;
-			await this.client.providers.default!.update(Databases.DashboardUsers, id, {
-				expires_at: expiresAt,
-				access_token: data.access_token,
-				refresh_token: data.refresh_token
-			});
-
-			const updated: DashboardUser = {
-				id,
-				expiresAt,
-				accessToken: data.access_token,
-				refreshToken: data.refresh_token
-			};
-
-			return updated;
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 			return null;

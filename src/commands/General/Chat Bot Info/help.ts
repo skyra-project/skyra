@@ -1,10 +1,11 @@
 import { isFunction, isNumber } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { getColor, noop } from '@utils/util';
+import { noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
 
@@ -67,7 +68,7 @@ export default class extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
-		if (command) return message.sendEmbed(this.buildCommandHelp(message, command));
+		if (command) return message.sendEmbed(await this.buildCommandHelp(message, command));
 
 		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
 			const response = await message.sendMessage(
@@ -110,7 +111,7 @@ export default class extends SkyraCommand {
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 		for (const [category, commands] of commandsByCategory) {
 			display.addPage((template: MessageEmbed) => template
 				.setTitle(`${category} Commands`)
@@ -120,11 +121,11 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	private buildCommandHelp(message: KlasaMessage, command: Command) {
+	private async buildCommandHelp(message: KlasaMessage, command: Command) {
 		const DATA = message.language.tget('COMMAND_HELP_DATA');
 
 		return new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
 			.setFooter(DATA.FOOTER(command.name))

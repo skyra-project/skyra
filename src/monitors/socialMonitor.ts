@@ -1,7 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { ClientSettings } from '@lib/types/settings/ClientSettings';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
 
@@ -19,18 +18,16 @@ export default class extends Monitor {
 			return;
 		}
 
-		// Ensure the user and member settings are up-to-date
-		await message.author.settings.sync();
-
 		try {
 			// If boosted guild, increase rewards
-			const boosts = this.client.settings!.get(ClientSettings.Boosts.Guilds);
-			const add = Math.round(((Math.random() * 4) + 4) * (boosts.includes(message.guild!.id) ? 1.5 : 1));
+			const set = await DbSet.connect();
+			const { guildBoost } = await set.clients.ensure();
+			const add = Math.round(((Math.random() * 4) + 4) * (guildBoost.includes(message.guild!.id) ? 1.5 : 1));
 			const multiplier = message.guild!.settings.get(GuildSettings.Social.Multiplier);
 
 			const [, points] = await Promise.all([
-				message.author.settings.increase(UserSettings.Points, add),
-				this.client.queries.upsertIncrementMemberSettings(message.guild!.id, message.author.id, add * multiplier)
+				this.addUserPoints(set, message.author.id, add),
+				this.addMemberPoints(set, message.author.id, message.guild!.id, add * multiplier)
 			]);
 			await this.handleRoles(message, points);
 		} catch (err) {
@@ -98,6 +95,24 @@ export default class extends Monitor {
 			&& message.author.id !== this.client.user!.id
 			&& message.guild.settings.get(GuildSettings.Social.Enabled)
 			&& !message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
+	}
+
+	private addUserPoints(set: DbSet, userID: string, points: number) {
+		return set.users.lock([userID], async id => {
+			const user = await set.users.ensure(id);
+
+			user.points += points;
+			await user.save();
+
+			return user.points;
+		});
+	}
+
+	private async addMemberPoints(set: DbSet, userID: string, guildID: string, points: number) {
+		const member = await set.members.ensure(userID, guildID);
+		member.points += points;
+		await member.save();
+		return member.points;
 	}
 
 }

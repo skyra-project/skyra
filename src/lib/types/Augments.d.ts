@@ -1,9 +1,9 @@
 import { WriteApi } from '@influxdata/influxdb-client';
 import { SettingsUpdateResults } from '@klasa/settings-gateway';
-import { CommonQuery } from '@lib/queries/common';
-import { GiveawayManager } from '@lib/structures/GiveawayManager';
 import { InviteStore } from '@lib/structures/InviteStore';
 import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
+import { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
+import { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
 import { UserTags } from '@utils/Cache/UserTags';
 import { ConnectFourManager } from '@utils/Games/ConnectFourManager';
 import { Leaderboard } from '@utils/Leaderboard';
@@ -28,6 +28,7 @@ declare module 'discord.js' {
 		leaderboard: Leaderboard;
 		ipcMonitors: IPCMonitorStore;
 		giveaways: GiveawayManager;
+		schedules: ScheduleManager;
 		invites: InviteStore;
 		analytics: WriteApi | null;
 		connectFour: ConnectFourManager;
@@ -37,8 +38,8 @@ declare module 'discord.js' {
 		ipc: VezaClient;
 		webhookError: Webhook;
 		webhookFeedback: Webhook | null;
+		webhookDatabase: Webhook | null;
 		fsWatcher: FSWatcher | null;
-		queries: CommonQuery;
 		twitch: Twitch;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
@@ -80,7 +81,6 @@ declare module 'discord.js' {
 	}
 
 	interface User {
-		profileLevel: number;
 		fetchRank(): Promise<number>;
 		increaseBalance(amount: number): Promise<void>;
 		decreaseBalance(amount: number): Promise<void>;

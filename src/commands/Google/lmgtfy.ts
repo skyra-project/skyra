@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const searchEngine = this.parseSearchEngine(message.flagArgs);
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setDescription(`[${message.language.tget('COMMAND_LMGTFY_CLICK')}](https://lmgtfy.com?q=${encodeURIComponent(query)}&s=${searchEngine})`));
 	}
 

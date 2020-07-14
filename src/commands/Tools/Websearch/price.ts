@@ -1,8 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { NAME, TOKENS, VERSION } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
+import { fetch, FetchResultTypes, roundNumber } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -24,7 +25,7 @@ export default class extends SkyraCommand {
 
 		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
 
-		return message.sendEmbed(this.buildEmbed(message, result, fromCurrency, amount));
+		return message.sendEmbed(await this.buildEmbed(message, result, fromCurrency, amount));
 	}
 
 	private async fetchAPI(message: KlasaMessage, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
@@ -45,14 +46,14 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private buildEmbed(message: KlasaMessage, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number): MessageEmbed {
+	private async buildEmbed(message: KlasaMessage, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
 		const worths: string[] = [];
 		for (const [currency, toAmount] of Object.entries(result)) {
 			worths.push(`**${roundNumber(fromAmount * toAmount, 2)}** ${currency}`);
 		}
 
 		return new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setDescription(message.language.tget('COMMAND_PRICE_CURRENCY', fromCurrency, fromAmount, worths))
 			.setTimestamp();
 	}

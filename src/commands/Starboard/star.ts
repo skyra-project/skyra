@@ -1,39 +1,52 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { DbSet } from '@lib/structures/DbSet';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Colors } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { KeyedMemberTag } from '@root/arguments/membername';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: [],
+	cooldown: 10,
+	description: language => language.tget('COMMAND_STAR_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_STAR_EXTENDED'),
+	requiredPermissions: ['EMBED_LINKS'],
+	requiredSettings: [],
+	runIn: ['text'],
+	subcommands: true,
+	usage: '(top|random:default) [user:membername{2}] (duration:timespan)',
+	usageDelim: ' '
+})
+@CreateResolvers([
+	[
+		'timespan', (arg, possible, message, [subcommand]) => {
+			if (!arg || subcommand === 'random') return undefined;
+			return message.client.arguments.get('timespan')!.run(arg, possible, message);
+		}
+	]
+])
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: [],
-			cooldown: 10,
-			description: language => language.tget('COMMAND_STAR_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_STAR_EXTENDED'),
-			requiredPermissions: ['EMBED_LINKS'],
-			requiredSettings: [],
-			runIn: ['text'],
-			subcommands: true,
-			usage: '(top|random:default) [user:membername{2}] (duration:timespan)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('timespan', (arg, possible, message, [subcommand]) => {
-			if (!arg || subcommand === 'random') return undefined;
-			return this.client.arguments.get('timespan')!.run(arg, possible, message);
-		});
-	}
-
 	public async random(message: KlasaMessage, [user]: [KeyedMemberTag?]): Promise<KlasaMessage | KlasaMessage[]> {
-		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
-		const starboardData = await (user
-			? this.client.queries.fetchStarRandomFromUser(message.guild!.id, user.id, min)
-			: this.client.queries.fetchStarRandom(message.guild!.id, min));
+		const minimum = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
+		const { starboards } = await DbSet.connect();
+		const qb = starboards.createQueryBuilder()
+			.select()
+			.where('guild_id = :id', { id: message.guild!.id })
+			.andWhere('star_message_id IS NOT NULL')
+			.andWhere('enabled = TRUE')
+			.andWhere('stars >= :minimum', { minimum });
+
+		if (user) qb.andWhere('user_id = :user', { user: user.id });
+
+		const starboardData = await qb
+			.orderBy('RANDOM()')
+			.limit(1)
+			.getOne();
 
 		// If there is no starboard message, return no stars
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
@@ -52,17 +65,17 @@ export default class extends SkyraCommand {
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
-		const starredMessageChannel = message.guild!.channels.get(starboardData.channel_id) as TextChannel;
+		const starredMessageChannel = message.guild!.channels.get(starboardData.channelID) as TextChannel;
 		if (!starredMessageChannel) {
-			await this.client.queries.deleteStar(message.guild!.id, starboardData.message_id);
+			await starboardData.remove();
 			return this.random(message, [user]);
 		}
 
 		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
 		// moderator, therefore delete it from database and search another
-		const starredMessage = await starboardChannel.messages.fetch(starboardData.star_message_id!).catch(() => null);
+		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageID!).catch(() => null);
 		if (!starredMessage) {
-			await this.client.queries.deleteStar(message.guild!.id, starboardData.message_id);
+			await starboardData.remove();
 			return this.random(message, [user]);
 		}
 
@@ -70,26 +83,34 @@ export default class extends SkyraCommand {
 	}
 
 	public async top(message: KlasaMessage, [user, timespan]: [KeyedMemberTag?, number?]) {
-		const min = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
-		const starboardMessages = await (user
-			? this.client.queries.fetchStarsFromUser(message.guild!.id, user.id, min)
-			: this.client.queries.fetchStars(message.guild!.id, min));
+		const minimum = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
+		const { starboards } = await DbSet.connect();
+		const qb = starboards.createQueryBuilder()
+			.select()
+			.where('guild_id = :id', { id: message.guild!.id })
+			.andWhere('star_message_id IS NOT NULL')
+			.andWhere('enabled = TRUE')
+			.andWhere('stars >= :minimum', { minimum });
+
+		if (user) qb.andWhere('user_id = :user', { user: user.id });
+
+		const starboardMessages = await qb.getMany();
 		if (starboardMessages.length === 0) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
 		const topReceivers: Map<string, number> = new Map();
 
-		const minimum = timespan ? Date.now() - timespan : null;
+		const minimumPostedAt = timespan ? Date.now() - timespan : null;
 		for (const starboardMessage of starboardMessages) {
-			if (minimum !== null) {
-				const postedAt = this.decodeSnowflake(starboardMessage.star_message_id!);
-				if (postedAt < minimum) continue;
+			if (minimumPostedAt !== null) {
+				const postedAt = this.decodeSnowflake(starboardMessage.starMessageID!);
+				if (postedAt < minimumPostedAt) continue;
 			}
-			const url = this.makeStarLink(starboardMessage.guild_id, starboardMessage.channel_id, starboardMessage.message_id);
+			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
 			const maskedUrl = `[${message.language.tget('JUMPTO')}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
-			topReceivers.set(starboardMessage.user_id, (topReceivers.get(starboardMessage.user_id) || 0) + starboardMessage.stars);
+			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;
 		}
 

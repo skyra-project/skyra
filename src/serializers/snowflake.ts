@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext } from 'klasa';
 import { Snowflake } from '@klasa/snowflake';
+import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 

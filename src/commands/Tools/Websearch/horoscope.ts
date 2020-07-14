@@ -1,6 +1,7 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { createPick, fetch, FetchResultTypes, getColor } from '@utils/util';
+import { createPick, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -32,7 +33,7 @@ export default class extends SkyraCommand {
 
 		const TITLES = message.language.tget('COMMAND_HOROSCOPE_TITLES');
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setDescription(horoscope)
 			.setTitle(TITLES.DAILY_HOROSCOPE(sunsign))
 			.setTimestamp(new Date(date))

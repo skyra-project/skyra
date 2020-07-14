@@ -1,3 +1,4 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -51,11 +52,12 @@ export default class extends SkyraCommand {
 		}
 
 		// Commit the suggestion to the DB
-		await this.client.queries.insertSuggestion({
+		const { suggestions } = await DbSet.connect();
+		await suggestions.insert({
 			id: suggestionID,
-			author_id: message.author.id,
-			guild_id: message.guild!.id,
-			message_id: suggestionsMessage.id
+			authorID: message.author.id,
+			guildID: message.guild!.id,
+			messageID: suggestionsMessage.id
 		});
 
 		// Increase the next id

@@ -1,11 +1,11 @@
 import { MoveEntry } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -23,7 +23,8 @@ export default class extends RichDisplayCommand {
 			.setColor(BrandingColors.Secondary));
 		const moveData = await this.fetchAPI(message, move.toLowerCase());
 
-		await this.buildDisplay(message, moveData).start(response, message.author.id);
+		const display = await this.buildDisplay(message, moveData);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -36,7 +37,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
+	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
 		const embedTranslations = message.language.tget('COMMAND_MOVE_EMBED_DATA');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
@@ -45,7 +46,7 @@ export default class extends RichDisplayCommand {
 		].join(' | ');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(`${embedTranslations.MOVE} - ${toTitleCase(moveData.name)}`, POKEMON_EMBED_THUMBNAIL)
 			.setDescription(moveData.desc || moveData.shortDesc))
 			.addPage((embed: MessageEmbed) => embed

@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Canvas } from 'canvas-constructor';
@@ -34,20 +34,16 @@ export default class extends SkyraCommand {
 	}
 
 	public async showProfile(message: KlasaMessage, user: KlasaUser) {
-		await user.settings.sync();
-		const points = user.settings.get(UserSettings.Points);
-		const color = user.settings.get(UserSettings.Color);
-		const themeLevel = user.settings.get(UserSettings.ThemeLevel);
-		const level = user.profileLevel;
-		const darkTheme = user.settings.get(UserSettings.DarkTheme);
+		const { users } = await DbSet.connect();
+		const settings = await users.ensureProfile(user.id);
 
 		/* Calculate information from the user */
-		const previousLevel = Math.floor((level / 0.2) ** 2);
-		const nextLevel = Math.floor(((level + 1) / 0.2) ** 2);
-		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
+		const previousLevel = Math.floor((settings.level / 0.2) ** 2);
+		const nextLevel = Math.floor(((settings.level + 1) / 0.2) ** 2);
+		const progressBar = Math.max(Math.round(((settings.points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			fsp.readFile(join(THEMES_FOLDER, `${themeLevel}.png`)),
+			fsp.readFile(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
 			fetchAvatar(user, 256)
 		]);
 
@@ -58,14 +54,14 @@ export default class extends SkyraCommand {
 			.createBeveledClip(10, 10, 620, 154, 8)
 			.addImage(themeImageSRC, 9, 9, 189, 157)
 			.restore()
-			.addImage(darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
+			.addImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
 
 			// Draw the progress bar
-			.setColor(`#${color.toString(16).padStart(6, '0') || 'FF239D'}`)
+			.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)
 			.addBeveledRect(341, 86, progressBar, 9, 3)
 
 			// Set styles
-			.setColor(darkTheme ? '#F0F0F0' : '#171717')
+			.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
 			.setTextFont('28px RobotoLight')
 
 			// Statistics Titles
@@ -74,15 +70,15 @@ export default class extends SkyraCommand {
 
 			// Draw the information
 			.setTextAlign('right')
-			.addText(points.toString(), 606, 73)
-			.addText((nextLevel - points).toString(), 606, 131)
+			.addText(settings.points.toString(), 606, 73)
+			.addText((nextLevel - settings.points).toString(), 606, 131)
 
 			// Draw the level
 			.setTextAlign('center')
 			.setTextFont('35px RobotoLight')
 			.addText(TITLE.LEVEL, 268, 73)
 			.setTextFont('45px RobotoRegular')
-			.addText(level.toString(), 268, 128)
+			.addText(settings.level.toString(), 268, 128)
 
 			// Draw the avatar
 			.save()

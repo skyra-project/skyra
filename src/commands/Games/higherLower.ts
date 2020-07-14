@@ -1,10 +1,10 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { getColor, resolveEmoji } from '@utils/util';
+import { resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -34,9 +34,9 @@ export default class extends SkyraCommand {
 	private readonly kTimer = Time.Minute * 3;
 
 	public async run(message: KlasaMessage, [wager]: [number]) {
-		await message.author.settings.sync();
-
-		const balance = message.author.settings.get(UserSettings.Money);
+		const { users } = await DbSet.connect();
+		const settings = await users.ensure(message.author.id);
+		const balance = settings.money;
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
 		await message.author.decreaseBalance(wager);
 
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 			wager,
 			emojis: this.kFirstReactionArray,
 			callback: null,
-			color: getColor(message),
+			color: await DbSet.fetchColor(message),
 			canceledByChoice: false
 		};
 

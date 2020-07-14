@@ -1,4 +1,4 @@
-import { Monitor, KlasaMessage } from 'klasa';
+import { KlasaMessage, Monitor } from 'klasa';
 
 export interface CommandHandler extends Monitor {
 	run(message: KlasaMessage): Promise<void>;

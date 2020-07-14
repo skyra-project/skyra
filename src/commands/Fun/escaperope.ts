@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 		if (message.deletable) await message.nuke().catch(() => null);
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setImage(this.kEscapeGif)
 			.setDescription(message.language.tget('COMMAND_ESCAPEROPE_OUTPUT', message.author))
 			.setAuthor(

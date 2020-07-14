@@ -9,6 +9,7 @@ export const enum Events {
 	CommandUsageAnalytics = 'commandUsageAnalytics',
 	CoreSettingsDelete = 'coreSettingsDelete',
 	CoreSettingsUpdate = 'coreSettingsUpdate',
+	Database = 'database',
 	Debug = 'debug',
 	Disconnect = 'disconnect',
 	Error = 'error',
@@ -81,4 +82,11 @@ export const enum PermissionLevels {
 	Administrator = 6,
 	ServerOwner = 7,
 	BotOwner = 10
+}
+
+export const enum Schedules {
+	DelayedGiveawayCreate = 'delayedGiveawayCreate',
+	Poststats = 'poststats',
+	Cleanup = 'cleanup',
+	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions'
 }

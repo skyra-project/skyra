@@ -1,7 +1,8 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { TOKENS } from '@root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 
 		const TITLES = message.language.tget('COMMAND_CURRENTTIME_TITLES');
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
 			.setDescription([
 				`**${TITLES.CURRENT_TIME}**: ${timeData.formatted.split(' ')[1]}`,

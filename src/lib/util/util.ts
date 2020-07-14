@@ -4,7 +4,6 @@ import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CLIENT_SECRET, TOKENS } from '@root/config';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
@@ -13,8 +12,9 @@ import { promises as fsp } from 'fs';
 import { KlasaGuild, RateLimitManager, util } from 'klasa';
 import { Util } from 'klasa-dashboard-hooks';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
+import { ValueTransformer } from 'typeorm';
 import { UserTag } from './Cache/UserTags';
-import { APIErrors, BrandingColors, Time } from './constants';
+import { APIErrors, Time } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -402,10 +402,6 @@ export function getImage(message: Message): string | null {
 	return attachment ? attachment.proxyURL || attachment.url : null;
 }
 
-export function getColor(message: Message) {
-	return message.author.settings.get(UserSettings.Color) || (message.member && message.member.displayColor) || BrandingColors.Primary;
-}
-
 const ROOT = 'https://cdn.discordapp.com';
 export function getDisplayAvatar(id: string, user: UserTag | User | APIUserData, options: ImageURLOptions = {}) {
 	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
@@ -593,6 +589,8 @@ export function bidirectionalReplace<T>(regex: RegExp, content: string, options:
 	if (previous < content.length) results.push(options.outMatch(content.slice(previous), previous, content.length));
 	return results;
 }
+
+export const kBigIntTransformer: ValueTransformer = { from: Number, to: String };
 
 /**
  * @enumerable decorator that sets the enumerable property of a class field to false.

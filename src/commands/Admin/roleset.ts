@@ -1,9 +1,9 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['rs'],
@@ -16,15 +16,29 @@ import { ApplyOptions } from '@skyra/decorators';
 	usage: '<add|remove|reset|list|auto:default> (name:name) (role:rolenames)',
 	usageDelim: ' '
 })
+@CreateResolvers([
+	[
+		'name', (arg, possible, message, [subcommand]) => {
+			if (subcommand === 'list') return undefined;
+			if (!arg && subcommand === 'reset') return undefined;
+			return message.client.arguments.get('string')!.run(arg, possible, message);
+		}
+	],
+	[
+		'rolenames', (arg, possible, message, [subcommand]) => {
+			if (subcommand === 'list' || subcommand === 'reset') return undefined;
+			return message.client.arguments.get('rolenames')!.run(arg, possible, message);
+		}
+	]
+])
 export default class extends SkyraCommand {
-
-	private readonly kIgnoredRoleNameSubCommand = ['list', 'reset'];
 
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 		const roleset = allRolesets.find(set => set.name === name);
+
 		// If it does not exist we need to create a brand new set
 		if (!roleset) {
 			await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, { name, roles: roles.map(role => role.id) }, {
@@ -124,19 +138,6 @@ export default class extends SkyraCommand {
 		if (!allRolesets.length) return message.send('You have no rolesets.');
 		const list = allRolesets.map(set => `💠 **${set.name}**: ${set.roles.map(id => message.guild!.roles.get(id)!.name).join(', ')}`);
 		return message.send(list);
-	}
-
-	public async init() {
-		this.createCustomResolver('name', (arg, possible, message, [subcommand]) => {
-			if (subcommand === 'list') return undefined;
-			if (!arg && subcommand === 'reset') return undefined;
-			return this.client.arguments.get('string')!.run(arg, possible, message);
-		});
-
-		this.createCustomResolver('rolenames', (arg, possible, message, [subcommand]) => {
-			if (this.kIgnoredRoleNameSubCommand.includes(subcommand)) return undefined;
-			return this.client.arguments.get('rolenames')!.run(arg, possible, message);
-		});
 	}
 
 }

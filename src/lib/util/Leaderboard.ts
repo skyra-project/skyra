@@ -1,10 +1,12 @@
-import { Client, Collection } from 'discord.js';
-import { PreciseTimeout } from './PreciseTimeout';
+import { Cache } from '@klasa/cache';
+import { DbSet } from '@lib/structures/DbSet';
+import { Client } from 'discord.js';
 import { Time } from './constants';
+import { PreciseTimeout } from './PreciseTimeout';
 
 /**
  * The Leaderboard singleton class in charge of storing local and global leaderboards
- * @version 2.0.0
+ * @version 2.1.0
  */
 export class Leaderboard {
 
@@ -16,18 +18,18 @@ export class Leaderboard {
 	/**
 	 * The cached global leaderboard
 	 */
-	private readonly kUsers: Collection<string, LeaderboardUser> = new Collection();
+	private readonly kUsers = new Cache<string, LeaderboardUser>();
 
 	/**
 	 * The cached collection for local leaderboards
 	 */
-	private readonly kGuilds: Collection<string, Collection<string, LeaderboardUser>> = new Collection();
+	private readonly kGuilds = new Cache<string, Cache<string, LeaderboardUser>>();
 
 	/**
 	 * The timeouts object
 	 */
 	private readonly kTimeouts: LeaderboardTimeouts = {
-		guilds: new Collection(),
+		guilds: new Cache(),
 		users: null
 	};
 
@@ -35,7 +37,7 @@ export class Leaderboard {
 	 * The temporal promises
 	 */
 	private readonly kTempPromises: LeaderboardPromises = {
-		guilds: new Collection(),
+		guilds: new Cache(),
 		users: null
 	};
 
@@ -111,17 +113,24 @@ export class Leaderboard {
 	}
 
 	private async createMemberSyncHandle(guild: string) {
-		const data = await this.client.queries.fetchLeaderboardLocal(guild);
+		const { members } = await DbSet.connect();
+		const data = await members.createQueryBuilder()
+			.select(['user_id', 'points'])
+			.where('guild_id = :guild', { guild })
+			.andWhere('points >= 25')
+			.orderBy('points', 'DESC')
+			.limit(5000)
+			.getRawMany<{ user_id: string; points: number }>();
 
 		// Clear the leaderboards for said guild
 		if (this.kGuilds.has(guild)) this.kGuilds.get(guild)!.clear();
-		else this.kGuilds.set(guild, new Collection());
+		else this.kGuilds.set(guild, new Cache());
 
 		// Get the store and initialize the position number, then save all entries
 		const store = this.kGuilds.get(guild)!;
 		let i = 0;
 		for (const entry of data) {
-			store.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
+			store.set(entry.user_id, { name: null, points: entry.points, position: ++i });
 		}
 
 		this.kTempPromises.guilds.delete(guild);
@@ -148,14 +157,21 @@ export class Leaderboard {
 	}
 
 	private async createUserSyncHandle() {
+		const { users } = await DbSet.connect();
 		// Get the sorted data from the db
-		const data = await this.client.queries.fetchLeaderboardGlobal();
+		const data = await users.createQueryBuilder()
+			.select(['id', 'points'])
+			.where('points >= 25')
+			.orderBy('points', 'DESC')
+			.limit(25000)
+			.getRawMany<{ id: string; points: number }>();
 
 		// Get the store and initialize the position number, then save all entries
 		this.kUsers.clear();
+
 		let i = 0;
 		for (const entry of data) {
-			this.kUsers.set(entry.user_id, { name: null, points: entry.point_count, position: ++i });
+			this.kUsers.set(entry.id, { name: null, points: entry.points, position: ++i });
 		}
 
 		this.kTempPromises.users = null;
@@ -171,7 +187,7 @@ export interface LeaderboardUser {
 
 interface LeaderboardTimeouts {
 	users: PreciseTimeout | null;
-	guilds: Collection<string, PreciseTimeout>;
+	guilds: Cache<string, PreciseTimeout>;
 }
 
 interface LeaderboardPromises {
@@ -182,5 +198,5 @@ interface LeaderboardPromises {
 	/**
 	 * The collection of Promises that are running for each guild leaderboard, if syncing
 	 */
-	guilds: Collection<string, Promise<void>>;
+	guilds: Cache<string, Promise<void>>;
 }

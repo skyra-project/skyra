@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
-import { KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
+import { mergeDefault } from '@klasa/utils';
 import { Colors } from '@klasa/console';
+import { KlasaClient, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
 import { InfluxDB, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
@@ -37,7 +38,8 @@ import {
 	ENABLE_INFLUX,
 	INFLUX_OPTIONS,
 	INFLUX_ORG,
-	INFLUX_ORG_ANALYTICS_BUCKET
+	INFLUX_ORG_ANALYTICS_BUCKET,
+	CLIENT_OPTIONS
 } from '@root/config';
 
 // Import all extensions and schemas
@@ -134,8 +136,9 @@ export class SkyraClient extends KlasaClient {
 
 	public websocket = new WebsocketHandler(this);
 
-	public constructor(options: KlasaClientOptions = {}) {
-		super(util.mergeDefault(clientOptions, options));
+	public constructor() {
+		// TODO: Remove as any when https://github.com/dirigeants/utils/pull/205 is merged and released
+		super(mergeDefault(clientOptions as any, CLIENT_OPTIONS));
 
 		// Register user gateway override
 		this.gateways.register(new UserGateway(this, 'users'));

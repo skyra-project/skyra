@@ -44,6 +44,7 @@
 		"url": "https://github.com/skyra-project/skyra/issues"
 	},
 	"dependencies": {
+		"@influxdata/influxdb-client": "^1.4.0",
 		"@klasa/async-queue": "^0.0.1",
 		"@klasa/cache": "^0.0.3",
 		"@klasa/console": "^0.0.3",

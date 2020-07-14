@@ -4,6 +4,7 @@ import { KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
 import { Colors } from '@klasa/console';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
+import { InfluxDB, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
@@ -32,7 +33,11 @@ import {
 	VERSION,
 	WEBHOOK_ERROR,
 	WEBHOOK_FEEDBACK,
-	WEBHOOK_DATABASE
+	WEBHOOK_DATABASE,
+	ENABLE_INFLUX,
+	INFLUX_OPTIONS,
+	INFLUX_ORG,
+	INFLUX_ORG_ANALYTICS_BUCKET
 } from '@root/config';
 
 // Import all extensions and schemas
@@ -98,6 +103,10 @@ export class SkyraClient extends KlasaClient {
 	public invites: InviteStore = new InviteStore(this);
 
 	public fsWatcher: FSWatcher | null = null;
+
+	public analytics: WriteApi | null = ENABLE_INFLUX
+		? new InfluxDB(INFLUX_OPTIONS).getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s)
+		: null;
 
 	/**
 	 * The ConnectFour manager

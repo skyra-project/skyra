@@ -23,17 +23,3 @@
 /src/lib/util/GameIntegration @favna
 /src/lib/util/Google.ts @favna
 /src/lib/util/Pokedex.ts @favna
-
-# QuantumlyTangled
-# Now while I may not have made all of them I would like to be notified of them so... this is what the following line is for
-/docker/ @quantumlytangled
-/src/commands/GameIntegration/ffxiv.ts @quantumlytangled
-/src/commands/Twitch/ @quantumlytangled
-/src/events/twitchStreamOffline.ts @quantumlytangled
-/src/events/twitchStreamOnline.ts @quantumlytangled
-/src/lib/types/definitions/Twitch.d.ts @quantumlytangled
-/src/lib/types/settings/raw/RawTwitchStreamSubscriptionSettings.ts @quantumlytangled
-/src/lib/util/GameIntegration/FFXIVTypings.d.ts @quantumlytangled
-/src/lib/util/GameIntegration/FFXIVUtils.ts @quantumlytangled
-/src/lib/util/Notifications/ @quantumlytangled
-/src/routes/twitch/twitchStreamChange.ts @quantumlytangled

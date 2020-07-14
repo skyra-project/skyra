@@ -10,6 +10,7 @@ import { join } from 'path';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
+const INFLUX_ALL_COMMANDS_SCRIPT = 'from(bucket: "analytics") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")';
 
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 
@@ -40,6 +41,8 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		const influx = new InfluxDB(INFLUX_OPTIONS);
 		const reader = influx.getQueryApi(INFLUX_ORG);
+
+		const commands = await reader.collectRows(INFLUX_ALL_COMMANDS_SCRIPT);
 	}
 
 	private createPoint(commandName: string, commandUsageAmount: number, categoryData: CategoryData) {

@@ -13,7 +13,8 @@ export default class extends AnalyticsEvent {
 	public run(guilds: number, users: number) {
 		this.writePoints([
 			this.syncGuilds(guilds),
-			this.syncUsers(users)
+			this.syncUsers(users),
+			this.syncVoiceConnections()
 		]);
 
 		return this.analytics.flush();
@@ -31,6 +32,13 @@ export default class extends AnalyticsEvent {
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			// TODO: Adjust for traditional sharding
 			.intField('value', value);
+	}
+
+	private syncVoiceConnections() {
+		return new Point(AnalyticsSchema.Points.VoiceConnections)
+			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+			// TODO: Adjust for traditional sharding
+			.intField('value', this.client.lavalink.players.size);
 	}
 
 }

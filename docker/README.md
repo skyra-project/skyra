@@ -8,19 +8,19 @@ Skyra currently has the following microservices that can be dockerized:
 
 - PostgreSQL Database
   - Service name in docker-compose: `postgres`
-  - Image used: `docker.pkg.github.com/skyra-project/docker-images/postgres:master`
+  - Image used: `skyrabot/postgres:master`
   - For more information see [skyra-project/docker-images]
 - Lavalink
   - Service name in docker-compose: `lavalink`
-  - Image used: `docker.pkg.github.com/skyra-project/docker-images/lavalink:master`
+  - Image used: `skyrabot/lavalink:master`
   - For more information see [skyra-project/docker-images]
 - GraphQL-Pokémon
   - Service name in docker-compose: `pokedex`
-  - Image used: `docker.pkg.github.com/favware/graphql-pokemon/graphql-pokemon:master`
+  - Image used: `favware/graphql-pokemon:master`
   - For more information see [favware/graphql-pokemon]
 - Saelem
   - Service name in docker-compose: `saelem`
-  - Image used: `docker.pkg.github.com/skyra-project/saelem/saelem:master`
+  - Image used: `skyrabot/saelem/saelem:master`
   - For more information see [skyra-project/saelem]
 
 <!-- Link dump -->

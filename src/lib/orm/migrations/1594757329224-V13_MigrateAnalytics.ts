@@ -31,7 +31,10 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		}
 
 		writer.writePoints(points);
-		return writer.close();
+		await writer.flush();
+		await writer.close();
+
+		await queryRunner.dropTable('command_counter');
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {

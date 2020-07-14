@@ -23,6 +23,7 @@ export default class extends SkyraCommand {
 				await this.client.lavalink.disconnect();
 			}
 			if (ENABLE_INFLUX) {
+				await this.client.analytics!.flush();
 				await this.client.analytics!.close();
 			}
 

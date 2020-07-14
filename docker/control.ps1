@@ -38,13 +38,13 @@ function Step-Run {
 
 	Process {
 		switch ($Command) {
-			build { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" -f "$($PSScriptRoot)\docker-build.yml" build $Service }
-			start { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" up -d $Service }
-			logs { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs $Service }
-			tail { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" logs -f $Service }
+			build { docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" -f "$($PSScriptRoot)/docker-build.yml" build $Service }
+			start { docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" up -d $Service }
+			logs { docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" logs $Service }
+			tail { docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" logs -f $Service }
 			push { docker push $Service }
-			remove { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" rm -fv $Service }
-			update { docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" pull $Service; docker-compose -p skyra -f "$($PSScriptRoot)\docker-compose.yml" up -d --force-recreate $Service }
+			remove { docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" rm -fv $Service }
+			update { docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" pull $Service; docker-compose -p skyra -f "$($PSScriptRoot)/docker-compose.yml" up -d --force-recreate $Service }
 			removeall { Remove-All-Containers }
 			default { Show-Help }
 		}

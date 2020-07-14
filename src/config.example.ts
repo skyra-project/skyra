@@ -39,7 +39,7 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	user: PGSQL_DATABASE_USER
 };
 
-export const INFLUX_URL = 'http://localhost:9999';
+export const INFLUX_URL = 'http://localhost:8285';
 export const INFLUX_TOKEN = '';
 export const INFLUX_ORG = 'Skyra-Project';
 export const INFLUX_ORG_ANALYTICS_BUCKET = 'analytics';

@@ -42,5 +42,3 @@ volumes:
     external: true
   influx-data:
     external: true
-#   grafana-data:
-#     external: true

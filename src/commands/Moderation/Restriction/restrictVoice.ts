@@ -45,14 +45,14 @@ export default class extends ModerationCommand {
 
 	public async prehandle() { /* Do nothing */ }
 
-	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
+	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.restrictVoice({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			reason: context.reason,
-			image_url: getImage(message),
+			imageURL: getImage(message),
 			duration: context.duration
-		}, this.getTargetDM(message, context.target));
+		}, await this.getTargetDM(message, context.target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

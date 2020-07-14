@@ -17,6 +17,7 @@ bwd/
 !src/**/*.d.ts
 **/*.tsbuildinfo
 !jest.config.js
+!ormconfig.js
 
 # Ignore the config file (contains sensitive information such as tokens)
 config.ts

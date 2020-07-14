@@ -1,8 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
 import { getImage } from '@utils/util';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -28,12 +29,17 @@ export default class extends SkyraCommand {
 		if (!entries.size) throw message.language.tget(cases.length === 1 ? 'MODERATION_CASE_NOT_EXISTS' : 'MODERATION_CASES_NOT_EXIST');
 
 		const imageURL = getImage(message);
-		await this.client.queries.updateModerationLogReasonBulk(message.guild!.id, entries.map(ml => ml.case!), reason);
+		const { moderations } = await DbSet.connect();
+		await moderations.createQueryBuilder()
+			.update()
+			.where('guild_id = :guild', { guild: message.guild!.id })
+			.andWhere('case_id IN (:...ids)', { ids: [...entries.keys()] })
+			.set({ reason, imageURL })
+			.execute();
 		await message.guild!.moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
-			entry.setReason(reason);
-			if (imageURL) entry.setImageURL(imageURL);
+			entry.setReason(reason).setImageURL(imageURL);
 			this.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 

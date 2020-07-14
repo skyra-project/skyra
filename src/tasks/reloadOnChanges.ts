@@ -1,6 +1,7 @@
 // Copyright (c) 2017-2019 dirigeants. All rights reserved. MIT license.
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
+import { PartialResponseValue } from '@orm/entities/ScheduleEntity';
 import { WATCH_FILES } from '@root/config';
 import { floatPromise } from '@utils/util';
 import { watch } from 'chokidar';
@@ -34,7 +35,7 @@ export default class extends Task {
 
 	private running = false;
 
-	public async run({ name, store, piece }: Run) {
+	public async run({ name, store, piece }: Run): Promise<PartialResponseValue | null> {
 		const timer = new Stopwatch();
 
 		for (const module of Object.keys(require.cache)) {
@@ -55,6 +56,8 @@ export default class extends Task {
 
 		this.client.emit(Events.Verbose, `[${store}] ${name} was updated. ${log}`);
 		await import('@utils/initClean');
+
+		return null;
 	}
 
 	public init() {

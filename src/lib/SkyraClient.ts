@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
-import { GatewayStorage, KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
+import { KlasaClient, KlasaClientOptions, Schema, util } from 'klasa';
 import { Colors } from '@klasa/console';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
@@ -11,10 +11,10 @@ import { DashboardClient } from 'klasa-dashboard-hooks';
 
 // Import all types
 import { Events } from './types/Enums';
-import { Databases } from './types/constants/Constants';
 
 // Import all structures
-import { GiveawayManager } from './structures/GiveawayManager';
+import { GiveawayManager } from './structures/managers/GiveawayManager';
+import { ScheduleManager } from './structures/managers/ScheduleManager';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
 
 // Import all utils
@@ -28,30 +28,24 @@ import { enumerable } from './util/util';
 
 // Import all configuration
 import {
-	ENABLE_POSTGRES,
-	EVLYN_PORT,
-	VERSION,
-	WEBHOOK_ERROR,
-	WEBHOOK_FEEDBACK,
-	ENABLE_INFLUX,
-	INFLUX_OPTIONS,
-	INFLUX_ORG,
-	INFLUX_ORG_ANALYTICS_BUCKET
+    ENABLE_INFLUX,
+    EVLYN_PORT,
+    INFLUX_OPTIONS,
+    INFLUX_ORG,
+    INFLUX_ORG_ANALYTICS_BUCKET,
+    VERSION,
+    WEBHOOK_DATABASE,
+    WEBHOOK_ERROR,
+    WEBHOOK_FEEDBACK
 } from '@root/config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
-import './schemas/Clients';
 import './schemas/Guilds';
-import './schemas/Users';
-import { BannerSchema } from './schemas/Banners';
 
 // Import setup files
 import './setup/PermissionsLevels';
 import './setup/Canvas';
-import { CommonQuery } from './queries/common';
-import { PostgresCommonQuery } from './queries/postgres';
-import { JsonCommonQuery } from './queries/json';
 import { WebsocketHandler } from './websocket';
 import { InviteStore } from './structures/InviteStore';
 
@@ -82,6 +76,11 @@ export class SkyraClient extends KlasaClient {
 	public giveaways: GiveawayManager = new GiveawayManager(this);
 
 	/**
+	 * The Schedule manager
+	 */
+	public schedules: ScheduleManager = new ScheduleManager(this);
+
+	/**
 	 * The webhook to use for the error event
 	 */
 	public webhookError: Webhook = new Webhook(this, WEBHOOK_ERROR);
@@ -92,16 +91,14 @@ export class SkyraClient extends KlasaClient {
 	public webhookFeedback: Webhook | null = WEBHOOK_FEEDBACK ? new Webhook(this, WEBHOOK_FEEDBACK) : null;
 
 	/**
+	 * The webhook to use for database errors
+	 */
+	public webhookDatabase: Webhook | null = WEBHOOK_DATABASE ? new Webhook(this, WEBHOOK_DATABASE) : null;
+
+	/**
 	 * The invite store
 	 */
 	public invites: InviteStore = new InviteStore(this);
-
-	/**
-	 * The common queries for the database
-	 */
-	public queries: CommonQuery = ENABLE_POSTGRES
-		? new PostgresCommonQuery(this)
-		: new JsonCommonQuery(this);
 
 	public fsWatcher: FSWatcher | null = null;
 
@@ -138,17 +135,6 @@ export class SkyraClient extends KlasaClient {
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
 
-		this.gateways
-			.register(new GatewayStorage(this, Databases.Members))
-			.register(new GatewayStorage(this, Databases.Banners, { schema: BannerSchema }))
-			.register(new GatewayStorage(this, Databases.Giveaway))
-			.register(new GatewayStorage(this, Databases.Moderation))
-			.register(new GatewayStorage(this, Databases.Starboard))
-			.register(new GatewayStorage(this, Databases.CommandCounter))
-			.register(new GatewayStorage(this, Databases.TwitchStreamSubscriptions))
-			.register(new GatewayStorage(this, Databases.DashboardUsers))
-			.register(new GatewayStorage(this, Databases.Suggestions));
-
 		// Register the API handler
 		this.registerStore(this.ipcMonitors);
 
@@ -156,6 +142,11 @@ export class SkyraClient extends KlasaClient {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
 		}
+	}
+
+	public async login(token?: string) {
+		await this.schedules.init();
+		return super.login(token);
 	}
 
 	public static defaultMemberSchema = new Schema()

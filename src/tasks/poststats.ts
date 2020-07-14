@@ -1,6 +1,7 @@
 import { Colors } from '@klasa/console';
 import { Events } from '@lib/types/Enums';
-import { ENABLE_INFLUX, TOKENS } from '@root/config';
+import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
+import { TOKENS } from '@root/config';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { Task } from 'klasa';
@@ -20,7 +21,9 @@ enum Lists {
 
 export default class extends Task {
 
-	public async run() {
+	public async run(): Promise<PartialResponseValue | null> {
+		if (this.client.options.dev) return { type: ResponseType.Finished };
+
 		const guilds = this.client.guilds.size.toString();
 		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
 
@@ -41,6 +44,7 @@ export default class extends Task {
 		])).filter(value => value !== null);
 
 		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
+		return null;
 	}
 
 	public async query(url: string, body: string, token: string | null, list: Lists) {

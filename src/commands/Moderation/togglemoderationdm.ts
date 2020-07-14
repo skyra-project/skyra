@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
 
@@ -12,12 +12,15 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
-		await message.author.settings.sync();
-		const current = message.author.settings.get(UserSettings.ModerationDM);
-		await message.author.settings.update(UserSettings.ModerationDM, !current, {
-			extraContext: { author: message.author.id }
+		const { users } = await DbSet.connect();
+		const updated = await users.lock([message.author.id], async id => {
+			const user = await users.ensure(id);
+
+			user.moderationDM = !user.moderationDM;
+			return user.save();
 		});
-		return message.sendLocale('COMMAND_TOGGLEMODERATIONDM_TOGGLED', [!current]);
+
+		return message.sendLocale('COMMAND_TOGGLEMODERATIONDM_TOGGLED', [updated.moderationDM]);
 	}
 
 }

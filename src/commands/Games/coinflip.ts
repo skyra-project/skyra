@@ -1,7 +1,7 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { ApplyOptions } from '@skyra/decorators';
-import { cleanMentions, getColor } from '@utils/util';
+import { cleanMentions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -26,11 +26,12 @@ export default class extends SkyraCommand {
 		if (guess === null) return this.noGuess(message);
 		if (wager === 'cashless') return this.cashless(message, guess);
 
-		await message.author.settings.sync();
-		const money = message.author.settings.get(UserSettings.Money);
+		const { users } = await DbSet.connect();
+		const settings = await users.ensure(message.author.id);
+		const balance = settings.money;
 
-		if (money < wager) {
-			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', money);
+		if (balance < wager) {
+			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
 		}
 
 		const result = this.flipCoin();
@@ -39,7 +40,7 @@ export default class extends SkyraCommand {
 			? message.author.increaseBalance(wager)
 			: message.author.decreaseBalance(wager));
 
-		return message.sendEmbed(this.buildEmbed(message, result)
+		return message.sendEmbed((await this.buildEmbed(message, result))
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result], wager)));
 	}
@@ -63,17 +64,17 @@ export default class extends SkyraCommand {
 		return this.client.arguments.get('shinywager')!;
 	}
 
-	private cashless(message: KlasaMessage, guess: CoinType) {
+	private async cashless(message: KlasaMessage, guess: CoinType) {
 		const result = this.flipCoin();
 		const won = result === guess;
-		return message.send(this.buildEmbed(message, result)
+		return message.send((await this.buildEmbed(message, result))
 			.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 			.setDescription(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result])));
 	}
 
-	private noGuess(message: KlasaMessage) {
+	private async noGuess(message: KlasaMessage) {
 		const result = this.flipCoin();
-		return message.send(this.buildEmbed(message, result)
+		return message.send((await this.buildEmbed(message, result))
 			.setTitle(message.language.tget('COMMAND_COINFLIP_NOGUESS_TITLE'))
 			.setDescription(message.language.tget('COMMAND_COINFLIP_NOGUESS_DESCRIPTION', message.language.tget('COMMAND_COINFLIP_COINNAMES')[result])));
 	}
@@ -82,9 +83,9 @@ export default class extends SkyraCommand {
 		return Math.random() > 0.5 ? CoinType.Heads : CoinType.Tails;
 	}
 
-	private buildEmbed(message: KlasaMessage, result: CoinType) {
+	private async buildEmbed(message: KlasaMessage, result: CoinType) {
 		return new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`);
 	}
 

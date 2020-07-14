@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -19,10 +19,12 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		if (user.bot) throw message.language.tget('COMMAND_BALANCE_BOTS');
 
-		await user.settings.sync();
+		const { users } = await DbSet.connect();
+		const money = (await users.findOne(user.id))?.money ?? 0;
+
 		return message.author === user
-			? message.sendLocale('COMMAND_BALANCE_SELF', [user.settings.get(UserSettings.Money).toLocaleString()])
-			: message.sendLocale('COMMAND_BALANCE', [user.username, user.settings.get(UserSettings.Money).toLocaleString()]);
+			? message.sendLocale('COMMAND_BALANCE_SELF', [money.toLocaleString()])
+			: message.sendLocale('COMMAND_BALANCE', [user.username, money.toLocaleString()]);
 	}
 
 }

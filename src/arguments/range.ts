@@ -1,5 +1,5 @@
-import { Argument, Possible, KlasaMessage } from 'klasa';
 import { parseRange } from '@utils/util';
+import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
 

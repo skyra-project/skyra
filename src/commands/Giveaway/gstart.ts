@@ -27,11 +27,11 @@ export default class extends SkyraCommand {
 
 		const winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
 		await this.client.giveaways.create({
-			channel_id: message.channel.id,
-			ends_at: time.getTime() + 500,
-			guild_id: message.guild!.id,
+			channelID: message.channel.id,
+			endsAt: new Date(time.getTime() + 500),
+			guildID: message.guild!.id,
 			minimum: 1,
-			minimum_winners: winners,
+			minimumWinners: winners,
 			title: cleanMentions(message.guild!, title)
 		});
 	}

@@ -17,13 +17,13 @@ export default class extends ModerationCommand {
 		return message.guild!.settings.get(GuildSettings.Events.MemberRemove) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
-	public handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
+	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild!.security.actions.kick({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			reason: context.reason,
-			image_url: getImage(message)
-		}, this.getTargetDM(message, context.target));
+			imageURL: getImage(message)
+		}, await this.getTargetDM(message, context.target));
 	}
 
 	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {

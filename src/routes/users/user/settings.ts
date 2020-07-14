@@ -1,21 +1,17 @@
-import { objectToTuples } from '@klasa/utils';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
+import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { RawUserSettings } from '@lib/types/settings/raw/RawUserSettings';
 import { authenticated, ratelimit } from '@utils/util';
 import { Route, RouteStore } from 'klasa-dashboard-hooks';
 import { inspect } from 'util';
 
-type Keys = keyof RawUserSettings;
+interface BodyData {
+	darkTheme?: boolean;
+	moderationDM?: boolean;
+}
 
 export default class extends Route {
-
-	private readonly kWhitelist: Keys[] = [
-		'dark_theme', 'moderation_dm'
-		// TODO(kyranet): Handle the following with SettingsGateway's rewrite release.
-		/* 'theme_level', 'theme_profile', 'badge_set', 'badge_list', 'banner_list' */
-	];
 
 	public constructor(store: RouteStore, file: string[], directory: string) {
 		super(store, file, directory, { name: 'userSettings', route: 'users/@me/settings' });
@@ -24,31 +20,40 @@ export default class extends Route {
 	@authenticated
 	@ratelimit(5, 1000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
-		const user = await this.client.users.fetch(request.auth!.user_id);
-		if (user === undefined) return response.error(500);
+		const { users } = await DbSet.connect();
+		const user = await users.ensureProfile(request.auth!.user_id);
 
-		await user.settings.sync();
-		return response.json(user.settings.toJSON());
+		return response.json(user);
 	}
 
 	@authenticated
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
-		const requestBody = request.body as { data: Record<Keys, unknown> | [Keys, unknown][] };
+		const requestBody = request.body as { data: BodyData };
 
-		const user = await this.client.users.fetch(request.auth!.user_id);
-		if (user === undefined) return response.error(500);
+		const { users } = await DbSet.connect();
+		const userID = request.auth!.user_id;
 
-		const entries = Array.isArray(requestBody.data) ? requestBody.data : objectToTuples(requestBody.data) as [Keys, unknown][];
-		if (entries.some(([key]) => !this.kWhitelist.includes(key))) return response.error(400);
-
-		await user.settings.sync();
 		try {
-			await user.settings.update(entries, { arrayAction: 'overwrite', extraContext: { author: user.id } });
-			return response.json({ newSettings: user.settings.toJSON() });
+			const newSettings = await users.lock([userID], async id => {
+				const user = await users.ensureProfile(id);
+
+				if (requestBody.data.darkTheme) {
+					if (typeof requestBody.data.darkTheme !== 'boolean') return response.badRequest('darkTheme must be a boolean');
+					user.profile.darkTheme = requestBody.data.darkTheme;
+				}
+
+				if (requestBody.data.moderationDM) {
+					if (typeof requestBody.data.moderationDM !== 'boolean') return response.badRequest('moderationDM must be a boolean');
+					user.moderationDM = requestBody.data.moderationDM;
+				}
+
+				return user.save();
+			});
+
+			return response.json({ newSettings });
 		} catch (errors) {
-			this.client.emit(Events.Error,
-				`${user.username}[${user.id}] failed user settings update:\n${inspect(errors)}`);
+			this.client.emit(Events.Error, `[${userID}] failed user settings update:\n${inspect(errors)}`);
 
 			return response.error(500);
 		}

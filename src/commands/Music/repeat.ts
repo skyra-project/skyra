@@ -1,7 +1,7 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { ApplyOptions } from '@skyra/decorators';
+import { requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
-import { requireSameVoiceChannel, requireUserInVoiceChannel, requireSkyraInVoiceChannel, requireMusicPlaying } from '@utils/Music/Decorators';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['replay'],

@@ -1,5 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language, Timestamp } from 'klasa';
 
@@ -30,7 +31,7 @@ export default class extends SkyraCommand {
 			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); });
 
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setImage(comic.img)
 			.setTitle(comic.title)
 			.setURL(`https://xkcd.com/${comicNumber}/`)

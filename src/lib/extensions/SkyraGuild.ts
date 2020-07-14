@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
-import { ModerationManager } from '@lib/structures/ModerationManager';
+import { ModerationManager } from '@lib/structures/managers/ModerationManager';
+import { PermissionsManager } from '@lib/structures/managers/PermissionsManager';
+import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
-import { PermissionsManager } from '@lib/structures/PermissionsManager';
-import { StarboardManager } from '@lib/structures/StarboardManager';
 import { WSGuildCreate } from '@lib/types/DiscordAPI';
 import { MemberTags } from '@utils/Cache/MemberTags';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';

@@ -15,7 +15,7 @@ export const enum GoogleResponseCodes {
 	ZeroResults = 'ZERO_RESULTS',
 	RequestDenied = 'REQUEST_DENIED',
 	InvalidRequest = 'INVALID_REQUEST',
-	OverQueryLimit= 'OVER_QUERY_LIMIT',
+	OverQueryLimit = 'OVER_QUERY_LIMIT',
 	UnknownError = 'UNKNOWN_ERROR',
 	Ok = 'OK',
 	Failed = 'FAILED'

@@ -24,11 +24,12 @@
  * SOFTWARE.
  */
 
+import { Snowflake } from '@klasa/snowflake';
 import { Events } from '@lib/types/Enums';
+import { PartialResponseValue } from '@orm/entities/ScheduleEntity';
 import { Time } from '@utils/constants';
 import { Channel, TextChannel } from 'discord.js';
 import { Task } from 'klasa';
-import { Snowflake } from '@klasa/snowflake';
 
 const THRESHOLD = Time.Minute * 30;
 
@@ -40,7 +41,7 @@ const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
  */
 export default class extends Task {
 
-	public run() {
+	public run(): PartialResponseValue | null {
 		const OLD_SNOWFLAKE = Snowflake.generate(Date.now() - THRESHOLD).toString();
 		let presences = 0;
 		let guildMembers = 0;
@@ -86,6 +87,8 @@ export default class extends Task {
 				this.setColor(guildMembers)} [GuildMember]s | ${
 				this.setColor(users)} [User]s | ${
 				this.setColor(lastMessages)} [Last Message]s.`);
+
+		return null;
 	}
 
 	/**

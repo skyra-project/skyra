@@ -1,9 +1,9 @@
 import { chunk } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -29,15 +29,15 @@ export default class extends RichDisplayCommand {
 			else staticEmotes.push(`<:${emote.name}:${id}>`);
 		}
 
-		const display = this.buildDisplay(message, chunk(animEmotes, 50), chunk(staticEmotes, 50));
+		const display = await this.buildDisplay(message, chunk(animEmotes, 50), chunk(staticEmotes, 50));
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(message: KlasaMessage, animatedEmojis: string[][], staticEmojis: string[][]) {
+	private async buildDisplay(message: KlasaMessage, animatedEmojis: string[][], staticEmojis: string[][]) {
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor([
 				`${message.guild!.emojis.size}`,
 				`${message.language.tget('COMMAND_EMOTES_TITLE')}`,

@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { KeyedMemberTag } from '@root/arguments/membername';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { socialFolder } from '@utils/constants';
@@ -58,16 +58,16 @@ export default class extends SkyraCommand {
 		// Get the avatars and sync the author's settings for dark mode preference
 		const [avatarFirstUser, avatarSecondUser] = await Promise.all([
 			this.fetchAvatar(firstUser.id, firstUserTag, { size: 64 }),
-			this.fetchAvatar(secondUser.id, secondUserTag, { size: 64 }),
-			message.author.settings.sync()
+			this.fetchAvatar(secondUser.id, secondUserTag, { size: 64 })
 		]);
 
-		const darkTheme = message.author.settings.get(UserSettings.DarkTheme);
+		const { users } = await DbSet.connect();
+		const settings = await users.ensureProfile(message.author.id);
 
 		// Build up the ship canvas
 		const attachment = await new Canvas(224, 88)
 			// Add base image
-			.addImage(darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 224, 88)
+			.addImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 224, 88)
 			// Add avatar image with side-offsets of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.addBeveledImage(avatarFirstUser, 12, 12, 64, 64, 10)
 			// Add heart icon with width offset of 84px and height offset of 20px

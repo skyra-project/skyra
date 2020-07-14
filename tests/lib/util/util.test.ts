@@ -1,9 +1,13 @@
+import Collection from '@discordjs/collection';
 import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
-import { createReadStream } from 'fs';
+import { MessageAttachment } from 'discord.js';
+import { createReadStream, promises as fsPromises } from 'fs';
+import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
+import { DeepPartial } from 'typeorm';
 
 describe('Utils', () => {
 	describe('noop', () => {
@@ -283,6 +287,127 @@ describe('Utils', () => {
 	describe('twemoji', () => {
 		test('GIVEN twemoji icon THEN returns identifier for maxcdn', () => {
 			expect(utils.twemoji('😀')).toEqual('1f600');
+		});
+	});
+
+	describe('getImage', () => {
+		test('GIVEN message w/ attachments w/ image w/o proxyURL attachment THEN returns url', async () => {
+			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const buffer = await fsPromises.readFile(filePath);
+			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
+			fakeAttachment.url = filePath;
+			fakeAttachment.height = 32;
+			fakeAttachment.width = 32;
+
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>([
+					['image.png', fakeAttachment]
+				]),
+				embeds: []
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toEqual(filePath);
+		});
+
+		test('GIVEN message w/ attachments w/ image w/ proxyURL attachment THEN returns url', async () => {
+			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const buffer = await fsPromises.readFile(filePath);
+			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
+			fakeAttachment.url = filePath;
+			fakeAttachment.proxyURL = filePath;
+			fakeAttachment.height = 32;
+			fakeAttachment.width = 32;
+
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>([
+					['image.png', fakeAttachment]
+				]),
+				embeds: []
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toEqual(filePath);
+		});
+
+		test('GIVEN message w/ attachments w/o image attachment THEN passes through to embed checking', async () => {
+			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
+			const buffer = await fsPromises.readFile(filePath);
+			const fakeAttachment = new MessageAttachment(buffer, 'image.png');
+			fakeAttachment.url = 'not_an_image';
+			fakeAttachment.proxyURL = 'not_an_image';
+			fakeAttachment.height = 32;
+			fakeAttachment.width = 32;
+
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>([
+					['image.png', fakeAttachment]
+				]),
+				embeds: [
+					{
+						type: 'image',
+						thumbnail: { url: 'image.png', proxyURL: 'image.png', height: 32, width: 32 }
+					}
+				]
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toEqual('image.png');
+		});
+
+		test('GIVEN message w/o attachments w/ embed type === image THEN returns embedded image url', () => {
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>(),
+				embeds: [
+					{
+						type: 'image',
+						thumbnail: { url: 'image.png', proxyURL: 'image.png', height: 32, width: 32 }
+					}
+				]
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toEqual('image.png');
+		});
+
+		test('GIVEN message w/o attachments w/ embed w/ image THEN returns embedded image url', () => {
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>(),
+				embeds: [
+					{
+						type: 'not_image',
+						image: { url: 'image.png', proxyURL: 'image.png', height: 32, width: 32 }
+					}
+				]
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toEqual('image.png');
+		});
+
+		test('GIVEN message w/o attachments w/ embed w/o image THEN returns null', () => {
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>(),
+				embeds: [
+					{
+						type: 'not_image',
+						image: undefined
+					}
+				]
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toBeNull();
+		});
+
+		test('GIVEN message w/o attachments w/o embed THEN returns null', () => {
+			const fakeMessage: DeepPartial<KlasaMessage> = {
+				attachments: new Collection<string, MessageAttachment>(),
+				embeds: []
+			};
+
+			// @ts-expect-error We're only passing partial data to not mock an entire message
+			expect(utils.getImage(fakeMessage)).toBeNull();
 		});
 	});
 

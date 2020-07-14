@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(new MessageEmbed()
 			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setImage(user.displayAvatarURL({ size: 2048, format: 'png', dynamic: true })));
 	}
 

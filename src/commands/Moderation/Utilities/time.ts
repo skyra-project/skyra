@@ -1,6 +1,6 @@
-import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Moderation } from '@utils/constants';
 import { Permissions } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
@@ -33,10 +33,10 @@ export default class extends SkyraCommand {
 		if (!entry) throw message.language.tget('MODERATION_CASE_NOT_EXISTS');
 		if (!cancel && entry.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');
 
-		const user = await this.client.users.fetch(entry.flattenedUser);
+		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
-		const task = this.client.schedule.tasks.find(tk => tk.data
-			&& tk.data[Moderation.SchemaKeys.Case] === entry.case
+		const task = this.client.schedules.queue.find(tk => tk.data
+			&& tk.data[Moderation.SchemaKeys.Case] === entry.caseID
 			&& tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id)!;
 
 		if (cancel) {
@@ -45,24 +45,24 @@ export default class extends SkyraCommand {
 			await message.guild!.moderation.fetchChannelMessages();
 			await entry.edit({
 				duration: null,
-				moderator_id: message.author.id
+				moderatorID: message.author.id
 			});
 
 			return message.sendLocale('COMMAND_TIME_ABORTED', [entry.title]);
 		}
 
 		if (entry.appealType || entry.invalidated) throw message.language.tget('MODERATION_LOG_APPEALED');
-		if (task) throw message.language.tget('MODLOG_TIMED', task.data.timestamp - Date.now());
+		if (task) throw message.language.tget('MODLOG_TIMED', (task.data.timestamp as number) - Date.now());
 
 		await message.guild!.moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
-			moderator_id: message.author.id
+			moderatorID: message.author.id
 		});
 		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration]);
 	}
 
-	private validateAction(message: KlasaMessage, modlog: ModerationManagerEntry, user: KlasaUser) {
+	private validateAction(message: KlasaMessage, modlog: ModerationEntity, user: KlasaUser) {
 		switch (modlog.type) {
 			case Moderation.TypeCodes.FastTemporaryBan:
 			case Moderation.TypeCodes.TemporaryBan:

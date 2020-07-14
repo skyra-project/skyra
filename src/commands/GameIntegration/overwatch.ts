@@ -1,10 +1,11 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
 import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -33,7 +34,8 @@ export default class extends RichDisplayCommand {
 			throw message.language.tget('COMMAND_OVERWATCH_NO_STATS', this.decodePlayerName(player));
 		}
 
-		await this.buildDisplay(message, overwatchData, player, platform).start(response, message.author.id);
+		const display = await this.buildDisplay(message, overwatchData, player, platform);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -46,18 +48,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
-	private buildDisplay(
-		message: KlasaMessage,
-		overwatchData: OverwatchDataSet,
-		player: string,
-		platform: PlatformUnion
-	) {
+	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const EMBED_DATA = message.language.tget('COMMMAND_OVERWATCH_EMBED_DATA');
 		const ratings = this.ratingsToMap(overwatchData.ratings ?? [], r => r.role, r => r);
 
 		return new UserRichDisplay(
 			new MessageEmbed()
-				.setColor(getColor(message))
+				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(EMBED_DATA.AUTHOR(overwatchData.name), this.kAuthorThumbnail)
 				.setTitle(EMBED_DATA.TITLE)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)

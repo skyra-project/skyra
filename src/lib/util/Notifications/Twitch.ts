@@ -19,7 +19,7 @@ export interface OauthResponse {
 
 export class Twitch {
 
-	public readonly ratelimitsStreams = new RateLimitManager(1, Twitch.RATELIMIT_COOLDOWN);
+	public readonly ratelimitsStreams = new RateLimitManager(1, Time.Minute * 3 * 1000);
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
 	public readonly BRANDING_COLOUR = 0x6441A4;
 
@@ -126,8 +126,6 @@ export class Twitch {
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;
 	}
-
-	public static readonly RATELIMIT_COOLDOWN = Time.Minute * 3 * 1000;
 
 }
 

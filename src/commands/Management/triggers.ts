@@ -1,9 +1,10 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
-import { displayEmoji, getColor, resolveEmoji } from '@utils/util';
+import { displayEmoji, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
 
@@ -81,7 +82,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public show(message: KlasaMessage) {
+	public async show(message: KlasaMessage) {
 		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias);
 		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes);
 		const output: string[] = [];
@@ -95,7 +96,7 @@ export default class extends SkyraCommand {
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const page of util.chunk(output, 10)) {
 			display.addPage((embed: MessageEmbed) => embed.setDescription(page));

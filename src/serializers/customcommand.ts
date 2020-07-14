@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext } from 'klasa';
 import type { CustomCommand } from '@lib/types/settings/GuildSettings';
+import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 

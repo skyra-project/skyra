@@ -74,7 +74,10 @@
       "profile": "https://github.com/vladfrangu",
       "contributions": [
         "code",
-        "doc"
+        "doc",
+        "bug",
+        "review",
+        "userTesting"
       ]
     },
     {

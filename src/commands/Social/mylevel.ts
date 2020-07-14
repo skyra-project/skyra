@@ -1,5 +1,7 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { Time } from '@utils/constants';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -18,8 +20,9 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
-		const memberSettings = await this.client.queries.fetchMemberSettings(message.guild!.id, user.id);
-		const memberPoints = memberSettings ? memberSettings.point_count : 0;
+		const { members } = await DbSet.connect();
+		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const memberPoints = memberSettings?.points ?? 0;
 		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
 		const title = nextRole
 			? `\n${message.language.tget('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}`

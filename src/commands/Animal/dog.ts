@@ -1,6 +1,7 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { fetch, FetchResultTypes, getColor, IMAGE_EXTENSION } from '@utils/util';
+import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -16,7 +17,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const embed = new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setTimestamp();
 
 		try {

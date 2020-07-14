@@ -1,7 +1,7 @@
-import { Giveaway, GiveawayEmoji } from '@lib/structures/Giveaway';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
+import { kRawEmoji } from '@orm/entities/GiveawayEntity';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors } from '@utils/constants';
 import { fetchReactionUsers } from '@utils/util';
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 
 	private async fetchParticipants(message: KlasaMessage): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, Giveaway.EMOJI);
+			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, kRawEmoji);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {
@@ -78,7 +78,7 @@ export default class extends SkyraCommand {
 		return message.author !== null
 			&& message.author.id === CLIENT_ID
 			&& message.embeds.length === 1
-			&& message.reactions.has(GiveawayEmoji);
+			&& message.reactions.has(kRawEmoji);
 	}
 
 	/**

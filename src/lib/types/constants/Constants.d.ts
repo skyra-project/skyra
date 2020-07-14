@@ -1,22 +1,5 @@
 export const enum Databases {
-	Banners = 'banners',
-	CommandCounter = 'command_counter',
-	DashboardUsers = 'dashboard_users',
-	Giveaway = 'giveaway',
-	Guilds = 'guilds',
-	Members = 'members',
-	Moderation = 'moderation',
-	RpgClass = 'rpg_class',
-	RpgGuildRank = 'rpg_guild_rank',
-	RpgGuilds = 'rpg_guilds',
-	RpgItems = 'rpg_items',
-	RpgItemRanks = 'rpg_item_ranks',
-	RpgUserItems = 'rpg_user_items',
-	RpgUsers = 'rpg_users',
-	Starboard = 'starboard',
-	TwitchStreamSubscriptions = 'twitch_stream_subscriptions',
-	Suggestions = 'suggestions',
-	Users = 'users'
+	Guild = 'guilds'
 }
 
 export const enum Colors {

@@ -2,14 +2,15 @@
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
 import { chunk } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings';
-import { ApplyOptions, requiresPermission, requiredPermissions } from '@skyra/decorators';
+import { ApplyOptions, requiredPermissions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
 import { BrandingColors } from '@utils/constants';
-import { cutText, codeBlock, getColor } from '@utils/util';
+import { codeBlock, cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandOptions, KlasaMessage } from 'klasa';
 
@@ -102,7 +103,7 @@ export default class extends SkyraCommand {
 		// Get prefix and display all tags
 		const prefix = message.guild!.settings.get(GuildSettings.Prefix);
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {

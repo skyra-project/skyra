@@ -1,11 +1,12 @@
 import { toTitleCase } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -37,7 +38,7 @@ export default class extends RichDisplayCommand {
 
 		if (!clanData.length) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', clan);
 
-		const display = this.buildClanDisplay(message, clanData);
+		const display = await this.buildClanDisplay(message, clanData);
 
 		await display.start(response, message.author.id);
 		return response;
@@ -86,11 +87,11 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private buildPlayerEmbed(message: KlasaMessage, player: ClashOfClans.Player) {
+	private async buildPlayerEmbed(message: KlasaMessage, player: ClashOfClans.Player) {
 		const TITLES = message.language.tget('COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES');
 
 		return new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail(player.league.iconUrls.medium)
 			.setAuthor(`${player.tag} - ${player.name}`, player.clan.badgeUrls.large, `https://www.clashleaders.com/player/${player.name.toLowerCase()}-${player.tag.slice(1).toLowerCase()}`)
 			.setDescription([
@@ -113,10 +114,10 @@ export default class extends RichDisplayCommand {
 			].join('\n'));
 	}
 
-	private buildClanDisplay(message: KlasaMessage, clans: ClashOfClans.Clan[]) {
+	private async buildClanDisplay(message: KlasaMessage, clans: ClashOfClans.Clan[]) {
 		const TITLES = message.language.tget('COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
 			display.addPage((embed: MessageEmbed) => embed

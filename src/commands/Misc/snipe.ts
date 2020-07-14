@@ -1,5 +1,6 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor, getContent, getImage } from '@utils/util';
+import { getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -15,13 +16,13 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public run(message: KlasaMessage) {
+	public async run(message: KlasaMessage) {
 		const { sniped } = message.channel as TextChannel;
 		if (sniped === null) throw message.language.tget('COMMAND_SNIPE_EMPTY');
 
 		const embed = new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_SNIPE_TITLE'))
-			.setColor(getColor(sniped))
+			.setColor(await DbSet.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);
 

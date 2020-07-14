@@ -1,10 +1,10 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { Colors } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { cutText, floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, util } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
 
 const OFFSET = 0b100000;
 /**
@@ -55,7 +55,7 @@ export default class extends ModerationMonitor {
 
 	protected async onDelete(message: KlasaMessage, value: number) {
 		floatPromise(this, message.nuke());
-		if (value > 25 && (await message.author.settings.sync()).get(UserSettings.ModerationDM)) {
+		if (value > 25 && await DbSet.fetchModerationDirectMessageEnabled(message.author.id)) {
 			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [util.codeBlock('md', cutText(message.content, 1900))]));
 		}
 	}

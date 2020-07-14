@@ -1,8 +1,11 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import type { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { APIErrors } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { KlasaMessage } from 'klasa';
 
@@ -92,19 +95,27 @@ export default class extends SkyraCommand {
 
 	public async init() {
 		this.createCustomResolver('suggestion', async (arg, _, message): Promise<SuggestionData> => {
+			// Validate the suggestions channel ID
 			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
 			if (!channelID) throw message.language.tget('COMMAND_SUGGEST_NOSETUP', message.author.username);
-			const channel = this.client.channels.get(channelID) as TextChannel;
+
+			// Validate the suggestion number
 			const id = Number(arg);
 			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALID_ID');
-			const suggestionData = await this.client.queries.fetchSuggestion(message.guild!.id, id);
-			if (suggestionData === null) throw message.language.tget('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
-			const suggestionMessage = await channel.messages.fetch(suggestionData.message_id);
-			if (typeof suggestionMessage === 'undefined') {
-				await this.client.queries.deleteSuggestion(message.guild!.id, id);
+
+			// Retrieve the suggestion data
+			const { suggestions } = await DbSet.connect();
+			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
+			if (!suggestionData) throw message.language.tget('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
+
+			const channel = this.client.channels.get(channelID) as TextChannel;
+			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
+			if (suggestionMessage === null) {
+				await suggestionData.remove();
 				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND');
 			}
-			const suggestionAuthor = await this.client.users.fetch(suggestionData.author_id).catch(() => null);
+
+			const suggestionAuthor = await this.client.users.fetch(suggestionData.authorID).catch(() => null);
 			return {
 				message: suggestionMessage,
 				author: suggestionAuthor,

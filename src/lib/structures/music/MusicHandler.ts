@@ -219,6 +219,25 @@ export class MusicHandler {
 		return this.queue;
 	}
 
+	public promote(index: number, context: MusicHandlerRequestContext | null = null) {
+		if (context) {
+			// Decrease index by 1 because end-users do not think in zero-based arrays
+			index--;
+
+			// Get the song to promote and remove it from the queue
+			const songToPromote = this.queue.splice(index, 1)[0];
+
+			// Move the song to the front of the queue
+			this.queue.unshift(songToPromote);
+
+			// Emit the queue change event to the websocket
+			this.client.emit(Events.MusicPromoteQueue, this, context);
+
+			// Return the new queue
+			return this.queue;
+		}
+	}
+
 	public remove(message: KlasaMessage, index: number, context: MusicHandlerRequestContext | null = null) {
 		// Decrease index by 1 because end-users do not think in zero-based arrays
 		index--;

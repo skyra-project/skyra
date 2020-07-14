@@ -51,6 +51,7 @@ export const enum Events {
 	MusicRemove = 'musicRemove',
 	MusicReplayUpdate = 'musicReplayUpdate',
 	MusicShuffleQueue = 'musicShuffleQueue',
+	MusicPromoteQueue = 'musicPromoteQueue',
 	MusicSongFinish = 'musicSongFinish',
 	MusicSongPause = 'musicSongPause',
 	MusicSongPlay = 'musicSongPlay',

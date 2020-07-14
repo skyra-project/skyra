@@ -16,6 +16,7 @@ export const enum OutgoingWebsocketAction {
 	MusicRemove = 'MUSIC_REMOVE',
 	MusicReplayUpdate = 'MUSIC_REPLAY_UPDATE',
 	MusicShuffleQueue = 'MUSIC_SHUFFLE_QUEUE',
+	MusicPromoteQueue = 'MUSIC_PROMOTE_QUEUE',
 	MusicSongFinish = 'MUSIC_SONG_FINISH',
 	MusicSongPause = 'MUSIC_SONG_PAUSE',
 	MusicSongPlay = 'MUSIC_SONG_PLAY',

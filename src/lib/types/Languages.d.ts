@@ -209,6 +209,9 @@ export interface LanguageKeys {
 	COMMAND_SUPPORT_EMBED_DESCRIPTION: string;
 	COMMAND_PLAYING_TIME_DESCRIPTION: string;
 	COMMAND_PLAYING_TIME_QUEUE_EMPTY: string;
+	COMMAND_PROMOTE_DESCRIPTION: string;
+	COMMAND_PROMOTE_EXTENDED: string;
+	COMMAND_PROMOTE_SUCCESS: (song: Song) => string;
 	COMMAND_VOLUME_DESCRIPTION: string;
 	COMMAND_VOLUME_SUCCESS: (volume: number) => string;
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;

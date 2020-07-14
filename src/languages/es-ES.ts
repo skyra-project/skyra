@@ -372,6 +372,17 @@ export default class extends Language {
 		COMMAND_PLAYING_DURATION: time => `**Duración**: ${time}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: '¿Es conmigo? Porque no hay nada en reproducción...',
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: 'Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.',
+		COMMAND_PROMOTE_DESCRIPTION: 'Promociona una canción al frente de la fila',
+		COMMAND_PROMOTE_EXTENDED: builder.display('promote', {
+			explainedUsage: [
+				['number', 'El índice en la cola para ascender al frente. Usa `Skyra, queue` para encontrar el índice de una canción']
+			],
+			examples: [
+				'5'
+			],
+			reminder: 'Este comando requiere que seas DJ o moderador para usarlo'
+		}),
+		COMMAND_PROMOTE_SUCCESS: song => `${GREENTICK} **${song.safeTitle}** (${song}) promovido con éxito a la parte superior de la cola`,
 		COMMAND_REPEAT_DESCRIPTION: 'Se alterna repitiendo la canción actual.',
 		COMMAND_REPEAT_SUCCESS: enabled => enabled ? 'This is your JAM isn\'t it? No te preocupes, repetiremos esto una y otra vez!' : 'En realidad, también me estaba cansando de esto, pero no quería decir nada.',
 		COMMAND_QUEUE_DESCRIPTION: 'Check the queue list.',

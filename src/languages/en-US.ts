@@ -436,6 +436,17 @@ export default class extends Language {
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Check how much time is left for the song to end.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: 'Are you speaking to me? Because my deck is empty...',
+		COMMAND_PROMOTE_DESCRIPTION: 'Promote a song to the front of the queue',
+		COMMAND_PROMOTE_EXTENDED: builder.display('promote', {
+			explainedUsage: [
+				['number', 'The index in the queue to promote to the front. Use `Skyra, queue` to find the index of a song']
+			],
+			examples: [
+				'5'
+			],
+			reminder: 'This command requires that you are a DJ or a Moderator to use it'
+		}),
+		COMMAND_PROMOTE_SUCCESS: song => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
 		COMMAND_VOLUME_DESCRIPTION: 'Manage the volume for current song.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,

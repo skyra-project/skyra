@@ -511,6 +511,10 @@ export interface LanguageKeys {
 		CLAN_ROLE: string;
 		CLAN_NAME: string;
 		LEAGUE_NAME: string;
+		NO_TOWNHALL_WEAPON_LEVEL: string;
+		NO_ROLE: string;
+		NO_CLAN: string;
+		NO_LEAGUE: string;
 	};
 	COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
 		CLAN_LEVEL: string;

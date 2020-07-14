@@ -47,7 +47,7 @@ export default class extends RichDisplayCommand {
 	public async player(message: KlasaMessage, [player]: [string]) {
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(message, player, ClashOfClansFetchCategories.PLAYERS);
 
-		return message.send(this.buildPlayerEmbed(message, playerData));
+		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 
 	public async init() {
@@ -92,13 +92,13 @@ export default class extends RichDisplayCommand {
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setThumbnail(player.league.iconUrls.medium)
-			.setAuthor(`${player.tag} - ${player.name}`, player.clan.badgeUrls.large, `https://www.clashleaders.com/player/${player.name.toLowerCase()}-${player.tag.slice(1).toLowerCase()}`)
+			.setThumbnail(player.league?.iconUrls?.medium ?? '')
+			.setAuthor(`${player.tag} - ${player.name}`, player.clan?.badgeUrls.large ?? '', `https://www.clashleaders.com/player/${player.name.toLowerCase()}-${player.tag.slice(1).toLowerCase()}`)
 			.setDescription([
 				`**${TITLES.XP_LEVEL}**: ${player.expLevel}`,
 				`**${TITLES.BUILDER_HALL_LEVEL}**: ${player.builderHallLevel}`,
 				`**${TITLES.TOWNHALL_LEVEL}**: ${player.townHallLevel}`,
-				`**${TITLES.TOWNHALL_WEAPON_LEVEL}**: ${player.townHallWeaponLevel}`,
+				`**${TITLES.TOWNHALL_WEAPON_LEVEL}**: ${player.townHallWeaponLevel ?? TITLES.NO_TOWNHALL_WEAPON_LEVEL}`,
 				`**${TITLES.TROPHIES}**: ${player.trophies}`,
 				`**${TITLES.BEST_TROPHIES}**: ${player.bestTrophies}`,
 				`**${TITLES.WAR_STARS}**: ${player.warStars}`,
@@ -108,9 +108,9 @@ export default class extends RichDisplayCommand {
 				`**${TITLES.VERSUS_TROPHIES}**: ${player.versusTrophies}`,
 				`**${TITLES.BEST_VERSUS_TROPHIES}**: ${player.bestVersusTrophies}`,
 				`**${TITLES.VERSUS_BATTLE_WINS}**: ${player.versusBattleWins}`,
-				`**${TITLES.CLAN_ROLE}**: ${toTitleCase(player.role)}`,
-				`**${TITLES.CLAN_NAME}**: ${player.clan.name}`,
-				`**${TITLES.LEAGUE_NAME}**: ${player.league.name}`
+				`**${TITLES.CLAN_ROLE}**: ${toTitleCase(player.role ?? TITLES.NO_ROLE)}`,
+				`**${TITLES.CLAN_NAME}**: ${player.clan?.name ?? TITLES.NO_CLAN}`,
+				`**${TITLES.LEAGUE_NAME}**: ${player.league?.name ?? TITLES.NO_LEAGUE}`
 			].join('\n'));
 	}
 

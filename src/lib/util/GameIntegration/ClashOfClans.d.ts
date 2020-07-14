@@ -1,12 +1,12 @@
 export namespace ClashOfClans {
 	export interface Player {
-		league: League;
-		clan: PlayerClan;
-		role: string;
+		league?: League;
+		clan?: PlayerClan;
+		role?: string;
 		attackWins: number;
 		defenseWins: number;
 		townHallLevel: number;
-		townHallWeaponLevel: number;
+		townHallWeaponLevel?: number;
 		versusBattleWins: number;
 		legendStatistics: LegendStatistics;
 		troops: Troop[];

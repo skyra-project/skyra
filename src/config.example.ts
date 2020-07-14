@@ -9,7 +9,6 @@ import { resolve } from 'path';
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
-export const ENABLE_POSTGRES = 'ENABLE_POSTGRES' in process.env ? process.env.ENABLE_POSTGRES === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
 export const EVLYN_PORT = 3100;
 export const WSS_PORT = 565;
@@ -25,12 +24,13 @@ export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 export const PGSQL_DATABASE_NAME = '';
 export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
+export const PGSQL_DATABASE_PORT = 5432;
+export const PGSQL_DATABASE_HOST = 'localhost';
 
 export const LAVALINK_HOST = 'localhost';
 export const LAVALINK_PORT = '2333';
 export const LAVALINK_PASSWORD = 'skyra';
 
-// TODO: Remove this object when moving to TypeORM
 export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	database: PGSQL_DATABASE_NAME,
 	password: PGSQL_DATABASE_PASSWORD,
@@ -109,7 +109,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
-		'default': ENABLE_POSTGRES ? 'postgres' : 'cache',
+		'default': 'postgres',
 		'json': { baseDirectory: resolve(__dirname, '..', 'bwd', 'providers', 'json') },
 		'postgres': PGSQL_DATABASE_OPTIONS
 	},
@@ -141,6 +141,8 @@ export const WEBHOOK_ERROR: APIWebhookData = {
 	name: 'Skyra Development',
 	token: ''
 };
+
+export const WEBHOOK_DATABASE: APIWebhookData | null = null;
 
 export const TOKENS = {
 	BLIZZARD_KEY: '',

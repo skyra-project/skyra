@@ -1,8 +1,9 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -24,7 +25,7 @@ export default class extends RichDisplayCommand {
 		const { results: entries } = await this.fetchAPI(message, song);
 		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
 
-		const display = this.buildDisplay(entries, message);
+		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
 		return response;
 	}
@@ -46,10 +47,10 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private buildDisplay(entries: ItunesData[], message: KlasaMessage) {
+	private async buildDisplay(entries: ItunesData[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_ITUNES_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {
 

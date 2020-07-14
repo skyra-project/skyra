@@ -1,6 +1,6 @@
 import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { floatPromise, getImage } from '@utils/util';
@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 		const modlog = await message.guild!.moderation.fetch(caseID);
 		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warn)) throw message.language.tget('GUILD_WARN_NOT_FOUND');
 
-		const user = typeof modlog.user === 'string' ? await this.client.users.fetch(modlog.user) : modlog.user;
+		const user = await modlog.fetchUser();
 		const unwarnLog = await this.handle(message, { target: user, reason, modlog, duration: null, preHandled: null });
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
@@ -30,19 +30,19 @@ export default class extends ModerationCommand {
 
 		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
 			const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
-			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.case], unwarnLog.case, [`\`${user.tag}\``], originalReason]);
+			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.caseID], unwarnLog.caseID, [`\`${user.tag}\``], originalReason]);
 		}
 
 		return null;
 	}
 
-	public handle(message: KlasaMessage, context: HandledCommandContext<null> & { modlog: ModerationManagerEntry }) {
+	public async handle(message: KlasaMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
 		return message.guild!.security.actions.unWarning({
-			user_id: context.target.id,
-			moderator_id: message.author.id,
+			userID: context.target.id,
+			moderatorID: message.author.id,
 			reason: context.reason,
-			image_url: getImage(message)
-		}, context.modlog.case!, this.getTargetDM(message, context.target));
+			imageURL: getImage(message)
+		}, context.modlog.caseID, await this.getTargetDM(message, context.target));
 	}
 
 	public async posthandle() { /* Do nothing */ }

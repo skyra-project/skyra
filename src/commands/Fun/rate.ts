@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { oneToTen } from '@utils/util';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
+import { oneToTen } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {

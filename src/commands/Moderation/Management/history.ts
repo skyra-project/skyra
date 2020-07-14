@@ -1,12 +1,12 @@
-import Collection from '@discordjs/collection';
+import { Cache } from '@klasa/cache';
 import { chunk } from '@klasa/utils';
-import { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 
@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size)));
 
@@ -82,9 +82,9 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, entry: ModerationManagerEntry) {
-		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdAt + entry.duration) - Date.now();
-		const formattedModerator = users.get(entry.flattenedModerator);
+	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, entry: ModerationEntity) {
+		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const formattedModerator = users.get(entry.moderatorID!);
 		const formattedReason = entry.reason || 'None';
 		const formattedTitle = `**${entry.title}**\n`;
 		const formattedDuration = entry.appealType
@@ -92,14 +92,14 @@ export default class extends SkyraCommand {
 			: remainingTime === null
 				? ''
 				: `\nExpires in: ${duration(remainingTime)}`;
-		return `${formattedTitle}Case \`${entry.case}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
+		return `${formattedTitle}Case \`${entry.caseID}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
 	}
 
-	private async fetchAllModerators(entries: Collection<number, ModerationManagerEntry>) {
+	private async fetchAllModerators(entries: Cache<number, ModerationEntity>) {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
-			const id = entry.flattenedModerator;
-			if (!moderators.has(id)) moderators.set(id, await this.client.userTags.fetchUsername(id));
+			const id = entry.moderatorID!;
+			if (!moderators.has(id)) moderators.set(id, (await entry.fetchModerator()).username);
 		}
 		return moderators;
 	}

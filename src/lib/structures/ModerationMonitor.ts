@@ -1,3 +1,4 @@
+import { LanguageKeysComplex } from '@lib/types/Augments';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CustomGet } from '@lib/types/settings/Shared';
@@ -7,7 +8,6 @@ import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
-import { LanguageKeysComplex } from '@lib/types/Augments';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
@@ -84,7 +84,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onWarning(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.warning({
-			user_id: message.author.id,
+			userID: message.author.id,
 			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
 			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}));
@@ -92,14 +92,14 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onKick(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.kick({
-			user_id: message.author.id,
+			userID: message.author.id,
 			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 		}));
 	}
 
 	protected async onMute(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.mute({
-			user_id: message.author.id,
+			userID: message.author.id,
 			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
 			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}));
@@ -107,14 +107,14 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onSoftBan(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.softBan({
-			user_id: message.author.id,
+			userID: message.author.id,
 			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
 		}, 1));
 	}
 
 	protected async onBan(message: KlasaMessage, points: number, maximum: number) {
 		await this.createActionAndSend(message, () => message.guild!.security.actions.ban({
-			user_id: message.author.id,
+			userID: message.author.id,
 			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
 			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 		}, 0));

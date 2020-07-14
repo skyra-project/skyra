@@ -1,42 +1,44 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
-import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { DbSet } from '@lib/structures/DbSet';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
 import { APIErrors } from '@utils/constants';
+import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	description: language => language.tget('COMMAND_DIVORCE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_DIVORCE_EXTENDED'),
+	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '<user:user>'
+})
 export default class extends SkyraCommand {
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: language => language.tget('COMMAND_DIVORCE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DIVORCE_EXTENDED'),
-			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '<user:user>'
-		});
-	}
-
 	public async run(message: KlasaMessage, [user]: [User]) {
-		const marry = message.author.settings.get(UserSettings.Marry);
-		if (!marry.includes(user.id)) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
+		const { users } = await DbSet.connect();
+		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
+			const settings = await users.findOne(authorID, { relations: ['spouses'] });
+			if (!settings) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
-		// Ask the user if they're sure
-		const accept = await message.ask(message.language.tget('COMMAND_DIVORCE_PROMPT'));
-		if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
+			const spouses = settings.spouses!;
+			const isMarried = spouses.some(marriage => marriage.id === targetID);
+			if (!isMarried) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
-		// Reset the values for both entries
-		await Promise.all([
-			message.author.settings.update(UserSettings.Marry, user, { arrayAction: 'remove', extraContext: { author: message.author.id } }),
-			user.settings.update(UserSettings.Marry, message.author, { arrayAction: 'remove', extraContext: { author: message.author.id } })
-		]);
+			// Ask the user if they're sure
+			const accept = await message.ask(message.language.tget('COMMAND_DIVORCE_PROMPT'));
+			if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
 
-		// Tell the user about the divorce
-		floatPromise(this, resolveOnErrorCodes(
-			user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)),
-			APIErrors.CannotMessageUser
-		));
-		return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
+			// Remove the spouse
+			settings.spouses = settings.spouses!.filter(spouse => spouse.id !== targetID);
+
+			// Tell the user about the divorce
+			floatPromise(this, resolveOnErrorCodes(
+				user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)),
+				APIErrors.CannotMessageUser
+			));
+			return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
+		});
 	}
 
 }

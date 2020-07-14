@@ -3,9 +3,10 @@ import { APIErrors, BrandingColors, Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
-import { floatPromise, getColor } from '@utils/util';
+import { floatPromise } from '@utils/util';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
+import { DbSet } from './DbSet';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -26,8 +27,7 @@ export class SettingsMenu {
 		this.schema = this.message.client.gateways.get('guilds')!.schema;
 		this.oldSettings = this.message.guild!.settings.clone();
 		this.embed = new MessageEmbed()
-			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(getColor(this.message));
+			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }));
 	}
 
 	private get changedCurrentPieceValue(): boolean {
@@ -61,7 +61,7 @@ export class SettingsMenu {
 		await this._renderResponse();
 	}
 
-	private render(): MessageEmbed {
+	private async render() {
 		const i18n = this.message.language;
 		const description: string[] = [];
 		if (isSchemaFolder(this.schema)) {
@@ -102,6 +102,7 @@ export class SettingsMenu {
 		else floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
 		return this.embed
+			.setColor(await DbSet.fetchColor(this.message))
 			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
 			.setFooter(parent ? i18n.tget('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
@@ -186,7 +187,7 @@ export class SettingsMenu {
 	private async _renderResponse() {
 		if (!this.response) return;
 		try {
-			await this.response.edit(this.render());
+			await this.response.edit(await this.render());
 		} catch (error) {
 			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 				this.response = null;

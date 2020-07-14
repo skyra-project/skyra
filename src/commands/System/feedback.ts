@@ -1,8 +1,8 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 import { Colors } from '@lib/types/constants/Constants';
 import { ApplyOptions } from '@skyra/decorators';
+import { MessageEmbed } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,

@@ -1,10 +1,10 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
-import { getColor } from '@utils/util';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
 
@@ -25,8 +25,9 @@ export default class extends RichDisplayCommand {
 			.setColor(BrandingColors.Secondary));
 
 		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
+		const display = await this.buildCharacterDisplay(message, characterDetails.Character);
 
-		await this.buildCharacterDisplay(message, characterDetails.Character).start(response, message.author.id);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -36,8 +37,9 @@ export default class extends RichDisplayCommand {
 			.setColor(BrandingColors.Secondary));
 
 		const itemDetails = await this.fetchItems(message.language, item);
+		const display = await this.buildItemDisplay(message, itemDetails);
 
-		await this.buildItemDisplay(message, itemDetails).start(response, message.author.id);
+		await display.start(response, message.author.id);
 
 		return response;
 	}
@@ -58,7 +60,7 @@ export default class extends RichDisplayCommand {
 		return searchResult.Results;
 	}
 
-	private buildCharacterDisplay(message: KlasaMessage, character: FFXIV.Character) {
+	private async buildCharacterDisplay(message: KlasaMessage, character: FFXIV.Character) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,
@@ -73,7 +75,7 @@ export default class extends RichDisplayCommand {
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setColor(getColor(message))
+				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
 		)
 			.addPage((embed: MessageEmbed) => embed
@@ -126,11 +128,11 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
-	private buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
+	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
 		const TITLES = message.language.tget('COMMAND_FFXIV_ITEM_FIELDS');
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setColor(getColor(message))
+				.setColor(await DbSet.fetchColor(message))
 		);
 
 		for (const item of items) {

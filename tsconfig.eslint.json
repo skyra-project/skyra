@@ -1,4 +1,4 @@
 {
-  "extends": "./tsconfig.json",
-  "include": ["src", "database", "tests", "jest.config.js"]
+	"extends": "./tsconfig.base.json",
+	"include": ["src", "database", "tests", "jest.config.js", "ormconfig.js"]
 }

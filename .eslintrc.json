@@ -1,5 +1,5 @@
 {
-	"extends": "bamboo",
+	"extends": "@skyra",
 	"rules": {
 		"@typescript-eslint/no-throw-literal": 0,
 		"@typescript-eslint/restrict-plus-operands": 0,
@@ -10,6 +10,12 @@
 			"files": ["src/commands/**/*.ts"],
 			"rules": {
 				"@typescript-eslint/require-await": 0
+			}
+		},
+		{
+			"files": ["src/lib/orm/entities/**/*.ts"],
+			"rules": {
+				"@typescript-eslint/no-inferrable-types": 0
 			}
 		}
 	]

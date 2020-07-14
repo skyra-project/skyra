@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { UserSettings } from '@lib/types/settings/UserSettings';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -14,12 +14,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, []: []) {
-		await message.author.settings.sync();
-		const current = message.author.settings.get(UserSettings.DarkTheme);
-		await message.author.settings.update(UserSettings.DarkTheme, !current, {
-			extraContext: { author: message.author.id }
+		const { users } = await DbSet.connect();
+		const updated = await users.lock([message.author.id], async id => {
+			const user = await users.ensureProfile(id);
+
+			user.profile.darkTheme = !user.profile.darkTheme;
+			return user.save();
 		});
-		return message.sendLocale('COMMAND_TOGGLEDARKMODE_TOGGLED', [!current]);
+
+		return message.sendLocale('COMMAND_TOGGLEDARKMODE_TOGGLED', [updated.profile.darkTheme]);
 	}
 
 }

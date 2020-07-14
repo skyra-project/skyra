@@ -1,9 +1,9 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 
 const MAXIMUM_TIME = Time.Hour * 6;
 

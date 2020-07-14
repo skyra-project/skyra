@@ -16,8 +16,8 @@ export default class extends Event {
 		const reason = message.language.tget('MONITOR_NMS_MODLOG', message.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed));
 		try {
 			await message.guild!.moderation.create({
-				user_id: message.author.id,
-				moderator_id: this.client.user!.id,
+				userID: message.author.id,
+				moderatorID: this.client.user!.id,
 				type: Moderation.TypeCodes.Ban,
 				reason
 			}).create();

@@ -1,9 +1,10 @@
 import { LanguageKeysComplex, LanguageKeysSimple } from '@lib/types/Augments';
 import { LanguageKeys } from '@lib/types/Languages';
 import { TOKENS, VERSION } from '@root/config';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
+import { DbSet } from './DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
 export abstract class WeebCommand extends SkyraCommand {
@@ -47,7 +48,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		{
 			embed: new MessageEmbed()
 				.setTitle('→').setURL(url)
-				.setColor(getColor(message))
+				.setColor(await DbSet.fetchColor(message))
 				.setImage(url)
 				.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
 		}) as Promise<KlasaMessage | KlasaMessage[]>;

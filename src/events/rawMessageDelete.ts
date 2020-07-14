@@ -1,10 +1,11 @@
+import { SkyraGuild } from '@lib/extensions/SkyraGuild';
+import { DbSet } from '@lib/structures/DbSet';
 import { WSMessageDelete } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
-import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 
 export default class extends Event {
 
@@ -24,7 +25,16 @@ export default class extends Event {
 
 		// Delete entry from starboard if it exists
 		try {
-			const result = await this.client.queries.deleteStarReturning(data.guild_id, data.id);
+			const { starboards } = await DbSet.connect();
+			const results = await starboards.createQueryBuilder()
+				.delete()
+				.where('guild_id = :guild', { guild: data.guild_id })
+				.andWhere('message_id = :message', { message: data.id })
+				.returning('*')
+				.execute();
+
+			if (results.affected === 0) return;
+			const [result] = results.raw;
 
 			// Get channel
 			const channel = guild.settings.get(GuildSettings.Starboard.Channel);

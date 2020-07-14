@@ -37,7 +37,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 
 	protected async onWarning(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.warning({
-			user_id: userID,
+			userID,
 			reason: '[Auto-Moderation] Threshold Reached.',
 			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
 		}));
@@ -45,14 +45,14 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 
 	protected async onKick(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.kick({
-			user_id: userID,
+			userID,
 			reason: '[Auto-Moderation] Threshold Reached.'
 		}));
 	}
 
 	protected async onMute(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.mute({
-			user_id: userID,
+			userID,
 			reason: '[Auto-Moderation] Threshold Reached.',
 			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
 		}));
@@ -60,14 +60,14 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 
 	protected async onSoftBan(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.softBan({
-			user_id: userID,
+			userID,
 			reason: '[Auto-Moderation] Threshold Reached.'
 		}, 1));
 	}
 
 	protected async onBan(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.ban({
-			user_id: userID,
+			userID,
 			reason: '[Auto-Moderation] Threshold Reached.',
 			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
 		}, 0));

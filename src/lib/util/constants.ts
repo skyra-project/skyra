@@ -234,7 +234,7 @@ export namespace Moderation {
 		userID: string;
 		reason: string | null;
 		prefix: string;
-		caseID: number | null;
+		caseID: number;
 		formattedDuration: string;
 	}
 

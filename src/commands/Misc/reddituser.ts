@@ -1,11 +1,12 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { decode } from 'he';
 import { Reddit } from '@lib/types/definitions/Reddit';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes, getColor, roundNumber } from '@utils/util';
+import { cutText, fetch, FetchResultTypes, roundNumber } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
+import { decode } from 'he';
 import { KlasaMessage, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
@@ -37,11 +38,12 @@ export default class extends RichDisplayCommand {
 		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
 		comments.sort((a, b) => b.score - a.score);
 
-		await this.buildDisplay(message, about, comments, posts).start(response, message.author.id);
+		const display = await this.buildDisplay(message, about, comments, posts);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private buildDisplay(message: KlasaMessage, about: Reddit.AboutDataElement, comments: Reddit.CommentDataElement[], posts: Reddit.PostDataElement[]) {
+	private async buildDisplay(message: KlasaMessage, about: Reddit.AboutDataElement, comments: Reddit.CommentDataElement[], posts: Reddit.PostDataElement[]) {
 		const titles = message.language.tget('COMMAND_REDDITUSER_TITLES');
 		const fieldsData = message.language.tget('COMMAND_REDDITUSER_DATA');
 		const [bestComment] = comments;
@@ -53,7 +55,7 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setTitle(fieldsData.OVERVIEW_FOR(about.name))
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
-				.setColor(getColor(message))
+				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(about.icon_img)
 		)
 			.addPage((embed: MessageEmbed) => embed

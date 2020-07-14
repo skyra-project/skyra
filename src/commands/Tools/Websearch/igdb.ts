@@ -1,11 +1,12 @@
 import { isNumber } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
-import { cutText, fetch, FetchMethods, FetchResultTypes, getColor, roundNumber } from '@utils/util';
+import { cutText, fetch, FetchMethods, FetchResultTypes, roundNumber } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -38,7 +39,7 @@ export default class extends RichDisplayCommand {
 		const entries = await this.fetchAPI(message, game);
 		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
 
-		const display = this.buildDisplay(entries, message);
+		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
 		return response;
 	}
@@ -64,11 +65,11 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private buildDisplay(entries: Game[], message: KlasaMessage) {
+	private async buildDisplay(entries: Game[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_IGDB_TITLES');
 		const fieldsData = message.language.tget('COMMAND_IGDB_DATA');
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);

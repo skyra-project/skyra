@@ -1,3 +1,4 @@
+import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Adder, AdderError } from '@utils/Adder';
@@ -5,7 +6,6 @@ import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
-import { Colors } from '@lib/types/constants/Constants';
 
 const { FLAGS } = Permissions;
 
@@ -33,25 +33,25 @@ export default class extends Monitor {
 					break;
 				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 					floatPromise(this, message.guild!.security.actions.kick({
-						user_id: message.author.id,
+						userID: message.author.id,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					})));
 					break;
 				case 0b010: await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 					floatPromise(this, message.guild!.security.actions.mute({
-						user_id: message.author.id,
+						userID: message.author.id,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					})));
 					break;
 				case 0b011: await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 					floatPromise(this, message.guild!.security.actions.softBan({
-						user_id: message.author.id,
+						userID: message.author.id,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					}, 1)));
 					break;
 				case 0b100: await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 					floatPromise(this, message.guild!.security.actions.ban({
-						user_id: message.author.id,
+						userID: message.author.id,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					}, 0)));
 					break;
@@ -76,8 +76,8 @@ export default class extends Monitor {
 		const lock = message.guild!.moderation.createLock();
 		await performAction();
 		await message.guild!.moderation.create({
-			user_id: message.author.id,
-			moderator_id: this.client.user!.id,
+			userID: message.author.id,
+			moderatorID: this.client.user!.id,
 			type,
 			duration: message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
 			reason: 'AttachmentFilter: Threshold Reached.'

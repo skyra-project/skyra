@@ -1,3 +1,4 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Events } from '@lib/types/Enums';
@@ -5,7 +6,6 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FuzzySearch } from '@utils/FuzzySearch';
-import { getColor } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -134,7 +134,7 @@ export default class extends RichDisplayCommand {
 		if (!roles.length) throw message.language.tget('COMMAND_ROLES_LIST_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTitle(message.language.tget('COMMAND_ROLES_LIST_TITLE')));
 

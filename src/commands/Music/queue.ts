@@ -1,10 +1,11 @@
 import { chunk } from '@klasa/utils';
+import { DbSet } from '@lib/structures/DbSet';
 import { Song } from '@lib/structures/music/Song';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { getColor, showSeconds } from '@utils/util';
+import { showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -18,6 +19,8 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage) {
 		const { queue, song } = message.guild!.music;
 
+		if (song === null && queue.length === 0) throw message.language.tget('COMMAND_QUEUE_EMPTY');
+
 		// Send the loading message
 		const response = await message.send(new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
@@ -25,7 +28,7 @@ export default class extends MusicCommand {
 
 		// Generate the pages with 5 songs each
 		const queueDisplay = new UserRichDisplay(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setTitle(message.language.tget('COMMAND_QUEUE_TITLE', message.guild!.name)));
 
 		if (song) {

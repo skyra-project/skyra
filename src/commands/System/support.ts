@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -16,11 +16,11 @@ export default class extends SkyraCommand {
 
 	}
 
-	public run(message: KlasaMessage) {
+	public async run(message: KlasaMessage) {
 		return message.sendEmbed(new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_SUPPORT_EMBED_TITLE', message.author.username))
 			.setDescription(message.language.tget('COMMAND_SUPPORT_EMBED_DESCRIPTION'))
-			.setColor(getColor(message)));
+			.setColor(await DbSet.fetchColor(message)));
 	}
 
 }

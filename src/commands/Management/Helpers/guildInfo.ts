@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { getColor } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild!.ownerID);
 		return message.sendEmbed(new MessageEmbed()
-			.setColor(getColor(message))
+			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail(message.guild!.iconURL()!)
 			.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
 			.splitFields(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.length), roles.join(' '))

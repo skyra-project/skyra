@@ -1,10 +1,11 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { Fortnite } from '@utils/GameIntegration/Fortnite';
-import { fetch, FetchResultTypes, getColor } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -25,8 +26,9 @@ export default class extends RichDisplayCommand {
 			.setColor(BrandingColors.Secondary));
 
 		const fortniteUser = await this.fetchAPI(message, user, platform);
+		const display = await this.buildDisplay(message, fortniteUser);
 
-		await this.buildDisplay(message, fortniteUser).start(response, message.author.id);
+		await display.start(response, message.author.id);
 		return response;
 	}
 
@@ -47,14 +49,14 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private buildDisplay(message: KlasaMessage, { lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser) {
+	private async buildDisplay(message: KlasaMessage, { lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser) {
 		const TITLES = message.language.tget('COMMAND_FORTNITE_TITLES');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(TITLES.TITLE(epicUserHandle))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
-				.setColor(getColor(message))
+				.setColor(await DbSet.fetchColor(message))
 		);
 		const lts = lifeTimeStats.map(stat => ({ ...stat, key: stat.key.toLowerCase() }));
 

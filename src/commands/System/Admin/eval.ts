@@ -31,7 +31,13 @@ export default class extends SkyraCommand {
 		}
 
 		const footer = codeBlock('ts', type);
-		const sendAs = message.flagArgs.output || message.flagArgs['output-to'] || (message.flagArgs.log ? 'log' : null);
+		const sendAs = (
+			Reflect.get(message.flagArgs, 'output')
+			|| Reflect.get(message.flagArgs, 'output-to')
+			|| Reflect.get(message.flagArgs, 'log')
+		)
+			?? null;
+
 		return handleMessage<Partial<EvalExtraData>>(message, {
 			sendAs,
 			hastebinUnavailable: false,

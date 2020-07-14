@@ -35,7 +35,13 @@ export default class extends SkyraCommand {
 			: '';
 		const content = escapeCodeBlock(getContent(target) || '');
 
-		const sendAs = message.flagArgs.output || message.flagArgs['output-to'] || (message.flagArgs.log ? 'log' : null);
+		const sendAs = (
+			Reflect.get(message.flagArgs, 'output')
+			|| Reflect.get(message.flagArgs, 'output-to')
+			|| Reflect.get(message.flagArgs, 'log')
+		)
+			?? null;
+
 		return handleMessage<Partial<ContentExtraData>>(message, {
 			sendAs,
 			attachments,

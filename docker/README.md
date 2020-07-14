@@ -45,4 +45,4 @@ Skyra currently has the following microservices that can be dockerized:
 [skyra-project/saelem]:        https://github.com/skyra-project/saelem
 [influxdb]:                    https://v2.docs.influxdata.com/v2.0/get-started/#download-and-run-influxdb-v2-0-beta
 [locahost:8285]:               http://localhost:8285
-[the config file]:             [/src/config]
+[the config file]:             ../src/config.ts

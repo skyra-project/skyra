@@ -1,4 +1,4 @@
-import { WriteApi } from '@influxdata/influxdb-client';
+import { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 import { SettingsUpdateResults } from '@klasa/settings-gateway';
 import { InviteStore } from '@lib/structures/InviteStore';
 import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
@@ -30,7 +30,9 @@ declare module 'discord.js' {
 		giveaways: GiveawayManager;
 		schedules: ScheduleManager;
 		invites: InviteStore;
+		influx: InfluxDB | null;
 		analytics: WriteApi | null;
+		analyticsReader: QueryApi | null;
 		connectFour: ConnectFourManager;
 		lavalink: LavalinkManager;
 		userTags: UserTags;

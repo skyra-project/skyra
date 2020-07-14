@@ -43,6 +43,7 @@ import './setup/PermissionsLevels';
 import './setup/Canvas';
 import { WebsocketHandler } from './websocket';
 import { InviteStore } from './structures/InviteStore';
+import { container } from 'tsyringe';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -133,6 +134,8 @@ export class SkyraClient extends KlasaClient {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
 		}
+
+		container.registerInstance(SkyraClient, this);
 	}
 
 	public async login(token?: string) {

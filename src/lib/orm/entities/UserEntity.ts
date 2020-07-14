@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { kBigIntTransformer } from '@utils/util';
-import { BaseEntity, Check, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import { BaseEntity, Check, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn, AfterLoad, AfterInsert, AfterUpdate, AfterRemove } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserProfileEntity } from './UserProfileEntity';
+import { SkyraClient } from '@lib/SkyraClient';
+import { Events } from '@lib/types/Enums';
+import { container } from 'tsyringe';
 
 @Check('money >= 0')
 @Check('points >= 0')
@@ -38,8 +42,36 @@ export class UserEntity extends BaseEntity {
 	@JoinTable()
 	public spouses?: UserEntity[];
 
+	#client: SkyraClient;
+	#money: number | null;
+
+	public constructor() {
+		super();
+		this.#client = container.resolve(SkyraClient);
+		this.#money = null;
+	}
+
 	public get level() {
 		return Math.floor(0.2 * Math.sqrt(this.points));
+	}
+
+	@AfterLoad()
+	protected entityLoad() {
+		this.#money = this.money;
+	}
+
+	@AfterInsert()
+	@AfterUpdate()
+	protected entityUpdate() {
+		if (this.#money !== null && this.money !== this.#money) {
+			this.#client.emit(Events.MoneyTransaction, this, this.money - this.#money, this.#money);
+			this.#money = this.money;
+		}
+	}
+
+	@AfterRemove()
+	protected entityRemove() {
+		this.#money = null;
 	}
 
 }

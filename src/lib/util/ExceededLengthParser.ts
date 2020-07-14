@@ -27,8 +27,12 @@ export async function handleMessage<ED extends ExtraDataPartial>(message: KlasaM
 		}
 		case 'console':
 		case 'log': {
-			message.client.emit(Events.Log, options.result);
-			return message.sendLocale('SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE', [options.time, options.footer]);
+			if (options.canLogToConsole) {
+				message.client.emit(Events.Log, options.result);
+				return message.sendLocale('SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE', [options.time, options.footer]);
+			}
+			await getTypeOutput(message, options);
+			return handleMessage(message, options);
 		}
 		case 'abort':
 		case 'none':

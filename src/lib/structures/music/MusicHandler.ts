@@ -219,6 +219,26 @@ export class MusicHandler {
 		return this.queue;
 	}
 
+	public remove(message: KlasaMessage, index: number, context: MusicHandlerRequestContext | null = null) {
+		// Decrease index by 1 because end-users do not think in zero-based arrays
+		index--;
+
+		// Get the song that will be removed
+		const song = this.queue[index];
+
+		// If song was requested by someone else and the user is not an admin/DJ then restrict the use of the command
+		if (song.requester !== message.author.id && !message.member!.isDJ) {
+			throw message.language.tget('COMMAND_REMOVE_DENIED');
+		}
+
+		// Splice the song out in-place
+		this.queue.splice(index, 1);
+
+		// Tell the websocket of the removed song
+		this.client.emit(Events.MusicRemove, this, song, context);
+
+	}
+
 	public reset(volume = false) {
 		this.song = null;
 		this.position = 0;

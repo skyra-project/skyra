@@ -389,13 +389,13 @@ export default class extends Language {
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
 		COMMAND_QUEUE_EMPTY: 'parece que nada se está reproduciendo en este momento y la cola está vacía, ¿por qué no inicias el disco?',
 		COMMAND_REMOVE_DESCRIPTION: 'Elimina una canción de la lista de cola.',
-		COMMAND_REMOVE_INDEX_INVALID: 'Mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
-		COMMAND_REMOVE_INDEX_OUT: amount => `He intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
+		COMMAND_REMOVE_INDEX_INVALID: 'mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
+		COMMAND_REMOVE_INDEX_OUT: amount => `he intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
 		COMMAND_REMOVE_DENIED: [
 			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
 			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'
 		].join(' '),
-		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.safeTitle}**, pedida por **${song.requester}**, de la cola.`,
+		COMMAND_REMOVE_SUCCESS: song => `🗑 Borrada la canción **${song.safeTitle}**, pedida por <@${song.requester}>, de la cola.`,
 		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
 		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: 'Reanuda la canción actual.',

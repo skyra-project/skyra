@@ -7,6 +7,7 @@ import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReaction
 import { resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { UserEntity } from '@orm/entities/UserEntity';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',
@@ -38,7 +39,9 @@ export default class extends SkyraCommand {
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
-		await message.author.decreaseBalance(wager);
+
+		settings.money -= wager;
+		await settings.save();
 
 		const response = await message.sendLocale('COMMAND_HIGHERLOWER_LOADING');
 		const game: HigherLowerGameData = {
@@ -57,7 +60,7 @@ export default class extends SkyraCommand {
 					game.callback = null;
 				}
 				try {
-					await this.end(game, message);
+					await this.end(game, message, settings);
 				} catch (error) {
 					this.client.emit(Events.Wtf, error);
 				}
@@ -93,17 +96,17 @@ export default class extends SkyraCommand {
 
 			switch (emoji) {
 				case HigherLowerReactions.Higher: {
-					game.running = await (game.number > oldNum ? this.win(game, message) : this.loss(game, message));
+					game.running = await (game.number > oldNum ? this.win(game, message, settings) : this.loss(game, message, settings));
 					break;
 				}
 				case HigherLowerReactions.Lower: {
-					game.running = await (game.number < oldNum ? this.win(game, message) : this.loss(game, message));
+					game.running = await (game.number < oldNum ? this.win(game, message, settings) : this.loss(game, message, settings));
 					break;
 				}
 				case HigherLowerReactions.Cancel:
 				case HigherLowerReactions.Cashout: {
 					game.canceledByChoice = true;
-					await this.end(game, message, emoji === HigherLowerReactions.Cashout);
+					await this.end(game, message, settings, emoji === HigherLowerReactions.Cashout);
 					game.running = false;
 					break;
 				}
@@ -132,7 +135,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async win(game: HigherLowerGameData, message: KlasaMessage) {
+	private async win(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity) {
 		const { language } = message;
 
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
@@ -149,13 +152,13 @@ export default class extends SkyraCommand {
 		switch (emoji) {
 			case null:
 				game.llrc.end();
-				await this.cashout(message, game);
+				await this.cashout(message, game, settings);
 				break;
 			case HigherLowerReactions.Ok:
 				await game.response.edit(language.tget('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
 				break;
 			case HigherLowerReactions.Cancel:
-				await this.end(game, message, true);
+				await this.end(game, message, settings, true);
 				break;
 			default:
 				throw new Error('Unreachable.');
@@ -164,13 +167,14 @@ export default class extends SkyraCommand {
 		return emoji === HigherLowerReactions.Ok;
 	}
 
-	private async loss(game: HigherLowerGameData, message: KlasaMessage) {
+	private async loss(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity) {
 		let losses = game.wager;
 
 		// There's a 0.001% chance that a user would lose not only the wager, but also what they would've won in one round less.
 		if ((Math.random()) < 0.0001) {
 			losses += this.calculateWinnings(game.wager, game.turn - 1);
-			await message.author.decreaseBalance(losses);
+			settings.money -= losses;
+			await settings.save();
 		}
 
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
@@ -184,12 +188,12 @@ export default class extends SkyraCommand {
 		return false;
 	}
 
-	private async end(game: HigherLowerGameData, message: KlasaMessage, cashout = false) {
+	private async end(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity, cashout = false) {
 		// End the LLRC
 		game.llrc.end();
 
 		// Should we need to cash out, proceed to doing that
-		if (cashout) return this.cashout(message, game);
+		if (cashout) return this.cashout(message, game, settings);
 
 		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
@@ -202,12 +206,13 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async cashout(message: KlasaMessage, game: HigherLowerGameData) {
+	private async cashout(message: KlasaMessage, game: HigherLowerGameData, settings: UserEntity) {
 		const { turn, wager } = game;
 
 		// Calculate and deposit winnings for that game
 		const winnings = this.calculateWinnings(wager, turn - 1);
-		await message.author.increaseBalance(winnings);
+		settings.money += winnings;
+		await settings.save();
 
 		const { TITLE } = message.language.tget('COMMAND_HIGHERLOWER_WIN');
 		const { DESCRIPTION: FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_CANCEL');

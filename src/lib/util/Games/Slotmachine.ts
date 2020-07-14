@@ -89,11 +89,6 @@ export class Slotmachine {
 		this.settings = settings;
 	}
 
-	/** The player */
-	private get player() {
-		return this.message.author;
-	}
-
 	public async run() {
 		const rolls = this.roll();
 		this.calculate(rolls);
@@ -106,9 +101,8 @@ export class Slotmachine {
 
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
-		await (lost
-			? this.player.decreaseBalance(this.bet)
-			: this.player.increaseBalance(winnings));
+		this.settings.money += lost ? -this.bet : winnings;
+		await this.settings.save();
 
 		return [await this.render(rolls, this.settings.profile!.darkTheme), amount] as [Buffer, number];
 	}

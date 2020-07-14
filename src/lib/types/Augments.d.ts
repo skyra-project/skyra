@@ -78,9 +78,6 @@ declare module 'discord.js' {
 
 	interface User {
 		fetchRank(): Promise<number>;
-		increaseBalance(amount: number): Promise<void>;
-		decreaseBalance(amount: number): Promise<void>;
-
 		_patch(data: APIUserData): void;
 	}
 

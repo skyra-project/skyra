@@ -85,9 +85,8 @@ export class WheelOfFortune {
 			throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 		}
 
-		await (lost
-			? this.player.decreaseBalance(-this.winnings)
-			: this.player.increaseBalance(this.winnings));
+		this.settings.money += lost ? -this.winnings : this.winnings;
+		await this.settings.save();
 
 		return [await this.render(this.settings.profile!.darkTheme), final] as const;
 	}

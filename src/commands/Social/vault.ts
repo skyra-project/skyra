@@ -1,6 +1,5 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { Events } from '@lib/types/Enums';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -52,7 +51,6 @@ export default class extends SkyraCommand {
 			const newVault = vault + coins;
 
 			await this.updateBalance(newMoney, newVault, settings);
-			this.client.emit(Events.MoneyTransaction, message.author, coins, money);
 
 			return message.sendEmbed(await this.buildEmbed(message, newMoney, newVault, coins, true));
 		});
@@ -74,8 +72,6 @@ export default class extends SkyraCommand {
 			const newVault = vault - coins;
 
 			await this.updateBalance(newMoney, newVault, settings);
-			this.client.emit(Events.MoneyTransaction, message.author, coins, money);
-
 			return message.sendEmbed(await this.buildEmbed(message, newMoney, newVault, coins));
 		});
 	}

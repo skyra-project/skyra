@@ -41,17 +41,12 @@ export default class extends SkyraCommand {
 
 			if (!accepted) return this.denyPayment(message);
 
-			let authorMoney: number | null = null;
-			let userMoney: number | null = null;
-
 			await getManager().transaction(async em => {
-				authorMoney = settings.money;
 				settings.money -= money;
 				await em.save(settings);
 
 				const previousEntry = await em.findOne(UserEntity, targetID);
 				if (previousEntry) {
-					userMoney = previousEntry.money;
 					previousEntry.money += money;
 					await em.save(previousEntry);
 				} else {
@@ -59,17 +54,16 @@ export default class extends SkyraCommand {
 						id: targetID,
 						money
 					});
+					this.client.emit(Events.MoneyTransaction, user, money, 0);
 				}
 			});
 
-			return this.acceptPayment(message, user, money, authorMoney, userMoney);
+			return this.acceptPayment(message, user, money);
 		});
 	}
 
-	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number, authorMoney: number | null, userMoney: number | null) {
+	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
 		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
-		if (authorMoney !== null) this.client.emit(Events.MoneyTransaction, message.author, money, authorMoney);
-		if (userMoney !== null) this.client.emit(Events.MoneyTransaction, user, money, userMoney);
 		return message.alert(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}
 

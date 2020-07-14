@@ -1,6 +1,5 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { Events } from '@lib/types/Enums';
 import { ClientEntity } from '@orm/entities/ClientEntity';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
@@ -51,13 +50,11 @@ export default class extends SkyraCommand {
 
 	private async claimDaily(message: KlasaMessage, connection: DbSet, settings: UserEntity, nextTime: number) {
 		const money = this.calculateDailies(message, await connection.clients.ensure(), settings);
-		const currentMoney = settings.money;
 
 		settings.money += money;
 		settings.cooldowns!.daily = new Date(nextTime);
 		await settings.save();
 
-		this.client.emit(Events.MoneyTransaction, message.author, money, currentMoney);
 		return money;
 	}
 

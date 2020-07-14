@@ -4,10 +4,10 @@ import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { UserEntity } from '@orm/entities/UserEntity';
 import { resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { UserEntity } from '@orm/entities/UserEntity';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',

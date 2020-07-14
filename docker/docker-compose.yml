@@ -2,36 +2,31 @@ version: "2.4"
 services:
   pokedex:
     container_name: pokedex
-    image: favware/graphql-pokemon:latest
+    image: favware/graphql-pokemon:master
     restart: always
     ports:
       - "4000:8080"
   postgres:
     container_name: pgsql
-    image: skyrabot/postgres:latest
+    image: skyrabot/postgres:master
     restart: always
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
   lavalink:
-    # network_mode: host
+    network_mode: host
     container_name: lavalink
-    image: skyrabot/lavalink:latest
+    image: skyrabot/lavalink:master
     restart: always
     ports:
       - "2333:2333"
-  # grafana:
-  #   # network_mode: host
-  #   container_name: grafana
-  #   image: grafana/grafana:latest
-  #   restart: always
-  #   ports:
-  #     - "3000:3000"
-  #   environment: 
-  #     - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource,cloudflare-app
-  #   volumes:
-  #     - grafana-data:/var/lib/grafana
+  saelem:
+    container_name: saelem
+    image: skyrabot/saelem:master
+    restart: always
+    ports:
+      - "8284:8080"
 
 volumes:
   postgres-data:

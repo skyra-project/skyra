@@ -14,8 +14,7 @@ Reflect.deleteProperty(KlasaUserStore.prototype, 'fetch');
 // Step 2: Create UserSettings, which is an empty Settings-like class, implements:
 //         Settings, SettingsFolder, and Map<string, unknown>.
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-ignore: Property '_patch' is protected but type 'UserSettings' is not a class derived from 'SettingsFolder'.
 export class UserSettings implements Settings {
 
 	public get id(): string {
@@ -39,8 +38,7 @@ export class UserSettings implements Settings {
 	}
 
 	public get base(): Settings | null {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
+		// @ts-ignore: Property '_patch' is protected but type 'UserSettings' is not a class derived from 'SettingsFolder'.
 		return this;
 	}
 
@@ -213,8 +211,7 @@ export class UserGateway extends GatewayStorage implements Gateway {
 	}
 
 	public create(): Settings {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
+		// @ts-ignore: Property '_patch' is protected but type 'UserSettings' is not a class derived from 'SettingsFolder'.
 		return new UserSettings();
 	}
 

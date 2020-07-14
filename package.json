@@ -20,7 +20,7 @@
 		"build-tlds": "tsc ./src/lib/util/Links/Build/script.ts && node ./src/lib/util/Links/Build/script.js",
 		"watch": "tsc -b src -w",
 		"dev": "yarn build && yarn start",
-		"dockerps": "pwsh ./docker/control.ps1",
+		"dockerps": "pwsh -NoLogo ./docker/control.ps1",
 		"typeorm": "node -r module-alias/register ./node_modules/typeorm/cli.js",
 		"typeorm:schema:resync": "docker container rm -f pgsql && docker volume rm postgres-data && docker volume create postgres-data && docker-compose -p skyra -f ./docker/docker-compose.yml up -d postgres && sleep 3 && yarn typeorm schema:sync"
 	},

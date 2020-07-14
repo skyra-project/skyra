@@ -1,9 +1,9 @@
 // Remove `.example` from the file extension to configure Skyra
 
+import { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import ApiRequest from '@lib/structures/api/ApiRequest';
 import ApiResponse from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
-import { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import { KlasaClientOptions, PostgresOptions } from 'klasa';
 import { resolve } from 'path';
 

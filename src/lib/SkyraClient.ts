@@ -20,6 +20,7 @@ import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { Twitch } from './util/Notifications/Twitch';
+import { UserGateway } from './util/AntiUserGateway';
 import { clientOptions } from './util/constants';
 import { Leaderboard } from './util/Leaderboard';
 import { UserTags } from './util/Cache/UserTags';
@@ -126,6 +127,9 @@ export class SkyraClient extends KlasaClient {
 
 	public constructor(options: KlasaClientOptions = {}) {
 		super(util.mergeDefault(clientOptions, options));
+
+		// Register user gateway override
+		this.gateways.register(new UserGateway(this, 'users'));
 
 		// Register the API handler
 		this.registerStore(this.ipcMonitors);

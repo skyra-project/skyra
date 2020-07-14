@@ -3,7 +3,8 @@ export namespace AnalyticsSchema {
 	export const enum Points {
 		Guilds = 'guilds',
 		Users = 'users',
-		Commands = 'commands'
+		Commands = 'commands',
+		VoiceConnections = 'voice_connections'
 	}
 
 	export const enum Tags {

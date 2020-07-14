@@ -3,7 +3,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
 import { fetch, FetchResultTypes } from '@utils/util';
@@ -15,6 +15,8 @@ const enum ClashOfClansFetchCategories {
 	CLANS = 'clans'
 }
 
+const kPlayerTagRegex = /#[A-Z0-9]{3,}/;
+
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
@@ -25,9 +27,23 @@ const enum ClashOfClansFetchCategories {
 	usage: '<player|clan:default> <query:tagOrName>',
 	usageDelim: ' '
 })
-export default class extends RichDisplayCommand {
+@CreateResolvers([
+	[
+		'tagOrName', (arg, possible, message, [action]) => {
+			if (action === 'clan') {
+				return message.client.arguments.get('...string')!.run(arg, possible, message);
+			}
 
-	private readonly kPlayerTagRegex = /#[A-Z0-9]{3,}/;
+			if (action === 'player') {
+				if (kPlayerTagRegex.test(arg)) return arg;
+				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
+			}
+
+			throw message.language.tget('SYSTEM_QUERY_FAIL');
+		}
+	]
+])
+export default class extends RichDisplayCommand {
 
 	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -48,21 +64,6 @@ export default class extends RichDisplayCommand {
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(message, player, ClashOfClansFetchCategories.PLAYERS);
 
 		return message.send(await this.buildPlayerEmbed(message, playerData));
-	}
-
-	public async init() {
-		this.createCustomResolver('tagOrName', (arg, possible, message, [action]) => {
-			if (action === 'clan') {
-				return this.client.arguments.get('...string')!.run(arg, possible, message);
-			}
-
-			if (action === 'player') {
-				if (this.kPlayerTagRegex.test(arg)) return arg;
-				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
-			}
-
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
-		});
 	}
 
 	private async fetchAPI<C extends ClashOfClansFetchCategories>(message: KlasaMessage, query: string, category: ClashOfClansFetchCategories) {

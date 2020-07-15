@@ -53,6 +53,7 @@ export default class extends MusicCommand {
 			const totalDescription = message.language.tget('COMMAND_QUEUE_TOTAL', queue.length, showSeconds(totalDuration));
 
 			queueDisplay.embedTemplate.addField(message.language.tget('COMMAND_QUEUE_TOTAL_TITLE'), totalDescription);
+			queueDisplay.embedTemplate.addField('\u200b', message.language.tget('COMMAND_QUEUE_DASHBOARD_INFO', message.guild!));
 
 			for (const page of chunk(songFields, 5)) {
 				queueDisplay.addPage((embed: MessageEmbed) => embed.setDescription(page.join('\n\n')));

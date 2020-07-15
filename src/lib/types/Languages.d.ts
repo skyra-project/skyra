@@ -178,6 +178,7 @@ export interface LanguageKeys {
 	COMMAND_QUEUE_TOTAL_TITLE: string;
 	COMMAND_QUEUE_TOTAL: (songs: number, remainingTime: string) => string;
 	COMMAND_QUEUE_EMPTY: string;
+	COMMAND_QUEUE_DASHBOARD_INFO: (guild: Guild) => string;
 	COMMAND_REMOVE_DESCRIPTION: string;
 	COMMAND_REMOVE_INDEX_INVALID: string;
 	COMMAND_REMOVE_INDEX_OUT: (amount: number) => string;

@@ -383,6 +383,7 @@ export default class extends Language {
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
 		COMMAND_QUEUE_EMPTY: 'looks like nothing is playing right now and the queue is empty, why don\'t you start the disc?',
+		COMMAND_QUEUE_DASHBOARD_INFO: guild => `Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/${guild.id})`,
 		COMMAND_REMOVE_DESCRIPTION: 'Remove a song from the queue list.',
 		COMMAND_REMOVE_INDEX_INVALID: `I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
 		COMMAND_REMOVE_INDEX_OUT: amount => `maybe time happened too fast for you, there are ${amount} ${amount === 1 ? 'song' : 'songs'} in the queue!`,

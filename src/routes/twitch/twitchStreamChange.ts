@@ -4,6 +4,7 @@ import ApiResponse from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
+import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
@@ -21,7 +22,7 @@ export default class extends Route {
 	}
 
 	// Stream Changed
-	public post(request: ApiRequest, response: ApiResponse) {
+	public async post(request: ApiRequest, response: ApiResponse) {
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];
@@ -32,7 +33,10 @@ export default class extends Route {
 
 		const id = request.params.id as string;
 		const { data } = request.body as PostStreamBody;
-		if (data.length === 0) {
+		const lengthStatus = data.length === 0;
+
+		await this.client.emit(Events.TwitchStreamHookedAnalytics, lengthStatus ? AnalyticsSchema.TwitchStreamStatus.Offline : AnalyticsSchema.TwitchStreamStatus.Online);
+		if (lengthStatus) {
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {
 			this.client.emit(Events.TwitchStreamOnline, data[0], response);

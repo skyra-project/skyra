@@ -10,6 +10,7 @@ import { Leaderboard } from '@utils/Leaderboard';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Twitch } from '@utils/Notifications/Twitch';
+import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
 import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
@@ -50,6 +51,7 @@ declare module 'discord.js' {
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
 		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;
+		emit(event: Events.TwitchStreamHookedAnalytics, status: AnalyticsSchema.TwitchStreamStatus): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 

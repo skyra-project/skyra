@@ -69,6 +69,7 @@ export const enum Events {
 	RoleReactionRemove = 'roleReactionRemove',
 	SettingsUpdate = 'settingsUpdate',
 	TaskError = 'taskError',
+	TwitchStreamHookedAnalytics = 'twitchStreamHookedAnalytics',
 	TwitchStreamOffline = 'twitchStreamOffline',
 	TwitchStreamOnline = 'twitchStreamOnline',
 	UnhandledRejection = 'unhandledRejection',

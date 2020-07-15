@@ -40,4 +40,9 @@ export namespace AnalyticsSchema {
 		Migration = 'migration'
 	}
 
+	export const enum TwitchStreamStatus {
+		Online = 1,
+		Offline = 0
+	}
+
 }

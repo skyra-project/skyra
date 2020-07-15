@@ -30,3 +30,6 @@ config.ts
 
 # Ignore package locks
 package-lock.json
+
+# Ignore the GH cli downloaded by workflows
+gh

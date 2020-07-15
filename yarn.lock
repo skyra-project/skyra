@@ -283,6 +283,11 @@
   dependencies:
     graphql "^15.2.0"
 
+"@influxdata/influxdb-client-apis@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@influxdata/influxdb-client-apis/-/influxdb-client-apis-1.4.0.tgz#ad06b39d1be731ff030dfa8450ed0b542d6330e2"
+  integrity sha512-q1zz13V4yZx5+HV78+3F5PFxmX17Kst1+wfjvaZInBZCDWURnjyl/UD7aN8KhrX0zzK8e3+y8456tqHSfKOSGw==
+
 "@influxdata/influxdb-client@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@influxdata/influxdb-client/-/influxdb-client-1.4.0.tgz#230d52052968407cc7c5592b52c714e7809fdd3d"

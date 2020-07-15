@@ -1,16 +1,13 @@
 import { InfluxDB, Point, WritePrecision } from '@influxdata/influxdb-client';
-import {
-	INFLUX_OPTIONS,
-	INFLUX_ORG,
-	INFLUX_ORG_ANALYTICS_BUCKET
-} from '@root/config';
+import { BucketsAPI } from '@influxdata/influxdb-client-apis';
+import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { readJson } from 'fs-nextra';
 import { join } from 'path';
 import { MigrationInterface, QueryRunner, Table, TableColumn, TableCheck } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
-const INFLUX_ALL_COMMANDS_SCRIPT = 'from(bucket: "analytics") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")';
+const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
 
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 
@@ -21,7 +18,18 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const categories = new Map(categoriesRaw);
 
 		const influx = new InfluxDB(INFLUX_OPTIONS);
+		const bucketAPI = new BucketsAPI(influx);
+		const buckets = await bucketAPI.getBuckets();
 		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
+
+		if (!buckets.buckets?.some(bucket => bucket.name === INFLUX_ORG_ANALYTICS_BUCKET)) {
+			await bucketAPI.postBuckets({
+				body: {
+					name: INFLUX_ORG_ANALYTICS_BUCKET,
+					retentionRules: []
+				}
+			});
+		}
 
 		const commandUses: CommandUsageStats = await queryRunner.query('SELECT * FROM command_counter');
 
@@ -40,42 +48,38 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		const influx = new InfluxDB(INFLUX_OPTIONS);
+		const bucketAPI = new BucketsAPI(influx);
+		const buckets = await bucketAPI.getBuckets();
 		const reader = influx.getQueryApi(INFLUX_ORG);
+
+		if (!buckets.buckets?.some(bucket => bucket.name === INFLUX_ORG_ANALYTICS_BUCKET)) return;
 
 		const commands = await reader.collectRows<InfluxSummedCommandEntry>(INFLUX_ALL_COMMANDS_SCRIPT);
 
-		try {
-			await queryRunner.startTransaction();
+		await queryRunner.createTable(new Table({
+			name: 'command_counter',
+			checks: [
+				new TableCheck({ expression: /* sql */`"uses" >= 0` })
+			],
+			columns: [
+				new TableColumn({ name: 'id', type: 'varchar', length: '32', isNullable: false }),
+				new TableColumn({ 'name': 'uses', 'type': 'integer', 'default': 0, 'isNullable': false })
+			]
+		}));
 
-			await queryRunner.createTable(new Table({
-				name: 'command_counter',
-				checks: [
-					new TableCheck({ expression: /* sql */`"uses" >= 0` })
-				],
-				columns: [
-					new TableColumn({ name: 'id', type: 'varchar', length: '32', isNullable: false }),
-					new TableColumn({ 'name': 'uses', 'type': 'integer', 'default': 0, 'isNullable': false })
-				]
-			}));
-
-			for (const command of commands) {
-				await queryRunner.query(/* sql */`
-					INSERT
-					INTO command_counter ("id", "uses")
-					VALUES ($1, $2)
-					ON CONFLICT (id)
-					DO
-						UPDATE
-						SET uses = command_counter.uses + $2;
-				`, [command._field, command._value]);
-			}
-		} catch (error) {
-			await queryRunner.rollbackTransaction();
-			console.error('Error detected! Transaction has been rolled back');
-			throw error;
-		} finally {
-			await queryRunner.commitTransaction();
+		for (const command of commands) {
+			await queryRunner.query(/* sql */`
+				INSERT
+				INTO command_counter ("id", "uses")
+				VALUES ($1, $2)
+				ON CONFLICT (id)
+				DO
+					UPDATE
+					SET uses = command_counter.uses + $2;
+			`, [command._field, command._value]);
 		}
+
+		await bucketAPI.deleteBucketsID({ bucketID: INFLUX_ORG_ANALYTICS_BUCKET });
 	}
 
 	private createPoint(commandName: string, commandUsageAmount: number, categoryData: CategoryData) {

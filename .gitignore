@@ -12,6 +12,8 @@ bwd/
 
 # Ignore JavaScript files
 **/*.js
+**/*.mjs
+!scripts/*.mjs
 **/*.js.map
 **/*.d.ts
 !src/**/*.d.ts

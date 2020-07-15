@@ -51,15 +51,17 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 - Everything should follow [OOP paradigms] and generally rely on behaviour over state where possible. This generally helps methods be predictable, keeps the codebase simple and understandable, reduces code duplication through abstraction, and leads to efficiency and therefore scalability.
 - Everything should follow our ESLint rules as closely as possible, and should pass lint tests even if you must disable a rule for a single line.
 - Everything should follow [Discord Bot Best Practices]
+- Scripts that are to be ran outside of the scope of the bot should be added to [scripts] directory and should be in the `.mjs` file format.
 
 <!-- Link Dump -->
 
-[Discord Server]: https://join.skyra.pw
-[here]: https://github.com/skyra-project/skyra/pulls
-[ESLint]: https://eslint.org/
-[Node.JS]: https://nodejs.org/en/download/
-[Yarn]: https://classic.yarnpkg.com/en/docs/install
+[Discord Server]:                            https://join.skyra.pw
+[here]:                                      https://github.com/skyra-project/skyra/pulls
+[ESLint]:                                    https://eslint.org/
+[Node.JS]:                                   https://nodejs.org/en/download/
+[Yarn]:                                      https://classic.yarnpkg.com/en/docs/install
 [installation instructions for node-canvas]: https://github.com/Automattic/node-canvas/blob/master/Readme.md#installation
-[OOP paradigms]: https://en.wikipedia.org/wiki/Object-oriented_programming
-[Discord Bot Best Practices]: https://github.com/meew0/discord-bot-best-practices
-[`config.example.ts`]: /src/config.example.ts
+[OOP paradigms]:                             https://en.wikipedia.org/wiki/Object-oriented_programming
+[Discord Bot Best Practices]:                https://github.com/meew0/discord-bot-best-practices
+[`config.example.ts`]:                       /src/config.example.ts
+[scripts]:                                   /scripts

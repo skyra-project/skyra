@@ -5,6 +5,9 @@
 		"@typescript-eslint/restrict-plus-operands": 0,
 		"@typescript-eslint/naming-convention": 0
 	},
+	"parserOptions": {
+		"extraFileExtensions": [".mjs"]
+	},
 	"overrides": [
 		{
 			"files": ["src/commands/**/*.ts"],

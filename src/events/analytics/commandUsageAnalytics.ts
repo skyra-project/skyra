@@ -13,8 +13,8 @@ export default class extends AnalyticsEvent {
 	public run(commandName: string, category: string, subCategory: string) {
 		const command = new Point(AnalyticsSchema.Points.Commands)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
-			.tag(AnalyticsSchema.CommandTags.Category, category)
-			.tag(AnalyticsSchema.CommandTags.SubCategory, subCategory)
+			.tag(AnalyticsSchema.CommandCategoryTypes.Category, category)
+			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, subCategory)
 			.intField(commandName, 1);
 
 		return this.writePoint(command);

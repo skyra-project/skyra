@@ -4,7 +4,8 @@ export namespace AnalyticsSchema {
 		Guilds = 'guilds',
 		Users = 'users',
 		Commands = 'commands',
-		VoiceConnections = 'voice_connections'
+		VoiceConnections = 'voice_connections',
+		Economy = 'economy'
 	}
 
 	export const enum Tags {
@@ -14,12 +15,22 @@ export namespace AnalyticsSchema {
 		Client = 'client_id',
 		Action = 'action',
 		OriginEvent = 'origin_event',
-		MigrationName = 'migration_name'
+		MigrationName = 'migration_name',
+		ValueType = 'value_type'
 	}
 
-	export const enum CommandTags {
+	export const enum CommandCategoryTypes {
 		Category = 'category',
 		SubCategory = 'sub_category'
+	}
+
+	export const enum EconomyValueType {
+		Size = 'size'
+	}
+
+	export const enum EconomyType {
+		Money = 'total_money',
+		Vault = 'total_vault'
 	}
 
 	export const enum Actions {

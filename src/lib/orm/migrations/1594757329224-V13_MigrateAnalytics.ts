@@ -78,8 +78,8 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		return new Point(AnalyticsSchema.Points.Commands)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
 			.tag(AnalyticsSchema.Tags.MigrationName, this.constructor.name)
-			.tag(AnalyticsSchema.CommandTags.Category, categoryData.category)
-			.tag(AnalyticsSchema.CommandTags.SubCategory, categoryData.subCategory)
+			.tag(AnalyticsSchema.CommandCategoryTypes.Category, categoryData.category)
+			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, categoryData.subCategory)
 			.timestamp(this.migStart)
 			.intField(commandName, commandUsageAmount);
 	}

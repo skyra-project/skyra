@@ -40,7 +40,7 @@ export default class extends Event {
 	private async initPostStatsTask() {
 		const { queue } = this.client.schedules;
 		if (!queue.some(task => task.taskID === Schedules.Poststats)) {
-			await this.client.schedules.add(Schedules.Poststats, '*/15 * * * *', {});
+			await this.client.schedules.add(Schedules.Poststats, '*/10 * * * *', {});
 		}
 	}
 

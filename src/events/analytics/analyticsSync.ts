@@ -13,8 +13,10 @@ export default class extends AnalyticsEvent {
 
 	public async run(guilds: number, users: number) {
 		const dbSet = await DbSet.connect();
-		const economyHealth = await this.fetchEconomyHealth(dbSet);
-		const twitchSubscriptionCount = await dbSet.twitchStreamSubscriptions.count();
+		const [economyHealth, twitchSubscriptionCount] = await Promise.all([
+			this.fetchEconomyHealth(dbSet),
+			dbSet.twitchStreamSubscriptions.count()
+		]);
 
 		this.writePoints([
 			this.syncGuilds(guilds),

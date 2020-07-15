@@ -35,10 +35,11 @@ export default class extends Route {
 		const { data } = request.body as PostStreamBody;
 		const lengthStatus = data.length === 0;
 
-		await this.client.emit(Events.TwitchStreamHookedAnalytics, lengthStatus ? AnalyticsSchema.TwitchStreamStatus.Offline : AnalyticsSchema.TwitchStreamStatus.Online);
 		if (lengthStatus) {
+			this.client.emit(Events.TwitchStreamHookedAnalytics, AnalyticsSchema.TwitchStreamStatus.Online);
 			this.client.emit(Events.TwitchStreamOffline, { id }, response);
 		} else {
+			this.client.emit(Events.TwitchStreamHookedAnalytics, AnalyticsSchema.TwitchStreamStatus.Offline);
 			this.client.emit(Events.TwitchStreamOnline, data[0], response);
 		}
 	}

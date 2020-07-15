@@ -42,17 +42,19 @@ export class UserEntity extends BaseEntity {
 	@JoinTable()
 	public spouses?: UserEntity[];
 
-	#client: SkyraClient;
 	#money: number | null;
 
 	public constructor() {
 		super();
-		this.#client = container.resolve(SkyraClient);
 		this.#money = null;
 	}
 
 	public get level() {
 		return Math.floor(0.2 * Math.sqrt(this.points));
+	}
+
+	private get client() {
+		return container.resolve(SkyraClient);
 	}
 
 	@AfterLoad()
@@ -64,7 +66,7 @@ export class UserEntity extends BaseEntity {
 	@AfterUpdate()
 	protected entityUpdate() {
 		if (this.#money !== null && this.money !== this.#money) {
-			this.#client.emit(Events.MoneyTransaction, this, this.money - this.#money, this.#money);
+			this.client.emit(Events.MoneyTransaction, this, this.money - this.#money, this.#money);
 			this.#money = this.money;
 		}
 	}

@@ -1,4 +1,8 @@
 {
 	"extends": "./tsconfig.base.json",
-	"include": ["src", "database", "tests", "jest.config.js", "ormconfig.js"]
+	"compilerOptions": {
+		"allowJs": true,
+		"checkJs": true
+	},
+	"include": ["src", "scripts", "tests", "jest.config.js", "ormconfig.js"]
 }

@@ -1,8 +1,11 @@
 name: Update TLDs
 
 on:
+  push:
+    branches:
+      - 'update-tlds-test'
   schedule:
-    - cron: '25 22 * * 3'
+    - cron: '0 0 * * 6'
 
 jobs:
   UpdateTLDs:

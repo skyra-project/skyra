@@ -36,7 +36,6 @@ export const TLDs = [
 	'agency',
 	'ai',
 	'aig',
-	'aigo',
 	'airbus',
 	'airforce',
 	'airtel',
@@ -51,6 +50,7 @@ export const TLDs = [
 	'alsace',
 	'alstom',
 	'am',
+	'amazon',
 	'americanexpress',
 	'americanfamily',
 	'amex',
@@ -395,7 +395,6 @@ export const TLDs = [
 	'es',
 	'esq',
 	'estate',
-	'esurance',
 	'et',
 	'etisalat',
 	'eu',
@@ -1074,7 +1073,6 @@ export const TLDs = [
 	'schwarz',
 	'science',
 	'scjohnson',
-	'scor',
 	'scot',
 	'sd',
 	'se',
@@ -1379,6 +1377,7 @@ export const TLDs = [
 	'орг', // xn--c1avg
 	'नेट', // xn--c2br7g
 	'ストア', // xn--cck2b3b
+	'アマゾン', // xn--cckwcxetd
 	'삼성', // xn--cg4bki
 	'சிங்கப்பூர்', // xn--clchc0ea0b2g2a9gcd
 	'商标', // xn--czr694b
@@ -1414,12 +1413,12 @@ export const TLDs = [
 	'ком', // xn--j1aef
 	'укр', // xn--j1amh
 	'香港', // xn--j6w193g
+	'亚马逊', // xn--jlq480n2rg
 	'诺基亚', // xn--jlq61u9w7b
 	'食品', // xn--jvr189m
 	'飞利浦', // xn--kcrx77d1x4a
 	'台湾', // xn--kprw13d
 	'台灣', // xn--kpry57d
-	'手表', // xn--kpu716f
 	'手机', // xn--kput3i
 	'мон', // xn--l1acc
 	'الجزائر', // xn--lgbbat1ad8j
@@ -1460,7 +1459,6 @@ export const TLDs = [
 	'招聘', // xn--otu796d
 	'рус', // xn--p1acf
 	'рф', // xn--p1ai
-	'珠宝', // xn--pbt977c
 	'تونس', // xn--pgbs0dh
 	'大拿', // xn--pssy2u
 	'ລາວ', // xn--q7ce6a

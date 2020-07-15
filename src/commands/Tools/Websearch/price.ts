@@ -13,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 	description: language => language.tget('COMMAND_PRICE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_PRICE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
-	usage: '[amount:integer] <from:string> <to:string> [...]',
+	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {

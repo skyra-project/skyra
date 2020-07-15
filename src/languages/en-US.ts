@@ -384,10 +384,10 @@ export default class extends Language {
 		COMMAND_QUEUE_TOTAL: (songs, remainingTime) => `${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
 		COMMAND_QUEUE_EMPTY: 'looks like nothing is playing right now and the queue is empty, why don\'t you start the disc?',
 		COMMAND_REMOVE_DESCRIPTION: 'Remove a song from the queue list.',
-		COMMAND_REMOVE_INDEX_INVALID: `${REDCROSS} I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
-		COMMAND_REMOVE_INDEX_OUT: amount => `${REDCROSS} Maybe time happened too fast for you, there are ${amount} ${amount === 1 ? 'song' : 'songs'} in the queue!`,
+		COMMAND_REMOVE_INDEX_INVALID: `I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
+		COMMAND_REMOVE_INDEX_OUT: amount => `maybe time happened too fast for you, there are ${amount} ${amount === 1 ? 'song' : 'songs'} in the queue!`,
 		COMMAND_REMOVE_DENIED: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
-		COMMAND_REMOVE_SUCCESS: song => `${GREENTICK} Removed the song **${song.safeTitle}** requested by **${song.requester}**.`,
+		COMMAND_REMOVE_SUCCESS: song => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
 		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
 		COMMAND_SEEK_SUCCESS: time => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: 'Resumes the current song.',
@@ -436,6 +436,17 @@ export default class extends Language {
 		COMMAND_SKIP_SUCCESS: title => `⏭ Skipped **${title}**.`,
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Check how much time is left for the song to end.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: 'Are you speaking to me? Because my deck is empty...',
+		COMMAND_PROMOTE_DESCRIPTION: 'Promote a song to the front of the queue',
+		COMMAND_PROMOTE_EXTENDED: builder.display('promote', {
+			explainedUsage: [
+				['number', 'The index in the queue to promote to the front. Use `Skyra, queue` to find the index of a song']
+			],
+			examples: [
+				'5'
+			],
+			reminder: 'This command requires that you are a DJ or a Moderator to use it'
+		}),
+		COMMAND_PROMOTE_SUCCESS: song => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
 		COMMAND_VOLUME_DESCRIPTION: 'Manage the volume for current song.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
 		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,

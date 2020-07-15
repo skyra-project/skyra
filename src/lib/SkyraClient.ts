@@ -5,7 +5,7 @@ import { Colors } from '@klasa/console';
 import { KlasaClient, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
-import { InfluxDB, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
+import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
@@ -106,8 +106,12 @@ export class SkyraClient extends KlasaClient {
 
 	public fsWatcher: FSWatcher | null = null;
 
-	public analytics: WriteApi | null = ENABLE_INFLUX
-		? new InfluxDB(INFLUX_OPTIONS).getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s)
+	public analytics: WriteApi | null = null;
+	public analyticsReader: QueryApi | null = null;
+
+	@enumerable(false)
+	public influx: InfluxDB | null = ENABLE_INFLUX
+		? new InfluxDB(INFLUX_OPTIONS)
 		: null;
 
 	/**
@@ -149,6 +153,11 @@ export class SkyraClient extends KlasaClient {
 		if (!this.options.dev) {
 			this.ipc.connectTo(EVLYN_PORT)
 				.catch((error: Error) => { this.console.error(error); });
+		}
+
+		if (ENABLE_INFLUX) {
+			this.analytics = this.influx!.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
+			this.analyticsReader = this.influx!.getQueryApi(INFLUX_ORG);
 		}
 
 		container.registerInstance(SkyraClient, this);

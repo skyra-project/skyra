@@ -1,4 +1,4 @@
-import { Point, WriteApi } from '@influxdata/influxdb-client';
+import { Point, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 import { ENABLE_INFLUX } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { enumerable } from '@utils/util';
@@ -7,6 +7,7 @@ import { Event } from 'klasa';
 export abstract class AnalyticsEvent extends Event {
 
 	public analytics!: WriteApi;
+	public analyticsReader!: QueryApi;
 
 	@enumerable(false)
 	public tags: [AnalyticsSchema.Tags, string][] = [];
@@ -15,6 +16,7 @@ export abstract class AnalyticsEvent extends Event {
 	public async init() {
 		if (!ENABLE_INFLUX) return this.disable();
 		this.analytics = this.client.analytics!;
+		this.analyticsReader = this.client.analyticsReader!;
 		this.initTags();
 	}
 

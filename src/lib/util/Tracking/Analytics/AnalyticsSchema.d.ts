@@ -13,7 +13,8 @@ export namespace AnalyticsSchema {
 		User = 'user_id',
 		Client = 'client_id',
 		Action = 'action',
-		OriginEvent = 'origin_event'
+		OriginEvent = 'origin_event',
+		MigrationName = 'migration_name'
 	}
 
 	export const enum CommandTags {
@@ -24,7 +25,8 @@ export namespace AnalyticsSchema {
 	export const enum Actions {
 		Addition = 'addition',
 		Subtraction = 'subtraction',
-		Sync = 'sync'
+		Sync = 'sync',
+		Migration = 'migration'
 	}
 
 }

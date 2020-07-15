@@ -1,6 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
 import { Events, Schedules } from '@lib/types/Enums';
-import { CommandCounterEntity } from '@orm/entities/CommandCounterEntity';
 import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
@@ -25,8 +23,6 @@ export default class extends Event {
 				this.client.guilds.map(guild => guild.permissionsManager.update()),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
-				// Ensure the existence of all command uses entries
-				this.initCommandUses(),
 				this.initAnalytics()
 			]);
 
@@ -76,17 +72,6 @@ export default class extends Event {
 		if (ENABLE_LAVALINK) {
 			await this.client.lavalink.connect();
 		}
-	}
-
-	private async initCommandUses() {
-		const { commandCounters } = await DbSet.connect();
-		const entries = await commandCounters.find();
-
-		const missing = this.client.commands
-			.filter(command => !entries.some(entry => entry.id === command.name))
-			.map(command => new CommandCounterEntity().setID(command.name));
-
-		if (missing.length) await commandCounters.insert(missing);
 	}
 
 }

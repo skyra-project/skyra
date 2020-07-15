@@ -32,10 +32,10 @@ export class UserEntity extends BaseEntity {
 	@OneToOne(() => RpgUserEntity, rpgUsers => rpgUsers.user)
 	public game?: RpgUserEntity;
 
-	@OneToOne(() => UserProfileEntity, profile => profile.user, { cascade: true, eager: true })
+	@OneToOne(() => UserProfileEntity, profile => profile.user, { cascade: true })
 	public profile?: UserProfileEntity;
 
-	@OneToOne(() => UserCooldownEntity, cooldown => cooldown.user, { cascade: true, eager: true })
+	@OneToOne(() => UserCooldownEntity, cooldown => cooldown.user, { cascade: true })
 	public cooldowns?: UserCooldownEntity;
 
 	@ManyToMany(() => UserEntity, { cascade: true })

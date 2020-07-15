@@ -20,7 +20,7 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async ensureProfile(id: string, options: FindOneOptions<UserEntity> = {}) {
-		const user = await this.ensure(id, options);
+		const user = await this.ensure(id, { ...options, relations: ['profile'] });
 		if (!user.profile) {
 			user.profile = new UserProfileEntity();
 			user.profile.user = user;
@@ -30,7 +30,7 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async ensureCooldowns(id: string, options: FindOneOptions<UserEntity> = {}) {
-		const user = await this.ensure(id, options);
+		const user = await this.ensure(id, { ...options, relations: ['cooldowns'] });
 		if (!user.cooldowns) {
 			user.cooldowns = new UserCooldownEntity();
 			user.cooldowns.user = user;
@@ -40,7 +40,7 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async ensureProfileAndCooldowns(id: string, options: FindOneOptions<UserEntity> = {}) {
-		const user = await this.ensure(id, options);
+		const user = await this.ensure(id, { ...options, relations: ['profile', 'cooldowns'] });
 		if (!user.profile) {
 			user.profile = new UserProfileEntity();
 			user.profile.user = user;

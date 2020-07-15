@@ -5,7 +5,8 @@ export namespace AnalyticsSchema {
 		Users = 'users',
 		Commands = 'commands',
 		VoiceConnections = 'voice_connections',
-		Economy = 'economy'
+		Economy = 'economy',
+		TwitchSubscriptions = 'twitch_subscriptions'
 	}
 
 	export const enum Tags {

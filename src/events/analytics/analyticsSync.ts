@@ -12,14 +12,17 @@ import { EventOptions } from 'klasa';
 export default class extends AnalyticsEvent {
 
 	public async run(guilds: number, users: number) {
-		const economyHealth = await this.fetchEconomyHealth();
+		const dbSet = await DbSet.connect();
+		const economyHealth = await this.fetchEconomyHealth(dbSet);
+		const twitchSubscriptionCount = await dbSet.twitchStreamSubscriptions.count();
 
 		this.writePoints([
 			this.syncGuilds(guilds),
 			this.syncUsers(users),
 			this.syncVoiceConnections(),
 			this.syncEconomy(economyHealth.total_money, AnalyticsSchema.EconomyType.Money),
-			this.syncEconomy(economyHealth.total_vault, AnalyticsSchema.EconomyType.Vault)
+			this.syncEconomy(economyHealth.total_vault, AnalyticsSchema.EconomyType.Vault),
+			this.syncTwitchSubscriptions(twitchSubscriptionCount)
 		]);
 
 		return this.analytics.flush();
@@ -53,8 +56,13 @@ export default class extends AnalyticsEvent {
 			.intField(type, Number(value));
 	}
 
-	private async fetchEconomyHealth(): Promise<{ total_money: string; total_vault: string }> {
-		const dbSet = await DbSet.connect();
+	private syncTwitchSubscriptions(value: number) {
+		return new Point(AnalyticsSchema.Points.TwitchSubscriptions)
+			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+			.intField('count', value);
+	}
+
+	private async fetchEconomyHealth(dbSet: DbSet): Promise<{ total_money: string; total_vault: string }> {
 		const [data] = await dbSet.users.query(/* sql */`
 			WITH
 				u AS (SELECT SUM(money) as total_money FROM public.user),

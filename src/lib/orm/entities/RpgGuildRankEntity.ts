@@ -1,4 +1,4 @@
-import { BaseEntity, Check, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { RpgGuildEntity } from './RpgGuildEntity';
 import { RpgUserEntity } from './RpgUserEntity';
 
@@ -12,7 +12,7 @@ export class RpgGuildRankEntity extends BaseEntity {
 	@Column('varchar', { length: 50 })
 	public name!: string;
 
-	@OneToMany(() => RpgGuildEntity, guild => guild.ranks, { onDelete: 'CASCADE' })
+	@ManyToOne(() => RpgGuildEntity, guild => guild.ranks, { onDelete: 'CASCADE' })
 	@JoinColumn()
 	public guild?: RpgGuildEntity;
 

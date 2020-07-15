@@ -9,27 +9,21 @@ import { MigrationInterface, QueryRunner, Table, TableColumn, TableCheck } from 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
 const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
 
+/*
+Since I believe in the competence of this dev team.
+I decided to remove the check for if the bucket exists under "up"
+*/
+
+
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 
 	private migStart: Date = new Date();
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		const categoriesRaw: CategoriesListEntry[] = await readJson(join('.', CATEGORIES_FILE));
-		const categories = new Map(categoriesRaw);
+		const categories = new Map<string, CategoryData>(await readJson(join(__dirname, CATEGORIES_FILE)));
 
 		const influx = new InfluxDB(INFLUX_OPTIONS);
-		const bucketAPI = new BucketsAPI(influx);
-		const buckets = await bucketAPI.getBuckets();
 		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
-
-		if (!buckets.buckets?.some(bucket => bucket.name === INFLUX_ORG_ANALYTICS_BUCKET)) {
-			await bucketAPI.postBuckets({
-				body: {
-					name: INFLUX_ORG_ANALYTICS_BUCKET,
-					retentionRules: []
-				}
-			});
-		}
 
 		const commandUses: CommandUsageStats = await queryRunner.query('SELECT * FROM command_counter');
 
@@ -62,7 +56,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 				new TableCheck({ expression: /* sql */`"uses" >= 0` })
 			],
 			columns: [
-				new TableColumn({ name: 'id', type: 'varchar', length: '32', isNullable: false }),
+				new TableColumn({ name: 'id', type: 'varchar', length: '32', isPrimary: true }),
 				new TableColumn({ 'name': 'uses', 'type': 'integer', 'default': 0, 'isNullable': false })
 			]
 		}));
@@ -76,10 +70,8 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 				DO
 					UPDATE
 					SET uses = command_counter.uses + $2;
-			`, [command._field, command._value]);
+			`, [command._field, Number(command._value)]);
 		}
-
-		await bucketAPI.deleteBucketsID({ bucketID: INFLUX_ORG_ANALYTICS_BUCKET });
 	}
 
 	private createPoint(commandName: string, commandUsageAmount: number, categoryData: CategoryData) {
@@ -120,5 +112,3 @@ interface CategoryData {
 	category: string;
 	subCategory: string;
 }
-
-type CategoriesListEntry = [string, CategoryData];

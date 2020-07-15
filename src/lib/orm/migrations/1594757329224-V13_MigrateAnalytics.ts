@@ -35,14 +35,32 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		await writer.flush();
 		await writer.close();
 
-		await queryRunner.dropTable('command_counter');
+		await queryRunner.query('DROP TABLE command_counter');
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		const influx = new InfluxDB(INFLUX_OPTIONS);
 		const reader = influx.getQueryApi(INFLUX_ORG);
 
-		const commands = await reader.collectRows(INFLUX_ALL_COMMANDS_SCRIPT);
+		const commands = await reader.collectRows<InfluxSummedCommandEntry>(INFLUX_ALL_COMMANDS_SCRIPT);
+
+		await queryRunner.startTransaction().then(async () => {
+			await queryRunner.query('CREATE TABLE command_counter');
+
+			for (const command of commands) {
+				await queryRunner.query(/* sql */`
+					INSERT
+					INTO command_counter ("id", "uses")
+					VALUES ($1, $2)
+					ON CONFLICT (id)
+					DO
+						UPDATE
+						SET uses = command_counter.uses + $2;
+				`, [command._field, command._value]);
+			}
+		});
+
+		await queryRunner.commitTransaction();
 	}
 
 	private createPoint(commandName: string, commandUsageAmount: number, categoryData: CategoryData) {
@@ -55,6 +73,21 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 			.intField(commandName, commandUsageAmount);
 	}
 
+}
+
+interface InfluxSummedCommandEntry {
+	result: '_result';
+	table: string;
+	_start: string;
+	_stop: string;
+	_field: string;
+	_measurement: AnalyticsSchema.Points.Commands;
+	action: AnalyticsSchema.Actions;
+	category: string;
+	client_id: string;
+	origin_event: string;
+	subCategory: string;
+	_value: string;
 }
 
 type CommandUsageStats = CommandUsage[];

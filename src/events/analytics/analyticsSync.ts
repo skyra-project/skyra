@@ -12,14 +12,14 @@ import { EventOptions } from 'klasa';
 export default class extends AnalyticsEvent {
 
 	public async run(guilds: number, users: number) {
-		const eco = await this.fetchEconomy();
+		const economyHealth = await this.fetchEconomyHealth();
 
 		this.writePoints([
 			this.syncGuilds(guilds),
 			this.syncUsers(users),
 			this.syncVoiceConnections(),
-			this.syncEconomy(eco.total_money, AnalyticsSchema.EconomyType.Money),
-			this.syncEconomy(eco.total_vault, AnalyticsSchema.EconomyType.Vault)
+			this.syncEconomy(economyHealth.total_money, AnalyticsSchema.EconomyType.Money),
+			this.syncEconomy(economyHealth.total_vault, AnalyticsSchema.EconomyType.Vault)
 		]);
 
 		return this.analytics.flush();
@@ -53,15 +53,15 @@ export default class extends AnalyticsEvent {
 			.intField(type, Number(value));
 	}
 
-	private async fetchEconomy(): Promise<{ total_money: string; total_vault: string }> {
+	private async fetchEconomyHealth(): Promise<{ total_money: string; total_vault: string }> {
 		const dbSet = await DbSet.connect();
-		const query = await dbSet.users.query(/* sql */`
+		const [data] = await dbSet.users.query(/* sql */`
 			WITH
 				u AS (SELECT SUM(money) as total_money FROM public.user),
 				v AS (SELECT SUM(vault) as total_vault FROM public.user_profile)
 			SELECT * FROM u, v;
 		`);
-		return query[0];
+		return data;
 	}
 
 }

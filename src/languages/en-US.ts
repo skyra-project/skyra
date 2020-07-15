@@ -810,8 +810,8 @@ export default class extends Language {
 		COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
 			XP_LEVEL: 'XP level',
 			BUILDER_HALL_LEVEL: 'Builder Hall level',
-			TOWNHALL_LEVEL: 'Townhall level',
-			TOWNHALL_WEAPON_LEVEL: 'Townhall weapon level',
+			TOWNHALL_LEVEL: 'Town Hall level',
+			TOWNHALL_WEAPON_LEVEL: 'Town Hall weapon level',
 
 			TROPHIES: 'Current trophies',
 			BEST_TROPHIES: 'Best trophies',
@@ -828,9 +828,9 @@ export default class extends Language {
 			CLAN_ROLE: 'Clan role',
 			CLAN_NAME: 'Clan name',
 			LEAGUE_NAME: 'League name',
-			NO_TOWNHALL_WEAPON_LEVEL: 'Town hall has no weapon level',
+			NO_TOWNHALL_WEAPON_LEVEL: 'Town Hall has no weapon level',
 			NO_ROLE: 'This player has no clan role',
-			NO_CLAN: 'This player is not a clan member',
+			NO_CLAN: 'This player is not in a clan',
 			NO_LEAGUE: 'This user is not in any league'
 		},
 		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {

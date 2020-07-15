@@ -6,7 +6,8 @@ export namespace AnalyticsSchema {
 		Commands = 'commands',
 		VoiceConnections = 'voice_connections',
 		Economy = 'economy',
-		TwitchSubscriptions = 'twitch_subscriptions'
+		TwitchSubscriptions = 'twitch_subscriptions',
+		TwitchSubscriptionHook = 'twitch_subscription_hook'
 	}
 
 	export const enum Tags {
@@ -17,7 +18,8 @@ export namespace AnalyticsSchema {
 		Action = 'action',
 		OriginEvent = 'origin_event',
 		MigrationName = 'migration_name',
-		ValueType = 'value_type'
+		ValueType = 'value_type',
+		TwitchStreamStatus = 'twitch_stream_status'
 	}
 
 	export const enum CommandCategoryTypes {
@@ -42,8 +44,8 @@ export namespace AnalyticsSchema {
 	}
 
 	export const enum TwitchStreamStatus {
-		Online = 1,
-		Offline = 0
+		Online = 'online',
+		Offline = 'offline'
 	}
 
 }

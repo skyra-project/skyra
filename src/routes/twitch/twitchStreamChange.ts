@@ -22,7 +22,7 @@ export default class extends Route {
 	}
 
 	// Stream Changed
-	public async post(request: ApiRequest, response: ApiResponse) {
+	public post(request: ApiRequest, response: ApiResponse) {
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 
 		const xHubSignature = request.headers['x-hub-signature'];

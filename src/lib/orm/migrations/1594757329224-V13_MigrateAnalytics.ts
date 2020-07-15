@@ -7,7 +7,7 @@ import {
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { readJson } from 'fs-nextra';
 import { join } from 'path';
-import { MigrationInterface, QueryRunner } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableColumn, TableCheck } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
 const INFLUX_ALL_COMMANDS_SCRIPT = 'from(bucket: "analytics") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")';
@@ -35,7 +35,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		await writer.flush();
 		await writer.close();
 
-		await queryRunner.query('DROP TABLE command_counter');
+		await queryRunner.dropTable('command_counter');
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
@@ -44,8 +44,19 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 
 		const commands = await reader.collectRows<InfluxSummedCommandEntry>(INFLUX_ALL_COMMANDS_SCRIPT);
 
-		await queryRunner.startTransaction().then(async () => {
-			await queryRunner.query('CREATE TABLE command_counter');
+		try {
+			await queryRunner.startTransaction();
+
+			await queryRunner.createTable(new Table({
+				name: 'command_counter',
+				checks: [
+					new TableCheck({ expression: /* sql */`"uses" >= 0` })
+				],
+				columns: [
+					new TableColumn({ name: 'id', type: 'varchar', length: '32', isNullable: false }),
+					new TableColumn({ 'name': 'uses', 'type': 'integer', 'default': 0, 'isNullable': false })
+				]
+			}));
 
 			for (const command of commands) {
 				await queryRunner.query(/* sql */`
@@ -58,9 +69,13 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 						SET uses = command_counter.uses + $2;
 				`, [command._field, command._value]);
 			}
-		});
-
-		await queryRunner.commitTransaction();
+		} catch (error) {
+			await queryRunner.rollbackTransaction();
+			console.error('Error detected! Transaction has been rolled back');
+			throw error;
+		} finally {
+			await queryRunner.commitTransaction();
+		}
 	}
 
 	private createPoint(commandName: string, commandUsageAmount: number, categoryData: CategoryData) {

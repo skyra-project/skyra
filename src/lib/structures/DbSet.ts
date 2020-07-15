@@ -1,6 +1,5 @@
 import { connect } from '@orm/dbConfig';
 import { BannerEntity } from '@orm/entities/BannerEntity';
-import { CommandCounterEntity } from '@orm/entities/CommandCounterEntity';
 import { DashboardUserEntity } from '@orm/entities/DashboardUserEntity';
 import { GiveawayEntity } from '@orm/entities/GiveawayEntity';
 import { GuildEntity } from '@orm/entities/GuildEntity';
@@ -38,10 +37,6 @@ export class DbSet {
 
 	public get clients() {
 		return this.connection.getCustomRepository(ClientRepository);
-	}
-
-	public get commandCounters() {
-		return this.connection.getRepository(CommandCounterEntity);
 	}
 
 	public get dashboardUsers() {

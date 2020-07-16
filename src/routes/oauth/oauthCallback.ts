@@ -12,8 +12,11 @@ import type OauthUser from './oauthUser';
 
 export default class extends Route {
 
+	private readonly kAuthorization: string;
+
 	public constructor(store: RouteStore, file: string[], directory: string) {
 		super(store, file, directory, { route: 'oauth/callback' });
+		this.kAuthorization = `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}`;
 	}
 
 	@ratelimit(2, 60000)
@@ -34,7 +37,7 @@ export default class extends Route {
 				code: requestBody.code
 			}),
 			headers: {
-				'Authorization': `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}`,
+				'Authorization': this.kAuthorization,
 				'Content-Type': Mime.Types.ApplicationFormUrlEncoded
 			}
 		});

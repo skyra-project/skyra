@@ -152,7 +152,10 @@ declare module 'klasa' {
 declare module 'klasa-dashboard-hooks' {
 
 	interface AuthData {
+		token: string;
+		refresh: string;
 		user_id: string;
+		expires: number;
 	}
 
 }

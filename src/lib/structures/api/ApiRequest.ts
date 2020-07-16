@@ -19,12 +19,3 @@ export interface ApiRequest {
 	length?: number;
 	auth?: UserAuthObject;
 }
-
-declare module 'klasa-dashboard-hooks' {
-	interface AuthData {
-		token: string;
-		refresh: string;
-		user_id: string;
-		expires: number;
-	}
-}

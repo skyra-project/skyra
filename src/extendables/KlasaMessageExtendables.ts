@@ -1,7 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { APIErrors } from '@utils/constants';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
-import { Extendable, ExtendableStore, util } from 'klasa';
+import { Extendable, ExtendableStore } from 'klasa';
+import { sleep } from '@klasa/utils';
 
 export default class extends Extendable {
 
@@ -48,7 +49,7 @@ export default class extends Extendable {
 		if (time === 0) return nuke(this);
 
 		const count = this.edits.length;
-		await util.sleep(time);
+		await sleep(time);
 		return !this.deleted && this.edits.length === count ? nuke(this) : this;
 	}
 

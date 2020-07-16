@@ -1,6 +1,6 @@
 import { Collection } from '@discordjs/collection';
 import { Message } from 'discord.js';
-import { util } from 'klasa';
+import { codeBlock } from '@klasa/utils';
 import { levenshtein } from './External/levenshtein';
 
 type FuzzySearchAccess<V> = (value: V) => string;
@@ -71,7 +71,7 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length > 10) results.length = 10;
 
 		const { content: n } = await message.prompt(message.language.tget('FUZZYSEARCH_MATCHES', results.length - 1,
-			util.codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))));
+			codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))));
 		if (n.toLowerCase() === 'abort') return null;
 		const parsed = Number(n);
 		if (!Number.isSafeInteger(parsed)) throw message.language.tget('FUZZYSEARCH_INVALID_NUMBER');

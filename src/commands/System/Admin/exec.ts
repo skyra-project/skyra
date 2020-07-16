@@ -2,7 +2,8 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageAttachment } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { codeBlock, exec } from '@klasa/utils';
 
 export default class extends SkyraCommand {
 
@@ -19,10 +20,10 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const result = await util.exec(input, { timeout: 'timeout' in message.flagArgs ? Number(message.flagArgs.timeout) : 60000 })
+		const result = await exec(input, { timeout: 'timeout' in message.flagArgs ? Number(message.flagArgs.timeout) : 60000 })
 			.catch(error => ({ stdout: null, stderr: error }));
-		const output = result.stdout ? `**\`OUTPUT\`**${util.codeBlock('prolog', result.stdout)}` : '';
-		const outerr = result.stderr ? `**\`ERROR\`**${util.codeBlock('prolog', result.stderr)}` : '';
+		const output = result.stdout ? `**\`OUTPUT\`**${codeBlock('prolog', result.stdout)}` : '';
+		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
 		const joined = [output, outerr].join('\n') || 'No output';
 
 		return message.sendMessage(joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined);

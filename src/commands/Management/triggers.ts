@@ -6,7 +6,8 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { displayEmoji, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, util } from 'klasa';
+import { KlasaMessage } from 'klasa';
+import { chunk } from '@klasa/utils';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
@@ -98,7 +99,7 @@ export default class extends SkyraCommand {
 			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(await DbSet.fetchColor(message)));
 
-		for (const page of util.chunk(output, 10)) {
+		for (const page of chunk(output, 10)) {
 			display.addPage((embed: MessageEmbed) => embed.setDescription(page));
 		}
 

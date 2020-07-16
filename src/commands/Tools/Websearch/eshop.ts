@@ -7,7 +7,8 @@ import { BrandingColors, Mime } from '@utils/constants';
 import { cutText, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage, Timestamp, util } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
+import { toTitleCase } from '@klasa/utils';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
@@ -91,7 +92,7 @@ export default class extends RichDisplayCommand {
 				.addField(titles.PRICE, price, true)
 				.addField(titles.AVAILABILITY, game.availability[0], true)
 				.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask), true)
-				.addField(titles.NUMBER_OF_PLAYERS, util.toTitleCase(game.players), true)
+				.addField(titles.NUMBER_OF_PLAYERS, toTitleCase(game.players), true)
 				.addField(titles.PLATFORM, game.platform, true)
 				.addField(titles.NSUID, game.nsuid || 'TBD', true)
 				.addField(titles.ESRB, esrbText)

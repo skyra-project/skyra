@@ -141,7 +141,6 @@ export class SkyraClient extends KlasaClient {
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
-		// TODO: Remove as any when https://github.com/dirigeants/utils/pull/205 is merged and released
 		super(mergeDefault(clientOptions as any, CLIENT_OPTIONS));
 
 		// Register user gateway override

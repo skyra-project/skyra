@@ -570,6 +570,11 @@
   resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.8.tgz#8b017d8f7a771e5c1894b85f8dafefc219fc9d76"
   integrity sha512-6G/P9/HM8fTanKUFPrODFmmD3ff8Jwr7gG//2BsTeWfGBBulDn/H8ObWRJjIu81nLKX1I4iQ1jNcK5uOfso6ug==
 
+"@klasa/utils@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.1.0.tgz#36f07120cecdd7a751d6b3cc57d519a05e0e51cc"
+  integrity sha512-QLWYkPxnMYq0tVTbALSxEWnygX+DewC8+NEjoFdXbVIjGLfK5XhcdrkoWIok4DvQYd/Hm4/LNO9KP01RNDGzKg==
+
 "@playlyfe/gql@^2.6.2":
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/@playlyfe/gql/-/gql-2.6.2.tgz#3cdb0281a18e183f1b61dc2bcfdfa82632ee3a30"

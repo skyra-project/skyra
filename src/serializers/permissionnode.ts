@@ -1,6 +1,7 @@
 import { PermissionsNode } from '@lib/types/settings/GuildSettings';
 import { GuildMember, Role } from 'discord.js';
-import { Command, Serializer, SerializerUpdateContext, util } from 'klasa';
+import { Command, Serializer, SerializerUpdateContext } from 'klasa';
+import { isObject } from '@klasa/utils';
 
 export default class extends Serializer {
 
@@ -8,7 +9,7 @@ export default class extends Serializer {
 		if (guild === null) throw new TypeError('guild must not be null.');
 
 		// Safe-guard checks against arbitrary data
-		if (!util.isObject(data)) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID');
+		if (!isObject(data)) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID');
 		if (Object.keys(data).length !== 3) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID');
 		if (typeof data.id !== 'string') throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID');
 		if (!Array.isArray(data.allow)) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID');

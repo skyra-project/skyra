@@ -3,7 +3,8 @@ import { Events } from '@lib/types/Enums';
 import { rootFolder } from '@utils/constants';
 import { inlineCodeblock } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
-import { Command, Event, KlasaMessage, util } from 'klasa';
+import { Command, Event, KlasaMessage } from 'klasa';
+import { codeBlock } from '@klasa/utils';
 
 const BLACKLISTED_CODES = [
 	// Unknown Channel
@@ -49,7 +50,7 @@ export default class extends Event {
 		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
 			await message.alert(this.client.options.owners.includes(message.author.id)
-				? util.codeBlock('js', error.stack!)
+				? codeBlock('js', error.stack!)
 				: message.language.tget('EVENTS_ERROR_WTF'));
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);
@@ -64,13 +65,13 @@ export default class extends Event {
 				`${inlineCodeblock('Path      ::')} ${error.path}`,
 				`${inlineCodeblock('Code      ::')} ${error.code}`,
 				`${inlineCodeblock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
-				`${inlineCodeblock('Error     ::')} ${util.codeBlock('js', error.stack || error)}`
+				`${inlineCodeblock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 			].join('\n');
 		} else {
 			output = [
 				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
 				`${inlineCodeblock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
-				`${inlineCodeblock('Error     ::')} ${util.codeBlock('js', error.stack || error)}`
+				`${inlineCodeblock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 			].join('\n');
 		}
 

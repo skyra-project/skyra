@@ -4,7 +4,8 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { resolveEmoji } from '@utils/util';
 import { Role } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
+import { codeBlock } from '@klasa/utils';
 
 export default class extends SkyraCommand {
 
@@ -59,7 +60,7 @@ export default class extends SkyraCommand {
 			});
 		}
 		if (!lines.length) throw message.language.tget('COMMAND_MANAGEROLEREACTION_LIST_EMPTY');
-		return message.sendMessage(util.codeBlock('asciicode', lines.join('\n')));
+		return message.sendMessage(codeBlock('asciicode', lines.join('\n')));
 	}
 
 	public async add(message: KlasaMessage, [role, reaction]: [Role, string]) {

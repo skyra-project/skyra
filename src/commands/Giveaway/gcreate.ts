@@ -2,6 +2,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { Schedules } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { cleanMentions } from '@utils/util';
+import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
@@ -12,14 +13,14 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 	extendedHelp: language => language.tget('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
-	usage: '<schedule:time> <duration:time> <title:...string{,256}>',
+	usage: '[channel:textchannelname{2}] <schedule:time> <duration:time> <title:...string{,256}>',
 	flagSupport: true,
 	usageDelim: ' ',
 	promptLimit: Infinity
 })
 export default class extends SkyraCommand {
 
-	public async run(message: KlasaMessage, [schedule, duration, title]: [Date, Date, string]) {
+	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]) {
 		// First do the checks for the giveaway itself
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
@@ -35,7 +36,7 @@ export default class extends SkyraCommand {
 				title: cleanMentions(message.guild!, title),
 				endsAt: duration.getTime() + scheduleOffset + 500,
 				guildID: message.guild!.id,
-				channelID: message.channel.id,
+				channelID: channel.id,
 				minimum: 1,
 				minimumWinners: winners
 			},

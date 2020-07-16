@@ -60,9 +60,9 @@ export default class extends Event {
 		}
 	}
 
-	private async initAnalytics() {
+	private initAnalytics() {
 		if (ENABLE_INFLUX) {
-			await this.client.emit(Events.AnalyticsSync,
+			this.client.emit(Events.AnalyticsSync,
 				this.client.guilds.size,
 				this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0));
 		}

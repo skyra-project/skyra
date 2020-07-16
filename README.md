@@ -12,8 +12,11 @@
 ### Requirements
 
 -   [`Node.js`]: To run the project.
--   [`PostgreSQL`]: (Dev Optional) To store persistent data.
--   [`Lavalink`]: (Dev Optional) Audio server.
+-   [`PostgreSQL`]: To store persistent data.
+
+### Optional additions
+-   [`Lavalink`]: Audio server.
+-   [`InfluxDB`]: Metrics platform
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -120,6 +123,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`node.js`]:                         https://nodejs.org/en/download/current/
 [`postgresql`]:                      https://www.postgresql.org/download/
 [`lavalink`]:                        https://github.com/Frederikam/Lavalink
+[`influxdb`]:                        https://v2.docs.influxdata.com/v2.0/get-started/
 
 [Set-Up - Refer to CONTRIBUTING.md]: /.github/CONTRIBUTING.md
 [Evlyn]:                             https://github.com/kyranet/Evlyn
@@ -128,7 +132,7 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [Netcup]:                            https://www.netcup.eu/
 [DigitalOcean]:                      https://www.digitalocean.com/
 
-[skyra invite link]:                 https://skyra.pw/invite
+[skyra invite link]:                 https://invite.skyra.pw
 [support server]:                    https://join.skyra.pw
 [patreon]:                           https://www.patreon.com/kyranet
 

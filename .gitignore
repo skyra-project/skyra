@@ -33,3 +33,6 @@ package-lock.json
 
 # Ignore the GH cli downloaded by workflows
 gh
+
+# Ignore the "wiki" folder so we can checkout the wiki inside the same folder
+wiki/

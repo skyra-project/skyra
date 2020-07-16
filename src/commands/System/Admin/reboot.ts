@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { ENABLE_LAVALINK, ENABLE_INFLUX } from '@root/config';
+import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -23,6 +23,10 @@ export default class extends SkyraCommand {
 				await this.client.lavalink.disconnect();
 			}
 			if (ENABLE_INFLUX) {
+				this.client.emit(Events.AnalyticsSync,
+					this.client.guilds.size,
+					this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0));
+
 				await this.client.analytics!.flush();
 				await this.client.analytics!.close();
 			}

@@ -4361,16 +4361,23 @@ export default class extends Language {
 		 * #################################
 		 */
 
-		SERIALIZER_PERMISSION_NODE_INVALID: 'Invalid data.',
-		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
-		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: command => `The command \`${command}\` does not exist or is invalid.`,
+		SERIALIZER_AUTOROLE_INVALID: 'Invalid autorole data.',
+		SERIALIZER_COMMAND_AUTO_DELETE_INVALID: 'Invalid command auto-delete data.',
 		SERIALIZER_CUSTOM_COMMAND_INVALID: 'Invalid custom command data.',
-		SERIALIZER_TWITCH_SUBSCRIPTION_INVALID: 'Invalid data.',
-		SERIALIZER_TWITCH_SUBSCRIPTION_INVALID_STREAMER: 'Invalid data streamer.',
+		SERIALIZER_DISABLED_COMMAND_CHANNEL_INVALID: 'Invalid disabled command channel data.',
 		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: command => `You have set \`${command}\` twice, either allow it, or deny it.`,
-		SERIALIZER_PERMISSION_NODE_SECURITY_OWNER: 'You cannot set permission overrides on the server owner.',
+		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: command => `The command \`${command}\` does not exist or is invalid.`,
+		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
+		SERIALIZER_PERMISSION_NODE_INVALID: 'Invalid data.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: command => `For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
+		SERIALIZER_PERMISSION_NODE_SECURITY_OWNER: 'You cannot set permission overrides on the server owner.',
+		SERIALIZER_STICKY_ROLE_INVALID: 'Invalid sticky role data.',
+		SERIALIZER_TRIGGER_ALIAS_INVALID: 'Invalid trigger alias data.',
+		SERIALIZER_TRIGGER_INCLUDE_INVALID: 'Invalid trigger includes data.',
+		SERIALIZER_TWITCH_SUBSCRIPTION_INVALID_STREAMER: 'Invalid data streamer.',
+		SERIALIZER_TWITCH_SUBSCRIPTION_INVALID: 'Invalid data.',
+		SERIALIZER_UNIQUE_ROLE_SET_INVALID: 'Invalid unique role set data.',
 
 		/**
 		 * #################################
@@ -4646,7 +4653,9 @@ export default class extends Language {
 		EVENTS_ERROR_STRING: (mention, message) => `${REDCROSS} Dear ${mention}, ${message}`,
 
 		CONST_USERS: 'Users',
-		UNKNOWN_USER: 'Unknown user.'
+		UNKNOWN_CHANNEL: 'Unknown channel',
+		UNKNOWN_ROLE: 'Unknown role',
+		UNKNOWN_USER: 'Unknown user'
 	};
 
 	public async init() {

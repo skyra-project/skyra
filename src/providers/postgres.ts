@@ -23,6 +23,13 @@ export default class extends SQLProvider {
 		.add('customcommand', { 'extends': 'any' })
 		.add('permissionnode', { 'extends': 'any' })
 		.add('twitchsubscription', { 'extends': 'any' })
+		.add('autorole', { 'extends': 'any' })
+		.add('commandautodelete', { 'extends': 'any' })
+		.add('disabledcommandchannel', { 'extends': 'any' })
+		.add('stickyrole', { 'extends': 'any' })
+		.add('triggeralias', { 'extends': 'any' })
+		.add('triggerinclude', { 'extends': 'any' })
+		.add('uniqueroleset', { 'extends': 'any' })
 		.add('emoji', { 'type': 'VARCHAR(128)', 'extends': 'string' })
 		.add('url', { 'type': 'VARCHAR(128)', 'extends': 'string' });
 	/* eslint-enable @typescript-eslint/no-invalid-this */

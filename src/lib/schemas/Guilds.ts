@@ -22,9 +22,9 @@ export default Client.defaultGuildSchema
 		.add('reaction-logs', 'TextChannel')
 		.add('roles', 'TextChannel')
 		.add('spam', 'TextChannel'))
-	.add('command-autodelete', 'any', { array: true })
-	.add('disabledChannels', 'TextChannel', { array: true })
-	.add('disabledCommandsChannels', 'any', { array: true, configurable: false })
+	.add('command-autodelete', 'CommandAutoDelete', { array: true, configurable: false })
+	.add('disabledChannels', 'TextChannel', { array: true, configurable: false })
+	.add('disabledCommandsChannels', 'DisabledCommandChannel', { array: true, configurable: false })
 	.add('events', folder => folder
 		.add('banAdd', 'Boolean', { 'default': false })
 		.add('banRemove', 'Boolean', { 'default': false })
@@ -46,10 +46,10 @@ export default Client.defaultGuildSchema
 		.add('moderation-message-display', 'Boolean', { 'default': true })
 		.add('moderation-auto-delete', 'Boolean', { 'default': false })
 		.add('moderator-name-display', 'Boolean', { 'default': true }))
-	.add('stickyRoles', 'any', { array: true })
+	.add('stickyRoles', 'StickyRole', { array: true, configurable: false })
 	.add('roles', folder => folder
 		.add('admin', 'Role')
-		.add('auto', 'any', { array: true })
+		.add('auto', 'AutoRole', { array: true, configurable: false })
 		.add('initial', 'Role')
 		.add('messageReaction', 'Snowflake', { configurable: false })
 		.add('moderator', 'Role')
@@ -60,11 +60,12 @@ export default Client.defaultGuildSchema
 		.add('restricted-attachment', 'Role')
 		.add('restricted-voice', 'Role')
 		.add('public', 'Role', { array: true })
+		// TODO(kyranet): Migrate to new reaction system
 		.add('reactions', 'any', { array: true })
 		.add('removeInitial', 'Boolean')
 		.add('dj', 'Role')
 		.add('subscriber', 'Role')
-		.add('uniqueRoleSets', 'any', { array: true }))
+		.add('uniqueRoleSets', 'UniqueRoleSet', { array: true, configurable: false }))
 	.add('selfmod', folder => folder
 		.add('attachment', 'Boolean', { 'default': false })
 		.add('attachmentMaximum', 'Integer', { 'default': 20, 'minimum': 0, 'maximum': 60 })
@@ -166,8 +167,8 @@ export default Client.defaultGuildSchema
 		.add('ignoreChannels', 'TextChannel', { array: true })
 		.add('minimum', 'Integer', { 'default': 1, 'minimum': 1, 'inclusive': true }))
 	.add('trigger', folder => folder
-		.add('alias', 'any', { array: true, configurable: false })
-		.add('includes', 'any', { array: true, configurable: false }))
+		.add('alias', 'TriggerAlias', { array: true, configurable: false })
+		.add('includes', 'TriggerInclude', { array: true, configurable: false }))
 	.add('music', folder => folder
 		.add('default-volume', 'Number', { 'minimum': 0, 'maximum': 200, 'default': 100 })
 		.add('maximum-duration', 'Number', { 'minimum': 0, 'maximum': Time.Hour * 12, 'default': Time.Hour * 2 })

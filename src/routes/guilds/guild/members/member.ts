@@ -1,5 +1,5 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { flattenMember } from '@utils/Models/ApiTransform';
 import { authenticated, ratelimit } from '@utils/util';
 import { Permissions } from 'discord.js';

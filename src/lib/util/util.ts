@@ -1,6 +1,6 @@
 import { isNumber } from '@klasa/utils';
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -616,7 +616,7 @@ export const authenticated = createFunctionInhibitor(
 	(request: ApiRequest) => {
 		if (!request.headers.authorization) return false;
 		request.auth = Util.decrypt(request.headers.authorization, CLIENT_SECRET);
-		return !(!request.auth!.user_id || !request.auth!.token);
+		return !(!request.auth!.user_id || !request.auth!.token || !request.auth!.refresh || !request.auth!.expires);
 
 	},
 	(_request: ApiRequest, response: ApiResponse) => {

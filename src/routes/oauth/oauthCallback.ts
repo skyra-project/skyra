@@ -1,10 +1,8 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
-import { DbSet } from '@lib/structures/DbSet';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
-import { DashboardUserEntity } from '@orm/entities/DashboardUserEntity';
-import { Mime, Time } from '@utils/constants';
+import { Mime } from '@utils/constants';
 import { ratelimit } from '@utils/util';
 import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
@@ -58,30 +56,15 @@ export default class extends Route {
 		const user = await oauthUser.api(body.access_token);
 		if (user === null) return response.error(500);
 
-		const { dashboardUsers } = await DbSet.connect();
-		const existing = await dashboardUsers.findOne({ where: { id: user.id }, cache: Time.Minute });
-		if (existing) {
-			existing.expiresAt = new Date(Date.now() + (body.expires_in * Time.Second));
-			existing.accessToken = body.access_token;
-			existing.refreshToken = body.refresh_token;
-			await existing.save();
-		} else {
-			const created = new DashboardUserEntity();
-			created.id = user.id;
-			created.expiresAt = new Date(Date.now() + (body.expires_in * Time.Second));
-			created.accessToken = body.access_token;
-			created.refreshToken = body.refresh_token;
-			await dashboardUsers.insert(created);
-		}
+		const authentication = Util.encrypt({
+			user_id: user.id,
+			token: body.access_token,
+			refresh: body.refresh_token,
+			expires: body.expires_in
+		}, this.client.options.clientSecret);
 
-		response.json(({
-			access_token: Util.encrypt({
-				user_id: user.id,
-				token: body.access_token
-			}, this.client.options.clientSecret),
-			user
-		}));
-
+		response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
+		response.json(({ user }));
 	}
 
 }

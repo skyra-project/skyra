@@ -1,6 +1,6 @@
 import { objectToTuples } from '@klasa/utils';
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { RawGuildSettings } from '@lib/types/settings/raw/RawGuildSettings';
 import { canManage } from '@utils/API';

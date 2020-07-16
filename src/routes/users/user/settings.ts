@@ -1,5 +1,5 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { authenticated, ratelimit } from '@utils/util';

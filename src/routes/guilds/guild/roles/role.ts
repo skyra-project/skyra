@@ -1,5 +1,5 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { canManage } from '@utils/API';
 import { flattenRole } from '@utils/Models/ApiTransform';
 import { authenticated, ratelimit } from '@utils/util';

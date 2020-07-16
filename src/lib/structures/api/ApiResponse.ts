@@ -1,7 +1,10 @@
 import { Mime } from '@utils/constants';
 import { ServerResponse, STATUS_CODES } from 'http';
+import { CookieStore } from './CookieStore';
 
-export default class ApiResponse extends ServerResponse {
+export class ApiResponse extends ServerResponse {
+
+	public cookies!: CookieStore;
 
 	public error(error: number | string): void {
 		if (typeof error === 'string') {
@@ -21,13 +24,19 @@ export default class ApiResponse extends ServerResponse {
 	}
 
 	public badRequest(data: unknown = STATUS_CODES[400]) {
-		this.status(400);
-		return typeof data === 'string' ? this.text(data) : this.json(data);
+		return this.status(400).json({ reason: data });
+	}
+
+	public unauthorized(data: unknown = STATUS_CODES[401]) {
+		return this.status(401).json({ reason: data });
 	}
 
 	public forbidden(data: unknown = STATUS_CODES[403]) {
-		this.status(403);
-		return typeof data === 'string' ? this.text(data) : this.json(data);
+		return this.status(403).json({ reason: data });
+	}
+
+	public notFound(data: unknown = STATUS_CODES[404]) {
+		return this.status(404).json({ reason: data });
 	}
 
 	public status(code: number): this {

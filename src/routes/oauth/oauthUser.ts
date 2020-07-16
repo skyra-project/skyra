@@ -1,6 +1,5 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
-import { DbSet } from '@lib/structures/DbSet';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { REDIRECT_URI, SCOPE } from '@root/config';
@@ -30,39 +29,31 @@ export default class extends Route {
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;
 		if (typeof requestBody.action !== 'string') {
-			return response.error(400);
+			return response.badRequest();
 		}
 
 		if (requestBody.action === 'SYNC_USER') {
-			const { dashboardUsers } = await DbSet.connect();
-			const data = await dashboardUsers.findOne({ where: { id: request.auth!.user_id }, cache: Time.Minute });
-			if (!data) return response.error(401);
-
-			if (!data.accessToken) {
-				await data.remove();
-				return response.error(401);
-			}
+			if (!request.auth) return response.error(401);
 
 			// If the token expires in a day, refresh
-			if (Date.now() + Time.Day > data.expiresAt!.getTime()) {
-				const body = await this.refreshToken(data.id!, data.refreshToken!);
+			if (Date.now() + Time.Day > request.auth.expires) {
+				const body = await this.refreshToken(request.auth!.user_id, request.auth!.refresh);
 				if (body !== null) {
-					data.accessToken = body.access_token;
-					data.refreshToken = body.refresh_token;
-					data.expiresAt = new Date(Date.now() + (body.expires_in * Time.Second));
+					const authentication = Util.encrypt({
+						user_id: request.auth!.user_id,
+						token: body.access_token,
+						refresh: body.refresh_token,
+						expires: body.expires_in
+					}, this.client.options.clientSecret);
+
+					response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
 				}
 			}
 
 			try {
-				const user = await this.fetchUser(request.auth!.user_id, `Bearer ${data.accessToken}`);
+				const user = await this.fetchUser(request.auth!.user_id, `Bearer ${request.auth!.token}`);
 				if (user === null) return response.error(500);
-				return response.json({
-					access_token: Util.encrypt({
-						user_id: user.id,
-						token: data.accessToken
-					}, this.client.options.clientSecret),
-					user
-				});
+				return response.json({ user });
 			} catch (error) {
 				this.client.emit(Events.Wtf, error);
 				return response.error(500);

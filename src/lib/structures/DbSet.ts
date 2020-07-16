@@ -1,6 +1,5 @@
 import { connect } from '@orm/dbConfig';
 import { BannerEntity } from '@orm/entities/BannerEntity';
-import { DashboardUserEntity } from '@orm/entities/DashboardUserEntity';
 import { GiveawayEntity } from '@orm/entities/GiveawayEntity';
 import { GuildEntity } from '@orm/entities/GuildEntity';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
@@ -37,10 +36,6 @@ export class DbSet {
 
 	public get clients() {
 		return this.connection.getCustomRepository(ClientRepository);
-	}
-
-	public get dashboardUsers() {
-		return this.connection.getRepository(DashboardUserEntity);
 	}
 
 	public get giveaways() {

@@ -36,6 +36,7 @@ export default class extends Route {
 			if (!request.auth) return response.error(401);
 
 			// If the token expires in a day, refresh
+			let authToken = request.auth.token;
 			if (Date.now() + Time.Day > request.auth.expires) {
 				const body = await this.refreshToken(request.auth.user_id, request.auth.refresh);
 				if (body !== null) {
@@ -47,11 +48,12 @@ export default class extends Route {
 					}, this.client.options.clientSecret);
 
 					response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
+					authToken = body.access_token;
 				}
 			}
 
 			try {
-				const user = await this.fetchUser(request.auth.user_id, `Bearer ${request.auth.token}`);
+				const user = await this.fetchUser(request.auth.user_id, `Bearer ${authToken}`);
 				if (user === null) return response.error(500);
 				return response.json({ user });
 			} catch (error) {

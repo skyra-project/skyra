@@ -1,13 +1,16 @@
 import { FlattenedMusicHandler } from '@utils/Models/ApiTransform';
 
+export const enum WebsocketEvents {
+	Message = 'message',
+	Connection = 'connection'
+}
+
 export const enum IncomingWebsocketAction {
-	Authenticate = 'AUTHENTICATE',
 	MusicQueueUpdate = 'MUSIC_QUEUE_UPDATE',
 	SubscriptionUpdate = 'SUBSCRIPTION_UPDATE'
 }
 
 export const enum OutgoingWebsocketAction {
-	Authenticate = 'AUTHENTICATE',
 	MusicAdd = 'MUSIC_ADD',
 	MusicConnect = 'MUSIC_CONNECT',
 	MusicSwitch = 'MUSIC_SWITCH',

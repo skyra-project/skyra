@@ -1,46 +1,40 @@
 import { SkyraClient } from '@lib/SkyraClient';
 import { UserAuthObject } from '@lib/structures/api/ApiRequest';
 import { Events } from '@lib/types/Enums';
-import { CLIENT_SECRET } from '@root/config';
-import { enumerable } from '@utils/util';
-import { KlasaUser } from 'klasa';
-import { Util } from 'klasa-dashboard-hooks';
 import WebSocket, { Data, Server } from 'ws';
 import {
 	CloseCodes,
 	IncomingWebsocketAction, IncomingWebsocketMessage,
 	MusicAction, MusicSubscription,
 	OutgoingWebsocketAction, OutgoingWebsocketMessage, Subscription,
-	SubscriptionAction, SubscriptionName
+	SubscriptionAction, SubscriptionName, WebsocketEvents
 } from './types';
-
 
 export default class DashboardWebsocketUser {
 
 	public IP: string;
 	public authenticated = false;
-	public auth?: UserAuthObject;
+	public auth: UserAuthObject;
 	public wss: Server;
 	public client: SkyraClient;
-	public user?: KlasaUser | null;
 	public subscriptions: Subscription[] = [];
 
-	@enumerable(false)
-	private _connection: WebSocket;
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	#connection: WebSocket;
 
-	public constructor(client: SkyraClient, wss: Server, connection: WebSocket, IP: string) {
-		this._connection = connection;
+	public constructor(client: SkyraClient, wss: Server, connection: WebSocket, IP: string, auth: UserAuthObject) {
+		this.#connection = connection;
 		this.wss = wss;
 		this.IP = IP;
 		this.client = client;
-		this.user = null;
+		this.auth = auth;
 
 		// When the connection for this user receives a Raw Websocket message...
-		this._connection.on('message', this.handleIncomingRawMessage.bind(this));
+		this.#connection.on(WebsocketEvents.Message, this.handleIncomingRawMessage.bind(this));
 	}
 
 	public send(message: OutgoingWebsocketMessage) {
-		this._connection.send(JSON.stringify(message));
+		this.#connection.send(JSON.stringify(message));
 	}
 
 	public error(message: string) {
@@ -48,12 +42,10 @@ export default class DashboardWebsocketUser {
 	}
 
 	public async canManageMusic(guildID: string) {
-		if (!this.user) return false;
-
 		const guild = this.client.guilds.get(guildID);
 		if (!guild) return false;
 
-		const member = await guild.members.fetch(this.user.id);
+		const member = await guild.members.fetch(this.auth.user_id);
 		if (!member) return false;
 
 		return member.isDJ;
@@ -71,7 +63,6 @@ export default class DashboardWebsocketUser {
 	public async handleMusicMessage(message: IncomingWebsocketMessage) {
 		if (!message.data.music_action
 			|| !message.data.guild_id
-			|| !this.user
 			|| !(await this.canManageMusic(message.data.guild_id))) return;
 
 		const guild = this.client.guilds.get(message.data.guild_id);
@@ -97,38 +88,6 @@ export default class DashboardWebsocketUser {
 		}
 	}
 
-	public async handleAuthenticationMessage(message: IncomingWebsocketMessage) {
-		// If they're already authenticated, or didn't send a id/token, close.
-		if (this.authenticated || message.data === undefined || !message.data.token || !message.data.user_id) {
-			return this._connection.close(CloseCodes.Unauthorized);
-		}
-
-		let decryptedAuth = undefined;
-		try {
-			decryptedAuth = Util.decrypt(message.data.token, CLIENT_SECRET);
-		} catch {
-			return this._connection.close(CloseCodes.Unauthorized);
-		}
-
-		if (!decryptedAuth.user_id || !decryptedAuth.token || decryptedAuth.user_id !== message.data.user_id) {
-			return this._connection.close(CloseCodes.Unauthorized);
-		}
-
-		let user = undefined;
-		try {
-			user = await this.client.users.fetch(decryptedAuth.user_id);
-			if (!user) throw null;
-		} catch {
-			return this._connection.close(CloseCodes.Unauthorized);
-		}
-
-		this.user = user;
-		this.auth = decryptedAuth;
-		this.authenticated = true;
-
-		this.send({ success: true, action: OutgoingWebsocketAction.Authenticate });
-	}
-
 	public subscribeToMusic(guild_id: string) {
 		const guild = this.client.guilds.get(guild_id);
 		if (!guild) return;
@@ -145,7 +104,6 @@ export default class DashboardWebsocketUser {
 	public handleSubscriptionUpdate(message: IncomingWebsocketMessage) {
 		if (!message.data.subscription_name || !message.data.subscription_action) return;
 
-
 		switch (message.data.subscription_action) {
 			case SubscriptionAction.Subscribe: {
 				if (message.data.subscription_name === SubscriptionName.Music) {
@@ -160,18 +118,12 @@ export default class DashboardWebsocketUser {
 	}
 
 	private handleMessage(message: IncomingWebsocketMessage) {
-
 		switch (message.action) {
-			case IncomingWebsocketAction.Authenticate: {
-				this.handleAuthenticationMessage(message).catch(err => this.client.emit(Events.Wtf, err));
-				break;
-			}
-
 			case IncomingWebsocketAction.MusicQueueUpdate: {
+				// TODO: Make this notify the user instead of silently failing
 				this.handleMusicMessage(message).catch(err => this.client.emit(Events.Wtf, err));
 				break;
 			}
-
 			case IncomingWebsocketAction.SubscriptionUpdate: {
 				this.handleSubscriptionUpdate(message);
 				break;
@@ -185,9 +137,8 @@ export default class DashboardWebsocketUser {
 			this.handleMessage(parsedMessage);
 		} catch {
 			// They've sent invalid JSON, close the connection.
-			this._connection.close(CloseCodes.ProtocolError);
+			this.#connection.close(CloseCodes.ProtocolError);
 		}
-
 	}
 
 }

@@ -37,7 +37,7 @@ export default class extends Route {
 
 			// If the token expires in a day, refresh
 			if (Date.now() + Time.Day > request.auth.expires) {
-				const body = await this.refreshToken(request.auth!.user_id, request.auth!.refresh);
+				const body = await this.refreshToken(request.auth.user_id, request.auth.refresh);
 				if (body !== null) {
 					const authentication = Util.encrypt({
 						user_id: request.auth!.user_id,
@@ -51,7 +51,7 @@ export default class extends Route {
 			}
 
 			try {
-				const user = await this.fetchUser(request.auth!.user_id, `Bearer ${request.auth!.token}`);
+				const user = await this.fetchUser(request.auth.user_id, `Bearer ${request.auth.token}`);
 				if (user === null) return response.error(500);
 				return response.json({ user });
 			} catch (error) {

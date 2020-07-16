@@ -18,7 +18,7 @@ export default class extends Route {
 		super(store, file, directory, { name: 'guildSettings', route: 'guilds/:guild/settings' });
 	}
 
-	@authenticated
+	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
@@ -34,7 +34,7 @@ export default class extends Route {
 		return response.json(guild.settings.toJSON());
 	}
 
-	@authenticated
+	@authenticated()
 	@ratelimit(2, 1000, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as { guild_id: string; data: Record<Keys, unknown> | [Keys, unknown][] | undefined };

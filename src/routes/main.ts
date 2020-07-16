@@ -13,7 +13,7 @@ export default class extends Route {
 		response.json({ message: 'Hello World' });
 	}
 
-	@authenticated
+	@authenticated()
 	public post(_request: ApiRequest, response: ApiResponse) {
 		response.json({ message: 'Hello World' });
 	}

@@ -24,7 +24,7 @@ export default class extends Route {
 		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
 	}
 
-	@authenticated
+	@authenticated()
 	@ratelimit(2, Time.Minute * 5, true)
 	public async post(request: ApiRequest, response: ApiResponse) {
 		const requestBody = request.body as Record<string, string>;

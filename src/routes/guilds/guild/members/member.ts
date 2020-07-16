@@ -13,7 +13,7 @@ export default class extends Route {
 		super(store, file, directory, { route: 'guilds/:guild/members/:member' });
 	}
 
-	@authenticated
+	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;

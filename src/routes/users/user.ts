@@ -10,7 +10,7 @@ export default class extends Route {
 		super(store, file, directory, { route: 'users/@me' });
 	}
 
-	@authenticated
+	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const user = await this.client.users.fetch(request.auth!.user_id).catch(() => null);

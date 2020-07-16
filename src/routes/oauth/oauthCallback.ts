@@ -29,7 +29,7 @@ export default class extends Route {
 
 		const url = new URL('https://discordapp.com/api/oauth2/token');
 		url.searchParams.append('grant_type', 'authorization_code');
-		url.searchParams.append('redirect_uri', requestBody.redirect_uri);
+		url.searchParams.append('redirect_uri', requestBody.redirectUri);
 
 		const res = await fetch(url, {
 			method: 'POST',

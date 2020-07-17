@@ -87,7 +87,7 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	public async fetch(id?: string | number | number[] | null): Promise<ModerationEntity | Cache<number, ModerationEntity> | this | null> {
 		// Case number
 		if (typeof id === 'number') {
-			return super.get(id) || this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None);
+			return super.get(id) || this._cache(await DbSet.fetchModerationEntry({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None);
 		}
 
 		// User id
@@ -145,23 +145,13 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	private _cache(entries: ModerationEntity | ModerationEntity[] | null, type: CacheActions): Cache<number, ModerationEntity> | ModerationEntity | null {
 		if (!entries) return null;
 
-		function removeNullAndUndefined<TValue>(value: TValue | null | undefined): value is TValue {
-			return value !== null && value !== undefined;
-		}
-
-		const parsedEntries = Array.isArray(entries)
-			? entries.map(entry => entry instanceof ModerationEntity
-				? entry
-				: entry === null
-					? null
-					: new ModerationEntity(entry).setup(this)).filter(removeNullAndUndefined)
-			: [entries instanceof ModerationEntity ? entries : new ModerationEntity(entries).setup(this)];
+		const parsedEntries = Array.isArray(entries) ? entries : [entries];
 
 		for (const entry of parsedEntries) {
-			super.set(entry.caseID, entry);
+			super.set(entry.caseID, entry.setup(this));
 		}
 
-		if (type === CacheActions.Insert) ++this._count!;
+		if (type === CacheActions.Insert) this._count! += parsedEntries.length;
 
 		if (!this._timer) {
 			this._timer = setInterval(() => {
@@ -171,8 +161,8 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 		}
 
 		return Array.isArray(entries)
-			? new Cache<number, ModerationEntity>(parsedEntries.map(entry => [entry.caseID, entry]))
-			: parsedEntries[0];
+			? new Cache<number, ModerationEntity>(entries.map(entry => [entry.caseID, entry]))
+			: entries;
 	}
 
 	public static get [Symbol.species]() {

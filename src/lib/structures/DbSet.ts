@@ -123,6 +123,21 @@ export class DbSet {
 	/**
 	 * Finds entities that match given options.
 	 */
+	public static fetchModerationEntry(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity>;
+
+	/**
+	 * Finds entities that match given conditions.
+	 */
+	// eslint-disable-next-line @typescript-eslint/unified-signatures
+	public static fetchModerationEntry(conditions?: FindConditions<ModerationEntity>): Promise<ModerationEntity>;
+	public static async fetchModerationEntry(optionsOrConditions?: FindConditions<ModerationEntity> | FindManyOptions<ModerationEntity>) {
+		const { moderations } = await DbSet.connect();
+		return moderations.findOne(optionsOrConditions as any);
+	}
+
+	/**
+	 * Finds entities that match given options.
+	 */
 	public static fetchModerationEntries(options?: FindManyOptions<ModerationEntity>): Promise<ModerationEntity[]>;
 
 	/**

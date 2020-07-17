@@ -1013,6 +1013,7 @@ export default class extends Language {
 					winners (in case of needing to re-roll).
 					You can also pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway.`,
 			explainedUsage: [
+				['channel', '(Optional) The channel in which to start the giveaway'],
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
 			],
@@ -1035,6 +1036,7 @@ export default class extends Language {
 				You can also pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway..
 			`,
 			explainedUsage: [
+				['channel', '(Optional) The channel in which to start the giveaway'],
 				['schedule', 'The time to wait before starting the giveaway.'],
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']

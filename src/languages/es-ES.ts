@@ -1021,6 +1021,7 @@ export default class extends Language {
 					winners (in case of needing to re-roll).
 					También puede pasar una bandera de \`--winners=X\`, en la que X es un número, para permitir que varias personas ganen este sorteo.`,
 			explainedUsage: [
+				['channel', '(Optional) The channel in which to start the giveaway'],
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
 			],
@@ -1043,6 +1044,7 @@ export default class extends Language {
 				También puede pasar una bandera de \`--winners=X\`, en la que X es un número, para permitir que varias personas ganen este sorteo.
 			`,
 			explainedUsage: [
+				['channel', '(Optional) The channel in which to start the giveaway'],
 				['schedule', 'The time to wait before starting the giveaway.'],
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']

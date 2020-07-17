@@ -3,19 +3,17 @@ import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { REDIRECT_URI, SCOPE } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { canManage } from '@utils/API';
 import { Mime, Time } from '@utils/constants';
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '@utils/Models/ApiTransform';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '@utils/util';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
-import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';
 
+@ApplyOptions<RouteOptions>({ route: 'oauth/user' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'oauth/user' });
-	}
 
 	public async api(token: string) {
 		const oauthUser = await fetch<RawOauthUser>('https://discordapp.com/api/users/@me', {

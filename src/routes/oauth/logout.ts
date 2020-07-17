@@ -2,19 +2,17 @@ import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes, ratelimit } from '@utils/util';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';
 
+@ApplyOptions<RouteOptions>({ route: 'oauth/logout', authenticated: true })
 export default class extends Route {
 
-	private readonly kAuthorization: string;
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'oauth/logout', authenticated: true });
-		this.kAuthorization = `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}`;
-	}
+	private readonly kAuthorization = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`;
 
 	@ratelimit(2, 60000)
 	public async post(request: ApiRequest, response: ApiResponse) {

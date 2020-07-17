@@ -3,20 +3,18 @@ import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { RawGuildSettings } from '@lib/types/settings/raw/RawGuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { canManage } from '@utils/API';
 import { authenticated, ratelimit } from '@utils/util';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import { inspect } from 'util';
 
 type Keys = keyof RawGuildSettings;
 
+@ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
 export default class extends Route {
 
 	private readonly kBlacklist: Keys[] = ['commandUses'];
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'guildSettings', route: 'guilds/:guild/settings' });
-	}
 
 	@authenticated()
 	@ratelimit(2, 5000, true)

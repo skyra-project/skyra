@@ -2,22 +2,20 @@ import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
 import { ratelimit } from '@utils/util';
-import { Route, RouteStore, Util } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
 import { stringify } from 'querystring';
 import { URL } from 'url';
 import type OauthUser from './oauthUser';
 
+@ApplyOptions<RouteOptions>({ route: 'oauth/callback' })
 export default class extends Route {
 
-	private readonly kAuthorization: string;
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'oauth/callback' });
-		this.kAuthorization = `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}`;
-	}
+	private readonly kAuthorization = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`;
 
 	@ratelimit(2, 60000)
 	public async post(request: ApiRequest, response: ApiResponse) {

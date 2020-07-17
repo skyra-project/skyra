@@ -2,8 +2,9 @@ import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { authenticated, ratelimit } from '@utils/util';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import { inspect } from 'util';
 
 interface BodyData {
@@ -11,11 +12,8 @@ interface BodyData {
 	moderationDM?: boolean;
 }
 
+@ApplyOptions<RouteOptions>({ name: 'userSettings', route: 'users/@me/settings' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'userSettings', route: 'users/@me/settings' });
-	}
 
 	@authenticated()
 	@ratelimit(5, 1000, true)

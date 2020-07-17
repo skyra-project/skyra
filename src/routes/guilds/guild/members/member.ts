@@ -1,17 +1,13 @@
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApplyOptions } from '@skyra/decorators';
+import { canManage } from '@utils/API';
 import { flattenMember } from '@utils/Models/ApiTransform';
 import { authenticated, ratelimit } from '@utils/util';
-import { Permissions } from 'discord.js';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
-const { FLAGS: { MANAGE_GUILD } } = Permissions;
-
+@ApplyOptions<RouteOptions>({ route: 'guilds/:guild/members/:member' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/:guild/members/:member' });
-	}
 
 	@authenticated()
 	@ratelimit(2, 5000, true)
@@ -23,11 +19,9 @@ export default class extends Route {
 
 		const memberAuthor = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!memberAuthor) return response.error(400);
+		if (!canManage(guild, memberAuthor)) return response.error(403);
 
 		const memberID = request.params.member;
-		const canManage = memberAuthor.id === memberID || memberAuthor.permissions.has(MANAGE_GUILD);
-		if (!canManage) return response.error(401);
-
 		const member = await guild.members.fetch(memberID).catch(() => null);
 		return member ? response.json(flattenMember(member)) : response.error(404);
 	}

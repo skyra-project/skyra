@@ -1,13 +1,11 @@
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchAllLeaderboardEntries, iteratorRange, ratelimit } from '@utils/util';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
+@ApplyOptions<RouteOptions>({ name: 'guildLeaderboard', route: 'guilds/:guild/leaderboard' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'guildLeaderboard', route: 'guilds/:guild/leaderboard' });
-	}
 
 	@ratelimit(2, 2500)
 	public async get(request: ApiRequest, response: ApiResponse) {

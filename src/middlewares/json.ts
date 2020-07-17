@@ -1,13 +1,11 @@
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
+import { ApplyOptions } from '@skyra/decorators';
+import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 import { createGunzip, createInflate } from 'zlib';
 
+@ApplyOptions<MiddlewareOptions>({ priority: 20 })
 export default class extends Middleware {
-
-	public constructor(store: MiddlewareStore, file: string[], directory: string) {
-		super(store, file, directory, { priority: 20 });
-	}
 
 	public async run(request: ApiRequest, response: ApiResponse) {
 		// If no Content-Type or does not have application/json, do not run this.

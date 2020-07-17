@@ -78,7 +78,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 			.tag(AnalyticsSchema.Tags.MigrationName, this.constructor.name)
 			.tag(AnalyticsSchema.CommandCategoryTypes.Category, categoryData.category)
 			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, categoryData.subCategory)
-			.intField(commandName, commandUsageAmount);
+			.intField(commandName.replace('time', 'case-time'), commandUsageAmount);
 	}
 
 }

@@ -1,33 +1,29 @@
+/* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { SkyraClient } from '@lib/SkyraClient';
 import { UserAuthObject } from '@lib/structures/api/ApiRequest';
 import { Events } from '@lib/types/Enums';
-import WebSocket, { Data, Server } from 'ws';
+import { APIErrors } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
+import WebSocket, { Data } from 'ws';
 import {
-	CloseCodes,
-	IncomingWebsocketAction, IncomingWebsocketMessage,
-	MusicAction, MusicSubscription,
-	OutgoingWebsocketAction, OutgoingWebsocketMessage, Subscription,
+	CloseCodes, IncomingWebsocketAction, IncomingWebsocketMessage,
+	MusicAction, OutgoingWebsocketAction, OutgoingWebsocketMessage,
 	SubscriptionAction, SubscriptionName, WebsocketEvents
 } from './types';
+import { WebsocketSubscriptionStore } from './WebsocketSubscriptionStore';
 
 export default class DashboardWebsocketUser {
 
-	public IP: string;
-	public authenticated = false;
-	public auth: UserAuthObject;
-	public wss: Server;
 	public client: SkyraClient;
-	public subscriptions: Subscription[] = [];
+	public musicSubscriptions = new WebsocketSubscriptionStore();
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	#auth: UserAuthObject;
 	#connection: WebSocket;
 
-	public constructor(client: SkyraClient, wss: Server, connection: WebSocket, IP: string, auth: UserAuthObject) {
-		this.#connection = connection;
-		this.wss = wss;
-		this.IP = IP;
+	public constructor(client: SkyraClient, connection: WebSocket, auth: UserAuthObject) {
 		this.client = client;
-		this.auth = auth;
+		this.#connection = connection;
+		this.#auth = auth;
 
 		// When the connection for this user receives a Raw Websocket message...
 		this.#connection.on(WebsocketEvents.Message, this.handleIncomingRawMessage.bind(this));
@@ -41,32 +37,30 @@ export default class DashboardWebsocketUser {
 		this.send({ error: message });
 	}
 
-	public async canManageMusic(guildID: string) {
-		const guild = this.client.guilds.get(guildID);
-		if (!guild) return false;
-
-		const member = await guild.members.fetch(this.auth.user_id);
-		if (!member) return false;
-
-		return member.isDJ;
-	}
-
-	public syncMusic() {
-		for (const musicSubscription of this.subscriptions.filter(sub => sub.type === SubscriptionName.Music) as MusicSubscription[]) {
-			const guild = this.client.guilds.get(musicSubscription.guild_id);
-			if (!guild) continue;
-
-			this.send({ action: OutgoingWebsocketAction.MusicSync, data: guild.music.toJSON() });
-		}
-	}
-
-	public async handleMusicMessage(message: IncomingWebsocketMessage) {
+	private async handleMusicMessage(message: IncomingWebsocketMessage) {
+		// Check if the message is well-formed:
 		if (!message.data.music_action
 			|| !message.data.guild_id
-			|| !(await this.canManageMusic(message.data.guild_id))) return;
+			|| !this.musicSubscriptions.subscribed(message.data.guild_id)) return;
 
+		// Check for the existence of the guild:
 		const guild = this.client.guilds.get(message.data.guild_id);
-		if (!guild) return;
+		if (!guild) {
+			this.musicSubscriptions.unsubscribe(message.data.guild_id);
+			this.send({ action: OutgoingWebsocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
+			return;
+		}
+
+		// Check for the existence of the member:
+		const member = await resolveOnErrorCodes(guild.members.fetch(this.#auth.user_id), APIErrors.UnknownMember);
+		if (!member) {
+			this.musicSubscriptions.unsubscribe(message.data.guild_id);
+			this.send({ action: OutgoingWebsocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
+			return;
+		}
+
+		// Check for the member's permissions:
+		if (!member.isDJ) return;
 
 		switch (message.data.music_action) {
 			case MusicAction.SkipSong: {
@@ -88,32 +82,35 @@ export default class DashboardWebsocketUser {
 		}
 	}
 
-	public subscribeToMusic(guild_id: string) {
-		const guild = this.client.guilds.get(guild_id);
-		if (!guild) return;
-
-		const subscription: Subscription = {
-			type: SubscriptionName.Music,
-			guild_id
-		};
-
-		this.subscriptions.push(subscription);
-		this.syncMusic();
-	}
-
-	public handleSubscriptionUpdate(message: IncomingWebsocketMessage) {
+	private handleSubscriptionUpdate(message: IncomingWebsocketMessage) {
 		if (!message.data.subscription_name || !message.data.subscription_action) return;
 
 		switch (message.data.subscription_action) {
-			case SubscriptionAction.Subscribe: {
-				if (message.data.subscription_name === SubscriptionName.Music) {
-					if (!message.data.guild_id) return;
-					this.subscribeToMusic(message.data.guild_id);
-				}
-			}
+			case SubscriptionAction.Subscribe:
+				this.handleSubscribeMessage(message);
+				break;
 			case SubscriptionAction.Unsubscribe: {
+				this.handleUnSubscribeMessage(message);
 				break;
 			}
+		}
+	}
+
+	private handleSubscribeMessage(message: IncomingWebsocketMessage) {
+		if (message.data.subscription_name === SubscriptionName.Music) {
+			if (!message.data.guild_id) return;
+
+			const guild = this.client.guilds.get(message.data.guild_id);
+			if (!guild) return;
+
+			this.musicSubscriptions.subscribe({ id: guild.id });
+			this.send({ action: OutgoingWebsocketAction.MusicSync, data: guild.music.toJSON() });
+		}
+	}
+
+	private handleUnSubscribeMessage(message: IncomingWebsocketMessage) {
+		if (message.data.guild_id && this.musicSubscriptions.unsubscribe(message.data.guild_id)) {
+			this.send({ action: OutgoingWebsocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
 		}
 	}
 

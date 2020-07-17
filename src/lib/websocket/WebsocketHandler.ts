@@ -42,7 +42,7 @@ export class WebsocketHandler {
 			if (!isObject(authData) || !authData.user_id || !authData.token) return ws.close(CloseCodes.Unauthorized);
 
 			// We have a new "user", add them to this.users
-			const websocketUser = new WebsocketUser(this.client, this.wss, ws, ip, authData);
+			const websocketUser = new WebsocketUser(this.client, ws, authData);
 			this.users.set(ip, websocketUser);
 
 			ws.once('close', () => {

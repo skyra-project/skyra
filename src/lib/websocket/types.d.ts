@@ -30,7 +30,8 @@ export const enum OutgoingWebsocketAction {
 	MusicSongVolumeUpdate = 'MUSIC_SONG_VOLUME_UPDATE',
 	MusicVoiceChannelJoin = 'MUSIC_VOICE_CHANNEL_JOIN',
 	MusicVoiceChannelLeave = 'MUSIC_VOICE_CHANNEL_LEAVE',
-	MusicSync = 'MUSIC_SYNC'
+	MusicSync = 'MUSIC_SYNC',
+	MusicWebsocketDisconnect = 'MUSIC_WEBSOCKET_DISCONNECT'
 }
 
 export const enum MusicAction {
@@ -50,18 +51,6 @@ export const enum SubscriptionName {
 	Music = 'MUSIC',
 	Something = 'SOMETHING'
 }
-
-export interface MusicSubscription {
-	type: SubscriptionName.Music;
-	guild_id: string;
-}
-
-export interface ExampleSubscription {
-	type: SubscriptionName.Something;
-	something: string;
-}
-
-export type Subscription = MusicSubscription | ExampleSubscription;
 
 export const enum CloseCodes {
 	ProtocolError = 1002,
@@ -89,9 +78,4 @@ export interface OutgoingWebsocketMessage {
 	data?: Partial<FlattenedMusicHandler>;
 	error?: string;
 	success?: boolean;
-}
-
-export interface UserAuthObject {
-	user_id: number;
-	token: string;
 }

@@ -389,8 +389,11 @@ export default class extends SQLProvider {
 			case 'string': {
 				return typeof value === 'string' ? value.trim() : null;
 			}
-			default:
+			default: {
+				const isJson = this.qb.get(type)?.extends === 'any';
+				if (isJson && typeof value === 'string') return JSON.parse(value);
 				return value;
+			}
 		}
 	}
 

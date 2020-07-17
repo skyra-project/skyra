@@ -10,14 +10,12 @@ const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
 const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
 
 /*
-Since I believe in the competence of this dev team.
-I decided to remove the check for if the bucket exists under "up"
+	Since I believe in the competence of this dev team.
+	I decided to remove the check for if the bucket exists under "up"
 */
 
 
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
-
-	private migStart: Date = new Date();
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		const categories = new Map<string, CategoryData>(await readJson(join(__dirname, CATEGORIES_FILE)));
@@ -80,7 +78,6 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 			.tag(AnalyticsSchema.Tags.MigrationName, this.constructor.name)
 			.tag(AnalyticsSchema.CommandCategoryTypes.Category, categoryData.category)
 			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, categoryData.subCategory)
-			.timestamp(this.migStart)
 			.intField(commandName, commandUsageAmount);
 	}
 

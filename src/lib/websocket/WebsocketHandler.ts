@@ -16,40 +16,35 @@ export class WebsocketHandler {
 	public users = new Cache<string, WebsocketUser>();
 
 	@enumerable(false)
-	private client: SkyraClient;
+	public client: SkyraClient;
 
 	public constructor(client: SkyraClient) {
 		this.client = client;
 		this.wss = new Server({ port: WSS_PORT });
 
-		this.wss.on(WebsocketEvents.Connection, (ws: WebSocket, request: ApiRequest) => {
-			// We've just gotten a new Websocket Connection
-			const ip = (request.headers['x-forwarded-for'] || request.connection.remoteAddress) as string;
+		this.wss.on(WebsocketEvents.Connection, this.handleConnection.bind(this));
+	}
 
-			// If they don't have a IP for some reason, close.
-			if (!ip) return ws.close(CloseCodes.InternalError);
+	private handleConnection(ws: WebSocket, request: ApiRequest) {
+		// Read SKYRA_AUTH cookie
+		const cookies = new CookieStore(request, null!, !DEV);
+		const auth = cookies.get('SKYRA_AUTH');
+		if (!auth) return ws.close(CloseCodes.Unauthorized);
 
-			// If they already have a connection with this IP, close.
-			if (this.users.has(ip)) return ws.close(CloseCodes.PolicyViolation);
+		// Decrypt and validate
+		const authData = Util.decrypt(auth, this.client.options.clientSecret) as UserAuthObject;
+		if (!isObject(authData) || !authData.user_id || !authData.token) return ws.close(CloseCodes.Unauthorized);
 
-			// Read SKYRA_AUTH cookie
-			const cookies = new CookieStore(request, null!, !DEV);
-			const auth = cookies.get('SKYRA_AUTH');
-			if (!auth) return ws.close(CloseCodes.Unauthorized);
+		// Retrieve the user ID
+		const id = authData.user_id;
 
-			// Decrypt and validate
-			const authData = Util.decrypt(auth, this.client.options.clientSecret) as UserAuthObject;
-			if (!isObject(authData) || !authData.user_id || !authData.token) return ws.close(CloseCodes.Unauthorized);
+		// If they already have a connection with this IP, close the previous.
+		const previous = this.users.get(id);
+		if (previous) previous.connection.close(CloseCodes.AbnormalClosure);
 
-			// We have a new "user", add them to this.users
-			const websocketUser = new WebsocketUser(this.client, ws, authData);
-			this.users.set(ip, websocketUser);
-
-			ws.once('close', () => {
-				ws.removeAllListeners('message');
-				this.users.delete(ip);
-			});
-		});
+		// We have a new "user", add them to this.users
+		const websocketUser = new WebsocketUser(this, ws, id);
+		this.users.set(id, websocketUser);
 	}
 
 }

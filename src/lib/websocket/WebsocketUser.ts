@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { SkyraClient } from '@lib/SkyraClient';
-import { UserAuthObject } from '@lib/structures/api/ApiRequest';
 import { Events } from '@lib/types/Enums';
 import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
@@ -10,27 +8,33 @@ import {
 	MusicAction, OutgoingWebsocketAction, OutgoingWebsocketMessage,
 	SubscriptionAction, SubscriptionName, WebsocketEvents
 } from './types';
+import type { WebsocketHandler } from './WebsocketHandler';
 import { WebsocketSubscriptionStore } from './WebsocketSubscriptionStore';
 
 export default class DashboardWebsocketUser {
 
-	public client: SkyraClient;
 	public musicSubscriptions = new WebsocketSubscriptionStore();
+	public connection: WebSocket;
 
-	#auth: UserAuthObject;
-	#connection: WebSocket;
+	#handler: WebsocketHandler;
+	#userID: string;
 
-	public constructor(client: SkyraClient, connection: WebSocket, auth: UserAuthObject) {
-		this.client = client;
-		this.#connection = connection;
-		this.#auth = auth;
+	public constructor(handler: WebsocketHandler, connection: WebSocket, userID: string) {
+		this.#handler = handler;
+		this.#userID = userID;
+		this.connection = connection;
 
-		// When the connection for this user receives a Raw Websocket message...
-		this.#connection.on(WebsocketEvents.Message, this.handleIncomingRawMessage.bind(this));
+		// Set up the event listeners
+		this.connection.on(WebsocketEvents.Message, this.onMessage.bind(this));
+		this.connection.once(WebsocketEvents.Close, this.onClose.bind(this));
+	}
+
+	public get client() {
+		return this.#handler.client;
 	}
 
 	public send(message: OutgoingWebsocketMessage) {
-		this.#connection.send(JSON.stringify(message));
+		this.connection.send(JSON.stringify(message));
 	}
 
 	public error(message: string) {
@@ -52,7 +56,7 @@ export default class DashboardWebsocketUser {
 		}
 
 		// Check for the existence of the member:
-		const member = await resolveOnErrorCodes(guild.members.fetch(this.#auth.user_id), APIErrors.UnknownMember);
+		const member = await resolveOnErrorCodes(guild.members.fetch(this.#userID), APIErrors.UnknownMember);
 		if (!member) {
 			this.musicSubscriptions.unsubscribe(message.data.guild_id);
 			this.send({ action: OutgoingWebsocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
@@ -128,14 +132,21 @@ export default class DashboardWebsocketUser {
 		}
 	}
 
-	private handleIncomingRawMessage(rawMessage: Data) {
+	private onMessage(rawMessage: Data) {
 		try {
 			const parsedMessage: IncomingWebsocketMessage = JSON.parse(rawMessage as string);
 			this.handleMessage(parsedMessage);
 		} catch {
 			// They've sent invalid JSON, close the connection.
-			this.#connection.close(CloseCodes.ProtocolError);
+			this.connection.close(CloseCodes.ProtocolError);
 		}
+	}
+
+	private onClose() {
+		this.connection.removeAllListeners(WebsocketEvents.Message);
+
+		// Only remove if the instance set is the same as this instance
+		if (this.#handler.users.get(this.#userID) === this) this.#handler.users.delete(this.#userID);
 	}
 
 }

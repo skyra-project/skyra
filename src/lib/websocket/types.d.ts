@@ -2,7 +2,8 @@ import { FlattenedMusicHandler } from '@utils/Models/ApiTransform';
 
 export const enum WebsocketEvents {
 	Message = 'message',
-	Connection = 'connection'
+	Connection = 'connection',
+	Close = 'close'
 }
 
 export const enum IncomingWebsocketAction {
@@ -54,6 +55,7 @@ export const enum SubscriptionName {
 
 export const enum CloseCodes {
 	ProtocolError = 1002,
+	AbnormalClosure = 1006,
 	PolicyViolation = 1008,
 	InternalError = 1011,
 	Unauthorized = 4301,

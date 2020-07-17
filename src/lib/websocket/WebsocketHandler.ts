@@ -38,9 +38,9 @@ export class WebsocketHandler {
 		// Retrieve the user ID
 		const id = authData.user_id;
 
-		// If they already have a connection with this IP, close the previous.
+		// If they already have a connection with the same user ID, close the previous.
 		const previous = this.users.get(id);
-		if (previous) previous.connection.close(CloseCodes.AbnormalClosure);
+		if (previous) previous.connection.close(CloseCodes.DuplicatedConnection);
 
 		// We have a new "user", add them to this.users
 		const websocketUser = new WebsocketUser(this, ws, id);

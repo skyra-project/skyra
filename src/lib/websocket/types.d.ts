@@ -55,10 +55,10 @@ export const enum SubscriptionName {
 
 export const enum CloseCodes {
 	ProtocolError = 1002,
-	AbnormalClosure = 1006,
 	PolicyViolation = 1008,
 	InternalError = 1011,
 	Unauthorized = 4301,
+	DuplicatedConnection = 4302
 }
 
 export interface IncomingDataObject {

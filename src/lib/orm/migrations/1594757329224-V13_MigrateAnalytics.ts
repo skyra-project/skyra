@@ -4,7 +4,7 @@ import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '@root/c
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { readJson } from 'fs-nextra';
 import { join } from 'path';
-import { MigrationInterface, QueryRunner, Table, TableColumn, TableCheck } from 'typeorm';
+import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
 const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
@@ -30,7 +30,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const points: Point[] = [];
 		for await (const commandUse of commandUses) {
 			if (commandUse.uses === 0) continue;
-			points.push(this.createPoint(commandUse.id, commandUse.uses, categories.get(commandUse.id)!));
+			points.push(this.createPoint(commandUse.id, commandUse.uses, categories.get(commandUse.id) ?? { category: 'General', subCategory: 'General' }));
 		}
 
 		writer.writePoints(points);

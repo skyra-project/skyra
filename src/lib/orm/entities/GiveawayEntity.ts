@@ -19,6 +19,20 @@ const enum States {
 
 export const kRawEmoji = '🎉';
 export const kEmoji = resolveEmoji(kRawEmoji)!;
+export const kGiveawayBlockListEditErrors: APIErrors[] = [
+	APIErrors.UnknownMessage,
+	APIErrors.UnknownChannel,
+	APIErrors.UnknownGuild,
+	APIErrors.MissingAccess,
+	APIErrors.InvalidFormBody
+];
+export const kGiveawayBlockListReactionErrors: APIErrors[] = [
+	APIErrors.UnknownMessage,
+	APIErrors.UnknownChannel,
+	APIErrors.UnknownGuild,
+	APIErrors.MissingAccess,
+	APIErrors.UnknownEmoji
+];
 
 export type GiveawayEntityData = Pick<GiveawayEntity, 'title' | 'endsAt' | 'guildID' | 'channelID' | 'messageID' | 'minimum' | 'minimumWinners'>;
 
@@ -134,8 +148,8 @@ export class GiveawayEntity extends BaseEntity {
 					.messages(this.messageID)
 					.delete();
 			} catch (error) {
-				if (error instanceof DiscordAPIError) {
-					if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return this;
+				if (error instanceof DiscordAPIError && kGiveawayBlockListReactionErrors.includes(error.code)) {
+					return this;
 				}
 				this.#client.emit(Events.ApiError, error);
 			}
@@ -154,12 +168,10 @@ export class GiveawayEntity extends BaseEntity {
 				.messages(this.messageID!)
 				.patch({ data: await this.getData() });
 		} catch (error) {
-			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.MissingAccess || error.code === APIErrors.InvalidFormBody) {
-					await this.destroy();
-				} else {
-					this.#client.emit(Events.ApiError, error);
-				}
+			if (error instanceof DiscordAPIError && kGiveawayBlockListEditErrors.includes(error.code)) {
+				await this.finish();
+			} else {
+				this.#client.emit(Events.ApiError, error);
 			}
 		}
 
@@ -200,7 +212,7 @@ export class GiveawayEntity extends BaseEntity {
 			.setDescription(description)
 			.setFooter(footer)
 			.setTimestamp(this.endsAt)
-		// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
+			// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
 			['_apiTransform']();
 	}
 

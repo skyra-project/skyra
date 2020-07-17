@@ -1,6 +1,6 @@
 import { isFunction, isPrimitive } from '@klasa/utils';
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { ApplyOptions } from '@skyra/decorators';
 import { ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';

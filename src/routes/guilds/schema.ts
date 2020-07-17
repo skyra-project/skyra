@@ -1,14 +1,12 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Databases } from '@lib/types/constants/Constants';
+import { ApplyOptions } from '@skyra/decorators';
 import { ratelimit } from '@utils/util';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
+@ApplyOptions<RouteOptions>({ route: 'guilds/schema' })
 export default class extends Route {
-
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/schema' });
-	}
 
 	@ratelimit(2, 5000)
 	public get(_request: ApiRequest, response: ApiResponse) {

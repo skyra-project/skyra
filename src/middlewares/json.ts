@@ -1,41 +1,49 @@
-import { KlasaIncomingMessage, Middleware, MiddlewareStore } from 'klasa-dashboard-hooks';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApplyOptions } from '@skyra/decorators';
+import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 import { createGunzip, createInflate } from 'zlib';
 
+@ApplyOptions<MiddlewareOptions>({ priority: 20 })
 export default class extends Middleware {
 
-	public constructor(store: MiddlewareStore, file: string[], directory: string) {
-		super(store, file, directory, { priority: 20 });
-	}
-
-	public async run(request: KlasaIncomingMessage) {
-		if (request.method !== 'POST') return;
+	public async run(request: ApiRequest, response: ApiResponse) {
+		// If no Content-Type or does not have application/json, do not run this.
+		if (!request.headers['content-type']?.startsWith('application/json')) return;
 
 		const stream = this.contentStream(request);
-		let body = '';
+		if (stream === null) return;
 
-		if (typeof stream === 'undefined') return;
+		let body = '';
 		for await (const chunk of stream) body += chunk;
 
-		request.body = JSON.parse(body);
+		try {
+			request.body = body === '' ? null : JSON.parse(body);
+		} catch {
+			response.json({ error: 'Cannot parse JSON data.' });
+		}
 	}
 
-	public contentStream(request: KlasaIncomingMessage) {
+	private contentStream(request: ApiRequest) {
 		const length = request.headers['content-length'];
-		let stream: ReturnType<typeof createInflate> | ReturnType<typeof createGunzip> | KlasaIncomingMessage | undefined = undefined;
-		switch ((request.headers['content-encoding'] ?? 'identity').toLowerCase()) {
-			case 'deflate':
-				stream = createInflate();
+		switch ((request.headers['content-encoding'] || 'identity').toLowerCase()) {
+			case 'deflate': {
+				const stream = createInflate();
 				request.pipe(stream);
-				break;
-			case 'gzip':
-				stream = createGunzip();
+				return stream;
+			}
+			case 'gzip': {
+				const stream = createGunzip();
 				request.pipe(stream);
-				break;
-			case 'identity':
-				stream = request;
+				return stream;
+			}
+			case 'identity': {
+				const stream = request;
 				stream.length = Number(length);
+				return stream;
+			}
 		}
-		return stream;
+		return null;
 	}
 
 }

@@ -1,8 +1,8 @@
 // Remove `.example` from the file extension to configure Skyra
 
 import { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIWebhookData } from '@lib/types/DiscordAPI';
 import { KlasaClientOptions, PostgresOptions } from 'klasa';
 import { resolve } from 'path';
@@ -19,8 +19,9 @@ export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
-export const REDIRECT_URI = 'http://localhost:3000/oauth/callback';
+export const REDIRECT_URI = 'http://localhost.org:3000/oauth/callback';
 export const SCOPE = 'identify guilds';
+export const DOMAIN = 'http://localhost.org:3000';
 export const TWITCH_CALLBACK = 'http://localhost/twitch/stream_change/';
 
 export const PGSQL_DATABASE_NAME = '';

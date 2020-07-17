@@ -311,6 +311,7 @@ export interface FlattenedSong {
 export function flattenMusicHandler(handler: MusicHandler): FlattenedMusicHandler {
 	const { voiceChannel } = handler;
 	return {
+		id: handler.guild.id,
 		voiceChannel: voiceChannel === null ? null : voiceChannel.id,
 		song: handler.song === null ? null : handler.song.toJSON(),
 		position: handler.position,
@@ -323,6 +324,7 @@ export function flattenMusicHandler(handler: MusicHandler): FlattenedMusicHandle
 }
 
 export interface FlattenedMusicHandler {
+	id: string;
 	voiceChannel: string | null;
 	song: FlattenedSong | null;
 	position: number;

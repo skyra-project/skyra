@@ -1,13 +1,17 @@
 import { FlattenedMusicHandler } from '@utils/Models/ApiTransform';
 
+export const enum WebsocketEvents {
+	Message = 'message',
+	Connection = 'connection',
+	Close = 'close'
+}
+
 export const enum IncomingWebsocketAction {
-	Authenticate = 'AUTHENTICATE',
 	MusicQueueUpdate = 'MUSIC_QUEUE_UPDATE',
 	SubscriptionUpdate = 'SUBSCRIPTION_UPDATE'
 }
 
 export const enum OutgoingWebsocketAction {
-	Authenticate = 'AUTHENTICATE',
 	MusicAdd = 'MUSIC_ADD',
 	MusicConnect = 'MUSIC_CONNECT',
 	MusicSwitch = 'MUSIC_SWITCH',
@@ -27,7 +31,8 @@ export const enum OutgoingWebsocketAction {
 	MusicSongVolumeUpdate = 'MUSIC_SONG_VOLUME_UPDATE',
 	MusicVoiceChannelJoin = 'MUSIC_VOICE_CHANNEL_JOIN',
 	MusicVoiceChannelLeave = 'MUSIC_VOICE_CHANNEL_LEAVE',
-	MusicSync = 'MUSIC_SYNC'
+	MusicSync = 'MUSIC_SYNC',
+	MusicWebsocketDisconnect = 'MUSIC_WEBSOCKET_DISCONNECT'
 }
 
 export const enum MusicAction {
@@ -48,23 +53,12 @@ export const enum SubscriptionName {
 	Something = 'SOMETHING'
 }
 
-export interface MusicSubscription {
-	type: SubscriptionName.Music;
-	guild_id: string;
-}
-
-export interface ExampleSubscription {
-	type: SubscriptionName.Something;
-	something: string;
-}
-
-export type Subscription = MusicSubscription | ExampleSubscription;
-
 export const enum CloseCodes {
 	ProtocolError = 1002,
 	PolicyViolation = 1008,
 	InternalError = 1011,
 	Unauthorized = 4301,
+	DuplicatedConnection = 4302
 }
 
 export interface IncomingDataObject {
@@ -86,9 +80,4 @@ export interface OutgoingWebsocketMessage {
 	data?: Partial<FlattenedMusicHandler>;
 	error?: string;
 	success?: boolean;
-}
-
-export interface UserAuthObject {
-	user_id: number;
-	token: string;
 }

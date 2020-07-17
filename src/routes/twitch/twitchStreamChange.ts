@@ -1,6 +1,6 @@
 import { isObject } from '@klasa/utils';
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';

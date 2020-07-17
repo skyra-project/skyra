@@ -1,7 +1,6 @@
 import { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { SubscriptionName } from '@lib/websocket/types';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
 import { enumerable, fetch, FetchResultTypes } from '@utils/util';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
@@ -282,9 +281,7 @@ export class MusicHandler {
 
 	public *websocketUserIterator() {
 		for (const user of this.client.websocket.users.values()) {
-			if (user.subscriptions.some(sub => sub.type === SubscriptionName.Music && sub.guild_id === this.guild.id)) {
-				yield user;
-			}
+			if (user.musicSubscriptions.subscribed(this.guild.id)) yield user;
 		}
 	}
 

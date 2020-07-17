@@ -1,16 +1,14 @@
 import { isNumber } from '@klasa/utils';
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { CLIENT_SECRET } from '@root/config';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
 import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
 import { promises as fsp } from 'fs';
 import { KlasaGuild, RateLimitManager, util } from 'klasa';
-import { Util } from 'klasa-dashboard-hooks';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
 import { UserTag } from './Cache/UserTags';
@@ -612,16 +610,9 @@ export function enumerable(value: boolean) {
 	};
 }
 
-export const authenticated = createFunctionInhibitor(
-	(request: ApiRequest) => {
-		if (!request.headers.authorization) return false;
-		request.auth = Util.decrypt(request.headers.authorization, CLIENT_SECRET);
-		return !(!request.auth!.user_id || !request.auth!.token);
-
-	},
-	(_request: ApiRequest, response: ApiResponse) => {
-		response.error(403);
-	}
+export const authenticated = () => createFunctionInhibitor(
+	(request: ApiRequest) => Boolean(request.auth?.token),
+	(_request: ApiRequest, response: ApiResponse) => response.error(403)
 );
 
 export function ratelimit(bucket: number, cooldown: number, auth = false) {

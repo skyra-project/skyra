@@ -1,4 +1,4 @@
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';

@@ -1,26 +1,21 @@
 import { IncomingMessage } from 'http';
-import { Socket } from 'net';
 
 export interface UserAuthObject {
 	token: string;
+	refresh: string;
 	user_id: string;
+	expires: number;
 }
 
-export default class ApiRequest extends IncomingMessage {
+export class ApiRequest extends IncomingMessage {}
 
-	public constructor(socket: Socket) {
-		super(socket);
-	}
-
-}
-
-export default interface ApiRequest<T = unknown> {
+export interface ApiRequest {
 	originalUrl: string;
 	path: string;
 	search: string;
 	query: Record<string, string | string[]>;
 	params: Record<string, string>;
-	body?: T;
+	body?: any;
 	length?: number;
 	auth?: UserAuthObject;
 }

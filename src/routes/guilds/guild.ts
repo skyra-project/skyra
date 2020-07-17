@@ -1,18 +1,16 @@
-import ApiRequest from '@lib/structures/api/ApiRequest';
-import ApiResponse from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '@lib/structures/api/ApiRequest';
+import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApplyOptions } from '@skyra/decorators';
 import { canManage } from '@utils/API';
 import { api } from '@utils/Models/Api';
 import { flattenGuild } from '@utils/Models/ApiTransform';
 import { authenticated, ratelimit } from '@utils/util';
-import { Route, RouteStore } from 'klasa-dashboard-hooks';
+import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
+@ApplyOptions<RouteOptions>({ route: 'guilds/:guild' })
 export default class extends Route {
 
-	public constructor(store: RouteStore, file: string[], directory: string) {
-		super(store, file, directory, { route: 'guilds/:guild' });
-	}
-
-	@authenticated
+	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;

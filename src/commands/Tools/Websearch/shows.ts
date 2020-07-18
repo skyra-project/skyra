@@ -42,7 +42,7 @@ export default class extends RichDisplayCommand {
 
 			if (year) url.searchParams.append('first_air_date_year', year);
 
-			return fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
+			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
 		}
@@ -53,7 +53,7 @@ export default class extends RichDisplayCommand {
 			const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
-			return fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
+			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
 		}

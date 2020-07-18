@@ -82,7 +82,7 @@ export default class extends RichDisplayCommand {
 					Authorization: `Bearer ${TOKENS.CLASH_OF_CLANS_KEY}`
 				}
 			}, FetchResultTypes.JSON);
-		} catch (err) {
+		} catch {
 			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', query);
 			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', query);
 		}

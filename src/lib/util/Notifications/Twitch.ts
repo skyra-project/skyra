@@ -89,7 +89,7 @@ export class Twitch {
 	}
 
 	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
-		const response = await fetch('https://api.twitch.tv/helix/webhooks/hub', {
+		await fetch('https://api.twitch.tv/helix/webhooks/hub', {
 			body: JSON.stringify({
 				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
 				'hub.mode': action,
@@ -103,8 +103,6 @@ export class Twitch {
 			},
 			method: FetchMethods.Post
 		}, FetchResultTypes.Result);
-		if (!response.ok) throw new Error(`[${response.status}] Failed to subscribe to action.`);
-		return response;
 	}
 
 	private async _performApiGETRequest<T>(path: string): Promise<T> {

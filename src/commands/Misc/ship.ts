@@ -125,7 +125,7 @@ export default class extends SkyraCommand {
 		try {
 			return await fetch(url, FetchResultTypes.Buffer);
 		} catch (error) {
-			throw `Could not download the profile avatar: ${error}`;
+			throw `Could not download the profile avatar: ${error.response}`;
 		}
 	}
 

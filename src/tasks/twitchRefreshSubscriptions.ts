@@ -5,7 +5,6 @@ import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
 import { Task } from 'klasa';
-import { Response } from 'node-fetch';
 import { Repository } from 'typeorm';
 
 const b = new Colors({ text: 'lightblue' });
@@ -28,7 +27,7 @@ export default class extends Task {
 		const currentDate = Date.now();
 
 		// Initialize a set of promises that should be resolved;
-		const promises: Promise<Response | boolean>[] = [];
+		const promises: Promise<unknown>[] = [];
 
 		// An array to keep track of the IDs of the subscriptions that were updated
 		// Used for logging and knowing which entries to update in the database

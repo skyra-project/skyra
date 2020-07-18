@@ -16,6 +16,7 @@ import { APIErrors, Time } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
+import { FetchError } from '@lib/errors/FetchError';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;
@@ -275,7 +276,7 @@ export async function fetch(url: URL | string, options: RequestInit | FetchResul
 	}
 
 	const result: Response = await nodeFetch(url, options);
-	if (!result.ok) throw new Error(await result.text());
+	if (!result.ok) throw new FetchError(url, result.status, await result.text());
 
 	switch (type) {
 		case FetchResultTypes.Result: return result;

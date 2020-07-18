@@ -1,4 +1,4 @@
-import { isFunction, sleep, chunk } from '@klasa/utils';
+import { chunk, isFunction, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';

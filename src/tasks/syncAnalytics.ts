@@ -1,5 +1,5 @@
-import { Task } from 'klasa';
 import { Events } from '@lib/types/Enums';
+import { Task } from 'klasa';
 
 export default class extends Task {
 

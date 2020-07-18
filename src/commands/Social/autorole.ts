@@ -1,9 +1,9 @@
+import { deepClone } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { deepClone } from '@klasa/utils';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 

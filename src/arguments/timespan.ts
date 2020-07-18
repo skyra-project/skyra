@@ -1,5 +1,5 @@
-import { Argument, Duration, KlasaMessage, Possible } from 'klasa';
 import { isNumber } from '@klasa/utils';
+import { Argument, Duration, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
 

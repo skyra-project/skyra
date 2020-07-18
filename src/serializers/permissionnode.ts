@@ -1,7 +1,7 @@
+import { isObject } from '@klasa/utils';
 import { PermissionsNode } from '@lib/types/settings/GuildSettings';
 import { GuildMember, Role } from 'discord.js';
 import { Command, Serializer, SerializerUpdateContext } from 'klasa';
-import { isObject } from '@klasa/utils';
 
 export default class extends Serializer {
 

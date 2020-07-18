@@ -1,3 +1,4 @@
+import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -8,7 +9,6 @@ import { cutText, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage, Timestamp } from 'klasa';
-import { toTitleCase } from '@klasa/utils';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;

@@ -7,7 +7,7 @@ export interface UserAuthObject {
 	expires: number;
 }
 
-export class ApiRequest extends IncomingMessage {}
+export class ApiRequest extends IncomingMessage { }
 
 export interface ApiRequest {
 	originalUrl: string;

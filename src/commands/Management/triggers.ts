@@ -1,3 +1,4 @@
+import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -7,7 +8,6 @@ import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { displayEmoji, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { chunk } from '@klasa/utils';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 

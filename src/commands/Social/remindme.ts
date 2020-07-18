@@ -1,3 +1,4 @@
+import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -6,7 +7,6 @@ import { BrandingColors, Time } from '@utils/constants';
 import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, ScheduledTask, Timestamp } from 'klasa';
-import { chunk } from '@klasa/utils';
 
 const enum Actions {
 	List = 'list',

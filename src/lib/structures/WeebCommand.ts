@@ -46,13 +46,13 @@ export abstract class WeebCommand extends SkyraCommand {
 		return message.sendMessage(Boolean(this.usage.parsedUsage.length)
 			? message.language.tget(this.responseName as LanguageKeysComplex, params![0].username)
 			: message.language.tget(this.responseName as LanguageKeysSimple),
-			{
-				embed: new MessageEmbed()
-					.setTitle('→').setURL(url)
-					.setColor(await DbSet.fetchColor(message))
-					.setImage(url)
-					.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
-			}) as Promise<KlasaMessage | KlasaMessage[]>;
+		{
+			embed: new MessageEmbed()
+				.setTitle('→').setURL(url)
+				.setColor(await DbSet.fetchColor(message))
+				.setImage(url)
+				.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
+		}) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
 }

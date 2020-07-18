@@ -212,7 +212,7 @@ export class GiveawayEntity extends BaseEntity {
 			.setDescription(description)
 			.setFooter(footer)
 			.setTimestamp(this.endsAt)
-			// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
+		// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
 			['_apiTransform']();
 	}
 

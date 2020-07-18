@@ -1,10 +1,10 @@
+import { codeBlock } from '@klasa/utils';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { rootFolder } from '@utils/constants';
 import { inlineCodeblock } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage } from 'klasa';
-import { codeBlock } from '@klasa/utils';
 
 const BLACKLISTED_CODES = [
 	// Unknown Channel

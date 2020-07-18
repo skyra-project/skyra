@@ -30,16 +30,16 @@ import { enumerable } from './util/util';
 
 // Import all configuration
 import {
-	EVLYN_PORT,
-	VERSION,
-	WEBHOOK_ERROR,
-	WEBHOOK_FEEDBACK,
-	WEBHOOK_DATABASE,
+	CLIENT_OPTIONS,
 	ENABLE_INFLUX,
+	EVLYN_PORT,
 	INFLUX_OPTIONS,
-	INFLUX_ORG,
 	INFLUX_ORG_ANALYTICS_BUCKET,
-	CLIENT_OPTIONS
+	INFLUX_ORG,
+	VERSION,
+	WEBHOOK_DATABASE,
+	WEBHOOK_ERROR,
+	WEBHOOK_FEEDBACK
 } from '@root/config';
 
 // Import all extensions and schemas

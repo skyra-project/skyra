@@ -1,3 +1,4 @@
+import { codeBlock } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -5,7 +6,6 @@ import { api } from '@utils/Models/Api';
 import { resolveEmoji } from '@utils/util';
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { codeBlock } from '@klasa/utils';
 
 export default class extends SkyraCommand {
 

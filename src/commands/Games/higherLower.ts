@@ -1,10 +1,10 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
+import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';

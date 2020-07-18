@@ -1,6 +1,6 @@
 import { Collection } from '@discordjs/collection';
-import { Message } from 'discord.js';
 import { codeBlock } from '@klasa/utils';
+import { Message } from 'discord.js';
 import { levenshtein } from './External/levenshtein';
 
 type FuzzySearchAccess<V> = (value: V) => string;

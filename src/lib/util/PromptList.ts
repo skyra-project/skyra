@@ -1,5 +1,5 @@
-import { Message } from 'discord.js';
 import { codeBlock } from '@klasa/utils';
+import { Message } from 'discord.js';
 
 const kPromptOptions = { time: 30000, dispose: true, max: 1 };
 const kAttempts = 5;

@@ -1,6 +1,6 @@
-import { Serializer, SerializerUpdateContext } from 'klasa';
-import { TriggerIncludes } from '@lib/types/settings/GuildSettings';
 import { isObject } from '@klasa/utils';
+import { TriggerIncludes } from '@lib/types/settings/GuildSettings';
+import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 

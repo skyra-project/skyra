@@ -1,3 +1,4 @@
+import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -6,7 +7,6 @@ import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
-import { toTitleCase } from '@klasa/utils';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],

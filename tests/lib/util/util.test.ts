@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
 import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
-import { Time } from '@utils/constants';
+import { Mime, Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
 import { MessageAttachment } from 'discord.js';
@@ -287,60 +287,88 @@ describe('Utils', () => {
 
 	describe('fetch', () => {
 		// eslint-disable-next-line @typescript-eslint/init-declarations
-		let scope: nock.Scope;
+		let nockScope: nock.Scope;
+
 		beforeAll(() => {
-			scope = nock('http://localhost')
+			nockScope = nock('http://localhost')
 				.persist()
 				.get('/simpleget')
-				.reply(200, { test: true });
+				.times(Infinity)
+				.reply(200, { test: true })
+				.get('/404')
+				.times(Infinity)
+				.reply(404, { success: false });
 		});
 
 		afterAll(() => {
-			scope.persist(false);
+			nockScope.persist(false);
 			nock.restore();
 		});
 
-		test('GIVEN fetch w/ JSON response THEN returns JSON', async () => {
-			const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', utils.FetchResultTypes.JSON);
+		describe('Successfull fetches', () => {
+			test('GIVEN fetch w/ JSON response THEN returns JSON', async () => {
+				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', utils.FetchResultTypes.JSON);
 
-			expect(response.test).toBe(true);
-		});
+				expect(response.test).toBe(true);
+			});
 
-		test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
-			// @ts-expect-error forcing undefined for the test
-			const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', undefined);
+			test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
+				// @ts-expect-error forcing undefined for the test
+				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', undefined);
 
-			expect(response.test).toBe(true);
-		});
+				expect(response.test).toBe(true);
+			});
 
-		test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
-			// @ts-expect-error forcing undefined for the test
-			const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', {}, undefined);
+			test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
+				const response = await utils.fetch<{ test: boolean }>(
+					'http://localhost/simpleget',
+					{ headers: { accept: Mime.Types.ApplicationJson } },
+					utils.FetchResultTypes.JSON
+				);
 
-			expect(response.test).toBe(true);
-		});
+				expect(response.test).toBe(true);
+			});
 
-		test('GIVEN fetch w/ Result Response THEN returns Result', async () => {
-			const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Result);
+			test('GIVEN fetch w/ Result Response THEN returns Result', async () => {
+				const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Result);
 
-			expect(response.ok).toBe(true);
-			expect(response.bodyUsed).toBe(false);
-		});
+				expect(response.ok).toBe(true);
+				expect(response.bodyUsed).toBe(false);
+			});
 
-		test('GIVEN fetch w/ Buffer Response THEN returns Buffer', async () => {
-			const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Buffer);
+			test('GIVEN fetch w/ Buffer Response THEN returns Buffer', async () => {
+				const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Buffer);
 
-			expect(response).toStrictEqual(Buffer.from(JSON.stringify({ test: true })));
-		});
+				expect(response).toStrictEqual(Buffer.from(JSON.stringify({ test: true })));
+			});
 
-		test('GIVEN fetch w/ Text Response THEN returns raw text', async () => {
-			const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Text);
+			test('GIVEN fetch w/ Text Response THEN returns raw text', async () => {
+				const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Text);
 
-			expect(response).toStrictEqual(JSON.stringify({ test: true }));
-		});
+				expect(response).toStrictEqual(JSON.stringify({ test: true }));
+			});
 
-		test('GIVEN fetch w/ invalid type THEN throws', async () => {
-			await expect(utils.fetch('http://localhost/simpleget', 5)).rejects.toThrow('Unknown type 5');
+			test('GIVEN fetch w/ invalid type THEN throws', async () => {
+				await expect(utils.fetch('http://localhost/simpleget', 5)).rejects.toThrowError('Unknown type 5');
+			});
+
+			test('GIVEN fetch w/ JSON response THEN returns FetchError', async () => {
+				const url = 'http://localhost/404';
+				const fetchResult = utils.fetch(url, utils.FetchResultTypes.JSON);
+
+				await expect(fetchResult).rejects.toThrowError(`Failed to request '${url}' with code 404.`);
+				await expect(fetchResult).rejects.toBeInstanceOf(Error);
+
+				try {
+					await fetchResult;
+				} catch (error) {
+					expect(error.message).toBe(`Failed to request '${url}' with code 404.`);
+					expect(error.response).toBe('{"success":false}');
+					expect(error.code).toBe(404);
+					expect(error.url).toBe(url);
+					expect(error.toJSON()).toStrictEqual({ success: false });
+				}
+			});
 		});
 	});
 

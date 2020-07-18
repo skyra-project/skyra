@@ -13,6 +13,7 @@ import { KlasaMessage, Language } from 'klasa';
 	cooldown: 10,
 	description: language => language.tget('COMMAND_FFXIV_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_FFXIV_EXTENDED'),
+	flagSupport: true,
 	subcommands: true,
 	usage: '(item|character:default) <search:...string> ',
 	usageDelim: ' '

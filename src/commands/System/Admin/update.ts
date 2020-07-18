@@ -19,9 +19,16 @@ import { resolve } from 'path';
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
+		// Fetch repository and pull if possible
 		await this.fetch(message, branch);
+
+		// Update Yarn dependencies
 		await this.updateDependencies(message);
-		await this.cleanDist(message);
+
+		// If there is --clean in the update then remove the dist
+		if (Reflect.has(message.flagArgs, 'clean')) await this.cleanDist(message);
+
+		// Compile TypeScript to JavaScript
 		await this.compile(message);
 	}
 
@@ -32,10 +39,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async cleanDist(message: KlasaMessage) {
-		if (message.flagArgs.fullRebuild) {
-			await remove(resolve(rootFolder, 'dist'));
-			return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
-		}
+		await remove(resolve(rootFolder, 'dist'));
+		return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
 	}
 
 	private async updateDependencies(message: KlasaMessage) {

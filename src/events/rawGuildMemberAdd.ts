@@ -2,6 +2,7 @@ import { LanguageKeysSimple } from '@lib/types/Augments';
 import { Colors } from '@lib/types/constants/Constants';
 import { WSGuildMemberAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { APIErrors, MessageLogsEnum } from '@utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
@@ -27,7 +28,7 @@ export default class extends Event {
 	} as const;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_MEMBER_ADD', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.GuildMemberAdd, emitter: store.client.ws });
 	}
 
 	public async run(data: WSGuildMemberAdd) {

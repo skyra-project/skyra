@@ -1,14 +1,12 @@
 import { Events, Schedules } from '@lib/types/Enums';
 import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ once: true })
 export default class extends Event {
-
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { once: true });
-	}
 
 	public async run() {
 		try {

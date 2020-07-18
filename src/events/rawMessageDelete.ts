@@ -2,6 +2,7 @@ import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { DbSet } from '@lib/structures/DbSet';
 import { WSMessageDelete } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { DiscordAPIError } from 'discord.js';
@@ -10,7 +11,7 @@ import { Event, EventStore } from 'klasa';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'MESSAGE_DELETE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.MessageDelete, emitter: store.client.ws });
 	}
 
 	public async run(data: WSMessageDelete): Promise<void> {

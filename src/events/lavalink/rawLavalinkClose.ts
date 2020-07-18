@@ -1,9 +1,10 @@
 import { Events } from '@lib/types/Enums';
+import { LavalinkEvents } from '@lib/types/Events';
 import { ApplyOptions } from '@skyra/decorators';
 import { LavalinkCloseEvent } from '@utils/LavalinkUtils';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ emitter: 'lavalink', event: 'close' })
+@ApplyOptions<EventOptions>({ emitter: 'lavalink', event: LavalinkEvents.Close })
 export default class extends Event {
 
 	public run(payload: LavalinkCloseEvent) {

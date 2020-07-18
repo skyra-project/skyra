@@ -2,6 +2,7 @@ import Collection from '@discordjs/collection';
 import { Colors } from '@lib/types/constants/Constants';
 import { APIUserData, WSMessageReactionAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
@@ -17,7 +18,7 @@ export default class extends Event {
 	private kTimerSweeper: NodeJS.Timer | null = null;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'MESSAGE_REACTION_ADD', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.MessageReactionAdd, emitter: store.client.ws });
 	}
 
 	public run(raw: WSMessageReactionAdd) {

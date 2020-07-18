@@ -1,6 +1,7 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
@@ -10,7 +11,7 @@ import { Event, EventStore } from 'klasa';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'USER_UPDATE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.UserUpdate, emitter: store.client.ws });
 	}
 
 	public run(data: APIUserData) {

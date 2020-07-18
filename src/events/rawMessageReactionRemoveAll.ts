@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { WSMessageReactionRemoveAll } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { DiscordAPIError } from 'discord.js';
@@ -9,7 +10,7 @@ import { Event, EventStore } from 'klasa';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'MESSAGE_REACTION_REMOVE_ALL', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.MessageReactionRemoveAll, emitter: store.client.ws });
 	}
 
 	public async run(data: WSMessageReactionRemoveAll): Promise<void> {

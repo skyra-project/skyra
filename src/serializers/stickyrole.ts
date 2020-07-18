@@ -14,7 +14,7 @@ export default class extends Serializer {
 
 			// TODO: Resolve this to a better solution (i.e. using `guild.roles.sticky.add`)
 			// see https://discordapp.com/channels/541738403230777351/541740581832097792/734011404750684220
-			Reflect.set(data, 'roles', [...new Set(data.roles)].filter((r => guild!.roles.has(r))));
+			Reflect.set(data, 'roles', [...new Set(data.roles)].filter((role => guild!.roles.has(role))));
 			return data;
 
 		}

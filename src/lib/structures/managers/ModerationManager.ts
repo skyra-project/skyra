@@ -5,6 +5,7 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Time } from '@utils/constants';
 import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
+import { In } from 'typeorm';
 import { DbSet } from '../DbSet';
 
 enum CacheActions {
@@ -98,7 +99,7 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 		}
 
 		if (Array.isArray(id) && id.length) {
-			return this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None);
+			return this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id, caseID: In(id) } }), CacheActions.None);
 		}
 
 		if (super.size !== this._count) {

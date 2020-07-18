@@ -1,4 +1,5 @@
 import { isNumber, isThenable } from '@klasa/utils';
+import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
@@ -16,7 +17,6 @@ import { APIErrors, Time } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
-import { FetchError } from '@lib/errors/FetchError';
 
 const REGEX_FCUSTOM_EMOJI = /<a?:\w{2,32}:\d{17,18}>/;
 const REGEX_PCUSTOM_EMOJI = /a?:\w{2,32}:\d{17,18}/;

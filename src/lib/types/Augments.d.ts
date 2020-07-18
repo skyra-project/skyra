@@ -143,7 +143,6 @@ declare module 'klasa' {
 
 	export interface ProvidersOptions extends Record<string, any> {
 		default?: 'postgres' | 'cache' | 'json' | string;
-		json: { baseDirectory: string };
 		postgres: PostgresOptions;
 	}
 

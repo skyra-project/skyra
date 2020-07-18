@@ -37,9 +37,9 @@ export interface EscapeMarkdownOptions {
 	bold?: boolean;
 
 	/**
-	* Whether or not to escape italic text
-	* @default true
-	*/
+	 * Whether or not to escape italic text
+	 * @default true
+	 */
 	italic?: boolean;
 
 	/**

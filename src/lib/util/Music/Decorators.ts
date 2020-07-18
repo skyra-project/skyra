@@ -56,4 +56,3 @@ export function requireSameVoiceChannel(): MethodDecorator {
 		(message: KlasaMessage) => message.sendLocale('INHIBITOR_MUSIC_BOTH_VOICE_CHANNEL')
 	);
 }
-

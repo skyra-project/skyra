@@ -3056,7 +3056,7 @@ export default class extends Language {
 		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
 		COMMAND_VAULT_EXTENDED: builder.display('vault', {
 			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or
-				 spin the wheel of fortune. You need to actively withdraw ${SHINY}'s from your vault before they can be spend gambling.`,
+				spin the wheel of fortune. You need to actively withdraw ${SHINY}'s from your vault before they can be spend gambling.`,
 			explainedUsage: [
 				['action', 'The action to perform: **withdraw** to withdraw from your vault or **deposit** to deposit into your vault.'],
 				['money', `The amount of ${SHINY}'s to withdraw or deposit.`]

@@ -1,7 +1,7 @@
 import { Colors } from '@klasa/console';
 import { Events } from '@lib/types/Enums';
 import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
-import { ENABLE_INFLUX, TOKENS } from '@root/config';
+import { DEV, ENABLE_INFLUX, TOKENS } from '@root/config';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { Task } from 'klasa';
@@ -22,12 +22,16 @@ enum Lists {
 export default class extends Task {
 
 	public async run(): Promise<PartialResponseValue | null> {
-		const guilds = this.client.guilds.size.toString();
-		const users = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0).toString();
+		if (!this.client.ready) return { type: ResponseType.Delay, value: 30000 };
 
-		await this.processAnalytics(Number(guilds), Number(users));
-		if (this.client.options.dev) return { type: ResponseType.Finished };
+		const rawGuilds = this.client.guilds.size;
+		const rawUsers = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0);
 
+		this.processAnalytics(rawGuilds, rawUsers);
+		if (DEV) return { type: ResponseType.Finished };
+
+		const guilds = rawGuilds.toString();
+		const users = rawUsers.toString();
 		const results = (await Promise.all([
 			this.query(`https://top.gg/api/bots/${this.client.user!.id}/stats`,
 				`{"server_count":${guilds}}`, TOKENS.TOP_GG, Lists.TopGG),
@@ -60,10 +64,8 @@ export default class extends Task {
 		}
 	}
 
-	private async processAnalytics(guilds: number, users: number) {
-		if (ENABLE_INFLUX) {
-			await this.client.emit(Events.AnalyticsSync, guilds, users);
-		}
+	private processAnalytics(guilds: number, users: number) {
+		if (ENABLE_INFLUX) this.client.emit(Events.AnalyticsSync, guilds, users);
 	}
 
 }

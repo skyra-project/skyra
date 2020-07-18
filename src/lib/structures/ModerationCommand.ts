@@ -143,19 +143,27 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		if (this.optionalDuration) {
 			return {
 				targets: targets as User[],
-				duration: args[0] as number | null,
-				reason: args[1] as string | null
+				duration: this.resolveDuration(args[0] as number | null),
+				reason: this.resolveReason(args[1] as string | null)
 			};
 		}
 
 		return {
 			targets: targets as User[],
 			duration: null,
-			reason: args[0] as string | null
+			reason: this.resolveReason(args[0] as string | null)
 		};
 	}
 
 	protected abstract handle(message: KlasaMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
+
+	private resolveReason(value: string | null): string | null {
+		return value !== null && value.length > 0 ? value : null;
+	}
+
+	private resolveDuration(value: number | null): number | null {
+		return value !== null && value > 0 ? value : null;
+	}
 
 }
 

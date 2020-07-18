@@ -738,7 +738,7 @@ export class ModerationActions {
 
 		const clone = this.customDeepClone<StickyRole, Mutable<StickyRole>>(stickyRoles);
 		clone.roles.push(roleID);
-		await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, {
+		await this.guild.settings.update(GuildSettings.StickyRoles, clone, {
 			arrayIndex: stickyRolesIndex,
 			extraContext: { author: moderatorID }
 		});

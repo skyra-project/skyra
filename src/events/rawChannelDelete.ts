@@ -2,6 +2,7 @@ import { Snowflake } from '@klasa/snowflake';
 import { DbSet } from '@lib/structures/DbSet';
 import { WSChannelDelete } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { APIErrors, Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
@@ -11,7 +12,7 @@ import { Event, EventStore } from 'klasa';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'CHANNEL_DELETE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.ChannelDelete, emitter: store.client.ws });
 	}
 
 	public async run(data: WSChannelDelete) {

@@ -3,6 +3,7 @@ import { LanguageKeysComplex, LanguageKeysSimple } from '@lib/types/Augments';
 import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum } from '@utils/constants';
@@ -14,7 +15,7 @@ import { Event, EventStore, KlasaGuild, Language } from 'klasa';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_MEMBER_UPDATE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.GuildMemberUpdate, emitter: store.client.ws });
 	}
 
 	public run(data: WSGuildMemberUpdate) {

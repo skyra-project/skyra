@@ -1,12 +1,13 @@
 import { WSGuildCreate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildMember } from 'discord.js';
 import { Event, EventStore, KlasaGuild } from 'klasa';
 
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_CREATE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.GuildCreate, emitter: store.client.ws });
 	}
 
 	public async run(data: WSGuildCreate & { shardID: number }, shardID: number) {

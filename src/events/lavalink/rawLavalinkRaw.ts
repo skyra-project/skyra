@@ -1,9 +1,10 @@
 import { Events } from '@lib/types/Enums';
+import { LavalinkEvents } from '@lib/types/Events';
 import { ApplyOptions } from '@skyra/decorators';
 import { isTrackStuckEvent, isWebSocketClosedEvent, LavalinkEvent } from '@utils/LavalinkUtils';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ emitter: 'lavalink', event: 'raw' })
+@ApplyOptions<EventOptions>({ emitter: 'lavalink', event: LavalinkEvents.Raw })
 export default class extends Event {
 
 	public run(payload: LavalinkEvent) {

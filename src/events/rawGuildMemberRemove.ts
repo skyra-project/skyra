@@ -2,6 +2,7 @@ import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Colors } from '@lib/types/constants/Constants';
 import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
@@ -21,7 +22,7 @@ export default class extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'GUILD_MEMBER_REMOVE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.GuildMemberRemove, emitter: store.client.ws });
 	}
 
 	public async run(data: WSGuildMemberRemove) {

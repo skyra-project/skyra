@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { ENABLE_LAVALINK } from '@root/config';
 import { Event, EventStore } from 'klasa';
 import { VoiceServerUpdate } from 'lavacord';
@@ -6,7 +7,7 @@ import { VoiceServerUpdate } from 'lavacord';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'VOICE_SERVER_UPDATE', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.VoiceServerUpdate, emitter: store.client.ws });
 	}
 
 	public async run(data: VoiceServerUpdate): Promise<void> {

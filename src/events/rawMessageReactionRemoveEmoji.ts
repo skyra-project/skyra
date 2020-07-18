@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { WSMessageReactionRemoveEmoji } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
+import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { compareEmoji } from '@utils/util';
@@ -10,7 +11,7 @@ import { Event, EventStore } from 'klasa';
 export default class extends Event {
 
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: 'MESSAGE_REACTION_REMOVE_EMOJI', emitter: store.client.ws });
+		super(store, file, directory, { name: DiscordEvents.MessageReactionRemoveEmoji, emitter: store.client.ws });
 	}
 
 	public async run(data: WSMessageReactionRemoveEmoji) {

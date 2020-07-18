@@ -1,23 +1,22 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ApplyOptions } from '@skyra/decorators';
 import { isTextBasedChannel } from '@utils/util';
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['src'],
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_SETROLECHANNEL_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SETROLECHANNEL_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	usage: '<here|channel:channelname>'
+})
 export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_SETROLECHANNEL_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SETROLECHANNEL_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			usage: '<here|channel:channelname>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;

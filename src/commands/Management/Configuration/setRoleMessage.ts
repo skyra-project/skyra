@@ -1,26 +1,26 @@
 import { Serializer } from '@klasa/settings-gateway';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
-export default class extends SkyraCommand {
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: language => language.tget('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SETROLEMESSAGE_EXTENDED'),
-			permissionLevel: PermissionLevels.Administrator,
-			requiredPermissions: ['READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '(message:message)'
-		});
-
-		this.createCustomResolver('message', async (arg, _, msg) => {
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['srm'],
+	bucket: 2,
+	cooldown: 10,
+	description: language => language.tget('COMMAND_SETROLEMESSAGE_DESCRIPTION'),
+	extendedHelp: language => language.tget('COMMAND_SETROLEMESSAGE_EXTENDED'),
+	permissionLevel: PermissionLevels.Administrator,
+	requiredPermissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '(message:message)'
+})
+@CreateResolvers([
+	[
+		'message', async (arg, _, msg) => {
 			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw msg.language.tget('RESOLVER_INVALID_MESSAGE', 'Message');
 
 			const rolesChannel = msg.guild!.settings.get(GuildSettings.Channels.Roles);
@@ -36,8 +36,10 @@ export default class extends SkyraCommand {
 			const message = await msg.channel.messages.fetch(arg).catch(() => null);
 			if (message) return message;
 			throw msg.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
-		});
-	}
+		}
+	]
+])
+export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [reactionMessage]: [KlasaMessage]) {
 		await message.guild!.settings.update(GuildSettings.Roles.MessageReaction, reactionMessage.id, {

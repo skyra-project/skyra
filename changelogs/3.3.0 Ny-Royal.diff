@@ -1,8 +1,0 @@
-+++ 3.3.0 Ny-Royal
-
-@@ Commands @@
-
-+ Localized createMute (and mute's auto create)'s output
-+ Fixed triggers command deleting all other triggers when setting one
-+ Added high-precision timer manager for anything time based
-+ Improved code infraestructure

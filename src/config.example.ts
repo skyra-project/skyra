@@ -157,6 +157,7 @@ export const WEBHOOK_DATABASE: APIWebhookData | null = null;
 export const TOKENS = {
 	BLIZZARD_KEY: '',
 	BOT_TOKEN: '',
+	BOTLIST_SPACE_KEY: '',
 	BOTS_FOR_DISCORD_KEY: '',
 	BOTS_ON_DISCORD_KEY: '',
 	CRYPTOCOMPARE_KEY: '',

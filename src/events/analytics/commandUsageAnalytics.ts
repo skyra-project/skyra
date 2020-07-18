@@ -15,7 +15,9 @@ export default class extends AnalyticsEvent {
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
 			.tag(AnalyticsSchema.CommandCategoryTypes.Category, category)
 			.tag(AnalyticsSchema.CommandCategoryTypes.SubCategory, subCategory)
-			.intField(commandName, 1);
+			.intField(commandName
+				.replace(/^time$/, 'case-time'),
+			1);
 
 		return this.writePoint(command);
 	}

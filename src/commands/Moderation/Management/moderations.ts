@@ -5,7 +5,6 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
-import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
@@ -43,11 +42,10 @@ export default class extends RichDisplayCommand {
 
 		// Set up the formatter
 		const durationDisplay = message.language.duration.bind(message.language);
-		const shouldDisplayName = action === 'all';
-		const i18n = message.language.tget('COMMAND_MODERATIONS_ENTRY_DATA');
+		const displayName = action === 'all';
 		const format = target
-			? this.displayModerationLogFromModerators.bind(this, i18n, usernames, durationDisplay, shouldDisplayName)
-			: this.displayModerationLogFromUsers.bind(this, i18n, usernames, durationDisplay, shouldDisplayName);
+			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)
+			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));

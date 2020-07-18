@@ -10,7 +10,6 @@ import type { ScheduledTask, SchemaEntry } from 'klasa';
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
-import type { ModerationManagerEntry } from '@lib/structures/ModerationManagerEntry';
 
 export const enum Position {
 	Before,
@@ -1397,13 +1396,6 @@ export interface LanguageKeys {
 	COMMAND_MODERATIONS_EXTENDED: string;
 	COMMAND_MODERATIONS_EMPTY: string;
 	COMMAND_MODERATIONS_AMOUNT: (amount: number) => string;
-	COMMAND_MODERATIONS_ENTRY_DATA: {
-		TITLE: (shouldDisplayName: boolean, entry: ModerationManagerEntry) => string;
-		VALUE: (isExpired: boolean, formattedValue: string) => string;
-		FORMATTED_DURATION: (remainingTime: number | null, isExpired: boolean) => string;
-		FORMATTED_VALUE: (userOrModeration: 'user' | 'moderator', userOrModeratorValue: string, formattedReason: string, formattedDuration: string) => string;
-		REASON_NONE: string;
-	};
 	COMMAND_MUTES_DESCRIPTION: string;
 	COMMAND_MUTES_EXTENDED: string;
 	COMMAND_WARNINGS_DESCRIPTION: string;

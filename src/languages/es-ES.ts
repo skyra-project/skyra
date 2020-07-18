@@ -1717,13 +1717,6 @@ export default class extends Language {
 		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
 			? 'There is 1 entry.'
 			: `There are ${amount} entries.`,
-		COMMAND_MODERATIONS_ENTRY_DATA: {
-			TITLE: (shouldDisplayName, entry) => shouldDisplayName ? `Caso \`${entry.case}\` | ${entry.title}` : `Caso \`${entry.case}\``,
-			VALUE: (isExpired, formattedValue) => isExpired ? `~~${formattedValue.replace(/(^)?~~($)?/g, (_, start, end) => `${start ? '\u200B' : ''}~\u200B~${end ? '\u200B' : ''}`)}~~` : formattedValue,
-			FORMATTED_DURATION: (remainingTime, isExpired) => remainingTime === null ? '' : isExpired ? `\nCaducó hace ${duration(-remainingTime)}.` : `\nCaduca en: ${duration(remainingTime)}`,
-			FORMATTED_VALUE: (userOrModerator, userOrModeratorValue, formattedReason, formattedDuration) => `${userOrModerator === 'user' ? `Usuario` : `Moderador`}: **${userOrModeratorValue}**.\n${formattedReason}${formattedDuration}`,
-			REASON_NONE: 'Ninguno'
-		},
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
 		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild

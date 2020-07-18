@@ -30,7 +30,6 @@ export default class extends Event {
 			await this.client.lavalink.leave(channel!.guild.id);
 		} else {
 			try {
-				this.client.console.debug('going to next song...');
 				manager.song = manager.queue.shift()!;
 				await manager.player?.play(manager.song.track);
 			} catch (error) {

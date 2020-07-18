@@ -56,7 +56,7 @@ export class WheelOfFortune {
 	/** The spin result */
 	public spin = -1;
 
-	/** The winnings */
+	/** The winnings, negative if the user has lost */
 	public winnings = 0;
 
 	/** The message that ran this instance */
@@ -85,7 +85,7 @@ export class WheelOfFortune {
 			throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 		}
 
-		this.settings.money += lost ? -this.winnings : this.winnings;
+		this.settings.money += this.winnings;
 		await this.settings.save();
 
 		return [await this.render(this.settings.profile!.darkTheme), final] as const;

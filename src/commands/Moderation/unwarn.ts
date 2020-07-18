@@ -18,7 +18,7 @@ export default class extends ModerationCommand {
 
 	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
-		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warn)) throw message.language.tget('GUILD_WARN_NOT_FOUND');
+		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.language.tget('GUILD_WARN_NOT_FOUND');
 
 		const user = await modlog.fetchUser();
 		const unwarnLog = await this.handle(message, { target: user, reason, modlog, duration: null, preHandled: null });

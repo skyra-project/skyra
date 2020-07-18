@@ -186,7 +186,7 @@ export class ModerationActions {
 	}
 
 	public async warning(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Warn);
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Warning);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
@@ -194,7 +194,7 @@ export class ModerationActions {
 
 	public async unWarning(rawOptions: ModerationActionOptions, caseID: number, sendOptions?: ModerationActionsSendOptions) {
 		const oldModerationLog = await this.guild.moderation.fetch(caseID);
-		if (oldModerationLog === null || !oldModerationLog.isType(Moderation.TypeCodes.Warn)) throw this.guild.language.tget('GUILD_WARN_NOT_FOUND');
+		if (oldModerationLog === null || !oldModerationLog.isType(Moderation.TypeCodes.Warning)) throw this.guild.language.tget('GUILD_WARN_NOT_FOUND');
 
 		await oldModerationLog.invalidate();
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnWarn);

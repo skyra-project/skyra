@@ -99,9 +99,9 @@ export default class extends RichDisplayCommand {
 						&& !entry.invalidated && !entry.appealType;
 			case 'warnings':
 				return target
-					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warn)
+					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
 						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
-					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warn)
+					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
 						&& !entry.invalidated && !entry.appealType;
 			default:
 				return target

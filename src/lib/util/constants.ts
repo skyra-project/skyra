@@ -84,7 +84,7 @@ export namespace Moderation {
 	}
 
 	export const enum TypeCodes {
-		Warn                               = TypeVariation.Warning,
+		Warning                            = TypeVariation.Warning,
 		Mute                               = TypeVariation.Mute,
 		Kick                               = TypeVariation.Kick,
 		Softban                            = TypeVariation.Softban,
@@ -140,7 +140,7 @@ export namespace Moderation {
 	/* eslint-enable no-multi-spaces */
 
 	export const metadata = new Map<TypeCodes, ModerationTypeAssets>([
-		[TypeCodes.Warn, { color: Colors.Yellow, title: 'Warning' }],
+		[TypeCodes.Warning, { color: Colors.Yellow, title: 'Warning' }],
 		[TypeCodes.Mute, { color: Colors.Amber, title: 'Mute' }],
 		[TypeCodes.Kick, { color: Colors.Orange, title: 'Kick' }],
 		[TypeCodes.Softban, { color: Colors.DeepOrange, title: 'Softban' }],

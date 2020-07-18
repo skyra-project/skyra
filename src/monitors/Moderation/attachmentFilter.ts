@@ -29,7 +29,7 @@ export default class extends Monitor {
 		} catch (error) {
 			const points = (error as AdderError).amount;
 			switch (action & 0b111) {
-				case 0b000: await this.actionAndSend(message, Moderation.TypeCodes.Warn, () => null);
+				case 0b000: await this.actionAndSend(message, Moderation.TypeCodes.Warning, () => null);
 					break;
 				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 					floatPromise(this, message.guild!.security.actions.kick({

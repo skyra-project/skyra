@@ -73,7 +73,25 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.FastTemporaryVoiceMute:
 			case Moderation.TypeCodes.TemporaryVoiceMute:
 			case Moderation.TypeCodes.VoiceMute: return this.checkVMute(message, user);
-			// TODO(kyranet): Add the rest of restrictions
+			case Moderation.TypeCodes.Warning:
+			case Moderation.TypeCodes.FastTemporaryWarning:
+			case Moderation.TypeCodes.TemporaryWarning:
+				// TODO(kyranet): Add checks for restrictions
+			case Moderation.TypeCodes.RestrictionAttachment:
+			case Moderation.TypeCodes.FastTemporaryRestrictionAttachment:
+			case Moderation.TypeCodes.TemporaryRestrictionAttachment:
+			case Moderation.TypeCodes.RestrictionEmbed:
+			case Moderation.TypeCodes.FastTemporaryRestrictionEmbed:
+			case Moderation.TypeCodes.TemporaryRestrictionEmbed:
+			case Moderation.TypeCodes.RestrictionEmoji:
+			case Moderation.TypeCodes.FastTemporaryRestrictionEmoji:
+			case Moderation.TypeCodes.TemporaryRestrictionEmoji:
+			case Moderation.TypeCodes.RestrictionReaction:
+			case Moderation.TypeCodes.FastTemporaryRestrictionReaction:
+			case Moderation.TypeCodes.TemporaryRestrictionReaction:
+			case Moderation.TypeCodes.RestrictionVoice:
+			case Moderation.TypeCodes.FastTemporaryRestrictionVoice:
+			case Moderation.TypeCodes.TemporaryRestrictionVoice: return;
 			default: throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}

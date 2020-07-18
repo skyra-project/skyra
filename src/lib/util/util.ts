@@ -1,4 +1,5 @@
 import { isNumber, isThenable } from '@klasa/utils';
+import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
@@ -275,7 +276,7 @@ export async function fetch(url: URL | string, options: RequestInit | FetchResul
 	}
 
 	const result: Response = await nodeFetch(url, options);
-	if (!result.ok) throw new Error(await result.text());
+	if (!result.ok) throw new FetchError(url, result.status, await result.text());
 
 	switch (type) {
 		case FetchResultTypes.Result: return result;

@@ -40,11 +40,14 @@ export default class extends SkyraCommand {
 			.addField(TITLES.METADATA_TITLE, TITLES.METADATA(intensity, keywords, mood)));
 	}
 
-	private fetchAPI(message: KlasaMessage, sunsign: string, when: string) {
+	private async fetchAPI(message: KlasaMessage, sunsign: string, when: string) {
 		const url = new URL(`https://theastrologer-api.herokuapp.com/api/horoscope/${sunsign}/${when}`);
 
-		return fetch<SunSignResponse>(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign, this.kRandomSunSign()); });
+		try {
+			return await fetch<SunSignResponse>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign, this.kRandomSunSign());
+		}
 	}
 
 

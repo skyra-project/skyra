@@ -40,11 +40,12 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
-	private fetchAPI(message: KlasaMessage, player: string, platform: PlatformUnion) {
-		return fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON)
-			.catch(() => {
-				throw message.language.tget('COMMAND_OVERWATCH_QUERY_FAIL', this.decodePlayerName(player), platform);
-			});
+	private async fetchAPI(message: KlasaMessage, player: string, platform: PlatformUnion) {
+		try {
+			return fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.tget('COMMAND_OVERWATCH_QUERY_FAIL', this.decodePlayerName(player), platform);
+		}
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */

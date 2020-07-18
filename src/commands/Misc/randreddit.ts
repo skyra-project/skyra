@@ -1,9 +1,9 @@
+import { FetchError } from '@lib/errors/FetchError';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Reddit } from '@lib/types/definitions/Reddit';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-
 
 export default class extends SkyraCommand {
 
@@ -60,10 +60,10 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private handleError(message: KlasaMessage, error: Error): never {
+	private handleError(message: KlasaMessage, error: FetchError): never {
 		let parsed: RedditError | undefined = undefined;
 		try {
-			parsed = JSON.parse(error.message) as RedditError;
+			parsed = error.toJSON() as RedditError;
 		} catch {
 			throw message.language.tget('SYSTEM_PARSE_ERROR');
 		}

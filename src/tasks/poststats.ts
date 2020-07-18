@@ -59,8 +59,7 @@ export default class extends Task {
 			}, FetchResultTypes.Result);
 			return g.format(list);
 		} catch (error) {
-			const reason = typeof error === 'object' ? error.status ?? error.code ?? null : error;
-			return `${r.format(list)}${reason ? ` [${r.format(reason)}]` : ''}`;
+			return `${r.format(list)} [${r.format(error.code)}]`;
 		}
 	}
 

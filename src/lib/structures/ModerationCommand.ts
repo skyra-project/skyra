@@ -2,7 +2,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
-import { floatPromise } from '@utils/util';
+import { floatPromise, isNullOrUndefined } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage, util } from 'klasa';
 import { DbSet } from './DbSet';
@@ -158,11 +158,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	protected abstract handle(message: KlasaMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
 
 	private resolveReason(value: string | null): string | null {
-		return value !== null && value.length > 0 ? value : null;
+		return !isNullOrUndefined(value) && value.length > 0 ? value : null;
 	}
 
 	private resolveDuration(value: number | null): number | null {
-		return value !== null && value > 0 ? value : null;
+		return !isNullOrUndefined(value) && value > 0 ? value : null;
 	}
 
 }

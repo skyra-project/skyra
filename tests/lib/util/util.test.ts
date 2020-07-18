@@ -545,6 +545,36 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('isNullOrUndefined', () => {
+		test('GIVEN undefined THEN returns true', () => {
+			expect(utils.isNullOrUndefined(undefined)).toEqual(true);
+		});
+
+		test('GIVEN null THEN returns true', () => {
+			expect(utils.isNullOrUndefined(null)).toEqual(true);
+		});
+
+		test('GIVEN empty object THEN returns false', () => {
+			expect(utils.isNullOrUndefined({})).toEqual(false);
+		});
+
+		test('GIVEN falsy string THEN returns false', () => {
+			expect(utils.isNullOrUndefined('')).toEqual(false);
+		});
+
+		test('GIVEN truthy string THEN returns false', () => {
+			expect(utils.isNullOrUndefined('foo')).toEqual(false);
+		});
+
+		test('GIVEN falsy number THEN returns false', () => {
+			expect(utils.isNullOrUndefined(0)).toEqual(false);
+		});
+
+		test('GIVEN truthy number THEN returns false', () => {
+			expect(utils.isNullOrUndefined(1)).toEqual(false);
+		});
+	});
+
 	describe('gql', () => {
 		test('GIVEN gql tag THEN returns unmodified code', () => {
 			expect(utils.gql`

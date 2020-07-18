@@ -1,9 +1,10 @@
+import { mergeDefault } from '@klasa/utils';
 import { LanguageKeysComplex, LanguageKeysSimple } from '@lib/types/Augments';
 import { LanguageKeys } from '@lib/types/Languages';
 import { TOKENS, VERSION } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -19,12 +20,12 @@ export abstract class WeebCommand extends SkyraCommand {
 	public responseName: keyof LanguageKeys;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
-		super(store, file, directory, util.mergeDefault({
+		super(store, file, directory, mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>({
 			bucket: 2,
 			cooldown: 30,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
-		}, options));
+		}, options) as WeebCommandOptions);
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;
@@ -45,13 +46,13 @@ export abstract class WeebCommand extends SkyraCommand {
 		return message.sendMessage(Boolean(this.usage.parsedUsage.length)
 			? message.language.tget(this.responseName as LanguageKeysComplex, params![0].username)
 			: message.language.tget(this.responseName as LanguageKeysSimple),
-		{
-			embed: new MessageEmbed()
-				.setTitle('→').setURL(url)
-				.setColor(await DbSet.fetchColor(message))
-				.setImage(url)
-				.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
-		}) as Promise<KlasaMessage | KlasaMessage[]>;
+			{
+				embed: new MessageEmbed()
+					.setTitle('→').setURL(url)
+					.setColor(await DbSet.fetchColor(message))
+					.setImage(url)
+					.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
+			}) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
 }

@@ -2,7 +2,7 @@
 // Import all dependencies
 import { mergeDefault } from '@klasa/utils';
 import { Colors } from '@klasa/console';
-import { KlasaClient, Schema } from 'klasa';
+import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
 import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
@@ -141,7 +141,7 @@ export class SkyraClient extends KlasaClient {
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
-		super(mergeDefault(clientOptions as any, CLIENT_OPTIONS));
+		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 
 		// Register user gateway override
 		this.gateways.register(new UserGateway(this, 'users'));

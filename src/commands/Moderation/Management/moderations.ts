@@ -11,6 +11,7 @@ import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
 	description: language => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
@@ -18,11 +19,11 @@ import { KlasaMessage, KlasaUser } from 'klasa';
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
-	usage: '<mutes|warnings|all:default> [user:username]'
+	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {
 
-	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'all', KlasaUser?]) {
+	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', KlasaUser?]) {
 		const response = await message.sendEmbed(new MessageEmbed()
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
@@ -90,7 +91,7 @@ export default class extends RichDisplayCommand {
 		return moderators;
 	}
 
-	private getFilter(type: 'mutes' | 'warnings' | 'all', target: KlasaUser | undefined) {
+	private getFilter(type: 'mutes' | 'warnings' | 'warns' | 'all', target: KlasaUser | undefined) {
 		switch (type) {
 			case 'mutes':
 				return target
@@ -98,12 +99,14 @@ export default class extends RichDisplayCommand {
 						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute)
 						&& !entry.invalidated && !entry.appealType;
+			case 'warns':
 			case 'warnings':
 				return target
 					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
 						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
 					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
 						&& !entry.invalidated && !entry.appealType;
+			case 'all':
 			default:
 				return target
 					? (entry: ModerationEntity) => entry.duration !== null

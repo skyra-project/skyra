@@ -1697,6 +1697,11 @@ export default class extends Language {
 					appealed.`,
 			examples: ['', '@Pete']
 		}),
+		COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) => `This user has ${
+			warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${
+			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
+			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
+			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
 		COMMAND_MODERATIONS_DESCRIPTION: 'List all running moderation logs from this guild.',
 		COMMAND_MODERATIONS_EXTENDED: builder.display('moderations', {
 			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
@@ -1708,6 +1713,10 @@ export default class extends Language {
 				'warnings'
 			]
 		}),
+		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
+		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
+			? 'There is 1 entry.'
+			: `There are ${amount} entries.`,
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
 		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
@@ -3297,21 +3306,6 @@ export default class extends Language {
 		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE: 'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
 		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
-
-		/**
-		 * ##############################
-		 * MODERATION/MANAGEMENT COMMANDS
-		 */
-
-		COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) => `This user has ${
-			warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${
-			mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${
-			kicks} ${kicks === 1 ? 'kick' : 'kicks'}, ${
-			bans} ${bans === 1 ? 'ban' : 'bans'}.`,
-		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_MODERATIONS_AMOUNT: amount => amount === 1
-			? 'There is 1 entry.'
-			: `There are ${amount} entries.`,
 
 		/**
 		 * #############################

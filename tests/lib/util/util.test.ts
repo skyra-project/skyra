@@ -8,6 +8,7 @@ import { createReadStream, promises as fsPromises } from 'fs';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
 import { DeepPartial } from 'typeorm';
+import nock = require('nock');
 
 describe('Utils', () => {
 	describe('noop', () => {
@@ -281,6 +282,65 @@ describe('Utils', () => {
 
 		test('GIVEN text with spaces THEN cuts off after space', () => {
 			expect(utils.cutText('textthat does have to truncate', 10)).toEqual('texttha...');
+		});
+	});
+
+	describe('fetch', () => {
+		// eslint-disable-next-line @typescript-eslint/init-declarations
+		let scope: nock.Scope;
+		beforeAll(() => {
+			scope = nock('http://localhost')
+				.persist()
+				.get('/simpleget')
+				.reply(200, { test: true });
+		});
+
+		afterAll(() => {
+			scope.persist(false);
+			nock.restore();
+		});
+
+		test('GIVEN fetch w/ JSON response THEN returns JSON', async () => {
+			const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', utils.FetchResultTypes.JSON);
+
+			expect(response.test).toBe(true);
+		});
+
+		test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
+			// @ts-expect-error forcing undefined for the test
+			const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', undefined);
+
+			expect(response.test).toBe(true);
+		});
+
+		test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
+			// @ts-expect-error forcing undefined for the test
+			const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', {}, undefined);
+
+			expect(response.test).toBe(true);
+		});
+
+		test('GIVEN fetch w/ Result Response THEN returns Result', async () => {
+			const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Result);
+
+			expect(response.ok).toBe(true);
+			expect(response.bodyUsed).toBe(false);
+		});
+
+		test('GIVEN fetch w/ Buffer Response THEN returns Buffer', async () => {
+			const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Buffer);
+
+			expect(response).toStrictEqual(Buffer.from(JSON.stringify({ test: true })));
+		});
+
+		test('GIVEN fetch w/ Text Response THEN returns raw text', async () => {
+			const response = await utils.fetch('http://localhost/simpleget', utils.FetchResultTypes.Text);
+
+			expect(response).toStrictEqual(JSON.stringify({ test: true }));
+		});
+
+		test('GIVEN fetch w/ invalid type THEN throws', async () => {
+			await expect(utils.fetch('http://localhost/simpleget', 5)).rejects.toThrow('Unknown type 5');
 		});
 	});
 

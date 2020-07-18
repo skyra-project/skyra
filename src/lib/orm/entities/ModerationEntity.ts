@@ -232,7 +232,7 @@ export class ModerationEntity extends BaseEntity {
 		}
 
 		const previous = this.#user;
-		if (previous) return previous;
+		if (previous?.id === this.userID) return previous;
 
 		const user = await this.#client.users.fetch(this.userID);
 		this.#user = user;
@@ -241,15 +241,15 @@ export class ModerationEntity extends BaseEntity {
 
 	public async fetchModerator() {
 		if (!this.moderatorID) {
-			throw new Error('userID must be set before calling this method.');
+			throw new Error('moderatorID must be set before calling this method.');
 		}
 
 		const previous = this.#moderator;
-		if (previous) return previous;
+		if (previous?.id === this.moderatorID) return previous;
 
-		const user = await this.#client.users.fetch(this.moderatorID);
-		this.#moderator = user;
-		return user;
+		const moderator = await this.#client.users.fetch(this.moderatorID);
+		this.#moderator = moderator;
+		return moderator;
 	}
 
 	public isType(type: Moderation.TypeCodes) {

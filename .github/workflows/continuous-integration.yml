@@ -111,7 +111,7 @@ jobs:
           build: src
 
   Upload_Coverage_Report:
-    name: upload coverage report to coveralls
+    name: Upload coverage report to coveralls
     needs: [Testing]
     runs-on: ubuntu-latest
     steps:

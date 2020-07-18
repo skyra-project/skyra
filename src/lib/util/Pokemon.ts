@@ -74,13 +74,13 @@ fragment evolutions on DexDetails {
 	evolutions {
 		...evolutionsData
 		evolutions {
-		...evolutionsData
+			...evolutionsData
 		}
 	}
 	preevolutions {
 		...evolutionsData
 		preevolutions {
-		...evolutionsData
+			...evolutionsData
 		}
 	}
 }
@@ -125,7 +125,7 @@ fragment ability on AbilityEntry {
 
 query getAbilityDetails ($ability: String!) {
 	getAbilityDetailsByFuzzy(ability: $ability skip: 0 take: 1 ) {
-	...ability
+		...ability
 	}
 }`;
 
@@ -167,7 +167,7 @@ fragment learnset on LearnsetEntry {
 	shinySprite
 	color
 	levelUpMoves {
-	...learnsetLevelupMove
+		...learnsetLevelupMove
 	}
 	virtualTransferMoves {
 		...learnsetMove
@@ -191,7 +191,7 @@ fragment learnset on LearnsetEntry {
 
 query getLearnsetDetails ($pokemon: String! $moves: [String!]! $generation: Int) {
 	getPokemonLearnsetByFuzzy(pokemon: $pokemon moves: $moves generation: $generation) {
-	...learnset
+		...learnset
 	}
 }`;
 
@@ -221,7 +221,7 @@ fragment moves on MoveEntry {
 
 query getMoveDetails ($move: String!) {
 	getMoveDetailsByFuzzy(move: $move, skip: 0, take: 1) {
-	...moves
+		...moves
 	}
 }`;
 
@@ -238,16 +238,16 @@ fragment typeEntry on TypeEntry {
 
 fragment typesMatchups on TypeMatchups {
 	attacking {
-	...typeEntry
+		...typeEntry
 	}
 	defending {
-	...typeEntry
+		...typeEntry
 	}
 }
 
 query getTypeMatchups ($types: [Types!]!) {
 	getTypeMatchup(types: $types) {
-	...typesMatchups
+		...typesMatchups
 	}
 }`;
 

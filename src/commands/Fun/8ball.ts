@@ -1,5 +1,6 @@
+import { codeBlock } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { CommandStore, KlasaMessage, Language, util } from 'klasa';
+import { CommandStore, KlasaMessage, Language } from 'klasa';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
 
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		return message.sendLocale('COMMAND_8BALL_OUTPUT',
-			[message.author, input, util.codeBlock('', this.generator(input.toLowerCase(), message.language))],
+			[message.author, input, codeBlock('', this.generator(input.toLowerCase(), message.language))],
 			{ disableEveryone: true });
 	}
 

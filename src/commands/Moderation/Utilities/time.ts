@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.Warning:
 			case Moderation.TypeCodes.FastTemporaryWarning:
 			case Moderation.TypeCodes.TemporaryWarning:
-				// TODO(kyranet): Add checks for restrictions
+			// TODO(kyranet): Add checks for restrictions
 			case Moderation.TypeCodes.RestrictionAttachment:
 			case Moderation.TypeCodes.FastTemporaryRestrictionAttachment:
 			case Moderation.TypeCodes.TemporaryRestrictionAttachment:

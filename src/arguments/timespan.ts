@@ -1,11 +1,12 @@
-import { Argument, Duration, KlasaMessage, Possible, util } from 'klasa';
+import { isNumber } from '@klasa/utils';
+import { Argument, Duration, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
 
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
 		const duration = new Duration(arg);
 
-		if (duration.offset <= 0 || !util.isNumber(duration.fromNow.getTime())) {
+		if (duration.offset <= 0 || !isNumber(duration.fromNow.getTime())) {
 			throw message.language.tget('RESOLVER_INVALID_DURATION', possible.name);
 		}
 

@@ -1,4 +1,4 @@
-import { isFunction } from '@klasa/utils';
+import { chunk, isFunction, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -6,7 +6,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { cleanMentions } from '@utils/util';
-import { KlasaMessage, Language, util } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],
@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 					const verification = await new Promise<boolean>(async res => {
 						resolve = res;
 						if (autoSkip) {
-							await util.sleep((gameMessage!.content.length / 20) * 1000);
+							await sleep((gameMessage!.content.length / 20) * 1000);
 							res(true);
 						}
 					});
@@ -141,7 +141,7 @@ export default class extends SkyraCommand {
 		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', game);
 		const death = deaths.length ? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
 		const proceed = language.tget('COMMAND_HUNGERGAMES_RESULT_PROCEED');
-		const panels = util.chunk(results, 5);
+		const panels = chunk(results, 5);
 
 		const texts = panels.map(panel => `__**${header}:**__\n\n${panel.map(text => `- ${text}`).join('\n')}\n\n_${proceed}_`);
 		if (deaths.length) texts.push(`${death}\n\n_${proceed}_`);

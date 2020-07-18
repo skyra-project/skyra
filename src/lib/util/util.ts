@@ -1,4 +1,4 @@
-import { isNumber } from '@klasa/utils';
+import { isNumber, isThenable } from '@klasa/utils';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
@@ -8,7 +8,7 @@ import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image } from 'canvas';
 import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
 import { promises as fsp } from 'fs';
-import { KlasaGuild, RateLimitManager, util } from 'klasa';
+import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
 import { UserTag } from './Cache/UserTags';
@@ -540,7 +540,7 @@ export function inlineCodeblock(input: string) {
 }
 
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
-	if (util.isThenable(promise)) promise.catch(error => ctx.client.emit(Events.Wtf, error));
+	if (isThenable(promise)) promise.catch(error => ctx.client.emit(Events.Wtf, error));
 }
 
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {

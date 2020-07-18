@@ -1,3 +1,4 @@
+import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -5,7 +6,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cutText, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, util } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
@@ -37,7 +38,7 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
 		const display = new UserRichDisplay(new MessageEmbed()
-			.setTitle(`Urban Dictionary: ${util.toTitleCase(query)}`)
+			.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
 			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail('https://i.imgur.com/CcIZZsa.png'))
 			.setFooterSuffix(' - © Urban Dictionary');

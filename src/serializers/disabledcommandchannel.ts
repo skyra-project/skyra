@@ -1,7 +1,7 @@
-import type { DisabledCommandChannel } from '@lib/types/settings/GuildSettings';
-import { Serializer, SerializerUpdateContext } from 'klasa';
 import { isObject } from '@klasa/utils';
+import type { DisabledCommandChannel } from '@lib/types/settings/GuildSettings';
 import { Guild } from 'discord.js';
+import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 

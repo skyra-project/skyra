@@ -2,7 +2,7 @@
 // Import all dependencies
 import { mergeDefault } from '@klasa/utils';
 import { Colors } from '@klasa/console';
-import { KlasaClient, Schema } from 'klasa';
+import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
 import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
@@ -30,16 +30,16 @@ import { enumerable } from './util/util';
 
 // Import all configuration
 import {
-	EVLYN_PORT,
-	VERSION,
-	WEBHOOK_ERROR,
-	WEBHOOK_FEEDBACK,
-	WEBHOOK_DATABASE,
+	CLIENT_OPTIONS,
 	ENABLE_INFLUX,
+	EVLYN_PORT,
 	INFLUX_OPTIONS,
-	INFLUX_ORG,
 	INFLUX_ORG_ANALYTICS_BUCKET,
-	CLIENT_OPTIONS
+	INFLUX_ORG,
+	VERSION,
+	WEBHOOK_DATABASE,
+	WEBHOOK_ERROR,
+	WEBHOOK_FEEDBACK
 } from '@root/config';
 
 // Import all extensions and schemas
@@ -141,8 +141,7 @@ export class SkyraClient extends KlasaClient {
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
-		// TODO: Remove as any when https://github.com/dirigeants/utils/pull/205 is merged and released
-		super(mergeDefault(clientOptions as any, CLIENT_OPTIONS));
+		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 
 		// Register user gateway override
 		this.gateways.register(new UserGateway(this, 'users'));

@@ -1,5 +1,6 @@
+import { mergeDefault } from '@klasa/utils';
 import { PermissionResolvable, Permissions } from 'discord.js';
-import { Command, CommandOptions, CommandStore, KlasaMessage, util } from 'klasa';
+import { Command, CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 
 export abstract class SkyraCommand extends Command {
 
@@ -7,7 +8,9 @@ export abstract class SkyraCommand extends Command {
 	public requiredGuildPermissions: Permissions;
 
 	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions = {}) {
-		super(store, file, directory, util.mergeDefault({ spam: false, requiredGuildPermissions: 0 }, options));
+		super(store, file, directory, mergeDefault<Partial<SkyraCommandOptions>, SkyraCommandOptions>({
+			spam: false, requiredGuildPermissions: 0
+		}, options) as SkyraCommandOptions);
 		this.spam = options.spam!;
 		this.requiredGuildPermissions = new Permissions(options.requiredGuildPermissions);
 	}

@@ -1,10 +1,11 @@
+import { mergeDefault } from '@klasa/utils';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise, isNullOrUndefined } from '@utils/util';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -26,7 +27,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public optionalDuration: boolean;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
-		super(store, file, directory, util.mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
+		super(store, file, directory, mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
 			flagSupport: true,
 			optionalDuration: false,
 			permissionLevel: PermissionLevels.Moderator,
@@ -36,7 +37,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				? '<users:...user{,10}> [duration:timespan] [reason:...string]'
 				: '<users:...user{,10}> [reason:...string]',
 			usageDelim: ' '
-		}, options));
+		}, options) as CommandOptions);
 
 		this.requiredMember = options.requiredMember!;
 		this.optionalDuration = options.optionalDuration!;

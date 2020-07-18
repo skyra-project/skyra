@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import { SkyraClient } from '@lib/SkyraClient';
+import { Events } from '@lib/types/Enums';
 import { kBigIntTransformer } from '@utils/util';
-import { BaseEntity, Check, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn, AfterLoad, AfterInsert, AfterUpdate, AfterRemove } from 'typeorm';
+import { container } from 'tsyringe';
+import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Check, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserProfileEntity } from './UserProfileEntity';
-import { SkyraClient } from '@lib/SkyraClient';
-import { Events } from '@lib/types/Enums';
-import { container } from 'tsyringe';
 
 @Check('money >= 0')
 @Check('points >= 0')

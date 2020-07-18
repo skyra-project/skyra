@@ -1,4 +1,5 @@
 import { Cache } from '@klasa/cache';
+import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -7,7 +8,7 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, KlasaUser, util } from 'klasa';
+import { KlasaMessage, KlasaUser } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	bucket: 2,
@@ -45,7 +46,7 @@ export default class extends RichDisplayCommand {
 			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)
 			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
 
-		for (const page of util.chunk([...entries.values()], 10)) {
+		for (const page of chunk([...entries.values()], 10)) {
 			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
 		}
 

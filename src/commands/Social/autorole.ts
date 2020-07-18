@@ -1,8 +1,9 @@
+import { deepClone } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
 import { Role } from 'discord.js';
-import { CommandStore, KlasaMessage, util } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Number(x.points === y.points) - 1;
 
@@ -94,7 +95,7 @@ export default class extends SkyraCommand {
 		}
 
 		const autoRole = autoRoles[index];
-		const clone = util.deepClone(autoRoles) as RolesAuto[];
+		const clone = deepClone(autoRoles) as RolesAuto[];
 		clone[index].points = points;
 		await message.guild!.settings.update(GuildSettings.Roles.Auto, clone.sort(SORT), {
 			arrayAction: 'overwrite',

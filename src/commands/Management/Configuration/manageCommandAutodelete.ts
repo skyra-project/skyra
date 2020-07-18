@@ -1,9 +1,10 @@
+import { codeBlock } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
-import { KlasaMessage, util } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -44,7 +45,7 @@ export default class extends SkyraCommand {
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${message.language.duration(entry[1] / 60000)}`);
 		}
 		if (!list.length) throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
-		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [util.codeBlock('asciidoc', list.join('\n'))]);
+		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [codeBlock('asciidoc', list.join('\n'))]);
 	}
 
 	public async add(message: KlasaMessage, [channel, duration]: [TextChannel, number]) {

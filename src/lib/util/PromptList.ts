@@ -1,5 +1,5 @@
+import { codeBlock } from '@klasa/utils';
 import { Message } from 'discord.js';
-import { util } from 'klasa';
 
 const kPromptOptions = { time: 30000, dispose: true, max: 1 };
 const kAttempts = 5;
@@ -23,7 +23,7 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
  */
 async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
-	const codeblock = util.codeBlock('asciidoc', list.join('\n'));
+	const codeblock = codeBlock('asciidoc', list.join('\n'));
 	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [codeblock, possibles]);
 	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS');
 	const promptFilter = (m: Message) => m.author === message.author

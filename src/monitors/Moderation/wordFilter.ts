@@ -1,3 +1,4 @@
+import { codeBlock } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
@@ -5,7 +6,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { cutText, floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, util } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
 
@@ -37,7 +38,7 @@ export default class extends ModerationMonitor {
 	protected async onDelete(message: KlasaMessage, value: FilterResults) {
 		floatPromise(this, message.nuke());
 		if (message.content.length > 25 && await DbSet.fetchModerationDirectMessageEnabled(message.author.id)) {
-			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [util.codeBlock('md', cutText(value.filtered, 1900))]));
+			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [codeBlock('md', cutText(value.filtered, 1900))]));
 		}
 	}
 

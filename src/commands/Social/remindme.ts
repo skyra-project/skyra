@@ -1,3 +1,4 @@
+import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -5,7 +6,7 @@ import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContex
 import { BrandingColors, Time } from '@utils/constants';
 import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, ScheduledTask, Timestamp, util } from 'klasa';
+import { KlasaMessage, ScheduledTask, Timestamp } from 'klasa';
 
 const enum Actions {
 	List = 'list',
@@ -117,7 +118,7 @@ export default class extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })));
 
-		const pages = util.chunk(tasks.map(task => `\`${task.id}\` - \`${this.kTimestamp.display(task.time)}\` - ${cutText(task.data.content as string, 40)}`), 10);
+		const pages = chunk(tasks.map(task => `\`${task.id}\` - \`${this.kTimestamp.display(task.time)}\` - ${cutText(task.data.content as string, 40)}`), 10);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));

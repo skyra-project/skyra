@@ -867,6 +867,7 @@ export class ModerationActions {
 	private static fillOptions(rawOptions: ModerationActionOptions, type: Moderation.TypeCodes) {
 		const options = { reason: null, ...rawOptions, type };
 		if (typeof options.reason === 'undefined') options.reason = null;
+		if (typeof options.moderatorID === 'undefined') options.moderatorID = CLIENT_ID;
 		return options;
 	}
 

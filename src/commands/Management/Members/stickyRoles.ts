@@ -82,7 +82,7 @@ export default class extends SkyraCommand {
 					arrayIndex: all.indexOf(entry),
 					extraContext: { author: message.author.id }
 				});
-				return message.sendLocale('COMMAND_STICKROLES_ADD', [user.username]);
+				return message.sendLocale('COMMAND_STICKYROLES_ADD', [user.username]);
 			} else if (cleaned.raw.roles.includes(role.id)) {
 				throw message.language.tget('COMMAND_STICKYROLES_ADD_EXISTS', user.username);
 			} else {

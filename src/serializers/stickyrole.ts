@@ -10,7 +10,14 @@ export default class extends Serializer {
 			&& Object.keys(data).length === 2
 			&& typeof data.user === 'string'
 			&& Array.isArray(data.roles)
-			&& data.roles.every(role => typeof role === 'string')) return this.cleanupStickyRoles(data, guild!);
+			&& data.roles.every(role => typeof role === 'string')) {
+
+			// TODO: Resolve this to a better solution (i.e. using `guild.roles.sticky.add`)
+			// see https://discordapp.com/channels/541738403230777351/541740581832097792/734011404750684220
+			Reflect.set(data, 'roles', [...new Set(data.roles)].filter((r => guild!.roles.has(r))));
+			return data;
+
+		}
 
 		throw language.tget('SERIALIZER_STICKY_ROLE_INVALID');
 	}
@@ -19,22 +26,6 @@ export default class extends Serializer {
 		const username = this.client.userTags.get(value.user)?.username ?? guild.language.tget('UNKNOWN_USER');
 		const roles = value.roles.map(role => guild.roles.get(role)?.name ?? guild.language.tget('UNKNOWN_ROLE'));
 		return `[${username} -> ${roles}]`;
-	}
-
-	// TODO: Resolve this to a better solution (i.e. using `guild.roles.sticky.add`) (see https://discordapp.com/channels/541738403230777351/541740581832097792/734011404750684220)
-	private cleanupStickyRoles(data: StickyRole, guild: Guild): StickyRole {
-		// Sticky roles that should be saved back to the database
-		const stickyRolesInGuild: string[] = [];
-
-		// Deduplicate stickyroles by using a set
-		for (const role of [...new Set(data.roles)]) {
-			// If the guild has the specified role then we'll add it
-			if (guild.roles.has(role)) stickyRolesInGuild.push(role);
-			continue;
-		}
-
-		// Return the new StickyRole object
-		return { user: data.user, roles: stickyRolesInGuild };
 	}
 
 }

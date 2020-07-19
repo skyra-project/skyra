@@ -65,6 +65,7 @@ export const enum Events {
 	Raw = 'raw',
 	ReactionBlacklist = 'reactionBlacklist',
 	Reconnecting = 'reconnecting',
+	ResourceAnalyticsSync = 'resourceAnalyticsSync',
 	RoleReactionAdd = 'roleReactionAdd',
 	RoleReactionRemove = 'roleReactionRemove',
 	SettingsUpdate = 'settingsUpdate',
@@ -90,5 +91,6 @@ export const enum Schedules {
 	DelayedGiveawayCreate = 'delayedGiveawayCreate',
 	Poststats = 'poststats',
 	Cleanup = 'cleanup',
+	SyncResourceAnalytics = 'syncResourceAnalytics',
 	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions'
 }

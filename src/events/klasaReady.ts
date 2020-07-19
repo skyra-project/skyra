@@ -58,11 +58,20 @@ export default class extends Event {
 		}
 	}
 
-	private initAnalytics() {
+	private async initSyncResourceAnalyticsTask() {
+		const { queue } = this.client.schedules;
+		if (!queue.some(task => task.taskID === Schedules.SyncResourceAnalytics)) {
+			await this.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '*/1 * * * *');
+		}
+	}
+
+	private async initAnalytics() {
 		if (ENABLE_INFLUX) {
 			this.client.emit(Events.AnalyticsSync,
 				this.client.guilds.size,
 				this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0));
+
+			await this.initSyncResourceAnalyticsTask().catch(error => this.client.emit(Events.Wtf, error));
 		}
 	}
 

@@ -781,7 +781,7 @@ export class ModerationActions {
 		if (!log) return null;
 
 		const { task } = log;
-		if (task && !task.paused) await task.delete();
+		if (task && !task.running) await task.delete();
 		return log;
 	}
 

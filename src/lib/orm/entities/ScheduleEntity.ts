@@ -88,8 +88,8 @@ export class ScheduleEntity extends BaseEntity {
 		return this.#client.tasks.get(this.taskID) ?? null;
 	}
 
-	public get paused() {
-		return this.#paused;
+	public get running() {
+		return this.#running;
 	}
 
 	public async run(): Promise<ResponseValue> {

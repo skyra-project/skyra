@@ -19,3 +19,4 @@ indent_style = space
 
 [*.{md,rmd,mkd,mkdn,mdwn,mdown,markdown,litcoffee}]
 tab_width = 4
+trim_trailing_whitespace = false

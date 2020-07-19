@@ -35,9 +35,6 @@
 		"bot",
 		"standalone"
 	],
-	"contributors": [
-		"kyranet <kyradiscord@gmail.com>"
-	],
 	"private": true,
 	"author": "kyranet <kyradiscord@gmail.com>",
 	"license": "Apache-2.0",

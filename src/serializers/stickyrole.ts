@@ -10,14 +10,7 @@ export default class extends Serializer {
 			&& Object.keys(data).length === 2
 			&& typeof data.user === 'string'
 			&& Array.isArray(data.roles)
-			&& data.roles.every(role => typeof role === 'string')) {
-
-			// TODO: Resolve this to a better solution (i.e. using `guild.roles.sticky.add`)
-			// see https://discordapp.com/channels/541738403230777351/541740581832097792/734011404750684220
-			Reflect.set(data, 'roles', [...new Set(data.roles)].filter((role => guild!.roles.has(role))));
-			return data;
-
-		}
+			&& data.roles.every(role => typeof role === 'string' && guild!.roles.has(role))) return data;
 
 		throw language.tget('SERIALIZER_STICKY_ROLE_INVALID');
 	}

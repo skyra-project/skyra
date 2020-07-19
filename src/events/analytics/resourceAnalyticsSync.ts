@@ -13,24 +13,17 @@ import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 export default class extends AnalyticsEvent {
 
 	public run() {
-		const perCoreLoad = cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100);
-
 		this.writePoints([
-			this.syncTotalCPULoad(perCoreLoad),
-			this.syncPerCoreLoad(perCoreLoad),
+			this.syncPerCoreLoad(),
 			this.syncMem()
 		]);
 
 		return this.analytics.flush();
 	}
 
-	private syncTotalCPULoad(perCoreLoad: readonly number[]) {
-		return new Point(AnalyticsSchema.Points.TotalCPULoad)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			.floatField('value', perCoreLoad.reduce((acc, val) => acc + val, 0) / perCoreLoad.length);
-	}
+	private syncPerCoreLoad() {
+		const perCoreLoad = cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100);
 
-	private syncPerCoreLoad(perCoreLoad: readonly number[]) {
 		const point = new Point(AnalyticsSchema.Points.PerCoreCPULoad)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync);
 		perCoreLoad.forEach((val, index) => point.floatField(`cpu_${index}`, val));

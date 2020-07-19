@@ -8,7 +8,6 @@ export namespace AnalyticsSchema {
 		Economy = 'economy',
 		TwitchSubscriptions = 'twitch_subscriptions',
 		TwitchSubscriptionHook = 'twitch_subscription_hook',
-		TotalCPULoad = 'total_cpu_load',
 		PerCoreCPULoad = 'per_core_cpu_load',
 		Memory = 'memory'
 	}

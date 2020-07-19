@@ -312,7 +312,6 @@ export class ModerationActions {
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
-		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.Mute);
 		return (await moderationLog.create())!;
 	}
 
@@ -779,7 +778,10 @@ export class ModerationActions {
 	 */
 	private async cancelLastLogTaskFromUser(userID: string, type: Moderation.TypeCodes, extra?: (log: ModerationEntity) => boolean) {
 		const log = await this.retrieveLastLogFromUser(userID, type, extra);
-		await log?.task?.delete();
+		if (!log) return null;
+
+		const { task } = log;
+		if (task && !task.running) await task.delete();
 		return log;
 	}
 

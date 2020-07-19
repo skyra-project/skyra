@@ -1,8 +1,6 @@
-import { deepClone } from '@klasa/utils';
 import { ModerationManagerCreateData } from '@lib/structures/managers/ModerationManager';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings, StickyRole } from '@lib/types/settings/GuildSettings';
-import { Mutable } from '@lib/types/util';
+import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors, Moderation } from '@utils/constants';
@@ -535,10 +533,7 @@ export class ModerationActions {
 
 	public userIsMuted(user: User) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID === null) return false;
-
-		const stickyRoles = this.guild.settings.get(GuildSettings.StickyRoles).find(stickyRole => stickyRole.user === user.id);
-		return typeof stickyRoles !== 'undefined' && stickyRoles.roles.includes(roleID);
+		return roleID !== null && this.guild.stickyRoles.get(user.id).includes(roleID);
 	}
 
 	public async userIsVoiceMuted(user: User) {
@@ -600,13 +595,13 @@ export class ModerationActions {
 	private addStickyMute(moderatorID: string, id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
 		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
-		return this.addStickyRole(moderatorID, id, mutedRole);
+		return this.guild.stickyRoles.add(id, mutedRole, { author: moderatorID });
 	}
 
 	private removeStickyMute(moderatorID: string, id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
 		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
-		return this.removeStickyRole(moderatorID, id, mutedRole);
+		return this.guild.stickyRoles.remove(id, mutedRole, { author: moderatorID });
 	}
 
 	private async muteUser(rawOptions: ModerationActionOptions) {
@@ -718,64 +713,10 @@ export class ModerationActions {
 		return [...roles];
 	}
 
-	private async addStickyRole(moderatorID: string, id: string, roleID: string) {
-		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) {
-			const stickyRoles: StickyRole = {
-				user: id,
-				roles: [roleID]
-			};
-			await this.guild.settings.update(GuildSettings.StickyRoles, stickyRoles, {
-				arrayAction: 'add',
-				extraContext: { author: moderatorID }
-			});
-			return;
-		}
-
-		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		if (stickyRoles.roles.includes(roleID)) return;
-
-		const clone = this.customDeepClone<StickyRole, Mutable<StickyRole>>(stickyRoles);
-		clone.roles.push(roleID);
-		await this.guild.settings.update(GuildSettings.StickyRoles, clone, {
-			arrayIndex: stickyRolesIndex,
-			extraContext: { author: moderatorID }
-		});
-	}
-
-	private async removeStickyRole(moderatorID: string, id: string, roleID: string) {
-		const guildStickyRoles = this.guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRolesIndex = guildStickyRoles.findIndex(stickyRole => stickyRole.user === id);
-		if (stickyRolesIndex === -1) return;
-
-		const stickyRoles = guildStickyRoles[stickyRolesIndex];
-		const roleIndex = stickyRoles.roles.indexOf(roleID);
-		if (roleIndex === -1) return;
-
-		if (stickyRoles.roles.length > 1) {
-			// If there are more than one role, remove the muted one and update the entry keeping the rest.
-			const clone = this.customDeepClone<StickyRole, Mutable<StickyRole>>(stickyRoles);
-			clone.roles.splice(roleIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, clone, {
-				arrayIndex: stickyRolesIndex,
-				extraContext: { author: moderatorID }
-			});
-		} else {
-			// Else clone the array, remove the entry, and update with action overwrite.
-			const cloneStickyRoles = guildStickyRoles.slice(0);
-			cloneStickyRoles.splice(stickyRolesIndex, 1);
-			await this.guild.settings.update(GuildSettings.StickyRoles, cloneStickyRoles, {
-				arrayAction: 'overwrite',
-				extraContext: { author: moderatorID }
-			});
-		}
-	}
-
 	private addStickyRestriction(moderatorID: string, id: string, roleID: string) {
 		const restrictedRole = this.guild.settings.get(roleID) as string | null;
 		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
-		return this.addStickyRole(moderatorID, id, restrictedRole);
+		return this.guild.stickyRoles.add(id, restrictedRole, { author: moderatorID });
 	}
 
 	private async addRestrictionRole(id: string, key: string) {
@@ -789,7 +730,7 @@ export class ModerationActions {
 	private removeStickyRestriction(moderatorID: string, id: string, roleID: string) {
 		const restrictedRole = this.guild.settings.get(roleID) as string | null;
 		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
-		return this.removeStickyRole(moderatorID, id, restrictedRole);
+		return this.guild.stickyRoles.remove(id, restrictedRole, { author: moderatorID });
 	}
 
 	private async removeRestrictionRole(id: string, key: string) {
@@ -848,10 +789,6 @@ export class ModerationActions {
 
 		// Filter all logs by valid and by type of mute (isType will include temporary and invisible).
 		return logs.filter(log => !log.invalidated && log.isType(type) && extra(log)).lastValue;
-	}
-
-	private customDeepClone<T, R extends T>(source: T) {
-		return deepClone<T>(source) as R;
 	}
 
 	private static getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {

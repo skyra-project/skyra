@@ -44,7 +44,7 @@ export default class extends Event {
 		const member = guild.members.add(data);
 
 		if (await this.handleRAID(guild, member)) return;
-		if (this.handleStickyRoles(guild, member)) return;
+		if (await this.handleStickyRoles(guild, member)) return;
 		this.handleJoinDM(guild, member);
 		this.handleInitialRole(guild, member);
 		this.handleGreetingMessage(guild, member);
@@ -117,16 +117,15 @@ export default class extends Event {
 		return true;
 	}
 
-	private handleStickyRoles(guild: Guild, member: GuildMember) {
+	private async handleStickyRoles(guild: Guild, member: GuildMember) {
 		if (!guild.me!.permissions.has(FLAGS.MANAGE_ROLES)) return false;
 
-		const all = guild.settings.get(GuildSettings.StickyRoles);
-		const stickyRoles = all.find(stickyRole => stickyRole.user === member.id);
-		if (!stickyRoles) return false;
+		const stickyRoles = await guild.stickyRoles.fetch(member.id);
+		if (stickyRoles.length === 0) return false;
 
 		// Handle the case the user is muted
 		const rolesMuted = guild.settings.get(GuildSettings.Roles.Muted);
-		if (rolesMuted && stickyRoles.roles.includes(rolesMuted)) {
+		if (rolesMuted && stickyRoles.includes(rolesMuted)) {
 			// Handle mute
 			const role = guild.roles.get(rolesMuted);
 			if (role) {
@@ -142,18 +141,7 @@ export default class extends Event {
 			return true;
 		}
 
-		// Otherwise, grant sticky roles
-		const roles: string[] = [];
-		for (const role of stickyRoles.roles) {
-			if (guild.roles.has(role)) roles.push(role);
-		}
-
-		if (stickyRoles.roles.length !== roles.length) {
-			guild.settings.update(GuildSettings.StickyRoles, { id: member.id, roles }, { arrayIndex: all.indexOf(stickyRoles) })
-				.catch(error => this.client.emit(Events.Wtf, error));
-		}
-
-		member.roles.add(roles).catch(error => this.client.emit(Events.ApiError, error));
+		member.roles.add([...stickyRoles]).catch(error => this.client.emit(Events.ApiError, error));
 
 		return false;
 	}

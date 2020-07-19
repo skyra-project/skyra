@@ -2,13 +2,13 @@
 import { ModerationManager } from '@lib/structures/managers/ModerationManager';
 import { PermissionsManager } from '@lib/structures/managers/PermissionsManager';
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
+import { StickyRoleManager } from '@lib/structures/managers/StickyRoleManager';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { WSGuildCreate } from '@lib/types/DiscordAPI';
 import { MemberTags } from '@utils/Cache/MemberTags';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { enumerable } from '@utils/util';
 import { Structures } from 'discord.js';
-
 
 export class SkyraGuild extends Structures.get('Guild') {
 
@@ -17,6 +17,7 @@ export class SkyraGuild extends Structures.get('Guild') {
 	public readonly moderation: ModerationManager = new ModerationManager(this);
 	public readonly permissionsManager: PermissionsManager = new PermissionsManager(this);
 	public readonly music: MusicHandler = new MusicHandler(this);
+	public readonly stickyRoles: StickyRoleManager = new StickyRoleManager(this);
 
 	@enumerable(false)
 	public readonly memberTags: MemberTags = new MemberTags(this);
@@ -30,6 +31,7 @@ declare module 'discord.js' {
 		readonly moderation: ModerationManager;
 		readonly permissionsManager: PermissionsManager;
 		readonly music: MusicHandler;
+		readonly stickyRoles: StickyRoleManager;
 		readonly memberTags: MemberTags;
 
 		_patch(data: WSGuildCreate & { shardID: number }): void;

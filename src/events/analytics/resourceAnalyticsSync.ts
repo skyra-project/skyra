@@ -25,7 +25,7 @@ export default class extends AnalyticsEvent {
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync);
 
 		let index = 0;
-		for (const { times } of cpus()) point.floatField(`cpu_${index++}`, ((times.user + times.nice + times.sys + times.irq) / times.idle));
+		for (const { times } of cpus()) point.floatField(`cpu_${index++}`, (times.user + times.nice + times.sys + times.irq) / times.idle);
 
 		return point;
 	}

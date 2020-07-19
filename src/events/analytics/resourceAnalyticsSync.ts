@@ -13,15 +13,16 @@ import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 export default class extends AnalyticsEvent {
 
 	public run() {
+		const perCoreLoad = cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100);
+
 		this.writePoints([
-			this.syncTotalCPULoad()
+			this.syncTotalCPULoad(perCoreLoad)
 		]);
 
 		return this.analytics.flush();
 	}
 
-	private syncTotalCPULoad() {
-		const perCoreLoad = cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100);
+	private syncTotalCPULoad(perCoreLoad: number[]) {
 		return new Point(AnalyticsSchema.Points.TotalCPULoad)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			.intField('value', perCoreLoad.reduce((acc, val) => acc + val, 0) / perCoreLoad.length);

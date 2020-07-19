@@ -9,7 +9,8 @@ export namespace AnalyticsSchema {
 		TwitchSubscriptions = 'twitch_subscriptions',
 		TwitchSubscriptionHook = 'twitch_subscription_hook',
 		TotalCPULoad = 'total_cpu_load',
-		PerCoreCPULoad = 'per_core_cpu_load'
+		PerCoreCPULoad = 'per_core_cpu_load',
+		Memory = 'memory'
 	}
 
 	export const enum Tags {

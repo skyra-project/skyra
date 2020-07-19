@@ -56,7 +56,7 @@ export class StarboardEntity extends BaseEntity {
 	public starMessageID: string | null = null;
 
 	@Column('integer')
-	public stars = 1;
+	public stars = 0;
 
 	/**
 	 * The last time it got updated
@@ -152,9 +152,9 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	public async increment(id: string): Promise<void> {
 		// TODO: https://github.com/skyra-project/skyra/issues/569
-		if (this.#message.author.id !== id && !this.#users.has(id)) {
+		if (this.#message.author.id !== id) {
 			this.#users.add(id);
-			await this.edit({ stars: this.stars });
+			await this.edit({ stars: this.#users.size });
 		}
 	}
 
@@ -163,10 +163,8 @@ export class StarboardEntity extends BaseEntity {
 	 * @param id The user's ID to remove
 	 */
 	public async decrement(id: string): Promise<void> {
-		if (this.#users.has(id)) {
-			this.#users.delete(id);
-			await this.edit({ stars: this.stars });
-		}
+		this.#users.delete(id);
+		await this.edit({ stars: this.#users.size });
 	}
 
 	/**
@@ -180,8 +178,13 @@ export class StarboardEntity extends BaseEntity {
 		const previousUpdate = this.#manager.syncMessageMap.get(this);
 		if (previousUpdate) await previousUpdate;
 
-		if ('enabled' in options) this.enabled = options.enabled!;
-		if ('stars' in options && this.enabled) await this.updateStarMessage();
+		if ('enabled' in options) {
+			this.enabled = options.enabled!;
+		}
+		if ('stars' in options && this.enabled) {
+			this.stars = options.stars!;
+			await this.updateStarMessage();
+		}
 		if ('starMessageID' in options && options.starMessageID === null) {
 			this.starMessageID = null;
 			this.#starMessage = null;
@@ -238,7 +241,6 @@ export class StarboardEntity extends BaseEntity {
 			return;
 		}
 
-		this.#users.delete(this.#message.author.id);
 		this.stars = this.#users.size;
 	}
 

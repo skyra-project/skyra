@@ -64,7 +64,7 @@ export class StarboardManager extends Cache<string, StarboardEntity> {
 	 * @param messageID The message id
 	 * @param userID The user id
 	 */
-	public async fetch(channel: TextChannel, messageID: string, userID: string) {
+	public async fetch(channel: TextChannel, messageID: string) {
 		const entry = super.get(messageID);
 		if (entry) return entry;
 
@@ -75,14 +75,14 @@ export class StarboardManager extends Cache<string, StarboardEntity> {
 			if (previous) {
 				previous.setup(this, message);
 				await previous.downloadStarMessage();
-				if (!previous.hasId()) return;
+				if (!previous.hasId()) return null;
 			}
 
 			const star = previous ?? new StarboardEntity().setup(this, message);
 			this.set(messageID, star);
 
 			await star.downloadUserList();
-			await star.increment(userID);
+			return star;
 		}
 
 		return null;

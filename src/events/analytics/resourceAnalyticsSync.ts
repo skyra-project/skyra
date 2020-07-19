@@ -3,7 +3,6 @@ import { ApplyOptions } from '@skyra/decorators';
 import { AnalyticsEvent } from '@utils/Tracking/Analytics/structures/AnalyticsEvent';
 import { EventOptions } from 'klasa';
 import { Point } from '@influxdata/influxdb-client';
-import { roundNumber } from '@utils/util';
 import { cpus } from 'os';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 
@@ -22,11 +21,12 @@ export default class extends AnalyticsEvent {
 	}
 
 	private syncPerCoreLoad() {
-		const perCoreLoad = cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100);
-
 		const point = new Point(AnalyticsSchema.Points.PerCoreCPULoad)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync);
-		perCoreLoad.forEach((val, index) => point.floatField(`cpu_${index}`, val));
+
+		let index = 0;
+		for (const { times } of cpus()) point.floatField(`cpu_${index++}`, ((times.user + times.nice + times.sys + times.irq) / times.idle));
+
 		return point;
 	}
 

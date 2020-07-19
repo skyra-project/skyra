@@ -160,12 +160,52 @@ export class StickyRoleManager {
 	}
 
 	private removeAt(index: number, extraContext?: unknown) {
+		// 1.0. Create a clone of the array, we do not want to mutate the original one:
 		const clone = this.entries.slice();
+
+		// 2.0. Remove the desired entry:
 		clone.splice(index, 1);
+
+		// 3.0. Patch invalid roles and remove empty entries:
+		this.cleanAllRoles(clone);
+
 		return this.#guild.settings.update(GuildSettings.StickyRoles, clone, {
 			arrayAction: ArrayActions.Overwrite,
 			extraContext
 		});
+	}
+
+	private cleanAllRoles(stickyRoles: StickyRole[]) {
+		// 1.0. We check if the array is empty, this is a must as we will otherwise
+		//      read an out-of-bounds value.
+		if (stickyRoles.length === 0) return;
+
+		// Iterate from last to first, why? Because when we do `splice(i, 1)`, we
+		// remove one entry from the array, making it smaller.Doing so in reverse
+		// is more efficient as the following operation:
+		//
+		//   const i = 2;
+		//   const arr = [0, 1, 2, 3, 4];
+		//   arr.splice(i, 1);
+		//
+		// Will result on: [0, 1, 3, 4]
+		//
+		// The array in the range [0..i) remains unchanged, whereas [i..n) is modified.
+
+		// 2.0. Start the index from the last element:
+		//        const arr = [0, 1, 2, 3, 4];
+		//        const last = arr.length - 1; // 5 - 1 = 4
+		for (let i = stickyRoles.length - 1; i >= 0; --i) {
+			// 3.0. Read the entry at the index:
+			const entry = stickyRoles[i];
+
+			// 4.0. Mutate the roles to remove all duplicates and removed roles:
+			entry.roles = [...this.cleanRoles(entry.roles)];
+
+			// 5.0. If empty, we will remove it from the settings, validating the
+			//      previous step's requirements.
+			if (entry.roles.length === 0) stickyRoles.splice(i, 1);
+		}
 	}
 
 }

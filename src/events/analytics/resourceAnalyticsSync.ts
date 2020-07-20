@@ -34,8 +34,8 @@ export default class extends AnalyticsEvent {
 		const usage = process.memoryUsage();
 		return new Point(AnalyticsSchema.Points.Memory)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			.floatField('total', Math.round(100 * (usage.heapTotal / 1048576)) / 100)
-			.floatField('used', Math.round(100 * (usage.heapUsed / 1048576)) / 100);
+			.floatField('total', usage.heapTotal)
+			.floatField('used', usage.heapUsed);
 	}
 
 }

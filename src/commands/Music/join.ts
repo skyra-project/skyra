@@ -20,9 +20,9 @@ export default class extends MusicCommand {
 		if (!channel) throw message.language.tget('COMMAND_JOIN_NO_VOICECHANNEL');
 
 		// Check if the bot is already playing in this guild
-		if (message.guild!.music.playing) {
+		if (message.guild!.music.playing && message.guild!.music.voiceChannel !== null) {
 			throw message.language.tget(
-				channel.id === message.guild!.music.voiceChannel!.id
+				channel.id === message.guild!.music.voiceChannel.id
 					? 'COMMAND_JOIN_VOICE_SAME'
 					: 'COMMAND_JOIN_VOICE_DIFFERENT'
 			);

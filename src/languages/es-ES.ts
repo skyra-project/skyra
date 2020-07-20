@@ -1809,7 +1809,7 @@ export default class extends Language {
 					can be managed by me. No, the guild's owner cannot be muted. This action can be optionally timed to create
 					a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.
 					The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Alphonse', '@Alphonse Spamming all channels', '@Alphonse Spamming all channels, for 24 hours.']
+			examples: ['@Alphonse', '@Alphonse Spamming all channels', '@Alphonse 24h Spamming all channels']
 		}),
 		COMMAND_SETNICKNAME_DESCRIPTION: 'Change the nickname of a user.',
 		COMMAND_SETNICKNAME_EXTENDED: builder.display('setnickname', {

@@ -141,8 +141,8 @@ export default class extends Language {
 		0: 'Ninguno',
 		1: 'Bajo',
 		2: 'Medio',
-		3: '(╯°□°）╯︵ ┻━┻',
-		4: '┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻'
+		3: 'Alto',
+		4: 'Muy alto'
 	};
 
 	public duration = duration;

@@ -54,6 +54,7 @@
 		"@klasa/timer-manager": "^0.0.1",
 		"@klasa/type": "^0.0.1",
 		"@klasa/utils": "^0.1.0",
+		"@sentry/node": "^5.19.2",
 		"@skyra/decorators": "1.x",
 		"canvas": "^2.6.1",
 		"canvas-constructor": "^3.2.0",

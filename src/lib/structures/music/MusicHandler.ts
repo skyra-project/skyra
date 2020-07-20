@@ -267,8 +267,12 @@ export class MusicHandler {
 		if (volume) this.volume = this.guild.settings.get(GuildSettings.Music.DefaultVolume);
 	}
 
-	public handleException(context: MusicHandlerRequestContext | null = null) {
-		return this.leave(context);
+	public async handleException(context: MusicHandlerRequestContext | null = null) {
+		// Destroy the lavalink instance
+		await this.leave(context);
+
+		// Empty the queue
+		this.queue = [];
 	}
 
 	public async manageableFor(message: KlasaMessage) {

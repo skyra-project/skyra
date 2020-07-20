@@ -8,9 +8,9 @@ export default class extends Event {
 
 	private kHeader = new Colors({ text: 'magenta' }).format('[LAVALINK]');
 
-	public run(manager: MusicHandler, payload: LavalinkExceptionEvent, context: MusicHandlerRequestContext | null = null) {
-		// Reset the manager for the guild by calling leave (keeps queue intact)
-		manager.handleException(context);
+	public async run(manager: MusicHandler, payload: LavalinkExceptionEvent, context: MusicHandlerRequestContext | null = null) {
+		// Destroy the instance for this guild
+		await manager.handleException(context);
 
 		// Emit an error message if there is an error message to emit
 		// The if case is because exceptions are also emitted when Skyra is disconnected by a moderator

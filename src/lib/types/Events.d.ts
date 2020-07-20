@@ -69,3 +69,28 @@ export const enum LavalinkPlayerEvents {
 	Error = 'error',
 	End = 'end'
 }
+
+export const enum DiscordVoiceCloseEventCodes {
+	/** You sent an invalid {@link https://discord.com/developers/ opcode}. */
+	UnknownOpcode = 4001,
+	/** You sent a payload before {@link https://discord.com/developers/docs/topics/gateway#gateway-identify identifying} with the Gateway. */
+	NotAuthenticated = 4003,
+	/** The token you sent in your {@link https://discord.com/developers/docs/topics/gateway#gateway-identify identify} payload is incorrect. */
+	AuthenticationFailed = 4004,
+	/** You sent more than one {@link https://discord.com/developers/docs/topics/gateway#gateway-identify identify} payload. Stahp. */
+	AlreadyAuthenticated = 4005,
+	/** Your session is no longer valid. */
+	SessionNoLongerValid = 4006,
+	/** Your session has timed out. */
+	SessionTimeout = 4009,
+	/** We can't find the server you're trying to connect to. */
+	ServerNotFound = 4011,
+	/** We didn't recognize the {@link https://discord.com/developers/ protocol} you sent. */
+	UnknownProtocol = 4012,
+	/** Either the channel was deleted or you were kicked. Should not reconnect. */
+	Disconnected = 4014,
+	/** The server crashed. Our bad! Try {@link https://discord.com/developers/ resuming}. */
+	VoiceServerCrashed = 4015,
+	/** We didn't recognize your {@link https://discord.com/developers/ encryption}. */
+	UnknownEncryptionMode = 4016,
+}

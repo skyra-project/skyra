@@ -1,9 +1,8 @@
 import { Colors } from '@klasa/console';
 import { DbSet } from '@lib/structures/DbSet';
-import { Events } from '@lib/types/Enums';
+import { Events, PubSubHubbubAction } from '@lib/types/Enums';
 import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
-import { TwitchHooksAction } from '@utils/Notifications/Twitch';
 import { Task } from 'klasa';
 import { Repository } from 'typeorm';
 
@@ -44,7 +43,7 @@ export default class extends Task {
 
 				// Queue the updating by pushing the promise into the promises array
 				promises.push(
-					this.client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe)
+					this.client.twitch.subscriptionsStreamHandle(subscription.id, PubSubHubbubAction.Subscribe)
 						.catch(error => this.client.emit(Events.Wtf, error))
 				);
 			}

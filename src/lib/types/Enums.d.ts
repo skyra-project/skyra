@@ -92,3 +92,8 @@ export const enum Schedules {
 	Cleanup = 'cleanup',
 	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions'
 }
+
+export const enum PubSubHubbubAction {
+	Subscribe = 'subscribe',
+	Unsubscribe = 'unsubscribe'
+}

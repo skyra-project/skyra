@@ -3,12 +3,11 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
-import { PermissionLevels } from '@lib/types/Enums';
+import { PermissionLevels, PubSubHubbubAction } from '@lib/types/Enums';
 import { GuildSettings, NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
-import { TwitchHooksAction } from '@utils/Notifications/Twitch';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Any } from 'typeorm';
@@ -125,7 +124,7 @@ export default class extends SkyraCommand {
 			// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 			// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
 			if (await this.upsertSubscription(message.guild!, streamer)) {
-				await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
+				await this.client.twitch.subscriptionsStreamHandle(streamer.id, PubSubHubbubAction.Subscribe);
 			}
 		} else {
 			// Retrieve the subscription.
@@ -326,7 +325,7 @@ export default class extends SkyraCommand {
 		// If this was the last guild subscribed to this channel, delete it from the database and unsubscribe from the Twitch notifications.
 		if (subscription.guildIds.length === 1) {
 			await subscription.remove();
-			await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Unsubscribe);
+			await this.client.twitch.subscriptionsStreamHandle(streamer.id, PubSubHubbubAction.Unsubscribe);
 		} else {
 			subscription.guildIds.splice(index, 1);
 			await subscription.save();

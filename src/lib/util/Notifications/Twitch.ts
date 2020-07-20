@@ -1,14 +1,10 @@
 import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUserFollowsResult, TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
+import { PubSubHubbubAction } from '@lib/types/Enums';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { Mime, Time } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
-
-export const enum TwitchHooksAction {
-	Subscribe = 'subscribe',
-	Unsubscribe = 'unsubscribe'
-}
 
 export interface OauthResponse {
 	access_token: string;
@@ -88,7 +84,7 @@ export class Twitch {
 		return TOKEN;
 	}
 
-	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
+	public async subscriptionsStreamHandle(streamerID: string, action: PubSubHubbubAction = PubSubHubbubAction.Subscribe) {
 		await fetch('https://api.twitch.tv/helix/webhooks/hub', {
 			body: JSON.stringify({
 				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,

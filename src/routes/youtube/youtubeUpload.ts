@@ -8,11 +8,11 @@ import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({
-	route: 'twitch/stream_change/:id'
+	route: 'youtube/upload/:id'
 })
 export default class extends PubSubHubbubRoute {
 
-	// Stream Changed
+	// I know this is just Twitch code but Im doing something else atm
 	public post(request: ApiRequest, response: ApiResponse) {
 		if (!isObject(request.body)) return response.badRequest('Malformed data received');
 

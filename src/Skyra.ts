@@ -12,7 +12,9 @@ inspect.defaultOptions.depth = 1;
 const client = new SkyraClient();
 
 async function main() {
-	sentry.init({ dsn: TOKENS.SENTRY_URL });
+	if (TOKENS.SENTRY_URL) {
+		sentry.init({ dsn: TOKENS.SENTRY_URL });
+	}
 	await DbSet.connect();
 	await client.login(TOKENS.BOT_TOKEN);
 }

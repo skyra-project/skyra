@@ -7,9 +7,9 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
+import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
-import { cutText } from '@utils/util';
 
 const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
 

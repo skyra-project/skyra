@@ -9,6 +9,7 @@ import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
+import { cutText } from '@utils/util';
 
 const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
 
@@ -75,7 +76,7 @@ export default class extends SkyraCommand {
 		const format = this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay);
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
+			display.addPage((template: MessageEmbed) => template.setDescription(cutText(page.map(format).join('\n'), 2000)));
 		}
 
 		await display.start(response, message.author.id);

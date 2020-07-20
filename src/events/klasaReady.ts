@@ -61,7 +61,7 @@ export default class extends Event {
 	private async initSyncResourceAnalyticsTask() {
 		const { queue } = this.client.schedules;
 		if (!queue.some(task => task.taskID === Schedules.SyncResourceAnalytics)) {
-			await this.client.schedules.add(Schedules.TwitchRefreshSubscriptions, '*/1 * * * *');
+			await this.client.schedules.add(Schedules.SyncResourceAnalytics, '*/1 * * * *');
 		}
 	}
 

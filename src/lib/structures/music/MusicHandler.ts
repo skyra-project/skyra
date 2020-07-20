@@ -1,5 +1,6 @@
 import { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
+import { LavalinkPlayerEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
 import { enumerable, fetch, FetchResultTypes } from '@utils/util';
@@ -125,10 +126,10 @@ export class MusicHandler {
 		if (this.player) {
 			// Handle all the player events
 			this.player
-				.on('playerUpdate', data => this.client.emit(Events.LavalinkPlayerUpdate, this, data))
-				.on('start', data => this.client.emit(Events.LavalinkStart, this, data))
-				.on('error', data => this.client.emit(Events.LavalinkException, this, data))
-				.on('end', data => this.client.emit(Events.LavalinkEnd, this, data));
+				.on(LavalinkPlayerEvents.PlayerUpdate, data => this.client.emit(Events.LavalinkPlayerUpdate, this, data))
+				.on(LavalinkPlayerEvents.Start, data => this.client.emit(Events.LavalinkStart, this, data))
+				.on(LavalinkPlayerEvents.Error, data => this.client.emit(Events.LavalinkException, this, data, context))
+				.on(LavalinkPlayerEvents.End, data => this.client.emit(Events.LavalinkEnd, this, data));
 		}
 
 		// Emit that we connected to the websocket
@@ -264,6 +265,10 @@ export class MusicHandler {
 		this.systemPaused = false;
 		this.replay = false;
 		if (volume) this.volume = this.guild.settings.get(GuildSettings.Music.DefaultVolume);
+	}
+
+	public handleException(context: MusicHandlerRequestContext | null = null) {
+		return this.leave(context);
 	}
 
 	public async manageableFor(message: KlasaMessage) {

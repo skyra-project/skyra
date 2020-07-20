@@ -62,3 +62,10 @@ export const enum LavalinkEvents {
 	Raw = 'raw',
 	Ready = 'ready'
 }
+
+export const enum LavalinkPlayerEvents {
+	PlayerUpdate = 'playerUpdate',
+	Start = 'start',
+	Error = 'error',
+	End = 'end'
+}

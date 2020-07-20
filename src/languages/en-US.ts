@@ -140,7 +140,7 @@ export default class extends Language {
 		1: 'Low',
 		2: 'Medium',
 		3: 'High',
-		4: 'Very High'
+		4: 'Highest'
 	};
 
 	public duration = duration;

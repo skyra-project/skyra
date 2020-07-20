@@ -11,6 +11,7 @@
 /src/commands/Google/ @favna
 /src/commands/Misc/reddituser.ts @favna
 /src/commands/Pokemon/ @favna
+/src/commands/Twitch/ @favna
 /src/commands/tools/Websearch/eshop.ts @favna
 /src/commands/tools/Websearch/igdb.ts @favna
 /src/commands/tools/Websearch/itunes.ts @favna
@@ -26,7 +27,7 @@
 
 # QuantumlyTangled
 /src/commands/GameIntegration/ffxiv.ts @quantumlytangled
-/src/commands/Twitch/ @quantumlytangled
+/src/commands/Notifi/ @quantumlytangled
 /src/events/analytics/ @quantumlytangled
 /src/events/twitch/ @quantumlytangled
 /src/lib/orm/migrations/1594757329224-V13_MigrateAnalytics.ts @quantumlytangled

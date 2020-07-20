@@ -3,7 +3,6 @@ import { PubSubHubbubAction } from '@lib/types/Enums';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { Mime, Time } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
-import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
 
 export interface OauthResponse {
@@ -30,9 +29,6 @@ export class Twitch {
 
 	@enumerable(false)
 	private readonly $clientSecret = TOKENS.TWITCH_SECRET;
-
-	@enumerable(false)
-	private readonly $webhookSecret = TOKENS.TWITCH_WEBHOOK_SECRET;
 
 	@enumerable(false)
 	private readonly kTwitchRequestHeaders = {
@@ -69,14 +65,6 @@ export class Twitch {
 		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userID}&to_id=${channelID}`);
 	}
 
-	public checkSignature(algorithm: string, signature: string, data: any) {
-		const hash = createHmac(algorithm, this.$webhookSecret)
-			.update(JSON.stringify(data))
-			.digest('hex');
-
-		return hash === signature;
-	}
-
 	public fetchBearer() {
 		const { TOKEN, EXPIRE } = this.BEARER;
 		if (!EXPIRE || !TOKEN) return this._generateBearerToken();
@@ -91,7 +79,7 @@ export class Twitch {
 				'hub.mode': action,
 				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
 				'hub.lease_seconds': (9 * Time.Day) / Time.Second,
-				'hub.secret': this.$webhookSecret
+				'hub.secret': Twitch.$webhookSecret
 			}),
 			headers: {
 				...this.kTwitchRequestHeaders,
@@ -120,6 +108,10 @@ export class Twitch {
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;
 	}
+
+
+	@enumerable(false)
+	public static $webhookSecret = TOKENS.TWITCH_WEBHOOK_SECRET;
 
 }
 

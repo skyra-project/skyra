@@ -1,9 +1,10 @@
-import { isObject } from '@klasa/utils';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
+import { hubSignature } from '@utils/Notifications/hubSignature';
 import { PubSubHubbubRoute } from '@utils/Notifications/structures/PubSubHubbubRoute';
+import { Twitch } from '@utils/Notifications/Twitch';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { RouteOptions } from 'klasa-dashboard-hooks';
 
@@ -13,15 +14,8 @@ import { RouteOptions } from 'klasa-dashboard-hooks';
 export default class extends PubSubHubbubRoute {
 
 	// Stream Changed
+	@hubSignature(Twitch.$webhookSecret)
 	public post(request: ApiRequest, response: ApiResponse) {
-		if (!isObject(request.body)) return response.badRequest('Malformed data received');
-
-		const xHubSignature = request.headers['x-hub-signature'];
-		if (typeof xHubSignature === 'undefined') return response.badRequest('Missing "x-hub-signature" header');
-
-		const [algo, sig] = xHubSignature.toString().split('=', 2);
-		if (!this.client.twitch.checkSignature(algo, sig, request.body)) return response.forbidden('Invalid Hub signature');
-
 		const id = request.params.id as string;
 		const { data } = request.body as PostStreamBody;
 		const lengthStatus = data.length === 0;

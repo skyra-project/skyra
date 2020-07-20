@@ -7,7 +7,9 @@ export namespace AnalyticsSchema {
 		VoiceConnections = 'voice_connections',
 		Economy = 'economy',
 		TwitchSubscriptions = 'twitch_subscriptions',
-		TwitchSubscriptionHook = 'twitch_subscription_hook'
+		TwitchSubscriptionHook = 'twitch_subscription_hook',
+		PerCoreCPULoad = 'per_core_cpu_load',
+		Memory = 'memory'
 	}
 
 	export const enum Tags {

@@ -185,7 +185,7 @@ export class StarboardEntity extends BaseEntity {
 			this.stars = options.stars!;
 			await this.updateStarMessage();
 		}
-		if ('starMessageID' in options && options.starMessageID === null) {
+		if (options.starMessageID === null) {
 			this.starMessageID = null;
 			this.#starMessage = null;
 		}
@@ -261,7 +261,10 @@ export class StarboardEntity extends BaseEntity {
 			}
 		} else {
 			const promise = this.#manager.starboardChannel?.send(content, this.embed!)
-				.then(message => { this.#starMessage = message; })
+				.then(message => {
+					this.#starMessage = message;
+					this.starMessageID = message.id;
+				})
 				.catch(error => {
 					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 

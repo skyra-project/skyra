@@ -162,15 +162,17 @@ export class MusicHandler {
 	}
 
 	public async play() {
-		// If there is no queue then tell the user they should add some songs
-		if (!this.queue || !this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
-		// If we're already playing then tell the user that they can listen right now
-		if (this.playing && !this.paused) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
+		if (this.player) {
+			// If there is no queue then tell the user they should add some songs
+			if (!this.queue || !this.queue.length) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_NO_SONGS'));
+			// If we're already playing then tell the user that they can listen right now
+			if (this.playing && !this.paused) return Promise.reject(this.guild.language.tget('MUSICMANAGER_PLAY_PLAYING'));
 
-		// Set the song to the first entry of the queue
-		this.song = this.queue.shift()!;
-		// And play it
-		await this.player!.play(this.song.track);
+			// Set the song to the first entry of the queue
+			this.song = this.queue.shift()!;
+			// And play it
+			await this.player.play(this.song.track);
+		}
 
 		return this;
 	}

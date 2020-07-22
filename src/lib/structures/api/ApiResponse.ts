@@ -1,10 +1,17 @@
 import { Mime } from '@utils/constants';
-import { ServerResponse, STATUS_CODES } from 'http';
+import { IncomingMessage, ServerResponse, STATUS_CODES } from 'http';
 import { CookieStore } from './CookieStore';
 
 export class ApiResponse extends ServerResponse {
 
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	#originUrl: string;
 	public cookies!: CookieStore;
+
+	public constructor(req: IncomingMessage) {
+		super(req);
+		this.#originUrl = req.headers.origin ?? '';
+	}
 
 	public error(error: number | string): void {
 		if (typeof error === 'string') {
@@ -45,17 +52,28 @@ export class ApiResponse extends ServerResponse {
 	}
 
 	public json(data: any): void {
-		this.setContentType(Mime.Types.ApplicationJson)
+		this
+			.setCORS()
+			.setContentType(Mime.Types.ApplicationJson)
 			.end(JSON.stringify(data));
 	}
 
 	public text(data: string): void {
-		this.setContentType(Mime.Types.TextPlain)
+		this
+			.setCORS()
+			.setContentType(Mime.Types.TextPlain)
 			.end(data);
 	}
 
 	public setContentType(contentType: Mime.Types) {
 		this.setHeader('Content-Type', contentType);
+		return this;
+	}
+
+	public setCORS() {
+		this.setHeader('Access-Control-Allow-Origin', this.#originUrl);
+		this.setHeader('Access-Control-Allow-Headers', '*');
+		this.setHeader('Access-Control-Allow-Methods', 'GET,POST');
 		return this;
 	}
 

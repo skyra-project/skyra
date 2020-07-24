@@ -6,7 +6,7 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{js,ts}]
+[*.{js,ts,mjs}]
 indent_size = 4
 indent_style = tab
 block_comment_start = /*
@@ -20,3 +20,8 @@ indent_style = space
 [*.{md,rmd,mkd,mkdn,mdwn,mdown,markdown,litcoffee}]
 tab_width = 4
 trim_trailing_whitespace = false
+
+[*.{ps1}]
+max_line_length = 115
+indent_size = 4
+indent_style = space

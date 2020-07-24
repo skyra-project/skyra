@@ -1,5 +1,6 @@
 module.exports = {
 	coverageProvider: 'v8',
+	coverageReporters: ['lcov', 'text-summary'],
 	displayName: 'unit test',
 	preset: 'ts-jest',
 	testEnvironment: 'node',

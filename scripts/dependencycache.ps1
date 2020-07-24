@@ -4,7 +4,7 @@ Function Step-Main {
 		[string]$Manager = "yarn"
     )
 
-    Get-Process {
+    Process {
         switch ( $Command ) {
             clear {
                 Remove-Item -Recurse -Force -ErrorAction Ignore dist

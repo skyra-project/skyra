@@ -78,13 +78,13 @@ export default class extends RichDisplayCommand {
 export interface OwlbotResultOk {
 	definitions: readonly OwlbotDefinition[];
 	word: string;
-	pronunciation: string|null;
+	pronunciation: string | null;
 }
 
 export interface OwlbotDefinition {
 	type: string;
 	definition: string;
-	example: string|null;
-	image_url: string|null;
-	emoji: string|null;
+	example: string | null;
+	image_url: string | null;
+	emoji: string | null;
 }

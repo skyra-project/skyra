@@ -7,9 +7,7 @@ import { cutText, fetch, FetchResultTypes } from '@utils/util';
 import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-
-const options = { headers: { Accept: 'application/json', Authorization: `Token ${TOKENS.OWLBOT}` } };
+import { BrandingColors, Mime } from '@utils/constants';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['definition', 'defination', 'dictionary'],
@@ -26,19 +24,11 @@ export default class extends RichDisplayCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		try {
-			const result = await fetch<OwlbotResultOk>(
-				`https://owlbot.info/api/v4/dictionary/${encodeURIComponent(input.toLowerCase())}`,
-				options,
-				FetchResultTypes.JSON
-			);
+		const result = await this.fetchApi(message, input);
+		const display = await this.buildDisplay(result, message);
+		await display.start(response, message.author.id);
+		return response;
 
-			const display = await this.buildDisplay(result, message);
-			await display.start(response, message.author.id);
-			return response;
-		} catch {
-			throw message.language.get('COMMAND_DEFINE_NOTFOUND');
-		}
 	}
 
 	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage) {
@@ -46,7 +36,7 @@ export default class extends RichDisplayCommand {
 			.setTitle(toTitleCase(results.word))
 			.setColor(await DbSet.fetchColor(message))
 			.addField('Pronounciation', results.pronunciation, true))
-			.setFooterSuffix('- Powered by Owlbot');
+			.setFooterSuffix(' - Powered by Owlbot');
 
 		for (const result of results.definitions) {
 			const definition = this.content(result.definition);
@@ -62,6 +52,19 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
+	private async fetchApi(message: KlasaMessage, word: string) {
+		try {
+			const res = await fetch<OwlbotResultOk>(
+				`https://owlbot.info/api/v4/dictionary/${encodeURIComponent(word.toLowerCase())}`,
+				{ headers: { Accept: Mime.Types.ApplicationJson, Authorization: `Token ${TOKENS.OWLBOT}` } },
+				FetchResultTypes.JSON
+			);
+			return res;
+		} catch {
+			throw message.language.get('COMMAND_DEFINE_NOTFOUND');
+		}
+	}
+
 	private content(definition: string) {
 		if (definition.length < 2048) return definition;
 		return cutText(definition, 2048);
@@ -70,13 +73,15 @@ export default class extends RichDisplayCommand {
 }
 
 export interface OwlbotResultOk {
-	definitions: Array<{
-		type: string;
-		definition: string;
-		example: string|null;
-		image_url: string|null;
-		emoji: string|null;
-	}>;
+	definitions: readonly OwlbotDefinition[];
 	word: string;
 	pronunciation: string;
+}
+
+export interface OwlbotDefinition {
+	type: string;
+	definition: string;
+	example: string|null;
+	image_url: string|null;
+	emoji: string|null;
 }

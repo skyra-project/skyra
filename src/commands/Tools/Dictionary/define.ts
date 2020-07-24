@@ -12,7 +12,7 @@ import { BrandingColors } from '@utils/constants';
 const options = { headers: { Accept: 'application/json', Authorization: `Token ${TOKENS.OWLBOT}` } };
 
 @ApplyOptions<RichDisplayCommandOptions>({
-	aliases: ['definition', 'defination'],
+	aliases: ['definition', 'defination', 'dictionary'],
 	bucket: 2,
 	cooldown: 20,
 	description: language => language.get('COMMAND_DEFINE_DESCRIPTION'),

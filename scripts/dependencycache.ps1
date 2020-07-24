@@ -1,14 +1,22 @@
 Function Step-Main {
     Param (
-        [string]$Command = "default"
+		[string]$Command = "default",
+		[string]$Manager = "yarn"
     )
 
-    Process {
+    Get-Process {
         switch ( $Command ) {
             clear {
                 Remove-Item -Recurse -Force dist
 				Remove-Item -Recurse -Force node_modules
-				Remove-Item -Recurse -Force $(yarn cache dir)
+				switch ($Manager) {
+					yarn {
+						Remove-Item -Recurse -Force $(yarn cache dir)
+					}
+					npm {
+						npm cache rm
+					}
+				}
             }
             default { Write-Host "Unrecognized command, please try again" -ForegroundColor Red }
         }

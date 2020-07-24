@@ -6,9 +6,9 @@ Function Step-Main {
     Process {
         switch ( $Command ) {
             clear {
-                Remove-Item -r -Force dist
-				Remove-Item -r -Force node_modules
-				Remove-Item -r -Force $(yarn cache dir)
+                Remove-Item -Recurse -Force dist
+				Remove-Item -Recurse -Force node_modules
+				Remove-Item -Recurse -Force $(yarn cache dir)
             }
             default { Write-Host "Unrecognized command, please try again" -ForegroundColor Red }
         }

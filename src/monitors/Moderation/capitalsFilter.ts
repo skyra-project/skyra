@@ -6,7 +6,21 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { cutText, floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { getCode, isUpper } from '@skyra/char';
+
+const OFFSET = 0b100000;
+/**
+ * In ASCII, the 6th bit tells whether a character is lowercase or uppercase:
+ *
+ * 'a': 97 (1100001)
+ * 'A': 65 (1000001)
+ *
+ * So the most efficient way to check if a character is uppercase is by checking
+ * it. In this version, we use the AND bitwise operator to change the value of the
+ * 6th bit to 1 and then checking if it is equal to the original number.
+ *
+ * To sum up: Doing the operation `code & 223` converts any ASCII character from
+ * lower case to upper case (upper case characters are unaffected).
+ */
 
 export default class extends ModerationMonitor {
 
@@ -31,16 +45,13 @@ export default class extends ModerationMonitor {
 
 	protected preProcess(message: KlasaMessage) {
 		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum);
-		let length = 0;
+		const { length } = message.content;
 		let count = 0;
+		let i = 0;
 
-		for (const char of message.content) {
-			const charCode = getCode(char);
-			if (isUpper(charCode)) count++;
-			length++;
-		}
+		while (i < length) if ((message.content.charCodeAt(i++) & OFFSET) === 0) count++;
 
-		return (count / length) * 100 >= capsthreshold ? count : null;
+		return (count / length) * 100 > capsthreshold ? count : null;
 	}
 
 	protected async onDelete(message: KlasaMessage, value: number) {

@@ -187,5 +187,6 @@ export const TOKENS = {
 	FORTNITE_KEY: '',
 	WEBHOOK_B4D: '',
 	WEBHOOK_TOPGG: '',
-	SENTRY_URL: ''
+	SENTRY_URL: '',
+	OWLBOT: ''
 };

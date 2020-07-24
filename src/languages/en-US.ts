@@ -3910,6 +3910,7 @@ export default class extends Language {
 			examples: ['heel']
 		}),
 		COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
+		COMMAND_DEFINE_PRONOUNCIATION: 'Pronounciation',
 
 		/**
 		 * #############

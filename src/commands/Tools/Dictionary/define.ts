@@ -26,16 +26,20 @@ export default class extends RichDisplayCommand {
 
 		const result = await this.fetchApi(message, input);
 		const display = await this.buildDisplay(result, message);
+
 		await display.start(response, message.author.id);
 		return response;
 
 	}
 
 	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage) {
-		const display = new UserRichDisplay(new MessageEmbed()
+		const base = new MessageEmbed()
 			.setTitle(toTitleCase(results.word))
-			.setColor(await DbSet.fetchColor(message))
-			.addField('Pronounciation', results.pronunciation, true))
+			.setColor(await DbSet.fetchColor(message));
+
+		if (results.pronunciation) base.addField(message.language.get('COMMAND_DEFINE_PRONOUNCIATION'), results.pronunciation, true);
+
+		const display = new UserRichDisplay(base)
 			.setFooterSuffix(' - Powered by Owlbot');
 
 		for (const result of results.definitions) {
@@ -54,12 +58,11 @@ export default class extends RichDisplayCommand {
 
 	private async fetchApi(message: KlasaMessage, word: string) {
 		try {
-			const res = await fetch<OwlbotResultOk>(
+			return await fetch<OwlbotResultOk>(
 				`https://owlbot.info/api/v4/dictionary/${encodeURIComponent(word.toLowerCase())}`,
 				{ headers: { Accept: Mime.Types.ApplicationJson, Authorization: `Token ${TOKENS.OWLBOT}` } },
 				FetchResultTypes.JSON
 			);
-			return res;
 		} catch {
 			throw message.language.get('COMMAND_DEFINE_NOTFOUND');
 		}
@@ -75,7 +78,7 @@ export default class extends RichDisplayCommand {
 export interface OwlbotResultOk {
 	definitions: readonly OwlbotDefinition[];
 	word: string;
-	pronunciation: string;
+	pronunciation: string|null;
 }
 
 export interface OwlbotDefinition {

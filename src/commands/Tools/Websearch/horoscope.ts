@@ -1,11 +1,21 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { ApplyOptions } from '@skyra/decorators';
-import { createPick, fetch, FetchResultTypes } from '@utils/util';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { Days, Sunsigns } from '@skyra/saelem';
+import { fetchSaelem, getHoroscope } from '@utils/Saelem';
+import { createPick } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
+const kSunSigns = new Set([
+	'capricorn', 'aquarius', 'pisces', 'aries',
+	'taurus', 'gemini', 'cancer', 'leo', 'virgo',
+	'libra', 'scorpio', 'sagittarius'
+]);
+const kRandomSunSign = createPick([...kSunSigns]);
+
 @ApplyOptions<SkyraCommandOptions>({
+	aliases: ['saelem'],
 	cooldown: 10,
 	description: language => language.tget('COMMAND_HOROSCOPE_DESCRIPTION'),
 	extendedHelp: language => language.tget('COMMAND_HOROSCOPE_EXTENDED'),
@@ -13,53 +23,37 @@ import { KlasaMessage } from 'klasa';
 	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
 	usageDelim: ' '
 })
+@CreateResolvers([
+	[
+		'sunsign', (arg, _, message) => {
+			const lowerCasedArgument = arg.toLowerCase();
+			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
+
+			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg, kRandomSunSign());
+		}
+	]
+])
 export default class extends SkyraCommand {
 
-	private readonly kSunSigns = new Set(['capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius']);
-	// eslint-disable-next-line @typescript-eslint/no-invalid-this
-	private readonly kRandomSunSign = createPick([...this.kSunSigns]);
-
-	public async init() {
-		this.createCustomResolver('sunsign', (arg, _, message) => {
-			const lowerCasedArgument = arg.toLowerCase();
-			if (this.kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
-
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg, this.kRandomSunSign());
-		});
-	}
-
-	public async run(message: KlasaMessage, [sign, when]: [string, 'tomorrow' | 'yesterday' | 'today']) {
-		const { horoscope, date, sunsign, meta: { intensity, keywords, mood } } = await this.fetchAPI(message, sign, when);
+	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
+		const horoscope = await this.fetchAPI(message, sign, day);
 
 		const TITLES = message.language.tget('COMMAND_HOROSCOPE_TITLES');
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(horoscope)
-			.setTitle(TITLES.DAILY_HOROSCOPE(sunsign))
-			.setTimestamp(new Date(date))
-			.addField(TITLES.METADATA_TITLE, TITLES.METADATA(intensity, keywords, mood)));
+			.setDescription(horoscope.prediction)
+			.setTitle(TITLES.DAILY_HOROSCOPE(sign))
+			.setTimestamp(new Date(horoscope.date))
+			.addField(TITLES.METADATA_TITLE, TITLES.METADATA(horoscope.intensity, horoscope.keywords, horoscope.mood, horoscope.rating)));
 	}
 
-	private async fetchAPI(message: KlasaMessage, sunsign: string, when: string) {
-		const url = new URL(`https://theastrologer-api.herokuapp.com/api/horoscope/${sunsign}/${when}`);
-
+	private async fetchAPI(message: KlasaMessage, sunsign: Sunsigns, day: Days) {
 		try {
-			return await fetch<SunSignResponse>(url, FetchResultTypes.JSON);
+			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
+			return data.getHoroscope;
 		} catch {
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign, this.kRandomSunSign());
+			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign, kRandomSunSign());
 		}
 	}
 
-
-}
-
-interface SunSignResponse {
-	date: string;
-	horoscope: string;
-	sunsign: string;
-	meta: {
-		intensity: string;
-		keywords: string;
-		mood: string;
-	};
 }

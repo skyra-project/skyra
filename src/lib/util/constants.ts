@@ -31,6 +31,8 @@ export const enum Emojis {
 	ArrowBL = '<:ArrowBL:694594285118685259>',
 	ArrowB = '<:ArrowB:694594285269680179>',
 	ArrowBR = '<:ArrowBR:694594285445578792>',
+	FilledStar = '⭐',
+	EmptyStar = '🔥'
 }
 
 export namespace ConnectFourConstants {

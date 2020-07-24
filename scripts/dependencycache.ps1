@@ -14,7 +14,7 @@ Function Step-Main {
 						Remove-Item -Recurse -Force -ErrorAction Ignore $(yarn cache dir)
 					}
 					npm {
-						npm cache rm
+						npm cache rm --force
 					}
 				}
             }

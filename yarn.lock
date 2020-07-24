@@ -692,6 +692,11 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@skyra/char@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.0.tgz#20100ebde1b0cc849405f8309b2ceaaa153781a0"
+  integrity sha512-05hi/zNa2E3N4PfPQYnmYbuv/qCN+U0n957dz50j27kWr+TVnWdZlGXGd10IL1xeAEKMXa74ZbGaN/ufzANqyQ==
+
 "@skyra/decorators@1.x":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.1.1.tgz#ae3030329d99244a4c667f888d7bdff5e43f973a"

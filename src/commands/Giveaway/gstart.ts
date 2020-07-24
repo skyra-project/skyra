@@ -5,7 +5,7 @@ import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
-const WINNERS_ARG_REGEX = /^(\d)+w$/i;
+const WINNERS_ARG_REGEX = /^(\d+)w$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveaway'],

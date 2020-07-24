@@ -31,12 +31,13 @@ export default class extends ModerationMonitor {
 
 	protected preProcess(message: KlasaMessage) {
 		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum);
-		const { length } = message.content;
+		let length = 0;
 		let count = 0;
 
 		for (const char of message.content) {
 			const charCode = getCode(char);
 			if (isUpper(charCode)) count++;
+			length++;
 		}
 
 		return (count / length) * 100 >= capsthreshold ? count : null;

@@ -29,7 +29,6 @@ export default class extends RichDisplayCommand {
 
 		await display.start(response, message.author.id);
 		return response;
-
 	}
 
 	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage) {

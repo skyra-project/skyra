@@ -7,11 +7,11 @@ Function Step-Main {
     Get-Process {
         switch ( $Command ) {
             clear {
-                Remove-Item -Recurse -Force dist
-				Remove-Item -Recurse -Force node_modules
+                Remove-Item -Recurse -Force -ErrorAction Ignore dist
+				Remove-Item -Recurse -Force -ErrorAction Ignore node_modules
 				switch ($Manager) {
 					yarn {
-						Remove-Item -Recurse -Force $(yarn cache dir)
+						Remove-Item -Recurse -Force -ErrorAction Ignore $(yarn cache dir)
 					}
 					npm {
 						npm cache rm

@@ -1011,13 +1011,18 @@ export default class extends Language {
 					so the members of the server can participate on it. Once the timer ends, Skyra will retrieve all the users who
 					reacted and send the owner of the giveaway a message in direct messages with the winner, and other 10 possible
 					winners (in case of needing to re-roll).
-					You can also pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway.`,
+					You can also pass a flag of \`--winners=Xw\`, wherein X is a number (for example 2w for 2 winners),
+					to allow multiple people to win this giveaway.`,
 			explainedUsage: [
 				['channel', '(Optional) The channel in which to start the giveaway'],
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
 			],
-			examples: ['6h A hug from Skyra.']
+			examples: [
+				'6h A hug from Skyra.',
+				'60m 5w A mysterious Steam game',
+				'1d Free Discord Nitro! --winners=2w'
+			]
 		}),
 		COMMAND_GIVEAWAYREROLL_DESCRIPTION: 'Re-roll the winners from a giveaway.',
 		COMMAND_GIVEAWAYREROLL_EXTENDED: builder.display('greroll', {

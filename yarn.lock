@@ -692,6 +692,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@skyra/char@skyra-project/char#build":
+  version "0.0.1"
+  resolved "https://codeload.github.com/skyra-project/char/tar.gz/9e60b769e79dc4976a23c5bdffa86a65e6ac85e4"
+
 "@skyra/decorators@1.x":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.1.1.tgz#ae3030329d99244a4c667f888d7bdff5e43f973a"

@@ -32,13 +32,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage) {
-		const base = new MessageEmbed()
+		const template = new MessageEmbed()
 			.setTitle(toTitleCase(results.word))
 			.setColor(await DbSet.fetchColor(message));
 
-		if (results.pronunciation) base.addField(message.language.get('COMMAND_DEFINE_PRONOUNCIATION'), results.pronunciation, true);
+		if (results.pronunciation) template.addField(message.language.get('COMMAND_DEFINE_PRONOUNCIATION'), results.pronunciation, true);
 
-		const display = new UserRichDisplay(base)
+		const display = new UserRichDisplay(template)
 			.setFooterSuffix(' - Powered by Owlbot');
 
 		for (const result of results.definitions) {

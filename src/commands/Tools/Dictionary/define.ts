@@ -48,10 +48,8 @@ export default class extends RichDisplayCommand {
 					.addField('Type', toTitleCase(result.type), true)
 					.setDescription(`${definition[0].toUpperCase()}${definition.substr(1)}`);
 
-				if (result.image_url) {
-					const imageUrl = IMAGE_EXTENSION.test(result.image_url) && parseURL(result.image_url);
-					if (imageUrl) embed.setThumbnail(imageUrl.toString());
-				}
+				const imageUrl = IMAGE_EXTENSION.test(result.image_url ?? '') && parseURL(result.image_url ?? '');
+				if (imageUrl) embed.setThumbnail(imageUrl.toString());
 
 				return embed;
 			});

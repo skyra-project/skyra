@@ -3,7 +3,7 @@ import { TOKENS } from '@root/config';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { cutText, fetch, FetchResultTypes } from '@utils/util';
+import { cutText, fetch, FetchResultTypes, IMAGE_EXTENSION, parseURL } from '@utils/util';
 import { toTitleCase } from '@klasa/utils';
 import { MessageEmbed } from 'discord.js';
 import { ApplyOptions } from '@skyra/decorators';
@@ -47,7 +47,12 @@ export default class extends RichDisplayCommand {
 				embed
 					.addField('Type', toTitleCase(result.type), true)
 					.setDescription(`${definition[0].toUpperCase()}${definition.substr(1)}`);
-				if (result.image_url) embed.setThumbnail(result.image_url);
+
+				if (result.image_url) {
+					const imageUrl = IMAGE_EXTENSION.test(result.image_url) && parseURL(result.image_url);
+					if (imageUrl) embed.setThumbnail(imageUrl.toString());
+				}
+
 				return embed;
 			});
 		}

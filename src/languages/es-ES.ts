@@ -3915,6 +3915,16 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'Lo siento, pero no he podido encontrar algo que coincida con el término que buscas a través de YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'Quizá quieras probar con un índice de página menor, porque no soy capaz de encontrar algo en éste.',
+		COMMAND_DEFINE_DESCRIPTION: 'Busca la definición de una palabra en inglés.',
+		COMMAND_DEFINE_EXTENDED: builder.display('define', {
+			extendedHelp: `¿Qué significa "heel"?`,
+			explainedUsage: [
+				['Word', 'La palabra o frase cuya definición quieres buscar.']
+			],
+			examples: ['heel']
+		}),
+		COMMAND_DEFINE_NOTFOUND: 'No pude encontrar la definición de esta palabra.',
+		COMMAND_DEFINE_PRONOUNCIATION: 'Pronunciación',
 
 		/**
 		 * #############

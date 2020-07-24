@@ -3901,6 +3901,16 @@ export default class extends Language {
 		COMMAND_WIKIPEDIA_NOTFOUND: 'I am sorry, I could not find something that could match your input in Wikipedia.',
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
+		COMMAND_DEFINE_DESCRIPTION: 'Check the definition of a word.',
+		COMMAND_DEFINE_EXTENDED: builder.display('define', {
+			extendedHelp: `What does "heel" mean?`,
+			explainedUsage: [
+				['Word', 'The word or phrase you want to get the definition from.']
+			],
+			examples: ['heel']
+		}),
+		COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
+		COMMAND_DEFINE_PRONOUNCIATION: 'Pronunciation',
 
 		/**
 		 * #############

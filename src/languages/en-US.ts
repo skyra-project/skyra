@@ -3735,10 +3735,11 @@ export default class extends Language {
 		COMMAND_HOROSCOPE_TITLES: {
 			DAILY_HOROSCOPE: sign => `Daily horoscope for ${sign}`,
 			METADATA_TITLE: 'Metadata',
-			METADATA: (intensity, keywords, mood) => ([
+			METADATA: (intensity, keywords, mood, rating) => ([
 				`**Intensity:** ${intensity}`,
-				`**Keywords:** ${keywords}`,
-				`**Mood:** ${mood}`
+				`**Keywords:** ${this.list(keywords, 'and')}`,
+				`**Mood:** ${mood}`,
+				`**Rating:** ${rating}`
 			].join('\n'))
 		},
 		COMMAND_IGDB_DESCRIPTION: 'Searches IGDB (Internet Game Database) for your favourite games',

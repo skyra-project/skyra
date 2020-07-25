@@ -254,9 +254,9 @@ query getTypeMatchups ($types: [Types!]!) {
 export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
 export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/pokemon/dex.png';
 
-export async function fetchGraphQLPokemon<R extends GraphQLQueryReturnTypes>(query: string, variables: GraphQLQueryVariables<R>) {
+export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
 	try {
-		return fetch<GraphQLPokemonResponse<R>>(POKEMON_GRAPHQL_API_URL, {
+		return fetch<PokemonResponse<R>>(POKEMON_GRAPHQL_API_URL, {
 			method: FetchMethods.Post,
 			headers: {
 				'Content-Type': Mime.Types.ApplicationJson
@@ -309,11 +309,11 @@ export const resolveColour = (col: string) => {
 	}
 };
 
-export interface GraphQLPokemonResponse<K extends keyof Omit<Query, '__typename'>> {
+export interface PokemonResponse<K extends keyof Omit<Query, '__typename'>> {
 	data: Record<K, Omit<Query[K], '__typename'>>;
 }
 
-export type GraphQLQueryReturnTypes = keyof Pick<
+export type PokemonQueryReturnTypes = keyof Pick<
 Query,
 | 'getAbilityDetailsByFuzzy'
 | 'getItemDetailsByFuzzy'
@@ -323,7 +323,7 @@ Query,
 | 'getTypeMatchup'
 >;
 
-type GraphQLQueryVariables<R extends GraphQLQueryReturnTypes> =
+type PokemonQueryVariables<R extends PokemonQueryReturnTypes> =
 	R extends 'getAbilityDetailsByFuzzy'
 		? QueryGetAbilityDetailsByFuzzyArgs
 		: R extends 'getItemDetailsByFuzzy'

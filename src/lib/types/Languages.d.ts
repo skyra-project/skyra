@@ -902,7 +902,7 @@ export interface LanguageKeys {
 	COMMAND_HOROSCOPE_TITLES: {
 		DAILY_HOROSCOPE: (sign: string) => string;
 		METADATA_TITLE: string;
-		METADATA(intensity: string, keywords: string, mood: string): string;
+		METADATA(intensity: string, keywords: readonly string[], mood: string, rating: string): string;
 	};
 	COMMAND_IGDB_DESCRIPTION: string;
 	COMMAND_IGDB_EXTENDED: string;

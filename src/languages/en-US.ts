@@ -3739,7 +3739,7 @@ export default class extends Language {
 				`**Intensity:** ${intensity}`,
 				`**Keywords:** ${this.list(keywords, 'and')}`,
 				`**Mood:** ${mood}`,
-				`**Rating:** ${Emojis.FilledStar.repeat(rating)}${Emojis.EmptyStar.repeat(5 - rating)}`
+				`**Rating:** ${rating}`
 			].join('\n'))
 		},
 		COMMAND_IGDB_DESCRIPTION: 'Searches IGDB (Internet Game Database) for your favourite games',

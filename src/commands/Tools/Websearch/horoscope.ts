@@ -2,6 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Days, Sunsigns } from '@skyra/saelem';
+import { Emojis } from '@utils/constants';
 import { fetchSaelem, getHoroscope } from '@utils/Saelem';
 import { createPick } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
@@ -44,7 +45,15 @@ export default class extends SkyraCommand {
 			.setDescription(horoscope.prediction)
 			.setTitle(TITLES.DAILY_HOROSCOPE(sign))
 			.setTimestamp(new Date(horoscope.date))
-			.addField(TITLES.METADATA_TITLE, TITLES.METADATA(horoscope.intensity, horoscope.keywords, horoscope.mood, horoscope.rating)));
+			.addField(
+				TITLES.METADATA_TITLE,
+				TITLES.METADATA(
+					horoscope.intensity,
+					horoscope.keywords,
+					horoscope.mood,
+					`${Emojis.Star.repeat(horoscope.rating)}${Emojis.StarEmpty.repeat(5 - horoscope.rating)}`
+				)
+			));
 	}
 
 	private async fetchAPI(message: KlasaMessage, sunsign: Sunsigns, day: Days) {

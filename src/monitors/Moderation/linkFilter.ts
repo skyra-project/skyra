@@ -23,7 +23,7 @@ export default class extends ModerationMonitor {
 	};
 
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });
-	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg)$/i;
+	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message)

@@ -2862,6 +2862,57 @@ export default class extends Language {
 		COMMAND_SUPPORT_EMBED_DESCRIPTION: '¡Entonces deberías unirte a [Skyra\'s lounge](https://join.skyra.pw)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.',
 
 		/**
+		 * #####################
+		 * DEVELOPERS COMMANDS
+		 */
+
+		COMMAND_YARN_DESCRIPTION: 'Responde con información sobre un paquete NodeJS utilizando el registro del paquete Yarn.',
+		COMMAND_YARN_EXTENDED: builder.display('yarn', {
+			extendedHelp: `Esto es para los desarrolladores de NodeJS que desean encontrar rápidamente información sobre un paquete publicado en npm [npm](https://npmjs.com)`,
+			explainedUsage: [
+				['package', 'El nombre del paquete a buscar debe ser una coincidencia exacta']
+			],
+			examples: [
+				'@skyra/char',
+				'@skyra/saelem',
+				'@skyra/eslint-config'
+			]
+		}),
+		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} Lo siento, pero tienes que darme el nombre de un paquete para buscarlo.`,
+		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
+		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
+		COMMAND_YARN_EMBED_DATA: {
+			DESCRIPTION: (
+				{
+					author,
+					dateCreated,
+					dateModified,
+					dependencies,
+					deprecated,
+					description,
+					latestVersionNumber,
+					license,
+					mainFile,
+					maintainers
+				}
+			) => [
+				description,
+				'',
+				`❯ Autor: ${author}`,
+				`❯ Mantenedores: ${this.list(maintainers, 'y')}`,
+				`❯ Ultima versión: ${latestVersionNumber}`,
+				`❯ Licencia: ${license}`,
+				`❯ Archivo principal: ${mainFile}`,
+				`❯ Fecha de creacion: ${dateCreated}`,
+				`❯ Fecha modificada: ${dateModified}`,
+				deprecated ? `❯ Aviso de desuso: **${deprecated}**` : undefined,
+				'',
+				dependencies && dependencies.length ? this.list(dependencies, 'y') : `Sin dependencias ${GREENTICK}!`
+			].join('\n'),
+			MORE_TEXT: 'más...'
+		},
+
+		/**
 		 * ##############
 		 * FUN COMMANDS
 		 */

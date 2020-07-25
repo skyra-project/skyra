@@ -2850,6 +2850,58 @@ export default class extends Language {
 		COMMAND_SUPPORT_EMBED_DESCRIPTION: 'Then you should probably join [Skyra\'s Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!',
 
 		/**
+		 * #####################
+		 * DEVELOPERS COMMANDS
+		 */
+
+		COMMAND_YARN_DESCRIPTION: 'Responds with information on a NodeJS package using the Yarn package registry',
+		COMMAND_YARN_EXTENDED: builder.display('yarn', {
+			extendedHelp: `This is for NodeJS developers who want to quickly find information on a package published to [npm](https://npmjs.com)`,
+			explainedUsage: [
+				['package', 'The name of the package to search for, has to be an exact match']
+			],
+			examples: [
+				'@skyra/char',
+				'@skyra/saelem',
+				'@skyra/eslint-config'
+			]
+		}),
+		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
+		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `What a silly developer who made ${pkg}! They unpublished it!`,
+		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
+		COMMAND_YARN_EMBED_DATA: {
+			DESCRIPTION: (
+				{
+					author,
+					dateCreated,
+					dateModified,
+					dependencies,
+					deprecated,
+					description,
+					latestVersionNumber,
+					license,
+					mainFile,
+					maintainers
+				}
+			) => [
+				description,
+				'',
+				author ? `❯ Author: ${author}` : undefined,
+				`❯ Maintainers: **${this.list(maintainers, 'and')}**`,
+				`❯ Latest version: **${latestVersionNumber}**`,
+				`❯ License: **${license}**`,
+				`❯ Main File: **${mainFile}**`,
+				`❯ Date Created: **${dateCreated}**`,
+				`❯ Date Modified: **${dateModified}**`,
+				deprecated ? `❯ Deprecation Notice: **${deprecated}**` : undefined,
+				'',
+				'__*Dependencies:*__',
+				dependencies && dependencies.length ? this.list(dependencies, 'and') : `No dependencies ${GREENTICK}!`
+			].filter(part => part !== undefined).join('\n'),
+			MORE_TEXT: 'more...'
+		},
+
+		/**
 		 * ##############
 		 * FUN COMMANDS
 		 */

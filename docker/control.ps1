@@ -15,13 +15,14 @@ function Show-Help {
 	Write-Host "Commands" -ForegroundColor yellow
 	Write-Host "
 build		Builds a Docker image so it is prepped for running
-start		Starts a Docker container in detached state
-stop		Stops a Docker container
-remove		Removes a single Docker container
-removeall	Removes all Docker containers - For this command no service is required and it can be skipped by just hitting enter when prompted
+start		Starts a service in detached state
+stop		Stops a service
+remove		Removes a single service
+removeall	Removes all services - For this command no service is required and it can be skipped by just hitting enter when prompted
 push		Pushes a docker image to Dockerhub
-logs		Shows the logs of a Docker container
-tail		Tails the logs of a Docker container"
+logs		Shows the logs of a service
+tail		Tails the logs of a service
+update		Updates a running service"
 }
 
 function Step-Run {

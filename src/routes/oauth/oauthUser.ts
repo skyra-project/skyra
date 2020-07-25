@@ -16,7 +16,7 @@ import { stringify } from 'querystring';
 export default class extends Route {
 
 	public async api(token: string) {
-		const oauthUser = await fetch<RawOauthUser>('https://discordapp.com/api/users/@me', {
+		const oauthUser = await fetch<RawOauthUser>('https://discord.com/api/users/@me', {
 			headers: { Authorization: `Bearer ${token}` }
 		}, FetchResultTypes.JSON);
 		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
@@ -69,7 +69,7 @@ export default class extends Route {
 
 		const guilds: OauthFlattenedGuild[] = [];
 		const oauthGuilds = await fetch<RawOauthGuild[]>(
-			'https://discordapp.com/api/users/@me/guilds',
+			'https://discord.com/api/users/@me/guilds',
 			{ headers: { Authorization: token } },
 			FetchResultTypes.JSON
 		);
@@ -123,7 +123,7 @@ export default class extends Route {
 	private async refreshToken(id: string, refreshToken: string) {
 		try {
 			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
-			return await fetch<OauthData>('https://discordapp.com/api/v6/oauth2/token', {
+			return await fetch<OauthData>('https://discord.com/api/v6/oauth2/token', {
 				method: 'POST',
 				body: stringify({
 					client_id: this.client.options.clientID,

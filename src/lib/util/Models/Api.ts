@@ -23,7 +23,7 @@ interface ApiChannels {
 interface ApiChannelsChannel {
 	/**
 	 * Get a channel by ID. Returns a channel object.
-	 * @url https://discordapp.com/developers/docs/resources/channel#get-channel
+	 * @url https://discord.com/developers/docs/resources/channel#get-channel
 	 */
 	get: ApiMethods['get'];
 
@@ -31,7 +31,7 @@ interface ApiChannelsChannel {
 	 * Update a channel's settings. Requires the `MANAGE_CHANNELS` permission for the guild. Returns a channel on
 	 * success, and a 400 BAD REQUEST on invalid parameters. Fires a Channel Update Gateway event. If modifying a
 	 * category, individual Channel Update events will fire for each child channel that also changes.
-	 * @url https://discordapp.com/developers/docs/resources/channel#modify-channel
+	 * @url https://discord.com/developers/docs/resources/channel#modify-channel
 	 */
 	put: ApiMethods['put'];
 
@@ -39,7 +39,7 @@ interface ApiChannelsChannel {
 	 * Update a channel's settings. Requires the `MANAGE_CHANNELS` permission for the guild. Returns a channel on
 	 * success, and a 400 BAD REQUEST on invalid parameters. Fires a Channel Update Gateway event. If modifying a
 	 * category, individual Channel Update events will fire for each child channel that also changes.
-	 * @url https://discordapp.com/developers/docs/resources/channel#modify-channel
+	 * @url https://discord.com/developers/docs/resources/channel#modify-channel
 	 */
 	patch: ApiMethods['patch'];
 
@@ -48,7 +48,7 @@ interface ApiChannelsChannel {
 	 * category does not delete its child channels; they will have their `parent_id` removed and a Channel Update
 	 * Gateway event will fire for each of them. Returns a channel object on success. Fires a Channel Delete Gateway
 	 * event.
-	 * @url https://discordapp.com/developers/docs/resources/channel#deleteclose-channel
+	 * @url https://discord.com/developers/docs/resources/channel#deleteclose-channel
 	 */
 	delete: ApiMethods['delete'];
 
@@ -92,7 +92,7 @@ interface ApiChannelsChannelMessages {
 	 * permission to be present on the current user. If the current user is missing the `READ_MESSAGE_HISTORY`
 	 * permission in the channel then this will return no messages (since they cannot read the message history). Returns
 	 * an array of message objects on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#get-channel-messages
+	 * @url https://discord.com/developers/docs/resources/channel#get-channel-messages
 	 */
 	get: ApiMethods['get'];
 
@@ -101,7 +101,7 @@ interface ApiChannelsChannelMessages {
 	 * `SEND_MESSAGES` permission to be present on the current user. If the `tts` field is set to `true`, the
 	 * `SEND_TTS_MESSAGES` permission is required for the message to be spoken. Returns a message object. Fires a
 	 * Message Create Gateway event. See message formatting for more information on how to properly format messages.
-	 * @url https://discordapp.com/developers/docs/resources/channel#create-message
+	 * @url https://discord.com/developers/docs/resources/channel#create-message
 	 */
 	post: ApiMethods['post'];
 
@@ -120,14 +120,14 @@ interface ApiChannelsChannelMessagesMessage {
 	/**
 	 * Returns a specific message in the channel. If operating on a guild channel, this endpoint requires the
 	 * `READ_MESSAGE_HISTORY` permission to be present on the current user. Returns a message object on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#get-channel-message
+	 * @url https://discord.com/developers/docs/resources/channel#get-channel-message
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Edit a previously sent message. You can only edit messages that have been sent by the current user. Returns a
 	 * message object. Fires a Message Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/channel#edit-message
+	 * @url https://discord.com/developers/docs/resources/channel#edit-message
 	 */
 	patch: ApiMethods['patch'];
 
@@ -135,7 +135,7 @@ interface ApiChannelsChannelMessagesMessage {
 	 * Delete a message. If operating on a guild channel and trying to delete a message that was not sent by the current
 	 * user, this endpoint requires the `MANAGE_MESSAGES` permission. Returns a 204 empty response on success. Fires a
 	 * Message Delete Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-message
+	 * @url https://discord.com/developers/docs/resources/channel#delete-message
 	 */
 	delete: ApiMethods['delete'];
 
@@ -149,7 +149,7 @@ interface ApiChannelsChannelMessagesMessageReactions {
 	/**
 	 * Deletes all reactions on a message. This endpoint requires the `MANAGE_MESSAGES` permission to be present on the
 	 * current user.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-all-reactions
+	 * @url https://discord.com/developers/docs/resources/channel#delete-all-reactions
 	 */
 	delete: ApiMethods['delete'];
 
@@ -164,14 +164,14 @@ interface ApiChannelsChannelMessagesMessageReactions {
 interface ApiChannelsChannelMessagesMessageReactionsEmoji {
 	/**
 	 * Get a list of users that reacted with this emoji. Returns an array of user objects on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#get-reactions
+	 * @url https://discord.com/developers/docs/resources/channel#get-reactions
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Deletes all the reactions for a given emoji on a message. This endpoint requires the `MANAGE_MESSAGES` permission
 	 * to be present on the current user.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-all-reactions-for-emoji
+	 * @url https://discord.com/developers/docs/resources/channel#delete-all-reactions-for-emoji
 	 */
 	delete: ApiMethods['delete'];
 
@@ -191,13 +191,13 @@ interface ApiChannelsChannelMessagesMessageReactionsEmojiMe {
 	 * characters. This endpoint requires the 'READ_MESSAGE_HISTORY' permission to be present on the current user.
 	 * Additionally, if nobody else has reacted to the message using this emoji, this endpoint requires the
 	 * `ADD_REACTIONS` permission to be present on the current user. Returns a 204 empty response on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#create-reaction
+	 * @url https://discord.com/developers/docs/resources/channel#create-reaction
 	 */
 	put: ApiMethods['put'];
 
 	/**
 	 * Delete a reaction the current user has made for the message. Returns a 204 empty response on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-own-reaction
+	 * @url https://discord.com/developers/docs/resources/channel#delete-own-reaction
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -209,7 +209,7 @@ interface ApiChannelsChannelMessagesMessageReactionsEmojiUser {
 	/**
 	 * Deletes another user's reaction. This endpoint requires the `MANAGE_MESSAGES` permission to be present on the
 	 * current user. Returns a 204 empty response on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-user-reaction
+	 * @url https://discord.com/developers/docs/resources/channel#delete-user-reaction
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -240,7 +240,7 @@ interface ApiChannelsChannelPermissionsPermission {
 	 * Edit the channel permission overwrites for a user or role in a channel. Only usable for guild channels. Requires
 	 * the `MANAGE_ROLES` permission. Returns a 204 empty response on success. For more information about permissions,
 	 * see permissions.
-	 * @url https://discordapp.com/developers/docs/resources/channel#edit-channel-permissions
+	 * @url https://discord.com/developers/docs/resources/channel#edit-channel-permissions
 	 */
 	put: ApiMethods['put'];
 
@@ -248,7 +248,7 @@ interface ApiChannelsChannelPermissionsPermission {
 	 * Delete a channel permission overwrite for a user or role in a channel. Only usable for guild channels. Requires
 	 * the `MANAGE_ROLES` permission. Returns a 204 empty response on success. For more information about permissions,
 	 * see permissions.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-channel-permission
+	 * @url https://discord.com/developers/docs/resources/channel#delete-channel-permission
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -260,7 +260,7 @@ interface ApiChannelsChannelInvites {
 	/**
 	 * Returns a list of invite objects (with invite metadata) for the channel. Only usable for guild channels. Requires
 	 * the `MANAGE_CHANNELS` permission.
-	 * @url https://discordapp.com/developers/docs/resources/channel#get-channel-invites
+	 * @url https://discord.com/developers/docs/resources/channel#get-channel-invites
 	 */
 	get: ApiMethods['get'];
 
@@ -268,7 +268,7 @@ interface ApiChannelsChannelInvites {
 	 * Create a new invite object for the channel. Only usable for guild channels. Requires the `CREATE_INSTANT_INVITE`
 	 * permission. All JSON parameters for this route are optional, however the request body is not. If you are not
 	 * sending any fields, you still have to send an empty JSON object (`{}`). Returns an invite object.
-	 * @url https://discordapp.com/developers/docs/resources/channel#create-channel-invite
+	 * @url https://discord.com/developers/docs/resources/channel#create-channel-invite
 	 */
 	post: ApiMethods['post'];
 }
@@ -282,7 +282,7 @@ interface ApiChannelsChannelTyping {
 	 * bot is responding to a command and expects the computation to take a few seconds, this endpoint may be called to
 	 * let the user know that the bot is processing their message. Returns a 204 empty response on success. Fires a
 	 * Typing Start Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/channel#trigger-typing-indicator
+	 * @url https://discord.com/developers/docs/resources/channel#trigger-typing-indicator
 	 */
 	post: ApiMethods['post'];
 }
@@ -293,7 +293,7 @@ interface ApiChannelsChannelTyping {
 interface ApiChannelsChannelPins {
 	/**
 	 * Returns all pinned messages in the channel as an array of message objects.
-	 * @url https://discordapp.com/developers/docs/resources/channel#get-pinned-messages
+	 * @url https://discord.com/developers/docs/resources/channel#get-pinned-messages
 	 */
 	get: ApiMethods['get'];
 
@@ -306,14 +306,14 @@ interface ApiChannelsChannelPins {
 interface ApiChannelsChannelPinsMessage {
 	/**
 	 * Pin a message in a channel. Requires the `MANAGE_MESSAGES` permission. Returns a 204 empty response on success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#add-pinned-channel-message
+	 * @url https://discord.com/developers/docs/resources/channel#add-pinned-channel-message
 	 */
 	put: ApiMethods['put'];
 
 	/**
 	 * Delete a pinned message in a channel. Requires the `MANAGE_MESSAGES` permission. Returns a 204 empty response on
 	 * success.
-	 * @url https://discordapp.com/developers/docs/resources/channel#delete-pinned-channel-message
+	 * @url https://discord.com/developers/docs/resources/channel#delete-pinned-channel-message
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -324,13 +324,13 @@ interface ApiChannelsChannelPinsMessage {
 interface ApiChannelsChannelWebhooks {
 	/**
 	 * Returns a list of channel webhook objects. Requires the `MANAGE_WEBHOOKS` permission.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#get-channel-webhooks
+	 * @url https://discord.com/developers/docs/resources/webhook#get-channel-webhooks
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Create a new webhook. Requires the `MANAGE_WEBHOOKS` permission. Returns a webhook object on success.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#create-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#create-webhook
 	 */
 	post: ApiMethods['post'];
 }
@@ -341,7 +341,7 @@ interface ApiChannelsChannelWebhooks {
 interface ApiGuilds {
 	/**
 	 * Create a new guild. Returns a guild object on success. Fires a Guild Create Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#create-guild
+	 * @url https://discord.com/developers/docs/resources/guild#create-guild
 	 */
 	post: ApiMethods['post'];
 
@@ -356,21 +356,21 @@ interface ApiGuilds {
 interface ApiGuildsGuild {
 	/**
 	 * Returns the guild object for the given id.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Modify a guild's settings. Requires the `MANAGE_GUILD` permission. Returns the updated guild object on success.
 	 * Fires a Guild Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-guild
+	 * @url https://discord.com/developers/docs/resources/guild#modify-guild
 	 */
 	patch: ApiMethods['patch'];
 
 	/**
 	 * Delete a guild permanently. User must be owner. Returns `204 No Content` on success. Fires a Guild Delete Gateway
 	 * event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#delete-guild
+	 * @url https://discord.com/developers/docs/resources/guild#delete-guild
 	 */
 	delete: ApiMethods['delete'];
 
@@ -451,21 +451,21 @@ interface ApiGuildsGuild {
 interface ApiGuildsGuildChannels {
 	/**
 	 * Returns a list of guild channel objects.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-channels
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-channels
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Create a new channel object for the guild. Requires the `MANAGE_CHANNELS` permission. Returns the new channel
 	 * object on success. Fires a Channel Create Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#create-guild-channel
+	 * @url https://discord.com/developers/docs/resources/guild#create-guild-channel
 	 */
 	post: ApiMethods['post'];
 
 	/**
 	 * Modify the positions of a set of channel objects for the guild. Requires `MANAGE_CHANNELS` permission. Returns a
 	 * 204 empty response on success. Fires multiple Channel Update Gateway events.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-guild-channel-positions
+	 * @url https://discord.com/developers/docs/resources/guild#modify-guild-channel-positions
 	 */
 	patch: ApiMethods['patch'];
 }
@@ -476,7 +476,7 @@ interface ApiGuildsGuildChannels {
 interface ApiGuildsGuildMembers {
 	/**
 	 * Returns a list of guild member objects that are members of the guild.
-	 * @url https://discordapp.com/developers/docs/resources/guild#list-guild-members
+	 * @url https://discord.com/developers/docs/resources/guild#list-guild-members
 	 */
 	get: ApiMethods['get'];
 
@@ -495,7 +495,7 @@ interface ApiGuildsGuildMembers {
 interface ApiGuildsGuildMembersMember {
 	/**
 	 * Returns a guild member object for the specified user.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-member
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-member
 	 */
 	get: ApiMethods['get'];
 
@@ -504,21 +504,21 @@ interface ApiGuildsGuildMembersMember {
 	 * scope. Returns a 201 Created with the guild member as the body, or 204 No Content if the user is already a member
 	 * of the guild. Fires a Guild Member Add Gateway event. Requires the bot to have the `CREATE_INSTANT_INVITE`
 	 * permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#add-guild-member
+	 * @url https://discord.com/developers/docs/resources/guild#add-guild-member
 	 */
 	put: ApiMethods['put'];
 
 	/**
 	 * Modify attributes of a guild member. Returns a 204 empty response on success. Fires a Guild Member Update Gateway
 	 * event. If the `channel_id` is set to null, this will force the target user to be disconnected from voice.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-guild-member
+	 * @url https://discord.com/developers/docs/resources/guild#modify-guild-member
 	 */
 	patch: ApiMethods['patch'];
 
 	/**
 	 * Remove a member from a guild. Requires `KICK_MEMBERS` permission. Returns a 204 empty response on success. Fires
 	 * a Guild Member Remove Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#remove-guild-member
+	 * @url https://discord.com/developers/docs/resources/guild#remove-guild-member
 	 */
 	delete: ApiMethods['delete'];
 
@@ -536,14 +536,14 @@ interface ApiGuildsGuildMembersMemberRolesRole {
 	/**
 	 * Adds a role to a guild member. Requires the `MANAGE_ROLES` permission. Returns a 204 empty response on success.
 	 * Fires a Guild Member Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#add-guild-member-role
+	 * @url https://discord.com/developers/docs/resources/guild#add-guild-member-role
 	 */
 	put: ApiMethods['put'];
 
 	/**
 	 * Removes a role from a guild member. Requires the `MANAGE_ROLES` permission. Returns a 204 empty response on
 	 * success. Fires a Guild Member Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#remove-guild-member-role
+	 * @url https://discord.com/developers/docs/resources/guild#remove-guild-member-role
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -559,7 +559,7 @@ interface ApiGuildsGuildMembersMeNick {
 	/**
 	 * Modifies the nickname of the current user in a guild. Returns a 200 with the nickname on success. Fires a Guild
 	 * Member Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-current-user-nick
+	 * @url https://discord.com/developers/docs/resources/guild#modify-current-user-nick
 	 */
 	patch: ApiMethods['patch'];
 }
@@ -570,7 +570,7 @@ interface ApiGuildsGuildMembersMeNick {
 interface ApiGuildsGuildBans {
 	/**
 	 * Returns a list of ban objects for the users banned from this guild. Requires the `BAN_MEMBERS` permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-bans
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-bans
 	 */
 	get: ApiMethods['get'];
 
@@ -584,21 +584,21 @@ interface ApiGuildsGuildBansUser {
 	/**
 	 * Returns a ban object for the given user or a 404 not found if the ban cannot be found. Requires the `BAN_MEMBERS`
 	 * permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-ban
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-ban
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Create a guild ban, and optionally delete previous messages sent by the banned user. Requires the `BAN_MEMBERS`
 	 * permission. Returns a 204 empty response on success. Fires a Guild Ban Add Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#create-guild-ban
+	 * @url https://discord.com/developers/docs/resources/guild#create-guild-ban
 	 */
 	put: ApiMethods['put'];
 
 	/**
 	 * Remove the ban for a user. Requires the `BAN_MEMBERS` permissions. Returns a 204 empty response on success. Fires
 	 * a Guild Ban Remove Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#remove-guild-ban
+	 * @url https://discord.com/developers/docs/resources/guild#remove-guild-ban
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -609,21 +609,21 @@ interface ApiGuildsGuildBansUser {
 interface ApiGuildsGuildRoles {
 	/**
 	 * Returns a list of role objects for the guild.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-roles
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-roles
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Create a new role for the guild. Requires the `MANAGE_ROLES` permission. Returns the new role object on success.
 	 * Fires a Guild Role Create Gateway event. All JSON params are optional.
-	 * @url https://discordapp.com/developers/docs/resources/guild#create-guild-role
+	 * @url https://discord.com/developers/docs/resources/guild#create-guild-role
 	 */
 	post: ApiMethods['post'];
 
 	/**
 	 * Modify the positions of a set of role objects for the guild. Requires the `MANAGE_ROLES` permission. Returns a
 	 * list of all of the guild's role objects on success. Fires multiple Guild Role Update Gateway events.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-guild-role-positions
+	 * @url https://discord.com/developers/docs/resources/guild#modify-guild-role-positions
 	 */
 	patch: ApiMethods['patch'];
 
@@ -637,7 +637,7 @@ interface ApiGuildsGuildRolesRole {
 	/**
 	 * Delete a guild role. Requires the `MANAGE_ROLES` permission. Returns a 204 empty response on success. Fires a
 	 * Guild Role Delete Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#delete-guild-role
+	 * @url https://discord.com/developers/docs/resources/guild#delete-guild-role
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -649,7 +649,7 @@ interface ApiGuildsGuildPrune {
 	/**
 	 * Returns an object with one 'pruned' key indicating the number of members that would be removed in a prune
 	 * operation. Requires the `KICK_MEMBERS` permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-prune-count
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-prune-count
 	 */
 	get: ApiMethods['get'];
 
@@ -658,7 +658,7 @@ interface ApiGuildsGuildPrune {
 	 * indicating the number of members that were removed in the prune operation. For large guilds it's recommended to
 	 * set the `compute_prune_count` option to `false`, forcing 'pruned' to `null`. Fires multiple Guild Member Remove
 	 * Gateway events.
-	 * @url https://discordapp.com/developers/docs/resources/guild#begin-guild-prune
+	 * @url https://discord.com/developers/docs/resources/guild#begin-guild-prune
 	 */
 	post: ApiMethods['post'];
 }
@@ -670,7 +670,7 @@ interface ApiGuildsGuildRegions {
 	/**
 	 * Returns a list of voice region objects for the guild. Unlike the similar `/voice` route, this returns VIP servers
 	 * when the guild is VIP-enabled.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-voice-regions
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-voice-regions
 	 */
 	get: ApiMethods['get'];
 }
@@ -681,7 +681,7 @@ interface ApiGuildsGuildRegions {
 interface ApiGuildsGuildInvites {
 	/**
 	 * Returns a list of invite objects (with invite metadata) for the guild. Requires the `MANAGE_GUILD` permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-invites
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-invites
 	 */
 	get: ApiMethods['get'];
 }
@@ -692,21 +692,21 @@ interface ApiGuildsGuildInvites {
 interface ApiGuildsGuildIntegrations {
 	/**
 	 * Returns a list of integration objects for the guild. Requires the `MANAGE_GUILD` permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-integrations
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-integrations
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Attach an integration object from the current user to the guild. Requires the `MANAGE_GUILD` permission. Returns
 	 * a 204 empty response on success. Fires a Guild Integrations Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#create-guild-integration
+	 * @url https://discord.com/developers/docs/resources/guild#create-guild-integration
 	 */
 	post: ApiMethods['post'];
 
 	/**
 	 * Modify the behavior and settings of an integration object for the guild. Requires the `MANAGE_GUILD` permission.
 	 * Returns a 204 empty response on success. Fires a Guild Integrations Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-guild-integration
+	 * @url https://discord.com/developers/docs/resources/guild#modify-guild-integration
 	 */
 	patch: ApiMethods['patch'];
 
@@ -721,7 +721,7 @@ interface ApiGuildsGuildIntegrationsIntegration {
 	/**
 	 * Delete the attached integration object for the guild. Requires the `MANAGE_GUILD` permission. Returns a 204 empty
 	 * response on success. Fires a Guild Integrations Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/guild#delete-guild-integration
+	 * @url https://discord.com/developers/docs/resources/guild#delete-guild-integration
 	 */
 	delete: ApiMethods['delete'];
 
@@ -734,7 +734,7 @@ interface ApiGuildsGuildIntegrationsIntegration {
 interface ApiGuildsGuildIntegrationsIntegrationSync {
 	/**
 	 * Sync an integration. Requires the `MANAGE_GUILD` permission. Returns a 204 empty response on success.
-	 * @url https://discordapp.com/developers/docs/resources/guild#sync-guild-integration
+	 * @url https://discord.com/developers/docs/resources/guild#sync-guild-integration
 	 */
 	post: ApiMethods['post'];
 }
@@ -745,14 +745,14 @@ interface ApiGuildsGuildIntegrationsIntegrationSync {
 interface ApiGuildsGuildEmojis {
 	/**
 	 * Returns a list of emoji objects for the given guild.
-	 * @url https://discordapp.com/developers/docs/resources/emoji#list-guild-emojis
+	 * @url https://discord.com/developers/docs/resources/emoji#list-guild-emojis
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Create a new emoji for the guild. Requires the `MANAGE_EMOJIS` permission. Returns the new emoji object on
 	 * success. Fires a Guild Emojis Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/emoji#create-guild-emoji
+	 * @url https://discord.com/developers/docs/resources/emoji#create-guild-emoji
 	 */
 	post: ApiMethods['post'];
 
@@ -765,21 +765,21 @@ interface ApiGuildsGuildEmojis {
 interface ApiGuildsGuildEmojisEmoji {
 	/**
 	 * Returns an emoji object for the given guild and emoji IDs.
-	 * @url https://discordapp.com/developers/docs/resources/emoji#get-guild-emoji
+	 * @url https://discord.com/developers/docs/resources/emoji#get-guild-emoji
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Modify the given emoji. Requires the `MANAGE_EMOJIS` permission. Returns the updated emoji object on success.
 	 * Fires a Guild Emojis Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/emoji#modify-guild-emoji
+	 * @url https://discord.com/developers/docs/resources/emoji#modify-guild-emoji
 	 */
 	patch: ApiMethods['patch'];
 
 	/**
 	 * Delete the given emoji. Requires the `MANAGE_EMOJIS` permission. Returns `204 No Content` on success. Fires a
 	 * Guild Emojis Update Gateway event.
-	 * @url https://discordapp.com/developers/docs/resources/emoji#delete-guild-emoji
+	 * @url https://discord.com/developers/docs/resources/emoji#delete-guild-emoji
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -790,7 +790,7 @@ interface ApiGuildsGuildEmojisEmoji {
 interface ApiGuildsGuildWebhooks {
 	/**
 	 * Returns a list of guild webhook objects. Requires the `MANAGE_WEBHOOKS` permission.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#get-guild-webhooks
+	 * @url https://discord.com/developers/docs/resources/webhook#get-guild-webhooks
 	 */
 	get: ApiMethods['get'];
 }
@@ -801,14 +801,14 @@ interface ApiGuildsGuildWebhooks {
 interface ApiGuildsGuildEmbed {
 	/**
 	 * Returns the guild embed object. Requires the `MANAGE_GUILD` permission.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-embed
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-embed
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Modify a guild embed object for the guild. All attributes may be passed in with JSON and modified. Requires the
 	 * `MANAGE_GUILD` permission. Returns the updated guild embed object.
-	 * @url https://discordapp.com/developers/docs/resources/guild#modify-guild-embed
+	 * @url https://discord.com/developers/docs/resources/guild#modify-guild-embed
 	 */
 	patch: ApiMethods['patch'];
 }
@@ -820,7 +820,7 @@ interface ApiGuildsGuildVanityUrl {
 	/**
 	 * Returns a partial invite object for guilds with that feature enabled. Requires the `MANAGE_GUILD` permission.
 	 * `code` will be null if a vanity url for the guild is not set.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-vanity-url
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-vanity-url
 	 */
 	get: ApiMethods['get'];
 }
@@ -832,7 +832,7 @@ interface ApiGuildsGuildWidget {
 	/**
 	 * Returns a PNG image widget for the guild. Requires no permissions or authentication. The same documentation also
 	 * applies to `embed.png`.
-	 * @url https://discordapp.com/developers/docs/resources/guild#get-guild-widget-image
+	 * @url https://discord.com/developers/docs/resources/guild#get-guild-widget-image
 	 */
 	get: ApiMethods['get'];
 }
@@ -854,14 +854,14 @@ interface ApiInvites {
 interface ApiInvitesInvite {
 	/**
 	 * Returns an invite object for the given code.
-	 * @url https://discordapp.com/developers/docs/resources/invite#get-invite
+	 * @url https://discord.com/developers/docs/resources/invite#get-invite
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Delete an invite. Requires the `MANAGE_CHANNELS` permission on the channel this invite belongs to, or
 	 * `MANAGE_GUILD` to remove any invite across the guild. Returns an invite object on success.
-	 * @url https://discordapp.com/developers/docs/resources/invite#delete-invite
+	 * @url https://discord.com/developers/docs/resources/invite#delete-invite
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -882,7 +882,7 @@ interface ApiUsers {
 interface ApiUsersUser {
 	/**
 	 * Returns a user object for a given user ID.
-	 * @url https://discordapp.com/developers/docs/resources/user#get-user
+	 * @url https://discord.com/developers/docs/resources/user#get-user
 	 */
 	get: ApiMethods['get'];
 }
@@ -894,13 +894,13 @@ interface ApiUsersMe {
 	/**
 	 * Returns the user object of the requester's account. For OAuth2, this requires the identify scope, which will
 	 * return the object without an email, and optionally the email scope, which returns the object with an email.
-	 * @url https://discordapp.com/developers/docs/resources/user#get-current-user
+	 * @url https://discord.com/developers/docs/resources/user#get-current-user
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Modify the requester's user account settings. Returns a user object on success.
-	 * @url https://discordapp.com/developers/docs/resources/user#modify-current-user
+	 * @url https://discord.com/developers/docs/resources/user#modify-current-user
 	 */
 	patch: ApiMethods['patch'];
 
@@ -926,7 +926,7 @@ interface ApiUsersMe {
 interface ApiUsersMeGuilds {
 	/**
 	 * Returns a list of partial guild objects the current user is a member of. Requires the `guilds` OAuth2 scope.
-	 * @url https://discordapp.com/developers/docs/resources/user#get-current-user-guilds
+	 * @url https://discord.com/developers/docs/resources/user#get-current-user-guilds
 	 */
 	get: ApiMethods['get'];
 
@@ -942,7 +942,7 @@ interface ApiUsersMeGuilds {
 interface ApiUsersMeGuildsGuild {
 	/**
 	 * Leave a guild. Returns a 204 empty response on success.
-	 * @url https://discordapp.com/developers/docs/resources/user#leave-guild
+	 * @url https://discord.com/developers/docs/resources/user#leave-guild
 	 */
 	delete: ApiMethods['delete'];
 }
@@ -954,13 +954,13 @@ interface ApiUsersMeChannels {
 	/**
 	 * Returns a list of DM channel objects. For bots, this is no longer a supported method of getting recent DMs, and
 	 * will return an empty array.
-	 * @url https://discordapp.com/developers/docs/resources/user#get-user-dms
+	 * @url https://discord.com/developers/docs/resources/user#get-user-dms
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Create a new DM channel with a user. Returns a DM channel object.
-	 * @url https://discordapp.com/developers/docs/resources/user#create-dm
+	 * @url https://discord.com/developers/docs/resources/user#create-dm
 	 */
 	post: ApiMethods['post'];
 }
@@ -968,7 +968,7 @@ interface ApiUsersMeChannels {
 interface ApiUsersMeConnections {
 	/**
 	 * Returns a list of connection objects. Requires the `connections` OAuth2 scope.
-	 * @url https://discordapp.com/developers/docs/resources/user#get-user-connections
+	 * @url https://discord.com/developers/docs/resources/user#get-user-connections
 	 */
 	get: ApiMethods['get'];
 }
@@ -983,7 +983,7 @@ interface ApiVoice {
 interface ApiVoiceRegions {
 	/**
 	 * Returns an array of voice region objects that can be used when creating servers.
-	 * @url https://discordapp.com/developers/docs/resources/voice#list-voice-regions
+	 * @url https://discord.com/developers/docs/resources/voice#list-voice-regions
 	 */
 	get: ApiMethods['get'];
 }
@@ -1001,19 +1001,19 @@ interface ApiWebhooks {
 interface ApiWebhooksWebhook {
 	/**
 	 * Returns the new webhook object for the given id.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#get-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#get-webhook
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Modify a webhook. Requires the `MANAGE_WEBHOOKS` permission. Returns the updated webhook object on success.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#modify-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#modify-webhook
 	 */
 	patch: ApiMethods['patch'];
 
 	/**
 	 * Delete a webhook permanently. User must be owner. Returns a 204 NO CONTENT response on success.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#delete-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#delete-webhook
 	 */
 	delete: ApiMethods['delete'];
 
@@ -1030,26 +1030,26 @@ interface ApiWebhooksWebhookToken {
 	/**
 	 * Same as the non-token version, except this call does not require authentication and returns no user in the
 	 * webhook object.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#get-webhook-with-token
+	 * @url https://discord.com/developers/docs/resources/webhook#get-webhook-with-token
 	 */
 	get: ApiMethods['get'];
 
 	/**
 	 * Same as the non-token version, except this call does not require authentication, does not accept a `channel_id`
 	 * parameter in the body, and does not return a user in the webhook object.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#modify-webhook-with-token
+	 * @url https://discord.com/developers/docs/resources/webhook#modify-webhook-with-token
 	 */
 	patch: ApiMethods['patch'];
 
 	/**
 	 * Same as the non-token version, except this call does not require authentication.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#delete-webhook-with-token
+	 * @url https://discord.com/developers/docs/resources/webhook#delete-webhook-with-token
 	 */
 	delete: ApiMethods['delete'];
 
 	/**
 	 * Sends a message.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#execute-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#execute-webhook
 	 */
 	post: ApiMethods['post'];
 
@@ -1070,7 +1070,7 @@ interface ApiWebhooksWebhookToken {
 interface ApiWebhooksWebhookTokenSlack {
 	/**
 	 * Sends a message with the Slack format.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#execute-slackcompatible-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#execute-slackcompatible-webhook
 	 */
 	post: ApiMethods['post'];
 }
@@ -1081,7 +1081,7 @@ interface ApiWebhooksWebhookTokenSlack {
 interface ApiWebhooksWebhookTokenGitHub {
 	/**
 	 * Sends a message with the GitHub format.
-	 * @url https://discordapp.com/developers/docs/resources/webhook#execute-githubcompatible-webhook
+	 * @url https://discord.com/developers/docs/resources/webhook#execute-githubcompatible-webhook
 	 */
 	post: ApiMethods['post'];
 }

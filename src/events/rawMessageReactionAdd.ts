@@ -76,7 +76,7 @@ export default class extends Event {
 			.setDescription([
 				`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
 				`**Channel**: ${data.channel}`,
-				`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discordapp.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
+				`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
 			].join('\n'))
 			.setFooter(`${data.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
 			.setTimestamp());

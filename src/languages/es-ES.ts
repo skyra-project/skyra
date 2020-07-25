@@ -2866,11 +2866,11 @@ export default class extends Language {
 		 * DEVELOPERS COMMANDS
 		 */
 
-		COMMAND_YARN_DESCRIPTION: 'Responds with information on a NodeJS package using the Yarn package registry',
+		COMMAND_YARN_DESCRIPTION: 'Responde con información sobre un paquete NodeJS utilizando el registro del paquete Yarn.',
 		COMMAND_YARN_EXTENDED: builder.display('yarn', {
-			extendedHelp: `This is for NodeJS developers who want to quickly find information on a package published to [npm](https://npmjs.com)`,
+			extendedHelp: `Esto es para los desarrolladores de NodeJS que desean encontrar rápidamente información sobre un paquete publicado en npm [npm](https://npmjs.com)`,
 			explainedUsage: [
-				['package', 'The name of the package to search for, has to be an exact match']
+				['package', 'El nombre del paquete a buscar debe ser una coincidencia exacta']
 			],
 			examples: [
 				'@skyra/char',
@@ -2878,24 +2878,24 @@ export default class extends Language {
 				'@skyra/eslint-config'
 			]
 		}),
-		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
-		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `What a silly developer who made ${pkg}! They unpublished it!`,
-		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
+		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} Lo siento, pero tienes que darme el nombre de un paquete para buscarlo.`,
+		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
+		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
 		COMMAND_YARN_EMBED_DATA: {
 			DESCRIPTION: (description, author, maintainers, latestVersionNumber, license, mainFile, dateCreated, dateModified, dependencies) => [
 				description,
 				'',
-				`❯ Author: ${author}`,
-				`❯ Maintainers: ${this.list(maintainers, 'y')}`,
-				`❯ Latest version: ${latestVersionNumber}`,
-				`❯ License: ${license}`,
-				`❯ Main File: ${mainFile}`,
-				`❯ Date Created: ${dateCreated}`,
-				`❯ Date Modified: ${dateModified}`,
+				`❯ Autor: ${author}`,
+				`❯ Mantenedores: ${this.list(maintainers, 'y')}`,
+				`❯ Ultima versión: ${latestVersionNumber}`,
+				`❯ Licencia: ${license}`,
+				`❯ Archivo principal: ${mainFile}`,
+				`❯ Fecha de creacion: ${dateCreated}`,
+				`❯ Fecha modificada: ${dateModified}`,
 				'',
-				dependencies && dependencies.length ? this.list(dependencies, 'o') : `No dependencies ${GREENTICK}!`
+				dependencies && dependencies.length ? this.list(dependencies, 'o') : `Sin dependencias ${GREENTICK}!`
 			].join('\n'),
-			MORE_TEXT: 'more...'
+			MORE_TEXT: 'más...'
 		},
 
 		/**

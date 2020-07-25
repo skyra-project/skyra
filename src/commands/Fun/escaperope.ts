@@ -13,7 +13,7 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 
-	private readonly kEscapeGif = 'https://cdn.skyra.pw/img/pokemon/escape_rope.gif';
+	private readonly kEscapeGif = 'https://cdn.skyra.pw/skyra-assets/escape_rope.gif';
 
 	public async run(message: KlasaMessage) {
 		if (message.deletable) await message.nuke().catch(() => null);

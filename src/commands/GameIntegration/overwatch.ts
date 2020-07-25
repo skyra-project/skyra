@@ -20,7 +20,7 @@ import { KlasaMessage, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
-	private readonly kAuthorThumbnail = 'https://cdn.skyra.pw/img/overwatch/logo.png';
+	private readonly kAuthorThumbnail = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png';
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const response = await message.sendEmbed(new MessageEmbed()

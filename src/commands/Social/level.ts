@@ -7,7 +7,7 @@ import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
-const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');
+const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 
 export default class extends SkyraCommand {
 

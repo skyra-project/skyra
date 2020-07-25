@@ -134,7 +134,7 @@ export default class extends SkyraCommand {
 	}
 
 	private makeStarLink(guildID: string, channeLID: string, messageID: string) {
-		return `https://canary.discordapp.com/channels/${guildID}/${channeLID}/${messageID}`;
+		return `https://discord.com/channels/${guildID}/${channeLID}/${messageID}`;
 	}
 
 }

@@ -1,5 +1,5 @@
 /**
- * https://discordapp.com/developers/docs/resources/user#user-object
+ * https://discord.com/developers/docs/resources/user#user-object
  */
 export interface APIUserData {
 	id: string;
@@ -23,7 +23,7 @@ export interface APIEmojiPartial {
 }
 
 /**
- * https://discordapp.com/developers/docs/resources/emoji#emoji-object-emoji-structure
+ * https://discord.com/developers/docs/resources/emoji#emoji-object-emoji-structure
  */
 export interface APIEmojiData extends APIEmojiPartial {
 	roles?: string[];
@@ -44,14 +44,14 @@ export interface APIGuildMemberPartial {
 }
 
 /**
- * https://discordapp.com/developers/docs/resources/guild#guild-member-object-guild-member-structure
+ * https://discord.com/developers/docs/resources/guild#guild-member-object-guild-member-structure
  */
 export interface APIGuildMemberData extends APIGuildMemberPartial {
 	user: APIUserData;
 }
 
 /**
- * https://discordapp.com/developers/docs/resources/webhook#webhook-object-webhook-structure
+ * https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-structure
  */
 export interface APIWebhookData {
 	id: string;

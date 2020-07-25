@@ -25,7 +25,7 @@ export default class extends Route {
 			return;
 		}
 
-		const url = new URL('https://discordapp.com/api/oauth2/token');
+		const url = new URL('https://discord.com/api/oauth2/token');
 		url.searchParams.append('grant_type', 'authorization_code');
 		url.searchParams.append('redirect_uri', requestBody.redirectUri);
 

@@ -1171,7 +1171,6 @@ export const TLDs = [
 	'sx',
 	'sy',
 	'sydney',
-	'symantec',
 	'systems',
 	'sz',
 	'tab',

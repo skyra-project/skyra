@@ -2893,7 +2893,7 @@ export default class extends Language {
 				`❯ Fecha de creacion: ${dateCreated}`,
 				`❯ Fecha modificada: ${dateModified}`,
 				'',
-				dependencies && dependencies.length ? this.list(dependencies, 'o') : `Sin dependencias ${GREENTICK}!`
+				dependencies && dependencies.length ? this.list(dependencies, 'y') : `Sin dependencias ${GREENTICK}!`
 			].join('\n'),
 			MORE_TEXT: 'más...'
 		},

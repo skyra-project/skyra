@@ -2882,7 +2882,7 @@ export default class extends Language {
 				`❯ Date Modified: **${dateModified}**`,
 				'',
 				'__*Dependencies:*__',
-				dependencies && dependencies.length ? this.list(dependencies, 'or') : `No dependencies ${GREENTICK}!`
+				dependencies && dependencies.length ? this.list(dependencies, 'and') : `No dependencies ${GREENTICK}!`
 			].filter(part => part !== undefined).join('\n'),
 			MORE_TEXT: 'more...'
 		},

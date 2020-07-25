@@ -64,11 +64,11 @@ export default class extends SkyraCommand {
 
 	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
 		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
-		return message.alert(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
+		return message.sendMessage(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}
 
 	private denyPayment(message: KlasaMessage) {
-		return message.alert(message.language.tget('COMMAND_PAY_PROMPT_DENY'));
+		return message.sendMessage(message.language.tget('COMMAND_PAY_PROMPT_DENY'));
 	}
 
 }

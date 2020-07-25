@@ -68,11 +68,18 @@ export default class extends SkyraCommand {
 			.setThumbnail(this.#nodeJsLogo)
 			.setColor(await DbSet.fetchColor(message))
 			.setDescription(EMBED_DATA.DESCRIPTION(
-				cutText(result.description, 1000),
-				this.parseAuthor(result.author), maintainers, result['dist-tags'].latest,
-				result.license, latestVersion.main ?? 'index.js',
-				this.#dateTimestamp.displayUTC(result.time.created), this.#dateTimestamp.displayUTC(result.time.modified),
-				dependencies
+				{
+					author: this.parseAuthor(result.author),
+					dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
+					dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
+					dependencies,
+					deprecated: latestVersion.deprecated,
+					description: cutText(result.description, 1000),
+					latestVersionNumber: result['dist-tags'].latest,
+					license: result.license,
+					mainFile: latestVersion.main ?? 'index.js',
+					maintainers
+				}
 			));
 	}
 

@@ -61,6 +61,7 @@ export namespace YarnPkg {
 		maintainers: Maintainer[];
 		directories: Record<string, string>;
 		dependencies?: Record<string, string>;
+		deprecated?: string;
 	}
 }
 

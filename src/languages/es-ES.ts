@@ -2882,7 +2882,20 @@ export default class extends Language {
 		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
 		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
 		COMMAND_YARN_EMBED_DATA: {
-			DESCRIPTION: (description, author, maintainers, latestVersionNumber, license, mainFile, dateCreated, dateModified, dependencies) => [
+			DESCRIPTION: (
+				{
+					author,
+					dateCreated,
+					dateModified,
+					dependencies,
+					deprecated,
+					description,
+					latestVersionNumber,
+					license,
+					mainFile,
+					maintainers
+				}
+			) => [
 				description,
 				'',
 				`❯ Autor: ${author}`,
@@ -2892,6 +2905,7 @@ export default class extends Language {
 				`❯ Archivo principal: ${mainFile}`,
 				`❯ Fecha de creacion: ${dateCreated}`,
 				`❯ Fecha modificada: ${dateModified}`,
+				deprecated ? `❯ Aviso de desuso: **${deprecated}**` : undefined,
 				'',
 				dependencies && dependencies.length ? this.list(dependencies, 'y') : `Sin dependencias ${GREENTICK}!`
 			].join('\n'),

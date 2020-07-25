@@ -1117,9 +1117,18 @@ export interface LanguageKeys {
 	COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg: string) => string;
 	COMMAND_YARN_EMBED_DATA: {
 		DESCRIPTION: (
-			description: string, author: string | undefined, maintainers: string[],
-			latestVersionNumber: string, license: string, mainFile: string,
-			dateCreated: string, dateModified: string, dependencies: string[] | null
+			params: {
+				author?: string;
+				dateCreated: string;
+				dateModified: string;
+				dependencies: string[] | null;
+				deprecated?: string;
+				description: string;
+				latestVersionNumber: string;
+				license: string;
+				mainFile: string;
+				maintainers: string[];
+			}
 		) => string;
 		MORE_TEXT: string;
 	};

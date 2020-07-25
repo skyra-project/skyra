@@ -7,6 +7,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
+import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 
@@ -48,7 +49,14 @@ export default class extends RichDisplayCommand {
 			: this.displayModerationLogFromUsers.bind(this, usernames, durationDisplay, displayName);
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
+			display.addPage((template: MessageEmbed) => {
+				for (const entry of page) {
+					const { name, value } = format(entry);
+					template.addField(name, value);
+				}
+
+				return template;
+			});
 		}
 
 		await display.start(response, message.author.id);
@@ -56,21 +64,33 @@ export default class extends RichDisplayCommand {
 	}
 
 	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
-		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const appealOrInvalidated = entry.appealType || entry.invalidated;
+		const remainingTime = appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedModerator = users.get(entry.moderatorID!);
-		const formattedReason = entry.reason || 'None';
-		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
-		const formattedTitle = displayName ? `**${entry.title}**\n` : '';
-		return `${formattedTitle}Case \`${entry.caseID}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
+		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
+		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
+
+		return {
+			name: `\`${entry.caseID}\`${displayName ? ` | ${entry.title}` : ''}`,
+			value: `${formatter}Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}${formatter}`
+		};
 	}
 
 	private displayModerationLogFromUsers(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
-		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const appealOrInvalidated = entry.appealType || entry.invalidated;
+		const remainingTime = appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedUser = users.get(entry.userID!);
-		const formattedReason = entry.reason || 'None';
-		const formattedDuration = remainingTime === null ? '' : `\nExpires in: ${duration(remainingTime)}`;
-		const formattedTitle = displayName ? `**${entry.title}**\n` : '';
-		return `${formattedTitle}Case \`${entry.caseID}\`. User: **${formattedUser}**.\n${formattedReason}${formattedDuration}`;
+		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
+		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
+		const formatter = appealOrInvalidated || expiredTime ? '~~' : '';
+
+		return {
+			name: `\`${entry.caseID}\`${displayName ? ` | ${entry.title}` : ''}`,
+			value: `${formatter}Moderator: **${formattedUser}**.\n${formattedReason}${formattedDuration}${formatter}`
+		};
 	}
 
 	private async fetchAllUsers(entries: Cache<number, ModerationEntity>) {

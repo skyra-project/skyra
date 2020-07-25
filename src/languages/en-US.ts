@@ -3,7 +3,7 @@ import { codeBlock, toTitleCase } from '@klasa/utils';
 import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import ShinyWager from '@root/arguments/shinywager';
-import { VERSION } from '@root/config';
+import { CLIENT_ID, VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
@@ -233,7 +233,6 @@ export default class extends Language {
 		COMMAND_PING: `${LOADING} Ping?`,
 		COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
 		COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
-		COMMAND_INVITE_DESCRIPTION: 'Displays the join server link of the bot.',
 		COMMAND_INFO_DESCRIPTION: 'Provides some information about this bot.',
 		COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 		COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
@@ -2821,10 +2820,21 @@ export default class extends Language {
 		 * GENERAL COMMANDS
 		 */
 
-		COMMAND_INVITE: () => [
-			`To add me to your discord guild: <${this.client.invite}>`,
+		COMMAND_INVITE_DESCRIPTION: 'Muestra el enlace para agregar Skyra a su servidor.',
+		COMMAND_INVITE_EXTENDED: builder.display('invite', {
+			extendedHelp: 'If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms` or `--nopermissions` to the command.',
+			examples: [
+				'',
+				'noperms',
+				'--noperms',
+				'--nopermissions'
+			]
+		}),
+		COMMAND_INVITE: [
+			`To add Skyra to your server: <${this.client.invite}>`,
 			'Don\'t be afraid to uncheck some permissions, I will let you know if you\'re trying to run a command without permissions.'
 		].join('\n'),
+		COMMAND_INVITE_NO_PERMS: `To add Skyra to your server: <https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=bot>`,
 		COMMAND_INFO: [
 			`Skyra ${VERSION} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 			"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",

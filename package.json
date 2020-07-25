@@ -42,8 +42,8 @@
 		"url": "https://github.com/skyra-project/skyra/issues"
 	},
 	"dependencies": {
-		"@influxdata/influxdb-client": "^1.4.0",
-		"@influxdata/influxdb-client-apis": "^1.4.0",
+		"@influxdata/influxdb-client": "^1.5.0",
+		"@influxdata/influxdb-client-apis": "^1.5.0",
 		"@klasa/async-queue": "^0.0.1",
 		"@klasa/cache": "^0.0.3",
 		"@klasa/console": "^0.0.3",
@@ -86,7 +86,7 @@
 		"@klasa/dapi-types": "^0.3.0",
 		"@playlyfe/gql": "^2.6.2",
 		"@skyra/eslint-config": "^5.2.1",
-		"@skyra/saelem": "^1.0.8",
+		"@skyra/saelem": "^1.0.9",
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",
 		"@types/he": "^1.1.1",
@@ -98,13 +98,13 @@
 		"@types/ws": "^7.2.6",
 		"@typescript-eslint/eslint-plugin": "^3.7.0",
 		"@typescript-eslint/parser": "^3.7.0",
-		"chokidar": "^3.4.0",
+		"chokidar": "^3.4.1",
 		"eslint": "^7.5.0",
 		"jest": "^26.1.0",
 		"jest-circus": "^26.1.0",
 		"nock": "^13.0.2",
-		"ts-jest": "^26.1.1",
-		"typescript": "^3.9.6"
+		"ts-jest": "^26.1.3",
+		"typescript": "^3.9.7"
 	},
 	"_moduleAliases": {
 		"@orm": "dist/lib/orm",

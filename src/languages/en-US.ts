@@ -697,6 +697,43 @@ export default class extends Language {
 		}),
 
 		/**
+		 * #####################
+		 * DEVELOPERS COMMANDS
+		 */
+
+		COMMAND_YARN_DESCRIPTION: 'Responds with information on a NodeJS package using the Yarn package registry',
+		COMMAND_YARN_EXTENDED: builder.display('yarn', {
+			extendedHelp: `This is for NodeJS developers who want to quickly find information on a package published to [npm](https://npmjs.com)`,
+			explainedUsage: [
+				['package', 'The name of the package to search for, has to be an exact match']
+			],
+			examples: [
+				'@skyra/char',
+				'@skyra/saelem',
+				'@skyra/eslint-config'
+			]
+		}),
+		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `What a silly developer who made ${pkg}! They unpublished it!`,
+		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
+		COMMAND_YARN_EMBED_DATA: {
+			DESCRIPTION: (description, author, maintainers, latestVersionNumber, license, mainFile, dateCreated, dateModified, dependencies) => [
+				description,
+				'',
+				author ? `❯ Author: ${author}` : undefined,
+				`❯ Maintainers: **${this.list(maintainers, 'and')}**`,
+				`❯ Latest version: **${latestVersionNumber}**`,
+				`❯ License: **${license}**`,
+				`❯ Main File: **${mainFile}**`,
+				`❯ Date Created: **${dateCreated}**`,
+				`❯ Date Modified: **${dateModified}**`,
+				'',
+				'__*Dependencies:*__',
+				dependencies && dependencies.length ? this.list(dependencies, 'or') : `No dependencies ${GREENTICK}!`
+			].filter(part => part !== undefined).join('\n'),
+			MORE_TEXT: 'more...'
+		},
+
+		/**
 		 * ############
 		 * FUN COMMANDS
 		 */

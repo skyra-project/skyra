@@ -472,8 +472,6 @@ export interface LanguageKeys {
 	COMMAND_SUBSCRIBE_EXTENDED: string;
 	COMMAND_UNSUBSCRIBE_DESCRIPTION: string;
 	COMMAND_UNSUBSCRIBE_EXTENDED: string;
-	COMMAND_8BALL_DESCRIPTION: string;
-	COMMAND_8BALL_EXTENDED: string;
 	COMMAND_CHOICE_DESCRIPTION: string;
 	COMMAND_CHOICE_EXTENDED: string;
 	COMMAND_CHANGEMYMIND_DESCRIPTION: string;
@@ -1112,6 +1110,20 @@ export interface LanguageKeys {
 	};
 	COMMAND_SUPPORT_DESCRIPTION: string;
 	COMMAND_SUPPORT_EXTENDED: string;
+	COMMAND_YARN_DESCRIPTION: string;
+	COMMAND_YARN_EXTENDED: string;
+	COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg: string) => string;
+	COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg: string) => string;
+	COMMAND_YARN_EMBED_DATA: {
+		DESCRIPTION: (
+			description: string, author: string | undefined, maintainers: string[],
+			latestVersionNumber: string, license: string, mainFile: string,
+			dateCreated: string, dateModified: string, dependencies: string[] | null
+		) => string;
+		MORE_TEXT: string;
+	};
+	COMMAND_8BALL_DESCRIPTION: string;
+	COMMAND_8BALL_EXTENDED: string;
 	COMMAND_8BALL_OUTPUT: (author: string, question: string, response: string) => string;
 	COMMAND_8BALL_NOT_QUESTION: string;
 	COMMAND_8BALL_QUESTIONS: Record<string, string | RegExp>;

@@ -7,6 +7,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
+import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 
@@ -32,16 +33,16 @@ export default class extends SkyraCommand {
 		let kicks = 0;
 		let bans = 0;
 		for (const log of logs.values()) {
-			if (log.invalidated) continue;
+			if (log.invalidated || log.appealType) continue;
 			switch (log.typeVariation) {
 				case Moderation.TypeVariation.Ban:
-				case Moderation.TypeVariation.Softban: bans++;
+				case Moderation.TypeVariation.Softban: ++bans;
 					break;
-				case Moderation.TypeVariation.Mute: mutes++;
+				case Moderation.TypeVariation.Mute: ++mutes;
 					break;
-				case Moderation.TypeVariation.Kick: kicks++;
+				case Moderation.TypeVariation.Kick: ++kicks;
 					break;
-				case Moderation.TypeVariation.Warning: warnings++;
+				case Moderation.TypeVariation.Warning: ++warnings;
 			}
 		}
 
@@ -59,7 +60,7 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('SYSTEM_LOADING'))
 			.setColor(BrandingColors.Secondary));
 
-		const entries = (await message.guild!.moderation.fetch(target.id)).filter(log => !log.invalidated);
+		const entries = (await message.guild!.moderation.fetch(target.id)).filter(log => !log.invalidated && !log.appealType);
 		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
 
 		const display = new UserRichDisplay(new MessageEmbed()
@@ -72,10 +73,16 @@ export default class extends SkyraCommand {
 
 		// Set up the formatter
 		const durationDisplay = message.language.duration.bind(message.language);
-		const format = this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay);
 
 		for (const page of chunk([...entries.values()], 10)) {
-			display.addPage((template: MessageEmbed) => template.setDescription(page.map(format)));
+			display.addPage((template: MessageEmbed) => {
+				for (const entry of page) {
+					const { name, value } = this.displayModerationLogFromModerators(usernames, durationDisplay, entry);
+					template.addField(name, value);
+				}
+
+				return template;
+			});
 		}
 
 		await display.start(response, message.author.id);
@@ -83,16 +90,20 @@ export default class extends SkyraCommand {
 	}
 
 	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, entry: ModerationEntity) {
-		const remainingTime = entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const appealOrInvalidated = entry.appealType || entry.invalidated;
+		const remainingTime = appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedModerator = users.get(entry.moderatorID!);
-		const formattedReason = entry.reason || 'None';
-		const formattedTitle = `**${entry.title}**\n`;
-		const formattedDuration = entry.appealType
+		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
+		const formattedDuration = remainingTime === null || expiredTime
 			? ''
-			: remainingTime === null
-				? ''
-				: `\nExpires in: ${duration(remainingTime)}`;
-		return `${formattedTitle}Case \`${entry.caseID}\`. Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}`;
+			: `\nExpires in: ${duration(remainingTime)}`;
+		const formatter = expiredTime || appealOrInvalidated ? '~~' : '';
+
+		return {
+			name: `\`${entry.caseID}\` | ${entry.title}`,
+			value: `${formatter}Moderator: **${formattedModerator}**.\n${formattedReason}${formattedDuration}${formatter}`
+		};
 	}
 
 	private async fetchAllModerators(entries: Cache<number, ModerationEntity>) {

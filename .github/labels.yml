@@ -4,6 +4,12 @@
 - name: 'Bug: Cannot Reproduce'
   description: Issues that report bugs that cannot be reproduced.
   color: f9d0c4
+- name: 'Bug: Cannot Fix (D.JS)'
+  description: Bugs that exist in Discord.JS and are out of our control to fix.
+  color: f9d0c4
+- name: 'Bug: Cannot Fix (H&C)'
+  description: Bugs that exist in Discord itself and are out of our control to fix.
+  color: f9d0c4
 - name: 'Bug: Confirmed'
   description: Issues that report confirmed bugs.
   color: f9d0c4

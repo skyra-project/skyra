@@ -15,7 +15,6 @@ query getHoroscope ($sunsign: Sunsigns! $day: Days!) {
 }`;
 
 export const SAELEM_GRAPHQL_API_URL = 'http://localhost:8284';
-export const SAELEM_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/img/saelem.png';
 
 export async function fetchSaelem<R extends SaelemQueryReturnTypes>(query: string, variables: SaelemQueryVariables<R>) {
 	try {

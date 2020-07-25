@@ -9,7 +9,7 @@ import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';
 
-const CDN_URL = 'https://cdn.skyra.pw/img/banners/';
+const CDN_URL = 'https://cdn.skyra.pw/skyra-assets/banners/';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],

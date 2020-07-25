@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 	private async buildEmbed(message: KlasaMessage, result: CoinType) {
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setThumbnail(`https://cdn.skyra.pw/img/coins/${this.cdnTypes[result]}.png`);
+			.setThumbnail(`https://cdn.skyra.pw/skyra-assets/coins_${this.cdnTypes[result]}.png`);
 	}
 
 }

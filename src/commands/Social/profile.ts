@@ -9,8 +9,8 @@ import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
 // Skyra's CDN assets folder
-const THEMES_FOLDER = join(cdnFolder, 'img', 'banners');
-const BADGES_FOLDER = join(cdnFolder, 'img', 'badges');
+const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
+const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,

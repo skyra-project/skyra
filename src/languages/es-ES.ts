@@ -2878,6 +2878,7 @@ export default class extends Language {
 				'@skyra/eslint-config'
 			]
 		}),
+		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
 		COMMAND_YARN_UNPUBLISHED_PACKAGE: pkg => `What a silly developer who made ${pkg}! They unpublished it!`,
 		COMMAND_YARN_PACKAGE_NOT_FOUND: pkg => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
 		COMMAND_YARN_EMBED_DATA: {

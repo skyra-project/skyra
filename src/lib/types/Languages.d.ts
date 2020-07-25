@@ -1112,6 +1112,7 @@ export interface LanguageKeys {
 	COMMAND_SUPPORT_EXTENDED: string;
 	COMMAND_YARN_DESCRIPTION: string;
 	COMMAND_YARN_EXTENDED: string;
+	COMMAND_YARN_NO_PACKAGE: string;
 	COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg: string) => string;
 	COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg: string) => string;
 	COMMAND_YARN_EMBED_DATA: {

@@ -21,7 +21,10 @@ import { KlasaMessage } from 'klasa';
 })
 @CreateResolvers([
 	[
-		'package', (arg, _, message) => cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase()
+		'package', (arg, _, message) => {
+			if (!arg) throw message.language.tget('COMMAND_YARN_NO_PACKAGE');
+			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
+		}
 	]
 ])
 export default class extends SkyraCommand {

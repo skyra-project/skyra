@@ -14,7 +14,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
-		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'noperms') || Reflect.has(message.flagArgs, 'nopermissions')) {
+		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
 			return message.sendLocale('COMMAND_INVITE_NO_PERMS');
 		}
 

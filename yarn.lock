@@ -692,25 +692,25 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@skyra/char@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.0.tgz#20100ebde1b0cc849405f8309b2ceaaa153781a0"
-  integrity sha512-05hi/zNa2E3N4PfPQYnmYbuv/qCN+U0n957dz50j27kWr+TVnWdZlGXGd10IL1xeAEKMXa74ZbGaN/ufzANqyQ==
+"@skyra/char@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.1.tgz#d1d88a9bde2b436f83fd4995b3f0926c1de6a7fa"
+  integrity sha512-cDtbEuH30sWlPIDBpBrdhXd2tnawKZygaPdwec0bglhDCliBaJGtN1gNsiKewkvotRsRV38KtFnrQSEE5nmXsg==
 
 "@skyra/decorators@1.x":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.1.1.tgz#ae3030329d99244a4c667f888d7bdff5e43f973a"
-  integrity sha512-I7HD3B0FiXcr3bDILqwHHp4ABkjGU4zOZIVXR1i35t4eAC9Gxd2BEaQGzg91DyV16JEVBZ9YFsaBI/d+hN/vXA==
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.2.0.tgz#eff48152d9948f5473a78440520992e5d84d7293"
+  integrity sha512-jQrbHv1rOAEKjztsdzc3RqKlNE9w8cnlN392D9PjdMEaqbne2T9hdPkBQnFJtLtOfRn5lU49eiI/BqO/LYmAxg==
 
-"@skyra/eslint-config@^5.2.1":
-  version "5.2.1"
-  resolved "https://registry.yarnpkg.com/@skyra/eslint-config/-/eslint-config-5.2.1.tgz#c9444c578855f6511e0184956c8ea98161d8fb99"
-  integrity sha512-Pfyy0BS6FCaHruFu19KOuMvxOm33UFa6mg2t1rySCq24sC4q8FNtJkwaqPUG3mVmdgzR/AxjjMt2+6w1DMn1mQ==
+"@skyra/eslint-config@^5.3.0":
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/@skyra/eslint-config/-/eslint-config-5.3.0.tgz#9f4f49bea425d0aac6877fa42daec0c4fc00f0ad"
+  integrity sha512-MO/JbDZjd5NvdS82pooOBiDHq3Njb54lo8XsMBYUM2vUxYAzpFcjZ2SIVnfj76MWZS9yQcvV+2MFLtTKaOuFOQ==
 
-"@skyra/saelem@^1.0.9":
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-1.0.9.tgz#727b0e856326710fb0b06339a64ef0c33c023724"
-  integrity sha512-2deQDMZhK78geVt+tcJAwfhLhdaL+27j6AShG+9skGR+T6SjGwjaPe7Rz6knPEaosI3zozD884svA4fIXNuHkw==
+"@skyra/saelem@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-1.1.0.tgz#c78cebf3b49ed261877231a45c5246afaa06663f"
+  integrity sha512-ylFwmIVVIfmyd7jRZ9ycQ+6d5wILkfW4A1Zii/r1QdPsAkR5pNXuAlkYDfMtU5gVCR6ReavgLZOUUNVD3GGKrQ==
   dependencies:
     graphql "^15.3.0"
 

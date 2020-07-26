@@ -6,7 +6,7 @@ To contribute to this repository, feel free to create a new fork of the reposito
 submit a pull request. We highly suggest [ESLint] to be installed
 in your text editor or IDE of your choice to ensure builds from GitHub Actions do not fail.
 
-1. Fork, clone, and select the **master** branch.
+1. Fork, clone, and select the **main** branch.
 2. Create a new branch in your fork.
 3. Make your changes.
 4. Ensure your linting and tests pass by running `yarn test && yarn lint`
@@ -60,7 +60,7 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 [ESLint]:                                    https://eslint.org/
 [Node.JS]:                                   https://nodejs.org/en/download/
 [Yarn]:                                      https://classic.yarnpkg.com/en/docs/install
-[installation instructions for node-canvas]: https://github.com/Automattic/node-canvas/blob/master/Readme.md#installation
+[installation instructions for node-canvas]: https://github.com/Automattic/node-canvas/blob/main/Readme.md#installation
 [OOP paradigms]:                             https://en.wikipedia.org/wiki/Object-oriented_programming
 [Discord Bot Best Practices]:                https://github.com/meew0/discord-bot-best-practices
 [`config.example.ts`]:                       /src/config.example.ts

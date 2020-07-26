@@ -18,7 +18,7 @@ import { resolve } from 'path';
 })
 export default class extends SkyraCommand {
 
-	public async run(message: KlasaMessage, [branch = 'master']: [string?]) {
+	public async run(message: KlasaMessage, [branch = 'main']: [string?]) {
 		// Fetch repository and pull if possible
 		await this.fetch(message, branch);
 

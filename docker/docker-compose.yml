@@ -2,13 +2,13 @@ version: "2.4"
 services:
   pokedex:
     container_name: pokedex
-    image: favware/graphql-pokemon:master
+    image: favware/graphql-pokemon:main
     restart: always
     ports:
       - "4000:8080"
   postgres:
     container_name: pgsql
-    image: skyrabot/postgres:master
+    image: skyrabot/postgres:main
     restart: always
     ports:
       - "5432:5432"
@@ -17,13 +17,13 @@ services:
   lavalink:
     network_mode: host
     container_name: lavalink
-    image: skyrabot/lavalink:master
+    image: skyrabot/lavalink:main
     restart: always
     ports:
       - "2333:2333"
   saelem:
     container_name: saelem
-    image: skyrabot/saelem:master
+    image: skyrabot/saelem:main
     restart: always
     ports:
       - "8284:8080"

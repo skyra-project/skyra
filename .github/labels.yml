@@ -16,8 +16,8 @@
 - name: 'Bug: Fixed'
   description: Issues that report bugs and have been fixed.
   color: 00fa9a
-- name: 'Bug: Fixed in master'
-  description: Issues that report bugs from stable, but that are fixed in master.
+- name: 'Bug: Fixed in main'
+  description: Issues that report bugs from stable, but that are fixed in main.
   color: b3e88c
 - name: 'Bug: Pending Response'
   description: Issues that report bugs and are pending of a response from the author.

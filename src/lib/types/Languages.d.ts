@@ -100,7 +100,6 @@ export interface LanguageKeys {
 	COMMAND_PING: string;
 	COMMAND_PING_DESCRIPTION: string;
 	COMMAND_PINGPONG: (diff: string, ping: string) => string;
-	COMMAND_INVITE_DESCRIPTION: string;
 	COMMAND_INFO_DESCRIPTION: string;
 	COMMAND_HELP_DESCRIPTION: string;
 	COMMAND_HELP_NO_EXTENDED: string;
@@ -1100,7 +1099,10 @@ export interface LanguageKeys {
 	COMMAND_ANNOUNCEMENT_CANCELLED: string;
 	COMMAND_ANNOUNCEMENT_PROMPT: string;
 	COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header: string, mentions: readonly string[]) => string;
+	COMMAND_INVITE_DESCRIPTION: string;
+	COMMAND_INVITE_EXTENDED: string;
 	COMMAND_INVITE: () => string;
+	COMMAND_INVITE_NO_PERMS: () => string;
 	COMMAND_INFO: string;
 	COMMAND_HELP_DATA: {
 		TITLE: (description: string) => string;

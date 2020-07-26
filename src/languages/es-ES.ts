@@ -3,7 +3,7 @@ import { codeBlock, toTitleCase } from '@klasa/utils';
 import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import ShinyWager from '@root/arguments/shinywager';
-import { VERSION } from '@root/config';
+import { CLIENT_ID, VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
@@ -235,7 +235,6 @@ export default class extends Language {
 		COMMAND_PING: `${LOADING} Ping?`,
 		COMMAND_PING_DESCRIPTION: 'Establece una prueba de conexión con Discord.',
 		COMMAND_PINGPONG: (diff, ping) => `Pong! (El viaje ida y vuelta tomó: ${diff}ms. Pulso: ${ping}ms.)`,
-		COMMAND_INVITE_DESCRIPTION: 'Muestra el enlace para invitarme.',
 		COMMAND_INFO_DESCRIPTION: 'Muestra alguna información sobre mí.',
 		COMMAND_HELP_DESCRIPTION: 'Muestra la ayuda para un comando o todos.',
 		COMMAND_HELP_NO_EXTENDED: 'No está documentado completamente.',
@@ -2833,10 +2832,21 @@ export default class extends Language {
 		 * GENERAL COMMANDS
 		 */
 
+		COMMAND_INVITE_DESCRIPTION: 'Muestra el enlace para invitarme.',
+		COMMAND_INVITE_EXTENDED: builder.display('invite', {
+			extendedHelp: 'Si desea obtener un enlace donde Skyra no solicitará ningún permiso, agregue `noperms`, `--noperms` o `--nopermissions` al comando.',
+			examples: [
+				'',
+				'noperms',
+				'--noperms',
+				'--nopermissions'
+			]
+		}),
 		COMMAND_INVITE: () => [
 			`Para añadir Skyra a tu servidor: <${this.client.invite}>`,
 			'No tengas miedo de quitar algunos permisos, Skyra te hará saber si estás intentando ejecutar un comando sin los permisos requeridos.'
 		].join('\n'),
+		COMMAND_INVITE_NO_PERMS: () => `Para añadir Skyra a tu servidor: <https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=bot>`,
 		COMMAND_INFO: [
 			`Skyra ${VERSION} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 			"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",

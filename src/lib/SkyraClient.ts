@@ -6,7 +6,7 @@ import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { Client as VezaClient } from 'veza';
 import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
-import { Permissions, Webhook } from 'discord.js';
+import { Webhook } from 'discord.js';
 import { FSWatcher } from 'chokidar';
 import { DashboardClient } from 'klasa-dashboard-hooks';
 
@@ -30,7 +30,6 @@ import { enumerable } from './util/util';
 
 // Import all configuration
 import {
-	CLIENT_ID,
 	CLIENT_OPTIONS,
 	ENABLE_INFLUX,
 	EVLYN_PORT,
@@ -132,16 +131,6 @@ export class SkyraClient extends KlasaClient {
 
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
-
-	/**
-	 * The invite link for Skyra
-	 * @since 0.0.1
-	 * @override
-	 */
-	public get invite() {
-		const permissions = new Permissions(this.constructor.basePermissions).add(...this.commands.map(command => command.requiredPermissions)).bitfield;
-		return `https://discordapp.com/oauth2/authorize?client_id=${CLIENT_ID}&permissions=${permissions}&scope=bot`;
-	}
 
 	public ipc = new VezaClient('skyra-master')
 		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })

@@ -2836,11 +2836,11 @@ export default class extends Language {
 		COMMAND_INVITE_EXTENDED: builder.display('invite', {
 
 		}),
-		COMMAND_INVITE: [
+		COMMAND_INVITE: () => [
 			`Para añadir Skyra a tu servidor: <${this.client.invite}>`,
 			'No tengas miedo de quitar algunos permisos, Skyra te hará saber si estás intentando ejecutar un comando sin los permisos requeridos.'
 		].join('\n'),
-		COMMAND_INVITE_NO_PERMS: `Para añadir Skyra a tu servidor: <https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=bot>`,
+		COMMAND_INVITE_NO_PERMS: () => `Para añadir Skyra a tu servidor: <https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=bot>`,
 		COMMAND_INFO: [
 			`Skyra ${VERSION} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 			"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",

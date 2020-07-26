@@ -2834,7 +2834,13 @@ export default class extends Language {
 
 		COMMAND_INVITE_DESCRIPTION: 'Muestra el enlace para invitarme.',
 		COMMAND_INVITE_EXTENDED: builder.display('invite', {
-
+			extendedHelp: 'Si desea obtener un enlace donde Skyra no solicitará ningún permiso, agregue `noperms`, `--noperms` o `--nopermissions` al comando.',
+			examples: [
+				'',
+				'noperms',
+				'--noperms',
+				'--nopermissions'
+			]
 		}),
 		COMMAND_INVITE: () => [
 			`Para añadir Skyra a tu servidor: <${this.client.invite}>`,

@@ -697,7 +697,7 @@
   resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.1.tgz#d1d88a9bde2b436f83fd4995b3f0926c1de6a7fa"
   integrity sha512-cDtbEuH30sWlPIDBpBrdhXd2tnawKZygaPdwec0bglhDCliBaJGtN1gNsiKewkvotRsRV38KtFnrQSEE5nmXsg==
 
-"@skyra/decorators@1.x":
+"@skyra/decorators@discordjs":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.2.0.tgz#eff48152d9948f5473a78440520992e5d84d7293"
   integrity sha512-jQrbHv1rOAEKjztsdzc3RqKlNE9w8cnlN392D9PjdMEaqbne2T9hdPkBQnFJtLtOfRn5lU49eiI/BqO/LYmAxg==
@@ -707,10 +707,10 @@
   resolved "https://registry.yarnpkg.com/@skyra/eslint-config/-/eslint-config-5.3.0.tgz#9f4f49bea425d0aac6877fa42daec0c4fc00f0ad"
   integrity sha512-MO/JbDZjd5NvdS82pooOBiDHq3Njb54lo8XsMBYUM2vUxYAzpFcjZ2SIVnfj76MWZS9yQcvV+2MFLtTKaOuFOQ==
 
-"@skyra/saelem@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-1.1.0.tgz#c78cebf3b49ed261877231a45c5246afaa06663f"
-  integrity sha512-ylFwmIVVIfmyd7jRZ9ycQ+6d5wILkfW4A1Zii/r1QdPsAkR5pNXuAlkYDfMtU5gVCR6ReavgLZOUUNVD3GGKrQ==
+"@skyra/saelem@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-1.1.1.tgz#aa1b38c8fe8b631af75f552a18da4c5a13056081"
+  integrity sha512-unCPL3k1nlHQQS1uXLDUgXk9WdAcdsBtjircHteKaJcSf99oD/2qRtv0qqHqOYyrjQQGAGvvlO6FVXyBU2f5kg==
   dependencies:
     graphql "^15.3.0"
 

@@ -2820,7 +2820,7 @@ export default class extends Language {
 		 * GENERAL COMMANDS
 		 */
 
-		COMMAND_INVITE_DESCRIPTION: 'Muestra el enlace para agregar Skyra a su servidor.',
+		COMMAND_INVITE_DESCRIPTION: 'Shows the invite link to add Skyra to your server.',
 		COMMAND_INVITE_EXTENDED: builder.display('invite', {
 			extendedHelp: 'If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms` or `--nopermissions` to the command.',
 			examples: [

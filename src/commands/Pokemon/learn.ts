@@ -2,9 +2,10 @@ import { LearnsetEntry, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
+import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -57,7 +58,7 @@ export default class extends RichDisplayCommand {
 	private buildDisplay(message: KlasaMessage, learnsetData: LearnsetEntry, generation: number, moves: string[]) {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(resolveColour(learnsetData.color))
-			.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
 			.setTitle(message.language.tget('COMMAND_LEARN_TITLE', learnsetData.species, generation))
 			.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite));
 

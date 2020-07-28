@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { CdnUrls } from '@lib/types/Constants';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
@@ -39,7 +40,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor('❤ Love Meter ❤', message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setThumbnail('https://twemoji.maxcdn.com/2/72x72/1f49e.png')
+			.setThumbnail(CdnUrls.RevolvingHeartTwemoji)
 			.setDescription([
 				`💗 **${user.tag}**`,
 				`💗 **${message.author.tag}**\n`,

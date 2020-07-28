@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { CdnUrls } from '@lib/types/Constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -23,7 +24,7 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(this.client.twitch.BRANDING_COLOUR)
-			.setAuthor(channel.display_name, 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png', `https://twitch.tv/${channel.login}`)
+			.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)
 			.setTitle(titles.CLICK_TO_VISIT)
 			.setURL(`https://twitch.tv/${channel.login}`)
 			.setDescription(channel.description)

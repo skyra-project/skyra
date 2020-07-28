@@ -2,6 +2,7 @@ import { Timestamp } from '@klasa/timestamp';
 import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { CdnUrls } from '@lib/types/Constants';
 import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
 import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -29,8 +30,6 @@ import { KlasaMessage } from 'klasa';
 ])
 export default class extends SkyraCommand {
 
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	#nodeJsLogo = 'https://cdn.skyra.pw/skyra-assets/nodejs_logo.png';
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#dateTimestamp = new Timestamp('YYYY-MM-DD');
 
@@ -65,7 +64,7 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setTitle(toTitleCase(result.name))
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
-			.setThumbnail(this.#nodeJsLogo)
+			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
 			.setDescription(EMBED_DATA.DESCRIPTION(
 				{

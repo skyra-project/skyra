@@ -461,6 +461,15 @@ export function parseURL(url: string) {
 }
 
 /**
+ * Parses an URL and checks if the extension is valid.
+ * @param url The url to check
+ */
+export function isImageURL(url: string) {
+	const parsed = parseURL(url);
+	return parsed ? IMAGE_EXTENSION.test(parsed.pathname) : false;
+}
+
+/**
  * Properly rounds up or down a number.
  * Also supports strinsgs using an exponent to indicate large or small numbers.
  * @param num The number to round off

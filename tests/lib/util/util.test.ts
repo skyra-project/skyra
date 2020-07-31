@@ -545,13 +545,31 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('parseUrL', () => {
+	describe('parseURL', () => {
 		test('GIVEN valid URL THEN returns URL', () => {
 			expect(utils.parseURL('https://skyra.pw')).toStrictEqual(new URL('https://skyra.pw'));
 		});
 
 		test('GIVEN invalid url THEN returns null', () => {
 			expect(utils.parseURL('thisisnotaurl')).toBeNull();
+		});
+	});
+
+	describe('isImageURL', () => {
+		test('GIVEN valid IMAGE URL THEN returns TRUE', () => {
+			expect(utils.isImageURL('https://example.com/image.png')).toBe(true);
+		});
+
+		test('GIVEN valid IMAGE URL WITH QUERYSTRING THEN returns TRUE', () => {
+			expect(utils.isImageURL('https://example.com/image.png?test=hehehehe')).toBe(true);
+		});
+
+		test('GIVEN invalid IMAGE URL THEN returns TRUE', () => {
+			expect(utils.isImageURL('https://example.com/image.mp4')).toBe(false);
+		});
+
+		test('GIVEN invalid URL THEN returns TRUE', () => {
+			expect(utils.isImageURL('something/image.mp4')).toBe(false);
 		});
 	});
 

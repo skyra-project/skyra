@@ -126,6 +126,7 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
+	@requiredPermissions(['EMBED_LINKS'])
 	public async show(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
 		return message.sendEmbed(new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

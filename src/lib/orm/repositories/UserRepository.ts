@@ -55,17 +55,17 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async fetchSpouse(a: string, b: string): Promise<RawSpouseEntry | null> {
-		const entries = await this.query(`SELECT * FROM user_spouses_user WHERE (user_id_1 = $1 AND user_id_2 = $2) OR (user_id_1 = $2 AND user_id_2 = $1);`, [a, b]);
+		const entries = await this.query(/* sql */`SELECT * FROM user_spouses_user WHERE (user_id_1 = $1 AND user_id_2 = $2) OR (user_id_1 = $2 AND user_id_2 = $1);`, [a, b]);
 		return entries.length ? entries[0] : null;
 	}
 
 	public async fetchSpouses(id: string) {
-		const entries = await this.query(`SELECT * FROM user_spouses_user WHERE user_id_1 = $1 OR user_id_2 = $1`, [id]) as RawSpouseEntry[];
+		const entries = await this.query(/* sql */`SELECT * FROM user_spouses_user WHERE user_id_1 = $1 OR user_id_2 = $1`, [id]) as RawSpouseEntry[];
 		return entries.map(entry => entry.user_id_1 === id ? entry.user_id_2 : entry.user_id_1);
 	}
 
 	public async deleteSpouse(entry: RawSpouseEntry) {
-		await this.query(`DELETE FROM user_spouses_user WHERE user_id_1 = $1 AND user_id_2 = $2`, [entry.user_id_1, entry.user_id_2]);
+		await this.query(/* sql */`DELETE FROM user_spouses_user WHERE user_id_1 = $1 AND user_id_2 = $2`, [entry.user_id_1, entry.user_id_2]);
 	}
 
 	public async lock<T>(targets: readonly string[], cb: (...targets: readonly string[]) => Promise<T>): Promise<T> {

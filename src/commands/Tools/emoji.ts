@@ -27,10 +27,10 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		if (!REG_TWEMOJI.test(emoji)) throw message.language.tget('COMMAND_EMOJI_INVALID', emoji);
+		if (!REG_TWEMOJI.test(emoji)) throw message.language.tget('COMMAND_EMOJI_INVALID');
 		const r = twemoji(emoji);
 		const buffer = await fetch(`https://twemoji.maxcdn.com/72x72/${r}.png`, FetchResultTypes.Buffer)
-			.catch(() => { throw message.language.tget('COMMAND_EMOJI_INVALID', emoji); });
+			.catch(() => { throw message.language.tget('COMMAND_EMOJI_INVALID'); });
 
 		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.tget('COMMAND_EMOJI_TOO_LARGE', emoji);
 

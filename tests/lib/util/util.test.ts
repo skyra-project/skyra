@@ -82,17 +82,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('loadImage', () => {
-		test('GIVEN valid path THEN sets buffer to image src', async () => {
-			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');
-
-			const image = await utils.loadImage(filePath);
-
-			expect(image.width).toBe(32);
-			expect(image.height).toBe(32);
-		});
-	});
-
 	describe('streamToBuffer', () => {
 		test('GIVEN path to file THEN converts to Buffer', async () => {
 			const filePath = resolve(__dirname, '..', '..', '..', 'tests', 'mocks', 'image.png');

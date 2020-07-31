@@ -3,7 +3,7 @@ import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Mime, Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
-import { MessageAttachment } from 'discord.js';
+import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
 import { createReadStream, promises as fsPromises } from 'fs';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
@@ -375,6 +375,97 @@ describe('Utils', () => {
 	describe('twemoji', () => {
 		test('GIVEN twemoji icon THEN returns identifier for maxcdn', () => {
 			expect(utils.twemoji('😀')).toEqual('1f600');
+		});
+	});
+
+	describe('getContent', () => {
+		test('GIVEN content THEN returns content', () => {
+			expect(utils.getContent({
+				content: 'Something',
+				embeds: []
+			} as unknown as Message)).toEqual('Something');
+		});
+
+		test('GIVEN description in embed THEN returns description', () => {
+			expect(utils.getContent({
+				content: '',
+				embeds: [new MessageEmbed().setDescription('Hey there!')]
+			} as unknown as Message)).toEqual('Hey there!');
+		});
+
+		test('GIVEN field value in embed THEN returns field value', () => {
+			expect(utils.getContent({
+				content: '',
+				embeds: [new MessageEmbed().addField('Name', 'Value')]
+			} as unknown as Message)).toEqual('Value');
+		});
+
+		test('GIVEN no detectable content THEN returns null', () => {
+			expect(utils.getContent({
+				content: '',
+				embeds: [new MessageEmbed()]
+			} as unknown as Message)).toEqual(null);
+		});
+	});
+
+	describe('getAllContent', () => {
+		test('GIVEN content THEN returns content', () => {
+			expect(utils.getAllContent({
+				content: 'Something',
+				embeds: []
+			} as unknown as Message)).toEqual('Something');
+		});
+
+		test('GIVEN description in embed THEN returns description', () => {
+			expect(utils.getAllContent({
+				content: '',
+				embeds: [new MessageEmbed().setDescription('Hey there!')]
+			} as unknown as Message)).toEqual('Hey there!');
+		});
+
+		test('GIVEN field value in embed THEN returns field value', () => {
+			expect(utils.getAllContent({
+				content: '',
+				embeds: [new MessageEmbed().addField('Name', 'Value')]
+			} as unknown as Message)).toEqual('Name Value');
+		});
+
+		test('GIVEN no detectable content THEN returns null', () => {
+			expect(utils.getAllContent({
+				content: '',
+				embeds: [new MessageEmbed()]
+			} as unknown as Message)).toEqual('');
+		});
+
+		test('GIVEN content and description in embed THEN returns both', () => {
+			expect(utils.getAllContent({
+				content: 'Something',
+				embeds: [new MessageEmbed().setDescription('Hey there!')]
+			} as unknown as Message)).toEqual('Something\nHey there!');
+		});
+
+		test('GIVEN content and author in embed THEN returns both', () => {
+			expect(utils.getAllContent({
+				content: 'Something',
+				embeds: [new MessageEmbed().setAuthor('Some author!')]
+			} as unknown as Message)).toEqual('Something\nSome author!');
+		});
+
+		test('GIVEN description and footer in embed THEN returns both', () => {
+			expect(utils.getAllContent({
+				content: '',
+				embeds: [new MessageEmbed().setDescription('Description!').setFooter('Some footer!')]
+			} as unknown as Message)).toEqual('Description!\nSome footer!');
+		});
+
+		test('GIVEN two embeds THEN returns both', () => {
+			expect(utils.getAllContent({
+				content: '',
+				embeds: [
+					new MessageEmbed().setDescription('Description!').setFooter('Some footer!'),
+					new MessageEmbed().setDescription('Other embed!').setFooter('Another footer!')
+				]
+			} as unknown as Message)).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');
 		});
 	});
 

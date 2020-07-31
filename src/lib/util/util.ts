@@ -346,6 +346,24 @@ export function getContent(message: Message): string | null {
 	return null;
 }
 
+/**
+ * Gets all the contents from a message.
+ * @param message The Message instance to get all contents from
+ */
+export function getAllContent(message: Message): string {
+	const output: string[] = [];
+	if (message.content) output.push(message.content);
+	for (const embed of message.embeds) {
+		if (embed.author?.name) output.push(embed.author.name);
+		if (embed.title) output.push(embed.title);
+		if (embed.description) output.push(embed.description);
+		for (const field of embed.fields) output.push(`${field.name} ${field.value}`);
+		if (embed.footer?.text) output.push(embed.footer.text);
+	}
+
+	return output.join('\n');
+}
+
 export interface ImageAttachment {
 	url: string;
 	proxyURL: string;

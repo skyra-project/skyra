@@ -135,7 +135,7 @@ export default class extends SkyraCommand {
 
 		// Check hierarchy role positions, allow when greater, block otherwise
 		const targetPosition = target instanceof Role ? target.position : getHighestRole(message.guild!, target.roles)!.position;
-		const authorPosition = message.member!.roles.highest.position;
+		const authorPosition = message.member!.roles.highest?.position ?? 0;
 		return authorPosition > targetPosition;
 	}
 

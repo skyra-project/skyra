@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
-import { loadImage } from '@utils/util';
+import { loadImage, roundNumber } from '@utils/util';
 import { Image } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
@@ -107,9 +107,9 @@ export class WheelOfFortune {
 		const multiplier = WheelOfFortune.kMultipliers[this.spin];
 
 		// The winnings
-		this.winnings = multiplier >= 1
+		this.winnings = roundNumber(multiplier >= 1
 			? (this.amount * multiplier * await this.fetchBoost()) - this.amount
-			: (this.amount * multiplier) - this.amount;
+			: (this.amount * multiplier) - this.amount);
 	}
 
 	private async render(darkTheme: boolean): Promise<Buffer> {

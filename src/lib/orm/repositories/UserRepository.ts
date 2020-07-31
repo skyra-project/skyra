@@ -54,9 +54,18 @@ export class UserRepository extends Repository<UserEntity> {
 		return user as UserEntity & { profile: NonNullable<UserEntity['profile']>; cooldowns: NonNullable<UserEntity['cooldowns']> };
 	}
 
+	public async fetchSpouse(a: string, b: string): Promise<RawSpouseEntry | null> {
+		const entries = await this.query(`SELECT * FROM user_spouses_user WHERE (user_id_1 = $1 AND user_id_2 = $2) OR (user_id_1 = $2 AND user_id_2 = $1);`, [a, b]);
+		return entries.length ? entries[0] : null;
+	}
+
 	public async fetchSpouses(id: string) {
-		const entries = await this.query(`SELECT * FROM user_spouses_user WHERE user_id_1 = $1 OR user_id_2 = $1`, [id]) as { user_id_1: string; user_id_2: string }[];
+		const entries = await this.query(`SELECT * FROM user_spouses_user WHERE user_id_1 = $1 OR user_id_2 = $1`, [id]) as RawSpouseEntry[];
 		return entries.map(entry => entry.user_id_1 === id ? entry.user_id_2 : entry.user_id_1);
+	}
+
+	public async deleteSpouse(entry: RawSpouseEntry) {
+		await this.query(`DELETE FROM user_spouses_user WHERE user_id_1 = $1 AND user_id_2 = $2`, [entry.user_id_1, entry.user_id_2]);
 	}
 
 	public async lock<T>(targets: readonly string[], cb: (...targets: readonly string[]) => Promise<T>): Promise<T> {
@@ -89,3 +98,8 @@ export class UserRepository extends Repository<UserEntity> {
 TimerManager.setInterval(() => {
 	UserRepository['queues'].sweep(value => value.remaining === 0);
 }, 60000);
+
+interface RawSpouseEntry {
+	user_id_1: string;
+	user_id_2: string;
+}

@@ -5,7 +5,7 @@ import { cleanMentions } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-const kWinnersArgRegex = /^(\d+)w$/i;
+const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveaway'],

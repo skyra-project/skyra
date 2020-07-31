@@ -2,9 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
-import { Image } from 'canvas';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -35,7 +34,7 @@ const imageCoordinates = [
 })
 export default class extends SkyraCommand {
 
-	private kTemplate: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -43,28 +42,21 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.kTemplate = await fsp.readFile(join(assetsFolder, '/images/memes/howtoflirt.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/howtoflirt.png'));
 	}
 
 	private async generate(message: KlasaMessage, user: KlasaUser) {
 		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
-		const buffers = await Promise.all([
+		const images = await Promise.all([
 			fetchAvatar(message.author, 128),
 			fetchAvatar(user, 128)
 		]);
-		const images = await Promise.all(buffers.map(buffer => new Promise<Image>((resolve, reject) => {
-			const image = new Image(128, 128);
-			image.src = buffer;
-			image.onload = resolve;
-			image.onerror = reject;
-			resolve(image);
-		})));
 
 		/* Initialize Canvas */
 		return new Canvas(500, 500)
-			.addImage(this.kTemplate!, 0, 0, 500, 500)
+			.printImage(this.kTemplate, 0, 0, 500, 500)
 			.process(canvas => {
 				for (const index of [0, 1]) {
 					const image = images[index];
@@ -74,7 +66,7 @@ export default class extends SkyraCommand {
 						canvas
 							.setTransform(flip ? -1 : 1, 0, 0, 1, center[0], center[1])
 							.rotate(flip ? -rotation : rotation)
-							.addCircularImage(image, 0, 0, radius);
+							.printCircularImage(image, 0, 0, radius);
 					}
 				}
 			})

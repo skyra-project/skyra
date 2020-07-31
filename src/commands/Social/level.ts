@@ -2,8 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
-import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
+import { loadImage, Image } from 'canvas';
+import { Canvas, rgba } from 'canvas-constructor';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -11,8 +11,8 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 
 export default class extends SkyraCommand {
 
-	private lightThemeTemplate: Buffer | null = null;
-	private darkThemeTemplate: Buffer | null = null;
+	private lightThemeTemplate: Image = null!;
+	private darkThemeTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		const progressBar = Math.max(Math.round(((settings.points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
-			fsp.readFile(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
+			loadImage(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
 			fetchAvatar(user, 256)
 		]);
 
@@ -52,37 +52,37 @@ export default class extends SkyraCommand {
 			// Draw the background
 			.save()
 			.createBeveledClip(10, 10, 620, 154, 8)
-			.addImage(themeImageSRC, 9, 9, 189, 157)
+			.printImage(themeImageSRC, 9, 9, 189, 157)
 			.restore()
-			.addImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
+			.printImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
 
 			// Draw the progress bar
 			.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)
-			.addBeveledRect(341, 86, progressBar, 9, 3)
+			.printRoundedRectangle(341, 86, progressBar, 9, 3)
 
 			// Set styles
 			.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
 			.setTextFont('28px RobotoLight')
 
 			// Statistics Titles
-			.addText(TITLE.EXPERIENCE, 340, 73)
-			.addText(TITLE.NEXT_IN, 340, 128)
+			.printText(TITLE.EXPERIENCE, 340, 73)
+			.printText(TITLE.NEXT_IN, 340, 128)
 
 			// Draw the information
 			.setTextAlign('right')
-			.addText(settings.points.toString(), 606, 73)
-			.addText((nextLevel - settings.points).toString(), 606, 131)
+			.printText(settings.points.toString(), 606, 73)
+			.printText((nextLevel - settings.points).toString(), 606, 131)
 
 			// Draw the level
 			.setTextAlign('center')
 			.setTextFont('35px RobotoLight')
-			.addText(TITLE.LEVEL, 268, 73)
+			.printText(TITLE.LEVEL, 268, 73)
 			.setTextFont('45px RobotoRegular')
-			.addText(settings.level.toString(), 268, 128)
+			.printText(settings.level.toString(), 268, 128)
 
 			// Draw the avatar
 			.save()
-			.addImage(imgAvatarSRC, 32, 16, 142, 142, { type: 'round', radius: 71 })
+			.printCircularImage(imgAvatarSRC, 103, 87, 71)
 			.restore()
 			.toBufferAsync();
 	}
@@ -94,32 +94,34 @@ export default class extends SkyraCommand {
 		] = await Promise.all([
 			new Canvas(640, 174)
 				.setAntialiasing('subpixel')
-				.setShadowColor('rgba(0,0,0,.7)')
+				.setShadowColor(rgba(0, 0, 0, 0.7))
 				.setShadowBlur(7)
 				.setColor('#FFFFFF')
 				.createBeveledPath(10, 10, 620, 154, 8)
 				.fill()
 				.createBeveledClip(10, 10, 620, 154, 5)
-				.clearPixels(10, 10, 186, 154)
-				.addCircle(103, 87, 70)
+				.clearRectangle(10, 10, 186, 154)
+				.printCircle(103, 87, 70)
 				.resetShadows()
 				.setColor('#E8E8E8')
-				.addBeveledRect(340, 85, 267, 11, 4)
-				.toBufferAsync(),
+				.printRoundedRectangle(340, 85, 267, 11, 4)
+				.toBufferAsync()
+				.then(loadImage),
 			new Canvas(640, 174)
 				.setAntialiasing('subpixel')
-				.setShadowColor('rgba(0,0,0,.7)')
+				.setShadowColor(rgba(0, 0, 0, 0.7))
 				.setShadowBlur(7)
 				.setColor('#202225')
 				.createBeveledPath(10, 10, 620, 154, 8)
 				.fill()
 				.createBeveledClip(10, 10, 620, 154, 5)
-				.clearPixels(10, 10, 186, 154)
-				.addCircle(103, 87, 70)
+				.clearRectangle(10, 10, 186, 154)
+				.printCircle(103, 87, 70)
 				.resetShadows()
 				.setColor('#2C2F33')
-				.addBeveledRect(340, 85, 267, 11, 4)
+				.printRoundedRectangle(340, 85, 267, 11, 4)
 				.toBufferAsync()
+				.then(loadImage)
 		]);
 	}
 

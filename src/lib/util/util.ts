@@ -6,9 +6,8 @@ import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { createFunctionInhibitor } from '@skyra/decorators';
-import { Image } from 'canvas';
+import { Image, loadImage } from 'canvas';
 import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
-import { promises as fsp } from 'fs';
 import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
@@ -63,17 +62,6 @@ export function showSeconds(duration: number): string {
 	}
 
 	return output;
-}
-
-/**
- * Load an image by its path
- * @param path The path to the image to load
- */
-export async function loadImage(path: string): Promise<Image> {
-	const buffer = await fsp.readFile(path);
-	const image = new Image();
-	image.src = buffer;
-	return image;
 }
 
 /**
@@ -287,10 +275,10 @@ export async function fetch(url: URL | string, options: RequestInit | FetchResul
 	}
 }
 
-export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Buffer> {
+export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Image> {
 	const url = user.avatar ? user.avatarURL({ format: 'png', size })! : user.defaultAvatarURL;
 	try {
-		return await fetch(url, FetchResultTypes.Buffer);
+		return await loadImage(url);
 	} catch (error) {
 		throw `Could not download the profile avatar: ${error}`;
 	}

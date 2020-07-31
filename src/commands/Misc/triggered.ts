@@ -1,9 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, streamToBuffer } from '@utils/util';
-import { Image } from 'canvas';
-import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
+import { Image, loadImage } from 'canvas';
+import { Canvas, rgba } from 'canvas-constructor';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 import GIFEncoder = require('gifencoder');
@@ -17,7 +16,7 @@ const COORDINATES: readonly [number, number][] = [
 
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -41,12 +40,7 @@ export default class extends SkyraCommand {
 		const encoder = new GIFEncoder(350, 393);
 		const canvas = new Canvas(350, 393);
 
-		const buffers = [this.template, await fetchAvatar(user, 512)];
-		const [imgTitle, imgTriggered] = buffers.map((buffer: Buffer | null) => {
-			const image = new Image(128, 128);
-			image.src = buffer!;
-			return image;
-		});
+		const userAvatar = await fetchAvatar(user, 512);
 
 		const stream = encoder.createReadStream();
 		encoder.start();
@@ -56,11 +50,10 @@ export default class extends SkyraCommand {
 
 		for (const [x, y] of COORDINATES) {
 			encoder.addFrame(canvas
-				.addImage(imgTriggered, x, y, 400, 400)
-				.addImage(imgTitle, 0, 340, 350, 53)
-				.setColor('rgba(255, 100, 0, 0.4)')
-				.addRect(0, 0, 350, 350)
-				.context);
+				.printImage(userAvatar, x, y, 400, 400)
+				.printImage(this.kTemplate, 0, 340, 350, 53)
+				.setColor(rgba(255, 100, 0, 0.4))
+				.printRectangle(0, 0, 350, 350)['context']);
 		}
 
 		encoder.finish();
@@ -69,7 +62,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await fsp.readFile(join(assetsFolder, './images/memes/triggered.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/triggered.png'));
 	}
 
 }

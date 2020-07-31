@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -20,7 +20,7 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 
-	private kTemplate: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -34,22 +34,22 @@ export default class extends SkyraCommand {
 		]);
 
 		return new Canvas(356, 435)
-			.addImage(this.kTemplate!, 0, 0, 356, 435)
+			.printImage(this.kTemplate, 0, 0, 356, 435)
 
 			// Draw Goofy
-			.addCircularImage(goofy, 245, 98, 46)
+			.printCircularImage(goofy, 245, 98, 46)
 
 			// Draw the kid in the floor
 			.translate(120, 321)
 			.rotate(radians(-45))
-			.addCircularImage(goofied, 0, 0, 25)
+			.printCircularImage(goofied, 0, 0, 25)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/goofy.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/goofy.png'));
 	}
 
 }

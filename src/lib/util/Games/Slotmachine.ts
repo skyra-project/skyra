@@ -2,8 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
-import { loadImage } from '@utils/util';
-import { Image } from 'canvas';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
@@ -112,27 +111,27 @@ export class Slotmachine {
 
 		const canvas = new Canvas(300, 150)
 			.setColor(darkTheme ? CanvasColors.BackgroundDark : CanvasColors.BackgroundLight)
-			.addBeveledRect(5, 5, 295, 145, 10)
+			.printRoundedRectangle(5, 5, 295, 145, 10)
 			.save()
 			.setColor(playerHasWon ? CanvasColors.IndicatorGreen : CanvasColors.IndicatorRed)
 			.setShadowColor(playerHasWon ? 'rgba(64, 224, 15, 0.4)' : 'rgba(237, 29, 2, 0.4)')
 			.setShadowBlur(4)
-			.addRect(53, 56, 2, 42)
-			.addRect(99, 56, 2, 42)
+			.printRectangle(53, 56, 2, 42)
+			.printRectangle(99, 56, 2, 42)
 			.restore()
 			.save()
 			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
-			.addText(this.message.language.tget('COMMAND_SLOTMACHINE_CANVAS_TEXT', playerHasWon), 280, 60)
-			.addText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
-			.addImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
+			.printText(this.message.language.tget('COMMAND_SLOTMACHINE_CANVAS_TEXT', playerHasWon), 280, 60)
+			.printText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
+			.printImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();
 
 		await Promise.all(rolls.map((value, index) => new Promise(resolve => {
 			const { x, y } = kAssets.get(value)!;
 			const coordinate = kCoordinates[index];
-			canvas.addImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coordinate.x, coordinate.y, kIconSize, kIconSize);
+			canvas.printImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coordinate.x, coordinate.y, kIconSize, kIconSize);
 			resolve();
 		})));
 

@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -20,7 +20,7 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 
-	private kTemplate: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
 		const attachment = await this.generate(user);
@@ -35,18 +35,18 @@ export default class extends SkyraCommand {
 		return new Canvas(960, 540)
 			// Draw the avatar
 			.setTransform(1, -0.1, 0.1, 1, 342, 88)
-			.addImage(praised, 0, 0, 109, 109)
+			.printImage(praised, 0, 0, 109, 109)
 
 			// Draw the template
 			.resetTransformation()
-			.addImage(this.kTemplate!, 0, 0, 960, 540)
+			.printImage(this.kTemplate, 0, 0, 960, 540)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/f.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/f.png'));
 	}
 
 }

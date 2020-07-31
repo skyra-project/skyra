@@ -1,7 +1,7 @@
 import { RGB } from '@lib/structures/color';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { hexConcat, luminance, parse } from '@utils/Color';
-import { Canvas } from 'canvas-constructor';
+import { Canvas, rgb } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 /* Color limiter */
@@ -38,38 +38,36 @@ export default class extends SkyraCommand {
 		const canvas = new Canvas(370, 390)
 			.setTextFont('18px FiraSans');
 
-		this.processFrame(canvas.context, 5, 5, cL(red + (diff * 2)), cL(green), cL(blue));
-		this.processFrame(canvas.context, 5, 125, cL(red + diff), cL(green + diff), cL(blue));
-		this.processFrame(canvas.context, 5, 245, cL(red), cL(green + (diff * 2)), cL(blue));
-		this.processFrame(canvas.context, 125, 5, cL(red + diff), cL(green), cL(blue + diff));
-		this.processFrame(canvas.context, 125, 125, cL(red), cL(green), cL(blue));
-		this.processFrame(canvas.context, 125, 245, cL(red - diff), cL(green), cL(blue - diff));
-		this.processFrame(canvas.context, 245, 5, cL(red), cL(green), cL(blue + (diff * 2)));
-		this.processFrame(canvas.context, 245, 125, cL(red - diff), cL(green - diff), cL(blue));
-		this.processFrame(canvas.context, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)));
+		this.processFrame(canvas, 5, 5, cL(red + (diff * 2)), cL(green), cL(blue));
+		this.processFrame(canvas, 5, 125, cL(red + diff), cL(green + diff), cL(blue));
+		this.processFrame(canvas, 5, 245, cL(red), cL(green + (diff * 2)), cL(blue));
+		this.processFrame(canvas, 125, 5, cL(red + diff), cL(green), cL(blue + diff));
+		this.processFrame(canvas, 125, 125, cL(red), cL(green), cL(blue));
+		this.processFrame(canvas, 125, 245, cL(red - diff), cL(green), cL(blue - diff));
+		this.processFrame(canvas, 245, 5, cL(red), cL(green), cL(blue + (diff * 2)));
+		this.processFrame(canvas, 245, 125, cL(red - diff), cL(green - diff), cL(blue));
+		this.processFrame(canvas, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)));
 
 		/* Complementary */
 		const thisLum = sCL(luminance(rL(255 - red), rL(255 - green), rL(255 - blue)));
 		return canvas
-			.setColor(`rgb(${255 - red}, ${255 - green}, ${255 - blue})`)
-			.addRect(5, 365, 360, 20)
+			.setColor(rgb(255 - red, 255 - green, 255 - blue))
+			.printRectangle(5, 365, 360, 20)
 			.setTextFont('16px FiraSans')
-			.setColor(`rgb(${thisLum}, ${thisLum}, ${thisLum})`)
-			.addText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
+			.setColor(rgb(thisLum, thisLum, thisLum))
+			.printText(hexConcat(255 - red, 255 - green, 255 - blue), 15, 382)
 			.toBufferAsync();
 	}
 
-	public processFrame(ctx: CanvasRenderingContext2D, x: number, y: number, red: number, green: number, blue: number) {
-		ctx.fillStyle = `rgb(${red}, ${green}, ${blue})`;
-		ctx.fillRect(x, y, 120, 120);
+	public processFrame(ctx: Canvas, x: number, y: number, red: number, green: number, blue: number) {
 		const lum = luminance(rL(red), rL(green), rL(blue));
 		const textColor = sCL(lum);
-		ctx.fillStyle = `rgb(${textColor}, ${textColor}, ${textColor})`;
-		ctx.fillText(
-			hexConcat(red, green, blue),
-			10 + x,
-			20 + y
-		);
+
+		return ctx
+			.setColor(rgb(red, green, blue))
+			.printRectangle(x, y, 120, 120)
+			.setColor(rgb(textColor, textColor, textColor))
+			.printText(hexConcat(red, green, blue), x + 10, y + 20);
 	}
 
 }

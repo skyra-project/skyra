@@ -4,8 +4,8 @@ import { CanvasColors } from '@lib/types/constants/Constants';
 import { KeyedMemberTag } from '@root/arguments/membername';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { socialFolder } from '@utils/constants';
-import { fetch, FetchResultTypes, getDisplayAvatar, loadImage } from '@utils/util';
-import { Image } from 'canvas';
+import { getDisplayAvatar } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
 import { KlasaMessage } from 'klasa';
@@ -44,9 +44,9 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
-	private lightThemeTemplate: Buffer | null = null;
-	private darkThemeTemplate: Buffer | null = null;
-	private heartIcon: Image | null = null;
+	private lightThemeTemplate: Image = null!;
+	private darkThemeTemplate: Image = null!;
+	private heartIcon: Image = null!;
 
 	public async run(message: KlasaMessage, [firstUser, secondUser]: [KeyedMemberTag, KeyedMemberTag]) {
 		// We need the UserTags to resolve the avatar and username
@@ -67,13 +67,13 @@ export default class extends SkyraCommand {
 		// Build up the ship canvas
 		const attachment = await new Canvas(224, 88)
 			// Add base image
-			.addImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 224, 88)
+			.printImage(settings.profile.darkTheme ? this.darkThemeTemplate : this.lightThemeTemplate, 0, 0, 224, 88)
 			// Add avatar image with side-offsets of 12px, a Height x Width of 64x64px and bevel radius of 10
-			.addBeveledImage(avatarFirstUser, 12, 12, 64, 64, 10)
+			.printRoundedImage(avatarFirstUser, 12, 12, 64, 64, 10)
 			// Add heart icon with width offset of 84px and height offset of 20px
-			.addImage(this.heartIcon!, 84, 20)
+			.printImage(this.heartIcon!, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
-			.addBeveledImage(avatarSecondUser, 148, 12, 64, 64, 10)
+			.printRoundedImage(avatarSecondUser, 148, 12, 64, 64, 10)
 			.toBufferAsync();
 
 		// Return the lovely message
@@ -93,12 +93,14 @@ export default class extends SkyraCommand {
 		] = await Promise.all([
 			new Canvas(224, 88)
 				.setColor(CanvasColors.BackgroundLight)
-				.addBeveledRect(0, 0, 224, 88, 10)
-				.toBufferAsync(),
+				.printRoundedRectangle(0, 0, 224, 88, 10)
+				.toBufferAsync()
+				.then(loadImage),
 			new Canvas(224, 88)
 				.setColor(CanvasColors.BackgroundDark)
-				.addBeveledRect(0, 0, 224, 88, 10)
-				.toBufferAsync(),
+				.printRoundedRectangle(0, 0, 224, 88, 10)
+				.toBufferAsync()
+				.then(loadImage),
 			loadImage(join(socialFolder, 'heart.png'))
 		]);
 	}
@@ -120,10 +122,10 @@ export default class extends SkyraCommand {
 	 * @details Losely based on fetchAvatar from utils, but customized for ship to account for not having a User object.
 	 * @param args The args to pass to getDisplayAvatar util function. Argument types match exactly.
 	 */
-	private async fetchAvatar(...args: Parameters<typeof getDisplayAvatar>): Promise<Buffer> {
+	private async fetchAvatar(...args: Parameters<typeof getDisplayAvatar>): Promise<Image> {
 		const url = getDisplayAvatar(...args);
 		try {
-			return await fetch(url, FetchResultTypes.Buffer);
+			return await loadImage(url);
 		} catch (error) {
 			throw `Could not download the profile avatar: ${error.response}`;
 		}

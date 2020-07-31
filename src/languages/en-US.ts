@@ -2923,8 +2923,7 @@ export default class extends Language {
 			HOW_MUCH: 'how much',
 			HOW_MANY: 'how many',
 			WHY: 'why',
-			WHO: 'who',
-			IS: 'is'
+			WHO: 'who'
 		},
 		COMMAND_8BALL_WHEN: createPick([
 			'Soon™',
@@ -2993,7 +2992,16 @@ export default class extends Language {
 			'Most likely.',
 			'Nope.',
 			'YES!',
-			'Maybe.'
+			'Maybe.',
+			'As I see it, yes',
+			'Ask me tomorrow.',
+			"I don't know, ask a physicist.",
+			'Better not tell you now.',
+			'Don’t count on it.',
+			'It is certain.',
+			'It is decidedly so.',
+			'Very doubtful.',
+			'Without a doubt.'
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Cat Fact',

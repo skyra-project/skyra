@@ -2934,8 +2934,7 @@ export default class extends Language {
 			HOW_MUCH: /^¿?cu[áa]nto/i,
 			HOW_MANY: /^¿?cu[áa]nto/i,
 			WHY: /^¿?por qu[ée]/i,
-			WHO: /^¿?qui[ée]n/i,
-			IS: /^¿?es/i
+			WHO: /^¿?qui[ée]n/i
 		},
 		COMMAND_8BALL_WHEN: createPick([
 			'Pronto™',
@@ -3004,7 +3003,16 @@ export default class extends Language {
 			'Probablemente.',
 			'No.',
 			'¡SÍ!',
-			'Quizás.'
+			'Quizás.',
+			'Como yo lo veo, sí.',
+			'Pregúnteme mañana.',
+			'No lo sé, pregúntaselo a un físico.',
+			'Mejor no decirte ahora.',
+			'No cuentes con eso.',
+			'Es cierto.',
+			'Es decididamente así.',
+			'Muy dudoso.',
+			'Sin duda.'
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Hecho Gatuno',

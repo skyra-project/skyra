@@ -1144,6 +1144,7 @@ export interface LanguageKeys {
 	COMMAND_8BALL_HOW_MANY: () => string;
 	COMMAND_8BALL_WHY: () => string;
 	COMMAND_8BALL_WHO: () => string;
+	COMMAND_8BALL_IS: () => string;
 	COMMAND_8BALL_ELSE: () => string;
 	COMMAND_CATFACT_TITLE: string;
 	COMMAND_CHOICE_OUTPUT: (user: string, word: string) => string;

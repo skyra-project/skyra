@@ -18,19 +18,15 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user]: [User]) {
 		const { users } = await DbSet.connect();
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
-			const settings = await users.findOne(authorID, { relations: ['spouses'] });
-			if (!settings) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
-
-			const spouses = settings.spouses!;
-			const isMarried = spouses.some(marriage => marriage.id === targetID);
-			if (!isMarried) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
+			const entry = await users.fetchSpouse(authorID, targetID);
+			if (!entry) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 			// Ask the user if they're sure
 			const accept = await message.ask(message.language.tget('COMMAND_DIVORCE_PROMPT'));
 			if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
 
 			// Remove the spouse
-			settings.spouses = settings.spouses!.filter(spouse => spouse.id !== targetID);
+			await users.deleteSpouse(entry);
 
 			// Tell the user about the divorce
 			floatPromise(this, resolveOnErrorCodes(

@@ -243,8 +243,8 @@ export const enum FetchMethods {
 	Delete = 'DELETE'
 }
 
-export async function fetch<R>(url: URL | string, type: FetchResultTypes.JSON): Promise<R>;
-export async function fetch<R>(url: URL | string, options: RequestInit, type: FetchResultTypes.JSON): Promise<R>;
+export async function fetch<R>(url: URL | string, type?: FetchResultTypes.JSON): Promise<R>;
+export async function fetch<R>(url: URL | string, options: RequestInit, type?: FetchResultTypes.JSON): Promise<R>;
 export async function fetch(url: URL | string, type: FetchResultTypes.Buffer): Promise<Buffer>;
 export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Buffer): Promise<Buffer>;
 export async function fetch(url: URL | string, type: FetchResultTypes.Text): Promise<string>;
@@ -252,7 +252,7 @@ export async function fetch(url: URL | string, options: RequestInit, type: Fetch
 export async function fetch(url: URL | string, type: FetchResultTypes.Result): Promise<Response>;
 export async function fetch(url: URL | string, options: RequestInit, type: FetchResultTypes.Result): Promise<Response>;
 export async function fetch<R>(url: URL | string, options: RequestInit, type: FetchResultTypes): Promise<Response | Buffer | string | R>;
-export async function fetch(url: URL | string, options: RequestInit | FetchResultTypes, type?: FetchResultTypes) {
+export async function fetch(url: URL | string, options?: RequestInit | FetchResultTypes, type?: FetchResultTypes) {
 	if (typeof options === 'undefined') {
 		options = {};
 		type = FetchResultTypes.JSON;

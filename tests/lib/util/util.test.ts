@@ -302,8 +302,7 @@ describe('Utils', () => {
 			});
 
 			test('GIVEN fetch w/o options w/ JSON response THEN returns JSON', async () => {
-				// @ts-expect-error forcing undefined for the test
-				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', undefined);
+				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget');
 
 				expect(response.test).toBe(true);
 			});
@@ -314,6 +313,13 @@ describe('Utils', () => {
 					{ headers: { accept: Mime.Types.ApplicationJson } },
 					utils.FetchResultTypes.JSON
 				);
+
+				expect(response.test).toBe(true);
+			});
+
+			test('GIVEN fetch w/ options w/ No Response THEN returns JSON', async () => {
+				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget',
+					{ headers: { accept: Mime.Types.ApplicationJson } });
 
 				expect(response.test).toBe(true);
 			});
@@ -438,6 +444,13 @@ describe('Utils', () => {
 				content: 'Something',
 				embeds: [new MessageEmbed().setAuthor('Some author!')]
 			} as unknown as Message)).toEqual('Something\nSome author!');
+		});
+
+		test('GIVEN content and title in embed THEN returns both', () => {
+			expect(utils.getAllContent({
+				content: 'Something',
+				embeds: [new MessageEmbed().setTitle('Some title!')]
+			} as unknown as Message)).toEqual('Something\nSome title!');
 		});
 
 		test('GIVEN description and footer in embed THEN returns both', () => {

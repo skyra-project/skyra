@@ -3761,7 +3761,7 @@ export default class extends Language {
 			`→ ${inlineCodeblock('Type  ::')} **Twemoji**`,
 			`→ ${inlineCodeblock('ID    ::')} **${id}**`
 		].join('\n'),
-		COMMAND_EMOJI_INVALID: emoji => `'${emoji}' is not a valid emoji.`,
+		COMMAND_EMOJI_INVALID: `The argument you provided is not a valid emoji.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
 		COMMAND_ESHOP_DESCRIPTION: 'Request information for any American Nintendo Digital Store',
 		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {

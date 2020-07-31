@@ -1633,7 +1633,7 @@ export interface LanguageKeys {
 	COMMAND_COLOR: (hex: string, rgb: string, hsl: string) => string;
 	COMMAND_EMOJI_CUSTOM: (emoji: string, id: string) => string;
 	COMMAND_EMOJI_TWEMOJI: (emoji: string, id: string) => string;
-	COMMAND_EMOJI_INVALID: (emoji: string) => string;
+	COMMAND_EMOJI_INVALID: string;
 	COMMAND_EMOJI_TOO_LARGE: (emoji: string) => string;
 	COMMAND_EMOTES_DESCRIPTION: string;
 	COMMAND_EMOTES_EXTENDED: string;

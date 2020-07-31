@@ -2917,9 +2917,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Question by ${author}: *${question}*\n${response}`,
-		COMMAND_8BALL_NOT_QUESTION: 'That does not seem to be a question...',
 		COMMAND_8BALL_QUESTIONS: {
-			QUESTION: '?',
 			WHEN: 'when',
 			WHAT: 'what',
 			HOW_MUCH: 'how much',
@@ -2994,7 +2992,23 @@ export default class extends Language {
 			'Most likely.',
 			'Nope.',
 			'YES!',
-			'Maybe.'
+			'Maybe.',
+			'As I see it, yes',
+			'Ask me tomorrow.',
+			"I don't know, ask a physicist.",
+			'Better not tell you now.',
+			'Don’t count on it.',
+			'It is certain.',
+			'It is decidedly so.',
+			'My sources say no.',
+			'Outlook not so good.',
+			'Outlook good.',
+			'Reply hazy, try again.',
+			'Signs point to yes.',
+			'Very doubtful.',
+			'Without a doubt.',
+			'Yes – definitely.',
+			'You may rely on it.'
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Cat Fact',

@@ -27,18 +27,10 @@ export default class extends SkyraCommand {
 		const prefixes = (i18n.language.COMMAND_8BALL_QUESTIONS
 			|| this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as unknown as EightBallLanguage;
 
-		if (!this.checkQuestion(prefixes.QUESTION || '?', input)) {
-			throw i18n.tget('COMMAND_8BALL_NOT_QUESTION');
-		}
-
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}`);
 		}
 		return i18n.tget('COMMAND_8BALL_ELSE');
-	}
-
-	private checkQuestion(question: string | RegExp, input: string) {
-		return question instanceof RegExp ? question.test(input) : input.endsWith(question);
 	}
 
 	private check(prefix: string | RegExp, input: string) {
@@ -48,7 +40,6 @@ export default class extends SkyraCommand {
 }
 
 interface EightBallLanguage {
-	QUESTION: string | RegExp;
 	WHEN: string | RegExp;
 	WHAT: string | RegExp;
 	HOW_MUCH: string | RegExp;

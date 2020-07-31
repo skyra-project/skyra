@@ -2928,9 +2928,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
-		COMMAND_8BALL_NOT_QUESTION: 'Eso no parece ser una pregunta...',
 		COMMAND_8BALL_QUESTIONS: {
-			QUESTION: '?',
 			WHEN: /^¿?cu[áa]ndo/i,
 			WHAT: /^¿?qu[ée]/i,
 			HOW_MUCH: /^¿?cu[áa]nto/i,
@@ -3005,7 +3003,23 @@ export default class extends Language {
 			'Probablemente.',
 			'No.',
 			'¡SÍ!',
-			'Quizás.'
+			'Quizás.',
+			'Como yo lo veo, sí.',
+			'Pregúnteme mañana.',
+			'No lo sé, pregúntaselo a un físico.',
+			'Mejor no decirte ahora.',
+			'No cuentes con eso.',
+			'Es cierto.',
+			'Es decididamente así.',
+			'Mis fuentes dicen que no.',
+			'No tiene muy buena pinta.',
+			'Tiene buena pinta.',
+			'No pude procesar mi respuesta, inténtalo de nuevo.',
+			'Un pajarito me susurró al oído diciendo que sí.',
+			'Muy dudoso.',
+			'Sin duda.',
+			'Definitivamente, sí.',
+			'Puedes confiar en ello.'
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Hecho Gatuno',

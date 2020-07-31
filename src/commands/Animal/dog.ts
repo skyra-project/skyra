@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
+import { fetch, FetchResultTypes, isImageURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -16,23 +16,23 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
-		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTimestamp();
+		const [color, image] = await Promise.all([
+			DbSet.fetchColor(message),
+			this.fetchImage()
+		]);
 
-		try {
-			const randomDogData = await fetch<DogResultOk>('https://dog.ceo/api/breeds/image/random', FetchResultTypes.JSON);
-			if (randomDogData && randomDogData.status === 'success') {
-				// Just in case the image is not a valid image url then fallthrough to the catch
-				if (!IMAGE_EXTENSION.test(randomDogData.message)) throw '💥';
+		return message.sendEmbed(new MessageEmbed()
+			.setColor(color)
+			.setImage(image)
+			.setTimestamp());
+	}
 
-				embed.setImage(randomDogData.message);
-			}
-		} catch {
-			embed.setImage('https://i.imgur.com/cF0XUF5.jpg');
-		}
-
-		return message.sendEmbed(embed);
+	private async fetchImage() {
+		const randomDogData = await fetch<DogResultOk>('https://dog.ceo/api/breeds/image/random', FetchResultTypes.JSON)
+			.catch(() => null);
+		return randomDogData?.status === 'success' && isImageURL(randomDogData.message)
+			? randomDogData.message
+			: 'https://i.imgur.com/cF0XUF5.jpg';
 	}
 
 }

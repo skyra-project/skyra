@@ -2,10 +2,11 @@ import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/gr
 import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
+import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -155,7 +156,7 @@ export default class extends RichDisplayCommand {
 	private parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
 		return new UserRichDisplay(new MessageEmbed()
 			.setColor(resolveColour(pokeDetails.color))
-			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
 			.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)
@@ -179,7 +180,7 @@ export default class extends RichDisplayCommand {
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(resolveColour(pokeDetails.color))
-			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, POKEMON_EMBED_THUMBNAIL)
+			.setAuthor(`#${pokeDetails.num} - ${toTitleCase(pokeDetails.species)}`, CdnUrls.Pokedex)
 			.setThumbnail(message.flagArgs.shiny ? pokeDetails.shinySprite : pokeDetails.sprite))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)

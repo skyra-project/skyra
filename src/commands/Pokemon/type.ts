@@ -2,9 +2,10 @@ import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
+import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -88,7 +89,7 @@ export default class extends RichDisplayCommand {
 
 		return new UserRichDisplay(new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR(types)}`, POKEMON_EMBED_THUMBNAIL))
+			.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR(types)}`, CdnUrls.Pokedex))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.OFFENSIVE, [
 					`${embedTranslations.SUPER_EFFECTIVE_AGAINST}: ${this.parseEffectiveMatchup(typeMatchups.attacking.doubleEffectiveTypes, typeMatchups.attacking.effectiveTypes)}`,

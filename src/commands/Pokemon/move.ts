@@ -3,9 +3,10 @@ import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL, POKEMON_EMBED_THUMBNAIL } from '@utils/Pokemon';
+import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -47,7 +48,7 @@ export default class extends RichDisplayCommand {
 
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(`${embedTranslations.MOVE} - ${toTitleCase(moveData.name)}`, POKEMON_EMBED_THUMBNAIL)
+			.setAuthor(`${embedTranslations.MOVE} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 			.setDescription(moveData.desc || moveData.shortDesc))
 			.addPage((embed: MessageEmbed) => embed
 				.addField(embedTranslations.TYPE, moveData.type, true)

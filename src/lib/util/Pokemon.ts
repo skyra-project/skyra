@@ -252,7 +252,6 @@ query getTypeMatchups ($types: [Types!]!) {
 }`;
 
 export const POKEMON_GRAPHQL_API_URL = ENABLE_LOCAL_POKEDEX ? 'http://localhost:4000' : 'https://graphqlpokemon.favware.tech';
-export const POKEMON_EMBED_THUMBNAIL = 'https://cdn.skyra.pw/skyra-assets/pokedex.png';
 
 export async function fetchGraphQLPokemon<R extends PokemonQueryReturnTypes>(query: string, variables: PokemonQueryVariables<R>) {
 	try {

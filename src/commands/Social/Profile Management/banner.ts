@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
@@ -9,7 +10,7 @@ import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';
 
-const CDN_URL = 'https://cdn.skyra.pw/skyra-assets/banners/';
+const CDN_URL = CdnUrls.BannersBasePath;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],

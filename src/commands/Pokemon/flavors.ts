@@ -2,9 +2,10 @@ import { DexDetails } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, POKEMON_EMBED_THUMBNAIL, resolveColour } from '@utils/Pokemon';
+import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -42,7 +43,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))
-				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, POKEMON_EMBED_THUMBNAIL)
+				.setAuthor(`#${pokemonData.num} - ${toTitleCase(pokemonData.species)}`, CdnUrls.Pokedex)
 				.setThumbnail(message.flagArgs.shiny ? pokemonData.shinySprite : pokemonData.sprite)
 		);
 

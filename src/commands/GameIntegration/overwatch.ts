@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { CdnUrls } from '@lib/types/Constants';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
 import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
@@ -20,7 +21,6 @@ import { KlasaMessage, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
-	private readonly kAuthorThumbnail = 'https://cdn.skyra.pw/skyra-assets/overwatch_logo.png';
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const response = await message.sendEmbed(new MessageEmbed()
@@ -56,7 +56,7 @@ export default class extends RichDisplayCommand {
 		return new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(EMBED_DATA.AUTHOR(overwatchData.name), this.kAuthorThumbnail)
+				.setAuthor(EMBED_DATA.AUTHOR(overwatchData.name), CdnUrls.OverwatchLogo)
 				.setTitle(EMBED_DATA.TITLE)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
 				.setThumbnail(overwatchData.icon)

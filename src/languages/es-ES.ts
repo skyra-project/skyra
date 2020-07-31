@@ -3012,13 +3012,13 @@ export default class extends Language {
 			'Es cierto.',
 			'Es decididamente así.',
 			'Mis fuentes dicen que no.',
-			'La perspectiva no es tan buena.',
-			'Perspectivas buena.',
-			'Respuesta confusa, intenta otra vez.',
-			'Las señales apuntan a que sí.',
+			'No tiene muy buena pinta.',
+			'Tiene buena pinta.',
+			'No pude procesar mi respuesta, inténtalo de nuevo.',
+			'Un pajarito me susurró al oído diciendo que sí.',
 			'Muy dudoso.',
 			'Sin duda.',
-			'Sí definitivamente.',
+			'Definitivamente, sí.',
 			'Puedes confiar en ello.'
 		]),
 

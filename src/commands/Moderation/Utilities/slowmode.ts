@@ -5,7 +5,7 @@ import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-const MAXIMUM_TIME = Time.Hour * 6;
+const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['sm'],
@@ -22,7 +22,7 @@ const MAXIMUM_TIME = Time.Hour * 6;
 @CreateResolvers([
 	[
 		'cooldown', async (arg, possible, message) =>
-			message.client.arguments.get('timespan')!.run(arg, possible, message)
+			await (message.client.arguments.get('timespan')!.run(arg, possible, message)) / 1000
 	]
 ])
 export default class extends SkyraCommand {
@@ -31,8 +31,8 @@ export default class extends SkyraCommand {
 		if (cooldown === 'reset' || cooldown === 'off' || cooldown < 0) cooldown = 0;
 		else if (cooldown > MAXIMUM_TIME) throw message.language.get('COMMAND_SLOWMODE_TOO_LONG');
 		const channel = message.channel as TextChannel;
-		await channel.setRateLimitPerUser(cooldown / 1000);
-		return message.sendLocale('COMMAND_SLOWMODE_SET', [cooldown]);
+		await channel.setRateLimitPerUser(cooldown);
+		return message.sendLocale('COMMAND_SLOWMODE_SET', [cooldown * 1000]);
 	}
 
 }

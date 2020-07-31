@@ -174,5 +174,6 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 
 export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorID' | 'reason' | 'imageURL'>>;
 export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guildID'>;
-export type ModerationManagerInsertData = StrictRequired<Pick<ModerationEntity, 'userID' | 'type'>>
-& Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorID' | 'reason' | 'imageURL' | 'createdAt' | 'caseID'>>;
+export type ModerationManagerInsertData =
+	& StrictRequired<Pick<ModerationEntity, 'moderatorID' | 'userID' | 'type'>>
+	& Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'reason' | 'imageURL' | 'createdAt' | 'caseID'>>;

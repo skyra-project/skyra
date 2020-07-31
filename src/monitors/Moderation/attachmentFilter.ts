@@ -1,6 +1,7 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { CLIENT_ID } from '@root/config';
 import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { floatPromise } from '@utils/util';
@@ -34,24 +35,28 @@ export default class extends Monitor {
 				case 0b001: await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 					floatPromise(this, message.guild!.security.actions.kick({
 						userID: message.author.id,
+						moderatorID: CLIENT_ID,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					})));
 					break;
 				case 0b010: await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 					floatPromise(this, message.guild!.security.actions.mute({
 						userID: message.author.id,
+						moderatorID: CLIENT_ID,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					})));
 					break;
 				case 0b011: await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 					floatPromise(this, message.guild!.security.actions.softBan({
 						userID: message.author.id,
+						moderatorID: CLIENT_ID,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					}, 1)));
 					break;
 				case 0b100: await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 					floatPromise(this, message.guild!.security.actions.ban({
 						userID: message.author.id,
+						moderatorID: CLIENT_ID,
 						reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
 					}, 0)));
 					break;

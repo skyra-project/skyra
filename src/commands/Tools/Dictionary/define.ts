@@ -1,13 +1,13 @@
-import { KlasaMessage } from 'klasa';
-import { TOKENS } from '@root/config';
+import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { cutText, fetch, FetchResultTypes, IMAGE_EXTENSION, parseURL } from '@utils/util';
-import { toTitleCase } from '@klasa/utils';
-import { MessageEmbed } from 'discord.js';
+import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
+import { cutText, fetch, FetchResultTypes, IMAGE_EXTENSION, parseURL } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['definition', 'defination', 'dictionary'],
@@ -45,8 +45,8 @@ export default class extends RichDisplayCommand {
 			const definition = this.content(result.definition);
 			display.addPage((embed: MessageEmbed) => {
 				embed
-					.addField('Type', toTitleCase(result.type), true)
-					.setDescription(`${definition[0].toUpperCase()}${definition.substr(1)}`);
+					.addField('Type', result.type ? toTitleCase(result.type) : message.language.tget('COMMAND_DEFINE_UNKNOWN'), true)
+					.setDescription(definition);
 
 				const imageUrl = IMAGE_EXTENSION.test(result.image_url ?? '') && parseURL(result.image_url ?? '');
 				if (imageUrl) embed.setThumbnail(imageUrl.toString());
@@ -84,7 +84,7 @@ export interface OwlbotResultOk {
 }
 
 export interface OwlbotDefinition {
-	type: string;
+	type: string | null;
 	definition: string;
 	example: string | null;
 	image_url: string | null;

@@ -1703,6 +1703,7 @@ export interface LanguageKeys {
 	COMMAND_DEFINE_EXTENDED: string;
 	COMMAND_DEFINE_NOTFOUND: string;
 	COMMAND_DEFINE_PRONOUNCIATION: string;
+	COMMAND_DEFINE_UNKNOWN: string;
 	COMMAND_WBANG: (user: string) => string;
 	COMMAND_WBANGHEAD: string;
 	COMMAND_WBITE: (user: string) => string;

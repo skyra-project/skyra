@@ -3992,6 +3992,7 @@ export default class extends Language {
 		}),
 		COMMAND_DEFINE_NOTFOUND: 'No pude encontrar la definición de esta palabra.',
 		COMMAND_DEFINE_PRONOUNCIATION: 'Pronunciación',
+		COMMAND_DEFINE_UNKNOWN: 'Desconocido',
 
 		/**
 		 * #############

@@ -4,7 +4,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { DEV } from '@root/config';
 import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
-import { cutText, iteratorAt } from '@utils/util';
+import { cutText, getAllContent, iteratorAt } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 
 		const messageBank = await this.fetchMessages(channel, user);
 		if (messageBank.size === 0) throw message.language.tget('COMMAND_MARKOV_NO_MESSAGES');
-		const contents = messageBank.map(m => m.content).join(' ');
+		const contents = messageBank.map(getAllContent).join(' ');
 		const markov = new Markov()
 			.parse(contents)
 			.start(this.kBoundUseUpperCase)

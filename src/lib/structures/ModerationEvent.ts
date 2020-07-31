@@ -1,3 +1,4 @@
+import { CLIENT_ID } from '@root/config';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { Guild, MessageEmbed } from 'discord.js';
 import { Event } from 'klasa';
@@ -38,6 +39,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	protected async onWarning(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.warning({
 			userID,
+			moderatorID: CLIENT_ID,
 			reason: '[Auto-Moderation] Threshold Reached.',
 			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
 		}));
@@ -46,6 +48,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	protected async onKick(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.kick({
 			userID,
+			moderatorID: CLIENT_ID,
 			reason: '[Auto-Moderation] Threshold Reached.'
 		}));
 	}
@@ -53,6 +56,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	protected async onMute(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.mute({
 			userID,
+			moderatorID: CLIENT_ID,
 			reason: '[Auto-Moderation] Threshold Reached.',
 			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
 		}));
@@ -61,6 +65,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	protected async onSoftBan(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.softBan({
 			userID,
+			moderatorID: CLIENT_ID,
 			reason: '[Auto-Moderation] Threshold Reached.'
 		}, 1));
 	}
@@ -68,6 +73,7 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	protected async onBan(guild: Guild, userID: string) {
 		await this.createActionAndSend(guild, () => guild.security.actions.ban({
 			userID,
+			moderatorID: CLIENT_ID,
 			reason: '[Auto-Moderation] Threshold Reached.',
 			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
 		}, 0));

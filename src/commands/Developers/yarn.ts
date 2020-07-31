@@ -73,7 +73,7 @@ export default class extends SkyraCommand {
 					dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
 					dependencies,
 					deprecated: latestVersion.deprecated,
-					description: cutText(result.description, 1000),
+					description: cutText(result.description ?? '', 1000),
 					latestVersionNumber: result['dist-tags'].latest,
 					license: result.license,
 					mainFile: latestVersion.main ?? 'index.js',
@@ -108,13 +108,14 @@ export default class extends SkyraCommand {
 		if (!author) return undefined;
 
 		// Parse the author name
-		const authorName = `[**${author.name}**]`;
+		const authorName = `**${author.name}**`;
+		const authorUrl = author.name.startsWith('@')
+			// If the author is an organization then use the Organization url
+			? encodeURI(author.url ?? `https://www.npmjs.com/org/${author.name.slice(1)}`)
+			// Otherwise use the User url
+			: encodeURI(author.url ?? `https://www.npmjs.com/~${author.name}`);
 
-		// If the author is an organization then use the Organization url
-		if (author.name.startsWith('@')) return `${authorName}(${author.url ?? `https://www.npmjs.com/org/${author.name.slice(1)}`})`;
-
-		// Otherwise use the User url
-		return `${authorName}(${author.url ?? `https://www.npmjs.com/~${author.name}`})`;
+		return `[${authorName}](${authorUrl})`;
 	}
 
 }

@@ -3000,8 +3000,15 @@ export default class extends Language {
 			'Don’t count on it.',
 			'It is certain.',
 			'It is decidedly so.',
+			'My sources say no.',
+			'Outlook not so good.',
+			'Outlook good.',
+			'Reply hazy, try again.',
+			'Signs point to yes.',
 			'Very doubtful.',
-			'Without a doubt.'
+			'Without a doubt.',
+			'Yes – definitely.',
+			'You may rely on it.'
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Cat Fact',

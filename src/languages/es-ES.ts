@@ -3011,8 +3011,15 @@ export default class extends Language {
 			'No cuentes con eso.',
 			'Es cierto.',
 			'Es decididamente así.',
+			'Mis fuentes dicen que no.',
+			'La perspectiva no es tan buena.',
+			'Perspectivas buena.',
+			'Respuesta confusa, intenta otra vez.',
+			'Las señales apuntan a que sí.',
 			'Muy dudoso.',
-			'Sin duda.'
+			'Sin duda.',
+			'Sí definitivamente.',
+			'Puedes confiar en ello.'
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Hecho Gatuno',

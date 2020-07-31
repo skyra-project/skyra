@@ -1137,7 +1137,6 @@ export interface LanguageKeys {
 	COMMAND_8BALL_DESCRIPTION: string;
 	COMMAND_8BALL_EXTENDED: string;
 	COMMAND_8BALL_OUTPUT: (author: string, question: string, response: string) => string;
-	COMMAND_8BALL_NOT_QUESTION: string;
 	COMMAND_8BALL_QUESTIONS: Record<string, string | RegExp>;
 	COMMAND_8BALL_WHEN: () => string;
 	COMMAND_8BALL_WHAT: () => string;

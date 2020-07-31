@@ -5,7 +5,7 @@ export namespace YarnPkg {
 		'dist-tags': DistTags;
 		author?: Author;
 		bugs: Record<'url', string>;
-		description: string;
+		description?: string;
 		homepage: string;
 		keywords: string[];
 		license: string;

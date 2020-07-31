@@ -2917,15 +2917,14 @@ export default class extends Language {
 		 */
 
 		COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Question by ${author}: *${question}*\n${response}`,
-		COMMAND_8BALL_NOT_QUESTION: 'That does not seem to be a question...',
 		COMMAND_8BALL_QUESTIONS: {
-			QUESTION: '?',
 			WHEN: 'when',
 			WHAT: 'what',
 			HOW_MUCH: 'how much',
 			HOW_MANY: 'how many',
 			WHY: 'why',
-			WHO: 'who'
+			WHO: 'who',
+			IS: 'is'
 		},
 		COMMAND_8BALL_WHEN: createPick([
 			'Soon™',

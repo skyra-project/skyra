@@ -108,8 +108,8 @@ export class WheelOfFortune {
 
 		// The winnings
 		this.winnings = multiplier >= 1
-			? (this.amount * multiplier * await this.fetchBoost()) - this.amount
-			: (this.amount * multiplier) - this.amount;
+			? Math.floor((this.amount * multiplier * await this.fetchBoost()) - this.amount)
+			: Math.ceil((this.amount * multiplier) - this.amount);
 	}
 
 	private async render(darkTheme: boolean): Promise<Buffer> {

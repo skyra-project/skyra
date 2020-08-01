@@ -113,12 +113,17 @@
 		"@root": "dist"
 	},
 	"resolutions": {
+		"@bcoe/v8-coverage": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.0.2.tgz",
 		"acorn": "^7.3.1",
-		"minimist": "^1.2.2",
-		"kind-of": "^6.0.3",
+		"apollo-codegen": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.0.2.tgz",
+		"chalk": "^4.1.0",
+		"fs-nextra": "^0.5.1",
 		"jest-environment-jsdom": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.0.2.tgz",
 		"jest-jasmine2": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.0.2.tgz",
-		"apollo-codegen": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.0.2.tgz"
+		"kind-of": "^6.0.3",
+		"lodash": "^4.17.19",
+		"minimist": "^1.2.2",
+		"node-ipc": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.0.2.tgz"
 	},
 	"engines": {
 		"node": ">=14",

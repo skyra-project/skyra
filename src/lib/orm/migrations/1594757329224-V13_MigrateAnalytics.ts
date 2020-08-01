@@ -9,12 +9,10 @@ import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';
 const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}") |> range(start: 0) |> filter(fn: (r) => r["_measurement"] == "commands") |> sum(column: "_value")`;
 
-/*
-Since I believe in the competence of this dev team.
-I decided to remove the check for if the bucket exists under "up"
+/**
+ * Since I believe in the competence of this dev team.
+ * I decided to remove the check for if the bucket exists under "up"
  */
-
-
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 
 	private migStart: Date = new Date();
@@ -25,7 +23,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const influx = new InfluxDB(INFLUX_OPTIONS);
 		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
 
-		const commandUses: CommandUsageStats = await queryRunner.query('SELECT * FROM command_counter');
+		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */`SELECT * FROM command_counter`);
 
 		const points: Point[] = [];
 		for await (const commandUse of commandUses) {

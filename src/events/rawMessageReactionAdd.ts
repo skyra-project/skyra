@@ -63,8 +63,8 @@ export default class extends Event {
 		) return;
 
 		const ignoreChannels = data.guild.settings.get(GuildSettings.Messages.IgnoreChannels);
-		const ignoreReactionAdd = data.guild.settings.get(GuildSettings.Channels.Ignore.ReactionAdd).includes(data.channel.id);
-		const ignoreAllEvents = data.guild.settings.get(GuildSettings.Channels.Ignore.All).includes(data.channel.id);
+		const ignoreReactionAdd = data.guild!.settings.get(GuildSettings.Channels.Ignore.ReactionAdd).some(id => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
+		const ignoreAllEvents = data.guild!.settings.get(GuildSettings.Channels.Ignore.All).some(id => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
 		if (ignoreChannels.includes(data.channel.id) || ignoreReactionAdd || ignoreAllEvents) return;
 
 		if (await this.retrieveCount(data, emoji) > 1) return;

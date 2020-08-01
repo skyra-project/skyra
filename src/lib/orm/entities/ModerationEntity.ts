@@ -38,7 +38,7 @@ export class ModerationEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
 	public guildID: string = null!;
 
-	@Column('varchar', { length: 19 })
+	@Column('varchar', { 'length': 19, 'default': CLIENT_ID })
 	public moderatorID: string = CLIENT_ID;
 
 	@Column('varchar', { 'nullable': true, 'length': 2000, 'default': () => 'null' })

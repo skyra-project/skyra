@@ -12,7 +12,7 @@ import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { ArrayActions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	aliases: ['mrr'],
+	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
 	bucket: 2,
 	cooldown: 10,
 	description: language => language.tget('COMMAND_MANAGEREACTIONROLES_DESCRIPTION'),
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 
-			return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL', [displayEmoji(reactionRole.emoji), channel]);
+			return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL', [displayEmoji(reactionRole.emoji), `<#${channel}>`]);
 		}
 
 		await message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_PROMPT');
@@ -111,7 +111,7 @@ export default class extends SkyraCommand {
 			arrayIndex: reactionRoleIndex,
 			extraContext: { author: message.author.id }
 		});
-		const url = `https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}`;
+		const url = reactionRole.message ? `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>` : `<#${reactionRole.channel}>`;
 		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_REMOVE', [displayEmoji(reactionRole.emoji), url]);
 	}
 

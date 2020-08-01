@@ -3,6 +3,7 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Moderation } from '@utils/constants';
 import { Event, KlasaMessage } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 export default class extends Event {
 
@@ -17,7 +18,7 @@ export default class extends Event {
 		try {
 			await message.guild!.moderation.create({
 				userID: message.author.id,
-				moderatorID: this.client.user!.id,
+				moderatorID: CLIENT_ID,
 				type: Moderation.TypeCodes.Ban,
 				reason
 			}).create();

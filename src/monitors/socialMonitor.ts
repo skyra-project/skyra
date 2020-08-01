@@ -3,6 +3,7 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const { FLAGS: { MANAGE_ROLES } } = Permissions;
@@ -92,7 +93,7 @@ export default class extends Monitor {
 			&& message.webhookID === null
 			&& message.content.length > 0
 			&& !message.system
-			&& message.author.id !== this.client.user!.id
+			&& message.author.id !== CLIENT_ID
 			&& message.guild.settings.get(GuildSettings.Social.Enabled)
 			&& !message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
 	}

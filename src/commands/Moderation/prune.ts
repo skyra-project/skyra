@@ -8,6 +8,7 @@ import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import { constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],
@@ -98,7 +99,7 @@ export default class extends SkyraCommand {
 			case Filter.Humans: return (mes: Message) => mes.author.id === message.author.id;
 			case Filter.Invites: return (mes: Message) => this.kInviteRegExp.test(mes.content);
 			case Filter.Links: return (mes: Message) => this.kLinkRegExp.test(mes.content);
-			case Filter.Skyra: return (mes: Message) => mes.author.id === this.client.user!.id;
+			case Filter.Skyra: return (mes: Message) => mes.author.id === CLIENT_ID;
 			case Filter.User: return (mes: Message) => mes.author.id === user!.id;
 			default: return () => true;
 		}

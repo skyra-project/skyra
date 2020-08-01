@@ -2,6 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { floatPromise } from '@utils/util';
 import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (user.id === this.client.user!.id) throw message.language.tget('COMMAND_GAMES_SKYRA');
+		if (user.id === CLIENT_ID) throw message.language.tget('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.tget('COMMAND_GAMES_BOT');
 		if (user.id === message.author.id) throw message.language.tget('COMMAND_GAMES_SELF');
 		if (this.channels.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');

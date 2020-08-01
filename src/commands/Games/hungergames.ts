@@ -7,6 +7,7 @@ import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { KlasaMessage, Language } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],
@@ -126,7 +127,7 @@ export default class extends SkyraCommand {
 		if (reaction.userID === message.author.id) return false;
 
 		// Don't listen to herself
-		if (reaction.userID === this.client.user!.id) return true;
+		if (reaction.userID === CLIENT_ID) return true;
 
 		try {
 			// Fetch the member for level measuring purposes

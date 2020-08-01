@@ -7,6 +7,7 @@ import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
 import { extname } from 'path';
+import { CLIENT_ID } from '@root/config';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte
@@ -66,7 +67,7 @@ export default class extends Monitor {
 			&& message.author !== null
 			&& message.webhookID === null
 			&& !message.system
-			&& message.author.id !== this.client.user!.id
+			&& message.author.id !== CLIENT_ID
 			&& message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null
 			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
 	}

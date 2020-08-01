@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 export default class extends SkyraCommand {
 
@@ -21,7 +22,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
-		if (user.id === this.client.user!.id) throw message.language.tget('COMMAND_GAMES_SKYRA');
+		if (user.id === CLIENT_ID) throw message.language.tget('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.tget('COMMAND_GAMES_BOT');
 		if (user.id === message.author.id) throw message.language.tget('COMMAND_GAMES_SELF');
 		if (this.client.connectFour.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');

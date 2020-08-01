@@ -4,6 +4,7 @@ import type { ModerationManager, ModerationManagerUpdateData } from '@lib/struct
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import type { AnyObject } from '@lib/types/util';
+import { CLIENT_ID } from '@root/config';
 import { Moderation, Time } from '@utils/constants';
 import { parseURL } from '@utils/util';
 import { Client, MessageEmbed, User } from 'discord.js';
@@ -37,8 +38,8 @@ export class ModerationEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
 	public guildID: string = null!;
 
-	@Column('varchar', { 'nullable': true, 'length': 19, 'default': () => 'null' })
-	public moderatorID: string | null = null;
+	@Column('varchar', { 'length': 19, 'default': CLIENT_ID })
+	public moderatorID: string = CLIENT_ID;
 
 	@Column('varchar', { 'nullable': true, 'length': 2000, 'default': () => 'null' })
 	public reason: string | null = null;
@@ -199,7 +200,7 @@ export class ModerationEntity extends BaseEntity {
 
 	public get shouldSend() {
 		// If the moderation log is not anonymous, it should always send
-		if (this.moderatorID) return true;
+		if (this.moderatorID !== CLIENT_ID) return true;
 
 		const before = Date.now() - Time.Minute;
 		const type = this.typeVariation;
@@ -240,12 +241,8 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public async fetchModerator() {
-		if (!this.moderatorID) {
-			throw new Error('moderatorID must be set before calling this method.');
-		}
-
 		const previous = this.#moderator;
-		if (previous?.id === this.moderatorID) return previous;
+		if (previous) return previous;
 
 		const moderator = await this.#client.users.fetch(this.moderatorID);
 		this.#moderator = moderator;
@@ -345,11 +342,12 @@ export class ModerationEntity extends BaseEntity {
 		return this;
 	}
 
-	public setModerator(value: User | string | null) {
+	public setModerator(value: User | string) {
 		if (value instanceof User) {
 			this.#moderator = value;
 			this.moderatorID = value.id;
-		} else {
+		} else if (this.moderatorID !== value) {
+			this.#moderator = null;
 			this.moderatorID = value;
 		}
 		return this;

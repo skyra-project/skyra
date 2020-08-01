@@ -82,7 +82,7 @@ export default class extends Monitor {
 		await performAction();
 		await message.guild!.moderation.create({
 			userID: message.author.id,
-			moderatorID: this.client.user!.id,
+			moderatorID: CLIENT_ID,
 			type,
 			duration: message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
 			reason: 'AttachmentFilter: Threshold Reached.'
@@ -97,7 +97,7 @@ export default class extends Monitor {
 			&& message.webhookID === null
 			&& message.attachments.size > 0
 			&& !message.system
-			&& message.author.id !== this.client.user!.id
+			&& message.author.id !== CLIENT_ID
 			&& message.guild.settings.get(GuildSettings.Selfmod.Attachment)
 			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
 			&& this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction));

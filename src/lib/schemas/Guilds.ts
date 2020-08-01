@@ -21,7 +21,12 @@ export default Client.defaultGuildSchema
 		.add('prune-logs', 'TextChannel')
 		.add('reaction-logs', 'TextChannel')
 		.add('roles', 'TextChannel')
-		.add('spam', 'TextChannel'))
+		.add('spam', 'TextChannel')
+		.add('ignore', folder => folder
+			.add('message-delete', 'CategoryOrTextChannel', { array: true })
+			.add('message-edit', 'CategoryOrTextChannel', { array: true })
+			.add('reaction-add', 'CategoryOrTextChannel', { array: true })
+			.add('all', 'CategoryOrTextChannel', { array: true })))
 	.add('command-autodelete', 'CommandAutoDelete', { array: true, configurable: false })
 	.add('disabledChannels', 'TextChannel', { array: true, configurable: false })
 	.add('disabledCommandsChannels', 'DisabledCommandChannel', { array: true, configurable: false })

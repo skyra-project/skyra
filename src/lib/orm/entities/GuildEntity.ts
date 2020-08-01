@@ -102,6 +102,18 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'channels.spam', nullable: true, length: 19 })
 	public channelsSpam?: string | null;
 
+	@Column('varchar', { 'name': 'channels.ignore.all', 'length': 19, 'array': true, 'default': () => 'ARRAY[]::VARCHAR[]' })
+	public channelsIgnoreAll: string[] = [];
+
+	@Column('varchar', { 'name': 'channels.ignore.message-edit', 'length': 19, 'array': true, 'default': () => 'ARRAY[]::VARCHAR[]' })
+	public channelsIgnoreMessageEdits: string[] = [];
+
+	@Column('varchar', { 'name': 'channels.ignore.message-delete', 'length': 19, 'array': true, 'default': () => 'ARRAY[]::VARCHAR[]' })
+	public channelsIgnoreMessageDeletes: string[] = [];
+
+	@Column('varchar', { 'name': 'channels.ignore.reaction-add', 'length': 19, 'array': true, 'default': () => 'ARRAY[]::VARCHAR[]' })
+	public channelsIgnoreReactionAdds: string[] = [];
+
 	@Column('simple-json', { 'name': 'command-autodelete', 'array': true, 'default': () => 'ARRAY[]::JSON[]' })
 	public commandAutodelete: [string, number][] = [];
 

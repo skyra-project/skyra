@@ -31,7 +31,8 @@ export default class extends SQLProvider {
 		.add('triggerinclude', { 'extends': 'any' })
 		.add('uniqueroleset', { 'extends': 'any' })
 		.add('emoji', { 'type': 'VARCHAR(128)', 'extends': 'string' })
-		.add('url', { 'type': 'VARCHAR(128)', 'extends': 'string' });
+		.add('url', { 'type': 'VARCHAR(128)', 'extends': 'string' })
+		.add('categoryortextchannel', { 'extends': 'snowflake' });
 	/* eslint-enable @typescript-eslint/no-invalid-this */
 
 	public pgsql: Pool | null = null;

@@ -14,7 +14,9 @@ export default class extends Event {
 
 		const enabled = message.guild.settings.get(GuildSettings.Events.MessageEdit);
 		const ignoreChannels = message.guild.settings.get(GuildSettings.Messages.IgnoreChannels);
-		if (!enabled || ignoreChannels.includes(message.channel.id)) return;
+		const ignoreEdits = message.guild.settings.get(GuildSettings.Channels.Ignore.MessageEdit).includes(message.channel.id);
+		const ignoreAllEvents = message.guild!.settings.get(GuildSettings.Channels.Ignore.All).includes(message.channel.id);
+		if (!enabled || ignoreChannels.includes(message.channel.id) || ignoreEdits || ignoreAllEvents) return;
 
 		this.client.emit(Events.GuildMessageLog, (message.channel as TextChannel).nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
 			.setColor(Colors.Amber)

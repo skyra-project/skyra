@@ -25,7 +25,9 @@ export default class extends Event {
 	private handleMessageLogs(message: KlasaMessage) {
 		const enabled = message.guild!.settings.get(GuildSettings.Events.MessageDelete);
 		const ignoreChannels = message.guild!.settings.get(GuildSettings.Messages.IgnoreChannels);
-		if (!enabled || ignoreChannels.includes(message.channel.id)) return;
+		const ignoreDeletes = message.guild!.settings.get(GuildSettings.Channels.Ignore.MessageDelete).includes(message.channel.id);
+		const ignoreAllEvents = message.guild!.settings.get(GuildSettings.Channels.Ignore.All).includes(message.channel.id);
+		if (!enabled || ignoreChannels.includes(message.channel.id) || ignoreDeletes || ignoreAllEvents) return;
 
 		const channel = message.channel as TextChannel;
 		this.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()

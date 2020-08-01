@@ -27,6 +27,12 @@ export namespace GuildSettings {
 		export const ReactionLogs = T<string>('channels.reaction-logs');
 		export const Roles = T<string>('channels.roles');
 		export const Spam = T<string>('channels.spam');
+		export namespace Ignore {
+			export const MessageDelete = T<string[]>('channels.ignore.message-delete');
+			export const MessageEdit = T<string[]>('channels.ignore.message-edit');
+			export const ReactionAdd = T<string[]>('channels.ignore.reaction-add')
+			export const All = T<string[]>('channels.ignore.all')
+		}
 	}
 
 	export const CommandAutodelete = T<readonly [string, number][]>('command-autodelete');

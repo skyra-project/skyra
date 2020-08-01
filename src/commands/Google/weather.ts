@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)
 			.setColor(COLORS[this.timePicker(icon)])
-			.createBeveledPath(10, 10, 380, 220, 5)
+			.createRoundedPath(10, 10, 380, 220, 5)
 			.fill()
 			.restore()
 

@@ -55,7 +55,6 @@ highlight.js/scss/
 highlight.js/styles/
 scripts/
 **/spec/
-*.html
 lru_map/tsconfig.json
 lru_map/test.js
 lru_map/benchmark.js
@@ -90,7 +89,7 @@ klasa-dashboard-hooks/azure-pipelines.yml
 .eslintrc.json
 .eslintrc.yaml
 .eslintrc.yml
-.giitignore~
+.gitignore~
 .istanbul.yml
 .npmrc
 *.flow
@@ -139,7 +138,6 @@ docs
 doc
 website
 images
-assets
 
 ## examples
 example

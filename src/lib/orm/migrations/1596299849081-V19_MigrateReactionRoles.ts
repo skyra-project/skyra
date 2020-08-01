@@ -4,7 +4,7 @@ export class V19MigrateReactionRoles1596299849081 implements MigrationInterface 
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		// Create the new column:
-		await queryRunner.addColumn('guilds', new TableColumn({ 'name': 'reaction-roles', 'type': 'text[]', 'default': 'ARRAY[]::JSON[]' }));
+		await queryRunner.addColumn('guilds', new TableColumn({ 'name': 'reaction-roles', 'type': 'JSON', 'isArray': true, 'default': 'ARRAY[]::JSON[]' }));
 
 		// Read all entries and insert the values to the new column:
 		const entries = await queryRunner.query(/* sql */`SELECT id, "channels.roles", "roles.messageReaction", "roles.reactions" FROM public.guilds;`) as RawData[];
@@ -22,10 +22,9 @@ export class V19MigrateReactionRoles1596299849081 implements MigrationInterface 
 				});
 			}
 
-			const stringifiedReactionRoles = JSON.stringify(reactionRoles);
-			const escapedReactionRoles = stringifiedReactionRoles.replace(/'/g, "''");
+			const escaped = reactionRoles.map(value => `'${JSON.stringify(value).replace(/'/g, "''")}'`);
 			const escapedID = entry.id.replace(/'/g, "''");
-			await queryRunner.query(/* sql */`UPDATE public.guilds SET "reaction-roles" = '${escapedReactionRoles}' WHERE id = '${escapedID}';`);
+			await queryRunner.query(/* sql */`UPDATE public.guilds SET "reaction-roles" = ARRAY[${escaped}]::JSON[] WHERE id = '${escapedID}';`);
 		}
 
 		// Drop the old columns:
@@ -39,7 +38,7 @@ export class V19MigrateReactionRoles1596299849081 implements MigrationInterface 
 		await queryRunner.addColumns('guilds', [
 			new TableColumn({ name: 'channels.roles', type: 'varchar', length: '19', isNullable: true }),
 			new TableColumn({ name: 'roles.messageReaction', type: 'varchar', length: '19', isNullable: true }),
-			new TableColumn({ 'name': 'roles.reactions', 'type': 'text[]', 'default': 'ARRAY[]::JSON[]' })
+			new TableColumn({ 'name': 'roles.reactions', 'type': 'JSON', 'isArray': true, 'default': 'ARRAY[]::JSON[]' })
 		]);
 
 		// Drop the new column:

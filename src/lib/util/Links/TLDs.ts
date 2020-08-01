@@ -1022,7 +1022,6 @@ export const TLDs = [
 	'rich',
 	'richardli',
 	'ricoh',
-	'rightathome',
 	'ril',
 	'rio',
 	'rip',

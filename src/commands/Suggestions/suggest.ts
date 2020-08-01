@@ -30,8 +30,9 @@ export default class extends SkyraCommand {
 		}
 
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
+		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel | undefined;
+		if (!suggestionsChannel?.postable) throw message.language.tget('COMMAND_SUGGEST_NOPERMISSIONS', message.author.username, `<#${message.channel.id}>`);
 
-		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel;
 		// Get the next suggestion ID
 		const suggestionID = message.guild!.settings.get(GuildSettings.Suggestions.AscendingID);
 
@@ -41,6 +42,9 @@ export default class extends SkyraCommand {
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true }))
 			.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
 			.setDescription(suggestion));
+
+		// Increase the next id
+		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
 
 		// Add the upvote/downvote reactions
 		const reactArray = [
@@ -59,9 +63,6 @@ export default class extends SkyraCommand {
 			guildID: message.guild!.id,
 			messageID: suggestionsMessage.id
 		});
-
-		// Increase the next id
-		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
 
 		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [suggestionsChannel]);
 	}

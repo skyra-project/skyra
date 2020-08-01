@@ -8,7 +8,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { displayEmoji, resolveEmoji } from '@utils/util';
-import { MessageEmbed, Role, TextChannel } from 'discord.js';
+import { MessageEmbed, Role, TextChannel, Guild } from 'discord.js';
 import { ArrayActions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -53,9 +53,8 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay(new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message)));
 
-		const serializer = this.client.serializers.get('reactionrole')!;
 		for (const bulk of chunk(reactionRoles, 20)) {
-			const serialized = bulk.map(value => serializer.stringify(value, message.guild!)).join(' ');
+			const serialized = bulk.map(value => this.format(value, message.guild!)).join('\n');
 			display.addPage((template: MessageEmbed) => template.setDescription(serialized));
 		}
 
@@ -126,6 +125,13 @@ export default class extends SkyraCommand {
 			extraContext: { author: message.author.id }
 		});
 		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_RESET');
+	}
+
+	private format(entry: ReactionRole, guild: Guild): string {
+		const emoji = displayEmoji(entry.emoji);
+		const role = `<@&${entry.role}>`;
+		const url = entry.message ? `[🔗](https://discord.com/channels/${guild.id}/${entry.channel}/${entry.message})` : `<#${entry.channel}>`;
+		return `${emoji} | ${role} -> ${url}`;
 	}
 
 }

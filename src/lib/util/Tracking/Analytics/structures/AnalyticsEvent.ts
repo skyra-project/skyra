@@ -1,5 +1,5 @@
 import { Point, QueryApi, WriteApi } from '@influxdata/influxdb-client';
-import { ENABLE_INFLUX } from '@root/config';
+import { ENABLE_INFLUX, CLIENT_ID } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { enumerable } from '@utils/util';
 import { Event } from 'klasa';
@@ -38,7 +38,7 @@ export abstract class AnalyticsEvent extends Event {
 
 	protected initTags() {
 		this.tags.push(
-			[AnalyticsSchema.Tags.Client, this.client.user!.id],
+			[AnalyticsSchema.Tags.Client, CLIENT_ID],
 			[AnalyticsSchema.Tags.OriginEvent, this.event]
 		);
 	}

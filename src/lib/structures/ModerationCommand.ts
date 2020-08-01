@@ -8,6 +8,7 @@ import { User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
+import { CLIENT_ID } from '@root/config';
 
 export interface ModerationCommandOptions extends SkyraCommandOptions {
 	requiredMember?: boolean;
@@ -111,7 +112,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			throw message.language.tget('COMMAND_USERSELF');
 		}
 
-		if (context.target.id === this.client.user!.id) {
+		if (context.target.id === CLIENT_ID) {
 			throw message.language.tget('COMMAND_TOSKYRA');
 		}
 

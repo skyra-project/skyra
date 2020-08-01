@@ -11,6 +11,7 @@ import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore, KlasaGuild, Language } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 export default class extends Event {
 
@@ -109,7 +110,7 @@ export default class extends Event {
 			}
 		});
 
-		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== this.client.user!.id
+		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== CLIENT_ID
 			&& e.target_id === data.user.id
 			&& e.changes.find(c => c.key === '$add' && c.new_value.length));
 		if (typeof entry === 'undefined') return;

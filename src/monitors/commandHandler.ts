@@ -2,6 +2,7 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { floatPromise } from '@utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
+import { CLIENT_ID } from '@root/config';
 
 export default class extends Monitor {
 
@@ -13,7 +14,7 @@ export default class extends Monitor {
 	}
 
 	public async run(message: KlasaMessage) {
-		if (message.guild && message.guild.me === null) await message.guild.members.fetch(this.client.user!.id);
+		if (message.guild && message.guild.me === null) await message.guild.members.fetch(CLIENT_ID);
 		if (!message.channel.postable) return undefined;
 		if (!message.commandText && message.prefix === this.client.mentionPrefix) return this.sendPrefixReminder(message);
 		if (!message.commandText) return undefined;

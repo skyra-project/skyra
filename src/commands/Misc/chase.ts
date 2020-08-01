@@ -3,8 +3,8 @@ import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -20,7 +20,7 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 
-	private KTemplate: Buffer | null = null;
+	private KTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -41,27 +41,27 @@ export default class extends SkyraCommand {
 		]);
 
 		return new Canvas(569, 327)
-			.addImage(this.KTemplate!, 0, 0, 569, 327)
+			.printImage(this.KTemplate, 0, 0, 569, 327)
 			.setTransform(-1, 0, 0, 1, 0, 0)
 
 			// Draw chased avatar
 			.save()
 			.translate(-144, 51)
 			.rotate(radians(16.12))
-			.addCircularImage(chasedAvatar, 0, 0, 26)
+			.printCircularImage(chasedAvatar, 0, 0, 26)
 			.restore()
 
 			// Draw chaser avatar
 			.translate(-391, 62)
 			.rotate(radians(12.26))
-			.addCircularImage(chaserAvatar, 0, 0, 25)
+			.printCircularImage(chaserAvatar, 0, 0, 25)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.KTemplate = await fsp.readFile(join(assetsFolder, './images/memes/chase.png'));
+		this.KTemplate = await loadImage(join(assetsFolder, './images/memes/chase.png'));
 	}
 
 }

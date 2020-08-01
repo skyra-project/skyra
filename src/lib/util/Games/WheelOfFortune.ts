@@ -2,8 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
-import { loadImage, roundNumber } from '@utils/util';
-import { Image } from 'canvas';
+import { roundNumber } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
@@ -119,20 +119,20 @@ export class WheelOfFortune {
 
 		const canvas = new Canvas(300, 132)
 			.setColor(darkTheme ? CanvasColors.BackgroundDark : CanvasColors.BackgroundLight)
-			.addBeveledRect(5, 5, 295, 127, 10)
+			.printRoundedRectangle(5, 5, 295, 127, 10)
 			.save()
 			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
-			.addText(this.message.language.tget('COMMAND_WHEELOFFORTUNE_CANVAS_TEXT', playerHasWon), 280, 60)
-			.addText((playerHasWon ? this.winnings : -this.winnings).toString(), 230, 100)
-			.addImage(WheelOfFortune.images.SHINY!, 240, 68, 38, 39)
-			.addImage(WheelOfFortune.images.ARROWS!, arrowX, arrowY, kArrowSize, kArrowSize, kIconSize + 12, kIconSize + 12, kIconSize, kIconSize)
+			.printText(this.message.language.tget('COMMAND_WHEELOFFORTUNE_CANVAS_TEXT', playerHasWon), 280, 60)
+			.printText((playerHasWon ? this.winnings : -this.winnings).toString(), 230, 100)
+			.printImage(WheelOfFortune.images.SHINY!, 240, 68, 38, 39)
+			.printImage(WheelOfFortune.images.ARROWS!, arrowX, arrowY, kArrowSize, kArrowSize, kIconSize + 12, kIconSize + 12, kIconSize, kIconSize)
 			.restore();
 
 		const image = playerHasWon ? WheelOfFortune.images.WIN_ICONS! : WheelOfFortune.images.LOSE_ICONS!;
 		await Promise.all(kAssets.map(({ x, y }) => new Promise(resolve => {
-			canvas.addImage(image, x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize);
+			canvas.printImage(image, x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize);
 			resolve();
 		})));
 

@@ -3,8 +3,8 @@ import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -20,7 +20,7 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 
-	private kTemplate: Buffer | null = null;
+	private kTemplate: Image = null!;
 	private readonly skyraID = CLIENT_ID;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -43,26 +43,26 @@ export default class extends SkyraCommand {
 
 		/* Initialize Canvas */
 		return new Canvas(950, 475)
-			.addImage(this.kTemplate!, 0, 0, 950, 475)
+			.printImage(this.kTemplate, 0, 0, 950, 475)
 
 			// Draw Batman
 			.save()
 			.setTransform(-1, 0, 0, 1, 476, 173)
 			.rotate(radians(-13.96))
-			.addCircularImage(batman, 0, 0, 79)
+			.printCircularImage(batman, 0, 0, 79)
 			.restore()
 
 			// Draw Robin
 			.translate(244, 265)
 			.rotate(radians(-24.53))
-			.addCircularImage(robin, 0, 0, 93)
+			.printCircularImage(robin, 0, 0, 93)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/slap.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/slap.png'));
 	}
 
 }

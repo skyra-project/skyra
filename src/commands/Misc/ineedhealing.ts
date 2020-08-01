@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -20,7 +20,7 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 
-	private kTemplate: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const attachment = await this.generate(message, user);
@@ -36,26 +36,26 @@ export default class extends SkyraCommand {
 		]);
 
 		return new Canvas(333, 500)
-			.addImage(this.kTemplate!, 0, 0, 333, 500)
+			.printImage(this.kTemplate, 0, 0, 333, 500)
 
 			// Draw the healer
 			.save()
 			.translate(244, 287)
 			.rotate(radians(30.42))
-			.addCircularImage(healed, 0, 0, 55)
+			.printCircularImage(healed, 0, 0, 55)
 			.restore()
 
 			// Draw the healed boy
 			.translate(123, 149)
 			.rotate(radians(-31.40))
-			.addCircularImage(healer, 0, 0, 53)
+			.printCircularImage(healer, 0, 0, 53)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/ineedhealing.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/ineedhealing.png'));
 	}
 
 }

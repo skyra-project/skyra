@@ -3,8 +3,8 @@ import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
@@ -21,7 +21,7 @@ import { join } from 'path';
 })
 export default class extends SkyraCommand {
 
-	private kTemplate: Buffer | null = null;
+	private kTemplate: Image = null!;
 	private readonly skyraID = CLIENT_ID;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -43,26 +43,26 @@ export default class extends SkyraCommand {
 		]);
 
 		return new Canvas(650, 471)
-			.addImage(this.kTemplate!, 0, 0, 650, 471)
+			.printImage(this.kTemplate, 0, 0, 650, 471)
 
 			// Draw the guy with the hammer
 			.save()
 			.translate(341, 135)
 			.rotate(radians(21.80))
-			.addCircularImage(hammerer, 0, 0, 77)
+			.printCircularImage(hammerer, 0, 0, 77)
 			.restore()
 
 			// Draw the who's getting the hammer
 			.setTransform(-1, 0, 0, 1, 511, 231)
 			.rotate(radians(-25.40))
-			.addCircularImage(hammered, 0, 0, 77)
+			.printCircularImage(hammered, 0, 0, 77)
 
 			// Draw the buffer
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.kTemplate = await fsp.readFile(join(assetsFolder, './images/memes/DeletThis.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/DeletThis.png'));
 	}
 
 }

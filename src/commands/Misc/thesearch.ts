@@ -1,13 +1,13 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -29,16 +29,16 @@ export default class extends SkyraCommand {
 
 	public generate(text: string) {
 		return new Canvas(700, 612)
-			.addImage(this.template!, 0, 0, 700, 612)
+			.printImage(this.kTemplate, 0, 0, 700, 612)
 			.setTextAlign('center')
 			.setTextFont('19px FamilyFriends')
-			.createRectClip(61, 335, 156, 60)
-			.addWrappedText(text, 143, 360, 156)
+			.createRectangleClip(61, 335, 156, 60)
+			.printWrappedText(text, 143, 360, 156)
 			.toBufferAsync();
 	}
 
 	public async init() {
-		this.template = await fsp.readFile(join(assetsFolder, './images/memes/TheSearch.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
 
 }

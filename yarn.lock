@@ -1314,10 +1314,10 @@ camelcase@^6.0.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.0.0.tgz#5259f7c30e35e278f1bdc2a4d91230b37cad981e"
   integrity sha512-8KMDF1Vz2gzOq54ONPJS65IvTUaB1cHJ2DMM7MbPmLZljDH1qpzzLsWdiN9pHh6qvkRVDTi/07+eNGch/oLU4w==
 
-canvas-constructor@^3.2.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-3.2.0.tgz#6e3f77b945b46812ef39a204fe91a1e9ad3b98dc"
-  integrity sha512-m62c2LCwctkvs1jLGS/zz74g/uIKF2agx/lJU53XYLDfDnxh37pioXoHYECdv6UeDNeyVhDgn88H8YDA6RFhEw==
+canvas-constructor@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/canvas-constructor/-/canvas-constructor-4.0.0.tgz#b2973cef9e1fec7c89ab239e231dad80b8ab81b7"
+  integrity sha512-xQp6KHpwhLqzOQwQy6M6vgJ62j6hoohUH/boFB5llQbywcog+iVl/2QRqyBF5rhr6eq/zzd1lbiz9i81MqJ01Q==
 
 canvas@^2.2.0, canvas@^2.6.1:
   version "2.6.1"

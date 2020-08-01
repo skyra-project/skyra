@@ -3,8 +3,8 @@ import { TOKENS } from '@root/config';
 import { assetsFolder } from '@utils/constants';
 import { queryGoogleMapsAPI } from '@utils/Google';
 import { fetch, FetchResultTypes } from '@utils/util';
+import { loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 
@@ -64,9 +64,9 @@ export default class extends SkyraCommand {
 	public async draw(message: KlasaMessage, { geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity }: WeatherData) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
 		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
-			fsp.readFile(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
-			fsp.readFile(join(assetsFolder, 'images', 'weather', theme, 'humidity.png')),
-			fsp.readFile(join(assetsFolder, 'images', 'weather', theme, 'precip.png'))
+			loadImage(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
+			loadImage(join(assetsFolder, 'images', 'weather', theme, 'humidity.png')),
+			loadImage(join(assetsFolder, 'images', 'weather', theme, 'precip.png'))
 		]);
 
 		const attachment = await new Canvas(400, 230)
@@ -74,39 +74,39 @@ export default class extends SkyraCommand {
 			.setShadowColor('rgba(0,0,0,.7)')
 			.setShadowBlur(7)
 			.setColor(COLORS[this.timePicker(icon)])
-			.createBeveledPath(10, 10, 380, 220, 5)
+			.createRoundedPath(10, 10, 380, 220, 5)
 			.fill()
 			.restore()
 
 			// City Name
 			.setTextFont('20px Roboto')
 			.setColor(fontColor)
-			.addWrappedText(geoCodeLocation, 30, 60, 300)
+			.printWrappedText(geoCodeLocation, 30, 60, 300)
 
 			// Prefecture Name
 			.setTextFont('16px Roboto')
 			.setColor(theme === 'light' ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.8)')
-			.addText(state ?? '', 30, 30)
+			.printText(state ?? '', 30, 30)
 
 			// Temperature
 			.setTextFont("48px 'Roboto Mono'")
 			.setColor(fontColor)
-			.addText(`${temperature}°C`, 30, 190)
+			.printText(`${temperature}°C`, 30, 190)
 
 			// Condition
 			.setTextFont('16px Roboto')
 			.setTextAlign('right')
-			.addText(condition, 370, 192)
+			.printText(condition, 370, 192)
 
 			// Titles
 			.setTextFont("16px 'Roboto Condensed'")
-			.addText(`${humidity}%`, 353, 150)
-			.addText(`${chanceOfRain}%`, 353, 171)
+			.printText(`${humidity}%`, 353, 150)
+			.printText(`${chanceOfRain}%`, 353, 171)
 
 			// Icons
-			.addImage(conditionBuffer, 325, 31, 48, 48)
-			.addImage(humidityBuffer, 358, 138, 13, 13)
-			.addImage(precipicityBuffer, 358, 158, 13, 13)
+			.printImage(conditionBuffer, 325, 31, 48, 48)
+			.printImage(humidityBuffer, 358, 138, 13, 13)
+			.printImage(precipicityBuffer, 358, 158, 13, 13)
 
 			.toBufferAsync();
 

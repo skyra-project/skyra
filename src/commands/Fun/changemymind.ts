@@ -1,14 +1,14 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { promises as fsp } from 'fs';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
 export default class extends SkyraCommand {
 
-	private template: Buffer | null = null;
+	private kTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -29,24 +29,24 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.template = await fsp.readFile(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
 	}
 
 	private async generate(author: KlasaUser, text: string) {
 		const guy = await fetchAvatar(author, 128);
 
 		return new Canvas(591, 607)
-			.addImage(this.template!, 0, 0, 591, 607)
+			.printImage(this.kTemplate!, 0, 0, 591, 607)
 
 			// Add user's avatar
-			.addImage(guy, 114, 32, 82, 82, { type: 'round', radius: 41, restore: true })
+			.printCircularImage(guy, 155, 73, 41)
 
 			// Add text
 			.setTextAlign('center')
 			.setColor('rgb(23,23,23)')
 			.setTextFont('42px RobotoRegular')
-			.createRectClip(144, 345, 336, 133)
-			.addWrappedText(text, 311, 375, 340)
+			.createRectangleClip(144, 345, 336, 133)
+			.printWrappedText(text, 311, 375, 340)
 
 			// Render
 			.toBufferAsync();

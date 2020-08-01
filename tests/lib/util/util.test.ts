@@ -274,6 +274,24 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('iteratorAt', () => {
+		function *generate() {
+			for (let i = 0; i < 100; ++i) yield i;
+		}
+
+		test('GIVEN 0 THEN give first element', () => {
+			expect(utils.iteratorAt(generate(), 0)).toBe(0);
+		});
+
+		test('GIVEN 5 THEN give fifth element', () => {
+			expect(utils.iteratorAt(generate(), 5)).toBe(5);
+		});
+
+		test('GIVEN negative number THEN give first element', () => {
+			expect(utils.iteratorAt(generate(), -1)).toBe(null);
+		});
+	});
+
 	describe('fetch', () => {
 		// eslint-disable-next-line @typescript-eslint/init-declarations
 		let nockScope: nock.Scope;

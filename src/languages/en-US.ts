@@ -1120,7 +1120,7 @@ export default class extends Language {
 			extendedHelp: `This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want
 					to be used in certain channels (to disable a command globally, use the \`disabledCommands\` settings key to disable in all channels.`,
 			explainedUsage: [
-				['show [channel]', 'Show the command blacklist for the selected channel'],
+				['show [channel]', 'Show the command blacklist for the selected channel.'],
 				['add [channel] <command>', 'Add a command to the specified channel\'s command blacklist.'],
 				['remove [channel] <command>', 'Remove a command to the specified channel\'s command blacklist.'],
 				['reset [channel]', 'Clear the command blacklist for the specified channel.']
@@ -1128,18 +1128,17 @@ export default class extends Language {
 			reminder: 'The channel argument is optional, but it uses fuzzy search when possible.',
 			examples: ['show', 'add #general profile', 'remove #general profile', 'reset #general']
 		}),
-		COMMAND_MANAGEROLEREACTION_DESCRIPTION: 'Manage the role reactions.',
-		COMMAND_MANAGEROLEREACTION_EXTENDED: builder.display('manageRoleReaction', {
-			extendedHelp: `This command manages the role reaction module, it requires a **role channel** set up and the permissions **${PERMS.ADD_REACTIONS}**
-					and **${PERMS.READ_MESSAGE_HISTORY}** to be able to validate and operate correctly.`,
+		COMMAND_MANAGEREACTIONROLES_DESCRIPTION: 'Manage the reaction roles for this server.',
+		COMMAND_MANAGEREACTIONROLES_EXTENDED: builder.display('manageReactionRoles', {
+			extendedHelp: `Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind
+				the first reaction from you alongside the channel and the message, with the specified role. Otherwise, if a channel is specified, a prompt will
+				not be created, and the reaction role will be bound to all of the channel's messages.`,
 			explainedUsage: [
-				['show', 'Show all the currently configured role reactions.'],
-				['add <role> <emoji>', 'Add a new role reaction with the role ID or name, and a valid emoji.'],
-				['remove <emoji>', 'Remove a role reaction by its configured emoji.'],
-				['reset', 'Reset all the current role reactions.']
-			],
-			reminder: 'You cannot set the same emoji twice, and Skyra may remove role reactions automatically if she loses permissions or they are removed.',
-			examples: ['show', 'add Baited 🎵', 'add "Looking for Group" 🎮', 'remove 🎮', 'reset']
+				['show', 'Retrieve the list of all reaction roles.'],
+				['add <role> [channel emoji]', 'Adds a reaction role binding the first reacted message since the execution with the role, optionally a channel.'],
+				['remove <role> <message>', 'Removes a reaction role, use `show` to get a list of them.'],
+				['reset', 'Removes all reaction roles.']
+			]
 		}),
 		COMMAND_SETIGNORECHANNELS_DESCRIPTION: 'Set a channel to the ignore channel list.',
 		COMMAND_SETIGNORECHANNELS_EXTENDED: builder.display('setIgnoreChannels', {
@@ -3296,19 +3295,16 @@ export default class extends Language {
 		COMMAND_MANAGECOMMANDCHANNEL_REMOVE: (channel, command) => `Successfully enabled the command ${command} for the channel ${channel}!`,
 		COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY: 'This channel had no disabled command, so I decided to do nothing.',
 		COMMAND_MANAGECOMMANDCHANNEL_RESET: channel => `Successfully enabled all disabled commands in ${channel}, enjoy!`,
-		COMMAND_MANAGEROLEREACTION_REQUIRED_REACTION: 'You must input a valid reaction that can be used by me.',
-		COMMAND_MANAGEROLEREACTION_REQUIRED_ROLE: 'You must input the name of the role you want me to add.',
-		COMMAND_MANAGEROLEREACTION_LIST_EMPTY: 'This guild has no role reaction set up.',
-		COMMAND_MANAGEROLEREACTION_EXISTS: 'There is already a role reaction set up with the specified role or emoji.',
-		COMMAND_MANAGEROLEREACTION_ADD: 'Successfully added the role reaction.',
-		COMMAND_MANAGEROLEREACTION_REMOVE_NOTEXISTS: 'I do not find an entry with this reaction. Are you sure you have typed it correctly?',
-		COMMAND_MANAGEROLEREACTION_REMOVE: 'Successfully removed the role reaction.',
-		COMMAND_MANAGEROLEREACTION_RESET: 'Successfully removed all role reactions.',
-		COMMAND_SETMESSAGEROLE_CHANNELNOTSET: 'In order to configure the message role, you must configure the channel first.',
-		COMMAND_SETMESSAGEROLE_WRONGCHANNEL: channel => `In order to reduce confusion, I would suggest you to move to ${channel}`,
-		COMMAND_SETMESSAGEROLE_SET: 'Successfully set the message role.',
+		COMMAND_MANAGEREACTIONROLES_SHOW_EMPTY: 'There are no reaction roles set up in this server.',
+		COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL: (emoji, channel) => `${GREENTICK} Success! I will now give the role when people react with ${emoji} to any message from ${channel}!`,
+		COMMAND_MANAGEREACTIONROLES_ADD_PROMPT: 'Listening now! Please react to a message and I will bind the reaction with the role!',
+		COMMAND_MANAGEREACTIONROLES_ADD_MISSING: 'I waited, but you did not seem to have reacted to a message.',
+		COMMAND_MANAGEREACTIONROLES_ADD: (emoji, url) => `${GREENTICK} Success! I will now give the role when people react with ${emoji} at ${url}!`,
+		COMMAND_MANAGEREACTIONROLES_REMOVE_NOTEXISTS: 'The reaction role you specified does not exist.',
+		COMMAND_MANAGEREACTIONROLES_REMOVE: (emoji, url) => `${GREENTICK} Success! I will not longer give the role when people react with ${emoji} at ${url}!`,
+		COMMAND_MANAGEREACTIONROLES_RESET_EMPTY: 'There were no reaction roles set up.',
+		COMMAND_MANAGEREACTIONROLES_RESET: `${GREENTICK} Successfully removed all reaction roles.`,
 		COMMAND_SETSTARBOARDEMOJI_SET: emoji => `Successfully set a new emoji for the next star messages: ${emoji}`,
-		COMMAND_SETROLECHANNEL_SET: channel => `Successfully set the role channel to ${channel}.`,
 		CONFIGURATION_TEXTCHANNEL_REQUIRED: 'The selected channel is not a valid text channel, try again with another.',
 		CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
 		COMMAND_SETIGNORECHANNELS_SET: channel => `Ignoring all command input from ${channel} now.`,
@@ -4462,6 +4458,7 @@ export default class extends Language {
 		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: command => `For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
 		SERIALIZER_PERMISSION_NODE_SECURITY_OWNER: 'You cannot set permission overrides on the server owner.',
+		SERIALIZER_REACTION_ROLE_INVALID: 'Invalid reaction role data.',
 		SERIALIZER_STICKY_ROLE_INVALID: 'Invalid sticky role data.',
 		SERIALIZER_TRIGGER_ALIAS_INVALID: 'Invalid trigger alias data.',
 		SERIALIZER_TRIGGER_INCLUDE_INVALID: 'Invalid trigger includes data.',

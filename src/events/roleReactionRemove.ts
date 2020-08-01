@@ -10,19 +10,12 @@ export default class extends Event {
 	public async run(channel: TextChannel, data: WSMessageReactionRemove) {
 		// If the channel is not a text channel then stop processing
 		if (!isTextBasedChannel(channel)) return;
-		// Role reactions only apply on the roles channel
-		const channelRoles = channel.guild.settings.get(GuildSettings.Channels.Roles);
-		if (!channelRoles) return;
-
-		// There may be a message filter, or not, it could be applied to any message
-		const messageReaction = channel.guild.settings.get(GuildSettings.Roles.MessageReaction);
-		if (messageReaction && messageReaction !== data.message_id) return;
 
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = channel.guild.settings.get(GuildSettings.Roles.Reactions)
-			.find(entry => entry.emoji === parsed);
+		const roleEntry = channel.guild.settings.get(GuildSettings.ReactionRoles)
+			.find(entry => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true));
 		if (!roleEntry) return;
 
 		try {

@@ -1,4 +1,6 @@
 import { Client, Guild, TextChannel, User } from 'discord.js';
+import { Time } from './constants';
+import { noop } from './util';
 
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 
@@ -56,6 +58,24 @@ export class LongLivingReactionCollector {
 		return this;
 	}
 
+	public static collectOne(client: Client, { filter = () => true, time = Time.Minute * 5 }: LLRCCollectOneOptions = {}) {
+		return new Promise<LLRCData | null>(resolve => {
+			const llrc = new LongLivingReactionCollector(client, reaction => {
+				if (filter(reaction)) {
+					resolve(reaction);
+					llrc.setEndListener(noop).end();
+				}
+			}, () => {
+				resolve(null);
+			}).setTime(time);
+		});
+	}
+
+}
+
+export interface LLRCCollectOneOptions {
+	filter?: (reaction: LLRCData) => boolean;
+	time?: number;
 }
 
 export interface LLRCDataEmoji {

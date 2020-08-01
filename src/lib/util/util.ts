@@ -169,7 +169,9 @@ export function cutText(str: string, length: number) {
 	return `${cut.slice(0, length - 3)}...`;
 }
 
-export function iteratorAt<T>(iterator: IterableIterator<T>, position: number) {
+export function iteratorAt<T>(iterator: IterableIterator<T>, position: number): T | null {
+	if (position < 0) return null;
+
 	let result: IteratorResult<T> | null = null;
 	while (position-- > 0) {
 		result = iterator.next();

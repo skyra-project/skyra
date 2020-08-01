@@ -20,7 +20,6 @@ export default Client.defaultGuildSchema
 		.add('image-logs', 'TextChannel')
 		.add('prune-logs', 'TextChannel')
 		.add('reaction-logs', 'TextChannel')
-		.add('roles', 'TextChannel')
 		.add('spam', 'TextChannel')
 		.add('ignore', folder => folder
 			.add('message-delete', 'CategoryOrTextChannel', { array: true })
@@ -52,11 +51,11 @@ export default Client.defaultGuildSchema
 		.add('moderation-auto-delete', 'Boolean', { 'default': false })
 		.add('moderator-name-display', 'Boolean', { 'default': true }))
 	.add('stickyRoles', 'StickyRole', { array: true, configurable: false })
+	.add('reaction-roles', 'ReactionRole', { array: true, configurable: false })
 	.add('roles', folder => folder
 		.add('admin', 'Role')
 		.add('auto', 'AutoRole', { array: true, configurable: false })
 		.add('initial', 'Role')
-		.add('messageReaction', 'Snowflake', { configurable: false })
 		.add('moderator', 'Role')
 		.add('muted', 'Role')
 		.add('restricted-reaction', 'Role')
@@ -65,8 +64,6 @@ export default Client.defaultGuildSchema
 		.add('restricted-attachment', 'Role')
 		.add('restricted-voice', 'Role')
 		.add('public', 'Role', { array: true })
-		// TODO(kyranet): Migrate to new reaction system
-		.add('reactions', 'any', { array: true })
 		.add('removeInitial', 'Boolean')
 		.add('dj', 'Role')
 		.add('subscriber', 'Role')

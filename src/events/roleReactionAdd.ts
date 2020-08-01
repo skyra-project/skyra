@@ -7,20 +7,12 @@ import { Event } from 'klasa';
 export default class extends Event {
 
 	public async run(parsed: LLRCData) {
-		// Role reactions only apply on the roles channel
-		const channelRoles = parsed.guild.settings.get(GuildSettings.Channels.Roles);
-		if (!channelRoles) return;
-
-		// There may be a message filter, or not, it could be applied to any message
-		const messageReaction = parsed.guild.settings.get(GuildSettings.Roles.MessageReaction);
-		if (messageReaction && messageReaction !== parsed.messageID) return;
-
 		// Resolve the emoji (since there can be many formats)
 		const emoji = resolveEmoji(parsed.emoji);
 		if (!emoji) return;
 
-		const roleEntry = parsed.guild.settings.get(GuildSettings.Roles.Reactions)
-			.find(entry => entry.emoji === emoji);
+		const roleEntry = parsed.guild.settings.get(GuildSettings.ReactionRoles)
+			.find(entry => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageID : true));
 		if (!roleEntry) return;
 
 		try {

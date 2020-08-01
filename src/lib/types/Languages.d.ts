@@ -1582,6 +1582,7 @@ export interface LanguageKeys {
 	COMMAND_SUGGEST_NOSETUP: (username: string) => string;
 	COMMAND_SUGGEST_NOSETUP_ASK: (username: string) => string;
 	COMMAND_SUGGEST_NOSETUP_ABORT: string;
+	COMMAND_SUGGEST_NOPERMISSIONS: (username: string, channel: string) => string;
 	COMMAND_SUGGEST_CHANNEL_PROMPT: string;
 	COMMAND_SUGGEST_TITLE: (id: number) => string;
 	COMMAND_SUGGEST_SUCCESS: (channel: TextChannel) => string;

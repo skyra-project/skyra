@@ -3643,6 +3643,7 @@ export default class extends Language {
 		COMMAND_SUGGEST_NOSETUP: username => `Lo siento ${username}, pero no los administradores no han configurado un canal de texto para las sugerencias.`,
 		COMMAND_SUGGEST_NOSETUP_ASK: username => `Lo siento ${username}, pero no se ha configurado un canal de texto para las sugerencias... ¿Quieres hacerlo ahora?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: '¡Entendido! Puede usar este comando si cambia de opinión.',
+		COMMAND_SUGGEST_NOPERMISSIONS: (username, channel) => `Lo siento ${username}, pero los administradores no me dieron permisos para enviar mensajes en ${channel}.`,
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Mencione el canal de texto o escriba su nombre o ID que en el que quiere que se publiquen las sugerencias.',
 		COMMAND_SUGGEST_TITLE: id => `Recomendación #${id}`,
 		COMMAND_SUGGEST_SUCCESS: channel => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,

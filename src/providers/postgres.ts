@@ -32,7 +32,7 @@ export default class extends SQLProvider {
 		.add('uniqueroleset', { 'extends': 'any' })
 		.add('emoji', { 'type': 'VARCHAR(128)', 'extends': 'string' })
 		.add('url', { 'type': 'VARCHAR(128)', 'extends': 'string' })
-		.add('categoryortextchannel', { 'type': 'VARCHAR(19)', 'extends': 'snowflake' });
+		.add('categoryortextchannel', { 'extends': 'snowflake' });
 	/* eslint-enable @typescript-eslint/no-invalid-this */
 
 	public pgsql: Pool | null = null;

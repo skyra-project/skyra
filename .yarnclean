@@ -1,0 +1,175 @@
+# Self Added Entries
+## TypeScript Extra Files
+diagnosticMessages.generated.json
+*.lcl
+
+## configs
+.prettierrc
+.eslintignore
+.gitignore
+.all-contributorsrc
+jest.config.js
+.nycrc.json
+typedoc.json
+bower.json
+
+## IDE / Git configs
+.vscode/
+.github/
+.idea/
+
+## Unneeded TS/JS files
+*.mjs
+*.mjs.map
+*.umd.js
+*.umd.js.map
+*.ts
+!*.d.ts
+
+## C++ / C files
+*.cc
+*.c
+*.cpp
+*.h
+*.gyp
+*.sln
+*.gypi
+
+## CoreJS unnecessary polyfills
+core-js/client/
+core-js/es5/
+core-js/es6/
+core-js/es7/
+core-js/fn/
+core-js/stage/
+core-js/web/
+core-js/build/
+
+## Packages that publish too much shit
+dentist/src/
+diff-sequences/perf/
+docs/
+fast-json-stable-stringify/benchmark/
+functional-red-black-tre/bench/
+highlight.js/scss/
+highlight.js/styles/
+scripts/
+**/spec/
+*.html
+lru_map/tsconfig.json
+lru_map/test.js
+lru_map/benchmark.js
+*.markdown
+js-yaml/lib/
+node-notifier/vendor/
+pg-protocol/tsconfig.json
+pg-protocol/src/
+ts-jest/tsconfig.spec.json
+tsutils/.fimbullinter.yaml
+tsutils/.wotanrc.yaml
+tsyringe/dist/esm5/
+tsyringe/dist/esm2015/
+typedarray-to-buffer/.airtrap.yml
+typeorm/browser/
+yargs/locales/*
+!yargs/locales/en.json
+
+## DiscordJS / Klasa GitHub intalls
+discord.js/tsconfig.json
+klasa/guides/
+klasa/.eslintrcmd.json
+klasa/.markdownlint.json
+klasa/azure-pipelines.yml
+klasa-dashboard-hooks/guides/
+klasa-dashboard-hooks/.eslintrcmd.json
+klasa-dashboard-hooks/.markdownlint.json
+klasa-dashboard-hooks/azure-pipelines.yml
+
+## Misc
+.babelrc
+.eslintrc.json
+.eslintrc.yaml
+.eslintrc.yml
+.giitignore~
+.istanbul.yml
+.npmrc
+*.flow
+*.patch
+*.txt
+**/man/
+Changelog
+component.json
+gulpfile*
+jsdoc.json
+LICENCE
+LICENSE
+LICENSE-MIT
+LICENSE.BSD
+LICENSE.closure-compiler
+LICENSE.docs
+LICENSE.esprima
+LICENSE.APACHE2
+LICENSE.MIT
+npm
+npm-shrinkwrap.json
+package-lock.json
+PATENTS
+README.md~
+rollup.config.js
+rollup.config.ts
+tslint.json
+webpack.config.js
+yarn.lock
+AUTHORS
+*.bnf
+.prettierrc.yml
+build-info.json
+*.gif
+*.json5
+
+# Yarn Auto Added
+## test directories
+__tests__
+test
+tests
+powered-test
+
+## asset directories
+docs
+doc
+website
+images
+assets
+
+## examples
+example
+examples
+
+## code coverage directories
+coverage
+.nyc_output
+
+## build scripts
+Makefile
+Gulpfile.js
+Gruntfile.js
+
+## configs
+appveyor.yml
+circle.yml
+codeship-services.yml
+codeship-steps.yml
+wercker.yml
+.tern-project
+.gitattributes
+.editorconfig
+.*ignore
+.eslintrc
+.jshintrc
+.flowconfig
+.documentup.json
+.yarn-metadata.json
+.travis.yml
+
+## misc
+*.md

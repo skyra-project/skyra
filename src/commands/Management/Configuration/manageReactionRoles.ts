@@ -8,7 +8,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { displayEmoji, resolveEmoji } from '@utils/util';
-import { MessageEmbed, Role, TextChannel, Guild } from 'discord.js';
+import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { ArrayActions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -20,7 +20,7 @@ import { ArrayActions, KlasaMessage } from 'klasa';
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
-	usage: '<show|add|remove|reset> (role:role) (message:messageOrChannel) (reaction:reaction)',
+	usage: '<add|remove|reset|show:default> (role:role) (message:messageOrChannel) (reaction:reaction)',
 	usageDelim: ' '
 })
 @CreateResolvers([

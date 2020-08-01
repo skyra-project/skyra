@@ -1,11 +1,11 @@
 import { chunk, isFunction, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
+import { Time } from '@utils/constants';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { cleanMentions } from '@utils/util';
+import { cleanMentions, floatPromise } from '@utils/util';
 import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -67,21 +67,28 @@ export default class extends SkyraCommand {
 		try {
 			while (game.tributes.size > 1) {
 				// If it's not bloodbath and it became the day, increase the turn
-				if (!game.bloodbath && game.sun) game.turn++;
+				if (!game.bloodbath && game.sun) ++game.turn;
 				const events = game.bloodbath ? 'HG_BLOODBATH' : game.sun ? 'HG_DAY' : 'HG_NIGHT';
 
 				// Main logic of the game
 				const { results, deaths } = this.makeResultEvents(game, message.language.tget(events));
 				const texts = this.buildTexts(message.language, game, results, deaths);
 
-				// Ask for the user to proceed
+				// Ask for the user to proceed:
 				for (const text of texts) {
-					game.llrc.setTime(120000);
+					// If the channel is not postable, break:
+					if (!message.channel.postable) return;
+
+					// Refresh the LLRC's timer, send new message with new reactions:
+					game.llrc.setTime(Time.Minute * 2);
 					gameMessage = await message.channel.send(text) as KlasaMessage;
 					for (const emoji of ['🇾', '🇳']) {
-						gameMessage.react(emoji)
-							.catch(error => this.client.emit(Events.ApiError, error));
+						await gameMessage.react(emoji);
 					}
+
+					// Ask for verification.
+					// NOTE: This does not deadlock because the callback is assigned to a variable in the scope, which
+					// is called with `false` when the LLRC times out.
 					const verification = await new Promise<boolean>(async res => {
 						resolve = res;
 						if (autoSkip) {
@@ -89,22 +96,19 @@ export default class extends SkyraCommand {
 							res(true);
 						}
 					});
-					gameMessage.nuke().catch(error => this.client.emit(Events.ApiError, error));
-					if (!verification) {
-						game.llrc.end();
-						return message.sendLocale('COMMAND_HUNGERGAMES_STOP');
-					}
+
+					// Delete the previous message, and if stopped, send stop.
+					floatPromise(this, gameMessage.nuke());
+					if (!verification) return message.channel.postable ? message.sendLocale('COMMAND_HUNGERGAMES_STOP') : undefined;
 				}
 				if (game.bloodbath) game.bloodbath = false;
 				else game.sun = !game.sun;
 			}
 
 			// The match finished with one remaining player
-			game.llrc.end();
 			return message.sendLocale('COMMAND_HUNGERGAMES_WINNER', [game.tributes.values().next().value]);
-		} catch (err) {
+		} finally {
 			game.llrc.end();
-			throw err;
 		}
 	}
 

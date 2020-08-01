@@ -1,7 +1,7 @@
 import type {
 	CustomCommand, DisabledCommandChannel,
 	NotificationsStreamTwitch, PermissionsNode,
-	RolesAuto, RolesReaction, StickyRole,
+	ReactionRole, RolesAuto, StickyRole,
 	TriggerAlias, TriggerIncludes, UniqueRoleSet
 } from '@lib/types/settings/GuildSettings';
 import { PREFIX } from '@root/config';
@@ -96,9 +96,6 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'channels.reaction-logs', nullable: true, length: 19 })
 	public channelsReactionLogs?: string | null;
 
-	@Column('varchar', { name: 'channels.roles', nullable: true, length: 19 })
-	public channelsRoles?: string | null;
-
 	@Column('varchar', { name: 'channels.spam', nullable: true, length: 19 })
 	public channelsSpam?: string | null;
 
@@ -183,6 +180,9 @@ export class GuildEntity extends BaseEntity {
 	@Column('simple-json', { 'name': 'stickyRoles', 'array': true, 'default': () => 'ARRAY[]::JSON[]' })
 	public stickyRoles: StickyRole[] = [];
 
+	@Column('simple-json', { 'name': 'reaction-roles', 'array': true, 'default': () => 'ARRAY[]::JSON[]' })
+	public reactionRoles: ReactionRole[] = [];
+
 	@Column('varchar', { name: 'roles.admin', nullable: true, length: 19 })
 	public rolesAdmin?: string | null;
 
@@ -191,9 +191,6 @@ export class GuildEntity extends BaseEntity {
 
 	@Column('varchar', { name: 'roles.initial', nullable: true, length: 19 })
 	public rolesInitial?: string | null;
-
-	@Column('varchar', { name: 'roles.messageReaction', nullable: true, length: 19 })
-	public rolesMessageReaction?: string | null;
 
 	@Column('varchar', { name: 'roles.moderator', nullable: true, length: 19 })
 	public rolesModerator?: string | null;
@@ -218,9 +215,6 @@ export class GuildEntity extends BaseEntity {
 
 	@Column('varchar', { 'name': 'roles.public', 'length': 19, 'array': true, 'default': () => 'ARRAY[]::VARCHAR[]' })
 	public rolesPublic: string[] = [];
-
-	@Column('simple-json', { 'name': 'roles.reactions', 'array': true, 'default': () => 'ARRAY[]::JSON[]' })
-	public rolesReactions: RolesReaction[] = [];
 
 	@Column('boolean', { 'name': 'roles.removeInitial', 'default': false })
 	public rolesRemoveInitial = false;

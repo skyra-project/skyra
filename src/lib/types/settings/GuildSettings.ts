@@ -25,7 +25,6 @@ export namespace GuildSettings {
 		export const ImageLogs = T<string>('channels.image-logs');
 		export const PruneLogs = T<string>('channels.prune-logs');
 		export const ReactionLogs = T<string>('channels.reaction-logs');
-		export const Roles = T<string>('channels.roles');
 		export const Spam = T<string>('channels.spam');
 		export namespace Ignore {
 			export const MessageDelete = T<string[]>('channels.ignore.message-delete');
@@ -65,12 +64,12 @@ export namespace GuildSettings {
 	}
 
 	export const StickyRoles = T<readonly StickyRole[]>('stickyRoles');
+	export const ReactionRoles = T<readonly ReactionRole[]>('reaction-roles');
 
 	export namespace Roles {
 		export const Admin = T<string>('roles.admin');
 		export const Auto = T<readonly RolesAuto[]>('roles.auto');
 		export const Initial = T<string>('roles.initial');
-		export const MessageReaction = T<string>('roles.messageReaction');
 		export const Moderator = T<string>('roles.moderator');
 		export const Muted = T<string>('roles.muted');
 		export const RestrictedReaction = T<string>('roles.restricted-reaction');
@@ -79,7 +78,6 @@ export namespace GuildSettings {
 		export const RestrictedAttachment = T<string>('roles.restricted-attachment');
 		export const RestrictedVoice = T<string>('roles.restricted-voice');
 		export const Public = T<readonly string[]>('roles.public');
-		export const Reactions = T<readonly RolesReaction[]>('roles.reactions');
 		export const RemoveInitial = T<boolean>('roles.removeInitial');
 		export const Dj = T<string>('roles.dj');
 		export const Subscriber = T<string>('roles.subscriber');
@@ -269,14 +267,16 @@ export interface StickyRole {
 	roles: readonly string[];
 }
 
+export interface ReactionRole {
+	role: string;
+	emoji: string;
+	message: string | null;
+	channel: string;
+}
+
 export interface RolesAuto {
 	id: string;
 	points: number;
-}
-
-export interface RolesReaction {
-	emoji: string;
-	role: string;
 }
 
 export interface TriggerAlias {

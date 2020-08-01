@@ -30,6 +30,7 @@ export default class extends SQLProvider {
 		.add('triggeralias', { 'extends': 'any' })
 		.add('triggerinclude', { 'extends': 'any' })
 		.add('uniqueroleset', { 'extends': 'any' })
+		.add('reactionrole', { 'extends': 'any' })
 		.add('emoji', { 'type': 'VARCHAR(128)', 'extends': 'string' })
 		.add('url', { 'type': 'VARCHAR(128)', 'extends': 'string' })
 		.add('categoryortextchannel', { 'extends': 'snowflake' });

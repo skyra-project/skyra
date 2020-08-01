@@ -21,7 +21,7 @@ const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VI
 export default class extends SkyraCommand {
 
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
-	private kChannelPrompt = this.definePrompt('<channel:textchannel>');
+	private kChannelPrompt = this.definePrompt('<channel:textChannel>');
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		// If including a flag of `--global` then revert to legacy behaviour of sending feedback
@@ -92,11 +92,11 @@ export default class extends SkyraCommand {
 		}
 
 		// Get the channel
-		const channel = await this.kChannelPrompt.createPrompt(message, {
+		const [channel] = await this.kChannelPrompt.createPrompt(message, {
 			target: message.author,
 			limit: 1,
 			time: 30000
-		}).run<TextChannel>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
+		}).run<TextChannel[]>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
 
 		if (!channel || channel.guild.id !== message.guild!.id) {
 			await message.sendLocale('RESOLVER_INVALID_CHANNELNAME');

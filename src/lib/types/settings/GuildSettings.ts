@@ -30,8 +30,8 @@ export namespace GuildSettings {
 		export namespace Ignore {
 			export const MessageDelete = T<string[]>('channels.ignore.message-delete');
 			export const MessageEdit = T<string[]>('channels.ignore.message-edit');
-			export const ReactionAdd = T<string[]>('channels.ignore.reaction-add')
-			export const All = T<string[]>('channels.ignore.all')
+			export const ReactionAdd = T<string[]>('channels.ignore.reaction-add');
+			export const All = T<string[]>('channels.ignore.all');
 		}
 	}
 

@@ -16,6 +16,7 @@ const enum ClashOfClansFetchCategories {
 }
 
 const kPlayerTagRegex = /#[A-Z0-9]{3,}/;
+const kFilterSpecialCharacters = /[^A-Z0-9]+/ig;
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
@@ -94,7 +95,7 @@ export default class extends RichDisplayCommand {
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail(player.league?.iconUrls?.medium ?? '')
-			.setAuthor(`${player.tag} - ${player.name}`, player.clan?.badgeUrls.large ?? '', `https://www.clashleaders.com/player/${player.name.toLowerCase()}-${player.tag.slice(1).toLowerCase()}`)
+			.setAuthor(`${player.tag} - ${player.name}`, player.clan?.badgeUrls.large ?? '', `https://www.clashleaders.com/player/${player.name.toLowerCase().replace(kFilterSpecialCharacters, '-')}-${player.tag.slice(1).toLowerCase()}`)
 			.setDescription([
 				`**${TITLES.XP_LEVEL}**: ${player.expLevel}`,
 				`**${TITLES.BUILDER_HALL_LEVEL}**: ${player.builderHallLevel}`,
@@ -124,7 +125,7 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => embed
 				.setThumbnail(clan.badgeUrls.large)
 				.setTitle(`${clan.tag} - ${clan.name}`)
-				.setURL(`https://www.clashleaders.com/clan/${clan.name.toLowerCase().replace(/ /g, '-')}-${clan.tag.slice(1).toLowerCase()}`)
+				.setURL(`https://www.clashleaders.com/clan/${clan.name.toLowerCase().replace(kFilterSpecialCharacters, '-')}-${clan.tag.slice(1).toLowerCase()}`)
 				.setDescription([
 					`**${TITLES.CLAN_LEVEL}**: ${clan.clanLevel}`,
 					`**${TITLES.CLAN_POINTS}**: ${clan.clanPoints}`,

@@ -804,7 +804,7 @@ export default class extends Language {
 				'A steak pun is a rare medium well done.',
 				'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
 			].join('\n')
-		}),
+		}, true),
 
 		/**
 		 * ################

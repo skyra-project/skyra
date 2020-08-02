@@ -2183,7 +2183,7 @@ export default class extends Language {
 			examples: ['']
 		}),
 
-		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild!.',
+		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild.',
 		COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
 			extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
 					amount of (local) points, an administrator must configure them through a setting command.

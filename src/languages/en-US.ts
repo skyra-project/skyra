@@ -2190,9 +2190,9 @@ export default class extends Language {
 					Note that if the role name has spaces in the name you need to put \`'quotes'\` around the name!`,
 			explainedUsage: [
 				['list', 'Lists all the current autoroles.'],
-				['add <amount> <role>', 'Add a new autorole.'],
+				['add <role> <amount>', 'Add a new autorole.'],
 				['remove <role>', 'Remove an autorole from the list.'],
-				['update <amount> <role>', 'Change the required amount of points for an existing autorole.']
+				['update <role> <amount>', 'Change the required amount of points for an existing autorole.']
 			],
 			reminder: 'The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.',
 			examples: ['list', 'add \'Trusted Member\' 20000', 'update \'Trusted Member\' 15000', 'remove \'Trusted Member\'']
@@ -4699,10 +4699,10 @@ export default class extends Language {
 				? 's'
 				: ''}: ${removed.join(', ')}\n`
 			: ''}${added.length > 0
-			? `Added the role${added.length > 1
-				? 's'
-				: ''}: ${added.join(', ')}`
-			: ''}`,
+				? `Added the role${added.length > 1
+					? 's'
+					: ''}: ${added.join(', ')}`
+				: ''}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
 		EVENTS_NAME_DIFFERENCE: (previous, next) => [

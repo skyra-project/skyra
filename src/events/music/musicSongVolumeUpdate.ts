@@ -9,12 +9,14 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('COMMAND_VOLUME_CHANGED', [
-				next > previous
+			const { language } = channel.guild;
+			const response = next >= 200
+				? language.tget('COMMAND_VOLUME_CHANGED_EXTREME', '📢', language.tget('COMMAND_VOLUME_CHANGED_TEXTS'), next)
+				: language.tget('COMMAND_VOLUME_CHANGED', next > previous
 					? (next === 200 ? '📢' : '🔊')
 					: (next === 0 ? '🔇' : '🔉'),
-				next
-			]));
+				next);
+			floatPromise(this, channel.sendMessage(response));
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {

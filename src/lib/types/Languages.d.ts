@@ -215,6 +215,8 @@ export interface LanguageKeys {
 	COMMAND_VOLUME_DESCRIPTION: string;
 	COMMAND_VOLUME_SUCCESS: (volume: number) => string;
 	COMMAND_VOLUME_CHANGED: (emoji: string, volume: number) => string;
+	COMMAND_VOLUME_CHANGED_EXTREME: (emoji: string, text: string, volume: number) => string;
+	COMMAND_VOLUME_CHANGED_TEXTS: () => string;
 	COMMAND_ABILITY_DESCRIPTION: string;
 	COMMAND_ABILITY_EXTENDED: string;
 	COMMAND_ABILITY_EMBED_DATA: {

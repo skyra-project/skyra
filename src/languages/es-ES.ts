@@ -798,6 +798,11 @@ export default class extends Language {
 			],
 			examples: ['1091', 'Curiosity']
 		}),
+		COMMAND_PUN_DESCRIPTION: 'Shows you a random pun.',
+		COMMAND_PUN_EXTENDED: [
+			'A steak pun is a rare medium well done.',
+			'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
+		].join('\n'),
 
 		/**
 		 * ################
@@ -3040,6 +3045,7 @@ export default class extends Language {
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['me quiero a mí misma mucho 😊', 'yo'],
+		COMMAND_PUN_ERROR: 'Something went wrong. Try again later.',
 		COMMAND_XKCD_COMICS: amount => `Hay ${amount} comics.`,
 		COMMAND_XKCD_NOTFOUND: 'He buscado en todos los rincones, pero no he tenido suerte encontrando este comic, ¡prueba más tarde o prueba con otro!',
 

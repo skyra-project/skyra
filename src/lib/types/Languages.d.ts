@@ -493,6 +493,8 @@ export interface LanguageKeys {
 	COMMAND_RATE_EXTENDED: string;
 	COMMAND_XKCD_DESCRIPTION: string;
 	COMMAND_XKCD_EXTENDED: string;
+	COMMAND_PUN_DESCRIPTION: string;
+	COMMAND_PUN_EXTENDED: string;
 	COMMAND_CLASHOFCLANS_DESCRIPTION: string;
 	COMMAND_CLASHOFCLANS_EXTENDED: string;
 	COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
@@ -1160,6 +1162,7 @@ export interface LanguageKeys {
 	COMMAND_LOVE_ITSELF: string;
 	COMMAND_LOVE_RESULT: string;
 	COMMAND_NORRIS_OUTPUT: string;
+	COMMAND_PUN_ERROR: string;
 	COMMAND_RATE_OUTPUT: (user: string, rate: number, emoji: string) => string;
 	COMMAND_RATE_MYSELF: [string, string];
 	COMMAND_XKCD_COMICS: (amount: number) => string;

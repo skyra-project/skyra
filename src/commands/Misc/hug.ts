@@ -39,8 +39,8 @@ export default class extends SkyraCommand {
 
 			// Draw the woman
 			.save()
-			.setTransform(-1, 0, 0, 1, 178, 146)
-			.rotate(radians(33.50))
+			.setTransform(-1, 0, 0, 1, 178, 144)
+			.rotate(radians(30))
 			.printCircularImage(hugger, 0, 0, 54)
 			.restore()
 

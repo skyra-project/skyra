@@ -449,7 +449,13 @@ export default class extends Language {
 		COMMAND_PROMOTE_SUCCESS: song => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
 		COMMAND_VOLUME_DESCRIPTION: 'Manage the volume for current song.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volume: ${volume}%`,
-		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume: ${volume}%`,
+		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume set to: ${volume}%`,
+		COMMAND_VOLUME_CHANGED_EXTREME: (emoji, text, volume) => `${emoji} ${text} set to: ${volume}%`,
+		COMMAND_VOLUME_CHANGED_TEXTS: createPick([
+			'**EXTREME VOLUME**',
+			'**AIRPLANE NACELLE-LIKE VOLUME**',
+			'**FALCON HEAVY LAUNCH-LIKE VOLUME**'
+		]),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `${REDCROSS} The queue\'s empty! The session will start as soon as we have some songs queued.`,
 		INHIBITOR_MUSIC_NOT_PLAYING: `${REDCROSS} Hmm, doesn't look like I'm playing anything right now.`,

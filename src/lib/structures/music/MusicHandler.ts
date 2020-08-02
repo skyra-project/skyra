@@ -100,7 +100,7 @@ export class MusicHandler {
 
 	public async setVolume(volume: number, context: MusicHandlerRequestContext | null = null) {
 		if (volume <= 0) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_SILENT');
-		if (volume > 200) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
+		if (volume > 300) throw this.guild.language.tget('MUSICMANAGER_SETVOLUME_LOUD');
 		await this.player!.volume(volume);
 		this.client.emit(Events.MusicSongVolumeUpdate, this, this.volume, volume, context);
 		this.volume = volume;

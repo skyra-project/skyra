@@ -457,7 +457,13 @@ export default class extends Language {
 		COMMAND_PROMOTE_SUCCESS: song => `${GREENTICK} **${song.safeTitle}** (${song}) promovido con éxito a la parte superior de la cola`,
 		COMMAND_VOLUME_DESCRIPTION: 'Controla el volumen para la canción.',
 		COMMAND_VOLUME_SUCCESS: volume => `📢 Volumen: ${volume}%`,
-		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen: ${volume}%`,
+		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen ajustado a: ${volume}%`,
+		COMMAND_VOLUME_CHANGED_EXTREME: (emoji, text, volume) => `${emoji} ${text} ajustado a: ${volume}%`,
+		COMMAND_VOLUME_CHANGED_TEXTS: createPick([
+			'**VOLUMEN EXTREMO**',
+			'**VOLUMEN TIPO NACELLE DE AVIÓN**',
+			'**VOLUMEN TIPO LANZAMIENTO DE FALCON HEAVY**'
+		]),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `${REDCROSS} ¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
 		INHIBITOR_MUSIC_NOT_PLAYING: `${REDCROSS} Hmm, no parece que esté jugando nada ahora.`,

@@ -799,10 +799,12 @@ export default class extends Language {
 			examples: ['1091', 'Curiosity']
 		}),
 		COMMAND_PUN_DESCRIPTION: 'Shows you a random pun.',
-		COMMAND_PUN_EXTENDED: [
-			'A steak pun is a rare medium well done.',
-			'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
-		].join('\n'),
+		COMMAND_PUN_EXTENDED: builder.display('pun', {
+			extendedHelp: [
+				'A steak pun is a rare medium well done.',
+				'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
+			].join('\n')
+		}),
 
 		/**
 		 * ################
@@ -4718,10 +4720,10 @@ export default class extends Language {
 				? 'Eliminado el rol'
 				: 'Eliminados los roles'}: ${removed.join(', ')}\n`
 			: ''}${added.length > 0
-			? `${added.length === 1
-				? 'Añadido el rol'
-				: 'Añadidos los roles'}: ${added.join(', ')}`
-			: ''}`,
+				? `${added.length === 1
+					? 'Añadido el rol'
+					: 'Añadidos los roles'}: ${added.join(', ')}`
+				: ''}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
 		EVENTS_NAME_DIFFERENCE: (previous, next) => [

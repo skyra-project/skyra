@@ -2199,16 +2199,16 @@ export default class extends Language {
 			examples: ['']
 		}),
 
-		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild!.',
+		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild.',
 		COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
 			extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
 					amount of (local) points, an administrator must configure them through a setting command.
 					Note that if the role name has spaces in the name you need to put \`'quotes'\` around the name!`,
 			explainedUsage: [
 				['list', 'Lists all the current autoroles.'],
-				['add <amount> <role>', 'Add a new autorole.'],
+				['add <role> <amount>', 'Add a new autorole.'],
 				['remove <role>', 'Remove an autorole from the list.'],
-				['update <amount> <role>', 'Change the required amount of points for an existing autorole.']
+				['update <role> <amount> ', 'Change the required amount of points for an existing autorole.']
 			],
 			reminder: 'The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.',
 			examples: ['list', 'add \'Trusted Member\' 20000', 'update \'Trusted Member\' 15000', 'remove \'Trusted Member\'']

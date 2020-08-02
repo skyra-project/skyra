@@ -10,7 +10,7 @@ export default class extends Event {
 
 		if (channel) {
 			const { language } = channel.guild;
-			const response = next >= 200
+			const response = next > 200
 				? language.tget('COMMAND_VOLUME_CHANGED_EXTREME', '📢', language.tget('COMMAND_VOLUME_CHANGED_TEXTS'), next)
 				: language.tget('COMMAND_VOLUME_CHANGED', next > previous
 					? (next === 200 ? '📢' : '🔊')

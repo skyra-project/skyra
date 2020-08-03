@@ -11,6 +11,7 @@ import { LanguageHelp } from '@utils/LanguageHelp';
 import { createPick, inlineCodeblock } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
+import { CATEGORIES } from '@utils/Games/TriviaManager';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
@@ -3152,6 +3153,29 @@ export default class extends Language {
 		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Girar para ${player}!\n${board}`,
 		COMMAND_TICTACTOE_WINNER: (winner, board) => `El ganador es ...${winner}!\n${board}`,
 		COMMAND_TICTACTOE_DRAW: board => `Este partido concluyó en un **empate**!\n${board}`,
+		COMMAND_TRIVIA_DESCRIPTION: 'Play a game of Trivia.',
+		COMMAND_TRIVIA_EXTENDED: builder.display('trivia', {
+			extendedHelp: [
+				'Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)',
+				'',
+				`**Categories**: ${Object.keys(CATEGORIES).join(', ')}`
+			].join('\n'),
+			explainedUsage: [
+				['category', 'The category questions are asked from.'],
+				['type', 'The type of question asked: can be boolean (true/false) or multiple choice.'],
+				['difficulty', 'The difficulty level of the questions asked.'],
+				['duration', 'The amount of time you get to answer.']
+			],
+			examples: [
+				'trivia history.',
+				'trivia books multiple easy.',
+				'trivia videogames 45.'
+			]
+		}, true),
+		COMMAND_TRIVIA_INVALID_CATEGORY: 'Invalid category: Please use `Skyra, help trivia` for a list of categories.',
+		COMMAND_TRIVIA_ACTIVE_GAME: 'A game of trivia is already being played in this channel',
+		COMMAND_TRIVIA_INCORRECT: (attempt: string) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
+		COMMAND_TRIVIA_NO_ANSWER: (correctAnswer: string) => `Looks like nobody got it! The right answer was **${correctAnswer}**.`,
 		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
 		COMMAND_VAULT_EXTENDED: builder.display('vault', {
 			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.

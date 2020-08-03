@@ -717,7 +717,7 @@ export function isTextBasedChannel(channel: Channel) {
  */
 export const shuffle = <T>(array: readonly T[]): T[] => {
 	const clone = array.slice();
-	const shuffled = [];
+	const shuffled = [] as T[];
 
 	for (const { } of array) {
 		const [value] = clone.splice(Math.floor(Math.random() * clone.length), 1);

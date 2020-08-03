@@ -2,9 +2,10 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { SUPPORT_SERVER } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel } from 'discord.js';
+import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel, Webhook } from 'discord.js';
 import type { KlasaMessage } from 'klasa';
 
 const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VIEW_CHANNEL'] as BitFieldResolvable<PermissionString>;
@@ -23,18 +24,23 @@ export default class extends SkyraCommand {
 	private kChannelPrompt = this.definePrompt('<channel:textChannel>');
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
-		// If including a flag of `--global` then revert to legacy behaviour of sending feedback
-		if (Reflect.has(message.flagArgs, 'global')) {
-			return this.client.commands.get('feedback')!.run(message, [suggestion]);
+		// If including a flag of `--global` send suggestions to #feedbacks in Skyra Lounge
+		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && this.client.webhookFeedback;
+
+		const guild = globalSuggestion ? this.client.guilds.get(SUPPORT_SERVER)! : message.guild!;
+		let suggestionsChannel: Webhook | TextChannel | undefined = undefined;
+
+		if (globalSuggestion) {
+			suggestionsChannel = this.client.webhookFeedback!;
+		} else {
+			const suggestionsChannelID = guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
+			suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel | undefined;
+			if (!suggestionsChannel?.postable)
+				throw message.language.tget('COMMAND_SUGGEST_NOPERMISSIONS', message.author.username, `<#${message.channel.id}>`);
 		}
 
-		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
-		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel | undefined;
-		if (!suggestionsChannel?.postable)
-			throw message.language.tget('COMMAND_SUGGEST_NOPERMISSIONS', message.author.username, `<#${message.channel.id}>`);
-
 		// Get the next suggestion ID
-		const suggestionID = message.guild!.settings.get(GuildSettings.Suggestions.AscendingID);
+		const suggestionID = guild.settings.get(GuildSettings.Suggestions.AscendingID);
 
 		// Post the suggestion
 		const suggestionsMessage = await suggestionsChannel.send(
@@ -49,12 +55,12 @@ export default class extends SkyraCommand {
 		);
 
 		// Increase the next id
-		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
+		await guild.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
 
 		// Add the upvote/downvote reactions
 		const reactArray = [
-			message.guild!.settings.get(GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji),
-			message.guild!.settings.get(GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji)
+			guild.settings.get(GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji),
+			guild.settings.get(GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji)
 		];
 		for (const emoji of reactArray) {
 			await suggestionsMessage.react(emoji);
@@ -65,11 +71,11 @@ export default class extends SkyraCommand {
 		await suggestions.insert({
 			id: suggestionID,
 			authorID: message.author.id,
-			guildID: message.guild!.id,
+			guildID: guild.id,
 			messageID: suggestionsMessage.id
 		});
 
-		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [suggestionsChannel]);
+		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [global ? 'the feedback channel' : suggestionsChannel]);
 	}
 
 	public async inhibit(message: KlasaMessage): Promise<boolean> {

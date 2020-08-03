@@ -11,6 +11,7 @@ import { LanguageHelp } from '@utils/LanguageHelp';
 import { createPick, inlineCodeblock } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
+import { CATEGORIES } from '@utils/Games/TriviaManager';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
@@ -3142,6 +3143,34 @@ export default class extends Language {
 		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
 		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
 		COMMAND_TICTACTOE_DRAW: board => `This match concluded in a **draw**!\n${board}`,
+		COMMAND_TRIVIA_DESCRIPTION: 'Play a game of Trivia.',
+		COMMAND_TRIVIA_EXTENDED: builder.display('trivia', {
+			extendedHelp: [
+				'Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)',
+				'',
+				`**Categories**: ${Object.keys(CATEGORIES).join(', ')}`
+			].join('\n'),
+			explainedUsage: [
+				['category', 'The category questions are asked from.'],
+				['type', 'The type of question asked: can be boolean (true/false) or multiple choice.'],
+				['difficulty', 'The difficulty level of the questions asked.'],
+				['duration', 'The amount of time you get to answer.']
+			],
+			examples: [
+				'trivia history.',
+				'trivia books multiple easy.',
+				'trivia videogames 45.'
+			]
+		}, true),
+		COMMAND_TRIVIA_INVALID_CATEGORY: 'Invalid category: Please use `Skyra, help trivia` for a list of categories.',
+		COMMAND_TRIVIA_ACTIVE_GAME: 'A game of trivia is already being played in this channel',
+		COMMAND_TRIVIA_INCORRECT: (attempt: string) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
+		COMMAND_TRIVIA_NO_ANSWER: (correctAnswer: string) => `Looks like nobody got it! The right answer was **${correctAnswer}**.`,
+		COMMAND_TRIVIA_EMBED_TITLES: {
+			TRIVIA: 'Trivia',
+			DIFFICULTY: 'Difficulty'
+		},
+		COMMAND_TRIVIA_WINNER: (winner, correctAnswer) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
 		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
 		COMMAND_VAULT_EXTENDED: builder.display('vault', {
 			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or

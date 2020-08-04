@@ -2,11 +2,9 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import TriviaManager, { CATEGORIES, QuestionType, QuestionDifficulty, QuestionData } from '@utils/Games/TriviaManager';
-import { AllHtmlEntities } from 'html-entities';
+import { decode } from 'he';
 import { shuffle } from '@utils/util';
 import { MessageEmbed, MessageCollector } from 'discord.js';
-
-const kEntities = new AllHtmlEntities();
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -28,8 +26,8 @@ export default class extends SkyraCommand {
 		const data = await TriviaManager.getQuestion(category, difficulty, questionType);
 		const possibleAnswers = questionType === QuestionType.BOOLEAN
 			? ['True', 'False']
-			: shuffle([data.correct_answer, ...data.incorrect_answers].map(ans => kEntities.decode(ans)));
-		const correctAnswer = kEntities.decode(data.correct_answer);
+			: shuffle([data.correct_answer, ...data.incorrect_answers].map(ans => decode(ans)));
+		const correctAnswer = decode(data.correct_answer);
 
 		await message.sendEmbed(this.buildQuestionEmbed(message, data, possibleAnswers));
 		const filter = (msg: KlasaMessage) => {
@@ -45,7 +43,7 @@ export default class extends SkyraCommand {
 		collector.on('collect', (collected: KlasaMessage) => {
 			if (participants.has(collected.author.id)) return;
 			const attempt = possibleAnswers[parseInt(collected.content, 10) - 1];
-			if (attempt === kEntities.decode(data.correct_answer)) {
+			if (attempt === decode(data.correct_answer)) {
 				winner = collected.author;
 				return collector.stop();
 			}
@@ -72,7 +70,7 @@ export default class extends SkyraCommand {
 			.setDescription([
 				`${TITLES.DIFFICULTY}: ${data.difficulty}`,
 				'',
-				kEntities.decode(data.question),
+				decode(data.question),
 				'',
 				questionDisplay.join('\n')
 			].join('\n'));

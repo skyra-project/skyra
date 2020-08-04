@@ -715,16 +715,13 @@ export function isTextBasedChannel(channel: Channel) {
  * Shuffles an array, returning it
  * @param array The array to shuffle
  */
-export const shuffle = <T>(array: readonly T[]): T[] => {
-	const clone = array.slice();
-	const shuffled = [] as T[];
-
-	for (const { } of array) {
-		const [value] = clone.splice(Math.floor(Math.random() * clone.length), 1);
-		shuffled.push(value);
+export const shuffle = <T>(array: T[]): T[] => {
+	let m = array.length;
+	while (m) {
+		const i = Math.floor(Math.random() * m--);
+		[array[m], array[i]] = [array[i], array[m]];
 	}
-
-	return shuffled;
+	return array;
 };
 
 /**

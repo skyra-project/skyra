@@ -1,6 +1,9 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { Emojis } from '@utils/constants';
+import { displayEntry } from '@utils/SettingsUtils';
+import { resolveEmoji } from '@utils/util';
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -24,9 +27,12 @@ export default class extends SkyraCommand {
 			const [role] = (await this.rolePrompt
 				.createPrompt(message, { time: 30000, limit: 1 })
 				.run(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
-			await message.guild!.settings.update(GuildSettings.Roles.Muted, role, {
+
+			const [update] = await message.guild!.settings.update(GuildSettings.Roles.Muted, role, {
 				extraContext: { author: message.author.id }
 			});
+			if (message.reactable) return message.react(resolveEmoji(Emojis.GreenTick)!);
+			return message.sendLocale('COMMAND_CONF_UPDATED', [GuildSettings.Roles.Muted, displayEntry(update.entry, update.next, message.guild!)]);
 		} else if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_NEW'))) {
 			await message.guild!.security.actions.muteSetup(message);
 			await message.sendLocale('COMMAND_SUCCESS');

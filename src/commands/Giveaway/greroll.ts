@@ -4,12 +4,15 @@ import { Events } from '@lib/types/Enums';
 import { kRawEmoji } from '@orm/entities/GiveawayEntity';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors } from '@utils/constants';
-import { fetchReactionUsers } from '@utils/util';
+import { fetchReactionUsers, resolveEmoji } from '@utils/util';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { FetchError } from 'node-fetch';
 
 export default class extends SkyraCommand {
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -57,7 +60,7 @@ export default class extends SkyraCommand {
 
 	private async fetchParticipants(message: KlasaMessage): Promise<string[]> {
 		try {
-			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, kRawEmoji);
+			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, this.#kResolvedEmoji);
 			users.delete(CLIENT_ID);
 			return [...users];
 		} catch (error) {

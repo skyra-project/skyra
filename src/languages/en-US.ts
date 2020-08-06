@@ -1176,7 +1176,7 @@ export default class extends Language {
 		COMMAND_SETMESSAGELOGS_EXTENDED: builder.display('setMessageLogs', {
 			extendedHelp: `This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: "Message Delete",
 					"Message Edit", and "Message Prune". All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. You
-					also need to individually set the "events" you want to listen: "events.messageDelete", "events.messageEdit", and "events.messagePrune" via the
+					also need to individually set the "events" you want to listen: "events.messageDelete" and "events.messageEdit" via the
 					"config" command.`,
 			explainedUsage: [
 				['channel', 'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.']

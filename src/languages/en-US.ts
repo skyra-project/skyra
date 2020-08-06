@@ -3891,7 +3891,7 @@ export default class extends Language {
 		},
 		COMMAND_SHOWS_DESCRIPTION: 'Searches The Movie Database for any show',
 		COMMAND_SHOWS_EXTENDED: builder.display('shows', {
-			extendedHelp: 'This command queries TheMovieDatabase for data on your favorute shows',
+			extendedHelp: 'This command queries TheMovieDatabase for data on your favorite shows',
 			explainedUsage: [
 				['query', 'The name of the show']
 			],
@@ -4699,10 +4699,10 @@ export default class extends Language {
 				? 's'
 				: ''}: ${removed.join(', ')}\n`
 			: ''}${added.length > 0
-			? `Added the role${added.length > 1
-				? 's'
-				: ''}: ${added.join(', ')}`
-			: ''}`,
+				? `Added the role${added.length > 1
+					? 's'
+					: ''}: ${added.join(', ')}`
+				: ''}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
 		EVENTS_NAME_DIFFERENCE: (previous, next) => [

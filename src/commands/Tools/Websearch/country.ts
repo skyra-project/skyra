@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 		for (const country of countries) {
 			display.addPage((embed: MessageEmbed) => embed
 				.setTitle(mapNativeName(country))
-				.setImage(`https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/${country.alpha2Code.toLowerCase()}.png`)
+				.setThumbnail(`https://raw.githubusercontent.com/hjnilsson/country-flags/master/png250px/${country.alpha2Code.toLowerCase()}.png`)
 				.setFooter(`Timezone: ${country.timezone}`)
 				.addField(titles.OVERVIEW, [
 					`${fieldsData.OVERVIEW.OFFICIAL_NAME}: ${country.altSpellings[2] ?? country.name}`,

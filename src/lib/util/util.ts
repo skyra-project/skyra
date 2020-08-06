@@ -295,7 +295,7 @@ export async function fetchReactionUsers(client: Client, channelID: string, mess
 		rawUsers = await api(client)
 			.channels(channelID)
 			.messages(messageID)
-			.reactions(reaction)
+			.reactions(client.emojis.resolveIdentifier(reaction)!)
 			.get<APIUserData[]>({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } });
 		for (const user of rawUsers) users.add(user.id);
 	} while (rawUsers.length === 100);

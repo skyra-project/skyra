@@ -33,7 +33,7 @@ export default class extends RichDisplayCommand {
 
 			await message.sendEmbed(this.buildQuestionEmbed(message, data, possibleAnswers));
 			const filter = (msg: KlasaMessage) => {
-				const num = parseInt(msg.content, 10);
+				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
 			const collector = new MessageCollector(message.channel, filter, { time: duration * 1000 });

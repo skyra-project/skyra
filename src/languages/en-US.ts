@@ -3788,6 +3788,31 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: `The argument you provided is not a valid emoji.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
+		COMMAND_COUNTRY_DESCRIPTION: 'Shows information about a country.',
+		COMMAND_COUNTRY_EXTENDED: builder.display('country', {
+			extendedHelp: 'This command uses https://restcountries.eu to get information on the provided country.',
+			explainedUsage: [['country', 'The name of the country.']],
+			examples: [
+				'United Kingdom'
+			]
+		}),
+		COMMAND_COUNTRY_TITLES: {
+			OVERVIEW: 'Overview',
+			LANGUAGES: 'Languages',
+			OTHER: 'Other'
+		},
+		COMMAND_COUNTRY_FIELDS: {
+			OVERVIEW: {
+				OFFICIAL_NAME: 'Official Name',
+				CAPITAL: 'Capital',
+				POPULATION: 'Population'
+			},
+			OTHER: {
+				DEMONYM: 'Demonym',
+				AREA: 'Area',
+				CURRENCIES: 'Currencies'
+			}
+		},
 		COMMAND_ESHOP_DESCRIPTION: 'Request information for any American Nintendo Digital Store',
 		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
 			extendedHelp: 'This command queries Nintendo of America to show data for the game you request.',

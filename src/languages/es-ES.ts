@@ -3801,6 +3801,31 @@ export default class extends Language {
 		].join('\n'),
 		COMMAND_EMOJI_INVALID: `El argumento que escribiste no es un emoji válido.`,
 		COMMAND_EMOJI_TOO_LARGE: emoji => `'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
+		COMMAND_COUNTRY_DESCRIPTION: 'Shows information about a country.',
+		COMMAND_COUNTRY_EXTENDED: builder.display('country', {
+			extendedHelp: 'This command uses https://restcountries.eu to get information on the provided country.',
+			explainedUsage: [['country', 'The name of the country.']],
+			examples: [
+				'United Kingdom'
+			]
+		}),
+		COMMAND_COUNTRY_TITLES: {
+			OVERVIEW: 'Overview',
+			LANGUAGES: 'Languages',
+			OTHER: 'Other'
+		},
+		COMMAND_COUNTRY_FIELDS: {
+			OVERVIEW: {
+				OFFICIAL_NAME: 'Official Name',
+				CAPITAL: 'Capital',
+				POPULATION: 'Population'
+			},
+			OTHER: {
+				DEMONYM: 'Demonym',
+				AREA: 'Area',
+				CURRENCIES: 'Currencies'
+			}
+		},
 		COMMAND_ESHOP_DESCRIPTION: 'Solicite información para cualquier tienda digital estadounidense de Nintendo',
 		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
 			extendedHelp: 'Este comando consulta a Nintendo of America para mostrar los datos del juego que solicitas.',

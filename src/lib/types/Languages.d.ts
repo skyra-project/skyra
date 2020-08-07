@@ -882,6 +882,25 @@ export interface LanguageKeys {
 	COMMAND_CONTENT_EXTENDED: string;
 	COMMAND_EMOJI_DESCRIPTION: string;
 	COMMAND_EMOJI_EXTENDED: string;
+	COMMAND_COUNTRY_DESCRIPTION: string;
+	COMMAND_COUNTRY_EXTENDED: string;
+	COMMAND_COUNTRY_TITLES: {
+		OVERVIEW: string;
+		LANGUAGES: string;
+		OTHER: string;
+	};
+	COMMAND_COUNTRY_FIELDS: {
+		OVERVIEW: {
+			OFFICIAL_NAME: string;
+			CAPITAL: string;
+			POPULATION: string;
+		};
+		OTHER: {
+			DEMONYM: string;
+			AREA: string;
+			CURRENCIES: string;
+		};
+	};
 	COMMAND_ESHOP_DESCRIPTION: string;
 	COMMAND_ESHOP_EXTENDED: string;
 	COMMAND_ESHOP_NOT_IN_DATABASE: string;

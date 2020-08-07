@@ -31,12 +31,9 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchAPI(message: KlasaMessage, countryName: string) {
-		const apiResult = await fetch<CountryApiResult>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`)
+		const apiResult = await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`)
 			.catch(() => { throw message.language.tget('SYSTEM_QUERY_FAIL'); });
-		if (Reflect.has(apiResult, 'status') && (apiResult as CountryResultError).status === 404) {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
-		}
-		return apiResult as CountryResultOk;
+		return apiResult;
 	}
 
 	private async buildDisplay(message: KlasaMessage, countries: CountryResultOk) {
@@ -66,13 +63,6 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-}
-
-export type CountryApiResult = CountryResultOk | CountryResultError;
-
-export interface CountryResultError {
-	status: number;
-	message: string;
 }
 
 export type CountryResultOk = CountryData[];

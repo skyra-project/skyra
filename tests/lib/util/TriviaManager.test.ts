@@ -1,5 +1,5 @@
 import nock = require('nock');
-import TriviaManager, { QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
+import { QuestionDifficulty, QuestionType, getQuestion } from '@utils/Games/TriviaManager';
 
 describe('TriviaManager', () => {
 	// eslint-disable-next-line @typescript-eslint/init-declarations
@@ -29,10 +29,10 @@ describe('TriviaManager', () => {
 	});
 
 	test('getQuestion', async () => {
-		const data = await TriviaManager.getQuestion(9, QuestionDifficulty.EASY, QuestionType.BOOLEAN);
+		const data = await getQuestion(9, QuestionDifficulty.Easy, QuestionType.Boolean);
 		expect(data.category).toBe('General Knowledge');
-		expect(data.difficulty).toBe(QuestionDifficulty.EASY);
-		expect(data.type).toBe(QuestionType.BOOLEAN);
+		expect(data.difficulty).toBe(QuestionDifficulty.Easy);
+		expect(data.type).toBe(QuestionType.Boolean);
 		expect(data.question).toBe('You can legally drink alcohol while driving in Mississippi.');
 		expect(data.correct_answer).toBe('True');
 		expect(data.incorrect_answers).toStrictEqual(['False']);

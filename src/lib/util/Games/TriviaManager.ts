@@ -1,24 +1,16 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
 import { fetch, FetchResultTypes } from '@utils/util';
 
-/**
- * This class will also be used for handling complete games of Trivia
- */
-// eslint-disable-next-line @typescript-eslint/no-extraneous-class
-export default class TriviaManager {
+export async function getQuestion(category: number, difficulty = QuestionDifficulty.Easy, questionType = QuestionType.Multiple) {
+	const url = new URL('https://opentdb.com/api.php');
+	url.searchParams.append('amount', '1');
+	url.searchParams.append('category', category.toString());
+	url.searchParams.append('difficulty', difficulty);
+	url.searchParams.append('type', questionType);
 
-	public static async getQuestion(category: number, difficulty = QuestionDifficulty.EASY, questionType = QuestionType.MULTIPLE) {
-		const url = new URL('https://opentdb.com/api.php');
-		url.searchParams.append('amount', '1');
-		url.searchParams.append('category', category.toString());
-		url.searchParams.append('difficulty', difficulty);
-		url.searchParams.append('type', questionType);
-
-		const { response_code, results } = await fetch<TriviaResultOk>(url, FetchResultTypes.JSON);
-		if (response_code === 0 && results.length) return results[0];
-		throw new Error('Invalid request');
-	}
-
+	const { response_code, results } = await fetch<TriviaResultOk>(url, FetchResultTypes.JSON);
+	if (response_code === 0 && results.length) return results[0];
+	throw new Error('Invalid request');
 }
 
 export interface TriviaResultOk {
@@ -39,14 +31,14 @@ export interface QuestionData {
 }
 
 export const enum QuestionType {
-	BOOLEAN = 'boolean',
-	MULTIPLE = 'multiple'
+	Boolean = 'boolean',
+	Multiple = 'multiple'
 }
 
 export const enum QuestionDifficulty {
-	EASY = 'easy',
-	MEDIUM = 'medium',
-	HARD = 'hard'
+	Easy = 'easy',
+	Medium = 'medium',
+	Hard = 'hard'
 }
 
 export const CATEGORIES = {

@@ -63,7 +63,6 @@ export default class extends RichDisplayCommand {
 
 	public async player(message: KlasaMessage, [player]: [string]) {
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(message, player, ClashOfClansFetchCategories.PLAYERS);
-
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 

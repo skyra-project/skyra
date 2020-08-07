@@ -1269,6 +1269,17 @@ export interface LanguageKeys {
 	COMMAND_TICTACTOE_TURN: (icon: string, player: string, board: string) => string;
 	COMMAND_TICTACTOE_WINNER: (winner: string, board: string) => string;
 	COMMAND_TICTACTOE_DRAW: (board: string) => string;
+	COMMAND_TRIVIA_DESCRIPTION: string;
+	COMMAND_TRIVIA_EXTENDED: string;
+	COMMAND_TRIVIA_INVALID_CATEGORY: string;
+	COMMAND_TRIVIA_ACTIVE_GAME: string;
+	COMMAND_TRIVIA_INCORRECT: (attempt: string) => string;
+	COMMAND_TRIVIA_NO_ANSWER: (correctAnswer: string) => string;
+	COMMAND_TRIVIA_EMBED_TITLES: {
+		TRIVIA: string;
+		DIFFICULTY: string;
+	};
+	COMMAND_TRIVIA_WINNER: (winner: string, correctAnswer: string) => string;
 	COMMAND_VAULT_DESCRIPTION: string;
 	COMMAND_VAULT_EXTENDED: string;
 	COMMAND_VAULT_EMBED_DATA: {

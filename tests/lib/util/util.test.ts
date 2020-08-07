@@ -826,4 +826,13 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('shuffle', () => {
+		test('GIVEN an array, shuffles it properly', () => {
+			const array = [0, 1, 2, 3, 4, 5];
+			const shuffled = utils.shuffle(array.slice());
+			expect(shuffled.length).toBe(array.length);
+			expect(array === shuffled).toBe(false);
+		});
+	});
+
 });

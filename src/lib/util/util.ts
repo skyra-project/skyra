@@ -712,6 +712,19 @@ export function isTextBasedChannel(channel: Channel) {
 }
 
 /**
+ * Shuffles an array, returning it
+ * @param array The array to shuffle
+ */
+export const shuffle = <T>(array: T[]): T[] => {
+	let m = array.length;
+	while (m) {
+		const i = Math.floor(Math.random() * m--);
+		[array[m], array[i]] = [array[i], array[m]];
+	}
+	return array;
+};
+
+/**
  * Checks whether or not a value is null or undefined
  * @param value The value to check
  */

@@ -27,7 +27,7 @@ Skyra currently has the following microservices that can be dockerized:
 	2. Fill in `SAELEM_REDIS_PASSWORD` as desired. This should match the values in [`redis.local.conf`]
 	3. Fill in `SAELEM_REDIS_HOST` as desired. The default of `host.docker.internal` works on Windows and MacOs, for Linux use `172.17.0.1`
 	3. Fill in `SAELEM_REDIS_DATABASE` as desired, this should be a number between 0 and 16.  
-	note: ***do not edit the SAELEM_REDIS_PORT***
+	Note: ***DO NOT edit the SAELEM_REDIS_PORT***
 - InfluxDB
   - Service name in docker-compose: `influx`
   - Image used: `quay.io/influxdb/influxdb:2.0.0-beta`
@@ -48,9 +48,9 @@ Skyra currently has the following microservices that can be dockerized:
   - Image used: `redis:alpine`
   - For more information see [redis]
   - Additional instructions
-    1. Copy the [`redis.conf`] file in [`configs`] directory and rename the copy to [`redis.local.conf`]
-	2. Fill in a password as desired. This should match the values in [`.env.local`]  
-	note: ***do not edit the port!***
+    1. Copy the [`redis.conf`] file in the [`configs`] directory and rename the new file to [`redis.local.conf`]
+	2. Fill in the password as desired. This should match the values in [`.env.local`]  
+	Note: ***DO NOT edit the port!***
 
 <!-- Link dump -->
 

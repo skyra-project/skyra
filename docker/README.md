@@ -22,6 +22,12 @@ Skyra currently has the following microservices that can be dockerized:
   - Service name in docker-compose: `saelem`
   - Image used: `skyrabot/saelem/saelem:main`
   - For more information see [skyra-project/saelem]
+  - Additional instructions
+    1. Copy the [`.env`] file in [`configs`] directory and rename the copy to [`.env.local`]
+	2. Fill in `SAELEM_REDIS_PASSWORD` as desired. This should match the values in [`redis.local.conf`]
+	3. Fill in `SAELEM_REDIS_HOST` as desired. The default of `host.docker.internal` works on Windows and MacOs, for Linux use `172.17.0.1`
+	3. Fill in `SAELEM_REDIS_DATABASE` as desired, this should be a number between 0 and 16.  
+	note: ***do not edit the SAELEM_REDIS_PORT***
 - InfluxDB
   - Service name in docker-compose: `influx`
   - Image used: `quay.io/influxdb/influxdb:2.0.0-beta`
@@ -37,12 +43,26 @@ Skyra currently has the following microservices that can be dockerized:
 	1. Open the "Tokens" tab in the new view
 	1. Click on your token, which should be YourUsername's Token (YourUsername being what you entered before as the username)
 	1. Click the "Copy to clipboard" button then paste set that value for `INFLUX_TOKEN` in [the config file]
+- Redis
+  - Service name in docker-compose: `redis`
+  - Image used: `redis:alpine`
+  - For more information see [redis]
+  - Additional instructions
+    1. Copy the [`redis.conf`] file in [`configs`] directory and rename the copy to [`redis.local.conf`]
+	2. Fill in a password as desired. This should match the values in [`.env.local`]  
+	note: ***do not edit the port!***
 
 <!-- Link dump -->
 
-[skyra-project/docker-images]: https://github.com/skyra-project/docker-images
+[`.env.local`]:                ./configs/.env.local
+[`.env`]:                      ./configs/.env
+[`configs`]:                   ./configs/
+[`redis.conf`]:                ./configs/redis.conf
+[`redis.local.conf`]:          ./configs/redis.local.conf
 [favware/graphql-pokemon]:     https://github.com/favware/graphql-pokemon
-[skyra-project/saelem]:        https://github.com/skyra-project/saelem
 [influxdb]:                    https://v2.docs.influxdata.com/v2.0/get-started/#download-and-run-influxdb-v2-0-beta
 [locahost:8285]:               http://localhost:8285
+[redis]:                       https://hub.docker.com/_/redis
+[skyra-project/docker-images]: https://github.com/skyra-project/docker-images
+[skyra-project/saelem]:        https://github.com/skyra-project/saelem
 [the config file]:             ../src/config.ts

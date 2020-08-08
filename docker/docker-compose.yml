@@ -23,7 +23,7 @@ services:
       - "2333:2333"
   saelem:
     container_name: saelem
-    image: skyrabot/saelem:feat-add-caching
+    image: skyrabot/saelem:main
     restart: always
     ports:
       - "8284:8080"

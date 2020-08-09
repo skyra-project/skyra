@@ -42,7 +42,6 @@ core-js/es6/
 core-js/es7/
 core-js/fn/
 core-js/stage/
-core-js/web/
 core-js/build/
 
 ## Packages that publish too much shit

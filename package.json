@@ -81,6 +81,8 @@
 		"zlib-sync": "^0.1.7"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^9.1.1",
+		"@commitlint/config-conventional": "^9.1.1",
 		"@discordjs/collection": "^0.1.5",
 		"@favware/graphql-pokemon": "^4.2.4",
 		"@klasa/dapi-types": "^0.3.0",
@@ -96,13 +98,20 @@
 		"@types/node-fetch": "^2.5.7",
 		"@types/pg": "^7.14.4",
 		"@types/ws": "^7.2.6",
+
 		"@typescript-eslint/eslint-plugin": "^3.8.0",
 		"@typescript-eslint/parser": "^3.8.0",
 		"chokidar": "^3.4.2",
+		"cz-conventional-changelog": "^3.2.0",
 		"eslint": "^7.5.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.4",
 		"jest": "^26.1.0",
 		"jest-circus": "^26.1.0",
+		"lint-staged": "^10.2.11",
 		"nock": "^13.0.2",
+		"prettier": "^2.0.5",
+		"pretty-quick": "^2.0.1",
 		"ts-jest": "^26.1.3",
 		"typescript": "^3.9.7"
 	},

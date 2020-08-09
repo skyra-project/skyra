@@ -14,7 +14,6 @@ const BLACKLISTED_CODES = [
 ];
 
 export default class extends Event {
-
 	public async run(message: KlasaMessage, command: Command, _: string[], error: string | Error) {
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
@@ -49,9 +48,9 @@ export default class extends Event {
 		// Emit where the error was emitted
 		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
-			await message.alert(this.client.options.owners.includes(message.author.id)
-				? codeBlock('js', error.stack!)
-				: message.language.tget('EVENTS_ERROR_WTF'));
+			await message.alert(
+				this.client.options.owners.includes(message.author.id) ? codeBlock('js', error.stack!) : message.language.tget('EVENTS_ERROR_WTF')
+			);
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);
 		}
@@ -76,11 +75,13 @@ export default class extends Event {
 		}
 
 		try {
-			await this.client.webhookError.send(new MessageEmbed()
-				.setDescription(output)
-				.setColor(Colors.Red)
-				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
-				.setTimestamp());
+			await this.client.webhookError.send(
+				new MessageEmbed()
+					.setDescription(output)
+					.setColor(Colors.Red)
+					.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
+					.setTimestamp()
+			);
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);
 		}
@@ -89,5 +90,4 @@ export default class extends Event {
 	private _getWarnError(message: KlasaMessage) {
 		return `ERROR: /${message.guild ? `${message.guild.id}/${message.channel.id}` : `DM/${message.author.id}`}/${message.id}`;
 	}
-
 }

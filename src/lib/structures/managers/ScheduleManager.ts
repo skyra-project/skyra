@@ -10,7 +10,6 @@ import { KlasaClient } from 'klasa';
 import { DbSet } from '../DbSet';
 
 export class ScheduleManager {
-
 	public readonly client: KlasaClient;
 	public queue: ScheduleEntity[] = [];
 	#interval: NodeJS.Timer | null = null;
@@ -46,7 +45,7 @@ export class ScheduleManager {
 
 	public async remove(entityOrID: ScheduleEntity | number) {
 		if (typeof entityOrID === 'number') {
-			entityOrID = this.queue.find(entity => entity.id === entityOrID)!;
+			entityOrID = this.queue.find((entity) => entity.id === entityOrID)!;
 			if (!entityOrID) return false;
 		}
 
@@ -75,7 +74,7 @@ export class ScheduleManager {
 	}
 
 	private _insert(entity: ScheduleEntity) {
-		const index = this.queue.findIndex(entry => entry.time > entity.time);
+		const index = this.queue.findIndex((entry) => entry.time > entity.time);
 		if (index === -1) this.queue.push(entity);
 		else this.queue.splice(index, 0, entity);
 
@@ -83,7 +82,7 @@ export class ScheduleManager {
 	}
 
 	private _remove(entity: ScheduleEntity) {
-		const index = this.queue.findIndex(entry => entry === entity);
+		const index = this.queue.findIndex((entry) => entry === entity);
 		if (index !== -1) this.queue.splice(index, 1);
 	}
 
@@ -132,7 +131,7 @@ export class ScheduleManager {
 
 			// - Update indexes
 			for (const entry of updated) {
-				const index = this.queue.findIndex(entity => entity === entry);
+				const index = this.queue.findIndex((entity) => entity === entry);
 				if (index === -1) continue;
 
 				this.queue.splice(index, 1);
@@ -148,7 +147,7 @@ export class ScheduleManager {
 			await queryRunner.rollbackTransaction();
 
 			// Reload all entities
-			await Promise.all(updated.map(entry => entry.reload()));
+			await Promise.all(updated.map((entry) => entry.reload()));
 		} finally {
 			// Release transaction
 			await queryRunner.release();
@@ -187,7 +186,6 @@ export class ScheduleManager {
 		}
 		throw new Error('invalid time passed');
 	}
-
 }
 
 export interface ScheduleManagerAddOptions {

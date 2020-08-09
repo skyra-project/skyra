@@ -5,7 +5,6 @@ import { LavalinkExceptionEvent } from '@utils/LavalinkUtils';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	private kHeader = new Colors({ text: 'magenta' }).format('[LAVALINK]');
 
 	public run(manager: MusicHandler, payload: LavalinkExceptionEvent) {
@@ -19,5 +18,4 @@ export default class extends Event {
 			]);
 		}
 	}
-
 }

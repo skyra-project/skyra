@@ -15,18 +15,17 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: language => language.tget('COMMAND_ESHOP_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_ESHOP_EXTENDED'),
+	description: (language) => language.tget('COMMAND_ESHOP_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_ESHOP_EXTENDED'),
 	usage: '<gameName:string>'
 })
 export default class extends RichDisplayCommand {
-
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const { results: entries } = await this.fetchAPI(message, gameName);
 		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
@@ -38,22 +37,21 @@ export default class extends RichDisplayCommand {
 
 	private async fetchAPI(message: KlasaMessage, gameName: string) {
 		try {
-			return fetch<EshopResult>(API_URL, {
-				method: FetchMethods.Post,
-				headers: {
-					'Content-Type': Mime.Types.ApplicationJson,
-					'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
-					'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
-				},
-				body: JSON.stringify(
-					{
+			return fetch<EshopResult>(
+				API_URL,
+				{
+					method: FetchMethods.Post,
+					headers: {
+						'Content-Type': Mime.Types.ApplicationJson,
+						'X-Algolia-API-Key': TOKENS.NINTENDO_KEY,
+						'X-Algolia-Application-Id': TOKENS.NINTENDO_ID
+					},
+					body: JSON.stringify({
 						requests: [
 							{
 								indexName: 'noa_aem_game_en_us',
 								params: stringify({
-									facetFilters: [
-										'type:game'
-									],
+									facetFilters: ['type:game'],
 									hitsPerPage: 10,
 									maxValuesPerFacet: 30,
 									page: 0,
@@ -61,9 +59,10 @@ export default class extends RichDisplayCommand {
 								})
 							}
 						]
-					}
-				)
-			}, FetchResultTypes.JSON);
+					})
+				},
+				FetchResultTypes.JSON
+			);
 		} catch {
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
 		}
@@ -71,36 +70,37 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_ESHOP_TITLES');
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
 			const price = game.msrp ? message.language.tget('COMMAND_ESHOP_PRICE', game.msrp) : 'TBD';
 			const esrbText = game.esrb
-				? [
-					`**${game.esrb}**`,
-					game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''
-				].join('')
+				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
 				: message.language.tget('COMMAND_ESHOP_NOT_IN_DATABASE');
 
-			display.addPage((embed: MessageEmbed) => embed
-				.setTitle(game.title)
-				.setURL(`https://nintendo.com${game.url}`)
-				.setThumbnail(`https://nintendo.com${game.boxArt}`)
-				.setDescription(description)
-				.addField(titles.PRICE, price, true)
-				.addField(titles.AVAILABILITY, game.availability[0], true)
-				.addField(titles.RELEASE_DATE, game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask), true)
-				.addField(titles.NUMBER_OF_PLAYERS, toTitleCase(game.players), true)
-				.addField(titles.PLATFORM, game.platform, true)
-				.addField(titles.NSUID, game.nsuid || 'TBD', true)
-				.addField(titles.ESRB, esrbText)
-				.addField(titles.CATEGORIES, game.categories.join(', ') || titles.NO_CATEGORIES));
+			display.addPage((embed: MessageEmbed) =>
+				embed
+					.setTitle(game.title)
+					.setURL(`https://nintendo.com${game.url}`)
+					.setThumbnail(`https://nintendo.com${game.boxArt}`)
+					.setDescription(description)
+					.addField(titles.PRICE, price, true)
+					.addField(titles.AVAILABILITY, game.availability[0], true)
+					.addField(
+						titles.RELEASE_DATE,
+						game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask),
+						true
+					)
+					.addField(titles.NUMBER_OF_PLAYERS, toTitleCase(game.players), true)
+					.addField(titles.PLATFORM, game.platform, true)
+					.addField(titles.NSUID, game.nsuid || 'TBD', true)
+					.addField(titles.ESRB, esrbText)
+					.addField(titles.CATEGORIES, game.categories.join(', ') || titles.NO_CATEGORIES)
+			);
 		}
 		return display;
 	}
-
 }
 
 interface EShopHit {
@@ -136,7 +136,6 @@ interface EShopHit {
 	availability: string[];
 	objectID: string;
 }
-
 
 interface EshopData {
 	hits: EShopHit[];

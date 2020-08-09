@@ -9,7 +9,6 @@ import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.MessageReactionRemoveEmoji, emitter: store.client.ws });
 	}
@@ -23,7 +22,8 @@ export default class extends Event {
 		// Delete entry from starboard if it exists
 		try {
 			const { starboards } = await DbSet.connect();
-			const results = await starboards.createQueryBuilder()
+			const results = await starboards
+				.createQueryBuilder()
 				.delete()
 				.where('guild_id = :guild', { guild: data.guild_id })
 				.andWhere('message_id = :message', { message: data.message_id })
@@ -38,7 +38,9 @@ export default class extends Event {
 				const channel = guild.settings.get(GuildSettings.Starboard.Channel);
 				if (!channel) return;
 
-				await api(this.client).channels(channel).messages(result.star_message_id)
+				await api(this.client)
+					.channels(channel)
+					.messages(result.star_message_id)
 					.delete({ reason: 'Starboard Management: Reactions Cleared' })
 					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 			}
@@ -46,5 +48,4 @@ export default class extends Event {
 			this.client.emit(Events.Wtf, error);
 		}
 	}
-
 }

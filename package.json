@@ -11,7 +11,7 @@
 		"pm2:dev": "yarn pm2:start --env development",
 		"pm2:stop": "pm2 stop Skyra",
 		"start": "node dist/Skyra.js",
-		"lint": "eslint src tests --ext ts --fix",
+		"lint": "eslint --fix src tests --ext ts",
 		"format": "prettier --write src/**/*.ts",
 		"format:check": "prettier --check src/**/*.ts",
 		"test": "jest",
@@ -158,7 +158,8 @@
 		"*.ts": [
 			"prettier --write",
 			"eslint --fix --ext ts"
-		]
+		],
+		"*.{js,ts,mjs,yml,yaml,md,rmd,mkd,mkdn,mdwn,mdown,markdown,litcoffee,ps1}": "eclint fix src tests scripts docker .github"
 	},
 	"config": {
 		"commitizen": {

@@ -6,7 +6,6 @@ import { Permissions } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
@@ -21,7 +20,7 @@ export default class extends SkyraCommand {
 			if (cancel === 'cancel') return null;
 			if (!arg) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
 
-			const restString = await this.client.arguments.get('...string')!.run(arg, possible, message) as string;
+			const restString = (await this.client.arguments.get('...string')!.run(arg, possible, message)) as string;
 			return this.client.arguments.get('timespan')!.run(restString, possible, message);
 		});
 	}
@@ -35,9 +34,9 @@ export default class extends SkyraCommand {
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
-		const task = this.client.schedules.queue.find(tk => tk.data
-			&& tk.data[Moderation.SchemaKeys.Case] === entry.caseID
-			&& tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id)!;
+		const task = this.client.schedules.queue.find(
+			(tk) => tk.data && tk.data[Moderation.SchemaKeys.Case] === entry.caseID && tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id
+		)!;
 
 		if (cancel) {
 			if (!task) throw message.language.tget('COMMAND_TIME_NOT_SCHEDULED');
@@ -66,13 +65,16 @@ export default class extends SkyraCommand {
 		switch (modlog.type) {
 			case Moderation.TypeCodes.FastTemporaryBan:
 			case Moderation.TypeCodes.TemporaryBan:
-			case Moderation.TypeCodes.Ban: return this.checkBan(message, user);
+			case Moderation.TypeCodes.Ban:
+				return this.checkBan(message, user);
 			case Moderation.TypeCodes.FastTemporaryMute:
 			case Moderation.TypeCodes.TemporaryMute:
-			case Moderation.TypeCodes.Mute: return this.checkMute(message, user);
+			case Moderation.TypeCodes.Mute:
+				return this.checkMute(message, user);
 			case Moderation.TypeCodes.FastTemporaryVoiceMute:
 			case Moderation.TypeCodes.TemporaryVoiceMute:
-			case Moderation.TypeCodes.VoiceMute: return this.checkVMute(message, user);
+			case Moderation.TypeCodes.VoiceMute:
+				return this.checkVMute(message, user);
 			case Moderation.TypeCodes.Warning:
 			case Moderation.TypeCodes.FastTemporaryWarning:
 			case Moderation.TypeCodes.TemporaryWarning:
@@ -91,14 +93,16 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.TemporaryRestrictionReaction:
 			case Moderation.TypeCodes.RestrictionVoice:
 			case Moderation.TypeCodes.FastTemporaryRestrictionVoice:
-			case Moderation.TypeCodes.TemporaryRestrictionVoice: return;
-			default: throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
+			case Moderation.TypeCodes.TemporaryRestrictionVoice:
+				return;
+			default:
+				throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}
 
 	private async checkBan(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.tget('COMMAND_UNBAN_MISSING_PERMISSION');
-		if (!await message.guild!.security.actions.userIsBanned(user)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
+		if (!(await message.guild!.security.actions.userIsBanned(user))) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 	}
 
 	private checkMute(message: KlasaMessage, user: KlasaUser) {
@@ -108,7 +112,6 @@ export default class extends SkyraCommand {
 
 	private async checkVMute(message: KlasaMessage, user: KlasaUser) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.tget('COMMAND_VMUTE_MISSING_PERMISSION');
-		if (!await message.guild!.security.actions.userIsVoiceMuted(user)) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
+		if (!(await message.guild!.security.actions.userIsVoiceMuted(user))) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
 	}
-
 }

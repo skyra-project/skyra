@@ -18,12 +18,11 @@ import type { SkyraClient } from '@lib/SkyraClient';
 import { LavalinkNodeOptions, Manager as LavacordManager, ManagerOptions } from 'lavacord';
 
 export class Manager extends LavacordManager {
-
 	public constructor(public readonly client: SkyraClient, nodes: LavalinkNodeOptions[], options?: ManagerOptions) {
 		super(nodes, options || {});
 		this.client = client;
 
-		this.send = packet => {
+		this.send = (packet) => {
 			const guild = this.client.guilds.get(packet.d.guild_id);
 			if (guild) return guild.shard.send(packet);
 		};
@@ -33,5 +32,4 @@ export class Manager extends LavacordManager {
 			this.shards = client.options.shardCount || 1;
 		});
 	}
-
 }

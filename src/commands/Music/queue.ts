@@ -11,37 +11,33 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['q', 'playing-time', 'pt'],
-	description: language => language.tget('COMMAND_QUEUE_DESCRIPTION'),
+	description: (language) => language.tget('COMMAND_QUEUE_DESCRIPTION'),
 	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export default class extends MusicCommand {
-
 	public async run(message: KlasaMessage) {
 		const { queue, song } = message.guild!.music;
 
 		if (song === null && queue.length === 0) throw message.language.tget('COMMAND_QUEUE_EMPTY');
 
 		// Send the loading message
-		const response = await message.send(new MessageEmbed()
-			.setColor(BrandingColors.Secondary)
-			.setDescription(message.language.tget('SYSTEM_LOADING')));
+		const response = await message.send(
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(message.language.tget('SYSTEM_LOADING'))
+		);
 
 		// Generate the pages with 5 songs each
-		const queueDisplay = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTitle(message.language.tget('COMMAND_QUEUE_TITLE', message.guild!.name)));
+		const queueDisplay = new UserRichDisplay(
+			new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(message.language.tget('COMMAND_QUEUE_TITLE', message.guild!.name))
+		);
 
 		if (song) {
-			const nowPlayingDescription = message.language.tget(
-				'COMMAND_QUEUE_NOWPLAYING',
-				{
-					duration: song.stream ? null : song.friendlyDuration,
-					title: song.safeTitle,
-					url: song.url,
-					requester: await song.fetchRequesterName(),
-					timeRemaining: song.stream ? null : showSeconds(message.guild!.music.trackRemaining)
-				}
-			);
+			const nowPlayingDescription = message.language.tget('COMMAND_QUEUE_NOWPLAYING', {
+				duration: song.stream ? null : song.friendlyDuration,
+				title: song.safeTitle,
+				url: song.url,
+				requester: await song.fetchRequesterName(),
+				timeRemaining: song.stream ? null : showSeconds(message.guild!.music.trackRemaining)
+			});
 
 			queueDisplay.embedTemplate.addField(message.language.tget('COMMAND_QUEUE_NOWPLAYING_TITLE'), nowPlayingDescription);
 		}
@@ -84,5 +80,4 @@ export default class extends MusicCommand {
 
 		return accumulator;
 	}
-
 }

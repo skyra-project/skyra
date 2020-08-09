@@ -8,7 +8,6 @@ const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
 
 export default class extends SkyraCommand {
-
 	private readonly channels: Set<string> = new Set();
 	private prompt: Usage;
 
@@ -16,8 +15,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ttt'],
 			cooldown: 10,
-			description: language => language.tget('COMMAND_TICTACTOE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TICTACTOE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_TICTACTOE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_TICTACTOE_EXTENDED'),
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -34,12 +33,17 @@ export default class extends SkyraCommand {
 		this.channels.add(message.channel.id);
 
 		try {
-			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.tget('COMMAND_TICTACTOE_PROMPT', message.author.toString(), user.toString()));
+			const [response] = await this.prompt
+				.createPrompt(message, { target: user })
+				.run(message.language.tget('COMMAND_TICTACTOE_PROMPT', message.author.toString(), user.toString()));
 			if (response) {
 				try {
-					await this.game(message.responses[0], [message.author, user].sort(() => Math.random() - 0.5));
+					await this.game(
+						message.responses[0],
+						[message.author, user].sort(() => Math.random() - 0.5)
+					);
 				} catch {
-					await message.send(message.language.tget('UNEXPECTED_ISSUE')).catch(error => this.client.emit(Events.ApiError, error));
+					await message.send(message.language.tget('UNEXPECTED_ISSUE')).catch((error) => this.client.emit(Events.ApiError, error));
 				}
 			} else {
 				await message.alert(message.language.tget('COMMAND_GAMES_PROMPT_DENY'));
@@ -58,9 +62,11 @@ export default class extends SkyraCommand {
 
 		try {
 			const winner = await this._game(message, players, board);
-			return await message.edit(winner
-				? message.language.tget('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
-				: message.language.tget('COMMAND_TICTACTOE_DRAW', this.render(board)));
+			return await message.edit(
+				winner
+					? message.language.tget('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
+					: message.language.tget('COMMAND_TICTACTOE_DRAW', this.render(board))
+			);
 		} catch (error) {
 			if (typeof error === 'string') return message.edit(error);
 			throw error;
@@ -77,10 +83,9 @@ export default class extends SkyraCommand {
 
 		return new Promise<number | null>((resolve, reject) => {
 			// Make the collectors
-			const collector = message.createReactionCollector((reaction, user) => !blocked
-				&& user.id === player?.id
-				&& (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1
-				&& board[chosen] === 0);
+			const collector = message.createReactionCollector(
+				(reaction, user) => !blocked && user.id === player?.id && (chosen = EMOJIS.indexOf(reaction.emoji.name)) !== -1 && board[chosen] === 0
+			);
 
 			const makeRound = async () => {
 				if (timeout) clearTimeout(timeout);
@@ -155,5 +160,4 @@ export default class extends SkyraCommand {
 
 		return output;
 	}
-
 }

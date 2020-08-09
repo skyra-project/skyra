@@ -4,7 +4,6 @@ import { Guild, Role } from 'discord.js';
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
 export class PermissionsManager extends Map<string, PermissionsManagerNode> {
-
 	public guild: Guild;
 
 	public constructor(guild: Guild) {
@@ -48,7 +47,7 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 
 		const sortedNodes: PermissionsNode[] = [];
 		for (const sortedRole of sortedRoles) {
-			const index = nodes.findIndex(node => node.id === sortedRole.id);
+			const index = nodes.findIndex((node) => node.id === sortedRole.id);
 			if (index === -1) continue;
 
 			sortedNodes.push(nodes[index]);
@@ -60,7 +59,6 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 			pendingToRemove: nodes
 		};
 	}
-
 }
 
 export interface PermissionsManagerNode {

@@ -5,14 +5,16 @@ import { resolveEmoji } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(parsed: LLRCData) {
 		// Resolve the emoji (since there can be many formats)
 		const emoji = resolveEmoji(parsed.emoji);
 		if (!emoji) return;
 
-		const roleEntry = parsed.guild.settings.get(GuildSettings.ReactionRoles)
-			.find(entry => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageID : true));
+		const roleEntry = parsed.guild.settings
+			.get(GuildSettings.ReactionRoles)
+			.find(
+				(entry) => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageID : true)
+			);
 		if (!roleEntry) return;
 
 		try {
@@ -41,5 +43,4 @@ export default class extends Event {
 			this.client.emit(Events.ApiError, error);
 		}
 	}
-
 }

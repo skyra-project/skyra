@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['rro'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_REMOVEROLE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_REMOVEROLE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_REMOVEROLE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_REMOVEROLE_EXTENDED'),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
@@ -18,7 +18,6 @@ import { KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends ModerationCommand {
-
 	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext & { role: Role } {
 		return {
 			targets: targets as User[],
@@ -29,13 +28,16 @@ export default class extends ModerationCommand {
 	}
 
 	protected async handle(message: KlasaMessage, context: HandledCommandContext & { role: Role }) {
-		return message.guild!.security.actions.removeRole({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			reason: context.reason,
-			imageURL: getImage(message),
-			duration: context.duration
-		}, context.role, await this.getTargetDM(message, context.target));
+		return message.guild!.security.actions.removeRole(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				reason: context.reason,
+				imageURL: getImage(message),
+				duration: context.duration
+			},
+			context.role,
+			await this.getTargetDM(message, context.target)
+		);
 	}
-
 }

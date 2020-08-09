@@ -6,7 +6,6 @@ import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ emitter: 'lavalink', event: LavalinkEvents.Raw })
 export default class extends Event {
-
 	public run(payload: LavalinkEvent) {
 		if (typeof payload.guildId !== 'string') return;
 
@@ -21,5 +20,4 @@ export default class extends Event {
 			return this.client.emit(Events.LavalinkWebsocketClosed, manager, payload);
 		}
 	}
-
 }

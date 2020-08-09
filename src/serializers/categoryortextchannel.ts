@@ -2,7 +2,6 @@ import { Serializer, SerializerUpdateContext, SchemaEntry, Language } from 'klas
 import { Channel, Guild } from 'discord.js';
 
 export default class extends Serializer {
-
 	// eslint-disable-next-line @typescript-eslint/require-await
 	public async validate(data: string | Channel, { entry, language, guild }: SerializerUpdateContext) {
 		if (data instanceof Channel) return this.checkChannel(data, entry, language);
@@ -23,5 +22,4 @@ export default class extends Serializer {
 		if (data.type === 'text' || data.type === 'category') return data;
 		throw language.tget('RESOLVER_INVALID_CHANNEL', entry.key);
 	}
-
 }

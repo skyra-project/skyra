@@ -1,7 +1,6 @@
 import { ColorHandler } from './index';
 
 export class B10 implements ColorHandler {
-
 	public value: number;
 
 	/**
@@ -14,7 +13,7 @@ export class B10 implements ColorHandler {
 	}
 
 	public check() {
-		if (this.value < 0 || this.value > 0xFFFFFF) throw 'Color must be within the range 0 - 16777215 (0xFFFFFF).';
+		if (this.value < 0 || this.value > 0xffffff) throw 'Color must be within the range 0 - 16777215 (0xFFFFFF).';
 	}
 
 	public get hex() {
@@ -38,7 +37,6 @@ export class B10 implements ColorHandler {
 	public toString() {
 		return String(this.value);
 	}
-
 }
 
 import { HEX } from './HEX';

@@ -4,10 +4,8 @@ import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity
 import { Task } from 'klasa';
 
 export default class extends Task {
-
 	public async run(data: GiveawayCreateData): Promise<PartialResponseValue> {
 		await this.client.giveaways.create({ ...data, endsAt: new Date(data.endsAt) });
 		return { type: ResponseType.Finished };
 	}
-
 }

@@ -6,7 +6,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'guildLeaderboard', route: 'guilds/:guild/leaderboard' })
 export default class extends Route {
-
 	@ratelimit(2, 2500)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
@@ -25,5 +24,4 @@ export default class extends Route {
 
 		return response.json(await fetchAllLeaderboardEntries(this.client, results));
 	}
-
 }

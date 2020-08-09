@@ -5,13 +5,12 @@ import { fetch, FetchResultTypes } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['yt'],
 			cooldown: 15,
-			description: language => language.tget('COMMAND_YOUTUBE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_YOUTUBE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_YOUTUBE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_YOUTUBE_EXTENDED'),
 			usage: '<query:string> [index:integer{0,20}]',
 			usageDelim: ' #'
 		});
@@ -28,18 +27,19 @@ export default class extends SkyraCommand {
 		const result = data.items[index];
 
 		if (!result) {
-			throw message.language.tget(index === 0
-				? 'COMMAND_YOUTUBE_NOTFOUND'
-				: 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
+			throw message.language.tget(index === 0 ? 'COMMAND_YOUTUBE_NOTFOUND' : 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
 		}
 
 		let output = '';
 		switch (result.id.kind) {
-			case 'youtube#channel': output = `https://youtube.com/channel/${result.id.channelId}`;
+			case 'youtube#channel':
+				output = `https://youtube.com/channel/${result.id.channelId}`;
 				break;
-			case 'youtube#playlist': output = `https://www.youtube.com/playlist?list=${result.id.playlistId}`;
+			case 'youtube#playlist':
+				output = `https://www.youtube.com/playlist?list=${result.id.playlistId}`;
 				break;
-			case 'youtube#video': output = `https://youtu.be/${result.id.videoId}`;
+			case 'youtube#video':
+				output = `https://youtu.be/${result.id.videoId}`;
 				break;
 			default: {
 				this.client.emit(Events.Wtf, `YouTube [${input}] [${ind}] -> Returned incompatible kind '${result.id.kind}'.`);
@@ -49,7 +49,6 @@ export default class extends SkyraCommand {
 
 		return message.sendMessage(output);
 	}
-
 }
 
 export interface YouTubeResultOk {

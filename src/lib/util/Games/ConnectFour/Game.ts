@@ -8,7 +8,6 @@ import { Board } from './Board';
 import { Player } from './Player';
 
 export class Game {
-
 	public readonly board: Board;
 	public message: KlasaMessage;
 	public players: readonly [Player | null, Player | null];
@@ -81,7 +80,7 @@ export class Game {
 		}
 
 		if (!this.message.deleted && this.manageMessages) {
-			await this.message.reactions.removeAll().catch(err => this.message.client.emit(Events.ApiError, err));
+			await this.message.reactions.removeAll().catch((err) => this.message.client.emit(Events.ApiError, err));
 		}
 	}
 
@@ -99,5 +98,4 @@ export class Game {
 			}
 		}
 	}
-
 }

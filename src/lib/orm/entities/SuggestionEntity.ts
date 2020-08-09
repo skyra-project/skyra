@@ -2,7 +2,6 @@ import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('suggestion', { schema: 'public' })
 export class SuggestionEntity extends BaseEntity {
-
 	@PrimaryColumn('integer')
 	public id!: number;
 
@@ -14,5 +13,4 @@ export class SuggestionEntity extends BaseEntity {
 
 	@Column('varchar', { length: 19 })
 	public authorID!: string;
-
 }

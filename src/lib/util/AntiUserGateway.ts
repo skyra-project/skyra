@@ -16,7 +16,6 @@ Reflect.deleteProperty(KlasaUserStore.prototype, 'fetch');
 
 // @ts-ignore: Property '_patch' is protected but type 'UserSettings' is not a class derived from 'SettingsFolder'.
 export class UserSettings implements Settings {
-
 	public get id(): string {
 		return '';
 	}
@@ -189,17 +188,15 @@ export class UserSettings implements Settings {
 	protected _updateSchemaEntryValue(): void {
 		// noop
 	}
-
 }
 
 // Step 3: Create UserGateway, which is an empty Gateway-like class, implements:
 //         Gateway.
 export class UserGateway extends GatewayStorage implements Gateway {
-
 	public cache = new Map();
 	public requestHandler = new RequestHandler<string, IdKeyed<string>>(
-		id => Promise.resolve({ id }),
-		ids => Promise.resolve(ids.map(id => ({ id })))
+		(id) => Promise.resolve({ id }),
+		(ids) => Promise.resolve(ids.map((id) => ({ id })))
 	);
 
 	public acquire(): Settings {
@@ -218,5 +215,4 @@ export class UserGateway extends GatewayStorage implements Gateway {
 	public sync(): Promise<this> {
 		return Promise.resolve(this);
 	}
-
 }

@@ -8,7 +8,8 @@ const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 const GOOGLE_CUSTOM_SEARCH_API_URL = 'https://www.googleapis.com/customsearch/v1';
 
 export const enum CustomSearchType {
-	Image, Search
+	Image,
+	Search
 }
 
 export const enum GoogleResponseCodes {
@@ -105,7 +106,6 @@ export interface GoogleMapsOkLocation {
 	lat: number;
 	lng: number;
 }
-
 
 export interface GoogleSearchResult<T extends CustomSearchType> {
 	kind: string;

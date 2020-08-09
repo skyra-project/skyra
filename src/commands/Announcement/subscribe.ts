@@ -4,12 +4,11 @@ import { announcementCheck } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 15,
-			description: language => language.tget('COMMAND_SUBSCRIBE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SUBSCRIBE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_SUBSCRIBE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_SUBSCRIBE_EXTENDED'),
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text']
 		});
@@ -37,5 +36,4 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale('COMMAND_SUBSCRIBE_SUCCESS', [role.name]);
 	}
-
 }

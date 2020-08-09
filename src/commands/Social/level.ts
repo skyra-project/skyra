@@ -10,7 +10,6 @@ import { join } from 'path';
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 
 export default class extends SkyraCommand {
-
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 
@@ -19,8 +18,8 @@ export default class extends SkyraCommand {
 			aliases: ['lvl', 'rank'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.tget('COMMAND_LEVEL_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_LEVEL_EXTENDED'),
+			description: (language) => language.tget('COMMAND_LEVEL_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_LEVEL_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -48,50 +47,49 @@ export default class extends SkyraCommand {
 		]);
 
 		const TITLE = message.language.retrieve('COMMAND_LEVEL');
-		return new Canvas(640, 174)
-			// Draw the background
-			.save()
-			.createRoundedClip(10, 10, 620, 154, 8)
-			.printImage(themeImageSRC, 9, 9, 189, 157)
-			.restore()
-			.printImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
+		return (
+			new Canvas(640, 174)
+				// Draw the background
+				.save()
+				.createRoundedClip(10, 10, 620, 154, 8)
+				.printImage(themeImageSRC, 9, 9, 189, 157)
+				.restore()
+				.printImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
 
-			// Draw the progress bar
-			.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)
-			.printRoundedRectangle(341, 86, progressBar, 9, 3)
+				// Draw the progress bar
+				.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)
+				.printRoundedRectangle(341, 86, progressBar, 9, 3)
 
-			// Set styles
-			.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
-			.setTextFont('28px RobotoLight')
+				// Set styles
+				.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
+				.setTextFont('28px RobotoLight')
 
-			// Statistics Titles
-			.printText(TITLE.EXPERIENCE, 340, 73)
-			.printText(TITLE.NEXT_IN, 340, 128)
+				// Statistics Titles
+				.printText(TITLE.EXPERIENCE, 340, 73)
+				.printText(TITLE.NEXT_IN, 340, 128)
 
-			// Draw the information
-			.setTextAlign('right')
-			.printText(settings.points.toString(), 606, 73)
-			.printText((nextLevel - settings.points).toString(), 606, 131)
+				// Draw the information
+				.setTextAlign('right')
+				.printText(settings.points.toString(), 606, 73)
+				.printText((nextLevel - settings.points).toString(), 606, 131)
 
-			// Draw the level
-			.setTextAlign('center')
-			.setTextFont('35px RobotoLight')
-			.printText(TITLE.LEVEL, 268, 73)
-			.setTextFont('45px RobotoRegular')
-			.printText(settings.level.toString(), 268, 128)
+				// Draw the level
+				.setTextAlign('center')
+				.setTextFont('35px RobotoLight')
+				.printText(TITLE.LEVEL, 268, 73)
+				.setTextFont('45px RobotoRegular')
+				.printText(settings.level.toString(), 268, 128)
 
-			// Draw the avatar
-			.save()
-			.printCircularImage(imgAvatarSRC, 103, 87, 71)
-			.restore()
-			.toBufferAsync();
+				// Draw the avatar
+				.save()
+				.printCircularImage(imgAvatarSRC, 103, 87, 71)
+				.restore()
+				.toBufferAsync()
+		);
 	}
 
 	public async init() {
-		[
-			this.lightThemeTemplate,
-			this.darkThemeTemplate
-		] = await Promise.all([
+		[this.lightThemeTemplate, this.darkThemeTemplate] = await Promise.all([
 			new Canvas(640, 174)
 				.setAntialiasing('subpixel')
 				.setShadowColor(rgba(0, 0, 0, 0.7))
@@ -124,7 +122,6 @@ export default class extends SkyraCommand {
 				.then(loadImage)
 		]);
 	}
-
 }
 
 export interface LevelTitles {

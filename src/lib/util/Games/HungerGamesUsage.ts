@@ -1,5 +1,4 @@
 export class HungerGamesUsage {
-
 	public tributes = 0;
 	public deaths: Set<number> = new Set();
 	private readonly parts: (string | number)[] = [];
@@ -9,7 +8,7 @@ export class HungerGamesUsage {
 	}
 
 	public display(...values: string[]) {
-		return this.parts.map(part => typeof part === 'number' ? values[part] : part).join('');
+		return this.parts.map((part) => (typeof part === 'number' ? values[part] : part)).join('');
 	}
 
 	public parse(usage: string): void {
@@ -47,5 +46,4 @@ export class HungerGamesUsage {
 	public static create(usage: string): HungerGamesUsage {
 		return new HungerGamesUsage(usage);
 	}
-
 }

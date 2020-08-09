@@ -11,7 +11,6 @@ import { KlasaMessage, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
-
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
@@ -44,16 +43,18 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage) {
-		return this.enabled
-			&& message.guild !== null
-			&& message.author !== null
-			&& message.webhookID === null
-			&& message.type === 'DEFAULT'
-			&& message.author.id !== CLIENT_ID
-			&& !message.author.bot
-			&& message.guild.settings.get(this.keyEnabled)
-			&& this.checkMessageChannel(message.channel as TextChannel)
-			&& this.checkMemberRoles(message.member);
+		return (
+			this.enabled &&
+			message.guild !== null &&
+			message.author !== null &&
+			message.webhookID === null &&
+			message.type === 'DEFAULT' &&
+			message.author.id !== CLIENT_ID &&
+			!message.author.bot &&
+			message.guild.settings.get(this.keyEnabled) &&
+			this.checkMessageChannel(message.channel as TextChannel) &&
+			this.checkMemberRoles(message.member)
+		);
 	}
 
 	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
@@ -84,46 +85,62 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async onWarning(message: KlasaMessage, points: number, maximum: number) {
-		await this.createActionAndSend(message, () => message.guild!.security.actions.warning({
-			userID: message.author.id,
-			moderatorID: CLIENT_ID,
-			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
-			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
-		}));
+		await this.createActionAndSend(message, () =>
+			message.guild!.security.actions.warning({
+				userID: message.author.id,
+				moderatorID: CLIENT_ID,
+				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
+			})
+		);
 	}
 
 	protected async onKick(message: KlasaMessage, points: number, maximum: number) {
-		await this.createActionAndSend(message, () => message.guild!.security.actions.kick({
-			userID: message.author.id,
-			moderatorID: CLIENT_ID,
-			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
-		}));
+		await this.createActionAndSend(message, () =>
+			message.guild!.security.actions.kick({
+				userID: message.author.id,
+				moderatorID: CLIENT_ID,
+				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+			})
+		);
 	}
 
 	protected async onMute(message: KlasaMessage, points: number, maximum: number) {
-		await this.createActionAndSend(message, () => message.guild!.security.actions.mute({
-			userID: message.author.id,
-			moderatorID: CLIENT_ID,
-			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
-			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
-		}));
+		await this.createActionAndSend(message, () =>
+			message.guild!.security.actions.mute({
+				userID: message.author.id,
+				moderatorID: CLIENT_ID,
+				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
+			})
+		);
 	}
 
 	protected async onSoftBan(message: KlasaMessage, points: number, maximum: number) {
-		await this.createActionAndSend(message, () => message.guild!.security.actions.softBan({
-			userID: message.author.id,
-			moderatorID: CLIENT_ID,
-			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
-		}, 1));
+		await this.createActionAndSend(message, () =>
+			message.guild!.security.actions.softBan(
+				{
+					userID: message.author.id,
+					moderatorID: CLIENT_ID,
+					reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+				},
+				1
+			)
+		);
 	}
 
 	protected async onBan(message: KlasaMessage, points: number, maximum: number) {
-		await this.createActionAndSend(message, () => message.guild!.security.actions.ban({
-			userID: message.author.id,
-			moderatorID: CLIENT_ID,
-			reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
-			duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
-		}, 0));
+		await this.createActionAndSend(message, () =>
+			message.guild!.security.actions.ban(
+				{
+					userID: message.author.id,
+					moderatorID: CLIENT_ID,
+					reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+					duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
+				},
+				0
+			)
+		);
 	}
 
 	protected async createActionAndSend(message: KlasaMessage, performAction: () => unknown): Promise<void> {
@@ -148,8 +165,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract onLogMessage(message: KlasaMessage, value: T): MessageEmbed;
 
 	private checkMessageChannel(channel: TextChannel) {
-		return !(channel.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(channel.id)
-			|| channel.guild.settings.get(this.ignoredChannelsPath).includes(channel.id));
+		return !(
+			channel.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(channel.id) ||
+			channel.guild.settings.get(this.ignoredChannelsPath).includes(channel.id)
+		);
 	}
 
 	private checkMemberRoles(member: GuildMember | null) {
@@ -159,9 +178,8 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		if (ignoredRoles.length === 0) return true;
 
 		const { roles } = member;
-		return !ignoredRoles.some(id => roles.has(id));
+		return !ignoredRoles.some((id) => roles.has(id));
 	}
-
 }
 
 export interface HardPunishment {

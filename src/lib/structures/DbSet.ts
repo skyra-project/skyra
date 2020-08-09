@@ -24,7 +24,6 @@ import type { Message } from 'discord.js';
 import type { Connection, FindConditions, FindManyOptions } from 'typeorm';
 
 export class DbSet {
-
 	public connection: Connection;
 	private constructor(connection: Connection) {
 		this.connection = connection;
@@ -156,5 +155,4 @@ export class DbSet {
 
 		return user?.color || message.member?.displayColor || BrandingColors.Primary;
 	}
-
 }

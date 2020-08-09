@@ -50,44 +50,61 @@ const guildChangeDefaultColumns = [
 ];
 
 export class V05MigrateGuilds1594583103788 implements MigrationInterface {
-
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await this.migrateGuilds(queryRunner);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await Promise.all(guildChangeTypeColumns.map(([colName, , oldType]) => queryRunner.query(/* sql */`
+		await Promise.all(
+			guildChangeTypeColumns.map(([colName, , oldType]) =>
+				queryRunner.query(/* sql */ `
 			ALTER TABLE public.guilds
 			ALTER COLUMN "${colName}"
 			TYPE ${oldType};
-		`)));
+		`)
+			)
+		);
 
-		await Promise.all(guildChangeDefaultColumns.map(([colName, , oldDefault]) => queryRunner.query(/* sql */`
+		await Promise.all(
+			guildChangeDefaultColumns.map(([colName, , oldDefault]) =>
+				queryRunner.query(/* sql */ `
 			ALTER TABLE public.guilds
 			ALTER COLUMN "${colName}"
 			SET DEFAULT ${oldDefault};
-		`)));
+		`)
+			)
+		);
 
-		await queryRunner.addColumn('guilds', new TableColumn({ 'name': 'roles.staff', 'type': 'varchar', 'length': '19', 'isNullable': true, 'default': null, 'comment': 'Staff roles' }));
+		await queryRunner.addColumn(
+			'guilds',
+			new TableColumn({ name: 'roles.staff', type: 'varchar', length: '19', isNullable: true, default: null, comment: 'Staff roles' })
+		);
 	}
 
 	private async migrateGuilds(queryRunner: QueryRunner): Promise<void> {
 		// Change the type of specified columns in the "guilds" table
-		await Promise.all(guildChangeTypeColumns.map(([colName, newType]) => queryRunner.query(/* sql */`
+		await Promise.all(
+			guildChangeTypeColumns.map(([colName, newType]) =>
+				queryRunner.query(/* sql */ `
 			ALTER TABLE public.guilds
 			ALTER COLUMN "${colName}"
 			TYPE ${newType};
-		`)));
+		`)
+			)
+		);
 
 		// Change the default specified columns in the "guilds" table
-		await Promise.all(guildChangeDefaultColumns.map(([colName, newDefault]) => queryRunner.query(/* sql */`
+		await Promise.all(
+			guildChangeDefaultColumns.map(([colName, newDefault]) =>
+				queryRunner.query(/* sql */ `
 			ALTER TABLE public.guilds
 			ALTER COLUMN "${colName}"
 			SET DEFAULT ${newDefault};
-		`)));
+		`)
+			)
+		);
 
 		// Remove the "roles.staff" column
 		await queryRunner.dropColumn('guilds', 'roles.staff');
 	}
-
 }

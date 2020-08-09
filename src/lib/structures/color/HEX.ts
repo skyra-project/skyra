@@ -1,7 +1,6 @@
 import { ColorHandler } from './index';
 
 export class HEX implements ColorHandler {
-
 	public r: string;
 	public g: string;
 	public b: string;
@@ -47,7 +46,6 @@ export class HEX implements ColorHandler {
 	public toString() {
 		return String(`#${this.r}${this.g}${this.b}`);
 	}
-
 }
 
 import { B10 } from './B10';

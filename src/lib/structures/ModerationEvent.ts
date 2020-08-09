@@ -5,7 +5,6 @@ import { Event } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationEvent<V extends unknown[], T = unknown> extends Event {
-
 	public abstract run(...params: V): unknown;
 
 	protected processSoftPunishment(args: Readonly<V>, preProcessed: T, bitField: SelfModeratorBitField) {
@@ -37,46 +36,62 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	}
 
 	protected async onWarning(guild: Guild, userID: string) {
-		await this.createActionAndSend(guild, () => guild.security.actions.warning({
-			userID,
-			moderatorID: CLIENT_ID,
-			reason: '[Auto-Moderation] Threshold Reached.',
-			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
-		}));
+		await this.createActionAndSend(guild, () =>
+			guild.security.actions.warning({
+				userID,
+				moderatorID: CLIENT_ID,
+				reason: '[Auto-Moderation] Threshold Reached.',
+				duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+			})
+		);
 	}
 
 	protected async onKick(guild: Guild, userID: string) {
-		await this.createActionAndSend(guild, () => guild.security.actions.kick({
-			userID,
-			moderatorID: CLIENT_ID,
-			reason: '[Auto-Moderation] Threshold Reached.'
-		}));
+		await this.createActionAndSend(guild, () =>
+			guild.security.actions.kick({
+				userID,
+				moderatorID: CLIENT_ID,
+				reason: '[Auto-Moderation] Threshold Reached.'
+			})
+		);
 	}
 
 	protected async onMute(guild: Guild, userID: string) {
-		await this.createActionAndSend(guild, () => guild.security.actions.mute({
-			userID,
-			moderatorID: CLIENT_ID,
-			reason: '[Auto-Moderation] Threshold Reached.',
-			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
-		}));
+		await this.createActionAndSend(guild, () =>
+			guild.security.actions.mute({
+				userID,
+				moderatorID: CLIENT_ID,
+				reason: '[Auto-Moderation] Threshold Reached.',
+				duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+			})
+		);
 	}
 
 	protected async onSoftBan(guild: Guild, userID: string) {
-		await this.createActionAndSend(guild, () => guild.security.actions.softBan({
-			userID,
-			moderatorID: CLIENT_ID,
-			reason: '[Auto-Moderation] Threshold Reached.'
-		}, 1));
+		await this.createActionAndSend(guild, () =>
+			guild.security.actions.softBan(
+				{
+					userID,
+					moderatorID: CLIENT_ID,
+					reason: '[Auto-Moderation] Threshold Reached.'
+				},
+				1
+			)
+		);
 	}
 
 	protected async onBan(guild: Guild, userID: string) {
-		await this.createActionAndSend(guild, () => guild.security.actions.ban({
-			userID,
-			moderatorID: CLIENT_ID,
-			reason: '[Auto-Moderation] Threshold Reached.',
-			duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
-		}, 0));
+		await this.createActionAndSend(guild, () =>
+			guild.security.actions.ban(
+				{
+					userID,
+					moderatorID: CLIENT_ID,
+					reason: '[Auto-Moderation] Threshold Reached.',
+					duration: guild.settings.get(this.hardPunishmentPath!.actionDuration) as number | null
+				},
+				0
+			)
+		);
 	}
 
 	protected async createActionAndSend(guild: Guild, performAction: () => unknown): Promise<void> {
@@ -93,7 +108,6 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown> extends 
 	protected abstract onDelete(args: Readonly<V>, value: T): unknown;
 	protected abstract onAlert(args: Readonly<V>, value: T): unknown;
 	protected abstract onLogMessage(args: Readonly<V>, value: T): Promise<MessageEmbed> | MessageEmbed;
-
 }
 
 export interface HardPunishment<A = string> {

@@ -3,7 +3,10 @@ import { Events } from '@lib/types/Enums';
 import { KlasaMessage } from 'klasa';
 import { fetch, FetchMethods, FetchResultTypes } from './util';
 
-export async function handleMessage<ED extends ExtraDataPartial>(message: KlasaMessage, options: HandleMessageData<ED>): Promise<KlasaMessage | KlasaMessage[] | null> {
+export async function handleMessage<ED extends ExtraDataPartial>(
+	message: KlasaMessage,
+	options: HandleMessageData<ED>
+): Promise<KlasaMessage | KlasaMessage[] | null> {
 	switch (options.sendAs) {
 		case 'file': {
 			if (message.channel.attachable) {
@@ -19,7 +22,8 @@ export async function handleMessage<ED extends ExtraDataPartial>(message: KlasaM
 		}
 		case 'haste':
 		case 'hastebin': {
-			if (!options.url) options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
+			if (!options.url)
+				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
 			if (options.url) return message.sendLocale('SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN', [options.url, options.time, options.footer]);
 			options.hastebinUnavailable = true;
 			await getTypeOutput(message, options);
@@ -45,11 +49,20 @@ export async function handleMessage<ED extends ExtraDataPartial>(message: KlasaM
 
 			if (options.content) {
 				return message.sendMessage(
-					`${options.content}${options.content && options.attachments ? `\n\n\n=============\n${options.attachments}` : options.attachments}`, { code: 'md' }
+					`${options.content}${
+						options.content && options.attachments ? `\n\n\n=============\n${options.attachments}` : options.attachments
+					}`,
+					{ code: 'md' }
 				);
 			}
-			return message.sendMessage(message.language.tget(options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR',
-				codeBlock(options.language!, options.result!), options.time, options.footer));
+			return message.sendMessage(
+				message.language.tget(
+					options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR',
+					codeBlock(options.language!, options.result!),
+					options.time,
+					options.footer
+				)
+			);
 		}
 	}
 }
@@ -63,8 +76,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message.prompt(message.language.tget('SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT', _options)).catch(() => ({ content: 'none' }));
-	}
-	while (!_options.concat('none', 'abort').includes(_choice.content));
+	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();
 }
 

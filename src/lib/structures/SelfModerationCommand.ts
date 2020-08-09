@@ -17,14 +17,30 @@ export enum AKeys {
 }
 
 export const kActions = new Map<string, AKeys>([
-	['e', AKeys.Enable], ['enable', AKeys.Enable], ['on', AKeys.Enable],
-	['d', AKeys.Disable], ['disable', AKeys.Disable], ['off', AKeys.Disable],
-	['a', AKeys.SoftAction], ['action', AKeys.SoftAction], ['soft-action', AKeys.SoftAction],
-	['p', AKeys.HardAction], ['punish', AKeys.HardAction], ['punishment', AKeys.HardAction],
-	['pd', AKeys.HardActionDuration], ['punish-duration', AKeys.HardActionDuration], ['punishment-duration', AKeys.HardActionDuration],
-	['t', AKeys.ThresholdMaximum], ['tm', AKeys.ThresholdMaximum], ['threshold-maximum', AKeys.ThresholdMaximum],
-	['td', AKeys.ThresholdDuration], ['threshold-duration', AKeys.ThresholdDuration],
-	['s', AKeys.Show], ['sh', AKeys.Show], ['show', AKeys.Show], ['display', AKeys.Show]
+	['e', AKeys.Enable],
+	['enable', AKeys.Enable],
+	['on', AKeys.Enable],
+	['d', AKeys.Disable],
+	['disable', AKeys.Disable],
+	['off', AKeys.Disable],
+	['a', AKeys.SoftAction],
+	['action', AKeys.SoftAction],
+	['soft-action', AKeys.SoftAction],
+	['p', AKeys.HardAction],
+	['punish', AKeys.HardAction],
+	['punishment', AKeys.HardAction],
+	['pd', AKeys.HardActionDuration],
+	['punish-duration', AKeys.HardActionDuration],
+	['punishment-duration', AKeys.HardActionDuration],
+	['t', AKeys.ThresholdMaximum],
+	['tm', AKeys.ThresholdMaximum],
+	['threshold-maximum', AKeys.ThresholdMaximum],
+	['td', AKeys.ThresholdDuration],
+	['threshold-duration', AKeys.ThresholdDuration],
+	['s', AKeys.Show],
+	['sh', AKeys.Show],
+	['show', AKeys.Show],
+	['display', AKeys.Show]
 ]);
 
 export enum ASKeys {
@@ -34,30 +50,52 @@ export enum ASKeys {
 }
 
 export const kSoftActions = new Map<string, ASKeys>([
-	['a', ASKeys.Alert], ['al', ASKeys.Alert], ['alert', ASKeys.Alert],
-	['l', ASKeys.Log], ['log', ASKeys.Log],
-	['d', ASKeys.Delete], ['del', ASKeys.Delete], ['delete', ASKeys.Delete]
+	['a', ASKeys.Alert],
+	['al', ASKeys.Alert],
+	['alert', ASKeys.Alert],
+	['l', ASKeys.Log],
+	['log', ASKeys.Log],
+	['d', ASKeys.Delete],
+	['del', ASKeys.Delete],
+	['delete', ASKeys.Delete]
 ]);
 
 export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
-	['r', SelfModeratorHardActionFlags.None], ['reset', SelfModeratorHardActionFlags.None], ['n', SelfModeratorHardActionFlags.None], ['none', SelfModeratorHardActionFlags.None],
-	['w', SelfModeratorHardActionFlags.Warning], ['warn', SelfModeratorHardActionFlags.Warning], ['warning', SelfModeratorHardActionFlags.Warning],
-	['m', SelfModeratorHardActionFlags.Mute], ['mute', SelfModeratorHardActionFlags.Mute],
-	['k', SelfModeratorHardActionFlags.Kick], ['kick', SelfModeratorHardActionFlags.Kick],
-	['sb', SelfModeratorHardActionFlags.SoftBan], ['softban', SelfModeratorHardActionFlags.SoftBan], ['soft-ban', SelfModeratorHardActionFlags.SoftBan],
-	['b', SelfModeratorHardActionFlags.Ban], ['ban', SelfModeratorHardActionFlags.Ban]
+	['r', SelfModeratorHardActionFlags.None],
+	['reset', SelfModeratorHardActionFlags.None],
+	['n', SelfModeratorHardActionFlags.None],
+	['none', SelfModeratorHardActionFlags.None],
+	['w', SelfModeratorHardActionFlags.Warning],
+	['warn', SelfModeratorHardActionFlags.Warning],
+	['warning', SelfModeratorHardActionFlags.Warning],
+	['m', SelfModeratorHardActionFlags.Mute],
+	['mute', SelfModeratorHardActionFlags.Mute],
+	['k', SelfModeratorHardActionFlags.Kick],
+	['kick', SelfModeratorHardActionFlags.Kick],
+	['sb', SelfModeratorHardActionFlags.SoftBan],
+	['softban', SelfModeratorHardActionFlags.SoftBan],
+	['soft-ban', SelfModeratorHardActionFlags.SoftBan],
+	['b', SelfModeratorHardActionFlags.Ban],
+	['ban', SelfModeratorHardActionFlags.Ban]
 ]);
 
 export abstract class SelfModerationCommand extends Command {
-
 	protected constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions = {}) {
-		super(store, file, directory, mergeDefault<Partial<CommandOptions>, CommandOptions>({
-			cooldown: 5,
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			usage: '(action:action) (value:value)',
-			usageDelim: ' '
-		}, options) as CommandOptions);
+		super(
+			store,
+			file,
+			directory,
+			mergeDefault<Partial<CommandOptions>, CommandOptions>(
+				{
+					cooldown: 5,
+					permissionLevel: PermissionLevels.Administrator,
+					runIn: ['text'],
+					usage: '(action:action) (value:value)',
+					usageDelim: ' '
+				},
+				options
+			) as CommandOptions
+		);
 
 		this.createCustomResolver('action', (arg, _possible, message) => {
 			if (typeof arg === 'undefined') return AKeys.Show;
@@ -139,23 +177,30 @@ export abstract class SelfModerationCommand extends Command {
 	protected show(message: KlasaMessage) {
 		const { settings } = message.guild!;
 		const [enabled, softAction, hardAction, hardActionDuration, thresholdMaximum, thresholdDuration] = settings.pluck(
-			this.keyEnabled, this.keySoftAction, this.keyHardAction, this.keyHardActionDuration, this.keyThresholdMaximum,
+			this.keyEnabled,
+			this.keySoftAction,
+			this.keyHardAction,
+			this.keyHardActionDuration,
+			this.keyThresholdMaximum,
 			this.keyThresholdDuration
 		) as [boolean, number, number, number, number, number];
 
 		const i18n = message.language.tget.bind(message.language);
 		const [yes, no] = [i18n('SELF_MODERATION_ENABLED'), i18n('SELF_MODERATION_DISABLED')];
-		return message.sendCode('prolog', i18n(
-			'SELF_MODERATION_COMMAND_SHOW',
-			enabled ? yes : no,
-			SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
-			SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
-			SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
-			i18n(SelfModerationCommand.displayHardAction(hardAction)),
-			hardActionDuration,
-			thresholdMaximum,
-			thresholdDuration
-		));
+		return message.sendCode(
+			'prolog',
+			i18n(
+				'SELF_MODERATION_COMMAND_SHOW',
+				enabled ? yes : no,
+				SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
+				SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
+				SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
+				i18n(SelfModerationCommand.displayHardAction(hardAction)),
+				hardActionDuration,
+				thresholdMaximum,
+				thresholdDuration
+			)
+		);
 	}
 
 	private getProperty(action: AKeys) {
@@ -222,12 +267,18 @@ export abstract class SelfModerationCommand extends Command {
 
 	private static displayHardAction(hardAction: SelfModeratorHardActionFlags | null) {
 		switch (hardAction) {
-			case SelfModeratorHardActionFlags.Ban: return 'SELF_MODERATION_HARD_ACTION_BAN';
-			case SelfModeratorHardActionFlags.Kick: return 'SELF_MODERATION_HARD_ACTION_KICK';
-			case SelfModeratorHardActionFlags.Mute: return 'SELF_MODERATION_HARD_ACTION_MUTE';
-			case SelfModeratorHardActionFlags.SoftBan: return 'SELF_MODERATION_HARD_ACTION_SOFTBAN';
-			case SelfModeratorHardActionFlags.Warning: return 'SELF_MODERATION_HARD_ACTION_WARNING';
-			default: return 'SELF_MODERATION_HARD_ACTION_NONE';
+			case SelfModeratorHardActionFlags.Ban:
+				return 'SELF_MODERATION_HARD_ACTION_BAN';
+			case SelfModeratorHardActionFlags.Kick:
+				return 'SELF_MODERATION_HARD_ACTION_KICK';
+			case SelfModeratorHardActionFlags.Mute:
+				return 'SELF_MODERATION_HARD_ACTION_MUTE';
+			case SelfModeratorHardActionFlags.SoftBan:
+				return 'SELF_MODERATION_HARD_ACTION_SOFTBAN';
+			case SelfModeratorHardActionFlags.Warning:
+				return 'SELF_MODERATION_HARD_ACTION_WARNING';
+			default:
+				return 'SELF_MODERATION_HARD_ACTION_NONE';
 		}
 	}
 
@@ -250,8 +301,10 @@ export abstract class SelfModerationCommand extends Command {
 	private static parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) throw message.language.tget('RESOLVER_INVALID_DURATION', name);
-		if (key.minimum !== null && parsed.offset < key.minimum) throw message.language.tget('SELF_MODERATION_DURATION_TOO_SHORT', key.minimum, parsed.offset);
-		if (key.maximum !== null && parsed.offset > key.maximum) throw message.language.tget('SELF_MODERATION_DURATION_TOO_LONG', key.maximum, parsed.offset);
+		if (key.minimum !== null && parsed.offset < key.minimum)
+			throw message.language.tget('SELF_MODERATION_DURATION_TOO_SHORT', key.minimum, parsed.offset);
+		if (key.maximum !== null && parsed.offset > key.maximum)
+			throw message.language.tget('SELF_MODERATION_DURATION_TOO_LONG', key.maximum, parsed.offset);
 		return parsed.offset;
 	}
 
@@ -262,5 +315,4 @@ export abstract class SelfModerationCommand extends Command {
 	protected abstract keyHardActionDuration: string;
 	protected abstract keyThresholdMaximum: string;
 	protected abstract keyThresholdDuration: string;
-
 }

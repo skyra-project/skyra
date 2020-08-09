@@ -12,23 +12,21 @@ const DAILY_PERIOD = Time.Hour * 12;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['dailies'],
 	cooldown: 30,
-	description: language => language.tget('COMMAND_DAILY_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_DAILY_EXTENDED'),
+	description: (language) => language.tget('COMMAND_DAILY_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_DAILY_EXTENDED'),
 	spam: true
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage) {
 		const now = Date.now();
 
 		const connection = await DbSet.connect();
-		return connection.users.lock([message.author.id], async id => {
+		return connection.users.lock([message.author.id], async (id) => {
 			const settings = await connection.users.ensureCooldowns(id);
 
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
-				return message.sendLocale('COMMAND_DAILY_TIME_SUCCESS',
-					[await this.claimDaily(message, connection, settings, now + DAILY_PERIOD)]);
+				return message.sendLocale('COMMAND_DAILY_TIME_SUCCESS', [await this.claimDaily(message, connection, settings, now + DAILY_PERIOD)]);
 			}
 
 			const remaining = settings.cooldowns.daily.getTime() - now;
@@ -64,5 +62,4 @@ export default class extends SkyraCommand {
 		if (message.guild && client.guildBoost.includes(message.guild.id)) money *= 1.5;
 		return money;
 	}
-
 }

@@ -5,12 +5,11 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['sniped'],
-			description: language => language.tget('COMMAND_SNIPE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SNIPE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_SNIPE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_SNIPE_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
@@ -33,5 +32,4 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(embed);
 	}
-
 }

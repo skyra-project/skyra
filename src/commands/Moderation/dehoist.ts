@@ -11,14 +11,13 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['dh'],
 	cooldown: 5,
-	description: language => language.tget('COMMAND_DEHOIST_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_DEHOIST_EXTENDED'),
+	description: (language) => language.tget('COMMAND_DEHOIST_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_DEHOIST_EXTENDED'),
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
 })
 export default class extends SkyraCommand {
-
 	private kLowestCode = 'A'.charCodeAt(0);
 
 	public async run(message: KlasaMessage) {
@@ -52,21 +51,18 @@ export default class extends SkyraCommand {
 
 	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
 		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
-		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTitle(embedLanguage.TITLE(message.guild!.memberTags.size));
+		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.TITLE(message.guild!.memberTags.size));
 
 		let description = embedLanguage.DESCRIPTION(dehoistedMembers);
 		if (dehoistedMembers <= 0) description = embedLanguage.DESCRIPTION_NOONE;
 		if (erroredChanges.length > 0) {
 			description = embedLanguage.DESCRIPTION_WITHERRORS(dehoistedMembers - erroredChanges.length, erroredChanges.length);
-			const erroredNicknames = erroredChanges.map(entry => `${entry.oldNick} => ${entry.newNick}`).join('\n');
+			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.FIELD_ERROR_TITLE, codeblock);
 		}
 		return embed.setDescription(description);
 	}
-
 }
 
 interface ErroredChange {

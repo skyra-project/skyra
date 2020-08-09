@@ -54,7 +54,7 @@ export const enum DiscordEvents {
 	VoiceStateUpdate = 'VOICE_STATE_UPDATE',
 	WebhooksUpdate = 'WEBHOOKS_UPDATE',
 	WSDebug = 'WS_DEBUG',
-	WTF = 'WTF',
+	WTF = 'WTF'
 }
 
 export const enum LavalinkEvents {
@@ -92,5 +92,5 @@ export const enum DiscordVoiceCloseEventCodes {
 	/** The server crashed. Our bad! Try {@link https://discord.com/developers/ resuming}. */
 	VoiceServerCrashed = 4015,
 	/** We didn't recognize your {@link https://discord.com/developers/ encryption}. */
-	UnknownEncryptionMode = 4016,
+	UnknownEncryptionMode = 4016
 }

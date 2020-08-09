@@ -28,15 +28,7 @@ interface ApiObject extends Record<string, ApiObjectProperty> {
 }
 
 /** Possible types of an ApiObject's properties */
-type ApiObjectProperty =
-	| ApiObject[]
-	| ApiObject
-	| number[]
-	| number
-	| string
-	| string[]
-	| boolean
-	| undefined;
+type ApiObjectProperty = ApiObject[] | ApiObject | number[] | number | string | string[] | boolean | undefined;
 
 interface AgeRating extends ApiObject {
 	id: number;
@@ -562,13 +554,11 @@ interface PlayerPerspective extends ApiObject {
 	url?: string;
 }
 
-
 interface ProductFamily extends ApiObject {
 	id: number;
 	name?: string;
 	slug?: string;
 }
-
 
 interface Pulse extends ApiObject {
 	id: number;

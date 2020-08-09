@@ -13,19 +13,18 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ow'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_OVERWATCH_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_OVERWATCH_EXTENDED'),
+	description: (language) => language.tget('COMMAND_OVERWATCH_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_OVERWATCH_EXTENDED'),
 	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
 	usageDelim: ' '
 })
 export default class extends RichDisplayCommand {
-
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const overwatchData = await this.fetchAPI(message, player, platform);
 
@@ -51,7 +50,11 @@ export default class extends RichDisplayCommand {
 	/** Builds a UserRichDisplay for presenting Overwatch data */
 	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const EMBED_DATA = message.language.tget('COMMMAND_OVERWATCH_EMBED_DATA');
-		const ratings = this.ratingsToMap(overwatchData.ratings ?? [], r => r.role, r => r);
+		const ratings = this.ratingsToMap(
+			overwatchData.ratings ?? [],
+			(r) => r.role,
+			(r) => r
+		);
 
 		return new UserRichDisplay(
 			new MessageEmbed()
@@ -61,17 +64,24 @@ export default class extends RichDisplayCommand {
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
 				.setThumbnail(overwatchData.icon)
 		)
-			.addPage((embed: MessageEmbed) => embed
-				.setDescription([
-					EMBED_DATA.HEADERS.ACCOUNT,
-					EMBED_DATA.PLAYER_LEVEL(overwatchData.level),
-					EMBED_DATA.PRESTIGE_LEVEL(overwatchData.level + (overwatchData.prestige * 100)),
-					EMBED_DATA.TOTAL_GAMES_WON(overwatchData.gamesWon)
-				].join('\n'))
-				.addField(EMBED_DATA.RATINGS_TITLE, EMBED_DATA.RATINGS([
-					...ratings.values(),
-					{ role: 'average', level: overwatchData.rating === 0 ? EMBED_DATA.NO_AVERAGE : overwatchData.rating }
-				])))
+			.addPage((embed: MessageEmbed) =>
+				embed
+					.setDescription(
+						[
+							EMBED_DATA.HEADERS.ACCOUNT,
+							EMBED_DATA.PLAYER_LEVEL(overwatchData.level),
+							EMBED_DATA.PRESTIGE_LEVEL(overwatchData.level + overwatchData.prestige * 100),
+							EMBED_DATA.TOTAL_GAMES_WON(overwatchData.gamesWon)
+						].join('\n')
+					)
+					.addField(
+						EMBED_DATA.RATINGS_TITLE,
+						EMBED_DATA.RATINGS([
+							...ratings.values(),
+							{ role: 'average', level: overwatchData.rating === 0 ? EMBED_DATA.NO_AVERAGE : overwatchData.rating }
+						])
+					)
+			)
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(overwatchData, 'quickPlayStats', EMBED_DATA)))
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(overwatchData, 'competitiveStats', EMBED_DATA)))
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractTopHeroes(overwatchData, 'quickPlayStats', EMBED_DATA)))
@@ -88,7 +98,10 @@ export default class extends RichDisplayCommand {
 	 * @returns a `Map<Key, Value>` of the values, mapped by the given key
 	 */
 	private ratingsToMap<I, K, V>(inputArray: readonly I[], keyExtractor: (_: I) => K, valueExtractor: (_: I) => V): Map<K, V> {
-		return inputArray.reduce<Map<K, V>>((accumulator: Map<K, V>, element: I) => accumulator.set(keyExtractor(element), valueExtractor(element)), new Map<K, V>());
+		return inputArray.reduce<Map<K, V>>(
+			(accumulator: Map<K, V>, element: I) => accumulator.set(keyExtractor(element), valueExtractor(element)),
+			new Map<K, V>()
+		);
 	}
 
 	/** Retrieves the top 5 heroes (name and time played in milliseconds) for either `competitiveStats` or `quickPlayStats` */
@@ -96,11 +109,12 @@ export default class extends RichDisplayCommand {
 		const overwatchDataType = overwatchData[type];
 
 		return Object.keys(overwatchDataType.topHeroes)
-			.map(hero => {
+			.map((hero) => {
 				const timePlayed = overwatchDataType.topHeroes[hero].timePlayed.split(':').map(parseFloat);
-				const seconds = timePlayed.length === 3
-					? Number(timePlayed[0] * 3600) + Number(timePlayed[1] * 60) + Number(timePlayed[0])
-					: Number(timePlayed[0] * 60) + Number(timePlayed[1]);
+				const seconds =
+					timePlayed.length === 3
+						? Number(timePlayed[0] * 3600) + Number(timePlayed[1] * 60) + Number(timePlayed[0])
+						: Number(timePlayed[0] * 60) + Number(timePlayed[1]);
 
 				return { hero, time: seconds * Time.Second };
 			})
@@ -122,7 +136,7 @@ export default class extends RichDisplayCommand {
 			awards: { medalsBronze, medalsSilver, medalsGold }
 		} = overwatchData[type];
 
-		const timePlayedMilliseconds = (Number(timePlayed.split(':')[0]) * Time.Hour) + (Number(timePlayed.split(':')[1]) * Time.Minute);
+		const timePlayedMilliseconds = Number(timePlayed.split(':')[0]) * Time.Hour + Number(timePlayed.split(':')[1]) * Time.Minute;
 
 		return [
 			EMBED_DATA.HEADERS[type === 'competitiveStats' ? 'COMPETITIVE' : 'QUICKPLAY'],
@@ -141,17 +155,20 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Extracts top heroes from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private extractTopHeroes(overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, EMBED_DATA: LanguageKeys['COMMMAND_OVERWATCH_EMBED_DATA']) {
+	private extractTopHeroes(
+		overwatchData: OverwatchDataSet,
+		type: OverwatchStatsTypeUnion,
+		EMBED_DATA: LanguageKeys['COMMMAND_OVERWATCH_EMBED_DATA']
+	) {
 		const topHeroes = this.getTopHeroes(overwatchData, type);
 
 		return [
 			EMBED_DATA.HEADERS[type === 'competitiveStats' ? 'TOP_HEROES_COMPETITIVE' : 'TOP_HEROES_QUICKPLAY'],
-			...topHeroes.map(topHero => EMBED_DATA.TOP_HERO(topHero.hero, this.kPlayTimestamp.display(topHero.time)))
+			...topHeroes.map((topHero) => EMBED_DATA.TOP_HERO(topHero.hero, this.kPlayTimestamp.display(topHero.time)))
 		].join('\n');
 	}
 
 	private decodePlayerName(name: string) {
 		return decodeURIComponent(name.replace('-', '#'));
 	}
-
 }

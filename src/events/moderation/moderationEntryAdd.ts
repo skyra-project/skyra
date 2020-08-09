@@ -6,12 +6,8 @@ import { DiscordAPIError } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public run(entry: ModerationEntity) {
-		return Promise.all([
-			this.sendMessage(entry),
-			this.scheduleDuration(entry)
-		]);
+		return Promise.all([this.sendMessage(entry), this.scheduleDuration(entry)]);
 	}
 
 	private async sendMessage(entry: ModerationEntity) {
@@ -31,17 +27,18 @@ export default class extends Event {
 	private async scheduleDuration(entry: ModerationEntity) {
 		const taskName = entry.duration === null ? null : entry.appealTaskName;
 		if (taskName !== null) {
-			await this.client.schedules.add(taskName, entry.duration! + Date.now(), {
-				catchUp: true,
-				data: {
-					[Moderation.SchemaKeys.Case]: entry.caseID,
-					[Moderation.SchemaKeys.User]: entry.userID,
-					[Moderation.SchemaKeys.Guild]: entry.guildID,
-					[Moderation.SchemaKeys.Duration]: entry.duration,
-					[Moderation.SchemaKeys.ExtraData]: entry.extraData
-				}
-			}).catch(error => this.client.emit(Events.Wtf, error));
+			await this.client.schedules
+				.add(taskName, entry.duration! + Date.now(), {
+					catchUp: true,
+					data: {
+						[Moderation.SchemaKeys.Case]: entry.caseID,
+						[Moderation.SchemaKeys.User]: entry.userID,
+						[Moderation.SchemaKeys.Guild]: entry.guildID,
+						[Moderation.SchemaKeys.Duration]: entry.duration,
+						[Moderation.SchemaKeys.ExtraData]: entry.extraData
+					}
+				})
+				.catch((error) => this.client.emit(Events.Wtf, error));
 		}
 	}
-
 }

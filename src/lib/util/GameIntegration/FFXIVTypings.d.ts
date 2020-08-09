@@ -43,7 +43,7 @@ export namespace FFXIV {
 		Healer,
 		MDPS,
 		PRDPS,
-		MRDPS,
+		MRDPS
 	}
 
 	export interface ClassMap {

@@ -58,7 +58,6 @@ lru_map/tsconfig.json
 lru_map/test.js
 lru_map/benchmark.js
 *.markdown
-js-yaml/lib/
 node-notifier/vendor/
 pg-protocol/tsconfig.json
 pg-protocol/src/

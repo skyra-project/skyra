@@ -6,7 +6,6 @@ import { Argument, KlasaGuild, KlasaMessage, KlasaUser, Possible } from 'klasa';
 const CHANNEL_REGEXP = Argument.regex.channel;
 
 export default class extends Argument {
-
 	public get channel() {
 		return this.store.get('channel')!;
 	}
@@ -24,7 +23,7 @@ export default class extends Argument {
 		const resChannel = this.resolveChannel(arg, message.guild);
 		if (resChannel && filter(resChannel)) return resChannel;
 
-		const result = await new FuzzySearch(message.guild.channels, entry => entry.name, filter).run(message, arg, possible.min || undefined);
+		const result = await new FuzzySearch(message.guild.channels, (entry) => entry.name, filter).run(message, arg, possible.min || undefined);
 		if (result) return result[1];
 		throw message.language.tget('RESOLVER_INVALID_CHANNELNAME', possible.name);
 	}
@@ -35,5 +34,4 @@ export default class extends Argument {
 			? (entry: GuildChannel) => validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser)
 			: (entry: GuildChannel) => filter(entry) && validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser);
 	}
-
 }

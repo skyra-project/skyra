@@ -4,7 +4,12 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings, NotificationsStreamsTwitchEventStatus, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
+import {
+	GuildSettings,
+	NotificationsStreamsTwitchEventStatus,
+	NotificationsStreamsTwitchStreamer,
+	NotificationsStreamTwitch
+} from '@lib/types/settings/GuildSettings';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
@@ -28,8 +33,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
-	description: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
+	description: (language) => language.tget('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -40,7 +45,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 })
 @CreateResolvers([
 	[
-		'streamer', async (argument, _, message, [type]) => {
+		'streamer',
+		async (argument, _, message, [type]) => {
 			if (!argument) {
 				if (type === Type.Show || type === Type.Reset) return undefined;
 				throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER');
@@ -56,7 +62,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		}
 	],
 	[
-		'channel', (argument, possible, message, [type]) => {
+		'channel',
+		(argument, possible, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
 			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
 
@@ -64,7 +71,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		}
 	],
 	[
-		'status', (argument, _, message, [type]) => {
+		'status',
+		(argument, _, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
 			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS');
 
@@ -74,22 +82,23 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		}
 	],
 	[
-		'content', (argument, possible, message, [type, , , status]) => {
+		'content',
+		(argument, possible, message, [type, , , status]) => {
 			// If the subcommand is Show, Reset, or Remove
 			if (
-				type === Type.Show
-				|| type === Type.Reset
-				|| type === Type.Remove
+				type === Type.Show ||
+				type === Type.Reset ||
+				type === Type.Remove ||
 				// or if the command is Add, the flagArgs include --embed and the status is online then allow no content
-				|| (type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
-			) return undefined;
+				(type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
+			)
+				return undefined;
 			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
 			return message.client.arguments.get('...string')!.run(argument, possible, message);
 		}
 	]
 ])
 export default class extends SkyraCommand {
-
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kSettingsKey = GuildSettings.Notifications.Streams.Twitch.Streamers;
 
@@ -101,18 +110,14 @@ export default class extends SkyraCommand {
 			embed: Reflect.has(message.flagArgs, 'embed'),
 			gamesBlacklist: [],
 			gamesWhitelist: [],
-			message: content
-				? content
-				: Reflect.has(message.flagArgs, 'embed')
-					? ''
-					: null,
+			message: content ? content : Reflect.has(message.flagArgs, 'embed') ? '' : null,
 			status
 		};
 
 		// Retrieve all subscriptions for the guild,
 		// then retrieve the index of the entry if the guild already subscribed to them.
 		const subscriptions = message.guild!.settings.get(this.#kSettingsKey);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
+		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
 
 		// If the subscription could not be found, we create a new one, otherwise we patch it by creating a new tuple.
 		if (subscriptionIndex === -1) {
@@ -132,7 +137,7 @@ export default class extends SkyraCommand {
 			const raw = subscriptions[subscriptionIndex];
 
 			// Check if the streamer was already subscribed for thesame channel and status.
-			if (raw[1].some(e => e.channel === entry.channel && e.status === entry.status)) {
+			if (raw[1].some((e) => e.channel === entry.channel && e.status === entry.status)) {
 				throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_ADD_DUPLICATED');
 			}
 
@@ -151,14 +156,14 @@ export default class extends SkyraCommand {
 		// Retrieve all subscriptions for the guild,
 		// then retrieve the index of the entry if the guild already subscribed to them.
 		const subscriptions = message.guild!.settings.get(this.#kSettingsKey);
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
+		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
 
 		// If the subscription could not be found, throw.
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED');
 
 		// Retrieve the subscription, then find the index for the notification desired to delete.
 		const subscription = subscriptions[subscriptionIndex];
-		const entryIndex = subscription[1].findIndex(entry => entry.channel === channel.id && entry.status === status);
+		const entryIndex = subscription[1].findIndex((entry) => entry.channel === channel.id && entry.status === status);
 
 		// If there was no entry with the channel and status specified, throw.
 		if (entryIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS');
@@ -198,7 +203,7 @@ export default class extends SkyraCommand {
 
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
 			const { twitchStreamSubscriptions } = await DbSet.connect();
-			await twitchStreamSubscriptions.manager.transaction(async em => {
+			await twitchStreamSubscriptions.manager.transaction(async (em) => {
 				const entries = await em.find(TwitchStreamSubscriptionEntity, { guildIds: Any([message.guild!.id]) });
 				const toUpdate: TwitchStreamSubscriptionEntity[] = [];
 				const toDelete: TwitchStreamSubscriptionEntity[] = [];
@@ -221,7 +226,7 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS', [subscriptionEntries]);
 		}
 
-		const subscriptionIndex = subscriptions.findIndex(sub => sub[0] === streamer.id);
+		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
 		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED');
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
@@ -238,20 +243,20 @@ export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		// Create the response message.
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		// Fetch the content.
-		const content = typeof streamer === 'undefined'
-			? await this.showAll(message)
-			: this.showSingle(message, streamer);
+		const content = typeof streamer === 'undefined' ? await this.showAll(message) : this.showSingle(message, streamer);
 
 		// Create the pages and the URD to display them.
 		const pages = chunk(content, 10);
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setColor(await DbSet.fetchColor(message))
+		);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		// Start the display and return the message.
@@ -262,7 +267,7 @@ export default class extends SkyraCommand {
 	private showSingle(message: KlasaMessage, streamer: Streamer) {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get(this.#kSettingsKey);
-		const subscriptions = guildSubscriptions.find(entry => entry[0] === streamer.id);
+		const subscriptions = guildSubscriptions.find((entry) => entry[0] === streamer.id);
 		if (typeof subscriptions === 'undefined') throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED');
 
 		// Print all entries for this guild for this streamer.
@@ -281,7 +286,7 @@ export default class extends SkyraCommand {
 		if (guildSubscriptions.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_EMPTY');
 
 		// Fetch all usernames and map them by their id.
-		const ids = guildSubscriptions.map(subscriptions => subscriptions[0]);
+		const ids = guildSubscriptions.map((subscriptions) => subscriptions[0]);
 		const profiles = await this.client.twitch.fetchUsers(ids, []);
 		const names = new Map<string, string>();
 		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
@@ -301,15 +306,16 @@ export default class extends SkyraCommand {
 
 	private async upsertSubscription(guild: Guild, streamer: Streamer) {
 		const { twitchStreamSubscriptions } = await DbSet.connect();
-		const results = await twitchStreamSubscriptions.createQueryBuilder()
+		const results = await twitchStreamSubscriptions
+			.createQueryBuilder()
 			.insert()
 			.values({
 				id: streamer.id,
 				isStreaming: false,
-				expiresAt: new Date(Date.now() + (Time.Day * 8)),
+				expiresAt: new Date(Date.now() + Time.Day * 8),
 				guildIds: [guild.id]
 			})
-			.onConflict(/* sql */`(id) DO UPDATE SET guild_ids = ARRAY_CAT(twitch_stream_subscription.guild_ids, ARRAY['${guild.id}']::VARCHAR[])`)
+			.onConflict(/* sql */ `(id) DO UPDATE SET guild_ids = ARRAY_CAT(twitch_stream_subscription.guild_ids, ARRAY['${guild.id}']::VARCHAR[])`)
 			.returning(['guild_ids'])
 			.execute();
 		return results.raw[0].guild_ids.length === 1;
@@ -332,5 +338,4 @@ export default class extends SkyraCommand {
 			await subscription.save();
 		}
 	}
-
 }

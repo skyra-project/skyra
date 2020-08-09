@@ -6,12 +6,11 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restricted-attachment', 'ura'],
-	description: language => language.tget('COMMAND_UNRESTRICTATTACHMENT_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_UNRESTRICTATTACHMENT_EXTENDED'),
+	description: (language) => language.tget('COMMAND_UNRESTRICTATTACHMENT_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_UNRESTRICTATTACHMENT_EXTENDED'),
 	requiredGuildPermissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
-
 	private readonly kPath = GuildSettings.Roles.RestrictedAttachment;
 
 	public inhibit(message: KlasaMessage) {
@@ -22,16 +21,22 @@ export default class extends ModerationCommand {
 		throw message.language.tget('GUILD_SETTINGS_ROLES_RESTRICTED', message.guild.settings.get(GuildSettings.Prefix), this.kPath);
 	}
 
-	public async prehandle() { /* Do nothing */ }
-
-	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.unRestrictAttachment({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			reason: context.reason
-		}, await this.getTargetDM(message, context.target));
+	public async prehandle() {
+		/* Do nothing */
 	}
 
-	public async posthandle() { /* Do nothing */ }
+	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
+		return message.guild!.security.actions.unRestrictAttachment(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				reason: context.reason
+			},
+			await this.getTargetDM(message, context.target)
+		);
+	}
 
+	public async posthandle() {
+		/* Do nothing */
+	}
 }

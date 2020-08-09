@@ -6,7 +6,6 @@ import { createGunzip, createInflate } from 'zlib';
 
 @ApplyOptions<MiddlewareOptions>({ priority: 20 })
 export default class extends Middleware {
-
 	public async run(request: ApiRequest, response: ApiResponse) {
 		// If no Content-Type or does not have application/json, do not run this.
 		if (!request.headers['content-type']?.startsWith('application/json')) return;
@@ -45,5 +44,4 @@ export default class extends Middleware {
 		}
 		return null;
 	}
-
 }

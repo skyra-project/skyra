@@ -4,7 +4,6 @@ import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandStore } from 'klasa';
 
 export default class extends SelfModerationCommand {
-
 	protected $adder: keyof GuildSecurity['adders'] = 'words';
 	protected keyEnabled = GuildSettings.Selfmod.Filter.Enabled;
 	protected keySoftAction = GuildSettings.Selfmod.Filter.SoftAction;
@@ -16,9 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['word-filter-mode'],
-			description: language => language.tget('COMMAND_FILTERMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FILTERMODE_EXTENDED')
+			description: (language) => language.tget('COMMAND_FILTERMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_FILTERMODE_EXTENDED')
 		});
 	}
-
 }

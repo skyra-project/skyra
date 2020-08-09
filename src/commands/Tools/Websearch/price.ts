@@ -10,18 +10,15 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
-	description: language => language.tget('COMMAND_PRICE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_PRICE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_PRICE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_PRICE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
-		await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		await message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary));
 
 		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
 
@@ -35,9 +32,13 @@ export default class extends SkyraCommand {
 			url.searchParams.append('tsyms', toCurrency.join(',').toUpperCase());
 			url.searchParams.append('extraParams', `${NAME} ${VERSION} Discord Bot`);
 
-			const body = await fetch<CryptoCompareResultOk | CryptoCompareResultError>(url, {
-				headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
-			}, FetchResultTypes.JSON);
+			const body = await fetch<CryptoCompareResultOk | CryptoCompareResultError>(
+				url,
+				{
+					headers: [['authorization', `Apikey ${TOKENS.CRYPTOCOMPARE_KEY}`]]
+				},
+				FetchResultTypes.JSON
+			);
 
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
@@ -57,7 +58,6 @@ export default class extends SkyraCommand {
 			.setDescription(message.language.tget('COMMAND_PRICE_CURRENCY', fromCurrency, fromAmount, worths))
 			.setTimestamp();
 	}
-
 }
 
 export interface CryptoCompareResultError {
@@ -70,6 +70,6 @@ export interface CryptoCompareResultError {
 	ParamWithError: string;
 }
 
-export interface CryptoCompareResultErrorData { }
+export interface CryptoCompareResultErrorData {}
 
-export interface CryptoCompareResultOk extends Record<string, number> { }
+export interface CryptoCompareResultOk extends Record<string, number> {}

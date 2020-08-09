@@ -7,7 +7,6 @@ const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Numbe
 const { FLAGS } = Permissions;
 
 export default class extends SkyraCommand {
-
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
 	private readonly kKeyPermissions: [PermissionString, number][] = [
 		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],
@@ -26,27 +25,27 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo', 'uinfo'],
 			cooldown: 15,
-			description: language => language.tget('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_WHOIS_EXTENDED'),
+			description: (language) => language.tget('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
 		});
 
 		this.createCustomResolver('username', (arg, possible, message) =>
-			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author);
+			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author
+		);
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
-		return message.sendMessage(member
-			? this.member(message, member)
-			: this.user(message, user));
+		return message.sendMessage(member ? this.member(message, member) : this.user(message, user));
 	}
 
 	private user(message: KlasaMessage, user: KlasaUser) {
-		return message.language.tget('COMMAND_WHOIS_USER', user)
+		return message.language
+			.tget('COMMAND_WHOIS_USER', user)
 			.setColor(BrandingColors.Secondary)
 			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(user.toString())
@@ -55,7 +54,8 @@ export default class extends SkyraCommand {
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
-		const embed = message.language.tget('COMMAND_WHOIS_MEMBER', member)
+		const embed = message.language
+			.tget('COMMAND_WHOIS_MEMBER', member)
 			.setColor(member.displayColor || BrandingColors.Secondary)
 			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(member.toString())
@@ -90,5 +90,4 @@ export default class extends SkyraCommand {
 			embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS'), permissions.join(', '));
 		}
 	}
-
 }

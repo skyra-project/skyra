@@ -6,7 +6,6 @@ import { TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.MessageReactionRemove, emitter: store.client.ws });
 	}
@@ -16,5 +15,4 @@ export default class extends Event {
 		if (!channel || !channel.readable || !isTextBasedChannel(channel)) return;
 		this.client.emit(Events.RoleReactionRemove, channel, data);
 	}
-
 }

@@ -53,23 +53,23 @@ export function processWordBoundaries(word: string) {
 	const ends = word.endsWith(kWordBoundaryWildcard);
 
 	return starts
-		// Starts and end?
-		? ends
-			// Starts and ends
-			? WordBoundary.Both
-			// Only starts
-			: WordBoundary.Start
-		// Ends?
-		: ends
-			// Ends with wildcard
-			? WordBoundary.End
-			// Does not have wildcards
-			: WordBoundary.None;
+		? // Starts and end?
+		  ends
+			? // Starts and ends
+			  WordBoundary.Both
+			: // Only starts
+			  WordBoundary.Start
+		: // Ends?
+		ends
+		? // Ends with wildcard
+		  WordBoundary.End
+		: // Does not have wildcards
+		  WordBoundary.None;
 }
 
 export function processWordPatternsWithGroups(word: string) {
 	return bidirectionalReplace(kPatternGroupReplacer, word, {
-		onMatch: match => `${processGroup(match[1])}+${match[2] ? '\\W*' : ''}`,
+		onMatch: (match) => `${processGroup(match[1])}+${match[2] ? '\\W*' : ''}`,
 		outMatch: (match, _, next) => `${processWordPattern(match)}${next === word.length ? '' : '\\W*'}`
 	}).join('');
 }
@@ -78,16 +78,17 @@ export function processGroup(group: string) {
 	const output = bidirectionalReplace(kGroupRangeReplacer, group, {
 		// Given a-b
 		// If a === b
-		onMatch: match => match[1] === match[2]
-			// and a === -
-			? match[1] === '-'
-				// then optimize to -
-				? '\\-'
-				// else optimize to a-
-				: `${processLetter(match[1])}\\-`
-			// otherwise a-b
-			: `${processLetter(match[1])}-${processLetter(match[2])}`,
-		outMatch: match => [...match].map(processLetter).join('')
+		onMatch: (match) =>
+			match[1] === match[2]
+				? // and a === -
+				  match[1] === '-'
+					? // then optimize to -
+					  '\\-'
+					: // else optimize to a-
+					  `${processLetter(match[1])}\\-`
+				: // otherwise a-b
+				  `${processLetter(match[1])}-${processLetter(match[2])}`,
+		outMatch: (match) => [...match].map(processLetter).join('')
 	});
 
 	return `[${output.join('')}]`;

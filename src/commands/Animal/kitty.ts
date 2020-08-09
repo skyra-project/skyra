@@ -8,28 +8,21 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['kitten', 'cat'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_KITTY_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_KITTY_EXTENDED'),
+	description: (language) => language.tget('COMMAND_KITTY_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_KITTY_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES', 'EMBED_LINKS'],
 	spam: true
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage) {
-		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTimestamp();
+		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTimestamp();
 
 		try {
 			const randomImageBuffer = await fetch('https://cataas.com/cat', FetchResultTypes.Buffer);
-			embed
-				.attachFiles([{ attachment: randomImageBuffer, name: 'randomcat.jpg' }])
-				.setImage('attachment://randomcat.jpg');
+			embed.attachFiles([{ attachment: randomImageBuffer, name: 'randomcat.jpg' }]).setImage('attachment://randomcat.jpg');
 		} catch {
-			embed
-				.setImage('https://wallpapercave.com/wp/wp3021105.jpg');
+			embed.setImage('https://wallpapercave.com/wp/wp3021105.jpg');
 		}
 		return message.sendEmbed(embed);
 	}
-
 }

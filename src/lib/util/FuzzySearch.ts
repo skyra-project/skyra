@@ -7,7 +7,6 @@ type FuzzySearchAccess<V> = (value: V) => string;
 type FuzzySearchFilter<V> = (value: V) => boolean;
 
 export class FuzzySearch<K extends string, V> {
-
 	private readonly kCollection: Collection<K, V>;
 	private readonly kAccess: FuzzySearchAccess<V>;
 	private readonly kFilter: FuzzySearchFilter<V>;
@@ -70,13 +69,17 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 
-		const { content: n } = await message.prompt(message.language.tget('FUZZYSEARCH_MATCHES', results.length - 1,
-			codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))));
+		const { content: n } = await message.prompt(
+			message.language.tget(
+				'FUZZYSEARCH_MATCHES',
+				results.length - 1,
+				codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
+			)
+		);
 		if (n.toLowerCase() === 'abort') return null;
 		const parsed = Number(n);
 		if (!Number.isSafeInteger(parsed)) throw message.language.tget('FUZZYSEARCH_INVALID_NUMBER');
 		if (parsed < 0 || parsed >= results.length) throw message.language.tget('FUZZYSEARCH_INVALID_INDEX');
 		return results[parsed];
 	}
-
 }

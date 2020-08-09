@@ -10,16 +10,15 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['emojis'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_EMOTES_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_EMOTES_EXTENDED'),
+	description: (language) => language.tget('COMMAND_EMOTES_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_EMOTES_EXTENDED'),
 	runIn: ['text']
 })
 export default class extends RichDisplayCommand {
-
 	public async run(message: KlasaMessage) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const animEmotes: string[] = [];
 		const staticEmotes: string[] = [];
@@ -36,25 +35,23 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, animatedEmojis: string[][], staticEmojis: string[][]) {
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setAuthor([
-				`${message.guild!.emojis.size}`,
-				`${message.language.tget('COMMAND_EMOTES_TITLE')}`,
-				`${message.guild!.name}`
-			].join(' '), message.guild!.iconURL({ format: 'png' })!));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setAuthor(
+					[`${message.guild!.emojis.size}`, `${message.language.tget('COMMAND_EMOTES_TITLE')}`, `${message.guild!.name}`].join(' '),
+					message.guild!.iconURL({ format: 'png' })!
+				)
+		);
 
 		for (const chunk of staticEmojis) {
-			display.addPage((embed: MessageEmbed) => embed
-				.setDescription(chunk.join(' ')));
+			display.addPage((embed: MessageEmbed) => embed.setDescription(chunk.join(' ')));
 		}
 
 		for (const chunk of animatedEmojis) {
-			display.addPage((embed: MessageEmbed) => embed
-				.setDescription(chunk.join(' ')));
+			display.addPage((embed: MessageEmbed) => embed.setDescription(chunk.join(' ')));
 		}
 
 		return display;
 	}
-
 }

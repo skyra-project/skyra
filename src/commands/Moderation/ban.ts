@@ -8,26 +8,29 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['b'],
-	description: language => language.tget('COMMAND_BAN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_BAN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_BAN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_BAN_EXTENDED'),
 	optionalDuration: true,
 	requiredMember: false,
 	requiredGuildPermissions: ['BAN_MEMBERS']
 })
 export default class extends ModerationCommand {
-
 	public prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) ? { unlock: message.guild!.moderation.createLock() } : null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.ban({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			duration: context.duration,
-			imageURL: getImage(message),
-			reason: context.reason
-		}, this.getDays(message), await this.getTargetDM(message, context.target));
+		return message.guild!.security.actions.ban(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				duration: context.duration,
+				imageURL: getImage(message),
+				reason: context.reason
+			},
+			this.getDays(message),
+			await this.getTargetDM(message, context.target)
+		);
 	}
 
 	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {
@@ -50,5 +53,4 @@ export default class extends ModerationCommand {
 		}
 		return 0;
 	}
-
 }

@@ -3,6 +3,6 @@ import { initClean } from '@utils/clean';
 
 const raw = Object.values(TOKENS)
 	.concat([CLIENT_SECRET, LAVALINK_PASSWORD, PGSQL_DATABASE_PASSWORD, WEBHOOK_ERROR.token, INFLUX_OPTIONS.token!])
-	.filter(value => typeof value === 'string' && value !== '');
+	.filter((value) => typeof value === 'string' && value !== '');
 
 initClean([...new Set(raw)]);

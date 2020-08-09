@@ -12,7 +12,6 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
-
 	private readonly kCountCache = new Collection<string, InternalCacheEntry>();
 	private readonly kSyncCache = new Collection<string, Promise<InternalCacheEntry>>();
 	private kTimerSweeper: NodeJS.Timer | null = null;
@@ -58,39 +57,56 @@ export default class extends Event {
 		if (data.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
 
 		this.client.emit(Events.ReactionBlacklist, data, emoji);
-		if (!data.guild.settings.get(GuildSettings.Channels.ReactionLogs)
-			|| (!data.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)
-		) return;
+		if (
+			!data.guild.settings.get(GuildSettings.Channels.ReactionLogs) ||
+			(!data.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)
+		)
+			return;
 
 		const ignoreChannels = data.guild.settings.get(GuildSettings.Messages.IgnoreChannels);
-		const ignoreReactionAdd = data.guild!.settings.get(GuildSettings.Channels.Ignore.ReactionAdd).some(id => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
-		const ignoreAllEvents = data.guild!.settings.get(GuildSettings.Channels.Ignore.All).some(id => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
+		const ignoreReactionAdd = data
+			.guild!.settings.get(GuildSettings.Channels.Ignore.ReactionAdd)
+			.some((id) => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
+		const ignoreAllEvents = data
+			.guild!.settings.get(GuildSettings.Channels.Ignore.All)
+			.some((id) => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
 		if (ignoreChannels.includes(data.channel.id) || ignoreReactionAdd || ignoreAllEvents) return;
 
-		if (await this.retrieveCount(data, emoji) > 1) return;
+		if ((await this.retrieveCount(data, emoji)) > 1) return;
 
 		const userTag = await this.client.userTags.fetch(data.userID);
 		if (userTag.bot) return;
 
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () => new MessageEmbed()
-			.setColor(Colors.Green)
-			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
-			.setThumbnail(data.emoji.id === null
-				? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
-				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
-			.setDescription([
-				`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
-				`**Channel**: ${data.channel}`,
-				`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
-			].join('\n'))
-			.setFooter(`${data.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
-			.setTimestamp());
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () =>
+			new MessageEmbed()
+				.setColor(Colors.Green)
+				.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
+				.setThumbnail(
+					data.emoji.id === null
+						? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
+						: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
+				)
+				.setDescription(
+					[
+						`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
+						`**Channel**: ${data.channel}`,
+						`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
+							data.messageID
+						})`
+					].join('\n')
+				)
+				.setFooter(`${data.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
+				.setTimestamp()
+		);
 	}
 
 	private async handleStarboard(data: LLRCData, emoji: string) {
-		if (data.channel.nsfw
-			|| data.channel.id === data.guild.settings.get(GuildSettings.Starboard.Channel)
-			|| emoji !== data.guild.settings.get(GuildSettings.Starboard.Emoji)) return;
+		if (
+			data.channel.nsfw ||
+			data.channel.id === data.guild.settings.get(GuildSettings.Starboard.Channel) ||
+			emoji !== data.guild.settings.get(GuildSettings.Starboard.Emoji)
+		)
+			return;
 
 		try {
 			const channel = data.guild.settings.get(GuildSettings.Starboard.Channel);
@@ -134,11 +150,7 @@ export default class extends Event {
 	}
 
 	private async fetchCount(data: LLRCData, emoji: string, id: string) {
-		const users = await api(this.client)
-			.channels(data.channel.id)
-			.messages(data.messageID)
-			.reactions(emoji)
-			.get() as APIUserData[];
+		const users = (await api(this.client).channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUserData[];
 		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
 		this.kCountCache.set(id, count);
 		this.kSyncCache.delete(id);
@@ -146,7 +158,7 @@ export default class extends Event {
 		if (this.kTimerSweeper === null) {
 			this.kTimerSweeper = this.client.setInterval(() => {
 				const now = Date.now();
-				this.kCountCache.sweep(entry => entry.sweepAt < now);
+				this.kCountCache.sweep((entry) => entry.sweepAt < now);
 				if (this.kTimerSweeper !== null && this.kCountCache.size === 0) {
 					this.client.clearInterval(this.kTimerSweeper);
 					this.kTimerSweeper = null;
@@ -156,7 +168,6 @@ export default class extends Event {
 
 		return count;
 	}
-
 }
 
 interface InternalCacheEntry {

@@ -1,4 +1,3 @@
-
 /**
  * @license
  * MIT License
@@ -40,7 +39,6 @@ const HEADER = '\u001B[39m\u001B[94m[CACHE CLEANUP]\u001B[39m\u001B[90m';
  * @version 2.0.0
  */
 export default class extends Task {
-
 	public run(): PartialResponseValue | null {
 		const OLD_SNOWFLAKE = Snowflake.generate(Date.now() - THRESHOLD).toString();
 		let presences = 0;
@@ -81,12 +79,12 @@ export default class extends Task {
 		}
 
 		// Emit a log
-		this.client.emit(Events.Verbose,
-			`${HEADER} ${
-				this.setColor(presences)} [Presence]s | ${
-				this.setColor(guildMembers)} [GuildMember]s | ${
-				this.setColor(users)} [User]s | ${
-				this.setColor(lastMessages)} [Last Message]s.`);
+		this.client.emit(
+			Events.Verbose,
+			`${HEADER} ${this.setColor(presences)} [Presence]s | ${this.setColor(guildMembers)} [GuildMember]s | ${this.setColor(
+				users
+			)} [User]s | ${this.setColor(lastMessages)} [Last Message]s.`
+		);
 
 		return null;
 	}
@@ -111,5 +109,4 @@ export default class extends Task {
 	private isTextChannel(channel: Channel): channel is TextChannel {
 		return channel.type === 'text';
 	}
-
 }

@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 
 export function api(client: Client) {
-	return (client as unknown as { api: Api }).api;
+	return ((client as unknown) as { api: Api }).api;
 }
 
 interface Api {
@@ -179,7 +179,10 @@ interface ApiChannelsChannelMessagesMessageReactionsEmoji {
 	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiMe>>(userID: '@me', key: T): ApiChannelsChannelMessagesMessageReactionsEmojiMe[T];
 
 	(userID: string): ApiChannelsChannelMessagesMessageReactionsEmojiUser;
-	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiUser>>(userID: string, key: T): ApiChannelsChannelMessagesMessageReactionsEmojiUser[T];
+	<T extends R<ApiChannelsChannelMessagesMessageReactionsEmojiUser>>(
+		userID: string,
+		key: T
+	): ApiChannelsChannelMessagesMessageReactionsEmojiUser[T];
 }
 
 /**

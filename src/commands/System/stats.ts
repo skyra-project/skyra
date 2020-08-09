@@ -6,20 +6,24 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { cpus, uptime } from 'os';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,
-			description: language => language.tget('COMMAND_STATS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_STATS_EXTENDED'),
+			description: (language) => language.tget('COMMAND_STATS_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_STATS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
 
 	public async run(message: KlasaMessage) {
-		return message.sendLocale('COMMAND_STATS', [await DbSet.fetchColor(message), this.generalStatistics, this.uptimeStatistics, this.usageStatistics]);
+		return message.sendLocale('COMMAND_STATS', [
+			await DbSet.fetchColor(message),
+			this.generalStatistics,
+			this.uptimeStatistics,
+			this.usageStatistics
+		]);
 	}
 
 	private get generalStatistics(): StatsGeneral {
@@ -48,7 +52,6 @@ export default class extends SkyraCommand {
 			RAM_USED: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
 		};
 	}
-
 }
 
 export interface StatsGeneral {

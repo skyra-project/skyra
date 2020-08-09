@@ -8,7 +8,6 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
 
 export default class extends Event {
-
 	public run(message: KlasaMessage) {
 		if (message.partial || !message.guild || message.author.bot) return;
 
@@ -25,22 +24,30 @@ export default class extends Event {
 	private handleMessageLogs(message: KlasaMessage) {
 		const enabled = message.guild!.settings.get(GuildSettings.Events.MessageDelete);
 		const ignoreChannels = message.guild!.settings.get(GuildSettings.Messages.IgnoreChannels);
-		const ignoreDeletes = message.guild!.settings.get(GuildSettings.Channels.Ignore.MessageDelete).some(id => message.channel.id === id || (message.channel as TextChannel).parent?.id === id);
-		const ignoreAllEvents = message.guild!.settings.get(GuildSettings.Channels.Ignore.All).some(id => message.channel.id === id || (message.channel as TextChannel).parent?.id === id);
+		const ignoreDeletes = message
+			.guild!.settings.get(GuildSettings.Channels.Ignore.MessageDelete)
+			.some((id) => message.channel.id === id || (message.channel as TextChannel).parent?.id === id);
+		const ignoreAllEvents = message
+			.guild!.settings.get(GuildSettings.Channels.Ignore.All)
+			.some((id) => message.channel.id === id || (message.channel as TextChannel).parent?.id === id);
 		if (!enabled || ignoreChannels.includes(message.channel.id) || ignoreDeletes || ignoreAllEvents) return;
 
 		const channel = message.channel as TextChannel;
-		this.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () => new MessageEmbed()
-			.setColor(Colors.Red)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(cutText(getContent(message) || '', 1900))
-			.setFooter(`${message.language.tget('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
-			.setImage(getImage(message)!)
-			.setTimestamp());
+		this.client.emit(Events.GuildMessageLog, channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () =>
+			new MessageEmbed()
+				.setColor(Colors.Red)
+				.setAuthor(
+					`${message.author.tag} (${message.author.id})`,
+					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+				)
+				.setDescription(cutText(getContent(message) || '', 1900))
+				.setFooter(`${message.language.tget('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
+				.setImage(getImage(message)!)
+				.setTimestamp()
+		);
 	}
 
 	private handleSnipeMessage(message: KlasaMessage) {
 		if (message.channel instanceof TextChannel) message.channel.sniped = message;
 	}
-
 }

@@ -1,5 +1,4 @@
 export namespace Kitsu {
-
 	export interface KitsuResult {
 		exhaustiveNbHits: boolean;
 		hitsPerPage: number;

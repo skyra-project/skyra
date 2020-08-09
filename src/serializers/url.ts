@@ -1,7 +1,6 @@
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
-
 	private readonly kProtocol = /^https?:\/\//;
 
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
@@ -16,5 +15,4 @@ export default class extends Serializer {
 	public stringify(data: string) {
 		return `https://${data}`;
 	}
-
 }

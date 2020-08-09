@@ -9,15 +9,17 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })
 export default class extends Route {
-
 	// Challenge
 	public get(request: ApiRequest, response: ApiResponse) {
 		const challenge = request.query['hub.challenge'] as string | undefined;
 		switch (request.query['hub.mode']) {
-			case 'denied': return response.setContentType(Mime.Types.TextPlain).ok(challenge ?? 'ok');
+			case 'denied':
+				return response.setContentType(Mime.Types.TextPlain).ok(challenge ?? 'ok');
 			case 'unsubscribe':
-			case 'subscribe': return response.setContentType(Mime.Types.TextPlain).ok(challenge);
-			default: return response.error("Well... Isn't this a pain in the ass");
+			case 'subscribe':
+				return response.setContentType(Mime.Types.TextPlain).ok(challenge);
+			default:
+				return response.error("Well... Isn't this a pain in the ass");
 		}
 	}
 
@@ -43,7 +45,6 @@ export default class extends Route {
 			this.client.emit(Events.TwitchStreamOnline, data[0], response);
 		}
 	}
-
 }
 
 export interface PostStreamBody {

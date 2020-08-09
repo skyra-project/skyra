@@ -3,7 +3,6 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Event, Settings } from 'klasa';
 
 export default class extends Event {
-
 	public async run(settings: Settings) {
 		// If the synchronized settings isn't from the guilds gateway, return early.
 		if (settings.gateway.name !== 'guilds') return;
@@ -23,5 +22,4 @@ export default class extends Event {
 	private updatePermissionNodes(guild: SkyraGuild) {
 		return guild.permissionsManager.update();
 	}
-
 }

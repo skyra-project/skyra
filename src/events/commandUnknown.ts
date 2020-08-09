@@ -6,7 +6,6 @@ import { floatPromise } from '@utils/util';
 import { Command, CommandPrompt, Event, KlasaMessage, Stopwatch } from 'klasa';
 
 export default class extends Event {
-
 	public run(message: KlasaMessage, command: string) {
 		if (!message.guild) return null;
 
@@ -16,11 +15,11 @@ export default class extends Event {
 		command = command.toLowerCase();
 
 		const tags = message.guild.settings.get(GuildSettings.CustomCommands);
-		const tag = tags.some(t => t.id === command);
+		const tag = tags.some((t) => t.id === command);
 		if (tag) return this.runTag(message, command);
 
 		const aliases = message.guild.settings.get(GuildSettings.Trigger.Alias);
-		const alias = aliases.find(entry => entry.input === command);
+		const alias = aliases.find((entry) => entry.input === command);
 		const commandAlias = (alias && this.client.commands.get(alias.output)) || null;
 		if (commandAlias) return this.runCommand(message, commandAlias);
 
@@ -28,9 +27,9 @@ export default class extends Event {
 	}
 
 	public runCommand(message: KlasaMessage, command: Command) {
-		const commandHandler = this.client.monitors.get('commandHandler') as unknown as CommandHandler;
+		const commandHandler = (this.client.monitors.get('commandHandler') as unknown) as CommandHandler;
 		message.command = command;
-		(message as unknown as { prompter: CommandPrompt }).prompter = message.command.usage.createPrompt(message, {
+		((message as unknown) as { prompter: CommandPrompt }).prompter = message.command.usage.createPrompt(message, {
 			flagSupport: message.command.flagSupport,
 			quotedStringSupport: message.command.quotedStringSupport,
 			time: message.command.promptTime,
@@ -58,7 +57,6 @@ export default class extends Event {
 			this.client.emit(Events.CommandInhibited, message, tagCommand, response);
 		}
 	}
-
 }
 
 interface TagCommand extends SkyraCommand {

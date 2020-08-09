@@ -4,7 +4,6 @@ import { Extendable, ExtendableStore } from 'klasa';
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
 
 export default class extends Extendable {
-
 	public constructor(store: ExtendableStore, file: string[], directory: string) {
 		super(store, file, directory, { appliesTo: [TextChannel] });
 	}
@@ -31,7 +30,6 @@ export default class extends Extendable {
 		const current = snipes.get(this);
 		return typeof current === 'undefined' ? null : current.message;
 	}
-
 }
 
 export interface SnipedMessage {

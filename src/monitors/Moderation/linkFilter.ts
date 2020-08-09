@@ -6,9 +6,7 @@ import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
-
 export default class extends ModerationMonitor {
-
 	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_LINKS';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Links.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Links.IgnoredChannels;
@@ -26,8 +24,7 @@ export default class extends ModerationMonitor {
 	private readonly kWhitelist = /^(?:\w+\.)?(?:discordapp.com|discord.gg|discord.com)$/i;
 
 	public shouldRun(message: KlasaMessage) {
-		return super.shouldRun(message)
-			&& message.content.length > 0;
+		return super.shouldRun(message) && message.content.length > 0;
 	}
 
 	protected preProcess(message: KlasaMessage) {
@@ -60,5 +57,4 @@ export default class extends ModerationMonitor {
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_LINK')}`)
 			.setTimestamp();
 	}
-
 }

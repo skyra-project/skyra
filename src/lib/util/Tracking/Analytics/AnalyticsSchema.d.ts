@@ -1,5 +1,4 @@
 export namespace AnalyticsSchema {
-
 	export const enum Points {
 		Guilds = 'guilds',
 		Users = 'users',
@@ -49,5 +48,4 @@ export namespace AnalyticsSchema {
 		Online = 'online',
 		Offline = 'offline'
 	}
-
 }

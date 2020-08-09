@@ -33,30 +33,36 @@ export function displayFolder(settings: SettingsFolder) {
 	if (folders.length) array.push('= Folders =', ...folders.sort(), '');
 	if (sections.size) {
 		for (const keyType of [...sections.keys()].sort()) {
-			array.push(`= ${toTitleCase(keyType)}s =`,
-				...sections.get(keyType)!.sort().map(key => `${key.padEnd(longest)} :: ${displayEntry(settings.schema.get(key) as SchemaEntry, settings.get(key), settings.base!.target as Guild)}`),
-				'');
+			array.push(
+				`= ${toTitleCase(keyType)}s =`,
+				...sections
+					.get(keyType)!
+					.sort()
+					.map(
+						(key) =>
+							`${key.padEnd(longest)} :: ${displayEntry(
+								settings.schema.get(key) as SchemaEntry,
+								settings.get(key),
+								settings.base!.target as Guild
+							)}`
+					),
+				''
+			);
 		}
 	}
 	return array.join('\n');
 }
 
 export function displayEntry(entry: SchemaEntry, value: unknown, guild: Guild) {
-	return entry.array
-		? displayEntryMultiple(entry, value as readonly unknown[], guild)
-		: displayEntrySingle(entry, value, guild);
+	return entry.array ? displayEntryMultiple(entry, value as readonly unknown[], guild) : displayEntrySingle(entry, value, guild);
 }
 
 export function displayEntrySingle(entry: SchemaEntry, value: unknown, guild: Guild) {
-	return value === null
-		? guild.language.tget('COMMAND_CONF_SETTING_NOT_SET')
-		: entry.serializer!.stringify(value, guild);
+	return value === null ? guild.language.tget('COMMAND_CONF_SETTING_NOT_SET') : entry.serializer!.stringify(value, guild);
 }
 
 export function displayEntryMultiple(entry: SchemaEntry, values: readonly unknown[], guild: Guild) {
-	return values.length === 0
-		? 'None'
-		: `[ ${values.map(value => displayEntrySingle(entry, value, guild)).join(' | ')} ]`;
+	return values.length === 0 ? 'None' : `[ ${values.map((value) => displayEntrySingle(entry, value, guild)).join(' | ')} ]`;
 }
 
 export function initConfigurableSchema(folder: Schema) {

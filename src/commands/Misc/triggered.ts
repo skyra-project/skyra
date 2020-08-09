@@ -15,15 +15,14 @@ const COORDINATES: readonly [number, number][] = [
 ];
 
 export default class extends SkyraCommand {
-
 	private kTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.tget('COMMAND_TRIGGERED_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_TRIGGERED_EXTENDED'),
+			description: (language) => language.tget('COMMAND_TRIGGERED_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_TRIGGERED_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -49,11 +48,13 @@ export default class extends SkyraCommand {
 		encoder.setQuality(100);
 
 		for (const [x, y] of COORDINATES) {
-			encoder.addFrame(canvas
-				.printImage(userAvatar, x, y, 400, 400)
-				.printImage(this.kTemplate, 0, 340, 350, 53)
-				.setColor(rgba(255, 100, 0, 0.4))
-				.printRectangle(0, 0, 350, 350)['context']);
+			encoder.addFrame(
+				canvas
+					.printImage(userAvatar, x, y, 400, 400)
+					.printImage(this.kTemplate, 0, 340, 350, 53)
+					.setColor(rgba(255, 100, 0, 0.4))
+					.printRectangle(0, 0, 350, 350)['context']
+			);
 		}
 
 		encoder.finish();
@@ -64,5 +65,4 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/triggered.png'));
 	}
-
 }

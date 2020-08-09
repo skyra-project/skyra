@@ -3,7 +3,20 @@ import { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
 import { kBigIntTransformer } from '@utils/util';
 import { container } from 'tsyringe';
-import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Check, Column, Entity, JoinTable, ManyToMany, OneToOne, PrimaryColumn } from 'typeorm';
+import {
+	AfterInsert,
+	AfterLoad,
+	AfterRemove,
+	AfterUpdate,
+	BaseEntity,
+	Check,
+	Column,
+	Entity,
+	JoinTable,
+	ManyToMany,
+	OneToOne,
+	PrimaryColumn
+} from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserProfileEntity } from './UserProfileEntity';
@@ -13,29 +26,28 @@ import { UserProfileEntity } from './UserProfileEntity';
 @Check('reputations >= 0')
 @Entity('user', { schema: 'public' })
 export class UserEntity extends BaseEntity {
-
 	@PrimaryColumn('varchar', { length: 19 })
 	public id!: string;
 
-	@Column('integer', { 'default': 0 })
+	@Column('integer', { default: 0 })
 	public points = 0;
 
-	@Column('integer', { 'default': 0 })
+	@Column('integer', { default: 0 })
 	public reputations = 0;
 
-	@Column('boolean', { 'default': true })
+	@Column('boolean', { default: true })
 	public moderationDM = true;
 
-	@Column('bigint', { 'default': 0, 'transformer': kBigIntTransformer })
+	@Column('bigint', { default: 0, transformer: kBigIntTransformer })
 	public money = 0;
 
-	@OneToOne(() => RpgUserEntity, rpgUsers => rpgUsers.user)
+	@OneToOne(() => RpgUserEntity, (rpgUsers) => rpgUsers.user)
 	public game?: RpgUserEntity;
 
-	@OneToOne(() => UserProfileEntity, profile => profile.user, { cascade: true })
+	@OneToOne(() => UserProfileEntity, (profile) => profile.user, { cascade: true })
 	public profile?: UserProfileEntity;
 
-	@OneToOne(() => UserCooldownEntity, cooldown => cooldown.user, { cascade: true })
+	@OneToOne(() => UserCooldownEntity, (cooldown) => cooldown.user, { cascade: true })
 	public cooldowns?: UserCooldownEntity;
 
 	@ManyToMany(() => UserEntity, { cascade: true })
@@ -75,5 +87,4 @@ export class UserEntity extends BaseEntity {
 	protected entityRemove() {
 		this.#money = null;
 	}
-
 }

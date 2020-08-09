@@ -29,7 +29,13 @@ const kReels: readonly Icons[][] = [
 	[4, 1, 2, 2, 4, 3, 8, 2, 1, 6, 5, 2, 7, 0, 0, 6, 1, 4, 2, 1, 0, 2, 5, 5, 3, 6, 8, 7, 1, 1, 7, 4, 4, 3, 3, 0, 6, 1, 3, 5, 6, 0, 3, 0, 5, 6, 4],
 	[3, 7, 1, 4, 2, 6, 5, 4, 1, 3, 0, 6, 1, 3, 4, 2, 1, 8, 1, 5, 2, 2, 7, 1, 4, 3, 4, 0, 7, 2, 2, 1, 0, 8, 4, 0, 6, 3, 5, 6, 8, 1, 8, 3, 4, 5, 7]
 ];
-const kCombinations = [[0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+const kCombinations = [
+	[0, 3, 6],
+	[1, 4, 7],
+	[2, 5, 8],
+	[0, 4, 8],
+	[2, 4, 6]
+];
 const kValues = new Map<Icons, number>([
 	[Icons.Cherry, 4],
 	[Icons.Bar, 4],
@@ -69,7 +75,6 @@ const kCoordinates: readonly Coordinate[] = [
 const kPositions = [0, 0, 0];
 
 export class Slotmachine {
-
 	/** The amount bet */
 	private bet: number;
 
@@ -93,10 +98,8 @@ export class Slotmachine {
 		this.calculate(rolls);
 
 		const lost = this.winnings === 0;
-		const winnings = (this.winnings * await this.fetchBoost()) - this.bet;
-		const amount = lost
-			? this.settings.money - this.bet
-			: this.settings.money + winnings;
+		const winnings = this.winnings * (await this.fetchBoost()) - this.bet;
+		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
 		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
@@ -128,12 +131,17 @@ export class Slotmachine {
 			.printImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();
 
-		await Promise.all(rolls.map((value, index) => new Promise(resolve => {
-			const { x, y } = kAssets.get(value)!;
-			const coordinate = kCoordinates[index];
-			canvas.printImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coordinate.x, coordinate.y, kIconSize, kIconSize);
-			resolve();
-		})));
+		await Promise.all(
+			rolls.map(
+				(value, index) =>
+					new Promise((resolve) => {
+						const { x, y } = kAssets.get(value)!;
+						const coordinate = kCoordinates[index];
+						canvas.printImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coordinate.x, coordinate.y, kIconSize, kIconSize);
+						resolve();
+					})
+			)
+		);
 
 		return canvas.toBufferAsync();
 	}
@@ -143,8 +151,10 @@ export class Slotmachine {
 		const { clients } = await DbSet.connect();
 		const settings = await clients.ensure();
 
-		return (this.message.guild && settings.guildBoost.includes(this.message.guild.id) ? 1.5 : 1)
-			* (settings.userBoost.includes(this.message.author.id) ? 1.5 : 1);
+		return (
+			(this.message.guild && settings.guildBoost.includes(this.message.guild.id) ? 1.5 : 1) *
+			(settings.userBoost.includes(this.message.author.id) ? 1.5 : 1)
+		);
 	}
 
 	private calculate(roll: readonly Icons[]) {
@@ -161,11 +171,7 @@ export class Slotmachine {
 			const reel = kReels[i];
 			const reelLength = reel.length;
 			const rand = this._spinReel(i);
-			roll.push(
-				reel[rand === 0 ? reelLength - 1 : rand - 1],
-				reel[rand],
-				reel[rand === reelLength - 1 ? 0 : rand + 1]
-			);
+			roll.push(reel[rand === 0 ? reelLength - 1 : rand - 1], reel[rand], reel[rand === reelLength - 1 ? 0 : rand + 1]);
 		}
 
 		return roll as readonly Icons[];
@@ -173,7 +179,7 @@ export class Slotmachine {
 
 	private _spinReel(reel: number) {
 		const kReelLength = kReels[reel].length;
-		const position = (kPositions[reel] + Math.round((Math.random() * kReelLength) + 3)) % kReelLength;
+		const position = (kPositions[reel] + Math.round(Math.random() * kReelLength + 3)) % kReelLength;
 		kPositions[reel] = position;
 		return position;
 	}
@@ -184,14 +190,10 @@ export class Slotmachine {
 	};
 
 	public static async init(): Promise<void> {
-		const [icon, shiny] = await Promise.all([
-			loadImage(join(socialFolder, 'sm-icons.png')),
-			loadImage(join(socialFolder, 'shiny-icon.png'))
-		]);
+		const [icon, shiny] = await Promise.all([loadImage(join(socialFolder, 'sm-icons.png')), loadImage(join(socialFolder, 'shiny-icon.png'))]);
 		Slotmachine.images.ICON = icon;
 		Slotmachine.images.SHINY = shiny;
 	}
-
 }
 
 interface SlotmachineAssets {

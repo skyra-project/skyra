@@ -5,7 +5,6 @@ import { Middleware, MiddlewareOptions, Route, Util } from 'klasa-dashboard-hook
 
 @ApplyOptions<MiddlewareOptions>({ priority: 100 })
 export default class extends Middleware {
-
 	public run(request: ApiRequest, response: ApiResponse, route?: Route) {
 		if (!route) return;
 
@@ -16,5 +15,4 @@ export default class extends Middleware {
 			response.unauthorized();
 		}
 	}
-
 }

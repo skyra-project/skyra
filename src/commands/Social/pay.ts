@@ -6,13 +6,12 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_PAY_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_PAY_EXTENDED'),
+			description: (language) => language.tget('COMMAND_PAY_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_PAY_EXTENDED'),
 			runIn: ['text'],
 			spam: true,
 			usage: '<amount:integer> <user:user>',
@@ -41,7 +40,7 @@ export default class extends SkyraCommand {
 
 			if (!accepted) return this.denyPayment(message);
 
-			await getManager().transaction(async em => {
+			await getManager().transaction(async (em) => {
 				settings.money -= money;
 				await em.save(settings);
 
@@ -70,5 +69,4 @@ export default class extends SkyraCommand {
 	private denyPayment(message: KlasaMessage) {
 		return message.sendMessage(message.language.tget('COMMAND_PAY_PROMPT_DENY'));
 	}
-
 }

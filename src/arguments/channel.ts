@@ -5,7 +5,6 @@ import { Argument, KlasaMessage, Possible } from 'klasa';
 const CHANNEL_REGEXP = Argument.regex.channel;
 
 export default class extends Argument {
-
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
 		if (!message.guild) throw message.language.tget('RESOLVER_CHANNEL_NOT_IN_GUILD');
 
@@ -23,5 +22,4 @@ export default class extends Argument {
 
 		throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
 	}
-
 }

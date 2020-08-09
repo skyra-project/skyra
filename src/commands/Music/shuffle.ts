@@ -4,14 +4,12 @@ import { requireDj, requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: language => language.tget('COMMAND_SHUFFLE_DESCRIPTION')
+	description: (language) => language.tget('COMMAND_SHUFFLE_DESCRIPTION')
 })
 export default class extends MusicCommand {
-
 	@requireQueueNotEmpty()
 	@requireDj()
 	public run(message: KlasaMessage) {
 		message.guild!.music.shuffle(this.getContext(message));
 	}
-
 }

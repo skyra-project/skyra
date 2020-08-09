@@ -11,7 +11,7 @@ const kAttempts = 5;
  */
 export async function prompt(message: Message, entries: PromptListResolvable) {
 	const n = await ask(message, [...resolve(entries, 10)]);
-	await Promise.all(message.responses.map(response => response.nuke().catch(() => null)));
+	await Promise.all(message.responses.map((response) => response.nuke().catch(() => null)));
 	return n;
 }
 
@@ -26,15 +26,16 @@ async function ask(message: Message, list: readonly string[]) {
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
 	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [codeblock, possibles]);
 	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS');
-	const promptFilter = (m: Message) => m.author === message.author
-		&& (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
+	const promptFilter = (m: Message) =>
+		m.author === message.author && (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null = null;
 	let n: number | undefined = undefined;
 	let attempts = 0;
 	do {
 		if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [codeblock, attempts, kAttempts]);
-		response = await message.channel.awaitMessages(promptFilter, kPromptOptions)
-			.then(responses => responses.size ? responses.first()! : null);
+		response = await message.channel
+			.awaitMessages(promptFilter, kPromptOptions)
+			.then((responses) => (responses.size ? responses.first()! : null));
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
@@ -51,7 +52,7 @@ async function ask(message: Message, list: readonly string[]) {
 	return (n ?? 0) - 1;
 }
 
-function *resolve(data: PromptListResolvable, maxLength: number): Iterable<string> {
+function* resolve(data: PromptListResolvable, maxLength: number): Iterable<string> {
 	let i = 0;
 	for (const entry of data) {
 		if (typeof entry === 'string') yield `${(i + 1).toString().padStart(2, ' ')} :: ${entry}`;

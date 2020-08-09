@@ -7,10 +7,9 @@ const { FLAGS } = Permissions;
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['connect'],
-	description: language => language.tget('COMMAND_JOIN_DESCRIPTION')
+	description: (language) => language.tget('COMMAND_JOIN_DESCRIPTION')
 })
 export default class extends MusicCommand {
-
 	@requireUserInVoiceChannel()
 	public async run(message: KlasaMessage) {
 		// Get the voice channel the member is in
@@ -22,9 +21,7 @@ export default class extends MusicCommand {
 		// Check if the bot is already playing in this guild
 		if (message.guild!.music.playing && message.guild!.music.voiceChannel !== null) {
 			throw message.language.tget(
-				channel.id === message.guild!.music.voiceChannel.id
-					? 'COMMAND_JOIN_VOICE_SAME'
-					: 'COMMAND_JOIN_VOICE_DIFFERENT'
+				channel.id === message.guild!.music.voiceChannel.id ? 'COMMAND_JOIN_VOICE_SAME' : 'COMMAND_JOIN_VOICE_DIFFERENT'
 			);
 		}
 
@@ -42,7 +39,6 @@ export default class extends MusicCommand {
 			// Connect to Lavalink and join the voice channel
 			await message.guild!.music.connect(channel, this.getContext(message));
 		}
-
 	}
 
 	public resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {
@@ -53,5 +49,4 @@ export default class extends MusicCommand {
 		if (!permissions.has(FLAGS.CONNECT)) throw message.language.tget('COMMAND_JOIN_VOICE_NO_CONNECT');
 		if (!permissions.has(FLAGS.SPEAK)) throw message.language.tget('COMMAND_JOIN_VOICE_NO_SPEAK');
 	}
-
 }

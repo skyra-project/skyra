@@ -9,8 +9,8 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveaway'],
-	description: language => language.tget('COMMAND_GIVEAWAY_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_GIVEAWAY_EXTENDED'),
+	description: (language) => language.tget('COMMAND_GIVEAWAY_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_GIVEAWAY_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <time:time> [winners:winners] <title:...string{,256}>',
@@ -19,7 +19,8 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 })
 @CreateResolvers([
 	[
-		'winners', arg => {
+		'winners',
+		(arg) => {
 			const match = kWinnersArgRegex.exec(arg);
 			if (match) return parseInt(match[1], 10);
 			throw 'Invalid winners value.';
@@ -27,7 +28,6 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 	]
 ])
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, time, winners, title]: [TextChannel, Date, number, string]) {
 		const offset = time.getTime() - Date.now();
 
@@ -43,5 +43,4 @@ export default class extends SkyraCommand {
 			title: cleanMentions(message.guild!, title)
 		});
 	}
-
 }

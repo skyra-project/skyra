@@ -7,7 +7,6 @@ import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<MiddlewareOptions>({ priority: 10 })
 export default class extends Middleware {
-
 	public run(request: ApiRequest, response: ApiResponse) {
 		response.setHeader('Access-Control-Allow-Origin', DOMAIN);
 		response.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -16,5 +15,4 @@ export default class extends Middleware {
 		response.setHeader('Content-Type', `${Mime.Types.ApplicationJson}; charset=utf-8`);
 		if (request.method === 'OPTIONS') response.noContent();
 	}
-
 }

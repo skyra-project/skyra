@@ -89,29 +89,36 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 		const url = new URL(`${FFXIV_BASE_URL}/character/${id}`);
 		url.searchParams.append('extended', '1');
 		url.searchParams.append('data', 'CJ');
-		url.searchParams.append('columns', [
-			'Character.Name',
-			'Character.Avatar',
-			'Character.ID',
-			'Character.Portrait',
-			'Character.Server',
-			'Character.DC',
-			'Character.Tribe.Name',
-			'Character.GenderID',
-			'Character.Nameday',
-			'Character.GuardianDeity.Name',
-			'Character.Town.Name',
-			'Character.GrandCompany.Company.Name',
-			'Character.GrandCompany.Rank.Name',
-			'Character.ClassJobs.*.Job.Abbreviation',
-			'Character.ClassJobs.*.Level'
-		].join(','));
+		url.searchParams.append(
+			'columns',
+			[
+				'Character.Name',
+				'Character.Avatar',
+				'Character.ID',
+				'Character.Portrait',
+				'Character.Server',
+				'Character.DC',
+				'Character.Tribe.Name',
+				'Character.GenderID',
+				'Character.Nameday',
+				'Character.GuardianDeity.Name',
+				'Character.Town.Name',
+				'Character.GrandCompany.Company.Name',
+				'Character.GrandCompany.Rank.Name',
+				'Character.ClassJobs.*.Job.Abbreviation',
+				'Character.ClassJobs.*.Level'
+			].join(',')
+		);
 
-		return await fetch<FFXIV.CharacterResult>(url, {
-			method: FetchMethods.Post,
-			headers: FFXIV_HEADERS,
-			body: FFXIV_PAYLOAD
-		}, FetchResultTypes.JSON);
+		return await fetch<FFXIV.CharacterResult>(
+			url,
+			{
+				method: FetchMethods.Post,
+				headers: FFXIV_HEADERS,
+				body: FFXIV_PAYLOAD
+			},
+			FetchResultTypes.JSON
+		);
 	} catch {
 		throw i18n.tget('COMMAND_FFXIV_NO_CHARACTER_FOUND');
 	}
@@ -126,11 +133,15 @@ export async function searchCharacter(i18n: Language, name: string, server?: str
 			else throw i18n.tget('COMMAND_FFXIV_INVALID_SERVER');
 		}
 
-		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(url, {
-			method: FetchMethods.Post,
-			headers: FFXIV_HEADERS,
-			body: FFXIV_PAYLOAD
-		}, FetchResultTypes.JSON);
+		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(
+			url,
+			{
+				method: FetchMethods.Post,
+				headers: FFXIV_HEADERS,
+				body: FFXIV_PAYLOAD
+			},
+			FetchResultTypes.JSON
+		);
 	} catch {
 		throw i18n.tget('COMMAND_FFXIV_NO_CHARACTER_FOUND');
 	}
@@ -140,28 +151,34 @@ export async function searchItem(i18n: Language, item: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/search`);
 
-		return await fetch<FFXIV.SearchResponse<FFXIV.ItemSearchResult>>(url, {
-			method: FetchMethods.Post,
-			headers: FFXIV_HEADERS,
-			body: JSON.stringify({
-				private_key: TOKENS.XIVAPI_KEY,
-				indexes: 'item',
-				columns: 'Name,Description,ItemKind.Name,Icon,LevelEquip,ItemSearchCategory.Name',
-				body: {
-					query: {
-						bool: {
-							must: [{
-								wildcard: {
-									NameCombined_en: `*${encodeURIComponent(item.toLowerCase())}*`
-								}
-							}]
-						}
-					},
-					from: 0,
-					size: 10
-				}
-			})
-		}, FetchResultTypes.JSON);
+		return await fetch<FFXIV.SearchResponse<FFXIV.ItemSearchResult>>(
+			url,
+			{
+				method: FetchMethods.Post,
+				headers: FFXIV_HEADERS,
+				body: JSON.stringify({
+					private_key: TOKENS.XIVAPI_KEY,
+					indexes: 'item',
+					columns: 'Name,Description,ItemKind.Name,Icon,LevelEquip,ItemSearchCategory.Name',
+					body: {
+						query: {
+							bool: {
+								must: [
+									{
+										wildcard: {
+											NameCombined_en: `*${encodeURIComponent(item.toLowerCase())}*`
+										}
+									}
+								]
+							}
+						},
+						from: 0,
+						size: 10
+					}
+				})
+			},
+			FetchResultTypes.JSON
+		);
 	} catch {
 		throw i18n.tget('COMMAND_FFXIV_NO_ITEM_FOUND');
 	}
@@ -169,266 +186,304 @@ export async function searchItem(i18n: Language, item: string) {
 
 export const FFXIVClasses = new Map<string, FFXIV.ClassMap>([
 	[
-		'CRP', {
+		'CRP',
+		{
 			fullName: 'Carpenter',
 			emote: '<:Carpenter:668480887616438293>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'BSM', {
+		'BSM',
+		{
 			fullName: 'Blacksmith',
 			emote: '<:Blacksmith:668480886487908362>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'ARM', {
+		'ARM',
+		{
 			fullName: 'Armorer',
 			emote: '<:Armorer:668480883086458892>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'GSM', {
+		'GSM',
+		{
 			fullName: 'Goldsmith',
 			emote: '<:Goldsmith:668480921057361931>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'LTW', {
+		'LTW',
+		{
 			fullName: 'Leatherworker',
 			emote: '<:Leatherworker:668480922768769086>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'WVR', {
+		'WVR',
+		{
 			fullName: 'Weaver',
 			emote: '<:Weaver:668480964984307743>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'ALC', {
+		'ALC',
+		{
 			fullName: 'Alchemist',
 			emote: '<:Alchemist:668480881291427890>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'CUL', {
+		'CUL',
+		{
 			fullName: 'Culinarian',
 			emote: '<:Culinarian:668480889403080745>',
 			subcategory: FFXIV.ClassSubcategory.DoH
 		}
 	],
 	[
-		'MIN', {
+		'MIN',
+		{
 			fullName: 'Miner',
 			emote: '<:Miner:668480924878503936>',
 			subcategory: FFXIV.ClassSubcategory.DoL
 		}
 	],
 	[
-		'BTN', {
+		'BTN',
+		{
 			fullName: 'Botanist',
 			emote: '<:Botanist:668480886395895819>',
 			subcategory: FFXIV.ClassSubcategory.DoL
 		}
 	],
 	[
-		'FSH', {
+		'FSH',
+		{
 			fullName: 'Fisher',
 			emote: '<:Fisher:668480891449770016>',
 			subcategory: FFXIV.ClassSubcategory.DoL
 		}
 	],
 	[
-		'GLA', {
+		'GLA',
+		{
 			fullName: 'Gladiator',
 			emote: '<:Gladiator:668480892007874590>',
 			subcategory: FFXIV.ClassSubcategory.Tank
 		}
 	],
 	[
-		'PLD', {
+		'PLD',
+		{
 			fullName: 'Paladin',
 			emote: '<:Paladin:668480928997441569>',
 			subcategory: FFXIV.ClassSubcategory.Tank
 		}
 	],
 	[
-		'MRD', {
+		'MRD',
+		{
 			fullName: 'Marauder',
 			emote: '<:Marauder:668480923767144518>',
 			subcategory: FFXIV.ClassSubcategory.Tank
 		}
 	],
 	[
-		'WAR', {
+		'WAR',
+		{
 			fullName: 'Warrior',
 			emote: '<:Warrior:668480962757394453>',
 			subcategory: FFXIV.ClassSubcategory.Tank
 		}
 	],
 	[
-		'DRK', {
+		'DRK',
+		{
 			fullName: 'Dark Knight',
 			emote: '<:DarkKnight:668480889704939530>',
 			subcategory: FFXIV.ClassSubcategory.Tank
 		}
 	],
 	[
-		'GNB', {
+		'GNB',
+		{
 			fullName: 'Gunbreaker',
 			emote: '<:Gunbreaker:668486588799516672>',
 			subcategory: FFXIV.ClassSubcategory.Tank
 		}
 	],
 	[
-		'CNJ', {
+		'CNJ',
+		{
 			fullName: 'Conjurer',
 			emote: '<:Conjurer:668480888102846504>',
 			subcategory: FFXIV.ClassSubcategory.Healer
 		}
 	],
 	[
-		'WHM', {
+		'WHM',
+		{
 			fullName: 'White Mage',
 			emote: '<:WhiteMage:668480964988764180>',
 			subcategory: FFXIV.ClassSubcategory.Healer
 		}
 	],
 	[
-		'SCH', {
+		'SCH',
+		{
 			fullName: 'Scholar',
 			emote: '<:Scholar:668480935104086036>',
 			subcategory: FFXIV.ClassSubcategory.Healer
 		}
 	],
 	[
-		'AST', {
+		'AST',
+		{
 			fullName: 'Astrologian',
 			emote: '<:Astrologian:668480884579500105>',
 			subcategory: FFXIV.ClassSubcategory.Healer
 		}
 	],
 	[
-		'PGL', {
+		'PGL',
+		{
 			fullName: 'Pugilist',
 			emote: '<:Pugilist:668480928997179415>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'MNK', {
+		'MNK',
+		{
 			fullName: 'Monk',
 			emote: '<:Monk:668480924752543747>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'LNC', {
+		'LNC',
+		{
 			fullName: 'Lancer',
 			emote: '<:Lancer:668480923397914634>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'DRG', {
+		'DRG',
+		{
 			fullName: 'Dragoon',
 			emote: '<:Dragoon:668480891026145281>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'ROG', {
+		'ROG',
+		{
 			fullName: 'Rogue',
 			emote: '<:Rogue:668482057164292115>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'NIN', {
+		'NIN',
+		{
 			fullName: 'Ninja',
 			emote: '<:Ninja:668480925063053332>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'SAM', {
+		'SAM',
+		{
 			fullName: 'Samurai',
 			emote: '<:Samurai:668480929538375711>',
 			subcategory: FFXIV.ClassSubcategory.MDPS
 		}
 	],
 	[
-		'ARC', {
+		'ARC',
+		{
 			fullName: 'Archer',
 			emote: '<:Archer:668480882713296908>',
 			subcategory: FFXIV.ClassSubcategory.PRDPS
 		}
 	],
 	[
-		'BRD', {
+		'BRD',
+		{
 			fullName: 'Bard',
 			emote: '<:Bard:668480886349758465>',
 			subcategory: FFXIV.ClassSubcategory.PRDPS
 		}
 	],
 	[
-		'MCH', {
+		'MCH',
+		{
 			fullName: 'Machinist',
 			emote: '<:Machinist:668480923032879135>',
 			subcategory: FFXIV.ClassSubcategory.PRDPS
 		}
 	],
 	[
-		'DNC', {
+		'DNC',
+		{
 			fullName: 'Dancer',
 			emote: '<:Dancer:668575277349208064>',
 			subcategory: FFXIV.ClassSubcategory.PRDPS
 		}
 	],
 	[
-		'THM', {
+		'THM',
+		{
 			fullName: 'Thaumaturge',
 			emote: '<:Thaumaturge:668480935448150037>',
 			subcategory: FFXIV.ClassSubcategory.MRDPS
 		}
 	],
 	[
-		'BLM', {
+		'BLM',
+		{
 			fullName: 'Black Mage',
 			emote: '<:BlackMage:668480886106357794>',
 			subcategory: FFXIV.ClassSubcategory.MRDPS
 		}
 	],
 	[
-		'ACN', {
+		'ACN',
+		{
 			fullName: 'Arcanist',
 			emote: '<:Arcanist:668480881148559371>',
 			subcategory: FFXIV.ClassSubcategory.MRDPS
 		}
 	],
 	[
-		'SMN', {
+		'SMN',
+		{
 			fullName: 'Summoner',
 			emote: '<:Summoner:668480935100022805>',
 			subcategory: FFXIV.ClassSubcategory.MRDPS
 		}
 	],
 	[
-		'RDM', {
+		'RDM',
+		{
 			fullName: 'Red Mage',
 			emote: '<:RedMage:668480929089454081>',
 			subcategory: FFXIV.ClassSubcategory.MRDPS
 		}
 	],
 	[
-		'BLU', {
+		'BLU',
+		{
 			fullName: 'Blue Mage',
 			emote: '<:BlueMage:668480886232317962>',
 			subcategory: FFXIV.ClassSubcategory.MRDPS

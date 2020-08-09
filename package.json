@@ -12,6 +12,8 @@
 		"pm2:stop": "pm2 stop Skyra",
 		"start": "node dist/Skyra.js",
 		"lint": "eslint src tests --ext ts --fix",
+		"format": "prettier --write src/**/*.ts",
+		"format:check": "prettier --check src/**/*.ts",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"update": "yarn upgrade-interactive --latest",

@@ -870,6 +870,11 @@ export default class extends Language {
 			},
 			true
 		),
+		COMMAND_WAKANDA_DESCRIPTION: "Helpful descriptions? We don't do that here",
+		COMMAND_WAKANDA_EXTENDED: builder.display('wakanda', {
+			extendedHelp: `Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here)
+			using the given user.`
+		}),
 
 		/**
 		 * ################

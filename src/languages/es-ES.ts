@@ -2456,7 +2456,7 @@ export default class extends Language {
 
 		COMMAND_AVATAR_DESCRIPTION: "View somebody's avatar in full size.",
 		COMMAND_AVATAR_EXTENDED: builder.display('avatar', {
-			extendedHelp: "As this command's name says, it shows somebody's avatar.",
+			extendedHelp: "As this command's name says, it shows somebody's avatar. Use the --size flag to change the avatar's size.",
 			explainedUsage: [['user', '(Optional) A user mention. Defaults to the author if the input is invalid or not given.']]
 		}),
 		COMMAND_COLOR_DESCRIPTION: 'Display some awesome colours.',

@@ -21,9 +21,9 @@ import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserProfileEntity } from './UserProfileEntity';
 
-@Check('money >= 0')
-@Check('points >= 0')
-@Check('reputations >= 0')
+@Check(/* sql */`money >= 0`)
+@Check(/* sql */`points >= 0`)
+@Check(/* sql */`reputations >= 0`)
 @Entity('user', { schema: 'public' })
 export class UserEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })

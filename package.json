@@ -155,7 +155,7 @@
 		]
 	},
 	"lint-staged": {
-		"*.ts": [
+		"*.{mjs,js,ts}": [
 			"prettier --write",
 			"eslint --fix --ext ts"
 		],

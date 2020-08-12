@@ -4,7 +4,6 @@ import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 
 @EntityRepository(MemberEntity)
 export class MemberRepository extends Repository<MemberEntity> {
-
 	public async ensure(userID: string, guildID: string, options: FindOneOptions<MemberEntity> = {}) {
 		const previous = await this.findOne({ where: { userID, guildID }, ...options });
 		if (previous) return previous;
@@ -14,5 +13,4 @@ export class MemberRepository extends Repository<MemberEntity> {
 		data.guildID = guildID;
 		return data;
 	}
-
 }

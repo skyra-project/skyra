@@ -219,17 +219,17 @@ export namespace Reddit {
 
 	export enum AuthorFlairType {
 		Richtext = 'richtext',
-		Text = 'text',
+		Text = 'text'
 	}
 
 	export enum FlairTextColor {
-		Dark = 'dark',
+		Dark = 'dark'
 	}
 
-	export interface Gildings { }
+	export interface Gildings {}
 
 	export enum PostHint {
-		Link = 'link',
+		Link = 'link'
 	}
 
 	export interface Preview {
@@ -292,10 +292,10 @@ export namespace Reddit {
 
 	export enum SubredditType {
 		Public = 'public',
-		Restricted = 'restricted',
+		Restricted = 'restricted'
 	}
 
 	export enum Kind {
-		T3 = 't3',
+		T3 = 't3'
 	}
 }

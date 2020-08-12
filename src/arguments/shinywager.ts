@@ -3,7 +3,6 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
 export default class ShinyWager extends Argument {
-
 	public run(arg: string, possible: Possible, message: KlasaMessage): number {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', possible.name);
 
@@ -19,7 +18,6 @@ export default class ShinyWager extends Argument {
 	}
 
 	public static readonly kValidBetAmounts = [50, 100, 200, 500, 1000, 2000, 5000, 10_000, 20_000, 25_000, 50_000, 100_000, 500_000] as const;
-
 }
 
 type ArrayValues<T extends readonly unknown[] = readonly unknown[]> = T[number];

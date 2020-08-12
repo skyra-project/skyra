@@ -12,25 +12,22 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
-	description: language => language.tget('COMMAND_GIMAGE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_GIMAGE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_GIMAGE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_GIMAGE_EXTENDED'),
 	usage: '<query:query>'
 })
 export default class extends RichDisplayCommand {
-
 	public async init() {
-		this.createCustomResolver('query', (arg, possible, message) => this.client.arguments.get('string')!.run(
-			arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'),
-			possible,
-			message
-		));
+		this.createCustomResolver('query', (arg, possible, message) =>
+			this.client.arguments
+				.get('string')!
+				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
+		);
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
-			message.sendEmbed(new MessageEmbed()
-				.setDescription(message.language.tget('SYSTEM_LOADING'))
-				.setColor(BrandingColors.Secondary)),
+			message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
@@ -43,14 +40,11 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, items: GoogleCSEImageData[]) {
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
 			display.addPage((embed: MessageEmbed) => {
-				embed
-					.setTitle(item.title)
-					.setURL(item.image.contextLink);
+				embed.setTitle(item.title).setURL(item.image.contextLink);
 
 				const imageUrl = IMAGE_EXTENSION.test(item.link) && parseURL(item.link);
 				if (imageUrl) {
@@ -63,5 +57,4 @@ export default class extends RichDisplayCommand {
 
 		return display;
 	}
-
 }

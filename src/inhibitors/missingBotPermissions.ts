@@ -3,7 +3,6 @@ import { Permissions, PermissionString, TextChannel } from 'discord.js';
 import { Command, Inhibitor, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {
-
 	// VIEW_CHANNEL, SEND_MESSAGES, SEND_TTS_MESSAGES, EMBED_LINKS, ATTACH_FILES,
 	// READ_MESSAGE_HISTORY, MENTION_EVERYONE, USE_EXTERNAL_EMOJIS, ADD_REACTIONS
 	private impliedPermissions = new Permissions(515136).freeze();
@@ -32,8 +31,10 @@ export default class extends Inhibitor {
 
 		if (missing.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', missing.map(permission => permissions[permission]));
+			throw message.language.tget(
+				'INHIBITOR_MISSING_BOT_PERMS',
+				missing.map((permission) => permissions[permission])
+			);
 		}
 	}
-
 }

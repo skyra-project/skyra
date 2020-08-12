@@ -4,10 +4,9 @@ import { requireMusicPaused, requireSameVoiceChannel, requireSkyraInVoiceChannel
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: language => language.tget('COMMAND_RESUME_DESCRIPTION')
+	description: (language) => language.tget('COMMAND_RESUME_DESCRIPTION')
 })
 export default class extends MusicCommand {
-
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
@@ -15,5 +14,4 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage) {
 		await message.guild!.music.resume(this.getContext(message));
 	}
-
 }

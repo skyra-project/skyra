@@ -4,7 +4,6 @@ import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public run(manager: MusicHandler, position: number, context: MusicHandlerRequestContext | null) {
 		const channel = context ? context.channel : manager.channel;
 
@@ -16,5 +15,4 @@ export default class extends Event {
 			subscription.send({ action: OutgoingWebsocketAction.MusicSongSeekUpdate, data: { position } });
 		}
 	}
-
 }

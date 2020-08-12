@@ -4,7 +4,6 @@ import { Extendable, ExtendableStore } from 'klasa';
 const ZWS = '\u200B';
 
 export default class extends Extendable {
-
 	public constructor(store: ExtendableStore, file: string[], directory: string) {
 		super(store, file, directory, { appliesTo: [MessageEmbed] });
 	}
@@ -47,5 +46,4 @@ export default class extends Extendable {
 		}
 		return this;
 	}
-
 }

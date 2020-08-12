@@ -14,7 +14,6 @@ interface BodyData {
 
 @ApplyOptions<RouteOptions>({ name: 'userSettings', route: 'users/@me/settings' })
 export default class extends Route {
-
 	@authenticated()
 	@ratelimit(5, 1000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
@@ -33,7 +32,7 @@ export default class extends Route {
 		const userID = request.auth!.user_id;
 
 		try {
-			const newSettings = await users.lock([userID], async id => {
+			const newSettings = await users.lock([userID], async (id) => {
 				const user = await users.ensureProfile(id);
 
 				if (requestBody.data.darkTheme) {
@@ -56,5 +55,4 @@ export default class extends Route {
 			return response.error(500);
 		}
 	}
-
 }

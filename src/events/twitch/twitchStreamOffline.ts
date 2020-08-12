@@ -8,7 +8,6 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, Language } from 'klasa';
 
 export default class extends Event {
-
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
 		// Fetch the streamer, and if it could not be found, return error.
 		const { twitchStreamSubscriptions } = await DbSet.connect();
@@ -23,8 +22,7 @@ export default class extends Event {
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
 			await guild.settings.sync();
-			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers)
-				.find(([id]) => id === streamer.id);
+			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers).find(([id]) => id === streamer.id);
 			if (typeof subscriptions === 'undefined') continue;
 
 			// Iterate over each subscription
@@ -56,10 +54,12 @@ export default class extends Event {
 	}
 
 	private transformText(str: string, notification: PostStreamBodyData) {
-		return str.replace(TWITCH_REPLACEABLES_REGEX, match => {
+		return str.replace(TWITCH_REPLACEABLES_REGEX, (match) => {
 			switch (match) {
-				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
-				default: return match;
+				case TWITCH_REPLACEABLES_MATCHES.ID:
+					return notification.id;
+				default:
+					return match;
 			}
 		});
 	}
@@ -71,5 +71,4 @@ export default class extends Event {
 			.setFooter(i18n.tget('NOTIFICATION_TWITCH_EMBED_FOOTER'))
 			.setTimestamp();
 	}
-
 }

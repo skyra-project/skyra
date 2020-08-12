@@ -13,8 +13,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: language => language.tget('COMMAND_SHIP_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_SHIP_EXTENDED'),
+	description: (language) => language.tget('COMMAND_SHIP_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_SHIP_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	usage: '(firstUser:user) (secondUser:user)',
@@ -22,7 +22,8 @@ import { join } from 'path';
 })
 @CreateResolvers([
 	[
-		'user', (arg, possible, message, [firstUser]: KeyedMemberTag[]) => {
+		'user',
+		(arg, possible, message, [firstUser]: KeyedMemberTag[]) => {
 			if (!arg) {
 				// Prefer self if there is already a firstUser, that is not self
 				if (firstUser !== undefined && firstUser.id !== message.author.id) return { id: message.author.id };
@@ -42,7 +43,6 @@ import { join } from 'path';
 	]
 ])
 export default class extends SkyraCommand {
-
 	private readonly kRemoveSymbolsRegex = /(?:[~`!@#%^&*(){}[\];:"'<,.>?/\\|_+=-])+/g;
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
@@ -78,37 +78,28 @@ export default class extends SkyraCommand {
 
 		// Return the lovely message
 		const DATA = message.language.tget('COMMAND_SHIP_DATA');
-		return message.sendMessage([
-			DATA.TITLE(firstUserTag.username, secondUserTag.username),
-			DATA.DESCRIPTION(this.getShipName([...firstUserTag.username], [...secondUserTag.username]))
-		].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
+		return message.sendMessage(
+			[
+				DATA.TITLE(firstUserTag.username, secondUserTag.username),
+				DATA.DESCRIPTION(this.getShipName([...firstUserTag.username], [...secondUserTag.username]))
+			].join('\n'),
+			{ files: [{ attachment, name: 'ship.png' }] }
+		);
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */
 	public async init() {
-		[
-			this.lightThemeTemplate,
-			this.darkThemeTemplate,
-			this.heartIcon
-		] = await Promise.all([
-			new Canvas(224, 88)
-				.setColor(CanvasColors.BackgroundLight)
-				.printRoundedRectangle(0, 0, 224, 88, 10)
-				.toBufferAsync()
-				.then(loadImage),
-			new Canvas(224, 88)
-				.setColor(CanvasColors.BackgroundDark)
-				.printRoundedRectangle(0, 0, 224, 88, 10)
-				.toBufferAsync()
-				.then(loadImage),
+		[this.lightThemeTemplate, this.darkThemeTemplate, this.heartIcon] = await Promise.all([
+			new Canvas(224, 88).setColor(CanvasColors.BackgroundLight).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
+			new Canvas(224, 88).setColor(CanvasColors.BackgroundDark).printRoundedRectangle(0, 0, 224, 88, 10).toBufferAsync().then(loadImage),
 			loadImage(join(socialFolder, 'heart.png'))
 		]);
 	}
 
 	/** Randomly pick a ship name for the two users */
 	private getShipName(firstUsername: string[], secondUsername: string[]) {
-		const randomizedFirstName = firstUsername.slice(0, Math.min(firstUsername.length, (firstUsername.length * Math.random() * 0.8) + 2));
-		const randomizedSecondName = secondUsername.slice(-Math.min(secondUsername.length, (secondUsername.length * Math.random() * 0.8) + 2));
+		const randomizedFirstName = firstUsername.slice(0, Math.min(firstUsername.length, firstUsername.length * Math.random() * 0.8 + 2));
+		const randomizedSecondName = secondUsername.slice(-Math.min(secondUsername.length, secondUsername.length * Math.random() * 0.8 + 2));
 		// Remove any confusables from the name to make a cleaner ship name
 		const deconfusedName = removeConfusables(randomizedFirstName.concat(randomizedSecondName).join(''));
 		// Remove all symbols from the ship name
@@ -130,5 +121,4 @@ export default class extends SkyraCommand {
 			throw `Could not download the profile avatar: ${error.response}`;
 		}
 	}
-
 }

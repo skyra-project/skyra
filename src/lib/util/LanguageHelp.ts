@@ -1,5 +1,4 @@
 export class LanguageHelp {
-
 	private explainedUsage: string | null = null;
 	private possibleFormats: string | null = null;
 	private examples: string | null = null;
@@ -46,7 +45,7 @@ export class LanguageHelp {
 
 		// Examples
 		if (examples.length) {
-			output.push(this.examples!, ...examples.map(example => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
+			output.push(this.examples!, ...examples.map((example) => `→ Skyra, ${name}${example ? ` *${example}*` : ''}`), '');
 		} else {
 			output.push(this.examples!, `→ Skyra, ${name}`, '');
 		}
@@ -62,9 +61,11 @@ export class LanguageHelp {
 	public static resolveMultilineString(str: string | string[], multiline: boolean): string {
 		return Array.isArray(str)
 			? LanguageHelp.resolveMultilineString(str.join(multiline ? '\n' : ' '), multiline)
-			: str.split('\n').map(line => line.trim()).join(multiline ? '\n' : ' ');
+			: str
+					.split('\n')
+					.map((line) => line.trim())
+					.join(multiline ? '\n' : ' ');
 	}
-
 }
 
 interface LanguageHelpDisplayOptions {

@@ -1,7 +1,7 @@
 import { KlasaClient } from 'klasa';
 
 export function rest(client: KlasaClient) {
-	return (client as unknown as { rest: Rest }).rest;
+	return ((client as unknown) as { rest: Rest }).rest;
 }
 
 interface Rest {

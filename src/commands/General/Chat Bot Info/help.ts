@@ -10,7 +10,10 @@ import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([
-	Permissions.FLAGS.MANAGE_MESSAGES, Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.EMBED_LINKS, Permissions.FLAGS.READ_MESSAGE_HISTORY
+	Permissions.FLAGS.MANAGE_MESSAGES,
+	Permissions.FLAGS.ADD_REACTIONS,
+	Permissions.FLAGS.EMBED_LINKS,
+	Permissions.FLAGS.READ_MESSAGE_HISTORY
 ]);
 
 /**
@@ -29,13 +32,12 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['commands', 'cmd', 'cmds'],
-	description: language => language.tget('COMMAND_HELP_DESCRIPTION'),
+	description: (language) => language.tget('COMMAND_HELP_DESCRIPTION'),
 	guarded: true,
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-
 	public async init() {
 		this.createCustomResolver('command', (arg, possible, message) => {
 			if (!arg) return undefined;
@@ -70,7 +72,11 @@ export default class extends SkyraCommand {
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
 		if (command) return message.sendEmbed(await this.buildCommandHelp(message, command));
 
-		if (!message.flagArgs.all && message.guild && (message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)) {
+		if (
+			!message.flagArgs.all &&
+			message.guild &&
+			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
+		) {
 			const response = await message.sendMessage(
 				message.language.tget('COMMAND_HELP_ALL_FLAG', message.guildSettings.get(GuildSettings.Prefix)),
 				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary })
@@ -79,15 +85,13 @@ export default class extends SkyraCommand {
 
 			// Extract start page and sanitize it
 			const page = isNumber(commandOrPage) ? commandOrPage - 1 : null;
-			const startPage = page === null || page < 0 || page >= display.pages.length
-				? null
-				: page;
+			const startPage = page === null || page < 0 || page >= display.pages.length ? null : page;
 			await display.start(response, message.author.id, startPage === null ? undefined : { startPage });
 			return response;
 		}
 
 		try {
-			const response = await message.author.send(await this.buildHelp(message), { split: { 'char': '\n' } });
+			const response = await message.author.send(await this.buildHelp(message), { split: { char: '\n' } });
 			return message.channel.type === 'dm' ? response : await message.sendLocale('COMMAND_HELP_DM');
 		} catch {
 			return message.channel.type === 'dm' ? null : message.sendLocale('COMMAND_HELP_NODM');
@@ -110,12 +114,13 @@ export default class extends SkyraCommand {
 		const commandsByCategory = await this._fetchCommands(message);
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 		for (const [category, commands] of commandsByCategory) {
-			display.addPage((template: MessageEmbed) => template
-				.setTitle(`${category} Commands`)
-				.setDescription(commands.map(this.formatCommand.bind(this, message, prefix, true)).join('\n')));
+			display.addPage((template: MessageEmbed) =>
+				template
+					.setTitle(`${category} Commands`)
+					.setDescription(commands.map(this.formatCommand.bind(this, message, prefix, true)).join('\n'))
+			);
 		}
 
 		return display;
@@ -130,10 +135,12 @@ export default class extends SkyraCommand {
 			.setTimestamp()
 			.setFooter(DATA.FOOTER(command.name))
 			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))
-			.setDescription([
-				DATA.USAGE(command.usage.fullUsage(message)),
-				DATA.EXTENDED(isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
-			].join('\n'));
+			.setDescription(
+				[
+					DATA.USAGE(command.usage.fullUsage(message)),
+					DATA.EXTENDED(isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
+				].join('\n')
+			);
 	}
 
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {
@@ -144,15 +151,19 @@ export default class extends SkyraCommand {
 	private async _fetchCommands(message: KlasaMessage) {
 		const run = this.client.inhibitors.run.bind(this.client.inhibitors, message);
 		const commands = new Collection<string, Command[]>();
-		await Promise.all(this.client.commands.map(command => run(command, true)
-			.then(() => {
-				const category = commands.get(command.fullCategory.join(' → '));
-				if (category) category.push(command);
-				else commands.set(command.fullCategory.join(' → '), [command]);
-				return null;
-			}).catch(noop)));
+		await Promise.all(
+			this.client.commands.map((command) =>
+				run(command, true)
+					.then(() => {
+						const category = commands.get(command.fullCategory.join(' → '));
+						if (category) category.push(command);
+						else commands.set(command.fullCategory.join(' → '), [command]);
+						return null;
+					})
+					.catch(noop)
+			)
+		);
 
 		return commands.sort(sortCommandsAlphabetically);
 	}
-
 }

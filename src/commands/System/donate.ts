@@ -2,11 +2,10 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.tget('COMMAND_DONATE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DONATE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_DONATE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_DONATE_EXTENDED'),
 			guarded: true
 		});
 	}
@@ -19,5 +18,4 @@ export default class extends SkyraCommand {
 			return message.channel.type === 'dm' ? null : message.alert(message.language.tget('COMMAND_DM_NOT_SENT'));
 		}
 	}
-
 }

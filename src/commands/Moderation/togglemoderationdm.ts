@@ -6,14 +6,13 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_TOGGLEMODERATIONDM_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_TOGGLEMODERATIONDM_EXTENDED')
+	description: (language) => language.tget('COMMAND_TOGGLEMODERATIONDM_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_TOGGLEMODERATIONDM_EXTENDED')
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage) {
 		const { users } = await DbSet.connect();
-		const updated = await users.lock([message.author.id], async id => {
+		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensure(id);
 
 			user.moderationDM = !user.moderationDM;
@@ -22,5 +21,4 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale('COMMAND_TOGGLEMODERATIONDM_TOGGLED', [updated.moderationDM]);
 	}
-
 }

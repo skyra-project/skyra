@@ -1,7 +1,6 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class V04MigrateGiveaways1594582905434 implements MigrationInterface {
-
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await this.migrateGiveaways(queryRunner);
 	}
@@ -9,11 +8,15 @@ export class V04MigrateGiveaways1594582905434 implements MigrationInterface {
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		const giveawayRawData = revertTransformGiveaways(await queryRunner.query(/* sql */ `SELECT * FROM public.giveaway`));
 		await queryRunner.clearTable('giveaway');
-		await queryRunner.changeColumn('giveaway', 'ends_at', new TableColumn({ name: 'ends_at', type: 'bigint', isNullable: false, comment: 'The date at which the giveaway ends' }));
+		await queryRunner.changeColumn(
+			'giveaway',
+			'ends_at',
+			new TableColumn({ name: 'ends_at', type: 'bigint', isNullable: false, comment: 'The date at which the giveaway ends' })
+		);
 
 		// Save the new Giveaway entities to the database
 		const stringifiedData = JSON.stringify(giveawayRawData).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.giveaway
 			SELECT * FROM json_populate_recordset(NULL::public.giveaway, '${stringifiedData}')
 			ON CONFLICT DO NOTHING;
@@ -28,17 +31,25 @@ export class V04MigrateGiveaways1594582905434 implements MigrationInterface {
 		await queryRunner.clearTable('giveaway');
 
 		// Change the type of the ends_at column to Timestamp
-		await queryRunner.changeColumn('giveaway', 'ends_at', new TableColumn({ name: 'ends_at', type: 'timestamp without time zone', isNullable: false, comment: 'The date at which the giveaway ends' }));
+		await queryRunner.changeColumn(
+			'giveaway',
+			'ends_at',
+			new TableColumn({
+				name: 'ends_at',
+				type: 'timestamp without time zone',
+				isNullable: false,
+				comment: 'The date at which the giveaway ends'
+			})
+		);
 
 		// Save the new Giveaway entities to the database
 		const stringifiedData = JSON.stringify(giveawayEntities).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.giveaway
 			SELECT * FROM json_populate_recordset(NULL::public.giveaway, '${stringifiedData}')
 			ON CONFLICT DO NOTHING;
 		`);
 	}
-
 }
 
 function transformGiveaways(dGiveaway: Giveaway[]): TransformedGiveaway[] {
@@ -62,7 +73,7 @@ function transformGiveaways(dGiveaway: Giveaway[]): TransformedGiveaway[] {
 }
 
 function revertTransformGiveaways(rdGiveaway: TransformedGiveaway[]): Giveaway[] {
-	return rdGiveaway.map(ga => ({
+	return rdGiveaway.map((ga) => ({
 		title: ga.title,
 		ends_at: new Date(ga.ends_at).getTime().toString(),
 		guild_id: ga.guild_id,

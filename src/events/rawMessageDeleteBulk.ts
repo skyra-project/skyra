@@ -8,7 +8,6 @@ import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.MessageDeleteBulk, emitter: store.client.ws });
 	}
@@ -21,7 +20,8 @@ export default class extends Event {
 		// Delete entries from starboard if it exists
 		try {
 			const { starboards } = await DbSet.connect();
-			const results = await starboards.createQueryBuilder()
+			const results = await starboards
+				.createQueryBuilder()
 				.delete()
 				.where('guild_id = :guild', { guild: data.guild_id })
 				.andWhere('message_id IN (:...ids)', { ids: data.ids })
@@ -37,17 +37,19 @@ export default class extends Event {
 
 			if (filteredResults.length === 0) return;
 			if (filteredResults.length === 1) {
-				await api(this.client).channels(channel).messages(filteredResults[0])
+				await api(this.client)
+					.channels(channel)
+					.messages(filteredResults[0])
 					.delete({ reason: 'Starboard Management: Message Deleted' })
 					.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 				return;
 			}
-			await api(this.client).channels(channel).messages['bulk-delete']
-				.post({ data: { messages: filteredResults }, reason: 'Starboard Management: Message Deleted' })
+			await api(this.client)
+				.channels(channel)
+				.messages['bulk-delete'].post({ data: { messages: filteredResults }, reason: 'Starboard Management: Message Deleted' })
 				.catch((error: DiscordAPIError) => this.client.emit(Events.ApiError, error));
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		}
 	}
-
 }

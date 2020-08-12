@@ -15,28 +15,30 @@ import { KlasaMessage, KlasaUser } from 'klasa';
 	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
-	description: language => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_MODERATIONS_EXTENDED'),
+	description: (language) => language.tget('COMMAND_MODERATIONS_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_MODERATIONS_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {
-
 	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', KlasaUser?]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
-		const entries = (await (target ? message.guild!.moderation.fetch(target.id) : message.guild!.moderation.fetch()))
-			.filter(this.getFilter(action, target));
+		const entries = (await (target ? message.guild!.moderation.fetch(target.id) : message.guild!.moderation.fetch())).filter(
+			this.getFilter(action, target)
+		);
 		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
 
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size)));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size))
+		);
 
 		// Fetch usernames
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
@@ -65,7 +67,8 @@ export default class extends RichDisplayCommand {
 
 	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
 		const appealOrInvalidated = entry.appealType || entry.invalidated;
-		const remainingTime = appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const remainingTime =
+			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedModerator = users.get(entry.moderatorID!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
@@ -80,7 +83,8 @@ export default class extends RichDisplayCommand {
 
 	private displayModerationLogFromUsers(users: Map<string, string>, duration: DurationDisplay, displayName: boolean, entry: ModerationEntity) {
 		const appealOrInvalidated = entry.appealType || entry.invalidated;
-		const remainingTime = appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const remainingTime =
+			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedUser = users.get(entry.userID!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
@@ -115,27 +119,22 @@ export default class extends RichDisplayCommand {
 		switch (type) {
 			case 'mutes':
 				return target
-					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute)
-						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
-					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute)
-						&& !entry.invalidated && !entry.appealType;
+					? (entry: ModerationEntity) =>
+							entry.isType(Moderation.TypeCodes.Mute) && !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Mute) && !entry.invalidated && !entry.appealType;
 			case 'warns':
 			case 'warnings':
 				return target
-					? (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
-						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
-					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning)
-						&& !entry.invalidated && !entry.appealType;
+					? (entry: ModerationEntity) =>
+							entry.isType(Moderation.TypeCodes.Warning) && !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.isType(Moderation.TypeCodes.Warning) && !entry.invalidated && !entry.appealType;
 			case 'all':
 			default:
 				return target
-					? (entry: ModerationEntity) => entry.duration !== null
-						&& !entry.invalidated && !entry.appealType && entry.userID === target.id
-					: (entry: ModerationEntity) => entry.duration !== null
-						&& !entry.invalidated && !entry.appealType;
+					? (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType && entry.userID === target.id
+					: (entry: ModerationEntity) => entry.duration !== null && !entry.invalidated && !entry.appealType;
 		}
 	}
-
 }
 
 type DurationDisplay = (time: number) => string;

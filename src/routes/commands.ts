@@ -7,17 +7,15 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'commands' })
 export default class extends Route {
-
 	@ratelimit(2, 2500)
 	public get(request: ApiRequest, response: ApiResponse) {
 		const { lang, category } = request.query;
 		const language = (lang && this.client.languages.get(lang as string)) ?? this.client.languages.default;
-		const commands = (category
-			? this.client.commands.filter(cmd => cmd.category === category)
-			: this.client.commands
-		).filter(cmd => cmd.permissionLevel < 9);
+		const commands = (category ? this.client.commands.filter((cmd) => cmd.category === category) : this.client.commands).filter(
+			(cmd) => cmd.permissionLevel < 9
+		);
 
-		const serializedCommands = commands.map(cmd => ({
+		const serializedCommands = commands.map((cmd) => ({
 			bucket: cmd.bucket,
 			category: cmd.category,
 			cooldown: cmd.cooldown,
@@ -31,5 +29,4 @@ export default class extends Route {
 		}));
 		return response.json(serializedCommands);
 	}
-
 }

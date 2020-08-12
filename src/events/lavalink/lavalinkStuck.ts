@@ -4,7 +4,6 @@ import { LavalinkStuckEvent } from '@utils/LavalinkUtils';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(manager: MusicHandler, payload: LavalinkStuckEvent) {
 		const { channel } = manager;
 
@@ -16,7 +15,5 @@ export default class extends Event {
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 		}
-
 	}
-
 }

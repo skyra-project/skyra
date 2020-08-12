@@ -11,7 +11,6 @@ const b = new Colors({ text: 'lightblue' });
 const header = b.format('[TWITCH SUB-UPDATE]');
 
 export default class extends Task {
-
 	public async run(): Promise<PartialResponseValue | null> {
 		// If we're running in developer mode then just exit early
 		if (this.client.options.dev) return { type: ResponseType.Finished };
@@ -35,17 +34,16 @@ export default class extends Task {
 
 		// Loop over all subscriptions
 		for (const subscription of allSubscriptions) {
-
 			// If the subscription has an expiry date that's before the current date then queue that subscription for refreshing
 			if (subscription.expiresAt.getTime() < currentDate) {
-
 				// Add the ID to the updatedSubscriptionIds array
 				updatedSubscriptionIds.push(subscription.id);
 
 				// Queue the updating by pushing the promise into the promises array
 				promises.push(
-					this.client.twitch.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe)
-						.catch(error => this.client.emit(Events.Wtf, error))
+					this.client.twitch
+						.subscriptionsStreamHandle(subscription.id, TwitchHooksAction.Subscribe)
+						.catch((error) => this.client.emit(Events.Wtf, error))
 				);
 			}
 		}
@@ -64,12 +62,6 @@ export default class extends Task {
 		const newExpireAt = new Date();
 		newExpireAt.setDate(newExpireAt.getDate() + 8);
 
-		return repository
-			.createQueryBuilder()
-			.update()
-			.set({ expiresAt: newExpireAt })
-			.where('id IN (:...ids)', { ids })
-			.execute();
+		return repository.createQueryBuilder().update().set({ expiresAt: newExpireAt }).where('id IN (:...ids)', { ids }).execute();
 	}
-
 }

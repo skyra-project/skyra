@@ -4,7 +4,6 @@ import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public run(manager: MusicHandler, context: MusicHandlerRequestContext | null) {
 		if (!manager.systemPaused) {
 			const channel = context ? context.channel : manager.channel;
@@ -18,5 +17,4 @@ export default class extends Event {
 			subscription.send({ action: OutgoingWebsocketAction.MusicSongPause });
 		}
 	}
-
 }

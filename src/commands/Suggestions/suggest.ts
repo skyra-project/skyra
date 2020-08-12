@@ -11,15 +11,14 @@ const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VI
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: language => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_SUGGEST_EXTENDED'),
+	description: (language) => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_SUGGEST_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<suggestion:string>',
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private kChannelPrompt = this.definePrompt('<channel:textChannel>');
 
@@ -31,17 +30,23 @@ export default class extends SkyraCommand {
 
 		const suggestionsChannelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
 		const suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel | undefined;
-		if (!suggestionsChannel?.postable) throw message.language.tget('COMMAND_SUGGEST_NOPERMISSIONS', message.author.username, `<#${message.channel.id}>`);
+		if (!suggestionsChannel?.postable)
+			throw message.language.tget('COMMAND_SUGGEST_NOPERMISSIONS', message.author.username, `<#${message.channel.id}>`);
 
 		// Get the next suggestion ID
 		const suggestionID = message.guild!.settings.get(GuildSettings.Suggestions.AscendingID);
 
 		// Post the suggestion
-		const suggestionsMessage = await suggestionsChannel.send(new MessageEmbed()
-			.setColor(BrandingColors.Primary)
-			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true }))
-			.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
-			.setDescription(suggestion));
+		const suggestionsMessage = await suggestionsChannel.send(
+			new MessageEmbed()
+				.setColor(BrandingColors.Primary)
+				.setAuthor(
+					`${message.author.tag} (${message.author.id})`,
+					message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })
+				)
+				.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
+				.setDescription(suggestion)
+		);
 
 		// Increase the next id
 		await message.guild!.settings.increase(GuildSettings.Suggestions.AscendingID, 1);
@@ -76,7 +81,6 @@ export default class extends SkyraCommand {
 	}
 
 	private async setChannel(message: KlasaMessage) {
-
 		// If the user doesn't have the rights to change guild configuration, do not proceed
 		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
 		if (!manageable) {
@@ -92,11 +96,13 @@ export default class extends SkyraCommand {
 		}
 
 		// Get the channel
-		const [channel] = await this.kChannelPrompt.createPrompt(message, {
-			target: message.author,
-			limit: 1,
-			time: 30000
-		}).run<TextChannel[]>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
+		const [channel] = await this.kChannelPrompt
+			.createPrompt(message, {
+				target: message.author,
+				limit: 1,
+				time: 30000
+			})
+			.run<TextChannel[]>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
 
 		if (!channel || channel.guild.id !== message.guild!.id) {
 			await message.sendLocale('RESOLVER_INVALID_CHANNELNAME');
@@ -107,7 +113,10 @@ export default class extends SkyraCommand {
 
 		if (missingPermissions.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', missingPermissions.map(permission => permissions[permission]));
+			throw message.language.tget(
+				'INHIBITOR_MISSING_BOT_PERMS',
+				missingPermissions.map((permission) => permissions[permission])
+			);
 		}
 
 		// Update settings
@@ -125,5 +134,4 @@ export default class extends SkyraCommand {
 
 		return missing;
 	}
-
 }

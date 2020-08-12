@@ -14,7 +14,6 @@ const enum CodeType {
 }
 
 export default class extends ModerationMonitor {
-
 	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_INVITES';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
@@ -31,8 +30,7 @@ export default class extends ModerationMonitor {
 	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus)\/|discord(?:app)?\.com\/invite\/)(?<code>[\w\d-]{2,})/gi;
 
 	public shouldRun(message: KlasaMessage) {
-		return super.shouldRun(message)
-			&& message.content.length > 0;
+		return super.shouldRun(message) && message.content.length > 0;
 	}
 
 	protected async preProcess(message: KlasaMessage) {
@@ -51,12 +49,10 @@ export default class extends ModerationMonitor {
 			if (scanned.has(key)) continue;
 			scanned.add(key);
 
-			promises.push(identifier === CodeType.DiscordGG
-				? this.scanLink(message, key, code)
-				: Promise.resolve(key));
+			promises.push(identifier === CodeType.DiscordGG ? this.scanLink(message, key, code) : Promise.resolve(key));
 		}
 
-		const resolved = (await Promise.all(promises)).filter(invite => invite !== null) as string[];
+		const resolved = (await Promise.all(promises)).filter((invite) => invite !== null) as string[];
 		return resolved.length === 0 ? null : resolved;
 	}
 
@@ -120,5 +116,4 @@ export default class extends ModerationMonitor {
 				return null;
 		}
 	}
-
 }

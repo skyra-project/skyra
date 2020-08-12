@@ -36,7 +36,7 @@ describe('Utils', () => {
 			expect(utils.IMAGE_EXTENSION.test('.webp')).toBe(true);
 		});
 
-		test('GIVEN extension without period THEN doesn\'t pass test', () => {
+		test("GIVEN extension without period THEN doesn't pass test", () => {
 			expect(utils.IMAGE_EXTENSION.test('bmp')).toBe(false);
 			expect(utils.IMAGE_EXTENSION.test('jpg')).toBe(false);
 			expect(utils.IMAGE_EXTENSION.test('jpeg')).toBe(false);
@@ -45,7 +45,7 @@ describe('Utils', () => {
 			expect(utils.IMAGE_EXTENSION.test('webp')).toBe(false);
 		});
 
-		test('GIVEN invalid extensions THEN doesn\'t pass test', () => {
+		test("GIVEN invalid extensions THEN doesn't pass test", () => {
 			expect(utils.IMAGE_EXTENSION.test('.mp4')).toBe(false);
 			expect(utils.IMAGE_EXTENSION.test('.mp3')).toBe(false);
 			expect(utils.IMAGE_EXTENSION.test('.aac')).toBe(false);
@@ -59,7 +59,7 @@ describe('Utils', () => {
 		});
 
 		test('GIVEN 120 degrees THEN returns ⅔ Pi', () => {
-			expect(utils.radians(120)).toEqual(Math.PI / 3 * 2);
+			expect(utils.radians(120)).toEqual((Math.PI / 3) * 2);
 		});
 
 		test('GIVEN 360 degrees THEN returns 2 Pi', () => {
@@ -261,7 +261,7 @@ describe('Utils', () => {
 	});
 
 	describe('cutText', () => {
-		test('GIVEN text short text THEN doesn\'t truncate', () => {
+		test("GIVEN text short text THEN doesn't truncate", () => {
 			expect(utils.cutText("text that doesn't have to truncate", 35)).toEqual("text that doesn't have to truncate");
 		});
 
@@ -275,7 +275,7 @@ describe('Utils', () => {
 	});
 
 	describe('iteratorAt', () => {
-		function *generate() {
+		function* generate() {
 			for (let i = 0; i < 100; ++i) yield i;
 		}
 
@@ -336,8 +336,9 @@ describe('Utils', () => {
 			});
 
 			test('GIVEN fetch w/ options w/ No Response THEN returns JSON', async () => {
-				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget',
-					{ headers: { accept: Mime.Types.ApplicationJson } });
+				const response = await utils.fetch<{ test: boolean }>('http://localhost/simpleget', {
+					headers: { accept: Mime.Types.ApplicationJson }
+				});
 
 				expect(response.test).toBe(true);
 			});
@@ -393,99 +394,125 @@ describe('Utils', () => {
 
 	describe('getContent', () => {
 		test('GIVEN content THEN returns content', () => {
-			expect(utils.getContent({
-				content: 'Something',
-				embeds: []
-			} as unknown as Message)).toEqual('Something');
+			expect(
+				utils.getContent(({
+					content: 'Something',
+					embeds: []
+				} as unknown) as Message)
+			).toEqual('Something');
 		});
 
 		test('GIVEN description in embed THEN returns description', () => {
-			expect(utils.getContent({
-				content: '',
-				embeds: [new MessageEmbed().setDescription('Hey there!')]
-			} as unknown as Message)).toEqual('Hey there!');
+			expect(
+				utils.getContent(({
+					content: '',
+					embeds: [new MessageEmbed().setDescription('Hey there!')]
+				} as unknown) as Message)
+			).toEqual('Hey there!');
 		});
 
 		test('GIVEN field value in embed THEN returns field value', () => {
-			expect(utils.getContent({
-				content: '',
-				embeds: [new MessageEmbed().addField('Name', 'Value')]
-			} as unknown as Message)).toEqual('Value');
+			expect(
+				utils.getContent(({
+					content: '',
+					embeds: [new MessageEmbed().addField('Name', 'Value')]
+				} as unknown) as Message)
+			).toEqual('Value');
 		});
 
 		test('GIVEN no detectable content THEN returns null', () => {
-			expect(utils.getContent({
-				content: '',
-				embeds: [new MessageEmbed()]
-			} as unknown as Message)).toEqual(null);
+			expect(
+				utils.getContent(({
+					content: '',
+					embeds: [new MessageEmbed()]
+				} as unknown) as Message)
+			).toEqual(null);
 		});
 	});
 
 	describe('getAllContent', () => {
 		test('GIVEN content THEN returns content', () => {
-			expect(utils.getAllContent({
-				content: 'Something',
-				embeds: []
-			} as unknown as Message)).toEqual('Something');
+			expect(
+				utils.getAllContent(({
+					content: 'Something',
+					embeds: []
+				} as unknown) as Message)
+			).toEqual('Something');
 		});
 
 		test('GIVEN description in embed THEN returns description', () => {
-			expect(utils.getAllContent({
-				content: '',
-				embeds: [new MessageEmbed().setDescription('Hey there!')]
-			} as unknown as Message)).toEqual('Hey there!');
+			expect(
+				utils.getAllContent(({
+					content: '',
+					embeds: [new MessageEmbed().setDescription('Hey there!')]
+				} as unknown) as Message)
+			).toEqual('Hey there!');
 		});
 
 		test('GIVEN field value in embed THEN returns field value', () => {
-			expect(utils.getAllContent({
-				content: '',
-				embeds: [new MessageEmbed().addField('Name', 'Value')]
-			} as unknown as Message)).toEqual('Name Value');
+			expect(
+				utils.getAllContent(({
+					content: '',
+					embeds: [new MessageEmbed().addField('Name', 'Value')]
+				} as unknown) as Message)
+			).toEqual('Name Value');
 		});
 
 		test('GIVEN no detectable content THEN returns null', () => {
-			expect(utils.getAllContent({
-				content: '',
-				embeds: [new MessageEmbed()]
-			} as unknown as Message)).toEqual('');
+			expect(
+				utils.getAllContent(({
+					content: '',
+					embeds: [new MessageEmbed()]
+				} as unknown) as Message)
+			).toEqual('');
 		});
 
 		test('GIVEN content and description in embed THEN returns both', () => {
-			expect(utils.getAllContent({
-				content: 'Something',
-				embeds: [new MessageEmbed().setDescription('Hey there!')]
-			} as unknown as Message)).toEqual('Something\nHey there!');
+			expect(
+				utils.getAllContent(({
+					content: 'Something',
+					embeds: [new MessageEmbed().setDescription('Hey there!')]
+				} as unknown) as Message)
+			).toEqual('Something\nHey there!');
 		});
 
 		test('GIVEN content and author in embed THEN returns both', () => {
-			expect(utils.getAllContent({
-				content: 'Something',
-				embeds: [new MessageEmbed().setAuthor('Some author!')]
-			} as unknown as Message)).toEqual('Something\nSome author!');
+			expect(
+				utils.getAllContent(({
+					content: 'Something',
+					embeds: [new MessageEmbed().setAuthor('Some author!')]
+				} as unknown) as Message)
+			).toEqual('Something\nSome author!');
 		});
 
 		test('GIVEN content and title in embed THEN returns both', () => {
-			expect(utils.getAllContent({
-				content: 'Something',
-				embeds: [new MessageEmbed().setTitle('Some title!')]
-			} as unknown as Message)).toEqual('Something\nSome title!');
+			expect(
+				utils.getAllContent(({
+					content: 'Something',
+					embeds: [new MessageEmbed().setTitle('Some title!')]
+				} as unknown) as Message)
+			).toEqual('Something\nSome title!');
 		});
 
 		test('GIVEN description and footer in embed THEN returns both', () => {
-			expect(utils.getAllContent({
-				content: '',
-				embeds: [new MessageEmbed().setDescription('Description!').setFooter('Some footer!')]
-			} as unknown as Message)).toEqual('Description!\nSome footer!');
+			expect(
+				utils.getAllContent(({
+					content: '',
+					embeds: [new MessageEmbed().setDescription('Description!').setFooter('Some footer!')]
+				} as unknown) as Message)
+			).toEqual('Description!\nSome footer!');
 		});
 
 		test('GIVEN two embeds THEN returns both', () => {
-			expect(utils.getAllContent({
-				content: '',
-				embeds: [
-					new MessageEmbed().setDescription('Description!').setFooter('Some footer!'),
-					new MessageEmbed().setDescription('Other embed!').setFooter('Another footer!')
-				]
-			} as unknown as Message)).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');
+			expect(
+				utils.getAllContent(({
+					content: '',
+					embeds: [
+						new MessageEmbed().setDescription('Description!').setFooter('Some footer!'),
+						new MessageEmbed().setDescription('Other embed!').setFooter('Another footer!')
+					]
+				} as unknown) as Message)
+			).toEqual('Description!\nSome footer!\nOther embed!\nAnother footer!');
 		});
 	});
 
@@ -499,9 +526,7 @@ describe('Utils', () => {
 			fakeAttachment.width = 32;
 
 			const fakeMessage: DeepPartial<KlasaMessage> = {
-				attachments: new Collection<string, MessageAttachment>([
-					['image.png', fakeAttachment]
-				]),
+				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
 				embeds: []
 			};
 
@@ -519,9 +544,7 @@ describe('Utils', () => {
 			fakeAttachment.width = 32;
 
 			const fakeMessage: DeepPartial<KlasaMessage> = {
-				attachments: new Collection<string, MessageAttachment>([
-					['image.png', fakeAttachment]
-				]),
+				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
 				embeds: []
 			};
 
@@ -539,9 +562,7 @@ describe('Utils', () => {
 			fakeAttachment.width = 32;
 
 			const fakeMessage: DeepPartial<KlasaMessage> = {
-				attachments: new Collection<string, MessageAttachment>([
-					['image.png', fakeAttachment]
-				]),
+				attachments: new Collection<string, MessageAttachment>([['image.png', fakeAttachment]]),
 				embeds: [
 					{
 						type: 'image',
@@ -717,7 +738,6 @@ describe('Utils', () => {
 	});
 
 	describe('createPick', () => {
-
 		beforeAll(() => {
 			// Mock out random so the result is predictable
 			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
@@ -834,5 +854,4 @@ describe('Utils', () => {
 			expect(array === shuffled).toBe(false);
 		});
 	});
-
 });

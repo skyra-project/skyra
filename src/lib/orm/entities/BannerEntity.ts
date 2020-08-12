@@ -1,11 +1,10 @@
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('banner', { schema: 'public' })
-@Check(/* sql */`"group"::text <> ''::text`)
-@Check(/* sql */`"title"::text <> ''::text`)
-@Check(/* sql */`"price" >= 0`)
+@Check(/* sql */ `"group"::text <> ''::text`)
+@Check(/* sql */ `"title"::text <> ''::text`)
+@Check(/* sql */ `"price" >= 0`)
 export class BannerEntity extends BaseEntity {
-
 	@PrimaryColumn('varchar', { length: 6 })
 	public id!: string;
 
@@ -20,5 +19,4 @@ export class BannerEntity extends BaseEntity {
 
 	@Column('integer')
 	public price!: number;
-
 }

@@ -2,9 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Inhibitor, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {
-
 	public async run(message: KlasaMessage, command: SkyraCommand) {
-		if ('inhibit' in command && await command.inhibit(message)) throw true;
+		if ('inhibit' in command && (await command.inhibit(message))) throw true;
 	}
-
 }

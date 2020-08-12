@@ -5,10 +5,9 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['replay'],
-	description: language => language.tget('COMMAND_REPEAT_DESCRIPTION')
+	description: (language) => language.tget('COMMAND_REPEAT_DESCRIPTION')
 })
 export default class extends MusicCommand {
-
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
@@ -17,5 +16,4 @@ export default class extends MusicCommand {
 		// Toggle the repeat option with its opposite value
 		message.guild!.music.setReplay(!message.guild!.music.replay, this.getContext(message));
 	}
-
 }

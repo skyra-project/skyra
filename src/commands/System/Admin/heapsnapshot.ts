@@ -29,13 +29,12 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { writeHeapSnapshot } from 'v8';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			description: 'Creates a heapdump for finding memory leaks.',
 			extendedHelp: [
 				'The heapsnapshot command is very useful for bots that have memory issues, it uses the heapdump library',
-				'which freezes the entire process for a moment to analize all elements from the process\' HEAP, NEVER share',
+				"which freezes the entire process for a moment to analize all elements from the process' HEAP, NEVER share",
 				'heapsnapshot files with anybody, as everything your bot holds is included in that file.\n\nTo open heapsnapshot',
 				'files, open Google Chrome, open Developer Tools, go to the tab Memory, and in Profiles, click on the buttom "load".',
 				'Finally, open the profile and you will be given a table of all objects in your process, have fun!\n\nP.S:',
@@ -53,7 +52,8 @@ export default class extends SkyraCommand {
 		// Capture the snapshot (this freezes the entire VM)
 		const filename = writeHeapSnapshot();
 
-		return message.sendMessage(`Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
+		return message.sendMessage(
+			`Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`
+		);
 	}
-
 }

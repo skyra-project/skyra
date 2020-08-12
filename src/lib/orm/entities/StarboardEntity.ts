@@ -8,21 +8,21 @@ import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel 
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [
-	0xFFE3AF,
-	0xFFE0A5,
-	0xFFDD9C,
-	0xFFDB92,
-	0xFFD889,
-	0xFFD57F,
-	0xFFD275,
-	0xFFCF6B,
-	0xFFCC61,
-	0xFFCA57,
-	0xFFC74C,
-	0xFFC440,
-	0xFFC133,
-	0xFFBE23,
-	0xFFBB09
+	0xffe3af,
+	0xffe0a5,
+	0xffdd9c,
+	0xffdb92,
+	0xffd889,
+	0xffd57f,
+	0xffd275,
+	0xffcf6b,
+	0xffcc61,
+	0xffca57,
+	0xffc74c,
+	0xffc440,
+	0xffc133,
+	0xffbe23,
+	0xffbb09
 ];
 
 export const kMaxColors = kColors.length - 1;
@@ -30,7 +30,6 @@ export const kMaxColors = kColors.length - 1;
 @Check('stars >= 0')
 @Entity('starboard', { schema: 'public' })
 export class StarboardEntity extends BaseEntity {
-
 	#users = new Set<string>();
 	#manager: StarboardManager = null!;
 	#client: Client = null!;
@@ -102,8 +101,7 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	private get embed() {
 		if (this.#starMessage?.embeds.length) {
-			return this.#starMessage.embeds[0]
-				.setColor(this.color);
+			return this.#starMessage.embeds[0].setColor(this.color);
 		}
 
 		const message = this.#message;
@@ -223,8 +221,12 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	public async downloadUserList(): Promise<void> {
 		try {
-			this.#users = await fetchReactionUsers(this.#client, this.#message.channel.id, this.#message.id,
-				this.#message.guild!.settings.get(GuildSettings.Starboard.Emoji));
+			this.#users = await fetchReactionUsers(
+				this.#client,
+				this.#message.channel.id,
+				this.#message.id,
+				this.#message.guild!.settings.get(GuildSettings.Starboard.Emoji)
+			);
 
 			// TODO: https://github.com/skyra-project/skyra/issues/569
 			this.#users.delete(this.#message.author.id);
@@ -260,12 +262,13 @@ export class StarboardEntity extends BaseEntity {
 				if (error.code === APIErrors.UnknownMessage) await this.edit({ starMessageID: null, enabled: false });
 			}
 		} else {
-			const promise = this.#manager.starboardChannel?.send(content, this.embed!)
-				.then(message => {
+			const promise = this.#manager.starboardChannel
+				?.send(content, this.embed!)
+				.then((message) => {
 					this.#starMessage = message;
 					this.starMessageID = message.id;
 				})
-				.catch(error => {
+				.catch((error) => {
 					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
 					if (error.code === APIErrors.MissingAccess) return;
@@ -280,5 +283,4 @@ export class StarboardEntity extends BaseEntity {
 			}
 		}
 	}
-
 }

@@ -14,29 +14,29 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_YARN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_YARN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_YARN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_YARN_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<package:package>'
 })
 @CreateResolvers([
 	[
-		'package', (arg, _, message) => {
+		'package',
+		(arg, _, message) => {
 			if (!arg) throw message.language.tget('COMMAND_YARN_NO_PACKAGE');
 			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
 		}
 	]
 ])
 export default class extends SkyraCommand {
-
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#dateTimestamp = new Timestamp('YYYY-MM-DD');
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const result = await this.fetchApi(message, pkg);
 
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage) {
 		const EMBED_DATA = message.language.tget('COMMAND_YARN_EMBED_DATA');
 
-		const maintainers = result.maintainers.map(user => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
+		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies ? this.trimArray(Object.keys(latestVersion.dependencies), EMBED_DATA.MORE_TEXT) : null;
 
@@ -66,8 +66,8 @@ export default class extends SkyraCommand {
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(EMBED_DATA.DESCRIPTION(
-				{
+			.setDescription(
+				EMBED_DATA.DESCRIPTION({
 					author: this.parseAuthor(result.author),
 					dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
 					dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
@@ -78,8 +78,8 @@ export default class extends SkyraCommand {
 					license: result.license,
 					mainFile: latestVersion.main ?? 'index.js',
 					maintainers
-				}
-			));
+				})
+			);
 	}
 
 	/**
@@ -110,12 +110,11 @@ export default class extends SkyraCommand {
 		// Parse the author name
 		const authorName = `**${author.name}**`;
 		const authorUrl = author.name.startsWith('@')
-			// If the author is an organization then use the Organization url
-			? encodeURI(author.url ?? `https://www.npmjs.com/org/${author.name.slice(1)}`)
-			// Otherwise use the User url
-			: encodeURI(author.url ?? `https://www.npmjs.com/~${author.name}`);
+			? // If the author is an organization then use the Organization url
+			  encodeURI(author.url ?? `https://www.npmjs.com/org/${author.name.slice(1)}`)
+			: // Otherwise use the User url
+			  encodeURI(author.url ?? `https://www.npmjs.com/~${author.name}`);
 
 		return `[${authorName}](${authorUrl})`;
 	}
-
 }

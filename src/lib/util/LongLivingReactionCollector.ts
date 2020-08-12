@@ -5,7 +5,6 @@ import { noop } from './util';
 export type LongLivingReactionCollectorListener = (reaction: LLRCData) => void;
 
 export class LongLivingReactionCollector {
-
 	public client: Client;
 	public listener: LongLivingReactionCollectorListener | null;
 	public endListener: (() => void) | null;
@@ -59,18 +58,21 @@ export class LongLivingReactionCollector {
 	}
 
 	public static collectOne(client: Client, { filter = () => true, time = Time.Minute * 5 }: LLRCCollectOneOptions = {}) {
-		return new Promise<LLRCData | null>(resolve => {
-			const llrc = new LongLivingReactionCollector(client, reaction => {
-				if (filter(reaction)) {
-					resolve(reaction);
-					llrc.setEndListener(noop).end();
+		return new Promise<LLRCData | null>((resolve) => {
+			const llrc = new LongLivingReactionCollector(
+				client,
+				(reaction) => {
+					if (filter(reaction)) {
+						resolve(reaction);
+						llrc.setEndListener(noop).end();
+					}
+				},
+				() => {
+					resolve(null);
 				}
-			}, () => {
-				resolve(null);
-			}).setTime(time);
+			).setTime(time);
 		});
 	}
-
 }
 
 export interface LLRCCollectOneOptions {

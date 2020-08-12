@@ -16,8 +16,8 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	aliases: ['banners', 'wallpaper', 'wallpapers', 'background', 'backgrounds'],
 	bucket: 2,
 	cooldown: 10,
-	description: language => language.tget('COMMAND_BANNER_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_BANNER_EXTENDED'),
+	description: (language) => language.tget('COMMAND_BANNER_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_BANNER_EXTENDED'),
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
 	subcommands: true,
@@ -25,7 +25,6 @@ const CDN_URL = CdnUrls.BannersBasePath;
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private readonly listPrompt = this.definePrompt('<all|user>');
 	private readonly banners: Map<string, BannerCache> = new Map();
@@ -36,7 +35,8 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const author = await users.ensureProfile(message.author.id);
 		const banners = new Set(author.profile.banners);
-		if (banners.has(banner.id)) throw message.language.tget('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix), banner.id);
+		if (banners.has(banner.id))
+			throw message.language.tget('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix), banner.id);
 
 		if (author.money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', author.money, banner.price);
 
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 		if (author.money < banner.price) throw message.language.tget('COMMAND_BANNER_MONEY', author.money, banner.price);
 
-		await getManager().transaction(async em => {
+		await getManager().transaction(async (em) => {
 			const existingbannerAuthor = await em.findOne(UserEntity, banner.author);
 			if (existingbannerAuthor) {
 				existingbannerAuthor.money += banner.price * 0.1;
@@ -67,9 +67,10 @@ export default class extends SkyraCommand {
 
 	public async reset(message: KlasaMessage) {
 		const { users } = await DbSet.connect();
-		await users.lock([message.author.id], async id => {
+		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
+			if (!user.profile.banners.length)
+				throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
 			if (user.profile.bannerProfile === '0001') throw message.language.tget('COMMAND_BANNER_RESET_DEFAULT');
 
 			user.profile.bannerProfile = '0001';
@@ -81,9 +82,10 @@ export default class extends SkyraCommand {
 
 	public async set(message: KlasaMessage, [banner]: [BannerCache]) {
 		const { users } = await DbSet.connect();
-		await users.lock([message.author.id], async id => {
+		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length) throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
+			if (!user.profile.banners.length)
+				throw message.language.tget('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
 			if (!user.profile.banners.includes(banner.id)) throw message.language.tget('COMMAND_BANNER_SET_NOT_BOUGHT');
 
 			user.profile.bannerProfile = banner.id;
@@ -121,10 +123,12 @@ export default class extends SkyraCommand {
 				title: banner.title
 			});
 
-			display.addPage((template: MessageEmbed) => template
-				.setImage(`${CDN_URL}${banner.id}.png`)
-				.setTitle(banner.title)
-				.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`));
+			display.addPage((template: MessageEmbed) =>
+				template
+					.setImage(`${CDN_URL}${banner.id}.png`)
+					.setTitle(banner.title)
+					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`)
+			);
 		}
 
 		this.display = display;
@@ -145,10 +149,12 @@ export default class extends SkyraCommand {
 		for (const id of banners) {
 			const banner = this.banners.get(id);
 			if (banner) {
-				display.addPage((template: MessageEmbed) => template
-					.setImage(`${CDN_URL}${banner.id}.png`)
-					.setTitle(banner.title)
-					.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`));
+				display.addPage((template: MessageEmbed) =>
+					template
+						.setImage(`${CDN_URL}${banner.id}.png`)
+						.setTitle(banner.title)
+						.setDescription(`• ID: \`${banner.id}\`\n• ${banner.price}${Emojis.Shiny}`)
+				);
 			}
 		}
 
@@ -157,7 +163,9 @@ export default class extends SkyraCommand {
 
 	private async runDisplay(message: KlasaMessage, display: UserRichDisplay | null) {
 		if (display !== null) {
-			const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
+			const response = await message.sendEmbed(
+				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary })
+			);
 			await display.start(response, message.author.id);
 			return response;
 		}
@@ -166,16 +174,12 @@ export default class extends SkyraCommand {
 	private async prompt(message: KlasaMessage, banner: BannerCache) {
 		const embed = new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
-			.setDescription([
-				`**Title**: ${banner.title} (\`${banner.id}\`)`,
-				`**Price**: ${banner.price}${Emojis.Shiny}`
-			].join('\n'))
+			.setDescription([`**Title**: ${banner.title} (\`${banner.id}\`)`, `**Price**: ${banner.price}${Emojis.Shiny}`].join('\n'))
 			.setImage(`${CDN_URL}${banner.id}.png`)
 			.setTimestamp();
 
 		return message.ask({ embed });
 	}
-
 }
 
 interface BannerCache {

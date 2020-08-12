@@ -4,7 +4,6 @@ import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandStore } from 'klasa';
 
 export default class extends SelfModerationCommand {
-
 	protected $adder: keyof GuildSecurity['adders'] = 'invites';
 	protected keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
 	protected keySoftAction = GuildSettings.Selfmod.Invites.SoftAction;
@@ -16,9 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['invites-mode', 'inv-mode'],
-			description: language => language.tget('COMMAND_INVITEMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_INVITEMODE_EXTENDED')
+			description: (language) => language.tget('COMMAND_INVITEMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_INVITEMODE_EXTENDED')
 		});
 	}
-
 }

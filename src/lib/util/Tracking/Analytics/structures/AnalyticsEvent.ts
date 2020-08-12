@@ -5,7 +5,6 @@ import { enumerable } from '@utils/util';
 import { Event } from 'klasa';
 
 export abstract class AnalyticsEvent extends Event {
-
 	public analytics!: WriteApi;
 	public analyticsReader!: QueryApi;
 
@@ -25,7 +24,7 @@ export abstract class AnalyticsEvent extends Event {
 	}
 
 	public writePoints(points: Point[]) {
-		points = points.map(point => this.injectTags(point));
+		points = points.map((point) => this.injectTags(point));
 		return this.analytics.writePoints(points);
 	}
 
@@ -37,10 +36,6 @@ export abstract class AnalyticsEvent extends Event {
 	}
 
 	protected initTags() {
-		this.tags.push(
-			[AnalyticsSchema.Tags.Client, CLIENT_ID],
-			[AnalyticsSchema.Tags.OriginEvent, this.event]
-		);
+		this.tags.push([AnalyticsSchema.Tags.Client, CLIENT_ID], [AnalyticsSchema.Tags.OriginEvent, this.event]);
 	}
-
 }

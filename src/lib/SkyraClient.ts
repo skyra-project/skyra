@@ -58,7 +58,6 @@ const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
 const r = new Colors({ text: 'red' }).format('[IPC   ]');
 
 export class SkyraClient extends KlasaClient {
-
 	/**
 	 * The version of Skyra
 	 */
@@ -110,9 +109,7 @@ export class SkyraClient extends KlasaClient {
 	public analyticsReader: QueryApi | null = null;
 
 	@enumerable(false)
-	public influx: InfluxDB | null = ENABLE_INFLUX
-		? new InfluxDB(INFLUX_OPTIONS)
-		: null;
+	public influx: InfluxDB | null = ENABLE_INFLUX ? new InfluxDB(INFLUX_OPTIONS) : null;
 
 	/**
 	 * The ConnectFour manager
@@ -133,9 +130,15 @@ export class SkyraClient extends KlasaClient {
 	public twitch: Twitch = new Twitch();
 
 	public ipc = new VezaClient('skyra-master')
-		.on('disconnect', client => { this.emit(Events.Warn, `${y} Disconnected: ${client.name}`); })
-		.on('ready', client => { this.emit(Events.Verbose, `${g} Ready ${client.name}`); })
-		.on('error', (error, client) => { this.emit(Events.Error, `${r} Error from ${client.name}`, error); })
+		.on('disconnect', (client) => {
+			this.emit(Events.Warn, `${y} Disconnected: ${client.name}`);
+		})
+		.on('ready', (client) => {
+			this.emit(Events.Verbose, `${g} Ready ${client.name}`);
+		})
+		.on('error', (error, client) => {
+			this.emit(Events.Error, `${r} Error from ${client.name}`, error);
+		})
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 	public websocket = new WebsocketHandler(this);
@@ -150,8 +153,9 @@ export class SkyraClient extends KlasaClient {
 		this.registerStore(this.ipcMonitors);
 
 		if (!this.options.dev) {
-			this.ipc.connectTo(EVLYN_PORT)
-				.catch((error: Error) => { this.console.error(error); });
+			this.ipc.connectTo(EVLYN_PORT).catch((error: Error) => {
+				this.console.error(error);
+			});
 		}
 
 		if (ENABLE_INFLUX) {
@@ -167,9 +171,7 @@ export class SkyraClient extends KlasaClient {
 		return super.login(token);
 	}
 
-	public static defaultMemberSchema = new Schema()
-		.add('points', 'Number', { configurable: false });
-
+	public static defaultMemberSchema = new Schema().add('points', 'Number', { configurable: false });
 }
 
 SkyraClient.use(DashboardClient);

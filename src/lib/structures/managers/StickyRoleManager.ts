@@ -8,7 +8,6 @@ export interface StickyRoleManagerExtraContext {
 }
 
 export class StickyRoleManager {
-
 	#guild: Guild;
 
 	public constructor(guild: Guild) {
@@ -20,7 +19,7 @@ export class StickyRoleManager {
 	}
 
 	public get(userID: string): readonly string[] {
-		return this.entries.find(entry => entry.user === userID)?.roles ?? [];
+		return this.entries.find((entry) => entry.user === userID)?.roles ?? [];
 	}
 
 	public async fetch(userID: string, extraContext?: StickyRoleManagerExtraContext): Promise<readonly string[]> {
@@ -141,7 +140,7 @@ export class StickyRoleManager {
 	}
 
 	private getKey(userID: string) {
-		return this.entries.findIndex(entry => entry.user === userID);
+		return this.entries.findIndex((entry) => entry.user === userID);
 	}
 
 	private *addRole(roleID: string, roleIDs: readonly string[]) {
@@ -173,5 +172,4 @@ export class StickyRoleManager {
 			if (roles.has(roleID)) yield roleID;
 		}
 	}
-
 }

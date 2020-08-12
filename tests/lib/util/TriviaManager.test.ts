@@ -12,14 +12,16 @@ describe('TriviaManager', () => {
 			.query({ amount: '1', category: '9', difficulty: 'easy', type: 'boolean' })
 			.reply(200, {
 				response_code: 0,
-				results: [{
-					category: 'General Knowledge',
-					type: 'boolean',
-					difficulty: 'easy',
-					question: 'You can legally drink alcohol while driving in Mississippi.',
-					correct_answer: 'True',
-					incorrect_answers: ['False']
-				}]
+				results: [
+					{
+						category: 'General Knowledge',
+						type: 'boolean',
+						difficulty: 'easy',
+						question: 'You can legally drink alcohol while driving in Mississippi.',
+						correct_answer: 'True',
+						incorrect_answers: ['False']
+					}
+				]
 			});
 	});
 

@@ -5,29 +5,31 @@ import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Tex
 import { Extendable, ExtendableStore } from 'klasa';
 
 export default class extends Extendable {
-
 	public constructor(store: ExtendableStore, file: string[], directory: string) {
 		super(store, file, directory, { appliesTo: [Message] });
 	}
 
 	public async prompt(this: Message, content: string, time = 30000) {
 		const message = await this.channel.send(content);
-		const responses = await this.channel.awaitMessages(msg => msg.author === this.author, { time, max: 1 });
-		message.nuke().catch(error => this.client.emit(Events.ApiError, error));
+		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
+		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
 		if (responses.size === 0) throw this.language.tget('MESSAGE_PROMPT_TIMEOUT');
 		return responses.first();
 	}
 
 	public async ask(this: Message, options: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
-	public async ask(this: Message, content: string | MessageOptions | null, options?: MessageOptions | MessageExtendablesAskOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean> {
+	public async ask(
+		this: Message,
+		content: string | MessageOptions | null,
+		options?: MessageOptions | MessageExtendablesAskOptions,
+		promptOptions?: MessageExtendablesAskOptions
+	): Promise<boolean> {
 		if (typeof content !== 'string') {
 			options = content!;
 			content = null;
 		}
 		const message = await this.send(content, options as MessageOptions);
-		return this.reactable
-			? awaitReaction(this, message, promptOptions)
-			: awaitMessage(this, promptOptions);
+		return this.reactable ? awaitReaction(this, message, promptOptions) : awaitMessage(this, promptOptions);
 	}
 
 	public async alert(this: Message, content: string, timer?: number): Promise<Message | null>;
@@ -39,9 +41,8 @@ export default class extends Extendable {
 			options = undefined;
 		}
 
-		const msg = await this.sendMessage(content, options as MessageOptions) as Message;
-		msg.nuke(typeof timer === 'number' ? timer : 10000)
-			.catch(error => this.client.emit(Events.ApiError, error));
+		const msg = (await this.sendMessage(content, options as MessageOptions)) as Message;
+		msg.nuke(typeof timer === 'number' ? timer : 10000).catch((error) => this.client.emit(Events.ApiError, error));
 		return msg;
 	}
 
@@ -52,7 +53,6 @@ export default class extends Extendable {
 		await sleep(time);
 		return !this.deleted && this.edits.length === count ? nuke(this) : this;
 	}
-
 }
 
 const OPTIONS = { time: 30000, max: 1 };
@@ -66,14 +66,14 @@ async function awaitReaction(message: Message, messageSent: Message, promptOptio
 
 	// Remove all reactions if the user has permissions to do so
 	if (message.guild && (message.channel as TextChannel).permissionsFor(message.guild.me!)!.has(Permissions.FLAGS.MANAGE_MESSAGES)) {
-		messageSent.reactions.removeAll().catch(error => messageSent.client.emit(Events.ApiError, error));
+		messageSent.reactions.removeAll().catch((error) => messageSent.client.emit(Events.ApiError, error));
 	}
 
 	return Boolean(reactions.size) && reactions.firstKey() === REACTIONS.YES;
 }
 
 async function awaitMessage(message: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
-	const messages = await message.channel.awaitMessages(mes => mes.author === message.author, promptOptions);
+	const messages = await message.channel.awaitMessages((mes) => mes.author === message.author, promptOptions);
 	return Boolean(messages.size) && REG_ACCEPT.test(messages.first()!.content);
 }
 

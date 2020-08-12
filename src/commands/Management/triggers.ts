@@ -13,8 +13,8 @@ const REG_TYPE = /^(alias|reaction)$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: language => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_TRIGGERS_EXTENDED'),
+	description: (language) => language.tget('COMMAND_TRIGGERS_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_TRIGGERS_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -22,42 +22,43 @@ const REG_TYPE = /^(alias|reaction)$/i;
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	public async init() {
 		this.createCustomResolver('type', (arg, _, msg, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
 			throw msg.language.tget('COMMAND_TRIGGERS_NOTYPE');
-		}).createCustomResolver('input', (arg, _, msg, [action]) => {
-			if (action === 'show') return undefined;
-			if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
-			return arg.toLowerCase();
-		}).createCustomResolver('output', async (arg, _, message, [action, type]) => {
-			if (action === 'show' || action === 'remove') return undefined;
-			if (!arg) throw message.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
-			if (type === 'reaction') {
-				const emoji = resolveEmoji(arg);
-				if (!emoji) throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+		})
+			.createCustomResolver('input', (arg, _, msg, [action]) => {
+				if (action === 'show') return undefined;
+				if (!arg) throw msg.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
+				return arg.toLowerCase();
+			})
+			.createCustomResolver('output', async (arg, _, message, [action, type]) => {
+				if (action === 'show' || action === 'remove') return undefined;
+				if (!arg) throw message.language.tget('COMMAND_TRIGGERS_NOOUTPUT');
+				if (type === 'reaction') {
+					const emoji = resolveEmoji(arg);
+					if (!emoji) throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
 
-				try {
-					await message.react(emoji);
-					return emoji;
-				} catch {
-					throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+					try {
+						await message.react(emoji);
+						return emoji;
+					} catch {
+						throw message.language.tget('COMMAND_TRIGGERS_INVALIDREACTION');
+					}
+				} else if (type === 'alias') {
+					const command = this.client.commands.get(arg);
+					if (command && command.permissionLevel < 10) return arg;
+					throw message.language.tget('COMMAND_TRIGGERS_INVALIDALIAS');
+				} else {
+					return null;
 				}
-			} else if (type === 'alias') {
-				const command = this.client.commands.get(arg);
-				if (command && command.permissionLevel < 10) return arg;
-				throw message.language.tget('COMMAND_TRIGGERS_INVALIDALIAS');
-			} else {
-				return null;
-			}
-		});
+			});
 	}
 
 	public async remove(message: KlasaMessage, [type, input]: [string, string]) {
 		const list = this._getList(message, type);
-		const index = list.findIndex(entry => entry.input === input);
+		const index = list.findIndex((entry) => entry.input === input);
 		if (index === -1) throw message.language.tget('COMMAND_TRIGGERS_REMOVE_NOTTAKEN');
 
 		// Create a shallow clone and remove the item
@@ -73,7 +74,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [type, input, output]: [string, string, string]) {
 		const list = this._getList(message, type);
-		if (list.some(entry => entry.input === input)) throw message.language.tget('COMMAND_TRIGGERS_ADD_TAKEN');
+		if (list.some((entry) => entry.input === input)) throw message.language.tget('COMMAND_TRIGGERS_ADD_TAKEN');
 
 		await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], {
 			arrayAction: 'overwrite',
@@ -95,9 +96,11 @@ export default class extends SkyraCommand {
 		}
 		if (!output.length) throw message.language.tget('COMMAND_TRIGGERS_LIST_EMPTY');
 
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setColor(await DbSet.fetchColor(message))
+		);
 
 		for (const page of chunk(output, 10)) {
 			display.addPage((embed: MessageEmbed) => embed.setDescription(page));
@@ -108,26 +111,32 @@ export default class extends SkyraCommand {
 
 	private _format(type: string, input: string, output: string) {
 		switch (type) {
-			case 'alias': return { input, output };
-			case 'reaction': return { action: 'react', input, output };
-			default: throw new TypeError(`Unknown Type: ${type}`);
+			case 'alias':
+				return { input, output };
+			case 'reaction':
+				return { action: 'react', input, output };
+			default:
+				throw new TypeError(`Unknown Type: ${type}`);
 		}
 	}
 
 	private _getListName(type: string) {
 		switch (type) {
-			case 'alias': return GuildSettings.Trigger.Alias;
+			case 'alias':
+				return GuildSettings.Trigger.Alias;
 			case 'reaction':
-			default: return GuildSettings.Trigger.Includes;
+			default:
+				return GuildSettings.Trigger.Includes;
 		}
 	}
 
 	private _getList(message: KlasaMessage, type: string) {
 		switch (type) {
-			case 'alias': return message.guild!.settings.get(GuildSettings.Trigger.Alias);
+			case 'alias':
+				return message.guild!.settings.get(GuildSettings.Trigger.Alias);
 			case 'reaction':
-			default: return message.guild!.settings.get(GuildSettings.Trigger.Includes);
+			default:
+				return message.guild!.settings.get(GuildSettings.Trigger.Includes);
 		}
 	}
-
 }

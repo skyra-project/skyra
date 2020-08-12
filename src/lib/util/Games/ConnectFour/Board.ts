@@ -13,7 +13,6 @@ export const kRows = 6;
 const kRenderMargin = '       ';
 
 export class Board {
-
 	private cells: Cell[];
 	private stack: Cell[][];
 
@@ -24,11 +23,11 @@ export class Board {
 	}
 
 	public getAt(x: number, y: number) {
-		return this.cells[x + (y * kColumns)];
+		return this.cells[x + y * kColumns];
 	}
 
 	public setAt(x: number, y: number, value: Cell) {
-		this.cells[x + (y * kColumns)] = value;
+		this.cells[x + y * kColumns] = value;
 	}
 
 	public save() {
@@ -58,10 +57,12 @@ export class Board {
 	public check(x: number, y: number): readonly [number, number][] | null {
 		const cell = this.getAt(x, y);
 
-		return this.checkVertical(x, y, cell)
-			|| this.checkHorizontal(x, y, cell)
-			|| this.checkDiagonalTopLeftToBottomRight(x, y, cell)
-			|| this.checkDiagonalBottomLeftToTopRight(x, y, cell);
+		return (
+			this.checkVertical(x, y, cell) ||
+			this.checkHorizontal(x, y, cell) ||
+			this.checkDiagonalTopLeftToBottomRight(x, y, cell) ||
+			this.checkDiagonalBottomLeftToTopRight(x, y, cell)
+		);
 	}
 
 	public isTableFull() {
@@ -155,15 +156,13 @@ export class Board {
 		// If there aren't enough rows in the same column to qualify, skip early
 		if (y + 3 >= kRows) return null;
 
-		return this.getAt(x, y + 1) === cell
-			&& this.getAt(x, y + 2) === cell
-			&& this.getAt(x, y + 3) === cell
-			? [
-				[x, y],
-				[x, y + 1],
-				[x, y + 2],
-				[x, y + 3]
-			] as [number, number][]
+		return this.getAt(x, y + 1) === cell && this.getAt(x, y + 2) === cell && this.getAt(x, y + 3) === cell
+			? ([
+					[x, y],
+					[x, y + 1],
+					[x, y + 2],
+					[x, y + 3]
+			  ] as [number, number][])
 			: null;
 	}
 
@@ -265,11 +264,16 @@ export class Board {
 
 	private static renderCell(cell: Cell) {
 		switch (cell) {
-			case Cell.Empty: return ConnectFourConstants.Emojis.Empty;
-			case Cell.PlayerOne: return ConnectFourConstants.Emojis.PlayerOne;
-			case Cell.PlayerTwo: return ConnectFourConstants.Emojis.PlayerTwo;
-			case Cell.WinnerPlayerOne: return ConnectFourConstants.Emojis.WinnerOne;
-			case Cell.WinnerPlayerTwo: return ConnectFourConstants.Emojis.WinnerTwo;
+			case Cell.Empty:
+				return ConnectFourConstants.Emojis.Empty;
+			case Cell.PlayerOne:
+				return ConnectFourConstants.Emojis.PlayerOne;
+			case Cell.PlayerTwo:
+				return ConnectFourConstants.Emojis.PlayerTwo;
+			case Cell.WinnerPlayerOne:
+				return ConnectFourConstants.Emojis.WinnerOne;
+			case Cell.WinnerPlayerTwo:
+				return ConnectFourConstants.Emojis.WinnerTwo;
 		}
 	}
 
@@ -280,5 +284,4 @@ export class Board {
 		}
 		return cells;
 	}
-
 }

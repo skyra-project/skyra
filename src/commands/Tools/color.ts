@@ -7,16 +7,15 @@ import { CommandStore, KlasaMessage } from 'klasa';
 /* Color limiter */
 const rL = (color: number) => color / 255;
 const cL = (color: number) => Math.max(Math.min(color, 255), 0);
-const sCL = (color: number) => color >= 0.5 ? 0 : 255;
+const sCL = (color: number) => (color >= 0.5 ? 0 : 255);
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['colour'],
 			cooldown: 15,
-			description: language => language.tget('COMMAND_COLOR_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_COLOR_EXTENDED'),
+			description: (language) => language.tget('COMMAND_COLOR_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_COLOR_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<color:string> [separator:integer{0,255}]',
 			usageDelim: ' >'
@@ -27,7 +26,9 @@ export default class extends SkyraCommand {
 		const { hex, hsl, rgb } = parse(input);
 
 		const attachment = await this.showColor(rgb, diff);
-		return message.channel.send(message.language.tget('COMMAND_COLOR', hex.toString(), rgb.toString(), hsl.toString()), { files: [{ attachment, name: 'color.png' }] });
+		return message.channel.send(message.language.tget('COMMAND_COLOR', hex.toString(), rgb.toString(), hsl.toString()), {
+			files: [{ attachment, name: 'color.png' }]
+		});
 	}
 
 	public async showColor(color: RGB, diff: number) {
@@ -35,18 +36,17 @@ export default class extends SkyraCommand {
 		const green = color.g;
 		const blue = color.b;
 
-		const canvas = new Canvas(370, 390)
-			.setTextFont('18px FiraSans');
+		const canvas = new Canvas(370, 390).setTextFont('18px FiraSans');
 
-		this.processFrame(canvas, 5, 5, cL(red + (diff * 2)), cL(green), cL(blue));
+		this.processFrame(canvas, 5, 5, cL(red + diff * 2), cL(green), cL(blue));
 		this.processFrame(canvas, 5, 125, cL(red + diff), cL(green + diff), cL(blue));
-		this.processFrame(canvas, 5, 245, cL(red), cL(green + (diff * 2)), cL(blue));
+		this.processFrame(canvas, 5, 245, cL(red), cL(green + diff * 2), cL(blue));
 		this.processFrame(canvas, 125, 5, cL(red + diff), cL(green), cL(blue + diff));
 		this.processFrame(canvas, 125, 125, cL(red), cL(green), cL(blue));
 		this.processFrame(canvas, 125, 245, cL(red - diff), cL(green), cL(blue - diff));
-		this.processFrame(canvas, 245, 5, cL(red), cL(green), cL(blue + (diff * 2)));
+		this.processFrame(canvas, 245, 5, cL(red), cL(green), cL(blue + diff * 2));
 		this.processFrame(canvas, 245, 125, cL(red - diff), cL(green - diff), cL(blue));
-		this.processFrame(canvas, 245, 245, cL(red - (diff * 2)), cL(green - (diff * 2)), cL(blue - (diff * 2)));
+		this.processFrame(canvas, 245, 245, cL(red - diff * 2), cL(green - diff * 2), cL(blue - diff * 2));
 
 		/* Complementary */
 		const thisLum = sCL(luminance(rL(255 - red), rL(255 - green), rL(255 - blue)));
@@ -69,5 +69,4 @@ export default class extends SkyraCommand {
 			.setColor(rgb(textColor, textColor, textColor))
 			.printText(hexConcat(red, green, blue), x + 10, y + 20);
 	}
-
 }

@@ -6,13 +6,12 @@ import { Time } from '@utils/constants';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_SOCIAL_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SOCIAL_EXTENDED'),
+			description: (language) => language.tget('COMMAND_SOCIAL_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_SOCIAL_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -79,9 +78,7 @@ export default class extends SkyraCommand {
 
 		const variation = amount - oldValue;
 		if (variation === 0) return message.sendLocale('COMMAND_SOCIAL_UNCHANGED', [user.username]);
-		return message.sendLocale(variation > 0
-			? 'COMMAND_SOCIAL_ADD'
-			: 'COMMAND_SOCIAL_REMOVE', [user.username, amount, Math.abs(variation)]);
+		return message.sendLocale(variation > 0 ? 'COMMAND_SOCIAL_ADD' : 'COMMAND_SOCIAL_REMOVE', [user.username, amount, Math.abs(variation)]);
 	}
 
 	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -89,5 +86,4 @@ export default class extends SkyraCommand {
 		await members.delete({ userID: user.id, guildID: message.guild!.id });
 		return message.sendLocale('COMMAND_SOCIAL_RESET', [user.username]);
 	}
-
 }

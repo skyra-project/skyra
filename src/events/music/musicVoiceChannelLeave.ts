@@ -3,7 +3,6 @@ import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(manager: MusicHandler) {
 		await manager.pause(true);
 
@@ -11,5 +10,4 @@ export default class extends Event {
 			subscription.send({ action: OutgoingWebsocketAction.MusicVoiceChannelLeave });
 		}
 	}
-
 }

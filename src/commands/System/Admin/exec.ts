@@ -6,12 +6,11 @@ import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['execute'],
-			description: language => language.tget('COMMAND_EXEC_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_EXEC_EXTENDED'),
+			description: (language) => language.tget('COMMAND_EXEC_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_EXEC_EXTENDED'),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			usage: '<expression:string>',
@@ -20,18 +19,23 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const result = await exec(input, { timeout: 'timeout' in message.flagArgs ? Number(message.flagArgs.timeout) : 60000 })
-			.catch(error => ({ stdout: null, stderr: error }));
+		const result = await exec(input, { timeout: 'timeout' in message.flagArgs ? Number(message.flagArgs.timeout) : 60000 }).catch((error) => ({
+			stdout: null,
+			stderr: error
+		}));
 		const output = result.stdout ? `**\`OUTPUT\`**${codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
 		const joined = [output, outerr].join('\n') || 'No output';
 
-		return message.sendMessage(joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined);
+		return message.sendMessage(
+			joined.length > 2000 ? await this.getHaste(joined).catch(() => new MessageAttachment(Buffer.from(joined), 'output.txt')) : joined
+		);
 	}
 
 	private async getHaste(result: string) {
-		const { key } = await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON) as { key: string };
+		const { key } = (await fetch('https://hasteb.in/documents', { method: FetchMethods.Post, body: result }, FetchResultTypes.JSON)) as {
+			key: string;
+		};
 		return `https://hasteb.in/${key}.js`;
 	}
-
 }

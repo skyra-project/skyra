@@ -10,7 +10,6 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, Language } from 'klasa';
 
 export default class extends Event {
-
 	private readonly kTwitchImageReplacerRegex = /({width}|{height})/gi;
 
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
@@ -22,7 +21,9 @@ export default class extends Event {
 		const streamer = await twitchStreamSubscriptions.findOne({ id: data.user_id });
 		if (!streamer) return response.error('No streamer could be found in the database.');
 
-		const { data: [game] } = await this.client.twitch.fetchGame([data.game_id]);
+		const {
+			data: [game]
+		} = await this.client.twitch.fetchGame([data.game_id]);
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guildIds) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
@@ -31,8 +32,7 @@ export default class extends Event {
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
 			await guild.settings.sync();
-			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers)
-				.find(([id]) => id === streamer.id);
+			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers).find(([id]) => id === streamer.id);
 			if (typeof subscriptions === 'undefined') continue;
 
 			// Iterate over each subscription
@@ -40,7 +40,11 @@ export default class extends Event {
 				if (subscription.status !== NotificationsStreamsTwitchEventStatus.Online) continue;
 				if (game !== undefined) {
 					if (subscription.gamesBlacklist.includes(game.name) || subscription.gamesBlacklist.includes(game.id)) continue;
-					if (subscription.gamesWhitelist.length && (!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))) continue;
+					if (
+						subscription.gamesWhitelist.length &&
+						(!subscription.gamesWhitelist.includes(game.name) || !subscription.gamesWhitelist.includes(game.id))
+					)
+						continue;
 				}
 				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
@@ -69,17 +73,26 @@ export default class extends Event {
 	}
 
 	private transformTextToString(source: string, notification: PostStreamBodyData, i18n: Language, game?: TwitchHelixGameSearchResult) {
-		return source.replace(TWITCH_REPLACEABLES_REGEX, match => {
+		return source.replace(TWITCH_REPLACEABLES_REGEX, (match) => {
 			switch (match) {
-				case TWITCH_REPLACEABLES_MATCHES.ID: return notification.id;
-				case TWITCH_REPLACEABLES_MATCHES.TITLE: return this.escapeText(notification.title);
-				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT: return notification.viewer_count.toString();
-				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME: return game?.name ?? i18n.tget('NOTIFICATIONS_TWITCH_NO_GAME_NAME');
-				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE: return notification.language;
-				case TWITCH_REPLACEABLES_MATCHES.GAME_ID: return notification.game_id;
-				case TWITCH_REPLACEABLES_MATCHES.USER_ID: return notification.user_id;
-				case TWITCH_REPLACEABLES_MATCHES.USER_NAME: return this.escapeText(notification.user_name);
-				default: return match;
+				case TWITCH_REPLACEABLES_MATCHES.ID:
+					return notification.id;
+				case TWITCH_REPLACEABLES_MATCHES.TITLE:
+					return this.escapeText(notification.title);
+				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT:
+					return notification.viewer_count.toString();
+				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
+					return game?.name ?? i18n.tget('NOTIFICATIONS_TWITCH_NO_GAME_NAME');
+				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE:
+					return notification.language;
+				case TWITCH_REPLACEABLES_MATCHES.GAME_ID:
+					return notification.game_id;
+				case TWITCH_REPLACEABLES_MATCHES.USER_ID:
+					return notification.user_id;
+				case TWITCH_REPLACEABLES_MATCHES.USER_NAME:
+					return this.escapeText(notification.user_name);
+				default:
+					return match;
 			}
 		});
 	}
@@ -115,13 +128,10 @@ export default class extends Event {
 	private escapeText(text: string) {
 		return escapeMarkdown(text.replace(/\\/g, '\\\\').replace(/"/g, '\\"'));
 	}
-
 }
 
-type TwitchOnlineEmbedData =
-	& Omit<PostStreamBodyData, 'id' | 'viewer_count' | 'started_at' | 'game_id'>
-	& Omit<Partial<TwitchHelixGameSearchResult>, 'id' | 'name'>
-	& {
+type TwitchOnlineEmbedData = Omit<PostStreamBodyData, 'id' | 'viewer_count' | 'started_at' | 'game_id'> &
+	Omit<Partial<TwitchHelixGameSearchResult>, 'id' | 'name'> & {
 		viewer_count: string;
 		started_at: Date;
 		game_name: string | undefined;

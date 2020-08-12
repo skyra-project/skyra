@@ -26,7 +26,6 @@ export interface LockdownEntry {
  * @version 3.0.0
  */
 export class GuildSecurity {
-
 	/**
 	 * The SkyraGuild instance which manages this instance
 	 */
@@ -86,5 +85,4 @@ export class GuildSecurity {
 		this.regexp = new RegExp(create(filterArray), 'gi');
 		return this;
 	}
-
 }

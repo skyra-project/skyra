@@ -7,11 +7,10 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['np', 'nowplaying'],
-	description: language => language.tget('COMMAND_PLAYING_DESCRIPTION'),
+	description: (language) => language.tget('COMMAND_PLAYING_DESCRIPTION'),
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends MusicCommand {
-
 	private kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
 	@requireMusicPlaying()
@@ -42,5 +41,4 @@ export default class extends MusicCommand {
 
 		return null;
 	}
-
 }

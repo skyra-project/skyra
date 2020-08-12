@@ -49,7 +49,6 @@ const kArrows = new Map<Arrows, Coordinate>([
 ]);
 
 export class WheelOfFortune {
-
 	/** The amount bet */
 	public amount: number;
 
@@ -96,8 +95,10 @@ export class WheelOfFortune {
 		const { clients } = await DbSet.connect();
 		const settings = await clients.ensure();
 
-		return (this.message.guild && settings.guildBoost.includes(this.message.guild.id) ? 1.5 : 1)
-			* (settings.userBoost.includes(this.message.author.id) ? 1.5 : 1);
+		return (
+			(this.message.guild && settings.guildBoost.includes(this.message.guild.id) ? 1.5 : 1) *
+			(settings.userBoost.includes(this.message.author.id) ? 1.5 : 1)
+		);
 	}
 
 	private async calculate() {
@@ -107,9 +108,9 @@ export class WheelOfFortune {
 		const multiplier = WheelOfFortune.kMultipliers[this.spin];
 
 		// The winnings
-		this.winnings = roundNumber(multiplier >= 1
-			? (this.amount * multiplier * await this.fetchBoost()) - this.amount
-			: (this.amount * multiplier) - this.amount);
+		this.winnings = roundNumber(
+			multiplier >= 1 ? this.amount * multiplier * (await this.fetchBoost()) - this.amount : this.amount * multiplier - this.amount
+		);
 	}
 
 	private async render(darkTheme: boolean): Promise<Buffer> {
@@ -131,10 +132,15 @@ export class WheelOfFortune {
 			.restore();
 
 		const image = playerHasWon ? WheelOfFortune.images.WIN_ICONS! : WheelOfFortune.images.LOSE_ICONS!;
-		await Promise.all(kAssets.map(({ x, y }) => new Promise(resolve => {
-			canvas.printImage(image, x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize);
-			resolve();
-		})));
+		await Promise.all(
+			kAssets.map(
+				({ x, y }) =>
+					new Promise((resolve) => {
+						canvas.printImage(image, x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize);
+						resolve();
+					})
+			)
+		);
 
 		return canvas.toBufferAsync();
 	}
@@ -171,7 +177,6 @@ export class WheelOfFortune {
 		WheelOfFortune.images.ARROWS = arrows;
 		WheelOfFortune.images.SHINY = shiny;
 	}
-
 }
 
 interface WheelOfFortuneAssets {

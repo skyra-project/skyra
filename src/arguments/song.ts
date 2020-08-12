@@ -3,7 +3,6 @@ import { Argument, KlasaMessage, Possible } from 'klasa';
 import type { TrackData } from 'lavacord';
 
 export default class extends Argument {
-
 	public async run(arg: string, _: Possible, message: KlasaMessage) {
 		if (!arg) {
 			if (message.guild && message.guild.music.queue.length) return null;
@@ -31,7 +30,7 @@ export default class extends Argument {
 			returnAll = false;
 		}
 		if (!tracks.length) {
-			if (soundcloud) tracks.push(...await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`));
+			if (soundcloud) tracks.push(...(await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`)));
 			if (!tracks.length) throw message.language.tget('MUSICMANAGER_FETCH_NO_MATCHES');
 		}
 		return returnAll ? tracks : [tracks[0]];
@@ -58,7 +57,8 @@ export default class extends Argument {
 
 	private getRemainingUserEntries(message: KlasaMessage) {
 		const maximumEntriesPerUser = message.guild!.settings.get(GuildSettings.Music.MaximumEntriesPerUser);
-		const userEntries = message.guild!.music.queue.reduce((acc, song) => song.requester === message.author.id ? acc + 1 : acc, 0) +
+		const userEntries =
+			message.guild!.music.queue.reduce((acc, song) => (song.requester === message.author.id ? acc + 1 : acc), 0) +
 			(message.guild!.music.song?.requester === message.author.id ? 1 : 0);
 		return Math.max(0, maximumEntriesPerUser - userEntries);
 	}
@@ -70,8 +70,7 @@ export default class extends Argument {
 		const allowStreams = message.guild!.settings.get(GuildSettings.Music.AllowStreams);
 
 		return tracks
-			.filter(track => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration)
+			.filter((track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration)
 			.slice(0, remainingUserEntries);
 	}
-
 }

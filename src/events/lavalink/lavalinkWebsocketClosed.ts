@@ -7,7 +7,6 @@ import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	private kHeader = new Colors({ text: 'magenta' }).format('[LAVALINK]');
 
 	public run(manager: MusicHandler, payload: LavalinkWebSocketClosedEvent) {
@@ -23,5 +22,4 @@ export default class extends Event {
 
 		manager.reset(true);
 	}
-
 }

@@ -9,7 +9,6 @@ import { DbSet } from './DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
 export abstract class WeebCommand extends SkyraCommand {
-
 	/**
 	 * The type for this command.
 	 */
@@ -20,12 +19,20 @@ export abstract class WeebCommand extends SkyraCommand {
 	public responseName: keyof LanguageKeys;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
-		super(store, file, directory, mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>({
-			bucket: 2,
-			cooldown: 30,
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text']
-		}, options) as WeebCommandOptions);
+		super(
+			store,
+			file,
+			directory,
+			mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>(
+				{
+					bucket: 2,
+					cooldown: 30,
+					requiredPermissions: ['EMBED_LINKS'],
+					runIn: ['text']
+				},
+				options
+			) as WeebCommandOptions
+		);
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;
@@ -36,25 +43,31 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
 
-		const { url } = await fetch<WeebCommandResult>(query, {
-			headers: {
-				'Authorization': `Wolke ${TOKENS.WEEB_SH_KEY}`,
-				'User-Agent': `Skyra/${VERSION}`
+		const { url } = await fetch<WeebCommandResult>(
+			query,
+			{
+				headers: {
+					Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
+					'User-Agent': `Skyra/${VERSION}`
+				}
+			},
+			FetchResultTypes.JSON
+		);
+
+		return message.sendMessage(
+			Boolean(this.usage.parsedUsage.length)
+				? message.language.tget(this.responseName as LanguageKeysComplex, params![0].username)
+				: message.language.tget(this.responseName as LanguageKeysSimple),
+			{
+				embed: new MessageEmbed()
+					.setTitle('→')
+					.setURL(url)
+					.setColor(await DbSet.fetchColor(message))
+					.setImage(url)
+					.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
 			}
-		}, FetchResultTypes.JSON);
-
-		return message.sendMessage(Boolean(this.usage.parsedUsage.length)
-			? message.language.tget(this.responseName as LanguageKeysComplex, params![0].username)
-			: message.language.tget(this.responseName as LanguageKeysSimple),
-		{
-			embed: new MessageEmbed()
-				.setTitle('→').setURL(url)
-				.setColor(await DbSet.fetchColor(message))
-				.setImage(url)
-				.setFooter(message.language.tget('POWEREDBY_WEEBSH'))
-		}) as Promise<KlasaMessage | KlasaMessage[]>;
+		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
-
 }
 
 interface WeebCommandOptions extends CommandOptions {

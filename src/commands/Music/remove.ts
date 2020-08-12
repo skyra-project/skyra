@@ -4,11 +4,10 @@ import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: language => language.tget('COMMAND_REMOVE_DESCRIPTION'),
+	description: (language) => language.tget('COMMAND_REMOVE_DESCRIPTION'),
 	usage: '<number:integer>'
 })
 export default class extends MusicCommand {
-
 	@requireQueueNotEmpty()
 	public run(message: KlasaMessage, [index]: [number]) {
 		if (index <= 0) throw message.language.tget('COMMAND_REMOVE_INDEX_INVALID');
@@ -19,5 +18,4 @@ export default class extends MusicCommand {
 		// Remove the song from the queue
 		message.guild!.music.remove(message, index, this.getContext(message));
 	}
-
 }

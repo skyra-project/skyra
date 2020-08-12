@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['rs'],
-	description: language => language.tget('COMMAND_ROLESET_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_ROLESET_EXTENDED'),
+	description: (language) => language.tget('COMMAND_ROLESET_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_ROLESET_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: [],
 	runIn: ['text'],
@@ -18,40 +18,45 @@ import { KlasaMessage } from 'klasa';
 })
 @CreateResolvers([
 	[
-		'name', (arg, possible, message, [subcommand]) => {
+		'name',
+		(arg, possible, message, [subcommand]) => {
 			if (subcommand === 'list') return undefined;
 			if (!arg && subcommand === 'reset') return undefined;
 			return message.client.arguments.get('string')!.run(arg, possible, message);
 		}
 	],
 	[
-		'rolenames', (arg, possible, message, [subcommand]) => {
+		'rolenames',
+		(arg, possible, message, [subcommand]) => {
 			if (subcommand === 'list' || subcommand === 'reset') return undefined;
 			return message.client.arguments.get('rolenames')!.run(arg, possible, message);
 		}
 	]
 ])
 export default class extends SkyraCommand {
-
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		const roleset = allRolesets.find(set => set.name === name);
+		const roleset = allRolesets.find((set) => set.name === name);
 
 		// If it does not exist we need to create a brand new set
 		if (!roleset) {
-			await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, { name, roles: roles.map(role => role.id) }, {
-				arrayAction: 'add',
-				extraContext: { author: message.author.id }
-			});
-			return message.sendLocale('COMMAND_ROLESET_CREATED', [name, roles.map(role => role.name).join(', ')]);
+			await message.guild!.settings.update(
+				GuildSettings.Roles.UniqueRoleSets,
+				{ name, roles: roles.map((role) => role.id) },
+				{
+					arrayAction: 'add',
+					extraContext: { author: message.author.id }
+				}
+			);
+			return message.sendLocale('COMMAND_ROLESET_CREATED', [name, roles.map((role) => role.name).join(', ')]);
 		}
 
 		// The set does exist so we want to only ADD new roles in
 
 		// Create a new array that we can use to overwrite the existing one in settings
-		const newsets = allRolesets.map(set => {
+		const newsets = allRolesets.map((set) => {
 			if (set.name !== name) return set;
 			const finalRoleIDs = [...set.roles];
 			for (const role of roles) if (!finalRoleIDs.includes(role.id)) finalRoleIDs.push(role.id);
@@ -63,7 +68,7 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_ROLESET_ADDED', [name, roles.map(role => role.name).join(', ')]);
+		return message.sendLocale('COMMAND_ROLESET_ADDED', [name, roles.map((role) => role.name).join(', ')]);
 	}
 
 	// This subcommand will always remove roles from a provided role set.
@@ -72,13 +77,15 @@ export default class extends SkyraCommand {
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 		// The set does exist so we want to only REMOVE provided roles from it
 		// Create a new array that we can use to overwrite the existing one in settings
-		const newsets = allRolesets.map(set => set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find(role => role.id === id)) } : set);
+		const newsets = allRolesets.map((set) =>
+			set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find((role) => role.id === id)) } : set
+		);
 
 		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_ROLESET_REMOVED', [name, roles.map(role => role.name).join(', ')]);
+		return message.sendLocale('COMMAND_ROLESET_REMOVED', [name, roles.map((role) => role.name).join(', ')]);
 	}
 
 	public async reset(message: KlasaMessage, [name]: [string?]) {
@@ -93,11 +100,12 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_ROLESET_RESET_ALL');
 		}
 
-		const arrayIndex = allRolesets.findIndex(roleset => roleset.name === name);
+		const arrayIndex = allRolesets.findIndex((roleset) => roleset.name === name);
 		if (arrayIndex === -1) throw message.language.tget('COMMAND_ROLESET_RESET_NOT_EXISTS', name);
 
 		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, allRolesets[arrayIndex], {
-			arrayAction: 'remove', arrayIndex,
+			arrayAction: 'remove',
+			arrayIndex,
 			extraContext: { author: message.author.id }
 		});
 		return message.sendLocale('COMMAND_ROLESET_RESET_GROUP', [name]);
@@ -107,17 +115,17 @@ export default class extends SkyraCommand {
 	public async auto(message: KlasaMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		const roleset = allRolesets.find(set => set.name === name);
+		const roleset = allRolesets.find((set) => set.name === name);
 		// If this roleset does not exist we have to create it
 		if (!roleset) return this.add(message, [name, roles]);
 
 		// The role set exists
 
-		const newsets = allRolesets.map(set => {
+		const newsets = allRolesets.map((set) => {
 			if (set.name !== name) return set;
 			// Add any role that wasnt in the set that the user provided
 			// This will also remove any of the roles that user provided and were already in the set
-			const newroles = set.roles.map(id => roles.find(role => role.id === id) ? null : id).filter(id => id);
+			const newroles = set.roles.map((id) => (roles.find((role) => role.id === id) ? null : id)).filter((id) => id);
 
 			for (const role of roles) if (!set.roles.includes(role.id)) newroles.push(role.id);
 
@@ -136,8 +144,7 @@ export default class extends SkyraCommand {
 		// Get all rolesets from settings
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 		if (!allRolesets.length) return message.send('You have no rolesets.');
-		const list = allRolesets.map(set => `💠 **${set.name}**: ${set.roles.map(id => message.guild!.roles.get(id)!.name).join(', ')}`);
+		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild!.roles.get(id)!.name).join(', ')}`);
 		return message.send(list);
 	}
-
 }

@@ -4,15 +4,20 @@ import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
 import WebSocket, { Data } from 'ws';
 import {
-	CloseCodes, IncomingWebsocketAction, IncomingWebsocketMessage,
-	MusicAction, OutgoingWebsocketAction, OutgoingWebsocketMessage,
-	SubscriptionAction, SubscriptionName, WebsocketEvents
+	CloseCodes,
+	IncomingWebsocketAction,
+	IncomingWebsocketMessage,
+	MusicAction,
+	OutgoingWebsocketAction,
+	OutgoingWebsocketMessage,
+	SubscriptionAction,
+	SubscriptionName,
+	WebsocketEvents
 } from './types';
 import type { WebsocketHandler } from './WebsocketHandler';
 import { WebsocketSubscriptionStore } from './WebsocketSubscriptionStore';
 
 export default class DashboardWebsocketUser {
-
 	public musicSubscriptions = new WebsocketSubscriptionStore();
 	public connection: WebSocket;
 
@@ -43,9 +48,7 @@ export default class DashboardWebsocketUser {
 
 	private async handleMusicMessage(message: IncomingWebsocketMessage) {
 		// Check if the message is well-formed:
-		if (!message.data.music_action
-			|| !message.data.guild_id
-			|| !this.musicSubscriptions.subscribed(message.data.guild_id)) return;
+		if (!message.data.music_action || !message.data.guild_id || !this.musicSubscriptions.subscribed(message.data.guild_id)) return;
 
 		// Check for the existence of the guild:
 		const guild = this.client.guilds.get(message.data.guild_id);
@@ -122,7 +125,7 @@ export default class DashboardWebsocketUser {
 		switch (message.action) {
 			case IncomingWebsocketAction.MusicQueueUpdate: {
 				// TODO: Make this notify the user instead of silently failing
-				this.handleMusicMessage(message).catch(err => this.client.emit(Events.Wtf, err));
+				this.handleMusicMessage(message).catch((err) => this.client.emit(Events.Wtf, err));
 				break;
 			}
 			case IncomingWebsocketAction.SubscriptionUpdate: {
@@ -148,5 +151,4 @@ export default class DashboardWebsocketUser {
 		// Only remove if the instance set is the same as this instance
 		if (this.#handler.users.get(this.#userID) === this) this.#handler.users.delete(this.#userID);
 	}
-
 }

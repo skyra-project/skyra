@@ -10,7 +10,6 @@ import { LoadType, TrackData, TrackResponse } from 'lavacord';
 import { Song } from './Song';
 
 export class MusicHandler {
-
 	@enumerable(false)
 	public client: SkyraClient;
 
@@ -32,12 +31,20 @@ export class MusicHandler {
 		return this.client.lavalink.players.get(this.guild.id);
 	}
 
-	public get canPlay() { return Boolean(this.song || this.queue.length); }
-	public get playing() { return this.player?.playing; }
-	public get paused() { return this.player?.paused; }
+	public get canPlay() {
+		return Boolean(this.song || this.queue.length);
+	}
+
+	public get playing() {
+		return this.player?.playing;
+	}
+
+	public get paused() {
+		return this.player?.paused;
+	}
 
 	public get channel() {
-		return (this.channelID && this.client.channels.get(this.channelID) as TextChannel) || null;
+		return (this.channelID && (this.client.channels.get(this.channelID) as TextChannel)) || null;
 	}
 
 	public get playingTime() {
@@ -77,7 +84,7 @@ export class MusicHandler {
 	}
 
 	public add(user: string, song: TrackData[], context: MusicHandlerRequestContext | null = null) {
-		const parsedSongs = song.map(info => new Song(this, info, user));
+		const parsedSongs = song.map((info) => new Song(this, info, user));
 		this.queue.push(...parsedSongs);
 		this.client.emit(Events.MusicAdd, this, parsedSongs, context);
 		return parsedSongs;
@@ -126,10 +133,10 @@ export class MusicHandler {
 		if (this.player) {
 			// Handle all the player events
 			this.player
-				.on(LavalinkPlayerEvents.PlayerUpdate, data => this.client.emit(Events.LavalinkPlayerUpdate, this, data))
-				.on(LavalinkPlayerEvents.Start, data => this.client.emit(Events.LavalinkStart, this, data))
-				.on(LavalinkPlayerEvents.Error, data => this.client.emit(Events.LavalinkException, this, data, context))
-				.on(LavalinkPlayerEvents.End, data => this.client.emit(Events.LavalinkEnd, this, data));
+				.on(LavalinkPlayerEvents.PlayerUpdate, (data) => this.client.emit(Events.LavalinkPlayerUpdate, this, data))
+				.on(LavalinkPlayerEvents.Start, (data) => this.client.emit(Events.LavalinkStart, this, data))
+				.on(LavalinkPlayerEvents.Error, (data) => this.client.emit(Events.LavalinkException, this, data, context))
+				.on(LavalinkPlayerEvents.End, (data) => this.client.emit(Events.LavalinkEnd, this, data));
 		}
 
 		// Emit that we connected to the websocket
@@ -257,7 +264,6 @@ export class MusicHandler {
 
 		// Tell the websocket of the removed song
 		this.client.emit(Events.MusicRemove, this, song, context);
-
 	}
 
 	public reset(volume = false) {
@@ -277,7 +283,8 @@ export class MusicHandler {
 		// If the member is a DJ, queues are always manageable for them.
 		if (message.member!.isDJ) return true;
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
-		if ((this.song ? this.song.requester === message.author.id : true) && this.queue.every(song => song.requester === message.author.id)) return true;
+		if ((this.song ? this.song.requester === message.author.id : true) && this.queue.every((song) => song.requester === message.author.id))
+			return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
 	}
@@ -298,13 +305,16 @@ export class MusicHandler {
 		const llUrl = new URL(`http://${node.host}:${node.port}/loadtracks`);
 		llUrl.searchParams.append('identifier', search);
 
-		return fetch<TrackResponse>(llUrl, {
-			headers: {
-				authorization: node.password
-			}
-		}, FetchResultTypes.JSON);
+		return fetch<TrackResponse>(
+			llUrl,
+			{
+				headers: {
+					authorization: node.password
+				}
+			},
+			FetchResultTypes.JSON
+		);
 	}
-
 }
 
 export interface MusicHandlerRequestContext {

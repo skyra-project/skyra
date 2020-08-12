@@ -3,7 +3,6 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
@@ -16,11 +15,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [index]: [number | 'latest']) {
-		const modlog = index === 'latest'
-			? (await message.guild!.moderation.fetch()).lastValue
-			: await message.guild!.moderation.fetch(index);
+		const modlog = index === 'latest' ? (await message.guild!.moderation.fetch()).lastValue : await message.guild!.moderation.fetch(index);
 		if (modlog) return message.sendEmbed(await modlog.prepareEmbed());
 		throw message.language.tget('COMMAND_REASON_NOT_EXISTS');
 	}
-
 }

@@ -21,7 +21,6 @@ enum Lists {
 }
 
 export default class extends Task {
-
 	public async run(): Promise<PartialResponseValue | null> {
 		if (!this.client.ready) return { type: ResponseType.Delay, value: 30000 };
 
@@ -33,20 +32,41 @@ export default class extends Task {
 
 		const guilds = rawGuilds.toString();
 		const users = rawUsers.toString();
-		const results = (await Promise.all([
-			this.query(`https://top.gg/api/bots/${CLIENT_ID}/stats`,
-				`{"server_count":${guilds}}`, TOKENS.TOP_GG, Lists.TopGG),
-			this.query(`https://discord.bots.gg/api/v1/bots/${CLIENT_ID}/stats`,
-				`{"guildCount":${guilds}}`, TOKENS.DISCORD_BOTS, Lists.DiscordBotsGG),
-			this.query(`https://botsfordiscord.com/api/bot/${CLIENT_ID}`,
-				`{"server_count":${guilds}}`, TOKENS.BOTS_FOR_DISCORD_KEY, Lists.BotsForDiscord),
-			this.query(`https://discordbotlist.com/api/v1/bots/${CLIENT_ID}/stats`,
-				`{"guilds":${guilds},"users":${users}}`, TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null, Lists.DiscordBotList),
-			this.query(`https://bots.ondiscord.xyz/bot-api/bots/${CLIENT_ID}/guilds`,
-				`{"guildCount":${guilds}}`, TOKENS.BOTS_ON_DISCORD_KEY, Lists.BotsOnDiscord),
-			this.query(`https://api.botlist.space/v1/bots/${CLIENT_ID}`,
-				`{"server_count":${guilds}}`, TOKENS.BOTLIST_SPACE_KEY, Lists.BotListSpace)
-		])).filter(value => value !== null);
+		const results = (
+			await Promise.all([
+				this.query(`https://top.gg/api/bots/${CLIENT_ID}/stats`, `{"server_count":${guilds}}`, TOKENS.TOP_GG, Lists.TopGG),
+				this.query(
+					`https://discord.bots.gg/api/v1/bots/${CLIENT_ID}/stats`,
+					`{"guildCount":${guilds}}`,
+					TOKENS.DISCORD_BOTS,
+					Lists.DiscordBotsGG
+				),
+				this.query(
+					`https://botsfordiscord.com/api/bot/${CLIENT_ID}`,
+					`{"server_count":${guilds}}`,
+					TOKENS.BOTS_FOR_DISCORD_KEY,
+					Lists.BotsForDiscord
+				),
+				this.query(
+					`https://discordbotlist.com/api/v1/bots/${CLIENT_ID}/stats`,
+					`{"guilds":${guilds},"users":${users}}`,
+					TOKENS.DISCORD_BOT_LIST ? `Bot ${TOKENS.DISCORD_BOT_LIST}` : null,
+					Lists.DiscordBotList
+				),
+				this.query(
+					`https://bots.ondiscord.xyz/bot-api/bots/${CLIENT_ID}/guilds`,
+					`{"guildCount":${guilds}}`,
+					TOKENS.BOTS_ON_DISCORD_KEY,
+					Lists.BotsOnDiscord
+				),
+				this.query(
+					`https://api.botlist.space/v1/bots/${CLIENT_ID}`,
+					`{"server_count":${guilds}}`,
+					TOKENS.BOTLIST_SPACE_KEY,
+					Lists.BotListSpace
+				)
+			])
+		).filter((value) => value !== null);
 
 		if (results.length) this.client.emit(Events.Verbose, `${header} [ ${guilds} [G] ] [ ${users} [U] ] | ${results.join(' | ')}`);
 		return null;
@@ -55,11 +75,15 @@ export default class extends Task {
 	public async query(url: string, body: string, token: string | null, list: Lists) {
 		try {
 			if (!token) return null;
-			await fetch(url, {
-				body,
-				headers: { 'content-type': Mime.Types.ApplicationJson, 'authorization': token },
-				method: 'POST'
-			}, FetchResultTypes.Result);
+			await fetch(
+				url,
+				{
+					body,
+					headers: { 'content-type': Mime.Types.ApplicationJson, authorization: token },
+					method: 'POST'
+				},
+				FetchResultTypes.Result
+			);
 			return g.format(list);
 		} catch (error) {
 			return `${r.format(list)} [${r.format(error.code)}]`;
@@ -69,5 +93,4 @@ export default class extends Task {
 	private processAnalytics(guilds: number, users: number) {
 		if (ENABLE_INFLUX) this.client.emit(Events.AnalyticsSync, guilds, users);
 	}
-
 }

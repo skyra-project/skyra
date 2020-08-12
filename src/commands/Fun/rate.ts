@@ -4,13 +4,12 @@ import { oneToTen } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_RATE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_RATE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_RATE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_RATE_EXTENDED'),
 			spam: true,
 			usage: '<user:string>'
 		});
@@ -27,15 +26,14 @@ export default class extends SkyraCommand {
 			rate = 100;
 			[ratewaifu, user] = message.language.tget('COMMAND_RATE_MYSELF');
 		} else {
-			user = /^(myself|me)$/i.test(user)
-				? message.author.username
-				: user.replace(/\bmy\b/g, 'your');
+			user = /^(myself|me)$/i.test(user) ? message.author.username : user.replace(/\bmy\b/g, 'your');
 
 			const rng = Math.round(Math.random() * 100);
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
-		return message.sendMessage(`**${message.author.username}**, ${message.language.tget('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, { disableEveryone: true });
+		return message.sendMessage(`**${message.author.username}**, ${message.language.tget('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, {
+			disableEveryone: true
+		});
 	}
-
 }

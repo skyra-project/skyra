@@ -9,7 +9,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild' })
 export default class extends Route {
-
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
@@ -26,5 +25,4 @@ export default class extends Route {
 		const emojis = await api(this.client).guilds(guildID).emojis.get();
 		return response.json({ ...flattenGuild(guild), emojis });
 	}
-
 }

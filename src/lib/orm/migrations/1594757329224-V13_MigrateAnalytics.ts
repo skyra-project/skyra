@@ -14,7 +14,6 @@ const INFLUX_ALL_COMMANDS_SCRIPT = `from(bucket: "${INFLUX_ORG_ANALYTICS_BUCKET}
  * I decided to remove the check for if the bucket exists under "up"
  */
 export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
-
 	private migStart: Date = new Date();
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
@@ -23,12 +22,14 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const influx = new InfluxDB(INFLUX_OPTIONS);
 		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
 
-		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */`SELECT * FROM command_counter`);
+		const commandUses: CommandUsageStats = await queryRunner.query(/* sql */ `SELECT * FROM command_counter`);
 
 		const points: Point[] = [];
 		for await (const commandUse of commandUses) {
 			if (commandUse.uses === 0) continue;
-			points.push(this.createPoint(commandUse.id, commandUse.uses, categories.get(commandUse.id) ?? { category: 'General', subCategory: 'General' }));
+			points.push(
+				this.createPoint(commandUse.id, commandUse.uses, categories.get(commandUse.id) ?? { category: 'General', subCategory: 'General' })
+			);
 		}
 
 		writer.writePoints(points);
@@ -44,23 +45,24 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 		const buckets = await bucketAPI.getBuckets();
 		const reader = influx.getQueryApi(INFLUX_ORG);
 
-		if (!buckets.buckets?.some(bucket => bucket.name === INFLUX_ORG_ANALYTICS_BUCKET)) return;
+		if (!buckets.buckets?.some((bucket) => bucket.name === INFLUX_ORG_ANALYTICS_BUCKET)) return;
 
 		const commands = await reader.collectRows<InfluxSummedCommandEntry>(INFLUX_ALL_COMMANDS_SCRIPT);
 
-		await queryRunner.createTable(new Table({
-			name: 'command_counter',
-			checks: [
-				new TableCheck({ expression: /* sql */`"uses" >= 0` })
-			],
-			columns: [
-				new TableColumn({ name: 'id', type: 'varchar', length: '32', isPrimary: true }),
-				new TableColumn({ 'name': 'uses', 'type': 'integer', 'default': 0, 'isNullable': false })
-			]
-		}));
+		await queryRunner.createTable(
+			new Table({
+				name: 'command_counter',
+				checks: [new TableCheck({ expression: /* sql */ `"uses" >= 0` })],
+				columns: [
+					new TableColumn({ name: 'id', type: 'varchar', length: '32', isPrimary: true }),
+					new TableColumn({ name: 'uses', type: 'integer', default: 0, isNullable: false })
+				]
+			})
+		);
 
 		for (const command of commands) {
-			await queryRunner.query(/* sql */`
+			await queryRunner.query(
+				/* sql */ `
 				INSERT
 				INTO command_counter ("id", "uses")
 				VALUES ($1, $2)
@@ -68,7 +70,9 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 				DO
 					UPDATE
 					SET uses = command_counter.uses + $2;
-			`, [command._field, Number(command._value)]);
+			`,
+				[command._field, Number(command._value)]
+			);
 		}
 	}
 
@@ -81,7 +85,6 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 			.timestamp(this.migStart)
 			.intField(commandName.replace(/^time$/, 'case-time'), commandUsageAmount);
 	}
-
 }
 
 interface InfluxSummedCommandEntry {

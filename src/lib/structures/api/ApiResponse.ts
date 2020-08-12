@@ -3,7 +3,6 @@ import { ServerResponse, STATUS_CODES } from 'http';
 import { CookieStore } from './CookieStore';
 
 export class ApiResponse extends ServerResponse {
-
 	public cookies!: CookieStore;
 
 	public error(error: number | string): void {
@@ -45,18 +44,15 @@ export class ApiResponse extends ServerResponse {
 	}
 
 	public json(data: any): void {
-		this.setContentType(Mime.Types.ApplicationJson)
-			.end(JSON.stringify(data));
+		this.setContentType(Mime.Types.ApplicationJson).end(JSON.stringify(data));
 	}
 
 	public text(data: string): void {
-		this.setContentType(Mime.Types.TextPlain)
-			.end(data);
+		this.setContentType(Mime.Types.TextPlain).end(data);
 	}
 
 	public setContentType(contentType: Mime.Types) {
 		this.setHeader('Content-Type', contentType);
 		return this;
 	}
-
 }

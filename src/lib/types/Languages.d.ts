@@ -84,7 +84,12 @@ export interface LanguageKeys {
 	INHIBITOR_DISABLED_GUILD: string;
 	INHIBITOR_DISABLED_GLOBAL: string;
 	COMMAND_BLACKLIST_DESCRIPTION: string;
-	COMMAND_BLACKLIST_SUCCESS: (usersAdded: readonly string[], usersRemoved: readonly string[], guildsAdded: readonly string[], guildsRemoved: readonly string[]) => string;
+	COMMAND_BLACKLIST_SUCCESS: (
+		usersAdded: readonly string[],
+		usersRemoved: readonly string[],
+		guildsAdded: readonly string[],
+		guildsRemoved: readonly string[]
+	) => string;
 	COMMAND_UNLOAD: (type: string, name: string) => string;
 	COMMAND_UNLOAD_DESCRIPTION: string;
 	COMMAND_TRANSFER_ERROR: string;
@@ -172,7 +177,13 @@ export interface LanguageKeys {
 	COMMAND_QUEUE_LAST: string;
 	COMMAND_QUEUE_TITLE: (guildname: string) => string;
 	COMMAND_QUEUE_LINE: (position: number, duration: string, title: string, url: string, requester: string) => string;
-	COMMAND_QUEUE_NOWPLAYING: (context: { duration: string | null; title: string; url: string; requester: string; timeRemaining: string | null }) => string;
+	COMMAND_QUEUE_NOWPLAYING: (context: {
+		duration: string | null;
+		title: string;
+		url: string;
+		requester: string;
+		timeRemaining: string | null;
+	}) => string;
 	COMMAND_QUEUE_NOWPLAYING_TITLE: string;
 	COMMAND_QUEUE_TOTAL_TITLE: string;
 	COMMAND_QUEUE_TOTAL: (songs: number, remainingTime: string) => string;
@@ -1105,11 +1116,11 @@ export interface LanguageKeys {
 		NONE: string;
 	};
 	COMMAND_MANGA_TYPES: {
-		'MANGA': string;
-		'NOVEL': string;
-		'MANHWA': string;
+		MANGA: string;
+		NOVEL: string;
+		MANHWA: string;
 		'ONE-SHOT': string;
-		'SPECIAL': string;
+		SPECIAL: string;
 		[index: string]: string;
 	};
 	COMMAND_WAIFU_FOOTER: string;
@@ -1141,20 +1152,18 @@ export interface LanguageKeys {
 	COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg: string) => string;
 	COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg: string) => string;
 	COMMAND_YARN_EMBED_DATA: {
-		DESCRIPTION: (
-			params: {
-				author?: string;
-				dateCreated: string;
-				dateModified: string;
-				dependencies: string[] | null;
-				deprecated?: string;
-				description: string;
-				latestVersionNumber: string;
-				license: string;
-				mainFile: string;
-				maintainers: string[];
-			}
-		) => string;
+		DESCRIPTION: (params: {
+			author?: string;
+			dateCreated: string;
+			dateModified: string;
+			dependencies: string[] | null;
+			deprecated?: string;
+			description: string;
+			latestVersionNumber: string;
+			license: string;
+			mainFile: string;
+			maintainers: string[];
+		}) => string;
 		MORE_TEXT: string;
 	};
 	COMMAND_8BALL_DESCRIPTION: string;
@@ -1821,7 +1830,16 @@ export interface LanguageKeys {
 	SELF_MODERATION_COMMAND_HARD_ACTION_DURATION: (value: number) => string;
 	SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM: (value: number) => string;
 	SELF_MODERATION_COMMAND_THRESHOLD_DURATION: (value: number) => string;
-	SELF_MODERATION_COMMAND_SHOW: (kEnabled: string, kAlert: string, kLog: string, kDelete: string, kHardAction: string, hardActionDuration: number, thresholdMaximum: number | null, thresholdDuration: number | null) => string;
+	SELF_MODERATION_COMMAND_SHOW: (
+		kEnabled: string,
+		kAlert: string,
+		kLog: string,
+		kDelete: string,
+		kHardAction: string,
+		hardActionDuration: number,
+		thresholdMaximum: number | null,
+		thresholdDuration: number | null
+	) => string;
 	SELF_MODERATION_SOFT_ACTION_ALERT: string;
 	SELF_MODERATION_SOFT_ACTION_LOG: string;
 	SELF_MODERATION_SOFT_ACTION_DELETE: string;

@@ -11,23 +11,29 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,
-	description: language => language.tget('COMMAND_ROLES_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_ROLES_EXTENDED'),
+	description: (language) => language.tget('COMMAND_ROLES_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_ROLES_EXTENDED'),
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
 	usage: '(roles:rolenames)'
 })
 export default class extends RichDisplayCommand {
-
 	public async init() {
 		this.createCustomResolver('rolenames', async (arg, _, message) => {
 			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 			if (!rolesPublic.length) return null;
 			if (!arg) return [];
 
-			const search = new FuzzySearch(message.guild!.roles, role => role.name, role => rolesPublic.includes(role.id));
-			const roles = arg.split(',').map(role => role.trim()).filter(role => role.length);
+			const search = new FuzzySearch(
+				message.guild!.roles,
+				(role) => role.name,
+				(role) => rolesPublic.includes(role.id)
+			);
+			const roles = arg
+				.split(',')
+				.map((role) => role.trim())
+				.filter((role) => role.length);
 			const output: Role[] = [];
 			for (const role of roles) {
 				const result = await search.run(message, role);
@@ -43,7 +49,7 @@ export default class extends RichDisplayCommand {
 		if (!roles) throw message.language.tget('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
 			const prefix = message.guild!.settings.get(GuildSettings.Prefix);
-			if (message.args.some(v => v.length !== 0)) throw message.language.tget('COMMAND_ROLES_ABORT', prefix);
+			if (message.args.some((v) => v.length !== 0)) throw message.language.tget('COMMAND_ROLES_ABORT', prefix);
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member!.roles.keys());
@@ -98,12 +104,14 @@ export default class extends RichDisplayCommand {
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild!.roles.has(rolesInitial)) message.guild!.settings.reset(GuildSettings.Roles.Initial).catch(error => this.client.emit(Events.Wtf, error));
+			if (!message.guild!.roles.has(rolesInitial))
+				message.guild!.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit(Events.Wtf, error));
 			else if (message.member!.roles.has(rolesInitial)) memberRoles.delete(rolesInitial);
 		}
 
 		// Apply the roles
-		if (removedRoles.length || addedRoles.length) await message.member!.roles.set([...memberRoles], message.language.tget('COMMAND_ROLES_AUDITLOG'));
+		if (removedRoles.length || addedRoles.length)
+			await message.member!.roles.set([...memberRoles], message.language.tget('COMMAND_ROLES_AUDITLOG'));
 
 		const output: string[] = [];
 		if (unlistedRoles.length) output.push(message.language.tget('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
@@ -133,17 +141,20 @@ export default class extends RichDisplayCommand {
 		// would filter and remove them all, causing this to be empty.
 		if (!roles.length) throw message.language.tget('COMMAND_ROLES_LIST_EMPTY');
 
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setTitle(message.language.tget('COMMAND_ROLES_LIST_TITLE')));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setTitle(message.language.tget('COMMAND_ROLES_LIST_TITLE'))
+		);
 
 		const pages = Math.ceil(roles.length / 10);
-		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, (i * 10) + 10)));
+		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
-		const response = await message.sendEmbed(new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary }));
+		const response = await message.sendEmbed(
+			new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary })
+		);
 		await display.start(response, message.author.id);
 		return response;
 	}
-
 }

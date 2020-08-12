@@ -10,15 +10,14 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { FetchError } from 'node-fetch';
 
 export default class extends SkyraCommand {
-
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['gr', 'groll'],
-			description: language => language.tget('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
+			description: (language) => language.tget('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '[winners:number{1,100}] [message:message]',
@@ -31,17 +30,23 @@ export default class extends SkyraCommand {
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? message.language.tget('GIVEAWAY_ENDED_MESSAGE', winners.map(winner => `<@${winner}>`), title)
+			? message.language.tget(
+					'GIVEAWAY_ENDED_MESSAGE',
+					winners.map((winner) => `<@${winner}>`),
+					title
+			  )
 			: message.language.tget('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', title);
 		return message.sendMessage(content);
 	}
 
 	private async resolveMessage(message: KlasaMessage, rawTarget: KlasaMessage | undefined) {
 		const target = rawTarget
-			// If rawMessage is defined then we check everything sans the colour
-			? this.validateMessage(rawTarget) ? rawTarget : null
-			// If rawTarget was undefined then we fetch it from the API and we check embed colour
-			: (await message.channel.messages.fetch({ limit: 100 })).find(msg => this.validatePossibleMessage(msg)) || null;
+			? // If rawMessage is defined then we check everything sans the colour
+			  this.validateMessage(rawTarget)
+				? rawTarget
+				: null
+			: // If rawTarget was undefined then we fetch it from the API and we check embed colour
+			  (await message.channel.messages.fetch({ limit: 100 })).find((msg) => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as KlasaMessage;
 		throw message.language.tget('COMMAND_GIVEAWAYREROLL_INVALID');
 	}
@@ -78,10 +83,7 @@ export default class extends SkyraCommand {
 	 * Validates that this message is a message from Skyra and is a giveaway
 	 */
 	private validateMessage(message: Message) {
-		return message.author !== null
-			&& message.author.id === CLIENT_ID
-			&& message.embeds.length === 1
-			&& message.reactions.has(kRawEmoji);
+		return message.author !== null && message.author.id === CLIENT_ID && message.embeds.length === 1 && message.reactions.has(kRawEmoji);
 	}
 
 	/**
@@ -90,5 +92,4 @@ export default class extends SkyraCommand {
 	private validatePossibleMessage(message: Message) {
 		return this.validateMessage(message) && message.embeds[0].color === Colors.Red;
 	}
-
 }

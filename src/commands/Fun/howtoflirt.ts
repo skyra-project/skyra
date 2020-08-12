@@ -13,7 +13,8 @@ const imageCoordinates = [
 		{ center: [211, 53], radius: 18, rotation: radians(-9.78), flip: true },
 		{ center: [136, 237], radius: 53, rotation: radians(24.27), flip: true },
 		{ center: [130, 385], radius: 34, rotation: radians(17.35), flip: true }
-	], [
+	],
+	[
 		// Cpt America
 		{ center: [326, 67], radius: 50, rotation: radians(-32.47), flip: true },
 		{ center: [351, 229], radius: 43, rotation: radians(-8.53), flip: false },
@@ -25,15 +26,14 @@ const imageCoordinates = [
 	aliases: ['pants'],
 	bucket: 2,
 	cooldown: 30,
-	description: language => language.tget('COMMAND_HOWTOFLIRT_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_HOWTOFLIRT_EXTENDED'),
+	description: (language) => language.tget('COMMAND_HOWTOFLIRT_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_HOWTOFLIRT_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })
 export default class extends SkyraCommand {
-
 	private kTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -49,15 +49,12 @@ export default class extends SkyraCommand {
 		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */
-		const images = await Promise.all([
-			fetchAvatar(message.author, 128),
-			fetchAvatar(user, 128)
-		]);
+		const images = await Promise.all([fetchAvatar(message.author, 128), fetchAvatar(user, 128)]);
 
 		/* Initialize Canvas */
 		return new Canvas(500, 500)
 			.printImage(this.kTemplate, 0, 0, 500, 500)
-			.process(canvas => {
+			.process((canvas) => {
 				for (const index of [0, 1]) {
 					const image = images[index];
 					const coordinates = imageCoordinates[index];
@@ -72,5 +69,4 @@ export default class extends SkyraCommand {
 			})
 			.toBufferAsync();
 	}
-
 }

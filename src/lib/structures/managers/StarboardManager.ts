@@ -9,7 +9,6 @@ import { DbSet } from '../DbSet';
  * @version 4.0.0
  */
 export class StarboardManager extends Cache<string, StarboardEntity> {
-
 	/**
 	 * The Client instance that manages this manager
 	 */
@@ -36,8 +35,9 @@ export class StarboardManager extends Cache<string, StarboardEntity> {
 	 */
 	public set(key: string, value: StarboardEntity) {
 		if (this.size >= 25) {
-			const entry = this.findValue(sMes => sMes.stars < this.minimum)
-				|| this.reduce((acc, sMes) => acc.lastUpdated > sMes.lastUpdated ? sMes : acc, this.firstValue!);
+			const entry =
+				this.findValue((sMes) => sMes.stars < this.minimum) ||
+				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.firstValue!);
 			this.delete(entry.messageID);
 		}
 		return super.set(key, value);
@@ -48,7 +48,7 @@ export class StarboardManager extends Cache<string, StarboardEntity> {
 	 */
 	public get starboardChannel() {
 		const channelID = this.guild.settings.get(GuildSettings.Starboard.Channel);
-		return (channelID && this.guild.channels.get(channelID) as TextChannel) || null;
+		return (channelID && (this.guild.channels.get(channelID) as TextChannel)) || null;
 	}
 
 	/**
@@ -87,5 +87,4 @@ export class StarboardManager extends Cache<string, StarboardEntity> {
 
 		return null;
 	}
-
 }

@@ -7,7 +7,6 @@ import { Collection, Guild, GuildMember } from 'discord.js';
  * @version 4.0.0
  */
 export class AntiRaid extends Collection<string, AntiRaidEntry> {
-
 	/**
 	 * The Guild instance that manages this instance
 	 */
@@ -49,14 +48,14 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	public create(id: string) {
 		const rateLimit = { id, time: Date.now() + 20000 };
 		this.set(id, rateLimit);
-		if (!this._sweepInterval) this._sweepInterval = setInterval(this.sweep.bind(this), 30000) as unknown as NodeJS.Timeout;
+		if (!this._sweepInterval) this._sweepInterval = (setInterval(this.sweep.bind(this), 30000) as unknown) as NodeJS.Timeout;
 		return rateLimit;
 	}
 
 	public sweep(fn?: (value: AntiRaidEntry, key: string, collection: this) => boolean, thisArg?: unknown) {
 		if (!fn) {
 			const now = Date.now();
-			fn = value => now > value.time;
+			fn = (value) => now > value.time;
 		}
 		const amount = super.sweep(fn, thisArg);
 
@@ -108,25 +107,17 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 				// If the defaultRole is defined and the member has two roles but doesn't have it
 				//   ^ Only possible if the role got removed and added another, i.e. the Muted role
 				//     or given by a moderator
-				if (member
-					&& member.kickable
-					&& member.roles.size <= minRolesAmount
-					&& initialRole
-					? member.roles.has(initialRole)
-					: true
-				) {
+				if (member && member.kickable && member.roles.size <= minRolesAmount && initialRole ? member.roles.has(initialRole) : true) {
 					return { done: false, value: member as GuildMember };
 				}
 
 				this.delete(id);
 				return { done: false, value: null };
 			}
-
 		};
 
 		return iterator;
 	}
-
 }
 
 interface AntiRaidEntry {

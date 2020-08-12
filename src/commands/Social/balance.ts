@@ -3,14 +3,13 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_BALANCE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_BALANCE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_BALANCE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_BALANCE_EXTENDED'),
 			usage: '[user:username]',
 			spam: true
 		});
@@ -26,5 +25,4 @@ export default class extends SkyraCommand {
 			? message.sendLocale('COMMAND_BALANCE_SELF', [money.toLocaleString()])
 			: message.sendLocale('COMMAND_BALANCE', [user.username, money.toLocaleString()]);
 	}
-
 }

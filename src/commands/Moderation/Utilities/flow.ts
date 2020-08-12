@@ -4,7 +4,6 @@ import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
@@ -20,9 +19,8 @@ export default class extends SkyraCommand {
 		if (!channel.readable) throw message.language.tget('CHANNEL_NOT_READABLE');
 		const messages = await channel.messages.fetch({ limit: 100, before: message.id });
 		const minimum = message.createdTimestamp - 60000;
-		const amount = messages.reduce((prev, curr) => curr.createdTimestamp > minimum ? prev + 1 : prev, 0);
+		const amount = messages.reduce((prev, curr) => (curr.createdTimestamp > minimum ? prev + 1 : prev), 0);
 
 		return message.sendLocale('COMMAND_FLOW', [amount]);
 	}
-
 }

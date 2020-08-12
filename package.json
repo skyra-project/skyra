@@ -11,7 +11,9 @@
 		"pm2:dev": "yarn pm2:start --env development",
 		"pm2:stop": "pm2 stop Skyra",
 		"start": "node dist/Skyra.js",
-		"lint": "eslint src tests --ext ts --fix",
+		"lint": "eslint --fix src tests --ext ts",
+		"format": "prettier --write src/**/*.ts",
+		"format:check": "prettier --check src/**/*.ts",
 		"test": "jest",
 		"test:watch": "jest --watch",
 		"update": "yarn upgrade-interactive --latest",
@@ -81,6 +83,8 @@
 		"zlib-sync": "^0.1.7"
 	},
 	"devDependencies": {
+		"@commitlint/cli": "^9.1.1",
+		"@commitlint/config-conventional": "^9.1.1",
 		"@discordjs/collection": "^0.1.5",
 		"@favware/graphql-pokemon": "^4.2.4",
 		"@klasa/dapi-types": "^0.3.0",
@@ -99,10 +103,17 @@
 		"@typescript-eslint/eslint-plugin": "^3.8.0",
 		"@typescript-eslint/parser": "^3.8.0",
 		"chokidar": "^3.4.2",
+		"cz-conventional-changelog": "^3.2.0",
 		"eslint": "^7.5.0",
+		"eslint-config-prettier": "^6.11.0",
+		"eslint-plugin-prettier": "^3.1.4",
+		"husky": "^4.2.5",
 		"jest": "^26.1.0",
 		"jest-circus": "^26.1.0",
+		"lint-staged": "^10.2.11",
 		"nock": "^13.0.2",
+		"prettier": "^2.0.5",
+		"pretty-quick": "^2.0.1",
 		"ts-jest": "^26.1.3",
 		"typescript": "^3.9.7"
 	},
@@ -128,5 +139,24 @@
 	"engines": {
 		"node": ">=14",
 		"npm": ">=6"
+	},
+	"husky": {
+		"hooks": {
+			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+			"pre-commit": "yarn pretty-quick --staged && yarn lint-staged"
+		}
+	},
+	"commitlint": {
+		"extends": [
+			"@commitlint/config-conventional"
+		]
+	},
+	"lint-staged": {
+		"*.{mjs,js,ts}": "eslint --fix --ext ts"
+	},
+	"config": {
+		"commitizen": {
+			"path": "./node_modules/cz-conventional-changelog"
+		}
 	}
 }

@@ -2,7 +2,6 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Finalizer, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {
-
 	public constructor(store: InhibitorStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			spamProtection: true
@@ -23,7 +22,6 @@ export default class extends Inhibitor {
 
 		if (existing && existing.limited) throw message.language.tget('INHIBITOR_COOLDOWN', existing.remainingTime);
 	}
-
 }
 
 interface CommandCooldown extends Finalizer {

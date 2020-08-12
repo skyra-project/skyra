@@ -16,10 +16,14 @@ const nodeModules = `${sep}node_modules${sep}`;
  * your bot. Test this piece on a test bot before using it in production.
  */
 
-const fakeMessage = {
-	sendLocale() { return Promise.resolve({}); },
-	sendMessage() { return Promise.resolve({}); }
-} as unknown as KlasaMessage;
+const fakeMessage = ({
+	sendLocale() {
+		return Promise.resolve({});
+	},
+	sendMessage() {
+		return Promise.resolve({});
+	}
+} as unknown) as KlasaMessage;
 
 interface Reload extends SkyraCommand {
 	everything(message: KlasaMessage): Promise<unknown>;
@@ -32,7 +36,6 @@ interface Run {
 }
 
 export default class extends Task {
-
 	private running = false;
 
 	public async run({ name, store, piece }: Run): Promise<PartialResponseValue | null> {
@@ -71,10 +74,7 @@ export default class extends Task {
 		if (this.client.fsWatcher !== null) return Promise.resolve();
 
 		this.client.fsWatcher = watch(join(process.cwd(), 'dist'), {
-			ignored: [
-				'**/tsconfig.tsbuildinfo',
-				'**/bwd/provider/**'
-			],
+			ignored: ['**/tsconfig.tsbuildinfo', '**/bwd/provider/**'],
 			persistent: true,
 			ignoreInitial: true,
 			cwd: process.cwd()
@@ -82,9 +82,8 @@ export default class extends Task {
 
 		const reloadStore = async (path: string) => {
 			const name = basename(path);
-			const store = path.split(sep).find(dir => this.client.pieceStores.has(dir)) ?? null;
+			const store = path.split(sep).find((dir) => this.client.pieceStores.has(dir)) ?? null;
 			const piece = store ? this.client.pieceStores.get(store).get(name.replace(extname(name), '')) ?? null : null;
-
 
 			if (!piece) {
 				if (this.running) return;
@@ -103,5 +102,4 @@ export default class extends Task {
 
 		return Promise.resolve();
 	}
-
 }

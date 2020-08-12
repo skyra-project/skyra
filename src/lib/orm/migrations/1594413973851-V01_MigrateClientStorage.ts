@@ -2,7 +2,6 @@ import { CLIENT_ID } from '@root/config';
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm';
 
 export class V01MigrateClientStorage1594413973851 implements MigrationInterface {
-
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await this.migrateClient(queryRunner);
 	}
@@ -18,11 +17,11 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 			new Table({
 				name: 'client',
 				columns: [
-					new TableColumn({ 'name': 'id', 'type': 'varchar', 'length': '19', 'default': `'${CLIENT_ID}'`, 'isNullable': false, 'isPrimary': true }),
-					new TableColumn({ 'name': 'user_blocklist', 'type': 'varchar', 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-					new TableColumn({ 'name': 'user_boost', 'type': 'varchar', 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-					new TableColumn({ 'name': 'guild_blocklist', 'type': 'varchar', 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-					new TableColumn({ 'name': 'guild_boost', 'type': 'varchar', 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' })
+					new TableColumn({ name: 'id', type: 'varchar', length: '19', default: `'${CLIENT_ID}'`, isNullable: false, isPrimary: true }),
+					new TableColumn({ name: 'user_blocklist', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
+					new TableColumn({ name: 'user_boost', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
+					new TableColumn({ name: 'guild_blocklist', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
+					new TableColumn({ name: 'guild_boost', type: 'varchar', isArray: true, default: 'ARRAY[]::VARCHAR[]' })
 				]
 			})
 		);
@@ -32,11 +31,36 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 			new Table({
 				name: 'schedule',
 				columns: [
-					new TableColumn({ name: 'id', type: 'integer', isPrimary: true, isNullable: false, isGenerated: true, generationStrategy: 'increment', comment: 'ID for a scheduled task' }),
+					new TableColumn({
+						name: 'id',
+						type: 'integer',
+						isPrimary: true,
+						isNullable: false,
+						isGenerated: true,
+						generationStrategy: 'increment',
+						comment: 'ID for a scheduled task'
+					}),
 					new TableColumn({ name: 'task_id', type: 'varchar', isNullable: false, comment: 'Name of the task that will run' }),
-					new TableColumn({ name: 'time', type: 'timestamp without time zone', isNullable: false, comment: 'Date when scheduled task ends' }),
-					new TableColumn({ 'name': 'recurring', 'type': 'varchar', 'isNullable': true, 'default': null, 'comment': 'Whether the scheduled task is scheduled with a cron pattern' }),
-					new TableColumn({ 'name': 'catch_up', 'type': 'boolean', 'isNullable': false, 'default': true, 'comment': 'Whether the task should catch up in event the bot is down' }),
+					new TableColumn({
+						name: 'time',
+						type: 'timestamp without time zone',
+						isNullable: false,
+						comment: 'Date when scheduled task ends'
+					}),
+					new TableColumn({
+						name: 'recurring',
+						type: 'varchar',
+						isNullable: true,
+						default: null,
+						comment: 'Whether the scheduled task is scheduled with a cron pattern'
+					}),
+					new TableColumn({
+						name: 'catch_up',
+						type: 'boolean',
+						isNullable: false,
+						default: true,
+						comment: 'Whether the task should catch up in event the bot is down'
+					}),
 					new TableColumn({ name: 'data', type: 'jsonb', isNullable: false, comment: 'The stored metadata to send to the task' })
 				]
 			})
@@ -44,11 +68,13 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 
 		// Get the data from the "clientStorage" table and transform it into Client entities
 		// Quotes around table name are required here
-		const { clientEntities, scheduleEntities } = transformClientStorage(await queryRunner.query(/* sql */`SELECT * FROM public."clientStorage"`));
+		const { clientEntities, scheduleEntities } = transformClientStorage(
+			await queryRunner.query(/* sql */ `SELECT * FROM public."clientStorage"`)
+		);
 
 		// Save the new Client entities to the database
 		const stringifiedClientData = JSON.stringify(clientEntities).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.client
 			SELECT * FROM json_populate_recordset(NULL::public.client, '${stringifiedClientData}')
 			ON CONFLICT DO NOTHING;
@@ -56,16 +82,17 @@ export class V01MigrateClientStorage1594413973851 implements MigrationInterface 
 
 		// Save the new Schedule entities to the database
 		const stringifiedScheduleData = JSON.stringify(scheduleEntities).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.schedule
 			SELECT * FROM json_populate_recordset(NULL::public.schedule, '${stringifiedScheduleData}')
 			ON CONFLICT DO NOTHING;
 		`);
 	}
-
 }
 
-function transformClientStorage(clientStorage: ClientStorage[]): { clientEntities: TransformedClientStorage[]; scheduleEntities: TransformedSchedule[] } {
+function transformClientStorage(
+	clientStorage: ClientStorage[]
+): { clientEntities: TransformedClientStorage[]; scheduleEntities: TransformedSchedule[] } {
 	const scheduleEntities: TransformedSchedule[] = [];
 	const clientEntities: TransformedClientStorage[] = [];
 

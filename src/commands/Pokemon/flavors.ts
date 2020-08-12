@@ -12,17 +12,16 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_FLAVORS_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_FLAVORS_EXTENDED'),
+	description: (language) => language.tget('COMMAND_FLAVORS_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_FLAVORS_EXTENDED'),
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
-
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const pokemonData = await this.fetchAPI(message, pokemon.toLowerCase());
 
@@ -48,14 +47,9 @@ export default class extends RichDisplayCommand {
 		);
 
 		for (const flavorText of pokemonData.flavorTexts) {
-			display.addPage((embed: MessageEmbed) => embed
-				.setDescription([
-					`**${flavorText.game}**`,
-					flavorText.flavor
-				].join('\n')));
+			display.addPage((embed: MessageEmbed) => embed.setDescription([`**${flavorText.game}**`, flavorText.flavor].join('\n')));
 		}
 
 		return display;
 	}
-
 }

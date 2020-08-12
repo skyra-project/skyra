@@ -37,10 +37,9 @@ export const kGiveawayBlockListReactionErrors: APIErrors[] = [
 export type GiveawayEntityData = Pick<GiveawayEntity, 'title' | 'endsAt' | 'guildID' | 'channelID' | 'messageID' | 'minimum' | 'minimumWinners'>;
 
 @Entity('giveaway', { schema: 'public' })
-@Check(/* sql */`"minimum" <> 0`)
-@Check(/* sql */`"minimum_winners" <> 0`)
+@Check(/* sql */ `"minimum" <> 0`)
+@Check(/* sql */ `"minimum_winners" <> 0`)
 export class GiveawayEntity extends BaseEntity {
-
 	#client: Client = null!;
 	#paused = true;
 	#finished = false;
@@ -62,10 +61,10 @@ export class GiveawayEntity extends BaseEntity {
 	@PrimaryColumn('varchar', { length: 19 })
 	public messageID: string | null = null;
 
-	@Column('integer', { 'default': 1 })
+	@Column('integer', { default: 1 })
 	public minimum = 1;
 
-	@Column('integer', { 'default': 1 })
+	@Column('integer', { default: 1 })
 	public minimumWinners = 1;
 
 	public constructor(data: Partial<GiveawayEntityData> = {}) {
@@ -109,7 +108,9 @@ export class GiveawayEntity extends BaseEntity {
 		this.pause();
 
 		// Create the message
-		const message = await api(this.#client).channels(this.channelID).messages.post({ data: await this.getData() }) as { id: string };
+		const message = (await api(this.#client)
+			.channels(this.channelID)
+			.messages.post({ data: await this.getData() })) as { id: string };
 		this.messageID = message.id;
 		this.resume();
 
@@ -194,10 +195,16 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async announceWinners(language: Language) {
 		const content = this.#winners
-			? language.tget('GIVEAWAY_ENDED_MESSAGE', this.#winners.map(winner => `<@${winner}>`), this.title)
+			? language.tget(
+					'GIVEAWAY_ENDED_MESSAGE',
+					this.#winners.map((winner) => `<@${winner}>`),
+					this.title
+			  )
 			: language.tget('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
 		try {
-			await api(this.#client).channels(this.channelID).messages.post({ data: { content } });
+			await api(this.#client)
+				.channels(this.channelID)
+				.messages.post({ data: { content } });
 		} catch (error) {
 			this.#client.emit(Events.ApiError, error);
 		}
@@ -212,29 +219,37 @@ export class GiveawayEntity extends BaseEntity {
 			.setDescription(description)
 			.setFooter(footer)
 			.setTimestamp(this.endsAt)
-		// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
-			['_apiTransform']();
+			[
+				// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
+				'_apiTransform'
+			]();
 	}
 
 	private getDescription(state: States, language: Language) {
 		switch (state) {
-			case States.Finished: return this.#winners?.length
-				? language.tget('GIVEAWAY_ENDED', this.#winners.map(winner => `<@${winner}>`))
-				: language.tget('GIVEAWAY_ENDED_NO_WINNER');
-			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE', this.remaining);
-			default: return language.tget('GIVEAWAY_DURATION', this.remaining);
+			case States.Finished:
+				return this.#winners?.length
+					? language.tget(
+							'GIVEAWAY_ENDED',
+							this.#winners.map((winner) => `<@${winner}>`)
+					  )
+					: language.tget('GIVEAWAY_ENDED_NO_WINNER');
+			case States.LastChance:
+				return language.tget('GIVEAWAY_LASTCHANCE', this.remaining);
+			default:
+				return language.tget('GIVEAWAY_DURATION', this.remaining);
 		}
 	}
 
 	private calculateNextRefresh() {
 		const { remaining } = this;
 		if (remaining < Time.Second * 5) return Date.now() + Time.Second;
-		if (remaining < Time.Second * 30) return Date.now() + Math.min(remaining - (Time.Second * 6), Time.Second * 5);
-		if (remaining < Time.Minute * 2) return Date.now() + (Time.Second * 15);
-		if (remaining < Time.Minute * 5) return Date.now() + (Time.Second * 20);
+		if (remaining < Time.Second * 30) return Date.now() + Math.min(remaining - Time.Second * 6, Time.Second * 5);
+		if (remaining < Time.Minute * 2) return Date.now() + Time.Second * 15;
+		if (remaining < Time.Minute * 5) return Date.now() + Time.Second * 20;
 		if (remaining < Time.Minute * 15) return Date.now() + Time.Minute;
-		if (remaining < Time.Minute * 30) return Date.now() + (Time.Minute * 2);
-		return Date.now() + (Time.Minute * 5);
+		if (remaining < Time.Minute * 30) return Date.now() + Time.Minute * 2;
+		return Date.now() + Time.Minute * 5;
 	}
 
 	private async pickWinners() {
@@ -267,24 +282,27 @@ export class GiveawayEntity extends BaseEntity {
 
 	private static getContent(state: States, language: Language) {
 		switch (state) {
-			case States.Finished: return language.tget('GIVEAWAY_ENDED_TITLE');
-			case States.LastChance: return language.tget('GIVEAWAY_LASTCHANCE_TITLE');
-			default: return language.tget('GIVEAWAY_TITLE');
+			case States.Finished:
+				return language.tget('GIVEAWAY_ENDED_TITLE');
+			case States.LastChance:
+				return language.tget('GIVEAWAY_LASTCHANCE_TITLE');
+			default:
+				return language.tget('GIVEAWAY_TITLE');
 		}
 	}
 
 	private static getColor(state: States) {
 		switch (state) {
-			case States.Finished: return Colors.Red;
-			case States.LastChance: return Colors.Orange;
-			default: return Colors.Blue;
+			case States.Finished:
+				return Colors.Red;
+			case States.LastChance:
+				return Colors.Orange;
+			default:
+				return Colors.Blue;
 		}
 	}
 
 	private static getFooter(state: States, language: Language) {
-		return state === States.Running
-			? language.tget('GIVEAWAY_ENDS_AT')
-			: language.tget('GIVEAWAY_ENDED_AT');
+		return state === States.Running ? language.tget('GIVEAWAY_ENDS_AT') : language.tget('GIVEAWAY_ENDED_AT');
 	}
-
 }

@@ -144,8 +144,7 @@
 	"husky": {
 		"hooks": {
 			"commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-			"pre-commit": "yarn lint-staged",
-			"post-commit": "git update-index --again"
+			"pre-commit": "yarn pretty-quick --staged && yarn lint-staged"
 		}
 	},
 	"commitlint": {
@@ -154,11 +153,7 @@
 		]
 	},
 	"lint-staged": {
-		"*.{mjs,js,ts}": [
-			"prettier --write",
-			"eslint --fix --ext ts"
-		],
-		"*.{js,ts,mjs,yml,yaml,md,rmd,mkd,mkdn,mdwn,mdown,markdown,litcoffee,ps1}": "eclint fix src tests scripts docker .github"
+		"*.{mjs,js,ts}": "eslint --fix --ext ts"
 	},
 	"config": {
 		"commitizen": {

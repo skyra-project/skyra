@@ -42,10 +42,12 @@ export default class extends Monitor {
 				await message.prompter!.run();
 				try {
 					const subcommand = message.command!.subcommands ? message.params.shift() : undefined;
-					// @ts-expect-error 7053
+					/* eslint-disable prettier/prettier */
 					const commandRun = subcommand
-						? message.command![subcommand](message, message.params)
+						? // @ts-expect-error7053
+						  message.command![subcommand](message, message.params)
 						: message.command!.run(message, message.params);
+					/* eslint-enable prettier/prettier */
 					timer.stop();
 					const response = await commandRun;
 					floatPromise(this, this.client.finalizers.run(message, message.command!, response, timer));

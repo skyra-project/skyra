@@ -1,8 +1,19 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { TOKENS } from '@root/config';
+import { Time } from '@utils/constants';
+import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { fetch, FetchResultTypes } from '@utils/util';
+import { Permissions } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+
+const kPermissions = new Permissions([Permissions.FLAGS.ADD_REACTIONS, Permissions.FLAGS.MANAGE_MESSAGES]).freeze();
+
+const EMOJIS = {
+	previous: '⬅️',
+	stop: '⏹️',
+	next: '➡️'
+};
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -11,25 +22,81 @@ export default class extends SkyraCommand {
 			cooldown: 15,
 			description: (language) => language.tget('COMMAND_YOUTUBE_DESCRIPTION'),
 			extendedHelp: (language) => language.tget('COMMAND_YOUTUBE_EXTENDED'),
-			usage: '<query:string> [index:integer{0,20}]',
-			usageDelim: ' #'
+			usage: '<query:string>'
 		});
 	}
 
-	public async run(message: KlasaMessage, [input, ind = 1]: [string, number]) {
-		const index = --ind;
+	public async run(message: KlasaMessage, [input]: [string]) {
 		const url = new URL('https://www.googleapis.com/youtube/v3/search');
 		url.searchParams.append('part', 'snippet');
 		url.searchParams.append('safeSearch', 'strict');
 		url.searchParams.append('q', input);
 		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
+
 		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
-		const result = data.items[index];
+		const results = data.items.slice(0, 5);
 
-		if (!result) {
-			throw message.language.tget(index === 0 ? 'COMMAND_YOUTUBE_NOTFOUND' : 'COMMAND_YOUTUBE_INDEX_NOTFOUND');
-		}
+		if (!results.length) throw message.language.tget('COMMAND_YOUTUBE_NOTFOUND');
 
+		const sent = await message.send(this.getLink(results[0]));
+
+		// if Skyra doesn't have permissions for an LLRC, we fallback to the first link
+		if (!message.guild?.me?.permissionsIn(message.channel).has(kPermissions)) return;
+
+		for (const emoji of Object.values(EMOJIS)) await sent.react(emoji);
+
+		let index = 0;
+		const llrc = new LongLivingReactionCollector(this.client);
+
+		llrc.setListener(async (reaction: LLRCData) => {
+			if (reaction.messageID !== sent.id || reaction.userID !== message.author.id) return;
+
+			switch (reaction.emoji.name) {
+				case EMOJIS.next:
+					index++;
+					if (index >= results.length) return;
+					if (index === results.length - 1) {
+						// at the final page, remove the next emoji
+						await sent.reactions.get(EMOJIS.next)?.remove();
+					}
+
+					// add the previous emoji to go back
+					if (!sent.reactions.has(EMOJIS.previous)) {
+						// remove all reactions to preserve the order: previous, stop, next
+						await sent.reactions.removeAll();
+						for (const emoji of Object.values(EMOJIS)) await sent.react(emoji);
+					}
+					await sent.edit(this.getLink(results[index]));
+					await sent.reactions.get(EMOJIS.next)?.users.remove(reaction.userID);
+					break;
+
+				case EMOJIS.previous:
+					index--;
+					if (index < 0) return;
+					if (index === 0) {
+						// at the first page, remove the previous emoji
+						await sent.reactions.get(EMOJIS.previous)?.remove();
+					}
+
+					if (!sent.reactions.has(EMOJIS.next)) await sent.react(EMOJIS.next);
+					await sent.edit(this.getLink(results[index]));
+					await sent.reactions.get(EMOJIS.previous)?.users.remove(reaction.userID);
+					break;
+
+				case EMOJIS.stop:
+					await sent.reactions.removeAll();
+					llrc.end();
+			}
+		});
+
+		llrc.setEndListener(async () => {
+			await sent.reactions.removeAll();
+		});
+
+		llrc.setTime(Time.Second * 60);
+	}
+
+	private getLink(result: YouTubeResultOkItem) {
 		let output = '';
 		switch (result.id.kind) {
 			case 'youtube#channel':
@@ -42,12 +109,12 @@ export default class extends SkyraCommand {
 				output = `https://youtu.be/${result.id.videoId}`;
 				break;
 			default: {
-				this.client.emit(Events.Wtf, `YouTube [${input}] [${ind}] -> Returned incompatible kind '${result.id.kind}'.`);
+				this.client.emit(Events.Wtf, `YouTube -> Returned incompatible kind '${result.id.kind}'.`);
 				throw 'I found an incompatible kind of result...';
 			}
 		}
 
-		return message.sendMessage(output);
+		return output;
 	}
 }
 

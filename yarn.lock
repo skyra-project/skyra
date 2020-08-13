@@ -854,10 +854,10 @@
   resolved "https://registry.yarnpkg.com/@skyra/eslint-config/-/eslint-config-5.3.0.tgz#9f4f49bea425d0aac6877fa42daec0c4fc00f0ad"
   integrity sha512-MO/JbDZjd5NvdS82pooOBiDHq3Njb54lo8XsMBYUM2vUxYAzpFcjZ2SIVnfj76MWZS9yQcvV+2MFLtTKaOuFOQ==
 
-"@skyra/saelem@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-1.1.1.tgz#aa1b38c8fe8b631af75f552a18da4c5a13056081"
-  integrity sha512-unCPL3k1nlHQQS1uXLDUgXk9WdAcdsBtjircHteKaJcSf99oD/2qRtv0qqHqOYyrjQQGAGvvlO6FVXyBU2f5kg==
+"@skyra/saelem@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-2.0.0.tgz#32fc1305407df451c1e208b5a990d6b438cfdaa8"
+  integrity sha512-nRgMqzF+v/okm3DAKqM7T8x1vakNjdez/5vZOJ3l0KVvmtwNN53NmHzkGmxQuaTknopz41r12wPJSSRW0XLdAg==
   dependencies:
     graphql "^15.3.0"
 
@@ -3951,10 +3951,10 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "^3.0.0"
 
-lodash@4.17.15, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19:
-  version "4.17.19"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
-  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
+lodash@4.17.15, lodash@^4.17.12, lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20:
+  version "4.17.20"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
+  integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
 
 log-symbols@^4.0.0:
   version "4.0.0"

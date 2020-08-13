@@ -1340,7 +1340,7 @@ export interface LanguageKeys {
 	COMMAND_SERVERINFO_ROLES: (roles: string) => string;
 	COMMAND_SERVERINFO_NOROLES: string;
 	COMMAND_SERVERINFO_CHANNELS: (text: number, voice: number, categories: number, afkChannel: string, afkTime: number) => string;
-	COMMAND_SERVERINFO_MEMBERS: (count: number, owner: User) => string;
+	COMMAND_SERVERINFO_MEMBERS: (count: string, owner: User) => string;
 	COMMAND_SERVERINFO_OTHER: (size: number, region: string, createdAt: number, verificationLevel: 0 | 1 | 2 | 3 | 4) => string;
 	COMMAND_ROLEINFO_TITLES: Record<string, string>;
 	COMMAND_ROLEINFO: (role: Role) => string;

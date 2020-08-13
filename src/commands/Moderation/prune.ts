@@ -2,13 +2,13 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { PermissionLevels } from '@lib/types/Enums';
 import { Filter, Position } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { APIErrors, Moderation } from '@utils/constants';
 import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import { constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa';
-import { CLIENT_ID } from '@root/config';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],

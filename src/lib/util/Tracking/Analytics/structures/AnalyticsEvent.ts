@@ -1,5 +1,5 @@
 import { Point, QueryApi, WriteApi } from '@influxdata/influxdb-client';
-import { ENABLE_INFLUX, CLIENT_ID } from '@root/config';
+import { CLIENT_ID, ENABLE_INFLUX } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { enumerable } from '@utils/util';
 import { Event } from 'klasa';

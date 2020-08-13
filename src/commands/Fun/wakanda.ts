@@ -1,11 +1,11 @@
-import { join } from 'path';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaUser, KlasaMessage } from 'klasa';
-import { fetchAvatar } from '@utils/util';
-import { loadImage, Image } from 'canvas';
-import { Canvas } from 'canvas-constructor';
 import { assetsFolder } from '@utils/constants';
+import { fetchAvatar } from '@utils/util';
+import { Image, loadImage } from 'canvas';
+import { Canvas } from 'canvas-constructor';
+import { KlasaMessage, KlasaUser } from 'klasa';
+import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,

@@ -5,13 +5,13 @@ import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { CLIENT_ID } from '@root/config';
 import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventStore, KlasaGuild, Language } from 'klasa';
-import { CLIENT_ID } from '@root/config';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {

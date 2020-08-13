@@ -1,8 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
+import { CLIENT_ID } from '@root/config';
 import { floatPromise } from '@utils/util';
 import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
-import { CLIENT_ID } from '@root/config';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];

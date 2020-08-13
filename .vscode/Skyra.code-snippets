@@ -20,7 +20,7 @@
 			"\trequiredGuildPermissions: [$3],",
 			"\tusage: '$4',",
 			"\tusageDelim: ' '",
-            "})",
+			"})",
 			"export default class extends SkyraCommand {",
 			"",
 			"\tpublic async run(message: KlasaMessage, [$5]: [$6]) {",

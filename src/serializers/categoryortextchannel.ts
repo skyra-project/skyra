@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext, SchemaEntry, Language } from 'klasa';
 import { Channel, Guild } from 'discord.js';
+import { Language, SchemaEntry, Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 	// eslint-disable-next-line @typescript-eslint/require-await

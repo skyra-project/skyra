@@ -818,6 +818,34 @@ export default class extends Language {
 		 * GAME INTEGRATION COMMANDS
 		 */
 
+		COMMAND_BRAWLSTARS_DESCRIPTION: 'Get data on a player or club from Supercell\'s newest game, Brawl Stars.',
+		COMMAND_BRAWLSTARS_EXTENDED: builder.display('brawlstars', {
+			explainedUsage: [
+				['category', 'The category of data to get: **club** to get data on a club, or **player** to get data on a player (default).'],
+				['query', 'The tag of the player or club, depending on which category you choose.']
+			],
+			examples: ['player #RJQLQ999']
+		}),
+		COMMAND_BRAWLSTARS_PLAYER_EMBED_TITLES: {
+			TROPHIES: 'Trophies',
+			EVENTS: 'Events',
+			EXP: 'Experience',
+			GAME_MODES: 'Game Modes',
+			OTHER: 'Other'
+		},
+		COMMAND_BRAWLSTARS_PLAYER_FIELDS: {
+			TOTAL: 'Total',
+			PERSONAL_BEST: 'Personal Best',
+			EVENTS: 'Events',
+			ROBO_RUMBLE: 'Best Robo Rumble Rank',
+			BOSS_FIGHT: 'Best Big Brawler Rank',
+			EXPERIENCE_LEVEL: 'Experience Level',
+			VICTORIES_3V3: '3v3 Victories',
+			VICTORIES_SOLO: 'Solo Victories',
+			VICTORIES_DUO: 'Duo Victories',
+			CLUB: 'Club',
+			BRAWLERS_UNLOCKED: 'Brawlers Unlocked'
+		},
 		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Obtenga datos sobre un jugador o clan en el popular juego móvil Choque de clanes',
 		COMMAND_CLASHOFCLANS_EXTENDED: builder.display('clashofclans', {
 			extendedHelp: 'La solicitud de clanes intentará devolver múltiples respuestas posibles.',

@@ -6,10 +6,12 @@ import { TOKENS } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { BrawlStarsEmojis } from '@utils/constants';
+import { DbSet } from '@lib/structures/DbSet';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 
 const kTotalBrawlers = 38; // this will need updating
+const kMaxMembers = 100;
 
 const kRoboRumbleLevels = [
 	'Normal', 'Hard',
@@ -34,7 +36,7 @@ const kBigGameLevels = [
 
 const enum BrawlStarsFetchCategories {
 	PLAYERS = 'players',
-	CLANS = 'clans'
+	CLUB = 'clubs'
 }
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -43,7 +45,8 @@ const enum BrawlStarsFetchCategories {
 	extendedHelp: language => language.tget('COMMAND_BRAWLSTARS_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
-	usage: '<clan|player:default> <tag:tag>'
+	usage: '<club|player:default> <tag:tag>',
+	usageDelim: ' '
 })
 @CreateResolvers([
 	[
@@ -60,9 +63,14 @@ export default class extends SkyraCommand {
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 
+	public async club(message: KlasaMessage, [tag]: [string]) {
+		const clubData = await this.fetchAPI(message, tag, BrawlStarsFetchCategories.CLUB) as BrawlStars.Club;
+		return message.send(await this.buildClubEmbed(message, clubData));
+	}
+
 	private async buildPlayerEmbed(message: KlasaMessage, player: BrawlStars.Player) {
 		const TITLES = message.language.tget('COMMAND_BRAWLSTARS_PLAYER_EMBED_TITLES');
-		const FIELDS = message.language.tget('COMMAND_BRAWLSTARS_PLAYER_FIELDS');
+		const FIELDS = message.language.tget('COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS');
 
 		return new MessageEmbed()
 			.setColor(player.nameColor.substr(4))
@@ -74,7 +82,8 @@ export default class extends SkyraCommand {
 			].join('\n'))
 			.addField(TITLES.EXP, [
 				`${BrawlStarsEmojis.Exp} **${FIELDS.EXPERIENCE_LEVEL}**: ${player.expLevel} (${player.expPoints.toLocaleString(message.language.name)})`,
-				`${BrawlStarsEmojis.PowerPoint} **${FIELDS.PERSONAL_BEST}**: ${player.highestPowerPlayPoints.toLocaleString(message.language.name) || 0}`
+				`${BrawlStarsEmojis.PowerPoint} **${FIELDS.TOTAL}**: ${player.powerPlayPoints?.toLocaleString(message.language.name) || 0}`,
+				`${BrawlStarsEmojis.PowerPoint} **${FIELDS.PERSONAL_BEST}**: ${player.highestPowerPlayPoints?.toLocaleString(message.language.name) || 0}`
 			].join('\n'))
 			.addField(TITLES.EVENTS, [
 				`${BrawlStarsEmojis.RoboRumble} **${FIELDS.ROBO_RUMBLE}**: ${kRoboRumbleLevels[player.bestRoboRumbleTime]}`,
@@ -91,24 +100,43 @@ export default class extends SkyraCommand {
 			].join('\n'));
 	}
 
+	private async buildClubEmbed(message: KlasaMessage, club: BrawlStars.Club) {
+		const TITLES = message.language.tget('COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES');
+		const FIELDS = message.language.tget('COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS');
+
+		const averageTrophies = Math.round(club.trophies / club.members.length);
+		const mapMembers = (member: BrawlStars.ClubMember, i: number) => `${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${member.trophies.toLocaleString(message.language.name)})`;
+		const president = club.members.find(member => member.role === 'president');
+
+		const embed = new MessageEmbed()
+			.setColor(await DbSet.fetchColor(message))
+			.setTitle(`${club.name} - ${club.tag}`)
+			.setURL(`https://brawlstats.com/club/${club.tag.substr(1)}`)
+			.addField(TITLES.TOTAL_TROPHIES, `${BrawlStarsEmojis.Trophy} ${club.trophies.toLocaleString()}`)
+			.addField(TITLES.AVERAGE_TROPHIES, `${BrawlStarsEmojis.Trophy} ${averageTrophies.toLocaleString()}`)
+			.addField(TITLES.REQUIRED_TROPHIES, `${BrawlStarsEmojis.Trophy} ${club.requiredTrophies.toLocaleString()}+`)
+			.addField(TITLES.MEMBERS, `${club.members.length} / ${kMaxMembers}`)
+			.addField(TITLES.TYPE, club.type)
+			.addField(TITLES.PRESIDENT, president?.name || FIELDS.NO_PRESIDENT)
+			.addField(TITLES.TOP_5_MEMBERS, club.members.slice(0, 5).map(mapMembers).join('\n'));
+
+		if (club.description !== '') embed.setDescription(club.description);
+
+		return embed;
+	}
+
 	private async fetchAPI<C extends BrawlStarsFetchCategories>(message: KlasaMessage, query: string, category: BrawlStarsFetchCategories) {
 		try {
 			const url = new URL(`https://api.brawlstars.com/v1/${category}/`);
+			url.href += encodeURIComponent(query);
 
-			if (category === BrawlStarsFetchCategories.CLANS) {
-				url.searchParams.append('name', query);
-				url.searchParams.append('limit', '10');
-			} else {
-				url.href += encodeURIComponent(query);
-			}
-
-			return await fetch<C extends BrawlStarsFetchCategories.CLANS ? any : BrawlStars.Player>(url, {
+			return await fetch<C extends BrawlStarsFetchCategories.CLUB ? any : BrawlStars.Player>(url, {
 				headers: {
 					Authorization: `Bearer ${TOKENS.BRAWL_STARS_KEY}`
 				}
 			}, FetchResultTypes.JSON);
 		} catch {
-			if (category === BrawlStarsFetchCategories.CLANS) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', query);
+			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', query);
 			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', query);
 		}
 	}

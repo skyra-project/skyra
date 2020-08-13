@@ -833,7 +833,7 @@ export default class extends Language {
 			GAME_MODES: 'Game Modes',
 			OTHER: 'Other'
 		},
-		COMMAND_BRAWLSTARS_PLAYER_FIELDS: {
+		COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS: {
 			TOTAL: 'Total',
 			PERSONAL_BEST: 'Personal Best',
 			EVENTS: 'Events',
@@ -845,6 +845,18 @@ export default class extends Language {
 			VICTORIES_DUO: 'Duo Victories',
 			CLUB: 'Club',
 			BRAWLERS_UNLOCKED: 'Brawlers Unlocked'
+		},
+		COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES: {
+			TOTAL_TROPHIES: 'Total Trophies',
+			AVERAGE_TROPHIES: 'Average Trophies',
+			REQUIRED_TROPHIES: 'Required Trophies',
+			MEMBERS: 'Members',
+			TYPE: 'Type',
+			TOP_5_MEMBERS: 'Top 5 Members',
+			PRESIDENT: 'President'
+		},
+		COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS: {
+			NO_PRESIDENT: 'No President'
 		},
 		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Obtenga datos sobre un jugador o clan en el popular juego móvil Choque de clanes',
 		COMMAND_CLASHOFCLANS_EXTENDED: builder.display('clashofclans', {

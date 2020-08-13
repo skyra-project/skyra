@@ -506,7 +506,7 @@ export interface LanguageKeys {
 		GAME_MODES: string;
 		OTHER: string;
 	};
-	COMMAND_BRAWLSTARS_PLAYER_FIELDS: {
+	COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS: {
 		TOTAL: string;
 		PERSONAL_BEST: string;
 		EXPERIENCE_LEVEL: string;
@@ -518,6 +518,18 @@ export interface LanguageKeys {
 		VICTORIES_SOLO: string;
 		CLUB: string;
 		BRAWLERS_UNLOCKED: string;
+	};
+	COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES: {
+		TOTAL_TROPHIES: string;
+		AVERAGE_TROPHIES: string;
+		REQUIRED_TROPHIES: string;
+		MEMBERS: string;
+		TYPE: string;
+		TOP_5_MEMBERS: string;
+		PRESIDENT: string;
+	};
+	COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS: {
+		NO_PRESIDENT: string;
 	};
 	COMMAND_CLASHOFCLANS_DESCRIPTION: string;
 	COMMAND_CLASHOFCLANS_EXTENDED: string;

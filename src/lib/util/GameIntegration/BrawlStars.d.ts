@@ -11,8 +11,8 @@ export namespace BrawlStars {
 		expLevel: number;
 		expPoints: number;
 		highestTrophies: number;
-		powerPlayPoints: number;
-		highestPowerPlayPoints: number;
+		powerPlayPoints?: number;
+		highestPowerPlayPoints?: number;
 		soloVictories: number;
 		duoVictories: number;
 		bestRoboRumbleTime: number;
@@ -49,5 +49,23 @@ export namespace BrawlStars {
 	export interface PartialGadget {
 		name: string;
 		id: number;
+	}
+
+	export interface Club {
+		tag: string;
+		name: string;
+		description: string;
+		trophies: number;
+		requiredTrophies: number;
+		members: ClubMember[];
+		type: string;
+	}
+
+	export interface ClubMember {
+		tag: string;
+		name: string;
+		trophies: number;
+		role: string;
+		nameColor: string;
 	}
 }

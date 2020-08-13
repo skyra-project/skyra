@@ -1,58 +1,58 @@
 name: Update TLDs
 
 on:
-    push:
-        branches:
-            - 'update-tlds-test'
-    schedule:
-        - cron: '0 0 * * 6'
+  push:
+    branches:
+      - 'update-tlds-test'
+  schedule:
+    - cron: '0 0 * * 6'
 
 jobs:
-    UpdateTLDs:
-        name: Update TLD's
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout Project
-              uses: actions/checkout@v2
-            - name: Use Node.js 14
-              uses: actions/setup-node@v1
-              with:
-                  node-version: 14
-            - name: Restore CI Cache
-              uses: actions/cache@v1
-              with:
-                  path: node_modules
-                  key: ${{ runner.os }}-14-${{ hashFiles('**/yarn.lock') }}
-            - name: Install Dependencies
-              run: yarn --ignore-scripts --frozen-lockfile
-            - name: Run the TLD updater script
-              run: yarn scripts:tlds
-            - name: Install GitHub CLI
-              env:
-                  GITHUB_TOKEN: ${{ secrets.SKYRA_TOKEN }}
-              run: |
-                  curl -sL \
-                      $(curl -sL \
-                          -H "Authorization: bearer ${GITHUB_TOKEN}" \
-                          -X POST \
-                          --data '{"query":"query { repository(owner: \"cli\", name: \"cli\") { releases(last: 1) { nodes { releaseAssets(first: 20) { nodes { downloadUrl name }}}}}}"}' "https://api.github.com/graphql" |
-                          jq -cr '.data.repository.releases.nodes[0].releaseAssets.nodes[]? | select(.name | contains("linux_amd64.tar.gz")).downloadUrl') |
-                      tar -xz --wildcards "*gh" && mv gh*linux_amd64/bin/gh . && rm -r gh_*linux_amd64
-            - name: Commit any changes and create a pull request
-              env:
-                  GITHUB_USER: NM-EEA-Y
-                  GITHUB_EMAIL: contact@skyra.pw
-                  GITHUB_TOKEN: ${{ secrets.SKYRA_TOKEN }}
-              run: |
-                  git add .;
-                  if git diff-index --quiet HEAD --; then
-                    exit 0;
-                  else
-                    git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git";
-                    git config --local user.email "${GITHUB_EMAIL}";
-                    git config --local user.name "${GITHUB_USER}";
-                    git checkout -b NM-EEA-Y/update-tlds/$(date +%F-%H-%M);
-                    git commit -sam "refactor: update TLDs";
-                    git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
-                    ./gh pr create -t "refactor: update TLDs" -b "*bleep bloop* I updated the TLDs file" -l "Meta: Refactor" -r "Favna" -r "Kyranet" -B main;
-                  fi
+  UpdateTLDs:
+    name: Update TLD's
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@v2
+      - name: Use Node.js 14
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Restore CI Cache
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-14-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Dependencies
+        run: yarn --ignore-scripts --frozen-lockfile
+      - name: Run the TLD updater script
+        run: yarn scripts:tlds
+      - name: Install GitHub CLI
+        env:
+          GITHUB_TOKEN: ${{ secrets.SKYRA_TOKEN }}
+        run: |
+          curl -sL \
+              $(curl -sL \
+                  -H "Authorization: bearer ${GITHUB_TOKEN}" \
+                  -X POST \
+                  --data '{"query":"query { repository(owner: \"cli\", name: \"cli\") { releases(last: 1) { nodes { releaseAssets(first: 20) { nodes { downloadUrl name }}}}}}"}' "https://api.github.com/graphql" |
+                  jq -cr '.data.repository.releases.nodes[0].releaseAssets.nodes[]? | select(.name | contains("linux_amd64.tar.gz")).downloadUrl') |
+              tar -xz --wildcards "*gh" && mv gh*linux_amd64/bin/gh . && rm -r gh_*linux_amd64
+      - name: Commit any changes and create a pull request
+        env:
+          GITHUB_USER: NM-EEA-Y
+          GITHUB_EMAIL: contact@skyra.pw
+          GITHUB_TOKEN: ${{ secrets.SKYRA_TOKEN }}
+        run: |
+          git add .;
+          if git diff-index --quiet HEAD --; then
+            exit 0;
+          else
+            git remote set-url origin "https://${GITHUB_TOKEN}:x-oauth-basic@github.com/${GITHUB_REPOSITORY}.git";
+            git config --local user.email "${GITHUB_EMAIL}";
+            git config --local user.name "${GITHUB_USER}";
+            git checkout -b NM-EEA-Y/update-tlds/$(date +%F-%H-%M);
+            git commit -sam "refactor: update TLDs";
+            git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD)
+            ./gh pr create -t "refactor: update TLDs" -b "*bleep bloop* I updated the TLDs file" -l "Meta: Refactor" -r "Favna" -r "Kyranet" -B main;
+          fi

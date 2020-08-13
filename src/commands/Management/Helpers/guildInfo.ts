@@ -49,7 +49,11 @@ export default class extends SkyraCommand {
 					),
 					true
 				)
-				.addField(serverInfoTitles.MEMBERS, message.language.tget('COMMAND_SERVERINFO_MEMBERS', message.guild!.memberCount, owner), true)
+				.addField(
+					serverInfoTitles.MEMBERS,
+					message.language.tget('COMMAND_SERVERINFO_MEMBERS', message.guild!.memberCount.toLocaleString(message.language.name), owner),
+					true
+				)
 				.addField(
 					serverInfoTitles.OTHER,
 					message.language.tget(

@@ -18,6 +18,17 @@ export const enum Time {
 	Year = 1000 * 60 * 60 * 24 * 365
 }
 
+export const enum BrawlStarsEmojis {
+	Trophy = '<:bstrophy:742083351891935353>',
+	PowerPoint = '<:bspowerpoint:742084949167046727>',
+	RoboRumble = '<:bsroborumble:742086199065182269>',
+	BossFight = '<:bsbossfight:742087586788540427>',
+	Exp = '<:bsxp:743434002139971636>',
+	GemGrab = '<:bsgemgrab:743430818780676137>',
+	SoloShowdown = '<:bssoloshowdown:743431454557732955>',
+	DuoShowdown = '<:bsduoshowdown:743431564674990151>'
+}
+
 export const enum Emojis {
 	GreenTick = '<:greenTick:637706251253317669>',
 	Loading = '<a:sloading:656988867403972629>',
@@ -35,17 +46,6 @@ export const enum Emojis {
 	StarHalf = '<:StarHalf:736337529900499034>',
 	StarEmpty = '<:StarEmpty:736337232738254849>'
 }
-
-export const BrawlStarsEmojis = {
-	Trophy: '<:bstrophy:742083351891935353>',
-	PowerPoint: '<:bspowerpoint:742084949167046727>',
-	RoboRumble: '<:bsroborumble:742086199065182269>',
-	BossFight: '<:bsbossfight:742087586788540427>',
-	Exp: '<:bsxp:743434002139971636>',
-	GemGrab: '<:bsgemgrab:743430818780676137>',
-	SoloShowdown: '<:bssoloshowdown:743431454557732955>',
-	DuoShowdown: '<:bsduoshowdown:743431564674990151>'
-};
 
 export namespace ConnectFourConstants {
 	export const enum Emojis {

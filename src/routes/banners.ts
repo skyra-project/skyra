@@ -7,7 +7,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'banners' })
 export default class extends Route {
-
 	private kInternalCacheTTL = 300000;
 
 	@ratelimit(2, 2500)
@@ -16,5 +15,4 @@ export default class extends Route {
 		const entries = await banners.find({ cache: this.kInternalCacheTTL });
 		return response.json(entries);
 	}
-
 }

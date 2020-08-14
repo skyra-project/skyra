@@ -19,13 +19,12 @@ const COLORS = {
 };
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 120,
-			description: language => language.tget('COMMAND_WEATHER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_WEATHER_EXTENDED'),
+			description: (language) => language.tget('COMMAND_WEATHER_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_WEATHER_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<city:string>'
 		});
@@ -50,7 +49,10 @@ export default class extends SkyraCommand {
 		const localityOrCountry = locality ? country : null;
 		const state = locality && governing ? governing : localityOrCountry ?? null;
 
-		const { currently } = await fetch<WeatherResultOk>(`https://api.darksky.net/forecast/${TOKENS.DARKSKY_WEATHER_KEY}/${params}?exclude=minutely,hourly,flags&units=si`, FetchResultTypes.JSON);
+		const { currently } = await fetch<WeatherResultOk>(
+			`https://api.darksky.net/forecast/${TOKENS.DARKSKY_WEATHER_KEY}/${params}?exclude=minutely,hourly,flags&units=si`,
+			FetchResultTypes.JSON
+		);
 
 		const { icon } = currently;
 		const condition = currently.summary;
@@ -142,7 +144,6 @@ export default class extends SkyraCommand {
 				return 'cloudy';
 		}
 	}
-
 }
 
 interface WeatherData {

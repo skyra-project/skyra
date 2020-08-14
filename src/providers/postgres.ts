@@ -6,50 +6,58 @@ import { PostgresOptions, SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLP
 import { Pool, QueryArrayConfig, QueryArrayResult, QueryConfig, QueryResult, QueryResultRow, Submittable } from 'pg';
 
 export default class extends SQLProvider {
-
 	/* eslint-disable @typescript-eslint/no-invalid-this */
 	public qb = new QueryBuilder({
-		array: type => `${type}[]`,
-		arraySerializer: (values, piece, resolver) =>
-			values.length ? `ARRAY[${values.map(value => resolver(value, piece)).join(', ')}]` : "'{}'",
+		array: (type) => `${type}[]`,
+		arraySerializer: (values, piece, resolver) => (values.length ? `ARRAY[${values.map((value) => resolver(value, piece)).join(', ')}]` : "'{}'"),
 		formatDatatype: (name, datatype, def = null) => `"${name}" ${datatype}${def === null ? '' : ` NOT NULL DEFAULT ${def}`}`
 	})
-		.add('boolean', { type: 'BOOL', serializer: input => this.cBoolean(input as boolean) })
-		.add('integer', { type: ({ maximum }) => maximum !== null && maximum >= 2 ** 32 ? 'BIGINT' : 'INTEGER', serializer: input => this.cNumber(input as number | bigint) })
-		.add('float', { type: 'DOUBLE PRECISION', serializer: input => this.cNumber(input as number) })
-		.add('any', { type: 'JSON', serializer: input => this.cJson(input as AnyObject), arraySerializer: input => this.cArrayJson(input as AnyObject[]) })
-		.add('json', { 'extends': 'any' })
-		.add('invite', { 'extends': 'string' })
-		.add('customcommand', { 'extends': 'any' })
-		.add('permissionnode', { 'extends': 'any' })
-		.add('twitchsubscription', { 'extends': 'any' })
-		.add('autorole', { 'extends': 'any' })
-		.add('commandautodelete', { 'extends': 'any' })
-		.add('disabledcommandchannel', { 'extends': 'any' })
-		.add('stickyrole', { 'extends': 'any' })
-		.add('triggeralias', { 'extends': 'any' })
-		.add('triggerinclude', { 'extends': 'any' })
-		.add('uniqueroleset', { 'extends': 'any' })
-		.add('reactionrole', { 'extends': 'any' })
-		.add('emoji', { 'type': 'VARCHAR(128)', 'extends': 'string' })
-		.add('url', { 'type': 'VARCHAR(128)', 'extends': 'string' })
-		.add('categoryortextchannel', { 'extends': 'snowflake' });
+		.add('boolean', { type: 'BOOL', serializer: (input) => this.cBoolean(input as boolean) })
+		.add('integer', {
+			type: ({ maximum }) => (maximum !== null && maximum >= 2 ** 32 ? 'BIGINT' : 'INTEGER'),
+			serializer: (input) => this.cNumber(input as number | bigint)
+		})
+		.add('float', { type: 'DOUBLE PRECISION', serializer: (input) => this.cNumber(input as number) })
+		.add('any', {
+			type: 'JSON',
+			serializer: (input) => this.cJson(input as AnyObject),
+			arraySerializer: (input) => this.cArrayJson(input as AnyObject[])
+		})
+		.add('json', { extends: 'any' })
+		.add('invite', { extends: 'string' })
+		.add('customcommand', { extends: 'any' })
+		.add('permissionnode', { extends: 'any' })
+		.add('twitchsubscription', { extends: 'any' })
+		.add('autorole', { extends: 'any' })
+		.add('commandautodelete', { extends: 'any' })
+		.add('disabledcommandchannel', { extends: 'any' })
+		.add('stickyrole', { extends: 'any' })
+		.add('triggeralias', { extends: 'any' })
+		.add('triggerinclude', { extends: 'any' })
+		.add('uniqueroleset', { extends: 'any' })
+		.add('reactionrole', { extends: 'any' })
+		.add('emoji', { type: 'VARCHAR(128)', extends: 'string' })
+		.add('url', { type: 'VARCHAR(128)', extends: 'string' })
+		.add('categoryortextchannel', { extends: 'snowflake' });
 	/* eslint-enable @typescript-eslint/no-invalid-this */
 
 	public pgsql: Pool | null = null;
 
 	public async init() {
-		const poolOptions = mergeDefault<PostgresOptions, PostgresOptions>({
-			host: 'localhost',
-			port: 5432,
-			database: 'klasa',
-			max: 20,
-			idleTimeoutMillis: 30000,
-			connectionTimeoutMillis: 2000
-		}, this.client.options.providers.postgres);
+		const poolOptions = mergeDefault<PostgresOptions, PostgresOptions>(
+			{
+				host: 'localhost',
+				port: 5432,
+				database: 'klasa',
+				max: 20,
+				idleTimeoutMillis: 30000,
+				connectionTimeoutMillis: 2000
+			},
+			this.client.options.providers.postgres
+		);
 
 		this.pgsql = new Pool(poolOptions);
-		this.pgsql.on('error', err => this.client.emit('error', err));
+		this.pgsql.on('error', (err) => this.client.emit('error', err));
 		return Promise.resolve();
 	}
 
@@ -71,19 +79,22 @@ export default class extends SQLProvider {
 	public createTable(table: string, rows?: readonly [string, string][]) {
 		// If rows were given, use them
 		if (rows) {
-			return this.run(/* sql */`
+			return this.run(/* sql */ `
 				CREATE TABLE ${this.cIdentifier(table)} (${rows.map(([k, v]) => `${this.cIdentifier(k)} ${v}`).join(', ')});
 			`);
 		}
 
 		// Otherwise generate datatypes from the schema
 		const gateway = this.client.gateways.get(table);
-		if (!gateway) throw new Error(`There is no gateway defined with the name ${table} nor an array of rows with datatypes have been given. Expected any of either.`);
+		if (!gateway)
+			throw new Error(
+				`There is no gateway defined with the name ${table} nor an array of rows with datatypes have been given. Expected any of either.`
+			);
 
 		const schemaValues = [...gateway.schema.values(true)];
 		const generatedColumns = schemaValues.map(this.qb.generateDatatype.bind(this.qb));
 		const columns = ['"id" VARCHAR(19) NOT NULL UNIQUE', ...generatedColumns];
-		return this.run(/* sql */`
+		return this.run(/* sql */ `
 			CREATE TABLE ${this.cIdentifier(table)} (
 				${columns.join(', ')},
 				PRIMARY KEY(id)
@@ -92,7 +103,7 @@ export default class extends SQLProvider {
 	}
 
 	public deleteTable(table: string) {
-		return this.run(/* sql */`
+		return this.run(/* sql */ `
 			DROP TABLE IF EXISTS ${this.cIdentifier(table)};
 		`);
 	}
@@ -101,19 +112,19 @@ export default class extends SQLProvider {
 
 	public async getAll(table: string, entries: readonly string[] = []): Promise<Record<string, unknown>[]> {
 		const filter = entries.length ? ` WHERE id IN ('${entries.join("', '")}')` : '';
-		const results = await this.runAll(/* sql */`
+		const results = await this.runAll(/* sql */ `
 			SELECT *
 			FROM ${this.cIdentifier(table)}${filter};
 		`);
-		return results.map(output => this.parseEntry(table, output) as Record<string, unknown>);
+		return results.map((output) => this.parseEntry(table, output) as Record<string, unknown>);
 	}
 
 	public async getKeys(table: string): Promise<string[]> {
-		const rows = await this.runAll(/* sql */`
+		const rows = await this.runAll(/* sql */ `
 			SELECT id
 			FROM ${this.cIdentifier(table)};
 		`);
-		return rows.map(row => row.id);
+		return rows.map((row) => row.id);
 	}
 
 	public async get(table: string, key: string, value?: unknown) {
@@ -122,7 +133,7 @@ export default class extends SQLProvider {
 			value = key;
 			key = 'id';
 		}
-		const output = await this.runOne(/* sql */`
+		const output = await this.runOne(/* sql */ `
 			SELECT *
 			FROM ${this.cIdentifier(table)}
 			WHERE
@@ -133,7 +144,7 @@ export default class extends SQLProvider {
 	}
 
 	public async has(table: string, id: string) {
-		const result = await this.runOne(/* sql */`
+		const result = await this.runOne(/* sql */ `
 			SELECT id
 			FROM ${this.cIdentifier(table)}
 			WHERE
@@ -151,7 +162,7 @@ export default class extends SQLProvider {
 			keys.push('id');
 			values.push(id);
 		}
-		return this.pgsql!.query(/* sql */`
+		return this.pgsql!.query(/* sql */ `
 			INSERT INTO ${this.cIdentifier(table)} (${keys.map(this.cIdentifier.bind(this)).join(', ')})
 			VALUES (${this.cValues(table, keys, values).join(', ')});
 		`);
@@ -160,7 +171,7 @@ export default class extends SQLProvider {
 	public update(table: string, id: string, data: Record<string, unknown> | SettingsUpdateResults) {
 		const { keys, values } = this.parseTupleUpdateInput(data);
 		const resolvedValues = this.cValues(table, keys, values);
-		return this.pgsql!.query(/* sql */`
+		return this.pgsql!.query(/* sql */ `
 			UPDATE ${this.cIdentifier(table)}
 			SET ${keys.map((key, i) => `${this.cIdentifier(key)} = ${resolvedValues[i]}`)}
 			WHERE id = ${this.cString(id)};
@@ -172,7 +183,7 @@ export default class extends SQLProvider {
 	}
 
 	public delete(table: string, id: string) {
-		return this.run(/* sql */`
+		return this.run(/* sql */ `
 			DELETE FROM ${this.cIdentifier(table)}
 			WHERE id = ${this.cString(id)};
 		`);
@@ -181,8 +192,9 @@ export default class extends SQLProvider {
 	public addColumn(table: string, column: SchemaFolder | SchemaEntry) {
 		const escapedTable = this.cIdentifier(table);
 		const columns = (column instanceof SchemaFolder ? [...column.values(true)] : [column])
-			.map(subpiece => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`).join(', ');
-		return this.run(/* sql */`
+			.map((subpiece) => `ADD COLUMN ${this.qb.generateDatatype(subpiece)}`)
+			.join(', ');
+		return this.run(/* sql */ `
 			ALTER TABLE ${escapedTable} ${columns};
 		`);
 	}
@@ -190,7 +202,7 @@ export default class extends SQLProvider {
 	public removeColumn(table: string, columns: string | readonly string[]) {
 		const escapedTable = this.cIdentifier(table);
 		const escapedColumns = typeof columns === 'string' ? this.cIdentifier(columns) : columns.map(this.cIdentifier.bind(this)).join(', ');
-		return this.run(/* sql */`
+		return this.run(/* sql */ `
 			ALTER TABLE ${escapedTable}
 			DROP COLUMN ${escapedColumns};
 		`);
@@ -198,48 +210,79 @@ export default class extends SQLProvider {
 
 	public updateColumn(table: string, entry: SchemaEntry) {
 		const [column, datatype] = this.qb.generateDatatype(entry).split(' ');
-		const defaultConstraint = entry.default === null
-			? ''
-			: `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(entry.default, entry)}`;
+		const defaultConstraint =
+			entry.default === null
+				? ''
+				: `, ALTER COLUMN ${column} SET NOT NULL, ALTER COLUMN ${column} SET DEFAULT ${this.qb.serialize(entry.default, entry)}`;
 
-		return this.pgsql!.query(/* sql */`
+		return this.pgsql!.query(/* sql */ `
 			ALTER TABLE ${this.cIdentifier(table)}
 			ALTER COLUMN ${column}
 			TYPE ${datatype}${defaultConstraint};`);
 	}
 
 	public async getColumns(table: string, schema = 'public') {
-		const result = await this.runAll(/* sql */`
+		const result = await this.runAll(/* sql */ `
 			SELECT column_name
 			FROM information_schema.columns
 			WHERE
 				table_schema = ${this.cString(schema)} AND
 				table_name = ${this.cString(table)};
 		`);
-		return result.map(row => row.column_name);
+		return result.map((row) => row.column_name);
 	}
 
 	public run<T extends Submittable>(queryStream: T): T;
-	public run<R extends unknown[] = unknown[], I extends unknown[] = unknown[]>(queryConfig: QueryArrayConfig<I>, values?: I): Promise<QueryArrayResult<R>>;
+	public run<R extends unknown[] = unknown[], I extends unknown[] = unknown[]>(
+		queryConfig: QueryArrayConfig<I>,
+		values?: I
+	): Promise<QueryArrayResult<R>>;
+
 	public run<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(queryConfig: QueryConfig<I>): Promise<QueryResult<R>>;
-	public run<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(queryTextOrConfig: string | QueryConfig<I>, values?: I): Promise<QueryResult<R>>;
+	public run<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(
+		queryTextOrConfig: string | QueryConfig<I>,
+		values?: I
+	): Promise<QueryResult<R>>;
+
 	public run(...sql: readonly any[]) {
 		// @ts-expect-error 2556
 		return this.pgsql!.query(...sql);
 	}
 
-	public async runAll<R extends unknown[] = unknown[], I extends unknown[] = unknown[]>(queryConfig: QueryArrayConfig<I>, values?: I): Promise<QueryArrayResult<R>['rows']>;
-	public async runAll<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(queryConfig: QueryConfig<I>): Promise<QueryResult<R>['rows']>;
-	public async runAll<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(queryTextOrConfig: string | QueryConfig<I>, values?: I): Promise<QueryResult<R>['rows']>;
+	public async runAll<R extends unknown[] = unknown[], I extends unknown[] = unknown[]>(
+		queryConfig: QueryArrayConfig<I>,
+		values?: I
+	): Promise<QueryArrayResult<R>['rows']>;
+
+	public async runAll<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(
+		queryConfig: QueryConfig<I>
+	): Promise<QueryResult<R>['rows']>;
+
+	public async runAll<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(
+		queryTextOrConfig: string | QueryConfig<I>,
+		values?: I
+	): Promise<QueryResult<R>['rows']>;
+
 	public async runAll(...sql: readonly unknown[]) {
 		// @ts-expect-error 2556
 		const results = await this.run<R>(...sql);
 		return results.rows;
 	}
 
-	public async runOne<R extends unknown[] = unknown[], I extends unknown[] = unknown[]>(queryConfig: QueryArrayConfig<I>, values?: I): Promise<QueryArrayResult<R>['rows'][number]>;
-	public async runOne<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(queryConfig: QueryConfig<I>): Promise<QueryResult<R>['rows'][number]>;
-	public async runOne<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(queryTextOrConfig: string | QueryConfig<I>, values?: I): Promise<QueryResult<R>['rows'][number]>;
+	public async runOne<R extends unknown[] = unknown[], I extends unknown[] = unknown[]>(
+		queryConfig: QueryArrayConfig<I>,
+		values?: I
+	): Promise<QueryArrayResult<R>['rows'][number]>;
+
+	public async runOne<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(
+		queryConfig: QueryConfig<I>
+	): Promise<QueryResult<R>['rows'][number]>;
+
+	public async runOne<R extends QueryResultRow = any, I extends unknown[] = unknown[]>(
+		queryTextOrConfig: string | QueryConfig<I>,
+		values?: I
+	): Promise<QueryResult<R>['rows'][number]>;
+
 	public async runOne(...sql: readonly unknown[]) {
 		// @ts-expect-error 2556
 		const results = await this.run<R>(...sql);
@@ -263,7 +306,7 @@ export default class extends SQLProvider {
 
 	public cValues(table: string, keys: readonly string[], values: readonly unknown[]) {
 		const gateway = this.client.gateways.get(table);
-		if (typeof gateway === 'undefined') return values.map(value => this.cUnknown(value));
+		if (typeof gateway === 'undefined') return values.map((value) => this.cUnknown(value));
 
 		const { schema } = gateway;
 		const parsedValues: string[] = [];
@@ -277,13 +320,15 @@ export default class extends SQLProvider {
 			}
 
 			const qbEntry = this.qb.get(entry.type);
-			parsedValues.push(qbEntry
-				? entry.array
-					? qbEntry.arraySerializer(value as unknown[], entry, qbEntry.serializer)
-					: value === null
+			parsedValues.push(
+				qbEntry
+					? entry.array
+						? qbEntry.arraySerializer(value as unknown[], entry, qbEntry.serializer)
+						: value === null
 						? 'NULL'
 						: qbEntry.serializer(value, entry)
-				: this.cUnknown(value));
+					: this.cUnknown(value)
+			);
 		}
 		return parsedValues;
 	}
@@ -332,7 +377,7 @@ export default class extends SQLProvider {
 	}
 
 	public cArrayJson(value: AnyObject[]) {
-		return `ARRAY[${value.map(json => this.cString(JSON.stringify(json)))}]::JSON[]`;
+		return `ARRAY[${value.map((json) => this.cString(JSON.stringify(json)))}]::JSON[]`;
 	}
 
 	public cUnknown(value: unknown): string {
@@ -373,7 +418,7 @@ export default class extends SQLProvider {
 	protected parseValue(value: unknown, schemaEntry: SchemaEntry): unknown {
 		if (value === null || typeof value === 'undefined') return schemaEntry.default;
 		return Array.isArray(value)
-			? value.map(element => this.parseValuePrimitive(element, schemaEntry.type))
+			? value.map((element) => this.parseValuePrimitive(element, schemaEntry.type))
 			: this.parseValuePrimitive(value, schemaEntry.type);
 	}
 
@@ -398,5 +443,4 @@ export default class extends SQLProvider {
 			}
 		}
 	}
-
 }

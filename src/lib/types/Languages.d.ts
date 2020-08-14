@@ -84,7 +84,12 @@ export interface LanguageKeys {
 	INHIBITOR_DISABLED_GUILD: string;
 	INHIBITOR_DISABLED_GLOBAL: string;
 	COMMAND_BLACKLIST_DESCRIPTION: string;
-	COMMAND_BLACKLIST_SUCCESS: (usersAdded: readonly string[], usersRemoved: readonly string[], guildsAdded: readonly string[], guildsRemoved: readonly string[]) => string;
+	COMMAND_BLACKLIST_SUCCESS: (
+		usersAdded: readonly string[],
+		usersRemoved: readonly string[],
+		guildsAdded: readonly string[],
+		guildsRemoved: readonly string[]
+	) => string;
 	COMMAND_UNLOAD: (type: string, name: string) => string;
 	COMMAND_UNLOAD_DESCRIPTION: string;
 	COMMAND_TRANSFER_ERROR: string;
@@ -172,7 +177,13 @@ export interface LanguageKeys {
 	COMMAND_QUEUE_LAST: string;
 	COMMAND_QUEUE_TITLE: (guildname: string) => string;
 	COMMAND_QUEUE_LINE: (position: number, duration: string, title: string, url: string, requester: string) => string;
-	COMMAND_QUEUE_NOWPLAYING: (context: { duration: string | null; title: string; url: string; requester: string; timeRemaining: string | null }) => string;
+	COMMAND_QUEUE_NOWPLAYING: (context: {
+		duration: string | null;
+		title: string;
+		url: string;
+		requester: string;
+		timeRemaining: string | null;
+	}) => string;
 	COMMAND_QUEUE_NOWPLAYING_TITLE: string;
 	COMMAND_QUEUE_TOTAL_TITLE: string;
 	COMMAND_QUEUE_TOTAL: (songs: number, remainingTime: string) => string;
@@ -497,6 +508,8 @@ export interface LanguageKeys {
 	COMMAND_XKCD_EXTENDED: string;
 	COMMAND_PUN_DESCRIPTION: string;
 	COMMAND_PUN_EXTENDED: string;
+	COMMAND_WAKANDA_DESCRIPTION: string;
+	COMMAND_WAKANDA_EXTENDED: string;
 	COMMAND_CLASHOFCLANS_DESCRIPTION: string;
 	COMMAND_CLASHOFCLANS_EXTENDED: string;
 	COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
@@ -1105,11 +1118,11 @@ export interface LanguageKeys {
 		NONE: string;
 	};
 	COMMAND_MANGA_TYPES: {
-		'MANGA': string;
-		'NOVEL': string;
-		'MANHWA': string;
+		MANGA: string;
+		NOVEL: string;
+		MANHWA: string;
 		'ONE-SHOT': string;
-		'SPECIAL': string;
+		SPECIAL: string;
 		[index: string]: string;
 	};
 	COMMAND_WAIFU_FOOTER: string;
@@ -1141,20 +1154,18 @@ export interface LanguageKeys {
 	COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg: string) => string;
 	COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg: string) => string;
 	COMMAND_YARN_EMBED_DATA: {
-		DESCRIPTION: (
-			params: {
-				author?: string;
-				dateCreated: string;
-				dateModified: string;
-				dependencies: string[] | null;
-				deprecated?: string;
-				description: string;
-				latestVersionNumber: string;
-				license: string;
-				mainFile: string;
-				maintainers: string[];
-			}
-		) => string;
+		DESCRIPTION: (params: {
+			author?: string;
+			dateCreated: string;
+			dateModified: string;
+			dependencies: string[] | null;
+			deprecated?: string;
+			description: string;
+			latestVersionNumber: string;
+			license: string;
+			mainFile: string;
+			maintainers: string[];
+		}) => string;
 		MORE_TEXT: string;
 	};
 	COMMAND_8BALL_DESCRIPTION: string;
@@ -1329,7 +1340,7 @@ export interface LanguageKeys {
 	COMMAND_SERVERINFO_ROLES: (roles: string) => string;
 	COMMAND_SERVERINFO_NOROLES: string;
 	COMMAND_SERVERINFO_CHANNELS: (text: number, voice: number, categories: number, afkChannel: string, afkTime: number) => string;
-	COMMAND_SERVERINFO_MEMBERS: (count: number, owner: User) => string;
+	COMMAND_SERVERINFO_MEMBERS: (count: string, owner: User) => string;
 	COMMAND_SERVERINFO_OTHER: (size: number, region: string, createdAt: number, verificationLevel: 0 | 1 | 2 | 3 | 4) => string;
 	COMMAND_ROLEINFO_TITLES: Record<string, string>;
 	COMMAND_ROLEINFO: (role: Role) => string;
@@ -1516,7 +1527,12 @@ export interface LanguageKeys {
 	COMMAND_WARN_MESSAGE: (user: User, log: number) => string;
 	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string | number, users: readonly string[], reason: string | null) => string;
 	COMMAND_MODERATION_FAILED: (users: readonly string[]) => string;
-	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, duration: number | null) => {
+	COMMAND_MODERATION_DM: (
+		guild: string,
+		title: string,
+		reason: string | null,
+		duration: number | null
+	) => {
 		DESCRIPTION: string;
 		FOOTER: string;
 	};
@@ -1654,7 +1670,11 @@ export interface LanguageKeys {
 		UPTIME: string;
 		SERVER_USAGE: string;
 	};
-	COMMAND_STATS_FIELDS: (stats: StatsGeneral, uptime: StatsUptime, usage: StatsUsage) => {
+	COMMAND_STATS_FIELDS: (
+		stats: StatsGeneral,
+		uptime: StatsUptime,
+		usage: StatsUsage
+	) => {
 		STATS: string;
 		UPTIME: string;
 		SERVER_USAGE: string;
@@ -1702,7 +1722,9 @@ export interface LanguageKeys {
 		JOINED: string;
 		CREATED_AT: string;
 	};
-	COMMAND_WHOIS_MEMBER_FIELDS: (member: GuildMember) => {
+	COMMAND_WHOIS_MEMBER_FIELDS: (
+		member: GuildMember
+	) => {
 		JOINED: string;
 		CREATED_AT: string;
 		FOOTER: string;
@@ -1713,7 +1735,9 @@ export interface LanguageKeys {
 	COMMAND_WHOIS_USER_TITLES: {
 		CREATED_AT: string;
 	};
-	COMMAND_WHOIS_USER_FIELDS: (user: User) => {
+	COMMAND_WHOIS_USER_FIELDS: (
+		user: User
+	) => {
 		CREATED_AT: string;
 		FOOTER: string;
 	};
@@ -1847,7 +1871,16 @@ export interface LanguageKeys {
 	SELF_MODERATION_COMMAND_HARD_ACTION_DURATION: (value: number) => string;
 	SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM: (value: number) => string;
 	SELF_MODERATION_COMMAND_THRESHOLD_DURATION: (value: number) => string;
-	SELF_MODERATION_COMMAND_SHOW: (kEnabled: string, kAlert: string, kLog: string, kDelete: string, kHardAction: string, hardActionDuration: number, thresholdMaximum: number | null, thresholdDuration: number | null) => string;
+	SELF_MODERATION_COMMAND_SHOW: (
+		kEnabled: string,
+		kAlert: string,
+		kLog: string,
+		kDelete: string,
+		kHardAction: string,
+		hardActionDuration: number,
+		thresholdMaximum: number | null,
+		thresholdDuration: number | null
+	) => string;
 	SELF_MODERATION_SOFT_ACTION_ALERT: string;
 	SELF_MODERATION_SOFT_ACTION_LOG: string;
 	SELF_MODERATION_SOFT_ACTION_DELETE: string;

@@ -5,7 +5,6 @@ import { TrackData } from 'lavacord';
 import { MusicHandler } from './MusicHandler';
 
 export class Song {
-
 	@enumerable(false)
 	public id: string;
 
@@ -60,12 +59,16 @@ export class Song {
 	}
 
 	public async fetchRequesterName() {
-		const nickname = await this.queue.guild.memberTags.fetch(this.requester)
-			.then(member => member?.nickname)
+		const nickname = await this.queue.guild.memberTags
+			.fetch(this.requester)
+			.then((member) => member?.nickname)
 			.catch(() => null);
-		const display = nickname ?? await this.queue.client.userTags.fetch(this.requester)
-			.then(user => user.username)
-			.catch(() => this.queue.guild.language.tget('UNKNOWN_USER'));
+		const display =
+			nickname ??
+			(await this.queue.client.userTags
+				.fetch(this.requester)
+				.then((user) => user.username)
+				.catch(() => this.queue.guild.language.tget('UNKNOWN_USER')));
 		return escapeMarkdown(cleanMentions(this.queue.guild, display));
 	}
 
@@ -80,8 +83,7 @@ export class Song {
 	private static counter = 0;
 
 	private static generateID(author: string) {
-		if (++Song.counter === 0xFFFFFF) Song.counter = 0;
+		if (++Song.counter === 0xffffff) Song.counter = 0;
 		return Buffer.from(`${author}.${Song.counter}.${Date.now()}`).toString('base64');
 	}
-
 }

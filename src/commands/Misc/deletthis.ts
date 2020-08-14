@@ -12,15 +12,14 @@ import { join } from 'path';
 	aliases: ['deletethis'],
 	bucket: 2,
 	cooldown: 30,
-	description: language => language.tget('COMMAND_DELETTHIS_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_DELETTHIS_EXTENDED'),
+	description: (language) => language.tget('COMMAND_DELETTHIS_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_DELETTHIS_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })
 export default class extends SkyraCommand {
-
 	private kTemplate: Image = null!;
 	private readonly skyraID = CLIENT_ID;
 
@@ -37,32 +36,30 @@ export default class extends SkyraCommand {
 		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [target, author] = [message.author, user];
 		else [target, author] = [user, message.author];
 
-		const [hammered, hammerer] = await Promise.all([
-			fetchAvatar(target, 256),
-			fetchAvatar(author, 256)
-		]);
+		const [hammered, hammerer] = await Promise.all([fetchAvatar(target, 256), fetchAvatar(author, 256)]);
 
-		return new Canvas(650, 471)
-			.printImage(this.kTemplate, 0, 0, 650, 471)
+		return (
+			new Canvas(650, 471)
+				.printImage(this.kTemplate, 0, 0, 650, 471)
 
-			// Draw the guy with the hammer
-			.save()
-			.translate(341, 135)
-			.rotate(radians(21.80))
-			.printCircularImage(hammerer, 0, 0, 77)
-			.restore()
+				// Draw the guy with the hammer
+				.save()
+				.translate(341, 135)
+				.rotate(radians(21.8))
+				.printCircularImage(hammerer, 0, 0, 77)
+				.restore()
 
-			// Draw the who's getting the hammer
-			.setTransform(-1, 0, 0, 1, 511, 231)
-			.rotate(radians(-25.40))
-			.printCircularImage(hammered, 0, 0, 77)
+				// Draw the who's getting the hammer
+				.setTransform(-1, 0, 0, 1, 511, 231)
+				.rotate(radians(-25.4))
+				.printCircularImage(hammered, 0, 0, 77)
 
-			// Draw the buffer
-			.toBufferAsync();
+				// Draw the buffer
+				.toBufferAsync()
+		);
 	}
 
 	public async init() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/DeletThis.png'));
 	}
-
 }

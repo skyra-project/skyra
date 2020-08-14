@@ -7,13 +7,12 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['ctime'],
 			cooldown: 10,
-			description: language => language.tget('COMMAND_CURRENTTIME_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_CURRENTTIME_EXTENDED'),
+			description: (language) => language.tget('COMMAND_CURRENTTIME_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_CURRENTTIME_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<location:string>'
 		});
@@ -26,16 +25,20 @@ export default class extends SkyraCommand {
 		if (status !== GoogleResponseCodes.Ok) throw message.language.tget(handleNotOK(status, this.client));
 
 		const TITLES = message.language.tget('COMMAND_CURRENTTIME_TITLES');
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
-			.setDescription([
-				`**${TITLES.CURRENT_TIME}**: ${timeData.formatted.split(' ')[1]}`,
-				`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
-				`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
-				`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
-				`${TITLES.DST(Number(timeData.dst))}`
-			].join('\n')));
+		return message.sendEmbed(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
+				.setDescription(
+					[
+						`**${TITLES.CURRENT_TIME}**: ${timeData.formatted.split(' ')[1]}`,
+						`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
+						`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
+						`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
+						`${TITLES.DST(Number(timeData.dst))}`
+					].join('\n')
+				)
+		);
 	}
 
 	private async fetchAPI(message: KlasaMessage, lat: number, lng: number) {
@@ -46,10 +49,10 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lat', lat.toString());
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
-		return fetch<TimeResult>(url, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND'); });
+		return fetch<TimeResult>(url, FetchResultTypes.JSON).catch(() => {
+			throw message.language.tget('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND');
+		});
 	}
-
 }
 
 /** API Response from TimezoneDB */

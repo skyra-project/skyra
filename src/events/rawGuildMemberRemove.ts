@@ -18,7 +18,6 @@ const enum Matches {
 }
 
 export default class extends Event {
-
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
@@ -29,7 +28,7 @@ export default class extends Event {
 		const guild = this.client.guilds.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		if (!this.client.guilds.some(g => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
+		if (!this.client.guilds.some((g) => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
 		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
 		this.handleFarewellMessage(guild, data.user);
@@ -49,17 +48,21 @@ export default class extends Event {
 		const footer = isModerationAction.kicked
 			? guild.language.tget('EVENTS_GUILDMEMBERKICKED')
 			: isModerationAction.banned
-				? guild.language.tget('EVENTS_GUILDMEMBERBANNED')
-				: isModerationAction.softbanned
-					? guild.language.tget('EVENTS_GUILDMEMBERSOFTBANNED')
-					: guild.language.tget('EVENTS_GUILDMEMBERREMOVE');
+			? guild.language.tget('EVENTS_GUILDMEMBERBANNED')
+			: isModerationAction.softbanned
+			? guild.language.tget('EVENTS_GUILDMEMBERSOFTBANNED')
+			: guild.language.tget('EVENTS_GUILDMEMBERREMOVE');
 
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-			.setColor(Colors.Red)
-			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag)))
-			.setFooter(footer)
-			.setTimestamp());
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+			new MessageEmbed()
+				.setColor(Colors.Red)
+				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
+				.setDescription(
+					guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag))
+				)
+				.setFooter(footer)
+				.setTimestamp()
+		);
 	}
 
 	private async isModerationAction(guild: SkyraGuild, data: WSGuildMemberRemove): Promise<IsModerationAction> {
@@ -94,27 +97,29 @@ export default class extends Event {
 		if (channelsFarewell && messagesFarewell) {
 			const channel = guild.channels.get(channelsFarewell) as TextChannel;
 			if (channel && channel.postable) {
-				channel.send(this.transformMessage(guild, user))
-					.catch(error => this.client.emit(Events.ApiError, error));
+				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Farewell)
-					.catch(error => this.client.emit(Events.Wtf, error));
+				guild.settings.reset(GuildSettings.Channels.Farewell).catch((error) => this.client.emit(Events.Wtf, error));
 			}
 		}
 	}
 
 	private transformMessage(guild: Guild, user: APIUserData) {
-		return guild.settings.get(GuildSettings.Messages.Farewell).replace(this.kTransformMessageRegExp, match => {
+		return guild.settings.get(GuildSettings.Messages.Farewell).replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
-				case Matches.Member: return `<@${user.id}>`;
-				case Matches.MemberName: return user.username;
-				case Matches.MemberTag: return `${user.username}#${user.discriminator}`;
-				case Matches.Guild: return guild.name;
-				default: return match;
+				case Matches.Member:
+					return `<@${user.id}>`;
+				case Matches.MemberName:
+					return user.username;
+				case Matches.MemberTag:
+					return `${user.username}#${user.discriminator}`;
+				case Matches.Guild:
+					return guild.name;
+				default:
+					return match;
 			}
 		});
 	}
-
 }
 
 interface IsModerationAction {

@@ -9,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['lock', 'unlock'],
 	cooldown: 5,
 	subcommands: true,
-	description: language => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
 	runIn: ['text'],
 	usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
 	usageDelim: ' ',
@@ -18,11 +18,8 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 })
 export default class extends SkyraCommand {
-
 	public auto(message: KlasaMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
-		return message.guild!.security.lockdowns.has(channel.id)
-			? this.unlock(message, [channel])
-			: this.lock(message, [channel, duration]);
+		return message.guild!.security.lockdowns.has(channel.id) ? this.unlock(message, [channel]) : this.lock(message, [channel, duration]);
 	}
 
 	public unlock(message: KlasaMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
@@ -61,5 +58,4 @@ export default class extends SkyraCommand {
 		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
 		return message.sendLocale('COMMAND_LOCKDOWN_OPEN', [channel]);
 	}
-
 }

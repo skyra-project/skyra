@@ -10,19 +10,14 @@ import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 	event: Events.ResourceAnalyticsSync
 })
 export default class extends AnalyticsEvent {
-
 	public run() {
-		this.writePoints([
-			this.syncPerCoreLoad(),
-			this.syncMem()
-		]);
+		this.writePoints([this.syncPerCoreLoad(), this.syncMem()]);
 
 		return this.analytics.flush();
 	}
 
 	private syncPerCoreLoad() {
-		const point = new Point(AnalyticsSchema.Points.PerCoreCPULoad)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync);
+		const point = new Point(AnalyticsSchema.Points.PerCoreCPULoad).tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync);
 
 		let index = 0;
 		for (const { times } of cpus()) point.floatField(`cpu_${index++}`, (times.user + times.nice + times.sys + times.irq) / times.idle);
@@ -37,5 +32,4 @@ export default class extends AnalyticsEvent {
 			.floatField('total', usage.heapTotal)
 			.floatField('used', usage.heapUsed);
 	}
-
 }

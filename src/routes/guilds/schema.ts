@@ -7,11 +7,9 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/schema' })
 export default class extends Route {
-
 	@ratelimit(2, 5000)
 	public get(_request: ApiRequest, response: ApiResponse) {
 		const gateway = this.client.gateways.get(Databases.Guild)!;
 		return response.json(gateway.schema.toJSON());
 	}
-
 }

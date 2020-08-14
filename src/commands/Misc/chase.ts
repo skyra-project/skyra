@@ -11,15 +11,14 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: language => language.tget('COMMAND_CHASE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_CHASE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_CHASE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_CHASE_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })
 export default class extends SkyraCommand {
-
 	private KTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -35,33 +34,31 @@ export default class extends SkyraCommand {
 		else if (this.client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];
 		else [chased, chaser] = [user, message.author];
 
-		const [chasedAvatar, chaserAvatar] = await Promise.all([
-			fetchAvatar(chased, 128),
-			fetchAvatar(chaser, 128)
-		]);
+		const [chasedAvatar, chaserAvatar] = await Promise.all([fetchAvatar(chased, 128), fetchAvatar(chaser, 128)]);
 
-		return new Canvas(569, 327)
-			.printImage(this.KTemplate, 0, 0, 569, 327)
-			.setTransform(-1, 0, 0, 1, 0, 0)
+		return (
+			new Canvas(569, 327)
+				.printImage(this.KTemplate, 0, 0, 569, 327)
+				.setTransform(-1, 0, 0, 1, 0, 0)
 
-			// Draw chased avatar
-			.save()
-			.translate(-144, 51)
-			.rotate(radians(16.12))
-			.printCircularImage(chasedAvatar, 0, 0, 26)
-			.restore()
+				// Draw chased avatar
+				.save()
+				.translate(-144, 51)
+				.rotate(radians(16.12))
+				.printCircularImage(chasedAvatar, 0, 0, 26)
+				.restore()
 
-			// Draw chaser avatar
-			.translate(-391, 62)
-			.rotate(radians(12.26))
-			.printCircularImage(chaserAvatar, 0, 0, 25)
+				// Draw chaser avatar
+				.translate(-391, 62)
+				.rotate(radians(12.26))
+				.printCircularImage(chaserAvatar, 0, 0, 25)
 
-			// Draw the buffer
-			.toBufferAsync();
+				// Draw the buffer
+				.toBufferAsync()
+		);
 	}
 
 	public async init() {
 		this.KTemplate = await loadImage(join(assetsFolder, './images/memes/chase.png'));
 	}
-
 }

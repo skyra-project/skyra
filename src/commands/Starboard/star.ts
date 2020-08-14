@@ -12,8 +12,8 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: [],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_STAR_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_STAR_EXTENDED'),
+	description: (language) => language.tget('COMMAND_STAR_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_STAR_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	requiredSettings: [],
 	runIn: ['text'],
@@ -23,18 +23,19 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 })
 @CreateResolvers([
 	[
-		'timespan', (arg, possible, message, [subcommand]) => {
+		'timespan',
+		(arg, possible, message, [subcommand]) => {
 			if (!arg || subcommand === 'random') return undefined;
 			return message.client.arguments.get('timespan')!.run(arg, possible, message);
 		}
 	]
 ])
 export default class extends SkyraCommand {
-
 	public async random(message: KlasaMessage, [user]: [KeyedMemberTag?]): Promise<KlasaMessage | KlasaMessage[]> {
 		const minimum = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const { starboards } = await DbSet.connect();
-		const qb = starboards.createQueryBuilder()
+		const qb = starboards
+			.createQueryBuilder()
 			.select()
 			.where('guild_id = :id', { id: message.guild!.id })
 			.andWhere('star_message_id IS NOT NULL')
@@ -43,10 +44,7 @@ export default class extends SkyraCommand {
 
 		if (user) qb.andWhere('user_id = :user', { user: user.id });
 
-		const starboardData = await qb
-			.orderBy('RANDOM()')
-			.limit(1)
-			.getOne();
+		const starboardData = await qb.orderBy('RANDOM()').limit(1).getOne();
 
 		// If there is no starboard message, return no stars
 		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
@@ -85,7 +83,8 @@ export default class extends SkyraCommand {
 	public async top(message: KlasaMessage, [user, timespan]: [KeyedMemberTag?, number?]) {
 		const minimum = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const { starboards } = await DbSet.connect();
-		const qb = starboards.createQueryBuilder()
+		const qb = starboards
+			.createQueryBuilder()
 			.select()
 			.where('guild_id = :id', { id: message.guild!.id })
 			.andWhere('star_message_id IS NOT NULL')
@@ -117,16 +116,24 @@ export default class extends SkyraCommand {
 		if (totalStars === 0) return message.sendLocale('COMMAND_STAR_NOSTARS');
 
 		const totalMessages = topMessages.length;
-		const topThreeMessages = topMessages.sort((a, b) => a[1] > b[1] ? -1 : 1).slice(0, 3);
-		const topThreeReceivers = [...topReceivers].sort((a, b) => a[1] > b[1] ? -1 : 1).slice(0, 3);
+		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
+		const topThreeReceivers = [...topReceivers].sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 
 		const i18n = message.language.tget.bind(message.language);
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(Colors.Amber)
-			.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', totalMessages, totalStars))
-			.addField(i18n('COMMAND_STAR_TOPSTARRED'), topThreeMessages.map(([mID, stars], index) => i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', MEDALS[index], mID, stars)))
-			.addField(i18n('COMMAND_STAR_TOPRECEIVERS'), topThreeReceivers.map(([uID, stars], index) => i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', MEDALS[index], uID, stars)))
-			.setTimestamp());
+		return message.sendEmbed(
+			new MessageEmbed()
+				.setColor(Colors.Amber)
+				.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', totalMessages, totalStars))
+				.addField(
+					i18n('COMMAND_STAR_TOPSTARRED'),
+					topThreeMessages.map(([mID, stars], index) => i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', MEDALS[index], mID, stars))
+				)
+				.addField(
+					i18n('COMMAND_STAR_TOPRECEIVERS'),
+					topThreeReceivers.map(([uID, stars], index) => i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', MEDALS[index], uID, stars))
+				)
+				.setTimestamp()
+		);
 	}
 
 	private decodeSnowflake(snowflake: string) {
@@ -136,5 +143,4 @@ export default class extends SkyraCommand {
 	private makeStarLink(guildID: string, channeLID: string, messageID: string) {
 		return `https://discord.com/channels/${guildID}/${channeLID}/${messageID}`;
 	}
-
 }

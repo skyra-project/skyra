@@ -9,7 +9,6 @@ import { PreciseTimeout } from './PreciseTimeout';
  * @version 2.1.0
  */
 export class Leaderboard {
-
 	/**
 	 * The Client that initialized this instance
 	 */
@@ -95,7 +94,7 @@ export class Leaderboard {
 		// It's not deleting the entry as the previous run will resolve
 
 		// Get the sorted data from the db
-		const promise = new Promise<void>(resolve => this.createMemberSyncHandle(guild).then(resolve));
+		const promise = new Promise<void>((resolve) => this.createMemberSyncHandle(guild).then(resolve));
 
 		this.kTempPromises.guilds.set(guild, promise);
 		await promise;
@@ -114,7 +113,8 @@ export class Leaderboard {
 
 	private async createMemberSyncHandle(guild: string) {
 		const { members } = await DbSet.connect();
-		const data = await members.createQueryBuilder()
+		const data = await members
+			.createQueryBuilder()
 			.select(['user_id', 'points'])
 			.where('guild_id = :guild', { guild })
 			.andWhere('points >= 25')
@@ -140,7 +140,7 @@ export class Leaderboard {
 	 * Sync the global leaderboard
 	 */
 	private async syncUsers(): Promise<void> {
-		const promise = new Promise<void>(resolve => this.createUserSyncHandle().then(resolve));
+		const promise = new Promise<void>((resolve) => this.createUserSyncHandle().then(resolve));
 		await (this.kTempPromises.users = promise);
 
 		// If it's still on timeout, reset it
@@ -159,7 +159,8 @@ export class Leaderboard {
 	private async createUserSyncHandle() {
 		const { users } = await DbSet.connect();
 		// Get the sorted data from the db
-		const data = await users.createQueryBuilder()
+		const data = await users
+			.createQueryBuilder()
 			.select(['id', 'points'])
 			.where('points >= 25')
 			.orderBy('points', 'DESC')
@@ -176,7 +177,6 @@ export class Leaderboard {
 
 		this.kTempPromises.users = null;
 	}
-
 }
 
 export interface LeaderboardUser {

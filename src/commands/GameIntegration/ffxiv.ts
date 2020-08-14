@@ -11,19 +11,18 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['finalfantasy'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_FFXIV_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_FFXIV_EXTENDED'),
+	description: (language) => language.tget('COMMAND_FFXIV_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_FFXIV_EXTENDED'),
 	flagSupport: true,
 	subcommands: true,
 	usage: '(item|character:default) <search:...string> ',
 	usageDelim: ' '
 })
 export default class extends RichDisplayCommand {
-
 	public async character(message: KlasaMessage, [name]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
 		const display = await this.buildCharacterDisplay(message, characterDetails.Character);
@@ -33,9 +32,9 @@ export default class extends RichDisplayCommand {
 	}
 
 	public async item(message: KlasaMessage, [item]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const itemDetails = await this.fetchItems(message.language, item);
 		const display = await this.buildItemDisplay(message, itemDetails);
@@ -78,8 +77,8 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
-		)
-			.addPage((embed: MessageEmbed) => embed
+		).addPage((embed: MessageEmbed) =>
+			embed
 				.setThumbnail(character.Avatar)
 				.setImage(character.Portrait)
 				.addField(TITLES.SERVER_AND_DC, [character.Server, character.DC].join(' - '), true)
@@ -90,11 +89,15 @@ export default class extends RichDisplayCommand {
 				.addField(TITLES.CITY_STATE, character.Town.Name, true)
 				.addField(TITLES.GRAND_COMPANY, character.GrandCompany.Company?.Name || TITLES.NONE, true)
 				.addField(TITLES.RANK, character.GrandCompany.Rank?.Name || TITLES.NONE, true)
-				.addBlankField(true));
+				.addBlankField(true)
+		);
 
 		if (
-			tankClassValues.length || healerClassValues.length || meleeDPSClassValues.length
-			|| phRangedDPSClassValues.length || magRangedDPSClassValues.length
+			tankClassValues.length ||
+			healerClassValues.length ||
+			meleeDPSClassValues.length ||
+			phRangedDPSClassValues.length ||
+			magRangedDPSClassValues.length
 		) {
 			display.addPage((embed: MessageEmbed) => {
 				embed.setTitle(TITLES.DOW_DOM_CLASSES);
@@ -102,8 +105,10 @@ export default class extends RichDisplayCommand {
 				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${TITLES.TANK}`, tankClassValues.join('\n'), true);
 				if (healerClassValues.length) embed.addField(`${SubCategoryEmotes.Healer} ${TITLES.HEALER}`, healerClassValues.join('\n'), true);
 				if (meleeDPSClassValues.length) embed.addField(`${SubCategoryEmotes.Melee} ${TITLES.MELEEDPS}`, meleeDPSClassValues.join('\n'), true);
-				if (phRangedDPSClassValues.length) embed.addField(`${SubCategoryEmotes.phRange} ${TITLES.PHYSICALRANGEDDPS}`, phRangedDPSClassValues.join('\n'), true);
-				if (magRangedDPSClassValues.length) embed.addField(`${SubCategoryEmotes.magRange} ${TITLES.MAGICALRANGEDDPS}`, magRangedDPSClassValues.join('\n'), true);
+				if (phRangedDPSClassValues.length)
+					embed.addField(`${SubCategoryEmotes.phRange} ${TITLES.PHYSICALRANGEDDPS}`, phRangedDPSClassValues.join('\n'), true);
+				if (magRangedDPSClassValues.length)
+					embed.addField(`${SubCategoryEmotes.magRange} ${TITLES.MAGICALRANGEDDPS}`, magRangedDPSClassValues.join('\n'), true);
 				return embed;
 			});
 		}
@@ -111,9 +116,7 @@ export default class extends RichDisplayCommand {
 		if (discipleOfTheHandJobs.length) {
 			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheHandJobs;
-				embed
-					.setTitle(TITLES.DOH_CLASSES)
-					.addBlankField(true);
+				embed.setTitle(TITLES.DOH_CLASSES).addBlankField(true);
 				return embed;
 			});
 		}
@@ -131,26 +134,24 @@ export default class extends RichDisplayCommand {
 
 	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
 		const TITLES = message.language.tget('COMMAND_FFXIV_ITEM_FIELDS');
-		const display = new UserRichDisplay(
-			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
-		);
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
-			display.addPage((embed: MessageEmbed) => embed
-				.setDescription(item.Description.split('\n')[0])
-				.setAuthor(item.Name, `${FFXIV_BASE_URL}${item.Icon}`)
-				.setThumbnail(`${FFXIV_BASE_URL}${item.Icon}`)
-				.addField(TITLES.KIND, item.ItemKind.Name, true)
-				.addField(TITLES.CATEGORY, item.ItemSearchCategory.Name || TITLES.NONE, true)
-				.addField(TITLES.LEVEL_EQUIP, item.LevelEquip, true));
+			display.addPage((embed: MessageEmbed) =>
+				embed
+					.setDescription(item.Description.split('\n')[0])
+					.setAuthor(item.Name, `${FFXIV_BASE_URL}${item.Icon}`)
+					.setThumbnail(`${FFXIV_BASE_URL}${item.Icon}`)
+					.addField(TITLES.KIND, item.ItemKind.Name, true)
+					.addField(TITLES.CATEGORY, item.ItemSearchCategory.Name || TITLES.NONE, true)
+					.addField(TITLES.LEVEL_EQUIP, item.LevelEquip, true)
+			);
 		}
 
 		return display;
 	}
 
 	private parseCharacterClasses(classJobs: FFXIV.ClassJob[]) {
-
 		const discipleOfTheHandJobs: EmbedField[] = [];
 		const discipleOfTheLandJobs: EmbedField[] = [];
 		const tankClassValues: string[] = [];
@@ -178,29 +179,19 @@ export default class extends RichDisplayCommand {
 					});
 					break;
 				case FFXIV.ClassSubcategory.Tank:
-					tankClassValues.push(
-						`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`
-					);
+					tankClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
 				case FFXIV.ClassSubcategory.Healer:
-					healerClassValues.push(
-						`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`
-					);
+					healerClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
 				case FFXIV.ClassSubcategory.MDPS:
-					meleeDPSClassValues.push(
-						`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`
-					);
+					meleeDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
 				case FFXIV.ClassSubcategory.PRDPS:
-					phRangedDPSClassValues.push(
-						`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`
-					);
+					phRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
 				case FFXIV.ClassSubcategory.MRDPS:
-					magRangedDPSClassValues.push(
-						`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`
-					);
+					magRangedDPSClassValues.push(`${classDetails.emote} **${classDetails.fullName}**: ${classJob.Level}`);
 					break;
 			}
 		}
@@ -215,5 +206,4 @@ export default class extends RichDisplayCommand {
 			magRangedDPSClassValues
 		};
 	}
-
 }

@@ -9,7 +9,6 @@ import { UserEntity } from '../entities/UserEntity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-
 	public async ensure(id: string, options?: FindOneOptions<UserEntity>) {
 		const previous = await this.findOne(id, options);
 		if (previous) return previous;
@@ -55,17 +54,22 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async fetchSpouse(a: string, b: string): Promise<RawSpouseEntry | null> {
-		const entries = await this.query(/* sql */`SELECT * FROM user_spouses_user WHERE (user_id_1 = $1 AND user_id_2 = $2) OR (user_id_1 = $2 AND user_id_2 = $1);`, [a, b]);
+		const entries = await this.query(
+			/* sql */ `SELECT * FROM user_spouses_user WHERE (user_id_1 = $1 AND user_id_2 = $2) OR (user_id_1 = $2 AND user_id_2 = $1);`,
+			[a, b]
+		);
 		return entries.length ? entries[0] : null;
 	}
 
 	public async fetchSpouses(id: string) {
-		const entries = await this.query(/* sql */`SELECT * FROM user_spouses_user WHERE user_id_1 = $1 OR user_id_2 = $1`, [id]) as RawSpouseEntry[];
-		return entries.map(entry => entry.user_id_1 === id ? entry.user_id_2 : entry.user_id_1);
+		const entries = (await this.query(/* sql */ `SELECT * FROM user_spouses_user WHERE user_id_1 = $1 OR user_id_2 = $1`, [
+			id
+		])) as RawSpouseEntry[];
+		return entries.map((entry) => (entry.user_id_1 === id ? entry.user_id_2 : entry.user_id_1));
 	}
 
 	public async deleteSpouse(entry: RawSpouseEntry) {
-		await this.query(/* sql */`DELETE FROM user_spouses_user WHERE user_id_1 = $1 AND user_id_2 = $2`, [entry.user_id_1, entry.user_id_2]);
+		await this.query(/* sql */ `DELETE FROM user_spouses_user WHERE user_id_1 = $1 AND user_id_2 = $2`, [entry.user_id_1, entry.user_id_2]);
 	}
 
 	public async lock<T>(targets: readonly string[], cb: (...targets: readonly string[]) => Promise<T>): Promise<T> {
@@ -73,7 +77,7 @@ export class UserRepository extends Repository<UserEntity> {
 			throw new Error(`Duplicated targets detected: '${targets.join("', '")}'`);
 		}
 
-		const queues = targets.map(target => {
+		const queues = targets.map((target) => {
 			const existing = UserRepository.queues.get(target);
 			if (existing) return existing;
 
@@ -82,7 +86,7 @@ export class UserRepository extends Repository<UserEntity> {
 			return created;
 		});
 
-		await Promise.all(queues.map(queue => queue.wait()));
+		await Promise.all(queues.map((queue) => queue.wait()));
 
 		try {
 			return await cb(...targets);
@@ -92,11 +96,10 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	private static queues = new Cache<string, AsyncQueue>();
-
 }
 
 TimerManager.setInterval(() => {
-	UserRepository['queues'].sweep(value => value.remaining === 0);
+	UserRepository['queues'].sweep((value) => value.remaining === 0);
 }, 60000);
 
 interface RawSpouseEntry {

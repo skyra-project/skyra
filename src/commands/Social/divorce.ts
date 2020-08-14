@@ -7,14 +7,13 @@ import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: language => language.tget('COMMAND_DIVORCE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_DIVORCE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_DIVORCE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_DIVORCE_EXTENDED'),
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '<user:user>'
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage, [user]: [User]) {
 		const { users } = await DbSet.connect();
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
@@ -29,12 +28,11 @@ export default class extends SkyraCommand {
 			await users.deleteSpouse(entry);
 
 			// Tell the user about the divorce
-			floatPromise(this, resolveOnErrorCodes(
-				user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)),
-				APIErrors.CannotMessageUser
-			));
+			floatPromise(
+				this,
+				resolveOnErrorCodes(user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)), APIErrors.CannotMessageUser)
+			);
 			return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
 		});
 	}
-
 }

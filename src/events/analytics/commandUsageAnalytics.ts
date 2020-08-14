@@ -9,7 +9,6 @@ import { EventOptions } from 'klasa';
 	event: Events.CommandUsageAnalytics
 })
 export default class extends AnalyticsEvent {
-
 	public run(commandName: string, category: string, subCategory: string) {
 		const command = new Point(AnalyticsSchema.Points.Commands)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
@@ -19,5 +18,4 @@ export default class extends AnalyticsEvent {
 
 		return this.writePoint(command);
 	}
-
 }

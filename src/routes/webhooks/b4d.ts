@@ -7,7 +7,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/b4d', route: 'webhooks/b4d' })
 export default class extends Route {
-
 	public async post(request: ApiRequest, response: ApiResponse) {
 		if (request.headers.authorization !== TOKENS.WEBHOOK_B4D) return response.forbidden();
 		if (!request.body) return response.badRequest();
@@ -15,7 +14,7 @@ export default class extends Route {
 		const body = request.body as Body;
 		try {
 			const { users } = await DbSet.connect();
-			await users.lock([body.user], async id => {
+			await users.lock([body.user], async (id) => {
 				const user = await users.ensure(id);
 
 				user.money += body.votes.totalVotes % 5 === 0 ? 1200 : 400;
@@ -28,7 +27,6 @@ export default class extends Route {
 			return response.error(error.message ?? 'Unknown error');
 		}
 	}
-
 }
 
 interface Body {

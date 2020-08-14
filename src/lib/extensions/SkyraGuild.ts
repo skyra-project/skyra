@@ -11,7 +11,6 @@ import { enumerable } from '@utils/util';
 import { Structures } from 'discord.js';
 
 export class SkyraGuild extends Structures.get('Guild') {
-
 	public readonly security: GuildSecurity = new GuildSecurity(this);
 	public readonly starboard: StarboardManager = new StarboardManager(this);
 	public readonly moderation: ModerationManager = new ModerationManager(this);
@@ -21,7 +20,6 @@ export class SkyraGuild extends Structures.get('Guild') {
 
 	@enumerable(false)
 	public readonly memberTags: MemberTags = new MemberTags(this);
-
 }
 
 declare module 'discord.js' {

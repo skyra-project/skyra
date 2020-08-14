@@ -6,13 +6,16 @@ const USER_REGEXP = Argument.regex.userOrMember;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
-
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<KeyedMemberTag> {
 		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
 		const resMember = await this.resolveMember(message, arg);
 		if (resMember) return resMember;
 
-		const result = await new FuzzySearch(message.guild!.memberTags.mapUsernames(), entry => entry, filter).run(message, arg, possible.min || undefined);
+		const result = await new FuzzySearch(message.guild!.memberTags.mapUsernames(), (entry) => entry, filter).run(
+			message,
+			arg,
+			possible.min || undefined
+		);
 		if (result) {
 			const id = result[0];
 			const memberTag = await message.guild!.memberTags.get(id);
@@ -26,8 +29,8 @@ export default class extends Argument {
 		const id = USER_REGEXP.test(query)
 			? USER_REGEXP.exec(query)![1]
 			: USER_TAG.test(query)
-				? this.client.userTags.getKeyFromTag(query) || null
-				: null;
+			? this.client.userTags.getKeyFromTag(query) || null
+			: null;
 
 		if (id) {
 			const memberTag = await message.guild!.memberTags.fetch(id);
@@ -36,7 +39,6 @@ export default class extends Argument {
 		}
 		return null;
 	}
-
 }
 
 export interface KeyedMemberTag extends MemberTag {

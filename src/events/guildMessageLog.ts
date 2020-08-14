@@ -14,7 +14,6 @@ const TYPES: Record<MessageLogsEnum, string> = {
 };
 
 export default class extends Event {
-
 	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => Promise<MessageEmbed> | MessageEmbed) {
 		const key = TYPES[type];
 		if (!key) {
@@ -38,10 +37,12 @@ export default class extends Event {
 		try {
 			await channel.send(processed);
 		} catch (error) {
-			this.client.emit(Events.Wtf, error instanceof DiscordAPIError || error instanceof HTTPError
-				? `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
-				: `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`);
+			this.client.emit(
+				Events.Wtf,
+				error instanceof DiscordAPIError || error instanceof HTTPError
+					? `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: [${error.code} - ${error.method} | ${error.path}] ${error.message}`
+					: `Failed to send '${type}' log for guild ${guild} in channel ${channel.name}. Error: ${error.message}`
+			);
 		}
 	}
-
 }

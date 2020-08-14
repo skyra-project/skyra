@@ -11,7 +11,6 @@ import { CloseCodes, WebsocketEvents } from './types';
 import WebsocketUser from './WebsocketUser';
 
 export class WebsocketHandler {
-
 	public wss: Server;
 	public users = new Cache<string, WebsocketUser>();
 
@@ -46,5 +45,4 @@ export class WebsocketHandler {
 		const websocketUser = new WebsocketUser(this, ws, id);
 		this.users.set(id, websocketUser);
 	}
-
 }

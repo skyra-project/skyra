@@ -12,8 +12,8 @@ import { CLIENT_ID } from '@root/config';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],
 	cooldown: 0,
-	description: language => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
+	description: (language) => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[user:string{,50}] [...]',
@@ -21,7 +21,6 @@ import { CLIENT_ID } from '@root/config';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
@@ -49,17 +48,24 @@ export default class extends SkyraCommand {
 		let gameMessage: KlasaMessage | null = null;
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
-			llrc: new LongLivingReactionCollector(this.client, async reaction => {
-				// Ignore if resolve is not ready
-				if (!isFunction(resolve)
-					// Run the collector inhibitor
-					|| await this.collectorInhibitor(message, gameMessage!, reaction)) return;
-				resolve(Boolean(this.kEmojis.indexOf(reaction.emoji.name)));
-				resolve = null;
-			}, () => {
-				if (isFunction(resolve)) resolve(false);
-				this.playing.delete(message.channel.id);
-			}),
+			llrc: new LongLivingReactionCollector(
+				this.client,
+				async (reaction) => {
+					// Ignore if resolve is not ready
+					if (
+						!isFunction(resolve) ||
+						// Run the collector inhibitor
+						(await this.collectorInhibitor(message, gameMessage!, reaction))
+					)
+						return;
+					resolve(Boolean(this.kEmojis.indexOf(reaction.emoji.name)));
+					resolve = null;
+				},
+				() => {
+					if (isFunction(resolve)) resolve(false);
+					this.playing.delete(message.channel.id);
+				}
+			),
 			sun: true,
 			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message.guild!))),
 			turn: 0
@@ -82,7 +88,7 @@ export default class extends SkyraCommand {
 
 					// Refresh the LLRC's timer, send new message with new reactions:
 					game.llrc.setTime(Time.Minute * 2);
-					gameMessage = await message.channel.send(text) as KlasaMessage;
+					gameMessage = (await message.channel.send(text)) as KlasaMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);
 					}
@@ -90,7 +96,7 @@ export default class extends SkyraCommand {
 					// Ask for verification.
 					// NOTE: This does not deadlock because the callback is assigned to a variable in the scope, which
 					// is called with `false` when the LLRC times out.
-					const verification = await new Promise<boolean>(async res => {
+					const verification = await new Promise<boolean>(async (res) => {
 						resolve = res;
 						if (autoSkip) {
 							await sleep((gameMessage!.content.length / 20) * 1000);
@@ -133,9 +139,15 @@ export default class extends SkyraCommand {
 			// Fetch the member for level measuring purposes
 			const member = await message.guild!.members.fetch(reaction.userID);
 			// Check if the user is a moderator
-			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call({
-				author: member.user, client: this.client, guild: member.guild, member
-			}, 5);
+			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call(
+				{
+					author: member.user,
+					client: this.client,
+					guild: member.guild,
+					member
+				},
+				5
+			);
 			return !hasLevel;
 		} catch {
 			return true;
@@ -144,17 +156,19 @@ export default class extends SkyraCommand {
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
 		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', game);
-		const death = deaths.length ? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', deaths.length)}\n\n${deaths.map(d => `- ${d}`).join('\n')}` : '';
+		const death = deaths.length
+			? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', deaths.length)}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
+			: '';
 		const proceed = language.tget('COMMAND_HUNGERGAMES_RESULT_PROCEED');
 		const panels = chunk(results, 5);
 
-		const texts = panels.map(panel => `__**${header}:**__\n\n${panel.map(text => `- ${text}`).join('\n')}\n\n_${proceed}_`);
+		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);
 		if (deaths.length) texts.push(`${death}\n\n_${proceed}_`);
 		return texts;
 	}
 
 	private pick(events: readonly HungerGamesUsage[], tributes: number, maxDeaths: number) {
-		events = events.filter(event => event.tributes <= tributes && event.deaths.size <= maxDeaths);
+		events = events.filter((event) => event.tributes <= tributes && event.deaths.size <= maxDeaths);
 		return events[Math.floor(Math.random() * events.length)];
 	}
 
@@ -220,21 +234,20 @@ export default class extends SkyraCommand {
 	private calculateMaxDeaths(game: HungerGamesGame) {
 		// If there are more than 16 tributes, perform a large blood bath
 		return game.tributes.size >= 16
-			// For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
-			// If it's in bloodbath, perform 50% more deaths.
-			? Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
-			// If there are more than 7 tributes, proceed to kill them in 4 or more.
-			: game.tributes.size > 7
-				// If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
-				? game.bloodbath
-					? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
-					: 4
-				// If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
-				: game.tributes.size === 4
-					? 2
-					: 1;
+			? // For 16 people, 4 die, 36 -> 6, and so on keeps the game interesting.
+			  // If it's in bloodbath, perform 50% more deaths.
+			  Math.ceil(Math.sqrt(game.tributes.size) * (game.bloodbath ? 1.5 : 1))
+			: // If there are more than 7 tributes, proceed to kill them in 4 or more.
+			game.tributes.size > 7
+			? // If it's a bloodbath, perform mass death (12 -> 7), else eliminate 4.
+			  game.bloodbath
+				? Math.ceil(Math.min(game.tributes.size - 3, Math.sqrt(game.tributes.size) * 2))
+				: 4
+			: // If there are 4 tributes, eliminate 2, else 1 (3 -> 2, 2 -> 1)
+			game.tributes.size === 4
+			? 2
+			: 1;
 	}
-
 }
 
 export interface HungerGamesGame {

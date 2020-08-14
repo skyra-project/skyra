@@ -36,7 +36,6 @@ function durationImpl(time: number, precision?: number) {
 	return friendlyDuration(time, TIMES, precision);
 }
 
-
 describe('FriendlyDuration', () => {
 	test('GIVEN 1 millisecond w/o precision THEN shows 0 seconds', () => {
 		expect(durationImpl(1)).toEqual('0 seconds');
@@ -47,11 +46,11 @@ describe('FriendlyDuration', () => {
 	});
 
 	test('GIVEN 1 day, 3 hours and 2 minutes w/o precision THEN shows 1 day 3 hours and 2 minutes', () => {
-		expect(durationImpl(Time.Day + (Time.Hour * 3) + (Time.Minute * 2))).toEqual('1 day 3 hours 2 minutes');
+		expect(durationImpl(Time.Day + Time.Hour * 3 + Time.Minute * 2)).toEqual('1 day 3 hours 2 minutes');
 	});
 
 	test('GIVEN 1 day, 3 hours and 2 minutes w/ precision of 2 THEN shows 1 day and 3 hours', () => {
-		expect(durationImpl(Time.Day + (Time.Hour * 3) + (Time.Minute * 2), 2)).toEqual('1 day 3 hours');
+		expect(durationImpl(Time.Day + Time.Hour * 3 + Time.Minute * 2, 2)).toEqual('1 day 3 hours');
 	});
 
 	test('GIVEN negative duration THEN prepends hyphen', () => {
@@ -59,6 +58,6 @@ describe('FriendlyDuration', () => {
 	});
 
 	test('GIVEN durations higher than 1 THEN shows plurals', () => {
-		expect(durationImpl((Time.Day * 2) + (Time.Hour * 2))).toEqual('2 days 2 hours');
+		expect(durationImpl(Time.Day * 2 + Time.Hour * 2)).toEqual('2 days 2 hours');
 	});
 });

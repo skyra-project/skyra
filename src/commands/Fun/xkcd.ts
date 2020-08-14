@@ -5,14 +5,13 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language, Timestamp } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	private readonly timestamp = new Timestamp('MMMM, dddd dd YYYY');
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: language => language.tget('COMMAND_XKCD_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_XKCD_EXTENDED'),
+			description: (language) => language.tget('COMMAND_XKCD_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_XKCD_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '[query:string]'
@@ -20,24 +19,23 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const query = typeof input === 'undefined'
-			? null
-			: /^\d+$/.test(input)
-				? Number(input)
-				: input;
+		const query = typeof input === 'undefined' ? null : /^\d+$/.test(input) ? Number(input) : input;
 
 		const comicNumber = await this.getNumber(query, message.language);
-		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON)
-			.catch(() => { throw message.language.tget('COMMAND_XKCD_NOTFOUND'); });
+		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
+			throw message.language.tget('COMMAND_XKCD_NOTFOUND');
+		});
 
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setImage(comic.img)
-			.setTitle(comic.title)
-			.setURL(`https://xkcd.com/${comicNumber}/`)
-			.setFooter(`XKCD | ${comic.num} | ${this.getTime(comic.year, comic.month, comic.day)}`)
-			.setDescription(comic.alt)
-			.setTimestamp());
+		return message.sendEmbed(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setImage(comic.img)
+				.setTitle(comic.title)
+				.setURL(`https://xkcd.com/${comicNumber}/`)
+				.setFooter(`XKCD | ${comic.num} | ${this.getTime(comic.year, comic.month, comic.day)}`)
+				.setDescription(comic.alt)
+				.setTimestamp()
+		);
 	}
 
 	private getTime(year: string, month: string, day: string) {
@@ -45,7 +43,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async getNumber(query: string | number | null, i18n: Language) {
-		const xkcdInfo = await fetch('https://xkcd.com/info.0.json', FetchResultTypes.JSON) as XkcdResultOk;
+		const xkcdInfo = (await fetch('https://xkcd.com/info.0.json', FetchResultTypes.JSON)) as XkcdResultOk;
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
@@ -53,7 +51,10 @@ export default class extends SkyraCommand {
 		}
 
 		if (query) {
-			const text = await fetch(`https://relevantxkcd.appspot.com/process?action=xkcd&query=${encodeURIComponent(query)}`, FetchResultTypes.Text);
+			const text = await fetch(
+				`https://relevantxkcd.appspot.com/process?action=xkcd&query=${encodeURIComponent(query)}`,
+				FetchResultTypes.Text
+			);
 			const comics = text.split(' ').slice(2);
 			const random = Math.floor(Math.random() * (comics.length / 2));
 			return parseInt(comics[random * 2].replace(/\n/g, ''), 10);
@@ -61,7 +62,6 @@ export default class extends SkyraCommand {
 
 		return Math.floor(Math.random() * (xkcdInfo.num - 1)) + 1;
 	}
-
 }
 
 export interface XkcdResultOk {

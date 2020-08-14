@@ -2,13 +2,12 @@ import { iteratorAt } from '@utils/util';
 import { pickByWeights } from './pickByWeights';
 
 export class Markov {
-
 	private readonly wordBank: WordBank = new Map();
 	private readonly normalizeFn: MarkovNormalizer;
 	private sentence = '';
 	private endFn: MarkovEndFunction;
 
-	public constructor(normalizeFn: MarkovNormalizer = word => word.replace(/\.$/g, '')) {
+	public constructor(normalizeFn: MarkovNormalizer = (word) => word.replace(/\.$/g, '')) {
 		this.normalizeFn = normalizeFn;
 		this.endFn = () => this.countWords() > 7;
 	}
@@ -60,7 +59,8 @@ export class Markov {
 				this.startFn = fnStart;
 				return this;
 			}
-			default: throw new TypeError('Expected either a string or a function.');
+			default:
+				throw new TypeError('Expected either a string or a function.');
 		}
 	}
 
@@ -82,7 +82,8 @@ export class Markov {
 				this.endFn = () => this.countWords() > fnEnd;
 				return this;
 			}
-			default: throw new TypeError('Expected either a function, string, number, or undefined.');
+			default:
+				throw new TypeError('Expected either a function, string, number, or undefined.');
 		}
 	}
 
@@ -104,7 +105,6 @@ export class Markov {
 
 		return words;
 	}
-
 }
 
 export type WordBank = Map<WordBankKey, WordBankValue>;

@@ -13,7 +13,6 @@ import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 type ArgumentType = [LLRCData, string];
 
 export default class extends ModerationEvent<ArgumentType> {
-
 	protected keyEnabled: string = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: string = GuildSettings.Selfmod.Reactions.SoftAction;
 	protected hardPunishmentPath: HardPunishment<typeof GuildSettings.Selfmod.Reactions.HardAction> = {
@@ -25,9 +24,12 @@ export default class extends ModerationEvent<ArgumentType> {
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		if (!data.guild.settings.get(this.keyEnabled)
-			|| data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).length === 0
-			|| data.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(data.channel.id)) return;
+		if (
+			!data.guild.settings.get(this.keyEnabled) ||
+			data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).length === 0 ||
+			data.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(data.channel.id)
+		)
+			return;
 
 		const member = await data.guild.members.fetch(data.userID);
 		if (member.user.bot || this.hasPermissions(member)) return;
@@ -66,15 +68,21 @@ export default class extends ModerationEvent<ArgumentType> {
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
-		floatPromise(this, api(this.client).channels(data.channel.id)
-			.messages(data.messageID)
-			.reactions(emoji, data.userID)
-			.delete({ reason: '[MODERATION] Automatic Removal of Blacklisted Emoji.' }));
+		floatPromise(
+			this,
+			api(this.client)
+				.channels(data.channel.id)
+				.messages(data.messageID)
+				.reactions(emoji, data.userID)
+				.delete({ reason: '[MODERATION] Automatic Removal of Blacklisted Emoji.' })
+		);
 	}
 
 	protected onAlert([data]: Readonly<ArgumentType>) {
-		floatPromise(this, data.channel.sendLocale('MONITOR_REACTIONSFILTER', [`<@${data.userID}>`])
-			.then(message => message.nuke(15000)));
+		floatPromise(
+			this,
+			data.channel.sendLocale('MONITOR_REACTIONSFILTER', [`<@${data.userID}>`]).then((message) => message.nuke(15000))
+		);
 	}
 
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
@@ -82,10 +90,14 @@ export default class extends ModerationEvent<ArgumentType> {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
-			.setThumbnail(data.emoji.id === null
-				? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
-				: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`)
-			.setDescription(`[${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`)
+			.setThumbnail(
+				data.emoji.id === null
+					? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
+					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
+			)
+			.setDescription(
+				`[${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
+			)
 			.setFooter(`${data.channel.name} | ${data.guild.language.tget('CONST_MONITOR_REACTIONFILTER')}`)
 			.setTimestamp();
 	}
@@ -99,5 +111,4 @@ export default class extends ModerationEvent<ArgumentType> {
 			? member.roles.has(member.guild.settings.get(GuildSettings.Roles.Moderator))
 			: member.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
 	}
-
 }

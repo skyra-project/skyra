@@ -8,7 +8,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild/members/:member' })
 export default class extends Route {
-
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
@@ -25,5 +24,4 @@ export default class extends Route {
 		const member = await guild.members.fetch(memberID).catch(() => null);
 		return member ? response.json(flattenMember(member)) : response.error(404);
 	}
-
 }

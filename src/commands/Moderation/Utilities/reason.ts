@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: language => language.tget('COMMAND_REASON_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_REASON_EXTENDED'),
+	description: (language) => language.tget('COMMAND_REASON_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_REASON_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -16,7 +16,6 @@ import { KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	public async init() {
 		this.createCustomResolver('range', async (arg, possible, message) => {
 			if (arg === 'latest') return [await message.guild!.moderation.count()];
@@ -30,7 +29,8 @@ export default class extends SkyraCommand {
 
 		const imageURL = getImage(message);
 		const { moderations } = await DbSet.connect();
-		await moderations.createQueryBuilder()
+		await moderations
+			.createQueryBuilder()
 			.update()
 			.where('guild_id = :guild', { guild: message.guild!.id })
 			.andWhere('case_id IN (:...ids)', { ids: [...entries.keys()] })
@@ -45,5 +45,4 @@ export default class extends SkyraCommand {
 
 		return message.alert(message.language.tget('COMMAND_REASON_UPDATED', cases, reason));
 	}
-
 }

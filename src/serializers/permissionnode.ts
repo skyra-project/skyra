@@ -4,7 +4,6 @@ import { GuildMember, Role } from 'discord.js';
 import { Command, Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
-
 	public async validate(data: PermissionsNode, { entry, language, guild }: SerializerUpdateContext) {
 		if (guild === null) throw new TypeError('guild must not be null.');
 
@@ -22,8 +21,9 @@ export default class extends Serializer {
 			if (!role) throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID_TARGET');
 			target = role;
 		} else {
-			target = await guild.members.fetch(data.id)
-				.catch(() => { throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID_TARGET'); });
+			target = await guild.members.fetch(data.id).catch(() => {
+				throw language.tget('SERIALIZER_PERMISSION_NODE_INVALID_TARGET');
+			});
 		}
 
 		// The @everyone role should not have allows
@@ -63,5 +63,4 @@ export default class extends Serializer {
 	public stringify(value: PermissionsNode) {
 		return `${value.id}(${value.allow.join(', ')} | ${value.deny.join(', ')})`;
 	}
-
 }

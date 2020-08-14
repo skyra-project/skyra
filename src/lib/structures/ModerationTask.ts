@@ -7,7 +7,6 @@ import { Task } from 'klasa';
 import { DbSet } from './DbSet';
 
 export abstract class ModerationTask<T = unknown> extends Task {
-
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
 		const guild = this.client.guilds.get(data.guildID);
 		// If the guild is not available, cancel the task.
@@ -20,7 +19,9 @@ export abstract class ModerationTask<T = unknown> extends Task {
 		// Run the abstract handle function.
 		try {
 			await this.handle(guild, data);
-		} catch { /* noop */ }
+		} catch {
+			/* noop */
+		}
 
 		return { type: ResponseType.Finished };
 	}
@@ -28,12 +29,11 @@ export abstract class ModerationTask<T = unknown> extends Task {
 	protected async getTargetDM(guild: Guild, target: User): Promise<ModerationActionsSendOptions> {
 		return {
 			moderator: null,
-			send: guild.settings.get(GuildSettings.Messages.ModerationDM) && await DbSet.fetchModerationDirectMessageEnabled(target.id)
+			send: guild.settings.get(GuildSettings.Messages.ModerationDM) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 
 	protected abstract handle(guild: Guild, data: ModerationData<T>): unknown;
-
 }
 
 export interface ModerationData<T = unknown> {

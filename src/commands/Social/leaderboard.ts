@@ -9,14 +9,13 @@ const titles = {
 };
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_LEADERBOARD_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_LEADERBOARD_EXTENDED'),
+			description: (language) => language.tget('COMMAND_LEADERBOARD_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_LEADERBOARD_EXTENDED'),
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
 			usageDelim: ' ',
@@ -27,7 +26,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
 
-		const { position } = list.get(message.author.id) || { position: (list.size + 1) };
+		const { position } = list.get(message.author.id) || { position: list.size + 1 };
 		const page = await this.generatePage(message, list, index - 1, position);
 		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
@@ -39,15 +38,18 @@ export default class extends SkyraCommand {
 		const page: string[] = [];
 		const listSize = list.size;
 		const pageCount = Math.ceil(listSize / 10);
-		const indexLength = ((index * 10) + 10).toString().length;
+		const indexLength = (index * 10 + 10).toString().length;
 		const positionOffset = index * 10;
 		for (const [id, value] of list) {
 			if (positionOffset > value.position) continue;
 			if (positionOffset + 10 < value.position) break;
 			retrievedPage.push(value);
 			if (!value.name) {
-				promises.push(this.client.userTags.fetchUsername(id)
-					.then(username => { value.name = username || `Unknown: ${id}`; }));
+				promises.push(
+					this.client.userTags.fetchUsername(id).then((username) => {
+						value.name = username || `Unknown: ${id}`;
+					})
+				);
 			}
 		}
 
@@ -72,5 +74,4 @@ export default class extends SkyraCommand {
 		if (str.length < 25) return str;
 		return `${str.substring(0, 22)}...`;
 	}
-
 }

@@ -5,13 +5,12 @@ import { KlasaMessage } from 'klasa';
 import { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: language => language.tget('COMMAND_PLAY_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_PLAY_EXTENDED'),
+	description: (language) => language.tget('COMMAND_PLAY_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_PLAY_EXTENDED'),
 	usage: '(song:song)',
 	flagSupport: true
 })
 export default class extends MusicCommand {
-
 	@requireUserInVoiceChannel()
 	public async run(message: KlasaMessage, [songs]: [TrackData[]]) {
 		const { music } = message.guild!;
@@ -40,5 +39,4 @@ export default class extends MusicCommand {
 			await music.play();
 		}
 	}
-
 }

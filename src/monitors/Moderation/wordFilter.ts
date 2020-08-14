@@ -9,7 +9,6 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
-
 	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_WORDS';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Filter.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Filter.IgnoredChannels;
@@ -24,8 +23,7 @@ export default class extends ModerationMonitor {
 	};
 
 	public shouldRun(message: KlasaMessage) {
-		return super.shouldRun(message)
-			&& message.guild!.security.regexp !== null;
+		return super.shouldRun(message) && message.guild!.security.regexp !== null;
 	}
 
 	protected preProcess(message: KlasaMessage) {
@@ -37,7 +35,7 @@ export default class extends ModerationMonitor {
 
 	protected async onDelete(message: KlasaMessage, value: FilterResults) {
 		floatPromise(this, message.nuke());
-		if (message.content.length > 25 && await DbSet.fetchModerationDirectMessageEnabled(message.author.id)) {
+		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
 			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [codeBlock('md', cutText(value.filtered, 1900))]));
 		}
 	}
@@ -88,7 +86,6 @@ export default class extends ModerationMonitor {
 			highlighted: highlighted.join('')
 		};
 	}
-
 }
 
 interface FilterResults {

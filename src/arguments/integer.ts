@@ -3,7 +3,6 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['int'] })
 export default class extends Argument {
-
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', possible.name);
 
@@ -15,5 +14,4 @@ export default class extends Argument {
 		// @ts-expect-error 2341
 		return Argument.minOrMax(this.client, number, min, max, possible, message, '') ? number : null;
 	}
-
 }

@@ -10,7 +10,6 @@ import { Game } from './Game';
 import { Player, PlayerColor } from './Player';
 
 export class PlayerHuman extends Player {
-
 	private player: KlasaUser;
 
 	public constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor, player: KlasaUser) {
@@ -19,14 +18,13 @@ export class PlayerHuman extends Player {
 	}
 
 	public async start(): Promise<void> {
-		const reaction = await new Promise<string>(resolve => {
+		const reaction = await new Promise<string>((resolve) => {
 			this.game.llrc?.setTime(Time.Minute * 5);
 			this.game.llrc?.setEndListener(() => resolve(''));
-			this.game.llrc?.setListener(data => {
+			this.game.llrc?.setListener((data) => {
 				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(data.emoji.name)) {
 					if (this.game.manageMessages) {
-						this.removeEmoji(data.emoji, data.userID)
-							.catch(error => this.game.message.client.emit(Events.ApiError, error));
+						this.removeEmoji(data.emoji, data.userID).catch((error) => this.game.message.client.emit(Events.ApiError, error));
 					}
 					resolve(data.emoji.name);
 				}
@@ -51,8 +49,7 @@ export class PlayerHuman extends Player {
 	private async removeEmoji(emoji: LLRCDataEmoji, userID: string): Promise<void> {
 		try {
 			const { message } = this.game;
-			await api(message.client).channels(message.channel.id).messages(message.id)
-				.reactions(resolveEmoji(emoji)!)(userID).delete();
+			await api(message.client).channels(message.channel.id).messages(message.id).reactions(resolveEmoji(emoji)!)(userID).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return;
@@ -61,5 +58,4 @@ export class PlayerHuman extends Player {
 			this.game.message.client.emit(Events.ApiError, error);
 		}
 	}
-
 }

@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ar'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_ADDROLE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_ADDROLE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_ADDROLE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_ADDROLE_EXTENDED'),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
@@ -18,7 +18,6 @@ import { KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends ModerationCommand {
-
 	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext & { role: Role } {
 		return {
 			targets: targets as User[],
@@ -29,13 +28,16 @@ export default class extends ModerationCommand {
 	}
 
 	protected async handle(message: KlasaMessage, context: HandledCommandContext & { role: Role }) {
-		return message.guild!.security.actions.addRole({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			reason: context.reason,
-			imageURL: getImage(message),
-			duration: context.duration
-		}, context.role, await this.getTargetDM(message, context.target));
+		return message.guild!.security.actions.addRole(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				reason: context.reason,
+				imageURL: getImage(message),
+				duration: context.duration
+			},
+			context.role,
+			await this.getTargetDM(message, context.target)
+		);
 	}
-
 }

@@ -3,7 +3,6 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	/**
 	 * Syntax  : {number}?[ ]d[ ]{number}[ ]{.*?}
 	 * Examples:
@@ -26,8 +25,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['roll'],
 			cooldown: 5,
-			description: language => language.tget('COMMAND_DICE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DICE_EXTENDED'),
+			description: (language) => language.tget('COMMAND_DICE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_DICE_EXTENDED'),
 			usage: '[amount:integer|dice:string]',
 			spam: true
 		});
@@ -68,7 +67,6 @@ export default class extends SkyraCommand {
 
 		const maximum = amount * dice;
 		const minimum = amount;
-		return Math.floor((Math.random() * ((maximum - minimum) + 1)) + minimum + modifier);
+		return Math.floor(Math.random() * (maximum - minimum + 1) + minimum + modifier);
 	}
-
 }

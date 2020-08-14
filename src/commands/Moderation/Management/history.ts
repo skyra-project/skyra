@@ -11,13 +11,13 @@ import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, KlasaUser } from 'klasa';
 
-const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB3244];
+const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: language => language.tget('COMMAND_HISTORY_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_HISTORY_EXTENDED'),
+	description: (language) => language.tget('COMMAND_HISTORY_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_HISTORY_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
 	usage: '<details|overview:default> [user:username]',
@@ -25,7 +25,6 @@ const COLORS = [0x80F31F, 0xA5DE0B, 0xC7C101, 0xE39E03, 0xF6780F, 0xFE5326, 0xFB
 	subcommands: true
 })
 export default class extends SkyraCommand {
-
 	public async overview(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
 		const logs = await message.guild!.moderation.fetch(target.id);
 		let warnings = 0;
@@ -36,37 +35,45 @@ export default class extends SkyraCommand {
 			if (log.invalidated || log.appealType) continue;
 			switch (log.typeVariation) {
 				case Moderation.TypeVariation.Ban:
-				case Moderation.TypeVariation.Softban: ++bans;
+				case Moderation.TypeVariation.Softban:
+					++bans;
 					break;
-				case Moderation.TypeVariation.Mute: ++mutes;
+				case Moderation.TypeVariation.Mute:
+					++mutes;
 					break;
-				case Moderation.TypeVariation.Kick: ++kicks;
+				case Moderation.TypeVariation.Kick:
+					++kicks;
 					break;
-				case Moderation.TypeVariation.Warning: ++warnings;
+				case Moderation.TypeVariation.Warning:
+					++warnings;
 			}
 		}
 
 		const index = Math.min(COLORS.length - 1, warnings + mutes + kicks + bans);
 
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(COLORS[index])
-			.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans)));
+		return message.sendEmbed(
+			new MessageEmbed()
+				.setColor(COLORS[index])
+				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans))
+		);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
-		const entries = (await message.guild!.moderation.fetch(target.id)).filter(log => !log.invalidated && !log.appealType);
+		const entries = (await message.guild!.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
 		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
 
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size)));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size))
+		);
 
 		// Fetch usernames
 		const usernames = await this.fetchAllModerators(entries);
@@ -91,13 +98,12 @@ export default class extends SkyraCommand {
 
 	private displayModerationLogFromModerators(users: Map<string, string>, duration: DurationDisplay, entry: ModerationEntity) {
 		const appealOrInvalidated = entry.appealType || entry.invalidated;
-		const remainingTime = appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : (entry.createdTimestamp + entry.duration!) - Date.now();
+		const remainingTime =
+			appealOrInvalidated || entry.duration === null || entry.createdAt === null ? null : entry.createdTimestamp + entry.duration! - Date.now();
 		const expiredTime = remainingTime !== null && remainingTime <= 0;
 		const formattedModerator = users.get(entry.moderatorID!);
 		const formattedReason = entry.reason ? cutText(entry.reason, 800) : 'None';
-		const formattedDuration = remainingTime === null || expiredTime
-			? ''
-			: `\nExpires in: ${duration(remainingTime)}`;
+		const formattedDuration = remainingTime === null || expiredTime ? '' : `\nExpires in: ${duration(remainingTime)}`;
 		const formatter = expiredTime || appealOrInvalidated ? '~~' : '';
 
 		return {
@@ -114,7 +120,6 @@ export default class extends SkyraCommand {
 		}
 		return moderators;
 	}
-
 }
 
 type DurationDisplay = (time: number) => string;

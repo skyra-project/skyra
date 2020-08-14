@@ -5,12 +5,11 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['bank'],
-			description: language => language.tget('COMMAND_VAULT_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_VAULT_EXTENDED'),
+			description: (language) => language.tget('COMMAND_VAULT_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_VAULT_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			subcommands: true,
 			usage: '<deposit|withdraw|show:default> (coins:coins)',
@@ -37,7 +36,7 @@ export default class extends SkyraCommand {
 
 	public async deposit(message: KlasaMessage, [coins]: [number]) {
 		const { users } = await DbSet.connect();
-		return users.lock([message.author.id], async id => {
+		return users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
 			const { money } = settings;
@@ -58,7 +57,7 @@ export default class extends SkyraCommand {
 
 	public async withdraw(message: KlasaMessage, [coins]: [number]) {
 		const { users } = await DbSet.connect();
-		return users.lock([message.author.id], async id => {
+		return users.lock([message.author.id], async (id) => {
 			const settings = await users.ensureProfile(id);
 
 			const { money } = settings;
@@ -89,17 +88,11 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
-		const {
-			ACCOUNT_MONEY, ACCOUNT_VAULT,
-			DEPOSITED_DESCRIPTION, WITHDREW_DESCRIPTION,
-			SHOW_DESCRIPTION
-		} = message.language.tget('COMMAND_VAULT_EMBED_DATA');
+		const { ACCOUNT_MONEY, ACCOUNT_VAULT, DEPOSITED_DESCRIPTION, WITHDREW_DESCRIPTION, SHOW_DESCRIPTION } = message.language.tget(
+			'COMMAND_VAULT_EMBED_DATA'
+		);
 
-		const description = coins
-			? hasDeposited
-				? DEPOSITED_DESCRIPTION(coins)
-				: WITHDREW_DESCRIPTION(coins)
-			: SHOW_DESCRIPTION;
+		const description = coins ? (hasDeposited ? DEPOSITED_DESCRIPTION(coins) : WITHDREW_DESCRIPTION(coins)) : SHOW_DESCRIPTION;
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -107,5 +100,4 @@ export default class extends SkyraCommand {
 			.addField(ACCOUNT_MONEY, money, true)
 			.addField(ACCOUNT_VAULT, vault, true);
 	}
-
 }

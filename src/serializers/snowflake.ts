@@ -2,7 +2,6 @@ import { Snowflake } from '@klasa/snowflake';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
-
 	/**
 	 * The validator, requiring all numbers and 17 to 19 digits (future-proof).
 	 */
@@ -21,5 +20,4 @@ export default class extends Serializer {
 		}
 		throw language.tget('RESOLVER_INVALID_SNOWFLAKE', entry.key);
 	}
-
 }

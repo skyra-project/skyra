@@ -3,7 +3,6 @@ import { UserEntity } from './UserEntity';
 
 @Entity('user_cooldown', { schema: 'public' })
 export class UserCooldownEntity extends BaseEntity {
-
 	@Column('timestamp without time zone', { nullable: true })
 	public daily: Date | null = null;
 
@@ -13,5 +12,4 @@ export class UserCooldownEntity extends BaseEntity {
 	@OneToOne(() => UserEntity, { primary: true, onDelete: 'CASCADE' })
 	@JoinColumn()
 	public user?: UserEntity;
-
 }

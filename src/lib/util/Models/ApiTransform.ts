@@ -1,6 +1,19 @@
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { Song } from '@lib/structures/music/Song';
-import { Channel, DMChannel, Guild, GuildChannel, GuildFeatures, GuildMember, NewsChannel, PermissionOverwrites, Role, TextChannel, User, VoiceChannel } from 'discord.js';
+import {
+	Channel,
+	DMChannel,
+	Guild,
+	GuildChannel,
+	GuildFeatures,
+	GuildMember,
+	NewsChannel,
+	PermissionOverwrites,
+	Role,
+	TextChannel,
+	User,
+	VoiceChannel
+} from 'discord.js';
 
 // #region Guild
 
@@ -317,7 +330,7 @@ export function flattenMusicHandler(handler: MusicHandler): FlattenedMusicHandle
 		position: handler.position,
 		playing: handler.playing ?? false,
 		paused: handler.paused ?? false,
-		queue: handler.queue.map(q => q.toJSON()),
+		queue: handler.queue.map((q) => q.toJSON()),
 		volume: handler.volume,
 		replay: handler.replay
 	};

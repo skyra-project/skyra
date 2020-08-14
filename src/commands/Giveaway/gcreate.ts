@@ -9,8 +9,8 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
-	description: language => language.tget('COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_GIVEAWAYSCHEDULE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <schedule:time> <duration:time> <title:...string{,256}>',
@@ -19,8 +19,10 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 	promptLimit: Infinity
 })
 export default class extends SkyraCommand {
-
-	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]) {
+	public async run(
+		message: KlasaMessage,
+		[channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]
+	) {
 		// First do the checks for the giveaway itself
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
@@ -45,5 +47,4 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale('GIVEAWAY_SCHEDULED', [scheduleOffset]);
 	}
-
 }

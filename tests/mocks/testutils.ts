@@ -9,7 +9,6 @@ export function expectCalledStrict(
 	}
 }
 
-
 export function expectReturnedStrict(
 	mockFn: ReturnType<typeof jest.fn> | ReturnType<typeof jest.spyOn>,
 	amountOfReturns = 1,

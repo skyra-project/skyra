@@ -4,12 +4,11 @@ import { requireDj, requireSkyraInVoiceChannel } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: language => language.tget('COMMAND_LEAVE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_LEAVE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_LEAVE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_LEAVE_EXTENDED'),
 	flagSupport: true
 })
 export default class extends MusicCommand {
-
 	@requireSkyraInVoiceChannel()
 	@requireDj()
 	public async run(message: KlasaMessage) {
@@ -21,5 +20,4 @@ export default class extends MusicCommand {
 			message.guild!.music.queue = [];
 		}
 	}
-
 }

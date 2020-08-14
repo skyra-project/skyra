@@ -10,13 +10,9 @@ import { EventOptions } from 'klasa';
 	event: Events.AnalyticsSync
 })
 export default class extends AnalyticsEvent {
-
 	public async run(guilds: number, users: number) {
 		const dbSet = await DbSet.connect();
-		const [economyHealth, twitchSubscriptionCount] = await Promise.all([
-			this.fetchEconomyHealth(dbSet),
-			dbSet.twitchStreamSubscriptions.count()
-		]);
+		const [economyHealth, twitchSubscriptionCount] = await Promise.all([this.fetchEconomyHealth(dbSet), dbSet.twitchStreamSubscriptions.count()]);
 
 		this.writePoints([
 			this.syncGuilds(guilds),
@@ -31,24 +27,30 @@ export default class extends AnalyticsEvent {
 	}
 
 	private syncGuilds(value: number) {
-		return new Point(AnalyticsSchema.Points.Guilds)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			// TODO: Adjust for traditional sharding
-			.intField('value', value);
+		return (
+			new Point(AnalyticsSchema.Points.Guilds)
+				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+				// TODO: Adjust for traditional sharding
+				.intField('value', value)
+		);
 	}
 
 	private syncUsers(value: number) {
-		return new Point(AnalyticsSchema.Points.Users)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			// TODO: Adjust for traditional sharding
-			.intField('value', value);
+		return (
+			new Point(AnalyticsSchema.Points.Users)
+				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+				// TODO: Adjust for traditional sharding
+				.intField('value', value)
+		);
 	}
 
 	private syncVoiceConnections() {
-		return new Point(AnalyticsSchema.Points.VoiceConnections)
-			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
-			// TODO: Adjust for traditional sharding
-			.intField('value', this.client.lavalink.players.size);
+		return (
+			new Point(AnalyticsSchema.Points.VoiceConnections)
+				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+				// TODO: Adjust for traditional sharding
+				.intField('value', this.client.lavalink.players.size)
+		);
 	}
 
 	private syncEconomy(value: string, type: AnalyticsSchema.EconomyType) {
@@ -65,7 +67,7 @@ export default class extends AnalyticsEvent {
 	}
 
 	private async fetchEconomyHealth(dbSet: DbSet): Promise<{ total_money: string; total_vault: string }> {
-		const [data] = await dbSet.users.query(/* sql */`
+		const [data] = await dbSet.users.query(/* sql */ `
 			WITH
 				u AS (SELECT SUM(money) as total_money FROM public.user),
 				v AS (SELECT SUM(vault) as total_vault FROM public.user_profile)
@@ -73,5 +75,4 @@ export default class extends AnalyticsEvent {
 		`);
 		return data;
 	}
-
 }

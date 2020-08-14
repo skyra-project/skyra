@@ -8,7 +8,7 @@ import { KlasaMessage, SettingsFolder } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
-	description: language => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
+	description: (language) => language.tget('COMMAND_CONF_SERVER_DESCRIPTION'),
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'],
@@ -18,7 +18,6 @@ import { KlasaMessage, SettingsFolder } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public menu(message: KlasaMessage) {
 		return new SettingsMenu(message).init();
@@ -88,5 +87,4 @@ export default class extends SkyraCommand {
 			throw message.language.tget('COMMAND_CONF_NOVALUE');
 		});
 	}
-
 }

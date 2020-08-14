@@ -4,7 +4,6 @@ import { getFromPath } from '@utils/util';
 import { Event, Settings } from 'klasa';
 
 export default class extends Event {
-
 	public async run(settings: Settings, changes: Record<string, unknown>) {
 		// If the synchronized settings isn't from the guilds gateway, return early.
 		if (settings.gateway.name !== 'guilds') return;
@@ -28,5 +27,4 @@ export default class extends Event {
 
 		return guild.permissionsManager.update(updated);
 	}
-
 }

@@ -3,7 +3,6 @@
  * @version 1.0.0
  */
 export class PreciseTimeout {
-
 	private readonly kEndsAt: number;
 	private stopped = false;
 	private resolve: (() => void) | null = null;
@@ -30,7 +29,7 @@ export class PreciseTimeout {
 		};
 
 		while (!this.stopped) {
-			await new Promise<void>(resolve => {
+			await new Promise<void>((resolve) => {
 				this.resolve = resolve;
 				this.timeout = setTimeout(cb, Date.now() - this.kEndsAt + 10);
 			});
@@ -50,5 +49,4 @@ export class PreciseTimeout {
 		if (this.resolve) this.resolve();
 		return true;
 	}
-
 }

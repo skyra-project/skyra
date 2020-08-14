@@ -37,7 +37,6 @@ export const enum Emojis {
 }
 
 export namespace ConnectFourConstants {
-
 	export const enum Emojis {
 		Empty = '<:Empty:352403997606412289>',
 		PlayerOne = '<:PlayerONE:352403997300359169>',
@@ -47,13 +46,18 @@ export namespace ConnectFourConstants {
 	}
 
 	export const Reactions = ['1⃣', '2⃣', '3⃣', '4⃣', '5⃣', '6⃣', '7⃣'] as readonly string[];
-
 }
 
-export const enum MessageLogsEnum { Message, NSFWMessage, Image, Moderation, Member, Reaction }
+export const enum MessageLogsEnum {
+	Message,
+	NSFWMessage,
+	Image,
+	Moderation,
+	Member,
+	Reaction
+}
 
 export namespace Moderation {
-
 	/* eslint-disable no-multi-spaces */
 	export const enum TypeVariation {
 		Ban = 0b00000000,
@@ -244,17 +248,14 @@ export namespace Moderation {
 	export interface Unlock {
 		unlock(): void;
 	}
-
 }
 
 export namespace Mime {
-
 	export const enum Types {
 		ApplicationJson = 'application/json',
 		ApplicationFormUrlEncoded = 'application/x-www-form-urlencoded',
 		TextPlain = 'text/plain'
 	}
-
 }
 
 export const enum APIErrors {
@@ -326,5 +327,5 @@ export const clientOptions: KlasaClientOptions = {
 
 export const enum BrandingColors {
 	Primary = 0x1e88e5,
-	Secondary = 0xFF9D01
+	Secondary = 0xff9d01
 }

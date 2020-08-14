@@ -5,7 +5,6 @@ import { VoiceChannel } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public run(manager: MusicHandler, voiceChannel: VoiceChannel, context: MusicHandlerRequestContext | null) {
 		const channel = context ? context.channel : manager.channel;
 
@@ -17,5 +16,4 @@ export default class extends Event {
 			subscription.send({ action: OutgoingWebsocketAction.MusicConnect, data: { voiceChannel: voiceChannel.id } });
 		}
 	}
-
 }

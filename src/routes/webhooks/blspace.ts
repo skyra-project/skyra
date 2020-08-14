@@ -7,7 +7,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'webhooks/blspace', route: 'webhooks/blspace' })
 export default class extends Route {
-
 	public async post(request: ApiRequest, response: ApiResponse) {
 		if (request.headers.authorization !== TOKENS.BOTLIST_SPACE_KEY) return response.forbidden();
 		if (!request.body) return response.badRequest();
@@ -15,7 +14,7 @@ export default class extends Route {
 		const body = request.body as Body;
 		try {
 			const { users } = await DbSet.connect();
-			await users.lock([body.user.id], async id => {
+			await users.lock([body.user.id], async (id) => {
 				const user = await users.ensure(id);
 
 				user.money += 400;
@@ -28,7 +27,6 @@ export default class extends Route {
 			return response.error(error.message ?? 'Unknown error');
 		}
 	}
-
 }
 
 export interface Body {

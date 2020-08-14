@@ -6,7 +6,6 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 	name: '...overwatchplayer'
 })
 export default class extends Argument {
-
 	public get baseArg() {
 		return this.store.get('overwatchplayer')!;
 	}
@@ -14,11 +13,13 @@ export default class extends Argument {
 	public run(arg: string, possible: Possible, message: KlasaMessage): string {
 		if (!arg) throw message.language.tget('COMMAND_OVERWATCH_INVALID_PLAYER_NAME', arg);
 		// eslint-disable-next-line dot-notation
-		const { args, usage: { usageDelim } } = message['prompter']!;
+		const {
+			args,
+			usage: { usageDelim }
+		} = message['prompter']!;
 		const index = args.indexOf(arg);
 		const rest = args.splice(index, args.length - index).join(usageDelim!);
 		args.push(rest);
 		return this.baseArg.run(rest, possible, message);
 	}
-
 }

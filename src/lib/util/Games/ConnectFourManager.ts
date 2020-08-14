@@ -6,7 +6,6 @@ import { PlayerColor } from './ConnectFour/Player';
 import { PlayerHuman } from './ConnectFour/PlayerHuman';
 
 export class ConnectFourManager extends Collection<string, Game | null> {
-
 	/**
 	 * The Client instance that manages this manager
 	 */
@@ -31,5 +30,4 @@ export class ConnectFourManager extends Collection<string, Game | null> {
 		this.set(message.channel.id, game);
 		return game;
 	}
-
 }

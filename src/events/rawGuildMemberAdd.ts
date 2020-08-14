@@ -20,7 +20,6 @@ const enum Matches {
 }
 
 export default class extends Event {
-
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 	private readonly kMessageLogMetaData = {
 		Join: { color: Colors.Green, title: 'EVENTS_GUILDMEMBERADD' },
@@ -56,12 +55,16 @@ export default class extends Event {
 	}
 
 	private handleMemberLog(guild: Guild, member: GuildMember, asset: MessageLogMetaData) {
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-			.setColor(asset.color)
-			.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(guild.language.tget('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp))
-			.setFooter(guild.language.tget(asset.title))
-			.setTimestamp());
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+			new MessageEmbed()
+				.setColor(asset.color)
+				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+				.setDescription(
+					guild.language.tget('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp)
+				)
+				.setFooter(guild.language.tget(asset.title))
+				.setTimestamp()
+		);
 	}
 
 	private handleGreetingMessage(guild: Guild, member: GuildMember) {
@@ -70,11 +73,9 @@ export default class extends Event {
 		if (channelsGreeting && messagesGreeting) {
 			const channel = guild.channels.get(channelsGreeting) as TextChannel;
 			if (channel && channel.postable) {
-				channel.send(this.transformMessage(messagesGreeting, guild, member.user))
-					.catch(error => this.client.emit(Events.ApiError, error));
+				channel.send(this.transformMessage(messagesGreeting, guild, member.user)).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Channels.Greeting)
-					.catch(error => this.client.emit(Events.Wtf, error));
+				guild.settings.reset(GuildSettings.Channels.Greeting).catch((error) => this.client.emit(Events.Wtf, error));
 			}
 		}
 	}
@@ -84,11 +85,9 @@ export default class extends Event {
 		if (initialRole) {
 			const role = guild.roles.get(initialRole);
 			if (!role || role.position >= guild.me!.roles.highest.position) {
-				guild.settings.reset(GuildSettings.Roles.Initial)
-					.catch(error => this.client.emit(Events.Wtf, error));
+				guild.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit(Events.Wtf, error));
 			} else {
-				member.roles.add(role)
-					.catch(error => this.client.emit(Events.ApiError, error));
+				member.roles.add(role).catch((error) => this.client.emit(Events.ApiError, error));
 			}
 		}
 	}
@@ -96,10 +95,10 @@ export default class extends Event {
 	private handleJoinDM(guild: Guild, member: GuildMember) {
 		const messagesJoinDM = guild.settings.get(GuildSettings.Messages.JoinDM);
 		if (messagesJoinDM) {
-			floatPromise(this, resolveOnErrorCodes(
-				member.user.send(this.transformMessage(messagesJoinDM, guild, member.user)),
-				APIErrors.CannotMessageUser
-			));
+			floatPromise(
+				this,
+				resolveOnErrorCodes(member.user.send(this.transformMessage(messagesJoinDM, guild, member.user)), APIErrors.CannotMessageUser)
+			);
 		}
 	}
 
@@ -129,11 +128,9 @@ export default class extends Event {
 			// Handle mute
 			const role = guild.roles.get(rolesMuted);
 			if (role) {
-				member.roles.add(role)
-					.catch(error => this.client.emit(Events.ApiError, error));
+				member.roles.add(role).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {
-				guild.settings.reset(GuildSettings.Roles.Muted)
-					.catch(error => this.client.emit(Events.ApiError, error));
+				guild.settings.reset(GuildSettings.Roles.Muted).catch((error) => this.client.emit(Events.ApiError, error));
 			}
 
 			// Handle log
@@ -141,25 +138,31 @@ export default class extends Event {
 			return true;
 		}
 
-		member.roles.add([...stickyRoles]).catch(error => this.client.emit(Events.ApiError, error));
+		member.roles.add([...stickyRoles]).catch((error) => this.client.emit(Events.ApiError, error));
 
 		return false;
 	}
 
 	private transformMessage(str: string, guild: Guild, user: User) {
-		return str.replace(this.kTransformMessageRegExp, match => {
+		return str.replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
-				case Matches.Member: return `<@${user.id}>`;
-				case Matches.MemberName: return user.username;
-				case Matches.MemberTag: return user.tag;
-				case Matches.Guild: return guild.name;
-				case Matches.Position: return guild.language.ordinal(guild.memberCount);
-				case Matches.MemberCount: return guild.memberCount.toString();
-				default: return match;
+				case Matches.Member:
+					return `<@${user.id}>`;
+				case Matches.MemberName:
+					return user.username;
+				case Matches.MemberTag:
+					return user.tag;
+				case Matches.Guild:
+					return guild.name;
+				case Matches.Position:
+					return guild.language.ordinal(guild.memberCount);
+				case Matches.MemberCount:
+					return guild.memberCount.toString();
+				default:
+					return match;
 			}
 		});
 	}
-
 }
 
 interface MessageLogMetaData {

@@ -6,7 +6,6 @@ import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(manager: MusicHandler, song: Song | null, context: MusicHandlerRequestContext | null) {
 		const channel = context ? context.channel : manager.channel;
 
@@ -20,7 +19,7 @@ export default class extends Event {
 
 		if (song !== null) {
 			for (const subscription of manager.websocketUserIterator()) {
-				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: { queue: manager.queue.map(s => s.toJSON()) } });
+				subscription.send({ action: OutgoingWebsocketAction.MusicSongFinish, data: { queue: manager.queue.map((s) => s.toJSON()) } });
 			}
 		}
 
@@ -37,5 +36,4 @@ export default class extends Event {
 			}
 		}
 	}
-
 }

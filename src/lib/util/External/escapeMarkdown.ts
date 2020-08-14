@@ -153,10 +153,10 @@ export function escapeBold(text: string): string {
  */
 export function escapeItalic(text: string): string {
 	let i = 0;
-	return text = text.replace(/(?<=^|[^*])\*([^*]|\*\*|$)/g, (_, match) => {
+	return (text = text.replace(/(?<=^|[^*])\*([^*]|\*\*|$)/g, (_, match) => {
 		if (match === '**' || match === '__') return ++i % 2 ? `\\*${match}` : `${match}\\*`;
 		return `\\*${match}`;
-	});
+	}));
 }
 
 /**

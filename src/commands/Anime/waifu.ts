@@ -13,21 +13,21 @@ import { KlasaMessage } from 'klasa';
 const kMaximum = 100000;
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: language => language.tget('COMMAND_WAIFU_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_WAIFU_EXTENDED'),
+	description: (language) => language.tget('COMMAND_WAIFU_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_WAIFU_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage) {
 		const url = `https://thiswaifudoesnotexist.net/example-${Math.floor(Math.random() * kMaximum)}.jpg`;
-		return message.sendEmbed(new MessageEmbed()
-			.setTitle('→')
-			.setURL(url)
-			.setColor(await DbSet.fetchColor(message))
-			.setImage(url)
-			.setFooter(message.language.tget('COMMAND_WAIFU_FOOTER'))
-			.setTimestamp());
+		return message.sendEmbed(
+			new MessageEmbed()
+				.setTitle('→')
+				.setURL(url)
+				.setColor(await DbSet.fetchColor(message))
+				.setImage(url)
+				.setFooter(message.language.tget('COMMAND_WAIFU_FOOTER'))
+				.setTimestamp()
+		);
 	}
-
 }

@@ -14,26 +14,26 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['learnset', 'learnall'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_LEARN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_LEARN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_LEARN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_LEARN_EXTENDED'),
 	usage: '(generation:generation) <pokemon:string> <moves:...string> ',
 	usageDelim: ' ',
 	flagSupport: true
 })
 @CreateResolvers([
 	[
-		'generation', (arg, possible, message) => {
+		'generation',
+		(arg, possible, message) => {
 			if (kPokemonGenerations.has(arg)) return message.client.arguments.get('integer')!.run(arg, possible, message);
 			throw message.language.tget('COMMAND_LEARN_INVALID_GENERATION', arg);
 		}
 	]
 ])
 export default class extends RichDisplayCommand {
-
 	public async run(message: KlasaMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const movesList = moves.split(', ');
 		const learnsetData = await this.fetchAPI(message, pokemon, movesList, generation);
@@ -56,35 +56,33 @@ export default class extends RichDisplayCommand {
 	}
 
 	private buildDisplay(message: KlasaMessage, learnsetData: LearnsetEntry, generation: number, moves: string[]) {
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(resolveColour(learnsetData.color))
-			.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
-			.setTitle(message.language.tget('COMMAND_LEARN_TITLE', learnsetData.species, generation))
-			.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite));
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setColor(resolveColour(learnsetData.color))
+				.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
+				.setTitle(message.language.tget('COMMAND_LEARN_TITLE', learnsetData.species, generation))
+				.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite)
+		);
 
 		const methodTypes = message.language.tget('COMMAND_LEARN_METHOD_TYPES');
-		const learnableMethods = Object
-			.entries(learnsetData)
-			.filter(([key, value]) => (
-				key.endsWith('Moves')
-				&& (value as LearnsetLevelUpMove[]).length
-			)) as [keyof typeof methodTypes, LearnsetLevelUpMove[]][];
+		const learnableMethods = Object.entries(learnsetData).filter(
+			([key, value]) => key.endsWith('Moves') && (value as LearnsetLevelUpMove[]).length
+		) as [keyof typeof methodTypes, LearnsetLevelUpMove[]][];
 
 		if (learnableMethods.length === 0) {
-			return display.addPage((embed: MessageEmbed) => embed
-				.setDescription(message.language.tget('COMMAND_LEARN_CANNOT_LEARN', learnsetData.species, moves)));
+			return display.addPage((embed: MessageEmbed) =>
+				embed.setDescription(message.language.tget('COMMAND_LEARN_CANNOT_LEARN', learnsetData.species, moves))
+			);
 		}
 
 		for (const [methodName, methodData] of learnableMethods) {
-			const method = methodData.map(move => this.parseMove(
-				message, learnsetData.species, move.generation!, move.name!, methodTypes[methodName](move.level!)
-			));
+			const method = methodData.map((move) =>
+				this.parseMove(message, learnsetData.species, move.generation!, move.name!, methodTypes[methodName](move.level!))
+			);
 
-			display.addPage((embed: MessageEmbed) => embed
-				.setDescription(method));
+			display.addPage((embed: MessageEmbed) => embed.setDescription(method));
 		}
 
 		return display;
 	}
-
 }

@@ -14,7 +14,6 @@ import { Event, EventStore, KlasaGuild, Language } from 'klasa';
 import { CLIENT_ID } from '@root/config';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.GuildMemberUpdate, emitter: store.client.ws });
 	}
@@ -31,7 +30,6 @@ export default class extends Event {
 	}
 
 	private handleMemberChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
-
 		// Get the currently stored dataset
 		const previous = guild.memberTags.get(data.user.id);
 
@@ -53,7 +51,8 @@ export default class extends Event {
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
 			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'EVENTS_NAME_DIFFERENCE', 'EVENTS_NICKNAME_UPDATE', previous.nickname, next.nickname));
+				this.buildEmbed(data, guild.language, 'EVENTS_NAME_DIFFERENCE', 'EVENTS_NICKNAME_UPDATE', previous.nickname, next.nickname)
+			);
 		}
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and
@@ -73,7 +72,8 @@ export default class extends Event {
 
 			// Set the Role change log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'EVENTS_ROLE_DIFFERENCE', 'EVENTS_ROLE_UPDATE', addedRoles, removedRoles));
+				this.buildEmbed(data, guild.language, 'EVENTS_ROLE_DIFFERENCE', 'EVENTS_ROLE_UPDATE', addedRoles, removedRoles)
+			);
 		}
 	}
 
@@ -102,37 +102,45 @@ export default class extends Event {
 		// If the user does not have multiple roles from any set cancel
 		if (!hasMultipleRolesInOneSet) return;
 
+		const auditLogs = await api(this.client)
+			.guilds(guild.id)
+			['audit-logs'].get<AuditLogResult>({
+				query: {
+					limit: 10,
+					action_type: 25
+				}
+			});
 
-		const auditLogs = await api(this.client).guilds(guild.id)['audit-logs'].get<AuditLogResult>({
-			query: {
-				limit: 10,
-				action_type: 25
-			}
-		});
-
-		const entry = auditLogs.audit_log_entries.find(e => e.user_id !== CLIENT_ID
-			&& e.target_id === data.user.id
-			&& e.changes.find(c => c.key === '$add' && c.new_value.length));
+		const entry = auditLogs.audit_log_entries.find(
+			(e) => e.user_id !== CLIENT_ID && e.target_id === data.user.id && e.changes.find((c) => c.key === '$add' && c.new_value.length)
+		);
 		if (typeof entry === 'undefined') return;
 
-		const change = entry.changes.find(c => c.key === '$add' && c.new_value.length)!;
+		const change = entry.changes.find((c) => c.key === '$add' && c.new_value.length)!;
 		const updatedRoleID = change.new_value[0].id;
 		let memberRoles = data.roles;
 		for (const set of allRoleSets) {
-			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter(id => !set.roles.includes(id) || id === updatedRoleID);
+			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter((id) => !set.roles.includes(id) || id === updatedRoleID);
 		}
 
-		await api(this.client).guilds(guild.id).members(data.user.id)
+		await api(this.client)
+			.guilds(guild.id)
+			.members(data.user.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
 	}
 
-	private buildEmbed(data: WSGuildMemberUpdate, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, ...descriptionData: readonly unknown[]) {
+	private buildEmbed(
+		data: WSGuildMemberUpdate,
+		i18n: Language,
+		descriptionKey: LanguageKeysComplex,
+		footerKey: LanguageKeysSimple,
+		...descriptionData: readonly unknown[]
+	) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-			.setDescription(i18n.tget(descriptionKey, ...descriptionData as [string, string | undefined]))
+			.setDescription(i18n.tget(descriptionKey, ...(descriptionData as [string, string | undefined])))
 			.setFooter(i18n.tget(footerKey))
 			.setTimestamp();
 	}
-
 }

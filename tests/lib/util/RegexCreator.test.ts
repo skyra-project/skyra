@@ -1,6 +1,11 @@
 import {
-	create, processGroup, processLetter, processWordBoundaries,
-	processWordPattern, processWordPatternsWithGroups, WordBoundary
+	create,
+	processGroup,
+	processLetter,
+	processWordBoundaries,
+	processWordPattern,
+	processWordPatternsWithGroups,
+	WordBoundary
 } from '@utils/Security/RegexCreator';
 
 describe('RegexCreator', () => {

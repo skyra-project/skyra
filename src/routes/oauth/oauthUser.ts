@@ -14,11 +14,14 @@ import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
 export default class extends Route {
-
 	public async api(token: string) {
-		const oauthUser = await fetch<RawOauthUser>('https://discord.com/api/users/@me', {
-			headers: { Authorization: `Bearer ${token}` }
-		}, FetchResultTypes.JSON);
+		const oauthUser = await fetch<RawOauthUser>(
+			'https://discord.com/api/users/@me',
+			{
+				headers: { Authorization: `Bearer ${token}` }
+			},
+			FetchResultTypes.JSON
+		);
 		return this.fetchUser(oauthUser.id, `Bearer ${token}`);
 	}
 
@@ -38,12 +41,15 @@ export default class extends Route {
 			if (Date.now() + Time.Day > request.auth.expires) {
 				const body = await this.refreshToken(request.auth.user_id, request.auth.refresh);
 				if (body !== null) {
-					const authentication = Util.encrypt({
-						user_id: request.auth!.user_id,
-						token: body.access_token,
-						refresh: body.refresh_token,
-						expires: body.expires_in
-					}, this.client.options.clientSecret);
+					const authentication = Util.encrypt(
+						{
+							user_id: request.auth!.user_id,
+							token: body.access_token,
+							refresh: body.refresh_token,
+							expires: body.expires_in
+						},
+						this.client.options.clientSecret
+					);
 
 					response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
 					authToken = body.access_token;
@@ -76,35 +82,36 @@ export default class extends Route {
 
 		for (const oauthGuild of oauthGuilds) {
 			const guild = this.client.guilds.get(oauthGuild.id);
-			const serialized: PartialOauthFlattenedGuild = typeof guild === 'undefined'
-				? {
-					afkChannelID: null,
-					afkTimeout: 0,
-					applicationID: null,
-					available: true,
-					banner: null,
-					channels: [],
-					defaultMessageNotifications: 'MENTIONS',
-					description: null,
-					embedEnabled: false,
-					explicitContentFilter: 0,
-					features: oauthGuild.features,
-					icon: oauthGuild.icon,
-					id: oauthGuild.id,
-					joinedTimestamp: null,
-					mfaLevel: 0,
-					name: oauthGuild.name,
-					ownerID: oauthGuild.owner ? user.id : null,
-					premiumSubscriptionCount: null,
-					premiumTier: 0,
-					region: null,
-					roles: [],
-					splash: null,
-					systemChannelID: null,
-					vanityURLCode: null,
-					verificationLevel: 0
-				}
-				: flattenGuild(guild);
+			const serialized: PartialOauthFlattenedGuild =
+				typeof guild === 'undefined'
+					? {
+							afkChannelID: null,
+							afkTimeout: 0,
+							applicationID: null,
+							available: true,
+							banner: null,
+							channels: [],
+							defaultMessageNotifications: 'MENTIONS',
+							description: null,
+							embedEnabled: false,
+							explicitContentFilter: 0,
+							features: oauthGuild.features,
+							icon: oauthGuild.icon,
+							id: oauthGuild.id,
+							joinedTimestamp: null,
+							mfaLevel: 0,
+							name: oauthGuild.name,
+							ownerID: oauthGuild.owner ? user.id : null,
+							premiumSubscriptionCount: null,
+							premiumTier: 0,
+							region: null,
+							roles: [],
+							splash: null,
+							systemChannelID: null,
+							vanityURLCode: null,
+							verificationLevel: 0
+					  }
+					: flattenGuild(guild);
 
 			guilds.push({
 				...serialized,
@@ -123,20 +130,24 @@ export default class extends Route {
 	private async refreshToken(id: string, refreshToken: string) {
 		try {
 			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
-			return await fetch<OauthData>('https://discord.com/api/v6/oauth2/token', {
-				method: 'POST',
-				body: stringify({
-					client_id: this.client.options.clientID,
-					client_secret: this.client.options.clientSecret,
-					grant_type: 'refresh_token',
-					refresh_token: refreshToken,
-					redirect_uri: REDIRECT_URI,
-					scope: SCOPE
-				}),
-				headers: {
-					'Content-Type': Mime.Types.ApplicationFormUrlEncoded
-				}
-			}, FetchResultTypes.JSON);
+			return await fetch<OauthData>(
+				'https://discord.com/api/v6/oauth2/token',
+				{
+					method: 'POST',
+					body: stringify({
+						client_id: this.client.options.clientID,
+						client_secret: this.client.options.clientSecret,
+						grant_type: 'refresh_token',
+						refresh_token: refreshToken,
+						redirect_uri: REDIRECT_URI,
+						scope: SCOPE
+					}),
+					headers: {
+						'Content-Type': Mime.Types.ApplicationFormUrlEncoded
+					}
+				},
+				FetchResultTypes.JSON
+			);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);
 			return null;
@@ -152,7 +163,6 @@ export default class extends Route {
 
 		return canManage(guild, member);
 	}
-
 }
 
 interface RawOauthUser {

@@ -13,10 +13,7 @@ const REGEXP = {
 
 export function parse(input: string): Resolver.ColorHandler {
 	if (REGEXP.RANDOM.test(input)) return _generateRandom();
-	const output = _HEX(input)
-		|| _B10(input)
-		|| _RGB(input)
-		|| _HSL(input);
+	const output = _HEX(input) || _B10(input) || _RGB(input) || _HSL(input);
 
 	if (output === null) throw `${input} is not a supported type.`;
 	return output;
@@ -27,7 +24,7 @@ function generateBetween(max: number, min: number): number {
 }
 
 export function luminance(r: number, g: number, b: number): number {
-	return (0.299 * (r ** 2)) + (0.587 * (g ** 2)) + (0.114 * (b ** 2));
+	return 0.299 * r ** 2 + 0.587 * g ** 2 + 0.114 * b ** 2;
 }
 
 export function hexConcat(r: number, g: number, b: number) {
@@ -35,17 +32,17 @@ export function hexConcat(r: number, g: number, b: number) {
 }
 
 function _generateRandom() {
-	return new Resolver.HSL(
-		generateBetween(360, 0),
-		generateBetween(100, 75),
-		generateBetween(100, 65)
-	);
+	return new Resolver.HSL(generateBetween(360, 0), generateBetween(100, 75), generateBetween(100, 65));
 }
 
 function _HEX(input: string) {
 	if (!REGEXP.HEX.test(input)) return null;
 	let raw = REGEXP.HEX_EXEC.exec(input)![1];
-	if (raw.length === 3) raw = raw.split('').map(char => char + char).join('');
+	if (raw.length === 3)
+		raw = raw
+			.split('')
+			.map((char) => char + char)
+			.join('');
 	return new Resolver.HEX(raw.substring(0, 2), raw.substring(2, 4), raw.substring(4, 6));
 }
 

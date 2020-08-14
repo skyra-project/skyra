@@ -4,7 +4,6 @@ import { KlasaClient } from 'klasa';
 import { DbSet } from '../DbSet';
 
 export class GiveawayManager {
-
 	public readonly client: KlasaClient;
 	public readonly queue: Array<GiveawayEntity> = [];
 	private interval: NodeJS.Timer | null = null;
@@ -45,7 +44,9 @@ export class GiveawayManager {
 	}
 
 	public create(data: GiveawayCreateData) {
-		return this.add({ ...data, messageID: null }).insert().finally(() => this.check());
+		return this.add({ ...data, messageID: null })
+			.insert()
+			.finally(() => this.check());
 	}
 
 	private async runEntry(giveaway: GiveawayEntity) {
@@ -71,12 +72,11 @@ export class GiveawayManager {
 	}
 
 	private insert(giveaway: GiveawayEntity) {
-		const index = this.queue.findIndex(entry => entry.refreshAt > giveaway.refreshAt);
+		const index = this.queue.findIndex((entry) => entry.refreshAt > giveaway.refreshAt);
 		if (index === -1) this.queue.push(giveaway);
 		else this.queue.splice(index, 0, giveaway);
 		return this;
 	}
-
 }
 
 export type GiveawayCreateData = Omit<GiveawayEntityData, 'messageID'>;

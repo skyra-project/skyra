@@ -5,14 +5,13 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.tget('COMMAND_REPUTATION_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_REPUTATION_EXTENDED'),
+			description: (language) => language.tget('COMMAND_REPUTATION_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_REPUTATION_EXTENDED'),
 			runIn: ['text'],
 			spam: true,
 			usage: '[check] (user:username)',
@@ -35,9 +34,11 @@ export default class extends SkyraCommand {
 
 		if (check) {
 			if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
-			return message.sendMessage(message.author === user
-				? message.language.tget('COMMAND_REPUTATIONS_SELF', selfSettings.reputations)
-				: message.language.tget('COMMAND_REPUTATIONS', user.username, extSettings!.reputations));
+			return message.sendMessage(
+				message.author === user
+					? message.language.tget('COMMAND_REPUTATIONS_SELF', selfSettings.reputations)
+					: message.language.tget('COMMAND_REPUTATIONS', user.username, extSettings!.reputations)
+			);
 		}
 
 		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
@@ -50,7 +51,7 @@ export default class extends SkyraCommand {
 		if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
 		if (user === message.author) throw message.language.tget('COMMAND_REPUTATION_SELF');
 
-		await getManager().transaction(async em => {
+		await getManager().transaction(async (em) => {
 			++extSettings!.reputations;
 			selfSettings.cooldowns.reputation = date;
 			await em.save([extSettings, selfSettings]);
@@ -58,5 +59,4 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
 	}
-
 }

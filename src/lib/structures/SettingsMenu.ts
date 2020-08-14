@@ -12,7 +12,6 @@ const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
 
 export class SettingsMenu {
-
 	private readonly message: KlasaMessage;
 	private schema: Schema | SchemaEntry;
 	private readonly oldSettings: Settings;
@@ -26,8 +25,10 @@ export class SettingsMenu {
 		this.message = message;
 		this.schema = this.message.client.gateways.get('guilds')!.schema;
 		this.oldSettings = this.message.guild!.settings.clone();
-		this.embed = new MessageEmbed()
-			.setAuthor(this.message.author.username, this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }));
+		this.embed = new MessageEmbed().setAuthor(
+			this.message.author.username,
+			this.message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+		);
 	}
 
 	private get changedCurrentPieceValue(): boolean {
@@ -48,16 +49,14 @@ export class SettingsMenu {
 	}
 
 	public async init(): Promise<void> {
-		this.response = await this.message.sendEmbed(new MessageEmbed()
-			.setColor(BrandingColors.Secondary)
-			.setDescription(this.message.language.tget('SYSTEM_LOADING')));
+		this.response = await this.message.sendEmbed(
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(this.message.language.tget('SYSTEM_LOADING'))
+		);
 		await this.response.react(EMOJIS.STOP);
-		this.llrc = new LongLivingReactionCollector(this.message.client)
-			.setListener(this.onReaction.bind(this))
-			.setEndListener(this.stop.bind(this));
+		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
 		this.llrc.setTime(TIMEOUT);
-		this.messageCollector = this.response.channel.createMessageCollector(msg => msg.author!.id === this.message.author.id);
-		this.messageCollector.on('collect', msg => this.onMessage(msg));
+		this.messageCollector = this.response.channel.createMessageCollector((msg) => msg.author!.id === this.message.author.id);
+		this.messageCollector.on('collect', (msg) => this.onMessage(msg));
 		await this._renderResponse();
 	}
 
@@ -77,7 +76,13 @@ export class SettingsMenu {
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_NOKEYS'));
-			else description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_SELECT'), '', ...folders.map(folder => `• \\📁${folder}`), ...keys.map(key => `• ${key}`));
+			else
+				description.push(
+					i18n.tget('COMMAND_CONF_MENU_RENDER_SELECT'),
+					'',
+					...folders.map((folder) => `• \\📁${folder}`),
+					...keys.map((key) => `• ${key}`)
+				);
 		} else {
 			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
@@ -87,11 +92,16 @@ export class SettingsMenu {
 					'',
 					i18n.tget('COMMAND_CONF_MENU_RENDER_TCTITLE'),
 					i18n.tget('COMMAND_CONF_MENU_RENDER_UPDATE'),
-					this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length ? i18n.tget('COMMAND_CONF_MENU_RENDER_REMOVE') : '',
+					this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length
+						? i18n.tget('COMMAND_CONF_MENU_RENDER_REMOVE')
+						: '',
 					this.changedPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_RESET') : '',
 					this.changedCurrentPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
-					i18n.tget('COMMAND_CONF_MENU_RENDER_CVALUE', displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(/``+/g, '`\u200B`'))
+					i18n.tget(
+						'COMMAND_CONF_MENU_RENDER_CVALUE',
+						displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(/``+/g, '`\u200B`')
+					)
 				);
 			}
 		}
@@ -103,7 +113,7 @@ export class SettingsMenu {
 
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
-			.setDescription(`${description.filter(v => v !== null).join('\n')}\n\u200B`)
+			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n\u200B`)
 			.setFooter(parent ? i18n.tget('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
 	}
@@ -215,7 +225,10 @@ export class SettingsMenu {
 			try {
 				await (previousValue === null
 					? this.message.guild!.settings.reset(this.schema.path, { extraContext: { author: this.message.author.id } })
-					: this.message.guild!.settings.update(this.schema.path, previousValue, { arrayAction: 'overwrite', extraContext: { author: this.message.author.id } }));
+					: this.message.guild!.settings.update(this.schema.path, previousValue, {
+							arrayAction: 'overwrite',
+							extraContext: { author: this.message.author.id }
+					  }));
 			} catch (error) {
 				this.errorMessage = String(error);
 			}
@@ -227,13 +240,12 @@ export class SettingsMenu {
 	private stop(): void {
 		if (this.response) {
 			if (this.response.reactions.size) {
-				this.response.reactions.removeAll()
-					.catch(error => this.response!.client.emit(Events.ApiError, error));
+				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
 			}
-			this.response.edit(this.message.language.tget('COMMAND_CONF_MENU_SAVED'), { embed: null })
-				.catch(error => this.message.client.emit(Events.ApiError, error));
+			this.response
+				.edit(this.message.language.tget('COMMAND_CONF_MENU_SAVED'), { embed: null })
+				.catch((error) => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();
 	}
-
 }

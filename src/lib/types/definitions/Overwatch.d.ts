@@ -140,7 +140,6 @@ interface CareerAllHeroesMisc extends Record<string, number> {
 	turretsDestroyed: number;
 }
 
-
 interface HeroStats {
 	assists: CareerAllHeroesAssists;
 	average: CareerAllHeroesAverage;

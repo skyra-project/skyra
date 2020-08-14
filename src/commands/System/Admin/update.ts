@@ -17,7 +17,6 @@ import { resolve } from 'path';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage, [branch = 'main']: [string?]) {
 		// Fetch repository and pull if possible
 		await this.fetch(message, branch);
@@ -59,7 +58,7 @@ export default class extends SkyraCommand {
 		// If it was not a successful pull, return the output
 		if (!this.isSuccessfulPull(stdout)) {
 			// If the pull failed because it was in a different branch, run checkout
-			if (!await this.isCurrentBranch(branch)) {
+			if (!(await this.isCurrentBranch(branch))) {
 				return this.checkout(message, branch);
 			}
 
@@ -68,7 +67,9 @@ export default class extends SkyraCommand {
 		}
 
 		// For all other cases, return the original output
-		return message.send(codeBlock('prolog', [cutText(stdout, 1800) || Emojis.GreenTick, cutText(stderr, 100) || Emojis.GreenTick].join('\n-=-=-=-\n')));
+		return message.send(
+			codeBlock('prolog', [cutText(stdout, 1800) || Emojis.GreenTick, cutText(stderr, 100) || Emojis.GreenTick].join('\n-=-=-=-\n'))
+		);
 	}
 
 	private async stash(message: KlasaMessage) {
@@ -113,5 +114,4 @@ export default class extends SkyraCommand {
 			return { stdout: '', stderr: error?.message || error || '', code: error.code ?? 1 };
 		}
 	}
-
 }

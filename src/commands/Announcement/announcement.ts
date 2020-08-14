@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['announce'],
 	bucket: 6,
 	cooldown: 30,
-	description: language => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
+	description: (language) => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
@@ -21,7 +21,6 @@ import { KlasaMessage } from 'klasa';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-
 	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
@@ -68,19 +67,19 @@ export default class extends SkyraCommand {
 			try {
 				const resultMessage = shouldSendAsEmbed
 					? await previous.edit(
-						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions),
-						this.buildEmbed(announcement)
-					)
+							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions),
+							this.buildEmbed(announcement)
+					  )
 					: await previous.edit(`${header}:\n${announcement}`);
 				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
 				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
 					const resultMessage = shouldSendAsEmbed
 						? await channel.sendEmbed(
-							this.buildEmbed(announcement),
-							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
-						)
-						: await channel.send(`${header}:\n${announcement}`) as KlasaMessage;
+								this.buildEmbed(announcement),
+								message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+						  )
+						: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 					this.messages.set(message, resultMessage);
 				} else {
@@ -91,10 +90,10 @@ export default class extends SkyraCommand {
 		} else {
 			const resultMessage = shouldSendAsEmbed
 				? await channel.sendEmbed(
-					this.buildEmbed(announcement),
-					message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
-				)
-				: await channel.send(`${header}:\n${announcement}`) as KlasaMessage;
+						this.buildEmbed(announcement),
+						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+				  )
+				: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
 			this.messages.set(message, resultMessage);
 		}
@@ -108,5 +107,4 @@ export default class extends SkyraCommand {
 			.setDescription(`${header ? `${header}\n` : ''}${announcement}`)
 			.setTimestamp();
 	}
-
 }

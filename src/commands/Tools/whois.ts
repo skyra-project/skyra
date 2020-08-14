@@ -7,7 +7,6 @@ const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Numbe
 const { FLAGS } = Permissions;
 
 export default class extends SkyraCommand {
-
 	private readonly kAdministratorPermission = FLAGS.ADMINISTRATOR;
 	private readonly kKeyPermissions: [PermissionString, number][] = [
 		['BAN_MEMBERS', FLAGS.BAN_MEMBERS],
@@ -26,23 +25,22 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo', 'uinfo'],
 			cooldown: 15,
-			description: language => language.tget('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_WHOIS_EXTENDED'),
+			description: (language) => language.tget('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
 		});
 
 		this.createCustomResolver('username', (arg, possible, message) =>
-			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author);
+			arg ? this.client.arguments.get('username')!.run(arg, possible, message) : message.author
+		);
 	}
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
-		return message.sendMessage(member
-			? this.member(message, member)
-			: this.user(message, user));
+		return message.sendMessage(member ? this.member(message, member) : this.user(message, user));
 	}
 
 	private user(message: KlasaMessage, user: KlasaUser) {
@@ -101,5 +99,4 @@ export default class extends SkyraCommand {
 			embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS'), permissions.join(', '));
 		}
 	}
-
 }

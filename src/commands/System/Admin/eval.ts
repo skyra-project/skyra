@@ -9,34 +9,29 @@ import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['ev'],
-	description: language => language.tget('COMMAND_EVAL_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_EVAL_EXTENDED'),
+	description: (language) => language.tget('COMMAND_EVAL_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_EVAL_EXTENDED'),
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<expression:str>',
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-
 	private readonly kTimeout = 60000;
 
 	public async run(message: KlasaMessage, [code]: [string]) {
-		const flagTime = 'no-timeout' in message.flagArgs ? 'wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.kTimeout : Infinity;
+		const flagTime = 'no-timeout' in message.flagArgs ? ('wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.kTimeout) : Infinity;
 		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 
 		if (message.flagArgs.silent) {
-			if (!success && result && (result as unknown as Error).stack) this.client.emit(Events.Wtf, (result as unknown as Error).stack);
+			if (!success && result && ((result as unknown) as Error).stack) this.client.emit(Events.Wtf, ((result as unknown) as Error).stack);
 			return null;
 		}
 
 		const footer = codeBlock('ts', type);
-		const sendAs = (
-			Reflect.get(message.flagArgs, 'output')
-			|| Reflect.get(message.flagArgs, 'output-to')
-			|| Reflect.get(message.flagArgs, 'log')
-		)
-			?? null;
+		const sendAs =
+			(Reflect.get(message.flagArgs, 'output') || Reflect.get(message.flagArgs, 'output-to') || Reflect.get(message.flagArgs, 'log')) ?? null;
 
 		return handleMessage<Partial<EvalExtraData>>(message, {
 			sendAs,
@@ -100,14 +95,15 @@ export default class extends SkyraCommand {
 
 		stopwatch.stop();
 		if (typeof result !== 'string') {
-			result = result instanceof Error
-				? result.stack
-				: message.flagArgs.json
+			result =
+				result instanceof Error
+					? result.stack
+					: message.flagArgs.json
 					? JSON.stringify(result, null, 4)
 					: inspect(result, {
-						depth: message.flagArgs.depth ? parseInt(message.flagArgs.depth, 10) || 0 : 0,
-						showHidden: Boolean(message.flagArgs.showHidden)
-					});
+							depth: message.flagArgs.depth ? parseInt(message.flagArgs.depth, 10) || 0 : 0,
+							showHidden: Boolean(message.flagArgs.showHidden)
+					  });
 		}
 		return { success, type: type!, time: this.formatTime(syncTime, asyncTime ?? ''), result: clean(result as string) };
 	}
@@ -115,5 +111,4 @@ export default class extends SkyraCommand {
 	private formatTime(syncTime: string, asyncTime: string) {
 		return asyncTime ? `⏱ ${asyncTime}<${syncTime}>` : `⏱ ${syncTime}`;
 	}
-
 }

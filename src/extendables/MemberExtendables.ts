@@ -3,7 +3,6 @@ import { GuildMember, Permissions } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 
 export default class extends Extendable {
-
 	public constructor(store: ExtendableStore, file: string[], directory: string) {
 		super(store, file, directory, { appliesTo: [GuildMember] });
 	}
@@ -20,7 +19,7 @@ export default class extends Extendable {
 	public get isDJ(this: GuildMember) {
 		const djRole = this.guild.settings.get(GuildSettings.Roles.Dj);
 
-		return (this.roles.has(djRole) || this.isStaff);
+		return this.roles.has(djRole) || this.isStaff;
 	}
 
 	public get isStaff() {
@@ -42,5 +41,4 @@ export default class extends Extendable {
 		if (this.roles.has(moderatorRole)) return true;
 		return this.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
 	}
-
 }

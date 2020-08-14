@@ -1,9 +1,10 @@
 {
-	"extends": "@skyra",
+	"extends": ["@skyra", "plugin:prettier/recommended"],
 	"rules": {
 		"@typescript-eslint/no-throw-literal": 0,
 		"@typescript-eslint/restrict-plus-operands": 0,
-		"@typescript-eslint/naming-convention": 0
+		"@typescript-eslint/naming-convention": 0,
+		"@typescript-eslint/indent": 0
 	},
 	"parserOptions": {
 		"extraFileExtensions": [".mjs"]

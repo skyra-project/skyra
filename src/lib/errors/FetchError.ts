@@ -2,7 +2,6 @@
  * The FetchError class which is thrown in Utils.fetch
  */
 export class FetchError extends Error {
-
 	/** The requested url. */
 	public readonly url: string;
 	/** The HTTP status code. */
@@ -23,5 +22,4 @@ export class FetchError extends Error {
 	public toJSON() {
 		return this.#json ?? (this.#json = JSON.parse(this.response));
 	}
-
 }

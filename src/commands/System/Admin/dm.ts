@@ -4,11 +4,10 @@ import { MessageOptions } from 'discord.js';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: language => language.tget('COMMAND_DM_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_DM_EXTENDED'),
+			description: (language) => language.tget('COMMAND_DM_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_DM_EXTENDED'),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			usage: '<user:user> <message:...string>',
@@ -28,5 +27,4 @@ export default class extends SkyraCommand {
 			return message.alert(`I am sorry, I could not send the message to ${user}`);
 		}
 	}
-
 }

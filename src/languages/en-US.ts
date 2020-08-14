@@ -3749,7 +3749,7 @@ export default class extends Language {
 			`I'm sorry ${username}, but the administrators didn't give me permission to send messages in ${channel}!`,
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Please mention the channel you want to set as the suggestions channel.',
 		COMMAND_SUGGEST_TITLE: (id) => `Suggestion #${id}`,
-		COMMAND_SUGGEST_SUCCESS: (channel) => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
+		COMMAND_SUGGEST_SUCCESS: (channel) => `Thank you for your suggestion! It has been successfully posted to ${channel}!`,
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
 		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
 			extendedHelp: "This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.",

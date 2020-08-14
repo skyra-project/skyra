@@ -1,16 +1,12 @@
-# QuantumlyTangled
-/src/commands/GameIntegration/ffxiv.ts @quantumlytangled
-/src/commands/Twitch/ @quantumlytangled
-/src/events/analytics/ @quantumlytangled
-/src/events/twitch/ @quantumlytangled
-/src/lib/orm/migrations/1594757329224-V13_MigrateAnalytics.ts @quantumlytangled
-/src/lib/types/definitions/Twitch.d.ts @quantumlytangled
-/src/lib/util/GameIntegration/FFXIVTypings.d.ts @quantumlytangled
-/src/lib/util/GameIntegration/FFXIVUtils.ts @quantumlytangled
-/src/lib/util/Notifications/ @quantumlytangled
-/src/lib/util/Tracking/ @quantumlytangled
-/src/routes/twitch/twitchStreamChange.ts @quantumlytangled
-/src/tasks/syncResourceAnalytics.ts @quantumlytangled
+# Kyra & Favna
+/src/ @favna @kyranet
+/tests/ @favna @kyranet
+/tsconfig.base.json @favna @kyranet
+/tsconfig.eslint.json @favna @kyranet
+
+# Just Kyra
+/assets/ @kyranet
+/LICENSE @kyranet
 
 # Just Favna
 /docker/ @favna
@@ -26,12 +22,16 @@
 /jest.config.js @favna
 /pm2.ecosystem.yml @favna
 
-# Just Kyra
-/assets/ @kyranet
-/LICENSE @kyranet
-
-# Kyra & Favna
-/src/ @favna @kyranet
-/tests/ @favna @kyranet
-/tsconfig.base.json @favna @kyranet
-/tsconfig.eslint.json @favna @kyranet
+# Just Quantum
+/src/commands/GameIntegration/ffxiv.ts @quantumlytangled
+/src/commands/Twitch/ @quantumlytangled
+/src/events/analytics/ @quantumlytangled
+/src/events/twitch/ @quantumlytangled
+/src/lib/orm/migrations/1594757329224-V13_MigrateAnalytics.ts @quantumlytangled
+/src/lib/types/definitions/Twitch.d.ts @quantumlytangled
+/src/lib/util/GameIntegration/FFXIVTypings.d.ts @quantumlytangled
+/src/lib/util/GameIntegration/FFXIVUtils.ts @quantumlytangled
+/src/lib/util/Notifications/ @quantumlytangled
+/src/lib/util/Tracking/ @quantumlytangled
+/src/routes/twitch/twitchStreamChange.ts @quantumlytangled
+/src/tasks/syncResourceAnalytics.ts @quantumlytangled

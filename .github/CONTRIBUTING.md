@@ -17,17 +17,18 @@ in your text editor or IDE of your choice to ensure builds from GitHub Actions d
 
 To run Skyra locally a few steps should be taken.
 
-0. Install [Node.JS] and [Yarn]
+1. Install [Node.JS], [Yarn] and [Docker]
+1. Follow [the wiki page on setting up a PostgreSQL schema for Skyra][]
 1. Copy and paste the [`config.example.ts`] file in the `src` directory and rename it to `config.ts`.
-2. Scroll down to `export const TOKENS = {`
-3. At this section enter your own bot's API token at `BOT_TOKEN`.
-4. Fill in any other API keys you have / want to fill in.
-5. Follow the [installation instructions for node-canvas] for your platform
+1. Scroll down to `export const TOKENS = {`
+1. At this section enter your own bot's API token at `BOT_TOKEN`.
+1. Fill in any other API keys you have / want to fill in.
+1. Follow the [installation instructions for node-canvas][] for your platfor
+    - Note: In case of using WSL then follow the Windows instructions
+1. Install project dependencies with `yarn install`
+1. Start Skyra in development mode with `yarn dev`
 
--   Note: In case of using WSL then follow the Windows instructions
-
-6. Install project dependencies with `yarn install`
-7. Start Skyra in development mode with `yarn dev`
+-   For additional services such as InfluxDB, GraphQL-Pokemon, Saelem and Redis check [the repository wiki][]
 
 A few other important commands:
 
@@ -62,8 +63,11 @@ There are a number of guidelines considered when reviewing Pull Requests to be m
 [eslint]: https://eslint.org/
 [node.js]: https://nodejs.org/en/download/
 [yarn]: https://classic.yarnpkg.com/en/docs/install
+[docker]: https://www.docker.com
 [installation instructions for node-canvas]: https://github.com/Automattic/node-canvas/blob/main/Readme.md#installation
 [oop paradigms]: https://en.wikipedia.org/wiki/Object-oriented_programming
 [discord bot best practices]: https://github.com/meew0/discord-bot-best-practices
 [`config.example.ts`]: /src/config.example.ts
 [scripts]: /scripts
+[the wiki page on setting up a postgresql schema for skyra]: https://github.com/skyra-project/skyra/wiki/PostgreSQL
+[the repository wiki]: https://github.com/skyra-project/skyra/wikib

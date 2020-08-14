@@ -18,6 +18,9 @@
 
 -   [`Lavalink`]: Audio server.
 -   [`InfluxDB`]: Metrics platform
+-   [`GraphQL-Pokemon`]: Pokemon API
+-   [`Saelem`]: Horoscope API
+-   [`Redis`]: Caching for [`Saelem`]
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -129,6 +132,9 @@ This project follows the [all-contributors](https://github.com/all-contributors/
 [`postgresql`]: https://www.postgresql.org/download/
 [`lavalink`]: https://github.com/Frederikam/Lavalink
 [`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
+[`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
+[`saelem`]: https://github.com/skyra-project/saelem/pull/6
+[`redis`]: https://redis.io
 [set-up - refer to contributing.md]: /.github/CONTRIBUTING.md
 [evlyn]: https://github.com/kyranet/Evlyn
 [glitch]: https://glitch.com/

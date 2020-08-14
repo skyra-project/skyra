@@ -1771,13 +1771,13 @@ export default class extends Language {
 			explainedUsage: [['user', "The person you're telling that phrase to."]],
 			examples: ['Jack']
 		}),
-		COMMAND_PEEPOLOVE_DESCRIPTION: 'Genera una imagen peepoLove con una imagen o avatar de usuario.',
+		COMMAND_PEEPOLOVE_DESCRIPTION: 'Genera una imagen peepoLove con avatar de usuario.',
 		COMMAND_PEEPOLOVE_EXTENDED: builder.display('peepolove', {
-			extendedHelp: `Te permite generar una imagen peepoLove con una imagen o avatar. Puedes subir una imagen, o
-				Skyra automáticamente buscará una imagen en los últimos 20 mensajes si hay uno. Puedes mencionar a un
-				usuario para utilizar su avatar.`,
-			explainedUsage: [['image', 'The image that peepo should hug.']],
-			examples: ['Jack']
+			extendedHelp: `Le permite generar una imagen peepoLove a partir del avatar de usuario.`,
+			explainedUsage: [['user', 'El usuario que peepo debe abrazar.']],
+			examples: ['Jack'],
+			reminder:
+				'El soporte de imágenes personalizadas se ha deshabilitado temporalmente, la ETA que regresa es aproximadamente noviembre de 2020.'
 		}),
 		COMMAND_SLAP_DESCRIPTION: 'Slap another user using the Batman & Robin Meme.',
 		COMMAND_SLAP_EXTENDED: builder.display('slap', {

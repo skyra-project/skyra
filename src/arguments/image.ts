@@ -1,11 +1,13 @@
-import { fetchAvatar, getImage } from '@utils/util';
-import { Image, loadImage } from 'canvas';
+import { fetchAvatar } from '@utils/util';
+import { Image } from 'canvas';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<Image> {
 		// If theres nothing provided, search the channel for an image.
 		if (!arg) {
+			// ! TODO: Re-enable after moving to sapphire!!
+			/*
 			// Configurable minimum of messages
 			const minimum = possible.min || 20;
 
@@ -14,9 +16,10 @@ export default class extends Argument {
 
 			const messages = [...message.channel.messages.values()];
 			for (let i = messages.length - 1; i >= 0; --i) {
-				const image = getImage(messages[i]);
-				if (image) return loadImage(image);
+				const imageSrc = getImage(messages[i]);
+				if (imageSrc) return loadImage(imageSrc);
 			}
+			*/
 
 			return fetchAvatar(message.author);
 		}

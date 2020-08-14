@@ -1746,12 +1746,12 @@ export default class extends Language {
 			explainedUsage: [['user', "The person you're telling that phrase to."]],
 			examples: ['Jack']
 		}),
-		COMMAND_PEEPOLOVE_DESCRIPTION: "Generates a peepoLove image from a provided image or users' avatar.",
+		COMMAND_PEEPOLOVE_DESCRIPTION: "Generates a peepoLove image from a users' avatar.",
 		COMMAND_PEEPOLOVE_EXTENDED: builder.display('peepolove', {
-			extendedHelp: `Allows you to generate a peepoLove image from an image or avatar. You can upload an image, or
-				Skyra will automatically pick an image in the last 20 messages if there is one. You can tag a user, or say their username, to generate one with their avatar.`,
-			explainedUsage: [['image', 'The image that peepo should hug.']],
-			examples: ['Kyra']
+			extendedHelp: `Allows you to generate a peepoLove image from a user's avatar.`,
+			explainedUsage: [['user', 'The user that peepo should hug.']],
+			examples: ['Joe'],
+			reminder: 'Custom image support has been temporarily disabled, ETA on it being back is roughly November 2020'
 		}),
 		COMMAND_SLAP_DESCRIPTION: 'Slap another user using the Batman & Robin Meme.',
 		COMMAND_SLAP_EXTENDED: builder.display('slap', {

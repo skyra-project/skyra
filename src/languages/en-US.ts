@@ -9,7 +9,6 @@ import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/Fr
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LanguageHelp } from '@utils/LanguageHelp';
 import { createPick, inlineCodeblock } from '@utils/util';
-import { MessageEmbed } from 'discord.js';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
 
@@ -3505,23 +3504,15 @@ export default class extends Language {
 		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
 		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) => `${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${reason ? `\nWith the reason of: ${reason}` : ''}`,
 		COMMAND_MODERATION_FAILED: users => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
-		COMMAND_MODERATION_DM: (guild, title, reason, pDuration, moderator) => new MessageEmbed()
-			.setAuthor(moderator.username, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription([
+		COMMAND_MODERATION_DM: (guild, title, reason, pDuration) => ({
+			DESCRIPTION: [
 				`**❯ Server**: ${guild}`,
 				`**❯ Type**: ${title}`,
 				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
 				`**❯ Reason**: ${reason || 'None specified'}`
-			].filter(line => line !== null).join('\n'))
-			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
-		COMMAND_MODERATION_DM_ANONYMOUS: (guild, title, reason, pDuration) => new MessageEmbed()
-			.setDescription([
-				`**❯ Server**: ${guild}`,
-				`**❯ Type**: ${title}`,
-				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
-				`**❯ Reason**: ${reason || 'None specified'}`
-			].filter(line => line !== null).join('\n'))
-			.setFooter('To disable moderation DMs, write `toggleModerationDM`.'),
+			].filter(line => line !== null).join('\n'),
+			FOOTER: 'To disable moderation DMs, write `toggleModerationDM`.'
+		}),
 		COMMAND_MODERATION_DAYS: /days?/i,
 
 		/**
@@ -3717,25 +3708,30 @@ export default class extends Language {
 
 		COMMAND_FEEDBACK: 'Thanks you for your feedback ❤! I will make sure the developer team read this, you may get a response in DMs!',
 
-		COMMAND_STATS: (color, stats, uptime, usage) => new MessageEmbed()
-			.setColor(color)
-			.addField('Statistics', [
+		COMMAND_STATS_TITLES: {
+			STATS: 'Statistics',
+			UPTIME: 'Uptime',
+			SERVER_USAGE: 'Server Usage'
+		},
+		COMMAND_STATS_FIELDS: (stats, uptime, usage) => ({
+			STATS: [
 				`• **Users**: ${stats.USERS}`,
 				`• **Guilds**: ${stats.GUILDS}`,
 				`• **Channels**: ${stats.CHANNELS}`,
 				`• **Discord.js**: ${stats.VERSION}`,
 				`• **Node.js**: ${stats.NODE_JS}`,
 				`• **Klasa**: ${klasaVersion}`
-			].join('\n'))
-			.addField('Uptime', [
+			].join('\n'),
+			UPTIME: [
 				`• **Host**: ${duration(uptime.HOST, 2)}`,
 				`• **Total**: ${duration(uptime.TOTAL, 2)}`,
 				`• **Client**: ${duration(uptime.CLIENT, 2)}`
-			].join('\n'))
-			.addField('Server Usage', [
+			].join('\n'),
+			SERVER_USAGE: [
 				`• **CPU Load**: ${usage.CPU_LOAD.join('% | ')}%`,
 				`• **Heap**: ${usage.RAM_USED} (Total: ${usage.RAM_TOTAL})`
-			].join('\n')),
+			].join('\n')
+		}),
 
 		/**
 		 * #############
@@ -3994,18 +3990,27 @@ export default class extends Language {
 		COMMAND_URBAN_NOTFOUND: 'I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'You may want to try a lower page number.',
 		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continue reading](${url})`,
-		COMMAND_WHOIS_MEMBER: member => new MessageEmbed()
-			.addField('Joined', member.joinedTimestamp
+		COMMAND_WHOIS_MEMBER_TITLES: {
+			JOINED: 'Joined',
+			CREATED_AT: 'Created At'
+		},
+		COMMAND_WHOIS_MEMBER_FIELDS: member => ({
+			JOINED: member.joinedTimestamp
 				? `${timestamp.displayUTC(member.joinedTimestamp)}\n${duration(Date.now() - member.joinedTimestamp, 2)} ago`
-				: 'Unknown', true)
-			.addField('Created At', `${timestamp.displayUTC(member.user.createdAt)}\n${duration(Date.now() - member.user.createdTimestamp, 2)} ago`, true)
-			.setFooter(`ID: ${member.id}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })),
+				: 'Unknown',
+			CREATED_AT: `${timestamp.displayUTC(member.user.createdAt)}\n${duration(Date.now() - member.user.createdTimestamp, 2)} ago`,
+			FOOTER: `ID: ${member.id}`
+		}),
 		COMMAND_WHOIS_MEMBER_ROLES: amount => amount === 1 ? 'Role [1]' : `Roles [${amount}]`,
 		COMMAND_WHOIS_MEMBER_PERMISSIONS: 'Key Permissions',
 		COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: 'All Permissions',
-		COMMAND_WHOIS_USER: user => new MessageEmbed()
-			.addField('Created At', `${timestamp.displayUTC(user.createdAt)}\n${duration(Date.now() - user.createdTimestamp, 2)} ago`)
-			.setFooter(`ID: ${user.id}`, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })),
+		COMMAND_WHOIS_USER_TITLES: {
+			CREATED_AT: 'Created At'
+		},
+		COMMAND_WHOIS_USER_FIELDS: user => ({
+			CREATED_AT: `${timestamp.displayUTC(user.createdAt)}\n${duration(Date.now() - user.createdTimestamp, 2)} ago`,
+			FOOTER: `ID: ${user.id}`
+		}),
 		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
 		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
 		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',

@@ -46,20 +46,31 @@ export default class extends SkyraCommand {
 	}
 
 	private user(message: KlasaMessage, user: KlasaUser) {
-		return message.language.tget('COMMAND_WHOIS_USER', user)
+		const TITLES = message.language.tget('COMMAND_WHOIS_USER_TITLES');
+		const FIELDS = message.language.tget('COMMAND_WHOIS_USER_FIELDS', user);
+
+		return new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
 			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(user.toString())
+			.addField(TITLES.CREATED_AT, FIELDS.CREATED_AT)
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
+			.setFooter(FIELDS.FOOTER, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
-		const embed = message.language.tget('COMMAND_WHOIS_MEMBER', member)
+		const TITLES = message.language.tget('COMMAND_WHOIS_MEMBER_TITLES');
+		const FIELDS = message.language.tget('COMMAND_WHOIS_MEMBER_FIELDS', member);
+
+		const embed = new MessageEmbed()
 			.setColor(member.displayColor || BrandingColors.Secondary)
+			.addField(TITLES.JOINED, FIELDS.JOINED)
+			.addField(TITLES.CREATED_AT, FIELDS.CREATED_AT)
 			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(member.toString())
 			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
+			.setFooter(FIELDS.FOOTER, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 
 		this.applyMemberRoles(message, member, embed);

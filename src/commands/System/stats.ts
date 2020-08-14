@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { roundNumber } from '@utils/util';
-import { version } from 'discord.js';
+import { version, MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { cpus, uptime } from 'os';
 
@@ -19,7 +19,17 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		return message.sendLocale('COMMAND_STATS', [await DbSet.fetchColor(message), this.generalStatistics, this.uptimeStatistics, this.usageStatistics]);
+		return message.send(await this.buildEmbed(message));
+	}
+
+	private async buildEmbed(message: KlasaMessage) {
+		const TITLES = message.language.tget('COMMAND_STATS_TITLES');
+		const FIELDS = message.language.tget('COMMAND_STATS_FIELDS', this.generalStatistics, this.uptimeStatistics, this.usageStatistics);
+		return new MessageEmbed()
+			.setColor(await DbSet.fetchColor(message))
+			.addField(TITLES.STATS, FIELDS.STATS)
+			.addField(TITLES.UPTIME, FIELDS.UPTIME)
+			.addField(TITLES.SERVER_USAGE, FIELDS.SERVER_USAGE);
 	}
 
 	private get generalStatistics(): StatsGeneral {

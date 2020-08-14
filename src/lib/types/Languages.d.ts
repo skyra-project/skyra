@@ -1516,7 +1516,10 @@ export interface LanguageKeys {
 	COMMAND_WARN_MESSAGE: (user: User, log: number) => string;
 	COMMAND_MODERATION_OUTPUT: (cases: readonly number[], range: string | number, users: readonly string[], reason: string | null) => string;
 	COMMAND_MODERATION_FAILED: (users: readonly string[]) => string;
-	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, duration: number | null, moderator: User) => MessageEmbed;
+	COMMAND_MODERATION_DM: (guild: string, title: string, reason: string | null, duration: number | null) => {
+		DESCRIPTION: string;
+		FOOTER: string;
+	};
 	COMMAND_MODERATION_DM_ANONYMOUS: (guild: string, title: string, reason: string | null, duration: number | null) => MessageEmbed;
 	COMMAND_MODERATION_DAYS: RegExp;
 	COMMAND_AUTOROLE_POINTS_REQUIRED: string;
@@ -1646,7 +1649,16 @@ export interface LanguageKeys {
 	COMMAND_EVAL_TIMEOUT: (seconds: number) => string;
 	COMMAND_EVAL_ERROR: (time: string, output: string, type: string) => string;
 	COMMAND_FEEDBACK: string;
-	COMMAND_STATS: (color: number, stats: StatsGeneral, uptime: StatsUptime, usage: StatsUsage) => MessageEmbed;
+	COMMAND_STATS_TITLES: {
+		STATS: string;
+		UPTIME: string;
+		SERVER_USAGE: string;
+	};
+	COMMAND_STATS_FIELDS: (stats: StatsGeneral, uptime: StatsUptime, usage: StatsUsage) => {
+		STATS: string;
+		UPTIME: string;
+		SERVER_USAGE: string;
+	};
 	COMMAND_TAG_DESCRIPTION: string;
 	COMMAND_TAG_EXTENDED: string;
 	COMMAND_TAG_PERMISSIONLEVEL: string;
@@ -1686,11 +1698,25 @@ export interface LanguageKeys {
 	COMMAND_URBAN_NOTFOUND: string;
 	COMMAND_URBAN_INDEX_NOTFOUND: string;
 	SYSTEM_TEXT_TRUNCATED: (definition: string, url: string) => string;
-	COMMAND_WHOIS_MEMBER: (member: GuildMember) => MessageEmbed;
+	COMMAND_WHOIS_MEMBER_TITLES: {
+		JOINED: string;
+		CREATED_AT: string;
+	};
+	COMMAND_WHOIS_MEMBER_FIELDS: (member: GuildMember) => {
+		JOINED: string;
+		CREATED_AT: string;
+		FOOTER: string;
+	};
 	COMMAND_WHOIS_MEMBER_ROLES: (amount: number) => string;
 	COMMAND_WHOIS_MEMBER_PERMISSIONS: string;
 	COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: string;
-	COMMAND_WHOIS_USER: (user: User) => MessageEmbed;
+	COMMAND_WHOIS_USER_TITLES: {
+		CREATED_AT: string;
+	};
+	COMMAND_WHOIS_USER_FIELDS: (user: User) => {
+		CREATED_AT: string;
+		FOOTER: string;
+	};
 	COMMAND_FOLLOWAGE: (user: string, channel: string, time: number) => string;
 	COMMAND_FOLLOWAGE_MISSING_ENTRIES: string;
 	COMMAND_FOLLOWAGE_NOT_FOLLOWING: string;

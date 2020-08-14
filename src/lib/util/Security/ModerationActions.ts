@@ -5,7 +5,7 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors, Moderation } from '@utils/constants';
 import { api } from '@utils/Models/Api';
-import { DiscordAPIError, Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User } from 'discord.js';
+import { DiscordAPIError, Guild, GuildChannel, GuildMember, PermissionOverwriteOption, Permissions, PermissionString, Role, RoleData, User, MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export const enum ModerationSetupRestriction {
@@ -579,16 +579,25 @@ export class ModerationActions {
 		if (sendOptions.send) {
 			try {
 				const target = await entry.fetchUser();
-				if (sendOptions.moderator) {
-					await target.sendLocale('COMMAND_MODERATION_DM', [this.guild.name, entry.title, entry.reason, entry.duration, sendOptions.moderator]).catch(() => null);
-				} else {
-					await target.sendLocale('COMMAND_MODERATION_DM_ANONYMOUS', [this.guild.name, entry.title, entry.reason, entry.duration]).catch(() => null);
-				}
+				await target.sendEmbed(this.buildEmbed(entry, sendOptions)).catch(() => null);
 			} catch (error) {
 				if (error.code === APIErrors.CannotMessageUser) return;
 				this.guild.client.emit(Events.Error, error);
 			}
 		}
+	}
+
+	private buildEmbed(entry: ModerationEntity, sendOptions: ModerationActionsSendOptions) {
+		const embedData = this.guild.language.tget('COMMAND_MODERATION_DM', this.guild.name, entry.title, entry.reason, entry.duration);
+		const embed = new MessageEmbed()
+			.setDescription(embedData.DESCRIPTION)
+			.setFooter(embedData.FOOTER);
+
+		if (sendOptions.moderator) {
+			embed.setAuthor(sendOptions.moderator.username, sendOptions.moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }));
+		}
+
+		return embed;
 	}
 
 	private addStickyMute(moderatorID: string, id: string) {

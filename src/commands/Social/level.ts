@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
-import { loadImage, Image } from 'canvas';
+import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';

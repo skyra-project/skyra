@@ -2,13 +2,13 @@ import { mergeDefault } from '@klasa/utils';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
+import { CLIENT_ID } from '@root/config';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise, isNullOrUndefined } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
-import { CLIENT_ID } from '@root/config';
 
 export interface ModerationCommandOptions extends SkyraCommandOptions {
 	requiredMember?: boolean;

@@ -3,10 +3,10 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions } from '@skyra/decorators';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
+import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
-import { loadImage, Image } from 'canvas';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');

@@ -1,7 +1,7 @@
 import { Colors } from '@klasa/console';
 import { Events } from '@lib/types/Enums';
 import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
-import { DEV, ENABLE_INFLUX, TOKENS, CLIENT_ID } from '@root/config';
+import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '@root/config';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { Task } from 'klasa';

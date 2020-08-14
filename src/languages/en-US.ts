@@ -7,11 +7,11 @@ import { CLIENT_ID, VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { LanguageHelp } from '@utils/LanguageHelp';
 import { createPick, inlineCodeblock } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
-import { CATEGORIES } from '@utils/Games/TriviaManager';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;

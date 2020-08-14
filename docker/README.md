@@ -23,20 +23,31 @@ Skyra currently has the following microservices that can be dockerized:
     -   Image used: `skyrabot/saelem/saelem:main`
     -   For more information see [skyra-project/saelem]
     -   Additional instructions
-        1. Copy the [`.env`] file in [`configs`] directory and rename the copy to [`.env.local`] 2. Fill in `SAELEM_REDIS_PASSWORD` as desired. This should match the values in [`redis.local.conf`] 3. Fill in `SAELEM_REDIS_HOST` as desired. The default of `host.docker.internal` works on Windows and MacOs, for Linux use `172.17.0.1` 3. Fill in `SAELEM_REDIS_DATABASE` as desired, this should be a number between 0 and 16.  
+        1. Copy the [`.env`] file in [`configs`] directory and rename the copy to [`.env.local`]
+        1. Fill in `SAELEM_REDIS_PASSWORD` as desired. This should match the values in [`redis.local.conf`]
+        1. Fill in `SAELEM_REDIS_HOST` as desired. The default of `host.docker.internal` works on Windows and MacOs, for Linux use `172.17.0.1`
+        1. Fill in `SAELEM_REDIS_DATABASE` as desired, this should be a number between 0 and 16.  
            Note: **_DO NOT edit the SAELEM_REDIS_PORT_**
 -   InfluxDB
     -   Service name in docker-compose: `influx`
     -   Image used: `quay.io/influxdb/influxdb:2.0.0-beta`
     -   For more information see [influxdb]
     -   Additional instructions
-        1. After starting the InfluxDB container go to [locahost:8285] 1. Create a user to your liking, ensuring you take note of the Organization name and Initial bucket name, you need those for the next two steps - The recommended value for Organization is: `Skyra-Project` - The recommended value for Initial bucket name is: `analytics` 1. In [the config file] set the value of `INFLUX_ORG` to the value of the Organization name 1. In [the config file] set the value of `INFLUX_ORG_ANALYTICS_BUCKET` to the value of the Initial bucket name 1. Once on the InfluxDB homepage click the "Data" tab on the left sidebar 1. Open the "Tokens" tab in the new view 1. Click on your token, which should be YourUsername's Token (YourUsername being what you entered before as the username) 1. Click the "Copy to clipboard" button then paste set that value for `INFLUX_TOKEN` in [the config file]
+        1. After starting the InfluxDB container go to [locahost:8285]
+        1. Create a user to your liking, ensuring you take note of the Organization name and Initial bucket name, you need those for the next two steps - The recommended value for Organization is: `Skyra-Project` - The recommended value for Initial bucket name is: `analytics`
+        1. In [the config file] set the value of `INFLUX_ORG` to the value of the Organization name
+        1. In [the config file] set the value of `INFLUX_ORG_ANALYTICS_BUCKET` to the value of the Initial bucket name
+        1. Once on the InfluxDB homepage click the "Data" tab on the left sidebar
+        1. Open the "Tokens" tab in the new view
+        1. Click on your token, which should be YourUsername's Token (YourUsername being what you entered before as the username)
+        1. Click the "Copy to clipboard" button then paste set that value for `INFLUX_TOKEN` in [the config file]
 -   Redis
     -   Service name in docker-compose: `redis`
     -   Image used: `redis:alpine`
     -   For more information see [redis]
     -   Additional instructions
-        1. Copy the [`redis.conf`] file in the [`configs`] directory and rename the new file to [`redis.local.conf`] 2. Fill in the password as desired. This should match the values in [`.env.local`]  
+        1. Copy the [`redis.conf`] file in the [`configs`] directory and rename the new file to [`redis.local.conf`]
+        1. Fill in the password as desired. This should match the values in [`.env.local`]  
            Note: **_DO NOT edit the port!_**
 
 <!-- Link dump -->

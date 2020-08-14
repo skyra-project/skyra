@@ -8,7 +8,7 @@ Last updated and effective: July 20, 2020
 Skyra Project  
 56 Calle María de Guzmán  
 Madrid 28003  
-Spain  
+Spain
 
 **Owner contact email**: skyra.project@gmail.com
 
@@ -16,39 +16,39 @@ Spain
 
 **Table of contents**:
 
-- [WELCOME TO SKYRA PROJECT!](#welcome-to-skyra-project)
+-   [WELCOME TO SKYRA PROJECT!](#welcome-to-skyra-project)
 
-- [INFORMATION WE COLLECT](#information-we-collect)
+-   [INFORMATION WE COLLECT](#information-we-collect)
 
-  * [OTHER INFORMATION:](#other-information)
+    -   [OTHER INFORMATION:](#other-information)
 
-- [WHERE INFORMATION IS PROCESSED](#where-information-is-processed)
+-   [WHERE INFORMATION IS PROCESSED](#where-information-is-processed)
 
-- [OUR USE OF YOUR INFORMATION](#our-use-of-your-information)
+-   [OUR USE OF YOUR INFORMATION](#our-use-of-your-information)
 
-- [OUR LEGAL BASES FOR HANDLING OF YOUR PERSONAL DATA](#our-legal-bases-for-handling-of-your-personal-data)
+-   [OUR LEGAL BASES FOR HANDLING OF YOUR PERSONAL DATA](#our-legal-bases-for-handling-of-your-personal-data)
 
-- [OUR DISCLOSURE OF YOUR INFORMATION](#our-disclosure-of-your-information)
+-   [OUR DISCLOSURE OF YOUR INFORMATION](#our-disclosure-of-your-information)
 
-- [UNSOLICITED INFORMATION](#unsolicited-information)
+-   [UNSOLICITED INFORMATION](#unsolicited-information)
 
-- [CHILDREN](#children)
+-   [CHILDREN](#children)
 
-- [LINKS TO OTHER WEB SITES](#links-to-other-web-sites)
+-   [LINKS TO OTHER WEB SITES](#links-to-other-web-sites)
 
-- [DATA RETENTION](#data-retention)
+-   [DATA RETENTION](#data-retention)
 
-- [SECURITY](#security)
+-   [SECURITY](#security)
 
-- [YOUR DATA RIGHTS AND CHOICES](#your-data-rights-and-choices)
+-   [YOUR DATA RIGHTS AND CHOICES](#your-data-rights-and-choices)
 
-- [WHO IS SKYRA PROJECT'S EEA REPRESENTATIVE?](#who-is-skyra-projects-eea-representative)
+-   [WHO IS SKYRA PROJECT'S EEA REPRESENTATIVE?](#who-is-skyra-projects-eea-representative)
 
-- [YOUR CALIFORNIA PRIVACY RIGHTS](#your-california-privacy-rights)
+-   [YOUR CALIFORNIA PRIVACY RIGHTS](#your-california-privacy-rights)
 
-- [CHANGES TO THIS PRIVACY POLICY](#changes-to-this-privacy-policy)
+-   [CHANGES TO THIS PRIVACY POLICY](#changes-to-this-privacy-policy)
 
-- [CONTACTING US](#contacting-us)
+-   [CONTACTING US](#contacting-us)
 
 ---
 
@@ -64,9 +64,9 @@ When you interact with us through the Services, we may collect information from 
 
 ### OTHER INFORMATION:
 
-- **Data We Collect Automatically**: When you interact with us through the Services, we receive and store certain information such as an IP address, device ID and your activities within the Services. We may store such information or such information may be included in the databases owned and maintained by affiliates, agents or service providers. The Services may use such information and pool it with other information to track, for example, the total number of visitors to our Site, the number of messages users have sent, as well as the sites which refer visitors to our Services.
-- **Cookies**: We employ cookies and similar technologies to keep track of your local computer's settings such as which account you have logged into on the Site. Cookies are pieces of data that sites and services can set on your browser or device that can be read on future visits. We may expand our use of cookies to save additional data as new features are added to the Service.
-- We may use third party web site analytics tools such as but not limited to Google Analytics on our Site that employ cookies to collect certain information concerning your use of our Services. However, you can disable cookies by changing your browser settings. Further information about the procedure to follow in order to disable cookies can be found on your Internet browser provider's website via your help screen.
+-   **Data We Collect Automatically**: When you interact with us through the Services, we receive and store certain information such as an IP address, device ID and your activities within the Services. We may store such information or such information may be included in the databases owned and maintained by affiliates, agents or service providers. The Services may use such information and pool it with other information to track, for example, the total number of visitors to our Site, the number of messages users have sent, as well as the sites which refer visitors to our Services.
+-   **Cookies**: We employ cookies and similar technologies to keep track of your local computer's settings such as which account you have logged into on the Site. Cookies are pieces of data that sites and services can set on your browser or device that can be read on future visits. We may expand our use of cookies to save additional data as new features are added to the Service.
+-   We may use third party web site analytics tools such as but not limited to Google Analytics on our Site that employ cookies to collect certain information concerning your use of our Services. However, you can disable cookies by changing your browser settings. Further information about the procedure to follow in order to disable cookies can be found on your Internet browser provider's website via your help screen.
 
 ## WHERE INFORMATION IS PROCESSED
 
@@ -80,12 +80,12 @@ We use the information you provide in a manner that is consistent with this Priv
 
 The laws in some jurisdictions require companies to tell you about the legal ground they rely on to use or disclose your personal data. To the extent those laws apply, our legal grounds are as follows:
 
-- Users have given their consent for one or more specific purposes.  
-Note: Under some legislations the Owner may be allowed to process Personal Data until the User objects to such processing (“opt-out”), without having to rely on consent or any other of the following legal bases. This, however, does not apply, whenever the processing of Personal Data is subject to European data protection law.
-- Provision of Data is necessary for the performance of an agreement with the User and/or for any pre-contractual obligations thereof.
-- Processing is necessary for compliance with a legal obligation to which the Owner is subject.
-- Processing is related to a task that is carried out in the public interest or in the exercise of official authority vested in the Owner.
-- Processing is necessary for the purposes of the legitimate interests pursued by the Owner or by a third party.
+-   Users have given their consent for one or more specific purposes.  
+    Note: Under some legislations the Owner may be allowed to process Personal Data until the User objects to such processing (“opt-out”), without having to rely on consent or any other of the following legal bases. This, however, does not apply, whenever the processing of Personal Data is subject to European data protection law.
+-   Provision of Data is necessary for the performance of an agreement with the User and/or for any pre-contractual obligations thereof.
+-   Processing is necessary for compliance with a legal obligation to which the Owner is subject.
+-   Processing is related to a task that is carried out in the public interest or in the exercise of official authority vested in the Owner.
+-   Processing is necessary for the purposes of the legitimate interests pursued by the Owner or by a third party.
 
 In any case, the Owner will gladly help to clarify the specific legal basis that applies to the processing, and in particular whether the provision of Personal Data is a statutory or contractual requirement, or a requirement necessary to enter into a contract.
 
@@ -93,9 +93,9 @@ In any case, the Owner will gladly help to clarify the specific legal basis that
 
 The Company is not in the business of selling your information. We consider this information to be a vital part of our relationship with you. There are, however, certain circumstances in which we may share your information with certain third parties, as set forth below:
 
-- **Consent**: We may transfer your information with your consent.
-- **Consultants and outside collaborators**: Like many businesses, we sometimes request the help of other companies or individuals to perform certain functions. Examples of such functions include accessing, modifying and adding to the open-source source code. In order to perform these functions they may require samples of any of the data stored by the Services. These people will however *never* have access to the *full* data and any data will always be anonymized where required.
-- **Legal Requirements**: We may disclose your information if required to do so by law or in the good faith belief that such action is necessary to (i) comply with a legal obligation, (ii) protect and defend the rights or property of the Company or Related Companies, (iii) protect the personal safety of users of the Services or the public, or (iv) protect against legal liability.
+-   **Consent**: We may transfer your information with your consent.
+-   **Consultants and outside collaborators**: Like many businesses, we sometimes request the help of other companies or individuals to perform certain functions. Examples of such functions include accessing, modifying and adding to the open-source source code. In order to perform these functions they may require samples of any of the data stored by the Services. These people will however _never_ have access to the _full_ data and any data will always be anonymized where required.
+-   **Legal Requirements**: We may disclose your information if required to do so by law or in the good faith belief that such action is necessary to (i) comply with a legal obligation, (ii) protect and defend the rights or property of the Company or Related Companies, (iii) protect the personal safety of users of the Services or the public, or (iv) protect against legal liability.
 
 ## UNSOLICITED INFORMATION
 
@@ -123,11 +123,11 @@ We believe that users should be treated equally no matter where they are, and so
 
 Individuals in California, the European Economic Area, Canada, Costa Rica and some other jurisdictions have certain legal rights to obtain confirmation of whether we hold personal data about them, to access personal data we hold about them (including, in some cases, in portable form), and to obtain its correction, update, amendment or deletion in appropriate circumstances. They may also object to our uses or disclosures of personal data, to request a restriction on its processing, or withdraw any consent, though such actions typically will not have retroactive effect. They also will not affect our ability to continue processing data in lawful ways.
 
-- **How can I access the personal data you have about me?**
+-   **How can I access the personal data you have about me?**
 
 If you would like to submit a data access request, you can do so by sending an email to skyra.project@gmail.com. Upon request we will start the process and provide you a link to access the personal data the Services has on you within 30 standard working days.
 
-- **How do I correct, update, amend, or delete the personal data you have about me?**
+-   **How do I correct, update, amend, or delete the personal data you have about me?**
 
 You can request modifications to your data from us directly. Please write us at skyra.project@gmail.com with the words "Personal Data Request" in the subject or body of your message, along with an explanation of what data subject right you are seeking to exercise. For your protection, we may take steps to verify identity before responding to your request.
 
@@ -151,7 +151,7 @@ Consumers residing in California are afforded certain additional rights with res
 
 Requests Received: We received the following number of data requests between November 24, 2016 and July 20, 2020:
 
-*No requests to date*
+_No requests to date_
 
 ## CHANGES TO THIS PRIVACY POLICY
 

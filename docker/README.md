@@ -41,15 +41,15 @@ Skyra currently has the following microservices that can be dockerized:
 
 <!-- Link dump -->
 
-[`.env.local`]:                ./configs/.env.local
-[`.env`]:                      ./configs/.env
-[`configs`]:                   ./configs/
-[`redis.conf`]:                ./configs/redis.conf
-[`redis.local.conf`]:          ./configs/redis.local.conf
-[favware/graphql-pokemon]:     https://github.com/favware/graphql-pokemon
-[influxdb]:                    https://v2.docs.influxdata.com/v2.0/get-started/#download-and-run-influxdb-v2-0-beta
-[locahost:8285]:               http://localhost:8285
-[redis]:                       https://hub.docker.com/_/redis
+[`.env.local`]: ./configs/.env.local
+[`.env`]: ./configs/.env
+[`configs`]: ./configs/
+[`redis.conf`]: ./configs/redis.conf
+[`redis.local.conf`]: ./configs/redis.local.conf
+[favware/graphql-pokemon]: https://github.com/favware/graphql-pokemon
+[influxdb]: https://v2.docs.influxdata.com/v2.0/get-started/#download-and-run-influxdb-v2-0-beta
+[locahost:8285]: http://localhost:8285
+[redis]: https://hub.docker.com/_/redis
 [skyra-project/docker-images]: https://github.com/skyra-project/docker-images
-[skyra-project/saelem]:        https://github.com/skyra-project/saelem
-[the config file]:             ../src/config.ts
+[skyra-project/saelem]: https://github.com/skyra-project/saelem
+[the config file]: ../src/config.ts

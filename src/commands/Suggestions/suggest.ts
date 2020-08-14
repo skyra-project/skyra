@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && this.client.webhookFeedback;
 
 		// ! NOTE: Once we start sharding we need to have a better solution for this
-		const guild = globalSuggestion ? this.client.guilds.get(WEBHOOK_FEEDBACK.guild_id!)! : message.guild!;
+		const guild = globalSuggestion ? this.client.guilds.get(WEBHOOK_FEEDBACK!.guild_id!)! : message.guild!;
 		let suggestionsChannel: Webhook | TextChannel | undefined = undefined;
 
 		if (globalSuggestion) {

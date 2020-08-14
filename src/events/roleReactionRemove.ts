@@ -6,7 +6,6 @@ import { TextChannel } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(channel: TextChannel, data: WSMessageReactionRemove) {
 		// If the channel is not a text channel then stop processing
 		if (!isTextBasedChannel(channel)) return;
@@ -14,8 +13,11 @@ export default class extends Event {
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = channel.guild.settings.get(GuildSettings.ReactionRoles)
-			.find(entry => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true));
+		const roleEntry = channel.guild.settings
+			.get(GuildSettings.ReactionRoles)
+			.find(
+				(entry) => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true)
+			);
 		if (!roleEntry) return;
 
 		try {
@@ -25,5 +27,4 @@ export default class extends Event {
 			this.client.emit(Events.ApiError, error);
 		}
 	}
-
 }

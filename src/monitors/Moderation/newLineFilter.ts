@@ -8,7 +8,6 @@ import { KlasaMessage } from 'klasa';
 const NEW_LINE = '\n';
 
 export default class extends ModerationMonitor {
-
 	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_NEWLINES';
 	protected readonly keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.NewLines.IgnoredChannels;
@@ -51,5 +50,4 @@ export default class extends ModerationMonitor {
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_NEWLINEFILTER')}`)
 			.setTimestamp();
 	}
-
 }

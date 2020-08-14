@@ -3,13 +3,12 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['nickname'],
 			cooldown: 30,
-			description: language => language.tget('COMMAND_NICK_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_NICK_EXTENDED'),
+			description: (language) => language.tget('COMMAND_NICK_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_NICK_EXTENDED'),
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['CHANGE_NICKNAME'],
 			runIn: ['text'],
@@ -19,9 +18,6 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [nick = '']: [string?]) {
 		await message.guild!.me!.setNickname(nick);
-		return nick
-			? message.alert(message.language.tget('COMMAND_NICK_SET', nick))
-			: message.alert(message.language.tget('COMMAND_NICK_CLEARED'));
+		return nick ? message.alert(message.language.tget('COMMAND_NICK_SET', nick)) : message.alert(message.language.tget('COMMAND_NICK_CLEARED'));
 	}
-
 }

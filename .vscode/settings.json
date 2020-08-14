@@ -6,11 +6,6 @@
 	"editor.detectIndentation": false,
 	"files.eol": "\n",
 	"deepscan.enable": true,
-	"[typescript]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
-	},
-	"[markdown]": {
-		"editor.defaultFormatter": "vscode.markdown-language-features"
-	},
-	"typescript.tsdk": "node_modules\\typescript\\lib"
+	"typescript.tsdk": "node_modules\\typescript\\lib",
+	"powershell.codeFormatting.addWhitespaceAroundPipe": true
 }

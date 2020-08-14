@@ -7,7 +7,6 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 import { join } from 'path';
 
 export default class extends SkyraCommand {
-
 	private kTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -15,8 +14,8 @@ export default class extends SkyraCommand {
 			aliases: ['cmm'],
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_CHANGEMYMIND_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_CHANGEMYMIND_EXTENDED'),
+			description: (language) => language.tget('COMMAND_CHANGEMYMIND_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_CHANGEMYMIND_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<text:string{1,50}>'
@@ -35,21 +34,22 @@ export default class extends SkyraCommand {
 	private async generate(author: KlasaUser, text: string) {
 		const guy = await fetchAvatar(author, 128);
 
-		return new Canvas(591, 607)
-			.printImage(this.kTemplate!, 0, 0, 591, 607)
+		return (
+			new Canvas(591, 607)
+				.printImage(this.kTemplate!, 0, 0, 591, 607)
 
-			// Add user's avatar
-			.printCircularImage(guy, 155, 73, 41)
+				// Add user's avatar
+				.printCircularImage(guy, 155, 73, 41)
 
-			// Add text
-			.setTextAlign('center')
-			.setColor('rgb(23,23,23)')
-			.setTextFont('42px RobotoRegular')
-			.createRectangleClip(144, 345, 336, 133)
-			.printWrappedText(text, 311, 375, 340)
+				// Add text
+				.setTextAlign('center')
+				.setColor('rgb(23,23,23)')
+				.setTextFont('42px RobotoRegular')
+				.createRectangleClip(144, 345, 336, 133)
+				.printWrappedText(text, 311, 375, 340)
 
-			// Render
-			.toBufferAsync();
+				// Render
+				.toBufferAsync()
+		);
 	}
-
 }

@@ -10,13 +10,15 @@ export function canManage(guild: Guild, member: GuildMember) {
 	const memberTag = guild.memberTags.get(member.id);
 
 	// MemberTag must always exist:
-	return typeof memberTag !== 'undefined'
+	return (
+		typeof memberTag !== 'undefined' &&
 		// If Roles.Admin is not configured, check MANAGE_GUILD, else check if the member has the role.
-		&& (roleID === null ? member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : memberTag.roles.includes(roleID))
+		(roleID === null ? member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : memberTag.roles.includes(roleID)) &&
 		// Check if despite of having permissions, user permission nodes do not deny them.
-		&& allowedPermissionsNodeUser(guild, member.id)
+		allowedPermissionsNodeUser(guild, member.id) &&
 		// Check if despite of having permissions, role permission nodes do not deny them.
-		&& allowedPermissionsNodeRole(guild, memberTag);
+		allowedPermissionsNodeRole(guild, memberTag)
+	);
 }
 
 export function allowedPermissionsNodeUser(guild: Guild, userID: string) {

@@ -11,18 +11,17 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
-	description: language => language.tget('COMMAND_URBAN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_URBAN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_URBAN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_URBAN_EXTENDED'),
 	nsfw: true,
 	runIn: ['text'],
 	usage: '<query:string>'
 })
 export default class extends RichDisplayCommand {
-
 	public async run(message: KlasaMessage, [query]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
 			`https://api.urbandictionary.com/v0/define?term=${encodeURIComponent(query)}`,
@@ -37,22 +36,25 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
-			.setColor(await DbSet.fetchColor(message))
-			.setThumbnail('https://i.imgur.com/CcIZZsa.png'))
-			.setFooterSuffix(' - © Urban Dictionary');
+		const display = new UserRichDisplay(
+			new MessageEmbed()
+				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
+				.setColor(await DbSet.fetchColor(message))
+				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
+		).setFooterSuffix(' - © Urban Dictionary');
 
 		for (const result of results) {
 			const definition = this.parseDefinition(result.definition, result.permalink, message.language);
 			const example = result.example ? this.parseDefinition(result.example, result.permalink, message.language) : 'None';
-			display.addPage((embed: MessageEmbed) => embed
-				.setURL(result.permalink)
-				.setDescription(definition)
-				.addField('Example', example)
-				.addField('Author', result.author || 'UrbanDictionary User')
-				.addField('👍', `${result.thumbs_up}`, true)
-				.addField('👎', `${result.thumbs_down}`, true));
+			display.addPage((embed: MessageEmbed) =>
+				embed
+					.setURL(result.permalink)
+					.setDescription(definition)
+					.addField('Example', example)
+					.addField('Author', result.author || 'UrbanDictionary User')
+					.addField('👍', `${result.thumbs_up}`, true)
+					.addField('👎', `${result.thumbs_down}`, true)
+			);
 		}
 
 		return display;
@@ -62,7 +64,6 @@ export default class extends RichDisplayCommand {
 		if (definition.length < 750) return definition;
 		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
 	}
-
 }
 
 export interface UrbanDictionaryResultOk {

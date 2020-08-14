@@ -7,7 +7,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'users/@me' })
 export default class extends Route {
-
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
@@ -20,5 +19,4 @@ export default class extends Route {
 		}
 		return response.json({ ...flattenUser(user), guilds });
 	}
-
 }

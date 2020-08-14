@@ -9,18 +9,17 @@ import { KlasaMessage, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: language => language.tget('COMMAND_ITUNES_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_ITUNES_EXTENDED'),
+	description: (language) => language.tget('COMMAND_ITUNES_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_ITUNES_EXTENDED'),
 	usage: '<song:str>'
 })
 export default class extends RichDisplayCommand {
-
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: KlasaMessage, [song]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const { results: entries } = await this.fetchAPI(message, song);
 		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
@@ -49,28 +48,27 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(entries: ItunesData[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_ITUNES_TITLES');
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {
-
-			display.addPage((embed: MessageEmbed) => embed
-				.setThumbnail(song.artworkUrl100)
-				.setTitle(song.trackName)
-				.setURL(song.trackViewUrl)
-				.addField(titles.ARTIST, `[${song.artistName}](${song.artistViewUrl})`, true)
-				.addField(titles.COLLECTION, `[${song.collectionName}](${song.collectionViewUrl})`, true)
-				.addField(titles.COLLECTION_PRICE, `$${song.collectionPrice}`, true)
-				.addField(titles.TRACK_PRICE, `$${song.trackPrice}`, true)
-				.addField(titles.TRACK_RELEASE_DATE, this.releaseDateTimestamp.displayUTC(song.releaseDate), true)
-				.addField(titles.NUMBER_OF_TRACKS_IN_COLLECTION, song.trackCount, true)
-				.addField(titles.PRIMARY_GENRE, song.primaryGenreName, true)
-				.addField(titles.PREVIEW, `[${titles.PREVIEW_LABEL}](${song.previewUrl})`, true));
+			display.addPage((embed: MessageEmbed) =>
+				embed
+					.setThumbnail(song.artworkUrl100)
+					.setTitle(song.trackName)
+					.setURL(song.trackViewUrl)
+					.addField(titles.ARTIST, `[${song.artistName}](${song.artistViewUrl})`, true)
+					.addField(titles.COLLECTION, `[${song.collectionName}](${song.collectionViewUrl})`, true)
+					.addField(titles.COLLECTION_PRICE, `$${song.collectionPrice}`, true)
+					.addField(titles.TRACK_PRICE, `$${song.trackPrice}`, true)
+					.addField(titles.TRACK_RELEASE_DATE, this.releaseDateTimestamp.displayUTC(song.releaseDate), true)
+					.addField(titles.NUMBER_OF_TRACKS_IN_COLLECTION, song.trackCount, true)
+					.addField(titles.PRIMARY_GENRE, song.primaryGenreName, true)
+					.addField(titles.PREVIEW, `[${titles.PREVIEW_LABEL}](${song.previewUrl})`, true)
+			);
 		}
 
 		return display;
 	}
-
 }
 
 interface ItunesData {

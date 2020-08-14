@@ -7,9 +7,7 @@ import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<MiddlewareOptions>({ priority: 30 })
 export default class extends Middleware {
-
 	public run(request: ApiRequest, response: ApiResponse) {
 		response.cookies = new CookieStore(request, response, !DEV);
 	}
-
 }

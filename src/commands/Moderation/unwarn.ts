@@ -8,13 +8,14 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uw', 'unwarning'],
-	description: language => language.tget('COMMAND_UNWARN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_UNWARN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_UNWARN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_UNWARN_EXTENDED'),
 	usage: '<case:number> [reason:...string]'
 })
 export default class extends ModerationCommand {
-
-	public async prehandle() { /* Do nothing */ }
+	public async prehandle() {
+		/* Do nothing */
+	}
 
 	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
@@ -37,14 +38,19 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(message: KlasaMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
-		return message.guild!.security.actions.unWarning({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			reason: context.reason,
-			imageURL: getImage(message)
-		}, context.modlog.caseID, await this.getTargetDM(message, context.target));
+		return message.guild!.security.actions.unWarning(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				reason: context.reason,
+				imageURL: getImage(message)
+			},
+			context.modlog.caseID,
+			await this.getTargetDM(message, context.target)
+		);
 	}
 
-	public async posthandle() { /* Do nothing */ }
-
+	public async posthandle() {
+		/* Do nothing */
+	}
 }

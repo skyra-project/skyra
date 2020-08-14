@@ -8,33 +8,22 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['doggo', 'puppy'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_DOG_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_DOG_EXTENDED'),
+	description: (language) => language.tget('COMMAND_DOG_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_DOG_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	spam: true
 })
 export default class extends SkyraCommand {
-
 	public async run(message: KlasaMessage) {
-		const [color, image] = await Promise.all([
-			DbSet.fetchColor(message),
-			this.fetchImage()
-		]);
+		const [color, image] = await Promise.all([DbSet.fetchColor(message), this.fetchImage()]);
 
-		return message.sendEmbed(new MessageEmbed()
-			.setColor(color)
-			.setImage(image)
-			.setTimestamp());
+		return message.sendEmbed(new MessageEmbed().setColor(color).setImage(image).setTimestamp());
 	}
 
 	private async fetchImage() {
-		const randomDogData = await fetch<DogResultOk>('https://dog.ceo/api/breeds/image/random', FetchResultTypes.JSON)
-			.catch(() => null);
-		return randomDogData?.status === 'success' && isImageURL(randomDogData.message)
-			? randomDogData.message
-			: 'https://i.imgur.com/cF0XUF5.jpg';
+		const randomDogData = await fetch<DogResultOk>('https://dog.ceo/api/breeds/image/random', FetchResultTypes.JSON).catch(() => null);
+		return randomDogData?.status === 'success' && isImageURL(randomDogData.message) ? randomDogData.message : 'https://i.imgur.com/cF0XUF5.jpg';
 	}
-
 }
 
 export interface DogResultOk {

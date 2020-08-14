@@ -7,7 +7,6 @@ import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
@@ -43,5 +42,4 @@ export default class extends SkyraCommand {
 
 		return message.sendMessage({ embed });
 	}
-
 }

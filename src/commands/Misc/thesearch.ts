@@ -6,15 +6,14 @@ import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 export default class extends SkyraCommand {
-
 	private kTemplate: Image = null!;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: language => language.tget('COMMAND_THESEARCH_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_THESEARCH_EXTENDED'),
+			description: (language) => language.tget('COMMAND_THESEARCH_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_THESEARCH_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -40,5 +39,4 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/TheSearch.png'));
 	}
-
 }

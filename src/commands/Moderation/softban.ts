@@ -8,13 +8,12 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sb'],
-	description: language => language.tget('COMMAND_SOFTBAN_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_SOFTBAN_EXTENDED'),
+	description: (language) => language.tget('COMMAND_SOFTBAN_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_SOFTBAN_EXTENDED'),
 	requiredMember: false,
 	requiredPermissions: ['BAN_MEMBERS']
 })
 export default class extends ModerationCommand {
-
 	public prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
 		return message.guild!.settings.get(GuildSettings.Events.BanAdd) || message.guild!.settings.get(GuildSettings.Events.BanRemove)
 			? { unlock: message.guild!.moderation.createLock() }
@@ -22,13 +21,17 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.softBan({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			duration: context.duration,
-			reason: context.reason,
-			imageURL: getImage(message)
-		}, this.getDays(message), await this.getTargetDM(message, context.target));
+		return message.guild!.security.actions.softBan(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				duration: context.duration,
+				reason: context.reason,
+				imageURL: getImage(message)
+			},
+			this.getDays(message),
+			await this.getTargetDM(message, context.target)
+		);
 	}
 
 	public posthandle(...[, { preHandled }]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['posthandle']>) {
@@ -51,5 +54,4 @@ export default class extends ModerationCommand {
 		}
 		return 0;
 	}
-
 }

@@ -4,7 +4,6 @@ import { VoiceState } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(oldState: VoiceState, newState: VoiceState) {
 		const { music } = newState.guild;
 
@@ -25,5 +24,4 @@ export default class extends Event {
 			}
 		}
 	}
-
 }

@@ -8,7 +8,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild/roles/:role' })
 export default class extends Route {
-
 	@authenticated()
 	@ratelimit(2, 5000, true)
 	public async get(request: ApiRequest, response: ApiResponse) {
@@ -26,5 +25,4 @@ export default class extends Route {
 		const role = guild.roles.get(roleID);
 		return role ? response.json(flattenRole(role)) : response.error(404);
 	}
-
 }

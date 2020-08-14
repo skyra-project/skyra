@@ -7,7 +7,6 @@ export enum PlayerColor {
 }
 
 export abstract class Player {
-
 	public name: string;
 	public color: PlayerColor;
 	protected game: Game;
@@ -25,11 +24,7 @@ export abstract class Player {
 	public finish(): Promise<void> | void {
 		if (this.game.stopped && !this.game.winner) return;
 		const { next } = this.game;
-		this.game.content = this.game.language.tget(
-			this.game.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT',
-			next!.name,
-			next!.color
-		);
+		this.game.content = this.game.language.tget(this.game.winner ? 'COMMAND_C4_GAME_WIN' : 'COMMAND_C4_GAME_NEXT', next!.name, next!.color);
 	}
 
 	protected drop(x: number) {
@@ -50,5 +45,4 @@ export abstract class Player {
 	}
 
 	public abstract start(): Promise<void> | void;
-
 }

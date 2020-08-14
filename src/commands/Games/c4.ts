@@ -4,15 +4,14 @@ import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
 import { CLIENT_ID } from '@root/config';
 
 export default class extends SkyraCommand {
-
 	private prompt: Usage;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['connect-four'],
 			cooldown: 0,
-			description: language => language.tget('COMMAND_C4_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_C4_EXTENDED'),
+			description: (language) => language.tget('COMMAND_C4_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_C4_EXTENDED'),
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -29,7 +28,9 @@ export default class extends SkyraCommand {
 		this.client.connectFour.set(message.channel.id, null);
 
 		try {
-			const [response] = await this.prompt.createPrompt(message, { target: user }).run(message.language.tget('COMMAND_C4_PROMPT', message.author.toString(), user.toString()));
+			const [response] = await this.prompt
+				.createPrompt(message, { target: user })
+				.run(message.language.tget('COMMAND_C4_PROMPT', message.author.toString(), user.toString()));
 			if (response) {
 				await this.client.connectFour.create(message, message.author, user)!.run();
 			} else {
@@ -42,5 +43,4 @@ export default class extends SkyraCommand {
 			this.client.connectFour.delete(message.channel.id);
 		}
 	}
-
 }

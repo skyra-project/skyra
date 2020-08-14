@@ -6,7 +6,6 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
-
 	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_MESSAGES';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Messages.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Messages.IgnoredChannels;
@@ -76,7 +75,6 @@ export default class extends ModerationMonitor {
 		if (contents.length >= queueSize) contents.length = queueSize - 1;
 		contents.unshift(content);
 
-		return contents.reduce((accumulator, ct) => ct === content ? accumulator + 1 : accumulator, 1);
+		return contents.reduce((accumulator, ct) => (ct === content ? accumulator + 1 : accumulator), 1);
 	}
-
 }

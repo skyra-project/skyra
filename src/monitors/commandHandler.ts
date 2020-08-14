@@ -5,7 +5,6 @@ import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
 import { CLIENT_ID } from '@root/config';
 
 export default class extends Monitor {
-
 	public constructor(store: MonitorStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			ignoreOthers: false,
@@ -27,7 +26,7 @@ export default class extends Monitor {
 	public async sendPrefixReminder(message: KlasaMessage) {
 		if (message.guild !== null) {
 			const disabledChannels = message.guild.settings.get(GuildSettings.DisabledChannels);
-			if (disabledChannels.includes(message.channel.id) && !await message.hasAtLeastPermissionLevel(5)) return;
+			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(5))) return;
 		}
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
 		return message.sendLocale('PREFIX_REMINDER', [prefix.length ? prefix : undefined]);
@@ -43,8 +42,12 @@ export default class extends Monitor {
 				await message.prompter!.run();
 				try {
 					const subcommand = message.command!.subcommands ? message.params.shift() : undefined;
-					// @ts-expect-error 7053
-					const commandRun = subcommand ? message.command![subcommand](message, message.params) : message.command!.run(message, message.params);
+					/* eslint-disable prettier/prettier */
+					const commandRun = subcommand
+						? // @ts-expect-error7053
+						  message.command![subcommand](message, message.params)
+						: message.command!.run(message, message.params);
+					/* eslint-enable prettier/prettier */
 					timer.stop();
 					const response = await commandRun;
 					floatPromise(this, this.client.finalizers.run(message, message.command!, response, timer));
@@ -60,5 +63,4 @@ export default class extends Monitor {
 		}
 		if (this.client.options.typing) message.channel.stopTyping();
 	}
-
 }

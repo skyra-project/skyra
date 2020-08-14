@@ -1,4 +1,10 @@
-import { TwitchHelixBearerToken, TwitchHelixGameSearchResult, TwitchHelixResponse, TwitchHelixUserFollowsResult, TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
+import {
+	TwitchHelixBearerToken,
+	TwitchHelixGameSearchResult,
+	TwitchHelixResponse,
+	TwitchHelixUserFollowsResult,
+	TwitchHelixUsersSearchResult
+} from '@lib/types/definitions/Twitch';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { Mime, Time } from '@utils/constants';
 import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
@@ -18,10 +24,9 @@ export interface OauthResponse {
 }
 
 export class Twitch {
-
 	public readonly ratelimitsStreams = new RateLimitManager(1, Time.Minute * 3 * 1000);
 	public readonly BASE_URL_HELIX = 'https://api.twitch.tv/helix/';
-	public readonly BRANDING_COLOUR = 0x6441A4;
+	public readonly BRANDING_COLOUR = 0x6441a4;
 
 	@enumerable(false)
 	private BEARER: TwitchHelixBearerToken = {
@@ -41,7 +46,7 @@ export class Twitch {
 	@enumerable(false)
 	private readonly kTwitchRequestHeaders = {
 		'Content-Type': Mime.Types.ApplicationJson,
-		'Accept': Mime.Types.ApplicationJson,
+		Accept: Mime.Types.ApplicationJson,
 		// eslint-disable-next-line @typescript-eslint/no-invalid-this
 		'Client-ID': this.$clientID
 	};
@@ -70,13 +75,13 @@ export class Twitch {
 	}
 
 	public async fetchUserFollowage(userID: string, channelID: string) {
-		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(`users/follows?from_id=${userID}&to_id=${channelID}`);
+		return this._performApiGETRequest<TwitchHelixResponse<TwitchHelixUserFollowsResult> & { total: number }>(
+			`users/follows?from_id=${userID}&to_id=${channelID}`
+		);
 	}
 
 	public checkSignature(algorithm: string, signature: string, data: any) {
-		const hash = createHmac(algorithm, this.$webhookSecret)
-			.update(JSON.stringify(data))
-			.digest('hex');
+		const hash = createHmac(algorithm, this.$webhookSecret).update(JSON.stringify(data)).digest('hex');
 
 		return hash === signature;
 	}
@@ -89,29 +94,37 @@ export class Twitch {
 	}
 
 	public async subscriptionsStreamHandle(streamerID: string, action: TwitchHooksAction = TwitchHooksAction.Subscribe) {
-		await fetch('https://api.twitch.tv/helix/webhooks/hub', {
-			body: JSON.stringify({
-				'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
-				'hub.mode': action,
-				'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
-				'hub.lease_seconds': (9 * Time.Day) / Time.Second,
-				'hub.secret': this.$webhookSecret
-			}),
-			headers: {
-				...this.kTwitchRequestHeaders,
-				Authorization: `Bearer ${await this.fetchBearer()}`
+		await fetch(
+			'https://api.twitch.tv/helix/webhooks/hub',
+			{
+				body: JSON.stringify({
+					'hub.callback': `${TWITCH_CALLBACK}${streamerID}`,
+					'hub.mode': action,
+					'hub.topic': `https://api.twitch.tv/helix/streams?user_id=${streamerID}`,
+					'hub.lease_seconds': (9 * Time.Day) / Time.Second,
+					'hub.secret': this.$webhookSecret
+				}),
+				headers: {
+					...this.kTwitchRequestHeaders,
+					Authorization: `Bearer ${await this.fetchBearer()}`
+				},
+				method: FetchMethods.Post
 			},
-			method: FetchMethods.Post
-		}, FetchResultTypes.Result);
+			FetchResultTypes.Result
+		);
 	}
 
 	private async _performApiGETRequest<T>(path: string): Promise<T> {
-		return fetch<T>(`${this.BASE_URL_HELIX}${path}`, {
-			headers: {
-				...this.kTwitchRequestHeaders,
-				Authorization: `Bearer ${await this.fetchBearer()}`
-			}
-		}, FetchResultTypes.JSON);
+		return fetch<T>(
+			`${this.BASE_URL_HELIX}${path}`,
+			{
+				headers: {
+					...this.kTwitchRequestHeaders,
+					Authorization: `Bearer ${await this.fetchBearer()}`
+				}
+			},
+			FetchResultTypes.JSON
+		);
 	}
 
 	private async _generateBearerToken() {
@@ -120,11 +133,10 @@ export class Twitch {
 		url.searchParams.append('client_id', this.$clientID);
 		url.searchParams.append('grant_type', 'client_credentials');
 		const respone = await fetch<OauthResponse>(url.href, { method: FetchMethods.Post }, FetchResultTypes.JSON);
-		const expires = Date.now() + (respone.expires_in * 1000);
+		const expires = Date.now() + respone.expires_in * 1000;
 		this.BEARER = { TOKEN: respone.access_token, EXPIRE: expires };
 		return respone.access_token;
 	}
-
 }
 
 export const TWITCH_REPLACEABLES_REGEX = /%ID%|%TITLE%|%VIEWER_COUNT%|%GAME_NAME%|%GAME_ID%|%LANGUAGE%|%USER_ID%|%USER_NAME%/g;

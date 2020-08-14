@@ -4,13 +4,12 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 5,
-			description: language => language.tget('COMMAND_FILTER_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_FILTER_EXTENDED'),
+			description: (language) => language.tget('COMMAND_FILTER_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_FILTER_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -61,9 +60,8 @@ export default class extends SkyraCommand {
 
 	public show(message: KlasaMessage) {
 		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
-		return message.sendMessage(raw.length
-			? message.language.tget('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``)
-			: message.language.tget('COMMAND_FILTER_SHOW_EMPTY'));
+		return message.sendMessage(
+			raw.length ? message.language.tget('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``) : message.language.tget('COMMAND_FILTER_SHOW_EMPTY')
+		);
 	}
-
 }

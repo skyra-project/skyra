@@ -16,8 +16,8 @@ import { CommandOptions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<CommandOptions>({
 	aliases: ['tags', 'customcommand', 'copypasta'],
-	description: language => language.tget('COMMAND_TAG_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_TAG_EXTENDED'),
+	description: (language) => language.tget('COMMAND_TAG_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_TAG_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
@@ -26,7 +26,6 @@ import { CommandOptions, KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	// Based on HEX regex from @utils/Color
 	private kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
@@ -38,14 +37,16 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
+		throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL');
+	})
 	public async add(message: KlasaMessage, [id, content]: [string, string]) {
 		// Check for permissions and content length
 		if (!content) throw message.language.tget('COMMAND_TAG_CONTENT_REQUIRED');
 
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		if (tags.some(command => command.id === id)) throw message.language.tget('COMMAND_TAG_EXISTS', id);
+		if (tags.some((command) => command.id === id)) throw message.language.tget('COMMAND_TAG_EXISTS', id);
 		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayAction: 'add',
 			extraContext: { author: message.author.id }
@@ -54,12 +55,14 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TAG_ADDED', [id, cutText(content, 1850)]);
 	}
 
-	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
+		throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL');
+	})
 	public async remove(message: KlasaMessage, [id]: [string]) {
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 
-		const tag = tags.find(command => command.id === id);
+		const tag = tags.find((command) => command.id === id);
 		if (!tag) throw message.language.tget('COMMAND_TAG_NOTEXISTS', id);
 		await message.guild!.settings.update(GuildSettings.CustomCommands, tag, {
 			arrayAction: 'remove',
@@ -69,19 +72,23 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TAG_REMOVED', [id]);
 	}
 
-	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
+		throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL');
+	})
 	public async reset(message: KlasaMessage) {
 		await message.guild!.settings.reset(GuildSettings.CustomCommands);
 		return message.sendLocale('COMMAND_TAG_RESET');
 	}
 
-	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => { throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL'); })
+	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
+		throw message.language.tget('COMMAND_TAG_PERMISSIONLEVEL');
+	})
 	public async edit(message: KlasaMessage, [id, content]: [string, string]) {
 		if (!content) throw message.language.tget('COMMAND_TAG_CONTENT_REQUIRED');
 
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		const index = tags.findIndex(command => command.id === id);
+		const index = tags.findIndex((command) => command.id === id);
 		if (index === -1) throw message.language.tget('COMMAND_TAG_NOTEXISTS', id);
 		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayIndex: index,
@@ -96,18 +103,17 @@ export default class extends SkyraCommand {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		if (!tags.length) throw message.language.tget('COMMAND_TAG_LIST_EMPTY');
 
-		const response = await message.send(new MessageEmbed()
-			.setColor(BrandingColors.Secondary)
-			.setDescription(message.language.tget('SYSTEM_LOADING')));
+		const response = await message.send(
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(message.language.tget('SYSTEM_LOADING'))
+		);
 
 		// Get prefix and display all tags
 		const prefix = message.guild!.settings.get(GuildSettings.Prefix);
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		// Add all pages, containing 30 tags each
 		for (const page of chunk(tags, 30)) {
-			const description = `\`${page.map(command => `${prefix}${command.id}`).join('`, `')}\``;
+			const description = `\`${page.map((command) => `${prefix}${command.id}`).join('`, `')}\``;
 			display.addPage((embed: MessageEmbed) => embed.setDescription(description));
 		}
 
@@ -119,19 +125,17 @@ export default class extends SkyraCommand {
 	@requiredPermissions(['EMBED_LINKS'])
 	public show(message: KlasaMessage, [tagName]: [string]) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		const tag = tags.find(command => command.id === tagName);
+		const tag = tags.find((command) => command.id === tagName);
 		return tag
 			? tag.embed
-				? message.sendEmbed(new MessageEmbed()
-					.setDescription(tag.content)
-					.setColor(tag.color))
+				? message.sendEmbed(new MessageEmbed().setDescription(tag.content).setColor(tag.color))
 				: message.sendMessage(tag.content)
 			: null;
 	}
 
 	public source(message: KlasaMessage, [tagName]: [string]) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		const tag = tags.find(command => command.id === tagName);
+		const tag = tags.find((command) => command.id === tagName);
 		return tag ? message.sendMessage(codeBlock('md', tag.content)) : null;
 	}
 
@@ -158,5 +162,4 @@ export default class extends SkyraCommand {
 			return 0;
 		}
 	}
-
 }

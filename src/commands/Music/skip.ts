@@ -5,18 +5,17 @@ import { requireSongPresent } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: language => language.tget('COMMAND_SKIP_DESCRIPTION'),
+	description: (language) => language.tget('COMMAND_SKIP_DESCRIPTION'),
 	usage: '[force]'
 })
 export default class extends MusicCommand {
-
 	@requireSongPresent()
 	public async run(message: KlasaMessage, [force = false]: [boolean]) {
 		const { music } = message.guild!;
 
 		if (music.listeners.length >= 4) {
 			if (force) {
-				if (!await message.hasAtLeastPermissionLevel(5)) throw message.language.tget('COMMAND_SKIP_PERMISSIONS');
+				if (!(await message.hasAtLeastPermissionLevel(5))) throw message.language.tget('COMMAND_SKIP_PERMISSIONS');
 			} else {
 				const response = this.handleSkips(music, message.author.id);
 				if (response) return message.sendMessage(response);
@@ -40,5 +39,4 @@ export default class extends MusicCommand {
 		const needed = Math.ceil(total * 0.4);
 		return size >= needed ? false : musicManager.guild.language.tget('COMMAND_SKIP_VOTES_TOTAL', size, needed);
 	}
-
 }

@@ -5,7 +5,6 @@ import { MusicHandlerRequestContext } from './music/MusicHandler';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
-
 	protected constructor(store: CommandStore, file: string[], directory: string, options: MusicCommandOptions = {}) {
 		super(store, file, directory, { ...options, runIn: ['text'] });
 	}
@@ -18,7 +17,6 @@ export abstract class MusicCommand extends SkyraCommand {
 	protected getContext(message: KlasaMessage): MusicHandlerRequestContext {
 		return { channel: message.channel as TextChannel, userID: message.author.id };
 	}
-
 }
 
 /**

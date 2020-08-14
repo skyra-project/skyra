@@ -186,5 +186,4 @@ export namespace ClashOfClans {
 		isCountry: boolean;
 		countryCode: string;
 	}
-
 }

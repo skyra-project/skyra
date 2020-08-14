@@ -4,7 +4,6 @@ import { T } from './Shared';
 /* eslint-disable @typescript-eslint/no-namespace */
 
 export namespace GuildSettings {
-
 	export const CommandUses = T<number>('commandUses');
 	export const Prefix = T<string>('prefix');
 	export const CustomCommands = T<CustomCommand[]>('custom-commands');
@@ -240,7 +239,6 @@ export namespace GuildSettings {
 			export const HideAuthor = T<boolean>('suggestions.on-action.hide-author');
 		}
 	}
-
 }
 
 export interface PermissionsNode {

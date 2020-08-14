@@ -15,14 +15,13 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: language => language.tget('COMMAND_PROFILE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_PROFILE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_PROFILE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_PROFILE_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[user:username]'
 })
 export default class extends SkyraCommand {
-
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 	private lightThemeDock: Image = null!;
@@ -52,8 +51,7 @@ export default class extends SkyraCommand {
 		const TITLE = message.language.retrieve('COMMAND_PROFILE');
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
-			const badges = await Promise.all(settings.profile.publicBadges.map(name =>
-				loadImage(join(BADGES_FOLDER, `${name}.png`))));
+			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));
 
 			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock! : this.lightThemeDock!, 600, 0, 100, 391);
 			let position = 20;
@@ -63,61 +61,58 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		return canvas
-			// Images
-			.save()
-			.createRoundedClip(10, 10, 620, 371, 8)
-			.printImage(themeImageSRC, 9, 9, 188, 373)
-			.restore()
-			.printImage(settings.profile.darkTheme ? this.darkThemeTemplate : this.lightThemeTemplate, 0, 0, 640, 391)
+		return (
+			canvas
+				// Images
+				.save()
+				.createRoundedClip(10, 10, 620, 371, 8)
+				.printImage(themeImageSRC, 9, 9, 188, 373)
+				.restore()
+				.printImage(settings.profile.darkTheme ? this.darkThemeTemplate : this.lightThemeTemplate, 0, 0, 640, 391)
 
-			// Progress bar
-			.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)
-			.printRoundedRectangle(227, 352, progressBar, 9, 3)
+				// Progress bar
+				.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)
+				.printRoundedRectangle(227, 352, progressBar, 9, 3)
 
-			// Name title
-			.setTextFont('35px RobotoRegular')
-			.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
-			.printResponsiveText(user.username, 227, 73, 306)
-			.setTextFont('25px RobotoLight')
-			.printText(`#${user.discriminator}`, 227, 105)
+				// Name title
+				.setTextFont('35px RobotoRegular')
+				.setColor(settings.profile.darkTheme ? '#F0F0F0' : '#171717')
+				.printResponsiveText(user.username, 227, 73, 306)
+				.setTextFont('25px RobotoLight')
+				.printText(`#${user.discriminator}`, 227, 105)
 
-			// Statistics Titles
-			.printText(TITLE.GLOBAL_RANK, 227, 276)
-			.printText(TITLE.CREDITS, 227, 229)
-			.printText(TITLE.REPUTATION, 227, 181)
+				// Statistics Titles
+				.printText(TITLE.GLOBAL_RANK, 227, 276)
+				.printText(TITLE.CREDITS, 227, 229)
+				.printText(TITLE.REPUTATION, 227, 181)
 
-			// Experience
-			.setTextFont('20px RobotoLight')
-			.printText(TITLE.EXPERIENCE, 227, 342)
+				// Experience
+				.setTextFont('20px RobotoLight')
+				.printText(TITLE.EXPERIENCE, 227, 342)
 
-			// Statistics Values
-			.setTextAlign('right')
-			.setTextFont('25px RobotoLight')
-			.printText(rank.toString(), 594, 276)
-			.printText(`${settings.money} | ${settings.profile.vault}`, 594, 229)
-			.printText(settings.reputations.toString(), 594, 181)
-			.printText(settings.points.toString(), 594, 346)
+				// Statistics Values
+				.setTextAlign('right')
+				.setTextFont('25px RobotoLight')
+				.printText(rank.toString(), 594, 276)
+				.printText(`${settings.money} | ${settings.profile.vault}`, 594, 229)
+				.printText(settings.reputations.toString(), 594, 181)
+				.printText(settings.points.toString(), 594, 346)
 
-			// Level
-			.setTextAlign('center')
-			.setTextFont('30px RobotoLight')
-			.printText(TITLE.LEVEL, 576, 58)
-			.setTextFont('40px RobotoRegular')
-			.printText(settings.level.toString(), 576, 100)
+				// Level
+				.setTextAlign('center')
+				.setTextFont('30px RobotoLight')
+				.printText(TITLE.LEVEL, 576, 58)
+				.setTextFont('40px RobotoRegular')
+				.printText(settings.level.toString(), 576, 100)
 
-			// Avatar
-			.printCircularImage(imgAvatarSRC, 103, 103, 71)
-			.toBufferAsync();
+				// Avatar
+				.printCircularImage(imgAvatarSRC, 103, 103, 71)
+				.toBufferAsync()
+		);
 	}
 
 	public async init() {
-		[
-			this.lightThemeTemplate,
-			this.darkThemeTemplate,
-			this.lightThemeDock,
-			this.darkThemeDock
-		] = await Promise.all([
+		[this.lightThemeTemplate, this.darkThemeTemplate, this.lightThemeDock, this.darkThemeDock] = await Promise.all([
 			new Canvas(640, 391)
 				.setAntialiasing('subpixel')
 				.setShadowColor('rgba(0, 0, 0, 0.7)')
@@ -168,7 +163,6 @@ export default class extends SkyraCommand {
 				.then(loadImage)
 		]);
 	}
-
 }
 
 export interface ProfileTitles {

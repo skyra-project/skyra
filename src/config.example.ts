@@ -92,14 +92,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	clientID: CLIENT_ID,
 	clientSecret: CLIENT_SECRET,
 	dev: DEV,
-	disabledEvents: [
-		'CHANNEL_PINS_UPDATE',
-		'GUILD_CREATE',
-		'GUILD_MEMBER_UPDATE',
-		'PRESENCE_UPDATE',
-		'TYPING_START',
-		'USER_UPDATE'
-	],
+	disabledEvents: ['CHANNEL_PINS_UPDATE', 'GUILD_CREATE', 'GUILD_MEMBER_UPDATE', 'PRESENCE_UPDATE', 'TYPING_START', 'USER_UPDATE'],
 	lavalink: [
 		{
 			id: CLIENT_ID,
@@ -120,11 +113,13 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
 	providers: {
-		'default': 'postgres',
-		'postgres': PGSQL_DATABASE_OPTIONS
+		default: 'postgres',
+		postgres: PGSQL_DATABASE_OPTIONS
 	},
-	readyMessage: client =>
-		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString()} [U]].`,
+	readyMessage: (client) =>
+		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds
+			.reduce((a, b) => a + b.memberCount, 0)
+			.toLocaleString()} [U]].`,
 	regexPrefix: DEV ? undefined : /^(hey +)?(eva|skyra)[,! ]/i,
 	restTimeOffset: 0,
 	schedule: { interval: 5000 },
@@ -172,7 +167,8 @@ export const TOKENS = {
 	GOOGLE_CUSTOM_SEARCH_WEB_KEY: '',
 	INTERNETGAMEDATABASE_KEY: '',
 	KITSU_ID: 'AWQO5J657S',
-	KITSU_KEY: 'NzYxODA5NmY0ODRjYTRmMzQ2YjMzNzNmZmFhNjY5ZGRmYjZlMzViN2VkZDIzMGUwYjM5ZjQ5NjAwZGI4ZTc5MHJlc3RyaWN0SW5kaWNlcz1wcm9kdWN0aW9uX21lZGlhJmZpbHRlcnM9Tk9UK2FnZVJhdGluZyUzQVIxOA==',
+	KITSU_KEY:
+		'NzYxODA5NmY0ODRjYTRmMzQ2YjMzNzNmZmFhNjY5ZGRmYjZlMzViN2VkZDIzMGUwYjM5ZjQ5NjAwZGI4ZTc5MHJlc3RyaWN0SW5kaWNlcz1wcm9kdWN0aW9uX21lZGlhJmZpbHRlcnM9Tk9UK2FnZVJhdGluZyUzQVIxOA==',
 	NINTENDO_ID: 'U3B6GR4UA3',
 	NINTENDO_KEY: '9a20c93440cf63cf1a7008d75f7438bf',
 	THEMOVIEDATABASE_KEY: '',

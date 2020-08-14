@@ -39,12 +39,11 @@ const TYPES = {
 const ACTIONS = ['warn', 'kick', 'mute', 'softban', 'ban'];
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: language => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
+			description: (language) => language.tget('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
@@ -73,11 +72,12 @@ export default class extends SkyraCommand {
 				const value = await this.client.arguments.get('boolean')!.run(arg, possible, message);
 				return value
 					? (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) | 0b1000
-					: (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111) & 0b0111;
+					: message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b0111 & 0b0111;
 			}
 
 			const [min, max] = type === 'expire' ? [5000, 120000] : [60000, Time.Year];
-			const duration = Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
+			const duration =
+				Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
 			if (duration < min || duration > max) throw message.language.tget('RESOLVER_MINMAX_BOTH', possible.name, min / 1000, max / 1000, true);
 			return duration;
 		});
@@ -91,7 +91,8 @@ export default class extends SkyraCommand {
 
 		// Update the adder
 		switch (type) {
-			case 'disable': message.guild!.security.adders.attachments = null;
+			case 'disable':
+				message.guild!.security.adders.attachments = null;
 				break;
 			case 'enable':
 			case 'maximum':
@@ -112,5 +113,4 @@ export default class extends SkyraCommand {
 		}
 		return message.sendLocale(language, [value]);
 	}
-
 }

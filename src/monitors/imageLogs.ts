@@ -15,7 +15,6 @@ const MAXIMUM_SIZE = 300;
 const MAXIMUM_LENGTH = 1024 * 1024;
 
 export default class extends Monitor {
-
 	public async run(message: KlasaMessage) {
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
@@ -26,7 +25,7 @@ export default class extends Monitor {
 			url.searchParams.append('height', dimensions.height.toString());
 
 			// Fetch the image.
-			const result = await fetch(url, FetchResultTypes.Result).catch(error => {
+			const result = await fetch(url, FetchResultTypes.Result).catch((error) => {
 				this.client.emit(Events.Error, `ImageLogs[${error}] ${url}`);
 				return null;
 			});
@@ -46,14 +45,19 @@ export default class extends Monitor {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () => new MessageEmbed()
-					.setColor(Colors.Yellow)
-					.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-					.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
-					.setFooter(`#${(message.channel as TextChannel).name}`)
-					.attachFiles([new MessageAttachment(buffer, filename)])
-					.setImage(`attachment://${filename}`)
-					.setTimestamp());
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () =>
+					new MessageEmbed()
+						.setColor(Colors.Yellow)
+						.setAuthor(
+							`${message.author.tag} (${message.author.id})`,
+							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
+						)
+						.setDescription(`[${message.language.tget('JUMPTO')}](${message.url})`)
+						.setFooter(`#${(message.channel as TextChannel).name}`)
+						.attachFiles([new MessageAttachment(buffer, filename)])
+						.setImage(`attachment://${filename}`)
+						.setTimestamp()
+				);
 			} catch (error) {
 				this.client.emit(Events.Wtf, `ImageLogs[${error}] ${url}`);
 			}
@@ -61,15 +65,17 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage) {
-		return this.enabled
-			&& message.attachments.size !== 0
-			&& message.guild !== null
-			&& message.author !== null
-			&& message.webhookID === null
-			&& !message.system
-			&& message.author.id !== CLIENT_ID
-			&& message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null
-			&& !message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id);
+		return (
+			this.enabled &&
+			message.attachments.size !== 0 &&
+			message.guild !== null &&
+			message.author !== null &&
+			message.webhookID === null &&
+			!message.system &&
+			message.author.id !== CLIENT_ID &&
+			message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null &&
+			!message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+		);
 	}
 
 	private *getAttachments(message: KlasaMessage) {
@@ -124,5 +130,4 @@ export default class extends Monitor {
 			height: MAXIMUM_SIZE
 		};
 	}
-
 }

@@ -7,7 +7,20 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
-import { Channel, Client, DiscordAPIError, Guild, GuildChannel, ImageSize, ImageURLOptions, Message, Permissions, Role, User, UserResolvable } from 'discord.js';
+import {
+	Channel,
+	Client,
+	DiscordAPIError,
+	Guild,
+	GuildChannel,
+	ImageSize,
+	ImageURLOptions,
+	Message,
+	Permissions,
+	Role,
+	User,
+	UserResolvable
+} from 'discord.js';
 import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
@@ -23,17 +36,17 @@ const REGEX_PARSED_FCUSTOM_EMOJI = /^a?:[^:]+:\d{17,19}$/;
 const REGEX_CUSTOM_EMOJI_PARTS = /^(a?):([^:]+):(\d{17,19})$/;
 
 const ONE_TO_TEN = new Map<number, UtilOneToTenEntry>([
-	[0, { emoji: '😪', color: 0x5B1100 }],
-	[1, { emoji: '😪', color: 0x5B1100 }],
-	[2, { emoji: '😫', color: 0xAB1100 }],
-	[3, { emoji: '😔', color: 0xFF2B00 }],
-	[4, { emoji: '😒', color: 0xFF6100 }],
-	[5, { emoji: '😌', color: 0xFF9C00 }],
-	[6, { emoji: '😕', color: 0xB4BF00 }],
-	[7, { emoji: '😬', color: 0x84FC00 }],
-	[8, { emoji: '🙂', color: 0x5BF700 }],
-	[9, { emoji: '😃', color: 0x24F700 }],
-	[10, { emoji: '😍', color: 0x51D4EF }]
+	[0, { emoji: '😪', color: 0x5b1100 }],
+	[1, { emoji: '😪', color: 0x5b1100 }],
+	[2, { emoji: '😫', color: 0xab1100 }],
+	[3, { emoji: '😔', color: 0xff2b00 }],
+	[4, { emoji: '😒', color: 0xff6100 }],
+	[5, { emoji: '😌', color: 0xff9c00 }],
+	[6, { emoji: '😕', color: 0xb4bf00 }],
+	[7, { emoji: '😬', color: 0x84fc00 }],
+	[8, { emoji: '🙂', color: 0x5bf700 }],
+	[9, { emoji: '😃', color: 0x24f700 }],
+	[10, { emoji: '😍', color: 0x51d4ef }]
 ]);
 
 export const IMAGE_EXTENSION = /\.(bmp|jpe?g|png|gif|webp)$/i;
@@ -45,10 +58,10 @@ export interface ReferredPromise<T> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-function
-export function noop() { }
+export function noop() {}
 
 export function radians(degrees: number) {
-	return degrees * Math.PI / 180;
+	return (degrees * Math.PI) / 180;
 }
 
 export function showSeconds(duration: number): string {
@@ -130,12 +143,14 @@ export function compareEmoji(emoji: string, matching: string | EmojiObjectPartia
 		// matchingExecResult is only `null` when it's not a custom emoji, and we're comparing against one, thus return false
 		if (matchingExecResult === null) return false;
 
-		return emojiExecResult[2] === matchingExecResult[2].replace(/~\d+/, '') // name
-			&& emojiExecResult[3] === matchingExecResult[3]; // id
+		return (
+			emojiExecResult[2] === matchingExecResult[2].replace(/~\d+/, '') && emojiExecResult[3] === matchingExecResult[3] // name
+		); // id
 	}
 
-	return emojiExecResult[2] === matching.name.replace(/~\d+/, '') // name
-		&& emojiExecResult[3] === matching.id; // id
+	return (
+		emojiExecResult[2] === matching.name.replace(/~\d+/, '') && emojiExecResult[3] === matching.id // name
+	); // id
 }
 
 export function oneToTen(level: number): UtilOneToTenEntry | undefined {
@@ -210,9 +225,11 @@ export async function fetchAllLeaderboardEntries(client: Client, results: readon
 	const promises: Promise<unknown>[] = [];
 	for (const [id, element] of results) {
 		if (element.name === null) {
-			promises.push(client.userTags.fetchUsername(id).then(username => {
-				element.name = username;
-			}));
+			promises.push(
+				client.userTags.fetchUsername(id).then((username) => {
+					element.name = username;
+				})
+			);
 		}
 	}
 	await Promise.all(promises);
@@ -269,11 +286,16 @@ export async function fetch(url: URL | string, options?: RequestInit | FetchResu
 	if (!result.ok) throw new FetchError(url, result.status, await result.text());
 
 	switch (type) {
-		case FetchResultTypes.Result: return result;
-		case FetchResultTypes.Buffer: return result.buffer();
-		case FetchResultTypes.JSON: return result.json();
-		case FetchResultTypes.Text: return result.text();
-		default: throw new Error(`Unknown type ${type}`);
+		case FetchResultTypes.Result:
+			return result;
+		case FetchResultTypes.Buffer:
+			return result.buffer();
+		case FetchResultTypes.JSON:
+			return result.json();
+		case FetchResultTypes.Text:
+			return result.text();
+		default:
+			throw new Error(`Unknown type ${type}`);
 	}
 }
 
@@ -312,9 +334,9 @@ export function twemoji(emoji: string) {
 	while (i < emoji.length) {
 		c = emoji.charCodeAt(i++);
 		if (p) {
-			r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
+			r.push((0x10000 + ((p - 0xd800) << 10) + (c - 0xdc00)).toString(16));
 			p = 0;
-		} else if (c >= 0xD800 && c <= 0xDBFF) {
+		} else if (c >= 0xd800 && c <= 0xdbff) {
 			p = c;
 		} else {
 			r.push(c.toString(16));
@@ -367,7 +389,7 @@ export interface ImageAttachment {
  */
 export function getAttachment(message: Message): ImageAttachment | null {
 	if (message.attachments.size) {
-		const attachment = message.attachments.find(att => IMAGE_EXTENSION.test(att.url));
+		const attachment = message.attachments.find((att) => IMAGE_EXTENSION.test(att.url));
 		if (attachment) {
 			return {
 				url: attachment.url,
@@ -412,7 +434,7 @@ export function getImage(message: Message): string | null {
 const ROOT = 'https://cdn.discordapp.com';
 export function getDisplayAvatar(id: string, user: UserTag | User | APIUserData, options: ImageURLOptions = {}) {
 	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
-	const format = typeof options.format === 'undefined' ? user.avatar.startsWith('a_') ? 'gif' : 'png' : options.format;
+	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
 	return `${ROOT}/avatars/${id}/${user.avatar}.${format}${size}`;
 }
@@ -504,26 +526,25 @@ export function roundNumber(num: number | string, scale = 0) {
  * @returns The input cleaned of mentions
  */
 export function cleanMentions(guild: Guild, input: string) {
-	return input
-		.replace(/@(here|everyone)/g, '@\u200B$1')
-		.replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
-			switch (type) {
-				case '@':
-				case '@!': {
-					const tag = guild.client.userTags.get(id);
-					return tag ? `@${tag.username}` : `<${type}\u200B${id}>`;
-				}
-				case '@&': {
-					const role = guild.roles.get(id);
-					return role ? `@${role.name}` : match;
-				}
-				case '#': {
-					const channel = guild.channels.get(id);
-					return channel ? `#${channel.name}` : `<${type}\u200B${id}>`;
-				}
-				default: return `<${type}\u200B${id}>`;
+	return input.replace(/@(here|everyone)/g, '@\u200B$1').replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+		switch (type) {
+			case '@':
+			case '@!': {
+				const tag = guild.client.userTags.get(id);
+				return tag ? `@${tag.username}` : `<${type}\u200B${id}>`;
 			}
-		});
+			case '@&': {
+				const role = guild.roles.get(id);
+				return role ? `@${role.name}` : match;
+			}
+			case '#': {
+				const channel = guild.channels.get(id);
+				return channel ? `#${channel.name}` : `<${type}\u200B${id}>`;
+			}
+			default:
+				return `<${type}\u200B${id}>`;
+		}
+	});
 }
 
 /**
@@ -558,7 +579,7 @@ export function inlineCodeblock(input: string) {
 }
 
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
-	if (isThenable(promise)) promise.catch(error => ctx.client.emit(Events.Wtf, error));
+	if (isThenable(promise)) promise.catch((error) => ctx.client.emit(Events.Wtf, error));
 }
 
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
@@ -628,10 +649,11 @@ export function enumerable(value: boolean) {
 	};
 }
 
-export const authenticated = () => createFunctionInhibitor(
-	(request: ApiRequest) => Boolean(request.auth?.token),
-	(_request: ApiRequest, response: ApiResponse) => response.error(403)
-);
+export const authenticated = () =>
+	createFunctionInhibitor(
+		(request: ApiRequest) => Boolean(request.auth?.token),
+		(_request: ApiRequest, response: ApiResponse) => response.error(403)
+	);
 
 export function ratelimit(bucket: number, cooldown: number, auth = false) {
 	const manager = new RateLimitManager(bucket, cooldown);
@@ -649,7 +671,7 @@ export function ratelimit(bucket: number, cooldown: number, auth = false) {
 
 			try {
 				bucket.drip();
-			} catch { }
+			} catch {}
 
 			response.setHeader('X-RateLimit-Limit', xRateLimitLimit);
 			response.setHeader('X-RateLimit-Remaining', bucket.bucket.toString());

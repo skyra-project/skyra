@@ -9,8 +9,12 @@ import type { KlasaClient } from 'klasa';
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn, ValueTransformer } from 'typeorm';
 
 const cronTransformer: ValueTransformer = {
-	from(value: string | null) { return value === null ? null : new Cron(value); },
-	to(value: Cron | null) { return value === null ? null : value.cron; }
+	from(value: string | null) {
+		return value === null ? null : new Cron(value);
+	},
+	to(value: Cron | null) {
+		return value === null ? null : value.cron;
+	}
 };
 
 export const enum ResponseType {
@@ -20,15 +24,15 @@ export const enum ResponseType {
 	Finished
 }
 
-export type PartialResponseValue = { type: ResponseType.Ignore | ResponseType.Finished }
-| { type: ResponseType.Delay; value: number }
-| { type: ResponseType.Update; value: Date };
+export type PartialResponseValue =
+	| { type: ResponseType.Ignore | ResponseType.Finished }
+	| { type: ResponseType.Delay; value: number }
+	| { type: ResponseType.Update; value: Date };
 
 export type ResponseValue = PartialResponseValue & { entry: ScheduleEntity };
 
 @Entity('schedule', { schema: 'public' })
 export class ScheduleEntity extends BaseEntity {
-
 	#client: KlasaClient = null!;
 	#manager: ScheduleManager = null!;
 
@@ -53,13 +57,13 @@ export class ScheduleEntity extends BaseEntity {
 	/**
 	 * Whether this scheduled task is scheduled with the Cron pattern
 	 */
-	@Column('varchar', { 'nullable': true, 'transformer': cronTransformer, 'default': null })
+	@Column('varchar', { nullable: true, transformer: cronTransformer, default: null })
 	public recurring: Cron | null = null;
 
 	/**
 	 * If the task should catch up in the event the bot is down
 	 */
-	@Column('boolean', { 'default': true })
+	@Column('boolean', { default: true })
 	public catchUp: boolean = true;
 
 	/**
@@ -99,7 +103,7 @@ export class ScheduleEntity extends BaseEntity {
 		this.#running = true;
 		let response: PartialResponseValue | null = null;
 		try {
-			response = await task.run({ ...this.data ?? {}, id: this.id }) as PartialResponseValue | null;
+			response = (await task.run({ ...(this.data ?? {}), id: this.id })) as PartialResponseValue | null;
 		} catch (error) {
 			this.#client.emit(Events.TaskError, this, task, error);
 		}
@@ -126,5 +130,4 @@ export class ScheduleEntity extends BaseEntity {
 	public delete() {
 		return this.#manager.remove(this);
 	}
-
 }

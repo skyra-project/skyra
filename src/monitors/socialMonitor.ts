@@ -6,10 +6,11 @@ import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
 import { CLIENT_ID } from '@root/config';
 
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
-const { FLAGS: { MANAGE_ROLES } } = Permissions;
+const {
+	FLAGS: { MANAGE_ROLES }
+} = Permissions;
 
 export default class extends Monitor {
-
 	private readonly ratelimits = new RateLimitManager(1, 60000);
 
 	public async run(message: KlasaMessage) {
@@ -23,7 +24,7 @@ export default class extends Monitor {
 			// If boosted guild, increase rewards
 			const set = await DbSet.connect();
 			const { guildBoost } = await set.clients.ensure();
-			const add = Math.round(((Math.random() * 4) + 4) * (guildBoost.includes(message.guild!.id) ? 1.5 : 1));
+			const add = Math.round((Math.random() * 4 + 4) * (guildBoost.includes(message.guild!.id) ? 1.5 : 1));
 			const multiplier = message.guild!.settings.get(GuildSettings.Social.Multiplier);
 
 			const [, points] = await Promise.all([
@@ -45,9 +46,10 @@ export default class extends Monitor {
 
 		const role = message.guild!.roles.get(autoRole.id);
 		if (!role || role.position > message.guild!.me!.roles.highest.position) {
-			message.guild!.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove' })
+			message
+				.guild!.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove' })
 				.then(() => this.handleRoles(message, points))
-				.catch(error => this.client.emit(Events.Error, error));
+				.catch((error) => this.client.emit(Events.Error, error));
 			return;
 		}
 
@@ -56,21 +58,31 @@ export default class extends Monitor {
 		await message.member!.roles.add(role);
 		if (message.guild!.settings.get(GuildSettings.Social.Achieve) && message.channel.postable) {
 			await message.channel.send(
-				this.getMessage(message.member!, role, message.guild!.settings.get(GuildSettings.Social.AchieveMessage)
-					|| message.language.tget('MONITOR_SOCIAL_ACHIEVEMENT'), points)
+				this.getMessage(
+					message.member!,
+					role,
+					message.guild!.settings.get(GuildSettings.Social.AchieveMessage) || message.language.tget('MONITOR_SOCIAL_ACHIEVEMENT'),
+					points
+				)
 			);
 		}
 	}
 
 	public getMessage(member: GuildMember, role: Role, content: string, points: number) {
-		return content.replace(MESSAGE_REGEXP, match => {
+		return content.replace(MESSAGE_REGEXP, (match) => {
 			switch (match) {
-				case '%ROLE%': return role.name;
-				case '%MEMBER%': return member.toString();
-				case '%MEMBERNAME%': return member.user.username;
-				case '%GUILD%': return member.guild.name;
-				case '%POINTS%': return points.toString();
-				default: return match;
+				case '%ROLE%':
+					return role.name;
+				case '%MEMBER%':
+					return member.toString();
+				case '%MEMBERNAME%':
+					return member.user.username;
+				case '%GUILD%':
+					return member.guild.name;
+				case '%POINTS%':
+					return points.toString();
+				default:
+					return match;
 			}
 		});
 	}
@@ -85,21 +97,23 @@ export default class extends Monitor {
 	}
 
 	public shouldRun(message: KlasaMessage) {
-		return this.enabled
-			&& message.guild !== null
-			&& message.author !== null
-			&& message.member !== null
-			&& !message.author.bot
-			&& message.webhookID === null
-			&& message.content.length > 0
-			&& !message.system
-			&& message.author.id !== CLIENT_ID
-			&& message.guild.settings.get(GuildSettings.Social.Enabled)
-			&& !message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id);
+		return (
+			this.enabled &&
+			message.guild !== null &&
+			message.author !== null &&
+			message.member !== null &&
+			!message.author.bot &&
+			message.webhookID === null &&
+			message.content.length > 0 &&
+			!message.system &&
+			message.author.id !== CLIENT_ID &&
+			message.guild.settings.get(GuildSettings.Social.Enabled) &&
+			!message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id)
+		);
 	}
 
 	private addUserPoints(set: DbSet, userID: string, points: number) {
-		return set.users.lock([userID], async id => {
+		return set.users.lock([userID], async (id) => {
 			const user = await set.users.ensure(id);
 
 			user.points += points;
@@ -115,5 +129,4 @@ export default class extends Monitor {
 		await member.save();
 		return member.points;
 	}
-
 }

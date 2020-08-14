@@ -16,7 +16,6 @@ export interface ModerationCommandOptions extends SkyraCommandOptions {
 }
 
 export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
-
 	/**
 	 * Whether a member is required or not.
 	 */
@@ -28,17 +27,26 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public optionalDuration: boolean;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
-		super(store, file, directory, mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>({
-			flagSupport: true,
-			optionalDuration: false,
-			permissionLevel: PermissionLevels.Moderator,
-			requiredMember: false,
-			runIn: ['text'],
-			usage: options.usage ?? options.optionalDuration
-				? '<users:...user{,10}> [duration:timespan] [reason:...string]'
-				: '<users:...user{,10}> [reason:...string]',
-			usageDelim: ' '
-		}, options) as CommandOptions);
+		super(
+			store,
+			file,
+			directory,
+			mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>(
+				{
+					flagSupport: true,
+					optionalDuration: false,
+					permissionLevel: PermissionLevels.Moderator,
+					requiredMember: false,
+					runIn: ['text'],
+					usage:
+						options.usage ?? options.optionalDuration
+							? '<users:...user{,10}> [duration:timespan] [reason:...string]'
+							: '<users:...user{,10}> [reason:...string]',
+					usageDelim: ' '
+				},
+				options
+			) as CommandOptions
+		);
 
 		this.requiredMember = options.requiredMember!;
 		this.optionalDuration = options.optionalDuration!;
@@ -99,7 +107,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected prehandle(message: KlasaMessage, context: CommandContext): Promise<T> | T {
-		return null as unknown as T;
+		return (null as unknown) as T;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -132,12 +140,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected async getTargetDM(message: KlasaMessage, target: User): Promise<ModerationActionsSendOptions> {
 		return {
-			moderator: 'no-author' in message.flagArgs
-				? null
-				: (('authored' in message.flagArgs) || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay))
+			moderator:
+				'no-author' in message.flagArgs
+					? null
+					: 'authored' in message.flagArgs || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay)
 					? message.author
 					: null,
-			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && await DbSet.fetchModerationDirectMessageEnabled(target.id)
+			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 
@@ -166,7 +175,6 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	private resolveDuration(value: number | null): number | null {
 		return !isNullOrUndefined(value) && value > 0 ? value : null;
 	}
-
 }
 
 export interface CommandContext {

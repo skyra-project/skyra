@@ -6,7 +6,6 @@ import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ name: 'globalLeaderboard', route: 'users/leaderboard' })
 export default class extends Route {
-
 	@ratelimit(2, 2500)
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const limit = 'limit' in request.query ? Number(request.query.limit) : 10;
@@ -20,5 +19,4 @@ export default class extends Route {
 
 		return response.json(await fetchAllLeaderboardEntries(this.client, results));
 	}
-
 }

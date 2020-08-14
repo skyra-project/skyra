@@ -15,7 +15,6 @@ enum CacheActions {
 }
 
 export class ModerationManager extends Cache<number, ModerationEntity> {
-
 	/**
 	 * The Guild instance that manages this manager
 	 */
@@ -50,7 +49,7 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	 */
 	public get channel() {
 		const channelID = this.guild.settings.get(GuildSettings.Channels.ModerationLogs);
-		return (channelID && this.guild.channels.get(channelID) as TextChannel) || null;
+		return (channelID && (this.guild.channels.get(channelID) as TextChannel)) || null;
 	}
 
 	/**
@@ -70,12 +69,20 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	public getLatestLogForUser(userID: string) {
 		if (this.size === 0) return null;
 
-		const minimumTime = Date.now() - (15 * Time.Second);
-		return this.reduce<ModerationEntity | null>((prev, curr) => curr.userID === userID
-			? prev === null
-				? curr.createdTimestamp >= minimumTime ? curr : prev
-				: curr.createdTimestamp > prev.createdTimestamp ? curr : prev
-			: prev, null);
+		const minimumTime = Date.now() - 15 * Time.Second;
+		return this.reduce<ModerationEntity | null>(
+			(prev, curr) =>
+				curr.userID === userID
+					? prev === null
+						? curr.createdTimestamp >= minimumTime
+							? curr
+							: prev
+						: curr.createdTimestamp > prev.createdTimestamp
+						? curr
+						: prev
+					: prev,
+			null
+		);
 	}
 
 	public create(data: ModerationManagerCreateData) {
@@ -88,13 +95,15 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	public async fetch(id?: string | number | number[] | null): Promise<ModerationEntity | Cache<number, ModerationEntity> | this | null> {
 		// Case number
 		if (typeof id === 'number') {
-			return super.get(id) || this._cache(await DbSet.fetchModerationEntry({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None);
+			return (
+				super.get(id) || this._cache(await DbSet.fetchModerationEntry({ where: { guildID: this.guild.id, caseID: id } }), CacheActions.None)
+			);
 		}
 
 		// User id
 		if (typeof id === 'string') {
 			return this._count === super.size
-				? super.filter(entry => entry.userID === id)
+				? super.filter((entry) => entry.userID === id)
 				: this._cache(await DbSet.fetchModerationEntries({ where: { guildID: this.guild.id, userID: id } }), CacheActions.None);
 		}
 
@@ -126,9 +135,12 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	public createLock() {
 		const lock = createReferPromise<undefined>();
 		this._locks.push(lock);
-		floatPromise(this.guild, lock.promise.finally(() => {
-			this._locks.splice(this._locks.indexOf(lock), 1);
-		}));
+		floatPromise(
+			this.guild,
+			lock.promise.finally(() => {
+				this._locks.splice(this._locks.indexOf(lock), 1);
+			})
+		);
 
 		return lock.resolve;
 	}
@@ -138,12 +150,15 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	}
 
 	public waitLock() {
-		return Promise.all(this._locks.map(lock => lock.promise));
+		return Promise.all(this._locks.map((lock) => lock.promise));
 	}
 
 	private _cache(entry: ModerationEntity | null, type: CacheActions): ModerationEntity;
 	private _cache(entries: ModerationEntity[], type: CacheActions): Cache<number, ModerationEntity>;
-	private _cache(entries: ModerationEntity | ModerationEntity[] | null, type: CacheActions): Cache<number, ModerationEntity> | ModerationEntity | null {
+	private _cache(
+		entries: ModerationEntity | ModerationEntity[] | null,
+		type: CacheActions
+	): Cache<number, ModerationEntity> | ModerationEntity | null {
 		if (!entries) return null;
 
 		const parsedEntries = Array.isArray(entries) ? entries : [entries];
@@ -156,24 +171,20 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 
 		if (!this._timer) {
 			this._timer = setInterval(() => {
-				super.sweep(value => value.cacheExpired);
+				super.sweep((value) => value.cacheExpired);
 				if (!super.size) this._timer = null;
 			}, 1000);
 		}
 
-		return Array.isArray(entries)
-			? new Cache<number, ModerationEntity>(entries.map(entry => [entry.caseID, entry]))
-			: entries;
+		return Array.isArray(entries) ? new Cache<number, ModerationEntity>(entries.map((entry) => [entry.caseID, entry])) : entries;
 	}
 
 	public static get [Symbol.species]() {
-		return Cache as unknown as typeof Cache;
+		return (Cache as unknown) as typeof Cache;
 	}
-
 }
 
 export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorID' | 'reason' | 'imageURL'>>;
 export type ModerationManagerCreateData = Omit<ModerationManagerInsertData, 'guildID'>;
-export type ModerationManagerInsertData =
-	& StrictRequired<Pick<ModerationEntity, 'moderatorID' | 'userID' | 'type'>>
-	& Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'reason' | 'imageURL' | 'createdAt' | 'caseID'>>;
+export type ModerationManagerInsertData = StrictRequired<Pick<ModerationEntity, 'moderatorID' | 'userID' | 'type'>> &
+	Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'reason' | 'imageURL' | 'createdAt' | 'caseID'>>;

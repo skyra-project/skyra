@@ -4,7 +4,6 @@ import { NodeMessage } from 'veza';
 import { IPCMonitor } from './IPCMonitor';
 
 export class IPCMonitorStore extends Store<string, IPCMonitor, Constructor<IPCMonitor>> {
-
 	public constructor(client: KlasaClient) {
 		// @ts-expect-error 2345
 		super(client, 'ipcMonitors', IPCMonitor);
@@ -31,5 +30,4 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, Constructor<IPCMo
 			message.reply([0, error]);
 		}
 	}
-
 }

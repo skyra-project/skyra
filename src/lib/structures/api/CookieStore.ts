@@ -5,7 +5,6 @@ import type { ApiRequest } from './ApiRequest';
 import type { ApiResponse } from './ApiResponse';
 
 export class CookieStore extends Map<string, string> {
-
 	protected request: ApiRequest;
 	protected response: ApiResponse;
 	private domain: string;
@@ -56,7 +55,7 @@ export class CookieStore extends Map<string, string> {
 			set = [set.toString()];
 		}
 
-		set = set.filter(i => i.substr(0, i.indexOf('=')) !== name);
+		set = set.filter((i) => i.substr(0, i.indexOf('=')) !== name);
 		set.push(entry);
 
 		this.response.setHeader('Set-Cookie', set);
@@ -108,7 +107,6 @@ export class CookieStore extends Map<string, string> {
 
 		return encodeURIComponent(value);
 	}
-
 }
 
 export interface SecureCookieStoreSetOptions {

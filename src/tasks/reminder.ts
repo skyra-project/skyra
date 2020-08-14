@@ -4,15 +4,11 @@ import { resolveOnErrorCodes } from '@utils/util';
 import { Task, Timestamp } from 'klasa';
 
 export default class extends Task {
-
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 
 	public async run(data: ReminderTaskData): Promise<PartialResponseValue | null> {
 		// Fetch the user to send the message to
-		const user = await resolveOnErrorCodes(
-			this.client.users.fetch(data.user),
-			APIErrors.UnknownUser
-		);
+		const user = await resolveOnErrorCodes(this.client.users.fetch(data.user), APIErrors.UnknownUser);
 
 		if (user) {
 			await resolveOnErrorCodes(
@@ -23,7 +19,6 @@ export default class extends Task {
 
 		return { type: ResponseType.Finished };
 	}
-
 }
 
 interface ReminderTaskData {

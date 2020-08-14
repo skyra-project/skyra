@@ -4,7 +4,6 @@ import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandStore } from 'klasa';
 
 export default class extends SelfModerationCommand {
-
 	protected $adder: keyof GuildSecurity['adders'] = 'messages';
 	protected keyEnabled = GuildSettings.Selfmod.Messages.Enabled;
 	protected keySoftAction = GuildSettings.Selfmod.Messages.SoftAction;
@@ -16,9 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['message-mode', 'msg-mode', 'm-mode'],
-			description: language => language.tget('COMMAND_MESSAGEMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MESSAGEMODE_EXTENDED')
+			description: (language) => language.tget('COMMAND_MESSAGEMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_MESSAGEMODE_EXTENDED')
 		});
 	}
-
 }

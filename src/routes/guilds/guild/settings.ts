@@ -10,7 +10,6 @@ import { inspect } from 'util';
 
 @ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
 export default class extends Route {
-
 	private readonly kBlacklist: string[] = ['commandUses'];
 
 	@authenticated()
@@ -46,7 +45,7 @@ export default class extends Route {
 
 		if (!canManage(botGuild, member)) return response.error(403);
 
-		const entries = Array.isArray(requestBody.data) ? requestBody.data : objectToTuples(requestBody.data) as [string, unknown][];
+		const entries = Array.isArray(requestBody.data) ? requestBody.data : (objectToTuples(requestBody.data) as [string, unknown][]);
 		if (entries.some(([key]) => this.kBlacklist.includes(key))) return response.error(400);
 
 		await botGuild.settings.sync();
@@ -54,11 +53,9 @@ export default class extends Route {
 			await botGuild.settings.update(entries, { arrayAction: 'overwrite', extraContext: { author: member.id } });
 			return response.json({ newSettings: botGuild.settings.toJSON() });
 		} catch (errors) {
-			this.client.emit(Events.Error,
-				`${botGuild.name}[${botGuild.id}] failed guild settings update:\n${inspect(errors)}`);
+			this.client.emit(Events.Error, `${botGuild.name}[${botGuild.id}] failed guild settings update:\n${inspect(errors)}`);
 
 			return response.error(500);
 		}
 	}
-
 }

@@ -8,17 +8,19 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,
-	description: language => language.tget('COMMAND_TRIVIA_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_TRIVIA_EXTENDED'),
+	description: (language) => language.tget('COMMAND_TRIVIA_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_TRIVIA_EXTENDED'),
 	usage: '(category:category) [boolean|multiple] [easy|hard|medium] [duration:int{30,60}]',
 	usageDelim: ' '
 })
 export default class extends RichDisplayCommand {
-
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#channels = new Set<string>();
 
-	public async run(message: KlasaMessage, [category, questionType = undefined, difficulty = undefined, duration = 30]: [number, QuestionType?, QuestionDifficulty?, number?]) {
+	public async run(
+		message: KlasaMessage,
+		[category, questionType = undefined, difficulty = undefined, duration = 30]: [number, QuestionType?, QuestionDifficulty?, number?]
+	) {
 		if (this.#channels.has(message.channel.id)) throw message.language.tget('COMMAND_TRIVIA_ACTIVE_GAME');
 
 		this.#channels.add(message.channel.id);
@@ -26,9 +28,10 @@ export default class extends RichDisplayCommand {
 		try {
 			await message.sendLocale('SYSTEM_LOADING');
 			const data = await getQuestion(category, difficulty, questionType);
-			const possibleAnswers = questionType === QuestionType.Boolean
-				? ['True', 'False']
-				: shuffle([data.correct_answer, ...data.incorrect_answers].map(ans => decode(ans)));
+			const possibleAnswers =
+				questionType === QuestionType.Boolean
+					? ['True', 'False']
+					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
 			await message.sendEmbed(this.buildQuestionEmbed(message, data, possibleAnswers));
@@ -62,7 +65,6 @@ export default class extends RichDisplayCommand {
 			this.#channels.delete(message.channel.id);
 			throw message.language.tget('UNEXPECTED_ISSUE');
 		}
-
 	}
 
 	public buildQuestionEmbed(message: KlasaMessage, data: QuestionData, possibleAnswers: string[]) {
@@ -73,13 +75,7 @@ export default class extends RichDisplayCommand {
 			.setTitle(data.category)
 			.setColor(0xf37917)
 			.setThumbnail('http://i.imgur.com/zPtu5aP.png')
-			.setDescription([
-				`${TITLES.DIFFICULTY}: ${data.difficulty}`,
-				'',
-				decode(data.question),
-				'',
-				questionDisplay.join('\n')
-			].join('\n'));
+			.setDescription([`${TITLES.DIFFICULTY}: ${data.difficulty}`, '', decode(data.question), '', questionDisplay.join('\n')].join('\n'));
 	}
 
 	public async init() {
@@ -91,5 +87,4 @@ export default class extends RichDisplayCommand {
 			return category;
 		});
 	}
-
 }

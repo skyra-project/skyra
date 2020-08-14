@@ -13,16 +13,15 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['definition', 'defination', 'dictionary'],
 	bucket: 2,
 	cooldown: 20,
-	description: language => language.get('COMMAND_DEFINE_DESCRIPTION'),
-	extendedHelp: language => language.get('COMMAND_DEFINE_EXTENDED'),
+	description: (language) => language.get('COMMAND_DEFINE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_DEFINE_EXTENDED'),
 	usage: '<input:string>'
 })
 export default class extends RichDisplayCommand {
-
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const result = await this.fetchApi(message, input);
 		const display = await this.buildDisplay(result, message);
@@ -32,14 +31,11 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage) {
-		const template = new MessageEmbed()
-			.setTitle(toTitleCase(results.word))
-			.setColor(await DbSet.fetchColor(message));
+		const template = new MessageEmbed().setTitle(toTitleCase(results.word)).setColor(await DbSet.fetchColor(message));
 
 		if (results.pronunciation) template.addField(message.language.get('COMMAND_DEFINE_PRONOUNCIATION'), results.pronunciation, true);
 
-		const display = new UserRichDisplay(template)
-			.setFooterSuffix(' - Powered by Owlbot');
+		const display = new UserRichDisplay(template).setFooterSuffix(' - Powered by Owlbot');
 
 		for (const result of results.definitions) {
 			const definition = this.content(result.definition);
@@ -74,7 +70,6 @@ export default class extends RichDisplayCommand {
 		if (definition.length < 2048) return definition;
 		return cutText(definition, 2048);
 	}
-
 }
 
 export interface OwlbotResultOk {

@@ -1,7 +1,6 @@
 import { ColorHandler } from './index';
 
 export class RGB implements ColorHandler {
-
 	public r: number;
 	public g: number;
 	public b: number;
@@ -53,11 +52,14 @@ export class RGB implements ColorHandler {
 			const d = max - min;
 			s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
 			switch (max) {
-				case r: h = ((g - b) / d) + (g < b ? 6 : 0);
+				case r:
+					h = (g - b) / d + (g < b ? 6 : 0);
 					break;
-				case g: h = ((b - r) / d) + 2;
+				case g:
+					h = (b - r) / d + 2;
 					break;
-				case b: h = ((r - g) / d) + 4;
+				case b:
+					h = (r - g) / d + 4;
 				// no default
 			}
 			// TODO(kyranet): This feel more wrong than eating cactus.
@@ -74,7 +76,6 @@ export class RGB implements ColorHandler {
 	public toString() {
 		return String(`rgb(${this.r}, ${this.g}, ${this.b})`);
 	}
-
 }
 
 import { HEX } from './HEX';

@@ -1,67 +1,70 @@
 import { MigrationInterface, QueryRunner, Table, TableColumn, TableForeignKey } from 'typeorm';
 
 export class V08MigrateUsers1594625931497 implements MigrationInterface {
-
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.createTable(
 			new Table({
 				name: 'user',
 				columns: [
 					new TableColumn({ name: 'id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
-					new TableColumn({ 'name': 'points', 'type': 'integer', 'isNullable': false, 'default': 0 }),
-					new TableColumn({ 'name': 'reputations', 'type': 'integer', 'isNullable': false, 'default': 0 }),
-					new TableColumn({ 'name': 'moderation_dm', 'type': 'boolean', 'isNullable': false, 'default': true }),
-					new TableColumn({ 'name': 'money', 'type': 'bigint', 'isNullable': false, 'default': 0 })
+					new TableColumn({ name: 'points', type: 'integer', isNullable: false, default: 0 }),
+					new TableColumn({ name: 'reputations', type: 'integer', isNullable: false, default: 0 }),
+					new TableColumn({ name: 'moderation_dm', type: 'boolean', isNullable: false, default: true }),
+					new TableColumn({ name: 'money', type: 'bigint', isNullable: false, default: 0 })
 				]
 			})
 		);
 
-		await queryRunner.createTable(new Table({
-			name: 'user_profile',
-			columns: [
-				new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
-				new TableColumn({ 'name': 'banners', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-				new TableColumn({ 'name': 'public_badges', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-				new TableColumn({ 'name': 'badges', 'type': 'varchar', 'isNullable': false, 'isArray': true, 'default': 'ARRAY[]::VARCHAR[]' }),
-				new TableColumn({ 'name': 'color', 'type': 'integer', 'isNullable': false, 'default': 0 }),
-				new TableColumn({ 'name': 'vault', 'type': 'bigint', 'isNullable': false, 'default': 0 }),
-				new TableColumn({ 'name': 'banner_level', 'type': 'varchar', 'isNullable': false, 'default': '1001' }),
-				new TableColumn({ 'name': 'banner_profile', 'type': 'varchar', 'isNullable': false, 'default': '0001' }),
-				new TableColumn({ 'name': 'dark_theme', 'type': 'boolean', 'isNullable': false, 'default': false })
-			],
-			foreignKeys: [
-				new TableForeignKey({
-					columnNames: ['user_id'],
-					referencedTableName: 'user',
-					referencedColumnNames: ['id'],
-					onDelete: 'CASCADE'
-				})
-			]
-		}));
+		await queryRunner.createTable(
+			new Table({
+				name: 'user_profile',
+				columns: [
+					new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
+					new TableColumn({ name: 'banners', type: 'varchar', isNullable: false, isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
+					new TableColumn({ name: 'public_badges', type: 'varchar', isNullable: false, isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
+					new TableColumn({ name: 'badges', type: 'varchar', isNullable: false, isArray: true, default: 'ARRAY[]::VARCHAR[]' }),
+					new TableColumn({ name: 'color', type: 'integer', isNullable: false, default: 0 }),
+					new TableColumn({ name: 'vault', type: 'bigint', isNullable: false, default: 0 }),
+					new TableColumn({ name: 'banner_level', type: 'varchar', isNullable: false, default: '1001' }),
+					new TableColumn({ name: 'banner_profile', type: 'varchar', isNullable: false, default: '0001' }),
+					new TableColumn({ name: 'dark_theme', type: 'boolean', isNullable: false, default: false })
+				],
+				foreignKeys: [
+					new TableForeignKey({
+						columnNames: ['user_id'],
+						referencedTableName: 'user',
+						referencedColumnNames: ['id'],
+						onDelete: 'CASCADE'
+					})
+				]
+			})
+		);
 
-		await queryRunner.createTable(new Table({
-			name: 'user_cooldown',
-			columns: [
-				new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
-				new TableColumn({ name: 'daily', type: 'timestamp without time zone', isNullable: true }),
-				new TableColumn({ name: 'reputation', type: 'timestamp without time zone', isNullable: true })
-			],
-			foreignKeys: [
-				new TableForeignKey({
-					columnNames: ['user_id'],
-					referencedTableName: 'user',
-					referencedColumnNames: ['id'],
-					onDelete: 'CASCADE'
-				})
-			]
-		}));
+		await queryRunner.createTable(
+			new Table({
+				name: 'user_cooldown',
+				columns: [
+					new TableColumn({ name: 'user_id', type: 'varchar', length: '19', isNullable: false, isPrimary: true }),
+					new TableColumn({ name: 'daily', type: 'timestamp without time zone', isNullable: true }),
+					new TableColumn({ name: 'reputation', type: 'timestamp without time zone', isNullable: true })
+				],
+				foreignKeys: [
+					new TableForeignKey({
+						columnNames: ['user_id'],
+						referencedTableName: 'user',
+						referencedColumnNames: ['id'],
+						onDelete: 'CASCADE'
+					})
+				]
+			})
+		);
 
 		// Get the data from the "users" table and transform it into User and UserProfile entities
-		const { userEntities, userProfileEntities } = transformUser(await queryRunner.query(/* sql */`SELECT * FROM public.users`));
+		const { userEntities, userProfileEntities } = transformUser(await queryRunner.query(/* sql */ `SELECT * FROM public.users`));
 
 		// Save the new User entities to the database
 		const stringifiedUserData = JSON.stringify(userEntities).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.user
 			SELECT * FROM json_populate_recordset(NULL::public.user, '${stringifiedUserData}')
 			ON CONFLICT DO NOTHING;
@@ -69,7 +72,7 @@ export class V08MigrateUsers1594625931497 implements MigrationInterface {
 
 		// Save the new UserProfile entities to the database
 		const stringifiedUserProfileData = JSON.stringify(userProfileEntities).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.user_profile
 			SELECT * FROM json_populate_recordset(NULL::public.user_profile, '${stringifiedUserProfileData}')
 			ON CONFLICT DO NOTHING;
@@ -80,7 +83,6 @@ export class V08MigrateUsers1594625931497 implements MigrationInterface {
 		await queryRunner.dropTable('user');
 		await queryRunner.dropTable('user_profile');
 	}
-
 }
 
 function transformUser(users: User[]): { userEntities: TransformedUser[]; userProfileEntities: TransformedUserProfile[] } {
@@ -115,14 +117,16 @@ function transformUser(users: User[]): { userEntities: TransformedUser[]; userPr
 }
 
 function isUserProfileAllDefaults(user: User) {
-	return user.badge_list.length === 0
-		&& user.theme_level === '1001'
-		&& user.theme_profile === '0001'
-		&& user.banner_list.length === 0
-		&& user.color === 0
-		&& user.badge_set.length === 0
-		&& user.vault === 0
-		&& !user.dark_theme;
+	return (
+		user.badge_list.length === 0 &&
+		user.theme_level === '1001' &&
+		user.theme_profile === '0001' &&
+		user.banner_list.length === 0 &&
+		user.color === 0 &&
+		user.badge_set.length === 0 &&
+		user.vault === 0 &&
+		!user.dark_theme
+	);
 }
 
 interface User {

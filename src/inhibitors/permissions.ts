@@ -24,7 +24,6 @@ const enum PermissionNodeResult {
 }
 
 export default class extends Inhibitor {
-
 	public async run(message: KlasaMessage, command: Command) {
 		// If the message was sent in a guild, the command isn't guarded (they are all 0, and
 		// cannot be denied), and the permission level is lower than 9, run the permission nodes.
@@ -73,11 +72,14 @@ export default class extends Inhibitor {
 
 	private checkPermissionNodeResult(message: KlasaMessage, result: PermissionNodeResult) {
 		switch (result) {
-			case PermissionNodeResult.Uncached: return false;
-			case PermissionNodeResult.Allow: return true;
-			case PermissionNodeResult.Disallow: throw message.language.tget('INHIBITOR_PERMISSIONS');
-			case PermissionNodeResult.NoMatch: return false;
+			case PermissionNodeResult.Uncached:
+				return false;
+			case PermissionNodeResult.Allow:
+				return true;
+			case PermissionNodeResult.Disallow:
+				throw message.language.tget('INHIBITOR_PERMISSIONS');
+			case PermissionNodeResult.NoMatch:
+				return false;
 		}
 	}
-
 }

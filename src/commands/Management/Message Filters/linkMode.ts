@@ -4,7 +4,6 @@ import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandStore } from 'klasa';
 
 export default class extends SelfModerationCommand {
-
 	protected $adder: keyof GuildSecurity['adders'] = 'links';
 	protected keyEnabled = GuildSettings.Selfmod.Links.Enabled;
 	protected keySoftAction = GuildSettings.Selfmod.Links.SoftAction;
@@ -16,9 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['link-mode', 'lmode', 'linkfilter', 'extlinks', 'externallinks'],
-			description: language => language.tget('COMMAND_LINKMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_LINKMODE_EXTENDED')
+			description: (language) => language.tget('COMMAND_LINKMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_LINKMODE_EXTENDED')
 		});
 	}
-
 }

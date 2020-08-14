@@ -9,15 +9,14 @@ import { Command, CommandStore, KlasaMessage } from 'klasa';
 type Nodes = readonly PermissionsNode[];
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['pnodes', 'pnode'],
 			bucket: 2,
 			cooldown: 10,
 			permissionLevel: PermissionLevels.Administrator,
-			description: language => language.tget('COMMAND_PERMISSIONNODES_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_PERMISSIONNODES_EXTENDED'),
+			description: (language) => language.tget('COMMAND_PERMISSIONNODES_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_PERMISSIONNODES_EXTENDED'),
 			subcommands: true,
 			usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
 			usageDelim: ' '
@@ -38,7 +37,7 @@ export default class extends SkyraCommand {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
-		const nodeIndex = nodes.findIndex(n => n.id === target.id);
+		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) {
 			const node: Nodes[number] = {
 				id: target.id,
@@ -69,7 +68,7 @@ export default class extends SkyraCommand {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
-		const nodeIndex = nodes.findIndex(n => n.id === target.id);
+		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) throw message.language.tget('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
 		const previous = nodes[nodeIndex];
@@ -95,7 +94,7 @@ export default class extends SkyraCommand {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
-		const nodeIndex = nodes.findIndex(n => n.id === target.id);
+		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 		if (nodeIndex === -1) throw message.language.tget('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
 		const clone = nodes.slice();
@@ -113,13 +112,13 @@ export default class extends SkyraCommand {
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
-		const node = nodes.find(n => n.id === target.id);
+		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') throw message.language.tget('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
 
 		return message.sendLocale('COMMAND_PERMISSIONNODES_SHOW', [
 			isRole ? (target as Role).name : (target as KeyedMemberTag).nickname || this.client.userTags.get(target.id)!.username,
-			node.allow.map(command => `\`${command}\``),
-			node.deny.map(command => `\`${command}\``)
+			node.allow.map((command) => `\`${command}\``),
+			node.deny.map((command) => `\`${command}\``)
 		]);
 	}
 
@@ -138,5 +137,4 @@ export default class extends SkyraCommand {
 		const authorPosition = message.member!.roles.highest?.position ?? 0;
 		return authorPosition > targetPosition;
 	}
-
 }

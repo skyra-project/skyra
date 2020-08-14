@@ -5,13 +5,12 @@ import { resolveEmoji } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_SETSTARBOARDEMOJI_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SETSTARBOARDEMOJI_EXTENDED'),
+			description: (language) => language.tget('COMMAND_SETSTARBOARDEMOJI_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_SETSTARBOARDEMOJI_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<Emoji:emoji>'
@@ -31,5 +30,4 @@ export default class extends SkyraCommand {
 		});
 		return message.sendLocale('COMMAND_SETSTARBOARDEMOJI_SET', [emoji.includes(':') ? `<${emoji}>` : emoji]);
 	}
-
 }

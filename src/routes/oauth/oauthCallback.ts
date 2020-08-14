@@ -14,7 +14,6 @@ import type OauthUser from './oauthUser';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/callback' })
 export default class extends Route {
-
 	private readonly kAuthorization = `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`;
 
 	@ratelimit(2, 60000)
@@ -35,7 +34,7 @@ export default class extends Route {
 				code: requestBody.code
 			}),
 			headers: {
-				'Authorization': this.kAuthorization,
+				Authorization: this.kAuthorization,
 				'Content-Type': Mime.Types.ApplicationFormUrlEncoded
 			}
 		});
@@ -53,19 +52,21 @@ export default class extends Route {
 			return;
 		}
 
-		const body = await res.json() as OauthData;
+		const body = (await res.json()) as OauthData;
 		const user = await oauthUser.api(body.access_token);
 		if (user === null) return response.error(500);
 
-		const authentication = Util.encrypt({
-			user_id: user.id,
-			token: body.access_token,
-			refresh: body.refresh_token,
-			expires: body.expires_in
-		}, this.client.options.clientSecret);
+		const authentication = Util.encrypt(
+			{
+				user_id: user.id,
+				token: body.access_token,
+				refresh: body.refresh_token,
+				expires: body.expires_in
+			},
+			this.client.options.clientSecret
+		);
 
 		response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
-		response.json(({ user }));
+		response.json({ user });
 	}
-
 }

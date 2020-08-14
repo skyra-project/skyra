@@ -4,7 +4,6 @@ import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandStore } from 'klasa';
 
 export default class extends SelfModerationCommand {
-
 	protected $adder: keyof GuildSecurity['adders'] = 'newlines';
 	protected keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
 	protected keySoftAction = GuildSettings.Selfmod.NewLines.SoftAction;
@@ -16,9 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['newline-mode', 'nl-mode'],
-			description: language => language.tget('COMMAND_NEWLINEMODE_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_NEWLINEMODE_EXTENDED')
+			description: (language) => language.tget('COMMAND_NEWLINEMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_NEWLINEMODE_EXTENDED')
 		});
 	}
-
 }

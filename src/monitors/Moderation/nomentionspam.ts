@@ -4,13 +4,13 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { KlasaMessage, Monitor } from 'klasa';
 
 export default class extends Monitor {
-
 	public run(message: KlasaMessage) {
 		if (!message.guild || !message.guild.settings.get(GuildSettings.NoMentionSpam.Enabled)) return;
 
-		const mentions = message.mentions.users.filter(user => !user.bot && user !== message.author).size +
-			(message.mentions.roles.size * this.client.options.nms.role!) +
-			(Number(message.mentions.everyone) * this.client.options.nms.everyone!);
+		const mentions =
+			message.mentions.users.filter((user) => !user.bot && user !== message.author).size +
+			message.mentions.roles.size * this.client.options.nms.role! +
+			Number(message.mentions.everyone) * this.client.options.nms.everyone!;
 
 		if (!mentions) return;
 
@@ -28,5 +28,4 @@ export default class extends Monitor {
 			this.client.emit(Events.MentionSpamExceeded, message);
 		}
 	}
-
 }

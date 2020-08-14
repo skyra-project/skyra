@@ -4,7 +4,6 @@ import { cleanMentions, floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public async run(manager: MusicHandler, song: MusicHandler['song'], context: MusicHandlerRequestContext | null) {
 		const channel = context ? context.channel : manager.channel;
 
@@ -24,11 +23,10 @@ export default class extends Event {
 					action: OutgoingWebsocketAction.MusicSongPlay,
 					data: {
 						song: song.toJSON(),
-						queue: manager.queue.map(s => s.toJSON())
+						queue: manager.queue.map((s) => s.toJSON())
 					}
 				});
 			}
 		}
 	}
-
 }

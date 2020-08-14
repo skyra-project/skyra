@@ -10,14 +10,13 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: language => language.tget('COMMAND_QUOTE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_QUOTE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_QUOTE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_QUOTE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
@@ -71,5 +70,4 @@ export default class extends SkyraCommand {
 
 		return channel.messages.fetch(_message);
 	}
-
 }

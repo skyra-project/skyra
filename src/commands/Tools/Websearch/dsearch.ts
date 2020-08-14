@@ -4,13 +4,12 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
-			description: language => language.tget('COMMAND_SEARCH_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SEARCH_EXTENDED'),
+			description: (language) => language.tget('COMMAND_SEARCH_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_SEARCH_EXTENDED'),
 			usage: '<query:string>',
 			usageDelim: ' ',
 			requiredPermissions: ['EMBED_LINKS']
@@ -24,11 +23,7 @@ export default class extends SkyraCommand {
 			throw message.language.tget('COMMAND_DUCKDUCKGO_NOTFOUND');
 		}
 
-		const embed = new MessageEmbed()
-			.setTitle(body.Heading)
-			.setURL(body.AbstractURL)
-			.setThumbnail(body.Image)
-			.setDescription(body.AbstractText);
+		const embed = new MessageEmbed().setTitle(body.Heading).setURL(body.AbstractURL).setThumbnail(body.Image).setDescription(body.AbstractText);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
 			embed.addField(message.language.tget('COMMAND_DUCKDUCKGO_LOOKALSO'), body.RelatedTopics[0].Text);
@@ -36,7 +31,6 @@ export default class extends SkyraCommand {
 
 		return message.sendMessage({ embed });
 	}
-
 }
 
 export interface DuckDuckGoResultOk {

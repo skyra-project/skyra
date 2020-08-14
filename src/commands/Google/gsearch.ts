@@ -11,25 +11,22 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_GSEARCH_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_GSEARCH_EXTENDED'),
+	description: (language) => language.tget('COMMAND_GSEARCH_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_GSEARCH_EXTENDED'),
 	usage: '<query:query>'
 })
 export default class extends RichDisplayCommand {
-
 	public async init() {
-		this.createCustomResolver('query', (arg, possible, message) => this.client.arguments.get('string')!.run(
-			arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'),
-			possible,
-			message
-		));
+		this.createCustomResolver('query', (arg, possible, message) =>
+			this.client.arguments
+				.get('string')!
+				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
+		);
 	}
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
-			message.sendEmbed(new MessageEmbed()
-				.setDescription(message.language.tget('SYSTEM_LOADING'))
-				.setColor(BrandingColors.Secondary)),
+			message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
@@ -42,17 +39,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, items: GooleCSEItem[]) {
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
 			display.addPage((embed: MessageEmbed) => {
-				embed
-					.setTitle(item.title)
-					.setURL(item.link)
-					.setDescription(item.snippet);
+				embed.setTitle(item.title).setURL(item.link).setDescription(item.snippet);
 
-				const imageUrl = item.pagemap?.cse_image?.find(image => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? '';
+				const imageUrl = item.pagemap?.cse_image?.find((image) => IMAGE_EXTENSION.test(image.src) && parseURL(image.src))?.src ?? '';
 				if (imageUrl) {
 					embed.setImage(imageUrl);
 				}
@@ -63,5 +56,4 @@ export default class extends RichDisplayCommand {
 
 		return display;
 	}
-
 }

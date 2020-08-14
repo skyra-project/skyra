@@ -2,7 +2,6 @@ import { AnyObject } from '@lib/types/util';
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class V07MigrateModeration1594583300041 implements MigrationInterface {
-
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await this.migrateModerations(queryRunner);
 	}
@@ -10,10 +9,14 @@ export class V07MigrateModeration1594583300041 implements MigrationInterface {
 	public async down(queryRunner: QueryRunner): Promise<void> {
 		const moderationRawData = revertTransformModerations(await queryRunner.query(/* sql */ `SELECT * FROM public.moderation`));
 		await queryRunner.clearTable('moderation');
-		await queryRunner.changeColumn('moderation', 'created_at', new TableColumn({ name: 'created_at', type: 'bigint', isNullable: true, comment: 'The date at which the moderation entry was made' }));
+		await queryRunner.changeColumn(
+			'moderation',
+			'created_at',
+			new TableColumn({ name: 'created_at', type: 'bigint', isNullable: true, comment: 'The date at which the moderation entry was made' })
+		);
 
 		const stringifiedData = JSON.stringify(moderationRawData).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.moderation
 			SELECT * FROM json_populate_recordset(NULL::public.moderation, '${stringifiedData}')
 			ON CONFLICT DO NOTHING;
@@ -28,21 +31,30 @@ export class V07MigrateModeration1594583300041 implements MigrationInterface {
 		await queryRunner.clearTable('moderation');
 
 		// Change the type of the created_at column to Timestamp
-		await queryRunner.changeColumn('moderation', 'created_at', new TableColumn({ 'name': 'created_at', 'type': 'timestamp without time zone', 'isNullable': true, 'default': null, 'comment': 'The date at which the moderation entry was created' }));
+		await queryRunner.changeColumn(
+			'moderation',
+			'created_at',
+			new TableColumn({
+				name: 'created_at',
+				type: 'timestamp without time zone',
+				isNullable: true,
+				default: null,
+				comment: 'The date at which the moderation entry was created'
+			})
+		);
 
 		// Save the new Moderation entities to the database
 		const stringifiedData = JSON.stringify(moderationEntities).replace(/'/g, "''");
-		await queryRunner.query(/* sql */`
+		await queryRunner.query(/* sql */ `
 			INSERT INTO public.moderation
 			SELECT * FROM json_populate_recordset(NULL::public.moderation, '${stringifiedData}')
 			ON CONFLICT DO NOTHING;
 		`);
 	}
-
 }
 
 function transformModerations(dModeration: Moderation[]): TransformedModeration[] {
-	return dModeration.map(mod => ({
+	return dModeration.map((mod) => ({
 		case_id: mod.case_id,
 		created_at: mod.created_at === null ? null : new Date(Number(mod.created_at)),
 		duration: mod.duration,
@@ -57,7 +69,7 @@ function transformModerations(dModeration: Moderation[]): TransformedModeration[
 }
 
 function revertTransformModerations(rdModerations: TransformedModeration[]): Moderation[] {
-	return rdModerations.map(mod => ({
+	return rdModerations.map((mod) => ({
 		case_id: mod.case_id,
 		created_at: mod.created_at ? new Date(mod.created_at).getTime().toString() : null,
 		duration: mod.duration,

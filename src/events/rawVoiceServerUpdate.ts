@@ -5,7 +5,6 @@ import { Event, EventStore } from 'klasa';
 import { VoiceServerUpdate } from 'lavacord';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.VoiceServerUpdate, emitter: store.client.ws });
 	}
@@ -22,5 +21,4 @@ export default class extends Event {
 		if (!ENABLE_LAVALINK) this.disable();
 		return Promise.resolve();
 	}
-
 }

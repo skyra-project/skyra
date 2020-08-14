@@ -5,7 +5,6 @@ import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
@@ -28,7 +27,7 @@ export default class extends SkyraCommand {
 		const { raid } = message.guild!.security;
 		const embed = new MessageEmbed()
 			.setTitle(message.language.tget('COMMAND_RAID_LIST'))
-			.setDescription([...raid.keys()].map(user => `<@${user}>`))
+			.setDescription([...raid.keys()].map((user) => `<@${user}>`))
 			.setFooter(`${raid.size}/${message.guild!.settings.get(GuildSettings.Selfmod.Raidthreshold)} ${message.language.tget('CONST_USERS')}`)
 			.setTimestamp();
 
@@ -44,5 +43,4 @@ export default class extends SkyraCommand {
 		message.guild!.security.raid.stop();
 		return message.sendLocale('COMMAND_RAID_COOL');
 	}
-
 }

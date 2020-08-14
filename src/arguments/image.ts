@@ -3,7 +3,6 @@ import { Image, loadImage } from 'canvas';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
-
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<Image> {
 		// If theres nothing provided, search the channel for an image.
 		if (!arg) {
@@ -25,5 +24,4 @@ export default class extends Argument {
 		const user = await this.client.arguments.get('username')!.run(arg, possible, message);
 		return fetchAvatar(user);
 	}
-
 }

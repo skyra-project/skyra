@@ -3,7 +3,6 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
 
 export default class extends Inhibitor {
-
 	public spamProtection = true;
 
 	private readonly ratelimit = new RateLimitManager(1, 30000);
@@ -27,5 +26,4 @@ export default class extends Inhibitor {
 			throw message.language.tget('INHIBITOR_SPAM', channel.toString());
 		}
 	}
-
 }

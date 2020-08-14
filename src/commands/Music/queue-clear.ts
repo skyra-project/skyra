@@ -5,14 +5,12 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['qc', 'clear'],
-	description: language => language.tget('COMMAND_CLEAR_DESCRIPTION')
+	description: (language) => language.tget('COMMAND_CLEAR_DESCRIPTION')
 })
 export default class extends MusicCommand {
-
 	@requireQueueNotEmpty()
 	@requireDj()
 	public run(message: KlasaMessage) {
 		message.guild!.music.prune(this.getContext(message));
 	}
-
 }

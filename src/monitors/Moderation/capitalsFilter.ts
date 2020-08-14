@@ -9,7 +9,6 @@ import { KlasaMessage } from 'klasa';
 import { getCode, isUpper } from '@skyra/char';
 
 export default class extends ModerationMonitor {
-
 	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_CAPITALS';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Capitals.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Capitals.IgnoredChannels;
@@ -24,9 +23,11 @@ export default class extends ModerationMonitor {
 	};
 
 	public shouldRun(message: KlasaMessage) {
-		return super.shouldRun(message)
-			&& message.content.length > 0
-			&& message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) < message.content.length;
+		return (
+			super.shouldRun(message) &&
+			message.content.length > 0 &&
+			message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) < message.content.length
+		);
 	}
 
 	protected preProcess(message: KlasaMessage) {
@@ -45,7 +46,7 @@ export default class extends ModerationMonitor {
 
 	protected async onDelete(message: KlasaMessage, value: number) {
 		floatPromise(this, message.nuke());
-		if (value > 25 && await DbSet.fetchModerationDirectMessageEnabled(message.author.id)) {
+		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
 			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [codeBlock('md', cutText(message.content, 1900))]));
 		}
 	}
@@ -62,5 +63,4 @@ export default class extends ModerationMonitor {
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_CAPSFILTER')}`)
 			.setTimestamp();
 	}
-
 }

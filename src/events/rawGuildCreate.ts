@@ -5,7 +5,6 @@ import { GuildMember } from 'discord.js';
 import { Event, EventStore, KlasaGuild } from 'klasa';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.GuildCreate, emitter: store.client.ws });
 	}
@@ -31,7 +30,7 @@ export default class extends Event {
 
 		this.processSweep(guild);
 
-		await Promise.all(data.voice_states.map(state => this.client.lavalink.voiceStateUpdate({ ...state, guild_id: data.id })));
+		await Promise.all(data.voice_states.map((state) => this.client.lavalink.voiceStateUpdate({ ...state, guild_id: data.id })));
 	}
 
 	private processSweep(guild: KlasaGuild) {
@@ -63,5 +62,4 @@ export default class extends Event {
 			this.client.users.set(me.id, me.user);
 		}
 	}
-
 }

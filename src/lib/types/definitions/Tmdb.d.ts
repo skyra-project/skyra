@@ -1,5 +1,4 @@
 export namespace Tmdb {
-
 	export interface TmdbCommon {
 		id: number;
 		adult: boolean;
@@ -39,8 +38,7 @@ export namespace Tmdb {
 	}
 
 	export interface TmdbSeriesList extends TmdbMovieList {
-		results: (TmdbCommon &
-		{
+		results: (TmdbCommon & {
 			genre_ids: number[];
 			first_air_date: string;
 			origin_country: string[];
@@ -78,8 +76,13 @@ export namespace Tmdb {
 		next_episode_to_air: TmdbSerieEpisode | null;
 		homepage?: string;
 		seasons: {
-			id: number; air_date: string; episode_count: number;
-			name: string; overview: string; poster_path: string; season_number: number;
+			id: number;
+			air_date: string;
+			episode_count: number;
+			name: string;
+			overview: string;
+			poster_path: string;
+			season_number: number;
 		}[];
 		genres: { id: number; name: string }[];
 		networks: { id: number; logo_path: string; name: string; origin_country: string }[];

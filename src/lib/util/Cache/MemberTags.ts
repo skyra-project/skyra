@@ -7,7 +7,6 @@ import { GuildMember, Role } from 'discord.js';
 import { KlasaGuild } from 'klasa';
 
 export class MemberTags extends Collection<string, MemberTag> {
-
 	public readonly kGuild: KlasaGuild;
 	private kFetchAllPromise: Promise<void> | null = null;
 	private readonly kRequestHandler: RequestHandler<string, GuildMember>;
@@ -15,10 +14,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 	public constructor(guild: KlasaGuild) {
 		super();
 		this.kGuild = guild;
-		this.kRequestHandler = new RequestHandler<string, GuildMember>(
-			this.requestHandlerGet.bind(this),
-			this.requestHandlerGetAll.bind(this)
-		);
+		this.kRequestHandler = new RequestHandler<string, GuildMember>(this.requestHandlerGet.bind(this), this.requestHandlerGetAll.bind(this));
 	}
 
 	public create(member: GuildMember) {
@@ -86,19 +82,19 @@ export class MemberTags extends Collection<string, MemberTag> {
 		if (skyraHighestRole === null) throw new Error('Unreachable.');
 
 		const skyraPosition = skyraHighestRole.position;
-		const nonManageableRoles = this.kGuild.roles.filter(role => role.position >= skyraPosition);
+		const nonManageableRoles = this.kGuild.roles.filter((role) => role.position >= skyraPosition);
 		if (nonManageableRoles.size === 0) {
-			yield *this.entries();
+			yield* this.entries();
 		} else {
 			for (const tag of this.entries()) {
-				if (tag[1].roles.some(role => nonManageableRoles.has(role))) continue;
+				if (tag[1].roles.some((role) => nonManageableRoles.has(role))) continue;
 				yield tag;
 			}
 		}
 	}
 
 	public static get [Symbol.species](): CollectionConstructor {
-		return Collection as unknown as CollectionConstructor;
+		return (Collection as unknown) as CollectionConstructor;
 	}
 
 	private async fetchAll() {
@@ -112,7 +108,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 
 	private getRawRoles(member: GuildMember) {
 		// eslint-disable-next-line @typescript-eslint/naming-convention
-		const casted = member as unknown as { _roles: string[] } & GuildMember;
+		const casted = (member as unknown) as { _roles: string[] } & GuildMember;
 		return casted._roles;
 	}
 
@@ -139,9 +135,8 @@ export class MemberTags extends Collection<string, MemberTag> {
 	}
 
 	private requestHandlerGetAll(ids: readonly string[]) {
-		return Promise.all(ids.map(id => this.kGuild.members.fetch(id)));
+		return Promise.all(ids.map((id) => this.kGuild.members.fetch(id)));
 	}
-
 }
 
 export interface MemberTag {

@@ -9,7 +9,6 @@ import { MessageEmbed } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
-
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.UserUpdate, emitter: store.client.ws });
 	}
@@ -31,15 +30,15 @@ export default class extends Event {
 		for (const guild of this.client.guilds.values()) {
 			if (!guild.memberTags.has(data.id)) continue;
 			if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () => new MessageEmbed()
-					.setColor(Colors.Yellow)
-					.setAuthor(`${next.username}#${next.discriminator} (${data.id})`, getDisplayAvatar(data.id, next))
-					.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.username, next.username))
-					.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
-					.setTimestamp());
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+					new MessageEmbed()
+						.setColor(Colors.Yellow)
+						.setAuthor(`${next.username}#${next.discriminator} (${data.id})`, getDisplayAvatar(data.id, next))
+						.setDescription(guild.language.tget('EVENTS_NAME_DIFFERENCE', previous.username, next.username))
+						.setFooter(guild.language.tget('EVENTS_NICKNAME_UPDATE'))
+						.setTimestamp()
+				);
 			}
 		}
-
 	}
-
 }

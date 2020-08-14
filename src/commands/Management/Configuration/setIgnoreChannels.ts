@@ -6,13 +6,12 @@ import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
-
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_SETIGNORECHANNELS_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_SETIGNORECHANNELS_EXTENDED'),
+			description: (language) => language.tget('COMMAND_SETIGNORECHANNELS_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_SETIGNORECHANNELS_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<here|channel:channelname>'
@@ -27,9 +26,6 @@ export default class extends SkyraCommand {
 			extraContext: { author: message.author.id }
 		});
 		const newLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
-		return message.sendLocale(oldLength < newLength
-			? 'COMMAND_SETIGNORECHANNELS_SET'
-			: 'COMMAND_SETIGNORECHANNELS_REMOVED', [channel]);
+		return message.sendLocale(oldLength < newLength ? 'COMMAND_SETIGNORECHANNELS_SET' : 'COMMAND_SETIGNORECHANNELS_REMOVED', [channel]);
 	}
-
 }

@@ -1,5 +1,4 @@
 export class AdderError extends Error {
-
 	/**
 	 * The amount of pointsthe adder reached when it threw this error.
 	 */
@@ -14,11 +13,9 @@ export class AdderError extends Error {
 		super(message);
 		this.amount = amount;
 	}
-
 }
 
 export class Adder<T> extends Array<{ id: T; end: number }> {
-
 	/**
 	 * The maximum amount of entries in this instance.
 	 */
@@ -101,7 +98,7 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 	 * @returns The amount of entries matching the same ID.
 	 */
 	public count(id: T) {
-		return this.reduce((count, entry) => entry.id === id ? count + 1 : count, 0);
+		return this.reduce((count, entry) => (entry.id === id ? count + 1 : count), 0);
 	}
 
 	/**
@@ -116,5 +113,4 @@ export class Adder<T> extends Array<{ id: T; end: number }> {
 
 		return i;
 	}
-
 }

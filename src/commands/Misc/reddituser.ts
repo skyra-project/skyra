@@ -12,12 +12,11 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['redditor'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_REDDITUSER_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_REDDITUSER_EXTENDED'),
+	description: (language) => language.tget('COMMAND_REDDITUSER_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_REDDITUSER_EXTENDED'),
 	usage: '<user:user>'
 })
 export default class extends RichDisplayCommand {
-
 	private joinedRedditTimestamp = new Timestamp('MMMM d YYYY');
 	private usernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
@@ -30,9 +29,9 @@ export default class extends RichDisplayCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const [about, comments, posts] = await this.fetchData(user, message);
 		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
@@ -43,7 +42,12 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(message: KlasaMessage, about: Reddit.AboutDataElement, comments: Reddit.CommentDataElement[], posts: Reddit.PostDataElement[]) {
+	private async buildDisplay(
+		message: KlasaMessage,
+		about: Reddit.AboutDataElement,
+		comments: Reddit.CommentDataElement[],
+		posts: Reddit.PostDataElement[]
+	) {
 		const titles = message.language.tget('COMMAND_REDDITUSER_TITLES');
 		const fieldsData = message.language.tget('COMMAND_REDDITUSER_DATA');
 		const [bestComment] = comments;
@@ -58,32 +62,48 @@ export default class extends RichDisplayCommand {
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(about.icon_img)
 		)
-			.addPage((embed: MessageEmbed) => embed
-				.setDescription(fieldsData.JOINED_REDDIT(this.joinedRedditTimestamp.displayUTC(about.created * 1000)))
-				.addField(titles.LINK_KARMA, about.link_karma, true)
-				.addField(titles.COMMENT_KARMA, about.comment_karma, true)
-				.addField(titles.TOTAL_COMMENTS, comments.length, true)
-				.addField(titles.TOTAL_SUBMISSIONS, posts.length, true)
-				.addField(titles.COMMENT_CONTROVERSIALITY, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
-				.addField(titles.TEXT_COMPLEXITY, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true))
-			.addPage((embed: MessageEmbed) => embed
-				.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_SUBMISSIONS})`, this.calculateTopContribution(posts), true)
-				.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true))
-			.addPage((embed: MessageEmbed) => embed
-				.addField(`__${titles.BEST_COMMENT}__`,
-					cutText([
-						`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
-						`${message.language.duration((Date.now() - (bestComment.created * 1000)), 3)} ago`,
-						`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
-						decode(bestComment.body)
-					].join('\n'), 1020))
-				.addField(`__${titles.WORST_COMMENT}__`,
-					cutText([
-						`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
-						`${message.language.duration((Date.now() - (worstComment.created * 1000)), 3)} ago`,
-						`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
-						decode(worstComment.body)
-					].join('\n'), 1020)))
+			.addPage((embed: MessageEmbed) =>
+				embed
+					.setDescription(fieldsData.JOINED_REDDIT(this.joinedRedditTimestamp.displayUTC(about.created * 1000)))
+					.addField(titles.LINK_KARMA, about.link_karma, true)
+					.addField(titles.COMMENT_KARMA, about.comment_karma, true)
+					.addField(titles.TOTAL_COMMENTS, comments.length, true)
+					.addField(titles.TOTAL_SUBMISSIONS, posts.length, true)
+					.addField(titles.COMMENT_CONTROVERSIALITY, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
+					.addField(titles.TEXT_COMPLEXITY, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
+			)
+			.addPage((embed: MessageEmbed) =>
+				embed
+					.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_SUBMISSIONS})`, this.calculateTopContribution(posts), true)
+					.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true)
+			)
+			.addPage((embed: MessageEmbed) =>
+				embed
+					.addField(
+						`__${titles.BEST_COMMENT}__`,
+						cutText(
+							[
+								`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
+								`${message.language.duration(Date.now() - bestComment.created * 1000, 3)} ago`,
+								`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
+								decode(bestComment.body)
+							].join('\n'),
+							1020
+						)
+					)
+					.addField(
+						`__${titles.WORST_COMMENT}__`,
+						cutText(
+							[
+								`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
+								`${message.language.duration(Date.now() - worstComment.created * 1000, 3)} ago`,
+								`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
+								decode(worstComment.body)
+							].join('\n'),
+							1020
+						)
+					)
+			)
 			.setFooterSuffix(` • ${fieldsData.DATA_AVAILABLE_FOR}`);
 	}
 
@@ -92,10 +112,9 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async fetchAbout(user: string, message: KlasaMessage) {
-		const { data } = await fetch<Reddit.Response<'about'>>(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON)
-			.catch(() => {
-				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
-			});
+		const { data } = await fetch<Reddit.Response<'about'>>(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON).catch(() => {
+			throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+		});
 		return data;
 	}
 
@@ -112,10 +131,9 @@ export default class extends RichDisplayCommand {
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
-		const { data } = await fetch<Reddit.Response<'comments'>>(url, FetchResultTypes.JSON)
-			.catch(() => {
-				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
-			});
+		const { data } = await fetch<Reddit.Response<'comments'>>(url, FetchResultTypes.JSON).catch(() => {
+			throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+		});
 
 		for (const child of data.children) {
 			dataElements.push(child.data);
@@ -139,10 +157,9 @@ export default class extends RichDisplayCommand {
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
-		const { data } = await fetch<Reddit.Response<'posts'>>(url, FetchResultTypes.JSON)
-			.catch(() => {
-				throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
-			});
+		const { data } = await fetch<Reddit.Response<'posts'>>(url, FetchResultTypes.JSON).catch(() => {
+			throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+		});
 
 		for (const child of data.children) {
 			dataElements.push(child.data);
@@ -181,11 +198,7 @@ export default class extends RichDisplayCommand {
 		const wordWeight = 11.8;
 		const adjustment = 15.59;
 
-		return (
-			(sentenceWeight * (words / sentences)) +
-			(wordWeight * (syllables / words)) -
-			adjustment
-		);
+		return sentenceWeight * (words / sentences) + wordWeight * (syllables / words) - adjustment;
 	}
 
 	/**
@@ -196,7 +209,8 @@ export default class extends RichDisplayCommand {
 	private calculateSyllables(word: string) {
 		word = word.toLowerCase(); // Transform the word to lowercase for proper analyzing
 		if (word.length <= 3) return 1; // If word has a length of 3 or smaller it will always only have 1 syllable
-		const syl = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '')
+		const syl = word
+			.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '')
 			.replace(/^y/, '')
 			.match(/[aeiouy]{1,2}/g);
 
@@ -239,9 +253,9 @@ export default class extends RichDisplayCommand {
 
 		subreddits.sort((a, b) => b.count - a.count);
 
-		return subreddits.first(5).map(
-			(subreddit, index) => `**${index + 1}:** [/r/${subreddit.name}](https://wwww.reddit.com/r/${subreddit.name}) (${subreddit.count})`
-		).join('\n');
+		return subreddits
+			.first(5)
+			.map((subreddit, index) => `**${index + 1}:** [/r/${subreddit.name}](https://wwww.reddit.com/r/${subreddit.name}) (${subreddit.count})`)
+			.join('\n');
 	}
-
 }

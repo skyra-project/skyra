@@ -35,16 +35,16 @@ export function levenshtein(a: string, b: string, full = true): number {
 	let lb = b.length;
 
 	// add-on, try to not match if distance is over 2
-	if (!full && (lb - la) > 2) return -1;
+	if (!full && lb - la > 2) return -1;
 
-	while (la > 0 && (a.charCodeAt(la - 1) === b.charCodeAt(lb - 1))) {
+	while (la > 0 && a.charCodeAt(la - 1) === b.charCodeAt(lb - 1)) {
 		la--;
 		lb--;
 	}
 
 	let offset = 0;
 
-	while (offset < la && (a.charCodeAt(offset) === b.charCodeAt(offset))) offset++;
+	while (offset < la && a.charCodeAt(offset) === b.charCodeAt(offset)) offset++;
 
 	la -= offset;
 	lb -= offset;
@@ -55,13 +55,7 @@ export function levenshtein(a: string, b: string, full = true): number {
 }
 
 function min(d0: number, d1: number, d2: number, bx: number, ay: number): number {
-	return d0 < d1 || d2 < d1
-		? d0 > d2
-			? d2 + 1
-			: d0 + 1
-		: bx === ay
-			? d1
-			: d1 + 1;
+	return d0 < d1 || d2 < d1 ? (d0 > d2 ? d2 + 1 : d0 + 1) : bx === ay ? d1 : d1 + 1;
 }
 
 function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: number): number {
@@ -85,7 +79,7 @@ function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: n
 		vector.push(y + 1, a.charCodeAt(offset + y++));
 	}
 
-	while ((x + 3) < lb) {
+	while (x + 3 < lb) {
 		bx0 = b.charCodeAt(offset + (d0 = x));
 		bx1 = b.charCodeAt(offset + (d1 = x + 1));
 		bx2 = b.charCodeAt(offset + (d2 = x + 2));
@@ -112,11 +106,7 @@ function fullLevenshtein(a: string, b: string, la: number, lb: number, offset: n
 		dd = ++x;
 		for (y = 0; y < vector.length; y += 2) {
 			dy = vector[y];
-			dd = dy < d0 || dd < d0
-				? dy > dd ? dd + 1 : dy + 1
-				: bx0 === vector[y + 1]
-					? d0
-					: d0 + 1;
+			dd = dy < d0 || dd < d0 ? (dy > dd ? dd + 1 : dy + 1) : bx0 === vector[y + 1] ? d0 : d0 + 1;
 			vector[y] = dd;
 			d0 = dy;
 		}

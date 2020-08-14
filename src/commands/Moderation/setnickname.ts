@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sn'],
 	cooldown: 10,
-	description: language => language.tget('COMMAND_SETNICKNAME_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_SETNICKNAME_EXTENDED'),
+	description: (language) => language.tget('COMMAND_SETNICKNAME_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_SETNICKNAME_EXTENDED'),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_NICKNAMES'],
@@ -18,9 +18,10 @@ import { KlasaMessage } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends ModerationCommand {
-
 	public async init() {
-		this.createCustomResolver('nickname', (arg, possible, message) => arg ? this.client.arguments.get('string')!.run(arg, possible, message) : '');
+		this.createCustomResolver('nickname', (arg, possible, message) =>
+			arg ? this.client.arguments.get('string')!.run(arg, possible, message) : ''
+		);
 	}
 
 	protected resolveOverloads([targets, ...args]: readonly unknown[]): CommandContext & { nickname: string } {
@@ -33,13 +34,16 @@ export default class extends ModerationCommand {
 	}
 
 	protected async handle(message: KlasaMessage, context: HandledCommandContext & { nickname: string }) {
-		return message.guild!.security.actions.setNickname({
-			userID: context.target.id,
-			moderatorID: message.author.id,
-			reason: context.reason,
-			imageURL: getImage(message),
-			duration: context.duration
-		}, context.nickname, await this.getTargetDM(message, context.target));
+		return message.guild!.security.actions.setNickname(
+			{
+				userID: context.target.id,
+				moderatorID: message.author.id,
+				reason: context.reason,
+				imageURL: getImage(message),
+				duration: context.duration
+			},
+			context.nickname,
+			await this.getTargetDM(message, context.target)
+		);
 	}
-
 }

@@ -64,4 +64,3 @@ export namespace YarnPkg {
 		deprecated?: string;
 	}
 }
-

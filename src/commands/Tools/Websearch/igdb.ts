@@ -13,7 +13,7 @@ import { KlasaMessage, Timestamp } from 'klasa';
 const API_URL = 'https://api-v3.igdb.com/games';
 
 function isArrayOfNumbers(array: unknown[]): array is number[] {
-	return array.every(val => isNumber(val));
+	return array.every((val) => isNumber(val));
 }
 
 function isIgdbCompany(company: unknown): company is Company {
@@ -22,19 +22,18 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: language => language.tget('COMMAND_IGDB_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_IGDB_EXTENDED'),
+	description: (language) => language.tget('COMMAND_IGDB_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_IGDB_EXTENDED'),
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
-
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 	private urlRegex = /https?:/i;
 
 	public async run(message: KlasaMessage, [game]: [string]) {
-		const response = await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		const response = await message.sendEmbed(
+			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+		);
 
 		const entries = await this.fetchAPI(message, game);
 		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
@@ -46,20 +45,24 @@ export default class extends RichDisplayCommand {
 
 	private async fetchAPI(message: KlasaMessage, game: string) {
 		try {
-			return await fetch<Game[]>(API_URL, {
-				method: FetchMethods.Post,
-				headers: {
-					'user-key': TOKENS.INTERNETGAMEDATABASE_KEY
+			return await fetch<Game[]>(
+				API_URL,
+				{
+					method: FetchMethods.Post,
+					headers: {
+						'user-key': TOKENS.INTERNETGAMEDATABASE_KEY
+					},
+					body: [
+						`search: "${game}";`,
+						'fields name, url, summary, rating, involved_companies.developer,',
+						'involved_companies.company.name, genres.name, release_dates.date,',
+						'platforms.name, cover.url, age_ratings.rating, age_ratings.category;',
+						'limit 10;',
+						'offset 0;'
+					].join('')
 				},
-				body: [
-					`search: "${game}";`,
-					'fields name, url, summary, rating, involved_companies.developer,',
-					'involved_companies.company.name, genres.name, release_dates.date,',
-					'platforms.name, cover.url, age_ratings.rating, age_ratings.category;',
-					'limit 10;',
-					'offset 0;'
-				].join('')
-			}, FetchResultTypes.JSON);
+				FetchResultTypes.JSON
+			);
 		} catch {
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
 		}
@@ -68,27 +71,30 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(entries: Game[], message: KlasaMessage) {
 		const titles = message.language.tget('COMMAND_IGDB_TITLES');
 		const fieldsData = message.language.tget('COMMAND_IGDB_DATA');
-		const display = new UserRichDisplay(new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)));
+		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);
 			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.NO_RATING;
 
-			display.addPage((embed: MessageEmbed) => embed
-				.setTitle(game.name)
-				.setURL(game.url || '')
-				.setThumbnail(coverImg)
-				.setDescription([
-					this.resolveSummary(game.summary, fieldsData.NO_SUMMARY),
-					'',
-					`**${titles.USER_SCORE}**: ${userRating}`,
-					`**${titles.AGE_RATING}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS)}`,
-					`**${titles.RELEASE_DATE}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE)}`,
-					`**${titles.GENRES}**: ${this.resolveGenres(game.genres, fieldsData.NO_GENRES)}`,
-					`**${titles.DEVELOPERS}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.NO_DEVELOPERS)}`,
-					`**${titles.PLATFORMS}**: ${this.resolvePlatforms(game.platforms, fieldsData.NO_PLATFORMS)}`
-				].join('\n')));
+			display.addPage((embed: MessageEmbed) =>
+				embed
+					.setTitle(game.name)
+					.setURL(game.url || '')
+					.setThumbnail(coverImg)
+					.setDescription(
+						[
+							this.resolveSummary(game.summary, fieldsData.NO_SUMMARY),
+							'',
+							`**${titles.USER_SCORE}**: ${userRating}`,
+							`**${titles.AGE_RATING}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS)}`,
+							`**${titles.RELEASE_DATE}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE)}`,
+							`**${titles.GENRES}**: ${this.resolveGenres(game.genres, fieldsData.NO_GENRES)}`,
+							`**${titles.DEVELOPERS}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.NO_DEVELOPERS)}`,
+							`**${titles.PLATFORMS}**: ${this.resolvePlatforms(game.platforms, fieldsData.NO_PLATFORMS)}`
+						].join('\n')
+					)
+			);
 		}
 
 		return display;
@@ -107,23 +113,26 @@ export default class extends RichDisplayCommand {
 
 	private resolveAgeRating(ageRatings: Game['age_ratings'], fallback: string) {
 		if (!ageRatings || isArrayOfNumbers(ageRatings)) return fallback;
-		return ageRatings.map(ageRating => `${ageRating.category === 1 ? 'ESRB' : 'PEGI'}: ${AgeRatingRatingEnum[ageRating.rating ?? 0]}`);
+		return ageRatings.map((ageRating) => `${ageRating.category === 1 ? 'ESRB' : 'PEGI'}: ${AgeRatingRatingEnum[ageRating.rating ?? 0]}`);
 	}
 
 	private resolveGenres(genres: Game['genres'], fallback: string) {
 		if (!genres || isArrayOfNumbers(genres)) return fallback;
-		return genres.map(genre => genre.name).join(', ');
+		return genres.map((genre) => genre.name).join(', ');
 	}
 
 	private resolveDevelopers(developers: Game['involved_companies'], fallback: string) {
 		if (!developers || isArrayOfNumbers(developers)) return fallback;
-		return developers.map(involvedCompany => {
-			if (isIgdbCompany(involvedCompany.company)) {
-				return involvedCompany.company.name;
-			}
+		return developers
+			.map((involvedCompany) => {
+				if (isIgdbCompany(involvedCompany.company)) {
+					return involvedCompany.company.name;
+				}
 
-			return null;
-		}).filter(Boolean).join(', ');
+				return null;
+			})
+			.filter(Boolean)
+			.join(', ');
 	}
 
 	private resolveReleaseDate(releaseDates: Game['release_dates'], fallback: string) {
@@ -133,7 +142,6 @@ export default class extends RichDisplayCommand {
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {
 		if (!platforms || isArrayOfNumbers(platforms)) return fallback;
-		return platforms.map(platform => platform.name).join(', ');
+		return platforms.map((platform) => platform.name).join(', ');
 	}
-
 }

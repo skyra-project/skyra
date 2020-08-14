@@ -23,7 +23,6 @@ import { LanguageKeys } from './Languages';
 import { CustomGet } from './settings/Shared';
 
 declare module 'discord.js' {
-
 	interface Client {
 		version: string;
 		leaderboard: Leaderboard;
@@ -47,7 +46,14 @@ declare module 'discord.js' {
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
-		emit(event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit, message: KlasaMessage, resultMessage: KlasaMessage, channel: TextChannel, role: Role, content: string): boolean;
+		emit(
+			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
+			message: KlasaMessage,
+			resultMessage: KlasaMessage,
+			channel: TextChannel,
+			role: Role,
+			content: string
+		): boolean;
 		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
 		emit(event: Events.MoneyPayment, message: KlasaMessage, user: KlasaUser, target: KlasaUser, money: number): boolean;
@@ -94,11 +100,9 @@ declare module 'discord.js' {
 		splitFields(title: string, content: string | string[]): this;
 		splitFields(content: string | string[]): this;
 	}
-
 }
 
 declare module 'klasa' {
-
 	interface KlasaClientOptions {
 		dev?: boolean;
 		nms?: {
@@ -137,7 +141,7 @@ declare module 'klasa' {
 
 	interface Argument {
 		// @ts-expect-error 1070
-		abstract run<T>(arg: string | undefined, possible: Possible, message: KlasaMessage, filter?: (entry: T) => boolean): any;
+		run<T>(arg: string | undefined, possible: Possible, message: KlasaMessage, filter?: (entry: T) => boolean): any;
 	}
 
 	type PostgresOptions = Omit<PoolConfig, 'stream' | 'ssl'> & Record<PropertyKey, unknown>;
@@ -146,18 +150,15 @@ declare module 'klasa' {
 		default?: 'postgres' | 'cache' | 'json' | string;
 		postgres: PostgresOptions;
 	}
-
 }
 
 declare module 'klasa-dashboard-hooks' {
-
 	interface AuthData {
 		token: string;
 		refresh: string;
 		user_id: string;
 		expires: number;
 	}
-
 }
 
 interface Fn {

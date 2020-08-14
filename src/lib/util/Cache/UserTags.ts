@@ -5,17 +5,13 @@ import { User } from 'discord.js';
 import { KlasaClient } from 'klasa';
 
 export class UserTags extends Collection<string, UserTag> {
-
 	public readonly kClient: KlasaClient;
 	private readonly kRequestHandler: RequestHandler<string, APIUserData>;
 
 	public constructor(client: KlasaClient) {
 		super();
 		this.kClient = client;
-		this.kRequestHandler = new RequestHandler<string, APIUserData>(
-			this.requestHandlerGet.bind(this),
-			this.requestHandlerGetAll.bind(this)
-		);
+		this.kRequestHandler = new RequestHandler<string, APIUserData>(this.requestHandlerGet.bind(this), this.requestHandlerGetAll.bind(this));
 	}
 
 	public getFirstKeyFromUserName(username: string) {
@@ -68,7 +64,7 @@ export class UserTags extends Collection<string, UserTag> {
 	}
 
 	public static get [Symbol.species](): CollectionConstructor {
-		return Collection as unknown as CollectionConstructor;
+		return (Collection as unknown) as CollectionConstructor;
 	}
 
 	private requestHandlerGet(id: string) {
@@ -76,9 +72,8 @@ export class UserTags extends Collection<string, UserTag> {
 	}
 
 	private requestHandlerGetAll(ids: readonly string[]) {
-		return Promise.all(ids.map(id => this.requestHandlerGet(id)));
+		return Promise.all(ids.map((id) => this.requestHandlerGet(id)));
 	}
-
 }
 
 export interface UserTag {

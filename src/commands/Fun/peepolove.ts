@@ -11,15 +11,14 @@ import { join } from 'path';
 	aliases: ['pepelove'],
 	bucket: 2,
 	cooldown: 10,
-	description: language => language.tget('COMMAND_PEEPOLOVE_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_PEEPOLOVE_EXTENDED'),
+	description: (language) => language.tget('COMMAND_PEEPOLOVE_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_PEEPOLOVE_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text', 'dm'],
 	spam: true,
 	usage: '<image:image>'
 })
 export default class extends SkyraCommand {
-
 	private bodyImage: Image = null!;
 	private handsImage: Image = null!;
 
@@ -42,5 +41,4 @@ export default class extends SkyraCommand {
 			loadImage(join(assetsFolder, '/images/generation/peepoHands.png'))
 		]);
 	}
-
 }

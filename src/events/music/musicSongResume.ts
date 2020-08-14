@@ -4,7 +4,6 @@ import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
-
 	public run(manager: MusicHandler, context: MusicHandlerRequestContext | null) {
 		if (manager.systemPaused) {
 			manager.systemPaused = false;
@@ -20,5 +19,4 @@ export default class extends Event {
 			subscription.send({ action: OutgoingWebsocketAction.MusicSongResume });
 		}
 	}
-
 }

@@ -12,7 +12,6 @@ const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
 
 export default class extends SkyraCommand {
-
 	private readonly kMessageHundredsLimit = 10;
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
 	private readonly kInternalMessageCache = new WeakMap<TextChannel, Collection<string, Message>>();
@@ -26,8 +25,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: language => language.tget('COMMAND_MARKOV_DESCRIPTION'),
-			extendedHelp: language => language.tget('COMMAND_MARKOV_EXTENDED'),
+			description: (language) => language.tget('COMMAND_MARKOV_DESCRIPTION'),
+			extendedHelp: (language) => language.tget('COMMAND_MARKOV_EXTENDED'),
 			runIn: ['text'],
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
 			usage: '[channel:channelname{2}] [user:username]'
@@ -39,18 +38,14 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
 		// Send loading message
-		await message.sendEmbed(new MessageEmbed()
-			.setDescription(message.language.tget('SYSTEM_LOADING'))
-			.setColor(BrandingColors.Secondary));
+		await message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary));
 
 		// Process the chain
 		return message.sendEmbed(await this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
 	}
 
 	private async processRelease(message: KlasaMessage, markov: Markov) {
-		return new MessageEmbed()
-			.setDescription(cutText(markov.process(), 2000))
-			.setColor(await DbSet.fetchColor(message));
+		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await DbSet.fetchColor(message));
 	}
 
 	private async processDevelopment(message: KlasaMessage, markov: Markov) {
@@ -71,13 +66,13 @@ export default class extends SkyraCommand {
 		const messageBank = await this.fetchMessages(channel, user);
 		if (messageBank.size === 0) throw message.language.tget('COMMAND_MARKOV_NO_MESSAGES');
 		const contents = messageBank.map(getAllContent).join(' ');
-		const markov = new Markov()
-			.parse(contents)
-			.start(this.kBoundUseUpperCase)
-			.end(60);
+		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);
 		else this.kInternalCache.set(channel, markov);
-		this.client.setTimeout(() => user ? this.kInternalUserCache.delete(`${channel.id}.${user.id}`) : this.kInternalCache.delete(channel), this.kInternalCacheTTL);
+		this.client.setTimeout(
+			() => (user ? this.kInternalUserCache.delete(`${channel.id}.${user.id}`) : this.kInternalCache.delete(channel)),
+			this.kInternalCacheTTL
+		);
 		return markov;
 	}
 
@@ -97,7 +92,7 @@ export default class extends SkyraCommand {
 			messageBank = cachedMessageBank;
 		}
 
-		return user ? messageBank.filter(message => message.author.id === user.id) : messageBank;
+		return user ? messageBank.filter((message) => message.author.id === user.id) : messageBank;
 	}
 
 	private useUpperCase(wordBank: WordBank) {
@@ -112,5 +107,4 @@ export default class extends SkyraCommand {
 			? filtered[Math.floor(Math.random() * filtered.length)]
 			: iteratorAt(wordBank.keys(), Math.floor(Math.random() * wordBank.size))!;
 	}
-
 }

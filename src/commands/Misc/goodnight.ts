@@ -11,15 +11,14 @@ import { join } from 'path';
 	aliases: ['night'],
 	bucket: 2,
 	cooldown: 30,
-	description: language => language.tget('COMMAND_GOODNIGHT_DESCRIPTION'),
-	extendedHelp: language => language.tget('COMMAND_GOODNIGHT_EXTENDED'),
+	description: (language) => language.tget('COMMAND_GOODNIGHT_DESCRIPTION'),
+	extendedHelp: (language) => language.tget('COMMAND_GOODNIGHT_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })
 export default class extends SkyraCommand {
-
 	private kTemplate: Image = null!;
 
 	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
@@ -30,32 +29,30 @@ export default class extends SkyraCommand {
 	public async generate(message: KlasaMessage, user: KlasaUser) {
 		if (user.id === message.author.id) user = this.client.user!;
 
-		const [kisser, child] = await Promise.all([
-			fetchAvatar(message.author, 256),
-			fetchAvatar(user, 256)
-		]);
+		const [kisser, child] = await Promise.all([fetchAvatar(message.author, 256), fetchAvatar(user, 256)]);
 
-		return new Canvas(500, 322)
-			.printImage(this.kTemplate, 0, 0, 636, 366)
+		return (
+			new Canvas(500, 322)
+				.printImage(this.kTemplate, 0, 0, 636, 366)
 
-			// Draw the mother
-			.save()
-			.translate(388, 98)
-			.rotate(radians(41.89))
-			.printCircularImage(kisser, 0, 0, 73)
-			.restore()
+				// Draw the mother
+				.save()
+				.translate(388, 98)
+				.rotate(radians(41.89))
+				.printCircularImage(kisser, 0, 0, 73)
+				.restore()
 
-			// Draw the kid
-			.setTransform(-1, 0, 0, 1, 405, 225)
-			.rotate(radians(-27.98))
-			.printCircularImage(child, 0, 0, 55)
+				// Draw the kid
+				.setTransform(-1, 0, 0, 1, 405, 225)
+				.rotate(radians(-27.98))
+				.printCircularImage(child, 0, 0, 55)
 
-			// Draw the buffer
-			.toBufferAsync();
+				// Draw the buffer
+				.toBufferAsync()
+		);
 	}
 
 	public async init() {
 		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/goodnight.png'));
 	}
-
 }

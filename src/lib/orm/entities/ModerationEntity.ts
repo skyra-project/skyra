@@ -12,42 +12,41 @@ import { Duration } from 'klasa';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('moderation', { schema: 'public' })
-@Check(/* sql */`("duration" >= 0) AND ("duration" <= 31536000000)`)
-@Check(/* sql */`"reason"::text <> ''::text`)
-@Check(/* sql */`"type" >= 0`)
+@Check(/* sql */ `("duration" >= 0) AND ("duration" <= 31536000000)`)
+@Check(/* sql */ `"reason"::text <> ''::text`)
+@Check(/* sql */ `"type" >= 0`)
 export class ModerationEntity extends BaseEntity {
-
 	#client: Client = null!;
 	#manager: ModerationManager = null!;
 	#moderator: User | null = null;
 	#user: User | null = null;
-	#timeout = Date.now() + (Time.Minute * 15);
+	#timeout = Date.now() + Time.Minute * 15;
 
 	@PrimaryColumn('integer')
 	public caseID: number = -1;
 
-	@Column('timestamp without time zone', { 'nullable': true, 'default': () => 'null' })
+	@Column('timestamp without time zone', { nullable: true, default: () => 'null' })
 	public createdAt: Date | null = null;
 
-	@Column('integer', { 'nullable': true, 'default': () => 'null' })
+	@Column('integer', { nullable: true, default: () => 'null' })
 	public duration: number | null = null;
 
-	@Column('json', { 'nullable': true, 'default': () => 'null' })
+	@Column('json', { nullable: true, default: () => 'null' })
 	public extraData: unknown[] | AnyObject | null = null;
 
 	@PrimaryColumn('varchar', { length: 19 })
 	public guildID: string = null!;
 
-	@Column('varchar', { 'length': 19, 'default': CLIENT_ID })
+	@Column('varchar', { length: 19, default: CLIENT_ID })
 	public moderatorID: string = CLIENT_ID;
 
-	@Column('varchar', { 'nullable': true, 'length': 2000, 'default': () => 'null' })
+	@Column('varchar', { nullable: true, length: 2000, default: () => 'null' })
 	public reason: string | null = null;
 
-	@Column('varchar', { 'nullable': true, 'length': 2000, 'default': () => 'null' })
+	@Column('varchar', { nullable: true, length: 2000, default: () => 'null' })
 	public imageURL: string | null = null;
 
-	@Column('varchar', { 'nullable': true, 'length': 19, 'default': () => 'null' })
+	@Column('varchar', { nullable: true, length: 19, default: () => 'null' })
 	public userID: string | null = null;
 
 	@Column('smallint')
@@ -74,13 +73,15 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public equals(other: ModerationEntity) {
-		return this.type === other.type
-			&& this.duration === other.duration
-			&& this.extraData === other.extraData
-			&& this.reason === other.reason
-			&& this.imageURL === other.imageURL
-			&& this.userID === other.userID
-			&& this.moderatorID === other.moderatorID;
+		return (
+			this.type === other.type &&
+			this.duration === other.duration &&
+			this.extraData === other.extraData &&
+			this.reason === other.reason &&
+			this.imageURL === other.imageURL &&
+			this.userID === other.userID &&
+			this.moderatorID === other.moderatorID
+		);
 	}
 
 	public get guild() {
@@ -182,19 +183,32 @@ export class ModerationEntity extends BaseEntity {
 	public get appealTaskName() {
 		if (!this.appealable) return null;
 		switch (this.typeVariation) {
-			case Moderation.TypeVariation.Warning: return Moderation.TypeVariationAppealNames.Warning;
-			case Moderation.TypeVariation.Mute: return Moderation.TypeVariationAppealNames.Mute;
-			case Moderation.TypeVariation.Ban: return Moderation.TypeVariationAppealNames.Ban;
-			case Moderation.TypeVariation.VoiceMute: return Moderation.TypeVariationAppealNames.VoiceMute;
-			case Moderation.TypeVariation.RestrictedAttachment: return Moderation.TypeVariationAppealNames.RestrictedAttachment;
-			case Moderation.TypeVariation.RestrictedReaction: return Moderation.TypeVariationAppealNames.RestrictedReaction;
-			case Moderation.TypeVariation.RestrictedEmbed: return Moderation.TypeVariationAppealNames.RestrictedEmbed;
-			case Moderation.TypeVariation.RestrictedEmoji: return Moderation.TypeVariationAppealNames.RestrictedEmoji;
-			case Moderation.TypeVariation.RestrictedVoice: return Moderation.TypeVariationAppealNames.RestrictedVoice;
-			case Moderation.TypeVariation.SetNickname: return Moderation.TypeVariationAppealNames.SetNickname;
-			case Moderation.TypeVariation.AddRole: return Moderation.TypeVariationAppealNames.AddRole;
-			case Moderation.TypeVariation.RemoveRole: return Moderation.TypeVariationAppealNames.RemoveRole;
-			default: return null;
+			case Moderation.TypeVariation.Warning:
+				return Moderation.TypeVariationAppealNames.Warning;
+			case Moderation.TypeVariation.Mute:
+				return Moderation.TypeVariationAppealNames.Mute;
+			case Moderation.TypeVariation.Ban:
+				return Moderation.TypeVariationAppealNames.Ban;
+			case Moderation.TypeVariation.VoiceMute:
+				return Moderation.TypeVariationAppealNames.VoiceMute;
+			case Moderation.TypeVariation.RestrictedAttachment:
+				return Moderation.TypeVariationAppealNames.RestrictedAttachment;
+			case Moderation.TypeVariation.RestrictedReaction:
+				return Moderation.TypeVariationAppealNames.RestrictedReaction;
+			case Moderation.TypeVariation.RestrictedEmbed:
+				return Moderation.TypeVariationAppealNames.RestrictedEmbed;
+			case Moderation.TypeVariation.RestrictedEmoji:
+				return Moderation.TypeVariationAppealNames.RestrictedEmoji;
+			case Moderation.TypeVariation.RestrictedVoice:
+				return Moderation.TypeVariationAppealNames.RestrictedVoice;
+			case Moderation.TypeVariation.SetNickname:
+				return Moderation.TypeVariationAppealNames.SetNickname;
+			case Moderation.TypeVariation.AddRole:
+				return Moderation.TypeVariationAppealNames.AddRole;
+			case Moderation.TypeVariation.RemoveRole:
+				return Moderation.TypeVariationAppealNames.RemoveRole;
+			default:
+				return null;
 		}
 	}
 
@@ -222,9 +236,9 @@ export class ModerationEntity extends BaseEntity {
 
 	public get task() {
 		const { guild } = this.#manager;
-		return this.#client.schedules.queue.find(value => value.data
-			&& value.data.caseID === this.caseID
-			&& value.data.guildID === guild.id) ?? null;
+		return (
+			this.#client.schedules.queue.find((value) => value.data && value.data.caseID === this.caseID && value.data.guildID === guild.id) ?? null
+		);
 	}
 
 	public async fetchUser() {
@@ -250,9 +264,11 @@ export class ModerationEntity extends BaseEntity {
 	}
 
 	public isType(type: Moderation.TypeCodes) {
-		return this.type === type
-			|| this.type === (type | Moderation.TypeMetadata.Temporary)
-			|| this.type === (type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast);
+		return (
+			this.type === type ||
+			this.type === (type | Moderation.TypeMetadata.Temporary) ||
+			this.type === (type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast)
+		);
 	}
 
 	public async edit(data: ModerationManagerUpdateData = {}) {
@@ -394,7 +410,7 @@ export class ModerationEntity extends BaseEntity {
 		// If the entry should not send, abort creation
 		if (!this.shouldSend) return null;
 
-		this.caseID = await this.#manager.count() + 1;
+		this.caseID = (await this.#manager.count()) + 1;
 		await this.save();
 		this.#manager.insert(this);
 
@@ -407,5 +423,4 @@ export class ModerationEntity extends BaseEntity {
 		if (duration < Time.Minute) return type | Moderation.TypeMetadata.Temporary | Moderation.TypeMetadata.Fast;
 		return type | Moderation.TypeMetadata.Temporary;
 	}
-
 }

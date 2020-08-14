@@ -1224,10 +1224,7 @@ export default class extends Language {
 				not be created, and the reaction role will be bound to all of the channel's messages.`,
 			explainedUsage: [
 				['show', 'Retrieve the list of all reaction roles.'],
-				[
-					'add <role> [channel emoji]',
-					'Adds a reaction role binding the first reacted message since the execution with the role, optionally a channel.'
-				],
+				['add <role>', 'Adds a reaction role binding the first reacted message since the execution with the role.'],
 				['remove <role> <message>', 'Removes a reaction role, use `show` to get a list of them.'],
 				['reset', 'Removes all reaction roles.']
 			]

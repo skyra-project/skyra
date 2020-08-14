@@ -6,6 +6,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
+import { roundNumber } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';
@@ -48,17 +49,18 @@ export default class extends SkyraCommand {
 		await getManager().transaction(async (em) => {
 			const existingbannerAuthor = await em.findOne(UserEntity, banner.author);
 			if (existingbannerAuthor) {
-				existingbannerAuthor.money += banner.price * 0.1;
+				existingbannerAuthor.money += roundNumber(banner.price * 0.1);
 				await em.save(existingbannerAuthor);
 			} else {
 				await em.insert(UserEntity, {
 					id: banner.author,
-					money: banner.price * 0.1
+					money: roundNumber(banner.price * 0.1)
 				});
 			}
 
 			banners.add(banner.id);
 			author.profile.banners = [...banners];
+			author.money -= banner.price;
 			await em.save(author);
 		});
 

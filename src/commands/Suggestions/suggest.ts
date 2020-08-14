@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { SUPPORT_SERVER } from '@root/config';
+import { WEBHOOK_FEEDBACK } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { BitFieldResolvable, MessageEmbed, PermissionString, TextChannel, Webhook } from 'discord.js';
@@ -27,7 +27,8 @@ export default class extends SkyraCommand {
 		// If including a flag of `--global` send suggestions to #feedbacks in Skyra Lounge
 		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && this.client.webhookFeedback;
 
-		const guild = globalSuggestion ? this.client.guilds.get(SUPPORT_SERVER)! : message.guild!;
+		// ! NOTE: Once we start sharding we need to have a better solution for this
+		const guild = globalSuggestion ? this.client.guilds.get(WEBHOOK_FEEDBACK.guild_id!)! : message.guild!;
 		let suggestionsChannel: Webhook | TextChannel | undefined = undefined;
 
 		if (globalSuggestion) {

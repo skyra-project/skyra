@@ -16,7 +16,6 @@ export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
-export const SUPPORT_SERVER = '254360814063058944';
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
 export const REDIRECT_URI = 'http://localhost.org:3000/oauth/callback';

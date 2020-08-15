@@ -1,7 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar, radians } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { KlasaMessage, KlasaUser } from 'klasa';
@@ -28,6 +28,11 @@ export default class extends SkyraCommand {
 	}
 
 	private generateImage(avatar: Image) {
-		return new Canvas(800, 450).printImage(this.kTemplate, 0, 0).printCircularImage(avatar, 316, 125, 65);
+		return new Canvas(800, 450)
+			.printImage(this.kTemplate, 0, 0)
+			.save()
+			.translate(316, 115)
+			.rotate(radians(10))
+			.printCircularImage(avatar, 0, 0, 65);
 	}
 }

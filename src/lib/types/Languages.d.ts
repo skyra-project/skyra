@@ -163,6 +163,7 @@ export interface LanguageKeys {
 	COMMAND_JOIN_VOICE_NO_CONNECT: string;
 	COMMAND_JOIN_VOICE_NO_SPEAK: string;
 	COMMAND_JOIN_VOICE_SAME: string;
+	COMMAND_JOIN_FAILED: string;
 	COMMAND_LEAVE_DESCRIPTION: string;
 	COMMAND_LEAVE_EXTENDED: LanguageHelpDisplayOptions;
 	COMMAND_LEAVE_SUCCESS: (channel: string) => string;

@@ -62,6 +62,7 @@ export const enum Events {
 	MusicSongVolumeUpdate = 'musicSongVolumeUpdate',
 	MusicVoiceChannelJoin = 'musicVoiceChannelJoin',
 	MusicVoiceChannelLeave = 'musicVoiceChannelLeave',
+	MusicJoinFailed = 'musicJoinFailed',
 	Raw = 'raw',
 	ReactionBlacklist = 'reactionBlacklist',
 	Reconnecting = 'reconnecting',

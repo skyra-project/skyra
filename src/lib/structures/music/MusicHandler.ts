@@ -124,6 +124,11 @@ export class MusicHandler {
 	}
 
 	public async connect(voiceChannel: VoiceChannel, context: MusicHandlerRequestContext | null = null) {
+		// If somehow there is something wrong with lavalink then do not attempt to continue any further
+		if (!this.client.lavalink || !this.client.lavalink.idealNodes || !this.client.lavalink.idealNodes.length) {
+			return this.client.emit(Events.MusicJoinFailed, this, context);
+		}
+
 		// Join channel and initiate the player for this guild
 		await this.client.lavalink.join(
 			{ guild: voiceChannel.guild.id, channel: voiceChannel.id, node: this.client.lavalink.idealNodes[0].id },

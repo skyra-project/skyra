@@ -1691,7 +1691,6 @@ export interface LanguageKeys {
 	COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal: string, id: string, stars: number) => string;
 	COMMAND_EVAL_TIMEOUT: (seconds: number) => string;
 	COMMAND_EVAL_ERROR: (time: string, output: string, type: string) => string;
-	COMMAND_FEEDBACK: string;
 	COMMAND_STATS: (color: number, stats: StatsGeneral, uptime: StatsUptime, usage: StatsUsage) => MessageEmbed;
 	COMMAND_TAG_DESCRIPTION: string;
 	COMMAND_TAG_EXTENDED: string;

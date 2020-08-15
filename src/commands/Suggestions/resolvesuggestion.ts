@@ -3,7 +3,8 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import type { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { ApplyOptions } from '@skyra/decorators';
+import { CLIENT_ID } from '@root/config';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
@@ -27,6 +28,46 @@ const enum SuggestionsColors {
 	usage: '<suggestion:suggestion> <accept|a|deny|d|consider|c> [comment:comment]',
 	usageDelim: ' '
 })
+@CreateResolvers([
+	[
+		'suggestion',
+		async (arg, _, message): Promise<SuggestionData> => {
+			// Validate the suggestions channel ID
+			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
+			if (!channelID) throw message.language.tget('COMMAND_SUGGEST_NOSETUP', message.author.username);
+
+			// Validate the suggestion number
+			const id = Number(arg);
+			if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALID_ID');
+
+			// Retrieve the suggestion data
+			const { suggestions } = await DbSet.connect();
+			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
+			if (!suggestionData) throw message.language.tget('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
+
+			const channel = message.client.channels.get(channelID) as TextChannel;
+			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
+			if (suggestionMessage === null) {
+				await suggestionData.remove();
+				throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND');
+			}
+
+			const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
+			return {
+				message: suggestionMessage,
+				author: suggestionAuthor,
+				id
+			};
+		}
+	],
+	[
+		'comment',
+		(arg, possible, message) => {
+			if (typeof arg === 'undefined') return message.language.tget('COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT');
+			return message.client.arguments.get('...string')!.run(arg, possible, message);
+		}
+	]
+])
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [suggestionData, action, comment]: [SuggestionData, string, string | undefined]) {
 		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = [
@@ -69,9 +110,9 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		shouldRepostSuggestion
-			? await suggestionData.message.channel.send(messageContent, { embed: newEmbed })
-			: await suggestionData.message.edit(newEmbed);
+		if (shouldRepostSuggestion) {
+			await suggestionData.message.channel.send(messageContent, { embed: newEmbed });
+		} else if (suggestionData.message.author.id === CLIENT_ID) await suggestionData.message.edit(newEmbed);
 
 		return message.sendLocale('COMMAND_RESOLVESUGGESTION_SUCCESS', [suggestionData.id, action]);
 	}
@@ -84,45 +125,6 @@ export default class extends SkyraCommand {
 		if (channelID !== null) return false;
 		await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
 		return true;
-	}
-
-	public async init() {
-		this.createCustomResolver(
-			'suggestion',
-			async (arg, _, message): Promise<SuggestionData> => {
-				// Validate the suggestions channel ID
-				const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
-				if (!channelID) throw message.language.tget('COMMAND_SUGGEST_NOSETUP', message.author.username);
-
-				// Validate the suggestion number
-				const id = Number(arg);
-				if (!Number.isInteger(id) || id < 1) throw message.language.tget('COMMAND_RESOLVESUGGESTION_INVALID_ID');
-
-				// Retrieve the suggestion data
-				const { suggestions } = await DbSet.connect();
-				const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
-				if (!suggestionData) throw message.language.tget('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
-
-				const channel = this.client.channels.get(channelID) as TextChannel;
-				const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
-				if (suggestionMessage === null) {
-					await suggestionData.remove();
-					throw message.language.tget('COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND');
-				}
-
-				const suggestionAuthor = await this.client.users.fetch(suggestionData.authorID).catch(() => null);
-				return {
-					message: suggestionMessage,
-					author: suggestionAuthor,
-					id
-				};
-			}
-		);
-
-		this.createCustomResolver('comment', (arg, possible, message) => {
-			if (typeof arg === 'undefined') return message.language.tget('COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT');
-			return this.client.arguments.get('...string')!.run(arg, possible, message);
-		});
 	}
 
 	private async getAuthor(message: KlasaMessage, hideAuthor: boolean) {

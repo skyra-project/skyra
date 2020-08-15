@@ -1,6 +1,7 @@
 // reference: https://developer.brawlstars.com/#/documentation
 export namespace BrawlStars {
 	export interface Player {
+		// eslint-disable-next-line @typescript-eslint/ban-types
 		club: PartialClub;
 		'3vs3Victories': number;
 		isQualifiedFromChampionshipChallenge: boolean;

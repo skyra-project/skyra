@@ -24,10 +24,7 @@ export class LanguageHelp {
 		return this;
 	}
 
-	// TODO: when all builder.display() usages in language files are removed, we cans safely remove
-	// the _multiline parameter
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public display(name: string, options: LanguageHelpDisplayOptions, _multiline = false) {
+	public display(name: string, options: LanguageHelpDisplayOptions) {
 		const { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
 		const output: string[] = [];
 

@@ -19,6 +19,7 @@ import {
 	MessageEmbed
 } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { floatPromise } from '@utils/util';
 
 export const enum ModerationSetupRestriction {
 	Reaction = 'roles.restricted-reaction',
@@ -651,7 +652,8 @@ export class ModerationActions {
 		if (sendOptions.send) {
 			try {
 				const target = await entry.fetchUser();
-				await target.sendEmbed(this.buildEmbed(entry, sendOptions)).catch(() => null);
+				const embed = this.buildEmbed(entry, sendOptions);
+				floatPromise({ client: this.guild.client }, target.sendEmbed(embed));
 			} catch (error) {
 				if (error.code === APIErrors.CannotMessageUser) return;
 				this.guild.client.emit(Events.Error, error);

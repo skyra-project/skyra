@@ -7,7 +7,6 @@ import { CLIENT_ID, VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
-import { LanguageHelp } from '@utils/LanguageHelp';
 import { createPick, inlineCodeblock } from '@utils/util';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
@@ -17,11 +16,6 @@ const SHINY = Emojis.Shiny;
 const GREENTICK = Emojis.GreenTick;
 const REDCROSS = Emojis.RedCross;
 
-const builder = new LanguageHelp()
-	.setExplainedUsage('⚙ | ***Explained usage***')
-	.setPossibleFormats('🔢 | ***Possible formats***')
-	.setExamples('🔗 | ***Examples***')
-	.setReminder('⏰ | ***Reminder***');
 const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
 
 const TIMES: DurationFormatAssetsTime = {
@@ -306,30 +300,27 @@ export default class extends Language {
 			`${name} accepts a range of maximum ${maximum} ${maximum === 1 ? 'number' : 'numbers'}`,
 
 		COMMAND_ADD_DESCRIPTION: 'Adds a song the the queue.',
-		COMMAND_ADD_EXTENDED: builder.display(
-			'add',
-			{
-				extendedHelp: [
-					`Add songs to the playing queue and prepare for musical enjoyment!
+		COMMAND_ADD_EXTENDED: {
+			extendedHelp: [
+				`Add songs to the playing queue and prepare for musical enjoyment!
 					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
-					'- To play from YouTube either give me something to search, a video link, or a playlist link.',
-					'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
-					"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VODs.",
-					'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
-				].join('\n'),
-				explainedUsage: [['song', 'The song to queue. Can be either a URL or a video/song title.']],
-				examples: [
-					'The Pokémon Theme song',
-					'https://youtu.be/fJ9rUzIMcZQ',
-					'--sc Imagine Dragons Believer',
-					'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
-					'https://vimeo.com/channels/music/239029778',
-					'https://mixer.com/Ninja',
-					'https://thedisappointed.bandcamp.com/album/escapism-2'
-				]
-			},
-			true
-		),
+				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
+				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
+				"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VODs.",
+				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
+			].join('\n'),
+			explainedUsage: [['song', 'The song to queue. Can be either a URL or a video/song title.']],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			],
+			multiline: true
+		},
 		COMMAND_ADD_PLAYLIST: (amount) => `${GREENTICK} Added **${amount}** ${amount === 1 ? 'song' : 'songs'} to the queue 🎶`,
 		COMMAND_ADD_SONG: (title) => `${GREENTICK} Added **${title}** to the queue 🎶`,
 		COMMAND_CLEAR_DESCRIPTION: 'Clears the queue list.',
@@ -345,49 +336,43 @@ export default class extends Language {
 		COMMAND_JOIN_VOICE_NO_SPEAK: `${REDCROSS} I can connect... but not speak. Please turn on this permission so I can emit music.`,
 		COMMAND_JOIN_VOICE_SAME: `${REDCROSS} Turn on your volume! I am playing music there!`,
 		COMMAND_LEAVE_DESCRIPTION: 'Leaves the voice channel.',
-		COMMAND_LEAVE_EXTENDED: builder.display(
-			'leave',
-			{
-				extendedHelp: `Use this command to have Skyra leave the current voice channel.
+		COMMAND_LEAVE_EXTENDED: {
+			extendedHelp: `Use this command to have Skyra leave the current voice channel.
 			By default I will leave the channel, forget about the currently playing song, but leave the queue intact.
 			This means that once you do \`Skyra, play\` after the leave command, I will continue playing with the first song that was on the queue before I left.
 
 			This default behaviour can be modified with flags:
 			\`--removeall\` or \`--ra\` to follow the default behavior as well clear the queue, next time you want me to start playing you will have to build a new queue`,
-				examples: ['leave', 'leave --removeall', 'leave --ra', 'leave --soft']
-			},
-			true
-		),
+			examples: ['leave', 'leave --removeall', 'leave --ra', 'leave --soft'],
+			multiline: true
+		},
 		COMMAND_LEAVE_SUCCESS: (channel) => `${GREENTICK} Successfully left the voice channel ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: 'Pauses the current song.',
 		COMMAND_PAUSE_SUCCESS: `${GREENTICK} Paused`,
 		COMMAND_PLAY_DESCRIPTION: 'Let me be your DJ and play you some tunes!',
-		COMMAND_PLAY_EXTENDED: builder.display(
-			'play',
-			{
-				extendedHelp: [
-					`Queue some music and allow me to start jamming out to your enjoyment.
+		COMMAND_PLAY_EXTENDED: {
+			extendedHelp: [
+				`Queue some music and allow me to start jamming out to your enjoyment.
 				When using this command I will automatically join your voice channel and start playing the first song in my queue.
 					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
-					'- To play from YouTube either give me something to search, a video link, or a playlist link.',
-					'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
-					"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VOD's.",
-					'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
-				].join('\n'),
-				explainedUsage: [['song', 'The song to play. Can be either a URL or a video/song title.']],
-				examples: [
-					'The Pokémon Theme song',
-					'https://youtu.be/fJ9rUzIMcZQ',
-					'--sc Imagine Dragons Believer',
-					'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
-					'https://vimeo.com/channels/music/239029778',
-					'https://mixer.com/Ninja',
-					'https://thedisappointed.bandcamp.com/album/escapism-2'
-				],
-				reminder: 'Before you can use this command you should join a voice channel!'
-			},
-			true
-		),
+				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
+				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
+				"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VOD's.",
+				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
+			].join('\n'),
+			explainedUsage: [['song', 'The song to play. Can be either a URL or a video/song title.']],
+			examples: [
+				'The Pokémon Theme song',
+				'https://youtu.be/fJ9rUzIMcZQ',
+				'--sc Imagine Dragons Believer',
+				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
+				'https://vimeo.com/channels/music/239029778',
+				'https://mixer.com/Ninja',
+				'https://thedisappointed.bandcamp.com/album/escapism-2'
+			],
+			reminder: 'Before you can use this command you should join a voice channel!',
+			multiline: true
+		},
 		COMMAND_PLAY_END: 'It looks like the queue ended here. I hope you enjoyed the session!',
 		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
 		COMMAND_PLAY_QUEUE_PAUSED: (song) => `There was a track going on! Playing it back! Now playing: ${song}!`,
@@ -435,35 +420,32 @@ export default class extends Language {
 		COMMAND_RESUME_DESCRIPTION: 'Resumes the current song.',
 		COMMAND_RESUME_SUCCESS: '▶ Resumed.',
 		COMMAND_ROLESET_DESCRIPTION: 'Manage unique role sets.',
-		COMMAND_ROLESET_EXTENDED: builder.display(
-			'roleset',
-			{
-				extendedHelp: `A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles \`Africa\`, \`America\`, \`Asia\`, and \`Europe\`, and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:
+		COMMAND_ROLESET_EXTENDED: {
+			extendedHelp: `A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles \`Africa\`, \`America\`, \`Asia\`, and \`Europe\`, and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:
 
 					- When somebody claims a role via the \`Skyra, roles\`.
 					- When somebody claims a role via reaction roles.
 					- When somebody receives a role either manually or from another bot.`,
-				explainedUsage: [
-					['add', 'Create a new roleset or add a role to an existing one.'],
-					['remove', 'Remove a role from an existing roleset.'],
-					['reset', 'Removes all roles from a roleset or, if not specified, all existing rolesets.'],
-					['list', 'Lists all rolesets.'],
-					['auto', 'Adds or removes a roleset.']
-				],
-				examples: [
-					'add regions America',
-					'add regions Africa America Asia Europe',
-					'remove regions America',
-					'reset',
-					'reset regions',
-					'list',
-					'regions America',
-					'regions Africa America Asia Europe'
-				],
-				reminder: 'This command can add and/or remove multiple roles at the same time.'
-			},
-			true
-		),
+			explainedUsage: [
+				['add', 'Create a new roleset or add a role to an existing one.'],
+				['remove', 'Remove a role from an existing roleset.'],
+				['reset', 'Removes all roles from a roleset or, if not specified, all existing rolesets.'],
+				['list', 'Lists all rolesets.'],
+				['auto', 'Adds or removes a roleset.']
+			],
+			examples: [
+				'add regions America',
+				'add regions Africa America Asia Europe',
+				'remove regions America',
+				'reset',
+				'reset regions',
+				'list',
+				'regions America',
+				'regions Africa America Asia Europe'
+			],
+			reminder: 'This command can add and/or remove multiple roles at the same time.',
+			multiline: true
+		},
 		COMMAND_ROLESET_CREATED: (name, roles) => `The ${name} unique role set has been created with the following roles: ${roles}`,
 		COMMAND_ROLESET_ADDED: (name, roles) => `The ${name} unique role set now has the following roles as well: ${roles}.`,
 		COMMAND_ROLESET_INVALID_NAME: (name) => `You can not remove the ${name} unique role set because it does not exist.`,
@@ -483,11 +465,11 @@ export default class extends Language {
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Check how much time is left for the song to end.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: 'Are you speaking to me? Because my deck is empty...',
 		COMMAND_PROMOTE_DESCRIPTION: 'Promote a song to the front of the queue',
-		COMMAND_PROMOTE_EXTENDED: builder.display('promote', {
+		COMMAND_PROMOTE_EXTENDED: {
 			explainedUsage: [['number', 'The index in the queue to promote to the front. Use `Skyra, queue` to find the index of a song']],
 			examples: ['5'],
 			reminder: 'This command requires that you are a DJ or a Moderator to use it'
-		}),
+		},
 		COMMAND_PROMOTE_SUCCESS: (song) => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
 		COMMAND_VOLUME_DESCRIPTION: 'Manage the volume for current song.',
 		COMMAND_VOLUME_SUCCESS: (volume) => `📢 Volume: ${volume}%`,
@@ -701,21 +683,21 @@ export default class extends Language {
 		 */
 
 		COMMAND_ANIME_DESCRIPTION: 'Search your favourite anime by title with this command.',
-		COMMAND_ANIME_EXTENDED: builder.display('anime', {
+		COMMAND_ANIME_EXTENDED: {
 			extendedHelp: 'This command queries Kitsu.io to show data for the anime you request.',
 			explainedUsage: [['query', "The anime's name you are looking for."]],
 			examples: ['One Piece']
-		}),
+		},
 		COMMAND_MANGA_DESCRIPTION: 'Search your favourite manga by title with this command.',
-		COMMAND_MANGA_EXTENDED: builder.display('manga', {
+		COMMAND_MANGA_EXTENDED: {
 			extendedHelp: 'This command queries Kitsu.io to show data for the manga you request.',
 			explainedUsage: [['query', "The manga's name you are looking for."]],
 			examples: ['Stone Ocean', 'One Piece']
-		}),
+		},
 		COMMAND_WAIFU_DESCRIPTION: 'Posts a randomly generated waifu image.',
-		COMMAND_WAIFU_EXTENDED: builder.display('waifu', {
+		COMMAND_WAIFU_EXTENDED: {
 			extendedHelp: 'This commands posts a random waifu generated by <https://thiswaifudoesnotexist.net/>'
-		}),
+		},
 
 		/**
 		 * #####################
@@ -723,48 +705,45 @@ export default class extends Language {
 		 */
 
 		COMMAND_ANNOUNCEMENT_DESCRIPTION: 'Send new announcements, mentioning the announcement role.',
-		COMMAND_ANNOUNCEMENT_EXTENDED: builder.display(
-			'announcement',
-			{
-				extendedHelp: [
-					`This command requires an announcement channel (**channels.announcement** in the configuration command)
+		COMMAND_ANNOUNCEMENT_EXTENDED: {
+			extendedHelp: [
+				`This command requires an announcement channel (**channels.announcement** in the configuration command)
 					which tells Skyra where she should post the announcement messages.`,
-					'',
-					`Question is, is this command needed? Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
+				'',
+				`Question is, is this command needed? Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
 					being mentioned by at everyone/here.`,
-					'',
-					`To avoid this, Skyra gives you the option of creating a subscriber role,
+				'',
+				`To avoid this, Skyra gives you the option of creating a subscriber role,
 					which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
 					Skyra will set the role to be mentionable, post the message, and back to unmentionable.`,
-					'',
-					`Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
+				'',
+				`Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
 					option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
 					by providing the \`--excludeMentions\` flag to the announcement.`
-				].join('\n'),
-				explainedUsage: [['announcement', 'The announcement text to post.']],
-				examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!'],
-				reminder: `If you want to edit the message you send in an announcement,
+			].join('\n'),
+			explainedUsage: [['announcement', 'The announcement text to post.']],
+			examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!'],
+			reminder: `If you want to edit the message you send in an announcement,
 				just edit the message you used to have Skyra send that announcement.
 				Skyra will then edit the message she sent previously. She can do this
 				up to 15 minutes after the initial announcement, so be sure to not wait
-				long!`
-			},
-			true
-		),
+				long!`,
+			multiline: true
+		},
 		COMMAND_SUBSCRIBE_DESCRIPTION: "Subscribe to this server's announcements.",
-		COMMAND_SUBSCRIBE_EXTENDED: builder.display('subscribe', {
+		COMMAND_SUBSCRIBE_EXTENDED: {
 			extendedHelp: `This command serves the purpose of **giving** you the subscriber role, which must be configured by the
 				server's administrators. When a moderator or administrator use the **announcement** command, you
 					will be mentioned. This feature is meant to replace everyone/here tags and mention only the interested
 					users.`
-		}),
+		},
 		COMMAND_UNSUBSCRIBE_DESCRIPTION: "Unsubscribe from this server's announcements.",
-		COMMAND_UNSUBSCRIBE_EXTENDED: builder.display('unsubscribe', {
+		COMMAND_UNSUBSCRIBE_EXTENDED: {
 			extendedHelp: `This command serves the purpose of **removing** you the subscriber role, which must be configured by the
 					server's administrators. When a moderator or administrator use the **announcement** command, you
 					will **not longer** be mentioned. This feature is meant to replace everyone/here tags and mention
 					only the interested users.`
-		}),
+		},
 
 		/**
 		 * ############
@@ -772,27 +751,27 @@ export default class extends Language {
 		 */
 
 		COMMAND_8BALL_DESCRIPTION: 'Skyra will read the Holy Bible to find the correct answer for your question.',
-		COMMAND_8BALL_EXTENDED: builder.display('8ball', {
+		COMMAND_8BALL_EXTENDED: {
 			extendedHelp: "This command provides you a random question based on your questions' type. Be careful, it may be too smart.",
 			explainedUsage: [['question', 'The Holy Question']],
 			examples: ['Why did the chicken cross the road?']
-		}),
+		},
 		COMMAND_CHOICE_DESCRIPTION: 'Eeny, meeny, miny, moe, catch a tiger by the toe...',
-		COMMAND_CHOICE_EXTENDED: builder.display('choice', {
+		COMMAND_CHOICE_EXTENDED: {
 			extendedHelp: `I have an existencial doubt... should I wash the dishes or throw them through the window? The search
 					continues. List me items separated by comma and I will choose one them. On a side note, I am not
 					responsible of what happens next.`,
 			explainedUsage: [['words', 'A list of words separated by comma.']],
 			examples: ['Should Wash the dishes, Throw the dishes out the window', 'Cat, Dog']
-		}),
+		},
 		COMMAND_CHANGEMYMIND_DESCRIPTION: 'Skyra is the best, change my mind.',
-		COMMAND_CHANGEMYMIND_EXTENDED: builder.display('changeMyMind', {
+		COMMAND_CHANGEMYMIND_EXTENDED: {
 			extendedHelp: "I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.",
 			explainedUsage: [['text', 'The phrase you want.']],
 			examples: ['Skyra is the best bot in this server']
-		}),
+		},
 		COMMAND_DICE_DESCRIPTION: 'Roll the dice using d20 syntax.',
-		COMMAND_DICE_EXTENDED: builder.display('dice', {
+		COMMAND_DICE_EXTENDED: {
 			extendedHelp: `The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice
 				can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once.
 				However, you can change the amount of rolls for the dice, and this command will 'roll' (get a random
@@ -800,85 +779,81 @@ export default class extends Language {
 				a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will
 				return 10 as output.`,
 			examples: ['370d24', '100d6', '6']
-		}),
+		},
 		COMMAND_ESCAPEROPE_DESCRIPTION: 'Use the escape rope from Pokemon.',
-		COMMAND_ESCAPEROPE_EXTENDED: builder.display('escaperope', {
+		COMMAND_ESCAPEROPE_EXTENDED: {
 			extendedHelp: '**Skyra** used **Escape Rope**.'
-		}),
+		},
 		COMMAND_HOWTOFLIRT_DESCRIPTION: 'Captain America, you do not know how to flirt.',
-		COMMAND_HOWTOFLIRT_EXTENDED: builder.display('howtoflirt', {
+		COMMAND_HOWTOFLIRT_EXTENDED: {
 			extendedHelp: `Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain
 				America, I can guarantee that you'll get him.`,
 			explainedUsage: [['user', 'The user to flirt with.']],
 			examples: ['Skyra']
-		}),
+		},
 		COMMAND_LOVE_DESCRIPTION: 'Lovemeter, online!',
-		COMMAND_LOVE_EXTENDED: builder.display('love', {
+		COMMAND_LOVE_EXTENDED: {
 			extendedHelp: `Hey! Wanna check the lovemeter? I know it's a ridiculous machine, but many humans love it!
 					Don't be shy and try it!`,
 			explainedUsage: [['user', 'The user to rate.']],
 			examples: ['Skyra']
-		}),
+		},
 		COMMAND_MARKOV_DESCRIPTION: 'Generate a Markov Chain from the text channel.',
-		COMMAND_MARKOV_EXTENDED: builder.display('markov', {
+		COMMAND_MARKOV_EXTENDED: {
 			extendedHelp: `A Markov chain is a stocha... what? Okay, something something a probability theory made by a
 					Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random
 					message given the content of the messages in the channel.`,
 			examples: ['']
-		}),
+		},
 		COMMAND_NORRIS_DESCRIPTION: "Enjoy your day reading Chuck Norris' jokes.",
-		COMMAND_NORRIS_EXTENDED: builder.display('norris', {
+		COMMAND_NORRIS_EXTENDED: {
 			extendedHelp: `Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone?
 					Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io
 					and retrieves a fact (do not assume they're false, not in front of him) so you can read it`
-		}),
+		},
 		COMMAND_RATE_DESCRIPTION: 'Let bots have opinions and rate somebody.',
-		COMMAND_RATE_EXTENDED: builder.display('rate', {
+		COMMAND_RATE_EXTENDED: {
 			extendedHelp: `Just because I am a bot doesn't mean I cannot rate you properly. I can grade you with a random number
 					generator to ease the process. Okay okay, it's not fair, but I mean... I can also give you a 💯.`,
 			explainedUsage: [['user', 'The user to rate.']],
 			examples: ['Skyra', 'me']
-		}),
+		},
 		COMMAND_XKCD_DESCRIPTION: 'Read comics from XKCD.',
-		COMMAND_XKCD_EXTENDED: builder.display('xkcd', {
+		COMMAND_XKCD_EXTENDED: {
 			extendedHelp: `**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't
 					provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve
 					the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches
 					with your input and display it. For example, \`Skyra, xkcd Curiosity\` will show the comic number 1091.`,
 			explainedUsage: [['query', 'Either the number of the comic, or a title to search for.']],
 			examples: ['1091', 'Curiosity']
-		}),
+		},
 		COMMAND_PUN_DESCRIPTION: 'Shows you a random pun.',
-		COMMAND_PUN_EXTENDED: builder.display(
-			'pun',
-			{
-				extendedHelp: [
-					'A steak pun is a rare medium well done.',
-					'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
-				].join('\n')
-			},
-			true
-		),
+		COMMAND_PUN_EXTENDED: {
+			extendedHelp: [
+				'A steak pun is a rare medium well done.',
+				'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
+			].join('\n'),
+			multiline: true
+		},
 		COMMAND_WAKANDA_DESCRIPTION: "Helpful descriptions? We don't do that here",
-		COMMAND_WAKANDA_EXTENDED: builder.display('wakanda', {
+		COMMAND_WAKANDA_EXTENDED: {
 			extendedHelp: `Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here)
 			using the given user.`
-		}),
-
+		},
 		/**
 		 * ################
 		 * GAME INTEGRATION COMMANDS
 		 */
 
 		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Get data on a player or clan in the popular mobile game Clash of Clans',
-		COMMAND_CLASHOFCLANS_EXTENDED: builder.display('clashofclans', {
+		COMMAND_CLASHOFCLANS_EXTENDED: {
 			extendedHelp: 'The request for clans will try to return multiple possible responses.',
 			explainedUsage: [
 				['category', 'The category of data to get: **clan** to get data on a clan or **player** to get data on a player.'],
 				['query', 'Either a clan name or player tag depending on the category you chose.']
 			],
 			examples: ['player #8GQPJG2CL', 'clan Hog Raiders Swe']
-		}),
+		},
 		COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES: {
 			XP_LEVEL: 'XP level',
 			BUILDER_HALL_LEVEL: 'Builder Hall level',
@@ -934,7 +909,7 @@ export default class extends Language {
 		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: (playertag) =>
 			`I am sorry, but I was unable to get data on the player with player tag \`${playertag}\`.`,
 		COMMAND_FFXIV_DESCRIPTION: 'Queries the Final Fantasy 14 API for game data',
-		COMMAND_FFXIV_EXTENDED: builder.display('ffxiv', {
+		COMMAND_FFXIV_EXTENDED: {
 			extendedHelp: `This command allows you to character and item data for FFXIV.
 				For item a wildcard search is performed so if your term is in the middle of the name it can still match.`,
 			explainedUsage: [
@@ -942,7 +917,7 @@ export default class extends Language {
 				['query', 'The player or thing to search.']
 			],
 			examples: ['character Laytlan Ardevon', 'Laytlan Ardevon', 'item potion']
-		}),
+		},
 		COMMAND_FFXIV_CHARACTER_FIELDS: {
 			SERVER_AND_DC: 'Server - Datacenter',
 			TRIBE: 'Tribe',
@@ -974,14 +949,14 @@ export default class extends Language {
 		COMMAND_FFXIV_INVALID_SERVER: `${REDCROSS} I am sorry, but an invalid server name was passed.`,
 		COMMAND_FFXIV_NO_ITEM_FOUND: `${REDCROSS} I am sorry, but I was unable to find an item with that query.`,
 		COMMAND_FORTNITE_DESCRIPTION: 'Gets player statistics for a Fortnite player',
-		COMMAND_FORTNITE_EXTENDED: builder.display('fortnite', {
+		COMMAND_FORTNITE_EXTENDED: {
 			extendedHelp: 'This command retrieves statistics for any Fortnite player that plays on PC, Xbox or Playstation',
 			explainedUsage: [
 				['platform', '(optional, defaults to `pc`) Platform the player plays on, one of `pc`, `xbox`, or `psn`.'],
 				['player', 'The Epic Games username of the player.']
 			],
 			examples: ['ninja', 'pc ninja', 'xbox TTV R1xbox', 'psn TTV IllusionOG']
-		}),
+		},
 		COMMAND_FORTNITE_NO_USER: [
 			'I am sorry, but I was unable to find a user with that name.',
 			'Are you sure that they play on the provided platform? (PC [default], Xbox or PSN are supported)'
@@ -1005,7 +980,7 @@ export default class extends Language {
 			TOP_25S: (count) => `Top 25s: **\`${count}\`**`
 		},
 		COMMAND_OVERWATCH_DESCRIPTION: 'Gets player statistics for an Overwatch player',
-		COMMAND_OVERWATCH_EXTENDED: builder.display('overwatch', {
+		COMMAND_OVERWATCH_EXTENDED: {
 			extendedHelp: `This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.
 				By default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform
 				to \`xbl\` or \`psn\` respectively.
@@ -1015,7 +990,7 @@ export default class extends Language {
 				['player', 'For PC the full blizzard tag, for console the username. Case sensitive!']
 			],
 			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
-		}),
+		},
 		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: (playerTag) =>
 			[
 				`\`${playerTag}\` is an invalid player name`,
@@ -1070,9 +1045,9 @@ export default class extends Language {
 		 */
 
 		COMMAND_SUPPORT_DESCRIPTION: 'Show support instructions',
-		COMMAND_SUPPORT_EXTENDED: builder.display('support', {
+		COMMAND_SUPPORT_EXTENDED: {
 			extendedHelp: "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
-		}),
+		},
 
 		/**
 		 * ###################
@@ -1080,13 +1055,13 @@ export default class extends Language {
 		 */
 
 		COMMAND_CREATEMUTE_DESCRIPTION: 'Prepare the mute system.',
-		COMMAND_CREATEMUTE_EXTENDED: builder.display('createMute', {
+		COMMAND_CREATEMUTE_EXTENDED: {
 			extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to
 					the guild settings. This command also modifies all channels (where possible) permissions and disables
 					the permission **${PERMS.SEND_MESSAGES}** in text channels and **${PERMS.CONNECT}** in voice channels for said role.`
-		}),
+		},
 		COMMAND_GIVEAWAY_DESCRIPTION: 'Start a new giveaway.',
-		COMMAND_GIVEAWAY_EXTENDED: builder.display('giveaway', {
+		COMMAND_GIVEAWAY_EXTENDED: {
 			extendedHelp: `This command is designed to manage giveaways. You can start them with this command by giving it the
 					time and a title. When a giveaway has been created, Skyra will send a giveaway message and react to it with 🎉
 					so the members of the server can participate on it. Once the timer ends, Skyra will retrieve all the users who
@@ -1100,9 +1075,9 @@ export default class extends Language {
 				['title', 'The title of the giveaway.']
 			],
 			examples: ['6h A hug from Skyra.', '60m 5w A mysterious Steam game', '1d Free Discord Nitro! --winners=2w']
-		}),
+		},
 		COMMAND_GIVEAWAYREROLL_DESCRIPTION: 'Re-roll the winners from a giveaway.',
-		COMMAND_GIVEAWAYREROLL_EXTENDED: builder.display('greroll', {
+		COMMAND_GIVEAWAYREROLL_EXTENDED: {
 			extendedHelp: `This command is designed to re-roll finished giveaways. Please check \`Skyra, help gstart\` for more information
 					about creating one.`,
 			explainedUsage: [
@@ -1110,9 +1085,9 @@ export default class extends Language {
 				['message', 'The message to target. Defaults to last giveaway message.']
 			],
 			examples: ['', '633939404745998346', '5', '5 633939404745998346']
-		}),
+		},
 		COMMAND_GIVEAWAYSCHEDULE_DESCRIPTION: 'Schedule a giveaway to start at a certain time.',
-		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: builder.display('gcreate', {
+		COMMAND_GIVEAWAYSCHEDULE_EXTENDED: {
 			extendedHelp: `
 				This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.
 				You can also pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway..
@@ -1124,7 +1099,7 @@ export default class extends Language {
 				['title', 'The title of the giveaway.']
 			],
 			examples: ['30m 6h A hug from Skyra.']
-		}),
+		},
 
 		/**
 		 * ###################
@@ -1132,14 +1107,14 @@ export default class extends Language {
 		 */
 
 		COMMAND_NICK_DESCRIPTION: "Change Skyra's nickname for this server.",
-		COMMAND_NICK_EXTENDED: builder.display('nick', {
+		COMMAND_NICK_EXTENDED: {
 			extendedHelp: "This command allows you to change Skyra's nickname easily for the server.",
 			reminder: `This command requires the **${PERMS.CHANGE_NICKNAME}** permission. Make sure Skyra has it.`,
 			explainedUsage: [['nick', "The new nickname. If you don't put any, it'll reset it instead."]],
 			examples: ['SkyNET', 'Assistant', '']
-		}),
+		},
 		COMMAND_PERMISSIONNODES_DESCRIPTION: 'Configure the permission nodes for this server.',
-		COMMAND_PERMISSIONNODES_EXTENDED: builder.display('pnodes', {
+		COMMAND_PERMISSIONNODES_EXTENDED: {
 			extendedHelp: `Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.
 					For example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved
 					to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command
@@ -1152,9 +1127,9 @@ export default class extends Language {
 			],
 			examples: ['add staff allow warn', 'add moderators deny ban', 'remove staff allow warn', 'reset staff', 'show staff'],
 			reminder: 'The server owner cannot have any actions, nor the `everyone` role can have allowed commands.'
-		}),
+		},
 		COMMAND_TRIGGERS_DESCRIPTION: 'Set custom triggers for your guild!.',
-		COMMAND_TRIGGERS_EXTENDED: builder.display('triggers', {
+		COMMAND_TRIGGERS_EXTENDED: {
 			extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild!. A trigger is
 					a piece that can active other functions. For example, the aliases are triggers that get executed when the command does not
 					exist in bot, triggering the unknown command event. When this happens, the alias system executes and tries to find an entry
@@ -1166,7 +1141,7 @@ export default class extends Language {
 				['remove <type> <input>', 'Remove a trigger given the type and input.']
 			],
 			examples: ['', 'list', 'add reaction "good night" 🌛', 'remove reaction "good night"']
-		}),
+		},
 
 		/**
 		 * #################################
@@ -1174,7 +1149,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION: 'Manage per-channel autodelete timer.',
-		COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED: builder.display('manageCommandAutodelete', {
+		COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED: {
 			extendedHelp:
 				"This command manages this guild's per-channel command autodelete timer, it serves well to leave a channel clean from commands.",
 			explainedUsage: [
@@ -1185,9 +1160,9 @@ export default class extends Language {
 			],
 			reminder: "The channel argument is optional, defaulting to the message's channel, but it uses fuzzy search when possible.",
 			examples: ['show', 'add #general 4s', 'remove #general', 'reset']
-		}),
+		},
 		COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION: 'Manage per-channel command blacklist.',
-		COMMAND_MANAGECOMMANDCHANNEL_EXTENDED: builder.display('manageCommandChannel', {
+		COMMAND_MANAGECOMMANDCHANNEL_EXTENDED: {
 			extendedHelp: `This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want
 					to be used in certain channels (to disable a command globally, use the \`disabledCommands\` settings key to disable in all channels.`,
 			explainedUsage: [
@@ -1198,9 +1173,9 @@ export default class extends Language {
 			],
 			reminder: 'The channel argument is optional, but it uses fuzzy search when possible.',
 			examples: ['show', 'add #general profile', 'remove #general profile', 'reset #general']
-		}),
+		},
 		COMMAND_MANAGEREACTIONROLES_DESCRIPTION: 'Manage the reaction roles for this server.',
-		COMMAND_MANAGEREACTIONROLES_EXTENDED: builder.display('manageReactionRoles', {
+		COMMAND_MANAGEREACTIONROLES_EXTENDED: {
 			extendedHelp: `Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind
 				the first reaction from you alongside the channel and the message, with the specified role. Otherwise, if a channel is specified, a prompt will
 				not be created, and the reaction role will be bound to all of the channel's messages.`,
@@ -1213,9 +1188,9 @@ export default class extends Language {
 				['remove <role> <message>', 'Removes a reaction role, use `show` to get a list of them.'],
 				['reset', 'Removes all reaction roles.']
 			]
-		}),
+		},
 		COMMAND_SETIGNORECHANNELS_DESCRIPTION: 'Set a channel to the ignore channel list.',
-		COMMAND_SETIGNORECHANNELS_EXTENDED: builder.display('setIgnoreChannels', {
+		COMMAND_SETIGNORECHANNELS_EXTENDED: {
 			extendedHelp: `This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators
 					can use Skyra's commands. Unlike removing the **${PERMS.SEND_MESSAGES}** permission, Skyra is still able to send (and therefore
 					execute commands) messages, which allows moderators to use moderation commands in the channel. Use this if you want to ban
@@ -1228,9 +1203,9 @@ export default class extends Language {
 			],
 			reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
 			examples: ['#general', 'here']
-		}),
+		},
 		COMMAND_SETIMAGELOGS_DESCRIPTION: 'Set the image logs channel.',
-		COMMAND_SETIMAGELOGS_EXTENDED: builder.display('setImageLogs', {
+		COMMAND_SETIMAGELOGS_EXTENDED: {
 			extendedHelp: `This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with
 					the attachment re-uploaded. All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra.`,
 			explainedUsage: [
@@ -1240,9 +1215,9 @@ export default class extends Language {
 				]
 			],
 			examples: ['#image-logs', 'here']
-		}),
+		},
 		COMMAND_SETMEMBERLOGS_DESCRIPTION: 'Set the member logs channel.',
-		COMMAND_SETMEMBERLOGS_EXTENDED: builder.display('setMemberLogs', {
+		COMMAND_SETMEMBERLOGS_EXTENDED: {
 			extendedHelp: `This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: "Member Join" and
 					"Member Leave". If a muted user joins, it will send a special "Muted Member Join" event. All messages are in embeds so you will need to enable
 					the permission **${PERMS.EMBED_LINKS}** for Skyra. You also need to individually set the "events" you want to listen: "events.memberAdd" and
@@ -1254,9 +1229,9 @@ export default class extends Language {
 				]
 			],
 			examples: ['#member-logs', 'here']
-		}),
+		},
 		COMMAND_SETMESSAGELOGS_DESCRIPTION: 'Set the message logs channel.',
-		COMMAND_SETMESSAGELOGS_EXTENDED: builder.display('setMessageLogs', {
+		COMMAND_SETMESSAGELOGS_EXTENDED: {
 			extendedHelp: `This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: "Message Delete",
 					"Message Edit", and "Message Prune". All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. You
 					also need to individually set the "events" you want to listen: "events.messageDelete" and "events.messageEdit" via the
@@ -1270,9 +1245,9 @@ export default class extends Language {
 			reminder: `Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the
 				permission **${PERMS.VIEW_AUDIT_LOG}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.`,
 			examples: ['#message-logs', 'here']
-		}),
+		},
 		COMMAND_SETMODLOGS_DESCRIPTION: 'Set the mod logs channel.',
-		COMMAND_SETMODLOGS_EXTENDED: builder.display('setModLogs', {
+		COMMAND_SETMODLOGS_EXTENDED: {
 			extendedHelp: `This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with
 					"claimable" reasons and moderators. This channel is not a must and you can always retrieve specific modlogs with the "case" command. All
 					messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. For auto-detection, you need to individually
@@ -1286,9 +1261,9 @@ export default class extends Language {
 			reminder: `Due to Discord limitations, the auto-detection does not detect kicks. You need to use the "kick" command if you want to document them as
 				a formal moderation log case.`,
 			examples: ['#mod-logs', 'here']
-		}),
+		},
 		COMMAND_SETPREFIX_DESCRIPTION: "Set Skyra's prefix.",
-		COMMAND_SETPREFIX_EXTENDED: builder.display('setPrefix', {
+		COMMAND_SETPREFIX_EXTENDED: {
 			extendedHelp: `This command helps you setting up Skyra's prefix. A prefix is an affix that is added in front of the word, in this case, the message.
 					It allows bots to distinguish between a regular message and a command. By nature, the prefix between should be different to avoid conflicts. If
 					you forget Skyra's prefix, simply mention her with nothing else and she will tell you the current prefix. Alternatively, you can take advantage
@@ -1296,9 +1271,9 @@ export default class extends Language {
 			explainedUsage: [['prefix', `The prefix to set. Default one in Skyra is "${this.client.options.prefix}".`]],
 			reminder: 'Your prefix should only contain characters everyone can write and type.',
 			examples: ['&', '=']
-		}),
+		},
 		COMMAND_SETROLECHANNEL_DESCRIPTION: 'Set the role channel for role reactions.',
-		COMMAND_SETROLECHANNEL_EXTENDED: builder.display('setRoleChannel', {
+		COMMAND_SETROLECHANNEL_EXTENDED: {
 			extendedHelp: `This command sets up the role channel to lock the reactions to, it is a requirement to set up before setting up the **role message**,
 					and if none is given, the role reactions module will not run.`,
 			explainedUsage: [
@@ -1309,24 +1284,24 @@ export default class extends Language {
 			],
 			reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
 			examples: ['#roles', 'here']
-		}),
+		},
 		COMMAND_SETROLEMESSAGE_DESCRIPTION: 'Set the role message for role reactions.',
-		COMMAND_SETROLEMESSAGE_EXTENDED: builder.display('setRoleMessage', {
+		COMMAND_SETROLEMESSAGE_EXTENDED: {
 			extendedHelp: `This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first, and if none is given,
 					Skyra will listen to any reaction in the channel. Additionally, Skyra requires **${PERMS.READ_MESSAGE_HISTORY}** in order to fetch the message for
 					validation.`,
 			explainedUsage: [['message', 'An ID, they are 17-18 characters long and numeric.']],
 			reminder: 'You must execute this command in the role channel.',
 			examples: ['434096799847022598']
-		}),
+		},
 		COMMAND_SETSTARBOARDEMOJI_DESCRIPTION: 'Set the emoji reaction for starboard.',
-		COMMAND_SETSTARBOARDEMOJI_EXTENDED: builder.display('setStarboardEmoji', {
+		COMMAND_SETSTARBOARDEMOJI_EXTENDED: {
 			extendedHelp: `This command sets up the starboard emoji for the starboard, which is, by default, ⭐. Once this is changed, Skyra will ignore any star and
 					will count users who reacted to said emoji.`,
 			explainedUsage: [['emoji', 'The emoji to set.']],
 			reminder: 'Use this wisely, not everyone expects the starboard to listen to a custom emoji.',
 			examples: ['⭐']
-		}),
+		},
 
 		/**
 		 * #################
@@ -1341,19 +1316,19 @@ export default class extends Language {
 		 */
 
 		COMMAND_ROLEINFO_DESCRIPTION: 'Check the information for a role.',
-		COMMAND_ROLEINFO_EXTENDED: builder.display('roleinfo', {
+		COMMAND_ROLEINFO_EXTENDED: {
 			extendedHelp: `The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted
 					(displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said
 					role, and its permissions. It sends an embedded message with the color of the role.`,
 			explainedUsage: [['role', 'The role name, partial name, mention or id.']],
 			examples: ['Administrator', 'Moderator', '']
-		}),
+		},
 		COMMAND_GUILDINFO_DESCRIPTION: 'Check the information of the guild!.',
-		COMMAND_GUILDINFO_EXTENDED: builder.display('serverinfo', {
+		COMMAND_GUILDINFO_EXTENDED: {
 			extendedHelp: `The serverinfo command displays information for the guild the message got sent. It shows the amount of channels,
 					with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles,
 					region, creation date, verification level... between others.`
-		}),
+		},
 
 		/**
 		 * ###########################
@@ -1361,7 +1336,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_STICKYROLES_DESCRIPTION: 'Manage sticky roles for users.',
-		COMMAND_STICKYROLES_EXTENDED: builder.display('stickyRoles', {
+		COMMAND_STICKYROLES_EXTENDED: {
 			extendedHelp: `The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when
 				you leave, and are applied back as soon as they join.`,
 			explainedUsage: [
@@ -1371,7 +1346,7 @@ export default class extends Language {
 			],
 			examples: ['add Skyra Goddess', 'show Skyra', 'remove Skyra Goddess', 'reset Skyra'],
 			reminder: "The member's roles will not be modified by this command, you need to add or remove them."
-		}),
+		},
 
 		/**
 		 * #####################################
@@ -1379,7 +1354,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_MANAGEATTACHMENTS_DESCRIPTION: 'Manage attachment management in this guild!.',
-		COMMAND_MANAGEATTACHMENTS_EXTENDED: builder.display('manageAttachments', {
+		COMMAND_MANAGEATTACHMENTS_EXTENDED: {
 			extendedHelp: 'This command manages the attachment management for me in this guild!.',
 			examples: ['maximum 25', 'duration 1m', 'action mute', 'logs y', 'enable', 'disable'],
 			explainedUsage: [
@@ -1390,7 +1365,7 @@ export default class extends Language {
 				['enable', 'Enables the attachment filter.'],
 				['disable', 'Disables the attachment filter.']
 			]
-		}),
+		},
 
 		/**
 		 * ##################################
@@ -1398,51 +1373,45 @@ export default class extends Language {
 		 */
 
 		COMMAND_CAPITALSMODE_DESCRIPTION: "Manage this guild's flags for the caps filter.",
-		COMMAND_CAPITALSMODE_EXTENDED: builder.display(
-			'capitalsMode',
-			{
-				extendedHelp: `The capitalsMode command manages the behavior of the caps system.
+		COMMAND_CAPITALSMODE_EXTENDED: {
+			extendedHelp: `The capitalsMode command manages the behavior of the caps system.
 				The minimum amount of characters before filtering can be set with \`Skyra, settings set selfmod.capitals.minimum <number>\`.
 				The percentage of uppercase letters can be set with \`Skyra, settings set selfmod.capitals.maximum <number>\`.`,
-				explainedUsage: [
-					['Enable', 'Enable the sub-system.'],
-					['Disable', 'Disable the sub-system'],
-					['Action Alert', 'Toggle message alerts in the channel.'],
-					['Action Log', 'Toggle message logs in the moderation logs channel.'],
-					['Action Delete', 'Toggle message deletions.'],
-					['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
-					['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
-					[
-						'Threshold-Maximum',
-						'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'
-					],
-					[
-						'Threshold-Duration',
-						'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.'
-					]
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				[
+					'Threshold-Maximum',
+					'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'
 				],
-				reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
-				examples: [
-					'enable',
-					'disable',
-					'action alert',
-					'punishment ban',
-					'punishment mute',
-					'punishment-duration 1m',
-					'threshold-maximum 5',
-					'threshold-duration 30s'
-				]
-			},
-			true
-		),
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			],
+			multiline: true
+		},
 		COMMAND_FILTER_DESCRIPTION: "Manage this guild's word blacklist.",
-		COMMAND_FILTER_EXTENDED: builder.display('filter', {
+		COMMAND_FILTER_EXTENDED: {
 			extendedHelp: `The filter command manages the word blacklist for this server and must have a filter mode set up, check \`Skyra, help filterMode\`.
 					Skyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters
 					duplicated characters for enhanced filtering.`
-		}),
+		},
 		COMMAND_FILTERMODE_DESCRIPTION: "Manage this server's word filter modes.",
-		COMMAND_FILTERMODE_EXTENDED: builder.display('filterMode', {
+		COMMAND_FILTERMODE_EXTENDED: {
 			extendedHelp: `The filterMode command manages the behavior of the word filter system.
 				Run \`Skyra, help filter\` for how to add words.`,
 			explainedUsage: [
@@ -1470,9 +1439,9 @@ export default class extends Language {
 				'threshold-maximum 5',
 				'threshold-duration 30s'
 			]
-		}),
+		},
 		COMMAND_INVITEMODE_DESCRIPTION: 'Manage the behavior for the invite link filter.',
-		COMMAND_INVITEMODE_EXTENDED: builder.display('inviteMode', {
+		COMMAND_INVITEMODE_EXTENDED: {
 			extendedHelp: 'The inviteMode command manages the behavior of the word filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
@@ -1499,9 +1468,9 @@ export default class extends Language {
 				'threshold-maximum 5',
 				'threshold-duration 30s'
 			]
-		}),
+		},
 		COMMAND_LINKMODE_DESCRIPTION: 'Manage the behavior for the link filter.',
-		COMMAND_LINKMODE_EXTENDED: builder.display('linkMode', {
+		COMMAND_LINKMODE_EXTENDED: {
 			extendedHelp: 'The linkMode command manages the behavior of the link system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
@@ -1528,9 +1497,9 @@ export default class extends Language {
 				'threshold-maximum 5',
 				'threshold-duration 30s'
 			]
-		}),
+		},
 		COMMAND_MESSAGEMODE_DESCRIPTION: 'Manage the behavior for the message filter system.',
-		COMMAND_MESSAGEMODE_EXTENDED: builder.display('messageMode', {
+		COMMAND_MESSAGEMODE_EXTENDED: {
 			extendedHelp: 'The messageMode command manages the behavior of the message filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
@@ -1557,9 +1526,9 @@ export default class extends Language {
 				'threshold-maximum 5',
 				'threshold-duration 30s'
 			]
-		}),
+		},
 		COMMAND_NEWLINEMODE_DESCRIPTION: 'Manage the behavior for the new line filter system.',
-		COMMAND_NEWLINEMODE_EXTENDED: builder.display('newLineMode', {
+		COMMAND_NEWLINEMODE_EXTENDED: {
 			extendedHelp: `The newLineMode command manages the behavior of the new line filter system.
 				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.maximum <number>\``,
 			explainedUsage: [
@@ -1587,9 +1556,9 @@ export default class extends Language {
 				'threshold-maximum 5',
 				'threshold-duration 30s'
 			]
-		}),
+		},
 		COMMAND_REACTIONMODE_DESCRIPTION: 'Manage the behavior for the reaction filter system.',
-		COMMAND_REACTIONMODE_EXTENDED: builder.display('reactionMode', {
+		COMMAND_REACTIONMODE_EXTENDED: {
 			extendedHelp: 'The reactionMode command manages the behavior of the reaction filter system.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
@@ -1616,7 +1585,7 @@ export default class extends Language {
 				'threshold-maximum 5',
 				'threshold-duration 30s'
 			]
-		}),
+		},
 
 		/**
 		 * #############
@@ -1624,68 +1593,68 @@ export default class extends Language {
 		 */
 
 		COMMAND_CUDDLE_DESCRIPTION: 'Cuddle somebody!',
-		COMMAND_CUDDLE_EXTENDED: builder.display('cuddle', {
+		COMMAND_CUDDLE_EXTENDED: {
 			extendedHelp: `Do you know something that I envy from humans? The warm feeling when somebody cuddles you. It's so cute ❤! I can
 				imagine and draw a image of you cuddling somebody in the bed, I hope you like it!`,
 			explainedUsage: [['user', 'The user to cuddle with.']],
 			examples: ['Skyra']
-		}),
+		},
 		COMMAND_DELETTHIS_DESCRIPTION: '*Sees offensive post* DELETTHIS!',
-		COMMAND_DELETTHIS_EXTENDED: builder.display('deletthis', {
+		COMMAND_DELETTHIS_EXTENDED: {
 			extendedHelp: `I see it! I see the hammer directly from your hand going directly to the user you want! Unless... unless it's me! If
 				you try to tell me this, I'm going to take the MJOLNIR! Same if you do with my creator!`,
 			explainedUsage: [['user', 'The user that should start deleting his post.']],
 			examples: ['John Doe']
-		}),
+		},
 		COMMAND_F_DESCRIPTION: 'Press F to pay respects.',
-		COMMAND_F_EXTENDED: builder.display('f', {
+		COMMAND_F_EXTENDED: {
 			extendedHelp: `This command generates an image... to pay respects reacting with 🇫. This command also makes Skyra
 				react the image if she has permissions to react messages.`,
 			explainedUsage: [['user', 'The user to pray respects to.']],
 			examples: ['John Doe', 'Jake']
-		}),
+		},
 		COMMAND_GOODNIGHT_DESCRIPTION: 'Give somebody a nice Good Night!',
-		COMMAND_GOODNIGHT_EXTENDED: builder.display('goodnight', {
+		COMMAND_GOODNIGHT_EXTENDED: {
 			extendedHelp: "Let me draw you giving a goodnight kiss to the person who is going to sleep! Who doesn't like goodnight kisses?",
 			explainedUsage: [['user', 'The user to give the goodnight kiss.']],
 			examples: ['Jake', 'DefinitivelyNotSleeping']
-		}),
+		},
 		COMMAND_GOOFYTIME_DESCRIPTION: "It's Goofy time!",
-		COMMAND_GOOFYTIME_EXTENDED: builder.display('goofytime', {
+		COMMAND_GOOFYTIME_EXTENDED: {
 			extendedHelp: `IT'S GOOFY TIME! *Screams loudly in the background* NO, DAD! NO! This is a command based on the Goofy Time meme,
 					what else would it be?`,
 			explainedUsage: [['user', "The user who will say IT'S GOOFY TIME!"]],
 			examples: ['TotallyNotADaddy']
-		}),
+		},
 		COMMAND_HUG_DESCRIPTION: 'Hugs!',
-		COMMAND_HUG_EXTENDED: builder.display('hug', {
+		COMMAND_HUG_EXTENDED: {
 			extendedHelp: `What would be two people in the middle of the snow with coats and hugging each other? Wait! I get it!
 				Mention somebody you want to hug with, and I'll try my best to draw it in a canvas!`,
 			explainedUsage: [['user', 'The user to hug with.']],
 			examples: ['Bear']
-		}),
+		},
 		COMMAND_INEEDHEALING_DESCRIPTION: "*Genji's voice* I NEED HEALING!",
-		COMMAND_INEEDHEALING_EXTENDED: builder.display('ineedhealing', {
+		COMMAND_INEEDHEALING_EXTENDED: {
 			extendedHelp: `Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES! You know it,
 				it's a cool cyborg ninja that looks like a XBOX and is always yelling "I NEED HEALING" loudly during the entire match.
 				Well, don't expect so much, this command actually shows a medic with some tool in your chest.`,
 			explainedUsage: [['healer', 'The healer you need to heal you.']],
 			examples: ['Mercy']
-		}),
+		},
 		COMMAND_RANDREDDIT_DESCRIPTION: 'Retrieve a random Reddit post.',
-		COMMAND_RANDREDDIT_EXTENDED: builder.display('randreddit', {
+		COMMAND_RANDREDDIT_EXTENDED: {
 			extendedHelp: 'This is actually something like a Russian Roulette, you can get a good meme, but you can also get a terrible meme.',
 			explainedUsage: [['reddit', 'The reddit to look at.']],
 			examples: ['discordapp']
-		}),
+		},
 		COMMAND_REDDITUSER_DESCRIPTION: 'Retrieve statistics for a Reddit user.',
-		COMMAND_REDDITUSER_EXTENDED: builder.display('reddituser', {
+		COMMAND_REDDITUSER_EXTENDED: {
 			extendedHelp: 'Gets statistics of any given Reddit user',
 			explainedUsage: [['user', 'The reddit user to look at.']],
 			examples: ['GloriousGe0rge']
-		}),
+		},
 		COMMAND_SHIP_DESCRIPTION: 'Ships 2 members',
-		COMMAND_SHIP_EXTENDED: builder.display('ship', {
+		COMMAND_SHIP_EXTENDED: {
 			extendedHelp: `
 				This commands generates a ship name between two users and creates more love in the world.
 				Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.
@@ -1696,69 +1665,69 @@ export default class extends Language {
 			],
 			examples: ['romeo juliet'],
 			reminder: 'If I cannot find either given user then I will pick someone randomly.'
-		}),
+		},
 		COMMAND_SHIP_DATA: {
 			TITLE: (romeoUsername, julietUsername) => `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,
 			DESCRIPTION: (shipName) => `I call it... ${shipName}`
 		},
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
-		COMMAND_CHASE_EXTENDED: builder.display('chase', {
+		COMMAND_CHASE_EXTENDED: {
 			extendedHelp: 'Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!',
 			explainedUsage: [['pinger', 'The user who you want to chase.']],
 			examples: ['IAmInnocent']
-		}),
+		},
 		COMMAND_SHINDEIRU_DESCRIPTION: 'Omae wa mou shindeiru.',
-		COMMAND_SHINDEIRU_EXTENDED: builder.display('shindeiru', {
+		COMMAND_SHINDEIRU_EXTENDED: {
 			extendedHelp: `"You are already dead" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga
 				and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words,
 				which makes the opponent reply with "nani?" (what?).`,
 			explainedUsage: [['user', "The person you're telling that phrase to."]],
 			examples: ['Jack']
-		}),
+		},
 		COMMAND_PEEPOLOVE_DESCRIPTION: "Generates a peepoLove image from a provided image or users' avatar.",
-		COMMAND_PEEPOLOVE_EXTENDED: builder.display('peepolove', {
+		COMMAND_PEEPOLOVE_EXTENDED: {
 			extendedHelp: `Allows you to generate a peepoLove image from an image or avatar. You can upload an image, or
 				Skyra will automatically pick an image in the last 20 messages if there is one. You can tag a user, or say their username, to generate one with their avatar.`,
 			explainedUsage: [['image', 'The image that peepo should hug.']],
 			examples: ['Kyra']
-		}),
+		},
 		COMMAND_SLAP_DESCRIPTION: 'Slap another user using the Batman & Robin Meme.',
-		COMMAND_SLAP_EXTENDED: builder.display('slap', {
+		COMMAND_SLAP_EXTENDED: {
 			extendedHelp: 'The hell are you saying? *Slaps*. This meme is based on a comic from Batman and Robin.',
 			explainedUsage: [['user', 'The user you wish to slap.']],
 			examples: ['Jake'],
 			reminder: "You try to slap me and I'll slap you instead."
-		}),
+		},
 		COMMAND_SNIPE_DESCRIPTION: 'Retrieve the last deleted message from a channel',
-		COMMAND_SNIPE_EXTENDED: builder.display('snipe', {
+		COMMAND_SNIPE_EXTENDED: {
 			extendedHelp: `This just sends the last deleted message from this channel, somebody is misbehaving? This will
 				catch them.`
-		}),
+		},
 		COMMAND_THESEARCH_DESCRIPTION: 'Are we the only one in the universe, this man on earth probably knows.',
-		COMMAND_THESEARCH_EXTENDED: builder.display('thesearch', {
+		COMMAND_THESEARCH_EXTENDED: {
 			extendedHelp: 'One man on Earth probably knows if there is intelligent life, ask and you shall receive an answer.',
 			explainedUsage: [['answer', 'The sentence that will reveal the truth.']],
 			examples: ['Your waifu is not real.']
-		}),
+		},
 		COMMAND_TRIGGERED_DESCRIPTION: 'I am getting TRIGGERED!',
-		COMMAND_TRIGGERED_EXTENDED: builder.display('triggered', {
+		COMMAND_TRIGGERED_EXTENDED: {
 			extendedHelp: `What? My commands are not enough userfriendly?! (╯°□°）╯︵ ┻━┻. This command generates a GIF image
 					your avatar wiggling fast, with a TRIGGERED footer, probably going faster than I thought, I don't know.`,
 			explainedUsage: [['user', 'The user that is triggered.']],
 			examples: ['kyra']
-		}),
+		},
 		COMMAND_UPVOTE_DESCRIPTION: 'Get a link to upvote Skyra in **Bots For Discord**',
-		COMMAND_UPVOTE_EXTENDED: builder.display('upvote', {
+		COMMAND_UPVOTE_EXTENDED: {
 			extendedHelp: `Bots For Discord is a website where you can find amazing bots for your website. If you really love me,
 					you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!`
-		}),
+		},
 		COMMAND_VAPORWAVE_DESCRIPTION: 'Vapowave characters!',
-		COMMAND_VAPORWAVE_EXTENDED: builder.display('vaporwave', {
+		COMMAND_VAPORWAVE_EXTENDED: {
 			extendedHelp: `Well, what can I tell you? This command turns your messages into unicode monospaced characters. That
 					is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...`,
 			explainedUsage: [['phrase', 'The phrase to convert']],
 			examples: ['A E S T H E T I C']
-		}),
+		},
 
 		/**
 		 * ##############################
@@ -1766,37 +1735,37 @@ export default class extends Language {
 		 */
 
 		COMMAND_HISTORY_DESCRIPTION: 'Display the count of moderation cases from this guild or from a user.',
-		COMMAND_HISTORY_EXTENDED: builder.display('history', {
+		COMMAND_HISTORY_EXTENDED: {
 			extendedHelp: `This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been
 					appealed.`,
 			examples: ['', '@Pete']
-		}),
+		},
 		COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) =>
 			`This user has ${warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${kicks} ${
 				kicks === 1 ? 'kick' : 'kicks'
 			}, ${bans} ${bans === 1 ? 'ban' : 'bans'}.`,
 		COMMAND_MODERATIONS_DESCRIPTION: 'List all running moderation logs from this guild.',
-		COMMAND_MODERATIONS_EXTENDED: builder.display('moderations', {
+		COMMAND_MODERATIONS_EXTENDED: {
 			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
 					reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}** to execute correctly.`,
 			examples: ['', '@Pete', 'mutes @Pete', 'warnings']
-		}),
+		},
 		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
 		COMMAND_MODERATIONS_AMOUNT: (amount) => (amount === 1 ? 'There is 1 entry.' : `There are ${amount} entries.`),
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
-		COMMAND_MUTES_EXTENDED: builder.display('mutes', {
+		COMMAND_MUTES_EXTENDED: {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
 					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
 					to execute correctly.`,
 			examples: ['', '@Pete']
-		}),
+		},
 		COMMAND_WARNINGS_DESCRIPTION: 'List all warnings from this guild or from a user.',
-		COMMAND_WARNINGS_EXTENDED: builder.display('warnings', {
+		COMMAND_WARNINGS_EXTENDED: {
 			extendedHelp: `This command shows either all warnings filed in this guild, or all warnings filed in this guild
 					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
 					to execute correctly.`,
 			examples: ['', '@Pete']
-		}),
+		},
 
 		/**
 		 * #############################
@@ -1804,7 +1773,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_ARCHIVE_DESCRIPTION: '[BETA] Temporarily save all messages from the current channel.',
-		COMMAND_ARCHIVE_EXTENDED: builder.display('archive', {
+		COMMAND_ARCHIVE_EXTENDED: {
 			extendedHelp: `The archive command fetches multiple messages from a channel with an optional filter. How does
 					this command work? First, I fetch all the messages, apply the filter, and then it's when the magic happens,
 					I make a "message gist", to respect End-User Data policies, all of this is encrypted and the gist requires
@@ -1822,18 +1791,18 @@ export default class extends Language {
 			],
 			examples: ['50 me', '75 @kyra', '20 bots'],
 			reminder: 'Message gists last 30 days, after that, they are deleted, you also need the encryption key.'
-		}),
+		},
 		COMMAND_CASE_DESCRIPTION: 'Get the information from a case given its index.',
-		COMMAND_CASE_EXTENDED: builder.display('case', {
+		COMMAND_CASE_EXTENDED: {
 			extendedHelp: ''
-		}),
+		},
 		COMMAND_SLOWMODE_DESCRIPTION: "Set the channel's slowmode value in seconds.",
-		COMMAND_SLOWMODE_EXTENDED: builder.display('slowmode', {
+		COMMAND_SLOWMODE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per
 					user to any value between 0 and 120 seconds.`,
 			examples: ['0', 'reset', '4'],
 			reminder: "To reset a channel's ratelimit per user, you can use either 0 or 'reset'."
-		}),
+		},
 
 		/**
 		 * ###################
@@ -1841,62 +1810,62 @@ export default class extends Language {
 		 */
 
 		COMMAND_BAN_DESCRIPTION: 'Hit somebody with the ban hammer.',
-		COMMAND_BAN_EXTENDED: builder.display('ban', {
+		COMMAND_BAN_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
 					can be banned by me. No, the guild's owner cannot be banned. This action can be optionally timed to create
 					a temporary ban.`,
 			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
-		}),
+		},
 		COMMAND_DEHOIST_DESCRIPTION: 'Shoot everyone with the dehoist-inator 3000',
-		COMMAND_DEHOIST_EXTENDED: builder.display('dehoist', {
+		COMMAND_DEHOIST_EXTENDED: {
 			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
 			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
 			with a special character that drags them to the bottom of the list.`,
 			reminder: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
 			can be dehoisted.`
-		}),
+		},
 		COMMAND_KICK_DESCRIPTION: 'Hit somebody with the 👢.',
-		COMMAND_KICK_EXTENDED: builder.display('kick', {
+		COMMAND_KICK_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.KICK_MEMBERS}**, and only members with lower role hierarchy position
 					can be kicked by me. No, the guild's owner cannot be kicked.`,
 			examples: ['@Sarah', '@Sarah Spamming general chat.']
-		}),
+		},
 		COMMAND_LOCKDOWN_DESCRIPTION: 'Close the gates for this channel!',
-		COMMAND_LOCKDOWN_EXTENDED: builder.display('lockdown', {
+		COMMAND_LOCKDOWN_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** in order to be able to manage the permissions for
 					a channel. This command removes the permission **${PERMS.SEND_MESSAGES}** to the \`@everyone\` role so nobody but
 					the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can
 					send messages. Optionally, you can pass time as second argument.`,
 			examples: ['', '#general', '#general 5m']
-		}),
+		},
 		COMMAND_MUTE_DESCRIPTION: 'Mute a user in all text and voice channels.',
-		COMMAND_MUTE_EXTENDED: builder.display('mute', {
+		COMMAND_MUTE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be muted. This action can be optionally timed to create
 					a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.
 					The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Alphonse', '@Alphonse Spamming all channels', '@Alphonse 24h Spamming all channels']
-		}),
+		},
 		COMMAND_SETNICKNAME_DESCRIPTION: 'Change the nickname of a user.',
-		COMMAND_SETNICKNAME_EXTENDED: builder.display('setnickname', {
+		COMMAND_SETNICKNAME_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
 						can be managed by me. No, the guild's owner nickname cannot be changed.`,
 			examples: ['@Pete peeehteeerrr', '@ꓑ𝗲੮ẻ Pete Unmentionable name']
-		}),
+		},
 		COMMAND_ADDROLE_DESCRIPTION: 'Adds a role to a user.',
-		COMMAND_ADDROLE_EXTENDED: builder.display('addrole', {
+		COMMAND_ADDROLE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 						can be managed by me. No, the guild's owner roles cannot be changed.`,
 			examples: ['@John member', '@John member Make John a member']
-		}),
+		},
 		COMMAND_REMOVEROLE_DESCRIPTION: '',
-		COMMAND_REMOVEROLE_EXTENDED: builder.display('', {
+		COMMAND_REMOVEROLE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 						can be managed by me. No, the guild's owner roles cannot be changed.`,
 			examples: ['@Paula member', '@Paula member Remove member permissions from Paula']
-		}),
+		},
 		COMMAND_PRUNE_DESCRIPTION: 'Prunes a certain amount of messages w/o filter.',
-		COMMAND_PRUNE_EXTENDED: builder.display('prune', {
+		COMMAND_PRUNE_EXTENDED: {
 			extendedHelp: `This command deletes the given amount of messages given a filter within the last 100 messages sent
 					in the channel the command has been run. Optionally, you can add \`--silent\` to tell Skyra not to send a
 					response message.`,
@@ -1913,9 +1882,9 @@ export default class extends Language {
 			],
 			examples: ['50 me', '75 @kyra', '20 bots', '60 humans before 629992398700675082'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
-		}),
+		},
 		COMMAND_REASON_DESCRIPTION: 'Edit the reason field from a moderation log case.',
-		COMMAND_REASON_EXTENDED: builder.display('reason', {
+		COMMAND_REASON_EXTENDED: {
 			extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.
 						If you want to modify multiple cases at once you provide a range.
 						For example \`1..3\` for the \`<range>\` will edit cases 1, 2, and 3.
@@ -1923,25 +1892,25 @@ export default class extends Language {
 						\`1,3..6\` will result in cases 1, 3, 4, 5, and 6
 						\`1,2,3\` will result in cases 1, 2, and 3`,
 			examples: ['420 Spamming all channels', '419..421 Bad memes', '1..3,4,7..9 Posting NSFW', 'latest Woops, I did a mistake!']
-		}),
+		},
 		COMMAND_RESTRICTATTACHMENT_DESCRIPTION: 'Restrict a user from sending attachments in all channels.',
-		COMMAND_RESTRICTATTACHMENT_EXTENDED: builder.display('restrictAttachment', {
+		COMMAND_RESTRICTATTACHMENT_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Sending weird images', '@Pete 24h Sending NSFW images']
-		}),
+		},
 		COMMAND_RESTRICTEMBED_DESCRIPTION: 'Restrict a user from attaching embeds in all channels.',
-		COMMAND_RESTRICTEMBED_EXTENDED: builder.display('restrictEmbed', {
+		COMMAND_RESTRICTEMBED_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Sending weird links', '@Pete 24h Posted a spam link']
-		}),
+		},
 		COMMAND_RESTRICTEMOJI_DESCRIPTION: 'Restrict a user from using external emojis in all channels.',
-		COMMAND_RESTRICTEMOJI_EXTENDED: builder.display('restrictEmoji', {
+		COMMAND_RESTRICTEMOJI_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
@@ -1949,142 +1918,142 @@ export default class extends Language {
 			examples: ['@Pete', '@Pete Spamming external emojis', '@Pete 24h Posted cringe'],
 			reminder: `This will only prevent the usage of external emojis and so will have no effect for non-nitro users,
 			your own server's emojis and regular build in twemojis can still be used by members with this role.`
-		}),
+		},
 		COMMAND_RESTRICTREACTION_DESCRIPTION: 'Restrict a user from reacting to messages in all channels.',
-		COMMAND_RESTRICTREACTION_EXTENDED: builder.display('restrictReaction', {
+		COMMAND_RESTRICTREACTION_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Spamming reactions', '@Pete 24h Posting weird reactions']
-		}),
+		},
 		COMMAND_RESTRICTVOICE_DESCRIPTION: 'Restrict a user from joining any voice channel.',
-		COMMAND_RESTRICTVOICE_EXTENDED: builder.display('restrictVoice', {
+		COMMAND_RESTRICTVOICE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
 			examples: ['@Pete', '@Pete Earraping in general voice channels', '@Pete 24h Making weird noises']
-		}),
+		},
 		COMMAND_SOFTBAN_DESCRIPTION: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
-		COMMAND_SOFTBAN_EXTENDED: builder.display('softban', {
+		COMMAND_SOFTBAN_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
 					can be banned by me. No, the guild's owner cannot be banned. The ban feature from Discord has a feature that
 					allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being
 					a number between 0 (no days) and 7. The user gets unbanned right after the ban, so it is like a kick, but
 					that can prune many many messages.`,
 			examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!']
-		}),
+		},
 		COMMAND_TOGGLEMODERATIONDM_DESCRIPTION: 'Toggle moderation DMs.',
-		COMMAND_TOGGLEMODERATIONDM_EXTENDED: builder.display('toggleModerationDM', {
+		COMMAND_TOGGLEMODERATIONDM_EXTENDED: {
 			extendedHelp: `This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation
 					action (automatic or manual) will DM you, but you can disable them with this command.`,
 			examples: ['']
-		}),
+		},
 		COMMAND_UNBAN_DESCRIPTION: 'Unban somebody from this guild!.',
-		COMMAND_UNBAN_EXTENDED: builder.display('unban', {
+		COMMAND_UNBAN_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
 					cleans them up, and allows the pass to this guild's gates.`,
 			examples: ['@Pete', '@Pete Turns out he was not the one who spammed all channels ¯\\_(ツ)_/¯']
-		}),
+		},
 		COMMAND_UNMUTE_DESCRIPTION: 'Remove the scotch tape from a user.',
-		COMMAND_UNMUTE_EXTENDED: builder.display('unmute', {
+		COMMAND_UNMUTE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the muted people's list,
 					and gives the old roles back if the user had them.`,
 			examples: ['@Pete', '@Pete (Insert random joke here).']
-		}),
+		},
 		COMMAND_UNRESTRICTATTACHMENT_DESCRIPTION: 'Remove the attachment restriction from one or more users.',
-		COMMAND_UNRESTRICTATTACHMENT_EXTENDED: builder.display('unRestrictAttachment', {
+		COMMAND_UNRESTRICTATTACHMENT_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_UNRESTRICTEMBED_DESCRIPTION: 'Remove the embed restriction from one or more users.',
-		COMMAND_UNRESTRICTEMBED_EXTENDED: builder.display('unRestrictEmbed', {
+		COMMAND_UNRESTRICTEMBED_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_UNRESTRICTEMOJI_DESCRIPTION: 'Remove the external emoji restriction from one or more users.',
-		COMMAND_UNRESTRICTEMOJI_EXTENDED: builder.display('unRestrictEmoji', {
+		COMMAND_UNRESTRICTEMOJI_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_UNRESTRICTREACTION_DESCRIPTION: 'Remove the reaction restriction from one or more users.',
-		COMMAND_UNRESTRICTREACTION_EXTENDED: builder.display('unRestrictReaction', {
+		COMMAND_UNRESTRICTREACTION_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_UNRESTRICTVOICE_DESCRIPTION: 'Remove the voice restriction from one or more users.',
-		COMMAND_UNRESTRICTVOICE_EXTENDED: builder.display('unRestrictVoice', {
+		COMMAND_UNRESTRICTVOICE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_UNWARN_DESCRIPTION: 'Appeal a warning moderation log case.',
-		COMMAND_UNWARN_EXTENDED: builder.display('unwarn', {
+		COMMAND_UNWARN_EXTENDED: {
 			extendedHelp: `This command appeals a warning, it requires no permissions, you only give me the moderation log
 					case to appeal and the reason.`,
 			examples: ['0 Whoops, wrong dude.', '42 Turns out this was the definition of life.']
-		}),
+		},
 		COMMAND_VMUTE_DESCRIPTION: "Throw somebody's microphone out the window.",
-		COMMAND_VMUTE_EXTENDED: builder.display('vmute', {
+		COMMAND_VMUTE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
 					can be silenced by me. No, the guild's owner cannot be silenced. This action can be optionally timed to create
 					a temporary voice mute.`,
 			examples: ['@Pete', '@Pete Singing too loud', '@Pete Literally sang hear rape, for 24 hours.']
-		}),
+		},
 		COMMAND_VOICEKICK_DESCRIPTION: 'Hit somebody with the 👢 for singing so bad and loud.',
-		COMMAND_VOICEKICK_EXTENDED: builder.display('voicekick', {
+		COMMAND_VOICEKICK_EXTENDED: {
 			extendedHelp: `This command requires the permissions **${PERMS.MANAGE_CHANNELS}** to create a temporary (hidden)
 					voice channel, and **${PERMS.MOVE_MEMBERS}** to move the user to the temporary channel. After this, the channel
 					is quickly deleted, making the user leave the voice channel. For scared moderators, this command has almost no
 					impact in the average user, as the channel is created in a way only me and the selected user can see and join,
 					then quickly deleted.`,
 			examples: ['@Pete', '@Pete Spamming all channels']
-		}),
+		},
 		COMMAND_VUNMUTE_DESCRIPTION: "Get somebody's microphone back so they can talk.",
-		COMMAND_VUNMUTE_EXTENDED: builder.display('vunmute', {
+		COMMAND_VUNMUTE_EXTENDED: {
 			extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
 					can be un-silenced by me. No, the guild's owner cannot be un-silenced.`,
 			examples: ['@Pete', '@Pete Appealed his times signing hear rape.']
-		}),
+		},
 		COMMAND_WARN_DESCRIPTION: 'File a warning to somebody.',
-		COMMAND_WARN_EXTENDED: builder.display('warn', {
+		COMMAND_WARN_EXTENDED: {
 			extendedHelp: `This command files a warning to a user. This kind of warning is meant to be **formal warnings**, as
 					they will be shown in the 'warnings' command. It is a good practise to do an informal warning before using this
 					command.`,
 			examples: ['@Pete Attempted to mention everyone.']
-		}),
+		},
 
 		/**
 		 * ##################
 		 * POKÉMON COMMANDS
 		 */
 		COMMAND_ABILITY_DESCRIPTION: 'Gets data for any given Pokémon ability using my Pokémon dataset.',
-		COMMAND_ABILITY_EXTENDED: builder.display('ability', {
+		COMMAND_ABILITY_EXTENDED: {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
 			explainedUsage: [['ability', 'The ability for which you want to find data']],
 			examples: ['multiscale', 'pressure']
-		}),
+		},
 		COMMAND_ABILITY_EMBED_DATA: {
 			ABILITY: 'Ability',
 			EXTERNAL_RESOURCES: 'External resources'
 		},
 		COMMAND_ABILITY_QUERY_FAIL: (ability) => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
 		COMMAND_FLAVORS_DESCRIPTION: 'Gets the dex entries across various games for a Pokémon.',
-		COMMAND_FLAVORS_EXTENDED: builder.display('flavors', {
+		COMMAND_FLAVORS_EXTENDED: {
 			extendedHelp: `
 				Uses a fuzzy search to also match against near-matches.
 				You can provide a flag of \`--shiny\` to get the shiny sprite.
 			`,
 			explainedUsage: [['pokemon', 'The Pokémon for which you want to get flavour texts']],
 			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
-		}),
+		},
 		COMMAND_FLAVORS_QUERY_FAIL: (pokemon) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_ITEM_DESCRIPTION: 'Gets data for any given Pokémon item using my Pokémon dataset.',
-		COMMAND_ITEM_EXTENDED: builder.display('item', {
+		COMMAND_ITEM_EXTENDED: {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
 			explainedUsage: [['item', 'The item for which you want to find data']],
 			examples: ['life orb', 'choice specs']
-		}),
+		},
 		COMMAND_ITEM_EMEBED_DATA: {
 			ITEM: 'Item',
 			GENERATION_INTRODUCED: 'Generation introduced',
@@ -2094,7 +2063,7 @@ export default class extends Language {
 		},
 		COMMAND_ITEM_QUERY_FAIL: (item) => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
 		COMMAND_LEARN_DESCRIPTION: 'Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.',
-		COMMAND_LEARN_EXTENDED: builder.display('learn', {
+		COMMAND_LEARN_EXTENDED: {
 			extendedHelp: `
 				Uses a fuzzy search to also match against near-matches.
 				Moves split on every \`, \` (comma space) and you can provide
@@ -2107,7 +2076,7 @@ export default class extends Language {
 				['move', 'The move(s) you want to check for']
 			],
 			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
-		}),
+		},
 		COMMAND_LEARN_METHOD_TYPES: {
 			levelUpMoves: (level) => `by level up at level ${level}`,
 			eventMoves: () => 'through an event',
@@ -2126,7 +2095,7 @@ export default class extends Language {
 		COMMAND_LEARN_CANNOT_LEARN: (pokemon, moves) => `Looks like ${toTitleCase(pokemon)} cannot learn ${this.list(moves, 'or')}`,
 		COMMAND_LEARN_TITLE: (pokemon, generation) => `Learnset data for ${toTitleCase(pokemon)} in generation ${generation}`,
 		COMMAND_MOVE_DESCRIPTION: 'Gets data for any given Pokémon move using my Pokémon dataset',
-		COMMAND_MOVE_EXTENDED: builder.display('move', {
+		COMMAND_MOVE_EXTENDED: {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
 			explainedUsage: [['move', 'The move for which you want to find data']],
 			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova'],
@@ -2134,7 +2103,7 @@ export default class extends Language {
 				Z-Move power may be shown for Generation 8 moves because it is calculated with a conversion table.
 				If Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands
 				Z-Moves are **NOT** in Generation 8.`
-		}),
+		},
 		COMMAND_MOVE_EMBED_DATA: {
 			MOVE: 'Move',
 			TYPE: 'Type',
@@ -2156,7 +2125,7 @@ export default class extends Language {
 		},
 		COMMAND_MOVE_QUERY_FAIL: (move: string) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Gets data for any given Pokémon using my Pokémon dataset.',
-		COMMAND_POKEDEX_EXTENDED: builder.display('pokedex', {
+		COMMAND_POKEDEX_EXTENDED: {
 			extendedHelp: `
 				Uses a fuzzy search to also match against near-matches.
 				You can provide a flag of \`--shiny\` to get the shiny sprite.
@@ -2165,7 +2134,7 @@ export default class extends Language {
 			examples: ['dragonite', 'pikachu', 'pikachu --shiny'],
 			reminder:
 				'If there are any "Other forme(s)" on the optional fourth page, those can be requested as well. Cosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex.'
-		}),
+		},
 		COMMAND_POKEDEX_EMBED_DATA: {
 			TYPES: 'Type(s)',
 			ABILITIES: 'Abilities',
@@ -2186,11 +2155,11 @@ export default class extends Language {
 		},
 		COMMAND_POKEDEX_QUERY_FAIL: (pokemon) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',
-		COMMAND_TYPE_EXTENDED: builder.display('type', {
+		COMMAND_TYPE_EXTENDED: {
 			extendedHelp: 'Types have to be exact matches to pokemon types (upper/lowercase can be ignored)',
 			explainedUsage: [['type', 'The type(s) to look up']],
 			examples: ['dragon', 'fire flying']
-		}),
+		},
 		COMMAND_TYPE_EMBED_DATA: {
 			OFFENSIVE: 'Offensive',
 			DEFENSIVE: 'Defensive',
@@ -2221,7 +2190,7 @@ export default class extends Language {
 		 */
 
 		COMMAND_SOCIAL_DESCRIPTION: "Configure this guild's member points.",
-		COMMAND_SOCIAL_EXTENDED: builder.display('social', {
+		COMMAND_SOCIAL_EXTENDED: {
 			extendedHelp: "This command allows for updating other members' points.",
 			explainedUsage: [
 				['set <user> <amount>', 'Sets an amount of points to the user.'],
@@ -2230,9 +2199,9 @@ export default class extends Language {
 				['reset <user>', 'Resets all pointss from the user.']
 			],
 			examples: ['set @kyra 40000', 'add @kyra 2400', 'remove @kyra 3000', 'reset @kyra']
-		}),
+		},
 		COMMAND_BANNER_DESCRIPTION: 'Configure the banner for your profile.',
-		COMMAND_BANNER_EXTENDED: builder.display('banner', {
+		COMMAND_BANNER_EXTENDED: {
 			extendedHelp: 'Banners are vertical in Skyra, they decorate your profile card.',
 			explainedUsage: [
 				['list', '(Default) Lists all available banners.'],
@@ -2241,15 +2210,15 @@ export default class extends Language {
 				['set <bannerID>', 'Set your displayed banner, must be an ID.']
 			],
 			examples: ['list', 'buy 0w1p06', 'set 0w1p06', 'reset']
-		}),
+		},
 		COMMAND_TOGGLEDARKMODE_DESCRIPTION: 'Toggle between light and dark templates for your profile and rank cards.',
-		COMMAND_TOGGLEDARKMODE_EXTENDED: builder.display('toggleDarkMode', {
+		COMMAND_TOGGLEDARKMODE_EXTENDED: {
 			extendedHelp: 'This command lets you toggle the template used to generate your profile.',
 			examples: ['']
-		}),
+		},
 
 		COMMAND_AUTOROLE_DESCRIPTION: '(ADM) List or configure the autoroles for a guild.',
-		COMMAND_AUTOROLE_EXTENDED: builder.display('autorole', {
+		COMMAND_AUTOROLE_EXTENDED: {
 			extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
 					amount of (local) points, an administrator must configure them through a setting command.
 					Note that if the role name has spaces in the name you need to put \`'quotes'\` around the name!`,
@@ -2261,65 +2230,65 @@ export default class extends Language {
 			],
 			reminder: 'The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.',
 			examples: ['list', "add 'Trusted Member' 20000", "update 'Trusted Member' 15000", "remove 'Trusted Member'"]
-		}),
+		},
 
 		COMMAND_BALANCE_DESCRIPTION: 'Check your current balance.',
-		COMMAND_BALANCE_EXTENDED: builder.display('balance', {
+		COMMAND_BALANCE_EXTENDED: {
 			extendedHelp: `The balance command retrieves your amount of ${SHINY}.`
-		}),
+		},
 		COMMAND_DAILY_DESCRIPTION: `Get your semi-daily ${SHINY}'s.`,
-		COMMAND_DAILY_EXTENDED: builder.display('daily', {
+		COMMAND_DAILY_EXTENDED: {
 			extendedHelp: 'Shiiiiny!',
 			reminder: [
 				'Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.',
 				'You can claim dailies once every 12 hours.'
 			].join('\n')
-		}),
+		},
 		COMMAND_LEADERBOARD_DESCRIPTION: 'Check the leaderboards.',
-		COMMAND_LEADERBOARD_EXTENDED: builder.display('leaderboard', {
+		COMMAND_LEADERBOARD_EXTENDED: {
 			extendedHelp: `The leaderboard command shows a list of users sorted by their local or global amount of points,
 				by default, when using no arguments, it will show the local leaderboard. The leaderboards refresh after 10
 					minutes.`,
 			reminder: '"Local" leaderboards refer to the guild\'s top list. "Global" refers to all scores from all guilds.'
-		}),
+		},
 		COMMAND_LEVEL_DESCRIPTION: 'Check your global level.',
-		COMMAND_LEVEL_EXTENDED: builder.display('level', {
+		COMMAND_LEVEL_EXTENDED: {
 			extendedHelp: 'How much until the next level?',
 			explainedUsage: [['user', "(Optional) The user's profile to show. Defaults to the message's author!."]]
-		}),
+		},
 		COMMAND_DIVORCE_DESCRIPTION: 'Break up with your couple!',
-		COMMAND_DIVORCE_EXTENDED: builder.display('divorce', {
+		COMMAND_DIVORCE_EXTENDED: {
 			extendedHelp: `Sniff... This command is used to break up with your couple, hopefully in this virtual world, you are
 					allowed to marry the user again.`
-		}),
+		},
 		COMMAND_MARRY_DESCRIPTION: 'Marry somebody!',
-		COMMAND_MARRY_EXTENDED: builder.display('marry', {
+		COMMAND_MARRY_EXTENDED: {
 			extendedHelp: 'Marry your waifu!',
 			explainedUsage: [['user', '(Optional) The user to marry with. If not given, the command will tell you who are you married with.']],
 			examples: ['', '@love']
-		}),
+		},
 		COMMAND_MYLEVEL_DESCRIPTION: 'Check your local level.',
-		COMMAND_MYLEVEL_EXTENDED: builder.display('mylevel', {
+		COMMAND_MYLEVEL_EXTENDED: {
 			extendedHelp: 'How much until next auto role? How many points do I have in this guild?',
 			explainedUsage: [['user', "(Optional) The user's profile to show. Defaults to the message's author!."]]
-		}),
+		},
 		COMMAND_PAY_DESCRIPTION: `Pay somebody with your ${SHINY}'s.`,
-		COMMAND_PAY_EXTENDED: builder.display('pay', {
+		COMMAND_PAY_EXTENDED: {
 			extendedHelp: 'Businessmen! Today is payday!',
 			explainedUsage: [
 				['money', `Amount of ${SHINY} to pay, you must have the amount you are going to pay.`],
 				['user', 'The targeted user to pay. (Must be mention/id)']
 			],
 			examples: ['200 @kyra']
-		}),
+		},
 		COMMAND_PROFILE_DESCRIPTION: 'Check your user profile.',
-		COMMAND_PROFILE_EXTENDED: builder.display('profile', {
+		COMMAND_PROFILE_EXTENDED: {
 			extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
 				Additionally, you are able to customize your colours with the 'setColor' command.`,
 			explainedUsage: [['user', "(Optional) The user's profile to show. Defaults to the message's author!."]]
-		}),
+		},
 		COMMAND_REMINDME_DESCRIPTION: 'Manage your reminders.',
-		COMMAND_REMINDME_EXTENDED: builder.display('remindme', {
+		COMMAND_REMINDME_EXTENDED: {
 			extendedHelp: 'This command allows you to set, delete and list reminders.',
 			explainedUsage: [
 				['action', 'The action, one of "list", "show", "delete", or "create"/"me". Defaults to "list".'],
@@ -2327,9 +2296,9 @@ export default class extends Language {
 				['description', '(Optional) Dependent of action, this is only read when creating a new reminder.']
 			],
 			examples: ['me 6h to fix this command.', 'list', 'show jedbcuywb', 'delete jedbcuywb']
-		}),
+		},
 		COMMAND_REPUTATION_DESCRIPTION: 'Give somebody a reputation point.',
-		COMMAND_REPUTATION_EXTENDED: builder.display('reputation', {
+		COMMAND_REPUTATION_EXTENDED: {
 			extendedHelp: `This guy is so helpful... I'll give him a reputation point! Additionally, you can check how many
 					reputation points a user has by writing 'check' before the mention.`,
 			explainedUsage: [
@@ -2338,9 +2307,9 @@ export default class extends Language {
 			],
 			reminder: 'You can give a reputation point once every 24 hours.',
 			examples: ['check @kyra', 'check', '@kyra', 'check "User With Spaces"', '"User With Spaces"']
-		}),
+		},
 		COMMAND_SETCOLOR_DESCRIPTION: "Change your user profile's color.",
-		COMMAND_SETCOLOR_EXTENDED: builder.display('setColor', {
+		COMMAND_SETCOLOR_EXTENDED: {
 			extendedHelp: 'The setColor command sets a color for your profile.',
 			explainedUsage: [['color', 'A color resolvable.']],
 			possibleFormats: [
@@ -2349,7 +2318,7 @@ export default class extends Language {
 				['HSL', 'hsl(350, 100, 100)'],
 				['B10', '14671839']
 			]
-		}),
+		},
 
 		/**
 		 * ##################
@@ -2357,9 +2326,9 @@ export default class extends Language {
 		 */
 
 		COMMAND_STAR_DESCRIPTION: 'Get a random starred message from the database or the star leaderboard.',
-		COMMAND_STAR_EXTENDED: builder.display('star', {
+		COMMAND_STAR_EXTENDED: {
 			extendedHelp: 'This command shows a random starred message or the starboard usage and leaderboard for this server.'
-		}),
+		},
 
 		/**
 		 * ###############
@@ -2367,15 +2336,13 @@ export default class extends Language {
 		 */
 
 		COMMAND_DM_DESCRIPTION: 'Sends a Direct Message. Reserved for bot owner for replying purposes.',
-		COMMAND_DM_EXTENDED: builder.display('dm', {
+		COMMAND_DM_EXTENDED: {
 			extendedHelp: `The DM command is reserved for bot owner, and it's only used for very certain purposes, such as replying feedback
 				messages sent by users.`
-		}),
+		},
 		COMMAND_EVAL_DESCRIPTION: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
-		COMMAND_EVAL_EXTENDED: builder.display(
-			'eval',
-			{
-				extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
+		COMMAND_EVAL_EXTENDED: {
+			extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
 					It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
 					The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
 					The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.
@@ -2388,20 +2355,19 @@ export default class extends Language {
 					The --json flag converts the output to json
 					The --no-timeout flag disables the timeout
 					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${PERMS.ATTACH_FILES} permission.`,
-				examples: ['msg.author!.username;', '1 + 1;']
-			},
-			true
-		),
+			examples: ['msg.author!.username;', '1 + 1;'],
+			multiline: true
+		},
 		COMMAND_EXEC_DESCRIPTION: 'Execute Order 66.',
-		COMMAND_EXEC_EXTENDED: builder.display('exec', {
+		COMMAND_EXEC_EXTENDED: {
 			extendedHelp: 'You better not know about this.'
-		}),
+		},
 		COMMAND_SETAVATAR_DESCRIPTION: "Set Skyra's avatar.",
-		COMMAND_SETAVATAR_EXTENDED: builder.display('setAvatar', {
+		COMMAND_SETAVATAR_EXTENDED: {
 			extendedHelp: "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel."
-		}),
+		},
 		COMMAND_DONATE_DESCRIPTION: 'Get information about how to donate to keep Skyra alive longer.',
-		COMMAND_DONATE_EXTENDED: builder.display('donate', {
+		COMMAND_DONATE_EXTENDED: {
 			extendedHelp: `
 				Skyra Project started on 24th October 2016, if you are reading this, you are
 				using the version ${VERSION}, which is the twelfth rewrite. I have
@@ -2412,20 +2378,20 @@ export default class extends Language {
 				I have been working on a lot of things, but she is my beautiful baby, take care of her ❤
 
 				Do you want to support this amazing project? Feel free to do so! https://www.patreon.com/kyranet`
-		}),
+		},
 		COMMAND_ECHO_DESCRIPTION: 'Make Skyra send a message to this (or another) channel.',
-		COMMAND_ECHO_EXTENDED: builder.display('echo', {
+		COMMAND_ECHO_EXTENDED: {
 			extendedHelp: 'This should be very obvious...'
-		}),
+		},
 		COMMAND_FEEDBACK_DESCRIPTION: "Send a feedback message to the bot's owner.",
-		COMMAND_FEEDBACK_EXTENDED: builder.display('feedback', {
+		COMMAND_FEEDBACK_EXTENDED: {
 			extendedHelp: `This command sends a message to a feedback channel where the bot's owner can read. You'll be replied
 					as soon as an update comes.`
-		}),
+		},
 		COMMAND_STATS_DESCRIPTION: 'Provides some details about the bot and stats.',
-		COMMAND_STATS_EXTENDED: builder.display('stats', {
+		COMMAND_STATS_EXTENDED: {
 			extendedHelp: 'This should be very obvious...'
-		}),
+		},
 
 		/**
 		 * ##############
@@ -2433,12 +2399,12 @@ export default class extends Language {
 		 */
 
 		COMMAND_AVATAR_DESCRIPTION: "View somebody's avatar in full size.",
-		COMMAND_AVATAR_EXTENDED: builder.display('avatar', {
+		COMMAND_AVATAR_EXTENDED: {
 			extendedHelp: "As this command's name says, it shows somebody's avatar. Use the --size flag to change the avatar's size.",
 			explainedUsage: [['user', '(Optional) A user mention. Defaults to the author if the input is invalid or not given.']]
-		}),
+		},
 		COMMAND_COLOR_DESCRIPTION: 'Display some awesome colours.',
-		COMMAND_COLOR_EXTENDED: builder.display('color', {
+		COMMAND_COLOR_EXTENDED: {
 			extendedHelp: 'The color command displays a set of colours with nearest tones given a difference between 1 and 255..',
 			explainedUsage: [['color', 'A color resolvable.']],
 			possibleFormats: [
@@ -2448,18 +2414,18 @@ export default class extends Language {
 				['B10', '14671839']
 			],
 			examples: ['#dfdfdf >25', 'rgb(200, 130, 75)']
-		}),
+		},
 		COMMAND_CONTENT_DESCRIPTION: "Get messages' raw content.",
-		COMMAND_CONTENT_EXTENDED: builder.display('content', {}),
+		COMMAND_CONTENT_EXTENDED: {},
 		COMMAND_EMOJI_DESCRIPTION: 'Get info on an emoji.',
-		COMMAND_EMOJI_EXTENDED: builder.display('emoji', {}),
+		COMMAND_EMOJI_EXTENDED: {},
 		COMMAND_EMOTES_DESCRIPTION: 'Shows all custom emotes available on this server',
-		COMMAND_EMOTES_EXTENDED: builder.display('emotes', {
+		COMMAND_EMOTES_EXTENDED: {
 			extendedHelp: 'The list of emotes is split per 50 emotes'
-		}),
+		},
 		COMMAND_EMOTES_TITLE: 'Emotes in',
 		COMMAND_PRICE_DESCRIPTION: 'Convert between currencies with this command.',
-		COMMAND_PRICE_EXTENDED: builder.display('price', {
+		COMMAND_PRICE_EXTENDED: {
 			extendedHelp: 'Convert between any two currencies, even if they are cryptocurrencies.',
 			explainedUsage: [
 				['from', 'The currency to convert from'],
@@ -2467,11 +2433,11 @@ export default class extends Language {
 				['amount', 'The amount to convert, will default to 1']
 			],
 			examples: ['EUR USD', 'USD EUR 5', 'USD BAT 10']
-		}),
+		},
 		COMMAND_QUOTE_DESCRIPTION: "Quote another person's message.",
-		COMMAND_QUOTE_EXTENDED: builder.display('quote', {}),
+		COMMAND_QUOTE_EXTENDED: {},
 		COMMAND_ROLES_DESCRIPTION: 'List all public roles from a guild, or claim/unclaim them.',
-		COMMAND_ROLES_EXTENDED: builder.display('roles', {
+		COMMAND_ROLES_EXTENDED: {
 			extendedHelp: `Public roles? They are roles that are available for everyone, an administrator must configure
 					them with a configuration command.`,
 			explainedUsage: [['Roles', 'The list of roles to claim and unclaim. Leave this empty to get a list of roles']],
@@ -2481,18 +2447,18 @@ export default class extends Language {
 				'You can specify which roles by writting their ID, name, or a section of the name.'
 			].join('\n'),
 			examples: ['', 'Designer, Programmer', 'Designer']
-		}),
+		},
 		COMMAND_SEARCH_DESCRIPTION: 'Search things from the Internet with DuckDuckGo.',
-		COMMAND_SEARCH_EXTENDED: builder.display('search', {}),
+		COMMAND_SEARCH_EXTENDED: {},
 		COMMAND_POLL_DESCRIPTION: 'Simplified reaction-based poll.',
-		COMMAND_POLL_EXTENDED: builder.display('spoll', {
+		COMMAND_POLL_EXTENDED: {
 			extendedHelp: `spoll stands for "simplified poll". You may want to use this command if you don't want to deal the
 					complexity of the other command. Simplified Polls do not track the users who vote nor it filters, it merely reacts
 					to your message with three emojis and let the users vote.`,
 			examples: ['Should I implement the #anime channel?']
-		}),
+		},
 		COMMAND_TOPINVITES_DESCRIPTION: 'Shows the top 10 most used invites for this server',
-		COMMAND_TOPINVITES_EXTENDED: builder.display('topinvites', {}),
+		COMMAND_TOPINVITES_EXTENDED: {},
 		COMMAND_TOPINVITES_NO_INVITES: 'There are no invites, or none of them have been used!',
 		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: (guild) => `Top 10 invites for ${guild}`,
 		COMMAND_TOPINVITES_EMBED_DATA: {
@@ -2506,31 +2472,29 @@ export default class extends Language {
 			USES: 'Uses'
 		},
 		COMMAND_URBAN_DESCRIPTION: 'Check the definition of a word on UrbanDictionary.',
-		COMMAND_URBAN_EXTENDED: builder.display('urban', {
+		COMMAND_URBAN_EXTENDED: {
 			extendedHelp: 'What does "spam" mean?',
 			explainedUsage: [
 				['Word', 'The word or phrase you want to get the definition from.'],
 				['Page', 'Defaults to 1, the page you wish to read.']
 			],
 			examples: ['spam']
-		}),
+		},
 		COMMAND_WHOIS_DESCRIPTION: 'Who are you?',
-		COMMAND_WHOIS_EXTENDED: builder.display('whois', {}),
+		COMMAND_WHOIS_EXTENDED: {},
 		COMMAND_FOLLOWAGE_DESCRIPTION: 'Check how long a Twitch user has been following a channel.',
-		COMMAND_FOLLOWAGE_EXTENDED: builder.display('followage', {
+		COMMAND_FOLLOWAGE_EXTENDED: {
 			extendedHelp: 'Just... that.',
 			examples: ['dallas cohhcarnage']
-		}),
+		},
 		COMMAND_TWITCH_DESCRIPTION: 'Check the information about a Twitch profile.',
-		COMMAND_TWITCH_EXTENDED: builder.display('twitch', {
+		COMMAND_TWITCH_EXTENDED: {
 			extendedHelp: 'Really, just that.',
 			examples: ['riotgames']
-		}),
+		},
 		COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION: 'Manage the subscriptions for your server.',
-		COMMAND_TWITCHSUBSCRIPTION_EXTENDED: builder.display(
-			'twitchSubscription',
-			{
-				extendedHelp: `
+		COMMAND_TWITCHSUBSCRIPTION_EXTENDED: {
+			extendedHelp: `
 				Manage the subscriptions for this server.
 				__Online Notifications__
 				For content, the best way is writing \`--embed\`, the notifications will then show up in MessageEmbeds
@@ -2547,32 +2511,28 @@ export default class extends Language {
 				__Offline Notifications__
 				For offline events none of the variables above are available and you'll have to write your own content.
 				You can still use the \`--embed\` flag for the notification to show in a nice Twitch-purple MessageEmbed.`,
-				explainedUsage: [
-					[this.list(['add', 'remove', 'reset', 'show'], 'or'), 'The subcommand to trigger.'],
-					['streamer', 'The Twitch username of the streamer to get notifications for.'],
-					['channel', 'A Discord channel where to post the notifications in.'],
-					[
-						'status',
-						`The status that the Twitch streamer should get for an notification, one of ${this.list(['online', 'offline'], 'or')}.`
-					],
-					['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
-				],
-				examples: [
-					'add favna #twitch online --embed',
-					'add favna #twitch online %USER_NAME% went live | %TITLE%',
-					'remove kyranet #twitch online',
-					'reset kyranet',
-					'reset',
-					'show kyranet',
-					'show'
-				]
-			},
-			true
-		),
+			explainedUsage: [
+				[this.list(['add', 'remove', 'reset', 'show'], 'or'), 'The subcommand to trigger.'],
+				['streamer', 'The Twitch username of the streamer to get notifications for.'],
+				['channel', 'A Discord channel where to post the notifications in.'],
+				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(['online', 'offline'], 'or')}.`],
+				['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
+			],
+			examples: [
+				'add favna #twitch online --embed',
+				'add favna #twitch online %USER_NAME% went live | %TITLE%',
+				'remove kyranet #twitch online',
+				'reset kyranet',
+				'reset',
+				'show kyranet',
+				'show'
+			],
+			multiline: true
+		},
 		COMMAND_WIKIPEDIA_DESCRIPTION: 'Search something through Wikipedia.',
-		COMMAND_WIKIPEDIA_EXTENDED: builder.display('wikipedia', {}),
+		COMMAND_WIKIPEDIA_EXTENDED: {},
 		COMMAND_YOUTUBE_DESCRIPTION: 'Search something through YouTube.',
-		COMMAND_YOUTUBE_EXTENDED: builder.display('youtube', {}),
+		COMMAND_YOUTUBE_EXTENDED: {},
 
 		/**
 		 * ################
@@ -2580,12 +2540,12 @@ export default class extends Language {
 		 */
 
 		COMMAND_CURRENTTIME_DESCRIPTION: 'Gets the current time in any location on the world',
-		COMMAND_CURRENTTIME_EXTENDED: builder.display('currenttime', {
+		COMMAND_CURRENTTIME_EXTENDED: {
 			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
 				support as it is... Google Search. Once this command got the coordinates, it queries TimezoneDB to get the time data`,
 			explainedUsage: [['location', 'The locality, governing, country or continent to check the time for.']],
 			examples: ['Antarctica', 'Arizona']
-		}),
+		},
 		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
 		COMMAND_CURRENTTIME_TITLES: {
 			CURRENT_TIME: 'Current Time',
@@ -2595,32 +2555,32 @@ export default class extends Language {
 			DST: (dst) => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
 		},
 		COMMAND_GSEARCH_DESCRIPTION: 'Find your favourite things on Google',
-		COMMAND_GSEARCH_EXTENDED: builder.display('gsearch', {
+		COMMAND_GSEARCH_EXTENDED: {
 			extendedHelp: `This command queries the powerful Google Search engine to find websites for your query.
 				For images please use the \`gimage\` command.`,
 			explainedUsage: [['query', 'The thing you want to find on Google']],
 			examples: ['Discord', 'Skyra']
-		}),
+		},
 		COMMAND_GIMAGE_DESCRIPTION: 'Find your favourite images on Google',
-		COMMAND_GIMAGE_EXTENDED: builder.display('gimage', {
+		COMMAND_GIMAGE_EXTENDED: {
 			extendedHelp: `This command queries the powerful Google Search engine to find images for your query.
 				For regular web results please use the \`gsearch\` command.
 				This command has been marked as NSFW because it is unavoidable that when you query explicit content, you will get explicit results.`,
 			explainedUsage: [['query', 'The image you want to find on Google']],
 			examples: ['Discord', 'Skyra']
-		}),
+		},
 		COMMAND_LMGTFY_DESCRIPTION: 'Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.',
-		COMMAND_LMGTFY_EXTENDED: builder.display('lmgtfy', {
+		COMMAND_LMGTFY_EXTENDED: {
 			explainedUsage: [['query', 'The query to google']]
-		}),
+		},
 		COMMAND_WEATHER_DESCRIPTION: 'Check the weather status in a location.',
-		COMMAND_WEATHER_EXTENDED: builder.display('weather', {
+		COMMAND_WEATHER_EXTENDED: {
 			extendedHelp: `This command uses Google Maps to get the coordinates of the place, this step also allows multilanguage
 				support as it is... Google Search. Once this command got the coordinates, it queries DarkSky to retrieve
 					information about the weather. Note: temperature is in **Celsius**`,
 			explainedUsage: [['city', 'The locality, governing, country or continent to check the weather from.']],
 			examples: ['Antarctica', 'Arizona']
-		}),
+		},
 		GOOGLE_ERROR_ZERO_RESULTS: 'Your request returned no results.',
 		GOOGLE_ERROR_REQUEST_DENIED: 'The GeoCode API Request was denied.',
 		GOOGLE_ERROR_INVALID_REQUEST: 'Invalid request.',
@@ -2633,128 +2593,128 @@ export default class extends Language {
 		 */
 
 		COMMAND_WBLUSH_DESCRIPTION: 'Blush with a weeb picture!',
-		COMMAND_WBLUSH_EXTENDED: builder.display('wblush', {
+		COMMAND_WBLUSH_EXTENDED: {
 			extendedHelp: 'Blush with a random weeb image!'
-		}),
+		},
 		COMMAND_WCRY_DESCRIPTION: 'Cry to somebody with a weeb picture!',
-		COMMAND_WCRY_EXTENDED: builder.display('wcry', {
+		COMMAND_WCRY_EXTENDED: {
 			extendedHelp: 'Cry with a random weeb image!',
 			explainedUsage: [['user', 'The user to cry to.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WCUDDLE_DESCRIPTION: 'Cuddle somebody with a weeb picture!',
-		COMMAND_WCUDDLE_EXTENDED: builder.display('wcuddle', {
+		COMMAND_WCUDDLE_EXTENDED: {
 			extendedHelp: 'Unlike the original cuddle command, this one displays random weeb images, enjoy!',
 			explainedUsage: [['user', 'The user to cuddle with.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WDANCE_DESCRIPTION: 'Dance with a weeb picture!',
-		COMMAND_WDANCE_EXTENDED: builder.display('wdance', {
+		COMMAND_WDANCE_EXTENDED: {
 			extendedHelp: 'Dance with a random weeb image!'
-		}),
+		},
 		COMMAND_WHUG_DESCRIPTION: 'Hug somebody with a weeb picture!',
-		COMMAND_WHUG_EXTENDED: builder.display('whug', {
+		COMMAND_WHUG_EXTENDED: {
 			extendedHelp: 'Unlike the original hug command, this one displays random weeb images, enjoy!',
 			explainedUsage: [['user', 'The user to give the hug.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WKISS_DESCRIPTION: 'Kiss somebody with a weeb picture!',
-		COMMAND_WKISS_EXTENDED: builder.display('wkiss', {
+		COMMAND_WKISS_EXTENDED: {
 			extendedHelp: 'Kiss somebody with a random weeb image!',
 			explainedUsage: [['user', 'The user to give the kiss to.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WLICK_DESCRIPTION: 'Lick somebody with a weeb picture!',
-		COMMAND_WLICK_EXTENDED: builder.display('wlick', {
+		COMMAND_WLICK_EXTENDED: {
 			extendedHelp: 'Lick somebody with a random weeb image!',
 			explainedUsage: [['user', 'The user to lick.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WNOM_DESCRIPTION: 'Nom nom with a 🍞!',
-		COMMAND_WNOM_EXTENDED: builder.display('wnom', {
+		COMMAND_WNOM_EXTENDED: {
 			extendedHelp: "Nom nom nom! Wha~... I'm busy eating!"
-		}),
+		},
 		COMMAND_WNEKO_DESCRIPTION: 'Human kittens!',
-		COMMAND_WNEKO_EXTENDED: builder.display('wneko', {
+		COMMAND_WNEKO_EXTENDED: {
 			extendedHelp: `Unlike the original kitten command, this one displays random weeb images, the difference is that
 					they're weebs... and humans, enjoy!`
-		}),
+		},
 		COMMAND_WPAT_DESCRIPTION: "Pats somebody's head!",
-		COMMAND_WPAT_EXTENDED: builder.display('wpat', {
+		COMMAND_WPAT_EXTENDED: {
 			extendedHelp: "Pat somebody's head with a random weeb image!",
 			explainedUsage: [['user', 'The user to pat with.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WPOUT_DESCRIPTION: 'I feel somebody... mad',
-		COMMAND_WPOUT_EXTENDED: builder.display('wpout', {
+		COMMAND_WPOUT_EXTENDED: {
 			extendedHelp: 'Show your expression with a random weeb image!'
-		}),
+		},
 		COMMAND_WSLAP_DESCRIPTION: 'Slap somebody with a weeb picture!',
-		COMMAND_WSLAP_EXTENDED: builder.display('wslap', {
+		COMMAND_WSLAP_EXTENDED: {
 			extendedHelp: 'Unlike the original slap command, this one displays random weeb images, enjoy!',
 			explainedUsage: [['user', 'The user to slap.']],
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_WSMUG_DESCRIPTION: 'Smug',
-		COMMAND_WSMUG_EXTENDED: builder.display('wsmug', {
+		COMMAND_WSMUG_EXTENDED: {
 			extendedHelp: 'Just an anime smug face!'
-		}),
+		},
 		COMMAND_WSTARE_DESCRIPTION: '*Stares*',
-		COMMAND_WSTARE_EXTENDED: builder.display('wstare', {
+		COMMAND_WSTARE_EXTENDED: {
 			extendedHelp: '*Still stares at you*',
 			explainedUsage: [['user', 'The user to stare at.']],
 			examples: ['@Pete']
-		}),
+		},
 		COMMAND_WTICKLE_DESCRIPTION: 'Give tickles to somebody with a weeb picture!',
-		COMMAND_WTICKLE_EXTENDED: builder.display('wtickle', {
+		COMMAND_WTICKLE_EXTENDED: {
 			extendedHelp: 'Tickle somebody!',
 			explainedUsage: [['user', 'The user to tickle.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WBANG_DESCRIPTION: 'Bang 💥🔫!',
-		COMMAND_WBANG_EXTENDED: builder.display('wbang', {
+		COMMAND_WBANG_EXTENDED: {
 			extendedHelp: 'Shoot a user with a random weeb image!',
 			explainedUsage: [['user', 'The user to shoot.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WBANGHEAD_DESCRIPTION: "STAHP! I'm banging my head here!",
-		COMMAND_WBANGHEAD_EXTENDED: builder.display('wbanghead', {
+		COMMAND_WBANGHEAD_EXTENDED: {
 			extendedHelp: 'Bang your head with a random weeb image!'
-		}),
+		},
 		COMMAND_WBITE_DESCRIPTION: '*nom nom* you are delicious!',
-		COMMAND_WBITE_EXTENDED: builder.display('wbite', {
+		COMMAND_WBITE_EXTENDED: {
 			extendedHelp: 'Bite a user with a random weeb image!',
 			explainedUsage: [['user', 'The user to bite.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WGREET_DESCRIPTION: 'Say hi! to another user',
-		COMMAND_WGREET_EXTENDED: builder.display('wgreet', {
+		COMMAND_WGREET_EXTENDED: {
 			extendedHelp: 'Greet a user with a random weeb image!',
 			explainedUsage: [['user', 'The user to greet.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WLEWD_DESCRIPTION: 'Lewds! Lewds! Lewds!',
-		COMMAND_WLEWD_EXTENDED: builder.display('wlewd', {
+		COMMAND_WLEWD_EXTENDED: {
 			extendedHelp: 'Random lewd weeb image!'
-		}),
+		},
 		COMMAND_WPUNCH_DESCRIPTION: '*pow* 👊👊',
-		COMMAND_WPUNCH_EXTENDED: builder.display('wpunch', {
+		COMMAND_WPUNCH_EXTENDED: {
 			extendedHelp: 'Punch that annoying user with a random weeb image!',
 			explainedUsage: [['user', 'The user to punch.']],
 			examples: ['@Skyra']
-		}),
+		},
 		COMMAND_WSLEEPY_DESCRIPTION: "I'm so sleeeeepy... *yawn*",
-		COMMAND_WSLEEPY_EXTENDED: builder.display('wsleepy', {
+		COMMAND_WSLEEPY_EXTENDED: {
 			extendedHelp: 'Show how sleepy you are with a random weeb image!'
-		}),
+		},
 		COMMAND_WSMILE_DESCRIPTION: "Huh, because I'm happy. Clap along if you feel like a room without a roof",
-		COMMAND_WSMILE_EXTENDED: builder.display('wsmile', {
+		COMMAND_WSMILE_EXTENDED: {
 			extendedHelp: 'Show just how happy you are with a random weeb image!'
-		}),
+		},
 		COMMAND_WTHUMBSUP_DESCRIPTION: 'Raise your thumb into the air in a magnificent show of approval',
-		COMMAND_WTHUMBSUP_EXTENDED: builder.display('wthumbsup', {
+		COMMAND_WTHUMBSUP_EXTENDED: {
 			extendedHelp: 'Raise your thumb with a random weeb image!'
-		}),
+		},
 
 		/**
 		 * #################################
@@ -2836,11 +2796,11 @@ export default class extends Language {
 		 */
 
 		COMMAND_INVITE_DESCRIPTION: 'Shows the invite link to add Skyra to your server.',
-		COMMAND_INVITE_EXTENDED: builder.display('invite', {
+		COMMAND_INVITE_EXTENDED: {
 			extendedHelp:
 				'If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms` or `--nopermissions` to the command.',
 			examples: ['', 'noperms', '--noperms', '--nopermissions']
-		}),
+		},
 		COMMAND_INVITE: () =>
 			[
 				`To add Skyra to your server: <${this.client.invite}>`,
@@ -2878,11 +2838,11 @@ export default class extends Language {
 		 */
 
 		COMMAND_YARN_DESCRIPTION: 'Responds with information on a NodeJS package using the Yarn package registry',
-		COMMAND_YARN_EXTENDED: builder.display('yarn', {
+		COMMAND_YARN_EXTENDED: {
 			extendedHelp: `This is for NodeJS developers who want to quickly find information on a package published to [npm](https://npmjs.com)`,
 			explainedUsage: [['package', 'The name of the package to search for, has to be an exact match']],
 			examples: ['@skyra/char', '@skyra/saelem', '@skyra/eslint-config']
-		}),
+		},
 		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
 		COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg) => `What a silly developer who made ${pkg}! They unpublished it!`,
 		COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg) => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
@@ -3052,20 +3012,20 @@ export default class extends Language {
 		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
 		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
 		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
-		COMMAND_C4_EXTENDED: builder.display('c4', {
+		COMMAND_C4_EXTENDED: {
 			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
 					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
 					game in which the players first choose a color and then take turns dropping colored discs from the top into a
 					seven-column, ~~six~~ five-row vertically suspended grid.`
-		}),
+		},
 		COMMAND_COINFLIP_DESCRIPTION: 'Flip a coin!',
-		COMMAND_COINFLIP_EXTENDED: builder.display('coinflip', {
+		COMMAND_COINFLIP_EXTENDED: {
 			extendedHelp: `Flip a coin. If you guess the side that shows up, you get back your wager, doubled.
 				If you don't, you lose your wager.
 				You can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.
 				Now get those coins flippin'.`,
 			examples: ['50 heads', '200 tails']
-		}),
+		},
 		COMMAND_COINFLIP_INVALID_COINNAME: (arg) => `Excuse me, but ${arg} is not a coin face!`,
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
@@ -3077,11 +3037,11 @@ export default class extends Language {
 			`The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
 		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: (result) => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
-		COMMAND_HIGHERLOWER_EXTENDED: builder.display('higherlower', {
+		COMMAND_HIGHERLOWER_EXTENDED: {
 			extendedHelp: `Higher/Lower is a game of luck. I will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis
 			Your winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 reaction emoji.
 			Be warned tho! The further you go, the more chances you have to lose the winnings.`
-		}),
+		},
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher/Lower.`,
 		COMMAND_HIGHERLOWER_NEWROUND: 'Alright. Starting new round.',
 		COMMAND_HIGHERLOWER_EMBED: {
@@ -3111,19 +3071,19 @@ export default class extends Language {
 		COMMAND_HUNGERGAMES_STOP: 'Game finished by choice! See you later!',
 		COMMAND_HUNGERGAMES_WINNER: (winner) => `And the winner is... ${winner}!`,
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
-		COMMAND_HUNGERGAMES_EXTENDED: builder.display('hg', {
+		COMMAND_HUNGERGAMES_EXTENDED: {
 			extendedHelp: 'Enough discussion, let the games begin!',
 			examples: ['Skyra, Katniss, Peeta, Clove, Cato, Johanna, Brutus, Blight']
-		}),
+		},
 		COMMAND_SLOTMACHINE_DESCRIPTION: `I bet 100 ${SHINY}'s you ain't winning this round.`,
-		COMMAND_SLOTMACHINE_EXTENDED: builder.display('slotmachine', {
+		COMMAND_SLOTMACHINE_EXTENDED: {
 			extendedHelp: `A slot machine (American English), known variously as a fruit machine (British English), puggy
 					(Scottish English), the slots (Canadian and American English), poker machine/pokies (Australian English and
 					New Zealand English), or simply slot (American English), is a casino gambling machine with three or more
 					reels which spin when a button is pushed.`,
 			explainedUsage: [['Amount', `Either 50, 100, 200, 500, or even, 1000 ${SHINY} to bet.`]],
 			reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
-		}),
+		},
 		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
 		COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
 		COMMAND_SLOTMACHINE_CANVAS_TEXT: (won) => (won ? 'You won' : 'You lost'),
@@ -3132,35 +3092,32 @@ export default class extends Language {
 			NEW: 'New'
 		},
 		COMMAND_TICTACTOE_DESCRIPTION: 'Play Tic-Tac-Toe with somebody.',
-		COMMAND_TICTACTOE_EXTENDED: builder.display('tictactoe', {
+		COMMAND_TICTACTOE_EXTENDED: {
 			extendedHelp: `Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two
 				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
 				their marks in a horizontal, vertical, or diagonal row wins the game.`
-		}),
+		},
 		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) =>
 			`Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
 		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
 		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
 		COMMAND_TICTACTOE_DRAW: (board) => `This match concluded in a **draw**!\n${board}`,
 		COMMAND_TRIVIA_DESCRIPTION: 'Play a game of Trivia.',
-		COMMAND_TRIVIA_EXTENDED: builder.display(
-			'trivia',
-			{
-				extendedHelp: [
-					'Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)',
-					'',
-					`**Categories**: ${Object.keys(CATEGORIES).join(', ')}`
-				].join('\n'),
-				explainedUsage: [
-					['category', 'The category questions are asked from.'],
-					['type', 'The type of question asked: can be boolean (true/false) or multiple choice.'],
-					['difficulty', 'The difficulty level of the questions asked.'],
-					['duration', 'The amount of time you get to answer.']
-				],
-				examples: ['trivia history.', 'trivia books multiple easy.', 'trivia videogames 45.']
-			},
-			true
-		),
+		COMMAND_TRIVIA_EXTENDED: {
+			extendedHelp: [
+				'Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)',
+				'',
+				`**Categories**: ${Object.keys(CATEGORIES).join(', ')}`
+			].join('\n'),
+			explainedUsage: [
+				['category', 'The category questions are asked from.'],
+				['type', 'The type of question asked: can be boolean (true/false) or multiple choice.'],
+				['difficulty', 'The difficulty level of the questions asked.'],
+				['duration', 'The amount of time you get to answer.']
+			],
+			examples: ['trivia history.', 'trivia books multiple easy.', 'trivia videogames 45.'],
+			multiline: true
+		},
 		COMMAND_TRIVIA_INVALID_CATEGORY: 'Invalid category: Please use `Skyra, help trivia` for a list of categories.',
 		COMMAND_TRIVIA_ACTIVE_GAME: 'A game of trivia is already being played in this channel',
 		COMMAND_TRIVIA_INCORRECT: (attempt: string) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
@@ -3171,7 +3128,7 @@ export default class extends Language {
 		},
 		COMMAND_TRIVIA_WINNER: (winner, correctAnswer) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
 		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
-		COMMAND_VAULT_EXTENDED: builder.display('vault', {
+		COMMAND_VAULT_EXTENDED: {
 			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or
 				spin the wheel of fortune. You need to actively withdraw ${SHINY}'s from your vault before they can be spend gambling.`,
 			explainedUsage: [
@@ -3179,7 +3136,7 @@ export default class extends Language {
 				['money', `The amount of ${SHINY}'s to withdraw or deposit.`]
 			],
 			examples: ['deposit 10000.', 'withdraw 10000.']
-		}),
+		},
 		COMMAND_VAULT_EMBED_DATA: {
 			DEPOSITED_DESCRIPTION: (coins) => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
 			WITHDREW_DESCRIPTION: (coins) => `Withdrew ${coins} ${SHINY}\ from your vault.`,
@@ -3193,10 +3150,10 @@ export default class extends Language {
 		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: (vault) =>
 			`I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is ${vault} ${SHINY}`,
 		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Gamble your shinies by spinning a wheel of fortune',
-		COMMAND_WHEELOFFORTUNE_EXTENDED: builder.display('wheeloffortune', {
+		COMMAND_WHEELOFFORTUNE_EXTENDED: {
 			extendedHelp: `You can lose 0.1, 0.2, 0.3 or 0.5 times your input
 				or win 1.2, 1.5, 1.7 or 2.4 times your input`
-		}),
+		},
 		COMMAND_WHEELOFFORTUNE_TITLES: {
 			PREVIOUS: 'Previous',
 			NEW: 'New'
@@ -3687,13 +3644,13 @@ export default class extends Language {
 		 * SUGGESTIONS COMMANDS
 		 */
 		COMMAND_SUGGEST_DESCRIPTION: 'Posts a suggestion for the server.',
-		COMMAND_SUGGEST_EXTENDED: builder.display('suggest', {
+		COMMAND_SUGGEST_EXTENDED: {
 			extendedHelp: "Posts a suggestion to the server's suggestion channel, if configured.",
 			explainedUsage: [['suggestion', 'Your suggestion']],
 			examples: ["Let's make a music channel!"],
 			reminder:
 				'You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command.'
-		}),
+		},
 		COMMAND_SUGGEST_NOSETUP: (username) => `I'm sorry ${username}, but a suggestions channel hasn't been set up.`,
 		COMMAND_SUGGEST_NOSETUP_ASK: (username) =>
 			`I'm sorry ${username}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?`,
@@ -3704,7 +3661,7 @@ export default class extends Language {
 		COMMAND_SUGGEST_TITLE: (id) => `Suggestion #${id}`,
 		COMMAND_SUGGEST_SUCCESS: (channel) => `Thank you for your suggestion! It has been successfully posted in ${channel}!`,
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: "Set the suggestion's status.",
-		COMMAND_RESOLVESUGGESTION_EXTENDED: builder.display('resolvesuggestion', {
+		COMMAND_RESOLVESUGGESTION_EXTENDED: {
 			extendedHelp: "This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.",
 			examples: [
 				'1 accept Thank you for your suggestion!',
@@ -3716,7 +3673,7 @@ export default class extends Language {
 			],
 			reminder: `Suggestions also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
 			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`
-		}),
+		},
 		COMMAND_RESOLVESUGGESTION_INVALID_ID: `${REDCROSS} That\'s not a valid suggestion ID!`,
 		COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,
 		COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND: `${REDCROSS} Couldn\'t find a suggestion with that ID`,
@@ -3777,48 +3734,45 @@ export default class extends Language {
 		 */
 
 		COMMAND_TAG_DESCRIPTION: "Manage this guilds' tags.",
-		COMMAND_TAG_EXTENDED: builder.display(
-			'tag',
-			{
-				extendedHelp: [
-					'Tags, also known as custom commands, can give you a chunk of text stored under a specific name.',
-					'For example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`',
-					"When adding tags you can customize the final look by adding flags to the tag content (these won't show up in the tag itself!):",
-					'❯ Add `--embed` to have Skyra send the tag embedded.',
-					'The content will be in the description, so you can use all the markdown you wish. for example, adding [masked links](https://skyra.pw).',
-					'❯ Add `--color=<a color>` or `--colour=<a colour>` to have Skyra colourize the embed. Does nothing unless also specifying `--embed`.',
-					'Colours can be RGB, HSL, HEX or Decimal.'
-				].join('\n'),
-				explainedUsage: [
-					[
-						'action',
-						`The action to perform: ${this.list(
-							[
-								'`add` to add new tags',
-								'`remove` to delete a tag',
-								'`edit` to edit a tag',
-								'`source` to get the source of a tag',
-								'`list` to list all known tags',
-								'`show` to show a tag'
-							],
-							'or'
-						)}.`
-					],
-					['tag', "The tag's name."],
-					['contents', 'Required for the actions `add` and `edit`, specifies the content for the tag.']
+		COMMAND_TAG_EXTENDED: {
+			extendedHelp: [
+				'Tags, also known as custom commands, can give you a chunk of text stored under a specific name.',
+				'For example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`',
+				"When adding tags you can customize the final look by adding flags to the tag content (these won't show up in the tag itself!):",
+				'❯ Add `--embed` to have Skyra send the tag embedded.',
+				'The content will be in the description, so you can use all the markdown you wish. for example, adding [masked links](https://skyra.pw).',
+				'❯ Add `--color=<a color>` or `--colour=<a colour>` to have Skyra colourize the embed. Does nothing unless also specifying `--embed`.',
+				'Colours can be RGB, HSL, HEX or Decimal.'
+			].join('\n'),
+			explainedUsage: [
+				[
+					'action',
+					`The action to perform: ${this.list(
+						[
+							'`add` to add new tags',
+							'`remove` to delete a tag',
+							'`edit` to edit a tag',
+							'`source` to get the source of a tag',
+							'`list` to list all known tags',
+							'`show` to show a tag'
+						],
+						'or'
+					)}.`
 				],
-				examples: [
-					'add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
-					'add rule1 --embed --color=#1E88E5 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
-					'edit rule1 Just be respectful with the others.',
-					'rule1',
-					'source rule1',
-					'remove rule1',
-					'list'
-				]
-			},
-			true
-		),
+				['tag', "The tag's name."],
+				['contents', 'Required for the actions `add` and `edit`, specifies the content for the tag.']
+			],
+			examples: [
+				'add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
+				'add rule1 --embed --color=#1E88E5 Respect other users. Harassment, hatespeech, etc... will not be tolerated.',
+				'edit rule1 Just be respectful with the others.',
+				'rule1',
+				'source rule1',
+				'remove rule1',
+				'list'
+			],
+			multiline: true
+		},
 		COMMAND_TAG_PERMISSIONLEVEL: 'You must be a staff member, moderator, or admin, to be able to manage tags.',
 		COMMAND_TAG_NAME_NOTALLOWED: 'A tag name may not have a grave accent nor invisible characters.',
 		COMMAND_TAG_NAME_TOOLONG: 'A tag name must be 50 or less characters long.',
@@ -3862,11 +3816,11 @@ export default class extends Language {
 		COMMAND_EMOJI_INVALID: `The argument you provided is not a valid emoji.`,
 		COMMAND_EMOJI_TOO_LARGE: (emoji) => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
 		COMMAND_COUNTRY_DESCRIPTION: 'Shows information about a country.',
-		COMMAND_COUNTRY_EXTENDED: builder.display('country', {
+		COMMAND_COUNTRY_EXTENDED: {
 			extendedHelp: 'This command uses https://restcountries.eu to get information on the provided country.',
 			explainedUsage: [['country', 'The name of the country.']],
 			examples: ['United Kingdom']
-		}),
+		},
 		COMMAND_COUNTRY_TITLES: {
 			OVERVIEW: 'Overview',
 			LANGUAGES: 'Languages',
@@ -3885,11 +3839,11 @@ export default class extends Language {
 			}
 		},
 		COMMAND_ESHOP_DESCRIPTION: 'Request information for any American Nintendo Digital Store',
-		COMMAND_ESHOP_EXTENDED: builder.display('eshop', {
+		COMMAND_ESHOP_EXTENDED: {
 			extendedHelp: 'This command queries Nintendo of America to show data for the game you request.',
 			explainedUsage: [['query', "The name of the game you're looking for."]],
 			examples: ['Breath of the Wild', 'Pokemon', 'Splatoon']
-		}),
+		},
 		COMMAND_ESHOP_NOT_IN_DATABASE: 'None available',
 		COMMAND_ESHOP_TITLES: {
 			PRICE: 'Price',
@@ -3904,7 +3858,7 @@ export default class extends Language {
 		},
 		COMMAND_ESHOP_PRICE: (price) => (price > 0 ? `$${price} USD` : 'Free'),
 		COMMAND_HOROSCOPE_DESCRIPTION: 'Get your latest horoscope',
-		COMMAND_HOROSCOPE_EXTENDED: builder.display('horoscope', {
+		COMMAND_HOROSCOPE_EXTENDED: {
 			extendedHelp: "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
 			explainedUsage: [
 				['sunsign', 'The sun sign you want to get the horoscope for'],
@@ -3914,7 +3868,7 @@ export default class extends Language {
 				]
 			],
 			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
-		}),
+		},
 		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign, maybe) => `${sign} is an invalid sun sign, maybe try ${maybe}}`,
 		COMMAND_HOROSCOPE_TITLES: {
 			DAILY_HOROSCOPE: (sign) => `Daily horoscope for ${sign}`,
@@ -3925,11 +3879,11 @@ export default class extends Language {
 				)
 		},
 		COMMAND_IGDB_DESCRIPTION: 'Searches IGDB (Internet Game Database) for your favourite games',
-		COMMAND_IGDB_EXTENDED: builder.display('igdb', {
+		COMMAND_IGDB_EXTENDED: {
 			extendedHelp: 'This command queries the IGDB API to show data on your favourite games.',
 			explainedUsage: [['query', 'The name of the game']],
 			examples: ['Breath of the Wild', 'Borderlands 3']
-		}),
+		},
 		COMMAND_IGDB_TITLES: {
 			USER_SCORE: 'User score',
 			AGE_RATING: 'Age rating(s)',
@@ -3948,11 +3902,11 @@ export default class extends Language {
 			NO_AGE_RATINGS: 'No age ratings available'
 		},
 		COMMAND_ITUNES_DESCRIPTION: 'Searches iTunes API for music tracks',
-		COMMAND_ITUNES_EXTENDED: builder.display('itunes', {
+		COMMAND_ITUNES_EXTENDED: {
 			extendedHelp: 'This command queries the Apple iTunes API to show data on a music you request.',
 			explainedUsage: [['query', 'The name of the song']],
 			examples: ['Apocalyptica feat. Brent Smith', "You're Gonna Go Far, Kid"]
-		}),
+		},
 		COMMAND_ITUNES_TITLES: {
 			ARTIST: 'Artist',
 			COLLECTION: 'Collection',
@@ -3966,14 +3920,14 @@ export default class extends Language {
 		},
 		COMMAND_LMGTFY_CLICK: 'Click me to search',
 		COMMAND_MOVIES_DESCRIPTION: 'Searches TheMovieDatabase for any movie',
-		COMMAND_MOVIES_EXTENDED: builder.display('movies', {
+		COMMAND_MOVIES_EXTENDED: {
 			extendedHelp: [
 				'This command queries TheMovieDatabase API for data on your favourite movies',
 				"Tip: You can use the 'y:' filter to narrow your results by year. Example: 'star wars y:1977'."
 			],
 			explainedUsage: [['query', 'The name of the movie']],
 			examples: ["Ocean's Eleven y:2001", 'Star Wars Revenge of the Sith', 'Spirited Away']
-		}),
+		},
 		COMMAND_MOVIES_TITLES: {
 			RUNTIME: 'Runtime',
 			USER_SCORE: 'User score',
@@ -3993,11 +3947,11 @@ export default class extends Language {
 			NO_GENRES: 'None on TheMovieDB'
 		},
 		COMMAND_SHOWS_DESCRIPTION: 'Searches The Movie Database for any show',
-		COMMAND_SHOWS_EXTENDED: builder.display('shows', {
+		COMMAND_SHOWS_EXTENDED: {
 			extendedHelp: 'This command queries TheMovieDatabase for data on your favorite shows',
 			explainedUsage: [['query', 'The name of the show']],
 			examples: ['Final Space', 'Gravity Falls', 'Rick and Morty']
-		}),
+		},
 		COMMAND_SHOWS_TITLES: {
 			EPISODE_RUNTIME: 'Episode runtime',
 			USER_SCORE: 'User score',
@@ -4100,11 +4054,11 @@ export default class extends Language {
 		COMMAND_YOUTUBE_NOTFOUND: 'I am sorry, I could not find something that could match your input in YouTube.',
 		COMMAND_YOUTUBE_INDEX_NOTFOUND: 'You may want to try a lower page number, because I am unable to find something at this index.',
 		COMMAND_DEFINE_DESCRIPTION: 'Check the definition of a word.',
-		COMMAND_DEFINE_EXTENDED: builder.display('define', {
+		COMMAND_DEFINE_EXTENDED: {
 			extendedHelp: `What does "heel" mean?`,
 			explainedUsage: [['Word', 'The word or phrase you want to get the definition from.']],
 			examples: ['heel']
-		}),
+		},
 		COMMAND_DEFINE_NOTFOUND: 'I could not find a definition for this word.',
 		COMMAND_DEFINE_PRONOUNCIATION: 'Pronunciation',
 		COMMAND_DEFINE_UNKNOWN: 'Unknown',

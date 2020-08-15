@@ -22,6 +22,7 @@ services:
     ports:
       - '2333:2333'
   saelem:
+    network_mode: host
     container_name: saelem
     image: skyrabot/saelem:main
     restart: always

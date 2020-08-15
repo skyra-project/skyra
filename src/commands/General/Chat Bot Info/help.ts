@@ -8,6 +8,9 @@ import { BrandingColors } from '@utils/constants';
 import { noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
+import { LanguageHelp, LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+
+type ExtendedHelpData = string | LanguageHelpDisplayOptions;
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,
@@ -128,6 +131,19 @@ export default class extends SkyraCommand {
 
 	private async buildCommandHelp(message: KlasaMessage, command: Command) {
 		const DATA = message.language.tget('COMMAND_HELP_DATA');
+		const BUILDER_DATA = message.language.tget('SYSTEM_HELP_TITLES');
+
+		const builder = new LanguageHelp()
+			.setExplainedUsage(BUILDER_DATA.EXPLAINED_USAGE)
+			.setExamples(BUILDER_DATA.EXAMPLES)
+			.setPossibleFormats(BUILDER_DATA.POSSIBLE_FORMATS)
+			.setReminder(BUILDER_DATA.REMINDERS);
+
+		const extendedHelpData = isFunction(command.extendedHelp)
+			? (command.extendedHelp(message.language) as ExtendedHelpData)
+			: command.extendedHelp;
+
+		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -135,12 +151,7 @@ export default class extends SkyraCommand {
 			.setTimestamp()
 			.setFooter(DATA.FOOTER(command.name))
 			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))
-			.setDescription(
-				[
-					DATA.USAGE(command.usage.fullUsage(message)),
-					DATA.EXTENDED(isFunction(command.extendedHelp) ? command.extendedHelp(message.language) : command.extendedHelp)
-				].join('\n')
-			);
+			.setDescription([DATA.USAGE(command.usage.fullUsage(message)), DATA.EXTENDED(extendedHelp)].join('\n'));
 	}
 
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {

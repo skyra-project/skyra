@@ -1,11 +1,11 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { ApplyOptions } from '@skyra/decorators';
-import { fetch } from '@utils/util';
-import { KlasaMessage } from 'klasa';
-import { MessageEmbed } from 'discord.js';
-import { BrandingColors } from '@utils/constants';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { DbSet } from '@lib/structures/DbSet';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { ApplyOptions } from '@skyra/decorators';
+import { BrandingColors } from '@utils/constants';
+import { fetch } from '@utils/util';
+import { MessageEmbed } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
 const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.symbol})`;

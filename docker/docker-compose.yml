@@ -1,54 +1,55 @@
 version: '2.4'
 services:
-    pokedex:
-        container_name: pokedex
-        image: favware/graphql-pokemon:main
-        restart: always
-        ports:
-            - '4000:8080'
-    postgres:
-        container_name: pgsql
-        image: skyrabot/postgres:main
-        restart: always
-        ports:
-            - '5432:5432'
-        volumes:
-            - postgres-data:/var/lib/postgresql/data
-    lavalink:
-        network_mode: host
-        container_name: lavalink
-        image: skyrabot/lavalink:main
-        restart: always
-        ports:
-            - '2333:2333'
-    saelem:
-        container_name: saelem
-        image: skyrabot/saelem:main
-        restart: always
-        ports:
-            - '8284:8080'
-        env_file: ./configs/.env.local
-    influx:
-        container_name: influxdb
-        image: quay.io/influxdb/influxdb:2.0.0-beta
-        restart: always
-        volumes:
-            - influx-data:/var/lib/influxdb2
-        ports:
-            - '8285:9999'
-        command: influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt
-    redis:
-        container_name: redis
-        image: redis:alpine
-        restart: always
-        volumes:
-            - ./configs/redis.local.conf:/usr/local/etc/redis/redis.conf
-        ports:
-            - '8287:8287'
-        command: redis-server /usr/local/etc/redis/redis.conf
+  pokedex:
+    container_name: pokedex
+    image: favware/graphql-pokemon:main
+    restart: always
+    ports:
+      - '4000:8080'
+  postgres:
+    container_name: pgsql
+    image: skyrabot/postgres:main
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  lavalink:
+    network_mode: host
+    container_name: lavalink
+    image: skyrabot/lavalink:main
+    restart: always
+    ports:
+      - '2333:2333'
+  saelem:
+    network_mode: host
+    container_name: saelem
+    image: skyrabot/saelem:main
+    restart: always
+    ports:
+      - '8284:8080'
+    env_file: ./configs/.env.local
+  influx:
+    container_name: influxdb
+    image: quay.io/influxdb/influxdb:2.0.0-beta
+    restart: always
+    volumes:
+      - influx-data:/var/lib/influxdb2
+    ports:
+      - '8285:9999'
+    command: influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt
+  redis:
+    container_name: redis
+    image: redis:alpine
+    restart: always
+    volumes:
+      - ./configs/redis.local.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - '8287:8287'
+    command: redis-server /usr/local/etc/redis/redis.conf
 
 volumes:
-    postgres-data:
-        external: true
-    influx-data:
-        external: true
+  postgres-data:
+    external: true
+  influx-data:
+    external: true

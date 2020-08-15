@@ -1,6 +1,6 @@
 apps:
-  script: "./dist/Skyra.js"
-  name: "Skyra"
+  script: './dist/Skyra.js'
+  name: 'Skyra'
   vizion: false
   env:
     ENABLE_LAVALINK: true

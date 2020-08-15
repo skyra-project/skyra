@@ -1,4 +1,28 @@
-# QuantumlyTangled
+# Kyra & Favna
+/src/ @favna @kyranet
+/tests/ @favna @kyranet
+/tsconfig.base.json @favna @kyranet
+/tsconfig.eslint.json @favna @kyranet
+
+# Just Kyra
+/assets/ @kyranet
+/LICENSE @kyranet
+
+# Just Favna
+/docker/ @favna
+/.github/ @favna
+/.vscode/ @favna
+/scripts/ @favna
+/.all-contributorsrc @favna
+/.eslintrc.json @favna
+/.gitignore @favna
+/.gqlconfig @favna
+/.prettierrc @favna
+/.yarnclean @favna
+/jest.config.js @favna
+/pm2.ecosystem.yml @favna
+
+# Just Quantum
 /src/commands/GameIntegration/ffxiv.ts @quantumlytangled
 /src/commands/Twitch/ @quantumlytangled
 /src/events/analytics/ @quantumlytangled
@@ -11,29 +35,3 @@
 /src/lib/util/Tracking/ @quantumlytangled
 /src/routes/twitch/twitchStreamChange.ts @quantumlytangled
 /src/tasks/syncResourceAnalytics.ts @quantumlytangled
-
-# Favna
-/docker/ @favna
-/src/commands/Anime/anime.ts @favna
-/src/commands/Anime/manga.ts @favna
-/src/commands/GameIntegration/ @favna
-/src/commands/Google/ @favna
-/src/commands/Misc/reddituser.ts @favna
-/src/commands/Pokemon/ @favna
-/src/commands/tools/Websearch/eshop.ts @favna
-/src/commands/tools/Websearch/igdb.ts @favna
-/src/commands/tools/Websearch/itunes.ts @favna
-/src/commands/tools/Websearch/movies.ts @favna
-/src/commands/tools/Websearch/shows.ts @favna
-/src/lib/types/definitions/Kitsu.d.ts @favna
-/src/lib/types/definitions/Reddit.d.ts @favna
-/src/lib/types/definitions/Tmdb.d.ts @favna
-/src/lib/util/External/igbTypes.ts @favna
-/src/lib/util/GameIntegration @favna
-/src/lib/util/Google.ts @favna
-/src/lib/util/Pokedex.ts @favna
-
-# Kyra
-/assets/ @kyranet
-/database/ @kyranet
-/src/ @kyranet

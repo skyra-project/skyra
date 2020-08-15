@@ -13,8 +13,5 @@
 		"composite": true,
 		"declaration": true
 	},
-	"include": [
-		".",
-		"./lib/orm/migrations/1594757329224-V13_MigrateAnalytics.json"
-	]
+	"include": [".", "./lib/orm/migrations/1594757329224-V13_MigrateAnalytics.json"]
 }

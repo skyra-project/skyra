@@ -1,10 +1,10 @@
-import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage, KlasaUser } from 'klasa';
-import { CATEGORIES, QuestionType, QuestionDifficulty, QuestionData, getQuestion } from '@utils/Games/TriviaManager';
-import { decode } from 'he';
-import { shuffle } from '@utils/util';
-import { MessageEmbed, MessageCollector } from 'discord.js';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
+import { shuffle } from '@utils/util';
+import { MessageCollector, MessageEmbed } from 'discord.js';
+import { decode } from 'he';
+import { KlasaMessage, KlasaUser } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,

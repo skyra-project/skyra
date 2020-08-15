@@ -1,7 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
-import { PermissionLevels } from '@lib/types/Enums';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,

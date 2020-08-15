@@ -1,8 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { CLIENT_ID } from '@root/config';
 import { floatPromise } from '@utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
-import { CLIENT_ID } from '@root/config';
 
 export default class extends Monitor {
 	public constructor(store: MonitorStore, file: string[], directory: string) {

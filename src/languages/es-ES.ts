@@ -7,9 +7,9 @@ import { CLIENT_ID, VERSION } from '@root/config';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
+import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { createPick, inlineCodeblock } from '@utils/util';
 import { Language, Timestamp, version as klasaVersion } from 'klasa';
-import { CATEGORIES } from '@utils/Games/TriviaManager';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
@@ -862,6 +862,46 @@ export default class extends Language {
 		 * GAME INTEGRATION COMMANDS
 		 */
 
+		COMMAND_BRAWLSTARS_DESCRIPTION: "Get data on a player or club from Supercell's newest game, Brawl Stars.",
+		COMMAND_BRAWLSTARS_EXTENDED: {
+			explainedUsage: [
+				['category', 'The category of data to get: **club** to get data on a club, or **player** to get data on a player (default).'],
+				['query', 'The tag of the player or club, depending on which category you choose.']
+			],
+			examples: ['player #RJQLQ999']
+		},
+		COMMAND_BRAWLSTARS_PLAYER_EMBED_TITLES: {
+			TROPHIES: 'Trophies',
+			EVENTS: 'Events',
+			EXP: 'Experience',
+			GAME_MODES: 'Game Modes',
+			OTHER: 'Other'
+		},
+		COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS: {
+			TOTAL: 'Total',
+			PERSONAL_BEST: 'Personal Best',
+			EVENTS: 'Events',
+			ROBO_RUMBLE: 'Best Robo Rumble Rank',
+			BOSS_FIGHT: 'Best Big Brawler Rank',
+			EXPERIENCE_LEVEL: 'Experience Level',
+			VICTORIES_3V3: '3v3 Victories',
+			VICTORIES_SOLO: 'Solo Victories',
+			VICTORIES_DUO: 'Duo Victories',
+			CLUB: 'Club',
+			BRAWLERS_UNLOCKED: 'Brawlers Unlocked'
+		},
+		COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES: {
+			TOTAL_TROPHIES: 'Total Trophies',
+			AVERAGE_TROPHIES: 'Average Trophies',
+			REQUIRED_TROPHIES: 'Required Trophies',
+			MEMBERS: 'Members',
+			TYPE: 'Type',
+			TOP_5_MEMBERS: 'Top 5 Members',
+			PRESIDENT: 'President'
+		},
+		COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS: {
+			NO_PRESIDENT: 'No President'
+		},
 		COMMAND_CLASHOFCLANS_DESCRIPTION: 'Obtenga datos sobre un jugador o clan en el popular juego móvil Choque de clanes',
 		COMMAND_CLASHOFCLANS_EXTENDED: {
 			extendedHelp: 'La solicitud de clanes intentará devolver múltiples respuestas posibles.',
@@ -1205,10 +1245,7 @@ export default class extends Language {
 				not be created, and the reaction role will be bound to all of the channel's messages.`,
 			explainedUsage: [
 				['show', 'Retrieve the list of all reaction roles.'],
-				[
-					'add <role> [channel emoji]',
-					'Adds a reaction role binding the first reacted message since the execution with the role, optionally a channel.'
-				],
+				['add <role>', 'Adds a reaction role binding the first reacted message since the execution with the role.'],
 				['remove <role> <message>', 'Removes a reaction role, use `show` to get a list of them.'],
 				['reset', 'Removes all reaction roles.']
 			]
@@ -1708,12 +1745,13 @@ export default class extends Language {
 			explainedUsage: [['user', "The person you're telling that phrase to."]],
 			examples: ['Jack']
 		},
-		COMMAND_PEEPOLOVE_DESCRIPTION: "Generates a peepoLove image from a provided image or users' avatar.",
+		COMMAND_PEEPOLOVE_DESCRIPTION: 'Genera una imagen peepoLove con avatar de usuario.',
 		COMMAND_PEEPOLOVE_EXTENDED: {
-			extendedHelp: `Allows you to generate a peepoLove image from an image or avatar. You can upload an image, or
-				Skyra will automatically pick an image in the last 20 messages if there is one. You can tag a user, or say their username, to generate one with their avatar.`,
-			explainedUsage: [['image', 'The image that peepo should hug.']],
-			examples: ['Kyra']
+			extendedHelp: `Le permite generar una imagen peepoLove a partir del avatar de usuario.`,
+			explainedUsage: [['user', 'El usuario que peepo debe abrazar.']],
+			examples: ['Jack'],
+			reminder:
+				'El soporte de imágenes personalizadas se ha deshabilitado temporalmente, la ETA que regresa es aproximadamente noviembre de 2020.'
 		},
 		COMMAND_SLAP_DESCRIPTION: 'Slap another user using the Batman & Robin Meme.',
 		COMMAND_SLAP_EXTENDED: {

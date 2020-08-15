@@ -15,8 +15,12 @@
 -   [`PostgreSQL`]: To store persistent data.
 
 ### Optional additions
+
 -   [`Lavalink`]: Audio server.
 -   [`InfluxDB`]: Metrics platform
+-   [`GraphQL-Pokemon`]: Pokemon API
+-   [`Saelem`]: Horoscope API
+-   [`Redis`]: Caching for [`Saelem`]
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 
@@ -25,12 +29,13 @@
 We are not supportive of the idea of people self hosting Skyra as we put a very high priority on providing the best experience we can for our end-users. This image of Skyra will be diminished if people self-host her as they will not use identical architecture to what we do and likely not put in the same amount of effort as we do. If Skyra is lacking a feature you'd like to see, please refer to the developing guidelines above and if you can add that feature it will be in Skyra to stay.
 
 Furthermore, Skyra has not been build with the idea of self hosting in mind and she makes use of many services that you will need to maintain in a production environment for full functionality. For example
-- Skyra uses many external API's for which you would have to create API keys
-- Skyra uses Lavalink as music module, this means you need to host your own instance of Lavalink (a Java application)
-- While Skyra can work with a JSON based database, it is extremely ill-advised to do so in production. Instead in production you should be using PostgreSQL, another thing to host yourself.
-- Skyra requires [Evlyn] in order to run properly, this means you will also need to host this Node.JS application on the same network as Skyra
 
-All this said, if you really are going to self-host Skyra please take heed, she ***will absolutely not*** run on services such as [Glitch] or [Heroku]. You ***will need*** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
+-   Skyra uses many external API's for which you would have to create API keys
+-   Skyra uses Lavalink as music module, this means you need to host your own instance of Lavalink (a Java application)
+-   While Skyra can work with a JSON based database, it is extremely ill-advised to do so in production. Instead in production you should be using PostgreSQL, another thing to host yourself.
+-   Skyra requires [Evlyn] in order to run properly, this means you will also need to host this Node.JS application on the same network as Skyra
+
+All this said, if you really are going to self-host Skyra please take heed, she **_will absolutely not_** run on services such as [Glitch] or [Heroku]. You **_will need_** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
 
 Sidenote, if you really think you're clever enough to self host then you're probably also smart enough to write your own bot.
 
@@ -74,7 +79,7 @@ We accept donations through Patreon, BitCoin, Ethereum, and Litecoin. You can us
 | Donate With |         QR         |                                                                  Address                                                                  |
 | :---------: | :----------------: | :---------------------------------------------------------------------------------------------------------------------------------------: |
 |   Patreon   | ![PatreonImage][]  |                                               [Click Here](https://www.patreon.com/kyranet)                                               |
-|   PayPal    | ![PayPalImage][]   |                [Click Here](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CET28NRZTDQ8L)                |
+|   PayPal    |  ![PayPalImage][]  |                     [Click Here](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=CET28NRZTDQ8L)                      |
 |   BitCoin   | ![BitcoinImage][]  |         [3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco](bitcoin:3JNzCHMTFtxYFWBnVtDM9Tt34zFbKvdwco?amount=0.01&label=Skyra%20Discord%20Bot)          |
 |  Ethereum   | ![EthereumImage][] | [0xcB5EDB76Bc9E389514F905D9680589004C00190c](ethereum:0xcB5EDB76Bc9E389514F905D9680589004C00190c?amount=0.01&label=Skyra%20Discord%20Bot) |
 |  Litecoin   | ![LitecoinImage][] |         [MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM](litecoin:MNVT1keYGMfGp7vWmcYjCS8ntU8LNvjnqM?amount=0.01&label=Skyra%20Discord%20Bot)         |
@@ -110,37 +115,38 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/gc"><img src="https://avatars2.githubusercontent.com/u/30398469?v=4?s=100" width="100px;" alt=""/><br /><sub><b>GC</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=gc" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/Rexogamer"><img src="https://avatars0.githubusercontent.com/u/42586271?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Ed L</b></sub></a><br /><a href="#translation-Rexogamer" title="Translation">🌍</a></td>
     <td align="center"><a href="https://github.com/Soumil07"><img src="https://avatars0.githubusercontent.com/u/29275227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Soumil07</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=Soumil07" title="Code">💻</a></td>
+    <td align="center"><a href="http://www.adityatd.me/"><img src="https://avatars0.githubusercontent.com/u/9266227?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aditya N. Tripathi</b></sub></a><br /><a href="https://github.com/skyra-project/skyra/commits?author=AdityaTD" title="Code">💻</a></td>
   </tr>
 </table>
 
 <!-- markdownlint-enable -->
 <!-- prettier-ignore-end -->
+
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
 
 <!----------------- LINKS --------------->
 
-[`node.js`]:                         https://nodejs.org/en/download/current/
-[`postgresql`]:                      https://www.postgresql.org/download/
-[`lavalink`]:                        https://github.com/Frederikam/Lavalink
-[`influxdb`]:                        https://v2.docs.influxdata.com/v2.0/get-started/
-
-[Set-Up - Refer to CONTRIBUTING.md]: /.github/CONTRIBUTING.md
-[Evlyn]:                             https://github.com/kyranet/Evlyn
-[Glitch]:                            https://glitch.com/
-[Heroku]:                            https://www.heroku.com/
-[Netcup]:                            https://www.netcup.eu/
-[DigitalOcean]:                      https://www.digitalocean.com/
-
-[skyra invite link]:                 https://invite.skyra.pw
-[support server]:                    https://join.skyra.pw
-[patreon]:                           https://www.patreon.com/kyranet
-
-[klasa's website]:                   https://klasa.js.org
-
-[patreonimage]:                      https://cdn.skyra.pw/gh-assets/patreon.png
-[paypalimage]:                       https://cdn.skyra.pw/gh-assets/paypal.png
-[bitcoinimage]:                      https://cdn.skyra.pw/gh-assets/bitcoin.png
-[ethereumimage]:                     https://cdn.skyra.pw/gh-assets/ethereum.png
-[litecoinimage]:                     https://cdn.skyra.pw/gh-assets/litecoin.png
+[`node.js`]: https://nodejs.org/en/download/current/
+[`postgresql`]: https://www.postgresql.org/download/
+[`lavalink`]: https://github.com/Frederikam/Lavalink
+[`influxdb`]: https://v2.docs.influxdata.com/v2.0/get-started/
+[`graphql-pokemon`]: https://github.com/favware/graphql-pokemon
+[`saelem`]: https://github.com/skyra-project/saelem/pull/6
+[`redis`]: https://redis.io
+[set-up - refer to contributing.md]: /.github/CONTRIBUTING.md
+[evlyn]: https://github.com/kyranet/Evlyn
+[glitch]: https://glitch.com/
+[heroku]: https://www.heroku.com/
+[netcup]: https://www.netcup.eu/
+[digitalocean]: https://www.digitalocean.com/
+[skyra invite link]: https://invite.skyra.pw
+[support server]: https://join.skyra.pw
+[patreon]: https://www.patreon.com/kyranet
+[klasa's website]: https://klasa.js.org
+[patreonimage]: https://cdn.skyra.pw/gh-assets/patreon.png
+[paypalimage]: https://cdn.skyra.pw/gh-assets/paypal.png
+[bitcoinimage]: https://cdn.skyra.pw/gh-assets/bitcoin.png
+[ethereumimage]: https://cdn.skyra.pw/gh-assets/ethereum.png
+[litecoinimage]: https://cdn.skyra.pw/gh-assets/litecoin.png

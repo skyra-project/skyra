@@ -3793,7 +3793,6 @@ export default class extends Language {
 
 		COMMAND_EVAL_TIMEOUT: (seconds) => `TIMEOUT: Took longer than ${seconds} seconds.`,
 		COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
-
 		COMMAND_STATS: (color, stats, uptime, usage) =>
 			new MessageEmbed()
 				.setColor(color)

@@ -69,7 +69,7 @@
 		"fs-nextra": "^0.5.1",
 		"gifencoder": "^2.0.1",
 		"he": "^1.2.0",
-		"klasa": "github:dirigeants/klasa#settings",
+		"klasa": "github:skyra-project/klasa#settings",
 		"klasa-dashboard-hooks": "github:kyranet/klasa-dashboard-hooks#master",
 		"lavacord": "^1.1.9",
 		"module-alias": "^2.2.2",

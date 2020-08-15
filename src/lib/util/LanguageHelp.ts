@@ -24,13 +24,16 @@ export class LanguageHelp {
 		return this;
 	}
 
-	public display(name: string, options: LanguageHelpDisplayOptions, multiline = false) {
+	// TODO: when all builder.display() usages in language files are removed, we cans safely remove
+	// the _multiline parameter
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	public display(name: string, options: LanguageHelpDisplayOptions, _multiline = false) {
 		const { extendedHelp, explainedUsage = [], possibleFormats = [], examples = [], reminder } = options;
 		const output: string[] = [];
 
 		// Extended help
 		if (extendedHelp) {
-			output.push(LanguageHelp.resolveMultilineString(extendedHelp, multiline), '');
+			output.push(LanguageHelp.resolveMultilineString(extendedHelp, options.multiline ?? false), '');
 		}
 
 		// Explained usage
@@ -52,7 +55,7 @@ export class LanguageHelp {
 
 		// Reminder
 		if (reminder) {
-			output.push(this.reminder!, LanguageHelp.resolveMultilineString(reminder, multiline));
+			output.push(this.reminder!, LanguageHelp.resolveMultilineString(reminder, options.multiline ?? false));
 		}
 
 		return output.join('\n');
@@ -68,10 +71,11 @@ export class LanguageHelp {
 	}
 }
 
-interface LanguageHelpDisplayOptions {
+export interface LanguageHelpDisplayOptions {
 	extendedHelp?: string[] | string;
 	explainedUsage?: Array<[string, string]>;
 	possibleFormats?: Array<[string, string]>;
 	examples?: string[];
 	reminder?: string[] | string;
+	multiline?: boolean;
 }

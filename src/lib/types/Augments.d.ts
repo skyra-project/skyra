@@ -13,7 +13,7 @@ import { Twitch } from '@utils/Notifications/Twitch';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { FSWatcher } from 'chokidar';
 import { PermissionString } from 'discord.js';
-import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions } from 'klasa';
+import { KlasaMessage, KlasaUser, SettingsFolderUpdateOptions, Language } from 'klasa';
 import { LavalinkNodeOptions } from 'lavacord';
 import { PoolConfig } from 'pg';
 import { Client as VezaClient } from 'veza';

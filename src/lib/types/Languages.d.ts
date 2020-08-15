@@ -10,6 +10,7 @@ import type { ScheduledTask, SchemaEntry } from 'klasa';
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const enum Position {
 	Before,
@@ -83,6 +84,13 @@ export interface LanguageKeys {
 	INHIBITOR_RUNIN_NONE: (name: string) => string;
 	INHIBITOR_DISABLED_GUILD: string;
 	INHIBITOR_DISABLED_GLOBAL: string;
+	// used to build a LanguageBuilder for extendedHelp
+	SYSTEM_HELP_TITLES: {
+		EXPLAINED_USAGE: string;
+		POSSIBLE_FORMATS: string;
+		EXAMPLES: string;
+		REMINDERS: string;
+	};
 	COMMAND_BLACKLIST_DESCRIPTION: string;
 	COMMAND_BLACKLIST_SUCCESS: (
 		usersAdded: readonly string[],
@@ -463,15 +471,15 @@ export interface LanguageKeys {
 	SETTINGS_SUGGESTIONS_ON_ACTION_REPOST: string;
 	SETTINGS_SUGGESTIONS_ON_ACTION_HIDE_AUTHOR: string;
 	COMMAND_CATFACT_DESCRIPTION: string;
-	COMMAND_CATFACT_EXTENDED: string;
+	COMMAND_CATFACT_EXTENDED: LanguageHelpDisplayOptions;
 	COMMAND_DOG_DESCRIPTION: string;
-	COMMAND_DOG_EXTENDED: string;
+	COMMAND_DOG_EXTENDED: LanguageHelpDisplayOptions;
 	COMMAND_FOX_DESCRIPTION: string;
-	COMMAND_FOX_EXTENDED: string;
+	COMMAND_FOX_EXTENDED: LanguageHelpDisplayOptions;
 	COMMAND_KITTY_DESCRIPTION: string;
-	COMMAND_KITTY_EXTENDED: string;
+	COMMAND_KITTY_EXTENDED: LanguageHelpDisplayOptions;
 	COMMAND_SHIBE_DESCRIPTION: string;
-	COMMAND_SHIBE_EXTENDED: string;
+	COMMAND_SHIBE_EXTENDED: LanguageHelpDisplayOptions;
 	COMMAND_ANIME_DESCRIPTION: string;
 	COMMAND_ANIME_EXTENDED: string;
 	COMMAND_MANGA_DESCRIPTION: string;

@@ -679,31 +679,31 @@ export default class extends Language {
 		 */
 
 		COMMAND_CATFACT_DESCRIPTION: 'Let me tell you a mysterious cat fact.',
-		COMMAND_CATFACT_EXTENDED: builder.display('catfact', {
+		COMMAND_CATFACT_EXTENDED: {
 			extendedHelp: `Do **you** know cats are very curious, right? They certainly have a lot of fun and weird facts.
 				This command queries catfact.ninja and retrieves a fact so you can read it.`
-		}),
+		},
 		COMMAND_DOG_DESCRIPTION: 'Cute doggos! ❤',
-		COMMAND_DOG_EXTENDED: builder.display('dog', {
+		COMMAND_DOG_EXTENDED: {
 			extendedHelp: `Do **you** know how cute dogs are? They are so beautiful! This command uses a tiny selection of images
 					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
 					some images that, sadly, got deleted and I cannot retrieve them 💔.`
-		}),
+		},
 		COMMAND_FOX_DESCRIPTION: 'Let me show you an image of a fox!',
-		COMMAND_FOX_EXTENDED: builder.display('fox', {
+		COMMAND_FOX_EXTENDED: {
 			extendedHelp: `This command provides you a random image from PixaBay, always showing 'fox' results. However,
 				it may not be exactly accurate and show you other kinds of foxes.`
-		}),
+		},
 		COMMAND_KITTY_DESCRIPTION: 'KITTENS!',
-		COMMAND_KITTY_EXTENDED: builder.display('kitty', {
+		COMMAND_KITTY_EXTENDED: {
 			extendedHelp: `Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images
 				From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
 				some images that, sadly, got deleted and I cannot retrieve them 💔.`
-		}),
+		},
 		COMMAND_SHIBE_DESCRIPTION: 'Cute shibes!',
-		COMMAND_SHIBE_EXTENDED: builder.display('shibe', {
+		COMMAND_SHIBE_EXTENDED: {
 			extendedHelp: "Everyone loves shibes, I shall love them aswell! They're so adorable ❤."
-		}),
+		},
 
 		/**
 		 * ##############

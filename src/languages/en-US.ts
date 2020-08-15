@@ -338,7 +338,7 @@ export default class extends Language {
 		COMMAND_JOIN_VOICE_NO_CONNECT: `${REDCROSS} I do not have enough permissions to connect to your voice channel. I am missing the **${PERMS.CONNECT}** permission.`,
 		COMMAND_JOIN_VOICE_NO_SPEAK: `${REDCROSS} I can connect... but not speak. Please turn on this permission so I can emit music.`,
 		COMMAND_JOIN_VOICE_SAME: `${REDCROSS} Turn on your volume! I am playing music there!`,
-		COMMAND_JOIN_FAILED: `${REDCROSS} Failed to join your voice channel because there is something wrong with my music player. Please join the support server by using \`@Skyra support\` and alert my developers.`,
+		COMMAND_JOIN_FAILED: `${REDCROSS} I could not join your voice channel because there is something wrong with my music player. Please join the support server by using \`@Skyra support\` and alert my developers.`,
 		COMMAND_LEAVE_DESCRIPTION: 'Leaves the voice channel.',
 		COMMAND_LEAVE_EXTENDED: builder.display(
 			'leave',

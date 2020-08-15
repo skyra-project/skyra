@@ -10,7 +10,7 @@ import type { ScheduledTask, SchemaEntry } from 'klasa';
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const enum Position {
 	Before,

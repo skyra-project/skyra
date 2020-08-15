@@ -1,7 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { Colors } from '@lib/types/constants/Constants';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -14,17 +12,11 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [feedback]: [string]) {
-		if (message.deletable) message.nuke().catch(() => null);
+		// Set the global flag
+		Reflect.set(message.flagArgs, 'global', 'global');
 
-		await this.client.webhookFeedback!.send(
-			new MessageEmbed()
-				.setColor(Colors.Green)
-				.setAuthor(`${message.author.tag}`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(feedback)
-				.setFooter(`${message.author.id} | Feedback`)
-				.setTimestamp()
-		);
-		return message.alert(message.language.tget('COMMAND_FEEDBACK'));
+		// Send the feedback as a suggestion
+		return this.client.commands.get('suggest')!.run(message, [feedback]);
 	}
 
 	public async init() {

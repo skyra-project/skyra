@@ -5,7 +5,7 @@ import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
 import { TOKENS } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { BrawlStarsEmojis } from '@utils/constants';
+import { BrawlStarsEmojis, BrandingColors } from '@utils/constants';
 import { DbSet } from '@lib/structures/DbSet';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 		const FIELDS = message.language.tget('COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS');
 
 		return new MessageEmbed()
-			.setColor(player.nameColor.substr(4))
+			.setColor(player.nameColor?.substr(4) || BrandingColors.Primary)
 			.setTitle(`${player.name} - ${player.tag}`)
 			.setURL(`https://brawlstats.com/profile/${player.tag.substr(1)}`)
 			.addField(
@@ -117,9 +117,13 @@ export default class extends SkyraCommand {
 			.addField(
 				TITLES.OTHER,
 				[
-					`**${FIELDS.CLUB}**: [${player.club.name}](https://brawlstats.com/club/${player.club.tag.substr(1)}) (${player.club.tag})`,
+					player.club.name
+						? `**${FIELDS.CLUB}**: [${player.club.name}](https://brawlstats.com/club/${player.club.tag.substr(1)}) (${player.club.tag})`
+						: '',
 					`**${FIELDS.BRAWLERS_UNLOCKED}**: ${player.brawlers.length} / ${kTotalBrawlers}`
-				].join('\n')
+				]
+					.filter((line) => line !== '')
+					.join('\n')
 			);
 	}
 

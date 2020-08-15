@@ -207,6 +207,12 @@ export default class extends Language {
 		RESOLVER_MINMAX_MAX: (name, max, inclusive) =>
 			inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
 		REACTIONHANDLER_PROMPT: '¿A qué página te gustaría saltar?',
+		SYSTEM_HELP_TITLES: {
+			EXPLAINED_USAGE: '⚙ | ***Uso Explicado***',
+			POSSIBLE_FORMATS: '🔢 | ***Formatos Posibles***',
+			EXAMPLES: '🔗 | ***Ejemplos***',
+			REMINDERS: '⏰ | ***Recordatorio***'
+		},
 		COMMANDMESSAGE_MISSING: 'Faltan uno o más argumentos al final de la entrada.',
 		COMMANDMESSAGE_MISSING_REQUIRED: (name) => `El argumento ${name} es requerido.`,
 		COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Falta una opción requerida: (${possibles})`,

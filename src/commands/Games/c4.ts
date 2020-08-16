@@ -1,7 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
-import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage, Usage } from 'klasa';
 
 export default class extends SkyraCommand {
 	private prompt: Usage;
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		if (user.id === CLIENT_ID) throw message.language.tget('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.tget('COMMAND_GAMES_BOT');
 		if (user.id === message.author.id) throw message.language.tget('COMMAND_GAMES_SELF');

@@ -8,8 +8,8 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { cutText } from '@utils/util';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { MessageEmbed, User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['moderation'],
@@ -23,7 +23,7 @@ import { KlasaMessage, KlasaUser } from 'klasa';
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', KlasaUser?]) {
+	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
@@ -115,7 +115,7 @@ export default class extends RichDisplayCommand {
 		return moderators;
 	}
 
-	private getFilter(type: 'mutes' | 'warnings' | 'warns' | 'all', target: KlasaUser | undefined) {
+	private getFilter(type: 'mutes' | 'warnings' | 'warns' | 'all', target: User | undefined) {
 		switch (type) {
 			case 'mutes':
 				return target

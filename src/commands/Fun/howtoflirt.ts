@@ -4,7 +4,8 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 const imageCoordinates = [
@@ -36,7 +37,7 @@ const imageCoordinates = [
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		const attachment = await this.generate(message, user);
 		return message.channel.send({ files: [{ attachment, name: 'HowToFlirt.png' }] });
 	}
@@ -45,7 +46,7 @@ export default class extends SkyraCommand {
 		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/howtoflirt.png'));
 	}
 
-	private async generate(message: KlasaMessage, user: KlasaUser) {
+	private async generate(message: KlasaMessage, user: User) {
 		if (user.id === message.author.id) user = this.client.user!;
 
 		/* Get the buffers from both profile avatars */

@@ -4,7 +4,8 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -16,7 +17,7 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const userAvatar = await fetchAvatar(user);
 		const image = this.generateImage(userAvatar);
 

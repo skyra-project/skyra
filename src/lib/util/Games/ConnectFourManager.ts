@@ -19,8 +19,8 @@ export class ConnectFourManager extends Collection<string, Game | null> {
 	/**
 	 * Create a new match for a channel
 	 * @param message The message that is managed by this instance
-	 * @param challenger The challenger KlasaUser instance
-	 * @param challengee The challengee KlasaUser instance
+	 * @param challenger The challenger User instance
+	 * @param challengee The challengee User instance
 	 */
 	public create(message: KlasaMessage, challenger: User, challengee: User): Game | null {
 		const game = new Game(message);

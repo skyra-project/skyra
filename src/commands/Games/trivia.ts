@@ -2,9 +2,9 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { ApplyOptions } from '@skyra/decorators';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
 import { shuffle } from '@utils/util';
-import { MessageCollector, MessageEmbed } from 'discord.js';
+import { MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,
@@ -41,7 +41,7 @@ export default class extends RichDisplayCommand {
 			};
 			const collector = new MessageCollector(message.channel, filter, { time: duration * 1000 });
 
-			let winner: KlasaUser | null = null;
+			let winner: User | null = null;
 			// users who have already participated
 			const participants = new Set<string>();
 

@@ -8,7 +8,7 @@ import { APIErrors, Moderation } from '@utils/constants';
 import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
-import { constants, KlasaGuild, KlasaMessage, KlasaUser, Timestamp } from 'klasa';
+import { constants, KlasaGuild, KlasaMessage, Timestamp } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],
@@ -184,7 +184,7 @@ export default class extends SkyraCommand {
 		return `[${this.timestamp.displayUTC(timestamp)}]`;
 	}
 
-	private formatAuthor(author: KlasaUser) {
+	private formatAuthor(author: User) {
 		return `${author.tag}${author.bot ? ' [BOT]' : ''}`;
 	}
 

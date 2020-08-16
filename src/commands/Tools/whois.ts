@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { BrandingColors } from '@utils/constants';
-import { GuildMember, MessageEmbed, Permissions, PermissionString, Role } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { GuildMember, MessageEmbed, Permissions, PermissionString, Role, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
@@ -37,13 +37,13 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => null);
 
 		return message.sendMessage(member ? this.member(message, member) : this.user(message, user));
 	}
 
-	private user(message: KlasaMessage, user: KlasaUser) {
+	private user(message: KlasaMessage, user: User) {
 		const TITLES = message.language.tget('COMMAND_WHOIS_USER_TITLES');
 		const FIELDS = message.language.tget('COMMAND_WHOIS_USER_FIELDS', user);
 

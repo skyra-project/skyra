@@ -1,8 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
-import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { MessageEmbed, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
 		const estimatedPercentage = Math.ceil(percentage * 100);

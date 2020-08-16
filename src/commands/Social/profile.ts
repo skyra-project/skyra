@@ -5,8 +5,9 @@ import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
+import { User } from 'discord.js';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
@@ -27,12 +28,12 @@ export default class extends SkyraCommand {
 	private lightThemeDock: Image = null!;
 	private darkThemeDock: Image = null!;
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const output = await this.showProfile(message, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	public async showProfile(message: KlasaMessage, user: KlasaUser) {
+	public async showProfile(message: KlasaMessage, user: User) {
 		const { users } = await DbSet.connect();
 		const settings = await users.ensureProfile(user.id);
 

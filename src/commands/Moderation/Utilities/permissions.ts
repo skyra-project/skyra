@@ -1,8 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { MessageEmbed, Permissions, PermissionString } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { MessageEmbed, Permissions, PermissionString, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		if (!user) throw message.language.tget('USER_NOT_EXISTENT');
 		const member = await message.guild!.members.fetch(user.id).catch(() => {
 			throw message.language.tget('USER_NOT_IN_GUILD');

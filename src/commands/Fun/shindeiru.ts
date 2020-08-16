@@ -4,7 +4,8 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -20,7 +21,7 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		const attachment = await this.generate(user, message.author);
 		return message.channel.send({ files: [{ attachment, name: 'Shindeiru.png' }] });
 	}
@@ -29,7 +30,7 @@ export default class extends SkyraCommand {
 		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/Shindeiru.png'));
 	}
 
-	private async generate(target: KlasaUser, author: KlasaUser) {
+	private async generate(target: User, author: User) {
 		if (target === author) author = this.client.user!;
 
 		/* Get the buffers from both profile avatars */

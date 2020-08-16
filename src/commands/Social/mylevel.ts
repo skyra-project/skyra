@@ -2,7 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
 import { Time } from '@utils/constants';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
 		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		const memberPoints = memberSettings?.points ?? 0;

@@ -6,11 +6,12 @@ import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/Syste
 import type { Moderation } from '@utils/constants';
 import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { Guild, GuildMember, MessageEmbed, PermissionString, Role, TextChannel, User } from 'discord.js';
-import type { ScheduledTask, SchemaEntry } from 'klasa';
+import type { SchemaEntry } from 'klasa';
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import type { ScheduleEntity } from '@orm/entities/ScheduleEntity';
 
 export const enum Position {
 	Before,
@@ -1652,9 +1653,9 @@ export interface LanguageKeys {
 	COMMAND_REMINDME_CREATE_NO_DURATION: string;
 	COMMAND_REMINDME_CREATE_NO_DESCRIPTION: string;
 	COMMAND_REMINDME_DELETE_NO_ID: string;
-	COMMAND_REMINDME_DELETE: (task: ScheduledTask) => string;
+	COMMAND_REMINDME_DELETE: (task: ScheduleEntity) => string;
 	COMMAND_REMINDME_LIST_EMPTY: string;
-	COMMAND_REMINDME_SHOW_FOOTER: (id: string) => string;
+	COMMAND_REMINDME_SHOW_FOOTER: (id: number) => string;
 	COMMAND_REMINDME_INVALID_ID: string;
 	COMMAND_REMINDME_NOTFOUND: string;
 	COMMAND_REPUTATION_TIME: (remaining: number) => string;

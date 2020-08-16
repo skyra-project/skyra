@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -16,7 +17,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public run(message: KlasaMessage, [target]: [KlasaUser?]) {
+	public run(message: KlasaMessage, [target]: [User?]) {
 		const moderations = (this.store.get('moderations') as unknown) as Moderations | undefined;
 		if (typeof moderations === 'undefined') throw new Error('Moderations command not loaded yet.');
 		return moderations.run(message, ['mutes', target]);
@@ -24,5 +25,5 @@ export default class extends SkyraCommand {
 }
 
 interface Moderations extends SkyraCommand {
-	run(message: KlasaMessage, args: ['mutes' | 'warnings' | 'all', KlasaUser | undefined]): Promise<KlasaMessage>;
+	run(message: KlasaMessage, args: ['mutes' | 'warnings' | 'all', User | undefined]): Promise<KlasaMessage>;
 }

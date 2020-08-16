@@ -1,7 +1,7 @@
 import { mergeDefault } from '@klasa/utils';
 import { Time } from '@utils/constants';
-import { Client, DMChannel, MessageEmbed, MessageReaction, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, KlasaUser, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
+import { Client, DMChannel, MessageEmbed, MessageReaction, Permissions, TextChannel, User } from 'discord.js';
+import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
 
 export class UserRichDisplay extends RichDisplay {
 	public constructor(embed?: MessageEmbed) {
@@ -12,7 +12,7 @@ export class UserRichDisplay extends RichDisplay {
 	public async start(message: KlasaMessage, target: string = message.author.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
 		mergeDefault(
 			{
-				filter: (_: MessageReaction, user: KlasaUser) => user.id === target,
+				filter: (_: MessageReaction, user: User) => user.id === target,
 				time: Time.Minute * 5
 			},
 			options

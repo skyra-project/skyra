@@ -5,7 +5,8 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -21,14 +22,14 @@ import { join } from 'path';
 export default class extends SkyraCommand {
 	private KTemplate: Image = null!;
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		const attachment = await this.generate(message, user);
 		return message.channel.send({ files: [{ attachment, name: 'chase.png' }] });
 	}
 
-	public async generate(message: KlasaMessage, user: KlasaUser) {
-		let chased: KlasaUser | undefined = undefined;
-		let chaser: KlasaUser | undefined = undefined;
+	public async generate(message: KlasaMessage, user: User) {
+		let chased: User | undefined = undefined;
+		let chaser: User | undefined = undefined;
 		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
 		if (user === message.author) [chased, chaser] = [message.author, this.client.user!];
 		else if (this.client.options.owners.concat(CLIENT_ID).includes(user.id)) [chased, chaser] = [message.author, user];

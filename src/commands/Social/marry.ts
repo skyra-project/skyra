@@ -6,8 +6,8 @@ import { CLIENT_ID } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import assert from 'assert';
-import { DMChannel, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { DMChannel, MessageEmbed, TextChannel, User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const SNEYRA_ID = '338249781594030090';
@@ -18,7 +18,7 @@ enum YesNoAnswer {
 	Yes
 }
 
-async function askYesNo(channel: TextChannel | DMChannel, user: KlasaUser, question: string): Promise<YesNoAnswer> {
+async function askYesNo(channel: TextChannel | DMChannel, user: User, question: string): Promise<YesNoAnswer> {
 	await channel.send(question);
 	const messages = await channel.awaitMessages((msg) => msg.author.id === user.id, { time: 60000, max: 1 });
 	if (!messages.size) return YesNoAnswer.Timeout;
@@ -44,7 +44,7 @@ async function askYesNo(channel: TextChannel | DMChannel, user: KlasaUser, quest
 	]
 ])
 export default class extends RichDisplayCommand {
-	public run(message: KlasaMessage, [user]: [KlasaUser | undefined]) {
+	public run(message: KlasaMessage, [user]: [User | undefined]) {
 		return user ? this.marry(message, user) : this.display(message);
 	}
 
@@ -72,7 +72,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async marry(message: KlasaMessage, user: KlasaUser) {
+	private async marry(message: KlasaMessage, user: User) {
 		const { author, channel, language } = message;
 
 		switch (user.id) {

@@ -2,7 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { UserEntity } from '@orm/entities/UserEntity';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
@@ -19,7 +20,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [money, user]: [number, KlasaUser]) {
+	public async run(message: KlasaMessage, [money, user]: [number, User]) {
 		if (message.author === user) throw message.language.tget('COMMAND_PAY_SELF');
 		if (user.bot) return message.sendLocale('COMMAND_SOCIAL_PAY_BOT');
 
@@ -61,7 +62,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async acceptPayment(message: KlasaMessage, user: KlasaUser, money: number) {
+	private async acceptPayment(message: KlasaMessage, user: User, money: number) {
 		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
 		return message.sendMessage(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}

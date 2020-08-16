@@ -3,7 +3,8 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, streamToBuffer } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import GIFEncoder = require('gifencoder');
 
@@ -30,12 +31,12 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const attachment = await this.generate(user);
 		return message.channel.sendFile(attachment, 'triggered.gif');
 	}
 
-	public async generate(user: KlasaUser) {
+	public async generate(user: User) {
 		const encoder = new GIFEncoder(350, 393);
 		const canvas = new Canvas(350, 393);
 

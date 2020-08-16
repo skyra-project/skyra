@@ -3,16 +3,15 @@ import { APIErrors, ConnectFourConstants, Time } from '@utils/constants';
 import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { resolveEmoji } from '@utils/util';
-import { DiscordAPIError } from 'discord.js';
-import { KlasaUser } from 'klasa';
+import { DiscordAPIError, User } from 'discord.js';
 import { Cell } from './Board';
 import { Game } from './Game';
 import { Player, PlayerColor } from './Player';
 
 export class PlayerHuman extends Player {
-	private player: KlasaUser;
+	private player: User;
 
-	public constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor, player: KlasaUser) {
+	public constructor(game: Game, cell: Cell, winning: Cell, color: PlayerColor, player: User) {
 		super(game, cell, winning, color, player.username);
 		this.player = player;
 	}

@@ -1,7 +1,7 @@
 import { FuzzySearch } from '@utils/FuzzySearch';
 import { validateChannelAccess } from '@utils/util';
-import { GuildChannel } from 'discord.js';
-import { Argument, KlasaGuild, KlasaMessage, KlasaUser, Possible } from 'klasa';
+import { GuildChannel, User } from 'discord.js';
+import { Argument, KlasaGuild, KlasaMessage, Possible } from 'klasa';
 
 const CHANNEL_REGEXP = Argument.regex.channel;
 
@@ -28,7 +28,7 @@ export default class extends Argument {
 		throw message.language.tget('RESOLVER_INVALID_CHANNELNAME', possible.name);
 	}
 
-	private getFilter(author: KlasaUser, filter?: (entry: GuildChannel) => boolean) {
+	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {
 		const clientUser = this.client.user!;
 		return typeof filter === 'undefined'
 			? (entry: GuildChannel) => validateChannelAccess(entry, author) && validateChannelAccess(entry, clientUser)

@@ -3,7 +3,8 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { MemberEntity } from '@orm/entities/MemberEntity';
 import { Time } from '@utils/constants';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -25,7 +26,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async add(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
+	public async add(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		if (settings) {
@@ -45,7 +46,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_SOCIAL_ADD', [user.username, amount, amount]);
 	}
 
-	public async remove(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
+	public async remove(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		if (!settings) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
@@ -57,7 +58,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_SOCIAL_REMOVE', [user.username, newAmount, amount]);
 	}
 
-	public async set(message: KlasaMessage, [user, amount]: [KlasaUser, number]) {
+	public async set(message: KlasaMessage, [user, amount]: [User, number]) {
 		// If sets to zero, it shall reset
 		if (amount === 0) return this.reset(message, [user]);
 
@@ -81,7 +82,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale(variation > 0 ? 'COMMAND_SOCIAL_ADD' : 'COMMAND_SOCIAL_REMOVE', [user.username, amount, Math.abs(variation)]);
 	}
 
-	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async reset(message: KlasaMessage, [user]: [User]) {
 		const { members } = await DbSet.connect();
 		await members.delete({ userID: user.id, guildID: message.guild!.id });
 		return message.sendLocale('COMMAND_SOCIAL_RESET', [user.username]);

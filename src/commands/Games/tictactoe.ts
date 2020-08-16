@@ -2,7 +2,8 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
 import { floatPromise } from '@utils/util';
-import { CommandStore, KlasaMessage, KlasaUser, Usage } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage, Usage } from 'klasa';
 
 const EMOJIS = ['↖', '⬆', '↗', '⬅', '⏺', '➡', '↙', '⬇', '↘'];
 const PLAYER = ['⭕', '❌'];
@@ -25,7 +26,7 @@ export default class extends SkyraCommand {
 		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		if (user.id === CLIENT_ID) throw message.language.tget('COMMAND_GAMES_SKYRA');
 		if (user.bot) throw message.language.tget('COMMAND_GAMES_BOT');
 		if (user.id === message.author.id) throw message.language.tget('COMMAND_GAMES_SELF');
@@ -55,7 +56,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	public async game(message: KlasaMessage, players: KlasaUser[]) {
+	public async game(message: KlasaMessage, players: User[]) {
 		// Add all reactions
 		for (const emoji of EMOJIS) await message.react(emoji);
 		const board = [0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -73,12 +74,12 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private _game(message: KlasaMessage, players: KlasaUser[], board: number[]) {
+	private _game(message: KlasaMessage, players: User[], board: number[]) {
 		let timeout: NodeJS.Timeout | undefined = undefined;
 		let turn = 0;
 		let chosen: number | undefined = undefined;
 		let winner: number | null | undefined = undefined;
-		let player: KlasaUser | undefined = undefined;
+		let player: User | undefined = undefined;
 		let blocked = true;
 
 		return new Promise<number | null>((resolve, reject) => {

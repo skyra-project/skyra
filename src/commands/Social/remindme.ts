@@ -6,7 +6,8 @@ import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContex
 import { BrandingColors, Time } from '@utils/constants';
 import { cutText } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, ScheduledTask, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp } from 'klasa';
+import { ScheduleEntity } from '@orm/entities/ScheduleEntity';
 
 const enum Actions {
 	List = 'list',
@@ -15,7 +16,7 @@ const enum Actions {
 	Delete = 'delete'
 }
 
-interface ReminderScheduledTask extends ScheduledTask {
+interface ReminderScheduledTask extends ScheduleEntity {
 	data: {
 		content: string;
 		user: string;

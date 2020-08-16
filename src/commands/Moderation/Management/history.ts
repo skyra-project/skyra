@@ -8,8 +8,8 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { cutText } from '@utils/util';
-import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { MessageEmbed, User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 
@@ -25,7 +25,7 @@ const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb
 	subcommands: true
 })
 export default class extends SkyraCommand {
-	public async overview(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
+	public async overview(message: KlasaMessage, [target = message.author]: [User]) {
 		const logs = await message.guild!.moderation.fetch(target.id);
 		let warnings = 0;
 		let mutes = 0;
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async details(message: KlasaMessage, [target = message.author]: [KlasaUser]) {
+	public async details(message: KlasaMessage, [target = message.author]: [User]) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);

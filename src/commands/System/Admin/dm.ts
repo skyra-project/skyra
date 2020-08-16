@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { MessageOptions } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { MessageOptions, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -15,7 +15,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user, content]: [KlasaUser, string]) {
+	public async run(message: KlasaMessage, [user, content]: [User, string]) {
 		const attachment = message.attachments.size > 0 ? message.attachments.first()!.url : null;
 		const options: MessageOptions = {};
 		if (attachment) options.files = [{ attachment }];

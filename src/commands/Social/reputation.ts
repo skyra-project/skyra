@@ -1,7 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Time } from '@utils/constants';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';
 
 export default class extends SkyraCommand {
@@ -24,7 +25,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [check, user]: ['check', KlasaUser]) {
+	public async run(message: KlasaMessage, [check, user]: ['check', User]) {
 		const date = new Date();
 		const now = date.getTime();
 

@@ -2,8 +2,8 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Moderation } from '@utils/constants';
-import { Permissions } from 'discord.js';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { Permissions, User } from 'discord.js';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration]);
 	}
 
-	private validateAction(message: KlasaMessage, modlog: ModerationEntity, user: KlasaUser) {
+	private validateAction(message: KlasaMessage, modlog: ModerationEntity, user: User) {
 		switch (modlog.type) {
 			case Moderation.TypeCodes.FastTemporaryBan:
 			case Moderation.TypeCodes.TemporaryBan:
@@ -100,17 +100,17 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async checkBan(message: KlasaMessage, user: KlasaUser) {
+	private async checkBan(message: KlasaMessage, user: User) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.tget('COMMAND_UNBAN_MISSING_PERMISSION');
 		if (!(await message.guild!.security.actions.userIsBanned(user))) throw message.language.tget('GUILD_BANS_NOT_FOUND');
 	}
 
-	private checkMute(message: KlasaMessage, user: KlasaUser) {
+	private checkMute(message: KlasaMessage, user: User) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.tget('COMMAND_UNMUTE_MISSING_PERMISSION');
 		if (!message.guild!.security.actions.userIsMuted(user)) throw message.language.tget('COMMAND_MUTE_USER_NOT_MUTED');
 	}
 
-	private async checkVMute(message: KlasaMessage, user: KlasaUser) {
+	private async checkVMute(message: KlasaMessage, user: User) {
 		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.tget('COMMAND_VMUTE_MISSING_PERMISSION');
 		if (!(await message.guild!.security.actions.userIsVoiceMuted(user))) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
 	}

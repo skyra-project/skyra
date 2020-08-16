@@ -1,8 +1,8 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { Role } from 'discord.js';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { Role, User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -34,7 +34,7 @@ import { KlasaMessage, KlasaUser } from 'klasa';
 	]
 ])
 export default class extends SkyraCommand {
-	public async reset(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async reset(message: KlasaMessage, [user]: [User]) {
 		const roles = message.guild!.stickyRoles.get(user.id);
 		if (!roles.length) throw message.language.tget('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_STICKYROLES_RESET', [user.username]);
 	}
 
-	public async remove(message: KlasaMessage, [user, role]: [KlasaUser, Role]) {
+	public async remove(message: KlasaMessage, [user, role]: [User, Role]) {
 		const roles = await message.guild!.stickyRoles.fetch(user.id);
 		if (!roles.length) throw message.language.tget('COMMAND_STICKYROLES_NOTEXISTS', user.username);
 
@@ -50,12 +50,12 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_STICKYROLES_REMOVE', [user.username]);
 	}
 
-	public async add(message: KlasaMessage, [user, role]: [KlasaUser, Role]) {
+	public async add(message: KlasaMessage, [user, role]: [User, Role]) {
 		await message.guild!.stickyRoles.add(user.id, role.id, { author: message.author.id });
 		return message.sendLocale('COMMAND_STICKYROLES_ADD', [user.username]);
 	}
 
-	public async show(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async show(message: KlasaMessage, [user]: [User]) {
 		const roles = await message.guild!.stickyRoles.fetch(user.id);
 		if (!roles.length) throw message.language.tget('COMMAND_STICKYROLES_SHOW_EMPTY');
 

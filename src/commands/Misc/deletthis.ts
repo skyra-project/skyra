@@ -5,7 +5,8 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { KlasaMessage, KlasaUser } from 'klasa';
+import { User } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -23,14 +24,14 @@ export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
 	private readonly skyraID = CLIENT_ID;
 
-	public async run(message: KlasaMessage, [user]: [KlasaUser]) {
+	public async run(message: KlasaMessage, [user]: [User]) {
 		const attachment = await this.generate(message, user);
 		return message.channel.send({ files: [{ attachment, name: 'deletThis.png' }] });
 	}
 
-	public async generate(message: KlasaMessage, user: KlasaUser) {
-		let target: KlasaUser | undefined = undefined;
-		let author: KlasaUser | undefined = undefined;
+	public async generate(message: KlasaMessage, user: User) {
+		let target: User | undefined = undefined;
+		let author: User | undefined = undefined;
 		if (user.id === message.author.id && this.client.options.owners.includes(message.author.id)) throw '💥';
 		if (user === message.author) [target, author] = [message.author, this.client.user!];
 		else if (this.client.options.owners.concat(this.skyraID).includes(user.id)) [target, author] = [message.author, user];

@@ -3,8 +3,9 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { CommandStore, KlasaMessage, KlasaUser } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
+import { User } from 'discord.js';
 
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 		this.kTemplate = await loadImage(join(assetsFolder, '/images/memes/ChangeMyMind.png'));
 	}
 
-	private async generate(author: KlasaUser, text: string) {
+	private async generate(author: User, text: string) {
 		const guy = await fetchAvatar(author, 128);
 
 		return (

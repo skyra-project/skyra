@@ -155,50 +155,51 @@ export default class extends Language {
 		 * ################################
 		 */
 
-		DEFAULT: (key) => `La clave ${key} aún no ha sido traducida a es-ES.`,
+		DEFAULT: ({ key }) => `La clave ${key} aún no ha sido traducida a es-ES.`,
 		DEFAULT_LANGUAGE: 'Lenguaje Predeterminado',
-		SETTING_GATEWAY_KEY_NOEXT: (key) => `The key "${key}" does not exist in the data schema.`,
-		SETTING_GATEWAY_CHOOSE_KEY: (keys) => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
+		SETTING_GATEWAY_KEY_NOEXT: ({ key }) => `The key "${key}" does not exist in the data schema.`,
+		SETTING_GATEWAY_CHOOSE_KEY: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
 		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'This settings group does not have any configurable sub-key.',
-		SETTING_GATEWAY_UNCONFIGURABLE_KEY: (key) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
-		SETTING_GATEWAY_MISSING_VALUE: (entry, value) =>
+		SETTING_GATEWAY_UNCONFIGURABLE_KEY: ({ key }) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
+		SETTING_GATEWAY_MISSING_VALUE: ({ entry, value }) =>
 			`The value "${value}" cannot be removed from the key "${entry.path}" because it does not exist.`,
-		SETTING_GATEWAY_DUPLICATE_VALUE: (entry, value) =>
+		SETTING_GATEWAY_DUPLICATE_VALUE: ({ entry, value }) =>
 			`The value "${value}" cannot be added to the key "${entry.path}" because it was already set.`,
-		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `The settings key "${entry.path}" does not accept the value "${value}".`,
-		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `No pude resolver suficientes ${name}s. Al menos ${min} ${min === 1 ? 'es' : 'son'} requeridos.`,
-		RESOLVER_INVALID_BOOL: (name) => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
-		RESOLVER_INVALID_CHANNEL: (name) => `${name} debe ser una mención de canal o una id de canal válida.`,
-		RESOLVER_INVALID_CUSTOM: (name, type) => `${name} debe ser un válido ${type}.`,
-		RESOLVER_INVALID_DATE: (name) => `${name} debe ser una fecha válida.`,
-		RESOLVER_INVALID_DURATION: (name) => `${name} debe ser una duración válida.`,
-		RESOLVER_INVALID_EMOJI: (name) => `${name} debe ser un emoji o una id de emoji válida.`,
-		RESOLVER_INVALID_FLOAT: (name) => `${name} debe ser un número válido.`,
-		RESOLVER_INVALID_GUILD: (name) => `${name} debe ser una id de servidor válida.`,
-		RESOLVER_INVALID_INT: (name) => `${name} debe ser un número entero válido.`,
-		RESOLVER_INVALID_INVITE: (name) => `${name} debe ser una invitación de servidor válida.`,
-		RESOLVER_INVALID_WAGER: (bet) =>
+		SETTING_GATEWAY_INVALID_FILTERED_VALUE: ({ entry, value }) => `The settings key "${entry.path}" does not accept the value "${value}".`,
+		RESOLVER_MULTI_TOO_FEW: ({ name, min = 1 }) =>
+			`No pude resolver suficientes ${name}s. Al menos ${min} ${min === 1 ? 'es' : 'son'} requeridos.`,
+		RESOLVER_INVALID_BOOL: ({ name }) => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
+		RESOLVER_INVALID_CHANNEL: ({ name }) => `${name} debe ser una mención de canal o una id de canal válida.`,
+		RESOLVER_INVALID_CUSTOM: ({ name, type }) => `${name} debe ser un válido ${type}.`,
+		RESOLVER_INVALID_DATE: ({ name }) => `${name} debe ser una fecha válida.`,
+		RESOLVER_INVALID_DURATION: ({ name }) => `${name} debe ser una duración válida.`,
+		RESOLVER_INVALID_EMOJI: ({ name }) => `${name} debe ser un emoji o una id de emoji válida.`,
+		RESOLVER_INVALID_FLOAT: ({ name }) => `${name} debe ser un número válido.`,
+		RESOLVER_INVALID_GUILD: ({ name }) => `${name} debe ser una id de servidor válida.`,
+		RESOLVER_INVALID_INT: ({ name }) => `${name} debe ser un número entero válido.`,
+		RESOLVER_INVALID_INVITE: ({ name }) => `${name} debe ser una invitación de servidor válida.`,
+		RESOLVER_INVALID_WAGER: ({ bet }) =>
 			`Lo siento, pero ${bet} ${SHINY} es una cantidad no válida para apostar. Puedes apostar una de las siguientes cantidades ${ShinyWager.kValidBetAmounts
 				.map((amount) => `\`${amount}\``)
 				.join(', ')}`,
-		RESOLVER_INVALID_LITERAL: (name) => `La opción no coincide con la única posibilidad: ${name}`,
-		RESOLVER_INVALID_MEMBER: (name) => `${name} debe ser una mención de usuario o una id de usuario válida.`,
-		RESOLVER_INVALID_MESSAGE: (name) => `${name} debe ser una id de mensaje válida.`,
-		RESOLVER_INVALID_PIECE: (name, piece) => `${name} debe ser un nombre de ${piece} válido.`,
-		RESOLVER_INVALID_REGEX_MATCH: (name, pattern) => `${name} debe combinar con el siguiente patrón \`${pattern}\`.`,
-		RESOLVER_INVALID_ROLE: (name) => `${name} debe ser una mención de rol o una id de rol válida.`,
-		RESOLVER_INVALID_STRING: (name) => `${name} debe ser un texto no vacío válido.`,
-		RESOLVER_INVALID_TIME: (name) => `${name} debe ser una duración o fecha válida.`,
-		RESOLVER_INVALID_URL: (name) => `${name} debe ser un enlace válido.`,
-		RESOLVER_INVALID_USER: (name) => `${name} debe ser una mención o una id de usuario válida.`,
-		RESOLVER_INVALID_SNOWFLAKE: (name) => `${name} debe ser un snowflake válido de Discord.`,
+		RESOLVER_INVALID_LITERAL: ({ name }) => `La opción no coincide con la única posibilidad: ${name}`,
+		RESOLVER_INVALID_MEMBER: ({ name }) => `${name} debe ser una mención de usuario o una id de usuario válida.`,
+		RESOLVER_INVALID_MESSAGE: ({ name }) => `${name} debe ser una id de mensaje válida.`,
+		RESOLVER_INVALID_PIECE: ({ name, piece }) => `${name} debe ser un nombre de ${piece} válido.`,
+		RESOLVER_INVALID_REGEX_MATCH: ({ name, pattern }) => `${name} debe combinar con el siguiente patrón \`${pattern}\`.`,
+		RESOLVER_INVALID_ROLE: ({ name }) => `${name} debe ser una mención de rol o una id de rol válida.`,
+		RESOLVER_INVALID_STRING: ({ name }) => `${name} debe ser un texto no vacío válido.`,
+		RESOLVER_INVALID_TIME: ({ name }) => `${name} debe ser una duración o fecha válida.`,
+		RESOLVER_INVALID_URL: ({ name }) => `${name} debe ser un enlace válido.`,
+		RESOLVER_INVALID_USER: ({ name }) => `${name} debe ser una mención o una id de usuario válida.`,
+		RESOLVER_INVALID_SNOWFLAKE: ({ name }) => `${name} debe ser un snowflake válido de Discord.`,
 		RESOLVER_STRING_SUFFIX: ' carácteres',
-		RESOLVER_MINMAX_EXACTLY: (name, min) => `${name} must be exactly ${min}.`,
-		RESOLVER_MINMAX_BOTH: (name, min, max, inclusive) =>
+		RESOLVER_MINMAX_EXACTLY: ({ name, min }) => `${name} must be exactly ${min}.`,
+		RESOLVER_MINMAX_BOTH: ({ name, min, max, inclusive }) =>
 			inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
-		RESOLVER_MINMAX_MIN: (name, min, inclusive) =>
+		RESOLVER_MINMAX_MIN: ({ name, min, inclusive }) =>
 			inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
-		RESOLVER_MINMAX_MAX: (name, max, inclusive) =>
+		RESOLVER_MINMAX_MAX: ({ name, max, inclusive }) =>
 			inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
 		REACTIONHANDLER_PROMPT: '¿A qué página te gustaría saltar?',
 		SYSTEM_HELP_TITLES: {
@@ -208,32 +209,32 @@ export default class extends Language {
 			REMINDERS: '⏰ | ***Recordatorio***'
 		},
 		COMMANDMESSAGE_MISSING: 'Faltan uno o más argumentos al final de la entrada.',
-		COMMANDMESSAGE_MISSING_REQUIRED: (name) => `El argumento ${name} es requerido.`,
-		COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Falta una opción requerida: (${possibles})`,
-		COMMANDMESSAGE_NOMATCH: (possibles) => `Su opción no se pudo encontrar en ninguna de las posibilidades: (${possibles})`,
-		MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error, time, abortOptions) =>
-			`${tag} | **${error}** | Tienes **${time}** segundos para responder a este mensaje con un argumento válido. Escribe **${abortOptions.join(
+		COMMANDMESSAGE_MISSING_REQUIRED: ({ name }) => `El argumento ${name} es requerido.`,
+		COMMANDMESSAGE_MISSING_OPTIONALS: ({ possibles }) => `Falta una opción requerida: (${possibles})`,
+		COMMANDMESSAGE_NOMATCH: ({ possibles }) => `Su opción no se pudo encontrar en ninguna de las posibilidades: (${possibles})`,
+		MONITOR_COMMAND_HANDLER_REPROMPT: ({ tag, name, time, cancelOptions }) =>
+			`${tag} | **${name}** | Tienes **${time}** segundos para responder a este mensaje con un argumento válido. Escribe **${cancelOptions.join(
 				'**, **'
 			)}** para cancelar la solicitud.`,
-		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) =>
+		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: ({ tag, name, time, cancelOptions }) =>
 			`${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions.join(
 				'**, **'
 			)}** para cancelar la solicitud.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Cancelado.',
-		INHIBITOR_COOLDOWN: (remaining) => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
-		INHIBITOR_MISSING_BOT_PERMS: (missing) => `No tengo los permisos suficientes, me faltan: ${this.list(missing, 'y')}`,
+		INHIBITOR_COOLDOWN: ({ remaining }) => `Acabas de usar este comando. Puedes usarlo de nuevo en ${duration(remaining)}.`,
+		INHIBITOR_MISSING_BOT_PERMS: ({ missing }) => `No tengo los permisos suficientes, me faltan: ${this.list(missing, 'y')}`,
 		INHIBITOR_NSFW: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		INHIBITOR_PERMISSIONS: 'No tienes permisos para usar este comando',
-		INHIBITOR_REQUIRED_SETTINGS: (settings) =>
+		INHIBITOR_REQUIRED_SETTINGS: ({ settings }) =>
 			`El servidor requiere ${settings.length === 1 ? 'el ajuste' : 'los ajustes'} del servidor **${settings.join(
 				', '
 			)}**, y por lo tanto, no puedo ejecutar el comando.`,
-		INHIBITOR_RUNIN: (types) => `Éste comando sólo está disponible en los canales de ${types}`,
-		INHIBITOR_RUNIN_NONE: (name) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
+		INHIBITOR_RUNIN: ({ type }) => `Éste comando sólo está disponible en los canales de ${type}`,
+		INHIBITOR_RUNIN_NONE: ({ name }) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
 		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild!.',
 		INHIBITOR_DISABLED_GLOBAL: 'This command has been globally disabled by the bot owner.',
 		COMMAND_BLACKLIST_DESCRIPTION: 'Pone o quita usuarios and servidores de mi lista negra.',
-		COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) =>
+		COMMAND_BLACKLIST_SUCCESS: ({ usersAdded, usersRemoved, guildsAdded, guildsRemoved }) =>
 			[
 				usersAdded.length ? `**Usuarios Añadidos**\n${codeBlock('', usersAdded.join(', '))}` : '',
 				usersRemoved.length ? `**Usuarios Eliminados**\n${codeBlock('', usersRemoved.join(', '))}` : '',
@@ -242,53 +243,54 @@ export default class extends Language {
 			]
 				.filter((val) => val !== '')
 				.join('\n'),
-		COMMAND_UNLOAD: (type, name) => `${GREENTICK} Eliminado con éxito la pieza tipo ${type}: ${name}`,
+		COMMAND_UNLOAD: ({ type, name }) => `${GREENTICK} Eliminado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_UNLOAD_DESCRIPTION: 'Elimina una pieza de Klasa.',
 		COMMAND_TRANSFER_ERROR: `${REDCROSS} El archivo ya había sido transferido o nunca existió.`,
-		COMMAND_TRANSFER_SUCCESS: (type, name) => `${GREENTICK} Transferido con éxito la pieza tipo ${type}: ${name}`,
-		COMMAND_TRANSFER_FAILED: (type, name) => `La transferencia de la pieza tipo ${type}: ${name} al cliente falló. Por favor revisa la consola.`,
+		COMMAND_TRANSFER_SUCCESS: ({ type, name }) => `${GREENTICK} Transferido con éxito la pieza tipo ${type}: ${name}`,
+		COMMAND_TRANSFER_FAILED: ({ type, name }) =>
+			`La transferencia de la pieza tipo ${type}: ${name} al cliente falló. Por favor revisa la consola.`,
 		COMMAND_TRANSFER_DESCRIPTION: 'Transfiere una pieza interna a su carpeta respectiva.',
-		COMMAND_RELOAD: (type, name, time) => `${GREENTICK} Recargada la pieza tipo ${type}: ${name}. (Tomó: ${time})`,
-		COMMAND_RELOAD_ALL: (type, time) => `${GREENTICK} Recargadas todas las piezas tipo ${type}. (Tomó: ${time})`,
-		COMMAND_RELOAD_EVERYTHING: (time) => `${GREENTICK} Recargado todo. (Tomó: ${time})`,
+		COMMAND_RELOAD: ({ type, name, time }) => `${GREENTICK} Recargada la pieza tipo ${type}: ${name}. (Tomó: ${time})`,
+		COMMAND_RELOAD_ALL: ({ type, time }) => `${GREENTICK} Recargadas todas las piezas tipo ${type}. (Tomó: ${time})`,
+		COMMAND_RELOAD_EVERYTHING: ({ time }) => `${GREENTICK} Recargado todo. (Tomó: ${time})`,
 		COMMAND_RELOAD_DESCRIPTION: 'Recarga una pieza de Klasa, o todas las piezas de su lista.',
 		COMMAND_REBOOT: `${LOADING} Reiniciando...`,
 		COMMAND_REBOOT_DESCRIPTION: 'Reinicia el bot.',
 		COMMAND_PING: `${LOADING} Ping?`,
 		COMMAND_PING_DESCRIPTION: 'Establece una prueba de conexión con Discord.',
-		COMMAND_PINGPONG: (diff, ping) => `Pong! (El viaje ida y vuelta tomó: ${diff}ms. Pulso: ${ping}ms.)`,
+		COMMAND_PINGPONG: ({ diff, ping }) => `Pong! (El viaje ida y vuelta tomó: ${diff}ms. Pulso: ${ping}ms.)`,
 		COMMAND_INFO_DESCRIPTION: 'Muestra alguna información sobre mí.',
 		COMMAND_HELP_DESCRIPTION: 'Muestra la ayuda para un comando o todos.',
 		COMMAND_HELP_NO_EXTENDED: 'No está documentado completamente.',
 		COMMAND_HELP_DM: '📥 | La lista de comandos ha sido enviada a tus mensajes privados.',
 		COMMAND_HELP_NODM: `${REDCROSS} | Parece que tienes tus mensajes privados desactivados, no pude mandarte el mensaje.`,
-		COMMAND_HELP_ALL_FLAG: (prefix) =>
+		COMMAND_HELP_ALL_FLAG: ({ prefix }) =>
 			`Mostrando una categoría por página. ¿Problemas con el mensaje? Envía \`${prefix}help --all\` para la lista de todos los comandos en tus Mensajes Directos.`,
-		COMMAND_HELP_COMMAND_COUNT: (n) => `${n} comando${n === 1 ? '' : 's'}`,
-		COMMAND_ENABLE: (type, name) => `+ Activado con éxito la pieza tipo ${type}: ${name}`,
+		COMMAND_HELP_COMMAND_COUNT: ({ n }) => `${n} comando${n === 1 ? '' : 's'}`,
+		COMMAND_ENABLE: ({ type, name }) => `+ Activado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-activa o activa temporalmente una pieza de Klasa. El estado por defecto es restaurado al recargar.',
-		COMMAND_DISABLE: (type, name) => `+ Desactivado con éxito la pieza tipo ${type}: ${name}`,
+		COMMAND_DISABLE: ({ type, name }) => `+ Desactivado con éxito la pieza tipo ${type}: ${name}`,
 		COMMAND_DISABLE_DESCRIPTION: 'Re-desactiva o desactiva temporalmente una pieza de Klasa. El estado por defecto es restaurado al recargar.',
 		COMMAND_DISABLE_WARN: 'Probablemente no quieras desactivar eso, ya que no tendrías ningún comando para re-activarlo.',
 		COMMAND_CONF_NOKEY: 'Debes proveer el nombre de una clave.',
 		COMMAND_CONF_NOVALUE: 'Debes proveer un valor para la clave.',
-		COMMAND_CONF_GUARDED: (name) => `La pieza ${toTitleCase(name)} no debería ser desactivada.`,
-		COMMAND_CONF_UPDATED: (key, response) => `Actualizado con éxito la clave **${key}** al valor: \`${response}\`.`,
+		COMMAND_CONF_GUARDED: ({ name }) => `La pieza ${toTitleCase(name)} no debería ser desactivada.`,
+		COMMAND_CONF_UPDATED: ({ key, response }) => `Actualizado con éxito la clave **${key}** al valor: \`${response}\`.`,
 		COMMAND_CONF_KEY_NOT_ARRAY: "Esta clave no acepta múltiples valores. Usa la acción 'reset' en su lugar.",
-		COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
-		COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
-		COMMAND_CONF_RESET: (key, response) => `The key **${key}** has been reset to: \`${response}\``,
-		COMMAND_CONF_NOCHANGE: (key) => `The value for **${key}** was already that value.`,
+		COMMAND_CONF_GET_NOEXT: ({ key }) => `The key **${key}** does not seem to exist.`,
+		COMMAND_CONF_GET: ({ key, value }) => `The value for the key **${key}** is: \`${value}\``,
+		COMMAND_CONF_RESET: ({ key, value }) => `The key **${key}** has been reset to: \`${value}\``,
+		COMMAND_CONF_NOCHANGE: ({ key }) => `The value for **${key}** was already that value.`,
 		COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server settings.',
-		COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
+		COMMAND_CONF_SERVER: ({ key, list }) => `**Server Setting ${key}**\n${list}`,
 		COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
-		COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
+		COMMAND_CONF_USER: ({ key, list }) => `**User Setting ${key}**\n${list}`,
 		COMMAND_CONF_SETTING_NOT_SET: 'No Establecido',
 		MESSAGE_PROMPT_TIMEOUT: 'La solicitud no recibió ninguna respuesta a tiempo.',
 		TEXT_PROMPT_ABORT_OPTIONS: ['abortar', 'parar', 'cancelar'],
-		COMMAND_LOAD: (time, type, name) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,
+		COMMAND_LOAD: ({ time, type, name }) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,
 		COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-		COMMAND_LOAD_ERROR: (type, name, error) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
+		COMMAND_LOAD_ERROR: ({ type, name, error }) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 		COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 		/**
@@ -297,8 +299,8 @@ export default class extends Language {
 		 * ################################
 		 */
 
-		ARGUMENT_RANGE_INVALID: (name: string) => `${name} debe ser un número o un rango de números.`,
-		ARGUMENT_RANGE_MAX: (name: string, maximum: number) =>
+		ARGUMENT_RANGE_INVALID: ({ name }) => `${name} debe ser un número o un rango de números.`,
+		ARGUMENT_RANGE_MAX: ({ name, maximum }) =>
 			`El argumento ${name} acepta un rango de máximo ${maximum} ${maximum === 1 ? 'número' : 'números'}`,
 
 		COMMAND_ADD_DESCRIPTION: 'Añade una canción a la cola.',
@@ -323,18 +325,18 @@ export default class extends Language {
 			],
 			multiline: true
 		},
-		COMMAND_ADD_PLAYLIST: (amount) =>
+		COMMAND_ADD_PLAYLIST: ({ amount }) =>
 			amount === 1 ? '🎵 Añadida **una** canción a la cola 🎶' : `🎵 Añadidas **${amount}** canciones a la cola 🎶`,
-		COMMAND_ADD_SONG: (title) => `🎵 Añadida la canción **${title}** a la cola 🎶`,
+		COMMAND_ADD_SONG: ({ title }) => `🎵 Añadida la canción **${title}** a la cola 🎶`,
 		COMMAND_CLEAR_DESCRIPTION: 'Borra las canciones de la cola.',
 		COMMAND_CLEAR_DENIED: '¡No puedes ejecutar este comando mientras que hayan más de 4 usuarios! ¡Debes ser el Dj de esta fiesta!',
-		COMMAND_CLEAR_SUCCESS: (amount) =>
+		COMMAND_CLEAR_SUCCESS: ({ amount }) =>
 			amount === 1 ? '🗑 Una canción fue borrada de la cola.' : `🗑 ${amount} canciones fueron borradas de la cola.`,
 		COMMAND_JOIN_DESCRIPTION: 'Unirse al canal de voz del autor del mensaje.',
 		COMMAND_JOIN_NO_MEMBER:
 			'Lo siento, pero Discord no me ha mandado la información necesaria que necesito para saber en qué canal de voz estás conectado/a...',
 		COMMAND_JOIN_NO_VOICECHANNEL: 'No estás conectado/a a un canal de voz.',
-		COMMAND_JOIN_SUCCESS: (channel) => `Me he conectado con éxito al canal de voz ${channel}`,
+		COMMAND_JOIN_SUCCESS: ({ channel }) => `Me he conectado con éxito al canal de voz ${channel}`,
 		COMMAND_JOIN_VOICE_DIFFERENT: 'Lo siento, pero estoy reproduciendo música en otro canal de voz. ¡Intenta de nuevo más tarde o únete a ellos!',
 		COMMAND_JOIN_VOICE_FULL: 'No puedo unirme a tu canal de voz, está lleno... ¡echa a alguien con las botas o haz espacio para mí!',
 		COMMAND_JOIN_VOICE_NO_CONNECT:
@@ -354,7 +356,7 @@ export default class extends Language {
 			examples: ['leave', 'leave --removeall', 'leave --ra', 'leave --soft'],
 			multiline: true
 		},
-		COMMAND_LEAVE_SUCCESS: (channel) => `Me he desconectado con éxito del canal de voz ${channel}`,
+		COMMAND_LEAVE_SUCCESS: ({ channel }) => `Me he desconectado con éxito del canal de voz ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: 'Pausa la canción actual.',
 		COMMAND_PAUSE_SUCCESS: '⏸ Pausado.',
 		COMMAND_PLAY_DESCRIPTION: '¡Empecemos la cola!',
@@ -382,24 +384,24 @@ export default class extends Language {
 			multiline: true
 		},
 		COMMAND_PLAY_END: '⏹ Del 1 al 10, siendo 1 la peor puntuación y 10 la mejor, ¿cómo valorarías la sesión? ¡Ya ha terminado!',
-		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
-		COMMAND_PLAY_QUEUE_PAUSED: (song) => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
+		COMMAND_PLAY_NEXT: ({ title, requester }) => `🎧 Reproduciendo: **${title}**, pedida por: **${requester}**`,
+		COMMAND_PLAY_QUEUE_PAUSED: ({ song }) => `¡Había una canción pausada! ¡Reproduciéndolo ahora! Ahora reproduciendo: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: '¡Ey! ¡El disco ya está girando!',
 		COMMAND_PLAY_QUEUE_EMPTY:
 			'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
 		COMMAND_PLAYING_DESCRIPTION: 'Obtén información de la canción actual.',
-		COMMAND_PLAYING_DURATION: (time) => `**Duración**: ${time}`,
+		COMMAND_PLAYING_DURATION: ({ duration }) => `**Duración**: ${duration}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: '¿Es conmigo? Porque no hay nada en reproducción...',
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: 'Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.',
 		COMMAND_REPEAT_DESCRIPTION: 'Se alterna repitiendo la canción actual.',
-		COMMAND_REPEAT_SUCCESS: (enabled) =>
+		COMMAND_REPEAT_SUCCESS: ({ enabled }) =>
 			enabled
 				? "This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!"
 				: 'En realidad, también me estaba cansando de esto, pero no quería decir nada.',
 		COMMAND_QUEUE_DESCRIPTION: 'Check the queue list.',
 		COMMAND_QUEUE_LAST: 'There are no more songs! After the one playing is over, the session will end!',
-		COMMAND_QUEUE_TITLE: (guildname) => `Music queue for ${guildname}`,
-		COMMAND_QUEUE_LINE: (position, duration, title, url, requester) =>
+		COMMAND_QUEUE_TITLE: ({ guildname }) => `Music queue for ${guildname}`,
+		COMMAND_QUEUE_LINE: ({ position, duration, title, url, requester }) =>
 			`**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
 		COMMAND_QUEUE_NOWPLAYING: ({ duration, title, url, requester, timeRemaining }) =>
 			[
@@ -412,22 +414,22 @@ export default class extends Language {
 				.join(' | '),
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
-		COMMAND_QUEUE_TOTAL: (songs, remainingTime) =>
+		COMMAND_QUEUE_TOTAL: ({ songs, remainingTime }) =>
 			`${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
 		COMMAND_QUEUE_EMPTY: 'parece que nada se está reproduciendo en este momento y la cola está vacía, ¿por qué no inicias el disco?',
-		COMMAND_QUEUE_DASHBOARD_INFO: (guild) =>
+		COMMAND_QUEUE_DASHBOARD_INFO: ({ guild }) =>
 			`¿Sabías que también puedes administrar tu música usando una aplicación web elegante? [Haga clic aquí para ir allí](https://skyra.pw/music/${guild.id})`,
 		COMMAND_REMOVE_DESCRIPTION: 'Elimina una canción de la lista de cola.',
 		COMMAND_REMOVE_INDEX_INVALID: 'mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
-		COMMAND_REMOVE_INDEX_OUT: (amount) =>
+		COMMAND_REMOVE_INDEX_OUT: ({ amount }) =>
 			`he intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
 		COMMAND_REMOVE_DENIED: [
 			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
 			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'
 		].join(' '),
-		COMMAND_REMOVE_SUCCESS: (song) => `🗑 Borrada la canción **${song.safeTitle}**, pedida por <@${song.requester}>, de la cola.`,
+		COMMAND_REMOVE_SUCCESS: ({ song }) => `🗑 Borrada la canción **${song.safeTitle}**, pedida por <@${song.requester}>, de la cola.`,
 		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
-		COMMAND_SEEK_SUCCESS: (time) => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
+		COMMAND_SEEK_SUCCESS: ({ time }) => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: 'Reanuda la canción actual.',
 		COMMAND_RESUME_SUCCESS: '▶ Reanudado.',
 		COMMAND_ROLESET_DESCRIPTION: 'Gestionar conjuntos de roles únicos.',
@@ -457,22 +459,22 @@ export default class extends Language {
 			reminder: 'This command can add and/or remove multiple roles at the same time.',
 			multiline: true
 		},
-		COMMAND_ROLESET_CREATED: (name, roles) => `El conjunto de roles único ${name} se ha creado con los siguientes roles: ${roles}`,
-		COMMAND_ROLESET_ADDED: (name, roles) => `El conjunto de roles único ${name} ahora también tiene los siguientes roles: ${roles}.`,
-		COMMAND_ROLESET_INVALID_NAME: (name) => `No puede eliminar el conjunto de roles único ${name} porque no existe.`,
-		COMMAND_ROLESET_REMOVED: (name, roles) => `El conjunto de roles único ${name} ya no incluirá los siguientes roles:${roles}`,
+		COMMAND_ROLESET_CREATED: ({ name, roles }) => `El conjunto de roles único ${name} se ha creado con los siguientes roles: ${roles}`,
+		COMMAND_ROLESET_ADDED: ({ name, roles }) => `El conjunto de roles único ${name} ahora también tiene los siguientes roles: ${roles}.`,
+		COMMAND_ROLESET_INVALID_NAME: ({ name }) => `No puede eliminar el conjunto de roles único ${name} porque no existe.`,
+		COMMAND_ROLESET_REMOVED: ({ name, roles }) => `El conjunto de roles único ${name} ya no incluirá los siguientes roles:${roles}`,
 		COMMAND_ROLESET_RESET_EMPTY: `${REDCROSS} There are no rolesets configured in this groupo.`,
 		COMMAND_ROLESET_RESET_ALL: `${GREENTICK} Successfully removed all rolesets.`,
-		COMMAND_ROLESET_RESET_NOT_EXISTS: (name) => `${REDCROSS} The roleset \`${name}\` does not exist in this server.`,
-		COMMAND_ROLESET_RESET_GROUP: (name) => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server.`,
-		COMMAND_ROLESET_UPDATED: (name) => `El conjunto de roles único ${name} se ha actualizado.`,
+		COMMAND_ROLESET_RESET_NOT_EXISTS: ({ name }) => `${REDCROSS} The roleset \`${name}\` does not exist in this server.`,
+		COMMAND_ROLESET_RESET_GROUP: ({ name }) => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server.`,
+		COMMAND_ROLESET_UPDATED: ({ name }) => `El conjunto de roles único ${name} se ha actualizado.`,
 		COMMAND_SHUFFLE_DESCRIPTION: 'Aleatoriza el orden de las canciones en la cola.',
-		COMMAND_SHUFFLE_SUCCESS: (amount) => `${GREENTICK} Canciones aleatorias exitosas de ${amount}.`,
+		COMMAND_SHUFFLE_SUCCESS: ({ amount }) => `${GREENTICK} Canciones aleatorias exitosas de ${amount}.`,
 		COMMAND_SKIP_DESCRIPTION: 'Salta la canción actual.',
 		COMMAND_SKIP_PERMISSIONS: 'No puedes ejecutar este comando, debes ser un DJ o un Moderador.',
 		COMMAND_SKIP_VOTES_VOTED: 'Ya has votado para saltar esta canción.',
-		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votos: ${amount} de ${needed}`,
-		COMMAND_SKIP_SUCCESS: (title) => `⏭ Saltada la canción ${title}.`,
+		COMMAND_SKIP_VOTES_TOTAL: ({ amount, needed }) => `🔸 | Votos: ${amount} de ${needed}`,
+		COMMAND_SKIP_SUCCESS: ({ title }) => `⏭ Saltada la canción ${title}.`,
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Revisa cuánto tiempo falta para terminar la canción.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: '¿Es conmigo? La cola está vacía...',
 		COMMAND_PROMOTE_DESCRIPTION: 'Promociona una canción al frente de la fila',
@@ -481,11 +483,11 @@ export default class extends Language {
 			examples: ['5'],
 			reminder: 'Este comando requiere que seas DJ o moderador para usarlo'
 		},
-		COMMAND_PROMOTE_SUCCESS: (song) => `${GREENTICK} **${song.safeTitle}** (${song}) promovido con éxito a la parte superior de la cola`,
+		COMMAND_PROMOTE_SUCCESS: ({ song }) => `${GREENTICK} **${song.safeTitle}** (${song}) promovido con éxito a la parte superior de la cola`,
 		COMMAND_VOLUME_DESCRIPTION: 'Controla el volumen para la canción.',
-		COMMAND_VOLUME_SUCCESS: (volume) => `📢 Volumen: ${volume}%`,
-		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volumen ajustado a: ${volume}%`,
-		COMMAND_VOLUME_CHANGED_EXTREME: (emoji, text, volume) => `${emoji} ${text} ajustado a: ${volume}%`,
+		COMMAND_VOLUME_SUCCESS: ({ volume }) => `📢 Volumen: ${volume}%`,
+		COMMAND_VOLUME_CHANGED: ({ emoji, volume }) => `${emoji} Volumen ajustado a: ${volume}%`,
+		COMMAND_VOLUME_CHANGED_EXTREME: ({ emoji, text, volume }) => `${emoji} ${text} ajustado a: ${volume}%`,
 		COMMAND_VOLUME_CHANGED_TEXTS: createPick([
 			'**VOLUMEN EXTREMO**',
 			'**VOLUMEN TIPO NACELLE DE AVIÓN**',
@@ -509,12 +511,12 @@ export default class extends Language {
 		MUSICMANAGER_SETVOLUME_LOUD: 'Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!',
 		MUSICMANAGER_PLAY_NO_SONGS: '¡No hay más canciones en la cola!',
 		MUSICMANAGER_PLAY_PLAYING: 'Los discos están girando, ¿no los escuchas?',
-		MUSICMANAGER_STUCK: (milliseconds) =>
+		MUSICMANAGER_STUCK: ({ milliseconds }) =>
 			`${LOADING} Espera un momento, he tenido un pequeño problema. ¡Estaré de vuelta en: ${duration(milliseconds)}!`,
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
-		COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path) => `Currently at: \\📁 ${path}`,
-		COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: ${path}`,
+		COMMAND_CONF_MENU_RENDER_AT_FOLDER: ({ path }) => `Currently at: \\📁 ${path}`,
+		COMMAND_CONF_MENU_RENDER_AT_PIECE: ({ path }) => `Currently at: ${path}`,
 		COMMAND_CONF_MENU_RENDER_NOKEYS: 'There are no configurable keys for this folder',
 		COMMAND_CONF_MENU_RENDER_SELECT: 'Please select any of the following entries',
 		COMMAND_CONF_MENU_RENDER_TCTITLE: 'Text Commands:',
@@ -522,7 +524,7 @@ export default class extends Language {
 		COMMAND_CONF_MENU_RENDER_REMOVE: '• Remove Value → `remove <value>`',
 		COMMAND_CONF_MENU_RENDER_RESET: '• Reset Value → `reset`',
 		COMMAND_CONF_MENU_RENDER_UNDO: '• Undo Update → `undo`',
-		COMMAND_CONF_MENU_RENDER_CVALUE: (value) => `Current Value: **\`\`${value}\`\`**`,
+		COMMAND_CONF_MENU_RENDER_CVALUE: ({ value }) => `Current Value: **\`\`${value}\`\`**`,
 		COMMAND_CONF_MENU_RENDER_BACK: 'Press ◀ to go back',
 		COMMAND_CONF_MENU_INVALID_KEY: 'Invalid Key, please try again with any of the following options.',
 		COMMAND_CONF_MENU_INVALID_ACTION: 'Invalid Action, please try again with any of the following options.',
@@ -962,12 +964,12 @@ export default class extends Language {
 				oncePerWeek: 'Una vez por semana',
 				unknown: 'Desconocido'
 			},
-			WAR_LOG_PUBLIC_DESCR: (isWarLogPublic) => (isWarLogPublic ? 'Si' : 'No')
+			WAR_LOG_PUBLIC_DESCR: ({ isWarLogPublic }) => (isWarLogPublic ? 'Si' : 'No')
 		},
-		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: (playertag) =>
+		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: ({ playertag }) =>
 			`Lo siento, \`${playertag}\` no es una etiqueta de jugador de Choque de clanes válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
-		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: (clan) => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
-		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: (playertag) =>
+		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: ({ clan }) => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
+		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: ({ playertag }) =>
 			`Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
 		COMMAND_FFXIV_DESCRIPTION: 'Consulta la API de Final Fantasy 14 para obtener datos del juego',
 		COMMAND_FFXIV_EXTENDED: {
@@ -1023,22 +1025,22 @@ export default class extends Language {
 			'¿Estás seguro de que juegan en la plataforma proporcionada? (PC [predeterminado], Xbox o PSN son compatibles)'
 		].join('\n'),
 		COMMAND_FORTNITE_TITLES: {
-			TITLE: (epicUserHandle) => `Estadísticas de jugadores de Fortnite para ${epicUserHandle}`,
+			TITLE: ({ epicUserHandle }) => `Estadísticas de jugadores de Fortnite para ${epicUserHandle}`,
 			LIFETIME_STATS: '**_Estadísticas de por vida_**',
 			SOLOS: '**_Solos_**',
 			DUOS: '**_Duos_**',
 			SQUADS: '**_Escuadrones_**',
-			WINS: (count) => `Victorias: **\`${count}\`**`,
-			KILLS: (count) => `Matas: **\`${count}\`**`,
-			KDR: (count) => `Mata / Relación de la muerte: **\`${count}%\`**`,
-			MATCHES_PLAYED: (count) => `Partidos jugados: **\`${count}\`**`,
-			TOP_1S: (count) => `Top 1s: **\`${count}\`**`,
-			TOP_3S: (count) => `Top 3s: **\`${count}\`**`,
-			TOP_5S: (count) => `Top 5s: **\`${count}\`**`,
-			TOP_6S: (count) => `Top 6s: **\`${count}\`**`,
-			TOP_10S: (count) => `Top 10s: **\`${count}\`**`,
-			TOP_12S: (count) => `Top 12s: **\`${count}\`**`,
-			TOP_25S: (count) => `Top 25s: **\`${count}\`**`
+			WINS: ({ count }) => `Victorias: **\`${count}\`**`,
+			KILLS: ({ count }) => `Matas: **\`${count}\`**`,
+			KDR: ({ count }) => `Mata / Relación de la muerte: **\`${count}%\`**`,
+			MATCHES_PLAYED: ({ count }) => `Partidos jugados: **\`${count}\`**`,
+			TOP_1S: ({ count }) => `Top 1s: **\`${count}\`**`,
+			TOP_3S: ({ count }) => `Top 3s: **\`${count}\`**`,
+			TOP_5S: ({ count }) => `Top 5s: **\`${count}\`**`,
+			TOP_6S: ({ count }) => `Top 6s: **\`${count}\`**`,
+			TOP_10S: ({ count }) => `Top 10s: **\`${count}\`**`,
+			TOP_12S: ({ count }) => `Top 12s: **\`${count}\`**`,
+			TOP_25S: ({ count }) => `Top 25s: **\`${count}\`**`
 		},
 		COMMAND_OVERWATCH_DESCRIPTION: 'Obtiene estadísticas de jugador para un jugador de Overwatch',
 		COMMAND_OVERWATCH_EXTENDED: {
@@ -1055,46 +1057,46 @@ export default class extends Language {
 			],
 			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
 		},
-		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: (playerTag) =>
+		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: ({ playerTag }) =>
 			[
 				`\`${playerTag}\` es un nombre de jugador no válido`,
 				'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `MagicPants#112369`.',
 				'Para Xbox y Playstation tiene que ser su nombre de usuario.'
 			].join('\n'),
-		COMMAND_OVERWATCH_QUERY_FAIL: (player, platform) =>
+		COMMAND_OVERWATCH_QUERY_FAIL: ({ player, platform }) =>
 			[
 				`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?`,
 				'También asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.'
 			].join('\n'),
-		COMMAND_OVERWATCH_NO_STATS: (player) =>
+		COMMAND_OVERWATCH_NO_STATS: ({ player }) =>
 			`Encontré un jugador con la etiqueta \`${player}\` pero no había estadísticas disponibles para ellos.`,
 		COMMMAND_OVERWATCH_EMBED_DATA: {
 			TITLE: 'Haga clic aquí para obtener más detalles en overwatchtracker.com',
 			RATINGS_TITLE: 'Calificaciones',
 			NO_AVERAGE: 'No hay suficientes datos para determinar el promedio.',
-			AUTHOR: (name) => `Estadísticas de jugador de Overwatch para ${name}`,
-			PLAYER_LEVEL: (level) => `**Nivel de jugador:** ${this.groupDigits(level)}`,
-			PRESTIGE_LEVEL: (level) => `**Nivel de prestigio:** ${this.groupDigits(level)}`,
-			TOTAL_GAMES_WON: (gamesWon) => `**Total de juegos ganados:** ${gamesWon ? this.groupDigits(gamesWon) : 'None'}`,
-			RATINGS: (ratings) =>
+			AUTHOR: ({ name }) => `Estadísticas de jugador de Overwatch para ${name}`,
+			PLAYER_LEVEL: ({ level }) => `**Nivel de jugador:** ${this.groupDigits(level)}`,
+			PRESTIGE_LEVEL: ({ level }) => `**Nivel de prestigio:** ${this.groupDigits(level)}`,
+			TOTAL_GAMES_WON: ({ gamesWon }) => `**Total de juegos ganados:** ${gamesWon ? this.groupDigits(gamesWon) : 'None'}`,
+			RATINGS: ({ ratings }) =>
 				ratings
 					.map(
 						(rating) =>
 							`**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`
 					)
 					.join('\n'),
-			FINAL_BLOWS: (finalBlows) => `**Golpes finales:** ${this.groupDigits(finalBlows)}`,
-			DEATHS: (deaths) => `**Muertes:** ${this.groupDigits(deaths)}`,
-			DAMAGE_DEALT: (damageDone) => `**Daño infligido:** ${this.groupDigits(damageDone)}`,
-			HEALING: (healingDone) => `**Curación:** ${this.groupDigits(healingDone)}`,
-			OBJECTIVE_KILLS: (objectiveKills) => `**El objetivo mata:** ${this.groupDigits(objectiveKills)}`,
-			SOLO_KILLS: (soloKills) => `**Solo mata:** ${this.groupDigits(soloKills)}`,
-			PLAY_TIME: (timePlayed) => `**Tiempo de juego:** ${this.duration(timePlayed, 2)}`,
-			GAMES_WON: (gamesWon) => `**Juegos ganados:** ${this.groupDigits(gamesWon)}`,
-			GOLDEN_MEDALS: (medalsGold) => `**Medallas de oro ganadas:** ${this.groupDigits(medalsGold)}`,
-			SILVER_MEDALS: (medalsSiver) => `**Medallas de plata ganadas:** ${this.groupDigits(medalsSiver)}`,
-			BRONZE_MEDALS: (medalsBronze) => `**Medallas de bronce ganadas:** ${this.groupDigits(medalsBronze)}`,
-			TOP_HERO: (heroName, timePlayed) => `**${toTitleCase(heroName)}** (${timePlayed})`,
+			FINAL_BLOWS: ({ finalBlows }) => `**Golpes finales:** ${this.groupDigits(finalBlows)}`,
+			DEATHS: ({ deaths }) => `**Muertes:** ${this.groupDigits(deaths)}`,
+			DAMAGE_DEALT: ({ damageDone }) => `**Daño infligido:** ${this.groupDigits(damageDone)}`,
+			HEALING: ({ healingDone }) => `**Curación:** ${this.groupDigits(healingDone)}`,
+			OBJECTIVE_KILLS: ({ objectiveKills }) => `**El objetivo mata:** ${this.groupDigits(objectiveKills)}`,
+			SOLO_KILLS: ({ soloKills }) => `**Solo mata:** ${this.groupDigits(soloKills)}`,
+			PLAY_TIME: ({ timePlayed }) => `**Tiempo de juego:** ${this.duration(timePlayed, 2)}`,
+			GAMES_WON: ({ gamesWon }) => `**Juegos ganados:** ${this.groupDigits(gamesWon)}`,
+			GOLDEN_MEDALS: ({ medalsGold }) => `**Medallas de oro ganadas:** ${this.groupDigits(medalsGold)}`,
+			SILVER_MEDALS: ({ medalsSilver }) => `**Medallas de plata ganadas:** ${this.groupDigits(medalsSilver)}`,
+			BRONZE_MEDALS: ({ medalsBronze }) => `**Medallas de bronce ganadas:** ${this.groupDigits(medalsBronze)}`,
+			TOP_HERO: ({ heroName, timePlayed }) => `**${toTitleCase(heroName)}** (${timePlayed})`,
 			HEADERS: {
 				ACCOUNT: '__Estadísticas de cuenta__',
 				QUICKPLAY: '__Estadísticas de Quickplay__',
@@ -2099,7 +2101,7 @@ export default class extends Language {
 			ABILITY: 'Habilidad',
 			EXTERNAL_RESOURCES: 'Recursos externos'
 		},
-		COMMAND_ABILITY_QUERY_FAIL: (ability) =>
+		COMMAND_ABILITY_QUERY_FAIL: ({ ability }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
 		COMMAND_FLAVORS_DESCRIPTION: 'Obtiene las entradas de dex en varios juegos para un Pokémon.',
 		COMMAND_FLAVORS_EXTENDED: {
@@ -2110,7 +2112,8 @@ export default class extends Language {
 			explainedUsage: [['pokemon', 'El Pokémon para el que quieres obtener textos de sabor.']],
 			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
 		},
-		COMMAND_FLAVORS_QUERY_FAIL: (pokemon) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
+		COMMAND_FLAVORS_QUERY_FAIL: ({ pokemon }) =>
+			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 		COMMAND_ITEM_DESCRIPTION: 'Obtiene datos para cualquier elemento Pokémon usando mi conjunto de datos Pokémon.',
 		COMMAND_ITEM_EXTENDED: {
 			extendedHelp: 'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
@@ -2121,10 +2124,10 @@ export default class extends Language {
 			ITEM: 'Ítem',
 			GENERATION_INTRODUCED: 'Generación introducida',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
-			AVAILABLE_IN_GENERATION_8_DATA: (available) => (available ? 'Sí' : 'No'),
+			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Sí' : 'No'),
 			EXTERNAL_RESOURCES: 'Recursos externos'
 		},
-		COMMAND_ITEM_QUERY_FAIL: (item) =>
+		COMMAND_ITEM_QUERY_FAIL: ({ item }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${item}\` es realmente un elemento en Pokémon?`,
 		COMMAND_LEARN_DESCRIPTION: 'Recupera si un Pokémon dado puede aprender uno o más movimientos dados usando mi conjunto de datos Pokémon.',
 		COMMAND_LEARN_EXTENDED: {
@@ -2142,7 +2145,7 @@ export default class extends Language {
 			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		},
 		COMMAND_LEARN_METHOD_TYPES: {
-			levelUpMoves: (level) => `por subir de nivel en el nivel ${level}`,
+			levelUpMoves: ({ level }) => `por subir de nivel en el nivel ${level}`,
 			eventMoves: () => 'a través de un evento',
 			tutorMoves: () => 'de un tutor de movimiento',
 			eggMoves: () => 'como un movimiento de huevo',
@@ -2150,15 +2153,15 @@ export default class extends Language {
 			tmMoves: () => 'utilizando un Máquina Técnico o Disco Técnico',
 			dreamworldMoves: () => 'a través de una captura de Pokémon Dream World'
 		},
-		COMMAND_LEARN_INVALID_GENERATION: (generation) => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
-		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) =>
+		COMMAND_LEARN_INVALID_GENERATION: ({ generation }) => `Lo siento, pero ${generation} no es una Generación Pokémon admitida`,
+		COMMAND_LEARN_METHOD: ({ generation, pokemon, move, method }) =>
 			`En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
-		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) =>
+		COMMAND_LEARN_QUERY_FAILED: ({ pokemon, moves }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves
 				.map((move) => `\`${move}\``)
 				.join('y')} son realmente movimientos?`,
-		COMMAND_LEARN_CANNOT_LEARN: (pokemon, moves) => `Parece que ${toTitleCase(pokemon)} no puede aprender ${this.list(moves, 'o')}`,
-		COMMAND_LEARN_TITLE: (pokemon, generation) => `Datos de Learnset para ${toTitleCase(pokemon)} en la generación ${generation}`,
+		COMMAND_LEARN_CANNOT_LEARN: ({ pokemon, moves }) => `Parece que ${toTitleCase(pokemon)} no puede aprender ${this.list(moves, 'o')}`,
+		COMMAND_LEARN_TITLE: ({ pokemon, generation }) => `Datos de Learnset para ${toTitleCase(pokemon)} en la generación ${generation}`,
 		COMMAND_MOVE_DESCRIPTION: 'Obtiene datos para cualquier movimiento Pokémon usando mi conjunto de datos Pokémon',
 		COMMAND_MOVE_EXTENDED: {
 			extendedHelp: 'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
@@ -2182,13 +2185,13 @@ export default class extends Language {
 			Z_CRYSTAL: 'Cristal Z',
 			GMAX_POKEMON: 'Gigamax Pokémon',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
-			AVAILABLE_IN_GENERATION_8_DATA: (available) => (available ? 'Sí' : 'No'),
+			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Sí' : 'No'),
 			EXTERNAL_RESOURCES: 'Recursos externos',
 			NONE: 'Ninguno',
 			MAX_MOVE_POWER: 'Potencia base como Movimiento Dinamax (Dinamax)',
 			Z_MOVE_POWER: 'Potencia base como Movimiento Z (Cristal Z)'
 		},
-		COMMAND_MOVE_QUERY_FAIL: (move: string) =>
+		COMMAND_MOVE_QUERY_FAIL: ({ move }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Obtiene datos de cualquier Pokémon usando mi conjunto de datos Pokémon.',
 		COMMAND_POKEDEX_EXTENDED: {
@@ -2217,9 +2220,10 @@ export default class extends Language {
 			EXTERNAL_RESOURCES: 'Recursos externos',
 			OTHER_FORMES_TITLE: 'Otras formas',
 			COSMETIC_FORMES_TITLE: 'Formas cosméticas',
-			FORMES_LIST: (formes) => this.list(formes, 'y')
+			FORMES_LIST: ({ formes }) => this.list(formes, 'y')
 		},
-		COMMAND_POKEDEX_QUERY_FAIL: (pokemon) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
+		COMMAND_POKEDEX_QUERY_FAIL: ({ pokemon }) =>
+			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Da los emparejamientos de tipos para uno o dos tipos de Pokémon.',
 		COMMAND_TYPE_EXTENDED: {
 			extendedHelp: 'Los tipos deben ser coincidencias exactas con los tipos de pokemon (se pueden ignorar mayúsculas / minúsculas)',
@@ -2238,11 +2242,11 @@ export default class extends Language {
 			RESISTS: 'Resiste',
 			NOT_AFFECTED_BY: 'No afectado por',
 			EXTERNAL_RESOURCES: 'Recursos externos',
-			TYPE_EFFECTIVENESS_FOR: (types) => `Tipo de efectividad para ${types.map((val) => `\`${val}\``).join(' and ')}`
+			TYPE_EFFECTIVENESS_FOR: ({ type }) => `Tipo de efectividad para ${type.map((val) => `\`${val}\``).join(' and ')}`
 		},
 		COMMAND_TYPE_TOO_MANY_TYPES: 'Lo siento, pero puedes obtener el emparejamiento para 2 tipos como máximo',
-		COMMAND_TYPE_NOT_A_TYPE: (type) => `${type} no es un tipo de Pokémon válido`,
-		COMMAND_TYPE_QUERY_FAIL: (types) =>
+		COMMAND_TYPE_NOT_A_TYPE: ({ type }) => `${type} no es un tipo de Pokémon válido`,
+		COMMAND_TYPE_QUERY_FAIL: ({ types }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que los ${types
 				.map((val) => `\`${val}\``)
 				.join(' and ')} son realmente tipos en Pokémon?`,
@@ -2528,7 +2532,7 @@ export default class extends Language {
 		COMMAND_TOPINVITES_DESCRIPTION: 'Muestra las 10 invitaciones más utilizadas para este servidor.',
 		COMMAND_TOPINVITES_EXTENDED: {},
 		COMMAND_TOPINVITES_NO_INVITES: '¡No hay invitaciones, o ninguna de ellas ha sido utilizada!',
-		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: (guild) => `Las 10 mejores invitaciones para ${guild}`,
+		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: ({ guild }) => `Las 10 mejores invitaciones para ${guild}`,
 		COMMAND_TOPINVITES_EMBED_DATA: {
 			CHANNEL: 'Canal',
 			LINK: 'Enlace',
@@ -2621,7 +2625,7 @@ export default class extends Language {
 			CURRENT_DATE: 'Fecha actual',
 			COUNTRY: 'País',
 			GMT_OFFSET: 'GMT Offset',
-			DST: (dst) =>
+			DST: ({ dst }) =>
 				`**Horario de verano**: ${
 					dst === 0 ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'
 				}`
@@ -2807,12 +2811,12 @@ export default class extends Language {
 			SPECIAL: '🎴 Especial'
 		},
 		COMMAND_ANIME_INVALID_CHOICE: '¡Esa opción no es válida! Selecciona otra opción, por favor.',
-		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, description) =>
+		COMMAND_ANIME_OUTPUT_DESCRIPTION: ({ entry, synopsis }) =>
 			[
 				`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
 				`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
 				`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
-				description ?? 'No hay sinopsis disponible para este título.'
+				synopsis ?? 'No hay sinopsis disponible para este título.'
 			].join('\n'),
 		COMMAND_ANIME_EMBED_DATA: {
 			TYPE: 'Tipo',
@@ -2824,12 +2828,12 @@ export default class extends Language {
 			WATCH_IT: 'Míralo Aquí:',
 			STILL_AIRING: 'Aún se transmite'
 		},
-		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, description) =>
+		COMMAND_MANGA_OUTPUT_DESCRIPTION: ({ entry, synopsis }) =>
 			[
 				`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
 				`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
 				`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
-				description ?? 'No hay sinopsis disponible para este título.'
+				synopsis ?? 'No hay sinopsis disponible para este título.'
 			].join('\n'),
 		COMMAND_MANGA_TYPES: {
 			MANGA: '📘 Manga',
@@ -2854,14 +2858,15 @@ export default class extends Language {
 		 */
 
 		COMMAND_SUBSCRIBE_NO_ROLE: 'Este servidor no configuró el rol para los anuncios.',
-		COMMAND_SUBSCRIBE_SUCCESS: (role) => `Concedido con éxito el rol: **${role}**`,
-		COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Removido con éxito el rol: **${role}***`,
+		COMMAND_SUBSCRIBE_SUCCESS: ({ role }) => `Concedido con éxito el rol: **${role}**`,
+		COMMAND_UNSUBSCRIBE_SUCCESS: ({ role }) => `Removido con éxito el rol: **${role}***`,
 		COMMAND_SUBSCRIBE_NO_CHANNEL: 'Este servidor no tiene un canal de anuncios configurado.',
-		COMMAND_ANNOUNCEMENT: (role) => `**Nuevo anuncio para** ${role}`,
+		COMMAND_ANNOUNCEMENT: ({ role }) => `**Nuevo anuncio para** ${role}`,
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Se ha publicado un nuevo anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
-		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, y mencionando a: ${list(mentions, 'y')}` : ''}:`,
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: ({ header, mentions }) =>
+			`${header}${mentions.length ? `, y mencionando a: ${list(mentions, 'y')}` : ''}:`,
 
 		/**
 		 * ################
@@ -2896,12 +2901,12 @@ export default class extends Language {
 			'And more!'
 		].join('\n'),
 		COMMAND_HELP_DATA: {
-			TITLE: (description) => `${description}`,
-			USAGE: (usage) => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
-			EXTENDED: (extendedHelp) => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
-			FOOTER: (name) => `Ayuda de comando para ${name}`
+			TITLE: ({ description }) => `${description}`,
+			USAGE: ({ usage }) => `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
+			EXTENDED: ({ extendedHelp }) => `🔍 | ***Descripción Extendida***\n${extendedHelp}`,
+			FOOTER: ({ name }) => `Ayuda de comando para ${name}`
 		},
-		COMMAND_SUPPORT_EMBED_TITLE: (username) => `¿Necesita ayuda, ${username}?`,
+		COMMAND_SUPPORT_EMBED_TITLE: ({ username }) => `¿Necesita ayuda, ${username}?`,
 		COMMAND_SUPPORT_EMBED_DESCRIPTION:
 			"¡Entonces deberías unirte a [Skyra's lounge](https://join.skyra.pw)! Allí, puede recibir ayuda de los desarrolladores y otros miembros de la comunidad.",
 
@@ -2917,8 +2922,8 @@ export default class extends Language {
 			examples: ['@skyra/char', '@skyra/saelem', '@skyra/eslint-config']
 		},
 		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} Lo siento, pero tienes que darme el nombre de un paquete para buscarlo.`,
-		COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg) => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
-		COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg) => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
+		COMMAND_YARN_UNPUBLISHED_PACKAGE: ({ pkg }) => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
+		COMMAND_YARN_PACKAGE_NOT_FOUND: ({ pkg }) => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
 		COMMAND_YARN_EMBED_DATA: {
 			DESCRIPTION: ({
 				author,
@@ -2954,7 +2959,7 @@ export default class extends Language {
 		 * FUN COMMANDS
 		 */
 
-		COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
+		COMMAND_8BALL_OUTPUT: ({ author, question, response }) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
 		COMMAND_8BALL_QUESTIONS: {
 			WHEN: /^¿?cu[áa]ndo/i,
 			WHAT: /^¿?qu[ée]/i,
@@ -3037,13 +3042,13 @@ export default class extends Language {
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Hecho Gatuno',
-		COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${codeBlock('', word)}`,
+		COMMAND_CHOICE_OUTPUT: ({ user, word }) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${codeBlock('', word)}`,
 		COMMAND_CHOICE_MISSING: 'Por favor, escribe al menos dos opciones separadas con coma.',
-		COMMAND_CHOICE_DUPLICATES: (words) => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
-		COMMAND_DICE_OUTPUT: (result) => `¡Lanzaste el dado! Obteniste: **${result}**`,
+		COMMAND_CHOICE_DUPLICATES: ({ words }) => `¿Por qué aceptaría palabras duplicadas? '${words}'.`,
+		COMMAND_DICE_OUTPUT: ({ result }) => `¡Lanzaste el dado! Obteniste: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'La cantidad de lanzamientos debe ser un número entre 1 y 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'La cantidad de lados debe ser un número entre 3 y 1024.',
-		COMMAND_ESCAPEROPE_OUTPUT: (user) => `**${user}** usó **Cuerda Huída**`,
+		COMMAND_ESCAPEROPE_OUTPUT: ({ user }) => `**${user}** usó **Cuerda Huída**`,
 		COMMAND_LOVE_LESS45: 'Prueba de nuevo la próxima vez...',
 		COMMAND_LOVE_LESS75: '¡Bastante bien!',
 		COMMAND_LOVE_LESS100: '¡Haríais una gran pareja!',
@@ -3053,10 +3058,10 @@ export default class extends Language {
 		COMMAND_MARKOV_TIMER: (timer) => `Processed in ${timer}.`,
 		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
-		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
+		COMMAND_RATE_OUTPUT: ({ user, rate, emoji }) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['me quiero a mí misma mucho 😊', 'yo'],
 		COMMAND_PUN_ERROR: 'Something went wrong. Try again later.',
-		COMMAND_XKCD_COMICS: (amount) => `Hay ${amount} comics.`,
+		COMMAND_XKCD_COMICS: ({ amount }) => `Hay ${amount} comics.`,
 		COMMAND_XKCD_NOTFOUND:
 			'He buscado en todos los rincones, pero no he tenido suerte encontrando este comic, ¡prueba más tarde o prueba con otro!',
 
@@ -3069,20 +3074,20 @@ export default class extends Language {
 		COMMAND_GAMES_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
 		COMMAND_GAMES_SELF: 'You must be so sad to play against yourself. Try again with another user.',
 		COMMAND_GAMES_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
-		COMMAND_GAMES_NO_PLAYERS: (prefix) =>
+		COMMAND_GAMES_NO_PLAYERS: ({ prefix }) =>
 			`Por favor, especifique algunos homenajes para jugar a los Juegos del Hambre, así: \`${prefix}hg Bob, Mark, Jim, Kyra\``,
-		COMMAND_GAMES_TOO_MANY_OR_FEW: (min, max) => `I am sorry but the amount of players is less than ${min} or greater than ${max}.`,
+		COMMAND_GAMES_TOO_MANY_OR_FEW: ({ min, max }) => `I am sorry but the amount of players is less than ${min} or greater than ${max}.`,
 		COMMAND_GAMES_REPEAT: 'Lo siento, pero un usuario no puede jugar dos veces.',
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
-		COMMAND_C4_PROMPT: (challenger, challengee) =>
+		COMMAND_C4_PROMPT: ({ challenger, challengee }) =>
 			`Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-		COMMAND_C4_START: (player) => `Let's play! Turn for: **${player}**.`,
+		COMMAND_C4_START: ({ player }) => `Let's play! Turn for: **${player}**.`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		COMMAND_C4_GAME_WIN: ({ user, turn }) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
 		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
-		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
+		COMMAND_C4_GAME_NEXT: ({ user, turn }) => `Turn for: ${user} (${turn === 0 ? 'blue' : 'red'}).`,
 		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
 		COMMAND_C4_EXTENDED: {
 			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
@@ -3096,16 +3101,16 @@ export default class extends Language {
 			Si no lo haces, pierdes tu apuesta. Ahora consigue esas monedas volteando.`,
 			examples: ['heads 50', 'tails 200']
 		},
-		COMMAND_COINFLIP_INVALID_COINNAME: (arg) => `Disculpe, pero ${arg} no es una cara de moneda!`,
+		COMMAND_COINFLIP_INVALID_COINNAME: ({ arg }) => `Disculpe, pero ${arg} no es una cara de moneda!`,
 		COMMAND_COINFLIP_COINNAMES: ['Cabezas', 'Cruz'],
 		COMMAND_COINFLIP_WIN_TITLE: '¡Ganaste!',
 		COMMAND_COINFLIP_LOSE_TITLE: 'Perdiste.',
 		COMMAND_COINFLIP_NOGUESS_TITLE: 'Lanzaste una moneda.',
-		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) =>
+		COMMAND_COINFLIP_WIN_DESCRIPTION: ({ result, wager }) =>
 			`La moneda fue lanzada y mostró ${result}. ${wager ? `Adivinaste correctamente y ganaste ${wager} ${SHINY}` : 'Lo entendiste bien'}!`,
-		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) =>
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: ({ result, wager }) =>
 			`La moneda fue lanzada y mostró${result}. No adivinaste correctamente ${wager ? `y perdido ${wager} ${SHINY}.` : ''}.`,
-		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: (result) => `La moneda fue lanzada y mostró ${result}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: ({ result }) => `La moneda fue lanzada y mostró ${result}.`,
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Comenzar un juego de Mayor/Menor',
 		COMMAND_HIGHERLOWER_EXTENDED: {
 			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis
@@ -3115,30 +3120,31 @@ export default class extends Language {
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Comenzar un nuevo juego de Mayor/Meno`,
 		COMMAND_HIGHERLOWER_NEWROUND: 'Bien. Comenzando una nueva ronda',
 		COMMAND_HIGHERLOWER_EMBED: {
-			TITLE: (turn) => `¿Mayor o menor? | Turno ${turn}`,
-			DESCRIPTION: (number) => `Su número es ${number}. ¿Será el siguiente mayor o menor?`,
+			TITLE: ({ turn }) => `¿Mayor o menor? | Turno ${turn}`,
+			DESCRIPTION: ({ number }) => `Su número es ${number}. ¿Será el siguiente mayor o menor?`,
 			FOOTER: 'El juego caducará en 3 minutos, ¡así que actúa rápido!'
 		},
 		COMMAND_HIGHERLOWER_LOSE: {
 			TITLE: '¡Perdiste!',
-			DESCRIPTION: (number, losses) => `No lo entendiste del todo. El número era ${number}. Perdiste ${losses} ${SHINY}`,
+			DESCRIPTION: ({ number, losses }) => `No lo entendiste del todo. El número era ${number}. Perdiste ${losses} ${SHINY}`,
 			FOOTER: '¡Mejor suerte la próxima vez!'
 		},
 		COMMAND_HIGHERLOWER_WIN: {
 			TITLE: '¡Ganaste!',
-			DESCRIPTION: (potentials, number) => `El número era ${number}. ¿Quieres continuar? Con otro intento, puedes ganar ${potentials} ${SHINY}`,
+			DESCRIPTION: ({ potentials, number }) =>
+				`El número era ${number}. ¿Quieres continuar? Con otro intento, puedes ganar ${potentials} ${SHINY}`,
 			FOOTER: '¡Actúa rapido! No tienes mucho tiempo.'
 		},
 		COMMAND_HIGHERLOWER_CANCEL: {
 			TITLE: 'Juego cancelado por elección',
-			DESCRIPTION: (username) => `Gracias por jugar, ¡${username}! Estaré aquí por si quieres continuar.`
+			DESCRIPTION: ({ username }) => `Gracias por jugar, ¡${username}! Estaré aquí por si quieres continuar.`
 		},
-		COMMAND_HIGHERLOWER_CASHOUT: (amount) => `${amount} ${SHINY} fueron directo a a su cuenta. ¡Espero que haya sido divertido!`,
-		COMMAND_HUNGERGAMES_RESULT_HEADER: (game) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
-		COMMAND_HUNGERGAMES_RESULT_DEATHS: (deaths) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		COMMAND_HIGHERLOWER_CASHOUT: ({ amount }) => `${amount} ${SHINY} fueron directo a a su cuenta. ¡Espero que haya sido divertido!`,
+		COMMAND_HUNGERGAMES_RESULT_HEADER: ({ game }) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
+		COMMAND_HUNGERGAMES_RESULT_DEATHS: ({ deaths }) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
 		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',
 		COMMAND_HUNGERGAMES_STOP: 'Game finished by choice! See you later!',
-		COMMAND_HUNGERGAMES_WINNER: (winner) => `And the winner is... ${winner}!`,
+		COMMAND_HUNGERGAMES_WINNER: ({ winner }) => `And the winner is... ${winner}!`,
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
 		COMMAND_HUNGERGAMES_EXTENDED: {
 			extendedHelp: 'Enough discussion, let the games begin!',
@@ -3153,9 +3159,9 @@ export default class extends Language {
 			explainedUsage: [['Cantidad', 'Ya sea 50, 100, 200, 500 o incluso, 1000 shinies para apostar.']],
 			reminder: 'Recibirá al menos 5 veces la cantidad (cerezas / tada) al ganar, y hasta 24 veces (siete, diamante sin piel).'
 		},
-		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
-		COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
-		COMMAND_SLOTMACHINE_CANVAS_TEXT: (won) => (won ? 'Tú ganaste' : 'Tú perdiste'),
+		COMMAND_SLOTMACHINES_WIN: ({ roll, winnings }) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
+		COMMAND_SLOTMACHINES_LOSS: ({ roll }) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+		COMMAND_SLOTMACHINE_CANVAS_TEXT: ({ won }) => (won ? 'Tú ganaste' : 'Tú perdiste'),
 		COMMAND_SLOTMACHINE_TITLES: {
 			PREVIOUS: 'Anterior',
 			NEW: 'Nuevo'
@@ -3167,11 +3173,11 @@ export default class extends Language {
 				El jugador que logra colocar tres de sus marcas en una fila horizontal,
 				vertical o diagonal gana el juego.`
 		},
-		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) =>
+		COMMAND_TICTACTOE_PROMPT: ({ challenger, challengee }) =>
 			`Querido ${challenger}, ${challengee} te ha desafiado en un partido de tres en raya. Responda con **yes** para aceptar`,
-		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Girar para ${player}!\n${board}`,
-		COMMAND_TICTACTOE_WINNER: (winner, board) => `El ganador es ...${winner}!\n${board}`,
-		COMMAND_TICTACTOE_DRAW: (board) => `Este partido concluyó en un **empate**!\n${board}`,
+		COMMAND_TICTACTOE_TURN: ({ icon, player, board }) => `(${icon}) Girar para ${player}!\n${board}`,
+		COMMAND_TICTACTOE_WINNER: ({ winner, board }) => `El ganador es ...${winner}!\n${board}`,
+		COMMAND_TICTACTOE_DRAW: ({ board }) => `Este partido concluyó en un **empate**!\n${board}`,
 		COMMAND_TRIVIA_DESCRIPTION: 'Play a game of Trivia.',
 		COMMAND_TRIVIA_EXTENDED: {
 			extendedHelp: [
@@ -3190,13 +3196,13 @@ export default class extends Language {
 		},
 		COMMAND_TRIVIA_INVALID_CATEGORY: 'Invalid category: Please use `Skyra, help trivia` for a list of categories.',
 		COMMAND_TRIVIA_ACTIVE_GAME: 'A game of trivia is already being played in this channel',
-		COMMAND_TRIVIA_INCORRECT: (attempt: string) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
-		COMMAND_TRIVIA_NO_ANSWER: (correctAnswer: string) => `Looks like nobody got it! The right answer was **${correctAnswer}**.`,
+		COMMAND_TRIVIA_INCORRECT: ({ attempt }) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
+		COMMAND_TRIVIA_NO_ANSWER: ({ correctAnswer }) => `Looks like nobody got it! The right answer was **${correctAnswer}**.`,
 		COMMAND_TRIVIA_EMBED_TITLES: {
 			TRIVIA: 'Trivia',
 			DIFFICULTY: 'Difficulty'
 		},
-		COMMAND_TRIVIA_WINNER: (winner, correctAnswer) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
+		COMMAND_TRIVIA_WINNER: ({ winner, correctAnswer }) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
 		COMMAND_VAULT_DESCRIPTION: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
 		COMMAND_VAULT_EXTENDED: {
 			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
@@ -3208,16 +3214,16 @@ export default class extends Language {
 			examples: ['depositar 10000.', 'retirar 10000.']
 		},
 		COMMAND_VAULT_EMBED_DATA: {
-			DEPOSITED_DESCRIPTION: (coins) => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
-			WITHDREW_DESCRIPTION: (coins) => `Retiró ${coins} ${SHINY} de su bóveda.`,
+			DEPOSITED_DESCRIPTION: ({ coins }) => `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
+			WITHDREW_DESCRIPTION: ({ coins }) => `Retiró ${coins} ${SHINY} de su bóveda.`,
 			SHOW_DESCRIPTION: 'Su cuenta corriente y saldo de caja fuerte son:',
 			ACCOUNT_MONEY: 'Dinero de la cuenta',
 			ACCOUNT_VAULT: 'Bóveda de cuenta'
 		},
 		COMMAND_VAULT_INVALID_COINS: 'Lo siento, pero esa es una cantidad inválida de monedas. ¡Asegúrese de que sea un número positivo!',
-		COMMAND_VAULT_NOT_ENOUGH_MONEY: (money) =>
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: ({ money }) =>
 			`Lo siento, ¡pero no tienes suficiente dinero para hacer ese depósito! Su saldo monetario actual es ${money}${SHINY}`,
-		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: (vault) =>
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: ({ vault }) =>
 			`Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
 		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Juega con tus shinies haciendo girar una rueda de la fortuna.',
 		COMMAND_WHEELOFFORTUNE_EXTENDED: {
@@ -3229,7 +3235,7 @@ export default class extends Language {
 			NEW: 'Nuevo'
 		},
 		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: (won) => (won ? 'Tú ganaste' : 'Tú perdiste'),
-		GAMES_NOT_ENOUGH_MONEY: (money) =>
+		GAMES_NOT_ENOUGH_MONEY: ({ money }) =>
 			`Lo siento, ¡pero no tienes suficiente dinero para pagar tu apuesta! El saldo de su cuenta corriente es ${money}${SHINY}`,
 		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `No puedes tener una cantidad negativa de ${SHINY}s`,
 
@@ -3940,7 +3946,7 @@ export default class extends Language {
 			NSUID: 'NSUID',
 			ESRB: 'ESRB'
 		},
-		COMMAND_ESHOP_PRICE: (price) => (price > 0 ? `$${price} USD` : 'Gratis'),
+		COMMAND_ESHOP_PRICE: ({ price }) => (price > 0 ? `$${price} USD` : 'Gratis'),
 		COMMAND_HOROSCOPE_DESCRIPTION: 'Obtén tu último horóscopo',
 		COMMAND_HOROSCOPE_EXTENDED: {
 			extendedHelp: 'Obtiene el horóscopo de un signo solar dado de The Astrologer de Kelli Fox.',
@@ -3953,11 +3959,11 @@ export default class extends Language {
 			],
 			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
 		},
-		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign, maybe) => `${sign} es un signo solar no válido, ¿tal vez intente con ${maybe}`,
+		COMMAND_HOROSCOPE_INVALID_SUNSIGN: ({ sign, maybe }) => `${sign} es un signo solar no válido, ¿tal vez intente con ${maybe}`,
 		COMMAND_HOROSCOPE_TITLES: {
-			DAILY_HOROSCOPE: (sign) => `Horóscopo diario para ${sign}`,
+			DAILY_HOROSCOPE: ({ sign }) => `Horóscopo diario para ${sign}`,
 			METADATA_TITLE: 'Metadatos',
-			METADATA: (intensity, keywords, mood, rating) =>
+			METADATA: ({ intensity, keywords, mood, rating }) =>
 				[
 					`**Intensidad:** ${intensity}`,
 					`**Palabras clave:** ${this.list(keywords, 'y')}`,

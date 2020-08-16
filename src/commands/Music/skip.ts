@@ -37,6 +37,6 @@ export default class extends MusicCommand {
 		if (total <= 3) return false;
 
 		const needed = Math.ceil(total * 0.4);
-		return size >= needed ? false : musicManager.guild.language.tget('COMMAND_SKIP_VOTES_TOTAL', size, needed);
+		return size >= needed ? false : musicManager.guild.language.tget('COMMAND_SKIP_VOTES_TOTAL', { amount: size, needed });
 	}
 }

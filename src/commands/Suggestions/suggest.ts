@@ -120,10 +120,7 @@ export default class extends SkyraCommand {
 
 		if (missingPermissions.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.tget(
-				'INHIBITOR_MISSING_BOT_PERMS',
-				missingPermissions.map((permission) => permissions[permission])
-			);
+			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', { missing: missingPermissions.map((permission) => permissions[permission]) });
 		}
 
 		// Update settings

@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 				if (position === null) return message;
 
 				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw message.language.tget('RESOLVER_INVALID_MESSAGE', possible.name);
+				if (fetched === null) throw message.language.tget('RESOLVER_INVALID_MESSAGE', { name: possible.name });
 				return fetched;
 			});
 	}

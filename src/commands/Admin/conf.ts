@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 
 	public show(message: KlasaMessage, [key]: [string]) {
 		const schemaOrEntry = configurableSchemaKeys.get(key);
-		if (typeof schemaOrEntry === 'undefined') throw message.language.tget('COMMAND_CONF_GET_NOEXT', key);
+		if (typeof schemaOrEntry === 'undefined') throw message.language.tget('COMMAND_CONF_GET_NOEXT', { key });
 
 		const value = key ? message.guild!.settings.get(key) : message.guild!.settings;
 		if (isSchemaEntry(schemaOrEntry)) {

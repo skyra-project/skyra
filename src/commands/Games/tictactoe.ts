@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		try {
 			const [response] = await this.prompt
 				.createPrompt(message, { target: user })
-				.run(message.language.tget('COMMAND_TICTACTOE_PROMPT', message.author.toString(), user.toString()));
+				.run(message.language.tget('COMMAND_TICTACTOE_PROMPT', { challengee: message.author.toString(), challenger: user.toString() }));
 			if (response) {
 				try {
 					await this.game(
@@ -65,8 +65,8 @@ export default class extends SkyraCommand {
 			const winner = await this._game(message, players, board);
 			return await message.edit(
 				winner
-					? message.language.tget('COMMAND_TICTACTOE_WINNER', players[winner - 1].username, this.render(board))
-					: message.language.tget('COMMAND_TICTACTOE_DRAW', this.render(board))
+					? message.language.tget('COMMAND_TICTACTOE_WINNER', { winner: players[winner - 1].username, board: this.render(board) })
+					: message.language.tget('COMMAND_TICTACTOE_DRAW', { board: this.render(board) })
 			);
 		} catch (error) {
 			if (typeof error === 'string') return message.edit(error);
@@ -93,7 +93,13 @@ export default class extends SkyraCommand {
 				player = players[turn % 2];
 
 				try {
-					await message.edit(message.language.tget('COMMAND_TICTACTOE_TURN', PLAYER[turn % 2], player.username, this.render(board)));
+					await message.edit(
+						message.language.tget('COMMAND_TICTACTOE_TURN', {
+							icon: PLAYER[turn % 2],
+							player: player.username,
+							board: this.render(board)
+						})
+					);
 					timeout = setTimeout(() => {
 						collector.stop();
 						reject(message.language.tget('COMMAND_GAMES_TIMEOUT'));

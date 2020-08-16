@@ -40,7 +40,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', arg, kRandomSunSign());
+			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
@@ -53,16 +53,16 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(horoscope.prediction)
-				.setTitle(TITLES.DAILY_HOROSCOPE(sign))
+				.setTitle(TITLES.DAILY_HOROSCOPE({ sign }))
 				.setTimestamp(new Date(horoscope.date))
 				.addField(
 					TITLES.METADATA_TITLE,
-					TITLES.METADATA(
-						horoscope.intensity,
-						horoscope.keywords,
-						horoscope.mood,
-						`${Emojis.Star.repeat(horoscope.rating)}${Emojis.StarEmpty.repeat(5 - horoscope.rating)}`
-					)
+					TITLES.METADATA({
+						intensity: horoscope.intensity,
+						keywords: horoscope.keywords,
+						mood: horoscope.mood,
+						rating: `${Emojis.Star.repeat(horoscope.rating)}${Emojis.StarEmpty.repeat(5 - horoscope.rating)}`
+					})
 				)
 		);
 	}
@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', sunsign, kRandomSunSign());
+			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

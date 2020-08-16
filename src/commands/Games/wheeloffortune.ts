@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
+			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', { money: balance });
 		}
 
 		const [attachment, amount] = await new WheelOfFortune(message, wager, settings).run();

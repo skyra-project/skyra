@@ -57,7 +57,7 @@ const enum BrawlStarsFetchCategories {
 		'tag',
 		(arg, _possible, message) => {
 			if (kTagRegex.test(arg)) return arg;
-			throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
+			throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
 		}
 	]
 ])
@@ -168,8 +168,8 @@ export default class extends SkyraCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', query);
-			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', query);
+			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
+			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
 		}
 	}
 }

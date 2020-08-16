@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && money < coins) {
-				throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_MONEY', money);
+				throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_MONEY', { money });
 			}
 
 			const newMoney = money - coins;
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && vault < coins) {
-				throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_IN_VAULT', vault);
+				throw message.language.tget('COMMAND_VAULT_NOT_ENOUGH_IN_VAULT', { vault });
 			}
 
 			const newMoney = money + coins;
@@ -92,7 +92,7 @@ export default class extends SkyraCommand {
 			'COMMAND_VAULT_EMBED_DATA'
 		);
 
-		const description = coins ? (hasDeposited ? DEPOSITED_DESCRIPTION(coins) : WITHDREW_DESCRIPTION(coins)) : SHOW_DESCRIPTION;
+		const description = coins ? (hasDeposited ? DEPOSITED_DESCRIPTION({ coins }) : WITHDREW_DESCRIPTION({ coins })) : SHOW_DESCRIPTION;
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

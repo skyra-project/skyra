@@ -13,7 +13,7 @@ export default class extends MusicCommand {
 		if (index <= 0) throw message.language.tget('COMMAND_REMOVE_INDEX_INVALID');
 
 		const { music } = message.guild!;
-		if (index > music.queue.length) throw message.language.tget('COMMAND_REMOVE_INDEX_OUT', music.queue.length);
+		if (index > music.queue.length) throw message.language.tget('COMMAND_REMOVE_INDEX_OUT', { amount: music.queue.length });
 
 		// Remove the song from the queue
 		message.guild!.music.remove(message, index, this.getContext(message));

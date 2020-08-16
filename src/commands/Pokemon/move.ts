@@ -33,7 +33,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_MOVE_QUERY_FAIL', move);
+			throw message.language.tget('COMMAND_MOVE_QUERY_FAIL', { move });
 		}
 	}
 
@@ -85,7 +85,7 @@ export default class extends RichDisplayCommand {
 				.addField(embedTranslations.GMAX_POKEMON, moveData.isGMax ?? embedTranslations.NONE)
 				.addField(
 					embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
-					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(moveData.isNonstandard !== 'Past')
+					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA({ available: moveData.isNonstandard !== 'Past' })
 				)
 				.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources)
 		);

@@ -30,7 +30,7 @@ export default class extends RichDisplayCommand {
 
 		if (overwatchData.error) throw message.language.tget('SYSTEM_QUERY_FAIL');
 		if (!overwatchData.competitiveStats.topHeroes || !overwatchData.quickPlayStats.topHeroes) {
-			throw message.language.tget('COMMAND_OVERWATCH_NO_STATS', this.decodePlayerName(player));
+			throw message.language.tget('COMMAND_OVERWATCH_NO_STATS', { player: this.decodePlayerName(player) });
 		}
 
 		const display = await this.buildDisplay(message, overwatchData, player, platform);
@@ -43,7 +43,7 @@ export default class extends RichDisplayCommand {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('COMMAND_OVERWATCH_QUERY_FAIL', this.decodePlayerName(player), platform);
+			throw message.language.tget('COMMAND_OVERWATCH_QUERY_FAIL', { player: this.decodePlayerName(player), platform });
 		}
 	}
 
@@ -59,7 +59,7 @@ export default class extends RichDisplayCommand {
 		return new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(EMBED_DATA.AUTHOR(overwatchData.name), CdnUrls.OverwatchLogo)
+				.setAuthor(EMBED_DATA.AUTHOR({ name: overwatchData.name }), CdnUrls.OverwatchLogo)
 				.setTitle(EMBED_DATA.TITLE)
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
 				.setThumbnail(overwatchData.icon)
@@ -69,17 +69,19 @@ export default class extends RichDisplayCommand {
 					.setDescription(
 						[
 							EMBED_DATA.HEADERS.ACCOUNT,
-							EMBED_DATA.PLAYER_LEVEL(overwatchData.level),
-							EMBED_DATA.PRESTIGE_LEVEL(overwatchData.level + overwatchData.prestige * 100),
-							EMBED_DATA.TOTAL_GAMES_WON(overwatchData.gamesWon)
+							EMBED_DATA.PLAYER_LEVEL({ level: overwatchData.level }),
+							EMBED_DATA.PRESTIGE_LEVEL({ level: overwatchData.level + overwatchData.prestige * 100 }),
+							EMBED_DATA.TOTAL_GAMES_WON({ gamesWon: overwatchData.gamesWon })
 						].join('\n')
 					)
 					.addField(
 						EMBED_DATA.RATINGS_TITLE,
-						EMBED_DATA.RATINGS([
-							...ratings.values(),
-							{ role: 'average', level: overwatchData.rating === 0 ? EMBED_DATA.NO_AVERAGE : overwatchData.rating }
-						])
+						EMBED_DATA.RATINGS({
+							ratings: [
+								...ratings.values(),
+								{ role: 'average', level: overwatchData.rating === 0 ? EMBED_DATA.NO_AVERAGE : overwatchData.rating }
+							]
+						})
 					)
 			)
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(overwatchData, 'quickPlayStats', EMBED_DATA)))
@@ -140,17 +142,17 @@ export default class extends RichDisplayCommand {
 
 		return [
 			EMBED_DATA.HEADERS[type === 'competitiveStats' ? 'COMPETITIVE' : 'QUICKPLAY'],
-			EMBED_DATA.FINAL_BLOWS(finalBlows),
-			EMBED_DATA.DEATHS(deaths),
-			EMBED_DATA.DAMAGE_DEALT(damageDone),
-			EMBED_DATA.HEALING(healingDone),
-			EMBED_DATA.OBJECTIVE_KILLS(objectiveKills),
-			EMBED_DATA.SOLO_KILLS(soloKills),
-			EMBED_DATA.PLAY_TIME(timePlayedMilliseconds),
-			EMBED_DATA.GAMES_WON(gamesWon),
-			EMBED_DATA.GOLDEN_MEDALS(medalsGold),
-			EMBED_DATA.SILVER_MEDALS(medalsSilver),
-			EMBED_DATA.BRONZE_MEDALS(medalsBronze)
+			EMBED_DATA.FINAL_BLOWS({ finalBlows }),
+			EMBED_DATA.DEATHS({ deaths }),
+			EMBED_DATA.DAMAGE_DEALT({ damageDone }),
+			EMBED_DATA.HEALING({ healingDone }),
+			EMBED_DATA.OBJECTIVE_KILLS({ objectiveKills }),
+			EMBED_DATA.SOLO_KILLS({ soloKills }),
+			EMBED_DATA.PLAY_TIME({ timePlayed: timePlayedMilliseconds }),
+			EMBED_DATA.GAMES_WON({ gamesWon }),
+			EMBED_DATA.GOLDEN_MEDALS({ medalsGold }),
+			EMBED_DATA.SILVER_MEDALS({ medalsSilver }),
+			EMBED_DATA.BRONZE_MEDALS({ medalsBronze })
 		].join('\n');
 	}
 
@@ -164,7 +166,7 @@ export default class extends RichDisplayCommand {
 
 		return [
 			EMBED_DATA.HEADERS[type === 'competitiveStats' ? 'TOP_HEROES_COMPETITIVE' : 'TOP_HEROES_QUICKPLAY'],
-			...topHeroes.map((topHero) => EMBED_DATA.TOP_HERO(topHero.hero, this.kPlayTimestamp.display(topHero.time)))
+			...topHeroes.map((topHero) => EMBED_DATA.TOP_HERO({ heroName: topHero.hero, timePlayed: this.kPlayTimestamp.display(topHero.time) }))
 		].join('\n');
 	}
 

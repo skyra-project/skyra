@@ -12,7 +12,7 @@ export default class extends Argument {
 		const channel = channelID === null ? null : message.guild.channels.get(channelID[1]);
 		if (channel) return this.validateAccess(channel, message);
 
-		throw message.language.tget('RESOLVER_INVALID_CHANNEL', possible.name);
+		throw message.language.tget('RESOLVER_INVALID_CHANNEL', { name: possible.name });
 	}
 
 	private validateAccess(channel: GuildChannel, message: KlasaMessage) {

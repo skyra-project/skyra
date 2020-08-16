@@ -74,7 +74,7 @@ export default class extends RichDisplayCommand {
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
-			const price = game.msrp ? message.language.tget('COMMAND_ESHOP_PRICE', game.msrp) : 'TBD';
+			const price = game.msrp ? message.language.tget('COMMAND_ESHOP_PRICE', { price: game.msrp }) : 'TBD';
 			const esrbText = game.esrb
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
 				: message.language.tget('COMMAND_ESHOP_NOT_IN_DATABASE');

@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('tagname', (arg, possible, message, [action]) => {
 			if (action === 'list' || action === 'reset') return undefined;
-			if (!arg) throw message.language.tget('RESOLVER_INVALID_STRING', possible.name);
+			if (!arg) throw message.language.tget('RESOLVER_INVALID_STRING', { name: possible.name });
 			return arg.toLowerCase();
 		});
 	}

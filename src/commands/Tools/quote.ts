@@ -23,8 +23,8 @@ export default class extends SkyraCommand {
 			const messageUrl = await this.getFromUrl(message, arg);
 			if (messageUrl) return messageUrl;
 
-			if (!isTextBasedChannel(channel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MESSAGE', 'Message');
+			if (!isTextBasedChannel(channel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', { name: 'Channel' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MESSAGE', { name: 'Message' });
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
 			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 
 		const channel = guild.channels.get(_channel);
 		if (!channel) return null;
-		if (!(channel instanceof TextChannel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', 'Channel');
+		if (!(channel instanceof TextChannel)) throw message.language.tget('RESOLVER_INVALID_CHANNEL', { name: 'Channel' });
 		if (!channel.readable) throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
 		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
 

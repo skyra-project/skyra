@@ -20,6 +20,6 @@ export default class extends Serializer {
 
 	private checkChannel(data: Channel, entry: SchemaEntry, language: Language) {
 		if (data.type === 'text' || data.type === 'category') return data;
-		throw language.tget('RESOLVER_INVALID_CHANNEL', entry.key);
+		throw language.tget('RESOLVER_INVALID_CHANNEL', { name: entry.key });
 	}
 }

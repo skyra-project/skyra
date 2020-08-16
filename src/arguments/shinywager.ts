@@ -7,8 +7,8 @@ export default class ShinyWager extends Argument {
 		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', possible.name);
 
 		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;
-		if (!Number.isInteger(number)) throw message.language.tget('RESOLVER_INVALID_INT', possible.name);
-		if (!ShinyWager.kValidBetAmounts.includes(number)) throw message.language.tget('RESOLVER_INVALID_WAGER', number);
+		if (!Number.isInteger(number)) throw message.language.tget('RESOLVER_INVALID_INT', { name: possible.name });
+		if (!ShinyWager.kValidBetAmounts.includes(number)) throw message.language.tget('RESOLVER_INVALID_WAGER', { bet: number });
 
 		return this.integerArg.run(arg, possible, message);
 	}

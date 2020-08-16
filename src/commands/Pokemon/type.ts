@@ -46,7 +46,7 @@ const kPokemonTypes = new Set([
 			if (arg.length > 2) throw message.language.tget('COMMAND_TYPE_TOO_MANY_TYPES');
 
 			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', type);
+				if (!kPokemonTypes.has(type)) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', { type });
 			}
 
 			return arg;
@@ -70,7 +70,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw message.language.tget('COMMAND_TYPE_QUERY_FAIL', types);
+			throw message.language.tget('COMMAND_TYPE_QUERY_FAIL', { types });
 		}
 	}
 
@@ -105,7 +105,7 @@ export default class extends RichDisplayCommand {
 		return new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR(types)}`, CdnUrls.Pokedex)
+				.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR({ type: types })}`, CdnUrls.Pokedex)
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed

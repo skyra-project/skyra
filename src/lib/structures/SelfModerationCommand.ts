@@ -292,7 +292,7 @@ export abstract class SelfModerationCommand extends Command {
 
 	private static parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = Number(input);
-		if (parsed < 0) throw message.language.tget('RESOLVER_INVALID_INT', name);
+		if (parsed < 0) throw message.language.tget('RESOLVER_INVALID_INT', { name });
 		if (key.minimum !== null && parsed < key.minimum) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_SHORT', key.minimum, parsed);
 		if (key.maximum !== null && parsed > key.maximum) throw message.language.tget('SELF_MODERATION_MAXIMUM_TOO_LONG', key.maximum, parsed);
 		return parsed;
@@ -300,7 +300,7 @@ export abstract class SelfModerationCommand extends Command {
 
 	private static parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = new Duration(input);
-		if (parsed.offset < 0) throw message.language.tget('RESOLVER_INVALID_DURATION', name);
+		if (parsed.offset < 0) throw message.language.tget('RESOLVER_INVALID_DURATION', { name });
 		if (key.minimum !== null && parsed.offset < key.minimum)
 			throw message.language.tget('SELF_MODERATION_DURATION_TOO_SHORT', key.minimum, parsed.offset);
 		if (key.maximum !== null && parsed.offset > key.maximum)

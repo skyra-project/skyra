@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) throw message.language.tget('RESOLVER_INVALID_INT', 'dice');
+			if (!isNumber(pattern) || pattern <= 0) throw message.language.tget('RESOLVER_INVALID_INT', { name: 'dice' });
 			amount = pattern;
 			dice = 6;
 		} else {

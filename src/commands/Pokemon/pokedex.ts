@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_POKEDEX_QUERY_FAIL', pokemon);
+			throw message.language.tget('COMMAND_POKEDEX_QUERY_FAIL', { pokemon });
 		}
 	}
 
@@ -231,12 +231,12 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => {
 				// If the pokémon has other formes
 				if (pokeDetails.otherFormes) {
-					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.FORMES_LIST(pokeDetails.otherFormes));
+					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.FORMES_LIST({ formes: pokeDetails.otherFormes }));
 				}
 
 				// If the pokémon has cosmetic formes
 				if (pokeDetails.cosmeticFormes) {
-					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.FORMES_LIST(pokeDetails.cosmeticFormes!));
+					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.FORMES_LIST({ formes: pokeDetails.cosmeticFormes! }));
 				}
 
 				// Add the external resource field

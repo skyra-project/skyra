@@ -64,7 +64,7 @@ export class SettingsMenu {
 		const i18n = this.message.language;
 		const description: string[] = [];
 		if (isSchemaFolder(this.schema)) {
-			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
+			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_FOLDER', { path: this.schema.path || 'Root' }));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
@@ -84,7 +84,7 @@ export class SettingsMenu {
 					...keys.map((key) => `• ${key}`)
 				);
 		} else {
-			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
+			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_PIECE', { path: this.schema.path }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if (this.schema.configurable) {
 				description.push(
@@ -98,10 +98,12 @@ export class SettingsMenu {
 					this.changedPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_RESET') : '',
 					this.changedCurrentPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
-					i18n.tget(
-						'COMMAND_CONF_MENU_RENDER_CVALUE',
-						displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(/``+/g, '`\u200B`')
-					)
+					i18n.tget('COMMAND_CONF_MENU_RENDER_CVALUE', {
+						value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
+							/``+/g,
+							'`\u200B`'
+						)
+					})
 				);
 			}
 		}
@@ -213,7 +215,8 @@ export class SettingsMenu {
 			const updated = await (value === null
 				? this.message.guild!.settings.reset(this.schema.path, { ...options, extraContext: { author: this.message.author.id } })
 				: this.message.guild!.settings.update(this.schema.path, value, { ...options, extraContext: { author: this.message.author.id } }));
-			if (updated.length === 0) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+			if (updated.length === 0)
+				this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', { key: (this.schema as SchemaEntry).key });
 		} catch (error) {
 			this.errorMessage = String(error);
 		}
@@ -233,7 +236,7 @@ export class SettingsMenu {
 				this.errorMessage = String(error);
 			}
 		} else {
-			this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+			this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', { key: (this.schema as SchemaEntry).key });
 		}
 	}
 

@@ -153,50 +153,50 @@ export default class extends Language {
 		 * ################################
 		 */
 
-		DEFAULT: (key) => `${key} has not been localized for en-US yet.`,
+		DEFAULT: ({ key }) => `${key} has not been localized for en-US yet.`,
 		DEFAULT_LANGUAGE: 'Default Language',
-		SETTING_GATEWAY_KEY_NOEXT: (key) => `The key "${key}" does not exist in the data schema.`,
-		SETTING_GATEWAY_CHOOSE_KEY: (keys) => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
+		SETTING_GATEWAY_KEY_NOEXT: ({ key }) => `The key "${key}" does not exist in the data schema.`,
+		SETTING_GATEWAY_CHOOSE_KEY: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
 		SETTING_GATEWAY_UNCONFIGURABLE_FOLDER: 'This settings group does not have any configurable sub-key.',
-		SETTING_GATEWAY_UNCONFIGURABLE_KEY: (key) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
-		SETTING_GATEWAY_MISSING_VALUE: (entry, value) =>
+		SETTING_GATEWAY_UNCONFIGURABLE_KEY: ({ key }) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
+		SETTING_GATEWAY_MISSING_VALUE: ({ entry, value }) =>
 			`The value "${value}" cannot be removed from the key "${entry.path}" because it does not exist.`,
-		SETTING_GATEWAY_DUPLICATE_VALUE: (entry, value) =>
+		SETTING_GATEWAY_DUPLICATE_VALUE: ({ entry, value }) =>
 			`The value "${value}" cannot be added to the key "${entry.path}" because it was already set.`,
-		SETTING_GATEWAY_INVALID_FILTERED_VALUE: (entry, value) => `The settings key "${entry.path}" does not accept the value "${value}".`,
-		RESOLVER_MULTI_TOO_FEW: (name, min = 1) => `Provided too few ${name}s. At least ${min} ${min === 1 ? 'is' : 'are'} required.`,
-		RESOLVER_INVALID_BOOL: (name) => `${name} must be true or false.`,
-		RESOLVER_INVALID_CHANNEL: (name) => `${name} must be a channel tag or valid channel id.`,
-		RESOLVER_INVALID_CUSTOM: (name, type) => `${name} must be a valid ${type}.`,
-		RESOLVER_INVALID_DATE: (name) => `${name} must be a valid date.`,
-		RESOLVER_INVALID_DURATION: (name) => `${name} must be a valid duration string.`,
-		RESOLVER_INVALID_EMOJI: (name) => `${name} must be a custom emoji tag or valid emoji id.`,
-		RESOLVER_INVALID_FLOAT: (name) => `${name} must be a valid number.`,
-		RESOLVER_INVALID_GUILD: (name) => `${name} must be a valid guild id.`,
-		RESOLVER_INVALID_INT: (name) => `${name} must be an integer.`,
-		RESOLVER_INVALID_INVITE: (name) => `${name} must be a valid invite link.`,
-		RESOLVER_INVALID_WAGER: (bet) =>
+		SETTING_GATEWAY_INVALID_FILTERED_VALUE: ({ entry, value }) => `The settings key "${entry.path}" does not accept the value "${value}".`,
+		RESOLVER_MULTI_TOO_FEW: ({ name, min = 1 }) => `Provided too few ${name}s. At least ${min} ${min === 1 ? 'is' : 'are'} required.`,
+		RESOLVER_INVALID_BOOL: ({ name }) => `${name} must be true or false.`,
+		RESOLVER_INVALID_CHANNEL: ({ name }) => `${name} must be a channel tag or valid channel id.`,
+		RESOLVER_INVALID_CUSTOM: ({ name, type }) => `${name} must be a valid ${type}.`,
+		RESOLVER_INVALID_DATE: ({ name }) => `${name} must be a valid date.`,
+		RESOLVER_INVALID_DURATION: ({ name }) => `${name} must be a valid duration string.`,
+		RESOLVER_INVALID_EMOJI: ({ name }) => `${name} must be a custom emoji tag or valid emoji id.`,
+		RESOLVER_INVALID_FLOAT: ({ name }) => `${name} must be a valid number.`,
+		RESOLVER_INVALID_GUILD: ({ name }) => `${name} must be a valid guild id.`,
+		RESOLVER_INVALID_INT: ({ name }) => `${name} must be an integer.`,
+		RESOLVER_INVALID_INVITE: ({ name }) => `${name} must be a valid invite link.`,
+		RESOLVER_INVALID_WAGER: ({ bet }) =>
 			`I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${ShinyWager.kValidBetAmounts
 				.map((amount) => `\`${amount}\``)
 				.join(', ')}`,
-		RESOLVER_INVALID_LITERAL: (name) => `Your option did not match the only possibility: ${name}`,
-		RESOLVER_INVALID_MEMBER: (name) => `${name} must be a mention or valid user id.`,
-		RESOLVER_INVALID_MESSAGE: (name) => `${name} must be a valid message id.`,
-		RESOLVER_INVALID_PIECE: (name, piece) => `${name} must be a valid ${piece} name.`,
-		RESOLVER_INVALID_REGEX_MATCH: (name, pattern) => `${name} must follow this regex pattern \`${pattern}\`.`,
-		RESOLVER_INVALID_ROLE: (name) => `${name} must be a role mention or role id.`,
-		RESOLVER_INVALID_STRING: (name) => `${name} must be a valid string.`,
-		RESOLVER_INVALID_TIME: (name) => `${name} must be a valid duration or date string.`,
-		RESOLVER_INVALID_URL: (name) => `${name} must be a valid url.`,
-		RESOLVER_INVALID_USER: (name) => `${name} must be a mention or valid user id.`,
-		RESOLVER_INVALID_SNOWFLAKE: (name) => `${name} must be a valid Discord snowflake.`,
+		RESOLVER_INVALID_LITERAL: ({ name }) => `Your option did not match the only possibility: ${name}`,
+		RESOLVER_INVALID_MEMBER: ({ name }) => `${name} must be a mention or valid user id.`,
+		RESOLVER_INVALID_MESSAGE: ({ name }) => `${name} must be a valid message id.`,
+		RESOLVER_INVALID_PIECE: ({ name, piece }) => `${name} must be a valid ${piece} name.`,
+		RESOLVER_INVALID_REGEX_MATCH: ({ name, pattern }) => `${name} must follow this regex pattern \`${pattern}\`.`,
+		RESOLVER_INVALID_ROLE: ({ name }) => `${name} must be a role mention or role id.`,
+		RESOLVER_INVALID_STRING: ({ name }) => `${name} must be a valid string.`,
+		RESOLVER_INVALID_TIME: ({ name }) => `${name} must be a valid duration or date string.`,
+		RESOLVER_INVALID_URL: ({ name }) => `${name} must be a valid url.`,
+		RESOLVER_INVALID_USER: ({ name }) => `${name} must be a mention or valid user id.`,
+		RESOLVER_INVALID_SNOWFLAKE: ({ name }) => `${name} must be a valid Discord snowflake.`,
 		RESOLVER_STRING_SUFFIX: ' characters',
-		RESOLVER_MINMAX_EXACTLY: (name, min) => `${name} must be exactly ${min}.`,
-		RESOLVER_MINMAX_BOTH: (name, min, max, inclusive) =>
+		RESOLVER_MINMAX_EXACTLY: ({ name, min }) => `${name} must be exactly ${min}.`,
+		RESOLVER_MINMAX_BOTH: ({ name, min, max, inclusive }) =>
 			inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
-		RESOLVER_MINMAX_MIN: (name, min, inclusive) =>
+		RESOLVER_MINMAX_MIN: ({ name, min, inclusive }) =>
 			inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
-		RESOLVER_MINMAX_MAX: (name, max, inclusive) =>
+		RESOLVER_MINMAX_MAX: ({ name, max, inclusive }) =>
 			inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
 		REACTIONHANDLER_PROMPT: 'Which page would you like to jump to?',
 		// used for help command
@@ -207,30 +207,30 @@ export default class extends Language {
 			REMINDERS: '⏰ | ***Reminder***'
 		},
 		COMMANDMESSAGE_MISSING: 'Missing one or more required arguments after end of input.',
-		COMMANDMESSAGE_MISSING_REQUIRED: (name) => `${name} is a required argument.`,
-		COMMANDMESSAGE_MISSING_OPTIONALS: (possibles) => `Missing a required option: (${possibles})`,
+		COMMANDMESSAGE_MISSING_REQUIRED: ({ name }) => `${name} is a required argument.`,
+		COMMANDMESSAGE_MISSING_OPTIONALS: ({ possibles }) => `Missing a required option: (${possibles})`,
 		COMMANDMESSAGE_NOMATCH: (possibles) => `Your option didn't match any of the possibilities: (${possibles})`,
-		MONITOR_COMMAND_HANDLER_REPROMPT: (tag, error, time, abortOptions) =>
-			`${tag} | **${error}** | You have **${time}** seconds to respond to this prompt with a valid argument. Type **${abortOptions.join(
+		MONITOR_COMMAND_HANDLER_REPROMPT: ({ tag, name, time, cancelOptions }) =>
+			`${tag} | **${name}** | You have **${time}** seconds to respond to this prompt with a valid argument. Type **${cancelOptions.join(
 				'**, **'
 			)}** to abort this prompt.`,
-		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: (tag, name, time, cancelOptions) =>
+		MONITOR_COMMAND_HANDLER_REPEATING_REPROMPT: ({ tag, name, time, cancelOptions }) =>
 			`${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **${cancelOptions.join(
 				'**, **'
 			)}** to cancel this prompt.`,
 		MONITOR_COMMAND_HANDLER_ABORTED: 'Aborted',
-		INHIBITOR_COOLDOWN: (remaining) => `You have just used this command. You can use this command again in ${duration(remaining)}.`,
-		INHIBITOR_MISSING_BOT_PERMS: (missing) => `I don't have sufficient permissions! I'm missing: ${this.list(missing, 'and')}`,
+		INHIBITOR_COOLDOWN: ({ remaining }) => `You have just used this command. You can use this command again in ${duration(remaining)}.`,
+		INHIBITOR_MISSING_BOT_PERMS: ({ missing }) => `I don't have sufficient permissions! I'm missing: ${this.list(missing, 'and')}`,
 		INHIBITOR_NSFW: 'You may not use NSFW commands in this channel!',
 		INHIBITOR_PERMISSIONS: 'You do not have permission to use this command!',
-		INHIBITOR_REQUIRED_SETTINGS: (settings) =>
+		INHIBITOR_REQUIRED_SETTINGS: ({ settings }) =>
 			`The guild is missing the **${settings.join(', ')}** guild setting${settings.length === 1 ? '' : 's'} and thus the command cannot run.`,
-		INHIBITOR_RUNIN: (types) => `This command is only available in ${types} channels.`,
-		INHIBITOR_RUNIN_NONE: (name) => `The ${name} command is not configured to run in any channel.`,
+		INHIBITOR_RUNIN: ({ type }) => `This command is only available in ${type} channels.`,
+		INHIBITOR_RUNIN_NONE: ({ name }) => `The ${name} command is not configured to run in any channel.`,
 		INHIBITOR_DISABLED_GUILD: 'This command has been disabled by an admin in this guild!',
 		INHIBITOR_DISABLED_GLOBAL: 'This command has been globally disabled by the bot owner!',
 		COMMAND_BLACKLIST_DESCRIPTION: 'Blacklists or un-blacklists users and guilds from the bot.',
-		COMMAND_BLACKLIST_SUCCESS: (usersAdded, usersRemoved, guildsAdded, guildsRemoved) =>
+		COMMAND_BLACKLIST_SUCCESS: ({ usersAdded, usersRemoved, guildsAdded, guildsRemoved }) =>
 			[
 				usersAdded.length ? `**Users Added**\n${codeBlock('', usersAdded.join(', '))}` : '',
 				usersRemoved.length ? `**Users Removed**\n${codeBlock('', usersRemoved.join(', '))}` : '',
@@ -239,54 +239,54 @@ export default class extends Language {
 			]
 				.filter((val) => val !== '')
 				.join('\n'),
-		COMMAND_UNLOAD: (type, name) => `${GREENTICK} Unloaded ${type}: ${name}`,
+		COMMAND_UNLOAD: ({ type, name }) => `${GREENTICK} Unloaded ${type}: ${name}`,
 		COMMAND_UNLOAD_DESCRIPTION: 'Unloads the klasa piece.',
 		COMMAND_TRANSFER_ERROR: `${REDCROSS} That file has been transferred already or never existed.`,
-		COMMAND_TRANSFER_SUCCESS: (type, name) => `${GREENTICK} Successfully transferred ${type}: ${name}`,
-		COMMAND_TRANSFER_FAILED: (type, name) => `Transfer of ${type}: ${name} to Client has failed. Please check your Console.`,
+		COMMAND_TRANSFER_SUCCESS: ({ type, name }) => `${GREENTICK} Successfully transferred ${type}: ${name}`,
+		COMMAND_TRANSFER_FAILED: ({ type, name }) => `Transfer of ${type}: ${name} to Client has failed. Please check your Console.`,
 		COMMAND_TRANSFER_DESCRIPTION: 'Transfers a core piece to its respective folder',
-		COMMAND_RELOAD: (type, name, time) => `${GREENTICK} Reloaded ${type}: ${name}. (Took: ${time})`,
-		COMMAND_RELOAD_ALL: (type, time) => `${GREENTICK} Reloaded all ${type}. (Took: ${time})`,
-		COMMAND_RELOAD_EVERYTHING: (time) => `${GREENTICK} Reloaded everything. (Took: ${time})`,
+		COMMAND_RELOAD: ({ type, name, time }) => `${GREENTICK} Reloaded ${type}: ${name}. (Took: ${time})`,
+		COMMAND_RELOAD_ALL: ({ type, time }) => `${GREENTICK} Reloaded all ${type}. (Took: ${time})`,
+		COMMAND_RELOAD_EVERYTHING: ({ time }) => `${GREENTICK} Reloaded everything. (Took: ${time})`,
 		COMMAND_RELOAD_DESCRIPTION: 'Reloads a klasa piece, or all pieces of a klasa store.',
 		COMMAND_REBOOT: `${LOADING} Rebooting...`,
 		COMMAND_REBOOT_DESCRIPTION: 'Reboots the bot.',
 		COMMAND_PING: `${LOADING} Ping?`,
 		COMMAND_PING_DESCRIPTION: 'Runs a connection test to Discord.',
-		COMMAND_PINGPONG: (diff, ping) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
+		COMMAND_PINGPONG: ({ diff, ping }) => `Pong! (Roundtrip took: ${diff}ms. Heartbeat: ${ping}ms.)`,
 		COMMAND_INFO_DESCRIPTION: 'Provides some information about this bot.',
 		COMMAND_HELP_DESCRIPTION: 'Display help for a command.',
 		COMMAND_HELP_NO_EXTENDED: 'No extended help available.',
 		COMMAND_HELP_DM: '📥 | The list of commands you have access to has been sent to your DMs.',
 		COMMAND_HELP_NODM: `${REDCROSS} | You have DMs disabled, I couldn't send you the commands in DMs.`,
-		COMMAND_HELP_ALL_FLAG: (prefix) =>
+		COMMAND_HELP_ALL_FLAG: ({ prefix }) =>
 			`Displaying one category per page. Have issues with the embed? Run \`${prefix}help --all\` for a full list in DMs.`,
-		COMMAND_HELP_COMMAND_COUNT: (n) => `${n} command${n === 1 ? '' : 's'}`,
-		COMMAND_ENABLE: (type, name) => `+ Successfully enabled ${type}: ${name}`,
+		COMMAND_HELP_COMMAND_COUNT: ({ n }) => `${n} command${n === 1 ? '' : 's'}`,
+		COMMAND_ENABLE: ({ type, name }) => `+ Successfully enabled ${type}: ${name}`,
 		COMMAND_ENABLE_DESCRIPTION: 'Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.',
-		COMMAND_DISABLE: (type, name) => `+ Successfully disabled ${type}: ${name}`,
+		COMMAND_DISABLE: ({ type, name }) => `+ Successfully disabled ${type}: ${name}`,
 		COMMAND_DISABLE_DESCRIPTION:
 			'Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.',
 		COMMAND_DISABLE_WARN: "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
 		COMMAND_CONF_NOKEY: 'You must provide a key',
 		COMMAND_CONF_NOVALUE: 'You must provide a value',
-		COMMAND_CONF_GUARDED: (name) => `${toTitleCase(name)} may not be disabled.`,
-		COMMAND_CONF_UPDATED: (key, value) => `Successfully updated the key **${key}**: \`${value}\``,
+		COMMAND_CONF_GUARDED: ({ name }) => `${toTitleCase(name)} may not be disabled.`,
+		COMMAND_CONF_UPDATED: ({ key, response }) => `Successfully updated the key **${key}**: \`${response}\``,
 		COMMAND_CONF_KEY_NOT_ARRAY: "This key is not array type. Use the action 'reset' instead.",
-		COMMAND_CONF_GET_NOEXT: (key) => `The key **${key}** does not seem to exist.`,
-		COMMAND_CONF_GET: (key, value) => `The value for the key **${key}** is: \`${value}\``,
-		COMMAND_CONF_RESET: (key, value) => `The key **${key}** has been reset to: \`${value}\``,
-		COMMAND_CONF_NOCHANGE: (key) => `The value for **${key}** was already that value.`,
+		COMMAND_CONF_GET_NOEXT: ({ key }) => `The key **${key}** does not seem to exist.`,
+		COMMAND_CONF_GET: ({ key, value }) => `The value for the key **${key}** is: \`${value}\``,
+		COMMAND_CONF_RESET: ({ key, value }) => `The key **${key}** has been reset to: \`${value}\``,
+		COMMAND_CONF_NOCHANGE: ({ key }) => `The value for **${key}** was already that value.`,
 		COMMAND_CONF_SERVER_DESCRIPTION: 'Define per-server settings.',
-		COMMAND_CONF_SERVER: (key, list) => `**Server Setting ${key}**\n${list}`,
+		COMMAND_CONF_SERVER: ({ key, list }) => `**Server Setting ${key}**\n${list}`,
 		COMMAND_CONF_USER_DESCRIPTION: 'Define per-user settings.',
-		COMMAND_CONF_USER: (key, list) => `**User Setting ${key}**\n${list}`,
+		COMMAND_CONF_USER: ({ key, list }) => `**User Setting ${key}**\n${list}`,
 		COMMAND_CONF_SETTING_NOT_SET: 'Not Set',
 		MESSAGE_PROMPT_TIMEOUT: 'The prompt has timed out.',
 		TEXT_PROMPT_ABORT_OPTIONS: ['abort', 'stop', 'cancel'],
-		COMMAND_LOAD: (time, type, name) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
+		COMMAND_LOAD: ({ time, type, name }) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
 		COMMAND_LOAD_FAIL: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
-		COMMAND_LOAD_ERROR: (type, name, error) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
+		COMMAND_LOAD_ERROR: ({ type, name, error }) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 		COMMAND_LOAD_DESCRIPTION: 'Load a piece from your bot.',
 
 		/**
@@ -295,9 +295,8 @@ export default class extends Language {
 		 * ################################
 		 */
 
-		ARGUMENT_RANGE_INVALID: (name: string) => `${name} must be a number or a range of numbers.`,
-		ARGUMENT_RANGE_MAX: (name: string, maximum: number) =>
-			`${name} accepts a range of maximum ${maximum} ${maximum === 1 ? 'number' : 'numbers'}`,
+		ARGUMENT_RANGE_INVALID: ({ name }) => `${name} must be a number or a range of numbers.`,
+		ARGUMENT_RANGE_MAX: ({ name, maximum }) => `${name} accepts a range of maximum ${maximum} ${maximum === 1 ? 'number' : 'numbers'}`,
 
 		COMMAND_ADD_DESCRIPTION: 'Adds a song the the queue.',
 		COMMAND_ADD_EXTENDED: {
@@ -321,15 +320,15 @@ export default class extends Language {
 			],
 			multiline: true
 		},
-		COMMAND_ADD_PLAYLIST: (amount) => `${GREENTICK} Added **${amount}** ${amount === 1 ? 'song' : 'songs'} to the queue 🎶`,
-		COMMAND_ADD_SONG: (title) => `${GREENTICK} Added **${title}** to the queue 🎶`,
+		COMMAND_ADD_PLAYLIST: ({ amount }) => `${GREENTICK} Added **${amount}** ${amount === 1 ? 'song' : 'songs'} to the queue 🎶`,
+		COMMAND_ADD_SONG: ({ title }) => `${GREENTICK} Added **${title}** to the queue 🎶`,
 		COMMAND_CLEAR_DESCRIPTION: 'Clears the queue list.',
 		COMMAND_CLEAR_DENIED: `${REDCROSS} You can't execute this command when there are over 4 members! You must be a dee-jay or a moderator!`,
-		COMMAND_CLEAR_SUCCESS: (amount) => `${REDCROSS}  Pruned ${amount} ${amount === 1 ? 'song' : 'songs'}.`,
+		COMMAND_CLEAR_SUCCESS: ({ amount }) => `${REDCROSS}  Pruned ${amount} ${amount === 1 ? 'song' : 'songs'}.`,
 		COMMAND_JOIN_DESCRIPTION: "Joins the message author's voice channel.",
 		COMMAND_JOIN_NO_MEMBER: `${REDCROSS} I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
 		COMMAND_JOIN_NO_VOICECHANNEL: `${REDCROSS} You are not connected in a voice channel.`,
-		COMMAND_JOIN_SUCCESS: (channel) => `${GREENTICK} Successfully joined the voice channel ${channel}`,
+		COMMAND_JOIN_SUCCESS: ({ channel }) => `${GREENTICK} Successfully joined the voice channel ${channel}`,
 		COMMAND_JOIN_VOICE_DIFFERENT: `${REDCROSS} I think you confused the channels! Earth to Moon, we are in another voice channel!`,
 		COMMAND_JOIN_VOICE_FULL: `${REDCROSS} I cannot join your voice channel, it's full... kick somebody or make room for me!`,
 		COMMAND_JOIN_VOICE_NO_CONNECT: `${REDCROSS} I do not have enough permissions to connect to your voice channel. I am missing the **${PERMS.CONNECT}** permission.`,
@@ -347,7 +346,7 @@ export default class extends Language {
 			examples: ['leave', 'leave --removeall', 'leave --ra', 'leave --soft'],
 			multiline: true
 		},
-		COMMAND_LEAVE_SUCCESS: (channel) => `${GREENTICK} Successfully left the voice channel ${channel}`,
+		COMMAND_LEAVE_SUCCESS: ({ channel }) => `${GREENTICK} Successfully left the voice channel ${channel}`,
 		COMMAND_PAUSE_DESCRIPTION: 'Pauses the current song.',
 		COMMAND_PAUSE_SUCCESS: `${GREENTICK} Paused`,
 		COMMAND_PLAY_DESCRIPTION: 'Let me be your DJ and play you some tunes!',
@@ -375,24 +374,24 @@ export default class extends Language {
 			multiline: true
 		},
 		COMMAND_PLAY_END: 'It looks like the queue ended here. I hope you enjoyed the session!',
-		COMMAND_PLAY_NEXT: (title, requester) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
-		COMMAND_PLAY_QUEUE_PAUSED: (song) => `There was a track going on! Playing it back! Now playing: ${song}!`,
+		COMMAND_PLAY_NEXT: ({ title, requester }) => `🎧 Playing: **${title}** as requested by: **${requester}**`,
+		COMMAND_PLAY_QUEUE_PAUSED: ({ song }) => `There was a track going on! Playing it back! Now playing: ${song}!`,
 		COMMAND_PLAY_QUEUE_PLAYING: `${REDCROSS} Hey! The disk is already spinning!`,
 		COMMAND_PLAY_QUEUE_EMPTY:
 			'The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!',
 		COMMAND_PLAYING_DESCRIPTION: 'Get information from the current song.',
-		COMMAND_PLAYING_DURATION: (time) => `**Duration**: ${time}`,
+		COMMAND_PLAYING_DURATION: ({ duration }) => `**Duration**: ${duration}`,
 		COMMAND_PLAYING_QUEUE_EMPTY: `${REDCROSS} Are you speaking to me? Because my deck is empty...`,
 		COMMAND_PLAYING_QUEUE_NOT_PLAYING: `${REDCROSS} I think you're listening to background noise, I'm not playing anything.`,
 		COMMAND_REPEAT_DESCRIPTION: 'Toggle repeating the current song.',
-		COMMAND_REPEAT_SUCCESS: (enabled) =>
+		COMMAND_REPEAT_SUCCESS: ({ enabled }) =>
 			enabled
 				? "This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!"
 				: "I was actually getting tired of this too, but I didn't want to say anything.",
 		COMMAND_QUEUE_DESCRIPTION: 'Check the queue list.',
 		COMMAND_QUEUE_LAST: 'There are no more songs! After the one playing is over, the session will end!',
-		COMMAND_QUEUE_TITLE: (guildname) => `Music queue for ${guildname}`,
-		COMMAND_QUEUE_LINE: (position, duration, title, url, requester) =>
+		COMMAND_QUEUE_TITLE: ({ guildname }) => `Music queue for ${guildname}`,
+		COMMAND_QUEUE_LINE: ({ position, duration, title, url, requester }) =>
 			`**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
 		COMMAND_QUEUE_NOWPLAYING: ({ duration, title, url, requester, timeRemaining }) =>
 			[
@@ -405,19 +404,19 @@ export default class extends Language {
 				.join(' | '),
 		COMMAND_QUEUE_NOWPLAYING_TITLE: 'Now Playing:',
 		COMMAND_QUEUE_TOTAL_TITLE: 'Total songs:',
-		COMMAND_QUEUE_TOTAL: (songs, remainingTime) =>
+		COMMAND_QUEUE_TOTAL: ({ songs, remainingTime }) =>
 			`${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
 		COMMAND_QUEUE_EMPTY: "looks like nothing is playing right now and the queue is empty, why don't you start the disc?",
-		COMMAND_QUEUE_DASHBOARD_INFO: (guild) =>
+		COMMAND_QUEUE_DASHBOARD_INFO: ({ guild }) =>
 			`Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/${guild.id})`,
 		COMMAND_REMOVE_DESCRIPTION: 'Remove a song from the queue list.',
 		COMMAND_REMOVE_INDEX_INVALID: `I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
-		COMMAND_REMOVE_INDEX_OUT: (amount) =>
+		COMMAND_REMOVE_INDEX_OUT: ({ amount }) =>
 			`maybe time happened too fast for you, there are ${amount} ${amount === 1 ? 'song' : 'songs'} in the queue!`,
 		COMMAND_REMOVE_DENIED: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
-		COMMAND_REMOVE_SUCCESS: (song) => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
+		COMMAND_REMOVE_SUCCESS: ({ song }) => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
 		COMMAND_SEEK_DESCRIPTION: 'Change the player time for the current song.',
-		COMMAND_SEEK_SUCCESS: (time) => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
+		COMMAND_SEEK_SUCCESS: ({ time }) => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
 		COMMAND_RESUME_DESCRIPTION: 'Resumes the current song.',
 		COMMAND_RESUME_SUCCESS: '▶ Resumed.',
 		COMMAND_ROLESET_DESCRIPTION: 'Manage unique role sets.',
@@ -447,22 +446,22 @@ export default class extends Language {
 			reminder: 'This command can add and/or remove multiple roles at the same time.',
 			multiline: true
 		},
-		COMMAND_ROLESET_CREATED: (name, roles) => `The ${name} unique role set has been created with the following roles: ${roles}`,
-		COMMAND_ROLESET_ADDED: (name, roles) => `The ${name} unique role set now has the following roles as well: ${roles}.`,
-		COMMAND_ROLESET_INVALID_NAME: (name) => `You can not remove the ${name} unique role set because it does not exist.`,
-		COMMAND_ROLESET_REMOVED: (name, roles) => `The ${name} unique role set will no longer include the following roles: ${roles}`,
+		COMMAND_ROLESET_CREATED: ({ name, roles }) => `The ${name} unique role set has been created with the following roles: ${roles}`,
+		COMMAND_ROLESET_ADDED: ({ name, roles }) => `The ${name} unique role set now has the following roles as well: ${roles}.`,
+		COMMAND_ROLESET_INVALID_NAME: ({ name }) => `You can not remove the ${name} unique role set because it does not exist.`,
+		COMMAND_ROLESET_REMOVED: ({ name, roles }) => `The ${name} unique role set will no longer include the following roles: ${roles}`,
 		COMMAND_ROLESET_RESET_EMPTY: `${REDCROSS} There are no rolesets configured in this groupo.`,
 		COMMAND_ROLESET_RESET_ALL: `${GREENTICK} Successfully removed all rolesets.`,
-		COMMAND_ROLESET_RESET_NOT_EXISTS: (name) => `${REDCROSS} The roleset \`${name}\` does not exist in this server.`,
-		COMMAND_ROLESET_RESET_GROUP: (name) => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server.`,
-		COMMAND_ROLESET_UPDATED: (name) => `The ${name} unique role set has been updated.`,
+		COMMAND_ROLESET_RESET_NOT_EXISTS: ({ name }) => `${REDCROSS} The roleset \`${name}\` does not exist in this server.`,
+		COMMAND_ROLESET_RESET_GROUP: ({ name }) => `${GREENTICK} Successfully removed the roleset \`${name}\` from this server.`,
+		COMMAND_ROLESET_UPDATED: ({ name }) => `The ${name} unique role set has been updated.`,
 		COMMAND_SHUFFLE_DESCRIPTION: 'Randomize the order of the songs in the queue.',
-		COMMAND_SHUFFLE_SUCCESS: (amount) => `${GREENTICK} Successfully randomized ${amount} songs.`,
+		COMMAND_SHUFFLE_SUCCESS: ({ amount }) => `${GREENTICK} Successfully randomized ${amount} songs.`,
 		COMMAND_SKIP_DESCRIPTION: 'Skip the current song.',
 		COMMAND_SKIP_PERMISSIONS: `${REDCROSS} You can't execute this command, you must be a DJ or a Moderator.`,
 		COMMAND_SKIP_VOTES_VOTED: `${REDCROSS} You have already voted.`,
-		COMMAND_SKIP_VOTES_TOTAL: (amount, needed) => `🔸 | Votes: ${amount} of ${needed}`,
-		COMMAND_SKIP_SUCCESS: (title) => `⏭ Skipped **${title}**.`,
+		COMMAND_SKIP_VOTES_TOTAL: ({ amount, needed }) => `🔸 | Votes: ${amount} of ${needed}`,
+		COMMAND_SKIP_SUCCESS: ({ title }) => `⏭ Skipped **${title}**.`,
 		COMMAND_PLAYING_TIME_DESCRIPTION: 'Check how much time is left for the song to end.',
 		COMMAND_PLAYING_TIME_QUEUE_EMPTY: 'Are you speaking to me? Because my deck is empty...',
 		COMMAND_PROMOTE_DESCRIPTION: 'Promote a song to the front of the queue',
@@ -471,11 +470,11 @@ export default class extends Language {
 			examples: ['5'],
 			reminder: 'This command requires that you are a DJ or a Moderator to use it'
 		},
-		COMMAND_PROMOTE_SUCCESS: (song) => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
+		COMMAND_PROMOTE_SUCCESS: ({ song }) => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
 		COMMAND_VOLUME_DESCRIPTION: 'Manage the volume for current song.',
-		COMMAND_VOLUME_SUCCESS: (volume) => `📢 Volume: ${volume}%`,
-		COMMAND_VOLUME_CHANGED: (emoji, volume) => `${emoji} Volume set to: ${volume}%`,
-		COMMAND_VOLUME_CHANGED_EXTREME: (emoji, text, volume) => `${emoji} ${text} set to: ${volume}%`,
+		COMMAND_VOLUME_SUCCESS: ({ volume }) => `📢 Volume: ${volume}%`,
+		COMMAND_VOLUME_CHANGED: ({ emoji, volume }) => `${emoji} Volume set to: ${volume}%`,
+		COMMAND_VOLUME_CHANGED_EXTREME: ({ emoji, text, volume }) => `${emoji} ${text} set to: ${volume}%`,
 		COMMAND_VOLUME_CHANGED_TEXTS: createPick(['**EXTREME VOLUME**', '**AIRPLANE NACELLE-LIKE VOLUME**', '**FALCON HEAVY LAUNCH-LIKE VOLUME**']),
 
 		INHIBITOR_MUSIC_QUEUE_EMPTY: `${REDCROSS} The queue\'s empty! The session will start as soon as we have some songs queued.`,
@@ -495,11 +494,11 @@ export default class extends Language {
 		MUSICMANAGER_SETVOLUME_LOUD: "I'll be honest, an airplane's nacelle would be less noisy than this!",
 		MUSICMANAGER_PLAY_NO_SONGS: 'No songs left in the queue!',
 		MUSICMANAGER_PLAY_PLAYING: "Decks' spinning, can't you hear it?",
-		MUSICMANAGER_STUCK: (milliseconds) => `${LOADING} Hold on, I got a little problem, I'll be back in: ${duration(milliseconds)}!`,
+		MUSICMANAGER_STUCK: ({ milliseconds }) => `${LOADING} Hold on, I got a little problem, I'll be back in: ${duration(milliseconds)}!`,
 
 		COMMAND_CONF_MENU_NOPERMISSIONS: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
-		COMMAND_CONF_MENU_RENDER_AT_FOLDER: (path) => `Currently at: \\📁 ${path}`,
-		COMMAND_CONF_MENU_RENDER_AT_PIECE: (path) => `Currently at: ${path}`,
+		COMMAND_CONF_MENU_RENDER_AT_FOLDER: ({ path }) => `Currently at: \\📁 ${path}`,
+		COMMAND_CONF_MENU_RENDER_AT_PIECE: ({ path }) => `Currently at: ${path}`,
 		COMMAND_CONF_MENU_RENDER_NOKEYS: 'There are no configurable keys for this folder',
 		COMMAND_CONF_MENU_RENDER_SELECT: "Please type in any of the following entries' names",
 		COMMAND_CONF_MENU_RENDER_TCTITLE: 'Text Commands:',
@@ -507,7 +506,7 @@ export default class extends Language {
 		COMMAND_CONF_MENU_RENDER_REMOVE: '• Remove Value → `remove <value>`',
 		COMMAND_CONF_MENU_RENDER_RESET: '• Reset Value → `reset`',
 		COMMAND_CONF_MENU_RENDER_UNDO: '• Undo Update → `undo`',
-		COMMAND_CONF_MENU_RENDER_CVALUE: (value) => `Current Value: **\`\`${value}\`\`**`,
+		COMMAND_CONF_MENU_RENDER_CVALUE: ({ value }) => `Current Value: **\`\`${value}\`\`**`,
 		COMMAND_CONF_MENU_RENDER_BACK: 'Press ◀ to go back',
 		COMMAND_CONF_MENU_INVALID_KEY: 'Invalid Key, please try again with any of the following options.',
 		COMMAND_CONF_MENU_INVALID_ACTION: 'Invalid Action, please try again with any of the following options.',
@@ -942,12 +941,12 @@ export default class extends Language {
 				oncePerWeek: 'Once per week',
 				unknown: 'Unknown'
 			},
-			WAR_LOG_PUBLIC_DESCR: (isWarLogPublic) => (isWarLogPublic ? 'Yes' : 'No')
+			WAR_LOG_PUBLIC_DESCR: ({ isWarLogPublic }) => (isWarLogPublic ? 'Yes' : 'No')
 		},
-		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: (playertag) =>
+		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: ({ playertag }) =>
 			`I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
-		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: (clan) => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
-		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: (playertag) =>
+		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: ({ clan }) => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
+		COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL: ({ playertag }) =>
 			`I am sorry, but I was unable to get data on the player with player tag \`${playertag}\`.`,
 		COMMAND_FFXIV_DESCRIPTION: 'Queries the Final Fantasy 14 API for game data',
 		COMMAND_FFXIV_EXTENDED: {
@@ -1003,22 +1002,22 @@ export default class extends Language {
 			'Are you sure that they play on the provided platform? (PC [default], Xbox or PSN are supported)'
 		].join('\n'),
 		COMMAND_FORTNITE_TITLES: {
-			TITLE: (epicUserHandle) => `Fortnite player statistics for ${epicUserHandle}`,
+			TITLE: ({ epicUserHandle }) => `Fortnite player statistics for ${epicUserHandle}`,
 			LIFETIME_STATS: '**_Lifetime Stats_**',
 			SOLOS: '**_Solos_**',
 			DUOS: '**_Duos_**',
 			SQUADS: '**_Squads_**',
-			WINS: (count) => `Wins: **\`${count}\`**`,
-			KILLS: (count) => `Kills: **\`${count}\`**`,
-			KDR: (count) => `KDR: **\`${count}%\`**`,
-			MATCHES_PLAYED: (count) => `Matches played: **\`${count}\`**`,
-			TOP_1S: (count) => `Top 1s: **\`${count}\`**`,
-			TOP_3S: (count) => `Top 3s: **\`${count}\`**`,
-			TOP_5S: (count) => `Top 5s: **\`${count}\`**`,
-			TOP_6S: (count) => `Top 6s: **\`${count}\`**`,
-			TOP_10S: (count) => `Top 10s: **\`${count}\`**`,
-			TOP_12S: (count) => `Top 12s: **\`${count}\`**`,
-			TOP_25S: (count) => `Top 25s: **\`${count}\`**`
+			WINS: ({ count }) => `Wins: **\`${count}\`**`,
+			KILLS: ({ count }) => `Kills: **\`${count}\`**`,
+			KDR: ({ count }) => `KDR: **\`${count}%\`**`,
+			MATCHES_PLAYED: ({ count }) => `Matches played: **\`${count}\`**`,
+			TOP_1S: ({ count }) => `Top 1s: **\`${count}\`**`,
+			TOP_3S: ({ count }) => `Top 3s: **\`${count}\`**`,
+			TOP_5S: ({ count }) => `Top 5s: **\`${count}\`**`,
+			TOP_6S: ({ count }) => `Top 6s: **\`${count}\`**`,
+			TOP_10S: ({ count }) => `Top 10s: **\`${count}\`**`,
+			TOP_12S: ({ count }) => `Top 12s: **\`${count}\`**`,
+			TOP_25S: ({ count }) => `Top 25s: **\`${count}\`**`
 		},
 		COMMAND_OVERWATCH_DESCRIPTION: 'Gets player statistics for an Overwatch player',
 		COMMAND_OVERWATCH_EXTENDED: {
@@ -1032,45 +1031,45 @@ export default class extends Language {
 			],
 			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
 		},
-		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: (playerTag) =>
+		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: ({ playerTag }) =>
 			[
 				`\`${playerTag}\` is an invalid player name`,
 				'For PC it has to be their full Blizzard BattleTag, for example `MagicPants#112369`.',
 				'For Xbox and Playstation it just has to be their username.'
 			].join('\n'),
-		COMMAND_OVERWATCH_QUERY_FAIL: (player, platform) =>
+		COMMAND_OVERWATCH_QUERY_FAIL: ({ player, platform }) =>
 			[
 				`Failed to get data for \`${player}\`, are you sure they play on \`${platform}\`?`,
 				'Also make sure to get the casing right, names are case sensitive.'
 			].join('\n'),
-		COMMAND_OVERWATCH_NO_STATS: (player) => `I found a player with the tag \`${player}\` but no stats were available for them.`,
+		COMMAND_OVERWATCH_NO_STATS: ({ player }) => `I found a player with the tag \`${player}\` but no stats were available for them.`,
 		COMMMAND_OVERWATCH_EMBED_DATA: {
 			TITLE: 'Click here for more details on overwatchtracker.com',
 			RATINGS_TITLE: 'Ratings',
 			NO_AVERAGE: 'Not enough data to determine average.',
-			AUTHOR: (name) => `Overwatch Player Statistics for ${name}`,
-			PLAYER_LEVEL: (level) => `**Player level:** ${this.groupDigits(level)}`,
-			PRESTIGE_LEVEL: (level) => `**Prestige level:** ${this.groupDigits(level)}`,
-			TOTAL_GAMES_WON: (gamesWon) => `**Total games won:** ${gamesWon ? this.groupDigits(gamesWon) : 'None'}`,
-			RATINGS: (ratings) =>
+			AUTHOR: ({ name }) => `Overwatch Player Statistics for ${name}`,
+			PLAYER_LEVEL: ({ level }) => `**Player level:** ${this.groupDigits(level)}`,
+			PRESTIGE_LEVEL: ({ level }) => `**Prestige level:** ${this.groupDigits(level)}`,
+			TOTAL_GAMES_WON: ({ gamesWon }) => `**Total games won:** ${gamesWon ? this.groupDigits(gamesWon) : 'None'}`,
+			RATINGS: ({ ratings }) =>
 				ratings
 					.map(
 						(rating) =>
 							`**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`
 					)
 					.join('\n'),
-			FINAL_BLOWS: (finalBlows) => `**Final blows:** ${this.groupDigits(finalBlows)}`,
-			DEATHS: (deaths) => `**Deaths:** ${this.groupDigits(deaths)}`,
-			DAMAGE_DEALT: (damageDone) => `**Damage dealt:** ${this.groupDigits(damageDone)}`,
-			HEALING: (healingDone) => `**Healing:** ${this.groupDigits(healingDone)}`,
-			OBJECTIVE_KILLS: (objectiveKills) => `**Objective kills:** ${this.groupDigits(objectiveKills)}`,
-			SOLO_KILLS: (soloKills) => `**Solo kills:** ${this.groupDigits(soloKills)}`,
-			PLAY_TIME: (timePlayed) => `**Playtime:** ${this.duration(timePlayed, 2)}`,
-			GAMES_WON: (gamesWon) => `**Games won:** ${this.groupDigits(gamesWon)}`,
-			GOLDEN_MEDALS: (medalsGold) => `**Gold medals earned:** ${this.groupDigits(medalsGold)}`,
-			SILVER_MEDALS: (medalsSiver) => `**Silver medals earned:** ${this.groupDigits(medalsSiver)}`,
-			BRONZE_MEDALS: (medalsBronze) => `**Bronze medals earned:** ${this.groupDigits(medalsBronze)}`,
-			TOP_HERO: (heroName, timePlayed) => `**${toTitleCase(heroName)}** (${timePlayed})`,
+			FINAL_BLOWS: ({ finalBlows }) => `**Final blows:** ${this.groupDigits(finalBlows)}`,
+			DEATHS: ({ deaths }) => `**Deaths:** ${this.groupDigits(deaths)}`,
+			DAMAGE_DEALT: ({ damageDone }) => `**Damage dealt:** ${this.groupDigits(damageDone)}`,
+			HEALING: ({ healingDone }) => `**Healing:** ${this.groupDigits(healingDone)}`,
+			OBJECTIVE_KILLS: ({ objectiveKills }) => `**Objective kills:** ${this.groupDigits(objectiveKills)}`,
+			SOLO_KILLS: ({ soloKills }) => `**Solo kills:** ${this.groupDigits(soloKills)}`,
+			PLAY_TIME: ({ timePlayed }) => `**Playtime:** ${this.duration(timePlayed, 2)}`,
+			GAMES_WON: ({ gamesWon }) => `**Games won:** ${this.groupDigits(gamesWon)}`,
+			GOLDEN_MEDALS: ({ medalsGold }) => `**Gold medals earned:** ${this.groupDigits(medalsGold)}`,
+			SILVER_MEDALS: ({ medalsSilver }) => `**Silver medals earned:** ${this.groupDigits(medalsSilver)}`,
+			BRONZE_MEDALS: ({ medalsBronze }) => `**Bronze medals earned:** ${this.groupDigits(medalsBronze)}`,
+			TOP_HERO: ({ heroName, timePlayed }) => `**${toTitleCase(heroName)}** (${timePlayed})`,
 			HEADERS: {
 				ACCOUNT: '__Account Stats__',
 				QUICKPLAY: '__Quickplay Stats__',
@@ -2075,7 +2074,8 @@ export default class extends Language {
 			ABILITY: 'Ability',
 			EXTERNAL_RESOURCES: 'External resources'
 		},
-		COMMAND_ABILITY_QUERY_FAIL: (ability) => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
+		COMMAND_ABILITY_QUERY_FAIL: ({ ability }) =>
+			`I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
 		COMMAND_FLAVORS_DESCRIPTION: 'Gets the dex entries across various games for a Pokémon.',
 		COMMAND_FLAVORS_EXTENDED: {
 			extendedHelp: `
@@ -2085,7 +2085,7 @@ export default class extends Language {
 			explainedUsage: [['pokemon', 'The Pokémon for which you want to get flavour texts']],
 			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
 		},
-		COMMAND_FLAVORS_QUERY_FAIL: (pokemon) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
+		COMMAND_FLAVORS_QUERY_FAIL: ({ pokemon }) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_ITEM_DESCRIPTION: 'Gets data for any given Pokémon item using my Pokémon dataset.',
 		COMMAND_ITEM_EXTENDED: {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
@@ -2096,10 +2096,10 @@ export default class extends Language {
 			ITEM: 'Item',
 			GENERATION_INTRODUCED: 'Generation introduced',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in generation 8',
-			AVAILABLE_IN_GENERATION_8_DATA: (available) => (available ? 'Yes' : 'No'),
+			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No'),
 			EXTERNAL_RESOURCES: 'External resources'
 		},
-		COMMAND_ITEM_QUERY_FAIL: (item) => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
+		COMMAND_ITEM_QUERY_FAIL: ({ item }) => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
 		COMMAND_LEARN_DESCRIPTION: 'Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.',
 		COMMAND_LEARN_EXTENDED: {
 			extendedHelp: `
@@ -2116,7 +2116,7 @@ export default class extends Language {
 			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		},
 		COMMAND_LEARN_METHOD_TYPES: {
-			levelUpMoves: (level) => `by level up at level ${level}`,
+			levelUpMoves: ({ level }) => `by level up at level ${level}`,
 			eventMoves: () => 'through an event',
 			tutorMoves: () => 'from a move tutor',
 			eggMoves: () => 'as an eggmove',
@@ -2124,14 +2124,15 @@ export default class extends Language {
 			tmMoves: () => 'by using a technical machine or technical record',
 			dreamworldMoves: () => 'through a Dream World capture'
 		},
-		COMMAND_LEARN_INVALID_GENERATION: (generation) => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
-		COMMAND_LEARN_METHOD: (generation, pokemon, move, method) => `In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
-		COMMAND_LEARN_QUERY_FAILED: (pokemon, moves) =>
+		COMMAND_LEARN_INVALID_GENERATION: ({ generation }) => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
+		COMMAND_LEARN_METHOD: ({ generation, pokemon, move, method }) =>
+			`In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
+		COMMAND_LEARN_QUERY_FAILED: ({ pokemon, moves }) =>
 			`I am sorry, but that query failed. Are you sure you \`${pokemon}\` is actually a Pokémon and ${moves
 				.map((move) => `\`${move}\``)
 				.join(' and ')} are actually moves?`,
-		COMMAND_LEARN_CANNOT_LEARN: (pokemon, moves) => `Looks like ${toTitleCase(pokemon)} cannot learn ${this.list(moves, 'or')}`,
-		COMMAND_LEARN_TITLE: (pokemon, generation) => `Learnset data for ${toTitleCase(pokemon)} in generation ${generation}`,
+		COMMAND_LEARN_CANNOT_LEARN: ({ pokemon, moves }) => `Looks like ${toTitleCase(pokemon)} cannot learn ${this.list(moves, 'or')}`,
+		COMMAND_LEARN_TITLE: ({ pokemon, generation }) => `Learnset data for ${toTitleCase(pokemon)} in generation ${generation}`,
 		COMMAND_MOVE_DESCRIPTION: 'Gets data for any given Pokémon move using my Pokémon dataset',
 		COMMAND_MOVE_EXTENDED: {
 			extendedHelp: 'Uses a fuzzy search to also match against near-matches.',
@@ -2155,13 +2156,13 @@ export default class extends Language {
 			Z_CRYSTAL: 'Z-Crystal',
 			GMAX_POKEMON: 'G-MAX Pokémon',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in Generation 8',
-			AVAILABLE_IN_GENERATION_8_DATA: (available) => (available ? 'Yes' : 'No'),
+			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No'),
 			EXTERNAL_RESOURCES: 'External Resources',
 			NONE: 'None',
 			MAX_MOVE_POWER: 'Base power as MAX move (Dynamax)',
 			Z_MOVE_POWER: 'Base power as Z-Move (Z-Crystal)'
 		},
-		COMMAND_MOVE_QUERY_FAIL: (move: string) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
+		COMMAND_MOVE_QUERY_FAIL: ({ move }) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Gets data for any given Pokémon using my Pokémon dataset.',
 		COMMAND_POKEDEX_EXTENDED: {
 			extendedHelp: `
@@ -2189,9 +2190,9 @@ export default class extends Language {
 			EXTERNAL_RESOURCES: 'External resources',
 			OTHER_FORMES_TITLE: 'Other forme(s)',
 			COSMETIC_FORMES_TITLE: 'Cosmetic Formes',
-			FORMES_LIST: (formes) => this.list(formes, 'and')
+			FORMES_LIST: ({ formes }) => this.list(formes, 'and')
 		},
-		COMMAND_POKEDEX_QUERY_FAIL: (pokemon) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
+		COMMAND_POKEDEX_QUERY_FAIL: ({ pokemon }) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',
 		COMMAND_TYPE_EXTENDED: {
 			extendedHelp: 'Types have to be exact matches to pokemon types (upper/lowercase can be ignored)',
@@ -2210,11 +2211,11 @@ export default class extends Language {
 			RESISTS: 'Resists',
 			NOT_AFFECTED_BY: 'Not affected by',
 			EXTERNAL_RESOURCES: 'External resources',
-			TYPE_EFFECTIVENESS_FOR: (types) => `Type effectiveness for ${types.map((val) => `\`${val}\``).join(' and ')}`
+			TYPE_EFFECTIVENESS_FOR: ({ type }) => `Type effectiveness for ${type.map((val) => `\`${val}\``).join(' and ')}`
 		},
 		COMMAND_TYPE_TOO_MANY_TYPES: 'I am sorry, but you can get the matchup for at most 2 types',
-		COMMAND_TYPE_NOT_A_TYPE: (type) => `${type} is not a valid Pokémon type`,
-		COMMAND_TYPE_QUERY_FAIL: (types) =>
+		COMMAND_TYPE_NOT_A_TYPE: ({ type }) => `${type} is not a valid Pokémon type`,
+		COMMAND_TYPE_QUERY_FAIL: ({ types }) =>
 			`I am sorry, but that query failed. Are you sure ${types.map((val) => `\`${val}\``).join(' and ')} are actually types in Pokémon?`,
 
 		/**
@@ -2498,7 +2499,7 @@ export default class extends Language {
 		COMMAND_TOPINVITES_DESCRIPTION: 'Shows the top 10 most used invites for this server',
 		COMMAND_TOPINVITES_EXTENDED: {},
 		COMMAND_TOPINVITES_NO_INVITES: 'There are no invites, or none of them have been used!',
-		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: (guild) => `Top 10 invites for ${guild}`,
+		COMMAND_TOPINVITES_TOP_10_INVITES_FOR: ({ guild }) => `Top 10 invites for ${guild}`,
 		COMMAND_TOPINVITES_EMBED_DATA: {
 			CHANNEL: 'Channel',
 			LINK: 'Link',
@@ -2590,7 +2591,7 @@ export default class extends Language {
 			CURRENT_DATE: 'Current Date',
 			COUNTRY: 'Country',
 			GMT_OFFSET: 'GMT Offset',
-			DST: (dst) => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+			DST: ({ dst }) => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
 		},
 		COMMAND_GSEARCH_DESCRIPTION: 'Find your favourite things on Google',
 		COMMAND_GSEARCH_EXTENDED: {
@@ -2772,12 +2773,12 @@ export default class extends Language {
 			SPECIAL: '🎴 Special'
 		},
 		COMMAND_ANIME_INVALID_CHOICE: "That's an invalid choice! Please try with another option.",
-		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, description) =>
+		COMMAND_ANIME_OUTPUT_DESCRIPTION: ({ entry, synopsis }) =>
 			[
 				`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
 				`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
-				description ?? 'No synopsis available for this title.'
+				synopsis ?? 'No synopsis available for this title.'
 			].join('\n'),
 		COMMAND_ANIME_EMBED_DATA: {
 			TYPE: 'Type',
@@ -2789,12 +2790,12 @@ export default class extends Language {
 			WATCH_IT: 'Watch it here:',
 			STILL_AIRING: 'Still airing'
 		},
-		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, description) =>
+		COMMAND_MANGA_OUTPUT_DESCRIPTION: ({ entry, synopsis }) =>
 			[
 				`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
 				`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
-				description ?? 'No synopsis available for this title.'
+				synopsis ?? 'No synopsis available for this title.'
 			].join('\n'),
 		COMMAND_MANGA_TYPES: {
 			MANGA: '📘 Manga',
@@ -2819,14 +2820,15 @@ export default class extends Language {
 		 */
 
 		COMMAND_SUBSCRIBE_NO_ROLE: 'This server does not have a configured announcement role.',
-		COMMAND_SUBSCRIBE_SUCCESS: (role) => `Successfully granted the role: **${role}**`,
-		COMMAND_UNSUBSCRIBE_SUCCESS: (role) => `Successfully removed the role: **${role}**`,
+		COMMAND_SUBSCRIBE_SUCCESS: ({ role }) => `Successfully granted the role: **${role}**`,
+		COMMAND_UNSUBSCRIBE_SUCCESS: ({ role }) => `Successfully removed the role: **${role}**`,
 		COMMAND_SUBSCRIBE_NO_CHANNEL: 'This server does not have a configured announcement channel.',
-		COMMAND_ANNOUNCEMENT: (role) => `**New announcement for** ${role}`,
+		COMMAND_ANNOUNCEMENT: ({ role }) => `**New announcement for** ${role}`,
 		COMMAND_ANNOUNCEMENT_SUCCESS: 'Successfully posted a new announcement.',
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Cancelled the message.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'This will be the message sent in the announcement channel. Are you OK with this?',
-		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: (header, mentions) => `${header}${mentions.length ? `, and mentioning: ${list(mentions, 'and')}` : ''}:`,
+		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: ({ header, mentions }) =>
+			`${header}${mentions.length ? `, and mentioning: ${list(mentions, 'and')}` : ''}:`,
 
 		/**
 		 * ################
@@ -2882,8 +2884,8 @@ export default class extends Language {
 			examples: ['@skyra/char', '@skyra/saelem', '@skyra/eslint-config']
 		},
 		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
-		COMMAND_YARN_UNPUBLISHED_PACKAGE: (pkg) => `What a silly developer who made ${pkg}! They unpublished it!`,
-		COMMAND_YARN_PACKAGE_NOT_FOUND: (pkg) => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
+		COMMAND_YARN_UNPUBLISHED_PACKAGE: ({ pkg }) => `What a silly developer who made ${pkg}! They unpublished it!`,
+		COMMAND_YARN_PACKAGE_NOT_FOUND: ({ pkg }) => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
 		COMMAND_YARN_EMBED_DATA: {
 			DESCRIPTION: ({
 				author,
@@ -2922,7 +2924,7 @@ export default class extends Language {
 		 * FUN COMMANDS
 		 */
 
-		COMMAND_8BALL_OUTPUT: (author, question, response) => `🎱 Question by ${author}: *${question}*\n${response}`,
+		COMMAND_8BALL_OUTPUT: ({ author, question, response }) => `🎱 Question by ${author}: *${question}*\n${response}`,
 		COMMAND_8BALL_QUESTIONS: {
 			WHEN: 'when',
 			WHAT: 'what',
@@ -3005,13 +3007,14 @@ export default class extends Language {
 		]),
 
 		COMMAND_CATFACT_TITLE: 'Cat Fact',
-		COMMAND_CHOICE_OUTPUT: (user, word) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
+		COMMAND_CHOICE_OUTPUT: ({ user, word }) =>
+			`🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
 		COMMAND_CHOICE_MISSING: 'Please write at least two options separated by comma.',
-		COMMAND_CHOICE_DUPLICATES: (words) => `Why would I accept duplicated words? '${words}'.`,
-		COMMAND_DICE_OUTPUT: (result) => `You rolled the dice! You got: **${result}**`,
+		COMMAND_CHOICE_DUPLICATES: ({ words }) => `Why would I accept duplicated words? '${words}'.`,
+		COMMAND_DICE_OUTPUT: ({ result }) => `You rolled the dice! You got: **${result}**`,
 		COMMAND_DICE_ROLLS_ERROR: 'Amount of rolls must be a number between 1 and 1024.',
 		COMMAND_DICE_SIDES_ERROR: 'Amount of sides must be a number between 3 and 1024.',
-		COMMAND_ESCAPEROPE_OUTPUT: (user) => `**${user}** used **Escape Rope**`,
+		COMMAND_ESCAPEROPE_OUTPUT: ({ user }) => `**${user}** used **Escape Rope**`,
 		COMMAND_LOVE_LESS45: 'Try again next time...',
 		COMMAND_LOVE_LESS75: 'Good enough!',
 		COMMAND_LOVE_LESS100: 'Good match!',
@@ -3021,10 +3024,10 @@ export default class extends Language {
 		COMMAND_MARKOV_TIMER: (timer) => `Processed in ${timer}.`,
 		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
-		COMMAND_RATE_OUTPUT: (user, rate, emoji) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
+		COMMAND_RATE_OUTPUT: ({ user, rate, emoji }) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
 		COMMAND_PUN_ERROR: 'Something went wrong. Try again later.',
-		COMMAND_XKCD_COMICS: (amount) => `There are only ${amount} comics.`,
+		COMMAND_XKCD_COMICS: ({ amount }) => `There are only ${amount} comics.`,
 		COMMAND_XKCD_NOTFOUND: 'I have searched far and wide, but I got no luck finding this comic, try again later or try another!',
 
 		/**
@@ -3036,19 +3039,20 @@ export default class extends Language {
 		COMMAND_GAMES_BOT: 'I am sorry, but I do not think they would like to stop doing what they are doing and play with humans.',
 		COMMAND_GAMES_SELF: 'You must be so sad to play against yourself. Try again with another user.',
 		COMMAND_GAMES_PROGRESS: 'I am sorry, but there is a game in progress in this channel, try again when it finishes.',
-		COMMAND_GAMES_NO_PLAYERS: (prefix) => `Please specify some tributes to play the Hunger Games, like so: \`${prefix}hg Bob, Mark, Jim, Kyra\``,
-		COMMAND_GAMES_TOO_MANY_OR_FEW: (min, max) => `I am sorry but the amount of players is less than ${min} or greater than ${max}.`,
+		COMMAND_GAMES_NO_PLAYERS: ({ prefix }) =>
+			`Please specify some tributes to play the Hunger Games, like so: \`${prefix}hg Bob, Mark, Jim, Kyra\``,
+		COMMAND_GAMES_TOO_MANY_OR_FEW: ({ min, max }) => `I am sorry but the amount of players is less than ${min} or greater than ${max}.`,
 		COMMAND_GAMES_REPEAT: 'I am sorry, but a user cannot play twice.',
 		COMMAND_GAMES_PROMPT_TIMEOUT: 'I am sorry, but the challengee did not reply on time.',
 		COMMAND_GAMES_PROMPT_DENY: 'I am sorry, but the challengee refused to play.',
 		COMMAND_GAMES_TIMEOUT: '**The match concluded in a draw due to lack of a response (60 seconds)**',
-		COMMAND_C4_PROMPT: (challenger, challengee) =>
+		COMMAND_C4_PROMPT: ({ challenger, challengee }) =>
 			`Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
-		COMMAND_C4_START: (player) => `Let's play! Turn for: **${player}**.`,
+		COMMAND_C4_START: ({ player }) => `Let's play! Turn for: **${player}**.`,
 		COMMAND_C4_GAME_COLUMN_FULL: 'This column is full. Please try another. ',
-		COMMAND_C4_GAME_WIN: (user, turn) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		COMMAND_C4_GAME_WIN: ({ user, turn }) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
 		COMMAND_C4_GAME_DRAW: 'This match concluded in a **draw**!',
-		COMMAND_C4_GAME_NEXT: (player, turn) => `Turn for: ${player} (${turn === 0 ? 'blue' : 'red'}).`,
+		COMMAND_C4_GAME_NEXT: ({ user, turn }) => `Turn for: ${user} (${turn === 0 ? 'blue' : 'red'}).`,
 		COMMAND_C4_DESCRIPTION: 'Play Connect-Four with somebody.',
 		COMMAND_C4_EXTENDED: {
 			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
@@ -3064,16 +3068,16 @@ export default class extends Language {
 				Now get those coins flippin'.`,
 			examples: ['heads 50', 'tails 200']
 		},
-		COMMAND_COINFLIP_INVALID_COINNAME: (arg) => `Excuse me, but ${arg} is not a coin face!`,
+		COMMAND_COINFLIP_INVALID_COINNAME: ({ arg }) => `Excuse me, but ${arg} is not a coin face!`,
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],
 		COMMAND_COINFLIP_WIN_TITLE: 'You won!',
 		COMMAND_COINFLIP_LOSE_TITLE: 'You lost.',
 		COMMAND_COINFLIP_NOGUESS_TITLE: 'You flipped a coin.',
-		COMMAND_COINFLIP_WIN_DESCRIPTION: (result, wager) =>
+		COMMAND_COINFLIP_WIN_DESCRIPTION: ({ result, wager }) =>
 			`The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
-		COMMAND_COINFLIP_LOSE_DESCRIPTION: (result, wager) =>
+		COMMAND_COINFLIP_LOSE_DESCRIPTION: ({ result, wager }) =>
 			`The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
-		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: (result) => `The coin was flipped, and it showed ${result}.`,
+		COMMAND_COINFLIP_NOGUESS_DESCRIPTION: ({ result }) => `The coin was flipped, and it showed ${result}.`,
 		COMMAND_HIGHERLOWER_DESCRIPTION: 'Play a game of Higher/Lower',
 		COMMAND_HIGHERLOWER_EXTENDED: {
 			extendedHelp: `Higher/Lower is a game of luck. I will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis
@@ -3083,31 +3087,31 @@ export default class extends Language {
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher/Lower.`,
 		COMMAND_HIGHERLOWER_NEWROUND: 'Alright. Starting new round.',
 		COMMAND_HIGHERLOWER_EMBED: {
-			TITLE: (turn) => `Higher or Lower? | Turn ${turn}`,
-			DESCRIPTION: (number) => `Your number is ${number}. Will the next number be higher or lower?`,
+			TITLE: ({ turn }) => `Higher or Lower? | Turn ${turn}`,
+			DESCRIPTION: ({ number }) => `Your number is ${number}. Will the next number be higher or lower?`,
 			FOOTER: 'The game will expire in 3 minutes, so act fast!'
 		},
 		COMMAND_HIGHERLOWER_LOSE: {
 			TITLE: 'You lost!',
-			DESCRIPTION: (number, losses) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}.`,
+			DESCRIPTION: ({ number, losses }) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}.`,
 			FOOTER: 'Better luck next time!'
 		},
 		COMMAND_HIGHERLOWER_WIN: {
 			TITLE: 'You won!',
-			DESCRIPTION: (potentials, number) =>
+			DESCRIPTION: ({ potentials, number }) =>
 				`The number was ${number}. Want to continue? With another attempt, you can win ${potentials} ${SHINY}!`,
 			FOOTER: "Act fast! You don't have much time."
 		},
 		COMMAND_HIGHERLOWER_CANCEL: {
 			TITLE: 'Game cancelled by choice',
-			DESCRIPTION: (username) => `Thanks for playing, ${username}! I'll be here when you want to play again.`
+			DESCRIPTION: ({ username }) => `Thanks for playing, ${username}! I'll be here when you want to play again.`
 		},
-		COMMAND_HIGHERLOWER_CASHOUT: (amount) => `Paid out ${amount} ${SHINY} to your account. Hope you had fun!`,
-		COMMAND_HUNGERGAMES_RESULT_HEADER: (game) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
-		COMMAND_HUNGERGAMES_RESULT_DEATHS: (deaths) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		COMMAND_HIGHERLOWER_CASHOUT: ({ amount }) => `Paid out ${amount} ${SHINY} to your account. Hope you had fun!`,
+		COMMAND_HUNGERGAMES_RESULT_HEADER: ({ game }) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
+		COMMAND_HUNGERGAMES_RESULT_DEATHS: ({ deaths }) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
 		COMMAND_HUNGERGAMES_RESULT_PROCEED: 'Proceed?',
 		COMMAND_HUNGERGAMES_STOP: 'Game finished by choice! See you later!',
-		COMMAND_HUNGERGAMES_WINNER: (winner) => `And the winner is... ${winner}!`,
+		COMMAND_HUNGERGAMES_WINNER: ({ winner }) => `And the winner is... ${winner}!`,
 		COMMAND_HUNGERGAMES_DESCRIPTION: 'Play Hunger Games with your friends!',
 		COMMAND_HUNGERGAMES_EXTENDED: {
 			extendedHelp: 'Enough discussion, let the games begin!',
@@ -3122,9 +3126,9 @@ export default class extends Language {
 			explainedUsage: [['Amount', `Either 50, 100, 200, 500, or even, 1000 ${SHINY} to bet.`]],
 			reminder: 'You will receive at least 5 times the amount (cherries/tada) at win, and up to 24 times (seven, diamond without skin).'
 		},
-		COMMAND_SLOTMACHINES_WIN: (roll, winnings) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
-		COMMAND_SLOTMACHINES_LOSS: (roll) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
-		COMMAND_SLOTMACHINE_CANVAS_TEXT: (won) => (won ? 'You won' : 'You lost'),
+		COMMAND_SLOTMACHINES_WIN: ({ roll, winnings }) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
+		COMMAND_SLOTMACHINES_LOSS: ({ roll }) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
+		COMMAND_SLOTMACHINE_CANVAS_TEXT: ({ won }) => (won ? 'You won' : 'You lost'),
 		COMMAND_SLOTMACHINE_TITLES: {
 			PREVIOUS: 'Previous',
 			NEW: 'New'
@@ -3135,11 +3139,11 @@ export default class extends Language {
 				players, X and O, who take turns marking the spaces in a 3×3 grid. The player who succeeds in placing three of
 				their marks in a horizontal, vertical, or diagonal row wins the game.`
 		},
-		COMMAND_TICTACTOE_PROMPT: (challenger, challengee) =>
+		COMMAND_TICTACTOE_PROMPT: ({ challenger, challengee }) =>
 			`Dear ${challengee}, you have been challenged by ${challenger} in a Tic-Tac-Toe match. Reply with **yes** to accept!`,
-		COMMAND_TICTACTOE_TURN: (icon, player, board) => `(${icon}) Turn for ${player}!\n${board}`,
-		COMMAND_TICTACTOE_WINNER: (winner, board) => `Winner is... ${winner}!\n${board}`,
-		COMMAND_TICTACTOE_DRAW: (board) => `This match concluded in a **draw**!\n${board}`,
+		COMMAND_TICTACTOE_TURN: ({ icon, player, board }) => `(${icon}) Turn for ${player}!\n${board}`,
+		COMMAND_TICTACTOE_WINNER: ({ winner, board }) => `Winner is... ${winner}!\n${board}`,
+		COMMAND_TICTACTOE_DRAW: ({ board }) => `This match concluded in a **draw**!\n${board}`,
 		COMMAND_TRIVIA_DESCRIPTION: 'Play a game of Trivia.',
 		COMMAND_TRIVIA_EXTENDED: {
 			extendedHelp: [
@@ -3158,13 +3162,13 @@ export default class extends Language {
 		},
 		COMMAND_TRIVIA_INVALID_CATEGORY: 'Invalid category: Please use `Skyra, help trivia` for a list of categories.',
 		COMMAND_TRIVIA_ACTIVE_GAME: 'A game of trivia is already being played in this channel',
-		COMMAND_TRIVIA_INCORRECT: (attempt: string) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
-		COMMAND_TRIVIA_NO_ANSWER: (correctAnswer: string) => `Looks like nobody got it! The right answer was **${correctAnswer}**.`,
+		COMMAND_TRIVIA_INCORRECT: ({ attempt }) => `I am sorry, but **${attempt}** is not the correct answer. Better luck next time!`,
+		COMMAND_TRIVIA_NO_ANSWER: ({ correctAnswer }) => `Looks like nobody got it! The right answer was **${correctAnswer}**.`,
 		COMMAND_TRIVIA_EMBED_TITLES: {
 			TRIVIA: 'Trivia',
 			DIFFICULTY: 'Difficulty'
 		},
-		COMMAND_TRIVIA_WINNER: (winner, correctAnswer) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
+		COMMAND_TRIVIA_WINNER: ({ winner, correctAnswer }) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
 		COMMAND_VAULT_DESCRIPTION: `Store your ${SHINY}'s securily in a vault so you cannot accidentally spend them gambling.`,
 		COMMAND_VAULT_EXTENDED: {
 			extendedHelp: `This is for the greedy spenders among us that tend to play a bit too much at the slot machine or
@@ -3176,16 +3180,16 @@ export default class extends Language {
 			examples: ['deposit 10000.', 'withdraw 10000.']
 		},
 		COMMAND_VAULT_EMBED_DATA: {
-			DEPOSITED_DESCRIPTION: (coins) => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
-			WITHDREW_DESCRIPTION: (coins) => `Withdrew ${coins} ${SHINY}\ from your vault.`,
+			DEPOSITED_DESCRIPTION: ({ coins }) => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
+			WITHDREW_DESCRIPTION: ({ coins }) => `Withdrew ${coins} ${SHINY}\ from your vault.`,
 			SHOW_DESCRIPTION: 'Your current account and vault balance are:',
 			ACCOUNT_MONEY: 'Account Money',
 			ACCOUNT_VAULT: 'Account Vault'
 		},
 		COMMAND_VAULT_INVALID_COINS: 'I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!',
-		COMMAND_VAULT_NOT_ENOUGH_MONEY: (money) =>
+		COMMAND_VAULT_NOT_ENOUGH_MONEY: ({ money }) =>
 			`I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money} ${SHINY}`,
-		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: (vault) =>
+		COMMAND_VAULT_NOT_ENOUGH_IN_VAULT: ({ vault }) =>
 			`I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is ${vault} ${SHINY}`,
 		COMMAND_WHEELOFFORTUNE_DESCRIPTION: 'Gamble your shinies by spinning a wheel of fortune',
 		COMMAND_WHEELOFFORTUNE_EXTENDED: {
@@ -3197,7 +3201,7 @@ export default class extends Language {
 			NEW: 'New'
 		},
 		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: (won) => (won ? 'You won' : 'You lost'),
-		GAMES_NOT_ENOUGH_MONEY: (money) =>
+		GAMES_NOT_ENOUGH_MONEY: ({ money }) =>
 			`I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money} ${SHINY}`,
 		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `You cannot have a negative amount of ${SHINY}s`,
 
@@ -3892,7 +3896,7 @@ export default class extends Language {
 			NSUID: 'NSUID',
 			ESRB: 'ESRB'
 		},
-		COMMAND_ESHOP_PRICE: (price) => (price > 0 ? `$${price} USD` : 'Free'),
+		COMMAND_ESHOP_PRICE: ({ price }) => (price > 0 ? `$${price} USD` : 'Free'),
 		COMMAND_HOROSCOPE_DESCRIPTION: 'Get your latest horoscope',
 		COMMAND_HOROSCOPE_EXTENDED: {
 			extendedHelp: "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
@@ -3905,11 +3909,11 @@ export default class extends Language {
 			],
 			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
 		},
-		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (sign, maybe) => `${sign} is an invalid sun sign, maybe try ${maybe}`,
+		COMMAND_HOROSCOPE_INVALID_SUNSIGN: ({ sign, maybe }) => `${sign} is an invalid sun sign, maybe try ${maybe}`,
 		COMMAND_HOROSCOPE_TITLES: {
-			DAILY_HOROSCOPE: (sign) => `Daily horoscope for ${sign}`,
+			DAILY_HOROSCOPE: ({ sign }) => `Daily horoscope for ${sign}`,
 			METADATA_TITLE: 'Metadata',
-			METADATA: (intensity, keywords, mood, rating) =>
+			METADATA: ({ intensity, keywords, mood, rating }) =>
 				[`**Intensity:** ${intensity}`, `**Keywords:** ${this.list(keywords, 'and')}`, `**Mood:** ${mood}`, `**Rating:** ${rating}`].join(
 					'\n'
 				)

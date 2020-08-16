@@ -89,7 +89,7 @@ export default class extends RichDisplayCommand {
 				embed
 					.setTitle(title)
 					.setURL(animeURL)
-					.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', entry, synopsis))
+					.setDescription(message.language.tget('COMMAND_ANIME_OUTPUT_DESCRIPTION', { entry, synopsis }))
 					.setThumbnail(entry.posterImage?.original ?? '')
 					.addField(embedData.TYPE, message.language.tget('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
 					.addField(embedData.SCORE, score, true)

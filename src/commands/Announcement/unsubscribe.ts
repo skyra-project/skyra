@@ -16,6 +16,6 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const role = announcementCheck(message);
 		await message.member!.roles.remove(role);
-		return message.sendLocale('COMMAND_UNSUBSCRIBE_SUCCESS', [role.name]);
+		return message.sendLocale('COMMAND_UNSUBSCRIBE_SUCCESS', [{ role: role.name }]);
 	}
 }

@@ -33,6 +33,6 @@ export default class extends SkyraCommand {
 		}
 
 		if (output.size >= 2) return [...output];
-		throw i18n.tget('COMMAND_CHOICE_DUPLICATES', [...filtered].join("', '"));
+		throw i18n.tget('COMMAND_CHOICE_DUPLICATES', { words: [...filtered].join("', '") });
 	}
 }

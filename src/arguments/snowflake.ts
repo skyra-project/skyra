@@ -20,6 +20,6 @@ export default class extends Argument {
 			const snowflake = new Snowflake(arg);
 			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return arg;
 		}
-		throw message.language.tget('RESOLVER_INVALID_SNOWFLAKE', possible.name);
+		throw message.language.tget('RESOLVER_INVALID_SNOWFLAKE', { name: possible.name });
 	}
 }

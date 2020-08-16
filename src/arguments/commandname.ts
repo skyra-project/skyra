@@ -12,6 +12,6 @@ export default class extends Argument {
 		const command = await new FuzzySearch(this.client.commands, (command) => command.name, filter).run(message, arg, possible.min || undefined);
 		if (command) return command[1];
 
-		throw message.language.tget('RESOLVER_INVALID_PIECE', possible.name, 'command');
+		throw message.language.tget('RESOLVER_INVALID_PIECE', { name: possible.name, piece: 'command' });
 	}
 }

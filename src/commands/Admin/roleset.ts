@@ -101,7 +101,7 @@ export default class extends SkyraCommand {
 		}
 
 		const arrayIndex = allRolesets.findIndex((roleset) => roleset.name === name);
-		if (arrayIndex === -1) throw message.language.tget('COMMAND_ROLESET_RESET_NOT_EXISTS', name);
+		if (arrayIndex === -1) throw message.language.tget('COMMAND_ROLESET_RESET_NOT_EXISTS', { name });
 
 		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, allRolesets[arrayIndex], {
 			arrayAction: 'remove',

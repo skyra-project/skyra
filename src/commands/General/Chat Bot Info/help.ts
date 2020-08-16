@@ -66,7 +66,7 @@ export default class extends SkyraCommand {
 			const commandCategories: string[] = [];
 			for (const [category, commands] of commandsByCategory) {
 				const line = String(++i).padStart(2, '0');
-				commandCategories.push(`\`${line}.\` **${category}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', commands.length)}`);
+				commandCategories.push(`\`${line}.\` **${category}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', { n: commands.length })}`);
 			}
 			return message.sendMessage(commandCategories);
 		}
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
 			const response = await message.sendMessage(
-				message.language.tget('COMMAND_HELP_ALL_FLAG', message.guildSettings.get(GuildSettings.Prefix)),
+				message.language.tget('COMMAND_HELP_ALL_FLAG', { prefix: message.guildSettings.get(GuildSettings.Prefix) }),
 				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary })
 			);
 			const display = await this.buildDisplay(message);
@@ -149,9 +149,9 @@ export default class extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
-			.setFooter(DATA.FOOTER(command.name))
-			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))
-			.setDescription([DATA.USAGE(command.usage.fullUsage(message)), DATA.EXTENDED(extendedHelp)].join('\n'));
+			.setFooter(DATA.FOOTER({ name: command.name }))
+			.setTitle(DATA.TITLE({ description: isFunction(command.description) ? command.description(message.language) : command.description }))
+			.setDescription([DATA.USAGE({ usage: command.usage.fullUsage(message) }), DATA.EXTENDED({ extendedHelp })].join('\n'));
 	}
 
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {

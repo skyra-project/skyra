@@ -38,7 +38,7 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 			if (action === 'player') {
 				if (kPlayerTagRegex.test(arg)) return arg;
-				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', arg);
+				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
 			}
 
 			throw message.language.tget('SYSTEM_QUERY_FAIL');
@@ -53,7 +53,7 @@ export default class extends RichDisplayCommand {
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(message, clan, ClashOfClansFetchCategories.CLANS);
 
-		if (!clanData.length) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', clan);
+		if (!clanData.length) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan });
 
 		const display = await this.buildClanDisplay(message, clanData);
 
@@ -87,8 +87,8 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', query);
-			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', query);
+			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
+			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
 		}
 	}
 
@@ -159,7 +159,7 @@ export default class extends RichDisplayCommand {
 							`**${TITLES.WAR_WINS}**: ${clan.warWins}`,
 							`**${TITLES.WAR_TIES}**: ${clan.warTies ?? TITLES.UNKNOWN}`,
 							`**${TITLES.WAR_LOSSES}**: ${clan.warLosses ?? TITLES.UNKNOWN}`,
-							`**${TITLES.WAR_LOG_PUBLIC}**: ${TITLES.WAR_LOG_PUBLIC_DESCR(clan.isWarLogPublic)}`
+							`**${TITLES.WAR_LOG_PUBLIC}**: ${TITLES.WAR_LOG_PUBLIC_DESCR({ isWarLogPublic: clan.isWarLogPublic })}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

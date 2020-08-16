@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
-		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', balance);
+		if (balance < wager) throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', { money: balance });
 
 		settings.money -= wager;
 		await settings.save();
@@ -84,7 +84,11 @@ export default class extends SkyraCommand {
 			const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_EMBED');
 			await game.response.edit(
 				null,
-				new MessageEmbed().setColor(game.color).setTitle(TITLE(game.turn)).setDescription(DESCRIPTION(game.number)).setFooter(FOOTER)
+				new MessageEmbed()
+					.setColor(game.color)
+					.setTitle(TITLE({ turn: game.turn }))
+					.setDescription(DESCRIPTION({ number: game.number }))
+					.setFooter(FOOTER)
 			);
 
 			// Add the options
@@ -146,7 +150,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(game.color)
 				.setTitle(TITLE)
-				.setDescription(DESCRIPTION(this.calculateWinnings(game.wager, game.turn), game.number))
+				.setDescription(DESCRIPTION({ potentials: this.calculateWinnings(game.wager, game.turn), number: game.number }))
 				.setFooter(FOOTER)
 		);
 
@@ -185,7 +189,11 @@ export default class extends SkyraCommand {
 		const { TITLE, DESCRIPTION, FOOTER } = message.language.tget('COMMAND_HIGHERLOWER_LOSE');
 		await game.response.edit(
 			null,
-			new MessageEmbed().setColor(game.color).setTitle(TITLE).setDescription(DESCRIPTION(game.number, losses)).setFooter(FOOTER)
+			new MessageEmbed()
+				.setColor(game.color)
+				.setTitle(TITLE)
+				.setDescription(DESCRIPTION({ number: game.number, losses }))
+				.setFooter(FOOTER)
 		);
 
 		game.llrc.end();
@@ -205,7 +213,10 @@ export default class extends SkyraCommand {
 
 			await game.response.edit(
 				null,
-				new MessageEmbed().setColor(game.color).setTitle(TITLE).setDescription(DESCRIPTION(message.author.username))
+				new MessageEmbed()
+					.setColor(game.color)
+					.setTitle(TITLE)
+					.setDescription(DESCRIPTION({ username: message.author.username }))
 			);
 		}
 	}
@@ -227,8 +238,8 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(game.color)
 				.setTitle(TITLE)
-				.setDescription(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', winnings))
-				.setFooter(FOOTER(message.author.username))
+				.setDescription(message.language.tget('COMMAND_HIGHERLOWER_CASHOUT', { amount: winnings }))
+				.setFooter(FOOTER({ username: message.author.username }))
 		);
 	}
 

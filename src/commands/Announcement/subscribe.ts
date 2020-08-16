@@ -34,6 +34,6 @@ export default class extends SkyraCommand {
 
 		await message.member!.roles.set([...memberRolesSet]);
 
-		return message.sendLocale('COMMAND_SUBSCRIBE_SUCCESS', [role.name]);
+		return message.sendLocale('COMMAND_SUBSCRIBE_SUCCESS', [{ role: role.name }]);
 	}
 }

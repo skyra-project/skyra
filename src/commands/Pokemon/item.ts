@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 				.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
 				.addField(
 					embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
-					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(itemDetails.isNonstandard !== 'Past'),
+					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA({ available: itemDetails.isNonstandard !== 'Past' }),
 					true
 				)
 				.addField(
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_ITEM_QUERY_FAIL', item);
+			throw message.language.tget('COMMAND_ITEM_QUERY_FAIL', { item });
 		}
 	}
 }

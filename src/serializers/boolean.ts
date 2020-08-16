@@ -12,7 +12,7 @@ export default class extends Serializer {
 		const boolean = String(data).toLowerCase();
 		if (this.kTruths.has(boolean)) return true;
 		if (this.kFalses.has(boolean)) return false;
-		throw language.tget('RESOLVER_INVALID_BOOL', entry.key);
+		throw language.tget('RESOLVER_INVALID_BOOL', { name: entry.key });
 	}
 
 	public stringify(data: string) {

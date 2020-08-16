@@ -27,7 +27,9 @@ export default class extends MusicCommand {
 
 		// Generate the pages with 5 songs each
 		const queueDisplay = new UserRichDisplay(
-			new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(message.language.tget('COMMAND_QUEUE_TITLE', message.guild!.name))
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setTitle(message.language.tget('COMMAND_QUEUE_TITLE', { guildname: message.guild!.name }))
 		);
 
 		if (song) {
@@ -46,10 +48,10 @@ export default class extends MusicCommand {
 			// Format the song entries
 			const songFields = await Promise.all(queue.map((song, position) => this.generateSongField(message, position, song)));
 			const totalDuration = this.calculateTotalDuration(queue);
-			const totalDescription = message.language.tget('COMMAND_QUEUE_TOTAL', queue.length, showSeconds(totalDuration));
+			const totalDescription = message.language.tget('COMMAND_QUEUE_TOTAL', { songs: queue.length, remainingTime: showSeconds(totalDuration) });
 
 			queueDisplay.embedTemplate.addField(message.language.tget('COMMAND_QUEUE_TOTAL_TITLE'), totalDescription);
-			queueDisplay.embedTemplate.addField('\u200b', message.language.tget('COMMAND_QUEUE_DASHBOARD_INFO', message.guild!));
+			queueDisplay.embedTemplate.addField('\u200b', message.language.tget('COMMAND_QUEUE_DASHBOARD_INFO', { guild: message.guild! }));
 
 			for (const page of chunk(songFields, 5)) {
 				queueDisplay.addPage((embed: MessageEmbed) => embed.setDescription(page.join('\n\n')));
@@ -68,7 +70,13 @@ export default class extends MusicCommand {
 
 	private async generateSongField(message: KlasaMessage, position: number, song: Song) {
 		const username = await song.fetchRequesterName();
-		return message.language.tget('COMMAND_QUEUE_LINE', position + 1, song.friendlyDuration, song.safeTitle, song.url, username);
+		return message.language.tget('COMMAND_QUEUE_LINE', {
+			position: position + 1,
+			duration: song.friendlyDuration,
+			title: song.safeTitle,
+			url: song.url,
+			requester: username
+		});
 	}
 
 	private calculateTotalDuration(songs: Song[]) {

@@ -39,7 +39,7 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', message.guild!))
+				.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', { guild: message.guild! }))
 				.setColor(await DbSet.fetchColor(message))
 		);
 		const embedData = message.language.tget('COMMAND_TOPINVITES_EMBED_DATA');

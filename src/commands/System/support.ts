@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		return message.sendEmbed(
 			new MessageEmbed()
-				.setTitle(message.language.tget('COMMAND_SUPPORT_EMBED_TITLE', message.author.username))
+				.setTitle(message.language.tget('COMMAND_SUPPORT_EMBED_TITLE', { username: message.author.username }))
 				.setDescription(message.language.tget('COMMAND_SUPPORT_EMBED_DESCRIPTION'))
 				.setColor(await DbSet.fetchColor(message))
 		);

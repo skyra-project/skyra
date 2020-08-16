@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		if (!channel.postable) throw message.language.tget('SYSTEM_CHANNEL_NOT_POSTABLE');
 
 		const role = announcementCheck(message);
-		const header = message.language.tget('COMMAND_ANNOUNCEMENT', role.toString());
+		const header = message.language.tget('COMMAND_ANNOUNCEMENT', { role: role.toString() });
 
 		if (await this.ask(message, header, announcement)) {
 			await this.send(message, channel, role, header, announcement);
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 			try {
 				const resultMessage = shouldSendAsEmbed
 					? await previous.edit(
-							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions),
+							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', { header, mentions }),
 							this.buildEmbed(announcement)
 					  )
 					: await previous.edit(`${header}:\n${announcement}`);
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 					const resultMessage = shouldSendAsEmbed
 						? await channel.sendEmbed(
 								this.buildEmbed(announcement),
-								message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+								message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', { header, mentions })
 						  )
 						: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
@@ -91,7 +91,7 @@ export default class extends SkyraCommand {
 			const resultMessage = shouldSendAsEmbed
 				? await channel.sendEmbed(
 						this.buildEmbed(announcement),
-						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', { header, mentions })
 				  )
 				: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);

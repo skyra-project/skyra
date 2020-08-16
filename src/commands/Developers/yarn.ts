@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 
 		const result = await this.fetchApi(message, pkg);
 
-		if (Reflect.has(result.time, 'unpublished')) throw message.language.tget('COMMAND_YARN_UNPUBLISHED_PACKAGE', pkg);
+		if (Reflect.has(result.time, 'unpublished')) throw message.language.tget('COMMAND_YARN_UNPUBLISHED_PACKAGE', { pkg });
 
 		const dataEmbed = await this.buildEmbed(result, message);
 		return response.edit(undefined, dataEmbed);
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		try {
 			return await fetch<YarnPkg.PackageJson>(`https://registry.yarnpkg.com/${pkg}`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('COMMAND_YARN_PACKAGE_NOT_FOUND', pkg);
+			throw message.language.tget('COMMAND_YARN_PACKAGE_NOT_FOUND', { pkg });
 		}
 	}
 

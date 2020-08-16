@@ -68,7 +68,7 @@ export class Game {
 	public async run() {
 		this.message = await this.message.send(this.language.tget('SYSTEM_LOADING'));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
-		this.content = this.language.tget('COMMAND_C4_GAME_NEXT', this.next!.name, this.next!.color);
+		this.content = this.language.tget('COMMAND_C4_GAME_NEXT', { user: this.next!.name, turn: this.next!.color });
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
 		let stop = false;

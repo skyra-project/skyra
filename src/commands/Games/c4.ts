@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		try {
 			const [response] = await this.prompt
 				.createPrompt(message, { target: user })
-				.run(message.language.tget('COMMAND_C4_PROMPT', message.author.toString(), user.toString()));
+				.run(message.language.tget('COMMAND_C4_PROMPT', { challenger: message.author.toString(), challengee: user.toString() }));
 			if (response) {
 				await this.client.connectFour.create(message, message.author, user)!.run();
 			} else {

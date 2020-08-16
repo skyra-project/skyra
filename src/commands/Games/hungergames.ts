@@ -35,13 +35,13 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			throw message.language.tget('COMMAND_GAMES_NO_PLAYERS', message.guild!.settings.get(GuildSettings.Prefix));
+			throw message.language.tget('COMMAND_GAMES_NO_PLAYERS', { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
 		}
 
 		const filtered = new Set(tributes);
 		if (filtered.size !== tributes.length) throw message.language.tget('COMMAND_GAMES_REPEAT');
 		if (this.playing.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');
-		if (filtered.size < 4 || filtered.size > 48) throw message.language.tget('COMMAND_GAMES_TOO_MANY_OR_FEW', 4, 48);
+		if (filtered.size < 4 || filtered.size > 48) throw message.language.tget('COMMAND_GAMES_TOO_MANY_OR_FEW', { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value?: boolean) => void) | null = null;
@@ -155,9 +155,9 @@ export default class extends SkyraCommand {
 	}
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
-		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', game);
+		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', { game });
 		const death = deaths.length
-			? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', deaths.length)}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
+			? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', { deaths: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
 			: '';
 		const proceed = language.tget('COMMAND_HUNGERGAMES_RESULT_PROCEED');
 		const panels = chunk(results, 5);

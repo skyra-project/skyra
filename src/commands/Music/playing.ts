@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 			.setTitle(song.title)
 			.setURL(song.url)
 			.setAuthor(song.author)
-			.setDescription(message.language.tget('COMMAND_PLAYING_DURATION', song.friendlyDuration))
+			.setDescription(message.language.tget('COMMAND_PLAYING_DURATION', { duration: song.friendlyDuration }))
 			.setTimestamp();
 
 		const imageUrl = this.getSongImage(song.url, song.identifier);

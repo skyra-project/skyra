@@ -2772,12 +2772,12 @@ export default class extends Language {
 			SPECIAL: '🎴 Special'
 		},
 		COMMAND_ANIME_INVALID_CHOICE: "That's an invalid choice! Please try with another option.",
-		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) =>
+		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, description) =>
 			[
 				`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
 				`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
-				synopsis
+				description ?? 'No synopsis available for this title.'
 			].join('\n'),
 		COMMAND_ANIME_EMBED_DATA: {
 			TYPE: 'Type',
@@ -2789,12 +2789,12 @@ export default class extends Language {
 			WATCH_IT: 'Watch it here:',
 			STILL_AIRING: 'Still airing'
 		},
-		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) =>
+		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, description) =>
 			[
 				`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
 				`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
 				`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
-				synopsis
+				description ?? 'No synopsis available for this title.'
 			].join('\n'),
 		COMMAND_MANGA_TYPES: {
 			MANGA: '📘 Manga',

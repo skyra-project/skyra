@@ -2807,12 +2807,12 @@ export default class extends Language {
 			SPECIAL: '🎴 Especial'
 		},
 		COMMAND_ANIME_INVALID_CHOICE: '¡Esa opción no es válida! Selecciona otra opción, por favor.',
-		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, synopsis) =>
+		COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry, description) =>
 			[
 				`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
 				`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
 				`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
-				synopsis
+				description ?? 'No hay sinopsis disponible para este título.'
 			].join('\n'),
 		COMMAND_ANIME_EMBED_DATA: {
 			TYPE: 'Tipo',
@@ -2824,12 +2824,12 @@ export default class extends Language {
 			WATCH_IT: 'Míralo Aquí:',
 			STILL_AIRING: 'Aún se transmite'
 		},
-		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, synopsis) =>
+		COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry, description) =>
 			[
 				`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
 				`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
 				`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
-				synopsis
+				description ?? 'No hay sinopsis disponible para este título.'
 			].join('\n'),
 		COMMAND_MANGA_TYPES: {
 			MANGA: '📘 Manga',

@@ -3062,7 +3062,7 @@ export default class extends Language {
 				If you don't, you lose your wager.
 				You can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.
 				Now get those coins flippin'.`,
-			examples: ['50 heads', '200 tails']
+			examples: ['heads 50', 'tails 200']
 		},
 		COMMAND_COINFLIP_INVALID_COINNAME: (arg) => `Excuse me, but ${arg} is not a coin face!`,
 		COMMAND_COINFLIP_COINNAMES: ['Heads', 'Tails'],

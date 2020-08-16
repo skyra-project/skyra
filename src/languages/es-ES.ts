@@ -3094,7 +3094,7 @@ export default class extends Language {
 		COMMAND_COINFLIP_EXTENDED: {
 			extendedHelp: `Lanza una moneda. Si adivina el lado que aparece, recupera su apuesta, duplicada.
 			Si no lo haces, pierdes tu apuesta. Ahora consigue esas monedas volteando.`,
-			examples: ['50 heads', '200 tails']
+			examples: ['heads 50', 'tails 200']
 		},
 		COMMAND_COINFLIP_INVALID_COINNAME: (arg) => `Disculpe, pero ${arg} no es una cara de moneda!`,
 		COMMAND_COINFLIP_COINNAMES: ['Cabezas', 'Cruz'],

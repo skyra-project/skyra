@@ -1142,7 +1142,7 @@ export interface LanguageKeys {
 		[index: string]: string;
 	};
 	COMMAND_ANIME_INVALID_CHOICE: string;
-	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
+	COMMAND_ANIME_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, description: string | null) => string;
 	COMMAND_ANIME_EMBED_DATA: {
 		TYPE: string;
 		SCORE: string;
@@ -1153,7 +1153,7 @@ export interface LanguageKeys {
 		WATCH_IT: string;
 		STILL_AIRING: string;
 	};
-	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, synopsis: string) => string;
+	COMMAND_MANGA_OUTPUT_DESCRIPTION: (entry: Kitsu.KitsuHit, description: string | null) => string;
 	COMMAND_MANGA_EMBED_DATA: {
 		TYPE: string;
 		SCORE: string;

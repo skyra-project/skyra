@@ -66,7 +66,20 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
-			const synopsis = cutText(entry.synopsis.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750);
+			const description =
+				// Prefer the synopsis
+				entry.synopsis ||
+				// Then prefer the English description
+				entry.description?.en ||
+				// Then prefer the English-us description
+				entry.description?.en_us ||
+				// Then prefer the latinized Japanese description
+				entry.description?.en_jp ||
+				// Then the description in kanji / hiragana / katakana
+				entry.description?.ja_jp ||
+				// If all fails just get the first key of the description
+				entry.description?.[Object.keys(entry.description!)[0]];
+			const synopsis = description ? cutText(description.replace(/(.+)[\r\n\t](.+)/gim, '$1 $2').split('\r\n')[0], 750) : null;
 			const score = `${entry.averageRating}%`;
 			const mangaURL = `https://kitsu.io/manga/${entry.id}`;
 			const type = entry.subtype;

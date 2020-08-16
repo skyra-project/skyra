@@ -17,6 +17,7 @@ export namespace Kitsu {
 		ageRating: 'PG' | 'G' | string;
 		averageRating: number;
 		canonicalTitle: string;
+		description?: Description;
 		endDate: number;
 		episodeCount: number;
 		episodeLength: number;
@@ -29,7 +30,7 @@ export namespace Kitsu {
 		slug: string;
 		startDate: number;
 		subtype: 'TV' | 'movie' | 'special' | string;
-		synopsis: string;
+		synopsis?: string;
 		totalLength: number;
 		userCount: number;
 		year: number;
@@ -64,5 +65,13 @@ export namespace Kitsu {
 		en_jp?: string;
 		en_us?: string;
 		ja_jp?: string;
+	}
+
+	export interface Description {
+		en: string;
+		en_jp: string;
+		en_us: string;
+		ja_jp: string;
+		[key: string]: string;
 	}
 }

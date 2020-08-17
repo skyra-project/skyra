@@ -30,7 +30,7 @@ export class UserRepository extends Repository<UserEntity> {
 	}
 
 	public async ensureGI(id: string, options: FindOneOptions<UserEntity> = {}) {
-		const user = await this.ensure(id, { ...options, relations: ['profile'] });
+		const user = await this.ensure(id, { ...options, relations: ['gi'] });
 		if (!user.gi) {
 			user.gi = new UserGameIntegrationsEntity();
 			user.gi.user = user;

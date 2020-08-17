@@ -11,7 +11,7 @@ export default class extends Argument {
 	}
 
 	public run(arg: string, possible: Possible, message: KlasaMessage): string {
-		if (!arg) throw message.language.tget('COMMAND_OVERWATCH_INVALID_PLAYER_NAME', { playerTag: arg });
+		if (!arg) throw message.language.get('COMMAND_OVERWATCH_INVALID_PLAYER_NAME', { playerTag: arg });
 		// eslint-disable-next-line dot-notation
 		const {
 			args,

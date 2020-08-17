@@ -33,8 +33,8 @@ const kPokemonTypes = new Set([
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['matchup', 'weakness', 'advantage'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_TYPE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_TYPE_EXTENDED'),
+	description: (language) => language.get('COMMAND_TYPE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_TYPE_EXTENDED'),
 	usage: '<types:type{2}>'
 })
 @CreateResolvers([
@@ -43,10 +43,10 @@ const kPokemonTypes = new Set([
 		(arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
-			if (arg.length > 2) throw message.language.tget('COMMAND_TYPE_TOO_MANY_TYPES');
+			if (arg.length > 2) throw message.language.get('COMMAND_TYPE_TOO_MANY_TYPES');
 
 			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw message.language.tget('COMMAND_TYPE_NOT_A_TYPE', { type });
+				if (!kPokemonTypes.has(type)) throw message.language.get('COMMAND_TYPE_NOT_A_TYPE', { type });
 			}
 
 			return arg;
@@ -56,7 +56,7 @@ const kPokemonTypes = new Set([
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [types]: [Types[]]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 		const typeMatchups = await this.fetchAPI(message, types);
 
@@ -70,7 +70,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw message.language.tget('COMMAND_TYPE_QUERY_FAIL', { types });
+			throw message.language.get('COMMAND_TYPE_QUERY_FAIL', { types });
 		}
 	}
 
@@ -95,7 +95,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
-		const embedTranslations = message.language.tget('COMMAND_TYPE_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_TYPE_EMBED_DATA');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
 			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,

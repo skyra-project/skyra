@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_GSEARCH_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_GSEARCH_EXTENDED'),
+	description: (language) => language.get('COMMAND_GSEARCH_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_GSEARCH_EXTENDED'),
 	usage: '<query:query>'
 })
 export default class extends RichDisplayCommand {
@@ -26,11 +26,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
-			message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)),
+			message.sendEmbed(new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
-		if (!items || !items.length) throw message.language.tget(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw message.language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

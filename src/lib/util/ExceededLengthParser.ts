@@ -13,7 +13,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				return message.channel.sendFile(
 					Buffer.from(options.content ? options.content : options.result!),
 					options.targetId ? `${options.targetId}.txt` : 'output.txt',
-					message.language.tget('SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE', options.time, options.footer)
+					message.language.get('SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE', options.time, options.footer)
 				);
 			}
 
@@ -56,7 +56,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				);
 			}
 			return message.sendMessage(
-				message.language.tget(
+				message.language.get(
 					options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR',
 					codeBlock(options.language!, options.result!),
 					options.time,
@@ -75,7 +75,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	if (!options.hastebinUnavailable) _options.push('hastebin');
 	let _choice: { content: string } | undefined = undefined;
 	do {
-		_choice = await message.prompt(message.language.tget('SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT', _options)).catch(() => ({ content: 'none' }));
+		_choice = await message.prompt(message.language.get('SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT', _options)).catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();
 }

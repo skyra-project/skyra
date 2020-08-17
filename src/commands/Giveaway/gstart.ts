@@ -9,8 +9,8 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveaway'],
-	description: (language) => language.tget('COMMAND_GIVEAWAY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_GIVEAWAY_EXTENDED'),
+	description: (language) => language.get('COMMAND_GIVEAWAY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_GIVEAWAY_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <time:time> [winners:winners] <title:...string{,256}>',
@@ -31,8 +31,8 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, time, winners, title]: [TextChannel, Date, number, string]) {
 		const offset = time.getTime() - Date.now();
 
-		if (offset < 9500) throw message.language.tget('GIVEAWAY_TIME');
-		if (offset > Time.Year) throw message.language.tget('GIVEAWAY_TIME_TOO_LONG');
+		if (offset < 9500) throw message.language.get('GIVEAWAY_TIME');
+		if (offset > Time.Year) throw message.language.get('GIVEAWAY_TIME_TOO_LONG');
 
 		await this.client.giveaways.create({
 			channelID: channel.id,

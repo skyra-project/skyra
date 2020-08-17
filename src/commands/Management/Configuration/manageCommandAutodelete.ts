@@ -9,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED'),
+	description: (language) => language.get('COMMAND_MANAGECOMMANDAUTODELETE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_MANAGECOMMANDAUTODELETE_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -25,7 +25,7 @@ import { KlasaMessage } from 'klasa';
 			if (!arg) return message.channel;
 			const channel = await message.client.arguments.get('channelname')!.run(arg, _, message);
 			if (channel.type === 'text') return channel;
-			throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
+			throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_TEXTCHANNEL');
 		}
 	],
 	['timespan', (arg, _, message, [type]) => (type === 'add' ? message.client.arguments.get('timespan')!.run(arg, _, message) : undefined)]
@@ -33,14 +33,14 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete);
-		if (!commandAutodelete.length) throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
+		if (!commandAutodelete.length) throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
 
 		const list: string[] = [];
 		for (const entry of commandAutodelete) {
 			const channel = this.client.channels.get(entry[0]) as TextChannel;
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${message.language.duration(entry[1] / 60000)}`);
 		}
-		if (!list.length) throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
+		if (!list.length) throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
 		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [codeBlock('asciidoc', list.join('\n'))]);
 	}
 
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 		}
-		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [channel, duration]);
+		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [channel.toString(), duration]);
 	}
 
 	public async remove(message: KlasaMessage, [channel]: [TextChannel]) {
@@ -72,9 +72,9 @@ export default class extends SkyraCommand {
 				arrayIndex: index,
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE', [channel]);
+			return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE', [channel.toString()]);
 		}
-		throw message.language.tget('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET', channel.toString());
+		throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET', channel.toString());
 	}
 
 	public async reset(message: KlasaMessage) {

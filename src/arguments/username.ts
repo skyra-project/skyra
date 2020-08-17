@@ -11,7 +11,7 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
-		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
+		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
@@ -23,10 +23,10 @@ export default class extends Argument {
 		);
 		if (result) {
 			return this.client.users.fetch(result[0]).catch(() => {
-				throw message.language.tget('USER_NOT_EXISTENT');
+				throw message.language.get('USER_NOT_EXISTENT');
 			});
 		}
-		throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
+		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
 	public resolveUser(message: KlasaMessage, query: string) {
@@ -38,7 +38,7 @@ export default class extends Argument {
 
 		if (id) {
 			return this.client.users.fetch(id).catch(() => {
-				throw message.language.tget('USER_NOT_EXISTENT');
+				throw message.language.get('USER_NOT_EXISTENT');
 			});
 		}
 		return null;

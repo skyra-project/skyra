@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.tget('COMMAND_TRIVIA_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_TRIVIA_EXTENDED'),
+	description: (language) => language.get('COMMAND_TRIVIA_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_TRIVIA_EXTENDED'),
 	usage: '(category:category) [boolean|multiple] [easy|hard|medium] [duration:int{30,60}]',
 	usageDelim: ' '
 })
@@ -21,7 +21,7 @@ export default class extends RichDisplayCommand {
 		message: KlasaMessage,
 		[category, questionType = undefined, difficulty = undefined, duration = 30]: [number, QuestionType?, QuestionDifficulty?, number?]
 	) {
-		if (this.#channels.has(message.channel.id)) throw message.language.tget('COMMAND_TRIVIA_ACTIVE_GAME');
+		if (this.#channels.has(message.channel.id)) throw message.language.get('COMMAND_TRIVIA_ACTIVE_GAME');
 
 		this.#channels.add(message.channel.id);
 
@@ -53,22 +53,22 @@ export default class extends RichDisplayCommand {
 					return collector.stop();
 				}
 				participants.add(collected.author.id);
-				return message.channel.sendLocale('COMMAND_TRIVIA_INCORRECT', [attempt]);
+				return message.channel.sendLocale('COMMAND_TRIVIA_INCORRECT', [{ attempt }]);
 			});
 
 			collector.on('end', () => {
 				this.#channels.delete(message.channel.id);
-				if (!winner) return message.channel.sendLocale('COMMAND_TRIVIA_NO_ANSWER', [correctAnswer]);
-				return message.channel.sendLocale('COMMAND_TRIVIA_WINNER', [winner, correctAnswer]);
+				if (!winner) return message.channel.sendLocale('COMMAND_TRIVIA_NO_ANSWER', [{ correctAnswer }]);
+				return message.channel.sendLocale('COMMAND_TRIVIA_WINNER', [{ winner: winner.toString(), correctAnswer }]);
 			});
 		} catch {
 			this.#channels.delete(message.channel.id);
-			throw message.language.tget('UNEXPECTED_ISSUE');
+			throw message.language.get('UNEXPECTED_ISSUE');
 		}
 	}
 
 	public buildQuestionEmbed(message: KlasaMessage, data: QuestionData, possibleAnswers: string[]) {
-		const TITLES = message.language.tget('COMMAND_TRIVIA_EMBED_TITLES');
+		const TITLES = message.language.get('COMMAND_TRIVIA_EMBED_TITLES');
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
 			.setAuthor(TITLES.TRIVIA)
@@ -83,7 +83,7 @@ export default class extends RichDisplayCommand {
 			if (!arg) return CATEGORIES.general;
 			arg = arg.toLowerCase();
 			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw message.language.tget('COMMAND_TRIVIA_INVALID_CATEGORY');
+			if (!category) throw message.language.get('COMMAND_TRIVIA_INVALID_CATEGORY');
 			return category;
 		});
 	}

@@ -15,8 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['link-mode', 'lmode', 'linkfilter', 'extlinks', 'externallinks'],
-			description: (language) => language.tget('COMMAND_LINKMODE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_LINKMODE_EXTENDED')
+			description: (language) => language.get('COMMAND_LINKMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_LINKMODE_EXTENDED')
 		});
 	}
 }

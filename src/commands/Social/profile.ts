@@ -5,9 +5,9 @@ import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
+import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { User } from 'discord.js';
 
 // Skyra's CDN assets folder
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
@@ -16,8 +16,8 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.tget('COMMAND_PROFILE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_PROFILE_EXTENDED'),
+	description: (language) => language.get('COMMAND_PROFILE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_PROFILE_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[user:username]'

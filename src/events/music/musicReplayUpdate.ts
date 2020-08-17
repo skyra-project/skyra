@@ -8,7 +8,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('COMMAND_REPEAT_SUCCESS', [repeating]));
+			floatPromise(this, channel.sendLocale('COMMAND_REPEAT_SUCCESS', [{ enabled: repeating }]));
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {

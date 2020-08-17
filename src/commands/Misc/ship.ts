@@ -13,8 +13,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_SHIP_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_SHIP_EXTENDED'),
+	description: (language) => language.get('COMMAND_SHIP_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_SHIP_EXTENDED'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	usage: '(firstUser:user) (secondUser:user)',
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const DATA = message.language.tget('COMMAND_SHIP_DATA');
+		const DATA = message.language.get('COMMAND_SHIP_DATA');
 		return message.sendMessage(
 			[
 				DATA.TITLE(firstUserTag.username, secondUserTag.username),

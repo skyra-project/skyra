@@ -9,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['escape'],
 	bucket: 2,
 	cooldown: 60,
-	description: (language) => language.tget('COMMAND_ESCAPEROPE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_ESCAPEROPE_EXTENDED')
+	description: (language) => language.get('COMMAND_ESCAPEROPE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_ESCAPEROPE_EXTENDED')
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(CdnUrls.EscapeRopeGif)
-				.setDescription(message.language.tget('COMMAND_ESCAPEROPE_OUTPUT', { user: message.author }))
+				.setDescription(message.language.get('COMMAND_ESCAPEROPE_OUTPUT', { user: message.author }))
 				.setAuthor(
 					message.member?.displayName ?? message.author.username,
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

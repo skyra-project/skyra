@@ -5,7 +5,7 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['vol'],
-	description: (language) => language.tget('COMMAND_VOLUME_DESCRIPTION'),
+	description: (language) => language.get('COMMAND_VOLUME_DESCRIPTION'),
 	usage: '[volume:number]'
 })
 export default class extends MusicCommand {
@@ -19,11 +19,11 @@ export default class extends MusicCommand {
 
 		// If no argument was given
 		if (typeof volume === 'undefined' || volume === previousVolume) {
-			return message.sendLocale('COMMAND_VOLUME_SUCCESS', [previousVolume]);
+			return message.sendLocale('COMMAND_VOLUME_SUCCESS', [{ volume: previousVolume }]);
 		}
 
 		if (music.listeners.length >= 4 && !(await music.manageableFor(message))) {
-			throw message.language.tget('INHIBITOR_MUSIC_DJ_MEMBER');
+			throw message.language.get('INHIBITOR_MUSIC_DJ_MEMBER');
 		}
 
 		// Set the volume

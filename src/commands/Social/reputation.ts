@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.tget('COMMAND_REPUTATION_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_REPUTATION_EXTENDED'),
+			description: (language) => language.get('COMMAND_REPUTATION_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_REPUTATION_EXTENDED'),
 			runIn: ['text'],
 			spam: true,
 			usage: '[check] (user:username)',
@@ -34,11 +34,11 @@ export default class extends SkyraCommand {
 		const extSettings = user ? await users.ensureProfile(user.id) : null;
 
 		if (check) {
-			if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
+			if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
 			return message.sendMessage(
 				message.author === user
-					? message.language.tget('COMMAND_REPUTATIONS_SELF', selfSettings.reputations)
-					: message.language.tget('COMMAND_REPUTATIONS', user.username, extSettings!.reputations)
+					? message.language.get('COMMAND_REPUTATIONS_SELF', selfSettings.reputations)
+					: message.language.get('COMMAND_REPUTATIONS', user.username, extSettings!.reputations)
 			);
 		}
 
@@ -49,8 +49,8 @@ export default class extends SkyraCommand {
 		}
 
 		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
-		if (user.bot) throw message.language.tget('COMMAND_REPUTATION_BOTS');
-		if (user === message.author) throw message.language.tget('COMMAND_REPUTATION_SELF');
+		if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
+		if (user === message.author) throw message.language.get('COMMAND_REPUTATION_SELF');
 
 		await getManager().transaction(async (em) => {
 			++extSettings!.reputations;
@@ -58,6 +58,6 @@ export default class extends SkyraCommand {
 			await em.save([extSettings, selfSettings]);
 		});
 
-		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user]);
+		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user.toString()]);
 	}
 }

@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['dh'],
 	cooldown: 5,
-	description: (language) => language.tget('COMMAND_DEHOIST_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_DEHOIST_EXTENDED'),
+	description: (language) => language.get('COMMAND_DEHOIST_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_DEHOIST_EXTENDED'),
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		const response = await message.sendLocale('SYSTEM_LOADING');
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
-			if (memberTag.nickname && memberTag.nickname.charCodeAt(0) < this.kLowestCode) {
+			if (memberTag.nickname && memberTag.nickname.codePointAt(0)! < this.kLowestCode) {
 				// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
 				const newNick = `🠷${memberTag.nickname.slice(1)}`;
 				try {
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
+		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED');
 		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.TITLE(message.guild!.memberTags.size));
 
 		let description = embedLanguage.DESCRIPTION(dehoistedMembers);

@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_FORTNITE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_FORTNITE_EXTENDED'),
+	description: (language) => language.get('COMMAND_FORTNITE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_FORTNITE_EXTENDED'),
 	usage: '<xbox|psn|pc:default> <user:...string>',
 	usageDelim: ' '
 })
@@ -21,7 +21,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const fortniteUser = await this.fetchAPI(message, user, platform);
@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw message.language.tget('COMMAND_FORTNITE_NO_USER');
+			throw message.language.get('COMMAND_FORTNITE_NO_USER');
 		}
 	}
 
@@ -52,7 +52,7 @@ export default class extends RichDisplayCommand {
 		message: KlasaMessage,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
-		const TITLES = message.language.tget('COMMAND_FORTNITE_TITLES');
+		const TITLES = message.language.get('COMMAND_FORTNITE_TITLES');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()

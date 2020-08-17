@@ -5,8 +5,8 @@ import { KlasaMessage } from 'klasa';
 import { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.tget('COMMAND_PLAY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_PLAY_EXTENDED'),
+	description: (language) => language.get('COMMAND_PLAY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_PLAY_EXTENDED'),
 	usage: '(song:song)',
 	flagSupport: true
 })
@@ -33,7 +33,7 @@ export default class extends MusicCommand {
 			await message.sendLocale('COMMAND_PLAY_QUEUE_PLAYING');
 		} else if (music.song) {
 			await music.resume(this.getContext(message));
-			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [music.song]);
+			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [{ song: music.song.toString() }]);
 		} else {
 			music.channelID = message.channel.id;
 			await music.play();

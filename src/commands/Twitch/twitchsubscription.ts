@@ -33,8 +33,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
-	description: (language) => language.tget('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
+	description: (language) => language.get('COMMAND_TWITCHSUBSCRIPTION_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_TWITCHSUBSCRIPTION_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -49,15 +49,15 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		async (argument, _, message, [type]) => {
 			if (!argument) {
 				if (type === Type.Show || type === Type.Reset) return undefined;
-				throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER');
+				throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER');
 			}
 
 			try {
 				const { data } = await message.client.twitch.fetchUsers([], [argument]);
-				if (data.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
+				if (data.length === 0) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
 				return data[0];
 			} catch {
-				throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
+				throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND');
 			}
 		}
 	],
@@ -65,7 +65,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		'channel',
 		(argument, possible, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
-			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
+			if (!argument) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL');
 
 			return message.client.arguments.get('textchannelname')!.run(argument, possible, message);
 		}
@@ -74,10 +74,10 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		'status',
 		(argument, _, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
-			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS');
+			if (!argument) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS');
 
-			const index = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES').indexOf(argument.toLowerCase());
-			if (index === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS');
+			const index = message.language.get('COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES').indexOf(argument.toLowerCase());
+			if (index === -1) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS');
 			return index;
 		}
 	],
@@ -93,7 +93,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 				(type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
 			)
 				return undefined;
-			if (!argument) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
+			if (!argument) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT');
 			return message.client.arguments.get('...string')!.run(argument, possible, message);
 		}
 	]
@@ -138,7 +138,7 @@ export default class extends SkyraCommand {
 
 			// Check if the streamer was already subscribed for thesame channel and status.
 			if (raw[1].some((e) => e.channel === entry.channel && e.status === entry.status)) {
-				throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_ADD_DUPLICATED');
+				throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_ADD_DUPLICATED');
 			}
 
 			// Patch creating a clone of the value.
@@ -159,14 +159,14 @@ export default class extends SkyraCommand {
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
 
 		// If the subscription could not be found, throw.
-		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED');
+		if (subscriptionIndex === -1) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED');
 
 		// Retrieve the subscription, then find the index for the notification desired to delete.
 		const subscription = subscriptions[subscriptionIndex];
 		const entryIndex = subscription[1].findIndex((entry) => entry.channel === channel.id && entry.status === status);
 
 		// If there was no entry with the channel and status specified, throw.
-		if (entryIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS');
+		if (entryIndex === -1) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS');
 
 		// If it was the only entry for said subscription, remove it completely.
 		if (subscription[1].length === 1) {
@@ -198,7 +198,7 @@ export default class extends SkyraCommand {
 		// If the streamer was not defined, reset all entries and purge all entries.
 		if (typeof streamer === 'undefined') {
 			const subscriptionEntries = subscriptions.reduce((accumulator, subscription) => accumulator + subscription[1].length, 0);
-			if (subscriptionEntries === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_RESET_EMPTY');
+			if (subscriptionEntries === 0) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_RESET_EMPTY');
 			await message.guild!.settings.reset(this.#kSettingsKey);
 
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
@@ -227,7 +227,7 @@ export default class extends SkyraCommand {
 		}
 
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
-		if (subscriptionIndex === -1) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED');
+		if (subscriptionIndex === -1) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED');
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
 		await message.guild!.settings.update(this.#kSettingsKey, [subscription], {
@@ -244,7 +244,7 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		// Create the response message.
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		// Fetch the content.
@@ -268,10 +268,10 @@ export default class extends SkyraCommand {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get(this.#kSettingsKey);
 		const subscriptions = guildSubscriptions.find((entry) => entry[0] === streamer.id);
-		if (typeof subscriptions === 'undefined') throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED');
+		if (typeof subscriptions === 'undefined') throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED');
 
 		// Print all entries for this guild for this streamer.
-		const statuses = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS');
+		const statuses = message.language.get('COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS');
 		const lines: string[] = [];
 		for (const subscription of subscriptions[1]) {
 			lines.push(`${streamer.display_name} - <#${subscription.channel}> → ${statuses[subscription.status]}`);
@@ -283,7 +283,7 @@ export default class extends SkyraCommand {
 	private async showAll(message: KlasaMessage) {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get(this.#kSettingsKey);
-		if (guildSubscriptions.length === 0) throw message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_EMPTY');
+		if (guildSubscriptions.length === 0) throw message.language.get('COMMAND_TWITCHSUBSCRIPTION_SHOW_EMPTY');
 
 		// Fetch all usernames and map them by their id.
 		const ids = guildSubscriptions.map((subscriptions) => subscriptions[0]);
@@ -292,10 +292,10 @@ export default class extends SkyraCommand {
 		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
 
 		// Print all entries for this guild.
-		const statuses = message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS');
+		const statuses = message.language.get('COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS');
 		const lines: string[] = [];
 		for (const subscriptions of guildSubscriptions) {
-			const name = names.get(subscriptions[0]) || message.language.tget('COMMAND_TWITCHSUBSCRIPTION_SHOW_UNKNOWN_USER');
+			const name = names.get(subscriptions[0]) || message.language.get('COMMAND_TWITCHSUBSCRIPTION_SHOW_UNKNOWN_USER');
 			for (const subscription of subscriptions[1]) {
 				lines.push(`${name} - <#${subscription.channel}> → ${statuses[subscription.status]}`);
 			}

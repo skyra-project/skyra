@@ -28,8 +28,8 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
 	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
-	if (status !== GoogleResponseCodes.Ok) throw message.language.tget(handleNotOK(status, message.client));
-	if (results.length === 0) throw message.language.tget('GOOGLE_ERROR_ZERO_RESULTS');
+	if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, message.client));
+	if (results.length === 0) throw message.language.get('GOOGLE_ERROR_ZERO_RESULTS');
 
 	return {
 		formattedAddress: results[0].formatted_address,
@@ -51,7 +51,7 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch {
-		throw message.language.tget(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
+		throw message.language.get(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
 	}
 }
 

@@ -9,17 +9,20 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_8BALL_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_8BALL_EXTENDED'),
+			description: (language) => language.get('COMMAND_8BALL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_8BALL_EXTENDED'),
 			spam: true,
 			usage: '<question:string>'
 		});
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		return message.sendLocale(
-			'COMMAND_8BALL_OUTPUT',
-			[message.author, input, codeBlock('', this.generator(input.toLowerCase(), message.language))],
+		return message.send(
+			message.language.get('COMMAND_8BALL_OUTPUT', {
+				author: message.author.toString(),
+				question: input,
+				response: codeBlock('', this.generator(input.toLowerCase(), message.language))
+			}),
 			{ disableEveryone: true }
 		);
 	}
@@ -29,9 +32,9 @@ export default class extends SkyraCommand {
 			this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as unknown) as EightBallLanguage;
 
 		for (const key of QUESTION_KEYS) {
-			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}`);
+			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}` as any);
 		}
-		return i18n.tget('COMMAND_8BALL_ELSE');
+		return i18n.get('COMMAND_8BALL_ELSE');
 	}
 
 	private check(prefix: string | RegExp, input: string) {

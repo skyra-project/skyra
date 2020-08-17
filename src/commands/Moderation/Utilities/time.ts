@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 		this.createCustomResolver('timer', async (arg, possible, message, [cancel]) => {
 			if (cancel === 'cancel') return null;
-			if (!arg) throw message.language.tget('COMMAND_TIME_UNDEFINED_TIME');
+			if (!arg) throw message.language.get('COMMAND_TIME_UNDEFINED_TIME');
 
 			const restString = (await this.client.arguments.get('...string')!.run(arg, possible, message)) as string;
 			return this.client.arguments.get('timespan')!.run(restString, possible, message);
@@ -29,8 +29,8 @@ export default class extends SkyraCommand {
 		if (caseID === 'latest') caseID = await message.guild!.moderation.count();
 
 		const entry = await message.guild!.moderation.fetch(caseID);
-		if (!entry) throw message.language.tget('MODERATION_CASE_NOT_EXISTS');
-		if (!cancel && entry.temporaryType) throw message.language.tget('COMMAND_TIME_TIMED');
+		if (!entry) throw message.language.get('MODERATION_CASE_NOT_EXISTS');
+		if (!cancel && entry.temporaryType) throw message.language.get('COMMAND_TIME_TIMED');
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 		)!;
 
 		if (cancel) {
-			if (!task) throw message.language.tget('COMMAND_TIME_NOT_SCHEDULED');
+			if (!task) throw message.language.get('COMMAND_TIME_NOT_SCHEDULED');
 
 			await message.guild!.moderation.fetchChannelMessages();
 			await entry.edit({
@@ -50,15 +50,15 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_TIME_ABORTED', [entry.title]);
 		}
 
-		if (entry.appealType || entry.invalidated) throw message.language.tget('MODERATION_LOG_APPEALED');
-		if (task) throw message.language.tget('MODLOG_TIMED', (task.data.timestamp as number) - Date.now());
+		if (entry.appealType || entry.invalidated) throw message.language.get('MODERATION_LOG_APPEALED');
+		if (task) throw message.language.get('MODLOG_TIMED', (task.data.timestamp as number) - Date.now());
 
 		await message.guild!.moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
 			moderatorID: message.author.id
 		});
-		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration]);
+		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration!]);
 	}
 
 	private validateAction(message: KlasaMessage, modlog: ModerationEntity, user: User) {
@@ -96,22 +96,22 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.TemporaryRestrictionVoice:
 				return;
 			default:
-				throw message.language.tget('COMMAND_TIME_UNSUPPORTED_TIPE');
+				throw message.language.get('COMMAND_TIME_UNSUPPORTED_TIPE');
 		}
 	}
 
 	private async checkBan(message: KlasaMessage, user: User) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.tget('COMMAND_UNBAN_MISSING_PERMISSION');
-		if (!(await message.guild!.security.actions.userIsBanned(user))) throw message.language.tget('GUILD_BANS_NOT_FOUND');
+		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) throw message.language.get('COMMAND_UNBAN_MISSING_PERMISSION');
+		if (!(await message.guild!.security.actions.userIsBanned(user))) throw message.language.get('GUILD_BANS_NOT_FOUND');
 	}
 
 	private checkMute(message: KlasaMessage, user: User) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.tget('COMMAND_UNMUTE_MISSING_PERMISSION');
-		if (!message.guild!.security.actions.userIsMuted(user)) throw message.language.tget('COMMAND_MUTE_USER_NOT_MUTED');
+		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw message.language.get('COMMAND_UNMUTE_MISSING_PERMISSION');
+		if (!message.guild!.security.actions.userIsMuted(user)) throw message.language.get('COMMAND_MUTE_USER_NOT_MUTED');
 	}
 
 	private async checkVMute(message: KlasaMessage, user: User) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.tget('COMMAND_VMUTE_MISSING_PERMISSION');
-		if (!(await message.guild!.security.actions.userIsVoiceMuted(user))) throw message.language.tget('COMMAND_VMUTE_USER_NOT_MUTED');
+		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) throw message.language.get('COMMAND_VMUTE_MISSING_PERMISSION');
+		if (!(await message.guild!.security.actions.userIsVoiceMuted(user))) throw message.language.get('COMMAND_VMUTE_USER_NOT_MUTED');
 	}
 }

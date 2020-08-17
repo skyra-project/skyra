@@ -16,8 +16,8 @@ const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_HISTORY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_HISTORY_EXTENDED'),
+	description: (language) => language.get('COMMAND_HISTORY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_HISTORY_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
 	usage: '<details|overview:default> [user:username]',
@@ -55,24 +55,24 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setFooter(message.language.tget('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans))
+				.setFooter(message.language.get('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans))
 		);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: KlasaMessage, [target = message.author]: [User]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = (await message.guild!.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
-		if (!entries.size) throw message.language.tget('COMMAND_MODERATIONS_EMPTY');
+		if (!entries.size) throw message.language.get('COMMAND_MODERATIONS_EMPTY');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.tget('COMMAND_MODERATIONS_AMOUNT', entries.size))
+				.setTitle(message.language.get('COMMAND_MODERATIONS_AMOUNT', entries.size))
 		);
 
 		// Fetch usernames

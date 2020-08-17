@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_PAY_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_PAY_EXTENDED'),
+			description: (language) => language.get('COMMAND_PAY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_PAY_EXTENDED'),
 			runIn: ['text'],
 			spam: true,
 			usage: '<amount:integer> <user:user>',
@@ -21,23 +21,23 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [money, user]: [number, User]) {
-		if (message.author === user) throw message.language.tget('COMMAND_PAY_SELF');
+		if (message.author === user) throw message.language.get('COMMAND_PAY_SELF');
 		if (user.bot) return message.sendLocale('COMMAND_SOCIAL_PAY_BOT');
 
-		if (money <= 0) throw message.language.tget('RESOLVER_POSITIVE_AMOUNT');
+		if (money <= 0) throw message.language.get('RESOLVER_POSITIVE_AMOUNT');
 
 		const { users } = await DbSet.connect();
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
 			const settings = await users.ensure(authorID);
 
 			const currencyBeforePrompt = settings.money;
-			if (currencyBeforePrompt < money) throw message.language.tget('COMMAND_PAY_MISSING_MONEY', money, currencyBeforePrompt);
+			if (currencyBeforePrompt < money) throw message.language.get('COMMAND_PAY_MISSING_MONEY', money, currencyBeforePrompt);
 
-			const accepted = await message.ask(message.language.tget('COMMAND_PAY_PROMPT', user.username, money));
+			const accepted = await message.ask(message.language.get('COMMAND_PAY_PROMPT', user.username, money));
 
 			await settings.reload();
 			const currencyAfterPrompt = settings.money;
-			if (currencyAfterPrompt < money) throw message.language.tget('COMMAND_PAY_MISSING_MONEY', money, currencyAfterPrompt);
+			if (currencyAfterPrompt < money) throw message.language.get('COMMAND_PAY_MISSING_MONEY', money, currencyAfterPrompt);
 
 			if (!accepted) return this.denyPayment(message);
 
@@ -64,10 +64,10 @@ export default class extends SkyraCommand {
 
 	private async acceptPayment(message: KlasaMessage, user: User, money: number) {
 		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
-		return message.sendMessage(message.language.tget('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
+		return message.sendMessage(message.language.get('COMMAND_PAY_PROMPT_ACCEPT', user.username, money));
 	}
 
 	private denyPayment(message: KlasaMessage) {
-		return message.sendMessage(message.language.tget('COMMAND_PAY_PROMPT_DENY'));
+		return message.sendMessage(message.language.get('COMMAND_PAY_PROMPT_DENY'));
 	}
 }

@@ -7,7 +7,7 @@ const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<KeyedMemberTag> {
-		if (!arg) throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
+		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 		const resMember = await this.resolveMember(message, arg);
 		if (resMember) return resMember;
 
@@ -18,11 +18,11 @@ export default class extends Argument {
 		);
 		if (result) {
 			const id = result[0];
-			const memberTag = await message.guild!.memberTags.get(id);
+			const memberTag = message.guild!.memberTags.get(id);
 			if (memberTag) return { ...memberTag, id };
-			throw message.language.tget('RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT');
+			throw message.language.get('RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT');
 		}
-		throw message.language.tget('RESOLVER_INVALID_USERNAME', possible.name);
+		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
 	}
 
 	public async resolveMember(message: KlasaMessage, query: string): Promise<KeyedMemberTag | null> {
@@ -35,7 +35,7 @@ export default class extends Argument {
 		if (id) {
 			const memberTag = await message.guild!.memberTags.fetch(id);
 			if (memberTag) return { ...memberTag, id };
-			throw message.language.tget('USER_NOT_EXISTENT');
+			throw message.language.get('USER_NOT_EXISTENT');
 		}
 		return null;
 	}

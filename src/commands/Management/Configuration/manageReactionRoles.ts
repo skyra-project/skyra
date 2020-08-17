@@ -15,8 +15,8 @@ import { ArrayActions, KlasaMessage } from 'klasa';
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_MANAGEREACTIONROLES_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_MANAGEREACTIONROLES_EXTENDED'),
+	description: (language) => language.get('COMMAND_MANAGEREACTIONROLES_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_MANAGEREACTIONROLES_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -50,11 +50,11 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
-			throw message.language.tget('COMMAND_MANAGEREACTIONROLES_SHOW_EMPTY');
+			throw message.language.get('COMMAND_MANAGEREACTIONROLES_SHOW_EMPTY');
 		}
 
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 		const reaction = await LongLivingReactionCollector.collectOne(this.client, {
 			filter: (reaction) => reaction.userID === message.author.id && reaction.guild.id === message.guild!.id
 		});
-		if (!reaction) throw message.language.tget('COMMAND_MANAGEREACTIONROLES_ADD_MISSING');
+		if (!reaction) throw message.language.get('COMMAND_MANAGEREACTIONROLES_ADD_MISSING');
 
 		const reactionRole: ReactionRole = {
 			emoji: resolveEmoji(reaction.emoji)!,
@@ -109,7 +109,7 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [role, messageID]: [Role, string]) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		const reactionRoleIndex = reactionRoles.findIndex((entry) => entry.message === messageID && entry.role === role.id);
-		if (reactionRoleIndex === -1) throw message.language.tget('COMMAND_MANAGEREACTIONROLES_REMOVE_NOTEXISTS');
+		if (reactionRoleIndex === -1) throw message.language.get('COMMAND_MANAGEREACTIONROLES_REMOVE_NOTEXISTS');
 
 		const reactionRole = reactionRoles[reactionRoleIndex];
 		await message.guild!.settings.update(GuildSettings.ReactionRoles, reactionRole, {
@@ -126,7 +126,7 @@ export default class extends SkyraCommand {
 	public async reset(message: KlasaMessage) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
-			throw message.language.tget('COMMAND_MANAGEREACTIONROLES_RESET_EMPTY');
+			throw message.language.get('COMMAND_MANAGEREACTIONROLES_RESET_EMPTY');
 		}
 
 		await message.guild!.settings.reset(GuildSettings.ReactionRoles, {

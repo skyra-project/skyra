@@ -1,12 +1,12 @@
+import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
-import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
 import { TOKENS } from '@root/config';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { BrandingColors, BrawlStarsEmojis } from '@utils/constants';
+import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { BrawlStarsEmojis, BrandingColors } from '@utils/constants';
-import { DbSet } from '@lib/structures/DbSet';
+import { KlasaMessage } from 'klasa';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 
@@ -45,8 +45,8 @@ const enum BrawlStarsFetchCategories {
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bs'],
-	description: (language) => language.tget('COMMAND_BRAWLSTARS_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_BRAWLSTARS_EXTENDED'),
+	description: (language) => language.get('COMMAND_BRAWLSTARS_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_BRAWLSTARS_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<club|player:default> <tag:tag>',
@@ -57,7 +57,7 @@ const enum BrawlStarsFetchCategories {
 		'tag',
 		(arg, _possible, message) => {
 			if (kTagRegex.test(arg)) return arg;
-			throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
+			throw message.language.get('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
 		}
 	]
 ])
@@ -73,8 +73,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, player: BrawlStars.Player) {
-		const TITLES = message.language.tget('COMMAND_BRAWLSTARS_PLAYER_EMBED_TITLES');
-		const FIELDS = message.language.tget('COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS');
+		const TITLES = message.language.get('COMMAND_BRAWLSTARS_PLAYER_EMBED_TITLES');
+		const FIELDS = message.language.get('COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS');
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) || BrandingColors.Primary)
@@ -128,8 +128,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildClubEmbed(message: KlasaMessage, club: BrawlStars.Club) {
-		const TITLES = message.language.tget('COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES');
-		const FIELDS = message.language.tget('COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS');
+		const TITLES = message.language.get('COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES');
+		const FIELDS = message.language.get('COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS');
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
@@ -168,8 +168,8 @@ export default class extends SkyraCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
-			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
+			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.get('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
+			else throw message.language.get('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
 		}
 	}
 }

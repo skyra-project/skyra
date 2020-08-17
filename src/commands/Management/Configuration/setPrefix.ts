@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_SETPREFIX_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_SETPREFIX_EXTENDED'),
+	description: (language) => language.get('COMMAND_SETPREFIX_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_SETPREFIX_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	usage: '<prefix:string{1,10}>',
@@ -16,7 +16,7 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [prefix]: [string]) {
-		if (message.guild!.settings.get(GuildSettings.Prefix) === prefix) throw message.language.tget('CONFIGURATION_EQUALS');
+		if (message.guild!.settings.get(GuildSettings.Prefix) === prefix) throw message.language.get('CONFIGURATION_EQUALS');
 		await message.guild!.settings.update(GuildSettings.Prefix, prefix, {
 			extraContext: { author: message.author.id }
 		});

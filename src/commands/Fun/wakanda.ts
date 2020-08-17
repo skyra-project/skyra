@@ -10,8 +10,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,
-	description: (language) => language.tget('COMMAND_WAKANDA_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_WAKANDA_EXTENDED'),
+	description: (language) => language.get('COMMAND_WAKANDA_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_WAKANDA_EXTENDED'),
 	usage: '[user:username]'
 })
 export default class extends SkyraCommand {

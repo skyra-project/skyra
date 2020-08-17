@@ -13,8 +13,8 @@ import { constants, KlasaGuild, KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],
 	cooldown: 5,
-	description: (language) => language.tget('COMMAND_PRUNE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_PRUNE_EXTENDED'),
+	description: (language) => language.get('COMMAND_PRUNE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_PRUNE_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	flagSupport: true,
 	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
@@ -32,21 +32,21 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('filter', (argument, _possible, message) => {
 			if (!argument) return undefined;
-			const filter = message.language.tget('COMMAND_PRUNE_FILTERS').get(argument.toLowerCase());
-			if (typeof filter === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_FILTER');
+			const filter = message.language.get('COMMAND_PRUNE_FILTERS').get(argument.toLowerCase());
+			if (typeof filter === 'undefined') throw message.language.get('COMMAND_PRUNE_INVALID_FILTER');
 			return filter;
 		})
 			.createCustomResolver('position', (argument, _possible, message) => {
 				if (!argument) return null;
-				const position = message.language.tget('COMMAND_PRUNE_POSITIONS').get(argument.toLowerCase());
-				if (typeof position === 'undefined') throw message.language.tget('COMMAND_PRUNE_INVALID_POSITION');
+				const position = message.language.get('COMMAND_PRUNE_POSITIONS').get(argument.toLowerCase());
+				if (typeof position === 'undefined') throw message.language.get('COMMAND_PRUNE_INVALID_POSITION');
 				return position;
 			})
 			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
 				if (position === null) return message;
 
 				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw message.language.tget('RESOLVER_INVALID_MESSAGE', { name: possible.name });
+				if (fetched === null) throw message.language.get('RESOLVER_INVALID_MESSAGE', { name: possible.name });
 				return fetched;
 			});
 	}
@@ -61,7 +61,7 @@ export default class extends SkyraCommand {
 		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
 		// are invalid command usages and therefore, for the sake of protection, Skyra should
 		// not execute an erroneous command.
-		if (message.args.length > 4) throw message.language.tget('COMMAND_PRUNE_INVALID');
+		if (message.args.length > 4) throw message.language.get('COMMAND_PRUNE_INVALID');
 
 		const position = this.resolvePosition(rawPosition);
 		const filter = this.resolveFilter(rawFilter);
@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 		// Filter the messages by their age
 		const now = Date.now();
 		const filtered = messages.filter((m) => now - m.createdTimestamp < 1209600000);
-		if (filtered.size === 0) throw message.language.tget('COMMAND_PRUNE_NO_DELETES');
+		if (filtered.size === 0) throw message.language.get('COMMAND_PRUNE_NO_DELETES');
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
@@ -86,7 +86,7 @@ export default class extends SkyraCommand {
 
 		// Send prune logs and reply to the channel
 		floatPromise(this, this.sendPruneLogs(message, filtered, filteredKeys));
-		return Reflect.has(message.flagArgs, 'silent') ? null : message.alert(message.language.tget('COMMAND_PRUNE', filteredKeys.length, limit));
+		return Reflect.has(message.flagArgs, 'silent') ? null : message.alert(message.language.get('COMMAND_PRUNE', filteredKeys.length, limit));
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
@@ -146,7 +146,7 @@ export default class extends SkyraCommand {
 						message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 					)
 					.setDescription(
-						message.language.tget(
+						message.language.get(
 							'COMMAND_PRUNE_LOG_MESSAGE',
 							(message.channel as TextChannel).toString(),
 							message.author.toString(),
@@ -161,7 +161,7 @@ export default class extends SkyraCommand {
 	}
 
 	private generateAttachment(message: KlasaMessage, messages: Collection<string, Message>) {
-		const header = message.language.tget('COMMAND_PRUNE_LOG_HEADER');
+		const header = message.language.get('COMMAND_PRUNE_LOG_HEADER');
 		const processed = messages
 			.map((message) => this.formatMessage(message))
 			.reverse()

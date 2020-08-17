@@ -25,8 +25,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo', 'uinfo'],
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_WHOIS_EXTENDED'),
+			description: (language) => language.get('COMMAND_WHOIS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_WHOIS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
@@ -44,8 +44,8 @@ export default class extends SkyraCommand {
 	}
 
 	private user(message: KlasaMessage, user: User) {
-		const TITLES = message.language.tget('COMMAND_WHOIS_USER_TITLES');
-		const FIELDS = message.language.tget('COMMAND_WHOIS_USER_FIELDS', user);
+		const TITLES = message.language.get('COMMAND_WHOIS_USER_TITLES');
+		const FIELDS = message.language.get('COMMAND_WHOIS_USER_FIELDS', user);
 
 		return new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
@@ -58,8 +58,8 @@ export default class extends SkyraCommand {
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
-		const TITLES = message.language.tget('COMMAND_WHOIS_MEMBER_TITLES');
-		const FIELDS = message.language.tget('COMMAND_WHOIS_MEMBER_FIELDS', member);
+		const TITLES = message.language.get('COMMAND_WHOIS_MEMBER_TITLES');
+		const FIELDS = message.language.get('COMMAND_WHOIS_MEMBER_FIELDS', member);
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || BrandingColors.Secondary)
@@ -81,12 +81,12 @@ export default class extends SkyraCommand {
 
 		const roles = member.roles.sorted(sortRanks);
 		roles.delete(member.guild.id);
-		embed.splitFields(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.size), [...roles.values()].join(' '));
+		embed.splitFields(message.language.get('COMMAND_WHOIS_MEMBER_ROLES', roles.size), [...roles.values()].join(' '));
 	}
 
 	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
 		if (member.permissions.has(this.kAdministratorPermission)) {
-			embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS'), message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL'));
+			embed.addField(message.language.get('COMMAND_WHOIS_MEMBER_PERMISSIONS'), message.language.get('COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL'));
 			return;
 		}
 
@@ -96,7 +96,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (permissions.length > 0) {
-			embed.addField(message.language.tget('COMMAND_WHOIS_MEMBER_PERMISSIONS'), permissions.join(', '));
+			embed.addField(message.language.get('COMMAND_WHOIS_MEMBER_PERMISSIONS'), permissions.join(', '));
 		}
 	}
 }

@@ -29,8 +29,8 @@ async function askYesNo(channel: TextChannel | DMChannel, user: User, question: 
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 30,
-	description: (language) => language.tget('COMMAND_MARRY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_MARRY_EXTENDED'),
+	description: (language) => language.get('COMMAND_MARRY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_MARRY_EXTENDED'),
 	runIn: ['text'],
 	usage: '(user:username)'
 })
@@ -50,7 +50,7 @@ export default class extends RichDisplayCommand {
 
 	private async display(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const { users } = await DbSet.connect();
@@ -65,7 +65,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const usernameChunk of usernames) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription(message.language.tget('COMMAND_MARRY_WITH', usernameChunk)));
+			display.addPage((embed: MessageEmbed) => embed.setDescription(message.language.get('COMMAND_MARRY_WITH', usernameChunk)));
 		}
 
 		await display.start(response, message.author.id);
@@ -92,13 +92,13 @@ export default class extends RichDisplayCommand {
 			// Retrieve the author's spouses
 			const spouses = await users.fetchSpouses(authorID);
 			if (spouses.includes(targetID)) {
-				throw message.language.tget('COMMAND_MARRY_ALREADY_MARRIED', user);
+				throw message.language.get('COMMAND_MARRY_ALREADY_MARRIED', user);
 			}
 
 			// Check if the author can marry another user
 			const authorLimit = premiumUsers.includes(authorID) ? 20 : 10;
 			if (spouses.length >= authorLimit) {
-				throw message.language.tget('COMMAND_MARRY_AUTHOR_TOO_MANY', authorLimit);
+				throw message.language.get('COMMAND_MARRY_AUTHOR_TOO_MANY', authorLimit);
 			}
 
 			// Retrieve the target's spouses
@@ -107,22 +107,22 @@ export default class extends RichDisplayCommand {
 			// Check if the target can marry another user
 			const targetLimit = premiumUsers.includes(targetID) ? 20 : 10;
 			if (targetSpouses.length >= targetLimit) {
-				throw message.language.tget('COMMAND_MARRY_TARGET_TOO_MANY', targetLimit);
+				throw message.language.get('COMMAND_MARRY_TARGET_TOO_MANY', targetLimit);
 			}
 
 			// Warn if starting polygamy:
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
-				const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_AUTHOR_TAKEN', author));
+				const answer = await askYesNo(channel, author, language.get('COMMAND_MARRY_AUTHOR_TAKEN', author));
 				if (answer !== YesNoAnswer.Yes)
 					return message.sendLocale('COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL', [await this.client.userTags.fetchUsername(spouses[0])]);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
-				const answer = await askYesNo(channel, author, language.tget('COMMAND_MARRY_TAKEN', targetSpouses.length));
+				const answer = await askYesNo(channel, author, language.get('COMMAND_MARRY_TAKEN', targetSpouses.length));
 				if (answer !== YesNoAnswer.Yes) return message.sendLocale('COMMAND_MARRY_MULTIPLE_CANCEL');
 			}
 
-			const answer = await askYesNo(channel, user, language.tget('COMMAND_MARRY_PETITION', author, user));
+			const answer = await askYesNo(channel, user, language.get('COMMAND_MARRY_PETITION', author, user));
 			switch (answer) {
 				case YesNoAnswer.Timeout:
 					return message.sendLocale('COMMAND_MARRY_NOREPLY');
@@ -138,7 +138,7 @@ export default class extends RichDisplayCommand {
 			settings.spouses = (settings.spouses ?? []).concat(await users.ensure(targetID));
 			await settings.save();
 
-			return message.sendLocale('COMMAND_MARRY_ACCEPTED', [author, user]);
+			return message.sendLocale('COMMAND_MARRY_ACCEPTED', [{ author, user }]);
 		});
 	}
 }

@@ -5,8 +5,8 @@ import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.tget('COMMAND_TWITCH_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_TWITCH_EXTENDED'),
+	description: (language) => language.get('COMMAND_TWITCH_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_TWITCH_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<name:string>'
@@ -14,12 +14,12 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [name]: [string]) {
 		const { data: channelData } = await this.fetchUsers(message, [name]);
-		if (channelData.length === 0) throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
+		if (channelData.length === 0) throw message.language.get('COMMAND_TWITCH_NO_ENTRIES');
 		const channel = channelData[0];
 
 		const { total: followersTotal } = await this.client.twitch.fetchUserFollowage('', channel.id);
 
-		const titles = message.language.tget('COMMAND_TWITCH_TITLES');
+		const titles = message.language.get('COMMAND_TWITCH_TITLES');
 
 		return message.sendEmbed(
 			new MessageEmbed()
@@ -33,13 +33,13 @@ export default class extends SkyraCommand {
 				.addField(titles.VIEWS, message.language.groupDigits(channel.view_count), true)
 				.addField(
 					titles.PARTNER,
-					message.language.tget('COMMAND_TWITCH_PARTNERSHIP', this.parseAffiliateProgram(message, channel.broadcaster_type))
+					message.language.get('COMMAND_TWITCH_PARTNERSHIP', this.parseAffiliateProgram(message, channel.broadcaster_type))
 				)
 		);
 	}
 
 	private parseAffiliateProgram(message: KlasaMessage, type: 'affiliate' | 'partner' | '') {
-		const options = message.language.tget('COMMAND_TWITCH_AFFILIATE_STATUS');
+		const options = message.language.get('COMMAND_TWITCH_AFFILIATE_STATUS');
 		switch (type) {
 			case 'affiliate':
 				return options.AFFILIATED;
@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 		try {
 			return await this.client.twitch.fetchUsers([], usernames);
 		} catch {
-			throw message.language.tget('COMMAND_TWITCH_NO_ENTRIES');
+			throw message.language.get('COMMAND_TWITCH_NO_ENTRIES');
 		}
 	}
 }

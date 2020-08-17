@@ -12,14 +12,14 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_MOVE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_MOVE_EXTENDED'),
+	description: (language) => language.get('COMMAND_MOVE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_MOVE_EXTENDED'),
 	usage: '<move:str>'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [move]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 		const moveData = await this.fetchAPI(message, move.toLowerCase());
 
@@ -33,12 +33,12 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_MOVE_QUERY_FAIL', { move });
+			throw message.language.get('COMMAND_MOVE_QUERY_FAIL', { move });
 		}
 	}
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.tget('COMMAND_MOVE_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_MOVE_EMBED_DATA');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
 			`[Serebii](${moveData.serebiiPage})`,

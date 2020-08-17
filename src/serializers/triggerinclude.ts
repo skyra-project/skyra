@@ -13,7 +13,7 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.tget('SERIALIZER_TRIGGER_INCLUDE_INVALID');
+		throw language.get('SERIALIZER_TRIGGER_INCLUDE_INVALID');
 	}
 
 	public stringify(value: TriggerIncludes) {

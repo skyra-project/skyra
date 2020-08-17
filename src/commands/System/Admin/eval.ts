@@ -9,8 +9,8 @@ import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['ev'],
-	description: (language) => language.tget('COMMAND_EVAL_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_EVAL_EXTENDED'),
+	description: (language) => language.get('COMMAND_EVAL_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_EVAL_EXTENDED'),
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<expression:str>',
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
 		return Promise.race([
 			sleep(flagTime).then(() => ({
-				result: message.language.tget('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
+				result: message.language.get('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'

@@ -7,8 +7,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['nickname'],
 			cooldown: 30,
-			description: (language) => language.tget('COMMAND_NICK_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_NICK_EXTENDED'),
+			description: (language) => language.get('COMMAND_NICK_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_NICK_EXTENDED'),
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['CHANGE_NICKNAME'],
 			runIn: ['text'],
@@ -16,8 +16,10 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [nick = '']: [string?]) {
-		await message.guild!.me!.setNickname(nick);
-		return nick ? message.alert(message.language.tget('COMMAND_NICK_SET', nick)) : message.alert(message.language.tget('COMMAND_NICK_CLEARED'));
+	public async run(message: KlasaMessage, [nickname = '']: [string?]) {
+		await message.guild!.me!.setNickname(nickname);
+		return nickname
+			? message.alert(message.language.get('COMMAND_NICK_SET', { nickname }))
+			: message.alert(message.language.get('COMMAND_NICK_CLEARED'));
 	}
 }

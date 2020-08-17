@@ -9,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restricted-reaction', 'rr'],
-	description: (language) => language.tget('COMMAND_RESTRICTREACTION_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_RESTRICTREACTION_EXTENDED'),
+	description: (language) => language.get('COMMAND_RESTRICTREACTION_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_RESTRICTREACTION_EXTENDED'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -25,15 +25,15 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedReaction);
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.tget('COMMAND_RESTRICT_LOWLEVEL');
-			if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('COMMAND_RESTRICT_LOWLEVEL');
+			if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
+					.run(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.RestrictedReaction, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+			} else if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_NEW'))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Reaction);
 				await message.sendLocale('COMMAND_SUCCESS');
 			} else {

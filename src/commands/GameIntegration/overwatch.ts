@@ -3,18 +3,17 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
-import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Timestamp, LanguageKeys } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ow'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_OVERWATCH_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_OVERWATCH_EXTENDED'),
+	description: (language) => language.get('COMMAND_OVERWATCH_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_OVERWATCH_EXTENDED'),
 	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
 	usageDelim: ' '
 })
@@ -23,14 +22,14 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const overwatchData = await this.fetchAPI(message, player, platform);
 
-		if (overwatchData.error) throw message.language.tget('SYSTEM_QUERY_FAIL');
+		if (overwatchData.error) throw message.language.get('SYSTEM_QUERY_FAIL');
 		if (!overwatchData.competitiveStats.topHeroes || !overwatchData.quickPlayStats.topHeroes) {
-			throw message.language.tget('COMMAND_OVERWATCH_NO_STATS', { player: this.decodePlayerName(player) });
+			throw message.language.get('COMMAND_OVERWATCH_NO_STATS', { player: this.decodePlayerName(player) });
 		}
 
 		const display = await this.buildDisplay(message, overwatchData, player, platform);
@@ -43,13 +42,13 @@ export default class extends RichDisplayCommand {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('COMMAND_OVERWATCH_QUERY_FAIL', { player: this.decodePlayerName(player), platform });
+			throw message.language.get('COMMAND_OVERWATCH_QUERY_FAIL', { player: this.decodePlayerName(player), platform });
 		}
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
 	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
-		const EMBED_DATA = message.language.tget('COMMMAND_OVERWATCH_EMBED_DATA');
+		const EMBED_DATA = message.language.get('COMMMAND_OVERWATCH_EMBED_DATA');
 		const ratings = this.ratingsToMap(
 			overwatchData.ratings ?? [],
 			(r) => r.role,

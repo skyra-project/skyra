@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 import { codeBlock, toTitleCase } from '@klasa/utils';
-import { Filter, LanguageKeys, Position } from '@lib/types/Languages';
+import { Filter, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import ShinyWager from '@root/arguments/shinywager';
 import { CLIENT_ID, VERSION } from '@root/config';
@@ -9,7 +9,7 @@ import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/Fr
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { createPick, inlineCodeblock } from '@utils/util';
-import { Language, Timestamp, version as klasaVersion } from 'klasa';
+import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;
@@ -111,27 +111,29 @@ function ordinal(cardinal: number) {
 	}
 }
 
-function list(values: readonly string[], conjunction: 'y' | 'o') {
+const list = (andValue: string, orString: string) => (values: readonly string[], conjuction: typeof andValue | typeof orString) => {
 	switch (values.length) {
 		case 0:
 			return '';
 		case 1:
 			return values[0];
 		case 2:
-			return `${values[0]} ${conjunction} ${values[1]}`;
+			return `${values[0]} ${conjuction} ${values[1]}`;
 		default: {
 			const trail = values.slice(0, -1);
 			const head = values[values.length - 1];
-			return `${trail.join(', ')} ${conjunction} ${head}`;
+			return `${trail.join(', ')}, ${conjuction} ${head}`;
 		}
 	}
-}
+};
 
 function groupDigits(number: number) {
 	return number.toLocaleString('es-ES', { useGrouping: true });
 }
 
 export default class extends Language {
+	public andString = 'y';
+	public orString = 'o';
 	public PERMISSIONS = PERMS;
 	public HUMAN_LEVELS = {
 		0: 'Ninguno',
@@ -143,7 +145,7 @@ export default class extends Language {
 
 	public duration = duration;
 	public ordinal = ordinal;
-	public list = list;
+	public list = list(this.andString, this.orString);
 	public groupDigits = groupDigits;
 
 	// @ts-expect-error:2416
@@ -2866,7 +2868,7 @@ export default class extends Language {
 		COMMAND_ANNOUNCEMENT_CANCELLED: 'Se ha cancelado el anuncio con éxito.',
 		COMMAND_ANNOUNCEMENT_PROMPT: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
 		COMMAND_ANNOUNCEMENT_EMBED_MENTIONS: ({ header, mentions }) =>
-			`${header}${mentions.length ? `, y mencionando a: ${list(mentions, 'y')}` : ''}:`,
+			`${header}${mentions.length ? `, y mencionando a: ${this.list(mentions, 'y')}` : ''}:`,
 
 		/**
 		 * ################
@@ -3247,24 +3249,24 @@ export default class extends Language {
 		GIVEAWAY_TIME: 'El sorteo debe durar al menos 10 seconds.',
 		GIVEAWAY_TIME_TOO_LONG: '¡Oye! ¡Eso es un tiempo increíblemente largo para contarlo con los dedos de mis manos!',
 		GIVEAWAY_ENDS_AT: 'Termina en:',
-		GIVEAWAY_DURATION: (time) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
+		GIVEAWAY_DURATION: ({ time }) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
 		GIVEAWAY_TITLE: '🎉 **GIVEAWAY** 🎉',
-		GIVEAWAY_LASTCHANCE: (time) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
+		GIVEAWAY_LASTCHANCE: ({ time }) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
 		GIVEAWAY_LASTCHANCE_TITLE: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
-		GIVEAWAY_ENDED: (winners) => (winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`),
+		GIVEAWAY_ENDED: ({ winners }) => (winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`),
 		GIVEAWAY_ENDED_NO_WINNER: 'No winner...',
 		GIVEAWAY_ENDED_AT: 'Ended at:',
 		GIVEAWAY_ENDED_TITLE: '🎉 **GIVEAWAY ENDED** 🎉',
-		GIVEAWAY_ENDED_MESSAGE: (mention, title) => `Congratulations ${mention}! You won the giveaway **${title}**`,
-		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: (title) => `The giveaway **${title}** ended without enough participants.`,
-		GIVEAWAY_SCHEDULED: (scheduledTime) => `El sorteo comenzará en ${duration(scheduledTime)}.`,
+		GIVEAWAY_ENDED_MESSAGE: ({ winners, title }) => `Congratulations ${winners.join(' ')}! You won the giveaway **${title}**`,
+		GIVEAWAY_ENDED_MESSAGE_NO_WINNER: ({ title }) => `The giveaway **${title}** ended without enough participants.`,
+		GIVEAWAY_SCHEDULED: ({ scheduledTime }) => `El sorteo comenzará en ${duration(scheduledTime)}.`,
 
 		/**
 		 * ###################
 		 * MANAGEMENT COMMANDS
 		 */
 
-		COMMAND_NICK_SET: (nickname) => `Changed the nickname to **${nickname}**.`,
+		COMMAND_NICK_SET: ({ nickname }) => `Changed the nickname to **${nickname}**.`,
 		COMMAND_NICK_CLEARED: 'Nickname cleared.',
 		COMMAND_PERMISSIONNODES_HIGHER: `${REDCROSS} You cannot modify nor preview the permission nodes for this target.`,
 		COMMAND_PERMISSIONNODES_INVALID_TYPE: `${REDCROSS} Invalid type, expected either of \`allow\` or \`deny\`.`,
@@ -3273,7 +3275,7 @@ export default class extends Language {
 		COMMAND_PERMISSIONNODES_COMMAND_NOT_EXISTS: `${REDCROSS} The selected command does not exist in the permision node.`,
 		COMMAND_PERMISSIONNODES_REMOVE: `${GREENTICK} Successfully removed the command from the permission node.`,
 		COMMAND_PERMISSIONNODES_RESET: `${GREENTICK} Successfully removed all commands from the permission node.`,
-		COMMAND_PERMISSIONNODES_SHOW: (name, allow, deny) =>
+		COMMAND_PERMISSIONNODES_SHOW: ({ name, allow, deny }) =>
 			[
 				`Permissions for: __${name}__`,
 				`**Allow**: ${allow.length ? allow.join(', ') : 'None'}`,
@@ -3330,12 +3332,15 @@ export default class extends Language {
 		COMMAND_FILTER_SHOW: (words) => `There is the list of all filtered words: ${words}`,
 		COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE: 'You must input a value for this type.',
 		COMMAND_MANAGEATTACHMENTS_INVALID_ACTION: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
-		COMMAND_MANAGEATTACHMENTS_MAXIMUM: (maximum) => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,
-		COMMAND_MANAGEATTACHMENTS_EXPIRE: (time) => `${GREENTICK} Successfully set the lifetime for the manager's entries to ${duration(time)}.`,
-		COMMAND_MANAGEATTACHMENTS_DURATION: (time) => `${GREENTICK} Successfully set the duration for moderation logs to ${duration(time)}.`,
+		COMMAND_MANAGEATTACHMENTS_MAXIMUM: ({ value: maximum }) => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,
+		COMMAND_MANAGEATTACHMENTS_EXPIRE: ({ value: time }) =>
+			`${GREENTICK} Successfully set the lifetime for the manager's entries to ${duration(time)}.`,
+		COMMAND_MANAGEATTACHMENTS_DURATION: ({ value: time }) =>
+			`${GREENTICK} Successfully set the duration for moderation logs to ${duration(time)}.`,
 		COMMAND_MANAGEATTACHMENTS_ACTION: `${GREENTICK} Successfully changed the moderative action for the manager.`,
 		COMMAND_MANAGEATTACHMENTS_LOGS: `${GREENTICK} Successfully changed the preferences for message logging.`,
-		COMMAND_MANAGEATTACHMENTS_ENABLED: (enabled) => `${GREENTICK} Successfully ${enabled ? 'enabled' : 'disabled'} the attachment management.`,
+		COMMAND_MANAGEATTACHMENTS_ENABLED: ({ value: enabled }) =>
+			`${GREENTICK} Successfully ${enabled ? 'enabled' : 'disabled'} the attachment management.`,
 
 		/**
 		 * #################################
@@ -3356,7 +3361,7 @@ export default class extends Language {
 		COMMAND_MANAGECOMMANDAUTODELETE_RESET: 'All the command autodeletes have been reset.',
 		COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL: 'You must input a valid text channel, people cannot use commands in a voice or a category channel!',
 		COMMAND_MANAGECOMMANDCHANNEL_REQUIRED_COMMAND: "You must specify what command do you want to add or remove from the channel's filter.",
-		COMMAND_MANAGECOMMANDCHANNEL_SHOW: (channel, commands) => `List of disabled commands in ${channel}: ${commands}`,
+		COMMAND_MANAGECOMMANDCHANNEL_SHOW: ({ channel, commands }) => `List of disabled commands in ${channel}: ${commands}`,
 		COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY: 'The list of disabled commands for the specified channel is empty!',
 		COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET: 'The command you are trying to disable is already disabled!',
 		COMMAND_MANAGECOMMANDCHANNEL_ADD: (channel, command) => `Successfully disabled the command ${command} for the channel ${channel}!`,
@@ -3457,7 +3462,7 @@ export default class extends Language {
 		COMMAND_RAID_LIST: 'List of users in the RAID queue',
 		COMMAND_RAID_CLEAR: 'Successfully cleared the RAID list.',
 		COMMAND_RAID_COOL: 'Successfully deactivated the RAID.',
-		COMMAND_FLOW: (amount) => `${amount} messages have been sent within the last minute.`,
+		COMMAND_FLOW: ({ amount }) => `${amount} messages have been sent within the last minute.`,
 		COMMAND_TIME_TIMED: 'The selected moderation case has already been timed.',
 		COMMAND_TIME_UNDEFINED_TIME: 'You must specify a time.',
 		COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
@@ -3489,10 +3494,10 @@ export default class extends Language {
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
-		COMMAND_LOCKDOWN_LOCKING: (channel) => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
+		COMMAND_LOCKDOWN_LOCKING: ({ channel }) => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
 		COMMAND_LOCKDOWN_LOCKED: (channel) => `The channel ${channel} was already locked.`,
 		COMMAND_LOCKDOWN_UNLOCKED: (channel) => `The channel ${channel} was not locked.`,
-		COMMAND_LOCKDOWN_OPEN: (channel) => `The lockdown for the channel ${channel} has been released.`,
+		COMMAND_LOCKDOWN_OPEN: ({ channel }) => `The lockdown for the channel ${channel} has been released.`,
 		COMMAND_MUTE_LOWLEVEL: 'I am sorry, there is no Mute role configured. Please ask an Administrator or the Guild Owner to set it up.',
 		COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
 		COMMAND_MUTE_CONFIGURE: 'Do you want me to create and configure the Mute role now?',
@@ -3615,7 +3620,7 @@ export default class extends Language {
 		COMMAND_TOGGLEDARKMODE_TOGGLED: (enabled) =>
 			enabled ? `${GREENTICK} Successfully enabled the dark mode.` : `${GREENTICK} Successfully disabled the dark mode.`,
 		COMMAND_DAILY_TIME: (time) => `El siguiente pago está disponible en: ${duration(time)}`,
-		COMMAND_DAILY_TIME_SUCCESS: (amount) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
+		COMMAND_DAILY_TIME_SUCCESS: ({ amount }) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
 		COMMAND_DAILY_GRACE: (remaining) =>
 			[
 				'¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.',
@@ -3654,8 +3659,9 @@ export default class extends Language {
 			`Fresh pair of eyes! ${author.username} is proposing to ${user.username}! 💞 <@${user.id}>, reply with **yes** to accept!`,
 		COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was a hard decision?',
 		COMMAND_MARRY_DENIED: 'O-oh... The user rejected your proposal! 💔',
-		COMMAND_MARRY_ACCEPTED: (author, user) => `Congratulations dear ${author}! You're now officially married with ${user}! ❤`,
-		COMMAND_MYLEVEL: (points, next, user) => `${user ? `The user ${user} has` : 'You have'} a total of ${points} points.${next}`,
+		COMMAND_MARRY_ACCEPTED: ({ author, user }) => `Congratulations dear ${author}! You're now officially married with ${user}! ❤`,
+		COMMAND_MYLEVEL: (points, next, user) => `The user ${user} has a total of ${points} points.${next}`,
+		COMMAND_MYLEVEL_SELF: (points, next) => `You have a total of ${points} points.${next}`,
 		COMMAND_MYLEVEL_NEXT: (remaining, next) => `Points for next rank: **${remaining}** (at ${next} points).`,
 		COMMAND_PAY_MISSING_MONEY: (needed, has) => `I am sorry, but you need ${needed}${SHINY} and you have ${has}${SHINY}`,
 		COMMAND_PAY_PROMPT: (user, amount) => `You are about to pay ${user} ${amount}${SHINY}, are you sure you want to proceed?`,
@@ -3733,16 +3739,16 @@ export default class extends Language {
 			reminder:
 				'Debe tener una configuración de canal de sugerencias para que este comando funcione. Si eres un administrador, se le dará la opción de hacerlo al invocar el comando.'
 		},
-		COMMAND_SUGGEST_NOSETUP: (username) =>
+		COMMAND_SUGGEST_NOSETUP: ({ username }) =>
 			`Lo siento ${username}, pero no los administradores no han configurado un canal de texto para las sugerencias.`,
-		COMMAND_SUGGEST_NOSETUP_ASK: (username) =>
+		COMMAND_SUGGEST_NOSETUP_ASK: ({ username }) =>
 			`Lo siento ${username}, pero no se ha configurado un canal de texto para las sugerencias... ¿Quieres hacerlo ahora?`,
 		COMMAND_SUGGEST_NOSETUP_ABORT: '¡Entendido! Puede usar este comando si cambia de opinión.',
-		COMMAND_SUGGEST_NOPERMISSIONS: (username, channel) =>
+		COMMAND_SUGGEST_NOPERMISSIONS: ({ username, channel }) =>
 			`Lo siento ${username}, pero los administradores no me dieron permisos para enviar mensajes en ${channel}.`,
 		COMMAND_SUGGEST_CHANNEL_PROMPT: 'Mencione el canal de texto o escriba su nombre o ID que en el que quiere que se publiquen las sugerencias.',
-		COMMAND_SUGGEST_TITLE: (id) => `Recomendación #${id}`,
-		COMMAND_SUGGEST_SUCCESS: (channel) => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,
+		COMMAND_SUGGEST_TITLE: ({ id }) => `Recomendación #${id}`,
+		COMMAND_SUGGEST_SUCCESS: ({ channel }) => `¡Gracias por su sugerencia! Lo he publicado en ${channel}!`,
 		COMMAND_RESOLVESUGGESTION_DESCRIPTION: 'Modifica el estado de la sugerencia.',
 		COMMAND_RESOLVESUGGESTION_EXTENDED: {
 			extendedHelp: 'Este comando le permite actualizar el estado de una sugerencia, marcándola como aceptada, considerada o denegada',
@@ -3774,7 +3780,7 @@ export default class extends Language {
 			DENY: (author, guild) => `${author} ha negado su sugerencia en ${guild}:`
 		},
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} No pude enviar el mensaje directo al usuario. ¿Están cerrados sus mensajes directos?`,
-		COMMAND_RESOLVESUGGESTION_SUCCESS: (id, action) =>
+		COMMAND_RESOLVESUGGESTION_SUCCESS: ({ id, action }) =>
 			`${GREENTICK} Recomendación \`${id}\` ${
 				action === 'a' || action === 'accept' ? 'aceptada' : action === 'd' || action === 'deny' ? 'denegada' : 'considerada'
 			} con éxito!`,
@@ -4230,7 +4236,7 @@ export default class extends Language {
 				? '[Auto-Moderation] Triggered word filter, no threshold.'
 				: `[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
 		MONITOR_INVITE_FILTER_ALERT: (user) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
-		MONITOR_INVITE_FILTER_LOG: (links) => `**Enlace${links.length === 1 ? '' : 's'}**: ${list(links, 'y')}`,
+		MONITOR_INVITE_FILTER_LOG: (links) => `**Enlace${links.length === 1 ? '' : 's'}**: ${this.list(links, 'y')}`,
 		MONITOR_NOLINK: (user) => `${REDCROSS} Perdona ${user}, los enlaces no están permitidos en este servidor.`,
 		MONITOR_WORDFILTER_DM: (filtered) =>
 			`¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
@@ -4668,18 +4674,18 @@ export default class extends Language {
 			`${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_ENABLED: `${GREENTICK} Successfully enabled sub-system.`,
 		SELF_MODERATION_COMMAND_DISABLED: `${GREENTICK} Successfully disabled sub-system.`,
-		SELF_MODERATION_COMMAND_SOFT_ACTION: (value) =>
+		SELF_MODERATION_COMMAND_SOFT_ACTION: ({ value }) =>
 			value ? `${GREENTICK} Successfully set actions to: \`${value}\`` : `${GREENTICK} Successfully disabled actions.`,
-		SELF_MODERATION_COMMAND_HARD_ACTION: (value) => `${GREENTICK} Successfully set punishment: ${value}`,
-		SELF_MODERATION_COMMAND_HARD_ACTION_DURATION: (value) =>
+		SELF_MODERATION_COMMAND_HARD_ACTION: ({ value }) => `${GREENTICK} Successfully set punishment: ${value}`,
+		SELF_MODERATION_COMMAND_HARD_ACTION_DURATION: ({ value }) =>
 			value
 				? `${GREENTICK} Successfully set the punishment appeal timer to: ${duration(value)}`
 				: `${GREENTICK} Successfully removed the punishment appeal timer.`,
-		SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM: (value) =>
+		SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM: ({ value }) =>
 			value
 				? `${GREENTICK} Successfully set the threshold maximum to: ${value}`
 				: `${GREENTICK} Successfully removed the threshold maximum, punishment will take place instantly if set.`,
-		SELF_MODERATION_COMMAND_THRESHOLD_DURATION: (value) =>
+		SELF_MODERATION_COMMAND_THRESHOLD_DURATION: ({ value }) =>
 			value
 				? `${GREENTICK} Successfully set the threshold duration to: ${duration(value)}`
 				: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
@@ -4760,7 +4766,7 @@ export default class extends Language {
 		RESOLVER_DATE_SUFFIX: ' segundos',
 		RESOLVER_POSITIVE_AMOUNT: 'You must give me a positive number.',
 		POWEREDBY_WEEBSH: 'Powered by weeb.sh',
-		PREFIX_REMINDER: (prefix) => `El prefijo de este servidor está configurado a: \`${prefix}\``,
+		PREFIX_REMINDER: ({ prefix }) => `El prefijo de este servidor está configurado a: \`${prefix}\``,
 
 		UNEXPECTED_ISSUE: '¡Algo inesperado pasó! Cancelando este comando...',
 

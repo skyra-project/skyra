@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_SEARCH_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_SEARCH_EXTENDED'),
+			description: (language) => language.get('COMMAND_SEARCH_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SEARCH_EXTENDED'),
 			usage: '<query:string>',
 			usageDelim: ' ',
 			requiredPermissions: ['EMBED_LINKS']
@@ -20,13 +20,13 @@ export default class extends SkyraCommand {
 		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
 
 		if (body.Heading.length === 0) {
-			throw message.language.tget('COMMAND_DUCKDUCKGO_NOTFOUND');
+			throw message.language.get('COMMAND_DUCKDUCKGO_NOTFOUND');
 		}
 
 		const embed = new MessageEmbed().setTitle(body.Heading).setURL(body.AbstractURL).setThumbnail(body.Image).setDescription(body.AbstractText);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
-			embed.addField(message.language.tget('COMMAND_DUCKDUCKGO_LOOKALSO'), body.RelatedTopics[0].Text);
+			embed.addField(message.language.get('COMMAND_DUCKDUCKGO_LOOKALSO'), body.RelatedTopics[0].Text);
 		}
 
 		return message.sendMessage({ embed });

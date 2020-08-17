@@ -46,19 +46,19 @@ export default class extends Event {
 		const isModerationAction = await this.isModerationAction(guild, data);
 
 		const footer = isModerationAction.kicked
-			? guild.language.tget('EVENTS_GUILDMEMBERKICKED')
+			? guild.language.get('EVENTS_GUILDMEMBERKICKED')
 			: isModerationAction.banned
-			? guild.language.tget('EVENTS_GUILDMEMBERBANNED')
+			? guild.language.get('EVENTS_GUILDMEMBERBANNED')
 			: isModerationAction.softbanned
-			? guild.language.tget('EVENTS_GUILDMEMBERSOFTBANNED')
-			: guild.language.tget('EVENTS_GUILDMEMBERREMOVE');
+			? guild.language.get('EVENTS_GUILDMEMBERSOFTBANNED')
+			: guild.language.get('EVENTS_GUILDMEMBERREMOVE');
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(
-					guild.language.tget('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag))
+					guild.language.get('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag))
 				)
 				.setFooter(footer)
 				.setTimestamp()

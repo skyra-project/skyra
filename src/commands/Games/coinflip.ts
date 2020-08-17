@@ -14,8 +14,8 @@ const enum CoinType {
 	aliases: ['cf'],
 	bucket: 2,
 	cooldown: 7,
-	description: (language) => language.tget('COMMAND_COINFLIP_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_COINFLIP_EXTENDED'),
+	description: (language) => language.get('COMMAND_COINFLIP_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_COINFLIP_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '(coin:cointype) (wager:coinwager)',
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		const balance = settings.money;
 
 		if (balance < wager) {
-			throw message.language.tget('GAMES_NOT_ENOUGH_MONEY', { money: balance });
+			throw message.language.get('GAMES_NOT_ENOUGH_MONEY', { money: balance });
 		}
 
 		const result = this.flipCoin();
@@ -43,10 +43,10 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(
 			(await this.buildEmbed(message, result))
-				.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
+				.setTitle(message.language.get(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 				.setDescription(
-					message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', {
-						result: message.language.tget('COMMAND_COINFLIP_COINNAMES')[result],
+					message.language.get(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', {
+						result: message.language.get('COMMAND_COINFLIP_COINNAMES')[result],
 						wager
 					})
 				)
@@ -57,8 +57,8 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('cointype', (arg, _possible, message) => {
 			if (!arg) return null;
 			const lArg = arg.toLowerCase();
-			const face = message.language.tget('COMMAND_COINFLIP_COINNAMES').findIndex((coin) => coin.toLowerCase() === lArg);
-			if (face === -1) throw message.language.tget('COMMAND_COINFLIP_INVALID_COINNAME', { arg: cleanMentions(message.guild!, arg) });
+			const face = message.language.get('COMMAND_COINFLIP_COINNAMES').findIndex((coin) => coin.toLowerCase() === lArg);
+			if (face === -1) throw message.language.get('COMMAND_COINFLIP_INVALID_COINNAME', { arg: cleanMentions(message.guild!, arg) });
 			return face;
 		});
 
@@ -77,10 +77,10 @@ export default class extends SkyraCommand {
 		const won = result === guess;
 		return message.send(
 			(await this.buildEmbed(message, result))
-				.setTitle(message.language.tget(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
+				.setTitle(message.language.get(won ? 'COMMAND_COINFLIP_WIN_TITLE' : 'COMMAND_COINFLIP_LOSE_TITLE'))
 				.setDescription(
-					message.language.tget(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', {
-						result: message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]
+					message.language.get(won ? 'COMMAND_COINFLIP_WIN_DESCRIPTION' : 'COMMAND_COINFLIP_LOSE_DESCRIPTION', {
+						result: message.language.get('COMMAND_COINFLIP_COINNAMES')[result]
 					})
 				)
 		);
@@ -89,9 +89,9 @@ export default class extends SkyraCommand {
 	private async noGuess(message: KlasaMessage) {
 		const result = this.flipCoin();
 		return message.send(
-			(await this.buildEmbed(message, result)).setTitle(message.language.tget('COMMAND_COINFLIP_NOGUESS_TITLE')).setDescription(
-				message.language.tget('COMMAND_COINFLIP_NOGUESS_DESCRIPTION', {
-					result: message.language.tget('COMMAND_COINFLIP_COINNAMES')[result]
+			(await this.buildEmbed(message, result)).setTitle(message.language.get('COMMAND_COINFLIP_NOGUESS_TITLE')).setDescription(
+				message.language.get('COMMAND_COINFLIP_NOGUESS_DESCRIPTION', {
+					result: message.language.get('COMMAND_COINFLIP_COINNAMES')[result]
 				})
 			)
 		);

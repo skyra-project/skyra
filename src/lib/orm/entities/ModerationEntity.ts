@@ -308,8 +308,8 @@ export class ModerationEntity extends BaseEntity {
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
 		const prefix = manager.guild.settings.get(GuildSettings.Prefix);
-		const formattedDuration = this.duration ? manager.guild.language.tget('MODERATION_LOG_EXPIRES_IN', this.duration) : '';
-		const description = manager.guild.language.tget('MODERATION_LOG_DESCRIPTION', {
+		const formattedDuration = this.duration ? manager.guild.language.get('MODERATION_LOG_EXPIRES_IN', this.duration) : '';
+		const description = manager.guild.language.get('MODERATION_LOG_DESCRIPTION', {
 			type: this.title,
 			userName: user.username,
 			userDiscriminator: user.discriminator,
@@ -325,7 +325,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
 			.setFooter(
-				manager.guild.language.tget('MODERATION_LOG_FOOTER', this.caseID),
+				manager.guild.language.get('MODERATION_LOG_FOOTER', this.caseID),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

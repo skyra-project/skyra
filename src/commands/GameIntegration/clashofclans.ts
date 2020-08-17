@@ -21,8 +21,8 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_CLASHOFCLANS_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_CLASHOFCLANS_EXTENDED'),
+	description: (language) => language.get('COMMAND_CLASHOFCLANS_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_CLASHOFCLANS_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
@@ -38,22 +38,22 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 			if (action === 'player') {
 				if (kPlayerTagRegex.test(arg)) return arg;
-				throw message.language.tget('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
+				throw message.language.get('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
 			}
 
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		}
 	]
 ])
 export default class extends RichDisplayCommand {
 	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(message, clan, ClashOfClansFetchCategories.CLANS);
 
-		if (!clanData.length) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan });
+		if (!clanData.length) throw message.language.get('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan });
 
 		const display = await this.buildClanDisplay(message, clanData);
 
@@ -87,13 +87,13 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.tget('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
-			else throw message.language.tget('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
+			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.get('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
+			else throw message.language.get('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
 		}
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, player: ClashOfClans.Player) {
-		const TITLES = message.language.tget('COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES');
+		const TITLES = message.language.get('COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES');
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -128,7 +128,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildClanDisplay(message: KlasaMessage, clans: ClashOfClans.Clan[]) {
-		const TITLES = message.language.tget('COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES');
+		const TITLES = message.language.get('COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {

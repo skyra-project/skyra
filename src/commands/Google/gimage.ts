@@ -12,8 +12,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
-	description: (language) => language.tget('COMMAND_GIMAGE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_GIMAGE_EXTENDED'),
+	description: (language) => language.get('COMMAND_GIMAGE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_GIMAGE_EXTENDED'),
 	usage: '<query:query>'
 })
 export default class extends RichDisplayCommand {
@@ -27,11 +27,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
-			message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)),
+			message.sendEmbed(new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
-		if (!items || !items.length) throw message.language.tget(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw message.language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

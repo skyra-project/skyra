@@ -12,8 +12,8 @@ const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VI
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_SUGGEST_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_SUGGEST_EXTENDED'),
+	description: (language) => language.get('COMMAND_SUGGEST_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_SUGGEST_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<suggestion:string>',
@@ -37,7 +37,10 @@ export default class extends SkyraCommand {
 			const suggestionsChannelID = guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel)!;
 			suggestionsChannel = this.client.channels.get(suggestionsChannelID) as TextChannel | undefined;
 			if (!suggestionsChannel?.postable)
-				throw message.language.tget('COMMAND_SUGGEST_NOPERMISSIONS', message.author.username, `<#${message.channel.id}>`);
+				throw message.language.get('COMMAND_SUGGEST_NOPERMISSIONS', {
+					username: message.author.username,
+					channel: (message.channel as TextChannel).toString()
+				});
 		}
 
 		// Get the next suggestion ID
@@ -51,7 +54,7 @@ export default class extends SkyraCommand {
 					`${message.author.tag} (${message.author.id})`,
 					message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })
 				)
-				.setTitle(message.language.tget('COMMAND_SUGGEST_TITLE', suggestionID))
+				.setTitle(message.language.get('COMMAND_SUGGEST_TITLE', { id: suggestionID }))
 				.setDescription(suggestion)
 		);
 
@@ -76,7 +79,7 @@ export default class extends SkyraCommand {
 			messageID: suggestionsMessage.id
 		});
 
-		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [global ? 'the feedback channel' : suggestionsChannel]);
+		return message.sendLocale('COMMAND_SUGGEST_SUCCESS', [{ channel: global ? 'the feedback channel' : suggestionsChannel.toString() }]);
 	}
 
 	public async inhibit(message: KlasaMessage): Promise<boolean> {
@@ -91,12 +94,12 @@ export default class extends SkyraCommand {
 		// If the user doesn't have the rights to change guild configuration, do not proceed
 		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
 		if (!manageable) {
-			await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [message.author.username]);
+			await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [{ username: message.author.username }]);
 			return true;
 		}
 
 		// Ask the user if they want to setup a channel
-		const setup = await message.ask({ content: message.language.tget('COMMAND_SUGGEST_NOSETUP_ASK', message.author.username) });
+		const setup = await message.ask({ content: message.language.get('COMMAND_SUGGEST_NOSETUP_ASK', { username: message.author.username }) });
 		if (!setup) {
 			await message.sendLocale('COMMAND_SUGGEST_NOSETUP_ABORT');
 			return true;
@@ -109,7 +112,7 @@ export default class extends SkyraCommand {
 				limit: 1,
 				time: 30000
 			})
-			.run<TextChannel[]>(message.language.tget('COMMAND_SUGGEST_CHANNEL_PROMPT'));
+			.run<TextChannel[]>(message.language.get('COMMAND_SUGGEST_CHANNEL_PROMPT'));
 
 		if (!channel || channel.guild.id !== message.guild!.id) {
 			await message.sendLocale('RESOLVER_INVALID_CHANNELNAME');
@@ -120,7 +123,7 @@ export default class extends SkyraCommand {
 
 		if (missingPermissions.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.tget('INHIBITOR_MISSING_BOT_PERMS', { missing: missingPermissions.map((permission) => permissions[permission]) });
+			throw message.language.get('INHIBITOR_MISSING_BOT_PERMS', { missing: missingPermissions.map((permission) => permissions[permission]) });
 		}
 
 		// Update settings

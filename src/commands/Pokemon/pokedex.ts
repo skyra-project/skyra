@@ -3,12 +3,11 @@ import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
-import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, LanguageKeys } from 'klasa';
 
 enum BaseStats {
 	hp = 'HP',
@@ -22,8 +21,8 @@ enum BaseStats {
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_POKEDEX_EXTENDED'),
+	description: (language) => language.get('COMMAND_POKEDEX_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_POKEDEX_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<pokemon:str>',
 	flagSupport: true
@@ -31,7 +30,7 @@ enum BaseStats {
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
 
@@ -44,7 +43,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_POKEDEX_QUERY_FAIL', { pokemon });
+			throw message.language.get('COMMAND_POKEDEX_QUERY_FAIL', { pokemon });
 		}
 	}
 
@@ -150,7 +149,7 @@ export default class extends RichDisplayCommand {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
-		const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_POKEDEX_EMBED_DATA');
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
 		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });

@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['m'],
-	description: (language) => language.tget('COMMAND_MUTE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_MUTE_EXTENDED'),
+	description: (language) => language.get('COMMAND_MUTE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_MUTE_EXTENDED'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -24,15 +24,15 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.Muted);
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.tget('COMMAND_MUTE_LOWLEVEL');
-			if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('COMMAND_MUTE_LOWLEVEL');
+			if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.tget('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
+					.run(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.Muted, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.tget('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+			} else if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_NEW'))) {
 				await message.guild.security.actions.muteSetup(message);
 				await message.sendLocale('COMMAND_SUCCESS');
 			} else {

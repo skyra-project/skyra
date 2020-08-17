@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_SETIMAGELOGS_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_SETIMAGELOGS_EXTENDED'),
+			description: (language) => language.get('COMMAND_SETIMAGELOGS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SETIMAGELOGS_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<here|channel:channelname>'
@@ -20,13 +20,13 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (!isTextBasedChannel(channel)) throw message.language.tget('CONFIGURATION_TEXTCHANNEL_REQUIRED');
+		else if (!isTextBasedChannel(channel)) throw message.language.get('CONFIGURATION_TEXTCHANNEL_REQUIRED');
 
 		const current = message.guild!.settings.get(GuildSettings.Channels.ImageLogs);
-		if (current === channel.id) throw message.language.tget('CONFIGURATION_EQUALS');
+		if (current === channel.id) throw message.language.get('CONFIGURATION_EQUALS');
 		await message.guild!.settings.update(GuildSettings.Channels.ImageLogs, channel, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_SETIMAGELOGS_SET', [channel]);
+		return message.sendLocale('COMMAND_SETIMAGELOGS_SET', [channel.toString()]);
 	}
 }

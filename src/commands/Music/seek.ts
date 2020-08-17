@@ -4,7 +4,7 @@ import { requireDj, requireMusicPlaying } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.tget('COMMAND_SEEK_DESCRIPTION'),
+	description: (language) => language.get('COMMAND_SEEK_DESCRIPTION'),
 	usage: '<position:timespan>'
 })
 export default class extends MusicCommand {

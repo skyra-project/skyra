@@ -12,8 +12,8 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],
 	cooldown: 0,
-	description: (language) => language.tget('COMMAND_HUNGERGAMES_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_HUNGERGAMES_EXTENDED'),
+	description: (language) => language.get('COMMAND_HUNGERGAMES_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_HUNGERGAMES_EXTENDED'),
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[user:string{,50}] [...]',
@@ -35,13 +35,13 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			throw message.language.tget('COMMAND_GAMES_NO_PLAYERS', { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
+			throw message.language.get('COMMAND_GAMES_NO_PLAYERS', { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
 		}
 
 		const filtered = new Set(tributes);
-		if (filtered.size !== tributes.length) throw message.language.tget('COMMAND_GAMES_REPEAT');
-		if (this.playing.has(message.channel.id)) throw message.language.tget('COMMAND_GAMES_PROGRESS');
-		if (filtered.size < 4 || filtered.size > 48) throw message.language.tget('COMMAND_GAMES_TOO_MANY_OR_FEW', { min: 4, max: 48 });
+		if (filtered.size !== tributes.length) throw message.language.get('COMMAND_GAMES_REPEAT');
+		if (this.playing.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
+		if (filtered.size < 4 || filtered.size > 48) throw message.language.get('COMMAND_GAMES_TOO_MANY_OR_FEW', { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value?: boolean) => void) | null = null;
@@ -78,7 +78,7 @@ export default class extends SkyraCommand {
 				const events = game.bloodbath ? 'HG_BLOODBATH' : game.sun ? 'HG_DAY' : 'HG_NIGHT';
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, message.language.tget(events));
+				const { results, deaths } = this.makeResultEvents(game, message.language.get(events));
 				const texts = this.buildTexts(message.language, game, results, deaths);
 
 				// Ask for the user to proceed:
@@ -155,11 +155,11 @@ export default class extends SkyraCommand {
 	}
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
-		const header = language.tget('COMMAND_HUNGERGAMES_RESULT_HEADER', { game });
+		const header = language.get('COMMAND_HUNGERGAMES_RESULT_HEADER', { game });
 		const death = deaths.length
-			? `${language.tget('COMMAND_HUNGERGAMES_RESULT_DEATHS', { deaths: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
+			? `${language.get('COMMAND_HUNGERGAMES_RESULT_DEATHS', { deaths: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
 			: '';
-		const proceed = language.tget('COMMAND_HUNGERGAMES_RESULT_PROCEED');
+		const proceed = language.get('COMMAND_HUNGERGAMES_RESULT_PROCEED');
 		const panels = chunk(results, 5);
 
 		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);

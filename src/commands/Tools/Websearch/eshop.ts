@@ -15,8 +15,8 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_ESHOP_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_ESHOP_EXTENDED'),
+	description: (language) => language.get('COMMAND_ESHOP_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_ESHOP_EXTENDED'),
 	usage: '<gameName:string>'
 })
 export default class extends RichDisplayCommand {
@@ -24,11 +24,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, gameName);
-		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
 
 		const display = await this.buildDisplay(entries[0].hits, message);
 		await display.start(response, message.author.id);
@@ -64,20 +64,20 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		}
 	}
 
 	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
-		const titles = message.language.tget('COMMAND_ESHOP_TITLES');
+		const titles = message.language.get('COMMAND_ESHOP_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
-			const price = game.msrp ? message.language.tget('COMMAND_ESHOP_PRICE', { price: game.msrp }) : 'TBD';
+			const price = game.msrp ? message.language.get('COMMAND_ESHOP_PRICE', { price: game.msrp }) : 'TBD';
 			const esrbText = game.esrb
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
-				: message.language.tget('COMMAND_ESHOP_NOT_IN_DATABASE');
+				: message.language.get('COMMAND_ESHOP_NOT_IN_DATABASE');
 
 			display.addPage((embed: MessageEmbed) =>
 				embed

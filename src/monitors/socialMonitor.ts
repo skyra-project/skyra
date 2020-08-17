@@ -61,7 +61,7 @@ export default class extends Monitor {
 				this.getMessage(
 					message.member!,
 					role,
-					message.guild!.settings.get(GuildSettings.Social.AchieveMessage) || message.language.tget('MONITOR_SOCIAL_ACHIEVEMENT'),
+					message.guild!.settings.get(GuildSettings.Social.AchieveMessage) || message.language.get('MONITOR_SOCIAL_ACHIEVEMENT'),
 					points
 				)
 			);

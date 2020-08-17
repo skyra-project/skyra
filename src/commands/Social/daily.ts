@@ -12,8 +12,8 @@ const DAILY_PERIOD = Time.Hour * 12;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['dailies'],
 	cooldown: 30,
-	description: (language) => language.tget('COMMAND_DAILY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_DAILY_EXTENDED'),
+	description: (language) => language.get('COMMAND_DAILY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_DAILY_EXTENDED'),
 	spam: true
 })
 export default class extends SkyraCommand {
@@ -26,7 +26,11 @@ export default class extends SkyraCommand {
 
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
-				return message.sendLocale('COMMAND_DAILY_TIME_SUCCESS', [await this.claimDaily(message, connection, settings, now + DAILY_PERIOD)]);
+				return message.sendLocale('COMMAND_DAILY_TIME_SUCCESS', [
+					{
+						amount: await this.claimDaily(message, connection, settings, now + DAILY_PERIOD)
+					}
+				]);
 			}
 
 			const remaining = settings.cooldowns.daily.getTime() - now;
@@ -35,7 +39,7 @@ export default class extends SkyraCommand {
 			if (remaining > GRACE_PERIOD) return message.sendLocale('COMMAND_DAILY_TIME', [remaining]);
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(message.language.tget('COMMAND_DAILY_GRACE', remaining));
+			const accepted = await message.ask(message.language.get('COMMAND_DAILY_GRACE', remaining));
 			if (!accepted) return message.sendLocale('COMMAND_DAILY_GRACE_DENIED');
 
 			// The user accepted the grace period

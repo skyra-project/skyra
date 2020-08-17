@@ -5,8 +5,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_INVITE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_INVITE_EXTENDED'),
+	description: (language) => language.get('COMMAND_INVITE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_INVITE_EXTENDED'),
 	usage: '[noperms]',
 	flagSupport: true,
 	guarded: true

@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_SOCIAL_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_SOCIAL_EXTENDED'),
+			description: (language) => language.get('COMMAND_SOCIAL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_SOCIAL_EXTENDED'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
-		if (!settings) throw message.language.tget('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
+		if (!settings) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
 
 		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;

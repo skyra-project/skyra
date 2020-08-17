@@ -12,8 +12,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['redditor'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_REDDITUSER_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_REDDITUSER_EXTENDED'),
+	description: (language) => language.get('COMMAND_REDDITUSER_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_REDDITUSER_EXTENDED'),
 	usage: '<user:user>'
 })
 export default class extends RichDisplayCommand {
@@ -22,7 +22,7 @@ export default class extends RichDisplayCommand {
 
 	public async init() {
 		this.createCustomResolver('user', (arg, _possible, message) => {
-			if (!this.usernameRegex.test(arg)) throw message.language.tget('COMMAND_REDDITUSER_INVALID_USER', arg);
+			if (!this.usernameRegex.test(arg)) throw message.language.get('COMMAND_REDDITUSER_INVALID_USER', arg);
 			arg = arg.replace(/^\/?u\//, '');
 			return arg;
 		});
@@ -30,11 +30,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [user]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const [about, comments, posts] = await this.fetchData(user, message);
-		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
 		comments.sort((a, b) => b.score - a.score);
 
 		const display = await this.buildDisplay(message, about, comments, posts);
@@ -48,12 +48,12 @@ export default class extends RichDisplayCommand {
 		comments: Reddit.CommentDataElement[],
 		posts: Reddit.PostDataElement[]
 	) {
-		const titles = message.language.tget('COMMAND_REDDITUSER_TITLES');
-		const fieldsData = message.language.tget('COMMAND_REDDITUSER_DATA');
+		const titles = message.language.get('COMMAND_REDDITUSER_TITLES');
+		const fieldsData = message.language.get('COMMAND_REDDITUSER_DATA');
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
-		const complexityLevels = message.language.tget('COMMAND_REDDITUSER_COMPLEXITY_LEVELS');
+		const complexityLevels = message.language.get('COMMAND_REDDITUSER_COMPLEXITY_LEVELS');
 
 		return new UserRichDisplay(
 			new MessageEmbed()
@@ -113,7 +113,7 @@ export default class extends RichDisplayCommand {
 
 	private async fetchAbout(user: string, message: KlasaMessage) {
 		const { data } = await fetch<Reddit.Response<'about'>>(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON).catch(() => {
-			throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+			throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
 		});
 		return data;
 	}
@@ -132,7 +132,7 @@ export default class extends RichDisplayCommand {
 		url.searchParams.append('limit', '100');
 
 		const { data } = await fetch<Reddit.Response<'comments'>>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+			throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
 		});
 
 		for (const child of data.children) {
@@ -158,7 +158,7 @@ export default class extends RichDisplayCommand {
 		url.searchParams.append('limit', '100');
 
 		const { data } = await fetch<Reddit.Response<'posts'>>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.tget('COMMAND_REDDITUSER_QUERY_FAILED');
+			throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
 		});
 
 		for (const child of data.children) {

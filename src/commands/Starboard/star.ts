@@ -12,8 +12,8 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: [],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_STAR_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_STAR_EXTENDED'),
+	description: (language) => language.get('COMMAND_STAR_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_STAR_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	requiredSettings: [],
 	runIn: ['text'],
@@ -107,7 +107,7 @@ export default class extends SkyraCommand {
 				if (postedAt < minimumPostedAt) continue;
 			}
 			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
-			const maskedUrl = `[${message.language.tget('JUMPTO')}](${url})`;
+			const maskedUrl = `[${message.language.get('JUMPTO')}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
 			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;
@@ -119,7 +119,7 @@ export default class extends SkyraCommand {
 		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 		const topThreeReceivers = [...topReceivers].sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 
-		const i18n = message.language.tget.bind(message.language);
+		const i18n = message.language.get.bind(message.language);
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(Colors.Amber)

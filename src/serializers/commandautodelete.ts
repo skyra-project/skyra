@@ -12,7 +12,7 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.tget('SERIALIZER_COMMAND_AUTO_DELETE_INVALID');
+		throw language.get('SERIALIZER_COMMAND_AUTO_DELETE_INVALID');
 	}
 
 	public stringify(value: [string, number], guild: Guild) {

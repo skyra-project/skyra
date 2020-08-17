@@ -27,8 +27,8 @@ const kRandomSunSign = createPick([...kSunSigns]);
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['saelem'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_HOROSCOPE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_HOROSCOPE_EXTENDED'),
+	description: (language) => language.get('COMMAND_HOROSCOPE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_HOROSCOPE_EXTENDED'),
 	requiredGuildPermissions: ['EMBED_LINKS'],
 	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
 	usageDelim: ' '
@@ -40,7 +40,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: arg, maybe: kRandomSunSign() });
+			throw message.language.get('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
 		const horoscope = await this.fetchAPI(message, sign, day);
 
-		const TITLES = message.language.tget('COMMAND_HOROSCOPE_TITLES');
+		const TITLES = message.language.get('COMMAND_HOROSCOPE_TITLES');
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.language.tget('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: sunsign, maybe: kRandomSunSign() });
+			throw message.language.get('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

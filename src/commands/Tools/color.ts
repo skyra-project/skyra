@@ -14,8 +14,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['colour'],
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_COLOR_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_COLOR_EXTENDED'),
+			description: (language) => language.get('COMMAND_COLOR_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_COLOR_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<color:string> [separator:integer{0,255}]',
 			usageDelim: ' >'
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 		const { hex, hsl, rgb } = parse(input);
 
 		const attachment = await this.showColor(rgb, diff);
-		return message.channel.send(message.language.tget('COMMAND_COLOR', hex.toString(), rgb.toString(), hsl.toString()), {
+		return message.channel.send(message.language.get('COMMAND_COLOR', hex.toString(), rgb.toString(), hsl.toString()), {
 			files: [{ attachment, name: 'color.png' }]
 		});
 	}

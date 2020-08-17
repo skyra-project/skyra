@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['letmegooglethatforyou'],
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_LMGTFY_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_LMGTFY_EXTENDED'),
+			description: (language) => language.get('COMMAND_LMGTFY_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_LMGTFY_EXTENDED'),
 			usage: '<query:string>',
 			requiredPermissions: ['EMBED_LINKS'],
 			flagSupport: true
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(
-					`[${message.language.tget('COMMAND_LMGTFY_CLICK')}](https://lmgtfy.com?q=${encodeURIComponent(query)}&s=${searchEngine})`
+					`[${message.language.get('COMMAND_LMGTFY_CLICK')}](https://lmgtfy.com?q=${encodeURIComponent(query)}&s=${searchEngine})`
 				)
 		);
 	}

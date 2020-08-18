@@ -26,7 +26,7 @@ export default class extends RichDisplayCommand {
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.sendLocale('SYSTEM_LOADING');
+			await message.sendLocale('SYSTEM_LOADING', []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean

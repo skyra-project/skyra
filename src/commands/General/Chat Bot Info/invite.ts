@@ -14,10 +14,10 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
 		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.sendLocale('COMMAND_INVITE_NO_PERMS');
+			return message.sendLocale('COMMAND_INVITE_NO_PERMS', []);
 		}
 
-		return message.sendLocale('COMMAND_INVITE');
+		return message.sendLocale('COMMAND_INVITE', []);
 	}
 
 	public async init() {

@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (promises.length) {
-			await message.sendLocale('SYSTEM_LOADING');
+			await message.sendLocale('SYSTEM_LOADING', []);
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {

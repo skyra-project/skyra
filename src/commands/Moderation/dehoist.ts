@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const members = message.guild!.memberTags;
-		const response = await message.sendLocale('SYSTEM_LOADING');
+		const response = await message.sendLocale('SYSTEM_LOADING', []);
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
 			if (memberTag.nickname && memberTag.nickname.codePointAt(0)! < this.kLowestCode) {

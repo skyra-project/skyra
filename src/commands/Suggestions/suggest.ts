@@ -115,7 +115,7 @@ export default class extends SkyraCommand {
 			.run<TextChannel[]>(message.language.get('COMMAND_SUGGEST_CHANNEL_PROMPT'));
 
 		if (!channel || channel.guild.id !== message.guild!.id) {
-			await message.sendLocale('RESOLVER_INVALID_CHANNELNAME');
+			await message.sendLocale('RESOLVER_INVALID_CHANNELNAME', [{ name: channel.name }]);
 			return true;
 		}
 

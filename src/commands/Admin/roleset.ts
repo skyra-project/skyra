@@ -53,7 +53,10 @@ export default class extends SkyraCommand {
 			return message.sendLocale('COMMAND_ROLESET_CREATED', [
 				{
 					name,
-					roles: roles.map((role) => role.name)
+					roles: message.language.list(
+						roles.map((role) => role.name),
+						message.language.andString
+					)
 				}
 			]);
 		}
@@ -76,7 +79,10 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_ROLESET_ADDED', [
 			{
 				name,
-				roles: roles.map((role) => role.name)
+				roles: message.language.list(
+					roles.map((role) => role.name),
+					message.language.andString
+				)
 			}
 		]);
 	}
@@ -98,7 +104,10 @@ export default class extends SkyraCommand {
 		return message.sendLocale('COMMAND_ROLESET_REMOVED', [
 			{
 				name,
-				roles: roles.map((role) => role.name)
+				roles: message.language.list(
+					roles.map((role) => role.name),
+					message.language.andString
+				)
 			}
 		]);
 	}

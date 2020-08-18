@@ -77,6 +77,7 @@ export class FuzzySearch<K extends string, V> {
 		);
 		if (n.toLowerCase() === 'abort') return null;
 		const parsed = Number(n);
+		if (!Number.isSafeInteger(parsed)) throw message.language.get('FUZZYSEARCH_INVALID_NUMBER');
 		if (parsed < 0 || parsed >= results.length) throw message.language.get('FUZZYSEARCH_INVALID_INDEX');
 		return results[parsed];
 	}

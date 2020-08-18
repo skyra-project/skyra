@@ -32,11 +32,8 @@ export default class extends SkyraCommand {
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
-		return message.sendMessage(
-			`**${message.author.username}**, ${message.language.get('COMMAND_RATE_OUTPUT', { user, rate, emoji: ratewaifu })}`,
-			{
-				disableEveryone: true
-			}
-		);
+		return message.sendLocale('COMMAND_RATE_OUTPUT', [{ author: message.author.username, userToRate: user, rate, emoji: ratewaifu }], {
+			disableEveryone: true
+		});
 	}
 }

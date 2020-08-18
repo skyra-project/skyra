@@ -29,20 +29,20 @@ export default class extends SkyraCommand {
 
 		const value = key ? message.guild!.settings.get(key) : message.guild!.settings;
 		if (isSchemaEntry(schemaOrEntry)) {
-			return message.send(
-				message.language.get('COMMAND_CONF_GET', {
+			return message.sendLocale('COMMAND_CONF_GET', [
+				{
 					key,
 					value: displayEntry(schemaOrEntry, message.guild!.settings.get(key), message.guild!)
-				})
-			);
+				}
+			]);
 		}
 
-		return message.send(
-			message.language.get('COMMAND_CONF_SERVER', {
+		return message.sendLocale('COMMAND_CONF_SERVER', [
+			{
 				key: key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '',
 				list: codeBlock('asciidoc', displayFolder(value as SettingsFolder))
-			})
-		);
+			}
+		]);
 	}
 
 	public async set(message: KlasaMessage, [key, valueToSet]: string[]) {
@@ -52,9 +52,7 @@ export default class extends SkyraCommand {
 				onlyConfigurable: true,
 				extraContext: { author: message.author.id }
 			});
-			return message.send(
-				message.language.get('COMMAND_CONF_UPDATED', { key, response: displayEntry(update.entry, update.next, message.guild!) })
-			);
+			return message.sendLocale('COMMAND_CONF_UPDATED', [{ key, response: displayEntry(update.entry, update.next, message.guild!) }]);
 		} catch (error) {
 			throw String(error);
 		}

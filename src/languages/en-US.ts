@@ -3026,7 +3026,7 @@ export default class extends Language {
 		COMMAND_MARKOV_TIMER: ({ timer }) => `Processed in ${timer}.`,
 		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
-		COMMAND_RATE_OUTPUT: ({ user, rate, emoji }) => `I would give **${user}** a **${rate}**/100 ${emoji}`,
+		COMMAND_RATE_OUTPUT: ({ author, userToRate, rate, emoji }) => `**${author}**, Uhm... le daría a **${userToRate}** un **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
 		COMMAND_PUN_ERROR: 'Something went wrong. Try again later.',
 		COMMAND_XKCD_COMICS: ({ amount }) => `There are only ${amount} comics.`,
@@ -3507,7 +3507,7 @@ export default class extends Language {
 			['you', Filter.Skyra]
 		]),
 		COMMAND_REASON_MISSING_CASE: 'You need to provide a case or a case range.',
-		COMMAND_REASON_NOT_EXISTS: ({ range = false }) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
+		COMMAND_REASON_NOT_EXISTS: ({ range }) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
 		COMMAND_REASON_UPDATED: ({ entries, newReason }) =>
 			[
 				`${GREENTICK} Updated ${entries.length} case${entries.length === 1 ? '' : 's'}`,

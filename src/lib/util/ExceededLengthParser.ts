@@ -56,13 +56,13 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 					{ code: 'md' }
 				);
 			}
-			return message.sendMessage(
-				message.language.get(options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR', {
+			return message.sendLocale(options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR', [
+				{
 					output: codeBlock(options.language!, options.result!),
 					time: options.time,
 					type: options.footer
-				})
-			);
+				}
+			]);
 		}
 	}
 }

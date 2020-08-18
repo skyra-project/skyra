@@ -60,10 +60,8 @@ export default class extends SkyraCommand {
 
 	public show(message: KlasaMessage) {
 		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
-		return message.sendMessage(
-			raw.length
-				? message.language.get('COMMAND_FILTER_SHOW', { words: `\`${raw.join('`, `')}\`` })
-				: message.language.get('COMMAND_FILTER_SHOW_EMPTY')
-		);
+		return raw.length
+			? message.sendLocale('COMMAND_FILTER_SHOW', [{ words: `\`${raw.join('`, `')}\`` }])
+			: message.sendLocale('COMMAND_FILTER_SHOW_EMPTY');
 	}
 }

@@ -17,12 +17,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		return message.send(
-			message.language.get('COMMAND_8BALL_OUTPUT', {
-				author: message.author.toString(),
-				question: input,
-				response: codeBlock('', this.generator(input.toLowerCase(), message.language))
-			}),
+		return message.sendLocale(
+			'COMMAND_8BALL_OUTPUT',
+			[
+				{
+					author: message.author.toString(),
+					question: input,
+					response: codeBlock('', this.generator(input.toLowerCase(), message.language))
+				}
+			],
 			{ disableEveryone: true }
 		);
 	}

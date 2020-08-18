@@ -212,10 +212,10 @@ declare module 'klasa' {
 		COMMAND_RESUME_SUCCESS: string;
 		COMMAND_ROLESET_DESCRIPTION: string;
 		COMMAND_ROLESET_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_ROLESET_CREATED: (params: { name: string; roles: readonly string[] }) => string;
-		COMMAND_ROLESET_ADDED: (params: { name: string; roles: readonly string[] }) => string;
+		COMMAND_ROLESET_CREATED: (params: { name: string; roles: string }) => string;
+		COMMAND_ROLESET_ADDED: (params: { name: string; roles: string }) => string;
 		COMMAND_ROLESET_INVALID_NAME: (params: { name: string }) => string;
-		COMMAND_ROLESET_REMOVED: (params: { name: string; roles: readonly string[] }) => string;
+		COMMAND_ROLESET_REMOVED: (params: { name: string; roles: string }) => string;
 		COMMAND_ROLESET_RESET_EMPTY: string;
 		COMMAND_ROLESET_RESET_ALL: string;
 		COMMAND_ROLESET_RESET_NOT_EXISTS: (params: { name: string }) => string;
@@ -1240,7 +1240,7 @@ declare module 'klasa' {
 		COMMAND_LOVE_RESULT: string;
 		COMMAND_NORRIS_OUTPUT: string;
 		COMMAND_PUN_ERROR: string;
-		COMMAND_RATE_OUTPUT: (params: { user: string; rate: number; emoji: string }) => string;
+		COMMAND_RATE_OUTPUT: (params: { author: string; userToRate: string; rate: number; emoji: string }) => string;
 		COMMAND_RATE_MYSELF: [string, string];
 		COMMAND_XKCD_COMICS: (params: { amount: number }) => string;
 		COMMAND_XKCD_NOTFOUND: string;
@@ -1561,7 +1561,7 @@ declare module 'klasa' {
 		COMMAND_PRUNE_POSITIONS: Map<string, Position>;
 		COMMAND_PRUNE_FILTERS: Map<string, Filter>;
 		COMMAND_REASON_MISSING_CASE: string;
-		COMMAND_REASON_NOT_EXISTS: (params: { range?: boolean }) => string;
+		COMMAND_REASON_NOT_EXISTS: (params: { range: boolean }) => string;
 		COMMAND_REASON_UPDATED: (params: { entries: readonly number[]; newReason: string }) => string;
 		COMMAND_TOGGLEMODERATIONDM_TOGGLED: (params: { value: boolean }) => string;
 		COMMAND_UNBAN_MISSING_PERMISSION: string;
@@ -1595,8 +1595,8 @@ declare module 'klasa' {
 		COMMAND_AUTOROLE_ADD: (params: { role: Role; points: number }) => string;
 		COMMAND_AUTOROLE_LIST_EMPTY: string;
 		COMMAND_AUTOROLE_UNKNOWN_ROLE: (params: { role: string }) => string;
-		COMMAND_BALANCE: (params: { user: string; amount: number }) => string;
-		COMMAND_BALANCE_SELF: (params: { amount: number }) => string;
+		COMMAND_BALANCE: (params: { user: string; amount: string }) => string;
+		COMMAND_BALANCE_SELF: (params: { amount: string }) => string;
 		COMMAND_BALANCE_BOTS: string;
 		COMMAND_SOCIAL_MEMBER_NOTEXISTS: string;
 		COMMAND_SOCIAL_ADD: (params: { user: string; amount: number; added: number }) => string;

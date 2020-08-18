@@ -45,7 +45,11 @@ export default class extends SkyraCommand {
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
 		return message.sendLocale('COMMAND_RANDREDDIT_MESSAGE', [
-			{ title: post.title, author: post.author, url: post.spoiler ? `||${post.url}||` : post.url }
+			{
+				title: post.title,
+				author: post.author,
+				url: post.spoiler ? `||${post.url}||` : post.url
+			}
 		]);
 	}
 

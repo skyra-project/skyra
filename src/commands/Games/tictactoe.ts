@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		try {
 			const [response] = await this.prompt
 				.createPrompt(message, { target: user })
-				.run(message.language.get('COMMAND_TICTACTOE_PROMPT', { challengee: message.author.toString(), challenger: user.toString() }));
+				.run(message.language.get('COMMAND_TICTACTOE_PROMPT', { challenger: message.author.toString(), challengee: user.toString() }));
 			if (response) {
 				try {
 					await this.game(

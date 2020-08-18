@@ -46,22 +46,22 @@ const kRandomSunSign = createPick([...kSunSigns]);
 ])
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
-		const horoscope = await this.fetchAPI(message, sign, day);
+		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(message, sign, day);
 
 		const TITLES = message.language.get('COMMAND_HOROSCOPE_TITLES');
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setDescription(horoscope.prediction)
+				.setDescription(prediction)
 				.setTitle(TITLES.DAILY_HOROSCOPE({ sign }))
-				.setTimestamp(new Date(horoscope.date))
+				.setTimestamp(new Date(date))
 				.addField(
 					TITLES.METADATA_TITLE,
 					TITLES.METADATA({
-						intensity: horoscope.intensity,
-						keywords: horoscope.keywords,
-						mood: horoscope.mood,
-						rating: `${Emojis.Star.repeat(horoscope.rating)}${Emojis.StarEmpty.repeat(5 - horoscope.rating)}`
+						intensity,
+						keywords,
+						mood,
+						rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`
 					})
 				)
 		);

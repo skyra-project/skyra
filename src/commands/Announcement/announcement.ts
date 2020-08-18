@@ -37,10 +37,10 @@ export default class extends SkyraCommand {
 
 		if (await this.ask(message, header, announcement)) {
 			await this.send(message, channel, role, header, announcement);
-			return message.send(message.language.get('COMMAND_ANNOUNCEMENT_SUCCESS'));
+			return message.sendLocale('COMMAND_ANNOUNCEMENT_SUCCESS');
 		}
 
-		return message.send(message.language.get('COMMAND_ANNOUNCEMENT_CANCELLED'));
+		return message.sendLocale('COMMAND_ANNOUNCEMENT_CANCELLED');
 	}
 
 	private ask(message: KlasaMessage, header: string, announcement: string) {

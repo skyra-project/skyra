@@ -11,7 +11,7 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
+		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
@@ -26,7 +26,7 @@ export default class extends Argument {
 				throw message.language.get('USER_NOT_EXISTENT');
 			});
 		}
-		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
+		throw message.language.get('RESOLVER_INVALID_USERNAME', { name: possible.name });
 	}
 
 	public resolveUser(message: KlasaMessage, query: string) {

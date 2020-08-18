@@ -90,12 +90,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const cases = sorted.map(({ log }) => log.caseID);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
-				output.push(message.language.get('COMMAND_MODERATION_OUTPUT', cases, range, users, logReason));
+				output.push(message.language.get('COMMAND_MODERATION_OUTPUT', { cases, range, users, reason: logReason }));
 			}
 
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
-				output.push(message.language.get('COMMAND_MODERATION_FAILED', users));
+				output.push(message.language.get('COMMAND_MODERATION_FAILED', { users }));
 			}
 
 			// Else send the message as usual.

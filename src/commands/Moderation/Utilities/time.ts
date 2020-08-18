@@ -47,18 +47,18 @@ export default class extends SkyraCommand {
 				moderatorID: message.author.id
 			});
 
-			return message.sendLocale('COMMAND_TIME_ABORTED', [entry.title]);
+			return message.sendLocale('COMMAND_TIME_ABORTED', [{ title: entry.title }]);
 		}
 
 		if (entry.appealType || entry.invalidated) throw message.language.get('MODERATION_LOG_APPEALED');
-		if (task) throw message.language.get('MODLOG_TIMED', (task.data.timestamp as number) - Date.now());
+		if (task) throw message.language.get('MODLOG_TIMED', { remaining: (task.data.timestamp as number) - Date.now() });
 
 		await message.guild!.moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
 			moderatorID: message.author.id
 		});
-		return message.sendLocale('COMMAND_TIME_SCHEDULED', [entry.title, user, duration!]);
+		return message.sendLocale('COMMAND_TIME_SCHEDULED', [{ title: entry.title, user, time: duration! }]);
 	}
 
 	private validateAction(message: KlasaMessage, modlog: ModerationEntity, user: User) {

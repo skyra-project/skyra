@@ -123,14 +123,18 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(Colors.Amber)
-				.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', totalMessages, totalStars))
+				.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', { messages: totalMessages, stars: totalStars }))
 				.addField(
 					i18n('COMMAND_STAR_TOPSTARRED'),
-					topThreeMessages.map(([mID, stars], index) => i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', MEDALS[index], mID, stars))
+					topThreeMessages.map(([mID, stars], index) =>
+						i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', { medal: MEDALS[index], id: mID, stars })
+					)
 				)
 				.addField(
 					i18n('COMMAND_STAR_TOPRECEIVERS'),
-					topThreeReceivers.map(([uID, stars], index) => i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', MEDALS[index], uID, stars))
+					topThreeReceivers.map(([uID, stars], index) =>
+						i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', { medal: MEDALS[index], id: uID, stars })
+					)
 				)
 				.setTimestamp()
 		);

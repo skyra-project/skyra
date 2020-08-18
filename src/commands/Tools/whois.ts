@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 	private user(message: KlasaMessage, user: User) {
 		const TITLES = message.language.get('COMMAND_WHOIS_USER_TITLES');
-		const FIELDS = message.language.get('COMMAND_WHOIS_USER_FIELDS', user);
+		const FIELDS = message.language.get('COMMAND_WHOIS_USER_FIELDS', { user });
 
 		return new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 
 	private member(message: KlasaMessage, member: GuildMember) {
 		const TITLES = message.language.get('COMMAND_WHOIS_MEMBER_TITLES');
-		const FIELDS = message.language.get('COMMAND_WHOIS_MEMBER_FIELDS', member);
+		const FIELDS = message.language.get('COMMAND_WHOIS_MEMBER_FIELDS', { member });
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || BrandingColors.Secondary)
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 
 		const roles = member.roles.sorted(sortRanks);
 		roles.delete(member.guild.id);
-		embed.splitFields(message.language.get('COMMAND_WHOIS_MEMBER_ROLES', roles.size), [...roles.values()].join(' '));
+		embed.splitFields(message.language.get('COMMAND_WHOIS_MEMBER_ROLES', { amount: roles.size }), [...roles.values()].join(' '));
 	}
 
 	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {

@@ -58,7 +58,12 @@ export default class extends Event {
 			new MessageEmbed()
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(guild.language.get('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp))
+				.setDescription(
+					guild.language.get('EVENTS_GUILDMEMBERADD_DESCRIPTION', {
+						mention: member.toString(),
+						time: Date.now() - member.user.createdTimestamp
+					})
+				)
 				.setFooter(guild.language.get(asset.title))
 				.setTimestamp()
 		);

@@ -61,14 +61,14 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_INVITE_FILTER_ALERT', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_INVITE_FILTER_ALERT', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(message.language.get('MONITOR_INVITE_FILTER_LOG', links))
+			.setDescription(message.language.get('MONITOR_INVITE_FILTER_LOG', { links }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_INVITELINK')}`)
 			.setTimestamp();
 	}

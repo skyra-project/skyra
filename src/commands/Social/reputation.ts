@@ -37,15 +37,15 @@ export default class extends SkyraCommand {
 			if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
 			return message.sendMessage(
 				message.author === user
-					? message.language.get('COMMAND_REPUTATIONS_SELF', selfSettings.reputations)
-					: message.language.get('COMMAND_REPUTATIONS', user.username, extSettings!.reputations)
+					? message.language.get('COMMAND_REPUTATIONS_SELF', { points: selfSettings.reputations })
+					: message.language.get('COMMAND_REPUTATIONS', { user: user.username, points: extSettings!.reputations })
 			);
 		}
 
 		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
 
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.sendLocale('COMMAND_REPUTATION_TIME', [timeReputation + Time.Day - now]);
+			return message.sendLocale('COMMAND_REPUTATION_TIME', [{ remaining: timeReputation + Time.Day - now }]);
 		}
 
 		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
@@ -58,6 +58,6 @@ export default class extends SkyraCommand {
 			await em.save([extSettings, selfSettings]);
 		});
 
-		return message.sendLocale('COMMAND_REPUTATION_GIVE', [user.toString()]);
+		return message.sendLocale('COMMAND_REPUTATION_GIVE', [{ user: user.toString() }]);
 	}
 }

@@ -37,7 +37,7 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get('COMMAND_MODERATIONS_AMOUNT', entries.size))
+				.setTitle(message.language.get('COMMAND_MODERATIONS_AMOUNT', { amount: entries.size }))
 		);
 
 		// Fetch usernames

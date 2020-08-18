@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
 		return Promise.race([
 			sleep(flagTime).then(() => ({
-				result: message.language.get('COMMAND_EVAL_TIMEOUT', flagTime / 1000),
+				result: message.language.get('COMMAND_EVAL_TIMEOUT', { seconds: flagTime / 1000 }),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'

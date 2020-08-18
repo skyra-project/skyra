@@ -16,7 +16,7 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name);
+		if (!arg) throw message.language.get('RESOLVER_INVALID_CHANNELNAME', { name: possible.name });
 		if (!message.guild) throw message.language.get('RESOLVER_CHANNEL_NOT_IN_GUILD');
 		filter = this.getFilter(message.author, filter);
 
@@ -25,7 +25,7 @@ export default class extends Argument {
 
 		const result = await new FuzzySearch(message.guild.channels, (entry) => entry.name, filter).run(message, arg, possible.min || undefined);
 		if (result) return result[1];
-		throw message.language.get('RESOLVER_INVALID_CHANNELNAME', possible.name);
+		throw message.language.get('RESOLVER_INVALID_CHANNELNAME', { name: possible.name });
 	}
 
 	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {

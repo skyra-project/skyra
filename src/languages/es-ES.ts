@@ -148,7 +148,6 @@ export default class extends Language {
 	public list = list(this.andString, this.orString);
 	public groupDigits = groupDigits;
 
-	// @ts-expect-error:2416
 	public language: LanguageKeys = {
 		/**
 		 * ################################
@@ -1806,7 +1805,7 @@ export default class extends Language {
 					appealed.`,
 			examples: ['', '@Pete']
 		},
-		COMMAND_HISTORY_FOOTER: (warnings, mutes, kicks, bans) =>
+		COMMAND_HISTORY_FOOTER: ({ warnings, mutes, kicks, bans }) =>
 			`This user has ${warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${kicks} ${
 				kicks === 1 ? 'kick' : 'kicks'
 			}, ${bans} ${bans === 1 ? 'ban' : 'bans'}.`,
@@ -1817,7 +1816,7 @@ export default class extends Language {
 			examples: ['', '@Pete', 'mutes @Pete', 'warnings']
 		},
 		COMMAND_MODERATIONS_EMPTY: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		COMMAND_MODERATIONS_AMOUNT: (amount) => (amount === 1 ? 'There is 1 entry.' : `There are ${amount} entries.`),
+		COMMAND_MODERATIONS_AMOUNT: ({ amount }) => (amount === 1 ? 'There is 1 entry.' : `There are ${amount} entries.`),
 		COMMAND_MUTES_DESCRIPTION: 'List all mutes from this guild or from a user.',
 		COMMAND_MUTES_EXTENDED: {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
@@ -3057,7 +3056,7 @@ export default class extends Language {
 		COMMAND_LOVE_100: '¡Emparejamiento perfecto!',
 		COMMAND_LOVE_ITSELF: 'Eres una criatura muy especial y deberías amarte a tí mismo más que a los demás <3',
 		COMMAND_LOVE_RESULT: 'Resultado',
-		COMMAND_MARKOV_TIMER: (timer) => `Processed in ${timer}.`,
+		COMMAND_MARKOV_TIMER: ({ timer }) => `Processed in ${timer}.`,
 		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
 		COMMAND_RATE_OUTPUT: ({ user, rate, emoji }) => `Uhm... le daría a **${user}** un **${rate}**/100 ${emoji}`,
@@ -3236,7 +3235,7 @@ export default class extends Language {
 			PREVIOUS: 'Anterior',
 			NEW: 'Nuevo'
 		},
-		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: (won) => (won ? 'Tú ganaste' : 'Tú perdiste'),
+		COMMAND_WHEELOFFORTUNE_CANVAS_TEXT: ({ won }) => (won ? 'Tú ganaste' : 'Tú perdiste'),
 		GAMES_NOT_ENOUGH_MONEY: ({ money }) =>
 			`Lo siento, ¡pero no tienes suficiente dinero para pagar tu apuesta! El saldo de su cuenta corriente es ${money}${SHINY}`,
 		GAMES_CANNOT_HAVE_NEGATIVE_MONEY: `No puedes tener una cantidad negativa de ${SHINY}s`,
@@ -3457,7 +3456,7 @@ export default class extends Language {
 		 * MODERATION/UTILITIES COMMANDS
 		 */
 
-		COMMAND_PERMISSIONS: (username, id) => `Permissions for ${username} (${id})`,
+		COMMAND_PERMISSIONS: ({ username, id }) => `Permissions for ${username} (${id})`,
 		COMMAND_PERMISSIONS_ALL: 'All Permissions',
 		COMMAND_RAID_DISABLED: 'The Anti-RAID system is not enabled in this server.',
 		COMMAND_RAID_MISSING_KICK: `As I do not have the **${PERMS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
@@ -3469,8 +3468,8 @@ export default class extends Language {
 		COMMAND_TIME_UNDEFINED_TIME: 'You must specify a time.',
 		COMMAND_TIME_UNSUPPORTED_TIPE: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
 		COMMAND_TIME_NOT_SCHEDULED: 'This task is not scheduled.',
-		COMMAND_TIME_ABORTED: (title) => `Successfully aborted the schedule for ${title}`,
-		COMMAND_TIME_SCHEDULED: (title, user, time) =>
+		COMMAND_TIME_ABORTED: ({ title }) => `Successfully aborted the schedule for ${title}`,
+		COMMAND_TIME_SCHEDULED: ({ title, user, time }) =>
 			`${GREENTICK} Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${
 				user.id
 			}) with a duration of ${duration(time)}`,
@@ -3480,25 +3479,25 @@ export default class extends Language {
 		 * MODERATION COMMANDS
 		 */
 
-		COMMAND_SLOWMODE_SET: (cooldown) =>
+		COMMAND_SLOWMODE_SET: ({ cooldown }) =>
 			cooldown === 0 ? 'The cooldown for this channel has been reset.' : `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
 		COMMAND_DEHOIST_EMBED: {
-			TITLE: (users) => `Finished dehoisting ${users} members`,
+			TITLE: ({ users }) => `Finished dehoisting ${users} members`,
 			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
-			DESCRIPTION_WITHERRORS: (users, errored) =>
+			DESCRIPTION_WITHERRORS: ({ users, errored }) =>
 				`${users} member${users > 1 ? 's' : ''} ${
 					users > 1 ? 'were' : 'was'
 				} dehoisted. We also tried to dehoist an additional ${errored} member${users > 1 ? 's' : ''}, but they errored out`,
-			DESCRIPTION: (users) => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`,
+			DESCRIPTION: ({ users }) => `${users} member${users > 1 ? 's' : ''} ${users > 1 ? 'were' : 'was'} dehoisted`,
 			FIELD_ERROR_TITLE: 'The users we encountered an error for:'
 		},
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
-		COMMAND_LOCKDOWN_LOCK: (channel) => `The channel ${channel} is now locked.`,
+		COMMAND_LOCKDOWN_LOCK: ({ channel }) => `The channel ${channel} is now locked.`,
 		COMMAND_LOCKDOWN_LOCKING: ({ channel }) => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
-		COMMAND_LOCKDOWN_LOCKED: (channel) => `The channel ${channel} was already locked.`,
-		COMMAND_LOCKDOWN_UNLOCKED: (channel) => `The channel ${channel} was not locked.`,
+		COMMAND_LOCKDOWN_LOCKED: ({ channel }) => `The channel ${channel} was already locked.`,
+		COMMAND_LOCKDOWN_UNLOCKED: ({ channel }) => `The channel ${channel} was not locked.`,
 		COMMAND_LOCKDOWN_OPEN: ({ channel }) => `The lockdown for the channel ${channel} has been released.`,
 		COMMAND_MUTE_LOWLEVEL: 'I am sorry, there is no Mute role configured. Please ask an Administrator or the Guild Owner to set it up.',
 		COMMAND_MUTE_CONFIGURE_CANCELLED: 'Prompt aborted, the Mute role creation has been cancelled.',
@@ -3510,13 +3509,13 @@ export default class extends Language {
 		COMMAND_MUTECREATE_MISSING_PERMISSION: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
 		COMMAND_RESTRICT_LOWLEVEL: `${REDCROSS} I am sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set i up.`,
 		COMMAND_PRUNE_INVALID: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
-		COMMAND_PRUNE: (amount, total) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
+		COMMAND_PRUNE: ({ amount, total }) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
 		COMMAND_PRUNE_INVALID_POSITION: `${REDCROSS} Position must be one of "before" or "after".`,
 		COMMAND_PRUNE_INVALID_FILTER: `${REDCROSS} Filtro debe ser uno de "archivo", "autor", "bot", "humano", "invitación", "enlace" o "skyra".`,
 		COMMAND_PRUNE_NO_DELETES: 'No message has been deleted, either no message match the filter or they are over 14 days old.',
 		COMMAND_PRUNE_LOG_HEADER:
 			'The following messages have been generated by request of a moderator.\nThe date formatting is of `YYYY/MM/DD hh:mm:ss`.',
-		COMMAND_PRUNE_LOG_MESSAGE: (channel, author, amount) =>
+		COMMAND_PRUNE_LOG_MESSAGE: ({ channel, author, amount }) =>
 			`${amount} ${amount === 1 ? 'message' : 'messages'} deleted in ${channel} by ${author}.`,
 		COMMAND_PRUNE_POSITIONS: new Map([
 			['before', Position.Before],
@@ -3547,26 +3546,26 @@ export default class extends Language {
 			['tú', Filter.Skyra]
 		]),
 		COMMAND_REASON_MISSING_CASE: 'You need to provide a case or a case range.',
-		COMMAND_REASON_NOT_EXISTS: (range = false) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
-		COMMAND_REASON_UPDATED: (entries, newReason) =>
+		COMMAND_REASON_NOT_EXISTS: ({ range = false }) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
+		COMMAND_REASON_UPDATED: ({ entries, newReason }) =>
 			[
 				entries.length === 1 ? `${GREENTICK} Actualizado 1 caso.` : `${GREENTICK} Actualizados ${entries.length} casos.`,
 				` └─ **Set the${entries.length === 1 ? '' : 'ir'} reason to:** ${newReason}`
 			].join('\n'),
-		COMMAND_TOGGLEMODERATIONDM_TOGGLED: (value) =>
+		COMMAND_TOGGLEMODERATIONDM_TOGGLED: ({ value }) =>
 			value ? `${GREENTICK} Successfully enabled moderation DMs.` : `${GREENTICK} Successfully disabled moderation DMs.`,
 		COMMAND_UNBAN_MISSING_PERMISSION: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
 		COMMAND_UNMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
 		COMMAND_VMUTE_MISSING_PERMISSION: `I will need the **${PERMS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
 		COMMAND_VMUTE_USER_NOT_MUTED: 'This user is not voice muted.',
-		COMMAND_WARN_DM: (moderator, guild, reason) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
-		COMMAND_WARN_MESSAGE: (user, log) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
-		COMMAND_MODERATION_OUTPUT: (cases, range, users, reason) =>
+		COMMAND_WARN_DM: ({ moderator, guild, reason }) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
+		COMMAND_WARN_MESSAGE: ({ user, log }) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
+		COMMAND_MODERATION_OUTPUT: ({ cases, range, users, reason }) =>
 			`${GREENTICK} Created ${cases.length === 1 ? 'case' : 'cases'} ${range} | ${users.join(', ')}.${
 				reason ? `\nWith the reason of: ${reason}` : ''
 			}`,
-		COMMAND_MODERATION_FAILED: (users) => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
-		COMMAND_MODERATION_DM: (guild, title, reason, pDuration) => ({
+		COMMAND_MODERATION_FAILED: ({ users }) => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users.join('\n')}`,
+		COMMAND_MODERATION_DM: ({ guild, title, reason, duration: pDuration }) => ({
 			DESCRIPTION: [
 				`**❯ Server**: ${guild}`,
 				`**❯ Type**: ${title}`,
@@ -3587,48 +3586,49 @@ export default class extends Language {
 		COMMAND_AUTOROLE_POINTS_REQUIRED: 'You must input a valid amount of points.',
 		COMMAND_AUTOROLE_UPDATE_CONFIGURED: 'This role is already configured as an autorole. Use the remove type instead.',
 		COMMAND_AUTOROLE_UPDATE_UNCONFIGURED: 'This role is not configured as an autorole. Use the add type instead.',
-		COMMAND_AUTOROLE_UPDATE: (role, points, before) =>
+		COMMAND_AUTOROLE_UPDATE: ({ role, points, before }) =>
 			`Updated autorole: ${role.name} (${role.id}). Points required: ${points} (before: ${before})`,
-		COMMAND_AUTOROLE_REMOVE: (role, before) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
-		COMMAND_AUTOROLE_ADD: (role, points) => `Added new autorole: ${role.name} (${role.id}). Points required: ${points}`,
+		COMMAND_AUTOROLE_REMOVE: ({ role, before }) => `Removed the autorole: ${role.name} (${role.id}), which required ${before} points.`,
+		COMMAND_AUTOROLE_ADD: ({ role, points }) => `Added new autorole: ${role.name} (${role.id}). Points required: ${points}`,
 		COMMAND_AUTOROLE_LIST_EMPTY: 'There is no role configured as an autorole in this server.',
-		COMMAND_AUTOROLE_UNKNOWN_ROLE: (role) => `Unknown role: ${role}`,
-		COMMAND_BALANCE: (user, amount) => `The user ${user} has a total of ${amount}${SHINY}`,
-		COMMAND_BALANCE_SELF: (amount) => `You have a total of ${amount}${SHINY}`,
+		COMMAND_AUTOROLE_UNKNOWN_ROLE: ({ role }) => `Unknown role: ${role}`,
+		COMMAND_BALANCE: ({ user, amount }) => `The user ${user} has a total of ${amount}${SHINY}`,
+		COMMAND_BALANCE_SELF: ({ amount }) => `You have a total of ${amount}${SHINY}`,
 		COMMAND_BALANCE_BOTS: `I think they have 5 gears as much, bots don't have ${SHINY}`,
 		COMMAND_SOCIAL_MEMBER_NOTEXISTS: `${REDCROSS} The member is not in this server, and is not in my database either.`,
-		COMMAND_SOCIAL_ADD: (user, amount, added) =>
+		COMMAND_SOCIAL_ADD: ({ user, amount, added }) =>
 			`${GREENTICK} Successfully added ${added} point${added === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
-		COMMAND_SOCIAL_REMOVE: (user, amount, removed) =>
+		COMMAND_SOCIAL_REMOVE: ({ user, amount, removed }) =>
 			`${GREENTICK} Successfully removed ${removed} point${removed === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
-		COMMAND_SOCIAL_UNCHANGED: (user) => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
-		COMMAND_SOCIAL_RESET: (user) => `${GREENTICK} The user ${user} got his points removed.`,
-		COMMAND_BANNER_MISSING: (type) => `You must specify a banner id to ${type}.`,
-		COMMAND_BANNER_NOTEXISTS: (prefix) =>
+		COMMAND_SOCIAL_UNCHANGED: ({ user }) => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
+		COMMAND_SOCIAL_RESET: ({ user }) => `${GREENTICK} The user ${user} got his points removed.`,
+		COMMAND_BANNER_MISSING: ({ type }) => `You must specify a banner id to ${type}.`,
+		COMMAND_BANNER_NOTEXISTS: ({ prefix }) =>
 			`This banner id does not exist. Please check \`${prefix}banner list\` for a list of banners you can buy.`,
-		COMMAND_BANNER_USERLIST_EMPTY: (prefix) => `You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,
+		COMMAND_BANNER_USERLIST_EMPTY: ({ prefix }) =>
+			`You did not buy a banner yet. Check \`${prefix}banner list\` for a list of banners you can buy.`,
 		COMMAND_BANNER_RESET_DEFAULT: 'You are already using the default banner.',
 		COMMAND_BANNER_RESET: 'Your banner has been reset to the default.',
 		COMMAND_BANNER_SET_NOT_BOUGHT: 'You did not buy this banner yet.',
-		COMMAND_BANNER_SET: (banner) => `${GREENTICK} **Success**. You have set your banner to: __${banner}__`,
-		COMMAND_BANNER_BOUGHT: (prefix, banner) =>
+		COMMAND_BANNER_SET: ({ banner }) => `${GREENTICK} **Success**. You have set your banner to: __${banner}__`,
+		COMMAND_BANNER_BOUGHT: ({ prefix, banner }) =>
 			`You already have this banner, you may want to use \`${prefix}banner set ${banner}\` to make it visible in your profile.`,
-		COMMAND_BANNER_MONEY: (money, cost) =>
+		COMMAND_BANNER_MONEY: ({ money, cost }) =>
 			`You do not have enough money to buy this banner. You have ${money}${SHINY}, the banner costs ${cost}${SHINY}`,
 		COMMAND_BANNER_PAYMENT_CANCELLED: `${REDCROSS} The payment has been cancelled.`,
-		COMMAND_BANNER_BUY: (banner) => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
+		COMMAND_BANNER_BUY: ({ banner }) => `${GREENTICK} **Success**. You have bought the banner: __${banner}__`,
 		COMMAND_BANNER_PROMPT:
 			'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
-		COMMAND_TOGGLEDARKMODE_TOGGLED: (enabled) =>
+		COMMAND_TOGGLEDARKMODE_TOGGLED: ({ enabled }) =>
 			enabled ? `${GREENTICK} Successfully enabled the dark mode.` : `${GREENTICK} Successfully disabled the dark mode.`,
-		COMMAND_DAILY_TIME: (time) => `El siguiente pago está disponible en: ${duration(time)}`,
+		COMMAND_DAILY_TIME: ({ time }) => `El siguiente pago está disponible en: ${duration(time)}`,
 		COMMAND_DAILY_TIME_SUCCESS: ({ amount }) => `¡Yuhu! ¡Has obtenido ${amount}${SHINY}! Siguiente pago en: 12 horas.`,
-		COMMAND_DAILY_GRACE: (remaining) =>
+		COMMAND_DAILY_GRACE: ({ remaining }) =>
 			[
 				'¿Te gustaría recibir el pago temprano? El tiempo restante será añadido al periodo normal de espera, de 12 horas.',
 				`Tiempo restante: ${duration(remaining)}`
 			].join('\n'),
-		COMMAND_DAILY_GRACE_ACCEPTED: (amount, remaining) =>
+		COMMAND_DAILY_GRACE_ACCEPTED: ({ amount, remaining }) =>
 			`¡Dinero dinero! ¡Has recibido ${amount}${SHINY}! Siguiente pago en: ${duration(remaining)}`,
 		COMMAND_DAILY_GRACE_DENIED: '¡De acuerdo! ¡Vuelve pronto!',
 		COMMAND_LEVEL: {
@@ -3639,35 +3639,35 @@ export default class extends Language {
 		COMMAND_DIVORCE_NOTTAKEN: 'Who would you divorce? You are not even taken!',
 		COMMAND_DIVORCE_PROMPT: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
 		COMMAND_DIVORCE_CANCEL: 'Oh lord. I am very glad you will continue with your partner!',
-		COMMAND_DIVORCE_DM: (user) => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
-		COMMAND_DIVORCE_SUCCESS: (user) => `Successful divorce 💔... You are no longer married to ${user}!`,
-		COMMAND_MARRY_WITH: (users) => `Dear, how could you forget it... You are currently married to ${this.list(users, 'y')}!`,
+		COMMAND_DIVORCE_DM: ({ user }) => `Pardon... but... do you remember ${user}? He decided to break up with you 💔!`,
+		COMMAND_DIVORCE_SUCCESS: ({ user }) => `Successful divorce 💔... You are no longer married to ${user}!`,
+		COMMAND_MARRY_WITH: ({ users }) => `Dear, how could you forget it... You are currently married to ${this.list(users, 'y')}!`,
 		COMMAND_MARRY_NOTTAKEN: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 		COMMAND_MARRY_SKYRA: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
 		COMMAND_MARRY_SNEYRA: 'In your dreams. She is my sister, I am not letting somebody harm her!',
 		COMMAND_MARRY_BOTS: 'Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!',
 		COMMAND_MARRY_SELF: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
-		COMMAND_MARRY_AUTHOR_TAKEN: (author) =>
+		COMMAND_MARRY_AUTHOR_TAKEN: ({ author }) =>
 			`You are already married. Is your love big enough for two people? <@${author.id}>, reply with **yes** to confirm!`,
-		COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: (user) => `Cancelling. Your commitment to ${user} is admirable.`,
-		COMMAND_MARRY_TAKEN: (spousesCount) =>
+		COMMAND_MARRY_AUTHOR_MULTIPLE_CANCEL: ({ user }) => `Cancelling. Your commitment to ${user} is admirable.`,
+		COMMAND_MARRY_TAKEN: ({ spousesCount }) =>
 			`This user is already married to ${spousesCount === 1 ? 'someone' : `${spousesCount} people`}. Would you like to join their harem?`,
-		COMMAND_MARRY_ALREADY_MARRIED: (user) => `You are already married with ${user}, did you forget it?`,
-		COMMAND_MARRY_AUTHOR_TOO_MANY: (limit) => `${REDCROSS} Ya estás casado con demasiadas personas, ¡tu límite de casamientos es ${limit}!`,
-		COMMAND_MARRY_TARGET_TOO_MANY: (limit) =>
+		COMMAND_MARRY_ALREADY_MARRIED: ({ user }) => `You are already married with ${user}, did you forget it?`,
+		COMMAND_MARRY_AUTHOR_TOO_MANY: ({ limit }) => `${REDCROSS} Ya estás casado con demasiadas personas, ¡tu límite de casamientos es ${limit}!`,
+		COMMAND_MARRY_TARGET_TOO_MANY: ({ limit }) =>
 			`${REDCROSS} La persona a la que intentas casarte ya está casada con demasiadas personas, ¡su límite de casamientos es ${limit}!`,
 		COMMAND_MARRY_MULTIPLE_CANCEL: "Cancelling. Don't worry, you'll find someone you don't have to share!",
-		COMMAND_MARRY_PETITION: (author, user) =>
+		COMMAND_MARRY_PETITION: ({ author, user }) =>
 			`Fresh pair of eyes! ${author.username} is proposing to ${user.username}! 💞 <@${user.id}>, reply with **yes** to accept!`,
 		COMMAND_MARRY_NOREPLY: 'The user did not reply on time... Maybe it was a hard decision?',
 		COMMAND_MARRY_DENIED: 'O-oh... The user rejected your proposal! 💔',
 		COMMAND_MARRY_ACCEPTED: ({ author, user }) => `Congratulations dear ${author}! You're now officially married with ${user}! ❤`,
-		COMMAND_MYLEVEL: (points, next, user) => `The user ${user} has a total of ${points} points.${next}`,
-		COMMAND_MYLEVEL_SELF: (points, next) => `You have a total of ${points} points.${next}`,
-		COMMAND_MYLEVEL_NEXT: (remaining, next) => `Points for next rank: **${remaining}** (at ${next} points).`,
-		COMMAND_PAY_MISSING_MONEY: (needed, has) => `I am sorry, but you need ${needed}${SHINY} and you have ${has}${SHINY}`,
-		COMMAND_PAY_PROMPT: (user, amount) => `You are about to pay ${user} ${amount}${SHINY}, are you sure you want to proceed?`,
-		COMMAND_PAY_PROMPT_ACCEPT: (user, amount) => `Payment accepted, ${amount}${SHINY} has been sent to ${user}'s profile.`,
+		COMMAND_MYLEVEL: ({ points, next, user }) => `The user ${user} has a total of ${points} points.${next}`,
+		COMMAND_MYLEVEL_SELF: ({ points, next }) => `You have a total of ${points} points.${next}`,
+		COMMAND_MYLEVEL_NEXT: ({ remaining, next }) => `Points for next rank: **${remaining}** (at ${next} points).`,
+		COMMAND_PAY_MISSING_MONEY: ({ needed, has }) => `I am sorry, but you need ${needed}${SHINY} and you have ${has}${SHINY}`,
+		COMMAND_PAY_PROMPT: ({ user, amount }) => `You are about to pay ${user} ${amount}${SHINY}, are you sure you want to proceed?`,
+		COMMAND_PAY_PROMPT_ACCEPT: ({ user, amount }) => `Payment accepted, ${amount}${SHINY} has been sent to ${user}'s profile.`,
 		COMMAND_PAY_PROMPT_DENY: 'Payment denied.',
 		COMMAND_PAY_SELF: 'If I taxed this, you would lose money, therefore, do not try to pay yourself.',
 		COMMAND_SOCIAL_PAY_BOT: 'Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.',
@@ -3678,38 +3678,38 @@ export default class extends Language {
 			EXPERIENCE: 'Experiencia',
 			LEVEL: 'Nivel'
 		},
-		COMMAND_REMINDME_CREATE: (id) => `A reminder with ID \`${id}\` has been created.`,
+		COMMAND_REMINDME_CREATE: ({ id }) => `A reminder with ID \`${id}\` has been created.`,
 		COMMAND_REMINDME_CREATE_NO_DURATION: 'You must tell me what you want me to remind you and when.',
 		COMMAND_REMINDME_CREATE_NO_DESCRIPTION: 'Algo, no me dijiste qué.',
 		COMMAND_REMINDME_DELETE_NO_ID: "To delete a previously created reminder, you must type 'delete' followed by the ID.",
-		COMMAND_REMINDME_DELETE: (task) =>
+		COMMAND_REMINDME_DELETE: ({ task }) =>
 			`The reminder with ID \`${task.id}\` and with a remaining time of **${duration(
 				task.time.getTime() - Date.now()
 			)}** has been successfully deleted.`,
 		COMMAND_REMINDME_LIST_EMPTY: 'You do not have any active reminder',
-		COMMAND_REMINDME_SHOW_FOOTER: (id) => `ID: ${id} | Ends at:`,
+		COMMAND_REMINDME_SHOW_FOOTER: ({ id }) => `ID: ${id} | Ends at:`,
 		COMMAND_REMINDME_INVALID_ID: 'I am sorry, but the ID provided does not seem to be valid.',
 		COMMAND_REMINDME_NOTFOUND: 'I cannot find something here. The reminder either never existed or it ended.',
 
-		COMMAND_REPUTATION_TIME: (remaining) => `You can give a reputation point in ${duration(remaining)}`,
+		COMMAND_REPUTATION_TIME: ({ remaining }) => `You can give a reputation point in ${duration(remaining)}`,
 		COMMAND_REPUTATION_USABLE: 'You can give a reputation point now.',
 		COMMAND_REPUTATION_USER_NOTFOUND: 'You must mention a user to give a reputation point.',
 		COMMAND_REPUTATION_SELF: 'You cannot give a reputation point to yourself.',
 		COMMAND_REPUTATION_BOTS: 'You cannot give a reputation point to bots.',
-		COMMAND_REPUTATION_GIVE: (user) => `You have given a reputation point to **${user}**!`,
+		COMMAND_REPUTATION_GIVE: ({ user }) => `You have given a reputation point to **${user}**!`,
 		COMMAND_REPUTATIONS_BOTS: 'Bots cannot have reputation points...',
-		COMMAND_REPUTATIONS_SELF: (points) => `You have a total of ${points} reputation points.`,
-		COMMAND_REPUTATIONS: (user, points) =>
+		COMMAND_REPUTATIONS_SELF: ({ points }) => `You have a total of ${points} reputation points.`,
+		COMMAND_REPUTATIONS: ({ user, points }) =>
 			`The user ${user} has a total of ${points === 1 ? 'one reputation point' : `${points} reputation points`}.`,
 		COMMAND_REQUIRE_ROLE: 'I am sorry, but you must provide a role for this command.',
-		COMMAND_SCOREBOARD_POSITION: (position) => `Your placing position is: ${position}`,
-		COMMAND_SETCOLOR: (color) => `Color changed to ${color}`,
+		COMMAND_SCOREBOARD_POSITION: ({ position }) => `Your placing position is: ${position}`,
+		COMMAND_SETCOLOR: ({ color }) => `Color changed to ${color}`,
 		COMMAND_SOCIAL_PROFILE_NOTFOUND: 'I am sorry, but this user profile does not exist.',
 		COMMAND_SOCIAL_PROFILE_BOT: 'I am sorry, but Bots do not have a __Member Profile__.',
-		COMMAND_SOCIAL_PROFILE_DELETE: (user, points) =>
+		COMMAND_SOCIAL_PROFILE_DELETE: ({ user, points }) =>
 			`${GREENTICK} **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
 		COMMAND_SOCIAL_POINTS: 'May you specify the amount of points you want to add or remove?',
-		COMMAND_SOCIAL_UPDATE: (action, amount, user, before, now) =>
+		COMMAND_SOCIAL_UPDATE: ({ action, amount, user, before, now }) =>
 			`You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${
 				amount === 1 ? 'point' : 'points'
 			} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
@@ -3721,12 +3721,12 @@ export default class extends Language {
 
 		COMMAND_STAR_NOSTARS: 'There is no starred message.',
 		COMMAND_STAR_STATS: 'Starboard Stats',
-		COMMAND_STAR_STATS_DESCRIPTION: (messages, stars) =>
+		COMMAND_STAR_STATS_DESCRIPTION: ({ messages, stars }) =>
 			`${messages} ${messages === 1 ? 'message' : 'messages'} starred with a total of ${stars} ${stars === 1 ? 'star' : 'stars'}.`,
 		COMMAND_STAR_TOPSTARRED: 'Top Starred Posts',
-		COMMAND_STAR_TOPSTARRED_DESCRIPTION: (medal, id, stars) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+		COMMAND_STAR_TOPSTARRED_DESCRIPTION: ({ medal, id, stars }) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 		COMMAND_STAR_TOPRECEIVERS: 'Top Star Receivers',
-		COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: (medal, id, stars) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+		COMMAND_STAR_TOPRECEIVERS_DESCRIPTION: ({ medal, id, stars }) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 
 		/**
 		 * ####################
@@ -3772,14 +3772,14 @@ export default class extends Language {
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'Un administrador',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'Un moderador',
 		COMMAND_RESOLVESUGGESTION_ACTIONS: {
-			ACCEPT: (author) => `${author} ha aceptado esta sugerencia:`,
-			CONSIDER: (author) => `${author} ha considerado esta sugerencia:`,
-			DENY: (author) => `${author} ha negado esta sugerencia:`
+			ACCEPT: ({ author }) => `${author} ha aceptado esta sugerencia:`,
+			CONSIDER: ({ author }) => `${author} ha considerado esta sugerencia:`,
+			DENY: ({ author }) => `${author} ha negado esta sugerencia:`
 		},
 		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
-			ACCEPT: (author, guild) => `${author} ha aceptado su sugerencia en ${guild}:`,
-			CONSIDER: (author, guild) => `${author} ha considerado su sugerencia en ${guild}:`,
-			DENY: (author, guild) => `${author} ha negado su sugerencia en ${guild}:`
+			ACCEPT: ({ author, guild }) => `${author} ha aceptado su sugerencia en ${guild}:`,
+			CONSIDER: ({ author, guild }) => `${author} ha considerado su sugerencia en ${guild}:`,
+			DENY: ({ author, guild }) => `${author} ha negado su sugerencia en ${guild}:`
 		},
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} No pude enviar el mensaje directo al usuario. ¿Están cerrados sus mensajes directos?`,
 		COMMAND_RESOLVESUGGESTION_SUCCESS: ({ id, action }) =>
@@ -3792,15 +3792,15 @@ export default class extends Language {
 		 * SYSTEM COMMANDS
 		 */
 
-		COMMAND_EVAL_TIMEOUT: (seconds) => `TIMEOUT: Took longer than ${seconds} seconds.`,
-		COMMAND_EVAL_ERROR: (time, output, type) => `**Error**:${output}\n**Type**:${type}\n${time}`,
+		COMMAND_EVAL_TIMEOUT: ({ seconds }) => `TIMEOUT: Took longer than ${seconds} seconds.`,
+		COMMAND_EVAL_ERROR: ({ time, output, type }) => `**Error**:${output}\n**Type**:${type}\n${time}`,
 
 		COMMAND_STATS_TITLES: {
 			STATS: 'Statistics',
 			UPTIME: 'Uptime',
 			SERVER_USAGE: 'Server Usage'
 		},
-		COMMAND_STATS_FIELDS: (stats, uptime, usage) => ({
+		COMMAND_STATS_FIELDS: ({ stats, uptime, usage }) => ({
 			STATS: [
 				`• **Users**: ${stats.USERS}`,
 				`• **Guilds**: ${stats.GUILDS}`,
@@ -3865,9 +3865,9 @@ export default class extends Language {
 		COMMAND_TAG_PERMISSIONLEVEL: 'Debe ser miembro del personal, moderador o administrador para poder administrar las etiquetas.',
 		COMMAND_TAG_NAME_NOTALLOWED: 'Un nombre de etiqueta puede no tener un acento grave ni caracteres invisibles.',
 		COMMAND_TAG_NAME_TOOLONG: 'El nombre de una etiqueta debe tener 50 caracteres o menos.',
-		COMMAND_TAG_EXISTS: (tag) => `La etiqueta \`${tag}\` ya existe.`,
+		COMMAND_TAG_EXISTS: ({ tag }) => `La etiqueta \`${tag}\` ya existe.`,
 		COMMAND_TAG_CONTENT_REQUIRED: 'Debe proporcionar un contenido para esta etiqueta.',
-		COMMAND_TAG_ADDED: (name, content) =>
+		COMMAND_TAG_ADDED: ({ name, content }) =>
 			[
 				`Se agregó con éxito una nueva etiqueta: **${name}** con un contenido de:`,
 				`**${
@@ -3876,9 +3876,9 @@ export default class extends Language {
 						: content
 				}**`
 			].join('\n'),
-		COMMAND_TAG_REMOVED: (name) => `Se eliminó con éxito la etiqueta **${name}**.`,
-		COMMAND_TAG_NOTEXISTS: (tag) => `La etiqueta \`${tag}\` no existe.`,
-		COMMAND_TAG_EDITED: (name, content) =>
+		COMMAND_TAG_REMOVED: ({ name }) => `Se eliminó con éxito la etiqueta **${name}**.`,
+		COMMAND_TAG_NOTEXISTS: ({ tag }) => `La etiqueta \`${tag}\` no existe.`,
+		COMMAND_TAG_EDITED: ({ name, content }) =>
 			[
 				`Se editó correctamente la etiqueta **${name}** con un contenido de:`,
 				`**${
@@ -3888,7 +3888,7 @@ export default class extends Language {
 				}**`
 			].join('\n'),
 		COMMAND_TAG_LIST_EMPTY: 'La lista de etiquetas para este servidor está vacía.',
-		COMMAND_TAG_LIST: (tags) => `${tags.length === 1 ? 'Hay 1 etiqueta:' : `Hay ${tags.length} etiquetas: `}${tags.join(', ')}`,
+		COMMAND_TAG_LIST: ({ tags }) => `${tags.length === 1 ? 'Hay 1 etiqueta:' : `Hay ${tags.length} etiquetas: `}${tags.join(', ')}`,
 		COMMAND_TAG_RESET: 'Todas las etiquetas se han eliminado con éxito de este servidor.',
 
 		/**
@@ -3897,21 +3897,21 @@ export default class extends Language {
 		 */
 
 		COMMAND_AVATAR_NONE: 'El usuario no tiene ninguna foto de perfil puesta.',
-		COMMAND_COLOR: (hex, rgb, hsl) => [`HEX: **${hex}**`, `RGB: **${rgb}**`, `HSL: **${hsl}**`].join('\n'),
-		COMMAND_EMOJI_CUSTOM: (emoji, id) =>
+		COMMAND_COLOR: ({ hex, rgb, hsl }) => [`HEX: **${hex}**`, `RGB: **${rgb}**`, `HSL: **${hsl}**`].join('\n'),
+		COMMAND_EMOJI_CUSTOM: ({ emoji, id }) =>
 			[
 				`→ ${inlineCodeblock('Emoji ::')} **${emoji}**`,
 				`→ ${inlineCodeblock('Type  ::')} **Personalizado**`,
 				`→ ${inlineCodeblock('ID    ::')} **${id}**`
 			].join('\n'),
-		COMMAND_EMOJI_TWEMOJI: (emoji, id) =>
+		COMMAND_EMOJI_TWEMOJI: ({ emoji, id }) =>
 			[
 				`→ ${inlineCodeblock('Emoji ::')} \`${emoji}\``,
 				`→ ${inlineCodeblock('Type  ::')} **Twemoji**`,
 				`→ ${inlineCodeblock('ID    ::')} **${id}**`
 			].join('\n'),
 		COMMAND_EMOJI_INVALID: `El argumento que escribiste no es un emoji válido.`,
-		COMMAND_EMOJI_TOO_LARGE: (emoji) =>
+		COMMAND_EMOJI_TOO_LARGE: ({ emoji }) =>
 			`'${emoji}' es tan pesado que los hámsters no pudieron con su peso. ¿Quizá prueba con un emoji más pequeño?ç`,
 		COMMAND_COUNTRY_DESCRIPTION: 'Shows information about a country.',
 		COMMAND_COUNTRY_EXTENDED: {
@@ -4065,47 +4065,47 @@ export default class extends Language {
 			UNKNOWN_USER_SCORE: 'Sin puntaje de usuario',
 			NO_GENRES: 'Ninguno en TheMovieDB'
 		},
-		COMMAND_PRICE_CURRENCY: (fromCurrency, fromAmount, worths) =>
+		COMMAND_PRICE_CURRENCY: ({ fromCurrency, fromAmount, worths }) =>
 			`**${fromAmount}** ${fromCurrency.toUpperCase()} vale ${this.list(worths, 'y')}.`,
 		COMMAND_PRICE_CURRENCY_NOT_FOUND: '¡Ha habido un error! Por favor, revise de nuevo la ortografía y que especificaste una moneda válida.',
 		COMMAND_QUOTE_MESSAGE: 'Esto es muy raro, pero dicho mensaje no tiene ni contenido ni imagen.',
 		COMMAND_ROLES_LIST_EMPTY: '¡Este servidor no tiene ningún rol público!',
-		COMMAND_ROLES_ABORT: (prefix) =>
+		COMMAND_ROLES_ABORT: ({ prefix }) =>
 			`He buscado en todos los rincones pero no he encontrado lo que buscabas. ¡Por favor escribe \`${prefix}roles\` para recibir la lista completa!`,
 		COMMAND_ROLES_LIST_TITLE: 'Lista de roles públicos',
-		COMMAND_ROLES_ADDED: (roles) => `Los siguientes roles han sido añadidos a tu perfil: \`${roles}\``,
-		COMMAND_ROLES_REMOVED: (roles) => `Los siguientes roles han sido removidos de tu perfil: \`${roles}\``,
-		COMMAND_ROLES_NOT_PUBLIC: (roles) => `Los siguientes roles no son públicos: \`${roles}\``,
-		COMMAND_ROLES_NOT_MANAGEABLE: (roles) => `Los siguientes roles no se pudieron entregar debido a la posición jerárquica: \`${roles}\``,
+		COMMAND_ROLES_ADDED: ({ roles }) => `Los siguientes roles han sido añadidos a tu perfil: \`${roles}\``,
+		COMMAND_ROLES_REMOVED: ({ roles }) => `Los siguientes roles han sido removidos de tu perfil: \`${roles}\``,
+		COMMAND_ROLES_NOT_PUBLIC: ({ roles }) => `Los siguientes roles no son públicos: \`${roles}\``,
+		COMMAND_ROLES_NOT_MANAGEABLE: ({ roles }) => `Los siguientes roles no se pudieron entregar debido a la posición jerárquica: \`${roles}\``,
 		COMMAND_ROLES_AUDITLOG: "Autorización: Administración de Roles Públicos | Comando 'Roles'.",
 		COMMAND_DUCKDUCKGO_NOTFOUND: 'Lo siento, pero la API de DuckDuckGo ha devuelto una respuesta en blanco. Prueba de nuevo con otras palabras.',
 		COMMAND_DUCKDUCKGO_LOOKALSO: 'Temas Relacionados:',
 
 		COMMAND_URBAN_NOTFOUND: 'Lo siento, la palabra que buscabas no parece estar definida en UrbanDictionary. ¿Prueba con otra palabra?',
 		COMMAND_URBAN_INDEX_NOTFOUND: 'Quizás quieras probar con un número de página más pequeño.',
-		SYSTEM_TEXT_TRUNCATED: (definition, url) => `${definition}... [continúa leyendo](${url})`,
+		SYSTEM_TEXT_TRUNCATED: ({ definition, url }) => `${definition}... [continúa leyendo](${url})`,
 		COMMAND_WHOIS_MEMBER_TITLES: {
 			JOINED: 'Fecha Ingreso',
 			CREATED_AT: 'Fecha Creación'
 		},
-		COMMAND_WHOIS_MEMBER_FIELDS: (member) => ({
+		COMMAND_WHOIS_MEMBER_FIELDS: ({ member }) => ({
 			JOINED: member.joinedTimestamp
 				? `Hace ${timestamp.displayUTC(member.joinedTimestamp)}\n${duration(Date.now() - member.joinedTimestamp, 2)}`
 				: 'Desconocido',
 			CREATED_AT: `${timestamp.displayUTC(member.user.createdAt)}\nHace ${duration(Date.now() - member.user.createdTimestamp, 2)}`,
 			FOOTER: `ID: ${member.id}`
 		}),
-		COMMAND_WHOIS_MEMBER_ROLES: (amount) => (amount === 1 ? 'Rol [1]' : `Roles [${amount}]`),
+		COMMAND_WHOIS_MEMBER_ROLES: ({ amount }) => (amount === 1 ? 'Rol [1]' : `Roles [${amount}]`),
 		COMMAND_WHOIS_MEMBER_PERMISSIONS: 'Permisos Clave',
 		COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL: 'Todos los Permisos',
 		COMMAND_WHOIS_USER_TITLES: {
 			CREATED_AT: 'Fecha Creación'
 		},
-		COMMAND_WHOIS_USER_FIELDS: (user) => ({
+		COMMAND_WHOIS_USER_FIELDS: ({ user }) => ({
 			CREATED_AT: `${timestamp.displayUTC(user.createdAt)}\nHace ${duration(Date.now() - user.createdTimestamp, 2)}`,
 			FOOTER: `ID: ${user.id}`
 		}),
-		COMMAND_FOLLOWAGE: (user, channel, time) => `${user} ha estado siguiendo ${channel} durante ${duration(time, 2)}.`,
+		COMMAND_FOLLOWAGE: ({ user, channel, time }) => `${user} ha estado siguiendo ${channel} durante ${duration(time, 2)}.`,
 		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
 		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',
 		COMMAND_TWITCH_NO_ENTRIES: 'There are no entries, are you sure you wrote the user name correctly?',
@@ -4115,8 +4115,8 @@ export default class extends Language {
 			CLICK_TO_VISIT: "Click to go to streamer's channel",
 			PARTNER: 'Partner'
 		},
-		COMMAND_TWITCH_MATURITY: (mature: boolean) => (mature ? 'This is a mature channel.' : 'This channel is safe for everyone.'),
-		COMMAND_TWITCH_PARTNERSHIP: (affiliateStatus) =>
+		COMMAND_TWITCH_MATURITY: ({ mature }) => (mature ? 'This is a mature channel.' : 'This channel is safe for everyone.'),
+		COMMAND_TWITCH_PARTNERSHIP: ({ affiliateStatus }) =>
 			affiliateStatus === false ? 'This channel is not part of the Twitch affiliate program.' : affiliateStatus,
 		COMMAND_TWITCH_AFFILIATE_STATUS: {
 			AFFILIATED: 'This is an affiliated channel.',
@@ -4131,21 +4131,21 @@ export default class extends Language {
 		COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS: `${REDCROSS} Eh, esperaba o "online" o "offline", pero no pude entender lo que me dijiste.`,
 		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT: `${REDCROSS} Mhmm, me pregunto qué quieres que mande cuando el usuario se conecta o algo, ¿puedes darme una pista?`,
 		COMMAND_TWITCHSUBSCRIPTION_ADD_DUPLICATED: `${REDCROSS} Ya estás subscrito/a a este canal para el canal de texto y estado que especificaste.`,
-		COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS: (name, channel, status) =>
+		COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS: ({ name, channel, status }) =>
 			`${GREENTICK} ¡Oído cocina! Cuando ${name} se ${
 				status === NotificationsStreamsTwitchEventStatus.Offline ? 'desconecte' : 'conecte'
 			}, mandaré un mensaje nuevo en el canal ${channel}.`,
 		COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} Perdona, no puedes desubscribirte de un canal en el cual no estás subscrito/a. Por favor, subscríbete para poder desubscribirte.`,
 		COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS: `${REDCROSS} Perdona, ya estás subscrito/a a este usuario, pero sus subscripciones no son publicadas en el canal de texto que especificaste.`,
-		COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS: (name, channel, status) =>
+		COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS: ({ name, channel, status }) =>
 			`${GREENTICK} ¡Hecho! No mandaré más mensajes en el canal ${channel} cuando ${name} se ${
 				status === NotificationsStreamsTwitchEventStatus.Offline ? 'desconecte' : 'conecte'
 			}.`,
 		COMMAND_TWITCHSUBSCRIPTION_RESET_EMPTY: `${REDCROSS} You were not subscribed to any streamer, mission abort!`,
-		COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS: (entries) =>
+		COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS: ({ entries }) =>
 			`${GREENTICK} Success! ${entries} subscription${entries === 1 ? '' : 's'} have been removed from this server.`,
 		COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} You were not subscribed to this streamer, are you sure you got the right one?`,
-		COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS: (name, entries) =>
+		COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS: ({ name, entries }) =>
 			`${GREENTICK} Success! Removed ${entries} subscription${entries === 1 ? '' : 's'} from the streamer ${name}.`,
 		COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} You wanted to see all subscriptions from this streamer, but there are none!`,
 		COMMAND_TWITCHSUBSCRIPTION_SHOW_STATUS: ['Online', 'Offline'],
@@ -4169,30 +4169,30 @@ export default class extends Language {
 		 * WEEB COMMANDS
 		 */
 
-		COMMAND_WBANG: (user) => `Ey ${user}... ¡bang!`,
+		COMMAND_WBANG: ({ user }) => `Ey ${user}... ¡bang!`,
 		COMMAND_WBANGHEAD: '¡Golpeo de cabeza en progreso!',
-		COMMAND_WBITE: (user) => `¡Mordiendo ${user}!`,
+		COMMAND_WBITE: ({ user }) => `¡Mordiendo ${user}!`,
 		COMMAND_WBLUSH: '¡Le/a ruborizaste! 😊',
-		COMMAND_WCRY: (user) => `Querido ${user}, ¿le/a hiciste llorar? 💔`,
-		COMMAND_WCUDDLE: (user) => `Ahí va un abracito para tí, ${user} 💞`,
+		COMMAND_WCRY: ({ user }) => `Querido ${user}, ¿le/a hiciste llorar? 💔`,
+		COMMAND_WCUDDLE: ({ user }) => `Ahí va un abracito para tí, ${user} 💞`,
 		COMMAND_WDANCE: '¡Olé! 💃',
-		COMMAND_WGREET: (user) => `¡Buenas ${user}!`,
-		COMMAND_WHUG: (user) => `¡Un abrazo! ${user} ❤`,
-		COMMAND_WKISS: (user) => `¡Un besito! ${user} 💜`,
+		COMMAND_WGREET: ({ user }) => `¡Buenas ${user}!`,
+		COMMAND_WHUG: ({ user }) => `¡Un abrazo! ${user} ❤`,
+		COMMAND_WKISS: ({ user }) => `¡Un besito! ${user} 💜`,
 		COMMAND_WLEWD: '¡Demasiado lujurioso!',
-		COMMAND_WLICK: (user) => `Lamiendo ${user} 👅`,
+		COMMAND_WLICK: ({ user }) => `Lamiendo ${user} 👅`,
 		COMMAND_WNOM: 'Nom, nom, nom! 😊',
 		COMMAND_WNEKO: 'Miau! 🐱',
-		COMMAND_WPAT: (user) => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
+		COMMAND_WPAT: ({ user }) => `\\*Da palmaditas en la cabeza de ${user}\\* ❤`,
 		COMMAND_WPOUT: '¿Oh?',
-		COMMAND_WPUNCH: (user) => `¡Dando un puñetazo a ${user}!`,
-		COMMAND_WSLAP: (user) => `¡Abofeteando ${user}!`,
+		COMMAND_WPUNCH: ({ user }) => `¡Dando un puñetazo a ${user}!`,
+		COMMAND_WSLAP: ({ user }) => `¡Abofeteando ${user}!`,
 		COMMAND_WSLEEPY: 'Durmiéndose...',
 		COMMAND_WSMILE: '¡Mostrando una risa radiante!',
 		COMMAND_WSMUG: '\\*Sonríe con superioridad\\*',
-		COMMAND_WSTARE: (user) => `Querido ${user}... hay alguien observándote 👀`,
+		COMMAND_WSTARE: ({ user }) => `Querido ${user}... hay alguien observándote 👀`,
 		COMMAND_WTHUMBSUP: '¡Tienes su pulgar hacia arriba!',
-		COMMAND_WTICKLE: (user) => `Cosquillitas para tí, ${user}!`,
+		COMMAND_WTICKLE: ({ user }) => `Cosquillitas para tí, ${user}!`,
 
 		/**
 		 * #################################
@@ -4209,51 +4209,51 @@ export default class extends Language {
 		CONST_MONITOR_MESSAGEFILTER: 'Too Many Message Duplicates',
 		CONST_MONITOR_NEWLINEFILTER: 'Too Many Lines',
 		CONST_MONITOR_REACTIONFILTER: 'Reacción Eliminada',
-		MODERATION_MONITOR_ATTACHMENTS: (amount, maximum) =>
+		MODERATION_MONITOR_ATTACHMENTS: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered attachment filter, no threshold.'
 				: `[Auto-Moderation] Triggered attachment filter, reached ${amount} out of ${maximum} infractions.`,
-		MODERATION_MONITOR_CAPITALS: (amount, maximum) =>
+		MODERATION_MONITOR_CAPITALS: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered capital filter, no threshold.'
 				: `[Auto-Moderation] Triggered capital filter, reached ${amount} out of ${maximum} infractions.`,
-		MODERATION_MONITOR_INVITES: (amount, maximum) =>
+		MODERATION_MONITOR_INVITES: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered invite filter, no threshold.'
 				: `[Auto-Moderation] Triggered invite filter, reached ${amount} out of ${maximum} infractions.`,
-		MODERATION_MONITOR_LINKS: (amount, maximum) =>
+		MODERATION_MONITOR_LINKS: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered link filter, no threshold.'
 				: `[Auto-Moderation] Triggered link filter, reached ${amount} out of ${maximum} infractions.`,
-		MODERATION_MONITOR_MESSAGES: (amount, maximum) =>
+		MODERATION_MONITOR_MESSAGES: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered duplicated message filter, no threshold.'
 				: `[Auto-Moderation] Triggered duplicated message filter, reached ${amount} out of ${maximum} infractions.`,
-		MODERATION_MONITOR_NEWLINES: (amount, maximum) =>
+		MODERATION_MONITOR_NEWLINES: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered newline filter, no threshold.'
 				: `[Auto-Moderation] Triggered newline filter, reached ${amount} out of ${maximum} infractions.`,
-		MODERATION_MONITOR_WORDS: (amount, maximum) =>
+		MODERATION_MONITOR_WORDS: ({ amount, maximum }) =>
 			maximum === 0
 				? '[Auto-Moderation] Triggered word filter, no threshold.'
 				: `[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
-		MONITOR_INVITE_FILTER_ALERT: (user) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
-		MONITOR_INVITE_FILTER_LOG: (links) => `**Enlace${links.length === 1 ? '' : 's'}**: ${this.list(links, 'y')}`,
-		MONITOR_NOLINK: (user) => `${REDCROSS} Perdona ${user}, los enlaces no están permitidos en este servidor.`,
-		MONITOR_WORDFILTER_DM: (filtered) =>
+		MONITOR_INVITE_FILTER_ALERT: ({ user }) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
+		MONITOR_INVITE_FILTER_LOG: ({ links }) => `**Enlace${links.length === 1 ? '' : 's'}**: ${this.list(links, 'y')}`,
+		MONITOR_NOLINK: ({ user }) => `${REDCROSS} Perdona ${user}, los enlaces no están permitidos en este servidor.`,
+		MONITOR_WORDFILTER_DM: ({ filtered }) =>
 			`¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
-		MONITOR_CAPSFILTER_DM: (message) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
-		MONITOR_WORDFILTER: (user) => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
-		MONITOR_CAPSFILTER: (user) => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
-		MONITOR_MESSAGEFILTER: (user) => `${REDCROSS} Woah woah woah, please stop re-posting so much ${user}!`,
-		MONITOR_NEWLINEFILTER: (user) => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
-		MONITOR_REACTIONSFILTER: (user) => `${REDCROSS} Hey ${user}, please do not add that reaction!`,
-		MONITOR_NMS_MESSAGE: (user) =>
+		MONITOR_CAPSFILTER_DM: ({ message }) => `Speak lower! I know you need to express your thoughts. There is the message I deleted:\n${message}`,
+		MONITOR_WORDFILTER: ({ user }) => `${REDCROSS} Perdona, querido/a ${user}, pero has escrito algo que no está permitido en este servidor.`,
+		MONITOR_CAPSFILTER: ({ user }) => `${REDCROSS} ¡EEEEEEH ${user}! ¡POR FAVOR NO GRITE EN ESTE SITIO! ¡HAS SUPERADO EL LÍMITE DE MAYÚSCULAS!`,
+		MONITOR_MESSAGEFILTER: ({ user }) => `${REDCROSS} Woah woah woah, please stop re-posting so much ${user}!`,
+		MONITOR_NEWLINEFILTER: ({ user }) => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
+		MONITOR_REACTIONSFILTER: ({ user }) => `${REDCROSS} Hey ${user}, please do not add that reaction!`,
+		MONITOR_NMS_MESSAGE: ({ user }) =>
 			[
 				`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
 				'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
 			].join('\n'),
-		MONITOR_NMS_MODLOG: (threshold) => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
+		MONITOR_NMS_MODLOG: ({ threshold }) => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
 		MONITOR_NMS_ALERT:
 			'Ten cuidado con mencionar otra vez más, estás a punto de ser expulsado por exceder el límite de spam de menciones de este servidor.',
 		MONITOR_SOCIAL_ACHIEVEMENT: '¡Felicidades %MEMBER! ¡Has logrado el rol %ROLE%!',
@@ -4264,7 +4264,7 @@ export default class extends Language {
 		 * #################################
 		 */
 
-		INHIBITOR_SPAM: (channel) =>
+		INHIBITOR_SPAM: ({ channel }) =>
 			`¿Podemos movernos al canal ${channel}, por favor? Este comando puede ser muy molesto y arruinar las conversaciones de otras personas.`,
 
 		/**
@@ -4634,12 +4634,12 @@ export default class extends Language {
 		SERIALIZER_COMMAND_AUTO_DELETE_INVALID: 'Invalid command auto-delete data.',
 		SERIALIZER_CUSTOM_COMMAND_INVALID: 'Invalid custom command data.',
 		SERIALIZER_DISABLED_COMMAND_CHANNEL_INVALID: 'Invalid disabled command channel data.',
-		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: (command) => `You have set \`${command}\` twice, either allow it, or deny it.`,
-		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: (command) => `The command \`${command}\` does not exist or is invalid.`,
+		SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND: ({ command }) => `You have set \`${command}\` twice, either allow it, or deny it.`,
+		SERIALIZER_PERMISSION_NODE_INVALID_COMMAND: ({ command }) => `The command \`${command}\` does not exist or is invalid.`,
 		SERIALIZER_PERMISSION_NODE_INVALID_TARGET: 'No data could be found from the ID.',
 		SERIALIZER_PERMISSION_NODE_INVALID: 'Invalid data.',
 		SERIALIZER_PERMISSION_NODE_SECURITY_EVERYONE_ALLOWS: 'For security, the everyone role cannot have allows.',
-		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: (command) =>
+		SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED: ({ command }) =>
 			`For security and for me to work properly, you cannot deny the usage for the command \`${command}\`.`,
 		SERIALIZER_PERMISSION_NODE_SECURITY_OWNER: 'You cannot set permission overrides on the server owner.',
 		SERIALIZER_REACTION_ROLE_INVALID: 'Invalid reaction role data.',
@@ -4656,7 +4656,7 @@ export default class extends Language {
 		 * #################################
 		 */
 		NOTIFICATIONS_TWITCH_NO_GAME_NAME: '*Nombre del juego no establecido*',
-		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName, gameName) =>
+		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: ({ userName, gameName }) =>
 			`${userName} ya está en vivo${gameName ? ` - ¡transmitiendo ${gameName}!` : '!'}`,
 		NOTIFICATION_TWITCH_EMBED_FOOTER: 'Skyra Twitch Notificaciones',
 
@@ -4666,13 +4666,13 @@ export default class extends Language {
 		 * #################################
 		 */
 
-		SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION: (name) =>
+		SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION: ({ name }) =>
 			`${REDCROSS} Action must be any of the following: \`enable\`, \`disable\`, \`action\`, \`punish\`, \`punish-duration\`, \`threshold-maximum\`, \`threshold-duration\`, or \`show\`. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: (name) =>
+		SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS: ({ name }) =>
 			`${REDCROSS} The specified action requires an extra argument to be passed. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: (name) =>
+		SELF_MODERATION_COMMAND_INVALID_SOFTACTION: ({ name }) =>
 			`${REDCROSS} Value must be any of the following: \`alert\`, \`log\`, or \`delete\`. Check \`Skyra, help ${name}\` for more information.`,
-		SELF_MODERATION_COMMAND_INVALID_HARDACTION: (name) =>
+		SELF_MODERATION_COMMAND_INVALID_HARDACTION: ({ name }) =>
 			`${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
 		SELF_MODERATION_COMMAND_ENABLED: `${GREENTICK} Successfully enabled sub-system.`,
 		SELF_MODERATION_COMMAND_DISABLED: `${GREENTICK} Successfully disabled sub-system.`,
@@ -4691,7 +4691,7 @@ export default class extends Language {
 			value
 				? `${GREENTICK} Successfully set the threshold duration to: ${duration(value)}`
 				: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
-		SELF_MODERATION_COMMAND_SHOW: (kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration) =>
+		SELF_MODERATION_COMMAND_SHOW: ({ kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration }) =>
 			[
 				`Enabled      : ${kEnabled}`,
 				'Action',
@@ -4716,37 +4716,37 @@ export default class extends Language {
 		SELF_MODERATION_HARD_ACTION_NONE: 'None',
 		SELF_MODERATION_ENABLED: 'Yes',
 		SELF_MODERATION_DISABLED: 'No',
-		SELF_MODERATION_MAXIMUM_TOO_SHORT: (minimum, value) => `${REDCROSS} The value (${value}) was too short, expected at least ${minimum}.`,
-		SELF_MODERATION_MAXIMUM_TOO_LONG: (maximum, value) => `${REDCROSS} The value (${value}) was too long, expected maximum ${maximum}.`,
-		SELF_MODERATION_DURATION_TOO_SHORT: (minimum, value) =>
+		SELF_MODERATION_MAXIMUM_TOO_SHORT: ({ minimum, value }) => `${REDCROSS} The value (${value}) was too short, expected at least ${minimum}.`,
+		SELF_MODERATION_MAXIMUM_TOO_LONG: ({ maximum, value }) => `${REDCROSS} The value (${value}) was too long, expected maximum ${maximum}.`,
+		SELF_MODERATION_DURATION_TOO_SHORT: ({ minimum, value }) =>
 			`${REDCROSS} The value (${duration(value)}) was too short, expected at least ${duration(minimum)}.`,
-		SELF_MODERATION_DURATION_TOO_LONG: (maximum, value) =>
+		SELF_MODERATION_DURATION_TOO_LONG: ({ maximum, value }) =>
 			`${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
 
-		ACTION_MUTE_REASON: (reason) => (reason === null ? '[Action] Applied Mute.' : `[Action] Applied Mute | Reason: ${reason}`),
-		ACTION_UNMUTE_REASON: (reason) => (reason === null ? '[Action] Revoked Mute.' : `[Action] Revoked Mute | Reason: ${reason}`),
-		ACTION_KICK_REASON: (reason) => (reason === null ? '[Action] Applied Kick.' : `[Action] Applied Kick | Reason: ${reason}`),
-		ACTION_SOFTBAN_REASON: (reason) => (reason === null ? '[Action] Applying Softban.' : `[Action] Applying Softban | Reason: ${reason}`),
-		ACTION_UNSOFTBAN_REASON: (reason) => (reason === null ? '[Action] Applied Softban.' : `[Action] Applied Softban | Reason: ${reason}`),
-		ACTION_BAN_REASON: (reason) => (reason === null ? '[Action] Applied Ban' : `[Action] Applied Ban | Reason: ${reason}`),
-		ACTION_UNBAN_REASON: (reason) => (reason === null ? '[Action] Applied Unban.' : `[Action] Applied Unban | Reason: ${reason}`),
-		ACTION_VMUTE_REASON: (reason) => (reason === null ? '[Action] Applied Voice Mute.' : `[Action] Applied Voice Mute | Reason: ${reason}`),
-		ACTION_UNVMUTE_REASON: (reason) => (reason === null ? '[Action] Revoked Voice Mute.' : `[Action] Revoked Voice Mute | Reason: ${reason}`),
-		ACTION_VKICK_REASON: (reason) => (reason === null ? '[Action] Applied Voice Kick.' : `[Action] Applied Voice Kick | Reason: ${reason}`),
-		ACTION_RESTRICTED_REACT_REASON: (reason) =>
+		ACTION_MUTE_REASON: ({ reason }) => (reason === null ? '[Action] Applied Mute.' : `[Action] Applied Mute | Reason: ${reason}`),
+		ACTION_UNMUTE_REASON: ({ reason }) => (reason === null ? '[Action] Revoked Mute.' : `[Action] Revoked Mute | Reason: ${reason}`),
+		ACTION_KICK_REASON: ({ reason }) => (reason === null ? '[Action] Applied Kick.' : `[Action] Applied Kick | Reason: ${reason}`),
+		ACTION_SOFTBAN_REASON: ({ reason }) => (reason === null ? '[Action] Applying Softban.' : `[Action] Applying Softban | Reason: ${reason}`),
+		ACTION_UNSOFTBAN_REASON: ({ reason }) => (reason === null ? '[Action] Applied Softban.' : `[Action] Applied Softban | Reason: ${reason}`),
+		ACTION_BAN_REASON: ({ reason }) => (reason === null ? '[Action] Applied Ban' : `[Action] Applied Ban | Reason: ${reason}`),
+		ACTION_UNBAN_REASON: ({ reason }) => (reason === null ? '[Action] Applied Unban.' : `[Action] Applied Unban | Reason: ${reason}`),
+		ACTION_VMUTE_REASON: ({ reason }) => (reason === null ? '[Action] Applied Voice Mute.' : `[Action] Applied Voice Mute | Reason: ${reason}`),
+		ACTION_UNVMUTE_REASON: ({ reason }) => (reason === null ? '[Action] Revoked Voice Mute.' : `[Action] Revoked Voice Mute | Reason: ${reason}`),
+		ACTION_VKICK_REASON: ({ reason }) => (reason === null ? '[Action] Applied Voice Kick.' : `[Action] Applied Voice Kick | Reason: ${reason}`),
+		ACTION_RESTRICTED_REACT_REASON: ({ reason }) =>
 			reason === null ? '[Action] Applied Reaction Restriction.' : `[Action] Applied Reaction Restriction | Reason: ${reason}`,
-		ACTION_RESTRICTED_EMBED_REASON: (reason) =>
+		ACTION_RESTRICTED_EMBED_REASON: ({ reason }) =>
 			reason === null ? '[Action] Applied Embed Restriction.' : `[Action] Applied Embed Restriction | Reason: ${reason}`,
-		ACTION_RESTRICTED_ATTACHMENT_REASON: (reason) =>
+		ACTION_RESTRICTED_ATTACHMENT_REASON: ({ reason }) =>
 			reason === null ? '[Action] Applied Attachment Restriction.' : `[Action] Applied Attachment Restriction | Reason: ${reason}`,
-		ACTION_RESTRICTED_VOICE_REASON: (reason) =>
+		ACTION_RESTRICTED_VOICE_REASON: ({ reason }) =>
 			reason === null ? '[Action] Applied Voice Restriction.' : `[Action] Applied Voice Restriction | Reason: ${reason}`,
-		ACTION_SET_NICKNAME: (reason, nickname) =>
+		ACTION_SET_NICKNAME: ({ reason, nickname }) =>
 			reason === null
 				? `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`
 				: `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
-		ACTION_ADD_ROLE: (reason) => (reason === null ? '[Action] Added Role.' : `[Action] Added Role | Reason: ${reason}`),
-		ACTION_REMOVE_ROLE: (reason) => (reason === null ? '[Action] Removed Role.' : `[Action] Removed Role | Reason: ${reason}`),
+		ACTION_ADD_ROLE: ({ reason }) => (reason === null ? '[Action] Added Role.' : `[Action] Added Role | Reason: ${reason}`),
+		ACTION_REMOVE_ROLE: ({ reason }) => (reason === null ? '[Action] Removed Role.' : `[Action] Removed Role | Reason: ${reason}`),
 		ACTION_REQUIRED_MEMBER: 'The user does not exist or is not in this server.',
 		ACTION_SETUP_MUTE_EXISTS: '**Cancelando la creación del rol de silenciado**: Ya existe un rol de silenciado.',
 		ACTION_SETUP_RESTRICTION_EXISTS: '**Cancelando la creación del rol de restricción**: Ya existe un rol de restricción.',
@@ -4754,7 +4754,7 @@ export default class extends Language {
 		ACTION_SHARED_ROLE_SETUP_EXISTING: 'I could not find a configured role. Do you want to configure an existing one?',
 		ACTION_SHARED_ROLE_SETUP_EXISTING_NAME: 'Please give me the name of the role you want to use for further actions of this type.',
 		ACTION_SHARED_ROLE_SETUP_NEW: 'Do you want me to create a new role and configure it automatically?',
-		ACTION_SHARED_ROLE_SETUP: (role, channels, permissions) =>
+		ACTION_SHARED_ROLE_SETUP: ({ role, channels, permissions }) =>
 			`${LOADING} Can I modify ${channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
 				permissions.length === 1 ? 'permission' : 'permissions'
 			}: \`${permissions.join('`, `')}\`?`,
@@ -4802,52 +4802,52 @@ export default class extends Language {
 		SYSTEM_DISCORD_ABORTERROR: 'He tenido un pequeño error de red al mandar un mensaje a Discord, ¡por favor ejecuta el comando de nuevo!',
 		SYSTEM_MESSAGE_NOT_FOUND: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
 		SYSTEM_NOTENOUGH_PARAMETERS: 'Lo siento, pero no proporcionaste suficientes parámetros...',
-		SYSTEM_GUILD_MUTECREATE_APPLYING: (channels, role) => `Aplicando permisos en ${channels} para el rol ${role}...`,
-		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: (denied) => (denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : ''),
-		SYSTEM_GUILD_MUTECREATE_APPLIED: (accepted, exceptions, author, role) =>
+		SYSTEM_GUILD_MUTECREATE_APPLYING: ({ channels, role }) => `Aplicando permisos en ${channels} para el rol ${role}...`,
+		SYSTEM_GUILD_MUTECREATE_EXCEPTIONS: ({ denied }) => (denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : ''),
+		SYSTEM_GUILD_MUTECREATE_APPLIED: ({ accepted, exceptions, author, role }) =>
 			`Permisos aplicados para ${accepted} ${
 				accepted === 1 ? 'canal' : 'canales'
 			}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 		SYSTEM_QUERY_FAIL: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		SYSTEM_NO_RESULTS: 'No pude encontrar ningún resultado para esa consulta',
 		SYSTEM_CANNOT_ACCESS_CHANNEL: 'Lo siento, pero no tienes permiso para ver ese canal.',
-		SYSTEM_EXCEEDED_LENGTH_OUTPUT: (output, time, type) =>
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT: ({ output, time, type }) =>
 			`**Salida**:${output}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
-		SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE: (time, type) =>
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE: ({ time, type }) =>
 			`Enviado el resultado a la consola.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
-		SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: (time, type) =>
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE: ({ time, type }) =>
 			`Enviado el resultado como un archivo.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
-		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (url, time, type) =>
+		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: ({ url, time, type }) =>
 			`Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
-		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: (options) => `Elija una de las siguientes opciones: ${this.list(options, 'o')}`,
+		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: ({ output }) => `Elija una de las siguientes opciones: ${this.list(output, 'o')}`,
 		SYSTEM_EXTERNAL_SERVER_ERROR: 'El servicio externo que utilizamos no pudo procesar nuestro mensaje, por favor, inténtelo de nuevo más tarde.',
 
 		JUMPTO: 'Salta al Mensaje ►',
 
-		RESOLVER_INVALID_CHANNELNAME: (name) => `${name} debe ser una mención, nombre, o id válido de un canal.`,
-		RESOLVER_INVALID_ROLENAME: (name) => `${name} debe ser una mención, nombre, o id válido de un rol.`,
-		RESOLVER_INVALID_USERNAME: (name) => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
+		RESOLVER_INVALID_CHANNELNAME: ({ name }) => `${name} debe ser una mención, nombre, o id válido de un canal.`,
+		RESOLVER_INVALID_ROLENAME: ({ name }) => `${name} debe ser una mención, nombre, o id válido de un rol.`,
+		RESOLVER_INVALID_USERNAME: ({ name }) => `${name} debe ser una mención, nombre, o id válido de un usuario.`,
 		RESOLVER_CHANNEL_NOT_IN_GUILD: 'Lo siento, pero ese comando solo se puede ejecutar en un servidor.',
-		RESOLVER_CHANNEL_NOT_IN_GUILD_SUBCOMMAND: (command, subcommand) =>
+		RESOLVER_CHANNEL_NOT_IN_GUILD_SUBCOMMAND: ({ command, subcommand }) =>
 			`${REDCROSS} Lo siento, pero la subcommandos \`${subcommand}\` para el comando \`${command}\` solo se puede ejecutar en un servidor.`,
 		RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT: 'El usuario salió durante la selección de usuarios.',
 
-		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
+		LISTIFY_PAGE: ({ page, pageCount, results }) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} Lo siento, pero el caso de moderación ha expirado o no se puede temporizar.`,
-		MODERATION_LOG_EXPIRES_IN: (duration) => `\n❯ **Caduca en**: ${this.duration(duration)}`,
-		MODERATION_LOG_DESCRIPTION: ({ caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID, userName }) =>
+		MODERATION_LOG_EXPIRES_IN: ({ duration }) => `\n❯ **Caduca en**: ${this.duration(duration)}`,
+		MODERATION_LOG_DESCRIPTION: ({ data: { caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID, userName } }) =>
 			[
 				`❯ **Tipo**: ${type}`,
 				`❯ **Usuario:** ${userName}#${userDiscriminator} (${userID})`,
 				`❯ **Razón:** ${reason || `Por favor use \`${prefix}reason ${caseID} <razón>\` para establecer la razón.`}${formattedDuration}`
 			].join('\n'),
-		MODERATION_LOG_FOOTER: (caseID) => `Caso ${caseID}`,
+		MODERATION_LOG_FOOTER: ({ caseID }) => `Caso ${caseID}`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'Necesitas configurar un canal de moderación. Utiliza `Skyra, settings set channels.modlog <NombreDeCanal>`.',
-		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) =>
+		GUILD_SETTINGS_ROLES_RESTRICTED: ({ prefix, path }) =>
 			`${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,
 		GUILD_MUTE_NOT_FOUND:
 			'He fallado al buscar un caso de moderación que justifique el mute del usuario. O el usuario nunca ha sido muteado, o todos sus muteos están reclamados.',
@@ -4861,25 +4861,25 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD: 'Nuevo Usuario',
 		EVENTS_GUILDMEMBERADD_MUTE: 'Nuevo Usuario Muteado',
 		EVENTS_GUILDMEMBERADD_RAID: 'RAID Detectado',
-		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
+		EVENTS_GUILDMEMBERADD_DESCRIPTION: ({ mention, time }) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
 		EVENTS_GUILDMEMBERREMOVE: 'Usuario Salió',
 		EVENTS_GUILDMEMBERKICKED: 'Usuario Pateado',
 		EVENTS_GUILDMEMBERBANNED: 'Usuario Baneado',
 		EVENTS_GUILDMEMBERSOFTBANNED: 'Usuario Levemente Baneado',
-		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) =>
+		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: ({ mention, time }) =>
 			`${mention} | **Se Unió al Servidor**: ${time === -1 ? 'Desconocido' : `Hace ${duration(time, 2)}`}.`,
-		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Actualizado el apodo de **${previous}** a **${current}**`,
-		EVENTS_GUILDMEMBER_ADDED_NICKNAME: (_, current) => `Añadido un nuevo apodo **${current}**`,
-		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous) => `Eliminado el apodo **${previous}**`,
-		EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) =>
+		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: ({ previous, current }) => `Actualizado el apodo de **${previous}** a **${current}**`,
+		EVENTS_GUILDMEMBER_ADDED_NICKNAME: ({ current }) => `Añadido un nuevo apodo **${current}**`,
+		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: ({ previous }) => `Eliminado el apodo **${previous}**`,
+		EVENTS_GUILDMEMBER_UPDATE_ROLES: ({ removed, added }) =>
 			`${removed.length > 0 ? `${removed.length === 1 ? 'Eliminado el rol' : 'Eliminados los roles'}: ${removed.join(', ')}\n` : ''}${
 				added.length > 0 ? `${added.length === 1 ? 'Añadido el rol' : 'Añadidos los roles'}: ${added.join(', ')}` : ''
 			}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
-		EVENTS_NAME_DIFFERENCE: (previous, next) =>
+		EVENTS_NAME_DIFFERENCE: ({ previous, next }) =>
 			[`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`, `**Next**: ${next === null ? 'Unset' : `\`${next}\``}`].join('\n'),
-		EVENTS_ROLE_DIFFERENCE: (addedRoles, removedRoles) =>
+		EVENTS_ROLE_DIFFERENCE: ({ addedRoles, removedRoles }) =>
 			[
 				`**Added roles**: ${addedRoles.length ? addedRoles.join(', ') : 'None'}`,
 				`**Removed roles**: ${removedRoles.length ? removedRoles.join(', ') : 'None'}`
@@ -4888,32 +4888,32 @@ export default class extends Language {
 		EVENTS_MESSAGE_UPDATE: 'Mensaje Editado',
 		EVENTS_MESSAGE_DELETE: 'Mensaje Eliminado',
 		EVENTS_REACTION: 'Reacción Añadida',
-		EVENTS_COMMAND: (command) => `Comando Usado: ${command}`,
+		EVENTS_COMMAND: ({ command }) => `Comando Usado: ${command}`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Restablecido el valor para la clave `channels.default`',
 		SETTINGS_DELETE_ROLES_INITIAL: 'Restablecido el valor para la clave `roles.initial`',
 		SETTINGS_DELETE_ROLES_MUTE: 'Restablecido el valor para la clave `roles.muted`',
 
-		MODLOG_TIMED: (remaining) => `Este caso de moderación ya había sido temporizado. Expira en ${duration(remaining)}`,
+		MODLOG_TIMED: ({ remaining }) => `Este caso de moderación ya había sido temporizado. Expira en ${duration(remaining)}`,
 
 		GUILD_WARN_NOT_FOUND:
 			'Fallé al buscar el caso de moderación para su reclamación. O no existe, o no es una advertencia, o ya estaba reclamada.',
 		GUILD_MEMBER_NOT_VOICECHANNEL: 'No puedo tomar acción en un miembro que no está conectado a un canal de voz.',
 
-		PROMPTLIST_MULTIPLE_CHOICE: (list, amount) =>
+		PROMPTLIST_MULTIPLE_CHOICE: ({ list, amount }) =>
 			`He encontrado ${amount} ${
 				amount === 1 ? 'resultado' : 'resultados'
 			}. Por favor escriba un número entre 1 y ${amount}, o escriba **"CANCELAR"** para cancelar la solicitud.\n${list}`,
-		PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Valor inválido. Intento **${attempt}** de **${maxAttempts}**\n${list}`,
+		PROMPTLIST_ATTEMPT_FAILED: ({ list, attempt, maxAttempts }) => `Valor inválido. Intento **${attempt}** de **${maxAttempts}**\n${list}`,
 		PROMPTLIST_ABORTED: 'Cancelada la solicitud con éxito.',
 
-		FUZZYSEARCH_MATCHES: (matches, codeblock) =>
+		FUZZYSEARCH_MATCHES: ({ matches, codeblock }) =>
 			`¡Encontré múltiples resultados! **Por favor selecciona un número entre 0 y ${matches}**:\n${codeblock}\nEscribe **ABORT** para cancelar la solicitud.`,
 		FUZZYSEARCH_INVALID_NUMBER: 'Esperaba que me dieras un número de un dígito, pero recibí una patata.',
 		FUZZYSEARCH_INVALID_INDEX: 'Cancelando solicitud... El número no estaba dentro del rango.',
 
 		EVENTS_ERROR_WTF: '¡Vaya fallo más terrible! ¡Lo siento!',
-		EVENTS_ERROR_STRING: (mention, message) => `Querido ${mention}, ${message}`,
+		EVENTS_ERROR_STRING: ({ mention, message }) => `Querido ${mention}, ${message}`,
 
 		CONST_USERS: 'Usuarios',
 		UNKNOWN_CHANNEL: 'Canal desconocido',

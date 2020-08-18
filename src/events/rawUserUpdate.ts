@@ -34,7 +34,7 @@ export default class extends Event {
 					new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(`${next.username}#${next.discriminator} (${data.id})`, getDisplayAvatar(data.id, next))
-						.setDescription(guild.language.get('EVENTS_NAME_DIFFERENCE', previous.username, next.username))
+						.setDescription(guild.language.get('EVENTS_NAME_DIFFERENCE', { previous: previous.username, next: next.username }))
 						.setFooter(guild.language.get('EVENTS_NICKNAME_UPDATE'))
 						.setTimestamp()
 				);

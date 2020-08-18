@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_AUTOROLE_ADD', [role, points]);
+		return message.sendLocale('COMMAND_AUTOROLE_ADD', [{ role, points }]);
 	}
 
 	public async remove(message: KlasaMessage, [role]: [Role]) {
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_AUTOROLE_REMOVE', [role, deleteEntry.points]);
+		return message.sendLocale('COMMAND_AUTOROLE_REMOVE', [{ role, before: deleteEntry.points }]);
 	}
 
 	public async update(message: KlasaMessage, [role, points]: [Role, number]) {
@@ -101,6 +101,6 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [role, points, autoRole.points]);
+		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [{ role, points, before: autoRole.points }]);
 	}
 }

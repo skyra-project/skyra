@@ -47,7 +47,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_NOLINK', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_NOLINK', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {

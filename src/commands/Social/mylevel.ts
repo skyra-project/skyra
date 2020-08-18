@@ -24,11 +24,16 @@ export default class extends SkyraCommand {
 		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
 		const memberPoints = memberSettings?.points ?? 0;
 		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
-		const title = nextRole ? `\n${message.language.get('COMMAND_MYLEVEL_NEXT', nextRole.points - memberPoints, nextRole.points)}` : '';
+		const title = nextRole
+			? `\n${message.language.get('COMMAND_MYLEVEL_NEXT', {
+					remaining: nextRole.points - memberPoints,
+					next: nextRole.points
+			  })}`
+			: '';
 
 		return user.id === message.author.id
-			? message.sendLocale('COMMAND_MYLEVEL_SELF', [memberPoints, title])
-			: message.sendLocale('COMMAND_MYLEVEL', [memberPoints, title, user.username]);
+			? message.sendLocale('COMMAND_MYLEVEL_SELF', [{ points: memberPoints, next: title }])
+			: message.sendLocale('COMMAND_MYLEVEL', [{ points: memberPoints, next: title, user: user.username }]);
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

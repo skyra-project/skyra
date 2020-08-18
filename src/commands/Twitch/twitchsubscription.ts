@@ -149,7 +149,7 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS', [streamer.display_name, channel.name, status]);
+		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS', [{ name: streamer.display_name, channel: channel.name, status }]);
 	}
 
 	public async remove(message: KlasaMessage, [streamer, channel, status]: [Streamer, Channel, Status]) {
@@ -188,7 +188,7 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS', [streamer.display_name, channel.name, status]);
+		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS', [{ name: streamer.display_name, channel: channel.name, status }]);
 	}
 
 	public async reset(message: KlasaMessage, [streamer]: [Streamer?]) {
@@ -223,7 +223,7 @@ export default class extends SkyraCommand {
 				await em.save(toUpdate);
 			});
 
-			return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS', [subscriptionEntries]);
+			return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS', [{ entries: subscriptionEntries }]);
 		}
 
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
@@ -237,7 +237,7 @@ export default class extends SkyraCommand {
 		});
 
 		await this.removeSubscription(message.guild!, streamer);
-		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS', [streamer.display_name, entries]);
+		return message.sendLocale('COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS', [{ name: streamer.display_name, entries }]);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])

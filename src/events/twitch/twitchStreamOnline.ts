@@ -118,7 +118,7 @@ export default class extends Event {
 			.setThumbnail(data.thumbnail_url)
 			.setTitle(data.title)
 			.setURL(`https://twitch.tv/${data.user_name}`)
-			.setDescription(i18n.get('NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION', data.user_name, data.game_name))
+			.setDescription(i18n.get('NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION', { userName: data.user_name, gameName: data.game_name }))
 			.setFooter(i18n.get('NOTIFICATION_TWITCH_EMBED_FOOTER'))
 			.setTimestamp(data.started_at)
 			.setColor(this.client.twitch.BRANDING_COLOUR)

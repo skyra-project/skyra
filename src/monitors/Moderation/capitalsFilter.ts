@@ -47,12 +47,12 @@ export default class extends ModerationMonitor {
 	protected async onDelete(message: KlasaMessage, value: number) {
 		floatPromise(this, message.nuke());
 		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [codeBlock('md', cutText(message.content, 1900))]));
+			floatPromise(this, message.author.sendLocale('MONITOR_CAPSFILTER_DM', [{ message: codeBlock('md', cutText(message.content, 1900)) }]));
 		}
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_CAPSFILTER', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_CAPSFILTER', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {

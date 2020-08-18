@@ -33,7 +33,9 @@ export default class extends SkyraCommand {
 				.addField(titles.VIEWS, message.language.groupDigits(channel.view_count), true)
 				.addField(
 					titles.PARTNER,
-					message.language.get('COMMAND_TWITCH_PARTNERSHIP', this.parseAffiliateProgram(message, channel.broadcaster_type))
+					message.language.get('COMMAND_TWITCH_PARTNERSHIP', {
+						affiliateStatus: this.parseAffiliateProgram(message, channel.broadcaster_type)
+					})
 				)
 		);
 	}

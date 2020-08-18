@@ -11,10 +11,12 @@ export default class extends Event {
 		await message
 			.guild!.members.ban(message.author.id, { days: 0, reason: message.language.get('CONST_MONITOR_NMS') })
 			.catch((error) => this.client.emit(Events.ApiError, error));
-		await message.sendLocale('MONITOR_NMS_MESSAGE', [message.author]).catch((error) => this.client.emit(Events.ApiError, error));
+		await message.sendLocale('MONITOR_NMS_MESSAGE', [{ user: message.author }]).catch((error) => this.client.emit(Events.ApiError, error));
 		message.guild!.security.nms.delete(message.author.id);
 
-		const reason = message.language.get('MONITOR_NMS_MODLOG', message.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed));
+		const reason = message.language.get('MONITOR_NMS_MODLOG', {
+			threshold: message.guild!.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed)
+		});
 		try {
 			await message
 				.guild!.moderation.create({

@@ -36,16 +36,18 @@ export default class extends SkyraCommand {
 			const remaining = settings.cooldowns.daily.getTime() - now;
 
 			// If it's not under the grace period (1 hour), tell them the time
-			if (remaining > GRACE_PERIOD) return message.sendLocale('COMMAND_DAILY_TIME', [remaining]);
+			if (remaining > GRACE_PERIOD) return message.sendLocale('COMMAND_DAILY_TIME', [{ time: remaining }]);
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(message.language.get('COMMAND_DAILY_GRACE', remaining));
+			const accepted = await message.ask(message.language.get('COMMAND_DAILY_GRACE', { remaining }));
 			if (!accepted) return message.sendLocale('COMMAND_DAILY_GRACE_DENIED');
 
 			// The user accepted the grace period
 			return message.sendLocale('COMMAND_DAILY_GRACE_ACCEPTED', [
-				await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD),
-				remaining + DAILY_PERIOD
+				{
+					amount: await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD),
+					remaining: remaining + DAILY_PERIOD
+				}
 			]);
 		});
 	}

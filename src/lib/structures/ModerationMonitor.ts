@@ -88,7 +88,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
 				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 			})
 		);
@@ -99,7 +99,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string
 			})
 		);
 	}
@@ -109,7 +109,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
 				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 			})
 		);
@@ -121,7 +121,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+					reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string
 				},
 				1
 			)
@@ -134,7 +134,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+					reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
 					duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 				},
 				0

@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(await DbSet.fetchColor(message))
-			.setFooter(message.language.get('COMMAND_MARKOV_TIMER', time.toString()));
+			.setFooter(message.language.get('COMMAND_MARKOV_TIMER', { timer: time.toString() }));
 	}
 
 	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {

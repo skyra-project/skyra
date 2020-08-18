@@ -100,24 +100,24 @@ export abstract class SelfModerationCommand extends Command {
 		this.createCustomResolver('action', (arg, _possible, message) => {
 			if (typeof arg === 'undefined') return AKeys.Show;
 			const action = kActions.get(arg.toLowerCase());
-			if (typeof action === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION', this.name);
+			if (typeof action === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION', { name: this.name });
 			return action;
 		}).createCustomResolver('value', (arg, _possible, message, [type]: AKeys[]) => {
 			if (type === AKeys.Enable) return true;
 			if (type === AKeys.Disable) return false;
 			if (type === AKeys.Show) return null;
-			if (!arg) throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS', this.name);
+			if (!arg) throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS', { name: this.name });
 
 			if (type === AKeys.SoftAction) {
 				const softAction = kSoftActions.get(arg.toLowerCase());
-				if (typeof softAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_SOFTACTION', this.name);
+				if (typeof softAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_SOFTACTION', { name: this.name });
 				const previousSoftAction = message.guild!.settings.get(this.keySoftAction) as number;
 				return SelfModerationCommand.toggle(previousSoftAction, softAction);
 			}
 
 			if (type === AKeys.HardAction) {
 				const hardAction = kHardActions.get(arg.toLowerCase());
-				if (typeof hardAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_HARDACTION', this.name);
+				if (typeof hardAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_HARDACTION', { name: this.name });
 				return hardAction;
 			}
 
@@ -189,17 +189,16 @@ export abstract class SelfModerationCommand extends Command {
 		const [yes, no] = [i18n('SELF_MODERATION_ENABLED'), i18n('SELF_MODERATION_DISABLED')];
 		return message.sendCode(
 			'prolog',
-			i18n(
-				'SELF_MODERATION_COMMAND_SHOW',
-				enabled ? yes : no,
-				SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
-				SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
-				SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
-				i18n(SelfModerationCommand.displayHardAction(hardAction)),
+			i18n('SELF_MODERATION_COMMAND_SHOW', {
+				kEnabled: enabled ? yes : no,
+				kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
+				kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
+				kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
+				kHardAction: i18n(SelfModerationCommand.displayHardAction(hardAction)),
 				hardActionDuration,
 				thresholdMaximum,
 				thresholdDuration
-			)
+			})
 		);
 	}
 
@@ -293,8 +292,10 @@ export abstract class SelfModerationCommand extends Command {
 	private static parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = Number(input);
 		if (parsed < 0) throw message.language.get('RESOLVER_INVALID_INT', { name });
-		if (key.minimum !== null && parsed < key.minimum) throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_SHORT', key.minimum, parsed);
-		if (key.maximum !== null && parsed > key.maximum) throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_LONG', key.maximum, parsed);
+		if (key.minimum !== null && parsed < key.minimum)
+			throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_SHORT', { minimum: key.minimum, value: parsed });
+		if (key.maximum !== null && parsed > key.maximum)
+			throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_LONG', { maximum: key.maximum, value: parsed });
 		return parsed;
 	}
 
@@ -302,9 +303,9 @@ export abstract class SelfModerationCommand extends Command {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) throw message.language.get('RESOLVER_INVALID_DURATION', { name });
 		if (key.minimum !== null && parsed.offset < key.minimum)
-			throw message.language.get('SELF_MODERATION_DURATION_TOO_SHORT', key.minimum, parsed.offset);
+			throw message.language.get('SELF_MODERATION_DURATION_TOO_SHORT', { minimum: key.minimum, value: parsed.offset });
 		if (key.maximum !== null && parsed.offset > key.maximum)
-			throw message.language.get('SELF_MODERATION_DURATION_TOO_LONG', key.maximum, parsed.offset);
+			throw message.language.get('SELF_MODERATION_DURATION_TOO_LONG', { maximum: key.maximum, value: parsed.offset });
 		return parsed.offset;
 	}
 

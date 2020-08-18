@@ -49,7 +49,7 @@ export default class extends RichDisplayCommand {
 		if (!roles) throw message.language.get('COMMAND_ROLES_LIST_EMPTY');
 		if (!roles.length) {
 			const prefix = message.guild!.settings.get(GuildSettings.Prefix);
-			if (message.args.some((v) => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', prefix);
+			if (message.args.some((v) => v.length !== 0)) throw message.language.get('COMMAND_ROLES_ABORT', { prefix });
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member!.roles.keys());
@@ -114,10 +114,10 @@ export default class extends RichDisplayCommand {
 			await message.member!.roles.set([...memberRoles], message.language.get('COMMAND_ROLES_AUDITLOG'));
 
 		const output: string[] = [];
-		if (unlistedRoles.length) output.push(message.language.get('COMMAND_ROLES_NOT_PUBLIC', unlistedRoles.join('`, `')));
-		if (unmanageable.length) output.push(message.language.get('COMMAND_ROLES_NOT_MANAGEABLE', unmanageable.join('`, `')));
-		if (removedRoles.length) output.push(message.language.get('COMMAND_ROLES_REMOVED', removedRoles.join('`, `')));
-		if (addedRoles.length) output.push(message.language.get('COMMAND_ROLES_ADDED', addedRoles.join('`, `')));
+		if (unlistedRoles.length) output.push(message.language.get('COMMAND_ROLES_NOT_PUBLIC', { roles: unlistedRoles.join('`, `') }));
+		if (unmanageable.length) output.push(message.language.get('COMMAND_ROLES_NOT_MANAGEABLE', { roles: unmanageable.join('`, `') }));
+		if (removedRoles.length) output.push(message.language.get('COMMAND_ROLES_REMOVED', { roles: removedRoles.join('`, `') }));
+		if (addedRoles.length) output.push(message.language.get('COMMAND_ROLES_ADDED', { roles: addedRoles.join('`, `') }));
 		return message.sendMessage(output.join('\n'));
 	}
 

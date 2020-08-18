@@ -46,13 +46,13 @@ export default class extends SkyraCommand {
 
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		if (tags.some((command) => command.id === id)) throw message.language.get('COMMAND_TAG_EXISTS', id);
+		if (tags.some((command) => command.id === id)) throw message.language.get('COMMAND_TAG_EXISTS', { tag: id });
 		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayAction: 'add',
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_TAG_ADDED', [id, cutText(content, 1850)]);
+		return message.sendLocale('COMMAND_TAG_ADDED', [{ name: id, content: cutText(content, 1850) }]);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
@@ -63,13 +63,13 @@ export default class extends SkyraCommand {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 
 		const tag = tags.find((command) => command.id === id);
-		if (!tag) throw message.language.get('COMMAND_TAG_NOTEXISTS', id);
+		if (!tag) throw message.language.get('COMMAND_TAG_NOTEXISTS', { tag: id });
 		await message.guild!.settings.update(GuildSettings.CustomCommands, tag, {
 			arrayAction: 'remove',
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_TAG_REMOVED', [id]);
+		return message.sendLocale('COMMAND_TAG_REMOVED', [{ name: id }]);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
@@ -89,13 +89,13 @@ export default class extends SkyraCommand {
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		const index = tags.findIndex((command) => command.id === id);
-		if (index === -1) throw message.language.get('COMMAND_TAG_NOTEXISTS', id);
+		if (index === -1) throw message.language.get('COMMAND_TAG_NOTEXISTS', { tag: id });
 		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayIndex: index,
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_TAG_EDITED', [id, cutText(content, 1000)]);
+		return message.sendLocale('COMMAND_TAG_EDITED', [{ name: id, content: cutText(content, 1000) }]);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])

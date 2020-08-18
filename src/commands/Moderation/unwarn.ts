@@ -31,7 +31,14 @@ export default class extends ModerationCommand {
 
 		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
 			const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
-			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.caseID], unwarnLog.caseID, [`\`${user.tag}\``], originalReason]);
+			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [
+				{
+					cases: [unwarnLog.caseID],
+					range: unwarnLog.caseID,
+					users: [`\`${user.tag}\``],
+					reason: originalReason
+				}
+			]);
 		}
 
 		return null;

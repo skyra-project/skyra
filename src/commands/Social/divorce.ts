@@ -30,9 +30,12 @@ export default class extends SkyraCommand {
 			// Tell the user about the divorce
 			floatPromise(
 				this,
-				resolveOnErrorCodes(user.send(message.language.get('COMMAND_DIVORCE_DM', message.author.username)), APIErrors.CannotMessageUser)
+				resolveOnErrorCodes(
+					user.send(message.language.get('COMMAND_DIVORCE_DM', { user: message.author.username })),
+					APIErrors.CannotMessageUser
+				)
 			);
-			return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user.toString()]);
+			return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [{ user: user.toString() }]);
 		});
 	}
 }

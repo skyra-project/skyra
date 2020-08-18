@@ -90,18 +90,18 @@ export default class extends SkyraCommand {
 		switch (action) {
 			case 'a':
 			case 'accept':
-				messageContent = DMActions.ACCEPT(author, message.guild!.name);
-				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.ACCEPT(author), comment);
+				messageContent = DMActions.ACCEPT({ author, guild: message.guild!.name });
+				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.ACCEPT({ author }), comment);
 				break;
 			case 'c':
 			case 'consider':
-				messageContent = DMActions.CONSIDER(author, message.guild!.name);
-				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.CONSIDER(author), comment);
+				messageContent = DMActions.CONSIDER({ author, guild: message.guild!.name });
+				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.CONSIDER({ author }), comment);
 				break;
 			case 'd':
 			case 'deny':
-				messageContent = DMActions.DENY(author, message.guild!.name);
-				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.DENY(author), comment);
+				messageContent = DMActions.DENY({ author, guild: message.guild!.name });
+				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.DENY({ author }), comment);
 				break;
 		}
 

@@ -23,7 +23,11 @@ export default class extends SkyraCommand {
 
 	private async buildEmbed(message: KlasaMessage) {
 		const TITLES = message.language.get('COMMAND_STATS_TITLES');
-		const FIELDS = message.language.get('COMMAND_STATS_FIELDS', this.generalStatistics, this.uptimeStatistics, this.usageStatistics);
+		const FIELDS = message.language.get('COMMAND_STATS_FIELDS', {
+			stats: this.generalStatistics,
+			uptime: this.uptimeStatistics,
+			usage: this.usageStatistics
+		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.addField(TITLES.STATS, FIELDS.STATS)

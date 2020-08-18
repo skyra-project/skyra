@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [emoji]: [string]) {
 		if (REG_EMOJI.test(emoji)) {
 			const [, animated, emojiName, emojiID] = /^<(a)?:(\w{2,32}):(\d{17,21})>$/.exec(emoji)!;
-			return message.sendLocale('COMMAND_EMOJI_CUSTOM', [emojiName, emojiID], {
+			return message.sendLocale('COMMAND_EMOJI_CUSTOM', [{ emoji: emojiName, id: emojiID }], {
 				files: [{ attachment: `https://cdn.discordapp.com/emojis/${emojiID}.${animated ? 'gif' : 'png'}` }]
 			});
 		}
@@ -32,8 +32,8 @@ export default class extends SkyraCommand {
 			throw message.language.get('COMMAND_EMOJI_INVALID');
 		});
 
-		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.get('COMMAND_EMOJI_TOO_LARGE', emoji);
+		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.language.get('COMMAND_EMOJI_TOO_LARGE', { emoji });
 
-		return message.sendLocale('COMMAND_EMOJI_TWEMOJI', [emoji, r], { files: [{ attachment: buffer, name: `${r}.png` }] });
+		return message.sendLocale('COMMAND_EMOJI_TWEMOJI', [{ emoji, id: r }], { files: [{ attachment: buffer, name: `${r}.png` }] });
 	}
 }

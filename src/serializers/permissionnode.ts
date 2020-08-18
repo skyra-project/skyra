@@ -39,21 +39,21 @@ export default class extends Serializer {
 		// Check all commands
 		const commands = new Map<string, Command>();
 		for (const allowed of data.allow) {
-			if (commands.has(allowed)) throw language.get('SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND', allowed);
+			if (commands.has(allowed)) throw language.get('SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND', { command: allowed });
 
 			const command = this.client.commands.get(allowed);
-			if (!command) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', allowed);
-			if (command.permissionLevel >= 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', allowed);
+			if (!command) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', { command: allowed });
+			if (command.permissionLevel >= 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', { command: allowed });
 			commands.set(allowed, command);
 		}
 
 		for (const denied of data.deny) {
-			if (commands.has(denied)) throw language.get('SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND', denied);
+			if (commands.has(denied)) throw language.get('SERIALIZER_PERMISSION_NODE_DUPLICATED_COMMAND', { command: denied });
 
 			const command = this.client.commands.get(denied);
-			if (!command) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', denied);
-			if (command.permissionLevel >= 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', denied);
-			if (command.guarded) throw language.get('SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED', denied);
+			if (!command) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', { command: denied });
+			if (command.permissionLevel >= 9) throw language.get('SERIALIZER_PERMISSION_NODE_INVALID_COMMAND', { command: denied });
+			if (command.guarded) throw language.get('SERIALIZER_PERMISSION_NODE_SECURITY_GUARDED', { command: denied });
 			commands.set(denied, command);
 		}
 

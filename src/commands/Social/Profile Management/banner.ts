@@ -36,14 +36,15 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const author = await users.ensureProfile(message.author.id);
 		const banners = new Set(author.profile.banners);
-		if (banners.has(banner.id)) throw message.language.get('COMMAND_BANNER_BOUGHT', message.guild!.settings.get(GuildSettings.Prefix), banner.id);
+		if (banners.has(banner.id))
+			throw message.language.get('COMMAND_BANNER_BOUGHT', { prefix: message.guild!.settings.get(GuildSettings.Prefix), banner: banner.id });
 
-		if (author.money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', author.money, banner.price);
+		if (author.money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', { money: author.money, cost: banner.price });
 
 		const accepted = await this.prompt(message, banner);
 		if (!accepted) throw message.language.get('COMMAND_BANNER_PAYMENT_CANCELLED');
 
-		if (author.money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', author.money, banner.price);
+		if (author.money < banner.price) throw message.language.get('COMMAND_BANNER_MONEY', { money: author.money, cost: banner.price });
 
 		await getManager().transaction(async (em) => {
 			const existingbannerAuthor = await em.findOne(UserEntity, banner.author);
@@ -63,7 +64,7 @@ export default class extends SkyraCommand {
 			await em.save(author);
 		});
 
-		return message.sendLocale('COMMAND_BANNER_BUY', [banner.title]);
+		return message.sendLocale('COMMAND_BANNER_BUY', [{ banner: banner.title }]);
 	}
 
 	public async reset(message: KlasaMessage) {
@@ -71,7 +72,7 @@ export default class extends SkyraCommand {
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
 			if (!user.profile.banners.length)
-				throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
+				throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
 			if (user.profile.bannerProfile === '0001') throw message.language.get('COMMAND_BANNER_RESET_DEFAULT');
 
 			user.profile.bannerProfile = '0001';
@@ -86,14 +87,14 @@ export default class extends SkyraCommand {
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
 			if (!user.profile.banners.length)
-				throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', message.guild!.settings.get(GuildSettings.Prefix));
+				throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
 			if (!user.profile.banners.includes(banner.id)) throw message.language.get('COMMAND_BANNER_SET_NOT_BOUGHT');
 
 			user.profile.bannerProfile = banner.id;
 			return user.save();
 		});
 
-		return message.sendLocale('COMMAND_BANNER_SET', [banner.title]);
+		return message.sendLocale('COMMAND_BANNER_SET', [{ banner: banner.title }]);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -108,7 +109,7 @@ export default class extends SkyraCommand {
 			if (!arg) throw message.language.get('COMMAND_BANNER_MISSING', type);
 			const banner = this.banners.get(arg);
 			if (banner) return banner;
-			throw message.language.get('COMMAND_BANNER_NOTEXISTS', message.guild!.settings.get(GuildSettings.Prefix));
+			throw message.language.get('COMMAND_BANNER_NOTEXISTS', { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
 		});
 
 		const { banners } = await DbSet.connect();
@@ -144,7 +145,7 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const user = await users.ensureProfile(message.author.id);
 		const banners = new Set(user.profile.banners);
-		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', prefix);
+		if (!banners.size) throw message.language.get('COMMAND_BANNER_USERLIST_EMPTY', { prefix });
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 		for (const id of banners) {

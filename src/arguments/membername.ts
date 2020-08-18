@@ -7,7 +7,7 @@ const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<KeyedMemberTag> {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
+		if (!arg) throw message.language.get('RESOLVER_INVALID_USERNAME', { name: possible.name });
 		const resMember = await this.resolveMember(message, arg);
 		if (resMember) return resMember;
 
@@ -22,7 +22,7 @@ export default class extends Argument {
 			if (memberTag) return { ...memberTag, id };
 			throw message.language.get('RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT');
 		}
-		throw message.language.get('RESOLVER_INVALID_USERNAME', possible.name);
+		throw message.language.get('RESOLVER_INVALID_USERNAME', { name: possible.name });
 	}
 
 	public async resolveMember(message: KlasaMessage, query: string): Promise<KeyedMemberTag | null> {

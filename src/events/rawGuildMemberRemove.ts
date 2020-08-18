@@ -58,7 +58,10 @@ export default class extends Event {
 				.setColor(Colors.Red)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(
-					guild.language.get('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', `<@${data.user.id}>`, this.processJoinedTimestamp(memberTag))
+					guild.language.get('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', {
+						mention: `<@${data.user.id}>`,
+						time: this.processJoinedTimestamp(memberTag)
+					})
 				)
 				.setFooter(footer)
 				.setTimestamp()

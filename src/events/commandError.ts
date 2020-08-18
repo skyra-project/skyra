@@ -18,7 +18,7 @@ export default class extends Event {
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
 			try {
-				return await message.alert(message.language.get('EVENTS_ERROR_STRING', message.author.toString(), error));
+				return await message.alert(message.language.get('EVENTS_ERROR_STRING', { mention: message.author.toString(), message: error }));
 			} catch (err) {
 				return this.client.emit(Events.ApiError, err);
 			}

@@ -62,8 +62,8 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(message.language.get('LISTIFY_PAGE', index + 1, pageCount, listSize.toLocaleString()));
-		page.push(message.language.get('COMMAND_SCOREBOARD_POSITION', position));
+		page.push(message.language.get('LISTIFY_PAGE', { page: index + 1, pageCount, results: listSize.toLocaleString() }));
+		page.push(message.language.get('COMMAND_SCOREBOARD_POSITION', { position }));
 
 		return page;
 	}

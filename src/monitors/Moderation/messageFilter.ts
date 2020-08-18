@@ -45,7 +45,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_MESSAGEFILTER', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_MESSAGEFILTER', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {

@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setFooter(message.language.get('COMMAND_HISTORY_FOOTER', warnings, mutes, kicks, bans))
+				.setFooter(message.language.get('COMMAND_HISTORY_FOOTER', { warnings, mutes, kicks, bans }))
 		);
 	}
 
@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get('COMMAND_MODERATIONS_AMOUNT', entries.size))
+				.setTitle(message.language.get('COMMAND_MODERATIONS_AMOUNT', { amount: entries.size }))
 		);
 
 		// Fetch usernames

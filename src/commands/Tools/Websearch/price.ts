@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(message.language.get('COMMAND_PRICE_CURRENCY', fromCurrency, fromAmount, worths))
+			.setDescription(message.language.get('COMMAND_PRICE_CURRENCY', { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}
 }

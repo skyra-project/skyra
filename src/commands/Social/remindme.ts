@@ -113,10 +113,12 @@ export default class extends SkyraCommand {
 			}
 		});
 
-		return message.sendLocale('COMMAND_REMINDME_CREATE', [task.id.toString()]);
+		return message.sendLocale('COMMAND_REMINDME_CREATE', [{ id: task.id.toString() }]);
 	}
 
-	@requiresGuildContext((message: KlasaMessage) => message.sendLocale('RESOLVER_CHANNEL_NOT_IN_GUILD_SUBCOMMAND', [message.command!.name, 'list']))
+	@requiresGuildContext((message: KlasaMessage) =>
+		message.sendLocale('RESOLVER_CHANNEL_NOT_IN_GUILD_SUBCOMMAND', [{ command: message.command!.name, subcommand: 'list' }])
+	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
@@ -151,13 +153,13 @@ export default class extends SkyraCommand {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(task.data.content)
-				.setFooter(message.language.get('COMMAND_REMINDME_SHOW_FOOTER', task.id))
+				.setFooter(message.language.get('COMMAND_REMINDME_SHOW_FOOTER', { id: task.id }))
 				.setTimestamp(task.time)
 		);
 	}
 
 	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
 		await task.delete();
-		return message.sendLocale('COMMAND_REMINDME_DELETE', [task]);
+		return message.sendLocale('COMMAND_REMINDME_DELETE', [{ task }]);
 	}
 }

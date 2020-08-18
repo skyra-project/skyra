@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(this.client.twitch.BRANDING_COLOUR)
 				.setAuthor(
-					message.language.get('COMMAND_FOLLOWAGE', user.display_name, channel.display_name, followingFor),
+					message.language.get('COMMAND_FOLLOWAGE', { user: user.display_name, channel: channel.display_name, time: followingFor }),
 					channel.profile_image_url
 				)
 				.setTimestamp()

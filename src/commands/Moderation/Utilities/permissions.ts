@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setTitle(message.language.get('COMMAND_PERMISSIONS', user.tag, user.id))
+			.setTitle(message.language.get('COMMAND_PERMISSIONS', { username: user.tag, id: user.id }))
 			.setDescription(list.join('\n'));
 
 		return message.sendMessage({ embed });

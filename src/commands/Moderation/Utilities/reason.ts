@@ -43,6 +43,6 @@ export default class extends SkyraCommand {
 			this.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
-		return message.alert(message.language.get('COMMAND_REASON_UPDATED', cases, reason));
+		return message.alert(message.language.get('COMMAND_REASON_UPDATED', { entries: cases, newReason: reason }));
 	}
 }

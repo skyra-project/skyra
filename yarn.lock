@@ -3768,7 +3768,7 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa@skyra-project/klasa#build:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/4bff6ed8c0e49c22eb9136f3cc840c7d3121bd39"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/afa5967ad0f5d11e7836fc3ec698f23de44196a2"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
     "@klasa/settings-gateway" "^0.0.10"

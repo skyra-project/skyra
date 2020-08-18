@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 	public async reset(message: KlasaMessage, [key]: string[]) {
 		try {
 			const [update] = await message.guild!.settings.reset(key, { extraContext: message.author.id });
-			return message.send(message.language.get('COMMAND_CONF_RESET', { key, value: displayEntry(update.entry, update.next, message.guild!) }));
+			return message.sendLocale('COMMAND_CONF_RESET', [{ key, value: displayEntry(update.entry, update.next, message.guild!) }]);
 		} catch (error) {
 			throw String(error);
 		}

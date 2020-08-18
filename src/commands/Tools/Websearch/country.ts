@@ -7,6 +7,7 @@ import { fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
+const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
 const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.symbol})`;
 
@@ -60,9 +61,13 @@ export default class extends SkyraCommand {
 						titles.OTHER,
 						[
 							`${fieldsData.OTHER.DEMONYM}: ${country.demonym}`,
-							`${fieldsData.OTHER.AREA}: ${country.area.toLocaleString(message.language.name)} sq. km`,
+							country.area
+								? `${fieldsData.OTHER.AREA}: ${country.area.toLocaleString(message.language.name)} km${SuperScriptTwo}`
+								: null,
 							`${fieldsData.OTHER.CURRENCIES}: ${country.currencies.map(mapCurrency).join(', ')}`
-						].join('\n')
+						]
+							.filter(Boolean)
+							.join('\n')
 					)
 			);
 		}
@@ -82,7 +87,7 @@ export interface CountryData {
 	demonym: string;
 	timezone: string;
 	population: number;
-	area: number;
+	area: number | null;
 	languages: CountryLanguage[];
 	currencies: CurrencyData[];
 }

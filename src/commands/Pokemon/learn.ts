@@ -16,7 +16,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 	cooldown: 10,
 	description: (language) => language.get('COMMAND_LEARN_DESCRIPTION'),
 	extendedHelp: (language) => language.get('COMMAND_LEARN_EXTENDED'),
-	usage: '(generation:generation) <pokemon:string> <moves:...string> ',
+	usage: '[generation:generation] <pokemon:string> <moves:...string> ',
 	usageDelim: ' ',
 	flagSupport: true
 })

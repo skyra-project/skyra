@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { ZeroWidhSpace } from '@utils/constants';
 import { MessageEmbed, Permissions, PermissionString, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 		});
 
 		const { permissions } = member;
-		const list = ['\u200B'];
+		const list = [ZeroWidhSpace];
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 			list.push(message.language.get('COMMAND_PERMISSIONS_ALL'));
 		} else {

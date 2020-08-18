@@ -23,7 +23,8 @@ export class MusicHandler {
 	public systemPaused = false;
 
 	public queue: Song[] = [];
-	public volume = 100;
+	// eslint-disable-next-line @typescript-eslint/no-invalid-this
+	public volume = this.guild.settings.get(GuildSettings.Music.DefaultVolume) ?? 100;
 	public replay = false;
 	public song: Song | null = null;
 
@@ -179,6 +180,8 @@ export class MusicHandler {
 			if (!this.queue || !this.queue.length) return Promise.reject(this.guild.language.get('MUSICMANAGER_PLAY_NO_SONGS'));
 			// If we're already playing then tell the user that they can listen right now
 			if (this.playing && !this.paused) return Promise.reject(this.guild.language.get('MUSICMANAGER_PLAY_PLAYING'));
+			// If we're not yet playing and we're also not paused then set the volume to the default volume
+			if (!this.playing && !this.paused) this.player.volume(this.volume);
 
 			// Set the song to the first entry of the queue
 			this.song = this.queue.shift()!;

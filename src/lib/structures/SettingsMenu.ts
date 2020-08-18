@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors, BrandingColors, Time } from '@utils/constants';
+import { APIErrors, BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
@@ -80,8 +80,8 @@ export class SettingsMenu {
 				description.push(
 					i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'),
 					'',
-					...folders.map((folder) => `• \\📁${folder}`),
-					...keys.map((key) => `• ${key}`)
+					...folders.map((folder) => `📁 ${folder}`),
+					...keys.map((key) => `⚙️ ${key}`)
 				);
 		} else {
 			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_PIECE', { path: this.schema.path }));
@@ -101,7 +101,7 @@ export class SettingsMenu {
 					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', {
 						value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
 							/``+/g,
-							'`\u200B`'
+							`\`${ZeroWidhSpace}\``
 						)
 					})
 				);
@@ -115,7 +115,7 @@ export class SettingsMenu {
 
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
-			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n\u200B`)
+			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidhSpace}`)
 			.setFooter(parent ? i18n.get('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
 	}

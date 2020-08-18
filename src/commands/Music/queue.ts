@@ -4,7 +4,7 @@ import { Song } from '@lib/structures/music/Song';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
+import { BrandingColors, ZeroWidhSpace } from '@utils/constants';
 import { showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -51,7 +51,7 @@ export default class extends MusicCommand {
 			const totalDescription = message.language.get('COMMAND_QUEUE_TOTAL', { songs: queue.length, remainingTime: showSeconds(totalDuration) });
 
 			queueDisplay.embedTemplate.addField(message.language.get('COMMAND_QUEUE_TOTAL_TITLE'), totalDescription);
-			queueDisplay.embedTemplate.addField('\u200b', message.language.get('COMMAND_QUEUE_DASHBOARD_INFO', { guild: message.guild! }));
+			queueDisplay.embedTemplate.addField(ZeroWidhSpace, message.language.get('COMMAND_QUEUE_DASHBOARD_INFO', { guild: message.guild! }));
 
 			for (const page of chunk(songFields, 5)) {
 				queueDisplay.addPage((embed: MessageEmbed) => embed.setDescription(page.join('\n\n')));

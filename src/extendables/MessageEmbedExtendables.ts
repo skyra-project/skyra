@@ -1,20 +1,19 @@
+import { ApplyOptions } from '@skyra/decorators';
+import { ZeroWidhSpace } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
-import { Extendable, ExtendableStore } from 'klasa';
+import { Extendable, ExtendableOptions } from 'klasa';
 
-const ZWS = '\u200B';
-
+@ApplyOptions<ExtendableOptions>({
+	appliesTo: [MessageEmbed]
+})
 export default class extends Extendable {
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [MessageEmbed] });
-	}
-
 	public splitFields(this: MessageEmbed, contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 
 		let title: string | undefined = undefined;
 		let content: string | string[] | undefined = undefined;
 		if (typeof rawContent === 'undefined') {
-			title = ZWS;
+			title = ZeroWidhSpace;
 			content = contentOrTitle;
 		} else {
 			title = contentOrTitle as string;
@@ -22,7 +21,7 @@ export default class extends Extendable {
 		}
 
 		if (Array.isArray(content)) content = content.join('\n');
-		if (title === ZWS && !this.description && content.length < 2048) {
+		if (title === ZeroWidhSpace && !this.description && content.length < 2048) {
 			this.description = content;
 			return this;
 		}
@@ -42,7 +41,7 @@ export default class extends Extendable {
 
 			this.fields.push({ name: title, value: content.trim().slice(0, x), inline: false });
 			content = content.slice(x + 1);
-			title = ZWS;
+			title = ZeroWidhSpace;
 		}
 		return this;
 	}

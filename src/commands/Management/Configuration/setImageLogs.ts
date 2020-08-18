@@ -27,6 +27,6 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.update(GuildSettings.Channels.ImageLogs, channel, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_SETIMAGELOGS_SET', [channel.toString()]);
+		return message.sendLocale('COMMAND_SETIMAGELOGS_SET', [{ channel: channel.toString() }]);
 	}
 }

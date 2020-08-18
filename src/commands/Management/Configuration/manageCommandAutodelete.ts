@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${message.language.duration(entry[1] / 60000)}`);
 		}
 		if (!list.length) throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY');
-		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [codeBlock('asciidoc', list.join('\n'))]);
+		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_SHOW', [{ codeblock: codeBlock('asciidoc', list.join('\n')) }]);
 	}
 
 	public async add(message: KlasaMessage, [channel, duration]: [TextChannel, number]) {
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 		}
-		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [channel.toString(), duration]);
+		return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_ADD', [{ channel: channel.toString(), time: duration }]);
 	}
 
 	public async remove(message: KlasaMessage, [channel]: [TextChannel]) {
@@ -72,9 +72,9 @@ export default class extends SkyraCommand {
 				arrayIndex: index,
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE', [channel.toString()]);
+			return message.sendLocale('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE', [{ channel: channel.toString() }]);
 		}
-		throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET', channel.toString());
+		throw message.language.get('COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET', { channel: channel.toString() });
 	}
 
 	public async reset(message: KlasaMessage) {

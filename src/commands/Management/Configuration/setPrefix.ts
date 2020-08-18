@@ -20,6 +20,6 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.update(GuildSettings.Prefix, prefix, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_SETPREFIX_SET', [prefix]);
+		return message.sendLocale('COMMAND_SETPREFIX_SET', [{ prefix }]);
 	}
 }

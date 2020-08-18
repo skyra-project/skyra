@@ -28,20 +28,20 @@ export default class extends SkyraCommand {
 		// Check if the word is not filtered
 		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
 		const { regexp } = message.guild!.security;
-		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get('COMMAND_FILTER_FILTERED', true);
+		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get('COMMAND_FILTER_FILTERED', { filtered: true });
 
 		// Perform update
 		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
 			arrayAction: 'add',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_FILTER_ADDED', [word]);
+		return message.sendLocale('COMMAND_FILTER_ADDED', [{ word }]);
 	}
 
 	public async remove(message: KlasaMessage, [word]: [string]) {
 		// Check if the word is already filtered
 		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
-		if (!raw.includes(word)) throw message.language.get('COMMAND_FILTER_FILTERED', false);
+		if (!raw.includes(word)) throw message.language.get('COMMAND_FILTER_FILTERED', { filtered: false });
 
 		// Perform update
 		if (raw.length === 1) return this.reset(message);
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 			arrayAction: 'remove',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_FILTER_REMOVED', [word]);
+		return message.sendLocale('COMMAND_FILTER_REMOVED', [{ word }]);
 	}
 
 	public async reset(message: KlasaMessage) {
@@ -61,7 +61,9 @@ export default class extends SkyraCommand {
 	public show(message: KlasaMessage) {
 		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
 		return message.sendMessage(
-			raw.length ? message.language.get('COMMAND_FILTER_SHOW', `\`${raw.join('`, `')}\``) : message.language.get('COMMAND_FILTER_SHOW_EMPTY')
+			raw.length
+				? message.language.get('COMMAND_FILTER_SHOW', { words: `\`${raw.join('`, `')}\`` })
+				: message.language.get('COMMAND_FILTER_SHOW_EMPTY')
 		);
 	}
 }

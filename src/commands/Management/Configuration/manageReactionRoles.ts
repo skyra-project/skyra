@@ -81,7 +81,9 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 
-			return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL', [displayEmoji(reactionRole.emoji), `<#${channel}>`]);
+			return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL', [
+				{ emoji: displayEmoji(reactionRole.emoji), channel: `<#${channel}>` }
+			]);
 		}
 
 		await message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_PROMPT');
@@ -103,7 +105,7 @@ export default class extends SkyraCommand {
 		});
 
 		const url = `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>`;
-		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD', [displayEmoji(reactionRole.emoji), url]);
+		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
 	}
 
 	public async remove(message: KlasaMessage, [role, messageID]: [Role, string]) {
@@ -120,7 +122,7 @@ export default class extends SkyraCommand {
 		const url = reactionRole.message
 			? `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>`
 			: `<#${reactionRole.channel}>`;
-		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_REMOVE', [displayEmoji(reactionRole.emoji), url]);
+		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_REMOVE', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
 	}
 
 	public async reset(message: KlasaMessage) {

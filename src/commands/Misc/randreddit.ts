@@ -44,7 +44,9 @@ export default class extends SkyraCommand {
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
-		return message.sendLocale('COMMAND_RANDREDDIT_MESSAGE', [post.title, post.author, post.spoiler ? `||${post.url}||` : post.url]);
+		return message.sendLocale('COMMAND_RANDREDDIT_MESSAGE', [
+			{ title: post.title, author: post.author, url: post.spoiler ? `||${post.url}||` : post.url }
+		]);
 	}
 
 	private async fetchData(message: KlasaMessage, reddit: string) {

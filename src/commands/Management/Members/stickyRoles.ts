@@ -36,23 +36,23 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async reset(message: KlasaMessage, [user]: [User]) {
 		const roles = message.guild!.stickyRoles.get(user.id);
-		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', user.username);
+		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', { user: user.username });
 
 		await message.guild!.stickyRoles.clear(user.id, { author: message.author.id });
-		return message.sendLocale('COMMAND_STICKYROLES_RESET', [user.username]);
+		return message.sendLocale('COMMAND_STICKYROLES_RESET', [{ user: user.username }]);
 	}
 
 	public async remove(message: KlasaMessage, [user, role]: [User, Role]) {
 		const roles = await message.guild!.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', user.username);
+		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', { user: user.username });
 
 		await message.guild!.stickyRoles.remove(user.id, role.id, { author: message.author.id });
-		return message.sendLocale('COMMAND_STICKYROLES_REMOVE', [user.username]);
+		return message.sendLocale('COMMAND_STICKYROLES_REMOVE', [{ user: user.username }]);
 	}
 
 	public async add(message: KlasaMessage, [user, role]: [User, Role]) {
 		await message.guild!.stickyRoles.add(user.id, role.id, { author: message.author.id });
-		return message.sendLocale('COMMAND_STICKYROLES_ADD', [user.username]);
+		return message.sendLocale('COMMAND_STICKYROLES_ADD', [{ user: user.username }]);
 	}
 
 	public async show(message: KlasaMessage, [user]: [User]) {
@@ -61,6 +61,6 @@ export default class extends SkyraCommand {
 
 		const guildRoles = message.guild!.roles;
 		const names = roles.map((role) => guildRoles.get(role)!.name);
-		return message.sendLocale('COMMAND_STICKYROLES_SHOW_SINGLE', [user.username, names]);
+		return message.sendLocale('COMMAND_STICKYROLES_SHOW_SINGLE', [{ user: user.username, roles: names }]);
 	}
 }

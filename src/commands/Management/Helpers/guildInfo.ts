@@ -39,30 +39,31 @@ export default class extends SkyraCommand {
 				.splitFields(message.language.get('COMMAND_WHOIS_MEMBER_ROLES', roles.length), roles.join(' '))
 				.addField(
 					serverInfoTitles.CHANNELS,
-					message.language.get(
-						'COMMAND_SERVERINFO_CHANNELS',
-						tChannels,
-						vChannels,
-						cChannels,
-						message.guild!.afkChannelID,
-						message.guild!.afkTimeout
-					),
+					message.language.get('COMMAND_SERVERINFO_CHANNELS', {
+						text: tChannels,
+						voice: vChannels,
+						categories: cChannels,
+						afkChannel: message.guild!.afkChannelID,
+						afkTime: message.guild!.afkTimeout
+					}),
 					true
 				)
 				.addField(
 					serverInfoTitles.MEMBERS,
-					message.language.get('COMMAND_SERVERINFO_MEMBERS', message.guild!.memberCount.toLocaleString(message.language.name), owner),
+					message.language.get('COMMAND_SERVERINFO_MEMBERS', {
+						count: message.guild!.memberCount.toLocaleString(message.language.name),
+						owner
+					}),
 					true
 				)
 				.addField(
 					serverInfoTitles.OTHER,
-					message.language.get(
-						'COMMAND_SERVERINFO_OTHER',
-						message.guild!.roles.size,
-						message.guild!.region,
-						message.guild!.createdTimestamp,
-						message.guild!.verificationLevel as 0 | 1 | 2 | 3 | 4
-					),
+					message.language.get('COMMAND_SERVERINFO_OTHER', {
+						size: message.guild!.roles.size,
+						region: message.guild!.region,
+						createdAt: message.guild!.createdTimestamp,
+						verificationLevel: message.guild!.verificationLevel as 0 | 1 | 2 | 3 | 4
+					}),
 					true
 				)
 		);

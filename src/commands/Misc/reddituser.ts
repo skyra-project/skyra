@@ -22,7 +22,7 @@ export default class extends RichDisplayCommand {
 
 	public async init() {
 		this.createCustomResolver('user', (arg, _possible, message) => {
-			if (!this.usernameRegex.test(arg)) throw message.language.get('COMMAND_REDDITUSER_INVALID_USER', arg);
+			if (!this.usernameRegex.test(arg)) throw message.language.get('COMMAND_REDDITUSER_INVALID_USER', { user: arg });
 			arg = arg.replace(/^\/?u\//, '');
 			return arg;
 		});
@@ -57,14 +57,14 @@ export default class extends RichDisplayCommand {
 
 		return new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(fieldsData.OVERVIEW_FOR(about.name))
+				.setTitle(fieldsData.OVERVIEW_FOR({ user: about.name }))
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(about.icon_img)
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.setDescription(fieldsData.JOINED_REDDIT(this.joinedRedditTimestamp.displayUTC(about.created * 1000)))
+					.setDescription(fieldsData.JOINED_REDDIT({ timestamp: this.joinedRedditTimestamp.displayUTC(about.created * 1000) }))
 					.addField(titles.LINK_KARMA, about.link_karma, true)
 					.addField(titles.COMMENT_KARMA, about.comment_karma, true)
 					.addField(titles.TOTAL_COMMENTS, comments.length, true)

@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 				}
 			);
 		}
-		return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [channel.toString(), command.name]);
+		return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [{ channel: channel.toString(), command: command.name }]);
 	}
 
 	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
@@ -98,10 +98,10 @@ export default class extends SkyraCommand {
 					});
 				}
 
-				return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [channel.toString(), command.name]);
+				return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [{ channel: channel.toString(), command: command.name }]);
 			}
 		}
-		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', channel.toString());
+		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', { channel: channel.toString() });
 	}
 
 	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
@@ -113,7 +113,7 @@ export default class extends SkyraCommand {
 				arrayAction: 'remove',
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [channel.toString()]);
+			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [{ channel: channel.toString() }]);
 		}
 		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');
 	}

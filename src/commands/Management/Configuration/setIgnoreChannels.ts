@@ -27,7 +27,9 @@ export default class extends SkyraCommand {
 		});
 		const newLength = message.guild!.settings.get(GuildSettings.DisabledChannels).length;
 		return message.sendLocale(oldLength < newLength ? 'COMMAND_SETIGNORECHANNELS_SET' : 'COMMAND_SETIGNORECHANNELS_REMOVED', [
-			channel.toString()
+			{
+				channel: channel.toString()
+			}
 		]);
 	}
 }

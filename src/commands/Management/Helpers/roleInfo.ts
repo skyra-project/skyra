@@ -24,12 +24,12 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(role.color || BrandingColors.Secondary)
 				.setTitle(`${role.name} [${role.id}]`)
-				.setDescription(message.language.get('COMMAND_ROLEINFO', role))
+				.setDescription(message.language.get('COMMAND_ROLEINFO', { role }))
 				.addField(
 					roleInfoTitles.PERMISSIONS,
 					permissions.has(Permissions.FLAGS.ADMINISTRATOR)
 						? message.language.get('COMMAND_ROLEINFO_ALL')
-						: message.language.get('COMMAND_ROLEINFO_PERMISSIONS', permissions.toArray())
+						: message.language.get('COMMAND_ROLEINFO_PERMISSIONS', { permissions: permissions.toArray() })
 				)
 		);
 	}

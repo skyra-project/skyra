@@ -80,8 +80,8 @@ export default class extends SkyraCommand {
 		const DATA = message.language.get('COMMAND_SHIP_DATA');
 		return message.sendMessage(
 			[
-				DATA.TITLE(firstUserTag.username, secondUserTag.username),
-				DATA.DESCRIPTION(this.getShipName([...firstUserTag.username], [...secondUserTag.username]))
+				DATA.TITLE({ romeoUsername: firstUserTag.username, julietUsername: secondUserTag.username }),
+				DATA.DESCRIPTION({ shipName: this.getShipName([...firstUserTag.username], [...secondUserTag.username]) })
 			].join('\n'),
 			{ files: [{ attachment, name: 'ship.png' }] }
 		);

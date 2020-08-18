@@ -1733,8 +1733,8 @@ export default class extends Language {
 			reminder: 'If I cannot find either given user then I will pick someone randomly.'
 		},
 		COMMAND_SHIP_DATA: {
-			TITLE: (romeoUsername, julietUsername) => `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,
-			DESCRIPTION: (shipName) => `I call it... ${shipName}`
+			TITLE: ({ romeoUsername, julietUsername }) => `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,
+			DESCRIPTION: ({ shipName }) => `I call it... ${shipName}`
 		},
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
 		COMMAND_CHASE_EXTENDED: {
@@ -3295,15 +3295,16 @@ export default class extends Language {
 			MEMBERS: 'Members',
 			OTHER: 'Other'
 		},
-		COMMAND_SERVERINFO_ROLES: (roles) => `**Roles**\n\n${roles}`,
+		COMMAND_SERVERINFO_ROLES: ({ roles }) => `**Roles**\n\n${roles}`,
 		COMMAND_SERVERINFO_NOROLES: 'Roles? Where? There is no other than the `@everyone` role!',
-		COMMAND_SERVERINFO_CHANNELS: (text, voice, categories, afkChannel, afkTime) =>
+		COMMAND_SERVERINFO_CHANNELS: ({ text, voice, categories, afkChannel, afkTime }) =>
 			[
 				`• **${text}** Text, **${voice}** Voice, **${categories}** categories.`,
 				`• AFK: ${afkChannel ? `**<#${afkChannel}>** after **${afkTime / 60}**min` : '**None**.'}`
 			].join('\n'),
-		COMMAND_SERVERINFO_MEMBERS: (count, owner) => [`• **${count}** members`, `• Owner: **${owner.tag}**`, `  (ID: **${owner.id}**)`].join('\n'),
-		COMMAND_SERVERINFO_OTHER: (size, region, createdAt, verificationLevel) =>
+		COMMAND_SERVERINFO_MEMBERS: ({ count, owner }) =>
+			[`• **${count}** members`, `• Owner: **${owner.tag}**`, `  (ID: **${owner.id}**)`].join('\n'),
+		COMMAND_SERVERINFO_OTHER: ({ size, region, createdAt, verificationLevel }) =>
 			[
 				`• Roles: **${size}**`,
 				`• Region: **${region}**`,
@@ -3311,7 +3312,7 @@ export default class extends Language {
 				`• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**`
 			].join('\n'),
 		COMMAND_ROLEINFO_TITLES: { PERMISSIONS: 'Permissions' },
-		COMMAND_ROLEINFO: (role) =>
+		COMMAND_ROLEINFO: ({ role }) =>
 			[
 				`ID: **${role.id}**`,
 				`Name: **${role.name}**`,
@@ -3321,15 +3322,15 @@ export default class extends Language {
 				`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
 			].join('\n'),
 		COMMAND_ROLEINFO_ALL: 'All Permissions granted.',
-		COMMAND_ROLEINFO_PERMISSIONS: (permissions) =>
+		COMMAND_ROLEINFO_PERMISSIONS: ({ permissions }) =>
 			permissions.length > 0 ? permissions.map((key) => `+ **${PERMS[key]}**`).join('\n') : 'Permissions not granted.',
 		COMMAND_FILTER_UNDEFINED_WORD: 'You must write what you want me to filter.',
-		COMMAND_FILTER_FILTERED: (filtered) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
-		COMMAND_FILTER_ADDED: (word) => `${GREENTICK} Success! Added the word ${word} to the filter.`,
-		COMMAND_FILTER_REMOVED: (word) => `${GREENTICK} Success! Removed the word ${word} from the filter.`,
+		COMMAND_FILTER_FILTERED: ({ filtered }) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
+		COMMAND_FILTER_ADDED: ({ word }) => `${GREENTICK} Success! Added the word ${word} to the filter.`,
+		COMMAND_FILTER_REMOVED: ({ word }) => `${GREENTICK} Success! Removed the word ${word} from the filter.`,
 		COMMAND_FILTER_RESET: `${GREENTICK} Success! The filter has been reset.`,
 		COMMAND_FILTER_SHOW_EMPTY: 'The list of filtered words is empty!',
-		COMMAND_FILTER_SHOW: (words) => `There is the list of all filtered words: ${words}`,
+		COMMAND_FILTER_SHOW: ({ words }) => `There is the list of all filtered words: ${words}`,
 		COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE: 'You must input a value for this type.',
 		COMMAND_MANAGEATTACHMENTS_INVALID_ACTION: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
 		COMMAND_MANAGEATTACHMENTS_MAXIMUM: ({ value: maximum }) => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,
@@ -3351,12 +3352,12 @@ export default class extends Language {
 			'You must input a valid text channel, people cannot use commands in a voice or a category channel!',
 		COMMAND_MANAGECOMMANDAUTODELETE_REQUIRED_DURATION: 'You must specify an amount of seconds for the command to be automatically deleted.',
 		COMMAND_MANAGECOMMANDAUTODELETE_SHOW_EMPTY: 'There are no command autodelete configured right now.',
-		COMMAND_MANAGECOMMANDAUTODELETE_SHOW: (codeblock) => `All command autodeletes configured:${codeblock}`,
-		COMMAND_MANAGECOMMANDAUTODELETE_ADD: (channel, time) =>
+		COMMAND_MANAGECOMMANDAUTODELETE_SHOW: ({ codeblock }) => `All command autodeletes configured:${codeblock}`,
+		COMMAND_MANAGECOMMANDAUTODELETE_ADD: ({ channel, time }) =>
 			`${GREENTICK} Success! All successful commands in ${channel} will be deleted after ${duration(time)}!`,
-		COMMAND_MANAGECOMMANDAUTODELETE_REMOVE: (channel) =>
+		COMMAND_MANAGECOMMANDAUTODELETE_REMOVE: ({ channel }) =>
 			`${GREENTICK} Success! Commands will not be automatically deleted in ${channel} anymore!`,
-		COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET: (channel) =>
+		COMMAND_MANAGECOMMANDAUTODELETE_REMOVE_NOTSET: ({ channel }) =>
 			`${REDCROSS} The channel ${channel} was not configured to automatically delete messages!`,
 		COMMAND_MANAGECOMMANDAUTODELETE_RESET: 'All the command autodeletes have been reset.',
 		COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL: 'You must input a valid text channel, people cannot use commands in a voice or a category channel!',
@@ -3364,32 +3365,33 @@ export default class extends Language {
 		COMMAND_MANAGECOMMANDCHANNEL_SHOW: ({ channel, commands }) => `List of disabled commands in ${channel}: ${commands}`,
 		COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY: 'The list of disabled commands for the specified channel is empty!',
 		COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET: 'The command you are trying to disable is already disabled!',
-		COMMAND_MANAGECOMMANDCHANNEL_ADD: (channel, command) => `Successfully disabled the command ${command} for the channel ${channel}!`,
-		COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET: (channel) => `The command you are trying to enable was not disabled for ${channel}.`,
-		COMMAND_MANAGECOMMANDCHANNEL_REMOVE: (channel, command) => `Successfully enabled the command ${command} for the channel ${channel}!`,
+		COMMAND_MANAGECOMMANDCHANNEL_ADD: ({ channel, command }) => `Successfully disabled the command ${command} for the channel ${channel}!`,
+		COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET: ({ channel }) => `The command you are trying to enable was not disabled for ${channel}.`,
+		COMMAND_MANAGECOMMANDCHANNEL_REMOVE: ({ channel, command }) => `Successfully enabled the command ${command} for the channel ${channel}!`,
 		COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY: 'This channel had no disabled command, so I decided to do nothing.',
-		COMMAND_MANAGECOMMANDCHANNEL_RESET: (channel) => `Successfully enabled all disabled commands in ${channel}, enjoy!`,
+		COMMAND_MANAGECOMMANDCHANNEL_RESET: ({ channel }) => `Successfully enabled all disabled commands in ${channel}, enjoy!`,
 		COMMAND_MANAGEREACTIONROLES_SHOW_EMPTY: 'There are no reaction roles set up in this server.',
-		COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL: (emoji, channel) =>
+		COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL: ({ emoji, channel }) =>
 			`${GREENTICK} Success! I will now give the role when people react with ${emoji} to any message from ${channel}!`,
 		COMMAND_MANAGEREACTIONROLES_ADD_PROMPT: 'Listening now! Please react to a message and I will bind the reaction with the role!',
 		COMMAND_MANAGEREACTIONROLES_ADD_MISSING: 'I waited, but you did not seem to have reacted to a message.',
-		COMMAND_MANAGEREACTIONROLES_ADD: (emoji, url) => `${GREENTICK} Success! I will now give the role when people react with ${emoji} at ${url}!`,
+		COMMAND_MANAGEREACTIONROLES_ADD: ({ emoji, url }) =>
+			`${GREENTICK} Success! I will now give the role when people react with ${emoji} at ${url}!`,
 		COMMAND_MANAGEREACTIONROLES_REMOVE_NOTEXISTS: 'The reaction role you specified does not exist.',
-		COMMAND_MANAGEREACTIONROLES_REMOVE: (emoji, url) =>
+		COMMAND_MANAGEREACTIONROLES_REMOVE: ({ emoji, url }) =>
 			`${GREENTICK} Success! I will not longer give the role when people react with ${emoji} at ${url}!`,
 		COMMAND_MANAGEREACTIONROLES_RESET_EMPTY: 'There were no reaction roles set up.',
 		COMMAND_MANAGEREACTIONROLES_RESET: `${GREENTICK} Successfully removed all reaction roles.`,
-		COMMAND_SETSTARBOARDEMOJI_SET: (emoji) => `Successfully set a new emoji for the next star messages: ${emoji}`,
+		COMMAND_SETSTARBOARDEMOJI_SET: ({ emoji }) => `Successfully set a new emoji for the next star messages: ${emoji}`,
 		CONFIGURATION_TEXTCHANNEL_REQUIRED: 'The selected channel is not a valid text channel, try again with another.',
 		CONFIGURATION_EQUALS: 'Successfully configured: no changes were made.',
-		COMMAND_SETIGNORECHANNELS_SET: (channel) => `Ignoring all command input from ${channel} now.`,
-		COMMAND_SETIGNORECHANNELS_REMOVED: (channel) => `Listening all command input from ${channel} now.`,
-		COMMAND_SETIMAGELOGS_SET: (channel) => `Establezca correctamente el canal de registros de imagen en ${channel}.`,
-		COMMAND_SETMEMBERLOGS_SET: (channel) => `Establecer correctamente el canal de registros de miembros en ${channel}.`,
-		COMMAND_SETMESSAGELOGS_SET: (channel) => `Establezca correctamente el canal de registros de mensajes en ${channel}.`,
-		COMMAND_SETMODLOGS_SET: (channel) => `Establezca con éxito el canal de registros de modificaciones en ${channel}.`,
-		COMMAND_SETPREFIX_SET: (prefix) => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
+		COMMAND_SETIGNORECHANNELS_SET: ({ channel }) => `Ignoring all command input from ${channel} now.`,
+		COMMAND_SETIGNORECHANNELS_REMOVED: ({ channel }) => `Listening all command input from ${channel} now.`,
+		COMMAND_SETIMAGELOGS_SET: ({ channel }) => `Establezca correctamente el canal de registros de imagen en ${channel}.`,
+		COMMAND_SETMEMBERLOGS_SET: ({ channel }) => `Establecer correctamente el canal de registros de miembros en ${channel}.`,
+		COMMAND_SETMESSAGELOGS_SET: ({ channel }) => `Establezca correctamente el canal de registros de mensajes en ${channel}.`,
+		COMMAND_SETMODLOGS_SET: ({ channel }) => `Establezca con éxito el canal de registros de modificaciones en ${channel}.`,
+		COMMAND_SETPREFIX_SET: ({ prefix }) => `Successfully set the prefix to ${prefix}. Use ${prefix}setPrefix <prefix> to change it again.`,
 
 		/**
 		 * ###########################
@@ -3398,13 +3400,13 @@ export default class extends Language {
 
 		COMMAND_STICKYROLES_REQUIRED_USER: 'A user target is required for this command to work.',
 		COMMAND_STICKYROLES_REQUIRED_ROLE: 'A role name is required when adding or removing a role.',
-		COMMAND_STICKYROLES_NOTEXISTS: (user) => `The user ${user} does not have any sticky roles or does not have the specified one.`,
-		COMMAND_STICKYROLES_RESET: (user) => `Successfully removed all sticky roles from ${user}.`,
-		COMMAND_STICKYROLES_REMOVE: (user) => `Successfully removed the specified role from ${user}.`,
-		COMMAND_STICKYROLES_ADD_EXISTS: (user) => `The user ${user} already had the specified role as sticky.`,
-		COMMAND_STICKYROLES_ADD: (user) => `Successfully added the specified role as sticky to ${user}.`,
+		COMMAND_STICKYROLES_NOTEXISTS: ({ user }) => `The user ${user} does not have any sticky roles or does not have the specified one.`,
+		COMMAND_STICKYROLES_RESET: ({ user }) => `Successfully removed all sticky roles from ${user}.`,
+		COMMAND_STICKYROLES_REMOVE: ({ user }) => `Successfully removed the specified role from ${user}.`,
+		COMMAND_STICKYROLES_ADD_EXISTS: ({ user }) => `The user ${user} already had the specified role as sticky.`,
+		COMMAND_STICKYROLES_ADD: ({ user }) => `Successfully added the specified role as sticky to ${user}.`,
 		COMMAND_STICKYROLES_SHOW_EMPTY: 'There are no sticky roles to show.',
-		COMMAND_STICKYROLES_SHOW_SINGLE: (user, roles) => `Sticky Role(s) for **${user}**: \`${roles.join('`, `')}\`.`,
+		COMMAND_STICKYROLES_SHOW_SINGLE: ({ user, roles }) => `Sticky Role(s) for **${user}**: \`${roles.join('`, `')}\`.`,
 
 		/**
 		 * #############
@@ -3417,13 +3419,13 @@ export default class extends Language {
 		COMMAND_RANDREDDIT_FAIL: 'I failed to retrieve data, are you sure you wrote the reddit correctly?',
 		COMMAND_RANDREDDIT_ALL_NSFW: 'Nothing could be posted as all retrieved posts are NSFW.',
 		COMMAND_RANDREDDIT_ALL_NSFL: 'Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.',
-		COMMAND_RANDREDDIT_MESSAGE: (title, author, url) => `**${title}** submitted by ${author}\n${url}`,
+		COMMAND_RANDREDDIT_MESSAGE: ({ title, author, url }) => `**${title}** submitted by ${author}\n${url}`,
 		COMMAND_RANDREDDIT_ERROR_PRIVATE: `${REDCROSS} No data could be downloaded as the subreddit is marked as private.`,
 		COMMAND_RANDREDDIT_ERROR_QUARANTINED: `${REDCROSS} No data could be downloaded as the subreddit is marked as quarantined.`,
 		COMMAND_RANDREDDIT_ERROR_NOT_FOUND: `${REDCROSS} No data could be downloaded as the subreddit does not exist.`,
 		COMMAND_RANDREDDIT_ERROR_BANNED: `${REDCROSS} No data could be downloaded as the subreddit is marked as banned.`,
 		COMMAND_REDDITUSER_COMPLEXITY_LEVELS: ['muy bajo', 'bajo', 'medio', 'alto', 'muy alto', 'muy alto'],
-		COMMAND_REDDITUSER_INVALID_USER: (user) => `\`${user}\` no es un nombre de usuario de Reddit válido`,
+		COMMAND_REDDITUSER_INVALID_USER: ({ user }) => `\`${user}\` no es un nombre de usuario de Reddit válido`,
 		COMMAND_REDDITUSER_QUERY_FAILED: 'No se pudieron encontrar datos para ese usuario de reddit',
 		COMMAND_REDDITUSER_TITLES: {
 			LINK_KARMA: 'Link Karma',
@@ -3439,16 +3441,16 @@ export default class extends Language {
 			WORST_COMMENT: 'Peor comentario'
 		},
 		COMMAND_REDDITUSER_DATA: {
-			OVERVIEW_FOR: (user) => `Resumen de/u/${user}`,
+			OVERVIEW_FOR: ({ user }) => `Resumen de/u/${user}`,
 			PERMALINK: 'Enlace permanente',
 			DATA_AVAILABLE_FOR: 'Los datos están disponibles para los últimos 1000 comentarios y presentaciones (limitación de la API de Reddit)',
-			JOINED_REDDIT: (timestamp) => `Se unió a Reddit ${timestamp}`
+			JOINED_REDDIT: ({ timestamp }) => `Se unió a Reddit ${timestamp}`
 		},
 		COMMAND_SNIPE_EMPTY: 'There are no sniped messages in this channel.',
 		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE:
 			'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
-		COMMAND_VAPORWAVE_OUTPUT: (str: string) => `Here is your converted message:\n${str}`,
+		COMMAND_VAPORWAVE_OUTPUT: ({ str }) => `Here is your converted message:\n${str}`,
 
 		/**
 		 * #############################

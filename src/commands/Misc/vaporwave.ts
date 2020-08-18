@@ -15,6 +15,6 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		let output = '';
 		for (let i = 0; i < input.length; i++) output += input[i] === ' ' ? ' ' : String.fromCharCode(input.charCodeAt(i) + 0xfee0);
-		return message.sendLocale('COMMAND_VAPORWAVE_OUTPUT', [output]);
+		return message.sendLocale('COMMAND_VAPORWAVE_OUTPUT', [{ str: output }]);
 	}
 }

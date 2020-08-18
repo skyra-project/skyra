@@ -27,6 +27,6 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.update(GuildSettings.Channels.ModerationLogs, channel, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_SETMODLOGS_SET', [channel.toString()]);
+		return message.sendLocale('COMMAND_SETMODLOGS_SET', [{ channel: channel.toString() }]);
 	}
 }

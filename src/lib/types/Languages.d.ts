@@ -109,6 +109,7 @@ declare module 'klasa' {
 		COMMAND_RELOAD: (params: { type: string; name: string; time: string }) => string;
 		COMMAND_RELOAD_ALL: (params: { type: string; time: string }) => string;
 		COMMAND_RELOAD_EVERYTHING: (params: { time: string }) => string;
+		COMMAND_RELOAD_FAILED: (params: { type: string; name: string }) => string;
 		COMMAND_RELOAD_DESCRIPTION: string;
 		COMMAND_REBOOT: string;
 		COMMAND_REBOOT_DESCRIPTION: string;

@@ -254,6 +254,7 @@ export default class extends Language {
 		COMMAND_RELOAD: ({ type, name, time }) => `${GREENTICK} Recargada la pieza tipo ${type}: ${name}. (Tomó: ${time})`,
 		COMMAND_RELOAD_ALL: ({ type, time }) => `${GREENTICK} Recargadas todas las piezas tipo ${type}. (Tomó: ${time})`,
 		COMMAND_RELOAD_EVERYTHING: ({ time }) => `${GREENTICK} Recargado todo. (Tomó: ${time})`,
+		COMMAND_RELOAD_FAILED: ({ type, name }) => `${REDCROSS} La recarga de la pieza tipo ${type}: ${name} falló. Por favor revisa su consola.`,
 		COMMAND_RELOAD_DESCRIPTION: 'Recarga una pieza de Klasa, o todas las piezas de su lista.',
 		COMMAND_REBOOT: `${LOADING} Reiniciando...`,
 		COMMAND_REBOOT_DESCRIPTION: 'Reinicia el bot.',

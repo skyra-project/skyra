@@ -250,6 +250,7 @@ export default class extends Language {
 		COMMAND_RELOAD_ALL: ({ type, time }) => `${GREENTICK} Reloaded all ${type}. (Took: ${time})`,
 		COMMAND_RELOAD_EVERYTHING: ({ time }) => `${GREENTICK} Reloaded everything. (Took: ${time})`,
 		COMMAND_RELOAD_DESCRIPTION: 'Reloads a klasa piece, or all pieces of a klasa store.',
+		COMMAND_RELOAD_FAILED: ({ type, name }) => `❌ Failed to reload ${type}: ${name}. Please check your Console.`,
 		COMMAND_REBOOT: `${LOADING} Rebooting...`,
 		COMMAND_REBOOT_DESCRIPTION: 'Reboots the bot.',
 		COMMAND_PING: `${LOADING} Ping?`,

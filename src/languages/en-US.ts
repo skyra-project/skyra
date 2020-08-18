@@ -3026,7 +3026,8 @@ export default class extends Language {
 		COMMAND_MARKOV_TIMER: ({ timer }) => `Processed in ${timer}.`,
 		COMMAND_MARKOV_NO_MESSAGES: 'The channel or user has no messages.',
 		COMMAND_NORRIS_OUTPUT: 'Chuck Norris',
-		COMMAND_RATE_OUTPUT: ({ author, userToRate, rate, emoji }) => `**${author}**, Uhm... le daría a **${userToRate}** un **${rate}**/100 ${emoji}`,
+		COMMAND_RATE_OUTPUT: ({ author, userToRate, rate, emoji }) =>
+			`**${author}**, Uhm... le daría a **${userToRate}** un **${rate}**/100 ${emoji}`,
 		COMMAND_RATE_MYSELF: ['I love myself a lot 😊', 'myself'],
 		COMMAND_PUN_ERROR: 'Something went wrong. Try again later.',
 		COMMAND_XKCD_COMICS: ({ amount }) => `There are only ${amount} comics.`,

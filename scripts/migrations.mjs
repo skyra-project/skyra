@@ -1,5 +1,5 @@
-import 'module-alias/register.js';
 import { promises as fsp } from 'fs';
+import 'module-alias/register.js';
 import { dirname, resolve } from 'path';
 import typeorm from 'typeorm';
 import { fileURLToPath } from 'url';

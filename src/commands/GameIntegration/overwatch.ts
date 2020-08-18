@@ -7,7 +7,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp, LanguageKeys } from 'klasa';
+import { KlasaMessage, LanguageKeys, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ow'],

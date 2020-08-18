@@ -54,7 +54,7 @@ export abstract class WeebCommand extends SkyraCommand {
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)
-				? message.language.get(this.responseName as LanguageKeysComplex, { userToRate: params![0].username })
+				? message.language.get(this.responseName as LanguageKeysComplex, { user: params![0].username })
 				: message.language.get(this.responseName as LanguageKeysSimple),
 			{
 				embed: new MessageEmbed()

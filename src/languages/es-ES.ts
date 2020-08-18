@@ -4656,7 +4656,7 @@ export default class extends Language {
 		 * #################################
 		 */
 		NOTIFICATIONS_TWITCH_NO_GAME_NAME: '*Nombre del juego no establecido*',
-		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: (userName, gameName) =>
+		NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION: ({ userName, gameName }) =>
 			`${userName} ya está en vivo${gameName ? ` - ¡transmitiendo ${gameName}!` : '!'}`,
 		NOTIFICATION_TWITCH_EMBED_FOOTER: 'Skyra Twitch Notificaciones',
 
@@ -4832,22 +4832,24 @@ export default class extends Language {
 			`${REDCROSS} Lo siento, pero la subcommandos \`${subcommand}\` para el comando \`${command}\` solo se puede ejecutar en un servidor.`,
 		RESOLVER_MEMBERNAME_USER_LEFT_DURING_PROMPT: 'El usuario salió durante la selección de usuarios.',
 
-		LISTIFY_PAGE: (page, pageCount, results) => `Página ${page} / ${pageCount} | ${results} Resultados`,
+		LISTIFY_PAGE: ({ page, pageCount, results }) => `Página ${page} / ${pageCount} | ${results} Resultados`,
 
 		MODERATION_LOG_APPEALED: `${REDCROSS} Lo siento, pero el caso de moderación ha expirado o no se puede temporizar.`,
-		MODERATION_LOG_EXPIRES_IN: (duration) => `\n❯ **Caduca en**: ${this.duration(duration)}`,
-		MODERATION_LOG_DESCRIPTION: ({ caseID, formattedDuration, prefix, reason, type, userDiscriminator, userID, userName }) =>
+		MODERATION_LOG_EXPIRES_IN: ({ duration }) => `\n❯ **Caduca en**: ${this.duration(duration)}`,
+		MODERATION_LOG_DESCRIPTION: ({ data }) =>
 			[
-				`❯ **Tipo**: ${type}`,
-				`❯ **Usuario:** ${userName}#${userDiscriminator} (${userID})`,
-				`❯ **Razón:** ${reason || `Por favor use \`${prefix}reason ${caseID} <razón>\` para establecer la razón.`}${formattedDuration}`
+				`❯ **Tipo**: ${data.type}`,
+				`❯ **Usuario:** ${data.userName}#${data.userDiscriminator} (${data.userID})`,
+				`❯ **Razón:** ${data.reason || `Por favor use \`${data.prefix}reason ${data.caseID} <razón>\` para establecer la razón.`}${
+					data.formattedDuration
+				}`
 			].join('\n'),
-		MODERATION_LOG_FOOTER: (caseID) => `Caso ${caseID}`,
+		MODERATION_LOG_FOOTER: ({ caseID }) => `Caso ${caseID}`,
 		MODERATION_CASE_NOT_EXISTS: `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
 		MODERATION_CASES_NOT_EXIST: `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
 
 		GUILD_SETTINGS_CHANNELS_MOD: 'Necesitas configurar un canal de moderación. Utiliza `Skyra, settings set channels.modlog <NombreDeCanal>`.',
-		GUILD_SETTINGS_ROLES_RESTRICTED: (prefix, path) =>
+		GUILD_SETTINGS_ROLES_RESTRICTED: ({ prefix, path }) =>
 			`${REDCROSS} You need to configure a role for this action, use \`${prefix}settings set ${path} <rolename>\` to set it up.`,
 		GUILD_MUTE_NOT_FOUND:
 			'He fallado al buscar un caso de moderación que justifique el mute del usuario. O el usuario nunca ha sido muteado, o todos sus muteos están reclamados.',
@@ -4861,25 +4863,25 @@ export default class extends Language {
 		EVENTS_GUILDMEMBERADD: 'Nuevo Usuario',
 		EVENTS_GUILDMEMBERADD_MUTE: 'Nuevo Usuario Muteado',
 		EVENTS_GUILDMEMBERADD_RAID: 'RAID Detectado',
-		EVENTS_GUILDMEMBERADD_DESCRIPTION: (mention, time) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
+		EVENTS_GUILDMEMBERADD_DESCRIPTION: ({ mention, time }) => `${mention} | **Se Unió a Discord**: Hace ${duration(time, 2)}.`,
 		EVENTS_GUILDMEMBERREMOVE: 'Usuario Salió',
 		EVENTS_GUILDMEMBERKICKED: 'Usuario Pateado',
 		EVENTS_GUILDMEMBERBANNED: 'Usuario Baneado',
 		EVENTS_GUILDMEMBERSOFTBANNED: 'Usuario Levemente Baneado',
-		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: (mention, time) =>
+		EVENTS_GUILDMEMBERREMOVE_DESCRIPTION: ({ mention, time }) =>
 			`${mention} | **Se Unió al Servidor**: ${time === -1 ? 'Desconocido' : `Hace ${duration(time, 2)}`}.`,
-		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: (previous, current) => `Actualizado el apodo de **${previous}** a **${current}**`,
-		EVENTS_GUILDMEMBER_ADDED_NICKNAME: (_, current) => `Añadido un nuevo apodo **${current}**`,
-		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: (previous) => `Eliminado el apodo **${previous}**`,
-		EVENTS_GUILDMEMBER_UPDATE_ROLES: (removed, added) =>
+		EVENTS_GUILDMEMBER_UPDATE_NICKNAME: ({ previous, current }) => `Actualizado el apodo de **${previous}** a **${current}**`,
+		EVENTS_GUILDMEMBER_ADDED_NICKNAME: ({ current }) => `Añadido un nuevo apodo **${current}**`,
+		EVENTS_GUILDMEMBER_REMOVED_NICKNAME: ({ previous }) => `Eliminado el apodo **${previous}**`,
+		EVENTS_GUILDMEMBER_UPDATE_ROLES: ({ removed, added }) =>
 			`${removed.length > 0 ? `${removed.length === 1 ? 'Eliminado el rol' : 'Eliminados los roles'}: ${removed.join(', ')}\n` : ''}${
 				added.length > 0 ? `${added.length === 1 ? 'Añadido el rol' : 'Añadidos los roles'}: ${added.join(', ')}` : ''
 			}`,
 		EVENTS_NICKNAME_UPDATE: 'Nickname Edited',
 		EVENTS_USERNAME_UPDATE: 'Username Edited',
-		EVENTS_NAME_DIFFERENCE: (previous, next) =>
+		EVENTS_NAME_DIFFERENCE: ({ previous, next }) =>
 			[`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`, `**Next**: ${next === null ? 'Unset' : `\`${next}\``}`].join('\n'),
-		EVENTS_ROLE_DIFFERENCE: (addedRoles, removedRoles) =>
+		EVENTS_ROLE_DIFFERENCE: ({ addedRoles, removedRoles }) =>
 			[
 				`**Added roles**: ${addedRoles.length ? addedRoles.join(', ') : 'None'}`,
 				`**Removed roles**: ${removedRoles.length ? removedRoles.join(', ') : 'None'}`
@@ -4888,32 +4890,32 @@ export default class extends Language {
 		EVENTS_MESSAGE_UPDATE: 'Mensaje Editado',
 		EVENTS_MESSAGE_DELETE: 'Mensaje Eliminado',
 		EVENTS_REACTION: 'Reacción Añadida',
-		EVENTS_COMMAND: (command) => `Comando Usado: ${command}`,
+		EVENTS_COMMAND: ({ command }) => `Comando Usado: ${command}`,
 
 		SETTINGS_DELETE_CHANNELS_DEFAULT: 'Restablecido el valor para la clave `channels.default`',
 		SETTINGS_DELETE_ROLES_INITIAL: 'Restablecido el valor para la clave `roles.initial`',
 		SETTINGS_DELETE_ROLES_MUTE: 'Restablecido el valor para la clave `roles.muted`',
 
-		MODLOG_TIMED: (remaining) => `Este caso de moderación ya había sido temporizado. Expira en ${duration(remaining)}`,
+		MODLOG_TIMED: ({ remaining }) => `Este caso de moderación ya había sido temporizado. Expira en ${duration(remaining)}`,
 
 		GUILD_WARN_NOT_FOUND:
 			'Fallé al buscar el caso de moderación para su reclamación. O no existe, o no es una advertencia, o ya estaba reclamada.',
 		GUILD_MEMBER_NOT_VOICECHANNEL: 'No puedo tomar acción en un miembro que no está conectado a un canal de voz.',
 
-		PROMPTLIST_MULTIPLE_CHOICE: (list, amount) =>
+		PROMPTLIST_MULTIPLE_CHOICE: ({ list, amount }) =>
 			`He encontrado ${amount} ${
 				amount === 1 ? 'resultado' : 'resultados'
 			}. Por favor escriba un número entre 1 y ${amount}, o escriba **"CANCELAR"** para cancelar la solicitud.\n${list}`,
-		PROMPTLIST_ATTEMPT_FAILED: (list, attempt, maxAttempts) => `Valor inválido. Intento **${attempt}** de **${maxAttempts}**\n${list}`,
+		PROMPTLIST_ATTEMPT_FAILED: ({ list, attempt, maxAttempts }) => `Valor inválido. Intento **${attempt}** de **${maxAttempts}**\n${list}`,
 		PROMPTLIST_ABORTED: 'Cancelada la solicitud con éxito.',
 
-		FUZZYSEARCH_MATCHES: (matches, codeblock) =>
+		FUZZYSEARCH_MATCHES: ({ matches, codeblock }) =>
 			`¡Encontré múltiples resultados! **Por favor selecciona un número entre 0 y ${matches}**:\n${codeblock}\nEscribe **ABORT** para cancelar la solicitud.`,
 		FUZZYSEARCH_INVALID_NUMBER: 'Esperaba que me dieras un número de un dígito, pero recibí una patata.',
 		FUZZYSEARCH_INVALID_INDEX: 'Cancelando solicitud... El número no estaba dentro del rango.',
 
 		EVENTS_ERROR_WTF: '¡Vaya fallo más terrible! ¡Lo siento!',
-		EVENTS_ERROR_STRING: (mention, message) => `Querido ${mention}, ${message}`,
+		EVENTS_ERROR_STRING: ({ mention, message }) => `Querido ${mention}, ${message}`,
 
 		CONST_USERS: 'Usuarios',
 		UNKNOWN_CHANNEL: 'Canal desconocido',

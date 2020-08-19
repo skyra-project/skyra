@@ -4057,9 +4057,9 @@ export default class extends Language {
 			FOOTER: `ID: ${user.id}`
 		}),
 		COMMAND_FOLLOWAGE: ({ user, channel, time }) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
-		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist.',
-		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'The user is not following the specified channel.',
-		COMMAND_TWITCH_NO_ENTRIES: 'There are no entries, are you sure you wrote the user name correctly?',
+		COMMAND_FOLLOWAGE_MISSING_ENTRIES: 'Either the user or the channel do not exist. Make sure you wrote their names correctly.',
+		COMMAND_FOLLOWAGE_NOT_FOLLOWING: 'That user is not following the specified channel.',
+		COMMAND_TWITCH_NO_ENTRIES: 'There are no entries. Are you sure you wrote the user name correctly?',
 		COMMAND_TWITCH_TITLES: {
 			FOLLOWERS: 'Followers',
 			VIEWS: 'Views',
@@ -4074,28 +4074,28 @@ export default class extends Language {
 			PARTNERED: 'This is a partnered channel.'
 		},
 		COMMAND_TWITCH_CREATED_AT: 'Created At:',
-		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER: `${REDCROSS} You must input the streamer's name to subscribe.`,
-		COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND: `${REDCROSS} Sorry, I could not find the streamer, are you sure you wrote it correctly?`,
+		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STREAMER: `${REDCROSS} You must specify which streamer you want to subscribe to.`,
+		COMMAND_TWITCHSUBSCRIPTION_STREAMER_NOT_FOUND: `${REDCROSS} Sorry, I could not find the streamer. Are you sure you wrote their name correctly?`,
 		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CHANNEL: `${REDCROSS} You must tell me where do you want the messages to be sent.`,
 		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_STATUS: `${REDCROSS} You must tell me which type of notification do you want, the options are "online" and "offline".`,
 		COMMAND_TWITCHSUBSCRIPTION_STATUS_VALUES: ['online', 'offline'],
-		COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS: `${REDCROSS} Woah there, I expected one of "online" or "offline", but I cannot understand what you gave me instead.`,
-		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT: `${REDCROSS} Mhmm, I wonder what you want me to send when the user goes live or something, can you give me a hint, please?`,
-		COMMAND_TWITCHSUBSCRIPTION_ADD_DUPLICATED: `${REDCROSS} You are already subscribed to this streamer in this channel for this status.`,
+		COMMAND_TWITCHSUBSCRIPTION_INVALID_STATUS: `${REDCROSS} Woah there! I expected "online" or "offline", but I cannot understand what you gave me instead.`,
+		COMMAND_TWITCHSUBSCRIPTION_REQUIRED_CONTENT: `${REDCROSS} Mhmm, I wonder what you want me to send when the user goes live or something. Can you give me a hint please?`,
+		COMMAND_TWITCHSUBSCRIPTION_ADD_DUPLICATED: `${REDCROSS} You're already subscribed to that streamer in this channel for that status.`,
 		COMMAND_TWITCHSUBSCRIPTION_ADD_SUCCESS: ({ name, channel, status }) =>
 			`${GREENTICK} Success! Whenever ${name} goes ${
 				status === NotificationsStreamsTwitchEventStatus.Offline ? 'offline' : 'live'
 			}, I will post a new message in ${channel}.`,
-		COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} I am sorry, you cannot unsubscribe to a channel you are not subscribed. Please subscribe to be able to unsubscribe.`,
-		COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS: `${REDCROSS} I am sorry, you are subscribed to this user, but their subscriptions are not posted in the channel you specified.`,
+		COMMAND_TWITCHSUBSCRIPTION_REMOVE_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} I'm sorry, you cannot unsubscribe from a channel you're not subscribed to. Please subscribe to be able to unsubscribe.`,
+		COMMAND_TWITCHSUBSCRIPTION_REMOVE_ENTRY_NOT_EXISTS: `${REDCROSS} I'm sorry; while you're subscribed to this user, their subscriptions are not posted in that channel.`,
 		COMMAND_TWITCHSUBSCRIPTION_REMOVE_SUCCESS: ({ name, channel, status }) =>
 			`${GREENTICK} Success! I will not longer post messages to ${channel} whenever ${name} goes ${
 				status === NotificationsStreamsTwitchEventStatus.Offline ? 'offline' : 'live'
 			}.`,
 		COMMAND_TWITCHSUBSCRIPTION_RESET_EMPTY: `${REDCROSS} You were not subscribed to any streamer, mission abort!`,
 		COMMAND_TWITCHSUBSCRIPTION_RESET_SUCCESS: ({ entries }) =>
-			`${GREENTICK} Success! ${entries} subscription${entries === 1 ? '' : 's'} have been removed from this server.`,
-		COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} You were not subscribed to this streamer, are you sure you got the right one?`,
+			`${GREENTICK} Success! ${entries} subscription${entries === 1 ? ' has' : 's have'} been removed from this server.`,
+		COMMAND_TWITCHSUBSCRIPTION_RESET_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} You were not subscribed to this streamer. Are you sure you specified the right one?`,
 		COMMAND_TWITCHSUBSCRIPTION_RESET_CHANNEL_SUCCESS: ({ name, entries }) =>
 			`${GREENTICK} Success! Removed ${entries} subscription${entries === 1 ? '' : 's'} from the streamer ${name}.`,
 		COMMAND_TWITCHSUBSCRIPTION_SHOW_STREAMER_NOT_SUBSCRIBED: `${REDCROSS} You wanted to see all subscriptions from this streamer, but there are none!`,

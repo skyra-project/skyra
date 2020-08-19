@@ -413,7 +413,7 @@
   resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-9.1.2.tgz#d05f66db03e3a3638a654e8badf2deb489eb220d"
   integrity sha512-r3fwVbVH+M8W0qYlBBZFsUwKe6NT5qvz+EmU7sr8VeN1cQ63z+3cfXyTo7WGGEMEgKiT0jboNAK3b1FZp8k9LQ==
 
-"@discordjs/collection@^0.1.1", "@discordjs/collection@^0.1.3", "@discordjs/collection@^0.1.6":
+"@discordjs/collection@^0.1.1", "@discordjs/collection@^0.1.6":
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.6.tgz#9e9a7637f4e4e0688fd8b2b5c63133c91607682c"
   integrity sha512-utRNxnd9kSS2qhyivo9lMlt5qgAUasH2gb7BEOn6p0efFh24gjGomHzWKMAPn2hEReOPQZCJaRKoURwRotKucQ==
@@ -672,15 +672,14 @@
   resolved "https://registry.yarnpkg.com/@klasa/request-handler/-/request-handler-0.0.3.tgz#ed72de611ece3dd99725cb797fc13e07bb05e618"
   integrity sha512-Z1O+Aa2kW/I4Uos4EZalByveIuQKRfuRx+JCsgsogDBd95N5Ub47AH+LEd5i+uzjnJ6iDHfodpVlaHojJ4Q+ZQ==
 
-"@klasa/settings-gateway@^0.0.10":
-  version "0.0.10"
-  resolved "https://registry.yarnpkg.com/@klasa/settings-gateway/-/settings-gateway-0.0.10.tgz#aff30bb639d6a64861efbe6602fb2ef0d382c182"
-  integrity sha512-bz+b0I2qmcfA75RY4Cjzgig9+5Bw/EhE4g7bAETjBQXkxea1ed7rWQHgQiIVAErm9sgy69/7NIK5JoFXZZs68A==
+"@klasa/settings-gateway@skyra-project/settings-gateway#build":
+  version "1.0.0"
+  resolved "https://codeload.github.com/skyra-project/settings-gateway/tar.gz/192fec0b4c292d7c587b42eab1ee63dc42696da9"
   dependencies:
-    "@discordjs/collection" "^0.1.3"
+    "@discordjs/collection" "^0.1.6"
     "@klasa/querybuilder" "^0.0.1"
     "@klasa/request-handler" "^0.0.3"
-    "@klasa/utils" "^0.0.4"
+    "@klasa/utils" "^0.1.0"
 
 "@klasa/snowflake@^0.0.1":
   version "0.0.1"
@@ -706,11 +705,6 @@
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.1.tgz#af20aa4ea24fdd83c41e9afb07f829194dea6363"
   integrity sha512-UOGHPXnbitN/fHIGODZYv8IVlpojVmMMyRYLlanN41QP+IC9oZfqihT41cBbaFtMbqF0gcw6/5mr2P6NpCV8Mg==
-
-"@klasa/utils@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@klasa/utils/-/utils-0.0.4.tgz#4bf010b09d0f93b39245523ed22a09571d56508c"
-  integrity sha512-9gZSGN/As3sxZumZ9ZwyQ+KcNSenzY8tR1orRakv8HKK0WH0gG7QrsP/1O2TD4uHxUyr8dysCjt73RYPfzuDWQ==
 
 "@klasa/utils@^0.0.8":
   version "0.0.8"
@@ -3768,10 +3762,10 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa@skyra-project/klasa#build:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/afa5967ad0f5d11e7836fc3ec698f23de44196a2"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/9128faf435dac26ef387fba73e0c5ec3eac3af77"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
-    "@klasa/settings-gateway" "^0.0.10"
+    "@klasa/settings-gateway" skyra-project/settings-gateway#build
     fs-nextra "^0.5.1"
 
 kleur@^3.0.3:

@@ -113,7 +113,7 @@ export default class extends SkyraCommand {
 			}
 
 			// The match finished with one remaining player
-			return message.sendLocale('COMMAND_HUNGERGAMES_WINNER', [game.tributes.values().next().value]);
+			return message.sendLocale('COMMAND_HUNGERGAMES_WINNER', [{ winner: game.tributes.values().next().value }]);
 		} finally {
 			game.llrc.end();
 		}

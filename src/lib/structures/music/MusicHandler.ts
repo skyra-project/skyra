@@ -23,8 +23,7 @@ export class MusicHandler {
 	public systemPaused = false;
 
 	public queue: Song[] = [];
-	// eslint-disable-next-line @typescript-eslint/no-invalid-this
-	public volume = this.guild.settings.get(GuildSettings.Music.DefaultVolume) ?? 100;
+	public volume: number;
 	public replay = false;
 	public song: Song | null = null;
 
@@ -82,6 +81,7 @@ export class MusicHandler {
 	public constructor(guild: Guild) {
 		this.client = guild.client as SkyraClient;
 		this.guild = guild;
+		this.volume = this.guild.settings.get(GuildSettings.Music.DefaultVolume);
 	}
 
 	public add(user: string, song: TrackData[], context: MusicHandlerRequestContext | null = null) {

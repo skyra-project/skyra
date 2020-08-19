@@ -183,6 +183,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
+		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
 			`[Serebii](${pokeDetails.serebiiPage})`,
@@ -206,7 +207,7 @@ export default class extends RichDisplayCommand {
 						`${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`
 					)
 
-					.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData)
+					.addField(externalResources, externalResourceData)
 			)
 			.addPage((embed: MessageEmbed) => {
 				embed
@@ -214,14 +215,14 @@ export default class extends RichDisplayCommand {
 					.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
 					.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true);
 
-				return embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData);
+				return embed.addField(externalResources, externalResourceData);
 			})
 			.addPage((embed: MessageEmbed) =>
 				embed
 					.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
 					.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
 
-					.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData)
+					.addField(externalResources, externalResourceData)
 			);
 
 		// If there are any cosmetic formes or other formes then add a page for them
@@ -239,7 +240,7 @@ export default class extends RichDisplayCommand {
 				}
 
 				// Add the external resource field
-				embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData);
+				embed.addField(externalResources, externalResourceData);
 
 				return embed;
 			});

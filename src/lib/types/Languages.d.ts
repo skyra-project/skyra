@@ -86,7 +86,7 @@ declare module 'klasa' {
 		INHIBITOR_RUNIN_NONE: (params: { name: string }) => string;
 		INHIBITOR_DISABLED_GUILD: string;
 		INHIBITOR_DISABLED_GLOBAL: string;
-		// used to build a LanguageBuilder for extendedHelp
+		/** used to build a LanguageBuilder for extendedHelp */
 		SYSTEM_HELP_TITLES: {
 			EXPLAINED_USAGE: string;
 			POSSIBLE_FORMATS: string;
@@ -243,10 +243,7 @@ declare module 'klasa' {
 		COMMAND_VOLUME_CHANGED_TEXTS: () => string;
 		COMMAND_ABILITY_DESCRIPTION: string;
 		COMMAND_ABILITY_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_ABILITY_EMBED_DATA: {
-			ABILITY: string;
-			EXTERNAL_RESOURCES: string;
-		};
+		COMMAND_ABILITY_EMBED_TITLE: string;
 		COMMAND_ABILITY_QUERY_FAIL: (params: { ability: string }) => string;
 		COMMAND_FLAVORS_DESCRIPTION: string;
 		COMMAND_FLAVORS_EXTENDED: LanguageHelpDisplayOptions;
@@ -258,7 +255,6 @@ declare module 'klasa' {
 			GENERATION_INTRODUCED: string;
 			AVAILABLE_IN_GENERATION_8_TITLE: string;
 			AVAILABLE_IN_GENERATION_8_DATA: (params: { available: boolean }) => string;
-			EXTERNAL_RESOURCES: string;
 		};
 		COMMAND_ITEM_QUERY_FAIL: (params: { item: string }) => string;
 		COMMAND_LEARN_DESCRIPTION: string;
@@ -293,7 +289,6 @@ declare module 'klasa' {
 			GMAX_POKEMON: string;
 			AVAILABLE_IN_GENERATION_8_TITLE: string;
 			AVAILABLE_IN_GENERATION_8_DATA: (params: { available: boolean }) => string;
-			EXTERNAL_RESOURCES: string;
 			NONE: string;
 			MAX_MOVE_POWER: string;
 			Z_MOVE_POWER: string;
@@ -314,7 +309,6 @@ declare module 'klasa' {
 			BASE_STATS: string;
 			BASE_STATS_TOTAL: string;
 			FLAVOUR_TEXT: string;
-			EXTERNAL_RESOURCES: string;
 			OTHER_FORMES_TITLE: string;
 			COSMETIC_FORMES_TITLE: string;
 			FORMES_LIST: (params: { formes: readonly string[] }) => string;
@@ -333,7 +327,6 @@ declare module 'klasa' {
 			TAKES_NORMAL_DAMAGE_FROM: string;
 			RESISTS: string;
 			NOT_AFFECTED_BY: string;
-			EXTERNAL_RESOURCES: string;
 			TYPE_EFFECTIVENESS_FOR: (params: { type: string[] }) => string;
 		};
 		COMMAND_TYPE_TOO_MANY_TYPES: string;
@@ -2026,6 +2019,7 @@ declare module 'klasa' {
 		SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN: (params: { url: string; time?: string; type?: string }) => string;
 		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: (params: { output: string[] }) => string;
 		SYSTEM_EXTERNAL_SERVER_ERROR: string;
+		SYSTEM_POKEDEX_EXTERNAL_RESOURCE: string;
 		JUMPTO: string;
 		RESOLVER_INVALID_CHANNELNAME: (params: { name: string }) => string;
 		RESOLVER_CHANNEL_NOT_IN_GUILD: string;

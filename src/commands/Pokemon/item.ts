@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 					true
 				)
 				.addField(
-					embedTranslations.EXTERNAL_RESOURCES,
+					message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE'),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 						`[Serebii](${itemDetails.serebiiPage})`,

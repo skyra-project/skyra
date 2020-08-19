@@ -19,14 +19,13 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
 		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
 
-		const embedTranslations = message.language.get('COMMAND_ABILITY_EMBED_DATA');
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(`${embedTranslations.ABILITY} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
+				.setAuthor(`${message.language.get('COMMAND_ABILITY_EMBED_TITLE')} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
 				.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
 				.addField(
-					embedTranslations.EXTERNAL_RESOURCES,
+					message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE'),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
 						`[Serebii](${abilityDetails.serebiiPage})`,

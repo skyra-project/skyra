@@ -96,6 +96,7 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
 		const embedTranslations = message.language.get('COMMAND_TYPE_EMBED_DATA');
+		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
 			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
@@ -131,7 +132,7 @@ export default class extends RichDisplayCommand {
 							}`
 						].join('\n')
 					)
-					.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources)
+					.addField(externalResources, externalSources)
 			)
 			.addPage((embed: MessageEmbed) =>
 				embed
@@ -157,7 +158,7 @@ export default class extends RichDisplayCommand {
 							}`
 						].join('\n')
 					)
-					.addField(embedTranslations.EXTERNAL_RESOURCES, externalSources)
+					.addField(externalResources, externalSources)
 			);
 	}
 }

@@ -2110,10 +2110,7 @@ export default class extends Language {
 			explainedUsage: [['habilidad', 'La capacidad para la que desea encontrar datos']],
 			examples: ['multiscale', 'pressure']
 		},
-		COMMAND_ABILITY_EMBED_DATA: {
-			ABILITY: 'Habilidad',
-			EXTERNAL_RESOURCES: 'Recursos externos'
-		},
+		COMMAND_ABILITY_EMBED_TITLE: 'Habilidad',
 		COMMAND_ABILITY_QUERY_FAIL: ({ ability }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
 		COMMAND_FLAVORS_DESCRIPTION: 'Obtiene las entradas de dex en varios juegos para un Pokémon.',
@@ -2137,8 +2134,7 @@ export default class extends Language {
 			ITEM: 'Ítem',
 			GENERATION_INTRODUCED: 'Generación introducida',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
-			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Sí' : 'No'),
-			EXTERNAL_RESOURCES: 'Recursos externos'
+			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Sí' : 'No')
 		},
 		COMMAND_ITEM_QUERY_FAIL: ({ item }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${item}\` es realmente un elemento en Pokémon?`,
@@ -2199,7 +2195,6 @@ export default class extends Language {
 			GMAX_POKEMON: 'Gigamax Pokémon',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Disponible en la generación 8',
 			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Sí' : 'No'),
-			EXTERNAL_RESOURCES: 'Recursos externos',
 			NONE: 'Ninguno',
 			MAX_MOVE_POWER: 'Potencia base como Movimiento Dinamax (Dinamax)',
 			Z_MOVE_POWER: 'Potencia base como Movimiento Z (Cristal Z)'
@@ -2230,7 +2225,6 @@ export default class extends Language {
 			BASE_STATS: 'Puntos de base',
 			BASE_STATS_TOTAL: 'TDPB',
 			FLAVOUR_TEXT: 'Entrada de Pokédex',
-			EXTERNAL_RESOURCES: 'Recursos externos',
 			OTHER_FORMES_TITLE: 'Otras formas',
 			COSMETIC_FORMES_TITLE: 'Formas cosméticas',
 			FORMES_LIST: ({ formes }) => this.list(formes, 'y')
@@ -2254,7 +2248,6 @@ export default class extends Language {
 			TAKES_NORMAL_DAMAGE_FROM: 'Toma daño normal de',
 			RESISTS: 'Resiste',
 			NOT_AFFECTED_BY: 'No afectado por',
-			EXTERNAL_RESOURCES: 'Recursos externos',
 			TYPE_EFFECTIVENESS_FOR: ({ type }) => `Tipo de efectividad para ${type.map((val) => `\`${val}\``).join(' and ')}`
 		},
 		COMMAND_TYPE_TOO_MANY_TYPES: 'Lo siento, pero puedes obtener el emparejamiento para 2 tipos como máximo',
@@ -4834,6 +4827,7 @@ export default class extends Language {
 			`Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
 		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: ({ output }) => `Elija una de las siguientes opciones: ${this.list(output, 'o')}`,
 		SYSTEM_EXTERNAL_SERVER_ERROR: 'El servicio externo que utilizamos no pudo procesar nuestro mensaje, por favor, inténtelo de nuevo más tarde.',
+		SYSTEM_POKEDEX_EXTERNAL_RESOURCE: 'Recursos Externos',
 
 		JUMPTO: 'Salta al Mensaje ►',
 

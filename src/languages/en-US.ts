@@ -2083,10 +2083,7 @@ export default class extends Language {
 			explainedUsage: [['ability', 'The ability for which you want to find data']],
 			examples: ['multiscale', 'pressure']
 		},
-		COMMAND_ABILITY_EMBED_DATA: {
-			ABILITY: 'Ability',
-			EXTERNAL_RESOURCES: 'External resources'
-		},
+		COMMAND_ABILITY_EMBED_TITLE: 'Ability',
 		COMMAND_ABILITY_QUERY_FAIL: ({ ability }) =>
 			`I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
 		COMMAND_FLAVORS_DESCRIPTION: 'Gets the dex entries across various games for a Pokémon.',
@@ -2109,8 +2106,7 @@ export default class extends Language {
 			ITEM: 'Item',
 			GENERATION_INTRODUCED: 'Generation introduced',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in generation 8',
-			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No'),
-			EXTERNAL_RESOURCES: 'External resources'
+			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No')
 		},
 		COMMAND_ITEM_QUERY_FAIL: ({ item }) => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
 		COMMAND_LEARN_DESCRIPTION: 'Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.',
@@ -2170,7 +2166,6 @@ export default class extends Language {
 			GMAX_POKEMON: 'G-MAX Pokémon',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in Generation 8',
 			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No'),
-			EXTERNAL_RESOURCES: 'External Resources',
 			NONE: 'None',
 			MAX_MOVE_POWER: 'Base power as MAX move (Dynamax)',
 			Z_MOVE_POWER: 'Base power as Z-Move (Z-Crystal)'
@@ -2200,7 +2195,6 @@ export default class extends Language {
 			BASE_STATS: 'Base stats',
 			BASE_STATS_TOTAL: 'BST',
 			FLAVOUR_TEXT: 'Pokdex entry',
-			EXTERNAL_RESOURCES: 'External resources',
 			OTHER_FORMES_TITLE: 'Other forme(s)',
 			COSMETIC_FORMES_TITLE: 'Cosmetic Formes',
 			FORMES_LIST: ({ formes }) => this.list(formes, 'and')
@@ -2223,7 +2217,6 @@ export default class extends Language {
 			TAKES_NORMAL_DAMAGE_FROM: 'Takes normal damage from',
 			RESISTS: 'Resists',
 			NOT_AFFECTED_BY: 'Not affected by',
-			EXTERNAL_RESOURCES: 'External resources',
 			TYPE_EFFECTIVENESS_FOR: ({ type }) => `Type effectiveness for ${type.map((val) => `\`${val}\``).join(' and ')}`
 		},
 		COMMAND_TYPE_TOO_MANY_TYPES: 'I am sorry, but you can get the matchup for at most 2 types',
@@ -4775,7 +4768,7 @@ export default class extends Language {
 			`Sent the result to hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
 		SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT: ({ output }) => `Choose one of the following options: ${this.list(output, 'or')}`,
 		SYSTEM_EXTERNAL_SERVER_ERROR: 'The external service we use could not process our message. Please try again later.',
-
+		SYSTEM_POKEDEX_EXTERNAL_RESOURCE: 'External Resources',
 		JUMPTO: 'Jump to Message ►',
 
 		RESOLVER_INVALID_CHANNELNAME: ({ name }) => `${name} must be a valid channel name, id, or tag.`,

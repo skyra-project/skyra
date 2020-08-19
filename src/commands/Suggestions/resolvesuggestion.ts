@@ -84,24 +84,24 @@ export default class extends SkyraCommand {
 		let messageContent = '';
 
 		const author = await this.getAuthor(message, shouldHideAuthor);
-		const actions = message.language.get('COMMAND_RESOLVESUGGESTION_ACTIONS');
-		const DMActions = message.language.get('COMMAND_RESOLVESUGGESTION_ACTIONS_DMS');
+		const actions = message.language.get('COMMAND_RESOLVESUGGESTION_ACTIONS', { author });
+		const DMActions = message.language.get('COMMAND_RESOLVESUGGESTION_ACTIONS_DMS', { author, guild: message.guild!.name });
 
 		switch (action) {
 			case 'a':
 			case 'accept':
-				messageContent = DMActions.ACCEPT({ author, guild: message.guild!.name });
-				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.ACCEPT({ author }), comment);
+				messageContent = DMActions.ACCEPT;
+				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.ACCEPT, comment);
 				break;
 			case 'c':
 			case 'consider':
-				messageContent = DMActions.CONSIDER({ author, guild: message.guild!.name });
-				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.CONSIDER({ author }), comment);
+				messageContent = DMActions.CONSIDER;
+				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.CONSIDER, comment);
 				break;
 			case 'd':
 			case 'deny':
-				messageContent = DMActions.DENY({ author, guild: message.guild!.name });
-				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.DENY({ author }), comment);
+				messageContent = DMActions.DENY;
+				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.DENY, comment);
 				break;
 		}
 

@@ -49,7 +49,10 @@ export default class extends RichDisplayCommand {
 		posts: Reddit.PostDataElement[]
 	) {
 		const titles = message.language.get('COMMAND_REDDITUSER_TITLES');
-		const fieldsData = message.language.get('COMMAND_REDDITUSER_DATA');
+		const fieldsData = message.language.get('COMMAND_REDDITUSER_DATA', {
+			user: about.name,
+			timestamp: this.joinedRedditTimestamp.displayUTC(about.created * 1000)
+		});
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
@@ -57,14 +60,14 @@ export default class extends RichDisplayCommand {
 
 		return new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(fieldsData.OVERVIEW_FOR({ user: about.name }))
+				.setTitle(fieldsData.OVERVIEW_FOR)
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(about.icon_img)
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.setDescription(fieldsData.JOINED_REDDIT({ timestamp: this.joinedRedditTimestamp.displayUTC(about.created * 1000) }))
+					.setDescription(fieldsData.JOINED_REDDIT)
 					.addField(titles.LINK_KARMA, about.link_karma, true)
 					.addField(titles.COMMENT_KARMA, about.comment_karma, true)
 					.addField(titles.TOTAL_COMMENTS, comments.length, true)

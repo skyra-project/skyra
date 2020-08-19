@@ -149,7 +149,10 @@ export default class extends RichDisplayCommand {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
-		const embedTranslations = message.language.get('COMMAND_POKEDEX_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_POKEDEX_EMBED_DATA', {
+			otherFormes: pokeDetails.otherFormes,
+			cosmeticFormes: pokeDetails.cosmeticFormes
+		});
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
 		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
@@ -231,12 +234,12 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => {
 				// If the pokémon has other formes
 				if (pokeDetails.otherFormes) {
-					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.FORMES_LIST({ formes: pokeDetails.otherFormes }));
+					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.OTHER_FORMES_LIST);
 				}
 
 				// If the pokémon has cosmetic formes
 				if (pokeDetails.cosmeticFormes) {
-					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.FORMES_LIST({ formes: pokeDetails.cosmeticFormes! }));
+					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.COSMETIC_FORMES_LIST);
 				}
 
 				// Add the external resource field
@@ -256,5 +259,5 @@ interface PokemonToDisplayArgs {
 	abilities: string[];
 	baseStats: string[];
 	evoChain: string;
-	embedTranslations: LanguageKeys['COMMAND_POKEDEX_EMBED_DATA'];
+	embedTranslations: ReturnType<LanguageKeys['COMMAND_POKEDEX_EMBED_DATA']>;
 }

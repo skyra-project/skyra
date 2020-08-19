@@ -38,7 +38,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.get('COMMAND_MOVE_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_MOVE_EMBED_DATA', { availableInGen8: moveData.isNonstandard !== 'Past' });
 		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
@@ -84,10 +84,7 @@ export default class extends RichDisplayCommand {
 			embed
 				.addField(embedTranslations.Z_CRYSTAL, moveData.isZ ?? embedTranslations.NONE, true)
 				.addField(embedTranslations.GMAX_POKEMON, moveData.isGMax ?? embedTranslations.NONE)
-				.addField(
-					embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
-					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA({ available: moveData.isNonstandard !== 'Past' })
-				)
+				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA)
 				.addField(externalResources, externalSources)
 		);
 	}

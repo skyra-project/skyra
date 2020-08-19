@@ -7,7 +7,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, LanguageKeys } from 'klasa';
 
 const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 
@@ -64,10 +64,9 @@ export default class extends RichDisplayCommand {
 				.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite)
 		);
 
-		const methodTypes = message.language.get('COMMAND_LEARN_METHOD_TYPES');
 		const learnableMethods = Object.entries(learnsetData).filter(
 			([key, value]) => key.endsWith('Moves') && (value as LearnsetLevelUpMove[]).length
-		) as [keyof typeof methodTypes, LearnsetLevelUpMove[]][];
+		) as [keyof ReturnType<LanguageKeys['COMMAND_LEARN_METHOD_TYPES']>, LearnsetLevelUpMove[]][];
 
 		if (learnableMethods.length === 0) {
 			return display.addPage((embed: MessageEmbed) =>
@@ -76,9 +75,10 @@ export default class extends RichDisplayCommand {
 		}
 
 		for (const [methodName, methodData] of learnableMethods) {
-			const method = methodData.map((move) =>
-				this.parseMove(message, learnsetData.species, move.generation!, move.name!, methodTypes[methodName]({ level: move.level! }))
-			);
+			const method = methodData.map((move) => {
+				const methodTypes = message.language.get('COMMAND_LEARN_METHOD_TYPES', { level: move.level });
+				return this.parseMove(message, learnsetData.species, move.generation!, move.name!, methodTypes[methodName]);
+			});
 
 			display.addPage((embed: MessageEmbed) => embed.setDescription(method));
 		}

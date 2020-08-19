@@ -130,7 +130,6 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildCommandHelp(message: KlasaMessage, command: Command) {
-		const DATA = message.language.get('COMMAND_HELP_DATA');
 		const BUILDER_DATA = message.language.get('SYSTEM_HELP_TITLES');
 
 		const builder = new LanguageHelp()
@@ -145,13 +144,19 @@ export default class extends SkyraCommand {
 
 		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
+		const DATA = message.language.get('COMMAND_HELP_DATA', {
+			footerName: command.name,
+			titleDescription: isFunction(command.description) ? command.description(message.language) : command.description,
+			usage: command.usage.fullUsage(message),
+			extendedHelp
+		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
-			.setFooter(DATA.FOOTER({ name: command.name }))
-			.setTitle(DATA.TITLE({ description: isFunction(command.description) ? command.description(message.language) : command.description }))
-			.setDescription([DATA.USAGE({ usage: command.usage.fullUsage(message) }), DATA.EXTENDED({ extendedHelp })].join('\n'));
+			.setFooter(DATA.FOOTER)
+			.setTitle(DATA.TITLE)
+			.setDescription([DATA.USAGE, DATA.EXTENDED].join('\n'));
 	}
 
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {

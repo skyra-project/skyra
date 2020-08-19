@@ -95,7 +95,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
-		const embedTranslations = message.language.get('COMMAND_TYPE_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_TYPE_EMBED_DATA', { types });
 		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
@@ -105,8 +105,8 @@ export default class extends RichDisplayCommand {
 
 		return new UserRichDisplay(
 			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR({ type: types })}`, CdnUrls.Pokedex)
+				.setColor(await DbSet.fetchColor(message)) //
+				.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR}`, CdnUrls.Pokedex) //
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed

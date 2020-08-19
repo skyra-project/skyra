@@ -250,23 +250,27 @@ declare module 'klasa' {
 		COMMAND_FLAVORS_QUERY_FAIL: (params: { pokemon: string }) => string;
 		COMMAND_ITEM_DESCRIPTION: string;
 		COMMAND_ITEM_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_ITEM_EMEBED_DATA: {
+		COMMAND_ITEM_EMEBED_DATA: (params: {
+			availableInGen8: boolean;
+		}) => {
 			ITEM: string;
 			GENERATION_INTRODUCED: string;
 			AVAILABLE_IN_GENERATION_8_TITLE: string;
-			AVAILABLE_IN_GENERATION_8_DATA: (params: { available: boolean }) => string;
+			AVAILABLE_IN_GENERATION_8_DATA: string;
 		};
 		COMMAND_ITEM_QUERY_FAIL: (params: { item: string }) => string;
 		COMMAND_LEARN_DESCRIPTION: string;
 		COMMAND_LEARN_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_LEARN_METHOD_TYPES: {
-			levelUpMoves: (params: { level: number }) => string;
-			eventMoves: (params: { level: number }) => string;
-			tutorMoves: (params: { level: number }) => string;
-			eggMoves: (params: { level: number }) => string;
-			virtualTransferMoves: (params: { level: number }) => string;
-			tmMoves: (params: { level: number }) => string;
-			dreamworldMoves: (params: { level: number }) => string;
+		COMMAND_LEARN_METHOD_TYPES: (params: {
+			level?: number | null;
+		}) => {
+			levelUpMoves: string;
+			eventMoves: string;
+			tutorMoves: string;
+			eggMoves: string;
+			virtualTransferMoves: string;
+			tmMoves: string;
+			dreamworldMoves: string;
 		};
 		COMMAND_LEARN_INVALID_GENERATION: (params: { generation: string }) => string;
 		COMMAND_LEARN_METHOD: (params: { generation: number; pokemon: string; move: string; method: string }) => string;
@@ -275,7 +279,9 @@ declare module 'klasa' {
 		COMMAND_LEARN_TITLE: (params: { pokemon: string; generation: number }) => string;
 		COMMAND_MOVE_DESCRIPTION: string;
 		COMMAND_MOVE_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_MOVE_EMBED_DATA: {
+		COMMAND_MOVE_EMBED_DATA: (params: {
+			availableInGen8: boolean;
+		}) => {
 			MOVE: string;
 			TYPE: string;
 			BASE_POWER: string;
@@ -288,7 +294,7 @@ declare module 'klasa' {
 			Z_CRYSTAL: string;
 			GMAX_POKEMON: string;
 			AVAILABLE_IN_GENERATION_8_TITLE: string;
-			AVAILABLE_IN_GENERATION_8_DATA: (params: { available: boolean }) => string;
+			AVAILABLE_IN_GENERATION_8_DATA: string;
 			NONE: string;
 			MAX_MOVE_POWER: string;
 			Z_MOVE_POWER: string;
@@ -296,7 +302,10 @@ declare module 'klasa' {
 		COMMAND_MOVE_QUERY_FAIL: (params: { move: string }) => string;
 		COMMAND_POKEDEX_DESCRIPTION: string;
 		COMMAND_POKEDEX_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_POKEDEX_EMBED_DATA: {
+		COMMAND_POKEDEX_EMBED_DATA: (params: {
+			otherFormes?: readonly string[] | null;
+			cosmeticFormes?: readonly string[] | null;
+		}) => {
 			TYPES: string;
 			ABILITIES: string;
 			GENDER_RATIO: string;
@@ -311,12 +320,15 @@ declare module 'klasa' {
 			FLAVOUR_TEXT: string;
 			OTHER_FORMES_TITLE: string;
 			COSMETIC_FORMES_TITLE: string;
-			FORMES_LIST: (params: { formes: readonly string[] }) => string;
+			OTHER_FORMES_LIST: string;
+			COSMETIC_FORMES_LIST: string;
 		};
 		COMMAND_POKEDEX_QUERY_FAIL: (params: { pokemon: string }) => string;
 		COMMAND_TYPE_DESCRIPTION: string;
 		COMMAND_TYPE_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_TYPE_EMBED_DATA: {
+		COMMAND_TYPE_EMBED_DATA: (params: {
+			types: string[];
+		}) => {
 			OFFENSIVE: string;
 			DEFENSIVE: string;
 			SUPER_EFFECTIVE_AGAINST: string;
@@ -327,7 +339,7 @@ declare module 'klasa' {
 			TAKES_NORMAL_DAMAGE_FROM: string;
 			RESISTS: string;
 			NOT_AFFECTED_BY: string;
-			TYPE_EFFECTIVENESS_FOR: (params: { type: string[] }) => string;
+			TYPE_EFFECTIVENESS_FOR: string;
 		};
 		COMMAND_TYPE_TOO_MANY_TYPES: string;
 		COMMAND_TYPE_NOT_A_TYPE: (params: { type: string }) => string;
@@ -583,7 +595,9 @@ declare module 'klasa' {
 			NO_CLAN: string;
 			NO_LEAGUE: string;
 		};
-		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
+		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: (params: {
+			isWarLogPublic: boolean;
+		}) => {
 			CLAN_LEVEL: string;
 			CLAN_POINTS: string;
 			CLAN_VERSUS_POINTS: string;
@@ -604,7 +618,7 @@ declare module 'klasa' {
 				oncePerWeek: string;
 				lessThanOncePerWeek: string;
 			};
-			WAR_LOG_PUBLIC_DESCR: (params: { isWarLogPublic: boolean }) => string;
+			WAR_LOG_PUBLIC_DESCR: string;
 		};
 		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: (params: { playertag: string }) => string;
 		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: (params: { clan: string }) => string;
@@ -644,50 +658,84 @@ declare module 'klasa' {
 		COMMAND_FORTNITE_DESCRIPTION: string;
 		COMMAND_FORTNITE_EXTENDED: LanguageHelpDisplayOptions;
 		COMMAND_FORTNITE_NO_USER: string;
-		COMMAND_FORTNITE_TITLES: {
-			TITLE: (params: { epicUserHandle: string }) => string;
+		COMMAND_FORTNITE_EMBED_TITLE: (params: { epicUserHandle: string }) => string;
+		COMMAND_FORTNITE_EMBED_SECTION_TITLES: {
 			LIFETIME_STATS: string;
 			SOLOS: string;
 			DUOS: string;
 			SQUADS: string;
-			WINS: (params: { count: string }) => string;
-			KILLS: (params: { count: string }) => string;
-			KDR: (params: { count: string }) => string;
-			MATCHES_PLAYED: (params: { count: string }) => string;
-			TOP_1S: (params: { count: string }) => string;
-			TOP_3S: (params: { count: string }) => string;
-			TOP_5S: (params: { count: string }) => string;
-			TOP_6S: (params: { count: string }) => string;
-			TOP_10S: (params: { count: string }) => string;
-			TOP_12S: (params: { count: string }) => string;
-			TOP_25S: (params: { count: string }) => string;
+		};
+		COMMAND_FORTNITE_EMBED_STATS: (params: {
+			winCount: string;
+			killCount: string;
+			kdrCount: string;
+			matchesPlayedCount: string;
+			top1Count: string;
+			top3Count: string;
+			top5Count: string;
+			top6Count: string;
+			top10Count: string;
+			top12Count: string;
+			top25Count: string;
+		}) => {
+			WINS: string;
+			KILLS: string;
+			KDR: string;
+			MATCHES_PLAYED: string;
+			TOP_1S: string;
+			TOP_3S: string;
+			TOP_5S: string;
+			TOP_6S: string;
+			TOP_10S: string;
+			TOP_12S: string;
+			TOP_25S: string;
 		};
 		COMMAND_OVERWATCH_DESCRIPTION: string;
 		COMMAND_OVERWATCH_EXTENDED: LanguageHelpDisplayOptions;
 		COMMAND_OVERWATCH_INVALID_PLAYER_NAME: (params: { playerTag: string }) => string;
 		COMMAND_OVERWATCH_QUERY_FAIL: (params: { player: string; platform: string }) => string;
 		COMMAND_OVERWATCH_NO_STATS: (params: { player: string }) => string;
-		COMMMAND_OVERWATCH_EMBED_DATA: {
+		COMMAND_OVERWATCH_NO_AVERAGE: string;
+		COMMAND_OVERWATCH_EMBED_DATA_STATS: (params: {
+			finalBlows: number;
+			deaths: number;
+			damageDone: number;
+			healing: number;
+			objectiveKills: number;
+			soloKills: number;
+			playTime: number;
+			gamesWon: number;
+			goldenMedals: number;
+			silverMedals: number;
+			bronzeMedals: number;
+		}) => {
+			FINAL_BLOWS: string;
+			DEATHS: string;
+			DAMAGE_DEALT: string;
+			HEALING: string;
+			OBJECTIVE_KILLS: string;
+			SOLO_KILLS: string;
+			PLAY_TIME: string;
+			GAMES_WON: string;
+			GOLDEN_MEDALS: string;
+			SILVER_MEDALS: string;
+			BRONZE_MEDALS: string;
+		};
+		COMMAND_OVERWATCH_EMBED_DATA_TOP_HERO: (params: { name: string; playTime: string }) => string;
+		COMMMAND_OVERWATCH_EMBED_DATA: (params: {
+			authorName: string;
+			playerLevel: number;
+			prestigeLevel: number;
+			ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] | string }>;
+			totalGamesWon: number;
+		}) => {
 			TITLE: string;
 			RATINGS_TITLE: string;
-			NO_AVERAGE: string;
-			AUTHOR: (params: { name: string }) => string;
-			PLAYER_LEVEL: (params: { level: number }) => string;
-			PRESTIGE_LEVEL: (params: { level: number }) => string;
-			RATINGS: (params: { ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] | string }> }) => string;
-			TOTAL_GAMES_WON: (params: { gamesWon: number }) => string;
-			FINAL_BLOWS: (params: { finalBlows: number }) => string;
-			DEATHS: (params: { deaths: number }) => string;
-			DAMAGE_DEALT: (params: { damageDone: number }) => string;
-			HEALING: (params: { healingDone: number }) => string;
-			OBJECTIVE_KILLS: (params: { objectiveKills: number }) => string;
-			SOLO_KILLS: (params: { soloKills: number }) => string;
-			PLAY_TIME: (params: { timePlayed: number }) => string;
-			GAMES_WON: (params: { gamesWon: number }) => string;
-			GOLDEN_MEDALS: (params: { medalsGold: number }) => string;
-			SILVER_MEDALS: (params: { medalsSilver: number }) => string;
-			BRONZE_MEDALS: (params: { medalsBronze: number }) => string;
-			TOP_HERO: (params: { heroName: string; timePlayed: string }) => string;
+			AUTHOR: string;
+			PLAYER_LEVEL: string;
+			PRESTIGE_LEVEL: string;
+			RATINGS: string;
+			TOTAL_GAMES_WON: string;
 			HEADERS: {
 				ACCOUNT: string;
 				QUICKPLAY: string;
@@ -709,12 +757,14 @@ declare module 'klasa' {
 		COMMAND_CURRENTTIME_DESCRIPTION: string;
 		COMMAND_CURRENTTIME_EXTENDED: LanguageHelpDisplayOptions;
 		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: string;
-		COMMAND_CURRENTTIME_TITLES: {
+		COMMAND_CURRENTTIME_TITLES: (params: {
+			dst: number;
+		}) => {
 			CURRENT_TIME: string;
 			CURRENT_DATE: string;
 			COUNTRY: string;
 			GMT_OFFSET: string;
-			DST: (params: { dst: number }) => string;
+			DST: string;
 		};
 		COMMAND_GSEARCH_DESCRIPTION: string;
 		COMMAND_GSEARCH_EXTENDED: LanguageHelpDisplayOptions;
@@ -981,10 +1031,16 @@ declare module 'klasa' {
 		COMMAND_HOROSCOPE_DESCRIPTION: string;
 		COMMAND_HOROSCOPE_EXTENDED: LanguageHelpDisplayOptions;
 		COMMAND_HOROSCOPE_INVALID_SUNSIGN: (params: { sign: string; maybe: string }) => string;
-		COMMAND_HOROSCOPE_TITLES: {
-			DAILY_HOROSCOPE: (params: { sign: string }) => string;
+		COMMAND_HOROSCOPE_TITLES: (params: {
+			sign: string;
+			intensity: string;
+			keywords: readonly string[];
+			mood: string;
+			rating: string;
+		}) => {
+			DAILY_HOROSCOPE: string;
 			METADATA_TITLE: string;
-			METADATA: (params: { intensity: string; keywords: readonly string[]; mood: string; rating: string }) => string;
+			METADATA: string;
 		};
 		COMMAND_IGDB_DESCRIPTION: string;
 		COMMAND_IGDB_EXTENDED: LanguageHelpDisplayOptions;
@@ -1189,11 +1245,16 @@ declare module 'klasa' {
 		COMMAND_INVITE: () => string;
 		COMMAND_INVITE_NO_PERMS: () => string;
 		COMMAND_INFO: string;
-		COMMAND_HELP_DATA: {
-			TITLE: (params: { description: string }) => string;
-			USAGE: (params: { usage: string }) => string;
-			EXTENDED: (params: { extendedHelp: string }) => string;
-			FOOTER: (params: { name: string }) => string;
+		COMMAND_HELP_DATA: (params: {
+			titleDescription: string;
+			usage: string;
+			extendedHelp: string;
+			footerName: string;
+		}) => {
+			TITLE: string;
+			USAGE: string;
+			EXTENDED: string;
+			FOOTER: string;
 		};
 		COMMAND_SUPPORT_DESCRIPTION: string;
 		COMMAND_SUPPORT_EXTENDED: LanguageHelpDisplayOptions;
@@ -1202,21 +1263,19 @@ declare module 'klasa' {
 		COMMAND_YARN_NO_PACKAGE: string;
 		COMMAND_YARN_UNPUBLISHED_PACKAGE: (params: { pkg: string }) => string;
 		COMMAND_YARN_PACKAGE_NOT_FOUND: (params: { pkg: string }) => string;
-		COMMAND_YARN_EMBED_DATA: {
-			DESCRIPTION: (params: {
-				author?: string;
-				dateCreated: string;
-				dateModified: string;
-				dependencies: string[] | null;
-				deprecated?: string;
-				description: string;
-				latestVersionNumber: string;
-				license: string;
-				mainFile: string;
-				maintainers: string[];
-			}) => string;
-			MORE_TEXT: string;
-		};
+		COMMAND_YARN_EMBED_DESCRIPTION: (params: {
+			author?: string;
+			dateCreated: string;
+			dateModified: string;
+			dependencies: string[] | null;
+			deprecated?: string;
+			description: string;
+			latestVersionNumber: string;
+			license: string;
+			mainFile: string;
+			maintainers: string[];
+		}) => string;
+		COMMAND_YARN_EMBED_MORE_TEXT: string;
 		COMMAND_8BALL_DESCRIPTION: string;
 		COMMAND_8BALL_EXTENDED: LanguageHelpDisplayOptions;
 		COMMAND_8BALL_OUTPUT: (params: { author: string; question: string; response: string }) => string;
@@ -1280,24 +1339,35 @@ declare module 'klasa' {
 		COMMAND_HIGHERLOWER_EXTENDED: LanguageHelpDisplayOptions;
 		COMMAND_HIGHERLOWER_LOADING: string;
 		COMMAND_HIGHERLOWER_NEWROUND: string;
-		COMMAND_HIGHERLOWER_EMBED: {
-			TITLE: (params: { turn: number }) => string;
-			DESCRIPTION: (params: { number: number }) => string;
+		COMMAND_HIGHERLOWER_EMBED: (params: {
+			turn: number;
+			number: number;
+		}) => {
+			TITLE: string;
+			DESCRIPTION: string;
 			FOOTER: string;
 		};
-		COMMAND_HIGHERLOWER_LOSE: {
+		COMMAND_HIGHERLOWER_LOSE: (params: {
+			number: number;
+			losses: number;
+		}) => {
 			TITLE: string;
-			DESCRIPTION: (params: { number: number; losses: number }) => string;
+			DESCRIPTION: string;
 			FOOTER: string;
 		};
-		COMMAND_HIGHERLOWER_WIN: {
+		COMMAND_HIGHERLOWER_WIN: (params: {
+			potentials: number;
+			number: number;
+		}) => {
 			TITLE: string;
-			DESCRIPTION: (params: { potentials: number; number: number }) => string;
+			DESCRIPTION: string;
 			FOOTER: string;
 		};
-		COMMAND_HIGHERLOWER_CANCEL: {
+		COMMAND_HIGHERLOWER_CANCEL: (params: {
+			username: string;
+		}) => {
 			TITLE: string;
-			DESCRIPTION: (params: { username: string }) => string;
+			DESCRIPTION: string;
 		};
 		COMMAND_HIGHERLOWER_CASHOUT: (params: { amount: number }) => string;
 		COMMAND_HUNGERGAMES_DESCRIPTION: string;
@@ -1342,9 +1412,11 @@ declare module 'klasa' {
 		COMMAND_TRIVIA_WINNER: (params: { winner: string; correctAnswer: string }) => string;
 		COMMAND_VAULT_DESCRIPTION: string;
 		COMMAND_VAULT_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_VAULT_EMBED_DATA: {
-			DEPOSITED_DESCRIPTION: (params: { coins: number }) => string;
-			WITHDREW_DESCRIPTION: (params: { coins: number }) => string;
+		COMMAND_VAULT_EMBED_DATA: (params: {
+			coins?: number;
+		}) => {
+			DEPOSITED_DESCRIPTION: string;
+			WITHDREW_DESCRIPTION: string;
 			SHOW_DESCRIPTION: string;
 			ACCOUNT_MONEY: string;
 			ACCOUNT_VAULT: string;
@@ -1485,17 +1557,24 @@ declare module 'klasa' {
 			BEST_COMMENT: string;
 			WORST_COMMENT: string;
 		};
-		COMMAND_REDDITUSER_DATA: {
-			OVERVIEW_FOR: (params: { user: string }) => string;
+		COMMAND_REDDITUSER_DATA: (params: {
+			user: string;
+			timestamp: string;
+		}) => {
+			OVERVIEW_FOR: string;
 			PERMALINK: string;
 			DATA_AVAILABLE_FOR: string;
-			JOINED_REDDIT: (params: { timestamp: string }) => string;
+			JOINED_REDDIT: string;
 		};
 		COMMAND_SHIP_DESCRIPTION: string;
 		COMMAND_SHIP_EXTENDED: LanguageHelpDisplayOptions;
-		COMMAND_SHIP_DATA: {
-			TITLE: (params: { romeoUsername: string; julietUsername: string }) => string;
-			DESCRIPTION: (params: { shipName: string }) => string;
+		COMMAND_SHIP_DATA: (params: {
+			romeoUsername: string;
+			julietUsername: string;
+			shipName: string;
+		}) => {
+			TITLE: string;
+			DESCRIPTION: string;
 		};
 		COMMAND_SNIPE_EMPTY: string;
 		COMMAND_SNIPE_TITLE: string;
@@ -1533,11 +1612,16 @@ declare module 'klasa' {
 		COMMAND_SLOWMODE_SET: (params: { cooldown: number }) => string;
 		COMMAND_SLOWMODE_TOO_LONG: string;
 		COMMAND_BAN_NOT_BANNABLE: string;
-		COMMAND_DEHOIST_EMBED: {
-			TITLE: (params: { users: number }) => string;
+		COMMAND_DEHOIST_EMBED: (params: {
+			users: number;
+			dehoistedMemberCount: number;
+			dehoistedWithErrorsCount: number;
+			errored: number;
+		}) => {
+			TITLE: string;
 			DESCRIPTION_NOONE: string;
-			DESCRIPTION_WITHERRORS: (params: { users: number; errored: number }) => string;
-			DESCRIPTION: (params: { users: number }) => string;
+			DESCRIPTION_WITHERRORS: string;
+			DESCRIPTION: string;
 			FIELD_ERROR_TITLE: string;
 		};
 		COMMAND_KICK_NOT_KICKABLE: string;
@@ -1697,15 +1781,20 @@ declare module 'klasa' {
 		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: string;
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: string;
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: string;
-		COMMAND_RESOLVESUGGESTION_ACTIONS: {
-			ACCEPT: (params: { author: string }) => string;
-			CONSIDER: (params: { author: string }) => string;
-			DENY: (params: { author: string }) => string;
+		COMMAND_RESOLVESUGGESTION_ACTIONS: (params: {
+			author: string;
+		}) => {
+			ACCEPT: string;
+			CONSIDER: string;
+			DENY: string;
 		};
-		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
-			ACCEPT: (params: { author: string; guild: string }) => string;
-			CONSIDER: (params: { author: string; guild: string }) => string;
-			DENY: (params: { author: string; guild: string }) => string;
+		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: (params: {
+			author: string;
+			guild: string;
+		}) => {
+			ACCEPT: string;
+			CONSIDER: string;
+			DENY: string;
 		};
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: string;
 		COMMAND_RESOLVESUGGESTION_SUCCESS: (params: { id: number; action: 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c' }) => string;

@@ -48,22 +48,20 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
 		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(message, sign, day);
 
-		const TITLES = message.language.get('COMMAND_HOROSCOPE_TITLES');
+		const TITLES = message.language.get('COMMAND_HOROSCOPE_TITLES', {
+			sign,
+			intensity,
+			keywords,
+			mood,
+			rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`
+		});
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(prediction)
-				.setTitle(TITLES.DAILY_HOROSCOPE({ sign }))
+				.setTitle(TITLES.DAILY_HOROSCOPE)
 				.setTimestamp(new Date(date))
-				.addField(
-					TITLES.METADATA_TITLE,
-					TITLES.METADATA({
-						intensity,
-						keywords,
-						mood,
-						rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`
-					})
-				)
+				.addField(TITLES.METADATA_TITLE, TITLES.METADATA)
 		);
 	}
 

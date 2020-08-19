@@ -128,10 +128,10 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildClanDisplay(message: KlasaMessage, clans: ClashOfClans.Clan[]) {
-		const TITLES = message.language.get('COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
+			const TITLES = message.language.get('COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES', { isWarLogPublic: clan.isWarLogPublic });
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)
@@ -159,7 +159,7 @@ export default class extends RichDisplayCommand {
 							`**${TITLES.WAR_WINS}**: ${clan.warWins}`,
 							`**${TITLES.WAR_TIES}**: ${clan.warTies ?? TITLES.UNKNOWN}`,
 							`**${TITLES.WAR_LOSSES}**: ${clan.warLosses ?? TITLES.UNKNOWN}`,
-							`**${TITLES.WAR_LOG_PUBLIC}**: ${TITLES.WAR_LOG_PUBLIC_DESCR({ isWarLogPublic: clan.isWarLogPublic })}`
+							`**${TITLES.WAR_LOG_PUBLIC}**: ${TITLES.WAR_LOG_PUBLIC_DESCR}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

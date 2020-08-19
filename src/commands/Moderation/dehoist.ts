@@ -50,15 +50,20 @@ export default class extends SkyraCommand {
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED');
+		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED', {
+			dehoistedMemberCount: dehoistedMembers,
+			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
+			errored: erroredChanges.length,
+			users: message.guild!.memberTags.size
+		});
 		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTitle(embedLanguage.TITLE({ users: message.guild!.memberTags.size }));
+			.setColor(await DbSet.fetchColor(message)) //
+			.setTitle(embedLanguage.TITLE);
 
-		let description = embedLanguage.DESCRIPTION({ users: dehoistedMembers });
+		let description = embedLanguage.DESCRIPTION;
 		if (dehoistedMembers <= 0) description = embedLanguage.DESCRIPTION_NOONE;
 		if (erroredChanges.length > 0) {
-			description = embedLanguage.DESCRIPTION_WITHERRORS({ users: dehoistedMembers - erroredChanges.length, errored: erroredChanges.length });
+			description = embedLanguage.DESCRIPTION_WITHERRORS;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.FIELD_ERROR_TITLE, codeblock);

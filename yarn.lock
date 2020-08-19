@@ -672,9 +672,9 @@
   resolved "https://registry.yarnpkg.com/@klasa/request-handler/-/request-handler-0.0.3.tgz#ed72de611ece3dd99725cb797fc13e07bb05e618"
   integrity sha512-Z1O+Aa2kW/I4Uos4EZalByveIuQKRfuRx+JCsgsogDBd95N5Ub47AH+LEd5i+uzjnJ6iDHfodpVlaHojJ4Q+ZQ==
 
-"@klasa/settings-gateway@skyra-project/settings-gateway#build":
+"@klasa/settings-gateway@github:skyra-project/settings-gateway#build":
   version "1.0.0"
-  resolved "https://codeload.github.com/skyra-project/settings-gateway/tar.gz/192fec0b4c292d7c587b42eab1ee63dc42696da9"
+  resolved "https://codeload.github.com/skyra-project/settings-gateway/tar.gz/a0ed999c24b5d61e1c21d193ef4bba72e10965eb"
   dependencies:
     "@discordjs/collection" "^0.1.6"
     "@klasa/querybuilder" "^0.0.1"
@@ -3762,10 +3762,10 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa@skyra-project/klasa#build:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/9128faf435dac26ef387fba73e0c5ec3eac3af77"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/97c358db99bd49aa3bca0dc507496bb90d06be46"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
-    "@klasa/settings-gateway" skyra-project/settings-gateway#build
+    "@klasa/settings-gateway" "github:skyra-project/settings-gateway#build"
     fs-nextra "^0.5.1"
 
 kleur@^3.0.3:

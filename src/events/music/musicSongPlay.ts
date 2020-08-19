@@ -15,7 +15,7 @@ export default class extends Event {
 		if (song) {
 			if (channel) {
 				const name = cleanMentions(manager.guild, await song.fetchRequesterName());
-				floatPromise(this, channel.sendLocale('COMMAND_PLAY_NEXT', [song.safeTitle, name]));
+				floatPromise(this, channel.sendLocale('COMMAND_PLAY_NEXT', [{ title: song.safeTitle, requester: name }]));
 			}
 
 			for (const subscription of manager.websocketUserIterator()) {

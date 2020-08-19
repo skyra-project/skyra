@@ -8,7 +8,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('COMMAND_PROMOTE_SUCCESS', [manager.queue[0]]));
+			floatPromise(this, channel.sendLocale('COMMAND_PROMOTE_SUCCESS', [{ song: manager.queue[0] }]));
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {

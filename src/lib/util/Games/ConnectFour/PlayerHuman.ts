@@ -32,7 +32,7 @@ export class PlayerHuman extends Player {
 
 		if (this.game.stopped) return;
 		if (!reaction) {
-			this.game.content = this.game.language.tget('COMMAND_GAMES_TIMEOUT');
+			this.game.content = this.game.language.get('COMMAND_GAMES_TIMEOUT');
 			this.game.stop();
 		} else if (!this.drop(ConnectFourConstants.Reactions.indexOf(reaction))) {
 			return this.start();

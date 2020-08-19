@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_RATE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_RATE_EXTENDED'),
+			description: (language) => language.get('COMMAND_RATE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_RATE_EXTENDED'),
 			spam: true,
 			usage: '<user:string>'
 		});
@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 
 		if (/^(you|yourself|skyra)$/i.test(user)) {
 			rate = 100;
-			[ratewaifu, user] = message.language.tget('COMMAND_RATE_MYSELF');
+			[ratewaifu, user] = message.language.get('COMMAND_RATE_MYSELF');
 		} else {
 			user = /^(myself|me)$/i.test(user) ? message.author.username : user.replace(/\bmy\b/g, 'your');
 
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			[ratewaifu, rate] = [oneToTen((rng / 10) | 0)!.emoji, rng];
 		}
 
-		return message.sendMessage(`**${message.author.username}**, ${message.language.tget('COMMAND_RATE_OUTPUT', user, rate, ratewaifu)}`, {
+		return message.sendLocale('COMMAND_RATE_OUTPUT', [{ author: message.author.username, userToRate: user, rate, emoji: ratewaifu }], {
 			disableEveryone: true
 		});
 	}

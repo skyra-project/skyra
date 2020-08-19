@@ -7,8 +7,8 @@ import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.tget('COMMAND_DIVORCE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_DIVORCE_EXTENDED'),
+	description: (language) => language.get('COMMAND_DIVORCE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_DIVORCE_EXTENDED'),
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '<user:user>'
@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 			if (!entry) return message.sendLocale('COMMAND_DIVORCE_NOTTAKEN');
 
 			// Ask the user if they're sure
-			const accept = await message.ask(message.language.tget('COMMAND_DIVORCE_PROMPT'));
+			const accept = await message.ask(message.language.get('COMMAND_DIVORCE_PROMPT'));
 			if (!accept) return message.sendLocale('COMMAND_DIVORCE_CANCEL');
 
 			// Remove the spouse
@@ -30,9 +30,12 @@ export default class extends SkyraCommand {
 			// Tell the user about the divorce
 			floatPromise(
 				this,
-				resolveOnErrorCodes(user.send(message.language.tget('COMMAND_DIVORCE_DM', message.author.username)), APIErrors.CannotMessageUser)
+				resolveOnErrorCodes(
+					user.send(message.language.get('COMMAND_DIVORCE_DM', { user: message.author.username })),
+					APIErrors.CannotMessageUser
+				)
 			);
-			return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [user]);
+			return message.sendLocale('COMMAND_DIVORCE_SUCCESS', [{ user: user.toString() }]);
 		});
 	}
 }

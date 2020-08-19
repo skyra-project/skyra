@@ -39,7 +39,7 @@ export default class extends Monitor {
 							message.guild!.security.actions.kick({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
-								reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
+								reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
 							})
 						)
 					);
@@ -51,7 +51,7 @@ export default class extends Monitor {
 							message.guild!.security.actions.mute({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
-								reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
+								reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
 							})
 						)
 					);
@@ -64,7 +64,7 @@ export default class extends Monitor {
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
-									reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
+									reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
 								},
 								1
 							)
@@ -79,7 +79,7 @@ export default class extends Monitor {
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
-									reason: message.language.get<string>(this.reasonLanguageKey, points, maximum)
+									reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
 								},
 								0
 							)
@@ -96,7 +96,7 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_ATTACHMENTFILTER')}`)
+						.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_ATTACHMENTFILTER')}`)
 						.setTimestamp()
 				);
 			}

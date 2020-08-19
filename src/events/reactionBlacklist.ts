@@ -81,7 +81,7 @@ export default class extends ModerationEvent<ArgumentType> {
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
 			this,
-			data.channel.sendLocale('MONITOR_REACTIONSFILTER', [`<@${data.userID}>`]).then((message) => message.nuke(15000))
+			data.channel.sendLocale('MONITOR_REACTIONSFILTER', [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
 		);
 	}
 
@@ -96,9 +96,9 @@ export default class extends ModerationEvent<ArgumentType> {
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(
-				`[${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
+				`[${data.guild.language.get('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
 			)
-			.setFooter(`${data.channel.name} | ${data.guild.language.tget('CONST_MONITOR_REACTIONFILTER')}`)
+			.setFooter(`${data.channel.name} | ${data.guild.language.get('CONST_MONITOR_REACTIONFILTER')}`)
 			.setTimestamp();
 	}
 

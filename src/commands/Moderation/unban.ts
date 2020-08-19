@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ub'],
-	description: (language) => language.tget('COMMAND_UNBAN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_UNBAN_EXTENDED'),
+	description: (language) => language.get('COMMAND_UNBAN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_UNBAN_EXTENDED'),
 	requiredMember: false,
 	requiredPermissions: ['BAN_MEMBERS']
 })
@@ -18,11 +18,11 @@ export default class extends ModerationCommand {
 			.guild!.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => {
-				throw message.language.tget('SYSTEM_FETCHBANS_FAIL');
+				throw message.language.get('SYSTEM_FETCHBANS_FAIL');
 			});
 		if (bans.length)
 			return { bans, unlock: message.guild!.settings.get(GuildSettings.Events.BanRemove) ? message.guild!.moderation.createLock() : null };
-		throw message.language.tget('GUILD_BANS_EMPTY');
+		throw message.language.get('GUILD_BANS_EMPTY');
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
@@ -45,7 +45,7 @@ export default class extends ModerationCommand {
 	public checkModeratable(
 		...[message, { preHandled, target, ...context }]: ArgumentTypes<ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']>
 	) {
-		if (!preHandled.bans.includes(target.id)) throw message.language.tget('GUILD_BANS_NOT_FOUND');
+		if (!preHandled.bans.includes(target.id)) throw message.language.get('GUILD_BANS_NOT_FOUND');
 		return super.checkModeratable(message, { preHandled, target, ...context });
 	}
 }

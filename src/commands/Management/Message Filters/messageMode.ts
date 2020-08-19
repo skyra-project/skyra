@@ -15,8 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['message-mode', 'msg-mode', 'm-mode'],
-			description: (language) => language.tget('COMMAND_MESSAGEMODE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_MESSAGEMODE_EXTENDED')
+			description: (language) => language.get('COMMAND_MESSAGEMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_MESSAGEMODE_EXTENDED')
 		});
 	}
 }

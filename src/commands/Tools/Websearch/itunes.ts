@@ -9,8 +9,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_ITUNES_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_ITUNES_EXTENDED'),
+	description: (language) => language.get('COMMAND_ITUNES_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_ITUNES_EXTENDED'),
 	usage: '<song:str>'
 })
 export default class extends RichDisplayCommand {
@@ -18,11 +18,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [song]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, song);
-		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -42,12 +42,12 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<AppleItunesResult>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		}
 	}
 
 	private async buildDisplay(entries: ItunesData[], message: KlasaMessage) {
-		const titles = message.language.tget('COMMAND_ITUNES_TITLES');
+		const titles = message.language.get('COMMAND_ITUNES_TITLES');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {

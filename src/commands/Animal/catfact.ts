@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['kittenfact'],
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_CATFACT_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_CATFACT_EXTENDED'),
+			description: (language) => language.get('COMMAND_CATFACT_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CATFACT_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true
 		});
@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.tget('COMMAND_CATFACT_TITLE'))
+				.setTitle(message.language.get('COMMAND_CATFACT_TITLE'))
 				.setDescription(fact)
 		);
 	}

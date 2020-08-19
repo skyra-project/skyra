@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['doggo', 'puppy'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_DOG_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_DOG_EXTENDED'),
+	description: (language) => language.get('COMMAND_DOG_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_DOG_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	spam: true
 })

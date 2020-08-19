@@ -5,8 +5,8 @@ import { ArgumentTypes, getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['w', 'warning'],
-	description: (language) => language.tget('COMMAND_WARN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_WARN_EXTENDED'),
+	description: (language) => language.get('COMMAND_WARN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_WARN_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredMember: true,
 	optionalDuration: true

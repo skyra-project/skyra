@@ -5,8 +5,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_INVITE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_INVITE_EXTENDED'),
+	description: (language) => language.get('COMMAND_INVITE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_INVITE_EXTENDED'),
 	usage: '[noperms]',
 	flagSupport: true,
 	guarded: true
@@ -14,10 +14,10 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
 		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.sendLocale('COMMAND_INVITE_NO_PERMS');
+			return message.sendLocale('COMMAND_INVITE_NO_PERMS', []);
 		}
 
-		return message.sendLocale('COMMAND_INVITE');
+		return message.sendLocale('COMMAND_INVITE', []);
 	}
 
 	public async init() {

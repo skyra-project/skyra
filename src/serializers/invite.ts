@@ -5,11 +5,11 @@ export default class extends Serializer {
 
 	public async validate(data: string, { entry, language }: SerializerUpdateContext) {
 		const parsed = this.kRegExp.exec(data);
-		if (parsed === null) throw language.tget('RESOLVER_INVALID_INVITE', entry.key);
+		if (parsed === null) throw language.get('RESOLVER_INVALID_INVITE', { name: entry.key });
 
 		const { code } = parsed.groups!;
 		const invite = await this.client.invites.fetch(code);
-		if (invite === null || !Reflect.has(invite, 'guildID')) throw language.tget('RESOLVER_INVALID_INVITE', entry.key);
+		if (invite === null || !Reflect.has(invite, 'guildID')) throw language.get('RESOLVER_INVALID_INVITE', { name: entry.key });
 		return code;
 	}
 }

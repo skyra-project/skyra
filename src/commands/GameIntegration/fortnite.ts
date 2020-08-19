@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_FORTNITE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_FORTNITE_EXTENDED'),
+	description: (language) => language.get('COMMAND_FORTNITE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_FORTNITE_EXTENDED'),
 	usage: '<xbox|psn|pc:default> <user:...string>',
 	usageDelim: ' '
 })
@@ -21,7 +21,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const fortniteUser = await this.fetchAPI(message, user, platform);
@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw message.language.tget('COMMAND_FORTNITE_NO_USER');
+			throw message.language.get('COMMAND_FORTNITE_NO_USER');
 		}
 	}
 
@@ -52,11 +52,11 @@ export default class extends RichDisplayCommand {
 		message: KlasaMessage,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
-		const TITLES = message.language.tget('COMMAND_FORTNITE_TITLES');
+		const TITLES = message.language.get('COMMAND_FORTNITE_TITLES');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(TITLES.TITLE(epicUserHandle))
+				.setTitle(TITLES.TITLE({ epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
 		);
@@ -67,16 +67,16 @@ export default class extends RichDisplayCommand {
 				embed.setDescription(
 					[
 						TITLES.LIFETIME_STATS,
-						TITLES.WINS(lts.find((el) => el.key === 'wins')!.value),
-						TITLES.KILLS(lts.find((el) => el.key === 'kills')!.value),
-						TITLES.KDR(lts.find((el) => el.key === 'k/d')!.value),
-						TITLES.MATCHES_PLAYED(lts.find((el) => el.key === 'matches played')!.value),
-						TITLES.TOP_3S(lts.find((el) => el.key === 'top 3s')!.value),
-						TITLES.TOP_5S(lts.find((el) => el.key === 'top 5s')!.value),
-						TITLES.TOP_6S(lts.find((el) => el.key === 'top 6s')!.value),
-						TITLES.TOP_10S(lts.find((el) => el.key === 'top 10')!.value),
-						TITLES.TOP_12S(lts.find((el) => el.key === 'top 12s')!.value),
-						TITLES.TOP_25S(lts.find((el) => el.key === 'top 25s')!.value)
+						TITLES.WINS({ count: lts.find((el) => el.key === 'wins')!.value }),
+						TITLES.KILLS({ count: lts.find((el) => el.key === 'kills')!.value }),
+						TITLES.KDR({ count: lts.find((el) => el.key === 'k/d')!.value }),
+						TITLES.MATCHES_PLAYED({ count: lts.find((el) => el.key === 'matches played')!.value }),
+						TITLES.TOP_3S({ count: lts.find((el) => el.key === 'top 3s')!.value }),
+						TITLES.TOP_5S({ count: lts.find((el) => el.key === 'top 5s')!.value }),
+						TITLES.TOP_6S({ count: lts.find((el) => el.key === 'top 6s')!.value }),
+						TITLES.TOP_10S({ count: lts.find((el) => el.key === 'top 10')!.value }),
+						TITLES.TOP_12S({ count: lts.find((el) => el.key === 'top 12s')!.value }),
+						TITLES.TOP_25S({ count: lts.find((el) => el.key === 'top 25s')!.value })
 					].join('\n')
 				)
 			)
@@ -84,17 +84,17 @@ export default class extends RichDisplayCommand {
 				embed.setDescription(
 					[
 						TITLES.SOLOS,
-						TITLES.WINS(p2.top1.value),
-						TITLES.KILLS(p2.kills.value),
-						TITLES.KDR(p2.kd.value),
-						TITLES.MATCHES_PLAYED(p2.matches.value),
-						TITLES.TOP_1S(p2.top1.value),
-						TITLES.TOP_3S(p2.top3.value),
-						TITLES.TOP_5S(p2.top5.value),
-						TITLES.TOP_6S(p2.top6.value),
-						TITLES.TOP_10S(p2.top10.value),
-						TITLES.TOP_12S(p2.top12.value),
-						TITLES.TOP_25S(p2.top25.value)
+						TITLES.WINS({ count: p2.top1.value }),
+						TITLES.KILLS({ count: p2.kills.value }),
+						TITLES.KDR({ count: p2.kd.value }),
+						TITLES.MATCHES_PLAYED({ count: p2.matches.value }),
+						TITLES.TOP_1S({ count: p2.top1.value }),
+						TITLES.TOP_3S({ count: p2.top3.value }),
+						TITLES.TOP_5S({ count: p2.top5.value }),
+						TITLES.TOP_6S({ count: p2.top6.value }),
+						TITLES.TOP_10S({ count: p2.top10.value }),
+						TITLES.TOP_12S({ count: p2.top12.value }),
+						TITLES.TOP_25S({ count: p2.top25.value })
 					].join('\n')
 				)
 			);
@@ -104,17 +104,17 @@ export default class extends RichDisplayCommand {
 				embed.setDescription(
 					[
 						TITLES.DUOS,
-						TITLES.WINS(p10.top1.value),
-						TITLES.KILLS(p10.kills.value),
-						TITLES.KDR(p10.kd.value),
-						TITLES.MATCHES_PLAYED(p10.matches.value),
-						TITLES.TOP_1S(p10.top1.value),
-						TITLES.TOP_3S(p10.top3.value),
-						TITLES.TOP_5S(p10.top5.value),
-						TITLES.TOP_6S(p10.top6.value),
-						TITLES.TOP_10S(p10.top10.value),
-						TITLES.TOP_12S(p10.top12.value),
-						TITLES.TOP_25S(p10.top25.value)
+						TITLES.WINS({ count: p10.top1.value }),
+						TITLES.KILLS({ count: p10.kills.value }),
+						TITLES.KDR({ count: p10.kd.value }),
+						TITLES.MATCHES_PLAYED({ count: p10.matches.value }),
+						TITLES.TOP_1S({ count: p10.top1.value }),
+						TITLES.TOP_3S({ count: p10.top3.value }),
+						TITLES.TOP_5S({ count: p10.top5.value }),
+						TITLES.TOP_6S({ count: p10.top6.value }),
+						TITLES.TOP_10S({ count: p10.top10.value }),
+						TITLES.TOP_12S({ count: p10.top12.value }),
+						TITLES.TOP_25S({ count: p10.top25.value })
 					].join('\n')
 				)
 			);
@@ -125,17 +125,17 @@ export default class extends RichDisplayCommand {
 				embed.setDescription(
 					[
 						TITLES.SQUADS,
-						TITLES.WINS(p9.top1.value),
-						TITLES.KILLS(p9.kills.value),
-						TITLES.KDR(p9.kd.value),
-						TITLES.MATCHES_PLAYED(p9.matches.value),
-						TITLES.TOP_1S(p9.top1.value),
-						TITLES.TOP_3S(p9.top3.value),
-						TITLES.TOP_5S(p9.top5.value),
-						TITLES.TOP_6S(p9.top6.value),
-						TITLES.TOP_10S(p9.top10.value),
-						TITLES.TOP_12S(p9.top12.value),
-						TITLES.TOP_25S(p9.top25.value)
+						TITLES.WINS({ count: p9.top1.value }),
+						TITLES.KILLS({ count: p9.kills.value }),
+						TITLES.KDR({ count: p9.kd.value }),
+						TITLES.MATCHES_PLAYED({ count: p9.matches.value }),
+						TITLES.TOP_1S({ count: p9.top1.value }),
+						TITLES.TOP_3S({ count: p9.top3.value }),
+						TITLES.TOP_5S({ count: p9.top5.value }),
+						TITLES.TOP_6S({ count: p9.top6.value }),
+						TITLES.TOP_10S({ count: p9.top10.value }),
+						TITLES.TOP_12S({ count: p9.top12.value }),
+						TITLES.TOP_25S({ count: p9.top25.value })
 					].join('\n')
 				)
 			);

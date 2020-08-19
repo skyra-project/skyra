@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { roundNumber } from '@utils/util';
-import { version, MessageEmbed } from 'discord.js';
+import { MessageEmbed, version } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { cpus, uptime } from 'os';
 
@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_STATS_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_STATS_EXTENDED'),
+			description: (language) => language.get('COMMAND_STATS_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_STATS_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
@@ -22,8 +22,12 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage) {
-		const TITLES = message.language.tget('COMMAND_STATS_TITLES');
-		const FIELDS = message.language.tget('COMMAND_STATS_FIELDS', this.generalStatistics, this.uptimeStatistics, this.usageStatistics);
+		const TITLES = message.language.get('COMMAND_STATS_TITLES');
+		const FIELDS = message.language.get('COMMAND_STATS_FIELDS', {
+			stats: this.generalStatistics,
+			uptime: this.uptimeStatistics,
+			usage: this.usageStatistics
+		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.addField(TITLES.STATS, FIELDS.STATS)

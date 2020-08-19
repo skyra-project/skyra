@@ -6,8 +6,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restricted-reaction', 'urr'],
-	description: (language) => language.tget('COMMAND_UNRESTRICTREACTION_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_UNRESTRICTREACTION_EXTENDED'),
+	description: (language) => language.get('COMMAND_UNRESTRICTREACTION_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_UNRESTRICTREACTION_EXTENDED'),
 	requiredGuildPermissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
@@ -18,7 +18,7 @@ export default class extends ModerationCommand {
 		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(this.kPath);
 		if (id && message.guild.roles.has(id)) return false;
-		throw message.language.tget('GUILD_SETTINGS_ROLES_RESTRICTED', message.guild.settings.get(GuildSettings.Prefix), this.kPath);
+		throw message.language.get('GUILD_SETTINGS_ROLES_RESTRICTED', { prefix: message.guild.settings.get(GuildSettings.Prefix), path: this.kPath });
 	}
 
 	public async prehandle() {

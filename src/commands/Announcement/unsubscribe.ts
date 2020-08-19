@@ -6,8 +6,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_UNSUBSCRIBE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_UNSUBSCRIBE_EXTENDED'),
+			description: (language) => language.get('COMMAND_UNSUBSCRIBE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_UNSUBSCRIBE_EXTENDED'),
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text']
 		});
@@ -16,6 +16,6 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const role = announcementCheck(message);
 		await message.member!.roles.remove(role);
-		return message.sendLocale('COMMAND_UNSUBSCRIBE_SUCCESS', [role.name]);
+		return message.sendLocale('COMMAND_UNSUBSCRIBE_SUCCESS', [{ role: role.name }]);
 	}
 }

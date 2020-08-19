@@ -47,14 +47,14 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.tget('MONITOR_NOLINK', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_NOLINK', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_LINK')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_LINK')}`)
 			.setTimestamp();
 	}
 }

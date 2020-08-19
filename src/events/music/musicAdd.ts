@@ -13,8 +13,8 @@ export default class extends Event {
 				this,
 				channel.sendMessage(
 					songs.length === 1
-						? channel.guild.language.tget('COMMAND_ADD_SONG', songs[0].safeTitle)
-						: channel.guild.language.tget('COMMAND_ADD_PLAYLIST', songs.length)
+						? channel.guild.language.get('COMMAND_ADD_SONG', { title: songs[0].safeTitle })
+						: channel.guild.language.get('COMMAND_ADD_PLAYLIST', { amount: songs.length })
 				)
 			);
 		}

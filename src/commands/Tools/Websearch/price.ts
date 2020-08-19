@@ -10,15 +10,15 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
-	description: (language) => language.tget('COMMAND_PRICE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_PRICE_EXTENDED'),
+	description: (language) => language.get('COMMAND_PRICE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_PRICE_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
-		await message.sendEmbed(new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary));
+		await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary));
 
 		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
 
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw message.language.tget('COMMAND_PRICE_CURRENCY_NOT_FOUND');
+			throw message.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
 		}
 	}
 
@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(message.language.tget('COMMAND_PRICE_CURRENCY', fromCurrency, fromAmount, worths))
+			.setDescription(message.language.get('COMMAND_PRICE_CURRENCY', { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}
 }

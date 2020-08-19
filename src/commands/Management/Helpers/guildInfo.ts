@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['serverinfo'],
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_GUILDINFO_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_GUILDINFO_EXTENDED'),
+			description: (language) => language.get('COMMAND_GUILDINFO_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_GUILDINFO_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 			else cChannels++;
 		}
 
-		const serverInfoTitles = (message.language.tget('COMMAND_SERVERINFO_TITLES') as unknown) as ServerInfoTitles;
+		const serverInfoTitles = (message.language.get('COMMAND_SERVERINFO_TITLES') as unknown) as ServerInfoTitles;
 		const roles = [...message.guild!.roles.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild!.ownerID);
@@ -36,33 +36,34 @@ export default class extends SkyraCommand {
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(message.guild!.iconURL()!)
 				.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
-				.splitFields(message.language.tget('COMMAND_WHOIS_MEMBER_ROLES', roles.length), roles.join(' '))
+				.splitFields(message.language.get('COMMAND_WHOIS_MEMBER_ROLES', { amount: roles.length }), roles.join(' '))
 				.addField(
 					serverInfoTitles.CHANNELS,
-					message.language.tget(
-						'COMMAND_SERVERINFO_CHANNELS',
-						tChannels,
-						vChannels,
-						cChannels,
-						message.guild!.afkChannelID,
-						message.guild!.afkTimeout
-					),
+					message.language.get('COMMAND_SERVERINFO_CHANNELS', {
+						text: tChannels,
+						voice: vChannels,
+						categories: cChannels,
+						afkChannel: message.guild!.afkChannelID,
+						afkTime: message.guild!.afkTimeout
+					}),
 					true
 				)
 				.addField(
 					serverInfoTitles.MEMBERS,
-					message.language.tget('COMMAND_SERVERINFO_MEMBERS', message.guild!.memberCount.toLocaleString(message.language.name), owner),
+					message.language.get('COMMAND_SERVERINFO_MEMBERS', {
+						count: message.guild!.memberCount.toLocaleString(message.language.name),
+						owner
+					}),
 					true
 				)
 				.addField(
 					serverInfoTitles.OTHER,
-					message.language.tget(
-						'COMMAND_SERVERINFO_OTHER',
-						message.guild!.roles.size,
-						message.guild!.region,
-						message.guild!.createdTimestamp,
-						message.guild!.verificationLevel as 0 | 1 | 2 | 3 | 4
-					),
+					message.language.get('COMMAND_SERVERINFO_OTHER', {
+						size: message.guild!.roles.size,
+						region: message.guild!.region,
+						createdAt: message.guild!.createdTimestamp,
+						verificationLevel: message.guild!.verificationLevel as 0 | 1 | 2 | 3 | 4
+					}),
 					true
 				)
 		);

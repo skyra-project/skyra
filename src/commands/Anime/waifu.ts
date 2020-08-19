@@ -13,8 +13,8 @@ import { KlasaMessage } from 'klasa';
 const kMaximum = 100000;
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.tget('COMMAND_WAIFU_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_WAIFU_EXTENDED'),
+	description: (language) => language.get('COMMAND_WAIFU_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_WAIFU_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 				.setURL(url)
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(url)
-				.setFooter(message.language.tget('COMMAND_WAIFU_FOOTER'))
+				.setFooter(message.language.get('COMMAND_WAIFU_FOOTER'))
 				.setTimestamp()
 		);
 	}

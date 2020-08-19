@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['announce'],
 	bucket: 6,
 	cooldown: 30,
-	description: (language) => language.tget('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_ANNOUNCEMENT_EXTENDED'),
+	description: (language) => language.get('COMMAND_ANNOUNCEMENT_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_ANNOUNCEMENT_EXTENDED'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS'],
@@ -25,15 +25,15 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [announcement]: [string]) {
 		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);
-		if (!announcementID) throw message.language.tget('COMMAND_SUBSCRIBE_NO_CHANNEL');
+		if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
 		const channel = message.guild!.channels.get(announcementID) as TextChannel;
-		if (!channel) throw message.language.tget('COMMAND_SUBSCRIBE_NO_CHANNEL');
+		if (!channel) throw message.language.get('COMMAND_SUBSCRIBE_NO_CHANNEL');
 
-		if (!channel.postable) throw message.language.tget('SYSTEM_CHANNEL_NOT_POSTABLE');
+		if (!channel.postable) throw message.language.get('SYSTEM_CHANNEL_NOT_POSTABLE');
 
 		const role = announcementCheck(message);
-		const header = message.language.tget('COMMAND_ANNOUNCEMENT', role.toString());
+		const header = message.language.get('COMMAND_ANNOUNCEMENT', { role: role.toString() });
 
 		if (await this.ask(message, header, announcement)) {
 			await this.send(message, channel, role, header, announcement);
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 	private ask(message: KlasaMessage, header: string, announcement: string) {
 		try {
-			return message.ask(message.language.tget('COMMAND_ANNOUNCEMENT_PROMPT'), {
+			return message.ask(message.language.get('COMMAND_ANNOUNCEMENT_PROMPT'), {
 				embed: this.buildEmbed(announcement, header)
 			});
 		} catch {
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 			try {
 				const resultMessage = shouldSendAsEmbed
 					? await previous.edit(
-							message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions),
+							message.language.get('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', { header, mentions }),
 							this.buildEmbed(announcement)
 					  )
 					: await previous.edit(`${header}:\n${announcement}`);
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 					const resultMessage = shouldSendAsEmbed
 						? await channel.sendEmbed(
 								this.buildEmbed(announcement),
-								message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+								message.language.get('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', { header, mentions })
 						  )
 						: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
@@ -91,7 +91,7 @@ export default class extends SkyraCommand {
 			const resultMessage = shouldSendAsEmbed
 				? await channel.sendEmbed(
 						this.buildEmbed(announcement),
-						message.language.tget('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', header, mentions)
+						message.language.get('COMMAND_ANNOUNCEMENT_EMBED_MENTIONS', { header, mentions })
 				  )
 				: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);

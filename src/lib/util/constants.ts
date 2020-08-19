@@ -9,6 +9,8 @@ export const assetsFolder = join(rootFolder, 'assets');
 export const socialFolder = join(assetsFolder, 'images', 'social');
 export const cdnFolder = DEV ? join(assetsFolder, 'public') : join('/var', 'www', 'skyra.pw', 'cdn');
 
+export const ZeroWidhSpace = '\u200B';
+
 export const enum Time {
 	Millisecond = 1,
 	Second = 1000,

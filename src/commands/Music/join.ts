@@ -7,7 +7,7 @@ const { FLAGS } = Permissions;
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['connect'],
-	description: (language) => language.tget('COMMAND_JOIN_DESCRIPTION')
+	description: (language) => language.get('COMMAND_JOIN_DESCRIPTION')
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
@@ -16,11 +16,11 @@ export default class extends MusicCommand {
 		const { channel } = message.member!.voice;
 
 		// If the member is not in a voice channel then throw
-		if (!channel) throw message.language.tget('COMMAND_JOIN_NO_VOICECHANNEL');
+		if (!channel) throw message.language.get('COMMAND_JOIN_NO_VOICECHANNEL');
 
 		// Check if the bot is already playing in this guild
 		if (message.guild!.music.playing && message.guild!.music.voiceChannel !== null) {
-			throw message.language.tget(
+			throw message.language.get(
 				channel.id === message.guild!.music.voiceChannel.id ? 'COMMAND_JOIN_VOICE_SAME' : 'COMMAND_JOIN_VOICE_DIFFERENT'
 			);
 		}
@@ -45,8 +45,8 @@ export default class extends MusicCommand {
 		const permissions = voiceChannel.permissionsFor(message.guild!.me!)!;
 
 		// Administrators can join voice channels even if they are full
-		if (voiceChannel.full && !permissions.has(FLAGS.ADMINISTRATOR)) throw message.language.tget('COMMAND_JOIN_VOICE_FULL');
-		if (!permissions.has(FLAGS.CONNECT)) throw message.language.tget('COMMAND_JOIN_VOICE_NO_CONNECT');
-		if (!permissions.has(FLAGS.SPEAK)) throw message.language.tget('COMMAND_JOIN_VOICE_NO_SPEAK');
+		if (voiceChannel.full && !permissions.has(FLAGS.ADMINISTRATOR)) throw message.language.get('COMMAND_JOIN_VOICE_FULL');
+		if (!permissions.has(FLAGS.CONNECT)) throw message.language.get('COMMAND_JOIN_VOICE_NO_CONNECT');
+		if (!permissions.has(FLAGS.SPEAK)) throw message.language.get('COMMAND_JOIN_VOICE_NO_SPEAK');
 	}
 }

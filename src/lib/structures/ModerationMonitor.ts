@@ -1,4 +1,3 @@
-import { LanguageKeysComplex } from '@lib/types/Augments';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CustomGet } from '@lib/types/settings/Shared';
@@ -7,7 +6,7 @@ import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
+import { KlasaMessage, LanguageKeysComplex, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
@@ -89,7 +88,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
 				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 			})
 		);
@@ -100,7 +99,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string
 			})
 		);
 	}
@@ -110,7 +109,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
 				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 			})
 		);
@@ -122,7 +121,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason: message.language.get(this.reasonLanguageKey, points, maximum) as string
+					reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string
 				},
 				1
 			)
@@ -135,7 +134,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason: message.language.get(this.reasonLanguageKey, points, maximum) as string,
+					reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
 					duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 				},
 				0

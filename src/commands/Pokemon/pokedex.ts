@@ -3,12 +3,11 @@ import { toTitleCase } from '@klasa/utils';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
-import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, LanguageKeys } from 'klasa';
 
 enum BaseStats {
 	hp = 'HP',
@@ -22,8 +21,8 @@ enum BaseStats {
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_POKEDEX_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_POKEDEX_EXTENDED'),
+	description: (language) => language.get('COMMAND_POKEDEX_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_POKEDEX_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<pokemon:str>',
 	flagSupport: true
@@ -31,7 +30,7 @@ enum BaseStats {
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
 
@@ -44,7 +43,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_POKEDEX_QUERY_FAIL', pokemon);
+			throw message.language.get('COMMAND_POKEDEX_QUERY_FAIL', { pokemon });
 		}
 	}
 
@@ -150,7 +149,7 @@ export default class extends RichDisplayCommand {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
-		const embedTranslations = message.language.tget('COMMAND_POKEDEX_EMBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_POKEDEX_EMBED_DATA');
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
 		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
@@ -184,6 +183,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
+		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
 			`[Serebii](${pokeDetails.serebiiPage})`,
@@ -207,7 +207,7 @@ export default class extends RichDisplayCommand {
 						`${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`
 					)
 
-					.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData)
+					.addField(externalResources, externalResourceData)
 			)
 			.addPage((embed: MessageEmbed) => {
 				embed
@@ -215,14 +215,14 @@ export default class extends RichDisplayCommand {
 					.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
 					.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true);
 
-				return embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData);
+				return embed.addField(externalResources, externalResourceData);
 			})
 			.addPage((embed: MessageEmbed) =>
 				embed
 					.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
 					.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
 
-					.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData)
+					.addField(externalResources, externalResourceData)
 			);
 
 		// If there are any cosmetic formes or other formes then add a page for them
@@ -231,16 +231,16 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => {
 				// If the pokémon has other formes
 				if (pokeDetails.otherFormes) {
-					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.FORMES_LIST(pokeDetails.otherFormes));
+					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.FORMES_LIST({ formes: pokeDetails.otherFormes }));
 				}
 
 				// If the pokémon has cosmetic formes
 				if (pokeDetails.cosmeticFormes) {
-					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.FORMES_LIST(pokeDetails.cosmeticFormes!));
+					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.FORMES_LIST({ formes: pokeDetails.cosmeticFormes! }));
 				}
 
 				// Add the external resource field
-				embed.addField(embedTranslations.EXTERNAL_RESOURCES, externalResourceData);
+				embed.addField(externalResources, externalResourceData);
 
 				return embed;
 			});

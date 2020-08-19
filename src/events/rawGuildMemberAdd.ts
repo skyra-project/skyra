@@ -1,4 +1,3 @@
-import { LanguageKeysSimple } from '@lib/types/Augments';
 import { Colors } from '@lib/types/constants/Constants';
 import { WSGuildMemberAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
@@ -7,7 +6,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { APIErrors, MessageLogsEnum } from '@utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
-import { Event, EventStore } from 'klasa';
+import { Event, EventStore, LanguageKeysSimple } from 'klasa';
 
 const { FLAGS } = Permissions;
 const enum Matches {
@@ -60,9 +59,12 @@ export default class extends Event {
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setDescription(
-					guild.language.tget('EVENTS_GUILDMEMBERADD_DESCRIPTION', member.toString(), Date.now() - member.user.createdTimestamp)
+					guild.language.get('EVENTS_GUILDMEMBERADD_DESCRIPTION', {
+						mention: member.toString(),
+						time: Date.now() - member.user.createdTimestamp
+					})
 				)
-				.setFooter(guild.language.tget(asset.title))
+				.setFooter(guild.language.get(asset.title))
 				.setTimestamp()
 		);
 	}

@@ -39,7 +39,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.tget('MONITOR_NEWLINEFILTER', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_NEWLINEFILTER', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
@@ -47,7 +47,7 @@ export default class extends ModerationMonitor {
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_NEWLINEFILTER')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_NEWLINEFILTER')}`)
 			.setTimestamp();
 	}
 }

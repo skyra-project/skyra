@@ -10,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pokeitem', 'bag'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_ITEM_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_ITEM_EXTENDED'),
+	description: (language) => language.get('COMMAND_ITEM_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_ITEM_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<item:str>'
 })
@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
 		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-		const embedTranslations = message.language.tget('COMMAND_ITEM_EMEBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_ITEM_EMEBED_DATA');
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -29,11 +29,11 @@ export default class extends SkyraCommand {
 				.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
 				.addField(
 					embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
-					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA(itemDetails.isNonstandard !== 'Past'),
+					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA({ available: itemDetails.isNonstandard !== 'Past' }),
 					true
 				)
 				.addField(
-					embedTranslations.EXTERNAL_RESOURCES,
+					message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE'),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 						`[Serebii](${itemDetails.serebiiPage})`,
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_ITEM_QUERY_FAIL', item);
+			throw message.language.get('COMMAND_ITEM_QUERY_FAIL', { item });
 		}
 	}
 }

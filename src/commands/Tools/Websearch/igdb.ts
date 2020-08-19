@@ -22,8 +22,8 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_IGDB_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_IGDB_EXTENDED'),
+	description: (language) => language.get('COMMAND_IGDB_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_IGDB_EXTENDED'),
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
@@ -32,11 +32,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = await this.fetchAPI(message, game);
-		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -64,13 +64,13 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		}
 	}
 
 	private async buildDisplay(entries: Game[], message: KlasaMessage) {
-		const titles = message.language.tget('COMMAND_IGDB_TITLES');
-		const fieldsData = message.language.tget('COMMAND_IGDB_DATA');
+		const titles = message.language.get('COMMAND_IGDB_TITLES');
+		const fieldsData = message.language.get('COMMAND_IGDB_DATA');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

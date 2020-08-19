@@ -1,5 +1,4 @@
 import { arrayStrictEquals } from '@klasa/utils';
-import { LanguageKeysComplex, LanguageKeysSimple } from '@lib/types/Augments';
 import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
@@ -11,7 +10,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { Event, EventStore, KlasaGuild, Language } from 'klasa';
+import { Event, EventStore, KlasaGuild, Language, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
@@ -51,7 +50,10 @@ export default class extends Event {
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
 			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'EVENTS_NAME_DIFFERENCE', 'EVENTS_NICKNAME_UPDATE', previous.nickname, next.nickname)
+				this.buildEmbed(data, guild.language, 'EVENTS_NAME_DIFFERENCE', 'EVENTS_NICKNAME_UPDATE', {
+					previous: previous.nickname,
+					next: next.nickname
+				})
 			);
 		}
 
@@ -72,7 +74,7 @@ export default class extends Event {
 
 			// Set the Role change log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'EVENTS_ROLE_DIFFERENCE', 'EVENTS_ROLE_UPDATE', addedRoles, removedRoles)
+				this.buildEmbed(data, guild.language, 'EVENTS_ROLE_DIFFERENCE', 'EVENTS_ROLE_UPDATE', { addedRoles, removedRoles })
 			);
 		}
 	}
@@ -129,18 +131,12 @@ export default class extends Event {
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
 	}
 
-	private buildEmbed(
-		data: WSGuildMemberUpdate,
-		i18n: Language,
-		descriptionKey: LanguageKeysComplex,
-		footerKey: LanguageKeysSimple,
-		...descriptionData: readonly unknown[]
-	) {
+	private buildEmbed(data: WSGuildMemberUpdate, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, value: any) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-			.setDescription(i18n.tget(descriptionKey, ...(descriptionData as [string, string | undefined])))
-			.setFooter(i18n.tget(footerKey))
+			.setDescription(i18n.get(descriptionKey, value))
+			.setFooter(i18n.get(footerKey))
 			.setTimestamp();
 	}
 }

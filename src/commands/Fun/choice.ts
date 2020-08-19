@@ -7,8 +7,8 @@ export default class extends SkyraCommand {
 			aliases: ['choose', 'choise', 'pick'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_CHOICE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_CHOICE_EXTENDED'),
+			description: (language) => language.get('COMMAND_CHOICE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CHOICE_EXTENDED'),
 			usage: '<words:string> [...]',
 			usageDelim: ',',
 			spam: true
@@ -17,14 +17,19 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, options: string[]) {
 		const words = this.filterWords(options, message.language);
-		return message.sendLocale('COMMAND_CHOICE_OUTPUT', [message.author, words[Math.floor(Math.random() * words.length)]]);
+		return message.sendLocale('COMMAND_CHOICE_OUTPUT', [
+			{
+				user: message.author.toString(),
+				word: words[Math.floor(Math.random() * words.length)]
+			}
+		]);
 	}
 
 	private filterWords(words: string[], i18n: Language) {
-		if (words.length < 2) throw i18n.tget('COMMAND_CHOICE_MISSING');
+		if (words.length < 2) throw i18n.get('COMMAND_CHOICE_MISSING');
 
-		const output = new Set();
-		const filtered = new Set();
+		const output = new Set<string>();
+		const filtered = new Set<string>();
 		for (const raw of words) {
 			const word = raw.trim();
 			if (!word) continue;
@@ -33,6 +38,6 @@ export default class extends SkyraCommand {
 		}
 
 		if (output.size >= 2) return [...output];
-		throw i18n.tget('COMMAND_CHOICE_DUPLICATES', [...filtered].join("', '"));
+		throw i18n.get('COMMAND_CHOICE_DUPLICATES', { words: [...filtered].join("', '") });
 	}
 }

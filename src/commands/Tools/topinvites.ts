@@ -9,8 +9,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_TOPINVITES_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_TOPINVITES_EXTENDED'),
+	description: (language) => language.get('COMMAND_TOPINVITES_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_TOPINVITES_EXTENDED'),
 	requiredGuildPermissions: ['MANAGE_GUILD'],
 	runIn: ['text']
 })
@@ -19,7 +19,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild!.fetchInvites();
@@ -28,7 +28,7 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw message.language.tget('COMMAND_TOPINVITES_NO_INVITES');
+		if (topTen.length === 0) throw message.language.get('COMMAND_TOPINVITES_NO_INVITES');
 
 		const display = await this.buildDisplay(message, topTen);
 
@@ -39,10 +39,10 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.tget('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', message.guild!))
+				.setTitle(message.language.get('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', { guild: message.guild! }))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedData = message.language.tget('COMMAND_TOPINVITES_EMBED_DATA');
+		const embedData = message.language.get('COMMAND_TOPINVITES_EMBED_DATA');
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) =>

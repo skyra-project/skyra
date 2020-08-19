@@ -6,8 +6,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.tget('COMMAND_PUN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_PUN_EXTENDED'),
+	description: (language) => language.get('COMMAND_PUN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_PUN_EXTENDED'),
 	spam: true
 })
 export default class extends SkyraCommand {
@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 				Accept: Mime.Types.ApplicationJson
 			}
 		}).catch(() => {
-			throw message.language.tget('COMMAND_PUN_ERROR');
+			throw message.language.get('COMMAND_PUN_ERROR');
 		});
 		return message.send(joke);
 	}

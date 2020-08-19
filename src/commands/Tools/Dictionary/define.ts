@@ -20,7 +20,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, input);
@@ -41,7 +41,7 @@ export default class extends RichDisplayCommand {
 			const definition = this.content(result.definition);
 			display.addPage((embed: MessageEmbed) => {
 				embed
-					.addField('Type', result.type ? toTitleCase(result.type) : message.language.tget('COMMAND_DEFINE_UNKNOWN'), true)
+					.addField('Type', result.type ? toTitleCase(result.type) : message.language.get('COMMAND_DEFINE_UNKNOWN'), true)
 					.setDescription(definition);
 
 				const imageUrl = IMAGE_EXTENSION.test(result.image_url ?? '') && parseURL(result.image_url ?? '');

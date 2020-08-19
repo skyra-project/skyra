@@ -16,12 +16,12 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.tget('SERIALIZER_REACTION_ROLE_INVALID');
+		throw language.get('SERIALIZER_REACTION_ROLE_INVALID');
 	}
 
 	public stringify(value: ReactionRole, guild: Guild) {
 		const emoji = displayEmoji(value.emoji);
-		const role = guild.roles.get(value.role)?.name ?? guild.language.tget('UNKNOWN_ROLE');
+		const role = guild.roles.get(value.role)?.name ?? guild.language.get('UNKNOWN_ROLE');
 		const url = `https://discord.com/channels/${guild.id}/${value.channel}/${value.message}`;
 		return `${emoji} | ${url} -> ${role}`;
 	}

@@ -25,7 +25,7 @@ import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
 import { UserTag } from './Cache/UserTags';
-import { APIErrors, Time } from './constants';
+import { APIErrors, Time, ZeroWidhSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -93,12 +93,12 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  */
 export function announcementCheck(message: Message) {
 	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.language.tget('COMMAND_SUBSCRIBE_NO_ROLE');
+	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
 	const role = message.guild!.roles.get(announcementID);
-	if (!role) throw message.language.tget('COMMAND_SUBSCRIBE_NO_ROLE');
+	if (!role) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.tget('SYSTEM_HIGHEST_ROLE');
+	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('SYSTEM_HIGHEST_ROLE');
 	return role;
 }
 
@@ -526,12 +526,12 @@ export function roundNumber(num: number | string, scale = 0) {
  * @returns The input cleaned of mentions
  */
 export function cleanMentions(guild: Guild, input: string) {
-	return input.replace(/@(here|everyone)/g, '@\u200B$1').replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+	return input.replace(/@(here|everyone)/g, `@${ZeroWidhSpace}$1`).replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
 		switch (type) {
 			case '@':
 			case '@!': {
 				const tag = guild.client.userTags.get(id);
-				return tag ? `@${tag.username}` : `<${type}\u200B${id}>`;
+				return tag ? `@${tag.username}` : `<${type}${ZeroWidhSpace}${id}>`;
 			}
 			case '@&': {
 				const role = guild.roles.get(id);
@@ -539,10 +539,10 @@ export function cleanMentions(guild: Guild, input: string) {
 			}
 			case '#': {
 				const channel = guild.channels.get(id);
-				return channel ? `#${channel.name}` : `<${type}\u200B${id}>`;
+				return channel ? `#${channel.name}` : `<${type}${ZeroWidhSpace}${id}>`;
 			}
 			default:
-				return `<${type}\u200B${id}>`;
+				return `<${type}${ZeroWidhSpace}${id}>`;
 		}
 	});
 }
@@ -570,12 +570,12 @@ export function createPick<T>(array: T[]): () => T {
 }
 
 export function codeBlock(language: string, input: string) {
-	if (input.length === 0) return '```\u200B```';
-	return `\`\`\`${language}\n${input.replace(/```/, '`\u200B``').replace(/`$/g, '`\u200B')}\`\`\``;
+	if (input.length === 0) return `\`\`\`${ZeroWidhSpace}\`\`\``;
+	return `\`\`\`${language}\n${input.replace(/```/, `\`${ZeroWidhSpace}\`\``).replace(/`$/g, `\`${ZeroWidhSpace}`)}\`\`\``;
 }
 
 export function inlineCodeblock(input: string) {
-	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, '`\u200B')}\``;
+	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, `\`${ZeroWidhSpace}`)}\``;
 }
 
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {

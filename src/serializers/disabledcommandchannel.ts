@@ -14,10 +14,10 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.tget('SERIALIZER_DISABLED_COMMAND_CHANNEL_INVALID');
+		throw language.get('SERIALIZER_DISABLED_COMMAND_CHANNEL_INVALID');
 	}
 
 	public stringify(value: DisabledCommandChannel, guild: Guild) {
-		return `[${guild.channels.get(value.channel)?.name ?? guild.language.tget('UNKNOWN_CHANNEL')} -> ${value.commands.join(' | ')}]`;
+		return `[${guild.channels.get(value.channel)?.name ?? guild.language.get('UNKNOWN_CHANNEL')} -> ${value.commands.join(' | ')}]`;
 	}
 }

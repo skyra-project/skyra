@@ -16,8 +16,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['gr', 'groll'],
-			description: (language) => language.tget('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_GIVEAWAYREROLL_EXTENDED'),
+			description: (language) => language.get('COMMAND_GIVEAWAYREROLL_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_GIVEAWAYREROLL_EXTENDED'),
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '[winners:number{1,100}] [message:message]',
@@ -30,12 +30,11 @@ export default class extends SkyraCommand {
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? message.language.tget(
-					'GIVEAWAY_ENDED_MESSAGE',
-					winners.map((winner) => `<@${winner}>`),
+			? message.language.get('GIVEAWAY_ENDED_MESSAGE', {
+					winners: winners.map((winner) => `<@${winner}>`),
 					title
-			  )
-			: message.language.tget('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', title);
+			  })
+			: message.language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', { title });
 		return message.sendMessage(content);
 	}
 
@@ -48,7 +47,7 @@ export default class extends SkyraCommand {
 			: // If rawTarget was undefined then we fetch it from the API and we check embed colour
 			  (await message.channel.messages.fetch({ limit: 100 })).find((msg) => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as KlasaMessage;
-		throw message.language.tget('COMMAND_GIVEAWAYREROLL_INVALID');
+		throw message.language.get('COMMAND_GIVEAWAYREROLL_INVALID');
 	}
 
 	private async pickWinners(message: KlasaMessage, winnerAmount: number) {

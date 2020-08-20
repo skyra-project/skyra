@@ -2223,8 +2223,8 @@ export default class extends Language {
 			FLAVOUR_TEXT: 'Pokdex entry',
 			OTHER_FORMES_TITLE: 'Other forme(s)',
 			COSMETIC_FORMES_TITLE: 'Cosmetic Formes',
-			OTHER_FORMES_LIST: this.list(otherFormes!, 'and'),
-			COSMETIC_FORMES_LIST: this.list(cosmeticFormes!, 'and')
+			OTHER_FORMES_LIST: this.list(otherFormes ?? [], 'and'),
+			COSMETIC_FORMES_LIST: this.list(cosmeticFormes ?? [], 'and')
 		}),
 		COMMAND_POKEDEX_QUERY_FAIL: ({ pokemon }) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',

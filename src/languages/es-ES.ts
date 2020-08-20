@@ -2253,8 +2253,8 @@ export default class extends Language {
 			FLAVOUR_TEXT: 'Entrada de Pokédex',
 			OTHER_FORMES_TITLE: 'Otras formas',
 			COSMETIC_FORMES_TITLE: 'Formas cosméticas',
-			OTHER_FORMES_LIST: this.list(otherFormes!, 'y'),
-			COSMETIC_FORMES_LIST: this.list(cosmeticFormes!, 'y')
+			OTHER_FORMES_LIST: this.list(otherFormes ?? [], 'y'),
+			COSMETIC_FORMES_LIST: this.list(cosmeticFormes ?? [], 'y')
 		}),
 		COMMAND_POKEDEX_QUERY_FAIL: ({ pokemon }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,

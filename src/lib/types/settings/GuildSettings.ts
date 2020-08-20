@@ -204,6 +204,7 @@ export namespace GuildSettings {
 		export const Emoji = T<string>('starboard.emoji');
 		export const IgnoreChannels = T<string>('starboard.ignoreChannels');
 		export const Minimum = T<number>('starboard.minimum');
+		export const SelfStar = T<boolean>('starboard.selfstar');
 	}
 
 	export namespace Trigger {

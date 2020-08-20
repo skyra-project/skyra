@@ -933,7 +933,7 @@ export default class extends Language {
 			NO_CLAN: 'This player is not in a clan',
 			NO_LEAGUE: 'This user is not in any league'
 		},
-		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: {
+		COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES: ({ isWarLogPublic }) => ({
 			CLAN_LEVEL: 'Clan level',
 			CLAN_POINTS: 'Clan points',
 			CLAN_VERSUS_POINTS: 'Clan versus points',
@@ -954,8 +954,8 @@ export default class extends Language {
 				oncePerWeek: 'Once per week',
 				unknown: 'Unknown'
 			},
-			WAR_LOG_PUBLIC_DESCR: ({ isWarLogPublic }) => (isWarLogPublic ? 'Yes' : 'No')
-		},
+			WAR_LOG_PUBLIC_DESCR: isWarLogPublic ? 'Yes' : 'No'
+		}),
 		COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG: ({ playertag }) =>
 			`I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
 		COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL: ({ clan }) => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
@@ -1014,24 +1014,38 @@ export default class extends Language {
 			'I am sorry, but I was unable to find a user with that name.',
 			'Are you sure that they play on the provided platform? (PC [default], Xbox or PSN are supported)'
 		].join('\n'),
-		COMMAND_FORTNITE_TITLES: {
-			TITLE: ({ epicUserHandle }) => `Fortnite player statistics for ${epicUserHandle}`,
+		COMMAND_FORTNITE_EMBED_TITLE: ({ epicUserHandle }) => `Fortnite player statistics for ${epicUserHandle}`,
+		COMMAND_FORTNITE_EMBED_SECTION_TITLES: {
 			LIFETIME_STATS: '**_Lifetime Stats_**',
 			SOLOS: '**_Solos_**',
 			DUOS: '**_Duos_**',
-			SQUADS: '**_Squads_**',
-			WINS: ({ count }) => `Wins: **\`${count}\`**`,
-			KILLS: ({ count }) => `Kills: **\`${count}\`**`,
-			KDR: ({ count }) => `KDR: **\`${count}%\`**`,
-			MATCHES_PLAYED: ({ count }) => `Matches played: **\`${count}\`**`,
-			TOP_1S: ({ count }) => `Top 1s: **\`${count}\`**`,
-			TOP_3S: ({ count }) => `Top 3s: **\`${count}\`**`,
-			TOP_5S: ({ count }) => `Top 5s: **\`${count}\`**`,
-			TOP_6S: ({ count }) => `Top 6s: **\`${count}\`**`,
-			TOP_10S: ({ count }) => `Top 10s: **\`${count}\`**`,
-			TOP_12S: ({ count }) => `Top 12s: **\`${count}\`**`,
-			TOP_25S: ({ count }) => `Top 25s: **\`${count}\`**`
+			SQUADS: '**_Squads_**'
 		},
+		COMMAND_FORTNITE_EMBED_STATS: ({
+			winCount,
+			killCount,
+			kdrCount,
+			matchesPlayedCount,
+			top1Count,
+			top3Count,
+			top5Count,
+			top6Count,
+			top10Count,
+			top12Count,
+			top25Count
+		}) => ({
+			WINS: `Wins: **\`${winCount}\`**`,
+			KILLS: `Kills: **\`${killCount}\`**`,
+			KDR: `KDR: **\`${kdrCount}%\`**`,
+			MATCHES_PLAYED: `Matches played: **\`${matchesPlayedCount}\`**`,
+			TOP_1S: `Top 1s: **\`${top1Count}\`**`,
+			TOP_3S: `Top 3s: **\`${top3Count}\`**`,
+			TOP_5S: `Top 5s: **\`${top5Count}\`**`,
+			TOP_6S: `Top 6s: **\`${top6Count}\`**`,
+			TOP_10S: `Top 10s: **\`${top10Count}\`**`,
+			TOP_12S: `Top 12s: **\`${top12Count}\`**`,
+			TOP_25S: `Top 25s: **\`${top25Count}\`**`
+		}),
 		COMMAND_OVERWATCH_DESCRIPTION: 'Gets player statistics for an Overwatch player',
 		COMMAND_OVERWATCH_EXTENDED: {
 			extendedHelp: `This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.
@@ -1056,33 +1070,45 @@ export default class extends Language {
 				'Also make sure to get the casing right, names are case sensitive.'
 			].join('\n'),
 		COMMAND_OVERWATCH_NO_STATS: ({ player }) => `I found a player with the tag \`${player}\` but no stats were available for them.`,
-		COMMMAND_OVERWATCH_EMBED_DATA: {
+		COMMAND_OVERWATCH_NO_AVERAGE: 'Not enough data to determine average.',
+		COMMAND_OVERWATCH_EMBED_DATA_STATS: ({
+			finalBlows,
+			deaths,
+			damageDone,
+			healing,
+			objectiveKills,
+			soloKills,
+			playTime,
+			gamesWon,
+			goldenMedals,
+			silverMedals,
+			bronzeMedals
+		}) => ({
+			FINAL_BLOWS: `**Final blows:** ${this.groupDigits(finalBlows)}`,
+			DEATHS: `**Deaths:** ${this.groupDigits(deaths)}`,
+			DAMAGE_DEALT: `**Damage dealt:** ${this.groupDigits(damageDone)}`,
+			HEALING: `**Healing:** ${this.groupDigits(healing)}`,
+			OBJECTIVE_KILLS: `**Objective kills:** ${this.groupDigits(objectiveKills)}`,
+			SOLO_KILLS: `**Solo kills:** ${this.groupDigits(soloKills)}`,
+			PLAY_TIME: `**Playtime:** ${this.duration(playTime, 2)}`,
+			GAMES_WON: `**Games won:** ${this.groupDigits(gamesWon)}`,
+			GOLDEN_MEDALS: `**Gold medals earned:** ${this.groupDigits(goldenMedals)}`,
+			SILVER_MEDALS: `**Silver medals earned:** ${this.groupDigits(silverMedals)}`,
+			BRONZE_MEDALS: `**Bronze medals earned:** ${this.groupDigits(bronzeMedals)}`
+		}),
+		COMMAND_OVERWATCH_EMBED_DATA_TOP_HERO: ({ name, playTime }) => `**${toTitleCase(name)}** (${playTime})`,
+		COMMMAND_OVERWATCH_EMBED_DATA: ({ authorName, playerLevel, prestigeLevel, ratings, totalGamesWon }) => ({
 			TITLE: 'Click here for more details on overwatchtracker.com',
 			RATINGS_TITLE: 'Ratings',
-			NO_AVERAGE: 'Not enough data to determine average.',
-			AUTHOR: ({ name }) => `Overwatch Player Statistics for ${name}`,
-			PLAYER_LEVEL: ({ level }) => `**Player level:** ${this.groupDigits(level)}`,
-			PRESTIGE_LEVEL: ({ level }) => `**Prestige level:** ${this.groupDigits(level)}`,
-			TOTAL_GAMES_WON: ({ gamesWon }) => `**Total games won:** ${gamesWon ? this.groupDigits(gamesWon) : 'None'}`,
-			RATINGS: ({ ratings }) =>
-				ratings
-					.map(
-						(rating) =>
-							`**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`
-					)
-					.join('\n'),
-			FINAL_BLOWS: ({ finalBlows }) => `**Final blows:** ${this.groupDigits(finalBlows)}`,
-			DEATHS: ({ deaths }) => `**Deaths:** ${this.groupDigits(deaths)}`,
-			DAMAGE_DEALT: ({ damageDone }) => `**Damage dealt:** ${this.groupDigits(damageDone)}`,
-			HEALING: ({ healingDone }) => `**Healing:** ${this.groupDigits(healingDone)}`,
-			OBJECTIVE_KILLS: ({ objectiveKills }) => `**Objective kills:** ${this.groupDigits(objectiveKills)}`,
-			SOLO_KILLS: ({ soloKills }) => `**Solo kills:** ${this.groupDigits(soloKills)}`,
-			PLAY_TIME: ({ timePlayed }) => `**Playtime:** ${this.duration(timePlayed, 2)}`,
-			GAMES_WON: ({ gamesWon }) => `**Games won:** ${this.groupDigits(gamesWon)}`,
-			GOLDEN_MEDALS: ({ medalsGold }) => `**Gold medals earned:** ${this.groupDigits(medalsGold)}`,
-			SILVER_MEDALS: ({ medalsSilver }) => `**Silver medals earned:** ${this.groupDigits(medalsSilver)}`,
-			BRONZE_MEDALS: ({ medalsBronze }) => `**Bronze medals earned:** ${this.groupDigits(medalsBronze)}`,
-			TOP_HERO: ({ heroName, timePlayed }) => `**${toTitleCase(heroName)}** (${timePlayed})`,
+			AUTHOR: `Overwatch Player Statistics for ${authorName}`,
+			PLAYER_LEVEL: `**Player level:** ${this.groupDigits(playerLevel)}`,
+			PRESTIGE_LEVEL: `**Prestige level:** ${this.groupDigits(prestigeLevel)}`,
+			TOTAL_GAMES_WON: `**Total games won:** ${totalGamesWon ? this.groupDigits(totalGamesWon) : 'None'}`,
+			RATINGS: ratings
+				.map(
+					(rating) => `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`
+				)
+				.join('\n'),
 			HEADERS: {
 				ACCOUNT: '__Account Stats__',
 				QUICKPLAY: '__Quickplay Stats__',
@@ -1090,7 +1116,7 @@ export default class extends Language {
 				TOP_HEROES_QUICKPLAY: '__Top Heroes Quickplay__',
 				TOP_HEROES_COMPETITIVE: '__Top Heroes Competitive__'
 			}
-		},
+		}),
 
 		/**
 		 * ################
@@ -1716,10 +1742,10 @@ export default class extends Language {
 			examples: ['romeo juliet'],
 			reminder: 'If I cannot find either given user then I will pick someone randomly.'
 		},
-		COMMAND_SHIP_DATA: {
-			TITLE: ({ romeoUsername, julietUsername }) => `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,
-			DESCRIPTION: ({ shipName }) => `I call it... ${shipName}`
-		},
+		COMMAND_SHIP_DATA: ({ romeoUsername, julietUsername, shipName }) => ({
+			TITLE: `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,
+			DESCRIPTION: `I call it... ${shipName}`
+		}),
 		COMMAND_CHASE_DESCRIPTION: 'Get in here!',
 		COMMAND_CHASE_EXTENDED: {
 			extendedHelp: 'Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!',
@@ -2102,12 +2128,12 @@ export default class extends Language {
 			explainedUsage: [['item', 'The item for which you want to find data']],
 			examples: ['life orb', 'choice specs']
 		},
-		COMMAND_ITEM_EMEBED_DATA: {
+		COMMAND_ITEM_EMEBED_DATA: ({ availableInGen8 }) => ({
 			ITEM: 'Item',
 			GENERATION_INTRODUCED: 'Generation introduced',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in generation 8',
-			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No')
-		},
+			AVAILABLE_IN_GENERATION_8_DATA: availableInGen8 ? 'Yes' : 'No'
+		}),
 		COMMAND_ITEM_QUERY_FAIL: ({ item }) => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
 		COMMAND_LEARN_DESCRIPTION: 'Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.',
 		COMMAND_LEARN_EXTENDED: {
@@ -2124,15 +2150,15 @@ export default class extends Language {
 			],
 			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
 		},
-		COMMAND_LEARN_METHOD_TYPES: {
-			levelUpMoves: ({ level }) => `by level up at level ${level}`,
-			eventMoves: () => 'through an event',
-			tutorMoves: () => 'from a move tutor',
-			eggMoves: () => 'as an eggmove',
-			virtualTransferMoves: () => 'by transfering from virtual console games',
-			tmMoves: () => 'by using a technical machine or technical record',
-			dreamworldMoves: () => 'through a Dream World capture'
-		},
+		COMMAND_LEARN_METHOD_TYPES: ({ level }) => ({
+			levelUpMoves: `by level up at level ${level}`,
+			eventMoves: 'through an event',
+			tutorMoves: 'from a move tutor',
+			eggMoves: 'as an eggmove',
+			virtualTransferMoves: 'by transfering from virtual console games',
+			tmMoves: 'by using a technical machine or technical record',
+			dreamworldMoves: 'through a Dream World capture'
+		}),
 		COMMAND_LEARN_INVALID_GENERATION: ({ generation }) => `I am sorry, but ${generation} is not a supported Pokémon Generation`,
 		COMMAND_LEARN_METHOD: ({ generation, pokemon, move, method }) =>
 			`In generation ${generation} ${pokemon} __**can**__ learn **${move}** ${method}`,
@@ -2152,7 +2178,7 @@ export default class extends Language {
 				If Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands
 				Z-Moves are **NOT** in Generation 8.`
 		},
-		COMMAND_MOVE_EMBED_DATA: {
+		COMMAND_MOVE_EMBED_DATA: ({ availableInGen8 }) => ({
 			MOVE: 'Move',
 			TYPE: 'Type',
 			BASE_POWER: 'Base Power',
@@ -2165,11 +2191,11 @@ export default class extends Language {
 			Z_CRYSTAL: 'Z-Crystal',
 			GMAX_POKEMON: 'G-MAX Pokémon',
 			AVAILABLE_IN_GENERATION_8_TITLE: 'Available in Generation 8',
-			AVAILABLE_IN_GENERATION_8_DATA: ({ available }) => (available ? 'Yes' : 'No'),
+			AVAILABLE_IN_GENERATION_8_DATA: availableInGen8 ? 'Yes' : 'No',
 			NONE: 'None',
 			MAX_MOVE_POWER: 'Base power as MAX move (Dynamax)',
 			Z_MOVE_POWER: 'Base power as Z-Move (Z-Crystal)'
-		},
+		}),
 		COMMAND_MOVE_QUERY_FAIL: ({ move }) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		COMMAND_POKEDEX_DESCRIPTION: 'Gets data for any given Pokémon using my Pokémon dataset.',
 		COMMAND_POKEDEX_EXTENDED: {
@@ -2182,7 +2208,7 @@ export default class extends Language {
 			reminder:
 				'If there are any "Other forme(s)" on the optional fourth page, those can be requested as well. Cosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex.'
 		},
-		COMMAND_POKEDEX_EMBED_DATA: {
+		COMMAND_POKEDEX_EMBED_DATA: ({ otherFormes, cosmeticFormes }) => ({
 			TYPES: 'Type(s)',
 			ABILITIES: 'Abilities',
 			GENDER_RATIO: 'Gender Ratio',
@@ -2197,8 +2223,9 @@ export default class extends Language {
 			FLAVOUR_TEXT: 'Pokdex entry',
 			OTHER_FORMES_TITLE: 'Other forme(s)',
 			COSMETIC_FORMES_TITLE: 'Cosmetic Formes',
-			FORMES_LIST: ({ formes }) => this.list(formes, 'and')
-		},
+			OTHER_FORMES_LIST: this.list(otherFormes ?? [], 'and'),
+			COSMETIC_FORMES_LIST: this.list(cosmeticFormes ?? [], 'and')
+		}),
 		COMMAND_POKEDEX_QUERY_FAIL: ({ pokemon }) => `I am sorry, but that query failed. Are you sure \`${pokemon}\` is actually a Pokémon?`,
 		COMMAND_TYPE_DESCRIPTION: 'Gives the type matchups for one or two Pokémon types',
 		COMMAND_TYPE_EXTENDED: {
@@ -2206,7 +2233,7 @@ export default class extends Language {
 			explainedUsage: [['type', 'The type(s) to look up']],
 			examples: ['dragon', 'fire flying']
 		},
-		COMMAND_TYPE_EMBED_DATA: {
+		COMMAND_TYPE_EMBED_DATA: ({ types }) => ({
 			OFFENSIVE: 'Offensive',
 			DEFENSIVE: 'Defensive',
 			SUPER_EFFECTIVE_AGAINST: 'Supereffective against',
@@ -2217,8 +2244,8 @@ export default class extends Language {
 			TAKES_NORMAL_DAMAGE_FROM: 'Takes normal damage from',
 			RESISTS: 'Resists',
 			NOT_AFFECTED_BY: 'Not affected by',
-			TYPE_EFFECTIVENESS_FOR: ({ type }) => `Type effectiveness for ${type.map((val) => `\`${val}\``).join(' and ')}`
-		},
+			TYPE_EFFECTIVENESS_FOR: `Type effectiveness for ${this.list(types, 'and')}`
+		}),
 		COMMAND_TYPE_TOO_MANY_TYPES: 'I am sorry, but you can get the matchup for at most 2 types',
 		COMMAND_TYPE_NOT_A_TYPE: ({ type }) => `${type} is not a valid Pokémon type`,
 		COMMAND_TYPE_QUERY_FAIL: ({ types }) =>
@@ -2592,13 +2619,13 @@ export default class extends Language {
 			examples: ['Antarctica', 'Arizona']
 		},
 		COMMAND_CURRENTTIME_LOCATION_NOT_FOUND: 'I am sorry, but I could not find time data for that location.',
-		COMMAND_CURRENTTIME_TITLES: {
+		COMMAND_CURRENTTIME_TITLES: ({ dst }) => ({
 			CURRENT_TIME: 'Current Time',
 			CURRENT_DATE: 'Current Date',
 			COUNTRY: 'Country',
 			GMT_OFFSET: 'GMT Offset',
-			DST: ({ dst }) => `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
-		},
+			DST: `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+		}),
 		COMMAND_GSEARCH_DESCRIPTION: 'Find your favourite things on Google',
 		COMMAND_GSEARCH_EXTENDED: {
 			extendedHelp: `This command queries the powerful Google Search engine to find websites for your query.
@@ -2868,12 +2895,12 @@ export default class extends Language {
 			'• Weeb commands (+10)!',
 			'And more!'
 		].join('\n'),
-		COMMAND_HELP_DATA: {
-			TITLE: ({ description }) => `${description}`,
-			USAGE: ({ usage }) => `📝 | ***Command Usage***\n\`${usage}\`\n`,
-			EXTENDED: ({ extendedHelp }) => `🔍 | ***Extended Help***\n${extendedHelp}`,
-			FOOTER: ({ name }) => `Command help for ${name}`
-		},
+		COMMAND_HELP_DATA: ({ titleDescription, usage, extendedHelp, footerName }) => ({
+			TITLE: `${titleDescription}`,
+			USAGE: `📝 | ***Command Usage***\n\`${usage}\`\n`,
+			EXTENDED: `🔍 | ***Extended Help***\n${extendedHelp}`,
+			FOOTER: `Command help for ${footerName}`
+		}),
 		COMMAND_SUPPORT_EMBED_TITLE: ({ username }) => `Looking for help, ${username}?`,
 		COMMAND_SUPPORT_EMBED_DESCRIPTION:
 			"Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
@@ -2892,38 +2919,36 @@ export default class extends Language {
 		COMMAND_YARN_NO_PACKAGE: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
 		COMMAND_YARN_UNPUBLISHED_PACKAGE: ({ pkg }) => `What a silly developer who made ${pkg}! They unpublished it!`,
 		COMMAND_YARN_PACKAGE_NOT_FOUND: ({ pkg }) => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
-		COMMAND_YARN_EMBED_DATA: {
-			DESCRIPTION: ({
-				author,
-				dateCreated,
-				dateModified,
-				dependencies,
-				deprecated,
+		COMMAND_YARN_EMBED_DESCRIPTION: ({
+			author,
+			dateCreated,
+			dateModified,
+			dependencies,
+			deprecated,
+			description,
+			latestVersionNumber,
+			license,
+			mainFile,
+			maintainers
+		}) =>
+			[
 				description,
-				latestVersionNumber,
-				license,
-				mainFile,
-				maintainers
-			}) =>
-				[
-					description,
-					'',
-					author ? `❯ Author: ${author}` : undefined,
-					`❯ Maintainers: **${this.list(maintainers, 'and')}**`,
-					`❯ Latest version: **${latestVersionNumber}**`,
-					`❯ License: **${license}**`,
-					`❯ Main File: **${mainFile}**`,
-					`❯ Date Created: **${dateCreated}**`,
-					`❯ Date Modified: **${dateModified}**`,
-					deprecated ? `❯ Deprecation Notice: **${deprecated}**` : undefined,
-					'',
-					'__*Dependencies:*__',
-					dependencies && dependencies.length ? this.list(dependencies, 'and') : `No dependencies ${GREENTICK}!`
-				]
-					.filter((part) => part !== undefined)
-					.join('\n'),
-			MORE_TEXT: 'more...'
-		},
+				'',
+				author ? `❯ Author: ${author}` : undefined,
+				`❯ Maintainers: **${this.list(maintainers, 'and')}**`,
+				`❯ Latest version: **${latestVersionNumber}**`,
+				`❯ License: **${license}**`,
+				`❯ Main File: **${mainFile}**`,
+				`❯ Date Created: **${dateCreated}**`,
+				`❯ Date Modified: **${dateModified}**`,
+				deprecated ? `❯ Deprecation Notice: **${deprecated}**` : undefined,
+				'',
+				'__*Dependencies:*__',
+				dependencies && dependencies.length ? this.list(dependencies, 'and') : `No dependencies ${GREENTICK}!`
+			]
+				.filter((part) => part !== undefined)
+				.join('\n'),
+		COMMAND_YARN_EMBED_MORE_TEXT: 'more...',
 
 		/**
 		 * ##############
@@ -3093,26 +3118,25 @@ export default class extends Language {
 		},
 		COMMAND_HIGHERLOWER_LOADING: `${LOADING} Starting a new game of Higher/Lower.`,
 		COMMAND_HIGHERLOWER_NEWROUND: 'Alright. Starting new round.',
-		COMMAND_HIGHERLOWER_EMBED: {
-			TITLE: ({ turn }) => `Higher or Lower? | Turn ${turn}`,
-			DESCRIPTION: ({ number }) => `Your number is ${number}. Will the next number be higher or lower?`,
+		COMMAND_HIGHERLOWER_EMBED: ({ turn, number }) => ({
+			TITLE: `Higher or Lower? | Turn ${turn}`,
+			DESCRIPTION: `Your number is ${number}. Will the next number be higher or lower?`,
 			FOOTER: 'The game will expire in 3 minutes, so act fast!'
-		},
-		COMMAND_HIGHERLOWER_LOSE: {
+		}),
+		COMMAND_HIGHERLOWER_LOSE: ({ number, losses }) => ({
 			TITLE: 'You lost!',
-			DESCRIPTION: ({ number, losses }) => `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}.`,
+			DESCRIPTION: `You didn't quite get it. The number was ${number}. You lost ${losses} ${SHINY}.`,
 			FOOTER: 'Better luck next time!'
-		},
-		COMMAND_HIGHERLOWER_WIN: {
+		}),
+		COMMAND_HIGHERLOWER_WIN: ({ potentials, number }) => ({
 			TITLE: 'You won!',
-			DESCRIPTION: ({ potentials, number }) =>
-				`The number was ${number}. Want to continue? With another attempt, you can win ${potentials} ${SHINY}!`,
+			DESCRIPTION: `The number was ${number}. Want to continue? With another attempt, you can win ${potentials} ${SHINY}!`,
 			FOOTER: "Act fast! You don't have much time."
-		},
-		COMMAND_HIGHERLOWER_CANCEL: {
+		}),
+		COMMAND_HIGHERLOWER_CANCEL: ({ username }) => ({
 			TITLE: 'Game cancelled by choice',
-			DESCRIPTION: ({ username }) => `Thanks for playing, ${username}! I'll be here when you want to play again.`
-		},
+			DESCRIPTION: `Thanks for playing, ${username}! I'll be here when you want to play again.`
+		}),
 		COMMAND_HIGHERLOWER_CASHOUT: ({ amount }) => `Paid out ${amount} ${SHINY} to your account. Hope you had fun!`,
 		COMMAND_HUNGERGAMES_RESULT_HEADER: ({ game }) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
 		COMMAND_HUNGERGAMES_RESULT_DEATHS: ({ deaths }) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
@@ -3186,13 +3210,13 @@ export default class extends Language {
 			],
 			examples: ['deposit 10000.', 'withdraw 10000.']
 		},
-		COMMAND_VAULT_EMBED_DATA: {
-			DEPOSITED_DESCRIPTION: ({ coins }) => `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
-			WITHDREW_DESCRIPTION: ({ coins }) => `Withdrew ${coins} ${SHINY}\ from your vault.`,
+		COMMAND_VAULT_EMBED_DATA: ({ coins }) => ({
+			DEPOSITED_DESCRIPTION: `Deposited ${coins} ${SHINY} from your account balance into your vault.`,
+			WITHDREW_DESCRIPTION: `Withdrew ${coins} ${SHINY}\ from your vault.`,
 			SHOW_DESCRIPTION: 'Your current account and vault balance are:',
 			ACCOUNT_MONEY: 'Account Money',
 			ACCOUNT_VAULT: 'Account Vault'
-		},
+		}),
 		COMMAND_VAULT_INVALID_COINS: 'I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!',
 		COMMAND_VAULT_NOT_ENOUGH_MONEY: ({ money }) =>
 			`I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money} ${SHINY}`,
@@ -3409,12 +3433,12 @@ export default class extends Language {
 			BEST_COMMENT: 'Best Comment',
 			WORST_COMMENT: 'Worst Comment'
 		},
-		COMMAND_REDDITUSER_DATA: {
-			OVERVIEW_FOR: ({ user }) => `Overview for /u/${user}`,
+		COMMAND_REDDITUSER_DATA: ({ user, timestamp }) => ({
+			OVERVIEW_FOR: `Overview for /u/${user}`,
 			PERMALINK: 'Permalink',
 			DATA_AVAILABLE_FOR: 'Data is available for the past 1000 comments and submissions (Reddit API limitation)',
-			JOINED_REDDIT: ({ timestamp }) => `Joined Reddit ${timestamp}`
-		},
+			JOINED_REDDIT: `Joined Reddit ${timestamp}`
+		}),
 		COMMAND_SNIPE_EMPTY: 'There are no sniped messages in this channel.',
 		COMMAND_SNIPE_TITLE: 'Sniped Message',
 		COMMAND_UPVOTE_MESSAGE:
@@ -3453,16 +3477,17 @@ export default class extends Language {
 			cooldown === 0 ? 'The cooldown for this channel has been reset.' : `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		COMMAND_SLOWMODE_TOO_LONG: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		COMMAND_BAN_NOT_BANNABLE: 'The target is not bannable for me.',
-		COMMAND_DEHOIST_EMBED: {
-			TITLE: ({ users }) => `Finished dehoisting ${users} members`,
+		COMMAND_DEHOIST_EMBED: ({ users, dehoistedMemberCount, dehoistedWithErrorsCount, errored }) => ({
+			TITLE: `Finished dehoisting ${users} members`,
 			DESCRIPTION_NOONE: 'No members were dehoisted. A round of applause for your law-abiding users!',
-			DESCRIPTION_WITHERRORS: ({ users, errored }) =>
-				`${users} member${users === 1 ? '' : 's'} ${
-					users === 1 ? 'was' : 'were'
-				} dehoisted. We also tried to dehoist an additional ${errored} member${users === 1 ? '' : 's'}, but they errored out`,
-			DESCRIPTION: ({ users }) => `${users} member${users === 1 ? '' : 's'} ${users === 1 ? 'was' : 'were'} dehoisted`,
+			DESCRIPTION_WITHERRORS: `${dehoistedWithErrorsCount} member${dehoistedWithErrorsCount > 1 ? 's' : ''} ${
+				dehoistedWithErrorsCount > 1 ? 'were' : 'was'
+			} dehoisted. We also tried to dehoist an additional ${errored} member${dehoistedWithErrorsCount > 1 ? 's' : ''}, but they errored out`,
+			DESCRIPTION: `${dehoistedMemberCount} member${dehoistedMemberCount > 1 ? 's' : ''} ${
+				dehoistedMemberCount > 1 ? 'were' : 'was'
+			} dehoisted`,
 			FIELD_ERROR_TITLE: 'The users we encountered an error for:'
-		},
+		}),
 		COMMAND_KICK_NOT_KICKABLE: 'The target is not kickable for me.',
 		COMMAND_LOCKDOWN_LOCK: ({ channel }) => `The channel ${channel} is now locked.`,
 		COMMAND_LOCKDOWN_LOCKING: ({ channel }) => `${LOADING} Locking the channel ${channel}... I might not be able to reply after this.`,
@@ -3734,16 +3759,16 @@ export default class extends Language {
 		COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT: 'No comment was provided.',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN: 'An administrator',
 		COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR: 'A moderator',
-		COMMAND_RESOLVESUGGESTION_ACTIONS: {
-			ACCEPT: ({ author }) => `${author} accepted this suggestion:`,
-			CONSIDER: ({ author }) => `${author} considered this suggestion:`,
-			DENY: ({ author }) => `${author} denied this suggestion:`
-		},
-		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: {
-			ACCEPT: ({ author, guild }) => `${author} accepted this suggestion in ${guild}:`,
-			CONSIDER: ({ author, guild }) => `${author} considered this suggestion in ${guild}:`,
-			DENY: ({ author, guild }) => `${author} denied this suggestion in ${guild}:`
-		},
+		COMMAND_RESOLVESUGGESTION_ACTIONS: ({ author }) => ({
+			ACCEPT: `${author} accepted this suggestion:`,
+			CONSIDER: `${author} considered this suggestion:`,
+			DENY: `${author} denied this suggestion:`
+		}),
+		COMMAND_RESOLVESUGGESTION_ACTIONS_DMS: ({ author, guild }) => ({
+			ACCEPT: `${author} accepted this suggestion in ${guild}:`,
+			CONSIDER: `${author} considered this suggestion in ${guild}:`,
+			DENY: `${author} denied this suggestion in ${guild}:`
+		}),
 		COMMAND_RESOLVESUGGESTION_DM_FAIL: `${REDCROSS} I wasn\'t able to send the author a DM. Are their DMs closed?`,
 		COMMAND_RESOLVESUGGESTION_SUCCESS: ({ id, action }) =>
 			`${GREENTICK} Successfully ${
@@ -3922,14 +3947,16 @@ export default class extends Language {
 			examples: ['pisces', 'virgo tomorrow', 'gemini yesterday', 'aries today']
 		},
 		COMMAND_HOROSCOPE_INVALID_SUNSIGN: ({ sign, maybe }) => `${sign} is an invalid sun sign, maybe try ${maybe}`,
-		COMMAND_HOROSCOPE_TITLES: {
-			DAILY_HOROSCOPE: ({ sign }) => `Daily horoscope for ${sign}`,
+		COMMAND_HOROSCOPE_TITLES: ({ sign, intensity, keywords, mood, rating }) => ({
+			DAILY_HOROSCOPE: `Daily horoscope for ${sign}`,
 			METADATA_TITLE: 'Metadata',
-			METADATA: ({ intensity, keywords, mood, rating }) =>
-				[`**Intensity:** ${intensity}`, `**Keywords:** ${this.list(keywords, 'and')}`, `**Mood:** ${mood}`, `**Rating:** ${rating}`].join(
-					'\n'
-				)
-		},
+			METADATA: [
+				`**Intensity:** ${intensity}`,
+				`**Keywords:** ${this.list(keywords, 'and')}`,
+				`**Mood:** ${mood}`,
+				`**Rating:** ${rating}`
+			].join('\n')
+		}),
 		COMMAND_IGDB_DESCRIPTION: 'Searches IGDB (Internet Game Database) for your favourite games',
 		COMMAND_IGDB_EXTENDED: {
 			extendedHelp: 'This command queries the IGDB API to show data on your favourite games.',

@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
 		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-		const embedTranslations = message.language.get('COMMAND_ITEM_EMEBED_DATA');
+		const embedTranslations = message.language.get('COMMAND_ITEM_EMEBED_DATA', { availableInGen8: itemDetails.isNonstandard !== 'Past' });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -27,11 +27,7 @@ export default class extends SkyraCommand {
 				.setThumbnail(itemDetails.sprite)
 				.setDescription(itemDetails.desc)
 				.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
-				.addField(
-					embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE,
-					embedTranslations.AVAILABLE_IN_GENERATION_8_DATA({ available: itemDetails.isNonstandard !== 'Past' }),
-					true
-				)
+				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA, true)
 				.addField(
 					message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE'),
 					[

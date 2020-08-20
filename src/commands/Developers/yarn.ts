@@ -54,31 +54,30 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage) {
-		const EMBED_DATA = message.language.get('COMMAND_YARN_EMBED_DATA');
-
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
-		const dependencies = latestVersion.dependencies ? this.trimArray(Object.keys(latestVersion.dependencies), EMBED_DATA.MORE_TEXT) : null;
+		const dependencies = latestVersion.dependencies
+			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get('COMMAND_YARN_EMBED_MORE_TEXT'))
+			: null;
 
+		const description = message.language.get('COMMAND_YARN_EMBED_DESCRIPTION', {
+			author: this.parseAuthor(result.author),
+			dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
+			dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
+			dependencies,
+			deprecated: latestVersion.deprecated,
+			description: cutText(result.description ?? '', 1000),
+			latestVersionNumber: result['dist-tags'].latest,
+			license: result.license,
+			mainFile: latestVersion.main ?? 'index.js',
+			maintainers
+		});
 		return new MessageEmbed()
 			.setTitle(toTitleCase(result.name))
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(
-				EMBED_DATA.DESCRIPTION({
-					author: this.parseAuthor(result.author),
-					dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
-					dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
-					dependencies,
-					deprecated: latestVersion.deprecated,
-					description: cutText(result.description ?? '', 1000),
-					latestVersionNumber: result['dist-tags'].latest,
-					license: result.license,
-					mainFile: latestVersion.main ?? 'index.js',
-					maintainers
-				})
-			);
+			.setDescription(description);
 	}
 
 	/**
@@ -87,7 +86,7 @@ export default class extends SkyraCommand {
 	 * @param arr The array to trim
 	 * @param moreText The text to show in the last entry of the array
 	 */
-	private trimArray(arr: string[], moreText: LanguageKeys['COMMAND_YARN_EMBED_DATA']['MORE_TEXT']) {
+	private trimArray(arr: string[], moreText: LanguageKeys['COMMAND_YARN_EMBED_MORE_TEXT']) {
 		if (arr.length > 10) {
 			const len = arr.length - 10;
 			arr = arr.slice(0, 10);

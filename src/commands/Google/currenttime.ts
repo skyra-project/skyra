@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 
 		if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, this.client));
 
-		const TITLES = message.language.get('COMMAND_CURRENTTIME_TITLES');
+		const TITLES = message.language.get('COMMAND_CURRENTTIME_TITLES', { dst: Number(timeData.dst) });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 						`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
 						`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
 						`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
-						`${TITLES.DST({ dst: Number(timeData.dst) })}`
+						`${TITLES.DST}`
 					].join('\n')
 				)
 		);

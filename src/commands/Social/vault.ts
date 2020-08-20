@@ -88,11 +88,15 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
-		const { ACCOUNT_MONEY, ACCOUNT_VAULT, DEPOSITED_DESCRIPTION, WITHDREW_DESCRIPTION, SHOW_DESCRIPTION } = message.language.get(
-			'COMMAND_VAULT_EMBED_DATA'
-		);
+		const {
+			ACCOUNT_MONEY,
+			ACCOUNT_VAULT,
+			DEPOSITED_DESCRIPTION,
+			WITHDREW_DESCRIPTION,
+			SHOW_DESCRIPTION
+		} = message.language.get('COMMAND_VAULT_EMBED_DATA', { coins });
 
-		const description = coins ? (hasDeposited ? DEPOSITED_DESCRIPTION({ coins }) : WITHDREW_DESCRIPTION({ coins })) : SHOW_DESCRIPTION;
+		const description = coins ? (hasDeposited ? DEPOSITED_DESCRIPTION : WITHDREW_DESCRIPTION) : SHOW_DESCRIPTION;
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

@@ -81,13 +81,13 @@ export default class extends SkyraCommand {
 
 		while (game.running) {
 			// Send the embed
-			const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_EMBED');
+			const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_EMBED', { turn: game.turn, number: game.number });
 			await game.response.edit(
 				null,
-				new MessageEmbed()
+				new MessageEmbed() //
 					.setColor(game.color)
-					.setTitle(TITLE({ turn: game.turn }))
-					.setDescription(DESCRIPTION({ number: game.number }))
+					.setTitle(TITLE)
+					.setDescription(DESCRIPTION)
 					.setFooter(FOOTER)
 			);
 
@@ -144,13 +144,16 @@ export default class extends SkyraCommand {
 	private async win(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity) {
 		const { language } = message;
 
-		const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_WIN');
+		const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_WIN', {
+			potentials: this.calculateWinnings(game.wager, game.turn),
+			number: game.number
+		});
 		await game.response.edit(
 			null,
-			new MessageEmbed()
+			new MessageEmbed() //
 				.setColor(game.color)
 				.setTitle(TITLE)
-				.setDescription(DESCRIPTION({ potentials: this.calculateWinnings(game.wager, game.turn), number: game.number }))
+				.setDescription(DESCRIPTION)
 				.setFooter(FOOTER)
 		);
 
@@ -186,13 +189,13 @@ export default class extends SkyraCommand {
 			await settings.save();
 		}
 
-		const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_LOSE');
+		const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_LOSE', { number: game.number, losses });
 		await game.response.edit(
 			null,
-			new MessageEmbed()
+			new MessageEmbed() //
 				.setColor(game.color)
 				.setTitle(TITLE)
-				.setDescription(DESCRIPTION({ number: game.number, losses }))
+				.setDescription(DESCRIPTION)
 				.setFooter(FOOTER)
 		);
 
@@ -209,14 +212,14 @@ export default class extends SkyraCommand {
 
 		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
-			const { TITLE, DESCRIPTION } = message.language.get('COMMAND_HIGHERLOWER_CANCEL');
+			const { TITLE, DESCRIPTION } = message.language.get('COMMAND_HIGHERLOWER_CANCEL', { username: message.author.username });
 
 			await game.response.edit(
 				null,
-				new MessageEmbed()
+				new MessageEmbed() //
 					.setColor(game.color)
 					.setTitle(TITLE)
-					.setDescription(DESCRIPTION({ username: message.author.username }))
+					.setDescription(DESCRIPTION)
 			);
 		}
 	}
@@ -229,8 +232,8 @@ export default class extends SkyraCommand {
 		settings.money += winnings;
 		await settings.save();
 
-		const { TITLE } = message.language.get('COMMAND_HIGHERLOWER_WIN');
-		const { DESCRIPTION: FOOTER } = message.language.get('COMMAND_HIGHERLOWER_CANCEL');
+		const { TITLE } = message.language.get('COMMAND_HIGHERLOWER_WIN', { potentials: 0, number: 0 });
+		const { DESCRIPTION: FOOTER } = message.language.get('COMMAND_HIGHERLOWER_CANCEL', { username: message.author.username });
 
 		// Let the user know we're done!
 		await game.response.edit(
@@ -239,7 +242,7 @@ export default class extends SkyraCommand {
 				.setColor(game.color)
 				.setTitle(TITLE)
 				.setDescription(message.language.get('COMMAND_HIGHERLOWER_CASHOUT', { amount: winnings }))
-				.setFooter(FOOTER({ username: message.author.username }))
+				.setFooter(FOOTER)
 		);
 	}
 

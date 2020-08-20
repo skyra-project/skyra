@@ -77,14 +77,12 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const DATA = message.language.get('COMMAND_SHIP_DATA');
-		return message.sendMessage(
-			[
-				DATA.TITLE({ romeoUsername: firstUserTag.username, julietUsername: secondUserTag.username }),
-				DATA.DESCRIPTION({ shipName: this.getShipName([...firstUserTag.username], [...secondUserTag.username]) })
-			].join('\n'),
-			{ files: [{ attachment, name: 'ship.png' }] }
-		);
+		const DATA = message.language.get('COMMAND_SHIP_DATA', {
+			romeoUsername: firstUserTag.username,
+			julietUsername: secondUserTag.username,
+			shipName: this.getShipName([...firstUserTag.username], [...secondUserTag.username])
+		});
+		return message.sendMessage([DATA.TITLE, DATA.DESCRIPTION].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */

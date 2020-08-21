@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-export class AddSelfStarCapabilities1598010877863 implements MigrationInterface {
+export class V22AddSelfStarCapabilities1598010877863 implements MigrationInterface {
 	public async up(queryRunner: QueryRunner): Promise<void> {
 		await queryRunner.addColumn(
 			'guilds',

@@ -552,7 +552,7 @@ declare module 'klasa' {
 			EXPERIENCE_LEVEL: string;
 			EVENTS: string;
 			ROBO_RUMBLE: string;
-			BOSS_FIGHT: string;
+			QUALIFIED_FOR_CHAMPS: string;
 			VICTORIES_3V3: string;
 			VICTORIES_DUO: string;
 			VICTORIES_SOLO: string;

@@ -27,16 +27,18 @@ export default class extends SkyraCommand {
 		const response = await message.sendLocale('SYSTEM_LOADING', []);
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
-			if (memberTag.nickname && memberTag.nickname.codePointAt(0)! < this.kLowestCode) {
+			const displayName = memberTag.nickname ?? this.client.users.get(memberId)?.username;
+
+			if (displayName && displayName.codePointAt(0)! < this.kLowestCode) {
 				// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
-				const newNick = `🠷${memberTag.nickname.slice(1)}`;
+				const newNick = `🠷 ${displayName.slice(2)}`;
 				try {
 					await api(this.client)
 						.guilds(message.guild!.id)
 						.members(memberId)
 						.patch({ data: { nick: newNick }, reason: 'Dehoisting' });
 				} catch (error) {
-					errored.push({ oldNick: memberTag.nickname, newNick });
+					errored.push({ oldNick: displayName, newNick });
 				}
 				counter++;
 			}

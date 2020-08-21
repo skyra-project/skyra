@@ -22,13 +22,14 @@ export const enum Time {
 
 export const enum BrawlStarsEmojis {
 	Trophy = '<:bstrophy:742083351891935353>',
-	PowerPoint = '<:bspowerpoint:742084949167046727>',
+	PowerPlay = '<:powerplay:746370227377405993>',
 	RoboRumble = '<:bsroborumble:742086199065182269>',
 	BossFight = '<:bsbossfight:742087586788540427>',
 	Exp = '<:bsxp:743434002139971636>',
 	GemGrab = '<:bsgemgrab:743430818780676137>',
 	SoloShowdown = '<:bssoloshowdown:743431454557732955>',
-	DuoShowdown = '<:bsduoshowdown:743431564674990151>'
+	DuoShowdown = '<:bsduoshowdown:743431564674990151>',
+	ChampionshipChallenge = '<:bschallenge:746373277726801971>'
 }
 
 export const enum Emojis {

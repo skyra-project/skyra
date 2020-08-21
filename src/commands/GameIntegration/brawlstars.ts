@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { TOKENS } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors, BrawlStarsEmojis } from '@utils/constants';
+import { BrandingColors, BrawlStarsEmojis, Emojis } from '@utils/constants';
 import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
@@ -35,8 +35,6 @@ const kRoboRumbleLevels = [
 	'Insane XV',
 	'Insane XVI'
 ];
-
-const kBigGameLevels = ['First Blood', 'Double Kill', 'Monster Kill', 'Godlike', 'Rampage'];
 
 const enum BrawlStarsFetchCategories {
 	PLAYERS = 'players',
@@ -93,8 +91,8 @@ export default class extends SkyraCommand {
 					`${BrawlStarsEmojis.Exp} **${FIELDS.EXPERIENCE_LEVEL}**: ${player.expLevel} (${player.expPoints.toLocaleString(
 						message.language.name
 					)})`,
-					`${BrawlStarsEmojis.PowerPoint} **${FIELDS.TOTAL}**: ${player.powerPlayPoints?.toLocaleString(message.language.name) || 0}`,
-					`${BrawlStarsEmojis.PowerPoint} **${FIELDS.PERSONAL_BEST}**: ${
+					`${BrawlStarsEmojis.PowerPlay} **${FIELDS.TOTAL}**: ${player.powerPlayPoints?.toLocaleString(message.language.name) || 0}`,
+					`${BrawlStarsEmojis.PowerPlay} **${FIELDS.PERSONAL_BEST}**: ${
 						player.highestPowerPlayPoints?.toLocaleString(message.language.name) || 0
 					}`
 				].join('\n')
@@ -103,7 +101,9 @@ export default class extends SkyraCommand {
 				TITLES.EVENTS,
 				[
 					`${BrawlStarsEmojis.RoboRumble} **${FIELDS.ROBO_RUMBLE}**: ${kRoboRumbleLevels[player.bestRoboRumbleTime]}`,
-					`${BrawlStarsEmojis.BossFight} **${FIELDS.BOSS_FIGHT}**: ${kBigGameLevels[player.bestTimeAsBigBrawler]}`
+					`${BrawlStarsEmojis.ChampionshipChallenge} **${FIELDS.QUALIFIED_FOR_CHAMPS}**: ${
+						player.isQualifiedFromChampionshipChallenge ? Emojis.GreenTick : Emojis.RedCross
+					}`
 				].join('\n')
 			)
 			.addField(

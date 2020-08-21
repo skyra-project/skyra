@@ -878,7 +878,7 @@ export default class extends Language {
 			PERSONAL_BEST: 'Personal Best',
 			EVENTS: 'Events',
 			ROBO_RUMBLE: 'Best Robo Rumble Rank',
-			BOSS_FIGHT: 'Best Big Brawler Rank',
+			QUALIFIED_FOR_CHAMPS: 'Qualified for Championship',
 			EXPERIENCE_LEVEL: 'Experience Level',
 			VICTORIES_3V3: '3v3 Victories',
 			VICTORIES_SOLO: 'Solo Victories',

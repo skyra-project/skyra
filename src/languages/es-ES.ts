@@ -667,6 +667,7 @@ export default class extends Language {
 			'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
+		SETTINGS_STARBOARD_SELFSTAR: 'Si la reacción del autor está incluida en el recuento total de estrellas',
 		SETTINGS_SUGGESTIONS_CHANNEL: 'El canal donde se enviarán las sugerencias.',
 		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'El emoji utilizado para votar a favor en las reacciones de las sugerencias.',
 		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'El emoji utilizado para votar en contra en las reacciones de las sugerencias.',

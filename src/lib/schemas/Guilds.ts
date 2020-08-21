@@ -201,6 +201,7 @@ export default Client.defaultGuildSchema
 			.add('emoji', 'String', { default: '%E2%AD%90', configurable: false })
 			.add('ignoreChannels', 'TextChannel', { array: true })
 			.add('minimum', 'Integer', { default: 1, minimum: 1, inclusive: true })
+			.add('selfStar', 'Boolean', { default: false })
 	)
 	.add('trigger', (folder) =>
 		folder

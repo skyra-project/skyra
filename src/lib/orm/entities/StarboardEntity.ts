@@ -148,12 +148,10 @@ export class StarboardEntity extends BaseEntity {
 	 * Add a new user to the list
 	 * @param id The user's ID to add
 	 */
-	public async increment(id: string): Promise<void> {
-		// TODO: https://github.com/skyra-project/skyra/issues/569
-		if (this.#message.author.id !== id) {
-			this.#users.add(id);
-			await this.edit({ stars: this.#users.size });
-		}
+	public async increment(id: string, selfStarring: boolean): Promise<void> {
+		if (this.#message.author.id === id && !selfStarring) return;
+		this.#users.add(id);
+		await this.edit({ stars: this.#users.size });
 	}
 
 	/**

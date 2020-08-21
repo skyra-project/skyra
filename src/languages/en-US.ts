@@ -649,7 +649,7 @@ export default class extends Language {
 			'The starboard channel. If you star a message, it will be posted there. Using the `setStarboardEmoji` command allows the emoji customization.',
 		SETTINGS_STARBOARD_IGNORECHANNELS: 'The channels I should ignore when listening for new stars.',
 		SETTINGS_STARBOARD_MINIMUM: 'The minimum amount of stars required before a message is posted to the starboard channel.',
-		SETTINGS_STARBOARD_SELFSTAR: "If the author's reaction should be included in the total star count",
+		SETTINGS_STARBOARD_SELFSTAR: "Whether the author's reaction should be included in the total star count",
 		SETTINGS_SUGGESTIONS_CHANNEL: 'The channel where suggestions will be sent.',
 		SETTINGS_SUGGESTIONS_EMOJIS_UPVOTE: 'The upvote emoji Skyra reacts with on every suggestion.',
 		SETTINGS_SUGGESTIONS_EMOJIS_DOWNVOTE: 'The downvote emoji Skyra reacts with on every suggestion.',

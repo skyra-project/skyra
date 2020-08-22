@@ -63,14 +63,6 @@ const enum BrawlStarsFetchCategories {
 export default class extends SkyraCommand {
 	public async player(message: KlasaMessage, [tag]: [string]) {
 		const playerData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
-		const toSave = Reflect.get(message.flagArgs, 'save');
-
-		if (toSave) {
-			const { users } = await DbSet.connect();
-			const userBsData = await users
-				.createQueryBuilder()
-		}
-
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 

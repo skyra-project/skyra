@@ -3,7 +3,6 @@ import { AsyncQueue } from '@klasa/async-queue';
 import { Cache } from '@klasa/cache';
 import { TimerManager } from '@klasa/timer-manager';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
-import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
@@ -27,16 +26,6 @@ export class UserRepository extends Repository<UserEntity> {
 		}
 
 		return user as UserEntity & { profile: NonNullable<UserEntity['profile']> };
-	}
-
-	public async ensureGI(id: string, options: FindOneOptions<UserEntity> = {}) {
-		const user = await this.ensure(id, { ...options, relations: ['gi'] });
-		if (!user.gi) {
-			user.gi = new UserGameIntegrationEntity();
-			user.gi.user = user;
-		}
-
-		return user as UserEntity & { gi: NonNullable<UserEntity['gi']> };
 	}
 
 	public async ensureCooldowns(id: string, options: FindOneOptions<UserEntity> = {}) {

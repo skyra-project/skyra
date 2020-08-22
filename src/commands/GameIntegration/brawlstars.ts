@@ -47,6 +47,7 @@ const enum BrawlStarsFetchCategories {
 	extendedHelp: (language) => language.get('COMMAND_BRAWLSTARS_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
+	flagSupport: true,
 	usage: '<club|player:default> <tag:tag>',
 	usageDelim: ' '
 })
@@ -62,6 +63,14 @@ const enum BrawlStarsFetchCategories {
 export default class extends SkyraCommand {
 	public async player(message: KlasaMessage, [tag]: [string]) {
 		const playerData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
+		const toSave = Reflect.get(message.flagArgs, 'save');
+
+		if (toSave) {
+			const { users } = await DbSet.connect();
+			const userBsData = await users
+				.createQueryBuilder()
+		}
+
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 

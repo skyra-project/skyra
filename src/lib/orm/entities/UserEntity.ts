@@ -15,10 +15,12 @@ import {
 	JoinTable,
 	ManyToMany,
 	OneToOne,
-	PrimaryColumn
+	PrimaryColumn,
+	OneToMany
 } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
+import { UserGameIntegrationEntity } from './UserGameIntegrationEntity';
 import { UserProfileEntity } from './UserProfileEntity';
 
 @Check(/* sql */ `money >= 0`)
@@ -46,6 +48,9 @@ export class UserEntity extends BaseEntity {
 
 	@OneToOne(() => UserProfileEntity, (profile) => profile.user, { cascade: true })
 	public profile?: UserProfileEntity;
+
+	@OneToMany(() => UserGameIntegrationEntity, (gi) => gi.user, { cascade: true })
+	public gi?: UserGameIntegrationEntity[];
 
 	@OneToOne(() => UserCooldownEntity, (cooldown) => cooldown.user, { cascade: true })
 	public cooldowns?: UserCooldownEntity;

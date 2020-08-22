@@ -15,6 +15,7 @@ import { StarboardEntity } from '@orm/entities/StarboardEntity';
 import { SuggestionEntity } from '@orm/entities/SuggestionEntity';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
+import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
 import { ClientRepository } from '@orm/repositories/ClientRepository';
 import { MemberRepository } from '@orm/repositories/MemberRepository';
@@ -103,6 +104,10 @@ export class DbSet {
 
 	public get userProfiles() {
 		return this.connection.getRepository(UserProfileEntity);
+	}
+
+	public get userGameIntegrations() {
+		return this.connection.getRepository(UserGameIntegrationEntity);
 	}
 
 	public get userCooldowns() {

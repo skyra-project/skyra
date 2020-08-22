@@ -2,11 +2,11 @@
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { cutText } from '@sapphire/utilities';
 import { APIErrors } from '@utils/constants';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
-import { cutText } from '@sapphire/utilities';
 
 export const kColors = [
 	0xffe3af,

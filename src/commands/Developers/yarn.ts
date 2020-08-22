@@ -3,7 +3,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
-import { toTitleCase, cutText } from '@sapphire/utilities';
+import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';

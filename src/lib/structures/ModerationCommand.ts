@@ -2,7 +2,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
-import { mergeDefault, isNullOrUndefined } from '@sapphire/utilities';
+import { isNullOrUndefined, mergeDefault } from '@sapphire/utilities';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise } from '@utils/util';
 import { User } from 'discord.js';

@@ -6,7 +6,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings';
-import { chunk, cutText, codeBlock } from '@sapphire/utilities';
+import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
 import { BrandingColors } from '@utils/constants';

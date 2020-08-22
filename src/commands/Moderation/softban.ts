@@ -1,6 +1,6 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { isNumber, ArgumentTypes } from '@sapphire/utilities';
+import { ArgumentTypes, isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { getImage } from '@utils/util';

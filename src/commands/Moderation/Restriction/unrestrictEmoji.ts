@@ -1,8 +1,8 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
-import { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],

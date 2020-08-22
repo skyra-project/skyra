@@ -6,9 +6,9 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import { sleep } from '@utils/sleep';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { KlasaMessage, Language } from 'klasa';
-import { sleep } from '@utils/sleep';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],

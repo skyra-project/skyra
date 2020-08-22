@@ -7,16 +7,16 @@ import { TrackData } from 'lavacord';
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get('COMMAND_PLAY_DESCRIPTION'),
 	extendedHelp: (language) => language.get('COMMAND_PLAY_EXTENDED'),
-	usage: '(song:song)',
+	usage: '(song:song|queue:url)',
 	flagSupport: true
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
-	public async run(message: KlasaMessage, [songs]: [TrackData[]]) {
+	public async run(message: KlasaMessage, [songs]: [TrackData[] | string]) {
 		const { music } = message.guild!;
 
 		if (songs) {
-			// If there are songs, add them
+			// If there are songs or a queue, add them
 			await this.client.commands.get('add')!.run(message, [songs]);
 			if (music.playing) return;
 		} else if (!music.canPlay) {

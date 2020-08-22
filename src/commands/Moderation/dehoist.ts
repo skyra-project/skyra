@@ -27,11 +27,14 @@ export default class extends SkyraCommand {
 		const response = await message.sendLocale('SYSTEM_LOADING', []);
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
-			const displayName = memberTag.nickname ?? this.client.users.get(memberId)?.username;
+			const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
+			if (!displayName) return;
+			const char = displayName.codePointAt(0)!;
 
-			if (displayName && displayName.codePointAt(0)! < this.kLowestCode) {
+			if (char < this.kLowestCode) {
 				// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
-				const newNick = `🠷 ${displayName.slice(2)}`;
+				// The ternary cuts 2 characters if the 1st codepoint belongs in UTF-16
+				const newNick = `🠷${displayName.slice(char <= 0xff ? 1 : 2)}`;
 				try {
 					await api(this.client)
 						.guilds(message.guild!.id)
@@ -46,12 +49,12 @@ export default class extends SkyraCommand {
 
 		// We're done!
 		return response.edit({
-			embed: await this.prepareFinalEmbed(message, members.size, counter, errored),
+			embed: await this.prepareFinalEmbed(message, counter, errored),
 			content: null
 		});
 	}
 
-	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
 		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED', {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,

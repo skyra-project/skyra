@@ -27,29 +27,35 @@ export default class extends SkyraCommand {
 		const response = await message.sendLocale('SYSTEM_LOADING', []);
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
-			if (memberTag.nickname && memberTag.nickname.codePointAt(0)! < this.kLowestCode) {
-				// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
-				const newNick = `🠷${memberTag.nickname.slice(1)}`;
-				try {
-					await api(this.client)
-						.guilds(message.guild!.id)
-						.members(memberId)
-						.patch({ data: { nick: newNick }, reason: 'Dehoisting' });
-				} catch (error) {
-					errored.push({ oldNick: memberTag.nickname, newNick });
-				}
-				counter++;
+			const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
+			if (!displayName) continue;
+
+			const char = displayName.codePointAt(0)!;
+			if (char > this.kLowestCode) continue;
+
+			// Replace the first character of the offending user's with an UTF-16 character, bringing'em down, down, down.
+			// The ternary cuts 2 characters if the 1st codepoint belongs in UTF-16
+			const newNick = `🠷${displayName.slice(char <= 0xff ? 1 : 2)}`;
+			try {
+				await api(this.client)
+					.guilds(message.guild!.id)
+					.members(memberId)
+					.patch({ data: { nick: newNick }, reason: 'Dehoisting' });
+			} catch {
+				errored.push({ oldNick: displayName, newNick });
 			}
+
+			++counter;
 		}
 
 		// We're done!
 		return response.edit({
-			embed: await this.prepareFinalEmbed(message, members.size, counter, errored),
+			embed: await this.prepareFinalEmbed(message, counter, errored),
 			content: null
 		});
 	}
 
-	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
 		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED', {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,

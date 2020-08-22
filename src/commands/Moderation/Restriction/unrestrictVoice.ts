@@ -1,8 +1,8 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes } from '@utils/util';
 import { KlasaMessage } from 'klasa';
+import { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restricted-voice', 'urv'],

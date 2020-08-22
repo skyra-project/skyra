@@ -1,13 +1,14 @@
-import { chunk, isFunction, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
+import { chunk, isFunction } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { KlasaMessage, Language } from 'klasa';
+import { sleep } from '@utils/sleep';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],

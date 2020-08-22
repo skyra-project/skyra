@@ -5,7 +5,8 @@ import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
+import { cutText } from '@sapphire/utilities';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 

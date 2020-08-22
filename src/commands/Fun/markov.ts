@@ -4,9 +4,10 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { DEV } from '@root/config';
 import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
-import { cutText, getAllContent, iteratorAt } from '@utils/util';
+import { getAllContent, iteratorAt } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
+import { cutText } from '@sapphire/utilities';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);

@@ -2,9 +2,10 @@ import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/Mod
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
 import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['m'],

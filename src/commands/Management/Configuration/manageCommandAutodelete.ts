@@ -1,4 +1,4 @@
-import { codeBlock } from '@klasa/utils';
+import { codeBlock } from '@sapphire/utilities';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';

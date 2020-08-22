@@ -1,9 +1,10 @@
-import { codeBlock, exec, sleep } from '@klasa/utils';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Emojis, rootFolder } from '@utils/constants';
-import { cutText } from '@utils/util';
+import { exec } from '@utils/exec';
+import { sleep } from '@utils/sleep';
 import { remove } from 'fs-nextra';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';

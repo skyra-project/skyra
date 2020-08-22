@@ -1,8 +1,7 @@
-import { codeBlock } from '@klasa/utils';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
+import { codeBlock, inlineCodeBlock } from '@sapphire/utilities';
 import { rootFolder } from '@utils/constants';
-import { inlineCodeblock } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage } from 'klasa';
 
@@ -60,17 +59,17 @@ export default class extends Event {
 		let output: string | undefined = undefined;
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			output = [
-				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
-				`${inlineCodeblock('Path      ::')} ${error.path}`,
-				`${inlineCodeblock('Code      ::')} ${error.code}`,
-				`${inlineCodeblock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
-				`${inlineCodeblock('Error     ::')} ${codeBlock('js', error.stack || error)}`
+				`${inlineCodeBlock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
+				`${inlineCodeBlock('Path      ::')} ${error.path}`,
+				`${inlineCodeBlock('Code      ::')} ${error.code}`,
+				`${inlineCodeBlock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
+				`${inlineCodeBlock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 			].join('\n');
 		} else {
 			output = [
-				`${inlineCodeblock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
-				`${inlineCodeblock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
-				`${inlineCodeblock('Error     ::')} ${codeBlock('js', error.stack || error)}`
+				`${inlineCodeBlock('Command   ::')} ${command.path.slice(rootFolder.length)}`,
+				`${inlineCodeBlock('Arguments ::')} ${message.args.length ? `[\`${message.args.join('`, `')}\`]` : 'Not Supplied'}`,
+				`${inlineCodeBlock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 			].join('\n');
 		}
 

@@ -1,5 +1,5 @@
-import { isNumber } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { isNumber } from '@sapphire/utilities';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {

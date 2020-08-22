@@ -5,10 +5,11 @@ import { Kitsu } from '@lib/types/definitions/Kitsu';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { cutText, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
+import { cutText } from '@sapphire/utilities';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 

@@ -1,9 +1,9 @@
-import { codeBlock } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { cutText, floatPromise, getContent } from '@utils/util';
+import { codeBlock, cutText } from '@sapphire/utilities';
+import { floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';

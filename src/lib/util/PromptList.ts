@@ -1,4 +1,4 @@
-import { codeBlock } from '@klasa/utils';
+import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 
 const kPromptOptions = { time: 30000, dispose: true, max: 1 };

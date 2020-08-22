@@ -1,7 +1,7 @@
-import { deepClone } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { deepClone } from '@sapphire/utilities';
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

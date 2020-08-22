@@ -250,30 +250,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('splitText', () => {
-		test('GIVEN text without spaces THEN hard cuts off', () => {
-			expect(utils.splitText('thistexthasnospaces', 10)).toEqual('thistextha');
-		});
-
-		test('GIVEN text with spaces THEN cuts off on space', () => {
-			expect(utils.splitText('thistext hasnospaces', 10)).toEqual('thistext');
-		});
-	});
-
-	describe('cutText', () => {
-		test("GIVEN text short text THEN doesn't truncate", () => {
-			expect(utils.cutText("text that doesn't have to truncate", 35)).toEqual("text that doesn't have to truncate");
-		});
-
-		test('GIVEN text with spaces THEN cuts off on space', () => {
-			expect(utils.cutText('text that does have to truncate', 10)).toEqual('text...');
-		});
-
-		test('GIVEN text with spaces THEN cuts off after space', () => {
-			expect(utils.cutText('textthat does have to truncate', 10)).toEqual('texttha...');
-		});
-	});
-
 	describe('iteratorAt', () => {
 		function* generate() {
 			for (let i = 0; i < 100; ++i) yield i;
@@ -677,16 +653,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('parseURL', () => {
-		test('GIVEN valid URL THEN returns URL', () => {
-			expect(utils.parseURL('https://skyra.pw')).toStrictEqual(new URL('https://skyra.pw'));
-		});
-
-		test('GIVEN invalid url THEN returns null', () => {
-			expect(utils.parseURL('thisisnotaurl')).toBeNull();
-		});
-	});
-
 	describe('isImageURL', () => {
 		test('GIVEN valid IMAGE URL THEN returns TRUE', () => {
 			expect(utils.isImageURL('https://example.com/image.png')).toBe(true);
@@ -702,38 +668,6 @@ describe('Utils', () => {
 
 		test('GIVEN invalid URL THEN returns TRUE', () => {
 			expect(utils.isImageURL('something/image.mp4')).toBe(false);
-		});
-	});
-
-	describe('roundNumber', () => {
-		test('GIVEN number without decimals THEN returns number', () => {
-			expect(utils.roundNumber(5)).toEqual(5);
-		});
-
-		test('GIVEN number with decimals that round down THEN returns floored number', () => {
-			expect(utils.roundNumber(5.3346353526)).toEqual(5);
-		});
-
-		test('GIVEN number with decimals that round up THEN returns floored number + 1', () => {
-			expect(utils.roundNumber(5.6556697864)).toEqual(6);
-		});
-
-		test('GIVEN number with positive exponent THEN returns exponent scaled number', () => {
-			expect(utils.roundNumber('10e5')).toEqual(1000000);
-		});
-
-		test('GIVEN number with negative exponent THEN returns 0', () => {
-			expect(utils.roundNumber('10e-5')).toEqual(0);
-		});
-
-		test('GIVEN number with negative exponent and many decimals THEN returns exponent scaled number', () => {
-			expect(utils.roundNumber('10e-5', 10)).toEqual(0.0001);
-		});
-	});
-
-	describe('inlineCodeblock', () => {
-		test('GIVEN text THEN converts to inline codeblock', () => {
-			expect(utils.inlineCodeblock('const skyraIsCool = true')).toEqual('`const skyraIsCool = true`');
 		});
 	});
 
@@ -779,36 +713,6 @@ describe('Utils', () => {
 
 		test('GIVEN object and string array path THEN returns undefined', () => {
 			expect(utils.getFromPath(obj, ['keyTwo', 'nestedKeyOne'])).toEqual('nestedValueOne');
-		});
-	});
-
-	describe('isNullOrUndefined', () => {
-		test('GIVEN undefined THEN returns true', () => {
-			expect(utils.isNullOrUndefined(undefined)).toEqual(true);
-		});
-
-		test('GIVEN null THEN returns true', () => {
-			expect(utils.isNullOrUndefined(null)).toEqual(true);
-		});
-
-		test('GIVEN empty object THEN returns false', () => {
-			expect(utils.isNullOrUndefined({})).toEqual(false);
-		});
-
-		test('GIVEN falsy string THEN returns false', () => {
-			expect(utils.isNullOrUndefined('')).toEqual(false);
-		});
-
-		test('GIVEN truthy string THEN returns false', () => {
-			expect(utils.isNullOrUndefined('foo')).toEqual(false);
-		});
-
-		test('GIVEN falsy number THEN returns false', () => {
-			expect(utils.isNullOrUndefined(0)).toEqual(false);
-		});
-
-		test('GIVEN truthy number THEN returns false', () => {
-			expect(utils.isNullOrUndefined(1)).toEqual(false);
 		});
 	});
 

@@ -1,6 +1,7 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
+import { ArgumentTypes } from '@sapphire/utilities';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vk'],

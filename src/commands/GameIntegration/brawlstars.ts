@@ -47,7 +47,6 @@ const enum BrawlStarsFetchCategories {
 	extendedHelp: (language) => language.get('COMMAND_BRAWLSTARS_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
-	flagSupport: true,
 	usage: '<club|player:default> <tag:tag>',
 	usageDelim: ' '
 })

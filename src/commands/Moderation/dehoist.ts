@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
 			const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
-			if (!displayName) return;
+			if (!displayName) continue;
 
 			const char = displayName.codePointAt(0)!;
 			if (char > this.kLowestCode) continue;

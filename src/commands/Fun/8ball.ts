@@ -1,5 +1,5 @@
-import { codeBlock } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { codeBlock } from '@sapphire/utilities';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];

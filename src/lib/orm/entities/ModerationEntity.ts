@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { isNumber } from '@klasa/utils';
 import type { ModerationManager, ModerationManagerUpdateData } from '@lib/structures/managers/ModerationManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import type { AnyObject } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
+import { isNumber, parseURL } from '@sapphire/utilities';
 import { Moderation, Time } from '@utils/constants';
-import { parseURL } from '@utils/util';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';

@@ -1,12 +1,12 @@
 import { Timestamp } from '@klasa/timestamp';
-import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
+import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cleanMentions, cutText, fetch, FetchResultTypes } from '@utils/util';
+import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 

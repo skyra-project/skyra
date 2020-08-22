@@ -1,4 +1,3 @@
-import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -11,6 +10,7 @@ import {
 	NotificationsStreamTwitch
 } from '@lib/types/settings/GuildSettings';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
+import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';

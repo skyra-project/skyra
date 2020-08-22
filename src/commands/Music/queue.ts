@@ -1,8 +1,8 @@
-import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { Song } from '@lib/structures/music/Song';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, ZeroWidhSpace } from '@utils/constants';
 import { showSeconds } from '@utils/util';

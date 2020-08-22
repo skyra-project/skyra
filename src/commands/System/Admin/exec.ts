@@ -1,6 +1,7 @@
-import { codeBlock, exec } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { codeBlock } from '@sapphire/utilities';
+import { exec } from '@utils/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';

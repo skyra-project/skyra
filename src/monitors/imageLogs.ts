@@ -1,8 +1,8 @@
-import { isNumber } from '@klasa/utils';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
+import { isNumber } from '@sapphire/utilities';
 import { MessageLogsEnum } from '@utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';

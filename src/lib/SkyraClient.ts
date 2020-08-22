@@ -1,31 +1,32 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
-import { mergeDefault } from '@klasa/utils';
+import { Client as VezaClient } from 'veza';
 import { Colors } from '@klasa/console';
+import { container } from 'tsyringe';
+import { DashboardClient } from 'klasa-dashboard-hooks';
+import { FSWatcher } from 'chokidar';
+import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
-import { Client as VezaClient } from 'veza';
-import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
+import { mergeDefault } from '@sapphire/utilities';
 import { Webhook } from 'discord.js';
-import { FSWatcher } from 'chokidar';
-import { DashboardClient } from 'klasa-dashboard-hooks';
 
 // Import all types
 import { Events } from './types/Enums';
 
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
-import { ScheduleManager } from './structures/managers/ScheduleManager';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
+import { ScheduleManager } from './structures/managers/ScheduleManager';
 
 // Import all utils
-import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { ConnectFourManager } from './util/Games/ConnectFourManager';
-import { Twitch } from './util/Notifications/Twitch';
 import { clientOptions } from './util/constants';
-import { Leaderboard } from './util/Leaderboard';
-import { UserTags } from './util/Cache/UserTags';
+import { ConnectFourManager } from './util/Games/ConnectFourManager';
 import { enumerable } from './util/util';
+import { Leaderboard } from './util/Leaderboard';
+import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
+import { Twitch } from './util/Notifications/Twitch';
+import { UserTags } from './util/Cache/UserTags';
 
 // Import all configuration
 import {
@@ -48,9 +49,8 @@ import './schemas/Guilds';
 // Import setup files
 import './setup/PermissionsLevels';
 import './setup/Canvas';
-import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { InviteStore } from './structures/InviteStore';
-import { container } from 'tsyringe';
+import { WebsocketHandler } from './websocket/WebsocketHandler';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');

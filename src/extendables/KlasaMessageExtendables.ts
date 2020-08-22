@@ -1,6 +1,6 @@
-import { sleep } from '@klasa/utils';
 import { Events } from '@lib/types/Enums';
 import { APIErrors } from '@utils/constants';
+import { sleep } from '@utils/sleep';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 

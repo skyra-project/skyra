@@ -1,8 +1,8 @@
-import { codeBlock } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
 import { MessageEmbed } from 'discord.js';

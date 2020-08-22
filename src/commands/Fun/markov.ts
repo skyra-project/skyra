@@ -2,9 +2,10 @@ import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { DEV } from '@root/config';
+import { cutText } from '@sapphire/utilities';
 import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
-import { cutText, getAllContent, iteratorAt } from '@utils/util';
+import { getAllContent, iteratorAt } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 

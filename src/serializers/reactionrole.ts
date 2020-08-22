@@ -1,5 +1,5 @@
-import { isObject } from '@klasa/utils';
 import type { ReactionRole } from '@lib/types/settings/GuildSettings';
+import { isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';
 import { Guild } from 'discord.js';
 import { Serializer, SerializerUpdateContext } from 'klasa';

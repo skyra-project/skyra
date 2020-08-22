@@ -1,10 +1,10 @@
-import { isNumber, isThenable } from '@klasa/utils';
 import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import {
@@ -158,30 +158,6 @@ export function oneToTen(level: number): UtilOneToTenEntry | undefined {
 	if (level < 0) level = 0;
 	else if (level > 10) level = 10;
 	return ONE_TO_TEN.get(level);
-}
-
-/**
- * Split a string by its latest space character in a range from the character 0 to the selected one.
- * @param str The text to split.
- * @param length The length of the desired string.
- * @param char The character to split with
- */
-export function splitText(str: string, length: number, char = ' ') {
-	const x = str.substring(0, length).lastIndexOf(char);
-	const pos = x === -1 ? length : x;
-	return str.substring(0, pos);
-}
-
-/**
- * Split a text by its latest space character in a range from the character 0 to the selected one.
- * @param str The text to split.
- * @param length The length of the desired string.
- */
-export function cutText(str: string, length: number) {
-	if (str.length < length) return str;
-	const cut = splitText(str, length - 3);
-	if (cut.length < length - 3) return `${cut}...`;
-	return `${cut.slice(0, length - 3)}...`;
 }
 
 export function iteratorAt<T>(iterator: IterableIterator<T>, position: number): T | null {
@@ -479,44 +455,12 @@ export function parseRange(input: string): number[] {
 }
 
 /**
- * Parses an URL, returns null if invalid.
- * @param url The url to parse
- */
-export function parseURL(url: string) {
-	try {
-		return new URL(url);
-	} catch {
-		return null;
-	}
-}
-
-/**
  * Parses an URL and checks if the extension is valid.
  * @param url The url to check
  */
 export function isImageURL(url: string) {
 	const parsed = parseURL(url);
 	return parsed ? IMAGE_EXTENSION.test(parsed.pathname) : false;
-}
-
-/**
- * Properly rounds up or down a number.
- * Also supports strinsgs using an exponent to indicate large or small numbers.
- * @param num The number to round off
- * @param scale The amount of decimals to retain
- */
-export function roundNumber(num: number | string, scale = 0) {
-	if (!num.toString().includes('e')) {
-		return Number(`${Math.round(Number(`${num}e+${scale}`))}e-${scale}`);
-	}
-	const arr = `${num}`.split('e');
-	let sig = '';
-
-	if (Number(arr[1]) + scale > 0) {
-		sig = '+';
-	}
-
-	return Number(`${Math.round(Number(`${Number(arr[0])}e${sig}${Number(arr[1]) + scale}`))}e-${scale}`);
 }
 
 /**
@@ -569,15 +513,6 @@ export function createPick<T>(array: T[]): () => T {
 	return () => array[Math.floor(Math.random() * length)];
 }
 
-export function codeBlock(language: string, input: string) {
-	if (input.length === 0) return `\`\`\`${ZeroWidhSpace}\`\`\``;
-	return `\`\`\`${language}\n${input.replace(/```/, `\`${ZeroWidhSpace}\`\``).replace(/`$/g, `\`${ZeroWidhSpace}`)}\`\`\``;
-}
-
-export function inlineCodeblock(input: string) {
-	return `\`${input.replace(/ /g, '\u00A0').replace(/`/g, `\`${ZeroWidhSpace}`)}\``;
-}
-
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
 	if (isThenable(promise)) promise.catch((error) => ctx.client.emit(Events.Wtf, error));
 }
@@ -601,8 +536,6 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 		throw error;
 	}
 }
-
-export type ArgumentTypes<F extends (...args: any[]) => unknown> = F extends (...args: infer A) => any ? A : never;
 
 export interface BidirectionalReplaceOptions<T> {
 	onMatch(match: RegExpExecArray): T;
@@ -745,14 +678,6 @@ export const shuffle = <T>(array: T[]): T[] => {
 	}
 	return array;
 };
-
-/**
- * Checks whether or not a value is null or undefined
- * @param value The value to check
- */
-export function isNullOrUndefined(value: unknown): value is undefined | null {
-	return value === undefined || value === null;
-}
 
 export interface UtilOneToTenEntry {
 	emoji: string;

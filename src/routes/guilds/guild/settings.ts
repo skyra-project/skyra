@@ -1,7 +1,7 @@
-import { objectToTuples } from '@klasa/utils';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
+import { objectToTuples } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { canManage } from '@utils/API';
 import { authenticated, ratelimit } from '@utils/util';

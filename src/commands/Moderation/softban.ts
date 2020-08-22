@@ -1,9 +1,9 @@
-import { isNumber } from '@klasa/utils';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ArgumentTypes, isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({

@@ -1,8 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserEntity } from '@orm/entities/UserEntity';
+import { roundNumber } from '@sapphire/utilities';
 import { socialFolder } from '@utils/constants';
-import { roundNumber } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';

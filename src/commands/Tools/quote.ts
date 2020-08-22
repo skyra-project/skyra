@@ -1,7 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { cutText, getContent, getImage, isTextBasedChannel } from '@utils/util';
+import { getContent, getImage, isTextBasedChannel } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, Serializer } from 'klasa';
 

@@ -1,4 +1,4 @@
-import { toTitleCase } from '@klasa/utils';
+import { toTitleCase } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { Schema, SchemaEntry, SettingsFolder } from 'klasa';
 

@@ -1,4 +1,4 @@
-import { isNumber } from '@klasa/utils';
+import { isNumber } from '@sapphire/utilities';
 import { Argument, Duration, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {

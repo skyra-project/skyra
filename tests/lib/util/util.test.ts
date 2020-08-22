@@ -1,9 +1,21 @@
 import Collection from '@discordjs/collection';
+import { client } from '@mocks/MockInstances';
 import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Mime, Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
-import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
+import {
+	CategoryChannel,
+	DMChannel,
+	Guild,
+	Message,
+	MessageAttachment,
+	MessageEmbed,
+	NewsChannel,
+	StoreChannel,
+	TextChannel,
+	VoiceChannel
+} from 'discord.js';
 import { createReadStream, promises as fsPromises } from 'fs';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
@@ -247,30 +259,6 @@ describe('Utils', () => {
 
 		test('GIVEN positive integer over 10 THEN returns level 10 (😍)', () => {
 			expect(utils.oneToTen(11)).toStrictEqual({ color: 5362927, emoji: '😍' });
-		});
-	});
-
-	describe('splitText', () => {
-		test('GIVEN text without spaces THEN hard cuts off', () => {
-			expect(utils.splitText('thistexthasnospaces', 10)).toEqual('thistextha');
-		});
-
-		test('GIVEN text with spaces THEN cuts off on space', () => {
-			expect(utils.splitText('thistext hasnospaces', 10)).toEqual('thistext');
-		});
-	});
-
-	describe('cutText', () => {
-		test("GIVEN text short text THEN doesn't truncate", () => {
-			expect(utils.cutText("text that doesn't have to truncate", 35)).toEqual("text that doesn't have to truncate");
-		});
-
-		test('GIVEN text with spaces THEN cuts off on space', () => {
-			expect(utils.cutText('text that does have to truncate', 10)).toEqual('text...');
-		});
-
-		test('GIVEN text with spaces THEN cuts off after space', () => {
-			expect(utils.cutText('textthat does have to truncate', 10)).toEqual('texttha...');
 		});
 	});
 
@@ -677,16 +665,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('parseURL', () => {
-		test('GIVEN valid URL THEN returns URL', () => {
-			expect(utils.parseURL('https://skyra.pw')).toStrictEqual(new URL('https://skyra.pw'));
-		});
-
-		test('GIVEN invalid url THEN returns null', () => {
-			expect(utils.parseURL('thisisnotaurl')).toBeNull();
-		});
-	});
-
 	describe('isImageURL', () => {
 		test('GIVEN valid IMAGE URL THEN returns TRUE', () => {
 			expect(utils.isImageURL('https://example.com/image.png')).toBe(true);
@@ -702,38 +680,6 @@ describe('Utils', () => {
 
 		test('GIVEN invalid URL THEN returns TRUE', () => {
 			expect(utils.isImageURL('something/image.mp4')).toBe(false);
-		});
-	});
-
-	describe('roundNumber', () => {
-		test('GIVEN number without decimals THEN returns number', () => {
-			expect(utils.roundNumber(5)).toEqual(5);
-		});
-
-		test('GIVEN number with decimals that round down THEN returns floored number', () => {
-			expect(utils.roundNumber(5.3346353526)).toEqual(5);
-		});
-
-		test('GIVEN number with decimals that round up THEN returns floored number + 1', () => {
-			expect(utils.roundNumber(5.6556697864)).toEqual(6);
-		});
-
-		test('GIVEN number with positive exponent THEN returns exponent scaled number', () => {
-			expect(utils.roundNumber('10e5')).toEqual(1000000);
-		});
-
-		test('GIVEN number with negative exponent THEN returns 0', () => {
-			expect(utils.roundNumber('10e-5')).toEqual(0);
-		});
-
-		test('GIVEN number with negative exponent and many decimals THEN returns exponent scaled number', () => {
-			expect(utils.roundNumber('10e-5', 10)).toEqual(0.0001);
-		});
-	});
-
-	describe('inlineCodeblock', () => {
-		test('GIVEN text THEN converts to inline codeblock', () => {
-			expect(utils.inlineCodeblock('const skyraIsCool = true')).toEqual('`const skyraIsCool = true`');
 		});
 	});
 
@@ -782,36 +728,6 @@ describe('Utils', () => {
 		});
 	});
 
-	describe('isNullOrUndefined', () => {
-		test('GIVEN undefined THEN returns true', () => {
-			expect(utils.isNullOrUndefined(undefined)).toEqual(true);
-		});
-
-		test('GIVEN null THEN returns true', () => {
-			expect(utils.isNullOrUndefined(null)).toEqual(true);
-		});
-
-		test('GIVEN empty object THEN returns false', () => {
-			expect(utils.isNullOrUndefined({})).toEqual(false);
-		});
-
-		test('GIVEN falsy string THEN returns false', () => {
-			expect(utils.isNullOrUndefined('')).toEqual(false);
-		});
-
-		test('GIVEN truthy string THEN returns false', () => {
-			expect(utils.isNullOrUndefined('foo')).toEqual(false);
-		});
-
-		test('GIVEN falsy number THEN returns false', () => {
-			expect(utils.isNullOrUndefined(0)).toEqual(false);
-		});
-
-		test('GIVEN truthy number THEN returns false', () => {
-			expect(utils.isNullOrUndefined(1)).toEqual(false);
-		});
-	});
-
 	describe('gql', () => {
 		test('GIVEN gql tag THEN returns unmodified code', () => {
 			expect(utils.gql`
@@ -843,6 +759,40 @@ describe('Utils', () => {
 				one
 				two
 			}`);
+		});
+	});
+
+	describe('isTextBasedChannel', () => {
+		const mockGuild = new Guild(client, {});
+
+		test('GIVEN DM Channel THEN returns false', () => {
+			const mockDMChannel = new DMChannel(client, { type: 1 });
+			expect(utils.isTextBasedChannel(mockDMChannel)).toBe(false);
+		});
+
+		test('GIVEN CategoryChannel THEN returns false', () => {
+			const mockCategoryChanenl = new CategoryChannel(mockGuild, { type: 4 });
+			expect(utils.isTextBasedChannel(mockCategoryChanenl)).toBe(false);
+		});
+
+		test('GIVEN VoiceChannel THEN returns false', () => {
+			const mockVoiceChannel = new VoiceChannel(mockGuild, { type: 2 });
+			expect(utils.isTextBasedChannel(mockVoiceChannel)).toBe(false);
+		});
+
+		test('GIVEN StoreChannel THEN returns false', () => {
+			const mockStoreChannel = new StoreChannel(mockGuild, { type: 6 });
+			expect(utils.isTextBasedChannel(mockStoreChannel)).toBe(false);
+		});
+
+		test('GIVEN TextChannel THEN returns true', () => {
+			const mockTextChannel = new TextChannel(mockGuild, { type: 0 });
+			expect(utils.isTextBasedChannel(mockTextChannel)).toBe(true);
+		});
+
+		test('GIVEN NewsChannel THEN returns true', () => {
+			const mockNewschannel = new NewsChannel(mockGuild, { type: 5 });
+			expect(utils.isTextBasedChannel(mockNewschannel)).toBe(true);
 		});
 	});
 

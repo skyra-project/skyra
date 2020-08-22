@@ -1,5 +1,5 @@
 import { Collection } from '@discordjs/collection';
-import { codeBlock } from '@klasa/utils';
+import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 import { levenshtein } from './External/levenshtein';
 

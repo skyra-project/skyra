@@ -1,4 +1,4 @@
-import { isNumber } from '@klasa/utils';
+import { isNumber } from '@sapphire/utilities';
 
 export function pickByWeights(entries: Map<string, number>) {
 	const sum = sumValues(entries);

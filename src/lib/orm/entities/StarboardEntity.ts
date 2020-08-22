@@ -2,8 +2,9 @@
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { cutText } from '@sapphire/utilities';
 import { APIErrors } from '@utils/constants';
-import { cutText, fetchReactionUsers, getImage } from '@utils/util';
+import { fetchReactionUsers, getImage } from '@utils/util';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 

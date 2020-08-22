@@ -1,10 +1,10 @@
-import { arrayStrictEquals } from '@klasa/utils';
 import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
+import { arrayStrictEquals } from '@sapphire/utilities';
 import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';

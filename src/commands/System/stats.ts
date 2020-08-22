@@ -1,6 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { roundNumber } from '@utils/util';
+import { roundNumber } from '@sapphire/utilities';
 import { MessageEmbed, version } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { cpus, uptime } from 'os';

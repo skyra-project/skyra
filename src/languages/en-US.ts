@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
-import { codeBlock, toTitleCase } from '@klasa/utils';
 import { Filter, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import ShinyWager from '@root/arguments/shinywager';
 import { CLIENT_ID, VERSION } from '@root/config';
+import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
-import { createPick, inlineCodeblock } from '@utils/util';
+import { createPick } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
 
 const LOADING = Emojis.Loading;
@@ -3883,15 +3883,15 @@ export default class extends Language {
 		COMMAND_COLOR: ({ hex, rgb, hsl }) => [`HEX: **${hex}**`, `RGB: **${rgb}**`, `HSL: **${hsl}**`].join('\n'),
 		COMMAND_EMOJI_CUSTOM: ({ emoji, id }) =>
 			[
-				`→ ${inlineCodeblock('Emoji ::')} **${emoji}**`,
-				`→ ${inlineCodeblock('Type  ::')} **Custom**`,
-				`→ ${inlineCodeblock('ID    ::')} **${id}**`
+				`→ ${inlineCodeBlock('Emoji ::')} **${emoji}**`,
+				`→ ${inlineCodeBlock('Type  ::')} **Custom**`,
+				`→ ${inlineCodeBlock('ID    ::')} **${id}**`
 			].join('\n'),
 		COMMAND_EMOJI_TWEMOJI: ({ emoji, id }) =>
 			[
-				`→ ${inlineCodeblock('Emoji ::')} \`${emoji}\``,
-				`→ ${inlineCodeblock('Type  ::')} **Twemoji**`,
-				`→ ${inlineCodeblock('ID    ::')} **${id}**`
+				`→ ${inlineCodeBlock('Emoji ::')} \`${emoji}\``,
+				`→ ${inlineCodeBlock('Type  ::')} **Twemoji**`,
+				`→ ${inlineCodeBlock('ID    ::')} **${id}**`
 			].join('\n'),
 		COMMAND_EMOJI_INVALID: `The argument you provided is not a valid emoji.`,
 		COMMAND_EMOJI_TOO_LARGE: ({ emoji }) => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,

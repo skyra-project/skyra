@@ -740,6 +740,10 @@
     parse-glob "3.0.4"
     promise-retry "1.1.1"
 
+"@sapphire/utilities@github:sapphire-project/utilities#build-utilities":
+  version "0.0.1"
+  resolved "https://codeload.github.com/sapphire-project/utilities/tar.gz/23f525f43ed3e6a938a37520f4f318b5eefd03d6"
+
 "@sentry/apm@5.21.3":
   version "5.21.3"
   resolved "https://registry.yarnpkg.com/@sentry/apm/-/apm-5.21.3.tgz#513f0432f70dd23b29431d7af10cbdfa0befcc51"

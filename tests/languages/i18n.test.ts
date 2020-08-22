@@ -1,12 +1,12 @@
-import { isObject } from '@klasa/utils';
 import { client } from '@mocks/MockInstances';
 import { createLanguageStore } from '@mocks/MockLanguageStore';
 import English from '@root/languages/en-US';
 import Spanish from '@root/languages/es-ES';
+import { isObject } from '@sapphire/utilities';
 
 /**
  * Convert an object to a tuple.
- * @description Adopted from `@klasa/utils`'s `objectToTuples`, but without including values which will never match between languages
+ * @description Adopted from `@sapphire/utilities`'s `objectToTuples`, but without including values which will never match between languages
  * @param original The object to convert
  * @param prefix The prefix for the key
  */

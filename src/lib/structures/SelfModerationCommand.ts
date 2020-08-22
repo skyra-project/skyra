@@ -1,5 +1,5 @@
-import { mergeDefault } from '@klasa/utils';
 import { PermissionLevels } from '@lib/types/Enums';
+import { mergeDefault } from '@sapphire/utilities';
 import { Adder } from '@utils/Adder';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { Command, CommandOptions, CommandStore, Duration, KlasaMessage, SchemaEntry } from 'klasa';

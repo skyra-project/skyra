@@ -31,9 +31,9 @@ export default class extends SkyraCommand {
 			if (!displayName) return;
 
 			const char = displayName.codePointAt(0)!;
-
 			if (char > this.kLowestCode) continue;
-			// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
+
+			// Replace the first character of the offending user's with an UTF-16 character, bringing'em down, down, down.
 			// The ternary cuts 2 characters if the 1st codepoint belongs in UTF-16
 			const newNick = `🠷${displayName.slice(char <= 0xff ? 1 : 2)}`;
 			try {
@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 					.guilds(message.guild!.id)
 					.members(memberId)
 					.patch({ data: { nick: newNick }, reason: 'Dehoisting' });
-			} catch (error) {
+			} catch {
 				errored.push({ oldNick: displayName, newNick });
 			}
 			counter++;

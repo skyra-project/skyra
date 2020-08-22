@@ -11,8 +11,8 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
-	description: (language) => language.tget('COMMAND_URBAN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_URBAN_EXTENDED'),
+	description: (language) => language.get('COMMAND_URBAN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_URBAN_EXTENDED'),
 	nsfw: true,
 	runIn: ['text'],
 	usage: '<query:string>'
@@ -20,7 +20,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
@@ -62,7 +62,7 @@ export default class extends RichDisplayCommand {
 
 	private parseDefinition(definition: string, permalink: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.tget('SYSTEM_TEXT_TRUNCATED', cutText(definition, 750), permalink);
+		return i18n.get('SYSTEM_TEXT_TRUNCATED', { definition: cutText(definition, 750), url: permalink });
 	}
 }
 

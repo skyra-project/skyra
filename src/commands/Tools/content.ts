@@ -11,8 +11,8 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['source', 'msg-source', 'message-source'],
 	cooldown: 15,
-	description: (language) => language.tget('COMMAND_CONTENT_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_CONTENT_EXTENDED'),
+	description: (language) => language.get('COMMAND_CONTENT_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_CONTENT_EXTENDED'),
 	runIn: ['text'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' ',
@@ -21,10 +21,10 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: TextChannel[]) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.tget('RESOLVER_INVALID_MESSAGE', 'Message');
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('RESOLVER_INVALID_MESSAGE', { name: 'Message' });
 			const target = await channel.messages.fetch(arg).catch(() => null);
 			if (target) return target;
-			throw message.language.tget('SYSTEM_MESSAGE_NOT_FOUND');
+			throw message.language.get('SYSTEM_MESSAGE_NOT_FOUND');
 		});
 	}
 

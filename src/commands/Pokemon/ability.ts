@@ -10,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_ABILITY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_ABILITY_EXTENDED'),
+	description: (language) => language.get('COMMAND_ABILITY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_ABILITY_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<ability:str>'
 })
@@ -19,14 +19,13 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
 		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
 
-		const embedTranslations = message.language.tget('COMMAND_ABILITY_EMBED_DATA');
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(`${embedTranslations.ABILITY} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
+				.setAuthor(`${message.language.get('COMMAND_ABILITY_EMBED_TITLE')} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
 				.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
 				.addField(
-					embedTranslations.EXTERNAL_RESOURCES,
+					message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE'),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
 						`[Serebii](${abilityDetails.serebiiPage})`,
@@ -41,7 +40,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_ABILITY_QUERY_FAIL', ability);
+			throw message.language.get('COMMAND_ABILITY_QUERY_FAIL', { ability });
 		}
 	}
 }

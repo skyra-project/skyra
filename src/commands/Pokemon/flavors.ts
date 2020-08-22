@@ -12,15 +12,15 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_FLAVORS_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_FLAVORS_EXTENDED'),
+	description: (language) => language.get('COMMAND_FLAVORS_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_FLAVORS_EXTENDED'),
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const pokemonData = await this.fetchAPI(message, pokemon.toLowerCase());
@@ -34,7 +34,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.tget('COMMAND_FLAVORS_QUERY_FAIL', pokemon);
+			throw message.language.get('COMMAND_FLAVORS_QUERY_FAIL', { pokemon });
 		}
 	}
 

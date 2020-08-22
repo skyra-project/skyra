@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uw', 'unwarning'],
-	description: (language) => language.tget('COMMAND_UNWARN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_UNWARN_EXTENDED'),
+	description: (language) => language.get('COMMAND_UNWARN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_UNWARN_EXTENDED'),
 	usage: '<case:number> [reason:...string]'
 })
 export default class extends ModerationCommand {
@@ -19,7 +19,7 @@ export default class extends ModerationCommand {
 
 	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
-		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.language.tget('GUILD_WARN_NOT_FOUND');
+		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.language.get('GUILD_WARN_NOT_FOUND');
 
 		const user = await modlog.fetchUser();
 		const unwarnLog = await this.handle(message, { target: user, reason, modlog, duration: null, preHandled: null });
@@ -31,7 +31,14 @@ export default class extends ModerationCommand {
 
 		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
 			const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
-			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [[unwarnLog.caseID], unwarnLog.caseID, [`\`${user.tag}\``], originalReason]);
+			return message.sendLocale('COMMAND_MODERATION_OUTPUT', [
+				{
+					cases: [unwarnLog.caseID],
+					range: unwarnLog.caseID,
+					users: [`\`${user.tag}\``],
+					reason: originalReason
+				}
+			]);
 		}
 
 		return null;

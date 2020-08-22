@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['dh'],
 	cooldown: 5,
-	description: (language) => language.tget('COMMAND_DEHOIST_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_DEHOIST_EXTENDED'),
+	description: (language) => language.get('COMMAND_DEHOIST_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_DEHOIST_EXTENDED'),
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
@@ -24,10 +24,10 @@ export default class extends SkyraCommand {
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const members = message.guild!.memberTags;
-		const response = await message.sendLocale('SYSTEM_LOADING');
+		const response = await message.sendLocale('SYSTEM_LOADING', []);
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
-			if (memberTag.nickname && memberTag.nickname.charCodeAt(0) < this.kLowestCode) {
+			if (memberTag.nickname && memberTag.nickname.codePointAt(0)! < this.kLowestCode) {
 				// Replace the first character of the offending user's with a downwards arrow, bringing'em down, down ,down
 				const newNick = `🠷${memberTag.nickname.slice(1)}`;
 				try {
@@ -50,13 +50,20 @@ export default class extends SkyraCommand {
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, totalMembers: number, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.tget('COMMAND_DEHOIST_EMBED');
-		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.TITLE(message.guild!.memberTags.size));
+		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED', {
+			dehoistedMemberCount: dehoistedMembers,
+			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
+			errored: erroredChanges.length,
+			users: message.guild!.memberTags.size
+		});
+		const embed = new MessageEmbed()
+			.setColor(await DbSet.fetchColor(message)) //
+			.setTitle(embedLanguage.TITLE);
 
-		let description = embedLanguage.DESCRIPTION(dehoistedMembers);
+		let description = embedLanguage.DESCRIPTION;
 		if (dehoistedMembers <= 0) description = embedLanguage.DESCRIPTION_NOONE;
 		if (erroredChanges.length > 0) {
-			description = embedLanguage.DESCRIPTION_WITHERRORS(dehoistedMembers - erroredChanges.length, erroredChanges.length);
+			description = embedLanguage.DESCRIPTION_WITHERRORS;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.FIELD_ERROR_TITLE, codeblock);

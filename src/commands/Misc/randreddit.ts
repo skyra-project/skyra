@@ -14,15 +14,15 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['rand', 'rand-reddit', 'reddit'],
 			cooldown: 3,
-			description: (language) => language.tget('COMMAND_RANDREDDIT_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_RANDREDDIT_EXTENDED'),
+			description: (language) => language.get('COMMAND_RANDREDDIT_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_RANDREDDIT_EXTENDED'),
 			usage: '<reddit:reddit>'
 		});
 
 		this.createCustomResolver('reddit', (arg, _possible, message) => {
-			if (!arg) throw message.language.tget('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
-			if (!this.kUsernameRegex.test(arg)) throw message.language.tget('COMMAND_RANDREDDIT_INVALID_ARGUMENT');
-			if (this.kBlacklist.test(arg)) throw message.language.tget('COMMAND_RANDREDDIT_BANNED');
+			if (!arg) throw message.language.get('COMMAND_RANDREDDIT_REQUIRED_REDDIT');
+			if (!this.kUsernameRegex.test(arg)) throw message.language.get('COMMAND_RANDREDDIT_INVALID_ARGUMENT');
+			if (this.kBlacklist.test(arg)) throw message.language.get('COMMAND_RANDREDDIT_BANNED');
 			return arg.toLowerCase();
 		});
 	}
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		const { kind, data } = await this.fetchData(message, reddit);
 
 		if (!kind || !data || data.children.length === 0) {
-			throw message.language.tget('COMMAND_RANDREDDIT_FAIL');
+			throw message.language.get('COMMAND_RANDREDDIT_FAIL');
 		}
 
 		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
@@ -40,11 +40,17 @@ export default class extends SkyraCommand {
 			: data.children.filter((child) => !child.data.over_18 && !this.kTitleBlacklist.test(child.data.title));
 
 		if (posts.length === 0) {
-			throw message.language.tget(nsfwEnabled ? 'COMMAND_RANDREDDIT_ALL_NSFL' : 'COMMAND_RANDREDDIT_ALL_NSFW');
+			throw message.language.get(nsfwEnabled ? 'COMMAND_RANDREDDIT_ALL_NSFL' : 'COMMAND_RANDREDDIT_ALL_NSFW');
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
-		return message.sendLocale('COMMAND_RANDREDDIT_MESSAGE', [post.title, post.author, post.spoiler ? `||${post.url}||` : post.url]);
+		return message.sendLocale('COMMAND_RANDREDDIT_MESSAGE', [
+			{
+				title: post.title,
+				author: post.author,
+				url: post.spoiler ? `||${post.url}||` : post.url
+			}
+		]);
 	}
 
 	private async fetchData(message: KlasaMessage, reddit: string) {
@@ -60,22 +66,22 @@ export default class extends SkyraCommand {
 		try {
 			parsed = error.toJSON() as RedditError;
 		} catch {
-			throw message.language.tget('SYSTEM_PARSE_ERROR');
+			throw message.language.get('SYSTEM_PARSE_ERROR');
 		}
 
 		switch (parsed.error) {
 			case 403: {
-				if (parsed.reason === 'private') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_PRIVATE');
-				if (parsed.reason === 'quarantined') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_QUARANTINED');
+				if (parsed.reason === 'private') throw message.language.get('COMMAND_RANDREDDIT_ERROR_PRIVATE');
+				if (parsed.reason === 'quarantined') throw message.language.get('COMMAND_RANDREDDIT_ERROR_QUARANTINED');
 				break;
 			}
 			case 404: {
-				if (!('reason' in parsed)) throw message.language.tget('COMMAND_RANDREDDIT_ERROR_NOT_FOUND');
-				if (parsed.reason === 'banned') throw message.language.tget('COMMAND_RANDREDDIT_ERROR_BANNED');
+				if (!('reason' in parsed)) throw message.language.get('COMMAND_RANDREDDIT_ERROR_NOT_FOUND');
+				if (parsed.reason === 'banned') throw message.language.get('COMMAND_RANDREDDIT_ERROR_BANNED');
 				break;
 			}
 			case 500: {
-				throw message.language.tget('SYSTEM_EXTERNAL_SERVER_ERROR');
+				throw message.language.get('SYSTEM_EXTERNAL_SERVER_ERROR');
 			}
 		}
 

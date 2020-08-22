@@ -1,6 +1,6 @@
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { CLIENT_ID } from '@root/config';
+import { CLIENT_ID, PREFIX } from '@root/config';
 import { floatPromise } from '@utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
 
@@ -29,7 +29,7 @@ export default class extends Monitor {
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(5))) return;
 		}
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
-		return message.sendLocale('PREFIX_REMINDER', [prefix.length ? prefix : undefined]);
+		return message.sendLocale('PREFIX_REMINDER', [{ prefix: prefix.length ? prefix : PREFIX }]);
 	}
 
 	public async runCommand(message: KlasaMessage) {

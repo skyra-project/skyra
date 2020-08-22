@@ -503,6 +503,9 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'starboard.minimum', default: 1 })
 	public starboardMinimum = 1;
 
+	@Column('boolean', { name: 'starboard.selfStar', default: false })
+	public starboardSelfStar = false;
+
 	@Column('simple-json', { name: 'trigger.alias', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public triggerAlias: TriggerAlias[] = [];
 

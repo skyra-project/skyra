@@ -5,7 +5,7 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['qc', 'clear'],
-	description: (language) => language.tget('COMMAND_CLEAR_DESCRIPTION')
+	description: (language) => language.get('COMMAND_CLEAR_DESCRIPTION')
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()

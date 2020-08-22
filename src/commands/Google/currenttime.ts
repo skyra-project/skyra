@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ctime'],
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_CURRENTTIME_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_CURRENTTIME_EXTENDED'),
+			description: (language) => language.get('COMMAND_CURRENTTIME_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CURRENTTIME_EXTENDED'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<location:string>'
 		});
@@ -22,9 +22,9 @@ export default class extends SkyraCommand {
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
 		const { status, ...timeData } = await this.fetchAPI(message, lat, lng);
 
-		if (status !== GoogleResponseCodes.Ok) throw message.language.tget(handleNotOK(status, this.client));
+		if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, this.client));
 
-		const TITLES = message.language.tget('COMMAND_CURRENTTIME_TITLES');
+		const TITLES = message.language.get('COMMAND_CURRENTTIME_TITLES', { dst: Number(timeData.dst) });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 						`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
 						`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
 						`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
-						`${TITLES.DST(Number(timeData.dst))}`
+						`${TITLES.DST}`
 					].join('\n')
 				)
 		);
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
 		return fetch<TimeResult>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.tget('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND');
+			throw message.language.get('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND');
 		});
 	}
 }

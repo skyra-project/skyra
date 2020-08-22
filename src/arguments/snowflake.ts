@@ -14,12 +14,12 @@ export default class extends Argument {
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
-		if (!arg) throw message.language.get('ARGUMENT_RANGE_INVALID', possible.name);
+		if (!arg) throw message.language.get('ARGUMENT_RANGE_INVALID', { name: possible.name });
 
 		if (this.kRegExp.test(arg)) {
 			const snowflake = new Snowflake(arg);
 			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return arg;
 		}
-		throw message.language.tget('RESOLVER_INVALID_SNOWFLAKE', possible.name);
+		throw message.language.get('RESOLVER_INVALID_SNOWFLAKE', { name: possible.name });
 	}
 }

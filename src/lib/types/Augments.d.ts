@@ -1,26 +1,25 @@
-import { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
-import { SettingsUpdateResults } from '@klasa/settings-gateway';
-import { InviteStore } from '@lib/structures/InviteStore';
-import { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
-import { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
-import { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
-import { UserTags } from '@utils/Cache/UserTags';
-import { ConnectFourManager } from '@utils/Games/ConnectFourManager';
-import { Leaderboard } from '@utils/Leaderboard';
-import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
-import { Twitch } from '@utils/Notifications/Twitch';
-import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
-import { FSWatcher } from 'chokidar';
-import { PermissionString, User } from 'discord.js';
-import { KlasaMessage, SettingsFolderUpdateOptions, Language } from 'klasa';
-import { LavalinkNodeOptions } from 'lavacord';
-import { PoolConfig } from 'pg';
-import { Client as VezaClient } from 'veza';
-import { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
-import { Events } from './Enums';
-import { LanguageKeys } from './Languages';
-import { CustomGet } from './settings/Shared';
+import type { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
+import type { SettingsUpdateResults } from '@klasa/settings-gateway';
+import type { InviteStore } from '@lib/structures/InviteStore';
+import type { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
+import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
+import type { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
+import type { UserTags } from '@utils/Cache/UserTags';
+import type { ConnectFourManager } from '@utils/Games/ConnectFourManager';
+import type { Leaderboard } from '@utils/Leaderboard';
+import type { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
+import type { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
+import type { Twitch } from '@utils/Notifications/Twitch';
+import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
+import type { FSWatcher } from 'chokidar';
+import type { PermissionString } from 'discord.js';
+import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
+import type { LavalinkNodeOptions } from 'lavacord';
+import type { PoolConfig } from 'pg';
+import type { Client as VezaClient } from 'veza';
+import type { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
+import type { Events } from './Enums';
+import type { CustomGet } from './settings/Shared';
 
 declare module 'discord.js' {
 	interface Client {
@@ -121,6 +120,8 @@ declare module 'klasa' {
 	}
 
 	interface Language {
+		andString: string;
+		orString: string;
 		PERMISSIONS: Record<PermissionString, string>;
 		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
 		duration(time: number, precision?: number): string;
@@ -128,10 +129,6 @@ declare module 'klasa' {
 		list(values: readonly string[], conjunction: string): string;
 		groupDigits(number: number): string;
 
-		get<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
-		get<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
-		tget<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
-		tget<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 		retrieve<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
 		retrieve<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
 	}
@@ -163,15 +160,3 @@ declare module 'klasa-dashboard-hooks' {
 		expires: number;
 	}
 }
-
-interface Fn {
-	(...args: readonly any[]): unknown;
-}
-
-export type LanguageKeysSimple = {
-	[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? never : K;
-}[keyof LanguageKeys];
-
-export type LanguageKeysComplex = {
-	[K in keyof LanguageKeys]: LanguageKeys[K] extends Fn ? K : never;
-}[keyof LanguageKeys];

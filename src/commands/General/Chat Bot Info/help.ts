@@ -5,10 +5,10 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
+import { LanguageHelp, LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
-import { LanguageHelp, LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 type ExtendedHelpData = string | LanguageHelpDisplayOptions;
 
@@ -35,7 +35,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['commands', 'cmd', 'cmds'],
-	description: (language) => language.tget('COMMAND_HELP_DESCRIPTION'),
+	description: (language) => language.get('COMMAND_HELP_DESCRIPTION'),
 	guarded: true,
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
@@ -66,7 +66,7 @@ export default class extends SkyraCommand {
 			const commandCategories: string[] = [];
 			for (const [category, commands] of commandsByCategory) {
 				const line = String(++i).padStart(2, '0');
-				commandCategories.push(`\`${line}.\` **${category}** → ${language.tget('COMMAND_HELP_COMMAND_COUNT', commands.length)}`);
+				commandCategories.push(`\`${line}.\` **${category}** → ${language.get('COMMAND_HELP_COMMAND_COUNT', { n: commands.length })}`);
 			}
 			return message.sendMessage(commandCategories);
 		}
@@ -81,8 +81,8 @@ export default class extends SkyraCommand {
 			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
 			const response = await message.sendMessage(
-				message.language.tget('COMMAND_HELP_ALL_FLAG', message.guildSettings.get(GuildSettings.Prefix)),
-				new MessageEmbed({ description: message.language.tget('SYSTEM_LOADING'), color: BrandingColors.Secondary })
+				message.language.get('COMMAND_HELP_ALL_FLAG', { prefix: message.guildSettings.get(GuildSettings.Prefix) }),
+				new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: BrandingColors.Secondary })
 			);
 			const display = await this.buildDisplay(message);
 
@@ -130,8 +130,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildCommandHelp(message: KlasaMessage, command: Command) {
-		const DATA = message.language.tget('COMMAND_HELP_DATA');
-		const BUILDER_DATA = message.language.tget('SYSTEM_HELP_TITLES');
+		const BUILDER_DATA = message.language.get('SYSTEM_HELP_TITLES');
 
 		const builder = new LanguageHelp()
 			.setExplainedUsage(BUILDER_DATA.EXPLAINED_USAGE)
@@ -145,13 +144,19 @@ export default class extends SkyraCommand {
 
 		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
+		const DATA = message.language.get('COMMAND_HELP_DATA', {
+			footerName: command.name,
+			titleDescription: isFunction(command.description) ? command.description(message.language) : command.description,
+			usage: command.usage.fullUsage(message),
+			extendedHelp
+		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
 			.setTimestamp()
-			.setFooter(DATA.FOOTER(command.name))
-			.setTitle(DATA.TITLE(isFunction(command.description) ? command.description(message.language) : command.description))
-			.setDescription([DATA.USAGE(command.usage.fullUsage(message)), DATA.EXTENDED(extendedHelp)].join('\n'));
+			.setFooter(DATA.FOOTER)
+			.setTitle(DATA.TITLE)
+			.setDescription([DATA.USAGE, DATA.EXTENDED].join('\n'));
 	}
 
 	private formatCommand(message: KlasaMessage, prefix: string, richDisplay: boolean, command: Command) {

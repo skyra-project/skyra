@@ -81,7 +81,7 @@ export class WheelOfFortune {
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
 		if (lost && final < 0) {
-			throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
+			throw this.message.language.get('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 		}
 
 		this.settings.money += this.winnings;
@@ -125,7 +125,7 @@ export class WheelOfFortune {
 			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
-			.printText(this.message.language.tget('COMMAND_WHEELOFFORTUNE_CANVAS_TEXT', playerHasWon), 280, 60)
+			.printText(this.message.language.get('COMMAND_WHEELOFFORTUNE_CANVAS_TEXT', { won: playerHasWon }), 280, 60)
 			.printText((playerHasWon ? this.winnings : -this.winnings).toString(), 230, 100)
 			.printImage(WheelOfFortune.images.SHINY!, 240, 68, 38, 39)
 			.printImage(WheelOfFortune.images.ARROWS!, arrowX, arrowY, kArrowSize, kArrowSize, kIconSize + 12, kIconSize + 12, kIconSize, kIconSize)

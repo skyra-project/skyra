@@ -20,8 +20,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['yt'],
 			cooldown: 15,
-			description: (language) => language.tget('COMMAND_YOUTUBE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_YOUTUBE_EXTENDED'),
+			description: (language) => language.get('COMMAND_YOUTUBE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_YOUTUBE_EXTENDED'),
 			usage: '<query:string>'
 		});
 	}
@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
 		const results = data.items.slice(0, 5);
 
-		if (!results.length) throw message.language.tget('COMMAND_YOUTUBE_NOTFOUND');
+		if (!results.length) throw message.language.get('COMMAND_YOUTUBE_NOTFOUND');
 
 		const sent = await message.send(this.getLink(results[0]));
 

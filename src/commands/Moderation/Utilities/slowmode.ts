@@ -12,8 +12,8 @@ const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 	bucket: 2,
 	cooldown: 5,
 	cooldownLevel: 'channel',
-	description: (language) => language.tget('COMMAND_SLOWMODE_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_SLOWMODE_EXTENDED'),
+	description: (language) => language.get('COMMAND_SLOWMODE_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_SLOWMODE_EXTENDED'),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_CHANNELS'],
 	runIn: ['text'],
@@ -28,6 +28,6 @@ export default class extends SkyraCommand {
 		else if (cooldown > MAXIMUM_TIME) throw message.language.get('COMMAND_SLOWMODE_TOO_LONG');
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown);
-		return message.sendLocale('COMMAND_SLOWMODE_SET', [cooldown * 1000]);
+		return message.sendLocale('COMMAND_SLOWMODE_SET', [{ cooldown: cooldown * 1000 }]);
 	}
 }

@@ -7,22 +7,23 @@ import { fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
+const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
 const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.symbol})`;
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.tget('COMMAND_COUNTRY_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_COUNTRY_EXTENDED'),
+	description: (language) => language.get('COMMAND_COUNTRY_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_COUNTRY_EXTENDED'),
 	usage: '<country:str>'
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [countryName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const countries = await this.fetchAPI(message, countryName);
-		if (countries.length === 0) throw message.language.tget('SYSTEM_QUERY_FAIL');
+		if (countries.length === 0) throw message.language.get('SYSTEM_QUERY_FAIL');
 
 		const display = await this.buildDisplay(message, countries);
 		await display.start(response, message.author.id);
@@ -31,14 +32,14 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, countryName: string) {
 		const apiResult = await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`).catch(() => {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		});
 		return apiResult;
 	}
 
 	private async buildDisplay(message: KlasaMessage, countries: CountryResultOk) {
-		const titles = message.language.tget('COMMAND_COUNTRY_TITLES');
-		const fieldsData = message.language.tget('COMMAND_COUNTRY_FIELDS');
+		const titles = message.language.get('COMMAND_COUNTRY_TITLES');
+		const fieldsData = message.language.get('COMMAND_COUNTRY_FIELDS');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const country of countries) {
@@ -60,9 +61,13 @@ export default class extends SkyraCommand {
 						titles.OTHER,
 						[
 							`${fieldsData.OTHER.DEMONYM}: ${country.demonym}`,
-							`${fieldsData.OTHER.AREA}: ${country.area.toLocaleString(message.language.name)} sq. km`,
+							country.area
+								? `${fieldsData.OTHER.AREA}: ${country.area.toLocaleString(message.language.name)} km${SuperScriptTwo}`
+								: null,
 							`${fieldsData.OTHER.CURRENCIES}: ${country.currencies.map(mapCurrency).join(', ')}`
-						].join('\n')
+						]
+							.filter(Boolean)
+							.join('\n')
 					)
 			);
 		}
@@ -82,7 +87,7 @@ export interface CountryData {
 	demonym: string;
 	timezone: string;
 	population: number;
-	area: number;
+	area: number | null;
 	languages: CountryLanguage[];
 	currencies: CurrencyData[];
 }

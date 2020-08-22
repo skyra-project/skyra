@@ -4,18 +4,17 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
-import { LanguageKeys } from '@lib/types/Languages';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cleanMentions, cutText, fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, LanguageKeys } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_YARN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_YARN_EXTENDED'),
+	description: (language) => language.get('COMMAND_YARN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_YARN_EXTENDED'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<package:package>'
@@ -24,7 +23,7 @@ import { KlasaMessage } from 'klasa';
 	[
 		'package',
 		(arg, _, message) => {
-			if (!arg) throw message.language.tget('COMMAND_YARN_NO_PACKAGE');
+			if (!arg) throw message.language.get('COMMAND_YARN_NO_PACKAGE');
 			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
 		}
 	]
@@ -35,12 +34,12 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, pkg);
 
-		if (Reflect.has(result.time, 'unpublished')) throw message.language.tget('COMMAND_YARN_UNPUBLISHED_PACKAGE', pkg);
+		if (Reflect.has(result.time, 'unpublished')) throw message.language.get('COMMAND_YARN_UNPUBLISHED_PACKAGE', { pkg });
 
 		const dataEmbed = await this.buildEmbed(result, message);
 		return response.edit(undefined, dataEmbed);
@@ -50,36 +49,35 @@ export default class extends SkyraCommand {
 		try {
 			return await fetch<YarnPkg.PackageJson>(`https://registry.yarnpkg.com/${pkg}`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('COMMAND_YARN_PACKAGE_NOT_FOUND', pkg);
+			throw message.language.get('COMMAND_YARN_PACKAGE_NOT_FOUND', { pkg });
 		}
 	}
 
 	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage) {
-		const EMBED_DATA = message.language.tget('COMMAND_YARN_EMBED_DATA');
-
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
-		const dependencies = latestVersion.dependencies ? this.trimArray(Object.keys(latestVersion.dependencies), EMBED_DATA.MORE_TEXT) : null;
+		const dependencies = latestVersion.dependencies
+			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get('COMMAND_YARN_EMBED_MORE_TEXT'))
+			: null;
 
+		const description = message.language.get('COMMAND_YARN_EMBED_DESCRIPTION', {
+			author: this.parseAuthor(result.author),
+			dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
+			dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
+			dependencies,
+			deprecated: latestVersion.deprecated,
+			description: cutText(result.description ?? '', 1000),
+			latestVersionNumber: result['dist-tags'].latest,
+			license: result.license,
+			mainFile: latestVersion.main ?? 'index.js',
+			maintainers
+		});
 		return new MessageEmbed()
 			.setTitle(toTitleCase(result.name))
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(
-				EMBED_DATA.DESCRIPTION({
-					author: this.parseAuthor(result.author),
-					dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
-					dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
-					dependencies,
-					deprecated: latestVersion.deprecated,
-					description: cutText(result.description ?? '', 1000),
-					latestVersionNumber: result['dist-tags'].latest,
-					license: result.license,
-					mainFile: latestVersion.main ?? 'index.js',
-					maintainers
-				})
-			);
+			.setDescription(description);
 	}
 
 	/**
@@ -88,7 +86,7 @@ export default class extends SkyraCommand {
 	 * @param arr The array to trim
 	 * @param moreText The text to show in the last entry of the array
 	 */
-	private trimArray(arr: string[], moreText: LanguageKeys['COMMAND_YARN_EMBED_DATA']['MORE_TEXT']) {
+	private trimArray(arr: string[], moreText: LanguageKeys['COMMAND_YARN_EMBED_MORE_TEXT']) {
 		if (arr.length > 10) {
 			const len = arr.length - 10;
 			arr = arr.slice(0, 10);

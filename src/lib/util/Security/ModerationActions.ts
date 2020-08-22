@@ -5,21 +5,21 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { APIErrors, Moderation } from '@utils/constants';
 import { api } from '@utils/Models/Api';
+import { floatPromise } from '@utils/util';
 import {
 	DiscordAPIError,
 	Guild,
 	GuildChannel,
 	GuildMember,
+	MessageEmbed,
 	PermissionOverwriteOption,
 	Permissions,
 	PermissionString,
 	Role,
 	RoleData,
-	User,
-	MessageEmbed
+	User
 } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { floatPromise } from '@utils/util';
 
 export const enum ModerationSetupRestriction {
 	Reaction = 'roles.restricted-reaction',
@@ -241,7 +241,7 @@ export class ModerationActions {
 	public async unWarning(rawOptions: ModerationActionOptions, caseID: number, sendOptions?: ModerationActionsSendOptions) {
 		const oldModerationLog = await this.guild.moderation.fetch(caseID);
 		if (oldModerationLog === null || !oldModerationLog.isType(Moderation.TypeCodes.Warning))
-			throw this.guild.language.tget('GUILD_WARN_NOT_FOUND');
+			throw this.guild.language.get('GUILD_WARN_NOT_FOUND');
 
 		await oldModerationLog.invalidate();
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnWarn);
@@ -258,7 +258,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
-			.patch({ data: { nick: nickname }, reason: this.guild.language.tget('ACTION_SET_NICKNAME', moderationLog.reason!, nickname) });
+			.patch({ data: { nick: nickname }, reason: this.guild.language.get('ACTION_SET_NICKNAME', { reason: moderationLog.reason!, nickname }) });
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.SetNickname);
 		return (await moderationLog.create())!;
@@ -285,7 +285,7 @@ export class ModerationActions {
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.roles(role.id)
-			.put({ reason: this.guild.language.tget('ACTION_ADD_ROLE', moderationLog.reason!) });
+			.put({ reason: this.guild.language.get('ACTION_ADD_ROLE', { reason: moderationLog.reason! }) });
 
 		await this.cancelLastLogTaskFromUser(
 			options.userID,
@@ -317,7 +317,7 @@ export class ModerationActions {
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.roles(role.id)
-			.delete({ reason: this.guild.language.tget('ACTION_REMOVE_ROLE', moderationLog.reason!) });
+			.delete({ reason: this.guild.language.get('ACTION_REMOVE_ROLE', { reason: moderationLog.reason! }) });
 
 		await this.cancelLastLogTaskFromUser(
 			options.userID,
@@ -356,10 +356,10 @@ export class ModerationActions {
 		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.UnMute);
 		await this.removeStickyMute(rawOptions.moderatorID || CLIENT_ID, options.userID);
 		const oldModerationLog = await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.Mute);
-		if (typeof oldModerationLog === 'undefined') throw this.guild.language.tget('MUTE_NOT_EXISTS');
+		if (typeof oldModerationLog === 'undefined') throw this.guild.language.get('MUTE_NOT_EXISTS');
 
 		// If Skyra does not have permissions to manage permissions, abort.
-		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw this.guild.language.tget('MUTE_CANNOT_MANAGE_ROLES');
+		if (!(await this.fetchMe()).permissions.has(Permissions.FLAGS.MANAGE_ROLES)) throw this.guild.language.get('MUTE_CANNOT_MANAGE_ROLES');
 
 		await this.unmuteUser(options, oldModerationLog);
 		const moderationLog = this.guild.moderation.create(options);
@@ -375,7 +375,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.delete({ reason: this.guild.language.tget('ACTION_KICK_REASON', moderationLog.reason!) });
+			.delete({ reason: this.guild.language.get('ACTION_KICK_REASON', { reason: moderationLog.reason! }) });
 		return (await moderationLog.create())!;
 	}
 
@@ -386,11 +386,14 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_SOFTBAN_REASON', moderationLog.reason!) });
+			.put({
+				query: { 'delete-message-days': days },
+				reason: this.guild.language.get('ACTION_SOFTBAN_REASON', { reason: moderationLog.reason! })
+			});
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.delete({ reason: this.guild.language.tget('ACTION_UNSOFTBAN_REASON', moderationLog.reason!) });
+			.delete({ reason: this.guild.language.get('ACTION_UNSOFTBAN_REASON', { reason: moderationLog.reason! }) });
 		return (await moderationLog.create())!;
 	}
 
@@ -401,7 +404,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.tget('ACTION_BAN_REASON', moderationLog.reason!) });
+			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.get('ACTION_BAN_REASON', { reason: moderationLog.reason! }) });
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.Ban);
 		return (await moderationLog.create())!;
@@ -413,7 +416,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.delete({ reason: this.guild.language.tget('ACTION_UNBAN_REASON', moderationLog.reason!) });
+			.delete({ reason: this.guild.language.get('ACTION_UNBAN_REASON', { reason: moderationLog.reason! }) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.Ban);
@@ -426,7 +429,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.patch({ data: { mute: true }, reason: this.guild.language.tget('ACTION_VMUTE_REASON', moderationLog.reason!) });
+			.patch({ data: { mute: true }, reason: this.guild.language.get('ACTION_VMUTE_REASON', { reason: moderationLog.reason! }) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.VoiceMute);
@@ -439,7 +442,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.patch({ data: { mute: false }, reason: this.guild.language.tget('ACTION_UNVMUTE_REASON', moderationLog.reason!) });
+			.patch({ data: { mute: false }, reason: this.guild.language.get('ACTION_UNVMUTE_REASON', { reason: moderationLog.reason! }) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.VoiceMute);
@@ -452,7 +455,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.patch({ data: { channel_id: null }, reason: this.guild.language.tget('ACTION_VKICK_REASON', moderationLog.reason!) });
+			.patch({ data: { channel_id: null }, reason: this.guild.language.get('ACTION_VKICK_REASON', { reason: moderationLog.reason! }) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -569,8 +572,8 @@ export class ModerationActions {
 
 	public muteSetup(message: KlasaMessage) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.tget('ACTION_SETUP_MUTE_EXISTS'));
-		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES'));
+		if (roleID && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.get('ACTION_SETUP_MUTE_EXISTS'));
+		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.get('ACTION_SETUP_TOO_MANY_ROLES'));
 
 		// Set up the shared role setup
 		return this.sharedRoleSetup(message, RoleDataKey.Muted, GuildSettings.Roles.Muted);
@@ -578,8 +581,8 @@ export class ModerationActions {
 
 	public restrictionSetup(message: KlasaMessage, path: ModerationSetupRestriction) {
 		const roleID = this.guild.settings.get(path) as string | null;
-		if (roleID !== null && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.tget('ACTION_SETUP_RESTRICTION_EXISTS'));
-		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.tget('ACTION_SETUP_TOO_MANY_ROLES'));
+		if (roleID !== null && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.get('ACTION_SETUP_RESTRICTION_EXISTS'));
+		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.get('ACTION_SETUP_TOO_MANY_ROLES'));
 
 		// Set up the shared role setup
 		return this.sharedRoleSetup(message, ModerationActions.getRoleDataKeyFromSchemaKey(path), path);
@@ -590,7 +593,7 @@ export class ModerationActions {
 			await api(this.guild.client).guilds(this.guild.id).bans(user.id).get();
 			return true;
 		} catch (error) {
-			if (!(error instanceof DiscordAPIError)) throw this.guild.language.tget('SYSTEM_FETCHBANS_FAIL');
+			if (!(error instanceof DiscordAPIError)) throw this.guild.language.get('SYSTEM_FETCHBANS_FAIL');
 			if (error.code === APIErrors.UnknownBan) return false;
 			throw error;
 		}
@@ -626,7 +629,11 @@ export class ModerationActions {
 
 		if (
 			await message.ask(
-				this.guild.language.tget('ACTION_SHARED_ROLE_SETUP', role.name, this.manageableChannelCount, this.displayPermissions(key))
+				this.guild.language.get('ACTION_SHARED_ROLE_SETUP', {
+					role: role.name,
+					channels: this.manageableChannelCount,
+					permissions: this.displayPermissions(key)
+				})
 			)
 		) {
 			await this.updatePermissionsForCategoryChannels(role, key);
@@ -662,7 +669,12 @@ export class ModerationActions {
 	}
 
 	private buildEmbed(entry: ModerationEntity, sendOptions: ModerationActionsSendOptions) {
-		const embedData = this.guild.language.tget('COMMAND_MODERATION_DM', this.guild.name, entry.title, entry.reason, entry.duration);
+		const embedData = this.guild.language.get('COMMAND_MODERATION_DM', {
+			guild: this.guild.name,
+			title: entry.title,
+			reason: entry.reason,
+			duration: entry.duration
+		});
 		const embed = new MessageEmbed().setDescription(embedData.DESCRIPTION).setFooter(embedData.FOOTER);
 
 		if (sendOptions.moderator) {
@@ -674,34 +686,34 @@ export class ModerationActions {
 
 	private addStickyMute(moderatorID: string, id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
+		if (mutedRole === null) return Promise.reject(this.guild.language.get('MUTE_NOT_CONFIGURED'));
 		return this.guild.stickyRoles.add(id, mutedRole, { author: moderatorID });
 	}
 
 	private removeStickyMute(moderatorID: string, id: string) {
 		const mutedRole = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (mutedRole === null) return Promise.reject(this.guild.language.tget('MUTE_NOT_CONFIGURED'));
+		if (mutedRole === null) return Promise.reject(this.guild.language.get('MUTE_NOT_CONFIGURED'));
 		return this.guild.stickyRoles.remove(id, mutedRole, { author: moderatorID });
 	}
 
 	private async muteUser(rawOptions: ModerationActionOptions) {
 		try {
 			const member = await this.guild.members.fetch(rawOptions.userID);
-			return this.muteUserInGuild(member, this.guild.language.tget('ACTION_MUTE_REASON', rawOptions.reason || null));
+			return this.muteUserInGuild(member, this.guild.language.get('ACTION_MUTE_REASON', { reason: rawOptions.reason || null }));
 		} catch (error) {
-			if (error.code === APIErrors.UnknownMember) throw this.guild.language.tget('ACTION_REQUIRED_MEMBER');
+			if (error.code === APIErrors.UnknownMember) throw this.guild.language.get('ACTION_REQUIRED_MEMBER');
 			throw error;
 		}
 	}
 
 	private async muteUserInGuild(member: GuildMember, reason: string) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
+		if (roleID === null) throw this.guild.language.get('MUTE_NOT_CONFIGURED');
 
 		const role = this.guild.roles.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.settings.reset(GuildSettings.Roles.Muted);
-			throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
+			throw this.guild.language.get('MUTE_NOT_CONFIGURED');
 		}
 
 		const { position } = (await this.fetchMe()).roles.highest;
@@ -716,8 +728,8 @@ export class ModerationActions {
 		try {
 			const member = await this.guild.members.fetch(options.userID);
 			return moderationLog === null
-				? this.unmuteUserInGuildWithoutData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason))
-				: this.unmuteUserInGuildWithData(member, this.guild.language.tget('ACTION_UNMUTE_REASON', options.reason), moderationLog);
+				? this.unmuteUserInGuildWithoutData(member, this.guild.language.get('ACTION_UNMUTE_REASON', { reason: options.reason }))
+				: this.unmuteUserInGuildWithData(member, this.guild.language.get('ACTION_UNMUTE_REASON', { reason: options.reason }), moderationLog);
 		} catch (error) {
 			if (error.code !== APIErrors.UnknownMember) throw error;
 		}
@@ -750,26 +762,26 @@ export class ModerationActions {
 	private async unmuteUserInGuildWithoutData(member: GuildMember, reason: string) {
 		// Retrieve the role ID of the mute role, return false if it does not exist.
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID === null) throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
+		if (roleID === null) throw this.guild.language.get('MUTE_NOT_CONFIGURED');
 
 		// Retrieve the role instance from the role ID, reset and return false if it does not exist.
 		const role = this.guild.roles.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.settings.reset(GuildSettings.Roles.Muted);
-			throw this.guild.language.tget('MUTE_NOT_CONFIGURED');
+			throw this.guild.language.get('MUTE_NOT_CONFIGURED');
 		}
 
 		// If the user has the role, begin processing the data.
 		if (member.roles.has(roleID)) {
 			// Fetch self and check if the bot has enough role hierarchy to manage the role, return false when not.
 			const { position } = (await this.fetchMe()).roles.highest;
-			if (role.position >= position) throw this.guild.language.tget('MUTE_LOW_HIERARCHY');
+			if (role.position >= position) throw this.guild.language.get('MUTE_LOW_HIERARCHY');
 
 			// Remove the role from the member.
 			await member.roles.remove(roleID, reason);
 			return;
 		}
-		throw this.guild.language.tget('MUTE_NOT_IN_MEMBER');
+		throw this.guild.language.get('MUTE_NOT_IN_MEMBER');
 	}
 
 	private unmuteExtractRoles(member: GuildMember, roleID: string, selfPosition: number, rawIdentifiers: readonly string[] | null) {
@@ -793,25 +805,25 @@ export class ModerationActions {
 
 	private addStickyRestriction(moderatorID: string, id: string, roleID: string) {
 		const restrictedRole = this.guild.settings.get(roleID) as string | null;
-		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
+		if (restrictedRole === null) return Promise.reject(this.guild.language.get('RESTRICTION_NOT_CONFIGURED'));
 		return this.guild.stickyRoles.add(id, restrictedRole, { author: moderatorID });
 	}
 
 	private async addRestrictionRole(id: string, key: string) {
 		const roleID = this.guild.settings.get(key) as string | null;
-		if (roleID === null) throw this.guild.language.tget('RESTRICTION_NOT_CONFIGURED');
+		if (roleID === null) throw this.guild.language.get('RESTRICTION_NOT_CONFIGURED');
 		await api(this.guild.client).guilds(this.guild.id).members(id).roles(roleID).put();
 	}
 
 	private removeStickyRestriction(moderatorID: string, id: string, roleID: string) {
 		const restrictedRole = this.guild.settings.get(roleID) as string | null;
-		if (restrictedRole === null) return Promise.reject(this.guild.language.tget('RESTRICTION_NOT_CONFIGURED'));
+		if (restrictedRole === null) return Promise.reject(this.guild.language.get('RESTRICTION_NOT_CONFIGURED'));
 		return this.guild.stickyRoles.remove(id, restrictedRole, { author: moderatorID });
 	}
 
 	private async removeRestrictionRole(id: string, key: string) {
 		const roleID = this.guild.settings.get(key) as string | null;
-		if (roleID === null) throw this.guild.language.tget('RESTRICTION_NOT_CONFIGURED');
+		if (roleID === null) throw this.guild.language.get('RESTRICTION_NOT_CONFIGURED');
 		try {
 			await api(this.guild.client).guilds(this.guild.id).members(id).roles(roleID).delete();
 		} catch (error) {

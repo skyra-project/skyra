@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors, BrandingColors, Time } from '@utils/constants';
+import { APIErrors, BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
@@ -50,7 +50,7 @@ export class SettingsMenu {
 
 	public async init(): Promise<void> {
 		this.response = await this.message.sendEmbed(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(this.message.language.tget('SYSTEM_LOADING'))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(this.message.language.get('SYSTEM_LOADING'))
 		);
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
@@ -64,7 +64,7 @@ export class SettingsMenu {
 		const i18n = this.message.language;
 		const description: string[] = [];
 		if (isSchemaFolder(this.schema)) {
-			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_FOLDER', this.schema.path || 'Root'));
+			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_FOLDER', { path: this.schema.path || 'Root' }));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
@@ -75,33 +75,35 @@ export class SettingsMenu {
 				else keys.push(key);
 			}
 
-			if (!folders.length && !keys.length) description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_NOKEYS'));
+			if (!folders.length && !keys.length) description.push(i18n.get('COMMAND_CONF_MENU_RENDER_NOKEYS'));
 			else
 				description.push(
-					i18n.tget('COMMAND_CONF_MENU_RENDER_SELECT'),
+					i18n.get('COMMAND_CONF_MENU_RENDER_SELECT'),
 					'',
-					...folders.map((folder) => `• \\📁${folder}`),
-					...keys.map((key) => `• ${key}`)
+					...folders.map((folder) => `📁 ${folder}`),
+					...keys.map((key) => `⚙️ ${key}`)
 				);
 		} else {
-			description.push(i18n.tget('COMMAND_CONF_MENU_RENDER_AT_PIECE', this.schema.path));
+			description.push(i18n.get('COMMAND_CONF_MENU_RENDER_AT_PIECE', { path: this.schema.path }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if (this.schema.configurable) {
 				description.push(
-					i18n.get(`SETTINGS_${this.schema.path.replace(/[.-]/g, '_').toUpperCase()}`),
+					i18n.get(`SETTINGS_${this.schema.path.replace(/[.-]/g, '_').toUpperCase()}` as any),
 					'',
-					i18n.tget('COMMAND_CONF_MENU_RENDER_TCTITLE'),
-					i18n.tget('COMMAND_CONF_MENU_RENDER_UPDATE'),
+					i18n.get('COMMAND_CONF_MENU_RENDER_TCTITLE'),
+					i18n.get('COMMAND_CONF_MENU_RENDER_UPDATE'),
 					this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length
-						? i18n.tget('COMMAND_CONF_MENU_RENDER_REMOVE')
+						? i18n.get('COMMAND_CONF_MENU_RENDER_REMOVE')
 						: '',
-					this.changedPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_RESET') : '',
-					this.changedCurrentPieceValue ? i18n.tget('COMMAND_CONF_MENU_RENDER_UNDO') : '',
+					this.changedPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_RESET') : '',
+					this.changedCurrentPieceValue ? i18n.get('COMMAND_CONF_MENU_RENDER_UNDO') : '',
 					'',
-					i18n.tget(
-						'COMMAND_CONF_MENU_RENDER_CVALUE',
-						displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(/``+/g, '`\u200B`')
-					)
+					i18n.get('COMMAND_CONF_MENU_RENDER_CVALUE', {
+						value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
+							/``+/g,
+							`\`${ZeroWidhSpace}\``
+						)
+					})
 				);
 			}
 		}
@@ -113,8 +115,8 @@ export class SettingsMenu {
 
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
-			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n\u200B`)
-			.setFooter(parent ? i18n.tget('COMMAND_CONF_MENU_RENDER_BACK') : '')
+			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidhSpace}`)
+			.setFooter(parent ? i18n.get('COMMAND_CONF_MENU_RENDER_BACK') : '')
 			.setTimestamp();
 	}
 
@@ -127,7 +129,7 @@ export class SettingsMenu {
 		if (isSchemaFolder(this.schema)) {
 			const schema = this.schema.get(message.content);
 			if (schema && configurableSchemaKeys.has(schema.path)) this.schema = schema;
-			else this.errorMessage = this.message.language.tget('COMMAND_CONF_MENU_INVALID_KEY');
+			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_KEY');
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
@@ -135,7 +137,7 @@ export class SettingsMenu {
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { arrayAction: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
-			else this.errorMessage = this.message.language.tget('COMMAND_CONF_MENU_INVALID_ACTION');
+			else this.errorMessage = this.message.language.get('COMMAND_CONF_MENU_INVALID_ACTION');
 		}
 
 		if (!this.errorMessage) floatPromise(this.message, message.nuke());
@@ -213,7 +215,8 @@ export class SettingsMenu {
 			const updated = await (value === null
 				? this.message.guild!.settings.reset(this.schema.path, { ...options, extraContext: { author: this.message.author.id } })
 				: this.message.guild!.settings.update(this.schema.path, value, { ...options, extraContext: { author: this.message.author.id } }));
-			if (updated.length === 0) this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+			if (updated.length === 0)
+				this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', { key: (this.schema as SchemaEntry).key });
 		} catch (error) {
 			this.errorMessage = String(error);
 		}
@@ -233,7 +236,7 @@ export class SettingsMenu {
 				this.errorMessage = String(error);
 			}
 		} else {
-			this.errorMessage = this.message.language.tget('COMMAND_CONF_NOCHANGE', (this.schema as SchemaEntry).key);
+			this.errorMessage = this.message.language.get('COMMAND_CONF_NOCHANGE', { key: (this.schema as SchemaEntry).key });
 		}
 	}
 
@@ -243,7 +246,7 @@ export class SettingsMenu {
 				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
 			}
 			this.response
-				.edit(this.message.language.tget('COMMAND_CONF_MENU_SAVED'), { embed: null })
+				.edit(this.message.language.get('COMMAND_CONF_MENU_SAVED'), { embed: null })
 				.catch((error) => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();

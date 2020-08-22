@@ -24,22 +24,22 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
 async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
-	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [codeblock, possibles]);
-	const abortOptions = message.language.tget('TEXT_PROMPT_ABORT_OPTIONS');
+	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [{ list: codeblock, amount: possibles }]);
+	const abortOptions = message.language.get('TEXT_PROMPT_ABORT_OPTIONS');
 	const promptFilter = (m: Message) =>
 		m.author === message.author && (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null = null;
 	let n: number | undefined = undefined;
 	let attempts = 0;
 	do {
-		if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [codeblock, attempts, kAttempts]);
+		if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [{ list: codeblock, attempt: attempts, maxAttempts: kAttempts }]);
 		response = await message.channel
 			.awaitMessages(promptFilter, kPromptOptions)
 			.then((responses) => (responses.size ? responses.first()! : null));
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
-			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.tget('PROMPTLIST_ABORTED');
+			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.get('PROMPTLIST_ABORTED');
 			n = Number(response.content);
 			if (!Number.isNaN(n) && n >= 1 && n <= possibles) {
 				await responseMessage.delete();

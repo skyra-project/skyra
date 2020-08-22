@@ -15,8 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['reaction-mode', 'r-mode'],
-			description: (language) => language.tget('COMMAND_REACTIONMODE_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_REACTIONMODE_EXTENDED')
+			description: (language) => language.get('COMMAND_REACTIONMODE_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_REACTIONMODE_EXTENDED')
 		});
 	}
 }

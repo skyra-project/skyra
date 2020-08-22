@@ -101,7 +101,7 @@ export class Slotmachine {
 		const winnings = this.winnings * (await this.fetchBoost()) - this.bet;
 		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
-		if (amount < 0) throw this.message.language.tget('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
+		if (amount < 0) throw this.message.language.get('GAMES_CANNOT_HAVE_NEGATIVE_MONEY');
 
 		this.settings.money += lost ? -this.bet : winnings;
 		await this.settings.save();
@@ -126,7 +126,7 @@ export class Slotmachine {
 			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
-			.printText(this.message.language.tget('COMMAND_SLOTMACHINE_CANVAS_TEXT', playerHasWon), 280, 60)
+			.printText(this.message.language.get('COMMAND_SLOTMACHINE_CANVAS_TEXT', { won: playerHasWon }), 280, 60)
 			.printText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
 			.printImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();

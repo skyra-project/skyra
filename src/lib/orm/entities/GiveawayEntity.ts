@@ -195,12 +195,8 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async announceWinners(language: Language) {
 		const content = this.#winners
-			? language.tget(
-					'GIVEAWAY_ENDED_MESSAGE',
-					this.#winners.map((winner) => `<@${winner}>`),
-					this.title
-			  )
-			: language.tget('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', this.title);
+			? language.get('GIVEAWAY_ENDED_MESSAGE', { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
+			: language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', { title: this.title });
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
@@ -229,15 +225,12 @@ export class GiveawayEntity extends BaseEntity {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
-					? language.tget(
-							'GIVEAWAY_ENDED',
-							this.#winners.map((winner) => `<@${winner}>`)
-					  )
-					: language.tget('GIVEAWAY_ENDED_NO_WINNER');
+					? language.get('GIVEAWAY_ENDED', { winners: this.#winners.map((winner) => `<@${winner}>`) })
+					: language.get('GIVEAWAY_ENDED_NO_WINNER');
 			case States.LastChance:
-				return language.tget('GIVEAWAY_LASTCHANCE', this.remaining);
+				return language.get('GIVEAWAY_LASTCHANCE', { time: this.remaining });
 			default:
-				return language.tget('GIVEAWAY_DURATION', this.remaining);
+				return language.get('GIVEAWAY_DURATION', { time: this.remaining });
 		}
 	}
 
@@ -283,11 +276,11 @@ export class GiveawayEntity extends BaseEntity {
 	private static getContent(state: States, language: Language) {
 		switch (state) {
 			case States.Finished:
-				return language.tget('GIVEAWAY_ENDED_TITLE');
+				return language.get('GIVEAWAY_ENDED_TITLE');
 			case States.LastChance:
-				return language.tget('GIVEAWAY_LASTCHANCE_TITLE');
+				return language.get('GIVEAWAY_LASTCHANCE_TITLE');
 			default:
-				return language.tget('GIVEAWAY_TITLE');
+				return language.get('GIVEAWAY_TITLE');
 		}
 	}
 
@@ -303,6 +296,6 @@ export class GiveawayEntity extends BaseEntity {
 	}
 
 	private static getFooter(state: States, language: Language) {
-		return state === States.Running ? language.tget('GIVEAWAY_ENDS_AT') : language.tget('GIVEAWAY_ENDED_AT');
+		return state === States.Running ? language.get('GIVEAWAY_ENDS_AT') : language.get('GIVEAWAY_ENDED_AT');
 	}
 }

@@ -12,8 +12,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
-	description: (language) => language.tget('COMMAND_SHOWS_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_SHOWS_EXTENDED'),
+	description: (language) => language.get('COMMAND_SHOWS_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_SHOWS_EXTENDED'),
 	usage: '<show:str> [year:str]',
 	usageDelim: 'y:'
 })
@@ -22,11 +22,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [show, year]: [string, string?]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.tget('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, show, year);
-		if (!entries.length) throw message.language.tget('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -43,7 +43,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		}
 	}
 
@@ -54,13 +54,13 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.tget('SYSTEM_QUERY_FAIL');
+			throw message.language.get('SYSTEM_QUERY_FAIL');
 		}
 	}
 
 	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage) {
-		const titles = message.language.tget('COMMAND_SHOWS_TITLES');
-		const fieldsData = message.language.tget('COMMAND_SHOWS_DATA');
+		const titles = message.language.get('COMMAND_SHOWS_TITLES');
+		const fieldsData = message.language.get('COMMAND_SHOWS_DATA');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		const showData = await Promise.all(shows.map((show) => this.fetchShowData(message, show.id)));

@@ -3,9 +3,9 @@ import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
+import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
-import { User } from 'discord.js';
 
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
@@ -15,8 +15,8 @@ export default class extends SkyraCommand {
 			aliases: ['cmm'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.tget('COMMAND_CHANGEMYMIND_DESCRIPTION'),
-			extendedHelp: (language) => language.tget('COMMAND_CHANGEMYMIND_EXTENDED'),
+			description: (language) => language.get('COMMAND_CHANGEMYMIND_DESCRIPTION'),
+			extendedHelp: (language) => language.get('COMMAND_CHANGEMYMIND_EXTENDED'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			usage: '<text:string{1,50}>'

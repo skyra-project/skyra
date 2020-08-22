@@ -90,12 +90,12 @@ export default class extends Event {
 					[
 						`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
 						`**Channel**: ${data.channel}`,
-						`**Message**: [${data.guild.language.tget('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
+						`**Message**: [${data.guild.language.get('JUMPTO')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
 							data.messageID
 						})`
 					].join('\n')
 				)
-				.setFooter(`${data.guild.language.tget('EVENTS_REACTION')} • ${data.channel.name}`)
+				.setFooter(`${data.guild.language.get('EVENTS_REACTION')} • ${data.channel.name}`)
 				.setTimestamp()
 		);
 	}
@@ -122,7 +122,7 @@ export default class extends Event {
 			// Process the starboard
 			const { starboard } = data.guild;
 			const sMessage = await starboard.fetch(data.channel, data.messageID);
-			if (sMessage) await sMessage.increment(data.userID);
+			if (sMessage) await sMessage.increment(data.userID, data.guild.settings.get(GuildSettings.Starboard.SelfStar));
 		} catch (error) {
 			this.client.emit(Events.ApiError, error);
 		}

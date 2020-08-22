@@ -10,7 +10,7 @@ export default class extends Event {
 		if (channel === null || payload.thresholdMs < 1000) return;
 
 		try {
-			const response = await channel.sendLocale('MUSICMANAGER_STUCK', [payload.thresholdMs]);
+			const response = await channel.sendLocale('MUSICMANAGER_STUCK', [{ milliseconds: payload.thresholdMs }]);
 			await response.nuke(payload.thresholdMs);
 		} catch (error) {
 			this.client.emit(Events.Wtf, error);

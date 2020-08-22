@@ -36,12 +36,12 @@ export default class extends ModerationMonitor {
 	protected async onDelete(message: KlasaMessage, value: FilterResults) {
 		floatPromise(this, message.nuke());
 		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [codeBlock('md', cutText(value.filtered, 1900))]));
+			floatPromise(this, message.author.sendLocale('MONITOR_WORDFILTER_DM', [{ filtered: codeBlock('md', cutText(value.filtered, 1900)) }]));
 		}
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.tget('MONITOR_WORDFILTER', message.author.toString())));
+		floatPromise(this, message.alert(message.language.get('MONITOR_WORDFILTER', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage, results: FilterResults) {
@@ -49,7 +49,7 @@ export default class extends ModerationMonitor {
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.tget('CONST_MONITOR_WORDFILTER')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_WORDFILTER')}`)
 			.setTimestamp();
 	}
 

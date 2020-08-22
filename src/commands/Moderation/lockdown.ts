@@ -9,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['lock', 'unlock'],
 	cooldown: 5,
 	subcommands: true,
-	description: (language) => language.tget('COMMAND_LOCKDOWN_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_LOCKDOWN_EXTENDED'),
+	description: (language) => language.get('COMMAND_LOCKDOWN_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_LOCKDOWN_EXTENDED'),
 	runIn: ['text'],
 	usage: '<lock|unlock|auto:default> [target:textchannelname] [duration:timespan]',
 	usageDelim: ' ',
@@ -24,23 +24,24 @@ export default class extends SkyraCommand {
 
 	public unlock(message: KlasaMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
 		const entry = message.guild!.security.lockdowns.get(channel.id);
-		if (typeof entry === 'undefined') throw message.language.tget('COMMAND_LOCKDOWN_UNLOCKED', channel.toString());
+		if (typeof entry === 'undefined') throw message.language.get('COMMAND_LOCKDOWN_UNLOCKED', { channel: channel.toString() });
 		return entry.timeout ? entry.timeout.stop() : this._unlock(message, channel);
 	}
 
 	public async lock(message: KlasaMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
 		// If there was a lockdown, abort lock
-		if (message.guild!.security.lockdowns.has(channel.id)) throw message.language.tget('COMMAND_LOCKDOWN_LOCKED', channel.toString());
+		if (message.guild!.security.lockdowns.has(channel.id)) throw message.language.get('COMMAND_LOCKDOWN_LOCKED', { channel: channel.toString() });
 
 		// Get the role, then check if the user could send messages
 		const role = message.guild!.roles.get(message.guild!.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
-		if (!couldSend) throw message.language.tget('COMMAND_LOCKDOWN_LOCKED', channel.toString());
+		if (!couldSend) throw message.language.get('COMMAND_LOCKDOWN_LOCKED', { channel: channel.toString() });
 
 		// If they can send, begin locking
-		const response = await message.sendLocale('COMMAND_LOCKDOWN_LOCKING', [channel]);
+		const response = await message.sendLocale('COMMAND_LOCKDOWN_LOCKING', [{ channel: channel.toString() }]);
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
-		if (message.channel.postable) await response.edit(message.language.tget('COMMAND_LOCKDOWN_LOCK', channel.toString())).catch(() => null);
+		if (message.channel.postable)
+			await response.edit(message.language.get('COMMAND_LOCKDOWN_LOCK', { channel: channel.toString() })).catch(() => null);
 
 		// Create the timeout
 		const timeout = duration ? new PreciseTimeout(duration) : null;
@@ -56,6 +57,6 @@ export default class extends SkyraCommand {
 	private async _unlock(message: KlasaMessage, channel: TextChannel) {
 		channel.guild.security.lockdowns.delete(channel.id);
 		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
-		return message.sendLocale('COMMAND_LOCKDOWN_OPEN', [channel]);
+		return message.sendLocale('COMMAND_LOCKDOWN_OPEN', [{ channel: channel.toString() }]);
 	}
 }

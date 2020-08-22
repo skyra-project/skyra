@@ -11,8 +11,15 @@ export default class extends Event {
 			const { language } = channel.guild;
 			const response =
 				next > 200
-					? language.tget('COMMAND_VOLUME_CHANGED_EXTREME', '📢', language.tget('COMMAND_VOLUME_CHANGED_TEXTS'), next)
-					: language.tget('COMMAND_VOLUME_CHANGED', next > previous ? (next === 200 ? '📢' : '🔊') : next === 0 ? '🔇' : '🔉', next);
+					? language.get('COMMAND_VOLUME_CHANGED_EXTREME', {
+							emoji: '📢',
+							text: language.get('COMMAND_VOLUME_CHANGED_TEXTS'),
+							volume: next
+					  })
+					: language.get('COMMAND_VOLUME_CHANGED', {
+							emoji: next > previous ? (next === 200 ? '📢' : '🔊') : next === 0 ? '🔇' : '🔉',
+							volume: next
+					  });
 			floatPromise(this, channel.sendMessage(response));
 		}
 

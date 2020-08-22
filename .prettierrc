@@ -10,7 +10,9 @@
 	"useTabs": true,
 	"overrides": [
 		{
-			"files": ["*.yml"],
+			"files": [
+				"*.yml"
+			],
 			"options": {
 				"tabWidth": 2,
 				"useTabs": false

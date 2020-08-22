@@ -4,8 +4,8 @@ import { ArgumentTypes, getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vk'],
-	description: (language) => language.tget('COMMAND_VOICEKICK_DESCRIPTION'),
-	extendedHelp: (language) => language.tget('COMMAND_VOICEKICK_EXTENDED'),
+	description: (language) => language.get('COMMAND_VOICEKICK_DESCRIPTION'),
+	extendedHelp: (language) => language.get('COMMAND_VOICEKICK_EXTENDED'),
 	requiredMember: true,
 	requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
 })
@@ -32,7 +32,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.voice.channelID) throw message.language.tget('GUILD_MEMBER_NOT_VOICECHANNEL');
+		if (member && !member.voice.channelID) throw message.language.get('GUILD_MEMBER_NOT_VOICECHANNEL');
 		return member;
 	}
 }

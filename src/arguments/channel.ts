@@ -6,13 +6,13 @@ const CHANNEL_REGEXP = Argument.regex.channel;
 
 export default class extends Argument {
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
-		if (!message.guild) throw message.language.tget('RESOLVER_CHANNEL_NOT_IN_GUILD');
+		if (!message.guild) throw message.language.get('RESOLVER_CHANNEL_NOT_IN_GUILD');
 
 		const channelID = CHANNEL_REGEXP.exec(arg);
 		const channel = channelID === null ? null : message.guild.channels.get(channelID[1]);
 		if (channel) return this.validateAccess(channel, message);
 
-		throw message.language.tget('RESOLVER_INVALID_CHANNEL', possible.name);
+		throw message.language.get('RESOLVER_INVALID_CHANNEL', { name: possible.name });
 	}
 
 	private validateAccess(channel: GuildChannel, message: KlasaMessage) {
@@ -20,6 +20,6 @@ export default class extends Argument {
 			return channel;
 		}
 
-		throw message.language.tget('SYSTEM_CANNOT_ACCESS_CHANNEL');
+		throw message.language.get('SYSTEM_CANNOT_ACCESS_CHANNEL');
 	}
 }

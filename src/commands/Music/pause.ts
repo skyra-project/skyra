@@ -10,7 +10,7 @@ import {
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.tget('COMMAND_PAUSE_DESCRIPTION')
+	description: (language) => language.get('COMMAND_PAUSE_DESCRIPTION')
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

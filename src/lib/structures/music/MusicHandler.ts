@@ -1,4 +1,5 @@
 import { SkyraClient } from '@lib/SkyraClient';
+import { DecodeResponse } from '@lib/types/definitions/Music';
 import { Events } from '@lib/types/Enums';
 import { LavalinkPlayerEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -295,6 +296,50 @@ export class MusicHandler {
 			return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
+	}
+
+	/**
+	 * Decode TrackData from a track string
+	 * @param trackdata The track string
+	 * @returns {DecodeResponse}
+	 */
+	public decodeSong(trackdata: string) {
+		const [node] = this.client.lavalink.idealNodes;
+		const params = new URLSearchParams();
+		params.append('track', trackdata);
+		return fetch<DecodeResponse>(
+			`http://${node.host}:${node.port}/decodetrack?${params}`,
+			{ headers: { Authorization: node.password } },
+			FetchResultTypes.JSON
+		);
+	}
+
+	/**
+	 * Downloads and parses a Skyra Queue
+	 * @param url The URL to the `.squeue` file
+	 * @returns {TrackData[]}
+	 */
+	public async parseQueue(url: string) {
+		try {
+			const rawData = await fetch<string[]>(url, FetchResultTypes.JSON);
+			return Promise.all(
+				rawData.map(async (track) => {
+					return {
+						track,
+						info: await this.guild.music.decodeSong(track)
+					};
+				})
+			);
+		} catch {
+			throw this.guild.language.get('musicManagerImportQueueError');
+		}
+	}
+
+	public getRemainingUserEntries(userId: string) {
+		const maximumEntriesPerUser = this.guild!.settings.get(GuildSettings.Music.MaximumEntriesPerUser);
+		const userEntries =
+			this.queue.reduce((acc, song) => (song.requester === userId ? acc + 1 : acc), 0) + (this.song?.requester === userId ? 1 : 0);
+		return Math.max(0, maximumEntriesPerUser - userEntries);
 	}
 
 	public *websocketUserIterator() {

@@ -159,6 +159,11 @@ declare module 'klasa' {
 		commandClearDescription: string;
 		commandClearDenied: string;
 		commandClearSuccess: (params: { amount: number }) => string;
+		commandExportQueueDescription: string;
+		commandExportQueueExtended: LanguageHelpDisplayOptions;
+		commandExportQueueSuccess: (params: { guildName: string }) => string;
+		commandImportQueueDescription: string;
+		commandImportQueueExtended: LanguageHelpDisplayOptions;
 		commandJoinDescription: string;
 		commandJoinNoMember: string;
 		commandJoinNoVoicechannel: string;
@@ -357,6 +362,8 @@ declare module 'klasa' {
 		musicManagerFetchNoArguments: string;
 		musicManagerFetchNoMatches: string;
 		musicManagerFetchLoadFailed: string;
+		musicManagerImportQueueNotFound: string;
+		musicManagerImportQueueError: string;
 		musicManagerTooManySongs: string;
 		musicManagerSetvolumeSilent: string;
 		musicManagerSetvolumeLoud: string;

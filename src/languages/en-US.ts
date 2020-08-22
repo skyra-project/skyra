@@ -309,7 +309,8 @@ export default class extends Language {
 				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
 				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
 				"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VODs.",
-				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
+				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.',
+				'- To play a previously-exported queue, include `--import` and attach the queue file to your message or give me a URL to it.'
 			].join('\n'),
 			explainedUsage: [['song', 'The song to queue. Can be either a URL or a video/song title.']],
 			examples: [
@@ -319,7 +320,9 @@ export default class extends Language {
 				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
 				'https://vimeo.com/channels/music/239029778',
 				'https://mixer.com/Ninja',
-				'https://thedisappointed.bandcamp.com/album/escapism-2'
+				'https://thedisappointed.bandcamp.com/album/escapism-2',
+				'https://cdn.discordapp.com/attachments/642137151626018818/746716958627725402/Skyra_Development_Suite-1598101595077.squeue',
+				'--import https://cdn.skyra.pw/favsongs.squeue'
 			],
 			multiline: true
 		},
@@ -328,6 +331,25 @@ export default class extends Language {
 		commandClearDescription: 'Clears the queue list.',
 		commandClearDenied: `${REDCROSS} You can't execute this command when there are over 4 members! You must be a dee-jay or a moderator!`,
 		commandClearSuccess: ({ amount }) => `${REDCROSS}  Pruned ${amount} ${amount === 1 ? 'song' : 'songs'}.`,
+		commandExportQueueDescription: 'Exports your queue to a `.squeue` file.',
+		commandExportQueueExtended: {
+			extendedHelp: [
+				"Have a queue you liked and want to replay later? Or maybe you want to send your friends what you're listening right now",
+				"Use `exportqueue` and I'll pack the music in your queue into a neat file you can either save or share with your friends!",
+				'When you want to play it back, just use it with `play`, `add` or `importqueue`!'
+			],
+			multiline: true
+		},
+		commandExportQueueSuccess: ({ guildName }) => `${GREENTICK} Here's the current queue for ${guildName}!`,
+		commandImportQueueDescription: 'Imports a queue saved as a `.squeue` file.',
+		commandImportQueueExtended: {
+			extendedHelp: [
+				'Did a friend send you a queue? Or you maybe want to play back a queue you have saved?',
+				'With `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!'
+			],
+			reminder: 'You can either give me a link to the `.squeue` file, or attach it along your commands!',
+			multiline: true
+		},
 		commandJoinDescription: "Joins the message author's voice channel.",
 		commandJoinNoMember: `${REDCROSS} I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
 		commandJoinNoVoicechannel: `${REDCROSS} You are not connected in a voice channel.`,
@@ -357,11 +379,12 @@ export default class extends Language {
 			extendedHelp: [
 				`Queue some music and allow me to start jamming out to your enjoyment.
 				When using this command I will automatically join your voice channel and start playing the first song in my queue.
-					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
+					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, Mixer, or a queue someone else exported earlier`,
 				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
 				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
 				"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VOD's.",
-				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.'
+				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.',
+				'- To play from a previously-exported queue, include `--import` and attach it to your message or give me a URL to it'
 			].join('\n'),
 			explainedUsage: [['song', 'The song to play. Can be either a URL or a video/song title.']],
 			examples: [
@@ -371,7 +394,8 @@ export default class extends Language {
 				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
 				'https://vimeo.com/channels/music/239029778',
 				'https://mixer.com/Ninja',
-				'https://thedisappointed.bandcamp.com/album/escapism-2'
+				'https://thedisappointed.bandcamp.com/album/escapism-2',
+				'--import https://cdn.skyra.pw/favsongs.squeue'
 			],
 			reminder: 'Before you can use this command you should join a voice channel!',
 			multiline: true
@@ -491,10 +515,12 @@ export default class extends Language {
 		inhibitorMusicNothingPlaying: `${REDCROSS} Looks like nothing is playing right now, how about you start the party 🎉?`,
 
 		musicManagerFetchNoArguments: 'I need you to give me the name of a song!',
-		musicManagerFetchNoMatches: "I'm sorry but I wasn't able to find that track!",
-		musicManagerFetchLoadFailed: "I'm sorry but I couldn't load this song! Maybe try another song?",
-		musicManagerTooManySongs: `${REDCROSS} Woah there, you're adding too many songs!`,
-		musicManagerSetvolumeSilent: 'You could just leave the voice channel if you wanted silence...',
+		musicManagerFetchNoMatches: "I'm sorry but I wasn't able to find the track!",
+		musicManagerFetchLoadFailed: "I'm sorry but I couldn't load this song! Maybe try other song!",
+		musicManagerImportQueueError: `${REDCROSS} Sorry, but I'm having issues trying to import that playlist. Are you sure it's from my own DJ deck?`,
+		musicManagerImportQueueNotFound: `${REDCROSS} I need a queue to import!`,
+		musicManagerTooManySongs: `${REDCROSS} Woah there, you are adding more songs than allowed!`,
+		musicManagerSetvolumeSilent: 'Woah, you can just leave the voice channel if you want silence!',
 		musicManagerSetvolumeLoud: "I'll be honest, an airplane's nacelle would be less noisy than this!",
 		musicManagerPlayNoSongs: 'There are no songs left in the queue!',
 		musicManagerPlayPlaying: "The deck's spinning, can't you hear it?",

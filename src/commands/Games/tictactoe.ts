@@ -39,8 +39,9 @@ export default class extends SkyraCommand {
 				.run(message.language.get('COMMAND_TICTACTOE_PROMPT', { challenger: message.author.toString(), challengee: user.toString() }));
 			if (response) {
 				try {
+					const gameMessage = await message.sendLocale('SYSTEM_LOADING', []);
 					await this.game(
-						message.responses[0],
+						gameMessage,
 						[message.author, user].sort(() => Math.random() - 0.5)
 					);
 				} catch {

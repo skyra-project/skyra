@@ -6,7 +6,7 @@ export class UserGameIntegrationEntity extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	public id!: number;
 
-	@ManyToOne(() => UserEntity, { primary: true, onDelete: 'CASCADE' })
+	@ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
 	@JoinColumn()
 	public user?: UserEntity;
 

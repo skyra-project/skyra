@@ -8,7 +8,7 @@ export class V23AddGIData1598083459734 implements MigrationInterface {
 				columns: [
 					new TableColumn({ name: 'id', type: 'int', isPrimary: true }),
 					new TableColumn({ name: 'game', type: 'varchar', length: '35' }),
-					new TableColumn({ name: 'extra_data', type: 'json' })
+					new TableColumn({ name: 'extra_data', type: 'jsonb' })
 				],
 				foreignKeys: [
 					new TableForeignKey({

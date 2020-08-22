@@ -13,6 +13,6 @@ export class UserGameIntegrationEntity extends BaseEntity {
 	@Column('varchar', { length: 35 })
 	public game!: string;
 
-	@Column({ type: 'json', name: 'extraData' })
+	@Column('jsonb')
 	public extraData!: unknown;
 }

@@ -44,7 +44,8 @@ export default class extends SkyraCommand {
 			} catch {
 				errored.push({ oldNick: displayName, newNick });
 			}
-			counter++;
+
+			++counter;
 		}
 
 		// We're done!

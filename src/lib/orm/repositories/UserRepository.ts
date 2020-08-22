@@ -3,7 +3,7 @@ import { AsyncQueue } from '@klasa/async-queue';
 import { Cache } from '@klasa/cache';
 import { TimerManager } from '@klasa/timer-manager';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
-import { UserGameIntegrationsEntity } from '@orm/entities/UserGameIntegrationsEntity';
+import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
@@ -32,7 +32,7 @@ export class UserRepository extends Repository<UserEntity> {
 	public async ensureGI(id: string, options: FindOneOptions<UserEntity> = {}) {
 		const user = await this.ensure(id, { ...options, relations: ['gi'] });
 		if (!user.gi) {
-			user.gi = new UserGameIntegrationsEntity();
+			user.gi = new UserGameIntegrationEntity();
 			user.gi.user = user;
 		}
 

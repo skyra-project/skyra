@@ -2551,7 +2551,7 @@ export default class extends Language {
 				'To claim multiple roles, you must separate them by a comma.',
 				'You can specify which roles by writting their ID, name, or a section of the name.',
 				'',
-				'Administrators can add public roles using `conf set roles.public <Role>`.'
+				'Administrators can add public roles using `Skyra, conf set roles.public MyPublicRole`.'
 			].join('\n'),
 			examples: ['', 'Designer, Programmer', 'Designer'],
 			multiline: true

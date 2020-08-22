@@ -1,9 +1,21 @@
 import Collection from '@discordjs/collection';
+import { client } from '@mocks/MockInstances';
 import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Mime, Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
-import { Message, MessageAttachment, MessageEmbed } from 'discord.js';
+import {
+	CategoryChannel,
+	DMChannel,
+	Guild,
+	Message,
+	MessageAttachment,
+	MessageEmbed,
+	NewsChannel,
+	StoreChannel,
+	TextChannel,
+	VoiceChannel
+} from 'discord.js';
 import { createReadStream, promises as fsPromises } from 'fs';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
@@ -747,6 +759,40 @@ describe('Utils', () => {
 				one
 				two
 			}`);
+		});
+	});
+
+	describe('isTextBasedChannel', () => {
+		const mockGuild = new Guild(client, {});
+
+		test('GIVEN DM Channel THEN returns false', () => {
+			const mockDMChannel = new DMChannel(client, { type: 1 });
+			expect(utils.isTextBasedChannel(mockDMChannel)).toBe(false);
+		});
+
+		test('GIVEN CategoryChannel THEN returns false', () => {
+			const mockCategoryChanenl = new CategoryChannel(mockGuild, { type: 4 });
+			expect(utils.isTextBasedChannel(mockCategoryChanenl)).toBe(false);
+		});
+
+		test('GIVEN VoiceChannel THEN returns false', () => {
+			const mockVoiceChannel = new VoiceChannel(mockGuild, { type: 2 });
+			expect(utils.isTextBasedChannel(mockVoiceChannel)).toBe(false);
+		});
+
+		test('GIVEN StoreChannel THEN returns false', () => {
+			const mockStoreChannel = new StoreChannel(mockGuild, { type: 6 });
+			expect(utils.isTextBasedChannel(mockStoreChannel)).toBe(false);
+		});
+
+		test('GIVEN TextChannel THEN returns true', () => {
+			const mockTextChannel = new TextChannel(mockGuild, { type: 0 });
+			expect(utils.isTextBasedChannel(mockTextChannel)).toBe(true);
+		});
+
+		test('GIVEN NewsChannel THEN returns true', () => {
+			const mockNewschannel = new NewsChannel(mockGuild, { type: 5 });
+			expect(utils.isTextBasedChannel(mockNewschannel)).toBe(true);
 		});
 	});
 

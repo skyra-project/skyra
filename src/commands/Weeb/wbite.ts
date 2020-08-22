@@ -4,10 +4,10 @@ import { CommandStore } from 'klasa';
 export default class extends WeebCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: (language) => language.get('COMMAND_WBITE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WBITE_EXTENDED'),
+			description: (language) => language.get('commandWbiteDescription'),
+			extendedHelp: (language) => language.get('commandWbiteExtended'),
 			queryType: 'bite',
-			responseName: 'COMMAND_WBITE',
+			responseName: 'commandWbite',
 			usage: '<user:username>'
 		});
 	}

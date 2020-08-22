@@ -27,8 +27,8 @@ const kRandomSunSign = createPick([...kSunSigns]);
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['saelem'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_HOROSCOPE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_HOROSCOPE_EXTENDED'),
+	description: (language) => language.get('commandHoroscopeDescription'),
+	extendedHelp: (language) => language.get('commandHoroscopeExtended'),
 	requiredGuildPermissions: ['EMBED_LINKS'],
 	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
 	usageDelim: ' '
@@ -40,7 +40,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.language.get('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: arg, maybe: kRandomSunSign() });
+			throw message.language.get('commandHoroscopeInvalidSunsign', { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
 		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(message, sign, day);
 
-		const TITLES = message.language.get('COMMAND_HOROSCOPE_TITLES', {
+		const titles = message.language.get('commandHoroscopeTitles', {
 			sign,
 			intensity,
 			keywords,
@@ -59,9 +59,9 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(prediction)
-				.setTitle(TITLES.DAILY_HOROSCOPE)
+				.setTitle(titles.dailyHoroscope)
 				.setTimestamp(new Date(date))
-				.addField(TITLES.METADATA_TITLE, TITLES.METADATA)
+				.addField(titles.metadataTitle, titles.metadata)
 		);
 	}
 
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.language.get('COMMAND_HOROSCOPE_INVALID_SUNSIGN', { sign: sunsign, maybe: kRandomSunSign() });
+			throw message.language.get('commandHoroscopeInvalidSunsign', { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

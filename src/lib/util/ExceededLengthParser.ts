@@ -13,7 +13,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				return message.channel.sendFile(
 					Buffer.from(options.content ? options.content : options.result!),
 					options.targetId ? `${options.targetId}.txt` : 'output.txt',
-					message.language.get('SYSTEM_EXCEEDED_LENGTH_OUTPUT_FILE', { time: options.time, type: options.footer })
+					message.language.get('systemExceededLengthOutputFile', { time: options.time, type: options.footer })
 				);
 			}
 
@@ -25,7 +25,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			if (!options.url)
 				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
 			if (options.url)
-				return message.sendLocale('SYSTEM_EXCEEDED_LENGTH_OUTPUT_HASTEBIN', [{ url: options.url, time: options.time, type: options.footer }]);
+				return message.sendLocale('systemExceededLengthOutputHastebin', [{ url: options.url, time: options.time, type: options.footer }]);
 			options.hastebinUnavailable = true;
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -34,7 +34,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'log': {
 			if (options.canLogToConsole) {
 				message.client.emit(Events.Log, options.result);
-				return message.sendLocale('SYSTEM_EXCEEDED_LENGTH_OUTPUT_CONSOLE', [{ time: options.time, type: options.footer }]);
+				return message.sendLocale('systemExceededLengthOutputConsole', [{ time: options.time, type: options.footer }]);
 			}
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -56,7 +56,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 					{ code: 'md' }
 				);
 			}
-			return message.sendLocale(options.success ? 'SYSTEM_EXCEEDED_LENGTH_OUTPUT' : 'COMMAND_EVAL_ERROR', [
+			return message.sendLocale(options.success ? 'systemExceededLengthOutput' : 'commandEvalError', [
 				{
 					output: codeBlock(options.language!, options.result!),
 					time: options.time,
@@ -76,7 +76,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message
-			.prompt(message.language.get('SYSTEM_EXCEEDED_LENGTH_CHOOSE_OUTPUT', { output: _options }))
+			.prompt(message.language.get('systemExceededLengthChooseOutput', { output: _options }))
 			.catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();

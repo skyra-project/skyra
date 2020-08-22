@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['rs'],
-	description: (language) => language.get('COMMAND_ROLESET_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_ROLESET_EXTENDED'),
+	description: (language) => language.get('commandRolesetDescription'),
+	extendedHelp: (language) => language.get('commandRolesetExtended'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: [],
 	runIn: ['text'],
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 					extraContext: { author: message.author.id }
 				}
 			);
-			return message.sendLocale('COMMAND_ROLESET_CREATED', [
+			return message.sendLocale('commandRolesetCreated', [
 				{
 					name,
 					roles: message.language.list(
@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_ROLESET_ADDED', [
+		return message.sendLocale('commandRolesetAdded', [
 			{
 				name,
 				roles: message.language.list(
@@ -101,7 +101,7 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_ROLESET_REMOVED', [
+		return message.sendLocale('commandRolesetRemoved', [
 			{
 				name,
 				roles: message.language.list(
@@ -115,24 +115,24 @@ export default class extends SkyraCommand {
 	public async reset(message: KlasaMessage, [name]: [string?]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		if (allRolesets.length === 0) throw message.language.get('COMMAND_ROLESET_RESET_EMPTY');
+		if (allRolesets.length === 0) throw message.language.get('commandRolesetResetEmpty');
 
 		if (!name) {
 			await message.guild!.settings.reset(GuildSettings.Roles.UniqueRoleSets, {
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('COMMAND_ROLESET_RESET_ALL');
+			return message.sendLocale('commandRolesetResetAll');
 		}
 
 		const arrayIndex = allRolesets.findIndex((roleset) => roleset.name === name);
-		if (arrayIndex === -1) throw message.language.get('COMMAND_ROLESET_RESET_NOT_EXISTS', { name });
+		if (arrayIndex === -1) throw message.language.get('commandRolesetResetNotExists', { name });
 
 		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, allRolesets[arrayIndex], {
 			arrayAction: 'remove',
 			arrayIndex,
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_ROLESET_RESET_GROUP', [{ name }]);
+		return message.sendLocale('commandRolesetResetGroup', [{ name }]);
 	}
 
 	// This subcommand will run if a user doesnt type add or remove. The bot will then add AND remove based on whether that role is in the set already.
@@ -160,14 +160,14 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_ROLESET_UPDATED', [{ name }]);
+		return message.sendLocale('commandRolesetUpdated', [{ name }]);
 	}
 
 	// This subcommand will show the user a list of role sets and each role in that set.
 	public async list(message: KlasaMessage) {
 		// Get all rolesets from settings
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		if (!allRolesets.length) return message.sendLocale('COMMAND_ROLESET_NO_ROLESETS');
+		if (!allRolesets.length) return message.sendLocale('commandRolesetNoRolesets');
 		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild!.roles.get(id)!.name).join(', ')}`);
 		return message.send(list);
 	}

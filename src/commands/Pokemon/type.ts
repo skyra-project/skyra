@@ -33,8 +33,8 @@ const kPokemonTypes = new Set([
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['matchup', 'weakness', 'advantage'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_TYPE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_TYPE_EXTENDED'),
+	description: (language) => language.get('commandTypeDescription'),
+	extendedHelp: (language) => language.get('commandTypeExtended'),
 	usage: '<types:type{2}>'
 })
 @CreateResolvers([
@@ -43,10 +43,10 @@ const kPokemonTypes = new Set([
 		(arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
-			if (arg.length > 2) throw message.language.get('COMMAND_TYPE_TOO_MANY_TYPES');
+			if (arg.length > 2) throw message.language.get('commandTypeTooManyTypes');
 
 			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw message.language.get('COMMAND_TYPE_NOT_A_TYPE', { type });
+				if (!kPokemonTypes.has(type)) throw message.language.get('commandTypeNotAType', { type });
 			}
 
 			return arg;
@@ -56,7 +56,7 @@ const kPokemonTypes = new Set([
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [types]: [Types[]]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 		const typeMatchups = await this.fetchAPI(message, types);
 
@@ -70,7 +70,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw message.language.get('COMMAND_TYPE_QUERY_FAIL', { types });
+			throw message.language.get('commandTypeQueryFail', { types });
 		}
 	}
 
@@ -95,8 +95,8 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
-		const embedTranslations = message.language.get('COMMAND_TYPE_EMBED_DATA', { types });
-		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
+		const embedTranslations = message.language.get('commandTypeEmbedData', { types });
+		const externalResources = message.language.get('systemPokedexExternalResource');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
 			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,
@@ -106,28 +106,28 @@ export default class extends RichDisplayCommand {
 		return new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message)) //
-				.setAuthor(`${embedTranslations.TYPE_EFFECTIVENESS_FOR}`, CdnUrls.Pokedex) //
+				.setAuthor(`${embedTranslations.typeEffectivenessFor}`, CdnUrls.Pokedex) //
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
 					.addField(
-						embedTranslations.OFFENSIVE,
+						embedTranslations.offensive,
 						[
-							`${embedTranslations.SUPER_EFFECTIVE_AGAINST}: ${this.parseEffectiveMatchup(
+							`${embedTranslations.superEffectiveAgainst}: ${this.parseEffectiveMatchup(
 								typeMatchups.attacking.doubleEffectiveTypes,
 								typeMatchups.attacking.effectiveTypes
 							)}`,
 							'',
-							`${embedTranslations.DEALS_NORMAL_DAMAGE_TO}: ${this.parseRegularMatchup(typeMatchups.attacking.normalTypes)}`,
+							`${embedTranslations.dealsNormalDamageTo}: ${this.parseRegularMatchup(typeMatchups.attacking.normalTypes)}`,
 							'',
-							`${embedTranslations.NOT_VERY_EFFECTIVE_AGAINST}: ${this.parseResistedMatchup(
+							`${embedTranslations.notVeryEffectiveAgainst}: ${this.parseResistedMatchup(
 								typeMatchups.attacking.doubleResistedTypes,
 								typeMatchups.attacking.resistedTypes
 							)}`,
 							'',
 							`${
 								typeMatchups.attacking.effectlessTypes.length
-									? `${embedTranslations.DOES_NOT_AFFECT}: ${this.parseRegularMatchup(typeMatchups.attacking.effectlessTypes)}`
+									? `${embedTranslations.doesNotAffect}: ${this.parseRegularMatchup(typeMatchups.attacking.effectlessTypes)}`
 									: ''
 							}`
 						].join('\n')
@@ -137,23 +137,23 @@ export default class extends RichDisplayCommand {
 			.addPage((embed: MessageEmbed) =>
 				embed
 					.addField(
-						embedTranslations.DEFENSIVE,
+						embedTranslations.defensive,
 						[
-							`${embedTranslations.VULNERABLE_TO}: ${this.parseEffectiveMatchup(
+							`${embedTranslations.vulnerableTo}: ${this.parseEffectiveMatchup(
 								typeMatchups.defending.doubleEffectiveTypes,
 								typeMatchups.defending.effectiveTypes
 							)}`,
 							'',
-							`${embedTranslations.TAKES_NORMAL_DAMAGE_FROM}: ${this.parseRegularMatchup(typeMatchups.defending.normalTypes)}`,
+							`${embedTranslations.takesNormalDamageFrom}: ${this.parseRegularMatchup(typeMatchups.defending.normalTypes)}`,
 							'',
-							`${embedTranslations.RESISTS}: ${this.parseResistedMatchup(
+							`${embedTranslations.resists}: ${this.parseResistedMatchup(
 								typeMatchups.defending.doubleResistedTypes,
 								typeMatchups.defending.resistedTypes
 							)}`,
 							'',
 							`${
 								typeMatchups.defending.effectlessTypes.length
-									? `${embedTranslations.NOT_AFFECTED_BY}: ${this.parseRegularMatchup(typeMatchups.defending.effectlessTypes)}`
+									? `${embedTranslations.notAffectedBy}: ${this.parseRegularMatchup(typeMatchups.defending.effectlessTypes)}`
 									: ''
 							}`
 						].join('\n')

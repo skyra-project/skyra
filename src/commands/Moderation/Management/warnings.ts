@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_WARNINGS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WARNINGS_EXTENDED'),
+			description: (language) => language.get('commandWarningsDescription'),
+			extendedHelp: (language) => language.get('commandWarningsExtended'),
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],

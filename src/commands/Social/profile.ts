@@ -16,8 +16,8 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('COMMAND_PROFILE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_PROFILE_EXTENDED'),
+	description: (language) => language.get('commandProfileDescription'),
+	extendedHelp: (language) => language.get('commandProfileExtended'),
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[user:username]'
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const TITLE = message.language.retrieve('COMMAND_PROFILE');
+		const title = message.language.retrieve('commandProfile');
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));
@@ -83,13 +83,13 @@ export default class extends SkyraCommand {
 				.printText(`#${user.discriminator}`, 227, 105)
 
 				// Statistics Titles
-				.printText(TITLE.GLOBAL_RANK, 227, 276)
-				.printText(TITLE.CREDITS, 227, 229)
-				.printText(TITLE.REPUTATION, 227, 181)
+				.printText(title.globalRank, 227, 276)
+				.printText(title.credits, 227, 229)
+				.printText(title.reputation, 227, 181)
 
 				// Experience
 				.setTextFont('20px RobotoLight')
-				.printText(TITLE.EXPERIENCE, 227, 342)
+				.printText(title.experience, 227, 342)
 
 				// Statistics Values
 				.setTextAlign('right')
@@ -102,7 +102,7 @@ export default class extends SkyraCommand {
 				// Level
 				.setTextAlign('center')
 				.setTextFont('30px RobotoLight')
-				.printText(TITLE.LEVEL, 576, 58)
+				.printText(title.level, 576, 58)
 				.setTextFont('40px RobotoRegular')
 				.printText(settings.level.toString(), 576, 100)
 
@@ -167,9 +167,9 @@ export default class extends SkyraCommand {
 }
 
 export interface ProfileTitles {
-	GLOBAL_RANK: string;
-	CREDITS: string;
-	REPUTATION: string;
-	EXPERIENCE: string;
-	LEVEL: string;
+	globalRank: string;
+	credits: string;
+	reputation: string;
+	experience: string;
+	level: string;
 }

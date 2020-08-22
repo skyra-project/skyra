@@ -9,7 +9,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('COMMAND_LEAVE_SUCCESS', [{ channel: voiceChannel.toString() }]));
+			floatPromise(this, channel.sendLocale('commandLeaveSuccess', [{ channel: voiceChannel.toString() }]));
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {

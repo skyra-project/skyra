@@ -9,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['slot', 'slots', 'slotmachines'],
 	bucket: 2,
 	cooldown: 7,
-	description: (language) => language.get('COMMAND_SLOTMACHINE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_SLOTMACHINE_EXTENDED'),
+	description: (language) => language.get('commandSlotmachineDescription'),
+	extendedHelp: (language) => language.get('commandSlotmachineExtended'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	usage: '<wager:wager>'
@@ -21,14 +21,14 @@ export default class extends SkyraCommand {
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw message.language.get('GAMES_NOT_ENOUGH_MONEY', { money: balance });
+			throw message.language.get('gamesNotEnoughMoney', { money: balance });
 		}
 
 		const [attachment, amount] = await new Slotmachine(message, wager, settings).run();
-		const TITLES = message.language.get('COMMAND_SLOTMACHINE_TITLES');
+		const titles = message.language.get('commandSlotmachineTitles');
 
 		return message.sendMessage(
-			[`**${TITLES.PREVIOUS}:** ${balance} ${Emojis.Shiny}`, `**${TITLES.NEW}:** ${amount} ${Emojis.Shiny}`].join('\n'),
+			[`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'),
 			{ files: [{ attachment, name: 'slots.png' }] }
 		);
 	}

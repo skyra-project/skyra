@@ -42,7 +42,7 @@ export default class extends Event {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(cutText(getContent(message) || '', 1900))
-				.setFooter(`${message.language.get('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
+				.setFooter(`${message.language.get('eventsMessageDelete')} • ${channel.name}`)
 				.setImage(getImage(message)!)
 				.setTimestamp()
 		);

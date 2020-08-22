@@ -7,7 +7,7 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_LINKS';
+	protected readonly reasonLanguageKey = 'moderationMonitorLinks';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Links.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Links.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Links.IgnoredRoles;
@@ -47,14 +47,14 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_NOLINK', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get('monitorNolink', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_LINK')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorLink')}`)
 			.setTimestamp();
 	}
 }

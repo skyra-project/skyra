@@ -5,8 +5,8 @@ import { KlasaMessage } from 'klasa';
 import { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('COMMAND_PLAY_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_PLAY_EXTENDED'),
+	description: (language) => language.get('commandPlayDescription'),
+	extendedHelp: (language) => language.get('commandPlayExtended'),
 	usage: '(song:song)',
 	flagSupport: true
 })
@@ -20,7 +20,7 @@ export default class extends MusicCommand {
 			await this.client.commands.get('add')!.run(message, [songs]);
 			if (music.playing) return;
 		} else if (!music.canPlay) {
-			await message.sendLocale('COMMAND_PLAY_QUEUE_EMPTY');
+			await message.sendLocale('commandPlayQueueEmpty');
 			return;
 		}
 
@@ -30,10 +30,10 @@ export default class extends MusicCommand {
 		}
 
 		if (music.playing) {
-			await message.sendLocale('COMMAND_PLAY_QUEUE_PLAYING');
+			await message.sendLocale('commandPlayQueuePlaying');
 		} else if (music.song) {
 			await music.resume(this.getContext(message));
-			await message.sendLocale('COMMAND_PLAY_QUEUE_PAUSED', [{ song: music.song.toString() }]);
+			await message.sendLocale('commandPlayQueuePaused', [{ song: music.song.toString() }]);
 		} else {
 			music.channelID = message.channel.id;
 			await music.play();

@@ -9,8 +9,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_TOPINVITES_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_TOPINVITES_EXTENDED'),
+	description: (language) => language.get('commandTopInvitesDescription'),
+	extendedHelp: (language) => language.get('commandTopInvitesExtended'),
 	requiredGuildPermissions: ['MANAGE_GUILD'],
 	runIn: ['text']
 })
@@ -19,7 +19,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild!.fetchInvites();
@@ -28,7 +28,7 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw message.language.get('COMMAND_TOPINVITES_NO_INVITES');
+		if (topTen.length === 0) throw message.language.get('commandTopInvitesNoInvites');
 
 		const display = await this.buildDisplay(message, topTen);
 
@@ -39,10 +39,10 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.get('COMMAND_TOPINVITES_TOP_10_INVITES_FOR', { guild: message.guild! }))
+				.setTitle(message.language.get('commandTopInvitesTop10InvitesFor', { guild: message.guild! }))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedData = message.language.get('COMMAND_TOPINVITES_EMBED_DATA');
+		const embedData = message.language.get('commandTopInvitesEmbedData');
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) =>
@@ -51,14 +51,14 @@ export default class extends RichDisplayCommand {
 					.setThumbnail(invite.inviter.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 					.setDescription(
 						[
-							`**${embedData.USES}**: ${this.resolveUses(invite.uses, invite.maxUses)}`,
-							`**${embedData.LINK}**: [${invite.code}](${invite.url})`,
-							`**${embedData.CHANNEL}**: ${invite.channel}`,
-							`**${embedData.TEMPORARY}**: ${invite.temporary ? Emojis.GreenTick : Emojis.RedCross}`
+							`**${embedData.uses}**: ${this.resolveUses(invite.uses, invite.maxUses)}`,
+							`**${embedData.link}**: [${invite.code}](${invite.url})`,
+							`**${embedData.channel}**: ${invite.channel}`,
+							`**${embedData.temporary}**: ${invite.temporary ? Emojis.GreenTick : Emojis.RedCross}`
 						].join('\n')
 					)
-					.addField(embedData.CREATED_AT, this.resolveCreationDate(invite.createdTimestamp, embedData.CREATED_AT_UNKNOWN), true)
-					.addField(embedData.EXPIRES_IN, this.resolveExpiryDate(message, invite.expiresTimestamp, embedData.NEVER_EXPIRES), true)
+					.addField(embedData.createdAt, this.resolveCreationDate(invite.createdTimestamp, embedData.createdAtUnknown), true)
+					.addField(embedData.expiresIn, this.resolveExpiryDate(message, invite.expiresTimestamp, embedData.neverExpress), true)
 			);
 		}
 

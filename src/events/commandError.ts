@@ -17,7 +17,7 @@ export default class extends Event {
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
 			try {
-				return await message.alert(message.language.get('EVENTS_ERROR_STRING', { mention: message.author.toString(), message: error }));
+				return await message.alert(message.language.get('eventsErrorString', { mention: message.author.toString(), message: error }));
 			} catch (err) {
 				return this.client.emit(Events.ApiError, err);
 			}
@@ -27,7 +27,7 @@ export default class extends Event {
 		if (error.name === 'AbortError') {
 			this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 			try {
-				return await message.alert(message.language.get('SYSTEM_DISCORD_ABORTERROR'));
+				return await message.alert(message.language.get('systemDiscordAborterror'));
 			} catch (err) {
 				return this.client.emit(Events.ApiError, err);
 			}
@@ -48,7 +48,7 @@ export default class extends Event {
 		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);
 		try {
 			await message.alert(
-				this.client.options.owners.includes(message.author.id) ? codeBlock('js', error.stack!) : message.language.get('EVENTS_ERROR_WTF')
+				this.client.options.owners.includes(message.author.id) ? codeBlock('js', error.stack!) : message.language.get('eventsErrorWtf')
 			);
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);

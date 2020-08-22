@@ -12,12 +12,12 @@ export default class extends Serializer {
 			Array.isArray(data.args) &&
 			data.args.every((arg) => typeof arg === 'string')
 		) {
-			if (data.id.length > 50) throw language.get('COMMAND_TAG_NAME_TOOLONG');
-			if (data.id.includes('`') || data.id.includes(ZeroWidhSpace)) throw language.get('COMMAND_TAG_NAME_NOTALLOWED');
+			if (data.id.length > 50) throw language.get('commandTagNameTooLong');
+			if (data.id.includes('`') || data.id.includes(ZeroWidhSpace)) throw language.get('commandTagNameNotAllowed');
 			return data;
 		}
 
-		throw language.get('SERIALIZER_CUSTOM_COMMAND_INVALID');
+		throw language.get('serializerCustomCommandInvalid');
 	}
 
 	public stringify(value: CustomCommand) {

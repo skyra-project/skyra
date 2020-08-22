@@ -25,8 +25,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo', 'uinfo'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_WHOIS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WHOIS_EXTENDED'),
+			description: (language) => language.get('commandWhoisDescription'),
+			extendedHelp: (language) => language.get('commandWhoisExtended'),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
@@ -44,31 +44,31 @@ export default class extends SkyraCommand {
 	}
 
 	private user(message: KlasaMessage, user: User) {
-		const TITLES = message.language.get('COMMAND_WHOIS_USER_TITLES');
-		const FIELDS = message.language.get('COMMAND_WHOIS_USER_FIELDS', { user });
+		const titles = message.language.get('commandWhoisUserTitles');
+		const fields = message.language.get('commandWhoisUserFields', { user });
 
 		return new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
 			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(user.toString())
-			.addField(TITLES.CREATED_AT, FIELDS.CREATED_AT)
+			.addField(titles.createdAt, fields.createdAt)
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
-			.setFooter(FIELDS.FOOTER, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
-		const TITLES = message.language.get('COMMAND_WHOIS_MEMBER_TITLES');
-		const FIELDS = message.language.get('COMMAND_WHOIS_MEMBER_FIELDS', { member });
+		const titles = message.language.get('commandWhoisMemberTitles');
+		const fields = message.language.get('commandWhoisMemberFields', { member });
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || BrandingColors.Secondary)
-			.addField(TITLES.JOINED, FIELDS.JOINED)
-			.addField(TITLES.CREATED_AT, FIELDS.CREATED_AT)
+			.addField(titles.joined, fields.joined)
+			.addField(titles.createdAt, fields.createdAt)
 			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(member.toString())
 			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
-			.setFooter(FIELDS.FOOTER, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 
 		this.applyMemberRoles(message, member, embed);
@@ -81,12 +81,12 @@ export default class extends SkyraCommand {
 
 		const roles = member.roles.sorted(sortRanks);
 		roles.delete(member.guild.id);
-		embed.splitFields(message.language.get('COMMAND_WHOIS_MEMBER_ROLES', { amount: roles.size }), [...roles.values()].join(' '));
+		embed.splitFields(message.language.get('commandWhoisMemberRoles', { amount: roles.size }), [...roles.values()].join(' '));
 	}
 
 	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
 		if (member.permissions.has(this.kAdministratorPermission)) {
-			embed.addField(message.language.get('COMMAND_WHOIS_MEMBER_PERMISSIONS'), message.language.get('COMMAND_WHOIS_MEMBER_PERMISSIONS_ALL'));
+			embed.addField(message.language.get('commandWhoisMemberPermissions'), message.language.get('commandWhoisMemberPermissionsAll'));
 			return;
 		}
 
@@ -96,7 +96,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (permissions.length > 0) {
-			embed.addField(message.language.get('COMMAND_WHOIS_MEMBER_PERMISSIONS'), permissions.join(', '));
+			embed.addField(message.language.get('commandWhoisMemberPermissions'), permissions.join(', '));
 		}
 	}
 }

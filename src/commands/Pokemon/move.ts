@@ -12,14 +12,14 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_MOVE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_MOVE_EXTENDED'),
+	description: (language) => language.get('commandMoveDescription'),
+	extendedHelp: (language) => language.get('commandMoveExtended'),
 	usage: '<move:str>'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [move]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 		const moveData = await this.fetchAPI(message, move.toLowerCase());
 
@@ -33,13 +33,13 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw message.language.get('COMMAND_MOVE_QUERY_FAIL', { move });
+			throw message.language.get('commandMoveQueryFail', { move });
 		}
 	}
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.get('COMMAND_MOVE_EMBED_DATA', { availableInGen8: moveData.isNonstandard !== 'Past' });
-		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
+		const embedTranslations = message.language.get('commandMoveEmbedData', { availableInGen8: moveData.isNonstandard !== 'Past' });
+		const externalResources = message.language.get('systemPokedexExternalResource');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
 			`[Serebii](${moveData.serebiiPage})`,
@@ -49,31 +49,31 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(`${embedTranslations.MOVE} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
+				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 				.setDescription(moveData.desc || moveData.shortDesc)
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(embedTranslations.TYPE, moveData.type, true)
-					.addField(embedTranslations.BASE_POWER, moveData.basePower, true)
-					.addField(embedTranslations.PP, moveData.pp, true)
-					.addField(embedTranslations.ACCURACY, `${moveData.accuracy}%`, true)
+					.addField(embedTranslations.types, moveData.type, true)
+					.addField(embedTranslations.basePower, moveData.basePower, true)
+					.addField(embedTranslations.pp, moveData.pp, true)
+					.addField(embedTranslations.accuracy, `${moveData.accuracy}%`, true)
 					.addField(externalResources, externalSources)
 			)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(embedTranslations.CATEGORY, moveData.category, true)
-					.addField(embedTranslations.PRIORITY, moveData.priority, true)
-					.addField(embedTranslations.TARGET, moveData.target, true)
-					.addField(embedTranslations.CONTEST_CONDITION, moveData.contestType ?? embedTranslations.NONE, true)
+					.addField(embedTranslations.category, moveData.category, true)
+					.addField(embedTranslations.priority, moveData.priority, true)
+					.addField(embedTranslations.target, moveData.target, true)
+					.addField(embedTranslations.contestCondition, moveData.contestType ?? embedTranslations.none, true)
 					.addField(externalResources, externalSources)
 			);
 
 		// If the move has zMovePower or maxMovePower then squeeze it in between as a page
 		if (moveData.zMovePower || moveData.maxMovePower) {
 			display.addPage((embed: MessageEmbed) => {
-				if (moveData.maxMovePower) embed.addField(embedTranslations.MAX_MOVE_POWER, moveData.maxMovePower);
-				if (moveData.zMovePower) embed.addField(embedTranslations.Z_MOVE_POWER, moveData.zMovePower);
+				if (moveData.maxMovePower) embed.addField(embedTranslations.maxMovePower, moveData.maxMovePower);
+				if (moveData.zMovePower) embed.addField(embedTranslations.zMovePower, moveData.zMovePower);
 
 				embed.addField(externalResources, externalSources);
 				return embed;
@@ -82,9 +82,9 @@ export default class extends RichDisplayCommand {
 
 		return display.addPage((embed: MessageEmbed) =>
 			embed
-				.addField(embedTranslations.Z_CRYSTAL, moveData.isZ ?? embedTranslations.NONE, true)
-				.addField(embedTranslations.GMAX_POKEMON, moveData.isGMax ?? embedTranslations.NONE)
-				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA)
+				.addField(embedTranslations.zCrystal, moveData.isZ ?? embedTranslations.none, true)
+				.addField(embedTranslations.gmaxPokemon, moveData.isGMax ?? embedTranslations.none)
+				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data)
 				.addField(externalResources, externalSources)
 		);
 	}

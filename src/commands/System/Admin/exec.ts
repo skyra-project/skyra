@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['execute'],
-			description: (language) => language.get('COMMAND_EXEC_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_EXEC_EXTENDED'),
+			description: (language) => language.get('commandExecDescription'),
+			extendedHelp: (language) => language.get('commandExecExtended'),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			usage: '<expression:string>',

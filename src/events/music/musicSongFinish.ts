@@ -25,7 +25,7 @@ export default class extends Event {
 
 		manager.reset();
 		if (manager.queue.length === 0) {
-			floatPromise(this, channel!.sendLocale('COMMAND_PLAY_END'));
+			floatPromise(this, channel!.sendLocale('commandPlayEnd'));
 			await this.client.lavalink.leave(channel!.guild.id);
 		} else {
 			try {

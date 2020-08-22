@@ -11,8 +11,8 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('COMMAND_HUG_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_HUG_EXTENDED'),
+	description: (language) => language.get('commandHugDescription'),
+	extendedHelp: (language) => language.get('commandHugExtended'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

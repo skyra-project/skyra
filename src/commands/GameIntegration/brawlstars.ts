@@ -43,8 +43,8 @@ const enum BrawlStarsFetchCategories {
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bs'],
-	description: (language) => language.get('COMMAND_BRAWLSTARS_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_BRAWLSTARS_EXTENDED'),
+	description: (language) => language.get('commandBrawlstarsDescription'),
+	extendedHelp: (language) => language.get('commandBrawlstarsExtended'),
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<club|player:default> <tag:tag>',
@@ -55,7 +55,7 @@ const enum BrawlStarsFetchCategories {
 		'tag',
 		(arg, _possible, message) => {
 			if (kTagRegex.test(arg)) return arg;
-			throw message.language.get('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
+			throw message.language.get('commandClashofclansInvalidPlayerTag', { playertag: arg });
 		}
 	]
 ])
@@ -71,56 +71,56 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, player: BrawlStars.Player) {
-		const TITLES = message.language.get('COMMAND_BRAWLSTARS_PLAYER_EMBED_TITLES');
-		const FIELDS = message.language.get('COMMAND_BRAWLSTARS_PLAYER_EMBED_FIELDS');
+		const titles = message.language.get('commandBrawlstarsPlayerEmbedTitles');
+		const fields = message.language.get('commandBrawlstarsPlayerEmbedFields');
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) || BrandingColors.Primary)
 			.setTitle(`${player.name} - ${player.tag}`)
 			.setURL(`https://brawlstats.com/profile/${player.tag.substr(1)}`)
 			.addField(
-				TITLES.TROPHIES,
+				titles.trophies,
 				[
-					`${BrawlStarsEmojis.Trophy} **${FIELDS.TOTAL}**: ${player.trophies.toLocaleString(message.language.name)}`,
-					`${BrawlStarsEmojis.Trophy} **${FIELDS.PERSONAL_BEST}**: ${player.highestTrophies.toLocaleString(message.language.name)}`
+					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${player.trophies.toLocaleString(message.language.name)}`,
+					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${player.highestTrophies.toLocaleString(message.language.name)}`
 				].join('\n')
 			)
 			.addField(
-				TITLES.EXP,
+				titles.exp,
 				[
-					`${BrawlStarsEmojis.Exp} **${FIELDS.EXPERIENCE_LEVEL}**: ${player.expLevel} (${player.expPoints.toLocaleString(
+					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${player.expPoints.toLocaleString(
 						message.language.name
 					)})`,
-					`${BrawlStarsEmojis.PowerPlay} **${FIELDS.TOTAL}**: ${player.powerPlayPoints?.toLocaleString(message.language.name) || 0}`,
-					`${BrawlStarsEmojis.PowerPlay} **${FIELDS.PERSONAL_BEST}**: ${
+					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${player.powerPlayPoints?.toLocaleString(message.language.name) || 0}`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${
 						player.highestPowerPlayPoints?.toLocaleString(message.language.name) || 0
 					}`
 				].join('\n')
 			)
 			.addField(
-				TITLES.EVENTS,
+				titles.events,
 				[
-					`${BrawlStarsEmojis.RoboRumble} **${FIELDS.ROBO_RUMBLE}**: ${kRoboRumbleLevels[player.bestRoboRumbleTime]}`,
-					`${BrawlStarsEmojis.ChampionshipChallenge} **${FIELDS.QUALIFIED_FOR_CHAMPS}**: ${
+					`${BrawlStarsEmojis.RoboRumble} **${fields.roboRumble}**: ${kRoboRumbleLevels[player.bestRoboRumbleTime]}`,
+					`${BrawlStarsEmojis.ChampionshipChallenge} **${fields.qualifiedForChamps}**: ${
 						player.isQualifiedFromChampionshipChallenge ? Emojis.GreenTick : Emojis.RedCross
 					}`
 				].join('\n')
 			)
 			.addField(
-				TITLES.GAME_MODES,
+				titles.gamesModes,
 				[
-					`${BrawlStarsEmojis.GemGrab} **${FIELDS.VICTORIES_3V3}**: ${player['3vs3Victories'].toLocaleString(message.language.name)}`,
-					`${BrawlStarsEmojis.SoloShowdown} **${FIELDS.VICTORIES_SOLO}**: ${player.soloVictories.toLocaleString(message.language.name)}`,
-					`${BrawlStarsEmojis.DuoShowdown} **${FIELDS.VICTORIES_DUO}**: ${player.duoVictories.toLocaleString(message.language.name)}`
+					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${player['3vs3Victories'].toLocaleString(message.language.name)}`,
+					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${player.soloVictories.toLocaleString(message.language.name)}`,
+					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${player.duoVictories.toLocaleString(message.language.name)}`
 				].join('\n')
 			)
 			.addField(
-				TITLES.OTHER,
+				titles.other,
 				[
 					player.club.name
-						? `**${FIELDS.CLUB}**: [${player.club.name}](https://brawlstats.com/club/${player.club.tag.substr(1)}) (${player.club.tag})`
+						? `**${fields.club}**: [${player.club.name}](https://brawlstats.com/club/${player.club.tag.substr(1)}) (${player.club.tag})`
 						: '',
-					`**${FIELDS.BRAWLERS_UNLOCKED}**: ${player.brawlers.length} / ${kTotalBrawlers}`
+					`**${fields.brawlersUnlocked}**: ${player.brawlers.length} / ${kTotalBrawlers}`
 				]
 					.filter((line) => line !== '')
 					.join('\n')
@@ -128,8 +128,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildClubEmbed(message: KlasaMessage, club: BrawlStars.Club) {
-		const TITLES = message.language.get('COMMAND_BRAWLSTARS_CLUB_EMBED_TITLES');
-		const FIELDS = message.language.get('COMMAND_BRAWLSTARS_CLUB_EMBED_FIELDS');
+		const titles = message.language.get('commandBrawlstarsClubEmbedTitles');
+		const fields = message.language.get('commandBrawlstarsClubEmbedFields');
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
@@ -140,13 +140,13 @@ export default class extends SkyraCommand {
 			.setColor(await DbSet.fetchColor(message))
 			.setTitle(`${club.name} - ${club.tag}`)
 			.setURL(`https://brawlstats.com/club/${club.tag.substr(1)}`)
-			.addField(TITLES.TOTAL_TROPHIES, `${BrawlStarsEmojis.Trophy} ${club.trophies.toLocaleString()}`)
-			.addField(TITLES.AVERAGE_TROPHIES, `${BrawlStarsEmojis.Trophy} ${averageTrophies.toLocaleString()}`)
-			.addField(TITLES.REQUIRED_TROPHIES, `${BrawlStarsEmojis.Trophy} ${club.requiredTrophies.toLocaleString()}+`)
-			.addField(TITLES.MEMBERS, `${club.members.length} / ${kMaxMembers}`)
-			.addField(TITLES.TYPE, club.type)
-			.addField(TITLES.PRESIDENT, president?.name || FIELDS.NO_PRESIDENT)
-			.addField(TITLES.TOP_5_MEMBERS, club.members.slice(0, 5).map(mapMembers).join('\n'));
+			.addField(titles.totalTrophies, `${BrawlStarsEmojis.Trophy} ${club.trophies.toLocaleString()}`)
+			.addField(titles.averageTrophies, `${BrawlStarsEmojis.Trophy} ${averageTrophies.toLocaleString()}`)
+			.addField(titles.requiredTrophies, `${BrawlStarsEmojis.Trophy} ${club.requiredTrophies.toLocaleString()}+`)
+			.addField(titles.members, `${club.members.length} / ${kMaxMembers}`)
+			.addField(titles.type, club.type)
+			.addField(titles.president, president?.name || fields.noPresident)
+			.addField(titles.top5Members, club.members.slice(0, 5).map(mapMembers).join('\n'));
 
 		if (club.description !== '') embed.setDescription(club.description);
 
@@ -168,8 +168,8 @@ export default class extends SkyraCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.get('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
-			else throw message.language.get('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
+			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.get('commandClashOfClansClansQueryFail', { clan: query });
+			else throw message.language.get('commandClashofclansPlayersQueryFail', { playertag: query });
 		}
 	}
 }

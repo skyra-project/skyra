@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('COMMAND_REASON_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_REASON_EXTENDED'),
+	description: (language) => language.get('commandReasonDescription'),
+	extendedHelp: (language) => language.get('commandReasonExtended'),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [cases, reason]: [number[], string]) {
 		const entries = await message.guild!.moderation.fetch(cases);
-		if (!entries.size) throw message.language.get(cases.length === 1 ? 'MODERATION_CASE_NOT_EXISTS' : 'MODERATION_CASES_NOT_EXIST');
+		if (!entries.size) throw message.language.get(cases.length === 1 ? 'moderationCaseNotExists' : 'moderationCasesNotExist');
 
 		const imageURL = getImage(message);
 		const { moderations } = await DbSet.connect();
@@ -43,6 +43,6 @@ export default class extends SkyraCommand {
 			this.client.emit(Events.ModerationEntryEdit, clone, entry);
 		}
 
-		return message.alert(message.language.get('COMMAND_REASON_UPDATED', { entries: cases, newReason: reason }));
+		return message.alert(message.language.get('commandReasonUpdated', { entries: cases, newReason: reason }));
 	}
 }

@@ -10,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restricted-attachment', 'ra'],
-	description: (language) => language.get('COMMAND_RESTRICTATTACHMENT_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_RESTRICTATTACHMENT_EXTENDED'),
+	description: (language) => language.get('commandRestrictAttachmentDescription'),
+	extendedHelp: (language) => language.get('commandRestrictAttachmentExtended'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -26,19 +26,19 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedAttachment);
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('COMMAND_RESTRICT_LOWLEVEL');
-			if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandRestrictLowlevel');
+			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
+					.run(message.language.get('actionSharedRoleSetupExistingName'))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.RestrictedAttachment, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+			} else if (await message.ask(message.language.get('actionSharedRoleSetupNew'))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Attachment);
-				await message.sendLocale('COMMAND_SUCCESS');
+				await message.sendLocale('commandSuccess');
 			} else {
-				await message.sendLocale('MONITOR_COMMAND_HANDLER_ABORTED');
+				await message.sendLocale('monitorCommandHandlerAborted');
 			}
 		}
 

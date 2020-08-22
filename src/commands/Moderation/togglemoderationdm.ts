@@ -6,8 +6,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_TOGGLEMODERATIONDM_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_TOGGLEMODERATIONDM_EXTENDED')
+	description: (language) => language.get('commandToggleModerationDmDescription'),
+	extendedHelp: (language) => language.get('commandToggleModerationDmExtended')
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
@@ -19,6 +19,6 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendLocale('COMMAND_TOGGLEMODERATIONDM_TOGGLED', [{ value: updated.moderationDM }]);
+		return message.sendLocale('commandToggleModerationDmToggled', [{ value: updated.moderationDM }]);
 	}
 }

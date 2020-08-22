@@ -93,12 +93,12 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  */
 export function announcementCheck(message: Message) {
 	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
+	if (!announcementID) throw message.language.get('commandSubscribeNoRole');
 
 	const role = message.guild!.roles.get(announcementID);
-	if (!role) throw message.language.get('COMMAND_SUBSCRIBE_NO_ROLE');
+	if (!role) throw message.language.get('commandSubscribeNoRole');
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('SYSTEM_HIGHEST_ROLE');
+	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('systemHighestRole');
 	return role;
 }
 

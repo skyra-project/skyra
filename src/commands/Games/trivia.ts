@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('COMMAND_TRIVIA_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_TRIVIA_EXTENDED'),
+	description: (language) => language.get('commandTriviaDescription'),
+	extendedHelp: (language) => language.get('commandTriviaExtended'),
 	usage: '(category:category) [boolean|multiple] [easy|hard|medium] [duration:int{30,60}]',
 	usageDelim: ' '
 })
@@ -21,12 +21,12 @@ export default class extends RichDisplayCommand {
 		message: KlasaMessage,
 		[category, questionType = undefined, difficulty = undefined, duration = 30]: [number, QuestionType?, QuestionDifficulty?, number?]
 	) {
-		if (this.#channels.has(message.channel.id)) throw message.language.get('COMMAND_TRIVIA_ACTIVE_GAME');
+		if (this.#channels.has(message.channel.id)) throw message.language.get('commandTriviaActiveGame');
 
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.sendLocale('SYSTEM_LOADING', []);
+			await message.sendLocale('systemLoading', []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean
@@ -53,29 +53,29 @@ export default class extends RichDisplayCommand {
 					return collector.stop();
 				}
 				participants.add(collected.author.id);
-				return message.channel.sendLocale('COMMAND_TRIVIA_INCORRECT', [{ attempt }]);
+				return message.channel.sendLocale('commandTriviaIncorrect', [{ attempt }]);
 			});
 
 			collector.on('end', () => {
 				this.#channels.delete(message.channel.id);
-				if (!winner) return message.channel.sendLocale('COMMAND_TRIVIA_NO_ANSWER', [{ correctAnswer }]);
-				return message.channel.sendLocale('COMMAND_TRIVIA_WINNER', [{ winner: winner.toString(), correctAnswer }]);
+				if (!winner) return message.channel.sendLocale('commandTriviaNoAnswer', [{ correctAnswer }]);
+				return message.channel.sendLocale('commandTriviaWinner', [{ winner: winner.toString(), correctAnswer }]);
 			});
 		} catch {
 			this.#channels.delete(message.channel.id);
-			throw message.language.get('UNEXPECTED_ISSUE');
+			throw message.language.get('unexpectedIssue');
 		}
 	}
 
 	public buildQuestionEmbed(message: KlasaMessage, data: QuestionData, possibleAnswers: string[]) {
-		const TITLES = message.language.get('COMMAND_TRIVIA_EMBED_TITLES');
+		const titles = message.language.get('commandTriviaEmbedTitles');
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
-			.setAuthor(TITLES.TRIVIA)
+			.setAuthor(titles.trivia)
 			.setTitle(data.category)
 			.setColor(0xf37917)
 			.setThumbnail('http://i.imgur.com/zPtu5aP.png')
-			.setDescription([`${TITLES.DIFFICULTY}: ${data.difficulty}`, '', decode(data.question), '', questionDisplay.join('\n')].join('\n'));
+			.setDescription([`${titles.difficulty}: ${data.difficulty}`, '', decode(data.question), '', questionDisplay.join('\n')].join('\n'));
 	}
 
 	public async init() {
@@ -83,7 +83,7 @@ export default class extends RichDisplayCommand {
 			if (!arg) return CATEGORIES.general;
 			arg = arg.toLowerCase();
 			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw message.language.get('COMMAND_TRIVIA_INVALID_CATEGORY');
+			if (!category) throw message.language.get('commandTriviaInvalidCategory');
 			return category;
 		});
 	}

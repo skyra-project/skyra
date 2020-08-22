@@ -15,8 +15,8 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_MANGA_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_MANGA_EXTENDED'),
+	description: (language) => language.get('commandMangaDescription'),
+	extendedHelp: (language) => language.get('commandMangaExtended'),
 	usage: '<mangaName:string>'
 })
 export default class extends RichDisplayCommand {
@@ -24,11 +24,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [mangaName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { hits: entries } = await this.fetchAPI(message, mangaName);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries, message);
 
@@ -58,12 +58,12 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const embedData = message.language.get('COMMAND_MANGA_EMBED_DATA');
+		const embedData = message.language.get('commandMangaEmbedData');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -90,13 +90,13 @@ export default class extends RichDisplayCommand {
 				embed
 					.setTitle(title)
 					.setURL(mangaURL)
-					.setDescription(message.language.get('COMMAND_MANGA_OUTPUT_DESCRIPTION', { entry, synopsis }))
+					.setDescription(message.language.get('commandMangaOutputDescription', { entry, synopsis }))
 					.setThumbnail(entry.posterImage?.original || '')
-					.addField(embedData.TYPE, message.language.get('COMMAND_MANGA_TYPES')[type.toUpperCase()] || type, true)
-					.addField(embedData.SCORE, score, true)
-					.addField(embedData.AGE_RATING, entry.ageRating ? entry.ageRating : embedData.NONE, true)
-					.addField(embedData.FIRST_PUBLISH_DATE, this.kTimestamp.display(entry.startDate * 1000), true)
-					.addField(embedData.READ_IT, `**[${title}](${mangaURL})**`)
+					.addField(embedData.type, message.language.get('commandMangaTypes')[type.toUpperCase()] || type, true)
+					.addField(embedData.score, score, true)
+					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
+					.addField(embedData.firstPublishDate, this.kTimestamp.display(entry.startDate * 1000), true)
+					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
 			);
 		}
 		return display;

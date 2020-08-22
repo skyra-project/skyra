@@ -4,11 +4,11 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 @ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
 export default class ShinyWager extends Argument {
 	public run(arg: string, possible: Possible, message: KlasaMessage): number {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', { name: possible.name });
+		if (!arg) throw message.language.get('resolverInvalidInt', { name: possible.name });
 
 		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;
-		if (!Number.isInteger(number)) throw message.language.get('RESOLVER_INVALID_INT', { name: possible.name });
-		if (!ShinyWager.kValidBetAmounts.includes(number)) throw message.language.get('RESOLVER_INVALID_WAGER', { bet: number });
+		if (!Number.isInteger(number)) throw message.language.get('resolverInvalidInt', { name: possible.name });
+		if (!ShinyWager.kValidBetAmounts.includes(number)) throw message.language.get('resolverInvalidWager', { bet: number });
 
 		return this.integerArg.run(arg, possible, message);
 	}

@@ -100,24 +100,24 @@ export abstract class SelfModerationCommand extends Command {
 		this.createCustomResolver('action', (arg, _possible, message) => {
 			if (typeof arg === 'undefined') return AKeys.Show;
 			const action = kActions.get(arg.toLowerCase());
-			if (typeof action === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ACTION', { name: this.name });
+			if (typeof action === 'undefined') throw message.language.get('selfModerationCommandInvalidMissingAction', { name: this.name });
 			return action;
 		}).createCustomResolver('value', (arg, _possible, message, [type]: AKeys[]) => {
 			if (type === AKeys.Enable) return true;
 			if (type === AKeys.Disable) return false;
 			if (type === AKeys.Show) return null;
-			if (!arg) throw message.language.get('SELF_MODERATION_COMMAND_INVALID_MISSING_ARGUMENTS', { name: this.name });
+			if (!arg) throw message.language.get('selfModerationCommandInvalidMissingArguments', { name: this.name });
 
 			if (type === AKeys.SoftAction) {
 				const softAction = kSoftActions.get(arg.toLowerCase());
-				if (typeof softAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_SOFTACTION', { name: this.name });
+				if (typeof softAction === 'undefined') throw message.language.get('selfModerationCommandInvalidSoftaction', { name: this.name });
 				const previousSoftAction = message.guild!.settings.get(this.keySoftAction) as number;
 				return SelfModerationCommand.toggle(previousSoftAction, softAction);
 			}
 
 			if (type === AKeys.HardAction) {
 				const hardAction = kHardActions.get(arg.toLowerCase());
-				if (typeof hardAction === 'undefined') throw message.language.get('SELF_MODERATION_COMMAND_INVALID_HARDACTION', { name: this.name });
+				if (typeof hardAction === 'undefined') throw message.language.get('selfModerationCommandInvalidHardaction', { name: this.name });
 				return hardAction;
 			}
 
@@ -186,10 +186,10 @@ export abstract class SelfModerationCommand extends Command {
 		) as [boolean, number, number, number, number, number];
 
 		const i18n = message.language.get.bind(message.language);
-		const [yes, no] = [i18n('SELF_MODERATION_ENABLED'), i18n('SELF_MODERATION_DISABLED')];
+		const [yes, no] = [i18n('selfModerationEnabled'), i18n('selfModerationDisabled')];
 		return message.sendCode(
 			'prolog',
-			i18n('SELF_MODERATION_COMMAND_SHOW', {
+			i18n('selfModerationCommandShow', {
 				kEnabled: enabled ? yes : no,
 				kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
 				kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
@@ -237,28 +237,28 @@ export abstract class SelfModerationCommand extends Command {
 
 	private static displaySoftAction(message: KlasaMessage, softAction: number) {
 		const actions: string[] = [];
-		if (SelfModerationCommand.has(softAction, ASKeys.Alert)) actions.push(message.language.get('SELF_MODERATION_SOFT_ACTION_ALERT'));
-		if (SelfModerationCommand.has(softAction, ASKeys.Log)) actions.push(message.language.get('SELF_MODERATION_SOFT_ACTION_LOG'));
-		if (SelfModerationCommand.has(softAction, ASKeys.Delete)) actions.push(message.language.get('SELF_MODERATION_SOFT_ACTION_DELETE'));
+		if (SelfModerationCommand.has(softAction, ASKeys.Alert)) actions.push(message.language.get('selfModerationSoftActionAlert'));
+		if (SelfModerationCommand.has(softAction, ASKeys.Log)) actions.push(message.language.get('selfModerationSoftActionLog'));
+		if (SelfModerationCommand.has(softAction, ASKeys.Delete)) actions.push(message.language.get('selfModerationSoftActionDelete'));
 		return actions;
 	}
 
 	private static getLanguageKey(message: KlasaMessage, action: AKeys, value: unknown) {
 		switch (action) {
 			case AKeys.Enable:
-				return message.language.get('SELF_MODERATION_COMMAND_ENABLED');
+				return message.language.get('selfModerationCommandEnabled');
 			case AKeys.Disable:
-				return message.language.get('SELF_MODERATION_COMMAND_DISABLED');
+				return message.language.get('selfModerationCommandDisabled');
 			case AKeys.SoftAction:
-				return message.language.get('SELF_MODERATION_COMMAND_SOFT_ACTION', { value: value as string });
+				return message.language.get('selfModerationCommandSoftAction', { value: value as string });
 			case AKeys.HardAction:
-				return message.language.get('SELF_MODERATION_COMMAND_HARD_ACTION', { value: value as string });
+				return message.language.get('selfModerationCommandHardAction', { value: value as string });
 			case AKeys.HardActionDuration:
-				return message.language.get('SELF_MODERATION_COMMAND_HARD_ACTION_DURATION', { value: value as number });
+				return message.language.get('selfModerationCommandHardActionDuration', { value: value as number });
 			case AKeys.ThresholdMaximum:
-				return message.language.get('SELF_MODERATION_COMMAND_THRESHOLD_MAXIMUM', { value: value as number });
+				return message.language.get('selfModerationCommandThresholdMaximum', { value: value as number });
 			case AKeys.ThresholdDuration:
-				return message.language.get('SELF_MODERATION_COMMAND_THRESHOLD_DURATION', { value: value as number });
+				return message.language.get('selfModerationCommandThresholdDuration', { value: value as number });
 			default:
 				throw new Error('Unexpected.');
 		}
@@ -267,17 +267,17 @@ export abstract class SelfModerationCommand extends Command {
 	private static displayHardAction(hardAction: SelfModeratorHardActionFlags | null) {
 		switch (hardAction) {
 			case SelfModeratorHardActionFlags.Ban:
-				return 'SELF_MODERATION_HARD_ACTION_BAN';
+				return 'selfModerationHardActionBan';
 			case SelfModeratorHardActionFlags.Kick:
-				return 'SELF_MODERATION_HARD_ACTION_KICK';
+				return 'selfModerationHardActionKick';
 			case SelfModeratorHardActionFlags.Mute:
-				return 'SELF_MODERATION_HARD_ACTION_MUTE';
+				return 'selfModerationHardActionMute';
 			case SelfModeratorHardActionFlags.SoftBan:
-				return 'SELF_MODERATION_HARD_ACTION_SOFTBAN';
+				return 'selfModerationHardActionSoftban';
 			case SelfModeratorHardActionFlags.Warning:
-				return 'SELF_MODERATION_HARD_ACTION_WARNING';
+				return 'selfModerationHardActionWarning';
 			default:
-				return 'SELF_MODERATION_HARD_ACTION_NONE';
+				return 'selfModerationHardActionNone';
 		}
 	}
 
@@ -291,21 +291,21 @@ export abstract class SelfModerationCommand extends Command {
 
 	private static parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = Number(input);
-		if (parsed < 0) throw message.language.get('RESOLVER_INVALID_INT', { name });
+		if (parsed < 0) throw message.language.get('resolverInvalidInt', { name });
 		if (key.minimum !== null && parsed < key.minimum)
-			throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_SHORT', { minimum: key.minimum, value: parsed });
+			throw message.language.get('selfModerationMaximumTooShort', { minimum: key.minimum, value: parsed });
 		if (key.maximum !== null && parsed > key.maximum)
-			throw message.language.get('SELF_MODERATION_MAXIMUM_TOO_LONG', { maximum: key.maximum, value: parsed });
+			throw message.language.get('selfModerationMaximumTooLong', { maximum: key.maximum, value: parsed });
 		return parsed;
 	}
 
 	private static parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
 		const parsed = new Duration(input);
-		if (parsed.offset < 0) throw message.language.get('RESOLVER_INVALID_DURATION', { name });
+		if (parsed.offset < 0) throw message.language.get('resolverInvalidDuration', { name });
 		if (key.minimum !== null && parsed.offset < key.minimum)
-			throw message.language.get('SELF_MODERATION_DURATION_TOO_SHORT', { minimum: key.minimum, value: parsed.offset });
+			throw message.language.get('selfModerationDurationTooShort', { minimum: key.minimum, value: parsed.offset });
 		if (key.maximum !== null && parsed.offset > key.maximum)
-			throw message.language.get('SELF_MODERATION_DURATION_TOO_LONG', { maximum: key.maximum, value: parsed.offset });
+			throw message.language.get('selfModerationDurationTooLong', { maximum: key.maximum, value: parsed.offset });
 		return parsed.offset;
 	}
 

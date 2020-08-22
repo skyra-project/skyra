@@ -8,7 +8,7 @@ import { KlasaMessage } from 'klasa';
 const NEW_LINE = '\n';
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_NEWLINES';
+	protected readonly reasonLanguageKey = 'moderationMonitorNewlines';
 	protected readonly keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.NewLines.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.NewLines.IgnoredRoles;
@@ -39,7 +39,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_NEWLINEFILTER', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get('monitorNewlineFilter', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
@@ -47,7 +47,7 @@ export default class extends ModerationMonitor {
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_NEWLINEFILTER')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorNewlinefilter')}`)
 			.setTimestamp();
 	}
 }

@@ -6,14 +6,14 @@ import { CommandStore, KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: (language) => language.get('COMMAND_REBOOT_DESCRIPTION'),
+			description: (language) => language.get('commandRebootDescription'),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner
 		});
 	}
 
 	public async run(message: KlasaMessage) {
-		await message.sendLocale('COMMAND_REBOOT').catch((err) => this.client.emit(Events.ApiError, err));
+		await message.sendLocale('commandReboot').catch((err) => this.client.emit(Events.ApiError, err));
 
 		try {
 			if (ENABLE_LAVALINK) {

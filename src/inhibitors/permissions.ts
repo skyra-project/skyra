@@ -33,7 +33,7 @@ export default class extends Inhibitor {
 		}
 
 		const { broke, permission } = await this.client.permissionLevels.run(message, command.permissionLevel);
-		if (!permission) throw broke ? message.language.get('INHIBITOR_PERMISSIONS') : true;
+		if (!permission) throw broke ? message.language.get('inhibitorPermissions') : true;
 	}
 
 	private checkUser(message: KlasaMessage, command: Command) {
@@ -77,7 +77,7 @@ export default class extends Inhibitor {
 			case PermissionNodeResult.Allow:
 				return true;
 			case PermissionNodeResult.Disallow:
-				throw message.language.get('INHIBITOR_PERMISSIONS');
+				throw message.language.get('inhibitorPermissions');
 			case PermissionNodeResult.NoMatch:
 				return false;
 		}

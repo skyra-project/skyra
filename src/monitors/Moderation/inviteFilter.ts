@@ -14,7 +14,7 @@ const enum CodeType {
 }
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_INVITES';
+	protected readonly reasonLanguageKey = 'moderationMonitorInvites';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Invites.IgnoredRoles;
@@ -61,15 +61,15 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_INVITE_FILTER_ALERT', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get('monitorInviteFilterAlert', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(message.language.get('MONITOR_INVITE_FILTER_LOG', { links }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_INVITELINK')}`)
+			.setDescription(message.language.get('monitorInviteFilterLog', { links }))
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorInvitelink')}`)
 			.setTimestamp();
 	}
 

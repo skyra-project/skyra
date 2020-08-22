@@ -8,31 +8,31 @@ import { CommandStore, KlasaMessage } from 'klasa';
 const TYPES = {
 	action: {
 		key: GuildSettings.Selfmod.AttachmentAction,
-		language: 'COMMAND_MANAGEATTACHMENTS_ACTION'
+		language: 'commandManageAttachmentsAction'
 	},
 	disable: {
 		key: GuildSettings.Selfmod.Attachment,
-		language: 'COMMAND_MANAGEATTACHMENTS_ENABLED'
+		language: 'commandManageAttachmentsEnabled'
 	},
 	duration: {
 		key: GuildSettings.Selfmod.AttachmentPunishmentDuration,
-		language: 'COMMAND_MANAGEATTACHMENTS_DURATION'
+		language: 'commandManageAttachmentsDuration'
 	},
 	enable: {
 		key: GuildSettings.Selfmod.Attachment,
-		language: 'COMMAND_MANAGEATTACHMENTS_ENABLED'
+		language: 'commandManageAttachmentsEnabled'
 	},
 	expire: {
 		key: GuildSettings.Selfmod.AttachmentDuration,
-		language: 'COMMAND_MANAGEATTACHMENTS_EXPIRE'
+		language: 'commandManageAttachmentsExpire'
 	},
 	logs: {
 		key: GuildSettings.Selfmod.AttachmentAction,
-		language: 'COMMAND_MANAGEATTACHMENTS_LOGS'
+		language: 'commandManageAttachmentsLogs'
 	},
 	maximum: {
 		key: GuildSettings.Selfmod.AttachmentMaximum,
-		language: 'COMMAND_MANAGEATTACHMENTS_MAXIMUM'
+		language: 'commandManageAttachmentsMaximum'
 	}
 } as const;
 
@@ -42,8 +42,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: (language) => language.get('COMMAND_MANAGEATTACHMENTS_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MANAGEATTACHMENTS_EXTENDED'),
+			description: (language) => language.get('commandManageAttachmentsDescription'),
+			extendedHelp: (language) => language.get('commandManageAttachmentsExtended'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<maximum|expire|duration|action|logs|enable|disable> (value:value)',
@@ -53,19 +53,19 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('value', async (arg, possible, message, [type]) => {
 			if (type === 'enable') return true;
 			if (type === 'disable') return false;
-			if (!arg) throw message.language.get('COMMAND_MANAGEATTACHMENTS_REQUIRED_VALUE');
+			if (!arg) throw message.language.get('commandManageAttachmentsRequiredValue');
 
 			if (type === 'maximum') {
 				const maximum = await this.client.arguments.get('integer')!.run(arg, possible, message);
 				if (maximum >= 0 && maximum <= 60) return maximum;
-				throw message.language.get('RESOLVER_MINMAX_BOTH', { name: possible.name, min: 0, max: 60, inclusive: true });
+				throw message.language.get('resolverMinmaxBoth', { name: possible.name, min: 0, max: 60, inclusive: true });
 			}
 
 			if (type === 'action') {
 				const action = arg.toLowerCase();
 				const index = ACTIONS.indexOf(action);
 				if (index !== -1) return (message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction) & 0b1000) + index;
-				throw message.language.get('COMMAND_MANAGEATTACHMENTS_INVALID_ACTION');
+				throw message.language.get('commandManageAttachmentsInvalidAction');
 			}
 
 			if (type === 'logs') {
@@ -79,7 +79,7 @@ export default class extends SkyraCommand {
 			const duration =
 				Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
 			if (duration < min || duration > max)
-				throw message.language.get('RESOLVER_MINMAX_BOTH', {
+				throw message.language.get('resolverMinmaxBoth', {
 					name: possible.name,
 					min: min / 1000,
 					max: max / 1000,
@@ -123,8 +123,8 @@ export default class extends SkyraCommand {
 
 	private sendReply(message: KlasaMessage, languageKey: typeof TYPES[keyof typeof TYPES]['language'], value: any) {
 		switch (languageKey) {
-			case 'COMMAND_MANAGEATTACHMENTS_ACTION':
-			case 'COMMAND_MANAGEATTACHMENTS_LOGS':
+			case 'commandManageAttachmentsAction':
+			case 'commandManageAttachmentsLogs':
 				return message.language.get(languageKey);
 			default:
 				return message.language.get(languageKey, { value });

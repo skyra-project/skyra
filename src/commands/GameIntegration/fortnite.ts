@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_FORTNITE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_FORTNITE_EXTENDED'),
+	description: (language) => language.get('commandFortniteDescription'),
+	extendedHelp: (language) => language.get('commandFortniteExtended'),
 	usage: '<xbox|psn|pc:default> <user:...string>',
 	usageDelim: ' '
 })
@@ -21,7 +21,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const fortniteUser = await this.fetchAPI(message, user, platform);
@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw message.language.get('COMMAND_FORTNITE_NO_USER');
+			throw message.language.get('commandFortniteNoUser');
 		}
 	}
 
@@ -54,16 +54,16 @@ export default class extends RichDisplayCommand {
 	) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.get('COMMAND_FORTNITE_EMBED_TITLE', { epicUserHandle }))
+				.setTitle(message.language.get('commandFortniteEmbedTitle', { epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedSectionTitles = message.language.get('COMMAND_FORTNITE_EMBED_SECTION_TITLES');
+		const embedSectionTitles = message.language.get('commandFortniteEmbedSectionTitles');
 
 		display
 			.addPage((embed) => {
 				const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
-				const ltsData = message.language.get('COMMAND_FORTNITE_EMBED_STATS', {
+				const ltsData = message.language.get('commandFortniteEmbedStats', {
 					winCount: lts.find((el) => el.key === 'wins')!.value,
 					killCount: lts.find((el) => el.key === 'kills')!.value,
 					kdrCount: lts.find((el) => el.key === 'k/d')!.value,
@@ -78,22 +78,22 @@ export default class extends RichDisplayCommand {
 				});
 				return embed.setDescription(
 					[
-						embedSectionTitles.LIFETIME_STATS,
-						ltsData.WINS,
-						ltsData.KILLS,
-						ltsData.KDR,
-						ltsData.MATCHES_PLAYED,
-						ltsData.TOP_3S,
-						ltsData.TOP_5S,
-						ltsData.TOP_6S,
-						ltsData.TOP_10S,
-						ltsData.TOP_12S,
-						ltsData.TOP_25S
+						embedSectionTitles.lifetimeStats,
+						ltsData.wins,
+						ltsData.kills,
+						ltsData.kdr,
+						ltsData.matchesPlayed,
+						ltsData.top3s,
+						ltsData.top5s,
+						ltsData.top6s,
+						ltsData.top10s,
+						ltsData.top12s,
+						ltsData.top25s
 					].join('\n')
 				);
 			})
 			.addPage((embed) => {
-				const p2Data = message.language.get('COMMAND_FORTNITE_EMBED_STATS', {
+				const p2Data = message.language.get('commandFortniteEmbedStats', {
 					winCount: p2.top1.value,
 					killCount: p2.kills.value,
 					kdrCount: p2.kd.value,
@@ -108,25 +108,25 @@ export default class extends RichDisplayCommand {
 				});
 				return embed.setDescription(
 					[
-						embedSectionTitles.SOLOS,
-						p2Data.WINS,
-						p2Data.KILLS,
-						p2Data.KDR,
-						p2Data.MATCHES_PLAYED,
-						p2Data.TOP_1S,
-						p2Data.TOP_3S,
-						p2Data.TOP_5S,
-						p2Data.TOP_6S,
-						p2Data.TOP_10S,
-						p2Data.TOP_12S,
-						p2Data.TOP_25S
+						embedSectionTitles.solos,
+						p2Data.wins,
+						p2Data.kills,
+						p2Data.kdr,
+						p2Data.matchesPlayed,
+						p2Data.top1s,
+						p2Data.top3s,
+						p2Data.top5s,
+						p2Data.top6s,
+						p2Data.top10s,
+						p2Data.top12s,
+						p2Data.top25s
 					].join('\n')
 				);
 			});
 
 		if (p10) {
 			display.addPage((embed) => {
-				const p10Data = message.language.get('COMMAND_FORTNITE_EMBED_STATS', {
+				const p10Data = message.language.get('commandFortniteEmbedStats', {
 					winCount: p10.top1.value,
 					killCount: p10.kills.value,
 					kdrCount: p10.kd.value,
@@ -141,18 +141,18 @@ export default class extends RichDisplayCommand {
 				});
 				return embed.setDescription(
 					[
-						embedSectionTitles.DUOS,
-						p10Data.WINS,
-						p10Data.KILLS,
-						p10Data.KDR,
-						p10Data.MATCHES_PLAYED,
-						p10Data.TOP_1S,
-						p10Data.TOP_3S,
-						p10Data.TOP_5S,
-						p10Data.TOP_6S,
-						p10Data.TOP_10S,
-						p10Data.TOP_12S,
-						p10Data.TOP_25S
+						embedSectionTitles.duos,
+						p10Data.wins,
+						p10Data.kills,
+						p10Data.kdr,
+						p10Data.matchesPlayed,
+						p10Data.top1s,
+						p10Data.top3s,
+						p10Data.top5s,
+						p10Data.top6s,
+						p10Data.top10s,
+						p10Data.top12s,
+						p10Data.top25s
 					].join('\n')
 				);
 			});
@@ -160,7 +160,7 @@ export default class extends RichDisplayCommand {
 
 		if (p9) {
 			display.addPage((embed) => {
-				const p9Data = message.language.get('COMMAND_FORTNITE_EMBED_STATS', {
+				const p9Data = message.language.get('commandFortniteEmbedStats', {
 					winCount: p9.top1.value,
 					killCount: p9.kills.value,
 					kdrCount: p9.kd.value,
@@ -175,18 +175,18 @@ export default class extends RichDisplayCommand {
 				});
 				return embed.setDescription(
 					[
-						embedSectionTitles.SQUADS,
-						p9Data.WINS,
-						p9Data.KILLS,
-						p9Data.KDR,
-						p9Data.MATCHES_PLAYED,
-						p9Data.TOP_1S,
-						p9Data.TOP_3S,
-						p9Data.TOP_5S,
-						p9Data.TOP_6S,
-						p9Data.TOP_10S,
-						p9Data.TOP_12S,
-						p9Data.TOP_25S
+						embedSectionTitles.squads,
+						p9Data.wins,
+						p9Data.kills,
+						p9Data.kdr,
+						p9Data.matchesPlayed,
+						p9Data.top1s,
+						p9Data.top3s,
+						p9Data.top5s,
+						p9Data.top6s,
+						p9Data.top10s,
+						p9Data.top12s,
+						p9Data.top25s
 					].join('\n')
 				);
 			});

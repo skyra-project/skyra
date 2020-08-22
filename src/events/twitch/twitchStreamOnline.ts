@@ -82,7 +82,7 @@ export default class extends Event {
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT:
 					return notification.viewer_count.toString();
 				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
-					return game?.name ?? i18n.get('NOTIFICATIONS_TWITCH_NO_GAME_NAME');
+					return game?.name ?? i18n.get('notificationsTwitchNoGameName');
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE:
 					return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID:
@@ -118,8 +118,8 @@ export default class extends Event {
 			.setThumbnail(data.thumbnail_url)
 			.setTitle(data.title)
 			.setURL(`https://twitch.tv/${data.user_name}`)
-			.setDescription(i18n.get('NOTIFICATIONS_TWITCH_EMBED_DESCRIPTION', { userName: data.user_name, gameName: data.game_name }))
-			.setFooter(i18n.get('NOTIFICATION_TWITCH_EMBED_FOOTER'))
+			.setDescription(i18n.get('notificationsTwitchEmbedDescription', { userName: data.user_name, gameName: data.game_name }))
+			.setFooter(i18n.get('notificationTwitchEmbedFooter'))
 			.setTimestamp(data.started_at)
 			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');

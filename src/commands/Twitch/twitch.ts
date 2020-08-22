@@ -5,8 +5,8 @@ import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get('COMMAND_TWITCH_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_TWITCH_EXTENDED'),
+	description: (language) => language.get('commandTwitchDescription'),
+	extendedHelp: (language) => language.get('commandTwitchExtended'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<name:string>'
@@ -14,26 +14,26 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [name]: [string]) {
 		const { data: channelData } = await this.fetchUsers(message, [name]);
-		if (channelData.length === 0) throw message.language.get('COMMAND_TWITCH_NO_ENTRIES');
+		if (channelData.length === 0) throw message.language.get('commandTwitchNoEntries');
 		const channel = channelData[0];
 
 		const { total: followersTotal } = await this.client.twitch.fetchUserFollowage('', channel.id);
 
-		const titles = message.language.get('COMMAND_TWITCH_TITLES');
+		const titles = message.language.get('commandTwitchTitles');
 
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(this.client.twitch.BRANDING_COLOUR)
 				.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)
-				.setTitle(titles.CLICK_TO_VISIT)
+				.setTitle(titles.clickToVisit)
 				.setURL(`https://twitch.tv/${channel.login}`)
 				.setDescription(channel.description)
 				.setThumbnail(channel.profile_image_url)
-				.addField(titles.FOLLOWERS, message.language.groupDigits(followersTotal), true)
-				.addField(titles.VIEWS, message.language.groupDigits(channel.view_count), true)
+				.addField(titles.followers, message.language.groupDigits(followersTotal), true)
+				.addField(titles.views, message.language.groupDigits(channel.view_count), true)
 				.addField(
-					titles.PARTNER,
-					message.language.get('COMMAND_TWITCH_PARTNERSHIP', {
+					titles.partner,
+					message.language.get('commandTwitchPartnership', {
 						affiliateStatus: this.parseAffiliateProgram(message, channel.broadcaster_type)
 					})
 				)
@@ -41,12 +41,12 @@ export default class extends SkyraCommand {
 	}
 
 	private parseAffiliateProgram(message: KlasaMessage, type: 'affiliate' | 'partner' | '') {
-		const options = message.language.get('COMMAND_TWITCH_AFFILIATE_STATUS');
+		const options = message.language.get('commandTwitchAffiliateStatus');
 		switch (type) {
 			case 'affiliate':
-				return options.AFFILIATED;
+				return options.affiliated;
 			case 'partner':
-				return options.PARTNERED;
+				return options.partnered;
 			case '':
 			default:
 				return false;
@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		try {
 			return await this.client.twitch.fetchUsers([], usernames);
 		} catch {
-			throw message.language.get('COMMAND_TWITCH_NO_ENTRIES');
+			throw message.language.get('commandTwitchNoEntries');
 		}
 	}
 }

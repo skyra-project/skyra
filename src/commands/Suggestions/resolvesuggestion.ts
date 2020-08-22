@@ -19,8 +19,8 @@ const enum SuggestionsColors {
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['resu'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_RESOLVESUGGESTION_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_RESOLVESUGGESTION_EXTENDED'),
+	description: (language) => language.get('commandResolveSuggestionDescription'),
+	extendedHelp: (language) => language.get('commandResolveSuggestionExtended'),
 	flagSupport: true,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS'],
@@ -34,22 +34,22 @@ const enum SuggestionsColors {
 		async (arg, _, message): Promise<SuggestionData> => {
 			// Validate the suggestions channel ID
 			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
-			if (!channelID) throw message.language.get('COMMAND_SUGGEST_NOSETUP', { username: message.author.username });
+			if (!channelID) throw message.language.get('commandSuggestNoSetup', { username: message.author.username });
 
 			// Validate the suggestion number
 			const id = Number(arg);
-			if (!Number.isInteger(id) || id < 1) throw message.language.get('COMMAND_RESOLVESUGGESTION_INVALID_ID');
+			if (!Number.isInteger(id) || id < 1) throw message.language.get('commandResolveSuggestionInvalidId');
 
 			// Retrieve the suggestion data
 			const { suggestions } = await DbSet.connect();
 			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
-			if (!suggestionData) throw message.language.get('COMMAND_RESOLVESUGGESTION_ID_NOT_FOUND');
+			if (!suggestionData) throw message.language.get('commandResolveSuggestionIdNotFound');
 
 			const channel = message.client.channels.get(channelID) as TextChannel;
 			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
 			if (suggestionMessage === null) {
 				await suggestionData.remove();
-				throw message.language.get('COMMAND_RESOLVESUGGESTION_MESSAGE_NOT_FOUND');
+				throw message.language.get('commandResolveSuggestionMessageNotFound');
 			}
 
 			const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
@@ -63,7 +63,7 @@ const enum SuggestionsColors {
 	[
 		'comment',
 		(arg, possible, message) => {
-			if (typeof arg === 'undefined') return message.language.get('COMMAND_RESOLVESUGGESTION_DEFAULT_COMMENT');
+			if (typeof arg === 'undefined') return message.language.get('commandResolveSuggestionDefaultComment');
 			return message.client.arguments.get('...string')!.run(arg, possible, message);
 		}
 	]
@@ -84,24 +84,24 @@ export default class extends SkyraCommand {
 		let messageContent = '';
 
 		const author = await this.getAuthor(message, shouldHideAuthor);
-		const actions = message.language.get('COMMAND_RESOLVESUGGESTION_ACTIONS', { author });
-		const DMActions = message.language.get('COMMAND_RESOLVESUGGESTION_ACTIONS_DMS', { author, guild: message.guild!.name });
+		const actions = message.language.get('commandResolveSuggestionActions', { author });
+		const DMActions = message.language.get('commandResolveSuggestionActionsDms', { author, guild: message.guild!.name });
 
 		switch (action) {
 			case 'a':
 			case 'accept':
-				messageContent = DMActions.ACCEPT;
-				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.ACCEPT, comment);
+				messageContent = DMActions.accept;
+				newEmbed = suggestion.setColor(SuggestionsColors.Accepted).addField(actions.accept, comment);
 				break;
 			case 'c':
 			case 'consider':
-				messageContent = DMActions.CONSIDER;
-				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.CONSIDER, comment);
+				messageContent = DMActions.consider;
+				newEmbed = suggestion.setColor(SuggestionsColors.Considered).addField(actions.consider, comment);
 				break;
 			case 'd':
 			case 'deny':
-				messageContent = DMActions.DENY;
-				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.DENY, comment);
+				messageContent = DMActions.deny;
+				newEmbed = suggestion.setColor(SuggestionsColors.Denied).addField(actions.deny, comment);
 				break;
 		}
 
@@ -109,7 +109,7 @@ export default class extends SkyraCommand {
 			try {
 				await suggestionData.author!.send(messageContent, { embed: newEmbed });
 			} catch {
-				await message.channel.sendLocale('COMMAND_RESOLVESUGGESTION_DM_FAIL');
+				await message.channel.sendLocale('commandResolveSuggestionDmFail');
 			}
 		}
 
@@ -117,7 +117,7 @@ export default class extends SkyraCommand {
 			await suggestionData.message.channel.send(messageContent, { embed: newEmbed });
 		} else if (suggestionData.message.author.id === CLIENT_ID) await suggestionData.message.edit(newEmbed);
 
-		return message.sendLocale('COMMAND_RESOLVESUGGESTION_SUCCESS', [{ id: suggestionData.id, action }]);
+		return message.sendLocale('commandResolveSuggestionSuccess', [{ id: suggestionData.id, action }]);
 	}
 
 	public async inhibit(message: KlasaMessage) {
@@ -126,7 +126,7 @@ export default class extends SkyraCommand {
 
 		const channelID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
 		if (channelID !== null) return false;
-		await message.sendLocale('COMMAND_SUGGEST_NOSETUP', [{ username: message.author.username }]);
+		await message.sendLocale('commandSuggestNoSetup', [{ username: message.author.username }]);
 		return true;
 	}
 
@@ -134,8 +134,8 @@ export default class extends SkyraCommand {
 		if (Reflect.has(message.flagArgs, 'show-author') || Reflect.has(message.flagArgs, 'showAuthor')) return message.author.tag;
 		if (Reflect.has(message.flagArgs, 'hide-author') || Reflect.has(message.flagArgs, 'hideAuthor') || hideAuthor) {
 			return (await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))
-				? message.language.get('COMMAND_RESOLVESUGGESTION_AUTHOR_ADMIN')
-				: message.language.get('COMMAND_RESOLVESUGGESTION_AUTHOR_MODERATOR');
+				? message.language.get('commandResolveSuggestionAuthorAdmin')
+				: message.language.get('commandResolveSuggestionAuthorModerator');
 		}
 		return message.author.tag;
 	}

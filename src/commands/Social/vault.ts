@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['bank'],
-			description: (language) => language.get('COMMAND_VAULT_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_VAULT_EXTENDED'),
+			description: (language) => language.get('commandVaultDescription'),
+			extendedHelp: (language) => language.get('commandVaultExtended'),
 			requiredPermissions: ['EMBED_LINKS'],
 			subcommands: true,
 			usage: '<deposit|withdraw|show:default> (coins:coins)',
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 			}
 			const coins = Number(arg);
 			if (coins && coins >= 0) return this.integerArgument.run(arg, possible, message);
-			throw message.language.get('COMMAND_VAULT_INVALID_COINS');
+			throw message.language.get('commandVaultInvalidCoins');
 		});
 	}
 
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && money < coins) {
-				throw message.language.get('COMMAND_VAULT_NOT_ENOUGH_MONEY', { money });
+				throw message.language.get('commandVaultNotEnoughMoney', { money });
 			}
 
 			const newMoney = money - coins;
@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && vault < coins) {
-				throw message.language.get('COMMAND_VAULT_NOT_ENOUGH_IN_VAULT', { vault });
+				throw message.language.get('commandVaultNotEnoughInVault', { vault });
 			}
 
 			const newMoney = money + coins;
@@ -89,19 +89,19 @@ export default class extends SkyraCommand {
 
 	private async buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
 		const {
-			ACCOUNT_MONEY,
-			ACCOUNT_VAULT,
-			DEPOSITED_DESCRIPTION,
-			WITHDREW_DESCRIPTION,
-			SHOW_DESCRIPTION
-		} = message.language.get('COMMAND_VAULT_EMBED_DATA', { coins });
+			accountMoney,
+			accountVault,
+			depositedDescription,
+			withdrewDescription,
+			showDescription
+		} = message.language.get('commandVaultEmbedData', { coins });
 
-		const description = coins ? (hasDeposited ? DEPOSITED_DESCRIPTION : WITHDREW_DESCRIPTION) : SHOW_DESCRIPTION;
+		const description = coins ? (hasDeposited ? depositedDescription : withdrewDescription) : showDescription;
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setDescription(description)
-			.addField(ACCOUNT_MONEY, money, true)
-			.addField(ACCOUNT_VAULT, vault, true);
+			.addField(accountMoney, money, true)
+			.addField(accountVault, vault, true);
 	}
 }

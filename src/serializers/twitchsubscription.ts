@@ -5,12 +5,12 @@ export default class extends Serializer {
 	public validate(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {
-			return Promise.reject(language.get('SERIALIZER_TWITCH_SUBSCRIPTION_INVALID'));
+			return Promise.reject(language.get('serializerTwitchSubscriptionInvalid'));
 		}
 
 		// Validate that all entries from the second index in the tuple are indeed correct values.
 		if (data[1].some((streamer) => !this.validateStreamer(streamer))) {
-			return Promise.reject(language.get('SERIALIZER_TWITCH_SUBSCRIPTION_INVALID_STREAMER'));
+			return Promise.reject(language.get('serializerTwitchSubscriptionInvalidStreamer'));
 		}
 
 		// Return without further modifications

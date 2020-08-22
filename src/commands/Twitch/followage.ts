@@ -4,8 +4,8 @@ import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get('COMMAND_FOLLOWAGE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_FOLLOWAGE_EXTENDED'),
+	description: (language) => language.get('commandFollowageDescription'),
+	extendedHelp: (language) => language.get('commandFollowageExtended'),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<user:string{1,20}> <channel:string{1,20}>',
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 		const { data } = await this.client.twitch.fetchUserFollowage(user.id, channel.id);
 
 		// If the user doesn't follow then the data length will be 0
-		if (data.length === 0) throw message.language.get('COMMAND_FOLLOWAGE_NOT_FOLLOWING');
+		if (data.length === 0) throw message.language.get('commandFollowageNotFollowing');
 
 		// Otherwise we can parse the data
 		const followingSince = new Date(data[0].followed_at).getTime();
@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(this.client.twitch.BRANDING_COLOUR)
 				.setAuthor(
-					message.language.get('COMMAND_FOLLOWAGE', { user: user.display_name, channel: channel.display_name, time: followingFor }),
+					message.language.get('commandFollowage', { user: user.display_name, channel: channel.display_name, time: followingFor }),
 					channel.profile_image_url
 				)
 				.setTimestamp()
@@ -40,11 +40,11 @@ export default class extends SkyraCommand {
 	private async retrieveResults(message: KlasaMessage, user: string, channel: string) {
 		try {
 			const { data } = await this.client.twitch.fetchUsers([], [user, channel]);
-			if (!data || data.length < 2) throw message.language.get('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
+			if (!data || data.length < 2) throw message.language.get('commandFollowageMissingEntries');
 
 			return data;
 		} catch (err) {
-			throw message.language.get('COMMAND_FOLLOWAGE_MISSING_ENTRIES');
+			throw message.language.get('commandFollowageMissingEntries');
 		}
 	}
 }

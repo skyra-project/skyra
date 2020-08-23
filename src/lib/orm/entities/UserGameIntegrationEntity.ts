@@ -8,7 +8,7 @@ export class UserGameIntegrationEntity<T> extends BaseEntity {
 
 	@ManyToOne(() => UserEntity, { onDelete: 'CASCADE' })
 	@JoinColumn()
-	public user?: UserEntity;
+	public userId?: UserEntity;
 
 	@Column('varchar', { length: 35 })
 	public game!: string;

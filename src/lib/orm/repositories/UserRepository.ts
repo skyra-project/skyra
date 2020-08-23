@@ -12,7 +12,7 @@ import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEnti
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-	public async ensure(id: sring, options?: FindOneOptions<UserEntity>) {
+	public async ensure(id: string, options?: FindOneOptions<UserEntity>) {
 		const previous = await this.findOne(id, options);
 		if (previous) return previous;
 

@@ -22,8 +22,8 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_IGDB_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_IGDB_EXTENDED'),
+	description: (language) => language.get('commandIgdbDescription'),
+	extendedHelp: (language) => language.get('commandIgdbExtended'),
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
@@ -32,11 +32,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = await this.fetchAPI(message, game);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -64,18 +64,18 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(entries: Game[], message: KlasaMessage) {
-		const titles = message.language.get('COMMAND_IGDB_TITLES');
-		const fieldsData = message.language.get('COMMAND_IGDB_DATA');
+		const titles = message.language.get('commandIgdbTitles');
+		const fieldsData = message.language.get('commandIgdbData');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const coverImg = this.resolveCover(game.cover);
-			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.NO_RATING;
+			const userRating = game.rating ? `${roundNumber(game.rating, 2)}%` : fieldsData.noRating;
 
 			display.addPage((embed: MessageEmbed) =>
 				embed
@@ -84,14 +84,14 @@ export default class extends RichDisplayCommand {
 					.setThumbnail(coverImg)
 					.setDescription(
 						[
-							this.resolveSummary(game.summary, fieldsData.NO_SUMMARY),
+							this.resolveSummary(game.summary, fieldsData.noSummary),
 							'',
-							`**${titles.USER_SCORE}**: ${userRating}`,
-							`**${titles.AGE_RATING}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.NO_AGE_RATINGS)}`,
-							`**${titles.RELEASE_DATE}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.NO_RELEASE_DATE)}`,
-							`**${titles.GENRES}**: ${this.resolveGenres(game.genres, fieldsData.NO_GENRES)}`,
-							`**${titles.DEVELOPERS}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.NO_DEVELOPERS)}`,
-							`**${titles.PLATFORMS}**: ${this.resolvePlatforms(game.platforms, fieldsData.NO_PLATFORMS)}`
+							`**${titles.userScore}**: ${userRating}`,
+							`**${titles.ageRating}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.noAgeRatings)}`,
+							`**${titles.releaseDate}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.noReleaseDate)}`,
+							`**${titles.genres}**: ${this.resolveGenres(game.genres, fieldsData.noGenres)}`,
+							`**${titles.developers}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.noDevelopers)}`,
+							`**${titles.platform}**: ${this.resolvePlatforms(game.platforms, fieldsData.noPlatforms)}`
 						].join('\n')
 					)
 			);

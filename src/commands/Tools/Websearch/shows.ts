@@ -13,8 +13,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_SHOWS_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_SHOWS_EXTENDED'),
+	description: (language) => language.get('commandShowsDescription'),
+	extendedHelp: (language) => language.get('commandShowsExtended'),
 	usage: '<show:str> [year:str]',
 	usageDelim: 'y:'
 })
@@ -23,11 +23,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [show, year]: [string, string?]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, show, year);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
@@ -55,13 +55,13 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage) {
-		const titles = message.language.get('COMMAND_SHOWS_TITLES');
-		const fieldsData = message.language.get('COMMAND_SHOWS_DATA');
+		const titles = message.language.get('commandShowsTitles');
+		const fieldsData = message.language.get('commandShowsData');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		const showData = await Promise.all(shows.map((show) => this.fetchShowData(message, show.id)));
@@ -75,16 +75,16 @@ export default class extends RichDisplayCommand {
 					.setThumbnail(`https://image.tmdb.org/t/p/original${show.poster_path}`)
 					.setDescription(cutText(show.overview, 750))
 					.addField(
-						titles.EPISODE_RUNTIME,
+						titles.episodeRuntime,
 						show.episode_run_time.length
 							? `${message.language.duration(show.episode_run_time[0] * 60 * 1000)}`
-							: fieldsData.VARIABLE_RUNTIME,
+							: fieldsData.variableRuntime,
 						true
 					)
-					.addField(titles.USER_SCORE, show.vote_average ? show.vote_average : fieldsData.UNKNOWN_USER_SCORE, true)
-					.addField(titles.STATUS, show.status, true)
-					.addField(titles.FIRST_AIR_DATE, this.releaseDateTimestamp.displayUTC(show.first_air_date), true)
-					.addField(titles.GENRES, show.genres.length ? show.genres.map((genre) => genre.name).join(', ') : fieldsData.NO_GENRES)
+					.addField(titles.userScore, show.vote_average ? show.vote_average : fieldsData.unknownUserScore, true)
+					.addField(titles.status, show.status, true)
+					.addField(titles.firstAirDate, this.releaseDateTimestamp.displayUTC(show.first_air_date), true)
+					.addField(titles.genres, show.genres.length ? show.genres.map((genre) => genre.name).join(', ') : fieldsData.noGenres)
 			);
 		}
 

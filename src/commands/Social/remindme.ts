@@ -29,8 +29,8 @@ const kReminderTaskName = 'reminder';
 	bucket: 2,
 	subcommands: true,
 	cooldown: 30,
-	description: (language) => language.get('COMMAND_REMINDME_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_REMINDME_EXTENDED'),
+	description: (language) => language.get('commandRemindmeDescription'),
+	extendedHelp: (language) => language.get('commandRemindmeExtended'),
 	usage: '<action:action> (value:idOrDuration) (description:description)',
 	usageDelim: ' '
 })
@@ -75,17 +75,17 @@ const kReminderTaskName = 'reminder';
 					return undefined;
 				case Actions.Show:
 				case Actions.Delete: {
-					if (!arg) throw message.language.get('COMMAND_REMINDME_DELETE_NO_ID');
+					if (!arg) throw message.language.get('commandRemindmeDeleteNoId');
 					const id = await message.client.arguments.get('string')!.run(arg, { ...possible, max: 9, min: 9 }, message);
 					for (const task of message.client.schedules.queue) {
 						if (task.id !== id) continue;
 						if (task.taskID !== kReminderTaskName || !task.data || task.data.user !== message.author.id) break;
 						return task;
 					}
-					throw message.language.get('COMMAND_REMINDME_NOTFOUND');
+					throw message.language.get('commandRemindmeNotfound');
 				}
 				case Actions.Create: {
-					if (!arg) throw message.language.get('COMMAND_REMINDME_CREATE_NO_DURATION');
+					if (!arg) throw message.language.get('commandRemindmeCreateNoDuration');
 					return message.client.arguments.get('timespan')!.run(arg, { ...possible, min: Time.Minute }, message);
 				}
 			}
@@ -95,7 +95,7 @@ const kReminderTaskName = 'reminder';
 		'description',
 		(arg, possible, message, [action]: Actions[]) => {
 			if (action !== Actions.Create) return undefined;
-			if (!arg) return message.language.get('COMMAND_REMINDME_CREATE_NO_DESCRIPTION');
+			if (!arg) return message.language.get('commandRemindmeCreateNoDescription');
 			return message.client.arguments.get('...string')!.run(arg, { ...possible, max: 1024 }, message);
 		}
 	]
@@ -112,16 +112,16 @@ export default class extends SkyraCommand {
 			}
 		});
 
-		return message.sendLocale('COMMAND_REMINDME_CREATE', [{ id: task.id.toString() }]);
+		return message.sendLocale('commandRemindmeCreate', [{ id: task.id.toString() }]);
 	}
 
 	@requiresGuildContext((message: KlasaMessage) =>
-		message.sendLocale('RESOLVER_CHANNEL_NOT_IN_GUILD_SUBCOMMAND', [{ command: message.command!.name, subcommand: 'list' }])
+		message.sendLocale('resolverChannelNotInGuildSubcommand', [{ command: message.command!.name, subcommand: 'list' }])
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
-		if (!tasks.length) return message.sendLocale('COMMAND_REMINDME_LIST_EMPTY');
+		if (!tasks.length) return message.sendLocale('commandRemindmeListEmpty');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -136,7 +136,7 @@ export default class extends SkyraCommand {
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: message.language.get('SYSTEM_LOADING'), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: message.language.get('systemLoading'), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;
@@ -152,13 +152,13 @@ export default class extends SkyraCommand {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(task.data.content)
-				.setFooter(message.language.get('COMMAND_REMINDME_SHOW_FOOTER', { id: task.id }))
+				.setFooter(message.language.get('commandRemindmeShowFooter', { id: task.id }))
 				.setTimestamp(task.time)
 		);
 	}
 
 	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
 		await task.delete();
-		return message.sendLocale('COMMAND_REMINDME_DELETE', [{ task }]);
+		return message.sendLocale('commandRemindmeDelete', [{ task }]);
 	}
 }

@@ -11,8 +11,8 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['finalfantasy'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_FFXIV_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_FFXIV_EXTENDED'),
+	description: (language) => language.get('commandFFXIVDescription'),
+	extendedHelp: (language) => language.get('commandFFXIVExtended'),
 	flagSupport: true,
 	subcommands: true,
 	usage: '(item|character:default) <search:...string> ',
@@ -21,7 +21,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async character(message: KlasaMessage, [name]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
@@ -33,7 +33,7 @@ export default class extends RichDisplayCommand {
 
 	public async item(message: KlasaMessage, [item]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const itemDetails = await this.fetchItems(message.language, item);
@@ -47,7 +47,7 @@ export default class extends RichDisplayCommand {
 	private async fetchCharacter(i18n: Language, name: string, server?: string) {
 		const searchResult = await searchCharacter(i18n, name, server);
 
-		if (!searchResult.Results.length) throw i18n.get('COMMAND_FFXIV_NO_CHARACTER_FOUND');
+		if (!searchResult.Results.length) throw i18n.get('commandFFXIVNoCharacterFound');
 
 		return getCharacterDetails(i18n, searchResult.Results[0].ID);
 	}
@@ -55,7 +55,7 @@ export default class extends RichDisplayCommand {
 	private async fetchItems(i18n: Language, item: string) {
 		const searchResult = await searchItem(i18n, item);
 
-		if (!searchResult.Results.length) throw i18n.get('COMMAND_FFXIV_NO_ITEM_FOUND');
+		if (!searchResult.Results.length) throw i18n.get('commandFFXIVNoItemFound');
 
 		return searchResult.Results;
 	}
@@ -71,7 +71,7 @@ export default class extends RichDisplayCommand {
 			tankClassValues
 		} = this.parseCharacterClasses(character.ClassJobs);
 
-		const TITLES = message.language.get('COMMAND_FFXIV_CHARACTER_FIELDS');
+		const titles = message.language.get('commandFFXIVCharacterFields');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -81,14 +81,14 @@ export default class extends RichDisplayCommand {
 			embed
 				.setThumbnail(character.Avatar)
 				.setImage(character.Portrait)
-				.addField(TITLES.SERVER_AND_DC, [character.Server, character.DC].join(' - '), true)
-				.addField(TITLES.TRIBE, character.Tribe.Name, true)
-				.addField(TITLES.CHARACTER_GENDER, character.GenderID === 1 ? `${TITLES.MALE}` : `${TITLES.FEMALE}`, true)
-				.addField(TITLES.NAMEDAY, character.Nameday, true)
-				.addField(TITLES.GUARDIAN, character.GuardianDeity.Name, true)
-				.addField(TITLES.CITY_STATE, character.Town.Name, true)
-				.addField(TITLES.GRAND_COMPANY, character.GrandCompany.Company?.Name || TITLES.NONE, true)
-				.addField(TITLES.RANK, character.GrandCompany.Rank?.Name || TITLES.NONE, true)
+				.addField(titles.serverAndDc, [character.Server, character.DC].join(' - '), true)
+				.addField(titles.tribe, character.Tribe.Name, true)
+				.addField(titles.characterGender, character.GenderID === 1 ? `${titles.male}` : `${titles.female}`, true)
+				.addField(titles.nameday, character.Nameday, true)
+				.addField(titles.guardian, character.GuardianDeity.Name, true)
+				.addField(titles.cityState, character.Town.Name, true)
+				.addField(titles.grandCompany, character.GrandCompany.Company?.Name || titles.none, true)
+				.addField(titles.rank, character.GrandCompany.Rank?.Name || titles.none, true)
 				.addBlankField(true)
 		);
 
@@ -100,15 +100,15 @@ export default class extends RichDisplayCommand {
 			magRangedDPSClassValues.length
 		) {
 			display.addPage((embed: MessageEmbed) => {
-				embed.setTitle(TITLES.DOW_DOM_CLASSES);
+				embed.setTitle(titles.dowDomClasses);
 
-				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${TITLES.TANK}`, tankClassValues.join('\n'), true);
-				if (healerClassValues.length) embed.addField(`${SubCategoryEmotes.Healer} ${TITLES.HEALER}`, healerClassValues.join('\n'), true);
-				if (meleeDPSClassValues.length) embed.addField(`${SubCategoryEmotes.Melee} ${TITLES.MELEEDPS}`, meleeDPSClassValues.join('\n'), true);
+				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${titles.tank}`, tankClassValues.join('\n'), true);
+				if (healerClassValues.length) embed.addField(`${SubCategoryEmotes.Healer} ${titles.healer}`, healerClassValues.join('\n'), true);
+				if (meleeDPSClassValues.length) embed.addField(`${SubCategoryEmotes.Melee} ${titles.meleeDps}`, meleeDPSClassValues.join('\n'), true);
 				if (phRangedDPSClassValues.length)
-					embed.addField(`${SubCategoryEmotes.phRange} ${TITLES.PHYSICALRANGEDDPS}`, phRangedDPSClassValues.join('\n'), true);
+					embed.addField(`${SubCategoryEmotes.phRange} ${titles.physicalRangedDps}`, phRangedDPSClassValues.join('\n'), true);
 				if (magRangedDPSClassValues.length)
-					embed.addField(`${SubCategoryEmotes.magRange} ${TITLES.MAGICALRANGEDDPS}`, magRangedDPSClassValues.join('\n'), true);
+					embed.addField(`${SubCategoryEmotes.magRange} ${titles.magicalRangedDps}`, magRangedDPSClassValues.join('\n'), true);
 				return embed;
 			});
 		}
@@ -116,7 +116,7 @@ export default class extends RichDisplayCommand {
 		if (discipleOfTheHandJobs.length) {
 			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheHandJobs;
-				embed.setTitle(TITLES.DOH_CLASSES).addBlankField(true);
+				embed.setTitle(titles.dohClasses).addBlankField(true);
 				return embed;
 			});
 		}
@@ -124,7 +124,7 @@ export default class extends RichDisplayCommand {
 		if (discipleOfTheLandJobs.length) {
 			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheLandJobs;
-				embed.setTitle(TITLES.DOL_CLASSES);
+				embed.setTitle(titles.dolClasses);
 				return embed;
 			});
 		}
@@ -133,7 +133,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
-		const TITLES = message.language.get('COMMAND_FFXIV_ITEM_FIELDS');
+		const titles = message.language.get('commandFFXIVItemFields');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
@@ -142,9 +142,9 @@ export default class extends RichDisplayCommand {
 					.setDescription(item.Description.split('\n')[0])
 					.setAuthor(item.Name, `${FFXIV_BASE_URL}${item.Icon}`)
 					.setThumbnail(`${FFXIV_BASE_URL}${item.Icon}`)
-					.addField(TITLES.KIND, item.ItemKind.Name, true)
-					.addField(TITLES.CATEGORY, item.ItemSearchCategory.Name || TITLES.NONE, true)
-					.addField(TITLES.LEVEL_EQUIP, item.LevelEquip, true)
+					.addField(titles.kind, item.ItemKind.Name, true)
+					.addField(titles.category, item.ItemSearchCategory.Name || titles.none, true)
+					.addField(titles.levelEquip, item.LevelEquip, true)
 			);
 		}
 

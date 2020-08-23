@@ -13,8 +13,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['redditor'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_REDDITUSER_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_REDDITUSER_EXTENDED'),
+	description: (language) => language.get('commandRedditUserDescription'),
+	extendedHelp: (language) => language.get('commandRedditUserExtended'),
 	usage: '<user:user>'
 })
 export default class extends RichDisplayCommand {
@@ -23,7 +23,7 @@ export default class extends RichDisplayCommand {
 
 	public async init() {
 		this.createCustomResolver('user', (arg, _possible, message) => {
-			if (!this.usernameRegex.test(arg)) throw message.language.get('COMMAND_REDDITUSER_INVALID_USER', { user: arg });
+			if (!this.usernameRegex.test(arg)) throw message.language.get('commandRedditUserInvalidUser', { user: arg });
 			arg = arg.replace(/^\/?u\//, '');
 			return arg;
 		});
@@ -31,11 +31,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [user]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const [about, comments, posts] = await this.fetchData(user, message);
-		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
+		if (!about || !comments || !posts || !comments.length || !posts.length) throw message.language.get('commandRedditUserQueryFailed');
 		comments.sort((a, b) => b.score - a.score);
 
 		const display = await this.buildDisplay(message, about, comments, posts);
@@ -49,66 +49,66 @@ export default class extends RichDisplayCommand {
 		comments: Reddit.CommentDataElement[],
 		posts: Reddit.PostDataElement[]
 	) {
-		const titles = message.language.get('COMMAND_REDDITUSER_TITLES');
-		const fieldsData = message.language.get('COMMAND_REDDITUSER_DATA', {
+		const titles = message.language.get('commandRedditUserTitles');
+		const fieldsData = message.language.get('commandRedditUserData', {
 			user: about.name,
 			timestamp: this.joinedRedditTimestamp.displayUTC(about.created * 1000)
 		});
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
-		const complexityLevels = message.language.get('COMMAND_REDDITUSER_COMPLEXITY_LEVELS');
+		const complexityLevels = message.language.get('commandRedditUserComplexityLevels');
 
 		return new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(fieldsData.OVERVIEW_FOR)
+				.setTitle(fieldsData.overviewFor)
 				.setURL(`https://www.reddit.com${about.subreddit.url}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(about.icon_img)
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.setDescription(fieldsData.JOINED_REDDIT)
-					.addField(titles.LINK_KARMA, about.link_karma, true)
-					.addField(titles.COMMENT_KARMA, about.comment_karma, true)
-					.addField(titles.TOTAL_COMMENTS, comments.length, true)
-					.addField(titles.TOTAL_SUBMISSIONS, posts.length, true)
-					.addField(titles.COMMENT_CONTROVERSIALITY, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
-					.addField(titles.TEXT_COMPLEXITY, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
+					.setDescription(fieldsData.joinedReddit)
+					.addField(titles.linkKarma, about.link_karma, true)
+					.addField(titles.commentKarma, about.comment_karma, true)
+					.addField(titles.totalComments, comments.length, true)
+					.addField(titles.totalSubmissions, posts.length, true)
+					.addField(titles.commentControversiality, `${roundNumber(this.calculateControversiality(comments), 1)}%`, true)
+					.addField(titles.textComplexity, `${complexityLevels[Math.floor(complexity / 20)]} (${roundNumber(complexity, 1)}%)`, true)
 			)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_SUBMISSIONS})`, this.calculateTopContribution(posts), true)
-					.addField(`${titles.TOP_5_SUBREDDITS} (${titles.BY_COMMENTS})`, this.calculateTopContribution(comments), true)
+					.addField(`${titles.top5Subreddits} (${titles.bySubmissions})`, this.calculateTopContribution(posts), true)
+					.addField(`${titles.top5Subreddits} (${titles.byComments})`, this.calculateTopContribution(comments), true)
 			)
 			.addPage((embed: MessageEmbed) =>
 				embed
 					.addField(
-						`__${titles.BEST_COMMENT}__`,
+						`__${titles.bestComment}__`,
 						cutText(
 							[
 								`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
 								`${message.language.duration(Date.now() - bestComment.created * 1000, 3)} ago`,
-								`[${fieldsData.PERMALINK}](https://reddit.com${bestComment.permalink})`,
+								`[${fieldsData.permalink}](https://reddit.com${bestComment.permalink})`,
 								decode(bestComment.body)
 							].join('\n'),
 							1020
 						)
 					)
 					.addField(
-						`__${titles.WORST_COMMENT}__`,
+						`__${titles.worstComment}__`,
 						cutText(
 							[
 								`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
 								`${message.language.duration(Date.now() - worstComment.created * 1000, 3)} ago`,
-								`[${fieldsData.PERMALINK}](https://reddit.com${worstComment.permalink})`,
+								`[${fieldsData.permalink}](https://reddit.com${worstComment.permalink})`,
 								decode(worstComment.body)
 							].join('\n'),
 							1020
 						)
 					)
 			)
-			.setFooterSuffix(` • ${fieldsData.DATA_AVAILABLE_FOR}`);
+			.setFooterSuffix(` • ${fieldsData.dataAvailableFor}`);
 	}
 
 	private async fetchData(user: string, message: KlasaMessage) {
@@ -117,7 +117,7 @@ export default class extends RichDisplayCommand {
 
 	private async fetchAbout(user: string, message: KlasaMessage) {
 		const { data } = await fetch<Reddit.Response<'about'>>(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
+			throw message.language.get('commandRedditUserQueryFailed');
 		});
 		return data;
 	}
@@ -136,7 +136,7 @@ export default class extends RichDisplayCommand {
 		url.searchParams.append('limit', '100');
 
 		const { data } = await fetch<Reddit.Response<'comments'>>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
+			throw message.language.get('commandRedditUserQueryFailed');
 		});
 
 		for (const child of data.children) {
@@ -162,7 +162,7 @@ export default class extends RichDisplayCommand {
 		url.searchParams.append('limit', '100');
 
 		const { data } = await fetch<Reddit.Response<'posts'>>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get('COMMAND_REDDITUSER_QUERY_FAILED');
+			throw message.language.get('commandRedditUserQueryFailed');
 		});
 
 		for (const child of data.children) {

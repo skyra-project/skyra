@@ -7,8 +7,8 @@ import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['k'],
-	description: (language) => language.get('COMMAND_KICK_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_KICK_EXTENDED'),
+	description: (language) => language.get('commandKickDescription'),
+	extendedHelp: (language) => language.get('commandKickExtended'),
 	requiredGuildPermissions: ['KICK_MEMBERS'],
 	requiredMember: true
 })
@@ -35,7 +35,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.kickable) throw message.language.get('COMMAND_KICK_NOT_KICKABLE');
+		if (member && !member.kickable) throw message.language.get('commandKickNotKickable');
 		return member;
 	}
 }

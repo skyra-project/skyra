@@ -10,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pokeitem', 'bag'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_ITEM_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_ITEM_EXTENDED'),
+	description: (language) => language.get('commandItemDescription'),
+	extendedHelp: (language) => language.get('commandItemExtended'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<item:str>'
 })
@@ -19,17 +19,17 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
 		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-		const embedTranslations = message.language.get('COMMAND_ITEM_EMEBED_DATA', { availableInGen8: itemDetails.isNonstandard !== 'Past' });
+		const embedTranslations = message.language.get('commandItemEmebedData', { availableInGen8: itemDetails.isNonstandard !== 'Past' });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)
 				.setThumbnail(itemDetails.sprite)
 				.setDescription(itemDetails.desc)
-				.addField(embedTranslations.GENERATION_INTRODUCED, itemDetails.generationIntroduced, true)
-				.addField(embedTranslations.AVAILABLE_IN_GENERATION_8_TITLE, embedTranslations.AVAILABLE_IN_GENERATION_8_DATA, true)
+				.addField(embedTranslations.generationIntroduced, itemDetails.generationIntroduced, true)
+				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
 				.addField(
-					message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE'),
+					message.language.get('systemPokedexExternalResource'),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 						`[Serebii](${itemDetails.serebiiPage})`,
@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw message.language.get('COMMAND_ITEM_QUERY_FAIL', { item });
+			throw message.language.get('commandItemQueryFail', { item });
 		}
 	}
 }

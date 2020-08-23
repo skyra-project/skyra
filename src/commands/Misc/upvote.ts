@@ -5,12 +5,12 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['updoot'],
-			description: (language) => language.get('COMMAND_UPVOTE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_UPVOTE_EXTENDED')
+			description: (language) => language.get('commandUpvoteDescription'),
+			extendedHelp: (language) => language.get('commandUpvoteExtended')
 		});
 	}
 
 	public run(message: KlasaMessage) {
-		return message.sendLocale('COMMAND_UPVOTE_MESSAGE');
+		return message.sendLocale('commandUpvoteMessage');
 	}
 }

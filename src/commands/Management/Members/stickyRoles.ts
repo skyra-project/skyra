@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_STICKYROLES_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_STICKYROLES_EXTENDED'),
+	description: (language) => language.get('commandStickyRolesDescription'),
+	extendedHelp: (language) => language.get('commandStickyRolesExtended'),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	runIn: ['text'],
@@ -20,7 +20,7 @@ import { KlasaMessage } from 'klasa';
 	[
 		'username',
 		(arg, possible, msg) => {
-			if (!arg) throw msg.language.get('COMMAND_STICKYROLES_REQUIRED_USER');
+			if (!arg) throw msg.language.get('commandStickyRolesRequiredUser');
 			return msg.client.arguments.get('username')!.run(arg, possible, msg);
 		}
 	],
@@ -28,7 +28,7 @@ import { KlasaMessage } from 'klasa';
 		'rolename',
 		(arg, possible, msg, [action]) => {
 			if (action === 'reset' || action === 'show') return undefined;
-			if (!arg) throw msg.language.get('COMMAND_STICKYROLES_REQUIRED_ROLE');
+			if (!arg) throw msg.language.get('commandStickyRolesRequiredRole');
 			return msg.client.arguments.get('rolename')!.run(arg, possible, msg);
 		}
 	]
@@ -36,31 +36,31 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async reset(message: KlasaMessage, [user]: [User]) {
 		const roles = message.guild!.stickyRoles.get(user.id);
-		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', { user: user.username });
+		if (!roles.length) throw message.language.get('commandStickyRolesNotExists', { user: user.username });
 
 		await message.guild!.stickyRoles.clear(user.id, { author: message.author.id });
-		return message.sendLocale('COMMAND_STICKYROLES_RESET', [{ user: user.username }]);
+		return message.sendLocale('commandStickyRolesReset', [{ user: user.username }]);
 	}
 
 	public async remove(message: KlasaMessage, [user, role]: [User, Role]) {
 		const roles = await message.guild!.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_NOTEXISTS', { user: user.username });
+		if (!roles.length) throw message.language.get('commandStickyRolesNotExists', { user: user.username });
 
 		await message.guild!.stickyRoles.remove(user.id, role.id, { author: message.author.id });
-		return message.sendLocale('COMMAND_STICKYROLES_REMOVE', [{ user: user.username }]);
+		return message.sendLocale('commandStickyRolesRemove', [{ user: user.username }]);
 	}
 
 	public async add(message: KlasaMessage, [user, role]: [User, Role]) {
 		await message.guild!.stickyRoles.add(user.id, role.id, { author: message.author.id });
-		return message.sendLocale('COMMAND_STICKYROLES_ADD', [{ user: user.username }]);
+		return message.sendLocale('commandStickyRolesAdd', [{ user: user.username }]);
 	}
 
 	public async show(message: KlasaMessage, [user]: [User]) {
 		const roles = await message.guild!.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.language.get('COMMAND_STICKYROLES_SHOW_EMPTY');
+		if (!roles.length) throw message.language.get('commandStickyRolesShowEmpty');
 
 		const guildRoles = message.guild!.roles;
 		const names = roles.map((role) => guildRoles.get(role)!.name);
-		return message.sendLocale('COMMAND_STICKYROLES_SHOW_SINGLE', [{ user: user.username, roles: names }]);
+		return message.sendLocale('commandStickyRolesShowSingle', [{ user: user.username, roles: names }]);
 	}
 }

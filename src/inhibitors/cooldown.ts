@@ -20,7 +20,7 @@ export default class extends Inhibitor {
 			return;
 		}
 
-		if (existing && existing.limited) throw message.language.get('INHIBITOR_COOLDOWN', { remaining: existing.remainingTime });
+		if (existing && existing.limited) throw message.language.get('inhibitorCooldown', { remaining: existing.remainingTime });
 	}
 }
 

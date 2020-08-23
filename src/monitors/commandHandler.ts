@@ -29,7 +29,7 @@ export default class extends Monitor {
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(5))) return;
 		}
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
-		return message.sendLocale('PREFIX_REMINDER', [{ prefix: prefix.length ? prefix : PREFIX }]);
+		return message.sendLocale('prefixReminder', [{ prefix: prefix.length ? prefix : PREFIX }]);
 	}
 
 	public async runCommand(message: KlasaMessage) {

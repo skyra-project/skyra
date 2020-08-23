@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['b'],
-	description: (language) => language.get('COMMAND_BAN_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_BAN_EXTENDED'),
+	description: (language) => language.get('commandBanDescription'),
+	extendedHelp: (language) => language.get('commandBanExtended'),
 	optionalDuration: true,
 	requiredMember: false,
 	requiredGuildPermissions: ['BAN_MEMBERS']
@@ -39,12 +39,12 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.bannable) throw message.language.get('COMMAND_BAN_NOT_BANNABLE');
+		if (member && !member.bannable) throw message.language.get('commandBanNotBannable');
 		return member;
 	}
 
 	private getDays(message: KlasaMessage) {
-		const regex = message.language.get('COMMAND_MODERATION_DAYS');
+		const regex = message.language.get('commandModerationDays');
 		for (const [key, value] of Object.entries(message.flagArgs)) {
 			if (regex.test(key)) {
 				const parsed = Number(value);

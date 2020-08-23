@@ -30,7 +30,7 @@ describe('LanguageHelp builder', () => {
 			multiline: true
 		});
 
-		const EXPECTED_OUTPUT = `Add songs to the playing queue and prepare for musical enjoyment!
+		const expectedOutput = `Add songs to the playing queue and prepare for musical enjoyment!
 I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.
 - To play from YouTube either give me something to search, a video link, or a playlist link.
 - To play from SoundCloud give me a SoundCloud link, or if you want me to search include either \`--sc\` or \`--soundcloud\` in your message.
@@ -50,7 +50,7 @@ I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.
 → Skyra, add *https://thedisappointed.bandcamp.com/album/escapism-2*
 `;
 
-		expect(commandHelp).toBe(EXPECTED_OUTPUT);
+		expect(commandHelp).toBe(expectedOutput);
 	});
 
 	test('GIVEN extended help w/ possible formats & w/ mutliline string & w/ reminder THEN parses correctly', () => {
@@ -68,7 +68,7 @@ I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.
 			examples: ['']
 		});
 
-		const EXPECTED_OUTPUT = `This is line 1 This is line 2 This is line 3
+		const expectedOutput = `This is line 1 This is line 2 This is line 3
 
 🔢 | ***Possible formats***
 → **Jest**: The good stuff
@@ -82,7 +82,7 @@ I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.
 ⏰ | ***Reminder***
 Ava is trash`;
 
-		expect(commandHelp).toBe(EXPECTED_OUTPUT);
+		expect(commandHelp).toBe(expectedOutput);
 	});
 
 	test('GIVEN extended help w/o extendedHelp THEN parses correctly', () => {
@@ -91,14 +91,14 @@ Ava is trash`;
 			multiline: true
 		});
 
-		const EXPECTED_OUTPUT = `🔗 | ***Examples***
+		const expectedOutput = `🔗 | ***Examples***
 → Skyra, sample
 
 ⏰ | ***Reminder***
 This goes to 9000
 Actually 9001`;
 
-		expect(commandHelp).toBe(EXPECTED_OUTPUT);
+		expect(commandHelp).toBe(expectedOutput);
 	});
 
 	test('GIVEN extended w/ array value w/o multiline THEN parses correctly', () => {
@@ -106,12 +106,12 @@ Actually 9001`;
 			reminder: ['This goes to 9000', 'Actually 9001']
 		});
 
-		const EXPECTED_OUTPUT = `🔗 | ***Examples***
+		const expectedOutput = `🔗 | ***Examples***
 → Skyra, sample
 
 ⏰ | ***Reminder***
 This goes to 9000 Actually 9001`;
 
-		expect(commandHelp).toBe(EXPECTED_OUTPUT);
+		expect(commandHelp).toBe(expectedOutput);
 	});
 });

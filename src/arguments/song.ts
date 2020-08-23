@@ -6,12 +6,12 @@ export default class extends Argument {
 	public async run(arg: string, _: Possible, message: KlasaMessage) {
 		if (!arg) {
 			if (message.guild && message.guild.music.queue.length) return null;
-			throw message.language.get('MUSICMANAGER_FETCH_NO_ARGUMENTS');
+			throw message.language.get('musicManagerFetchNoArguments');
 		}
 		if (!message.guild) return null;
 
 		const remainingUserEntries = this.getRemainingUserEntries(message);
-		if (remainingUserEntries === 0) throw message.language.get('MUSICMANAGER_TOO_MANY_SONGS');
+		if (remainingUserEntries === 0) throw message.language.get('musicManagerTooManySongs');
 
 		arg = arg.replace(/^<(.+)>$/g, '$1');
 		const parsedURL = this.parseURL(arg);
@@ -31,7 +31,7 @@ export default class extends Argument {
 		}
 		if (!tracks.length) {
 			if (soundcloud) tracks.push(...(await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`)));
-			if (!tracks.length) throw message.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
+			if (!tracks.length) throw message.language.get('musicManagerFetchNoMatches');
 		}
 		return returnAll ? tracks : [tracks[0]];
 	}

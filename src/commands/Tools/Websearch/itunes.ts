@@ -9,8 +9,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_ITUNES_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_ITUNES_EXTENDED'),
+	description: (language) => language.get('commandItunesDescription'),
+	extendedHelp: (language) => language.get('commandItunesExtended'),
 	usage: '<song:str>'
 })
 export default class extends RichDisplayCommand {
@@ -18,11 +18,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [song]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, song);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -42,12 +42,12 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<AppleItunesResult>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(entries: ItunesData[], message: KlasaMessage) {
-		const titles = message.language.get('COMMAND_ITUNES_TITLES');
+		const titles = message.language.get('commandItunesTitles');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {
@@ -56,14 +56,14 @@ export default class extends RichDisplayCommand {
 					.setThumbnail(song.artworkUrl100)
 					.setTitle(song.trackName)
 					.setURL(song.trackViewUrl)
-					.addField(titles.ARTIST, `[${song.artistName}](${song.artistViewUrl})`, true)
-					.addField(titles.COLLECTION, `[${song.collectionName}](${song.collectionViewUrl})`, true)
-					.addField(titles.COLLECTION_PRICE, `$${song.collectionPrice}`, true)
-					.addField(titles.TRACK_PRICE, `$${song.trackPrice}`, true)
-					.addField(titles.TRACK_RELEASE_DATE, this.releaseDateTimestamp.displayUTC(song.releaseDate), true)
-					.addField(titles.NUMBER_OF_TRACKS_IN_COLLECTION, song.trackCount, true)
-					.addField(titles.PRIMARY_GENRE, song.primaryGenreName, true)
-					.addField(titles.PREVIEW, `[${titles.PREVIEW_LABEL}](${song.previewUrl})`, true)
+					.addField(titles.artist, `[${song.artistName}](${song.artistViewUrl})`, true)
+					.addField(titles.collection, `[${song.collectionName}](${song.collectionViewUrl})`, true)
+					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
+					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
+					.addField(titles.trackReleaseDate, this.releaseDateTimestamp.displayUTC(song.releaseDate), true)
+					.addField(titles.numberOfTracksInCollection, song.trackCount, true)
+					.addField(titles.primaryGenre, song.primaryGenreName, true)
+					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)
 			);
 		}
 

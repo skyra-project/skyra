@@ -6,7 +6,7 @@ export default class extends Serializer {
 	public validate(data: RolesAuto, { language }: SerializerUpdateContext) {
 		if (isObject(data) && Object.keys(data).length === 2 && typeof data.id === 'string' && typeof data.points === 'number') return data;
 
-		throw language.get('SERIALIZER_AUTOROLE_INVALID');
+		throw language.get('serializerAutoRoleInvalid');
 	}
 
 	public stringify(value: RolesAuto) {

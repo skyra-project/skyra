@@ -11,12 +11,12 @@ export default class extends Event {
 			const { language } = channel.guild;
 			const response =
 				next > 200
-					? language.get('COMMAND_VOLUME_CHANGED_EXTREME', {
+					? language.get('commandVolumeChangedExtreme', {
 							emoji: '📢',
-							text: language.get('COMMAND_VOLUME_CHANGED_TEXTS'),
+							text: language.get('commandVolumeChangedTexts'),
 							volume: next
 					  })
-					: language.get('COMMAND_VOLUME_CHANGED', {
+					: language.get('commandVolumeChanged', {
 							emoji: next > previous ? (next === 200 ? '📢' : '🔊') : next === 0 ? '🔇' : '🔉',
 							volume: next
 					  });

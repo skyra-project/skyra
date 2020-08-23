@@ -15,8 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['capitals-mode', 'caps-mode'],
-			description: (language) => language.get('COMMAND_CAPITALSMODE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_CAPITALSMODE_EXTENDED')
+			description: (language) => language.get('commandCapitalsModeDescription'),
+			extendedHelp: (language) => language.get('commandCapitalsModeExtended')
 		});
 	}
 }

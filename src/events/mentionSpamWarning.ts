@@ -3,6 +3,6 @@ import { Event, KlasaMessage } from 'klasa';
 
 export default class extends Event {
 	public async run(message: KlasaMessage) {
-		await message.alert(message.language.get('MONITOR_NMS_ALERT'));
+		await message.alert(message.language.get('monitorNmsAlert'));
 	}
 }

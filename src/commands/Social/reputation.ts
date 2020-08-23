@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_REPUTATION_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_REPUTATION_EXTENDED'),
+			description: (language) => language.get('commandReputationDescription'),
+			extendedHelp: (language) => language.get('commandReputationExtended'),
 			runIn: ['text'],
 			spam: true,
 			usage: '[check] (user:username)',
@@ -34,23 +34,23 @@ export default class extends SkyraCommand {
 		const extSettings = user ? await users.ensureProfile(user.id) : null;
 
 		if (check) {
-			if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
+			if (user.bot) throw message.language.get('commandReputationBots');
 			return message.sendMessage(
 				message.author === user
-					? message.language.get('COMMAND_REPUTATIONS_SELF', { points: selfSettings.reputations })
-					: message.language.get('COMMAND_REPUTATIONS', { user: user.username, points: extSettings!.reputations })
+					? message.language.get('commandReputationsSelf', { points: selfSettings.reputations })
+					: message.language.get('commandReputations', { user: user.username, points: extSettings!.reputations })
 			);
 		}
 
 		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
 
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.sendLocale('COMMAND_REPUTATION_TIME', [{ remaining: timeReputation + Time.Day - now }]);
+			return message.sendLocale('commandReputationTime', [{ remaining: timeReputation + Time.Day - now }]);
 		}
 
-		if (!user) return message.sendLocale('COMMAND_REPUTATION_USABLE');
-		if (user.bot) throw message.language.get('COMMAND_REPUTATION_BOTS');
-		if (user === message.author) throw message.language.get('COMMAND_REPUTATION_SELF');
+		if (!user) return message.sendLocale('commandReputationUsable');
+		if (user.bot) throw message.language.get('commandReputationBots');
+		if (user === message.author) throw message.language.get('commandReputationSelf');
 
 		await getManager().transaction(async (em) => {
 			++extSettings!.reputations;
@@ -58,6 +58,6 @@ export default class extends SkyraCommand {
 			await em.save([extSettings, selfSettings]);
 		});
 
-		return message.sendLocale('COMMAND_REPUTATION_GIVE', [{ user: user.toString() }]);
+		return message.sendLocale('commandReputationGive', [{ user: user.toString() }]);
 	}
 }

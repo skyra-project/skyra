@@ -13,8 +13,8 @@ const REG_TYPE = /^(alias|reaction)$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('COMMAND_TRIGGERS_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_TRIGGERS_EXTENDED'),
+	description: (language) => language.get('commandTriggersDescription'),
+	extendedHelp: (language) => language.get('commandTriggersExtended'),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -26,30 +26,30 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('type', (arg, _, msg, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
-			throw msg.language.get('COMMAND_TRIGGERS_NOTYPE');
+			throw msg.language.get('commandTriggersNotype');
 		})
 			.createCustomResolver('input', (arg, _, msg, [action]) => {
 				if (action === 'show') return undefined;
-				if (!arg) throw msg.language.get('COMMAND_TRIGGERS_NOOUTPUT');
+				if (!arg) throw msg.language.get('commandTriggersNooutput');
 				return arg.toLowerCase();
 			})
 			.createCustomResolver('output', async (arg, _, message, [action, type]) => {
 				if (action === 'show' || action === 'remove') return undefined;
-				if (!arg) throw message.language.get('COMMAND_TRIGGERS_NOOUTPUT');
+				if (!arg) throw message.language.get('commandTriggersNooutput');
 				if (type === 'reaction') {
 					const emoji = resolveEmoji(arg);
-					if (!emoji) throw message.language.get('COMMAND_TRIGGERS_INVALIDREACTION');
+					if (!emoji) throw message.language.get('commandTriggersInvalidreaction');
 
 					try {
 						await message.react(emoji);
 						return emoji;
 					} catch {
-						throw message.language.get('COMMAND_TRIGGERS_INVALIDREACTION');
+						throw message.language.get('commandTriggersInvalidreaction');
 					}
 				} else if (type === 'alias') {
 					const command = this.client.commands.get(arg);
 					if (command && command.permissionLevel < 10) return arg;
-					throw message.language.get('COMMAND_TRIGGERS_INVALIDALIAS');
+					throw message.language.get('commandTriggersInvalidalias');
 				} else {
 					return null;
 				}
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [type, input]: [string, string]) {
 		const list = this._getList(message, type);
 		const index = list.findIndex((entry) => entry.input === input);
-		if (index === -1) throw message.language.get('COMMAND_TRIGGERS_REMOVE_NOTTAKEN');
+		if (index === -1) throw message.language.get('commandTriggersRemoveNottaken');
 
 		// Create a shallow clone and remove the item
 		const clone = [...list];
@@ -69,18 +69,18 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_TRIGGERS_REMOVE');
+		return message.sendLocale('commandTriggersRemove');
 	}
 
 	public async add(message: KlasaMessage, [type, input, output]: [string, string, string]) {
 		const list = this._getList(message, type);
-		if (list.some((entry) => entry.input === input)) throw message.language.get('COMMAND_TRIGGERS_ADD_TAKEN');
+		if (list.some((entry) => entry.input === input)) throw message.language.get('commandTriggersAddTaken');
 
 		await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_TRIGGERS_ADD');
+		return message.sendLocale('commandTriggersAdd');
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 		for (const react of includes) {
 			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
 		}
-		if (!output.length) throw message.language.get('COMMAND_TRIGGERS_LIST_EMPTY');
+		if (!output.length) throw message.language.get('commandTriggersListEmpty');
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()

@@ -5,7 +5,7 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['replay'],
-	description: (language) => language.get('COMMAND_REPEAT_DESCRIPTION')
+	description: (language) => language.get('commandRepeatDescription')
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

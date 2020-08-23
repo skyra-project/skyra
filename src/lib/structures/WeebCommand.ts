@@ -62,7 +62,7 @@ export abstract class WeebCommand extends SkyraCommand {
 					.setURL(url)
 					.setColor(await DbSet.fetchColor(message))
 					.setImage(url)
-					.setFooter(message.language.get('POWEREDBY_WEEBSH'))
+					.setFooter(message.language.get('systemPoweredByWeebsh'))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}

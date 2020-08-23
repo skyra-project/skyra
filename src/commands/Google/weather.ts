@@ -23,8 +23,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 120,
-			description: (language) => language.get('COMMAND_WEATHER_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WEATHER_EXTENDED'),
+			description: (language) => language.get('commandWeatherDescription'),
+			extendedHelp: (language) => language.get('commandWeatherExtended'),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<city:string>'
 		});

@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_MANAGECOMMANDCHANNEL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MANAGECOMMANDCHANNEL_EXTENDED'),
+			description: (language) => language.get('commandManageCommandChannelDescription'),
+			extendedHelp: (language) => language.get('commandManageCommandChannelExtended'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -22,14 +22,14 @@ export default class extends SkyraCommand {
 			if (!arg) return msg.channel;
 			const channel = await this.client.arguments.get('channelname')!.run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
-			throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_TEXTCHANNEL');
+			throw msg.language.get('commandManageCommandChannelTextChannel');
 		}).createCustomResolver('command', async (arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (arg) {
 				const command = await this.client.arguments.get('command')!.run(arg, possible, msg);
 				if (!command.disabled && command.permissionLevel < 9) return command;
 			}
-			throw msg.language.get('COMMAND_MANAGECOMMANDCHANNEL_REQUIRED_COMMAND');
+			throw msg.language.get('commandManageCommandChannelRequiredCommand');
 		});
 	}
 
@@ -37,11 +37,11 @@ export default class extends SkyraCommand {
 		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
 		if (entry && entry.commands.length) {
-			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_SHOW', [
+			return message.sendLocale('commandManageCommandChannelShow', [
 				{ channel: channel.toString(), commands: `\`${entry.commands.join('` | `')}\`` }
 			]);
 		}
-		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_SHOW_EMPTY');
+		throw message.language.get('commandManageCommandChannelShowEmpty');
 	}
 
 	public async add(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 			);
 		} else {
 			const entry = disabledCommandsChannels[index];
-			if (entry.commands.includes(command.name)) throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_ADD_ALREADYSET');
+			if (entry.commands.includes(command.name)) throw message.language.get('commandManageCommandChannelAddAlreadyset');
 
 			await message.guild!.settings.update(
 				GuildSettings.DisabledCommandChannels,
@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 				}
 			);
 		}
-		return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_ADD', [{ channel: channel.toString(), command: command.name }]);
+		return message.sendLocale('commandManageCommandChannelAdd', [{ channel: channel.toString(), command: command.name }]);
 	}
 
 	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
@@ -98,10 +98,10 @@ export default class extends SkyraCommand {
 					});
 				}
 
-				return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_REMOVE', [{ channel: channel.toString(), command: command.name }]);
+				return message.sendLocale('commandManageCommandChannelRemove', [{ channel: channel.toString(), command: command.name }]);
 			}
 		}
-		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_REMOVE_NOTSET', { channel: channel.toString() });
+		throw message.language.get('commandManageCommandChannelRemoveNotset', { channel: channel.toString() });
 	}
 
 	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
@@ -113,8 +113,8 @@ export default class extends SkyraCommand {
 				arrayAction: 'remove',
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('COMMAND_MANAGECOMMANDCHANNEL_RESET', [{ channel: channel.toString() }]);
+			return message.sendLocale('commandManageCommandChannelReset', [{ channel: channel.toString() }]);
 		}
-		throw message.language.get('COMMAND_MANAGECOMMANDCHANNEL_RESET_EMPTY');
+		throw message.language.get('commandManageCommandChannelResetEmpty');
 	}
 }

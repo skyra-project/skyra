@@ -11,7 +11,7 @@ import { KlasaMessage, Monitor } from 'klasa';
 const { FLAGS } = Permissions;
 
 export default class extends Monitor {
-	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_ATTACHMENTS';
+	protected readonly reasonLanguageKey = 'moderationMonitorAttachments';
 
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
@@ -96,7 +96,7 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_ATTACHMENTFILTER')}`)
+						.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorAttachmentfilter')}`)
 						.setTimestamp()
 				);
 			}

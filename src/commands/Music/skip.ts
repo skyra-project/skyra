@@ -5,7 +5,7 @@ import { requireSongPresent } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('COMMAND_SKIP_DESCRIPTION'),
+	description: (language) => language.get('commandSkipDescription'),
 	usage: '[force]'
 })
 export default class extends MusicCommand {
@@ -15,7 +15,7 @@ export default class extends MusicCommand {
 
 		if (music.listeners.length >= 4) {
 			if (force) {
-				if (!(await message.hasAtLeastPermissionLevel(5))) throw message.language.get('COMMAND_SKIP_PERMISSIONS');
+				if (!(await message.hasAtLeastPermissionLevel(5))) throw message.language.get('commandSkipPermissions');
 			} else {
 				const response = this.handleSkips(music, message.author.id);
 				if (response) return message.sendMessage(response);
@@ -27,7 +27,7 @@ export default class extends MusicCommand {
 
 	public handleSkips(musicManager: MusicHandler, user: string): string | false {
 		const song = musicManager.song || musicManager.queue[0];
-		if (song.skips.has(user)) return musicManager.guild.language.get('COMMAND_SKIP_VOTES_VOTED');
+		if (song.skips.has(user)) return musicManager.guild.language.get('commandSkipVotesVoted');
 		song.skips.add(user);
 		const members = musicManager.listeners.length;
 		return this.shouldInhibit(musicManager, members, song.skips.size);
@@ -37,6 +37,6 @@ export default class extends MusicCommand {
 		if (total <= 3) return false;
 
 		const needed = Math.ceil(total * 0.4);
-		return size >= needed ? false : musicManager.guild.language.get('COMMAND_SKIP_VOTES_TOTAL', { amount: size, needed });
+		return size >= needed ? false : musicManager.guild.language.get('commandSkipVotesTotal', { amount: size, needed });
 	}
 }

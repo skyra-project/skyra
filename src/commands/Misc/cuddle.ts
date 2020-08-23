@@ -11,8 +11,8 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('COMMAND_CUDDLE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_CUDDLE_EXTENDED'),
+	description: (language) => language.get('commandCuddleDescription'),
+	extendedHelp: (language) => language.get('commandCuddleExtended'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

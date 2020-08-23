@@ -4,7 +4,7 @@ import { Serializer, SerializerUpdateContext } from 'klasa';
 export default class extends Serializer {
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
 		const resolved = resolveEmoji(data);
-		if (resolved === null) return Promise.reject(language.get('RESOLVER_INVALID_EMOJI', { name: entry.path }));
+		if (resolved === null) return Promise.reject(language.get('resolverInvalidEmoji', { name: entry.path }));
 		return Promise.resolve(resolved);
 	}
 

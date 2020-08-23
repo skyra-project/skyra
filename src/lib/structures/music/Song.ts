@@ -68,7 +68,7 @@ export class Song {
 			(await this.queue.client.userTags
 				.fetch(this.requester)
 				.then((user) => user.username)
-				.catch(() => this.queue.guild.language.get('UNKNOWN_USER')));
+				.catch(() => this.queue.guild.language.get('unknownUser')));
 		return escapeMarkdown(cleanMentions(this.queue.guild, display));
 	}
 

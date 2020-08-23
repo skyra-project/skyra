@@ -5,8 +5,8 @@ import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uvm', 'vum', 'unvmute'],
-	description: (language) => language.get('COMMAND_VUNMUTE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_VUNMUTE_EXTENDED'),
+	description: (language) => language.get('commandVunmuteDescription'),
+	extendedHelp: (language) => language.get('commandVunmuteExtended'),
 	requiredMember: true,
 	requiredPermissions: ['MUTE_MEMBERS']
 })
@@ -33,7 +33,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.voice.serverMute) throw message.language.get('GUILD_MUTE_NOT_FOUND');
+		if (member && !member.voice.serverMute) throw message.language.get('guildMuteNotFound');
 		return member;
 	}
 }

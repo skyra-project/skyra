@@ -21,8 +21,8 @@ const enum Matches {
 export default class extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 	private readonly kMessageLogMetaData = {
-		Join: { color: Colors.Green, title: 'EVENTS_GUILDMEMBERADD' },
-		Mute: { color: Colors.Amber, title: 'EVENTS_GUILDMEMBERADD_MUTE' }
+		Join: { color: Colors.Green, title: 'eventsGuildMemberAdd' },
+		Mute: { color: Colors.Amber, title: 'eventsGuildMemberAddMute' }
 	} as const;
 
 	public constructor(store: EventStore, file: string[], directory: string) {
@@ -59,7 +59,7 @@ export default class extends Event {
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setDescription(
-					guild.language.get('EVENTS_GUILDMEMBERADD_DESCRIPTION', {
+					guild.language.get('eventsGuildMemberAddDescription', {
 						mention: member.toString(),
 						time: Date.now() - member.user.createdTimestamp
 					})

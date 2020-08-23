@@ -21,8 +21,8 @@ enum BaseStats {
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['pokemon', 'dex', 'mon', 'poke', 'dexter'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_POKEDEX_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_POKEDEX_EXTENDED'),
+	description: (language) => language.get('commandPokedexDescription'),
+	extendedHelp: (language) => language.get('commandPokedexExtended'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<pokemon:str>',
 	flagSupport: true
@@ -30,7 +30,7 @@ enum BaseStats {
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
 
@@ -43,7 +43,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.get('COMMAND_POKEDEX_QUERY_FAIL', { pokemon });
+			throw message.language.get('commandPokedexQueryFail', { pokemon });
 		}
 	}
 
@@ -149,7 +149,7 @@ export default class extends RichDisplayCommand {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
-		const embedTranslations = message.language.get('COMMAND_POKEDEX_EMBED_DATA', {
+		const embedTranslations = message.language.get('commandPokedexEmbedData', {
 			otherFormes: pokeDetails.otherFormes,
 			cosmeticFormes: pokeDetails.cosmeticFormes
 		});
@@ -167,26 +167,26 @@ export default class extends RichDisplayCommand {
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)
-					.addField(embedTranslations.ABILITIES, abilities.join(', '), true)
-					.addField(embedTranslations.GENDER_RATIO, this.parseGenderRatio(pokeDetails.gender), true)
-					.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
+					.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
+					.addField(embedTranslations.abilities, abilities.join(', '), true)
+					.addField(embedTranslations.genderRatio, this.parseGenderRatio(pokeDetails.gender), true)
+					.addField(embedTranslations.evolutionaryLine, evoChain)
 					.addField(
-						embedTranslations.BASE_STATS,
-						`${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`
+						embedTranslations.baseStats,
+						`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`
 					)
 			)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
-					.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
-					.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true)
-					.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
+					.addField(embedTranslations.height, `${pokeDetails.height}m`, true)
+					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
+					.addField(embedTranslations.eggGroups, pokeDetails.eggGroups?.join(', ') || '', true)
+					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier, true)
 			);
 	}
 
 	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
-		const externalResources = message.language.get('SYSTEM_POKEDEX_EXTERNAL_RESOURCE');
+		const externalResources = message.language.get('systemPokedexExternalResource');
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
 			`[Serebii](${pokeDetails.serebiiPage})`,
@@ -201,29 +201,29 @@ export default class extends RichDisplayCommand {
 		)
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(embedTranslations.TYPES, pokeDetails.types.join(', '), true)
-					.addField(embedTranslations.ABILITIES, abilities.join(', '), true)
-					.addField(embedTranslations.GENDER_RATIO, this.parseGenderRatio(pokeDetails.gender), true)
-					.addField(embedTranslations.EVOLUTIONARY_LINE, evoChain)
+					.addField(embedTranslations.types, pokeDetails.types.join(', '), true)
+					.addField(embedTranslations.abilities, abilities.join(', '), true)
+					.addField(embedTranslations.genderRatio, this.parseGenderRatio(pokeDetails.gender), true)
+					.addField(embedTranslations.evolutionaryLine, evoChain)
 					.addField(
-						embedTranslations.BASE_STATS,
-						`${baseStats.join(', ')} (*${embedTranslations.BASE_STATS_TOTAL}*: **${pokeDetails.baseStatsTotal}**)`
+						embedTranslations.baseStats,
+						`${baseStats.join(', ')} (*${embedTranslations.baseStatsTotal}*: **${pokeDetails.baseStatsTotal}**)`
 					)
 
 					.addField(externalResources, externalResourceData)
 			)
 			.addPage((embed: MessageEmbed) => {
 				embed
-					.addField(embedTranslations.HEIGHT, `${pokeDetails.height}m`, true)
-					.addField(embedTranslations.WEIGHT, `${pokeDetails.weight}kg`, true)
-					.addField(embedTranslations.EGG_GROUPS, pokeDetails.eggGroups?.join(', ') || '', true);
+					.addField(embedTranslations.height, `${pokeDetails.height}m`, true)
+					.addField(embedTranslations.weight, `${pokeDetails.weight}kg`, true)
+					.addField(embedTranslations.eggGroups, pokeDetails.eggGroups?.join(', ') || '', true);
 
 				return embed.addField(externalResources, externalResourceData);
 			})
 			.addPage((embed: MessageEmbed) =>
 				embed
-					.addField(embedTranslations.SMOGON_TIER, pokeDetails.smogonTier, true)
-					.addField(embedTranslations.FLAVOUR_TEXT, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
+					.addField(embedTranslations.smogonTier, pokeDetails.smogonTier, true)
+					.addField(embedTranslations.flavourText, `\`(${pokeDetails.flavorTexts[0].game})\` ${pokeDetails.flavorTexts[0].flavor}`)
 
 					.addField(externalResources, externalResourceData)
 			);
@@ -234,12 +234,12 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => {
 				// If the pokémon has other formes
 				if (pokeDetails.otherFormes) {
-					embed.addField(embedTranslations.OTHER_FORMES_TITLE, embedTranslations.OTHER_FORMES_LIST);
+					embed.addField(embedTranslations.otherFormesTitle, embedTranslations.otherFormesList);
 				}
 
 				// If the pokémon has cosmetic formes
 				if (pokeDetails.cosmeticFormes) {
-					embed.addField(embedTranslations.COSMETIC_FORMES_TITLE, embedTranslations.COSMETIC_FORMES_LIST);
+					embed.addField(embedTranslations.cosmeticFormesTitle, embedTranslations.cosmeticFormesList);
 				}
 
 				// Add the external resource field
@@ -259,5 +259,5 @@ interface PokemonToDisplayArgs {
 	abilities: string[];
 	baseStats: string[];
 	evoChain: string;
-	embedTranslations: ReturnType<LanguageKeys['COMMAND_POKEDEX_EMBED_DATA']>;
+	embedTranslations: ReturnType<LanguageKeys['commandPokedexEmbedData']>;
 }

@@ -10,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restrict-external-emoji', 'restricted-emoji', 'restricted-external-emoji', 'ree', 'restrict-emojis'],
-	description: (language) => language.get('COMMAND_RESTRICTEMOJI_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_RESTRICTEMOJI_EXTENDED'),
+	description: (language) => language.get('commandRestrictEmojiDescription'),
+	extendedHelp: (language) => language.get('commandRestrictEmojiExtended'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -26,19 +26,19 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedEmoji);
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('COMMAND_RESTRICT_LOWLEVEL');
-			if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandRestrictLowlevel');
+			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {
 				const [role] = (await this.kRolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
+					.run(message.language.get('actionSharedRoleSetupExistingName'))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.RestrictedEmoji, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+			} else if (await message.ask(message.language.get('actionSharedRoleSetupNew'))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Emoji);
-				await message.sendLocale('COMMAND_SUCCESS');
+				await message.sendLocale('commandSuccess');
 			} else {
-				await message.sendLocale('MONITOR_COMMAND_HANDLER_ABORTED');
+				await message.sendLocale('monitorCommandHandlerAborted');
 			}
 		}
 

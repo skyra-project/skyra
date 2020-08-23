@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['connect-four'],
 			cooldown: 0,
-			description: (language) => language.get('COMMAND_C4_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_C4_EXTENDED'),
+			description: (language) => language.get('commandC4Description'),
+			extendedHelp: (language) => language.get('commandC4Extended'),
 			requiredPermissions: ['USE_EXTERNAL_EMOJIS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -22,24 +22,24 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [User]) {
-		if (user.id === CLIENT_ID) throw message.language.get('COMMAND_GAMES_SKYRA');
-		if (user.bot) throw message.language.get('COMMAND_GAMES_BOT');
-		if (user.id === message.author.id) throw message.language.get('COMMAND_GAMES_SELF');
-		if (this.client.connectFour.has(message.channel.id)) throw message.language.get('COMMAND_GAMES_PROGRESS');
+		if (user.id === CLIENT_ID) throw message.language.get('commandGamesSkyra');
+		if (user.bot) throw message.language.get('commandGamesBot');
+		if (user.id === message.author.id) throw message.language.get('commandGamesSelf');
+		if (this.client.connectFour.has(message.channel.id)) throw message.language.get('commandGamesProgress');
 		this.client.connectFour.set(message.channel.id, null);
 
 		try {
 			const [response] = await this.prompt
 				.createPrompt(message, { target: user })
-				.run(message.language.get('COMMAND_C4_PROMPT', { challenger: message.author.toString(), challengee: user.toString() }));
+				.run(message.language.get('commandC4Prompt', { challenger: message.author.toString(), challengee: user.toString() }));
 			if (response) {
 				await this.client.connectFour.create(message, message.author, user)!.run();
 			} else {
-				await message.alert(message.language.get('COMMAND_GAMES_PROMPT_DENY'));
+				await message.alert(message.language.get('commandGamesPromptDeny'));
 			}
 		} catch (error) {
 			if (typeof error !== 'string') this.client.emit(Events.Wtf, error);
-			await message.alert(message.language.get('COMMAND_GAMES_PROMPT_TIMEOUT'));
+			await message.alert(message.language.get('commandGamesPromptTimeout'));
 		} finally {
 			this.client.connectFour.delete(message.channel.id);
 		}

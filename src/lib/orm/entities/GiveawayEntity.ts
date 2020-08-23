@@ -195,8 +195,8 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async announceWinners(language: Language) {
 		const content = this.#winners
-			? language.get('GIVEAWAY_ENDED_MESSAGE', { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
-			: language.get('GIVEAWAY_ENDED_MESSAGE_NO_WINNER', { title: this.title });
+			? language.get('giveawayEndedMessage', { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
+			: language.get('giveawayEndedMessageNoWinner', { title: this.title });
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
@@ -225,12 +225,12 @@ export class GiveawayEntity extends BaseEntity {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
-					? language.get('GIVEAWAY_ENDED', { winners: this.#winners.map((winner) => `<@${winner}>`) })
-					: language.get('GIVEAWAY_ENDED_NO_WINNER');
+					? language.get('giveawayEnded', { winners: this.#winners.map((winner) => `<@${winner}>`) })
+					: language.get('giveawayEndedNoWinner');
 			case States.LastChance:
-				return language.get('GIVEAWAY_LASTCHANCE', { time: this.remaining });
+				return language.get('giveawayLastchance', { time: this.remaining });
 			default:
-				return language.get('GIVEAWAY_DURATION', { time: this.remaining });
+				return language.get('giveawayDuration', { time: this.remaining });
 		}
 	}
 
@@ -276,11 +276,11 @@ export class GiveawayEntity extends BaseEntity {
 	private static getContent(state: States, language: Language) {
 		switch (state) {
 			case States.Finished:
-				return language.get('GIVEAWAY_ENDED_TITLE');
+				return language.get('giveawayEndedTitle');
 			case States.LastChance:
-				return language.get('GIVEAWAY_LASTCHANCE_TITLE');
+				return language.get('giveawayLastchanceTitle');
 			default:
-				return language.get('GIVEAWAY_TITLE');
+				return language.get('giveawayTitle');
 		}
 	}
 
@@ -296,6 +296,6 @@ export class GiveawayEntity extends BaseEntity {
 	}
 
 	private static getFooter(state: States, language: Language) {
-		return state === States.Running ? language.get('GIVEAWAY_ENDS_AT') : language.get('GIVEAWAY_ENDED_AT');
+		return state === States.Running ? language.get('giveawayEndsAt') : language.get('giveawayEndedAt');
 	}
 }

@@ -4,10 +4,10 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 @ApplyOptions<ArgumentOptions>({ aliases: ['int'] })
 export default class extends Argument {
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
-		if (!arg) throw message.language.get('RESOLVER_INVALID_INT', { name: possible.name });
+		if (!arg) throw message.language.get('resolverInvalidInt', { name: possible.name });
 
 		const number = Number(arg);
-		if (!Number.isInteger(number)) throw message.language.get('RESOLVER_INVALID_INT', { name: possible.name });
+		if (!Number.isInteger(number)) throw message.language.get('resolverInvalidInt', { name: possible.name });
 
 		const { min, max } = possible;
 

@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['kitten', 'cat'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_KITTY_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_KITTY_EXTENDED'),
+	description: (language) => language.get('commandKittyDescription'),
+	extendedHelp: (language) => language.get('commandKittyExtended'),
 	requiredPermissions: ['ATTACH_FILES', 'EMBED_LINKS'],
 	spam: true
 })

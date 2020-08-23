@@ -87,7 +87,7 @@ export class StarboardEntity extends BaseEntity {
 	 * The formatted masked url
 	 */
 	private get maskedUrl() {
-		return `[${this.#message.language.get('JUMPTO')}](${this.#message.url})`;
+		return `[${this.#message.language.get('jumpTo')}](${this.#message.url})`;
 	}
 
 	/**

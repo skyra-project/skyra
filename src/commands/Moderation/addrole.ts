@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ar'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_ADDROLE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_ADDROLE_EXTENDED'),
+	description: (language) => language.get('commandAddRoleDescription'),
+	extendedHelp: (language) => language.get('commandAddRoleExtended'),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],

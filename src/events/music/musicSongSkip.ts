@@ -9,7 +9,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('COMMAND_SKIP_SUCCESS', [{ title: song.safeTitle }]));
+			floatPromise(this, channel.sendLocale('commandSkipSuccess', [{ title: song.safeTitle }]));
 		}
 
 		manager.reset();

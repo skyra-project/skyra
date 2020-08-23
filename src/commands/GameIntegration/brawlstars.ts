@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 
 		if (!tag && bsData.extraData?.playerTag) {
 			tag = bsData!.extraData.playerTag!;
-		} else {
+		} else if (!tag) {
 			throw message.language.get('resolverInvalidString', { name: 'tag' });
 		}
 

@@ -65,6 +65,7 @@ declare module 'klasa' {
 		resolverInvalidUrl: (params: { name: string }) => string;
 		resolverInvalidUser: (params: { name: string }) => string;
 		resolverInvalidSnowflake: (params: { name: string }) => string;
+		resolverInvalidStore: (params: { store: string }) => string;
 		resolverStringSuffix: string;
 		resolverMinmaxExactly: (params: { name: string; min: number }) => string;
 		resolverMinmaxBoth: (params: { name: string; min: number; max: number; inclusive: boolean }) => string;

@@ -193,6 +193,7 @@ export default class extends Language {
 		resolverInvalidUrl: ({ name }) => `${name} debe ser un enlace válido.`,
 		resolverInvalidUser: ({ name }) => `${name} debe ser una mención o una id de usuario válida.`,
 		resolverInvalidSnowflake: ({ name }) => `${name} debe ser un snowflake válido de Discord.`,
+		resolverInvalidStore: ({ store }) => `${store} debe ser una tienda válido.`,
 		resolverStringSuffix: ' carácteres',
 		resolverMinmaxExactly: ({ name, min }) => `${name} must be exactly ${min}.`,
 		resolverMinmaxBoth: ({ name, min, max, inclusive }) =>

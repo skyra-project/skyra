@@ -41,13 +41,19 @@ const enum BrawlStarsFetchCategories {
 	CLUB = 'clubs'
 }
 
+export interface BrawlStarsGIData {
+	playerTag?: string;
+	clubTag?: string;
+}
+
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bs'],
 	description: (language) => language.get('COMMAND_BRAWLSTARS_DESCRIPTION'),
 	extendedHelp: (language) => language.get('COMMAND_BRAWLSTARS_EXTENDED'),
 	runIn: ['text'],
 	subcommands: true,
-	usage: '<club|player:default> <tag:tag>',
+	flagSupport: true,
+	usage: '<club|player:default> [tag:tag]',
 	usageDelim: ' '
 })
 @CreateResolvers([
@@ -61,12 +67,44 @@ const enum BrawlStarsFetchCategories {
 ])
 export default class extends SkyraCommand {
 	public async player(message: KlasaMessage, [tag]: [string]) {
+		const { users } = await DbSet.connect();
+		const bsData = await users.fetchIntegration<BrawlStarsGIData>('brawlstars', message.author);
+
+		if (!tag && bsData.extraData?.playerTag) {
+			tag = bsData!.extraData.playerTag!;
+		} else {
+			throw message.language.get('RESOLVER_INVALID_STRING', { name: 'tag' });
+		}
+
 		const playerData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
+		const saveFlag = Reflect.get(message.flagArgs, 'save');
+
+		if (saveFlag) {
+			bsData.extraData = { ...bsData.extraData, playerTag: playerData.tag };
+			await bsData.save();
+		}
+
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 
 	public async club(message: KlasaMessage, [tag]: [string]) {
+		const { users } = await DbSet.connect();
+		const bsData = await users.fetchIntegration<BrawlStarsGIData>('brawlstars', message.author);
+
+		if (!tag && bsData.extraData?.clubTag) {
+			tag = bsData!.extraData.clubTag!;
+		} else if (!tag) {
+			throw message.language.get('RESOLVER_INVALID_STRING', { name: 'tag' });
+		}
+
 		const clubData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.CLUB)) as BrawlStars.Club;
+		const saveFlag = Reflect.get(message.flagArgs, 'save');
+
+		if (saveFlag) {
+			bsData.extraData = { ...bsData.extraData, clubTag: clubData.tag };
+			await bsData.save();
+		}
+
 		return message.send(await this.buildClubEmbed(message, clubData));
 	}
 

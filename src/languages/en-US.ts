@@ -859,6 +859,7 @@ export default class extends Language {
 
 		commandBrawlstarsDescription: "Get data on a player or club from Supercell's newest game, Brawl Stars.",
 		commandBrawlstarsExtended: {
+			extendedHelp: 'Use this command with --save to save your player/club tag.',
 			explainedUsage: [
 				['category', 'The category of data to get: **club** to get data on a club, or **player** to get data on a player (default).'],
 				['query', 'The tag of the player or club, depending on which category you choose.']

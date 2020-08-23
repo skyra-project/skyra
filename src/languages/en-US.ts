@@ -490,16 +490,16 @@ export default class extends Language {
 		inhibitorMusicNothingPlaying: `${REDCROSS} Looks like nothing is playing right now, how about you start the party 🎉?`,
 
 		musicManagerFetchNoArguments: 'I need you to give me the name of a song!',
-		musicManagerFetchNoMatches: "I'm sorry but I wasn't able to find the track!",
-		musicManagerFetchLoadFailed: "I'm sorry but I couldn't load this song! Maybe try other song!",
-		musicManagerTooManySongs: `${REDCROSS} Woah there, you are adding more songs than allowed!`,
-		musicManagerSetvolumeSilent: 'Woah, you can just leave the voice channel if you want silence!',
+		musicManagerFetchNoMatches: "I'm sorry but I wasn't able to find that track!",
+		musicManagerFetchLoadFailed: "I'm sorry but I couldn't load this song! Maybe try another song?",
+		musicManagerTooManySongs: `${REDCROSS} Woah there, you're adding too many songs!`,
+		musicManagerSetvolumeSilent: 'You could just leave the voice channel if you wanted silence...',
 		musicManagerSetvolumeLoud: "I'll be honest, an airplane's nacelle would be less noisy than this!",
-		musicManagerPlayNoSongs: 'No songs left in the queue!',
-		musicManagerPlayPlaying: "Decks' spinning, can't you hear it?",
+		musicManagerPlayNoSongs: 'There are no songs left in the queue!',
+		musicManagerPlayPlaying: "The deck's spinning, can't you hear it?",
 		musicManagerStuck: ({ milliseconds }) => `${LOADING} Hold on, I got a little problem, I'll be back in: ${duration(milliseconds)}!`,
 
-		commandConfMenuNopermissions: `I need the permissions ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} to be able to run the menu.`,
+		commandConfMenuNopermissions: `I need the ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} permissions to be able to run the menu.`,
 		commandConfMenuRenderAtFolder: ({ path }) => `Currently at: 📁 ${path}`,
 		commandConfMenuRenderAtPiece: ({ path }) => `Currently at: ⚙️ ${path}`,
 		commandConfMenuRenderNokeys: 'There are no configurable keys for this folder',
@@ -522,7 +522,7 @@ export default class extends Language {
 		settingsDisabledcommands:
 			'The disabled commands, core commands may not be disabled, and moderators will override this. All commands must be in lower case.',
 		settingsChannelsAnnouncements:
-			'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
+			'The channel for announcements. This (alongside the `roles.subscriber` key) is required for the announce command.',
 		settingsChannelsFarewell:
 			'The channel I will use to send farewells, you must enable the events and set up the messages, in other categories.',
 		settingsChannelsGreeting:
@@ -593,7 +593,7 @@ export default class extends Language {
 		settingsRolesRestrictedReaction: 'The role that is used for the restrictReaction moderation command.',
 		settingsRolesRestrictedVoice: 'The role that is used for the restrictVoice moderation command.',
 		settingsRolesSubscriber:
-			'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
+			"The subscriber role. This role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people don't mention it abusively.",
 		settingsSelfmodAttachment: 'Whether or not the attachment filter is enabled.',
 		settingsSelfmodAttachmentmaximum:
 			'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',

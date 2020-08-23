@@ -11,7 +11,7 @@ import { KlasaMessage } from 'klasa';
 	cooldown: 5,
 	description: (language) => language.get('commandTriviaDescription'),
 	extendedHelp: (language) => language.get('commandTriviaExtended'),
-	usage: '[category:category] [boolean|multiple] [easy|hard|medium] [duration:timespan-seconds]',
+	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
 	usageDelim: ' '
 })
 @CreateResolvers([
@@ -56,7 +56,7 @@ export default class extends RichDisplayCommand {
 			await message.sendLocale('systemLoading', []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
-				questionType === QuestionType.Boolean
+				questionType === QuestionType.Boolean || QuestionType.TrueFalse
 					? ['True', 'False']
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);

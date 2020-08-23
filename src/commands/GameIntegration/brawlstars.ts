@@ -68,7 +68,7 @@ export interface BrawlStarsGIData {
 export default class extends SkyraCommand {
 	public async player(message: KlasaMessage, [tag]: [string]) {
 		const { users } = await DbSet.connect();
-		const bsData = await users.fetchIntegration<BrawlStarsGIData>('brawlstars', message.author);
+		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 
 		if (!tag && bsData.extraData?.playerTag) {
 			tag = bsData!.extraData.playerTag!;
@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 
 	public async club(message: KlasaMessage, [tag]: [string]) {
 		const { users } = await DbSet.connect();
-		const bsData = await users.fetchIntegration<BrawlStarsGIData>('brawlstars', message.author);
+		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 
 		if (!tag && bsData.extraData?.clubTag) {
 			tag = bsData!.extraData.clubTag!;

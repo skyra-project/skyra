@@ -1,6 +1,5 @@
 import Collection from '@discordjs/collection';
 import { client } from '@mocks/MockInstances';
-import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Mime, Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
@@ -23,21 +22,6 @@ import { DeepPartial } from 'typeorm';
 import nock = require('nock');
 
 describe('Utils', () => {
-	describe('noop', () => {
-		test('GIVEN function THEN matches function type', () => {
-			expect(utils.noop).toEqual(expect.any(Function));
-		});
-
-		test('GIVEN call THEN should return undefined', () => {
-			jest.spyOn(utils, 'noop');
-
-			utils.noop();
-
-			expectCalledStrict(utils.noop, 1);
-			expectReturnedStrict(utils.noop, 1, undefined);
-		});
-	});
-
 	describe('IMAGE_EXTENSION', () => {
 		test('GIVEN valid extensions THEN passes test', () => {
 			expect(utils.IMAGE_EXTENSION.test('.bmp')).toBe(true);

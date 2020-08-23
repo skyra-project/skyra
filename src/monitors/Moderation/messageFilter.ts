@@ -6,7 +6,7 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'MODERATION_MONITOR_MESSAGES';
+	protected readonly reasonLanguageKey = 'moderationMonitorMessages';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Messages.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Messages.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Messages.IgnoredRoles;
@@ -45,7 +45,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('MONITOR_MESSAGEFILTER', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get('monitorMessageFilter', { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
@@ -53,7 +53,7 @@ export default class extends ModerationMonitor {
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('CONST_MONITOR_MESSAGEFILTER')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorMessagefilter')}`)
 			.setTimestamp();
 	}
 

@@ -19,8 +19,8 @@ export default class extends SkyraCommand {
 			aliases: ['lvl', 'rank'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('COMMAND_LEVEL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_LEVEL_EXTENDED'),
+			description: (language) => language.get('commandLevelDescription'),
+			extendedHelp: (language) => language.get('commandLevelExtended'),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const TITLE = message.language.retrieve('COMMAND_LEVEL');
+		const title = message.language.retrieve('commandLevel');
 		return (
 			new Canvas(640, 174)
 				// Draw the background
@@ -66,8 +66,8 @@ export default class extends SkyraCommand {
 				.setTextFont('28px RobotoLight')
 
 				// Statistics Titles
-				.printText(TITLE.EXPERIENCE, 340, 73)
-				.printText(TITLE.NEXT_IN, 340, 128)
+				.printText(title.experience, 340, 73)
+				.printText(title.nextIn, 340, 128)
 
 				// Draw the information
 				.setTextAlign('right')
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 				// Draw the level
 				.setTextAlign('center')
 				.setTextFont('35px RobotoLight')
-				.printText(TITLE.LEVEL, 268, 73)
+				.printText(title.level, 268, 73)
 				.setTextFont('45px RobotoRegular')
 				.printText(settings.level.toString(), 268, 128)
 
@@ -126,7 +126,7 @@ export default class extends SkyraCommand {
 }
 
 export interface LevelTitles {
-	EXPERIENCE: string;
-	NEXT_IN: string;
-	LEVEL: string;
+	experience: string;
+	nextIn: string;
+	level: string;
 }

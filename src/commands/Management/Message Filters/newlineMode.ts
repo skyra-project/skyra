@@ -15,8 +15,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['newline-mode', 'nl-mode'],
-			description: (language) => language.get('COMMAND_NEWLINEMODE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_NEWLINEMODE_EXTENDED')
+			description: (language) => language.get('commandNewlineModeDescription'),
+			extendedHelp: (language) => language.get('commandNewlineModeExtended')
 		});
 	}
 }

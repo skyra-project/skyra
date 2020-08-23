@@ -1,10 +1,10 @@
-import { arrayStrictEquals } from '@klasa/utils';
 import { Colors } from '@lib/types/constants/Constants';
 import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
+import { arrayStrictEquals } from '@sapphire/utilities';
 import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';
@@ -50,7 +50,7 @@ export default class extends Event {
 		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
 			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'EVENTS_NAME_DIFFERENCE', 'EVENTS_NICKNAME_UPDATE', {
+				this.buildEmbed(data, guild.language, 'eventsNameDifference', 'eventsNicknameUpdate', {
 					previous: previous.nickname,
 					next: next.nickname
 				})
@@ -74,7 +74,7 @@ export default class extends Event {
 
 			// Set the Role change log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'EVENTS_ROLE_DIFFERENCE', 'EVENTS_ROLE_UPDATE', { addedRoles, removedRoles })
+				this.buildEmbed(data, guild.language, 'eventsRoleDifference', 'eventsRoleUpdate', { addedRoles, removedRoles })
 			);
 		}
 	}

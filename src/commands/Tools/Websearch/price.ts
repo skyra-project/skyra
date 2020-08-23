@@ -1,24 +1,25 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { NAME, TOKENS, VERSION } from '@root/config';
+import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes, roundNumber } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
-	description: (language) => language.get('COMMAND_PRICE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_PRICE_EXTENDED'),
+	description: (language) => language.get('commandPriceDescription'),
+	extendedHelp: (language) => language.get('commandPriceExtended'),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
-		await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary));
+		await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary));
 
 		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
 
@@ -43,7 +44,7 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw message.language.get('COMMAND_PRICE_CURRENCY_NOT_FOUND');
+			throw message.language.get('commandPriceCurrencyNotFound');
 		}
 	}
 
@@ -55,7 +56,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(message.language.get('COMMAND_PRICE_CURRENCY', { fromCurrency, fromAmount, worths }))
+			.setDescription(message.language.get('commandPriceCurrency', { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}
 }

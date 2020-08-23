@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['rro'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_REMOVEROLE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_REMOVEROLE_EXTENDED'),
+	description: (language) => language.get('commandRemoveroleDescription'),
+	extendedHelp: (language) => language.get('commandRemoveroleExtended'),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],

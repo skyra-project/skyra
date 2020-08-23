@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['wof'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_WHEELOFFORTUNE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_WHEELOFFORTUNE_EXTENDED'),
+	description: (language) => language.get('commandWheelOfFortuneDescription'),
+	extendedHelp: (language) => language.get('commandWheelOfFortuneExtended'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	usage: '<wager:wager>'
@@ -20,14 +20,14 @@ export default class extends SkyraCommand {
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw message.language.get('GAMES_NOT_ENOUGH_MONEY', { money: balance });
+			throw message.language.get('gamesNotEnoughMoney', { money: balance });
 		}
 
 		const [attachment, amount] = await new WheelOfFortune(message, wager, settings).run();
-		const TITLES = message.language.get('COMMAND_WHEELOFFORTUNE_TITLES');
+		const titles = message.language.get('commandWheelOfFortuneTitles');
 
 		return message.sendMessage(
-			[`**${TITLES.PREVIOUS}:** ${balance} ${Emojis.Shiny}`, `**${TITLES.NEW}:** ${amount} ${Emojis.Shiny}`].join('\n'),
+			[`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'),
 			{ files: [{ attachment, name: 'wof.png' }] }
 		);
 	}

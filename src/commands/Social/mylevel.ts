@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_MYLEVEL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MYLEVEL_EXTENDED'),
+			description: (language) => language.get('commandMylevelDescription'),
+			extendedHelp: (language) => language.get('commandMylevelExtended'),
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
@@ -25,15 +25,15 @@ export default class extends SkyraCommand {
 		const memberPoints = memberSettings?.points ?? 0;
 		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
 		const title = nextRole
-			? `\n${message.language.get('COMMAND_MYLEVEL_NEXT', {
+			? `\n${message.language.get('commandMylevelNext', {
 					remaining: nextRole.points - memberPoints,
 					next: nextRole.points
 			  })}`
 			: '';
 
 		return user.id === message.author.id
-			? message.sendLocale('COMMAND_MYLEVEL_SELF', [{ points: memberPoints, next: title }])
-			: message.sendLocale('COMMAND_MYLEVEL', [{ points: memberPoints, next: title, user: user.username }]);
+			? message.sendLocale('commandMylevelSelf', [{ points: memberPoints, next: title }])
+			: message.sendLocale('commandMylevel', [{ points: memberPoints, next: title, user: user.username }]);
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

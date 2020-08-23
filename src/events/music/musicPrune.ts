@@ -8,7 +8,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('COMMAND_CLEAR_SUCCESS', [{ amount: manager.queue.length }]));
+			floatPromise(this, channel.sendLocale('commandClearSuccess', [{ amount: manager.queue.length }]));
 		}
 
 		manager.queue.length = 0;

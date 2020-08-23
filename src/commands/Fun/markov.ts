@@ -2,9 +2,10 @@ import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { DEV } from '@root/config';
+import { cutText } from '@sapphire/utilities';
 import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
-import { cutText, getAllContent, iteratorAt } from '@utils/util';
+import { getAllContent, iteratorAt } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
 
@@ -25,8 +26,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_MARKOV_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_MARKOV_EXTENDED'),
+			description: (language) => language.get('commandMarkovDescription'),
+			extendedHelp: (language) => language.get('commandMarkovExtended'),
 			runIn: ['text'],
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
 			usage: '[channel:channelname{2}] [user:username]'
@@ -38,7 +39,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
 		// Send loading message
-		await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary));
+		await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary));
 
 		// Process the chain
 		return message.sendEmbed(await this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
@@ -56,7 +57,7 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(await DbSet.fetchColor(message))
-			.setFooter(message.language.get('COMMAND_MARKOV_TIMER', { timer: time.toString() }));
+			.setFooter(message.language.get('commandMarkovTimer', { timer: time.toString() }));
 	}
 
 	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
@@ -64,7 +65,7 @@ export default class extends SkyraCommand {
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
-		if (messageBank.size === 0) throw message.language.get('COMMAND_MARKOV_NO_MESSAGES');
+		if (messageBank.size === 0) throw message.language.get('commandMarkovNoMessages');
 		const contents = messageBank.map(getAllContent).join(' ');
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);

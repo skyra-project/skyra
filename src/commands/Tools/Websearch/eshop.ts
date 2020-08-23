@@ -1,11 +1,11 @@
-import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { cutText, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage, Timestamp } from 'klasa';
@@ -15,8 +15,8 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_ESHOP_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_ESHOP_EXTENDED'),
+	description: (language) => language.get('commandEshopDescription'),
+	extendedHelp: (language) => language.get('commandEshopExtended'),
 	usage: '<gameName:string>'
 })
 export default class extends RichDisplayCommand {
@@ -24,11 +24,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, gameName);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries[0].hits, message);
 		await display.start(response, message.author.id);
@@ -64,20 +64,20 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
-		const titles = message.language.get('COMMAND_ESHOP_TITLES');
+		const titles = message.language.get('commandEshopTitles');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
-			const price = game.msrp ? message.language.get('COMMAND_ESHOP_PRICE', { price: game.msrp }) : 'TBD';
+			const price = game.msrp ? message.language.get('commandEshopPrice', { price: game.msrp }) : 'TBD';
 			const esrbText = game.esrb
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
-				: message.language.get('COMMAND_ESHOP_NOT_IN_DATABASE');
+				: message.language.get('commandEshopNotInDatabase');
 
 			display.addPage((embed: MessageEmbed) =>
 				embed
@@ -85,18 +85,18 @@ export default class extends RichDisplayCommand {
 					.setURL(`https://nintendo.com${game.url}`)
 					.setThumbnail(`https://nintendo.com${game.boxArt}`)
 					.setDescription(description)
-					.addField(titles.PRICE, price, true)
-					.addField(titles.AVAILABILITY, game.availability[0], true)
+					.addField(titles.price, price, true)
+					.addField(titles.availability, game.availability[0], true)
 					.addField(
-						titles.RELEASE_DATE,
+						titles.releaseDate,
 						game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask),
 						true
 					)
-					.addField(titles.NUMBER_OF_PLAYERS, toTitleCase(game.players), true)
-					.addField(titles.PLATFORM, game.platform, true)
-					.addField(titles.NSUID, game.nsuid || 'TBD', true)
-					.addField(titles.ESRB, esrbText)
-					.addField(titles.CATEGORIES, game.categories.join(', ') || titles.NO_CATEGORIES)
+					.addField(titles.numberOfPlayers, toTitleCase(game.players), true)
+					.addField(titles.platform, game.platform, true)
+					.addField(titles.nsuid, game.nsuid || 'TBD', true)
+					.addField(titles.esrb, esrbText)
+					.addField(titles.categories, game.categories.join(', ') || titles.noCategories)
 			);
 		}
 		return display;

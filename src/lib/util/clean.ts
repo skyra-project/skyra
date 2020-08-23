@@ -23,7 +23,7 @@
  * SOFTWARE.
  * @url https://github.com/dirigeants/utils/blob/cc5699d98c92356a483b2b2192ba446173294fe4/src/lib/clean.ts
  */
-import { regExpEsc } from '@klasa/utils';
+import { regExpEsc } from '@sapphire/utilities';
 
 let sensitivePattern: string | RegExp | undefined = undefined;
 const zws = String.fromCharCode(8203);

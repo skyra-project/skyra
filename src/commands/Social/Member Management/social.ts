@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_SOCIAL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_SOCIAL_EXTENDED'),
+			description: (language) => language.get('commandSocialDescription'),
+			extendedHelp: (language) => language.get('commandSocialExtended'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 			settings.points = newAmount;
 			await settings.save();
 
-			return message.sendLocale('COMMAND_SOCIAL_ADD', [{ user: user.username, amount: newAmount, added: amount }]);
+			return message.sendLocale('commandSocialAdd', [{ user: user.username, amount: newAmount, added: amount }]);
 		}
 
 		const created = new MemberEntity();
@@ -43,19 +43,19 @@ export default class extends SkyraCommand {
 		created.points = amount;
 		await members.insert(created);
 
-		return message.sendLocale('COMMAND_SOCIAL_ADD', [{ user: user.username, amount, added: amount }]);
+		return message.sendLocale('commandSocialAdd', [{ user: user.username, amount, added: amount }]);
 	}
 
 	public async remove(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
-		if (!settings) throw message.language.get('COMMAND_SOCIAL_MEMBER_NOTEXISTS');
+		if (!settings) throw message.language.get('commandSocialMemberNotexists');
 
 		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;
 		await settings.save();
 
-		return message.sendLocale('COMMAND_SOCIAL_REMOVE', [{ user: user.username, amount: newAmount, removed: amount }]);
+		return message.sendLocale('commandSocialRemove', [{ user: user.username, amount: newAmount, removed: amount }]);
 	}
 
 	public async set(message: KlasaMessage, [user, amount]: [User, number]) {
@@ -78,17 +78,17 @@ export default class extends SkyraCommand {
 		}
 
 		const variation = amount - oldValue;
-		if (variation === 0) return message.sendLocale('COMMAND_SOCIAL_UNCHANGED', [{ user: user.username }]);
+		if (variation === 0) return message.sendLocale('commandSocialUnchanged', [{ user: user.username }]);
 		return message.sendMessage(
 			variation > 0
-				? message.language.get('COMMAND_SOCIAL_ADD', { user: user.username, amount, added: variation })
-				: message.language.get('COMMAND_SOCIAL_REMOVE', { user: user.username, amount, removed: -variation })
+				? message.language.get('commandSocialAdd', { user: user.username, amount, added: variation })
+				: message.language.get('commandSocialRemove', { user: user.username, amount, removed: -variation })
 		);
 	}
 
 	public async reset(message: KlasaMessage, [user]: [User]) {
 		const { members } = await DbSet.connect();
 		await members.delete({ userID: user.id, guildID: message.guild!.id });
-		return message.sendLocale('COMMAND_SOCIAL_RESET', [{ user: user.username }]);
+		return message.sendLocale('commandSocialReset', [{ user: user.username }]);
 	}
 }

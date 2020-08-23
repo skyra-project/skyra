@@ -9,7 +9,7 @@ export default class extends Event {
 			const channel = context ? context.channel : manager.channel;
 
 			if (channel) {
-				floatPromise(this, channel.sendLocale('COMMAND_PAUSE_SUCCESS'));
+				floatPromise(this, channel.sendLocale('commandPauseSuccess'));
 			}
 		}
 

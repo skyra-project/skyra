@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_ROLEINFO_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_ROLEINFO_EXTENDED'),
+			description: (language) => language.get('commandRoleInfoDescription'),
+			extendedHelp: (language) => language.get('commandRoleInfoExtended'),
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
@@ -18,18 +18,18 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage, [role = message.member!.roles.highest]: [Role?]) {
-		const roleInfoTitles = (message.language.get('COMMAND_ROLEINFO_TITLES') as unknown) as RoleInfoTitles;
+		const roleInfoTitles = (message.language.get('commandRoleInfoTitles') as unknown) as RoleInfoTitles;
 		const { permissions } = role;
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(role.color || BrandingColors.Secondary)
 				.setTitle(`${role.name} [${role.id}]`)
-				.setDescription(message.language.get('COMMAND_ROLEINFO', { role }))
+				.setDescription(message.language.get('commandRoleInfo', { role }))
 				.addField(
 					roleInfoTitles.PERMISSIONS,
 					permissions.has(Permissions.FLAGS.ADMINISTRATOR)
-						? message.language.get('COMMAND_ROLEINFO_ALL')
-						: message.language.get('COMMAND_ROLEINFO_PERMISSIONS', { permissions: permissions.toArray() })
+						? message.language.get('commandRoleInfoAll')
+						: message.language.get('commandRoleInfoPermissions', { permissions: permissions.toArray() })
 				)
 		);
 	}

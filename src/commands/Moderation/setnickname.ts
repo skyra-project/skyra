@@ -8,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sn'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_SETNICKNAME_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_SETNICKNAME_EXTENDED'),
+	description: (language) => language.get('commandSetNicknameDescription'),
+	extendedHelp: (language) => language.get('commandSetNicknameExtended'),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_NICKNAMES'],

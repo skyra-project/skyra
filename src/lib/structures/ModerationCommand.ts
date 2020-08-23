@@ -1,10 +1,10 @@
-import { mergeDefault } from '@klasa/utils';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
+import { isNullOrUndefined, mergeDefault } from '@sapphire/utilities';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
-import { floatPromise, isNullOrUndefined } from '@utils/util';
+import { floatPromise } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
@@ -90,12 +90,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const cases = sorted.map(({ log }) => log.caseID);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
-				output.push(message.language.get('COMMAND_MODERATION_OUTPUT', { cases, range, users, reason: logReason }));
+				output.push(message.language.get('commandModerationOutput', { cases, range, users, reason: logReason }));
 			}
 
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
-				output.push(message.language.get('COMMAND_MODERATION_FAILED', { users }));
+				output.push(message.language.get('commandModerationFailed', { users }));
 			}
 
 			// Else send the message as usual.
@@ -117,22 +117,22 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected async checkModeratable(message: KlasaMessage, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw message.language.get('COMMAND_USERSELF');
+			throw message.language.get('commandUserself');
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw message.language.get('COMMAND_TOSKYRA');
+			throw message.language.get('commandToskyra');
 		}
 
 		const member = await message.guild!.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw message.language.get('USER_NOT_IN_GUILD');
+			if (this.requiredMember) throw message.language.get('userNotInGuild');
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER_SKYRA');
-			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get('COMMAND_ROLE_HIGHER');
+			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.get('commandRoleHigherSkyra');
+			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get('commandRoleHigher');
 		}
 
 		return member;

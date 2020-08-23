@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
-import { isNumber, makeObject, mergeDefault } from '@klasa/utils';
 import { AnyObject } from '@lib/types/util';
+import { isNumber, makeObject, mergeDefault } from '@sapphire/utilities';
 import { PostgresOptions, SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLProvider, Type } from 'klasa';
 import { Pool, QueryArrayConfig, QueryArrayResult, QueryConfig, QueryResult, QueryResultRow, Submittable } from 'pg';
 

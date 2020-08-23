@@ -1,7 +1,7 @@
-import { deepClone } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { deepClone } from '@sapphire/utilities';
 import { Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -12,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['autoroles', 'levelrole', 'lvlrole'],
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_AUTOROLE_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_AUTOROLE_EXTENDED'),
+			description: (language) => language.get('commandAutoRoleDescription'),
+			extendedHelp: (language) => language.get('commandAutoRoleExtended'),
 			permissionLevel: PermissionLevels.Administrator,
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 
 	public async show(message: KlasaMessage) {
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
-		if (!autoRoles.length) throw message.language.get('COMMAND_AUTOROLE_LIST_EMPTY');
+		if (!autoRoles.length) throw message.language.get('commandAutoRoleListEmpty');
 
 		const filtered = new Set(autoRoles);
 		const output: string[] = [];
@@ -45,17 +45,17 @@ export default class extends SkyraCommand {
 
 		if (filtered.size !== autoRoles.length)
 			await message.guild!.settings.update(GuildSettings.Roles.Auto, [...filtered], { arrayAction: 'overwrite' });
-		if (!output.length) throw message.language.get('COMMAND_AUTOROLE_LIST_EMPTY');
+		if (!output.length) throw message.language.get('commandAutoRoleListEmpty');
 		return message.sendMessage(output.join('\n'), { code: 'http' });
 	}
 
 	public async add(message: KlasaMessage, [role, points]: [Role, number]) {
-		if (typeof points === 'undefined') throw message.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
-		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
+		if (typeof points === 'undefined') throw message.language.get('commandAutoRolePointsRequired');
+		if (typeof role === 'undefined') throw message.language.get('commandRequireRole');
 
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		if (autoRoles.length && autoRoles.some((entry) => entry.id === role.id)) {
-			throw message.language.get('COMMAND_AUTOROLE_UPDATE_CONFIGURED');
+			throw message.language.get('commandAutoRoleUpdateConfigured');
 		}
 
 		const sorted = [...autoRoles, { id: role.id, points }].sort(SORT);
@@ -63,16 +63,16 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_AUTOROLE_ADD', [{ role, points }]);
+		return message.sendLocale('commandAutoRoleAdd', [{ role, points }]);
 	}
 
 	public async remove(message: KlasaMessage, [role]: [Role]) {
-		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
+		if (typeof role === 'undefined') throw message.language.get('commandRequireRole');
 
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex((entry) => entry.id === role.id);
 		if (index === -1) {
-			throw message.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
+			throw message.language.get('commandAutoRoleUpdateUnconfigured');
 		}
 
 		const deleteEntry = autoRoles[index];
@@ -81,17 +81,17 @@ export default class extends SkyraCommand {
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('COMMAND_AUTOROLE_REMOVE', [{ role, before: deleteEntry.points }]);
+		return message.sendLocale('commandAutoRoleRemove', [{ role, before: deleteEntry.points }]);
 	}
 
 	public async update(message: KlasaMessage, [role, points]: [Role, number]) {
-		if (typeof points === 'undefined') throw message.language.get('COMMAND_AUTOROLE_POINTS_REQUIRED');
-		if (typeof role === 'undefined') throw message.language.get('COMMAND_REQUIRE_ROLE');
+		if (typeof points === 'undefined') throw message.language.get('commandAutoRolePointsRequired');
+		if (typeof role === 'undefined') throw message.language.get('commandRequireRole');
 
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex((entry) => entry.id === role.id);
 		if (index === -1) {
-			throw message.language.get('COMMAND_AUTOROLE_UPDATE_UNCONFIGURED');
+			throw message.language.get('commandAutoRoleUpdateUnconfigured');
 		}
 
 		const autoRole = autoRoles[index];
@@ -101,6 +101,6 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_AUTOROLE_UPDATE', [{ role, points, before: autoRole.points }]);
+		return message.sendLocale('commandAutoRoleUpdate', [{ role, points, before: autoRole.points }]);
 	}
 }

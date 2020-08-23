@@ -1,11 +1,12 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vm'],
-	description: (language) => language.get('COMMAND_VMUTE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_VMUTE_EXTENDED'),
+	description: (language) => language.get('commandVmuteDescription'),
+	extendedHelp: (language) => language.get('commandVmuteExtended'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MUTE_MEMBERS']
@@ -34,7 +35,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && member.voice.serverMute) throw message.language.get('COMMAND_MUTE_MUTED');
+		if (member && member.voice.serverMute) throw message.language.get('commandMuteMuted');
 		return member;
 	}
 }

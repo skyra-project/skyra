@@ -19,7 +19,7 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, Constructor<IPCMo
 		const [route, payload = null] = message.data;
 		const monitor = this.get(route);
 		if (!monitor) {
-			message.reply([0, 'UNKNOWN_ROUTE']);
+			message.reply([0, 'unknownRoute']);
 			return;
 		}
 

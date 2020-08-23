@@ -21,8 +21,8 @@ const enum HigherLowerReactions {
 	aliases: ['hilo', 'higherlower', 'hl'],
 	bucket: 2,
 	cooldown: 7,
-	description: (language) => language.get('COMMAND_HIGHERLOWER_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_HIGHERLOWER_EXTENDED'),
+	description: (language) => language.get('commandHigherLowerDescription'),
+	extendedHelp: (language) => language.get('commandHigherLowerExtended'),
 	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'USE_EXTERNAL_EMOJIS'],
 	runIn: ['text'],
 	usage: '<wager:wager>'
@@ -37,12 +37,12 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
-		if (balance < wager) throw message.language.get('GAMES_NOT_ENOUGH_MONEY', { money: balance });
+		if (balance < wager) throw message.language.get('gamesNotEnoughMoney', { money: balance });
 
 		settings.money -= wager;
 		await settings.save();
 
-		const response = await message.sendLocale('COMMAND_HIGHERLOWER_LOADING');
+		const response = await message.sendLocale('commandHigherLowerLoading');
 		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
 			llrc: new LongLivingReactionCollector(
@@ -81,7 +81,10 @@ export default class extends SkyraCommand {
 
 		while (game.running) {
 			// Send the embed
-			const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_EMBED', { turn: game.turn, number: game.number });
+			const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = message.language.get('commandHigherLowerEmbed', {
+				turn: game.turn,
+				number: game.number
+			});
 			await game.response.edit(
 				null,
 				new MessageEmbed() //
@@ -144,7 +147,7 @@ export default class extends SkyraCommand {
 	private async win(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity) {
 		const { language } = message;
 
-		const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_WIN', {
+		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = message.language.get('commandHigherLowerWin', {
 			potentials: this.calculateWinnings(game.wager, game.turn),
 			number: game.number
 		});
@@ -167,7 +170,7 @@ export default class extends SkyraCommand {
 				await this.cashout(message, game, settings);
 				break;
 			case HigherLowerReactions.Ok:
-				await game.response.edit(language.get('COMMAND_HIGHERLOWER_NEWROUND'), { embed: null });
+				await game.response.edit(language.get('commandHigherLowerNewround'), { embed: null });
 				break;
 			case HigherLowerReactions.Cancel:
 				await this.end(game, message, settings, true);
@@ -189,7 +192,10 @@ export default class extends SkyraCommand {
 			await settings.save();
 		}
 
-		const { TITLE, DESCRIPTION, FOOTER } = message.language.get('COMMAND_HIGHERLOWER_LOSE', { number: game.number, losses });
+		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = message.language.get('commandHigherLowerLose', {
+			number: game.number,
+			losses
+		});
 		await game.response.edit(
 			null,
 			new MessageEmbed() //
@@ -212,7 +218,9 @@ export default class extends SkyraCommand {
 
 		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
-			const { TITLE, DESCRIPTION } = message.language.get('COMMAND_HIGHERLOWER_CANCEL', { username: message.author.username });
+			const { title: TITLE, description: DESCRIPTION } = message.language.get('commandHigherLowerCancel', {
+				username: message.author.username
+			});
 
 			await game.response.edit(
 				null,
@@ -232,8 +240,8 @@ export default class extends SkyraCommand {
 		settings.money += winnings;
 		await settings.save();
 
-		const { TITLE } = message.language.get('COMMAND_HIGHERLOWER_WIN', { potentials: 0, number: 0 });
-		const { DESCRIPTION: FOOTER } = message.language.get('COMMAND_HIGHERLOWER_CANCEL', { username: message.author.username });
+		const { title: TITLE } = message.language.get('commandHigherLowerWin', { potentials: 0, number: 0 });
+		const { description: FOOTER } = message.language.get('commandHigherLowerCancel', { username: message.author.username });
 
 		// Let the user know we're done!
 		await game.response.edit(
@@ -241,7 +249,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(game.color)
 				.setTitle(TITLE)
-				.setDescription(message.language.get('COMMAND_HIGHERLOWER_CASHOUT', { amount: winnings }))
+				.setDescription(message.language.get('commandHigherLowerCashout', { amount: winnings }))
 				.setFooter(FOOTER)
 		);
 	}

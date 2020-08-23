@@ -1,11 +1,11 @@
-import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes, IMAGE_EXTENSION, parseURL } from '@utils/util';
+import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -13,14 +13,14 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['definition', 'defination', 'dictionary'],
 	bucket: 2,
 	cooldown: 20,
-	description: (language) => language.get('COMMAND_DEFINE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_DEFINE_EXTENDED'),
+	description: (language) => language.get('commandDefineDescription'),
+	extendedHelp: (language) => language.get('commandDefineExtended'),
 	usage: '<input:string>'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, input);
@@ -33,7 +33,7 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage) {
 		const template = new MessageEmbed().setTitle(toTitleCase(results.word)).setColor(await DbSet.fetchColor(message));
 
-		if (results.pronunciation) template.addField(message.language.get('COMMAND_DEFINE_PRONOUNCIATION'), results.pronunciation, true);
+		if (results.pronunciation) template.addField(message.language.get('commandDefinePronounciation'), results.pronunciation, true);
 
 		const display = new UserRichDisplay(template).setFooterSuffix(' - Powered by Owlbot');
 
@@ -41,7 +41,7 @@ export default class extends RichDisplayCommand {
 			const definition = this.content(result.definition);
 			display.addPage((embed: MessageEmbed) => {
 				embed
-					.addField('Type', result.type ? toTitleCase(result.type) : message.language.get('COMMAND_DEFINE_UNKNOWN'), true)
+					.addField('Type', result.type ? toTitleCase(result.type) : message.language.get('commandDefineUnknown'), true)
 					.setDescription(definition);
 
 				const imageUrl = IMAGE_EXTENSION.test(result.image_url ?? '') && parseURL(result.image_url ?? '');
@@ -62,7 +62,7 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('COMMAND_DEFINE_NOTFOUND');
+			throw message.language.get('commandDefineNotfound');
 		}
 	}
 

@@ -93,8 +93,8 @@ export class MusicHandler {
 
 	public async fetch(song: string) {
 		const response = await this.getSongs(song);
-		if (response.loadType === LoadType.NO_MATCHES) throw this.guild.language.get('MUSICMANAGER_FETCH_NO_MATCHES');
-		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild.language.get('MUSICMANAGER_FETCH_LOAD_FAILED');
+		if (response.loadType === LoadType.NO_MATCHES) throw this.guild.language.get('musicManagerFetchNoMatches');
+		if (response.loadType === LoadType.LOAD_FAILED) throw this.guild.language.get('musicManagerFetchLoadFailed');
 		return response.tracks;
 	}
 
@@ -107,8 +107,8 @@ export class MusicHandler {
 	}
 
 	public async setVolume(volume: number, context: MusicHandlerRequestContext | null = null) {
-		if (volume <= 0) throw this.guild.language.get('MUSICMANAGER_SETVOLUME_SILENT');
-		if (volume > 300) throw this.guild.language.get('MUSICMANAGER_SETVOLUME_LOUD');
+		if (volume <= 0) throw this.guild.language.get('musicManagerSetvolumeSilent');
+		if (volume > 300) throw this.guild.language.get('musicManagerSetvolumeLoud');
 		await this.player!.volume(volume);
 		this.client.emit(Events.MusicSongVolumeUpdate, this, this.volume, volume, context);
 		this.volume = volume;
@@ -177,9 +177,9 @@ export class MusicHandler {
 	public async play() {
 		if (this.player) {
 			// If there is no queue then tell the user they should add some songs
-			if (!this.queue || !this.queue.length) return Promise.reject(this.guild.language.get('MUSICMANAGER_PLAY_NO_SONGS'));
+			if (!this.queue || !this.queue.length) return Promise.reject(this.guild.language.get('musicManagerPlayNoSongs'));
 			// If we're already playing then tell the user that they can listen right now
-			if (this.playing && !this.paused) return Promise.reject(this.guild.language.get('MUSICMANAGER_PLAY_PLAYING'));
+			if (this.playing && !this.paused) return Promise.reject(this.guild.language.get('musicManagerPlayPlaying'));
 			// If we're not yet playing and we're also not paused then set the volume to the default volume
 			if (!this.playing && !this.paused) this.player.volume(this.volume);
 
@@ -264,7 +264,7 @@ export class MusicHandler {
 
 		// If song was requested by someone else and the user is not an admin/DJ then restrict the use of the command
 		if (song.requester !== message.author.id && !message.member!.isDJ) {
-			throw message.language.get('COMMAND_REMOVE_DENIED');
+			throw message.language.get('commandRemoveDenied');
 		}
 
 		// Splice the song out in-place

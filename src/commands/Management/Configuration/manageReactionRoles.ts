@@ -1,9 +1,9 @@
-import { chunk } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, ReactionRole } from '@lib/types/settings/GuildSettings';
+import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
@@ -15,8 +15,8 @@ import { ArrayActions, KlasaMessage } from 'klasa';
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_MANAGEREACTIONROLES_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_MANAGEREACTIONROLES_EXTENDED'),
+	description: (language) => language.get('commandManageReactionRolesDescription'),
+	extendedHelp: (language) => language.get('commandManageReactionRolesExtended'),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -50,11 +50,11 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
-			throw message.language.get('COMMAND_MANAGEREACTIONROLES_SHOW_EMPTY');
+			throw message.language.get('commandManageReactionRolesShowEmpty');
 		}
 
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
@@ -81,17 +81,17 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 
-			return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_CHANNEL', [
+			return message.sendLocale('commandManageReactionRolesAddChannel', [
 				{ emoji: displayEmoji(reactionRole.emoji), channel: `<#${channel}>` }
 			]);
 		}
 
-		await message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD_PROMPT');
+		await message.sendLocale('commandManageReactionRolesAddPrompt');
 
 		const reaction = await LongLivingReactionCollector.collectOne(this.client, {
 			filter: (reaction) => reaction.userID === message.author.id && reaction.guild.id === message.guild!.id
 		});
-		if (!reaction) throw message.language.get('COMMAND_MANAGEREACTIONROLES_ADD_MISSING');
+		if (!reaction) throw message.language.get('commandManageReactionRolesAddMissing');
 
 		const reactionRole: ReactionRole = {
 			emoji: resolveEmoji(reaction.emoji)!,
@@ -105,13 +105,13 @@ export default class extends SkyraCommand {
 		});
 
 		const url = `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>`;
-		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_ADD', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
+		return message.sendLocale('commandManageReactionRolesAdd', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
 	}
 
 	public async remove(message: KlasaMessage, [role, messageID]: [Role, string]) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		const reactionRoleIndex = reactionRoles.findIndex((entry) => entry.message === messageID && entry.role === role.id);
-		if (reactionRoleIndex === -1) throw message.language.get('COMMAND_MANAGEREACTIONROLES_REMOVE_NOTEXISTS');
+		if (reactionRoleIndex === -1) throw message.language.get('commandManageReactionRolesRemoveNotExists');
 
 		const reactionRole = reactionRoles[reactionRoleIndex];
 		await message.guild!.settings.update(GuildSettings.ReactionRoles, reactionRole, {
@@ -122,19 +122,19 @@ export default class extends SkyraCommand {
 		const url = reactionRole.message
 			? `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>`
 			: `<#${reactionRole.channel}>`;
-		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_REMOVE', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
+		return message.sendLocale('commandManageReactionRolesRemove', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
 	}
 
 	public async reset(message: KlasaMessage) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
-			throw message.language.get('COMMAND_MANAGEREACTIONROLES_RESET_EMPTY');
+			throw message.language.get('commandManageReactionRolesResetEmpty');
 		}
 
 		await message.guild!.settings.reset(GuildSettings.ReactionRoles, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_MANAGEREACTIONROLES_RESET');
+		return message.sendLocale('commandManageReactionRolesReset');
 	}
 
 	private format(entry: ReactionRole, guild: Guild): string {

@@ -2,17 +2,17 @@
 import { AsyncQueue } from '@klasa/async-queue';
 import { Cache } from '@klasa/cache';
 import { TimerManager } from '@klasa/timer-manager';
+import { DbSet } from '@lib/structures/DbSet';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
 import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
 import { User } from 'discord.js';
-import { DbSet } from '@lib/structures/DbSet';
 import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEntity';
 
 @EntityRepository(UserEntity)
 export class UserRepository extends Repository<UserEntity> {
-	public async ensure(id: string, options?: FindOneOptions<UserEntity>) {
+	public async ensure(id: sring, options?: FindOneOptions<UserEntity>) {
 		const previous = await this.findOne(id, options);
 		if (previous) return previous;
 

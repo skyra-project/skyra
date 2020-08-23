@@ -7,10 +7,10 @@ export default class extends Serializer {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(data) ? data : `https://${data}`);
 			return hostname.length > 128
-				? Promise.reject(language.get('RESOLVER_MINMAX_MAX', { name: entry.path, max: 128, inclusive: true }))
+				? Promise.reject(language.get('resolverMinmaxMax', { name: entry.path, max: 128, inclusive: true }))
 				: Promise.resolve(hostname);
 		} catch {
-			return Promise.reject(language.get('RESOLVER_INVALID_URL', { name: entry.path }));
+			return Promise.reject(language.get('resolverInvalidUrl', { name: entry.path }));
 		}
 	}
 

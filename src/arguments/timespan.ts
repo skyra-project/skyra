@@ -1,4 +1,4 @@
-import { isNumber } from '@klasa/utils';
+import { isNumber } from '@sapphire/utilities';
 import { Argument, Duration, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
@@ -6,7 +6,7 @@ export default class extends Argument {
 		const duration = new Duration(arg);
 
 		if (duration.offset <= 0 || !isNumber(duration.fromNow.getTime())) {
-			throw message.language.get('RESOLVER_INVALID_DURATION', { name: possible.name });
+			throw message.language.get('resolverInvalidDuration', { name: possible.name });
 		}
 
 		const { min, max } = possible;

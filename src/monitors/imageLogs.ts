@@ -1,8 +1,8 @@
-import { isNumber } from '@klasa/utils';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
+import { isNumber } from '@sapphire/utilities';
 import { MessageLogsEnum } from '@utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
@@ -52,7 +52,7 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setDescription(`[${message.language.get('JUMPTO')}](${message.url})`)
+						.setDescription(`[${message.language.get('jumpTo')}](${message.url})`)
 						.setFooter(`#${(message.channel as TextChannel).name}`)
 						.attachFiles([new MessageAttachment(buffer, filename)])
 						.setImage(`attachment://${filename}`)

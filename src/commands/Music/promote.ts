@@ -10,8 +10,8 @@ import {
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('COMMAND_PROMOTE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_PROMOTE_EXTENDED'),
+	description: (language) => language.get('commandPromoteDescription'),
+	extendedHelp: (language) => language.get('commandPromoteExtended'),
 	usage: '<number:integer>'
 })
 export default class extends MusicCommand {
@@ -21,10 +21,10 @@ export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	public run(message: KlasaMessage, [index]: [number]) {
-		if (index <= 0) throw message.language.get('COMMAND_REMOVE_INDEX_INVALID');
+		if (index <= 0) throw message.language.get('commandRemoveIndexInvalid');
 
 		const { music } = message.guild!;
-		if (index > music.queue.length) throw message.language.get('COMMAND_REMOVE_INDEX_OUT', { amount: music.queue.length });
+		if (index > music.queue.length) throw message.language.get('commandRemoveIndexOut', { amount: music.queue.length });
 
 		// Promote the song to the top of the queue
 		message.guild!.music.promote(index, this.getContext(message));

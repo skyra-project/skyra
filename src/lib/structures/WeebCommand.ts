@@ -1,5 +1,5 @@
-import { mergeDefault } from '@klasa/utils';
 import { TOKENS, VERSION } from '@root/config';
+import { mergeDefault } from '@sapphire/utilities';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, LanguageKeys, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
@@ -62,7 +62,7 @@ export abstract class WeebCommand extends SkyraCommand {
 					.setURL(url)
 					.setColor(await DbSet.fetchColor(message))
 					.setImage(url)
-					.setFooter(message.language.get('POWEREDBY_WEEBSH'))
+					.setFooter(message.language.get('systemPoweredByWeebsh'))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}

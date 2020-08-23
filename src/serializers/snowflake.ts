@@ -18,6 +18,6 @@ export default class extends Serializer {
 			const snowflake = new Snowflake(data);
 			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return data;
 		}
-		throw language.get('RESOLVER_INVALID_SNOWFLAKE', { name: entry.key });
+		throw language.get('resolverInvalidSnowflake', { name: entry.key });
 	}
 }

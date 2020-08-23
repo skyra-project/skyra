@@ -3,9 +3,10 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Kitsu } from '@lib/types/definitions/Kitsu';
 import { TOKENS } from '@root/config';
+import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { cutText, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
@@ -14,8 +15,8 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_ANIME_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_ANIME_EXTENDED'),
+	description: (language) => language.get('commandAnimeDescription'),
+	extendedHelp: (language) => language.get('commandAnimeExtended'),
 	usage: '<animeName:string>'
 })
 export default class extends RichDisplayCommand {
@@ -23,11 +24,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [animeName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { hits: entries } = await this.fetchAPI(message, animeName);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries, message);
 
@@ -57,12 +58,12 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const embedData = message.language.get('COMMAND_ANIME_EMBED_DATA');
+		const embedData = message.language.get('commandAnimeEmbedData');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -89,15 +90,15 @@ export default class extends RichDisplayCommand {
 				embed
 					.setTitle(title)
 					.setURL(animeURL)
-					.setDescription(message.language.get('COMMAND_ANIME_OUTPUT_DESCRIPTION', { entry, synopsis }))
+					.setDescription(message.language.get('commandAnimeOutputDescription', { entry, synopsis }))
 					.setThumbnail(entry.posterImage?.original ?? '')
-					.addField(embedData.TYPE, message.language.get('COMMAND_ANIME_TYPES')[type.toUpperCase()] || type, true)
-					.addField(embedData.SCORE, score, true)
-					.addField(embedData.EPISODES, entry.episodeCount ? entry.episodeCount : embedData.STILL_AIRING, true)
-					.addField(embedData.EPISODE_LENGTH, message.language.duration(entry.episodeLength * 60 * 1000), true)
-					.addField(embedData.AGE_RATING, entry.ageRating, true)
-					.addField(embedData.FIRST_AIR_DATE, this.kTimestamp.display(entry.startDate * 1000), true)
-					.addField(embedData.WATCH_IT, `**[${title}](${animeURL})**`)
+					.addField(embedData.type, message.language.get('commandAnimeTypes')[type.toUpperCase()] || type, true)
+					.addField(embedData.score, score, true)
+					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
+					.addField(embedData.episodeLength, message.language.duration(entry.episodeLength * 60 * 1000), true)
+					.addField(embedData.ageRating, entry.ageRating, true)
+					.addField(embedData.firstAirDate, this.kTimestamp.display(entry.startDate * 1000), true)
+					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
 			);
 		}
 		return display;

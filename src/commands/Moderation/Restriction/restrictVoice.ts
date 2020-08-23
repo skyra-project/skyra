@@ -1,16 +1,17 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
 import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restricted-voice', 'rv'],
-	description: (language) => language.get('COMMAND_RESTRICTVOICE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_RESTRICTVOICE_EXTENDED'),
+	description: (language) => language.get('commandRestrictVoiceDescription'),
+	extendedHelp: (language) => language.get('commandRestrictVoiceExtended'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -25,19 +26,19 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedVoice);
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('COMMAND_RESTRICT_LOWLEVEL');
-			if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandRestrictLowlevel');
+			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
+					.run(message.language.get('actionSharedRoleSetupExistingName'))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.RestrictedVoice, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+			} else if (await message.ask(message.language.get('actionSharedRoleSetupNew'))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Voice);
-				await message.sendLocale('COMMAND_SUCCESS');
+				await message.sendLocale('commandSuccess');
 			} else {
-				await message.sendLocale('MONITOR_COMMAND_HANDLER_ABORTED');
+				await message.sendLocale('monitorCommandHandlerAborted');
 			}
 		}
 

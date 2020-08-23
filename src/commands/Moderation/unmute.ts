@@ -1,13 +1,14 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['um'],
-	description: (language) => language.get('COMMAND_UNMUTE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_UNMUTE_EXTENDED'),
+	description: (language) => language.get('commandUnmuteDescription'),
+	extendedHelp: (language) => language.get('commandUnmuteExtended'),
 	requiredGuildPermissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
@@ -18,7 +19,7 @@ export default class extends ModerationCommand {
 		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(this.kPath);
 		if (id && message.guild.roles.has(id)) return false;
-		throw message.language.get('GUILD_SETTINGS_ROLES_RESTRICTED', { prefix: message.guild.settings.get(GuildSettings.Prefix), path: this.kPath });
+		throw message.language.get('guildSettingsRolesRestricted', { prefix: message.guild.settings.get(GuildSettings.Prefix), path: this.kPath });
 	}
 
 	public async prehandle() {

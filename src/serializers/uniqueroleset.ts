@@ -1,5 +1,5 @@
-import { isObject } from '@klasa/utils';
 import { UniqueRoleSet } from '@lib/types/settings/GuildSettings';
+import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
@@ -14,10 +14,10 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.get('SERIALIZER_UNIQUE_ROLE_SET_INVALID');
+		throw language.get('serializerUniqueRoleSetInvalid');
 	}
 
 	public stringify(value: UniqueRoleSet, guild: Guild) {
-		return `[${value.name} -> ${value.roles.map((role) => guild.roles.get(role)?.name ?? guild.language.get('UNKNOWN_ROLE'))}]`;
+		return `[${value.name} -> ${value.roles.map((role) => guild.roles.get(role)?.name ?? guild.language.get('unknownRole'))}]`;
 	}
 }

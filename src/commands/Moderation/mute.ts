@@ -1,15 +1,16 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { ArgumentTypes, getImage } from '@utils/util';
+import { getImage } from '@utils/util';
 import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['m'],
-	description: (language) => language.get('COMMAND_MUTE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_MUTE_EXTENDED'),
+	description: (language) => language.get('commandMuteDescription'),
+	extendedHelp: (language) => language.get('commandMuteExtended'),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -24,19 +25,19 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.Muted);
 		const role = (id && message.guild.roles.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('COMMAND_MUTE_LOWLEVEL');
-			if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandMuteLowlevel');
+			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get('ACTION_SHARED_ROLE_SETUP_EXISTING_NAME'))) as [Role];
+					.run(message.language.get('actionSharedRoleSetupExistingName'))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.Muted, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.get('ACTION_SHARED_ROLE_SETUP_NEW'))) {
+			} else if (await message.ask(message.language.get('actionSharedRoleSetupNew'))) {
 				await message.guild.security.actions.muteSetup(message);
-				await message.sendLocale('COMMAND_SUCCESS');
+				await message.sendLocale('commandSuccess');
 			} else {
-				await message.sendLocale('MONITOR_COMMAND_HANDLER_ABORTED');
+				await message.sendLocale('monitorCommandHandlerAborted');
 			}
 		}
 

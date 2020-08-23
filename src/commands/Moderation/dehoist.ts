@@ -1,8 +1,8 @@
-import { codeBlock } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
 import { MessageEmbed } from 'discord.js';
@@ -11,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['dh'],
 	cooldown: 5,
-	description: (language) => language.get('COMMAND_DEHOIST_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_DEHOIST_EXTENDED'),
+	description: (language) => language.get('commandDehoistDescription'),
+	extendedHelp: (language) => language.get('commandDehoistExtended'),
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const members = message.guild!.memberTags;
-		const response = await message.sendLocale('SYSTEM_LOADING', []);
+		const response = await message.sendLocale('systemLoading', []);
 
 		for (const [memberId, memberTag] of members.manageableMembers()) {
 			const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.get('COMMAND_DEHOIST_EMBED', {
+		const embedLanguage = message.language.get('commandDehoistEmbed', {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,
@@ -64,15 +64,15 @@ export default class extends SkyraCommand {
 		});
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message)) //
-			.setTitle(embedLanguage.TITLE);
+			.setTitle(embedLanguage.title);
 
-		let description = embedLanguage.DESCRIPTION;
-		if (dehoistedMembers <= 0) description = embedLanguage.DESCRIPTION_NOONE;
+		let { description } = embedLanguage;
+		if (dehoistedMembers <= 0) description = embedLanguage.descriptionNoone;
 		if (erroredChanges.length > 0) {
-			description = embedLanguage.DESCRIPTION_WITHERRORS;
+			description = embedLanguage.descriptionWitherrors;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
-			embed.addField(embedLanguage.FIELD_ERROR_TITLE, codeblock);
+			embed.addField(embedLanguage.fieldErrorTitle, codeblock);
 		}
 		return embed.setDescription(description);
 	}

@@ -1,4 +1,4 @@
-import { codeBlock } from '@klasa/utils';
+import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 
 const kPromptOptions = { time: 30000, dispose: true, max: 1 };
@@ -24,22 +24,22 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
 async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
-	const responseMessage = await message.channel.sendLocale('PROMPTLIST_MULTIPLE_CHOICE', [{ list: codeblock, amount: possibles }]);
-	const abortOptions = message.language.get('TEXT_PROMPT_ABORT_OPTIONS');
+	const responseMessage = await message.channel.sendLocale('promptlistMultipleChoice', [{ list: codeblock, amount: possibles }]);
+	const abortOptions = message.language.get('textPromptAbortOptions');
 	const promptFilter = (m: Message) =>
 		m.author === message.author && (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null = null;
 	let n: number | undefined = undefined;
 	let attempts = 0;
 	do {
-		if (attempts !== 0) await message.sendLocale('PROMPTLIST_ATTEMPT_FAILED', [{ list: codeblock, attempt: attempts, maxAttempts: kAttempts }]);
+		if (attempts !== 0) await message.sendLocale('promptlistAttemptFailed', [{ list: codeblock, attempt: attempts, maxAttempts: kAttempts }]);
 		response = await message.channel
 			.awaitMessages(promptFilter, kPromptOptions)
 			.then((responses) => (responses.size ? responses.first()! : null));
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
-			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.get('PROMPTLIST_ABORTED');
+			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.get('promptlistAborted');
 			n = Number(response.content);
 			if (!Number.isNaN(n) && n >= 1 && n <= possibles) {
 				await responseMessage.delete();

@@ -12,8 +12,8 @@ const DAILY_PERIOD = Time.Hour * 12;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['dailies'],
 	cooldown: 30,
-	description: (language) => language.get('COMMAND_DAILY_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_DAILY_EXTENDED'),
+	description: (language) => language.get('commandDailyDescription'),
+	extendedHelp: (language) => language.get('commandDailyExtended'),
 	spam: true
 })
 export default class extends SkyraCommand {
@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
-				return message.sendLocale('COMMAND_DAILY_TIME_SUCCESS', [
+				return message.sendLocale('commandDailyTimeSuccess', [
 					{
 						amount: await this.claimDaily(message, connection, settings, now + DAILY_PERIOD)
 					}
@@ -36,14 +36,14 @@ export default class extends SkyraCommand {
 			const remaining = settings.cooldowns.daily.getTime() - now;
 
 			// If it's not under the grace period (1 hour), tell them the time
-			if (remaining > GRACE_PERIOD) return message.sendLocale('COMMAND_DAILY_TIME', [{ time: remaining }]);
+			if (remaining > GRACE_PERIOD) return message.sendLocale('commandDailyTime', [{ time: remaining }]);
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(message.language.get('COMMAND_DAILY_GRACE', { remaining }));
-			if (!accepted) return message.sendLocale('COMMAND_DAILY_GRACE_DENIED');
+			const accepted = await message.ask(message.language.get('commandDailyGrace', { remaining }));
+			if (!accepted) return message.sendLocale('commandDailyGraceDenied');
 
 			// The user accepted the grace period
-			return message.sendLocale('COMMAND_DAILY_GRACE_ACCEPTED', [
+			return message.sendLocale('commandDailyGraceAccepted', [
 				{
 					amount: await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD),
 					remaining: remaining + DAILY_PERIOD

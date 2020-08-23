@@ -4,7 +4,7 @@ import { requireMusicPaused, requireSameVoiceChannel, requireSkyraInVoiceChannel
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('COMMAND_RESUME_DESCRIPTION')
+	description: (language) => language.get('commandResumeDescription')
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

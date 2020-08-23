@@ -12,8 +12,8 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: [],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_STAR_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_STAR_EXTENDED'),
+	description: (language) => language.get('commandStarDescription'),
+	extendedHelp: (language) => language.get('commandStarExtended'),
 	requiredPermissions: ['EMBED_LINKS'],
 	requiredSettings: [],
 	runIn: ['text'],
@@ -47,19 +47,19 @@ export default class extends SkyraCommand {
 		const starboardData = await qb.orderBy('RANDOM()').limit(1).getOne();
 
 		// If there is no starboard message, return no stars
-		if (!starboardData) return message.sendLocale('COMMAND_STAR_NOSTARS');
+		if (!starboardData) return message.sendLocale('commandStarNostars');
 
 		// If there is no configured starboard channel, return no stars
 		// TODO(kyranet): Change this to a more descriptive message
 		const starboardChannelID = message.guild!.settings.get(GuildSettings.Starboard.Channel);
-		if (!starboardChannelID) return message.sendLocale('COMMAND_STAR_NOSTARS');
+		if (!starboardChannelID) return message.sendLocale('commandStarNostars');
 
 		// If there is no configured starboard channel, return no stars
 		// TODO(kyranet): Change this to a more descriptive message
 		const starboardChannel = message.guild!.channels.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {
 			await message.guild!.settings.reset(GuildSettings.Starboard.Channel);
-			return message.sendLocale('COMMAND_STAR_NOSTARS');
+			return message.sendLocale('commandStarNostars');
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 		if (user) qb.andWhere('user_id = :user', { user: user.id });
 
 		const starboardMessages = await qb.getMany();
-		if (starboardMessages.length === 0) return message.sendLocale('COMMAND_STAR_NOSTARS');
+		if (starboardMessages.length === 0) return message.sendLocale('commandStarNostars');
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
@@ -107,13 +107,13 @@ export default class extends SkyraCommand {
 				if (postedAt < minimumPostedAt) continue;
 			}
 			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
-			const maskedUrl = `[${message.language.get('JUMPTO')}](${url})`;
+			const maskedUrl = `[${message.language.get('jumpTo')}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
 			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;
 		}
 
-		if (totalStars === 0) return message.sendLocale('COMMAND_STAR_NOSTARS');
+		if (totalStars === 0) return message.sendLocale('commandStarNostars');
 
 		const totalMessages = topMessages.length;
 		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
@@ -123,17 +123,15 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(Colors.Amber)
-				.addField(i18n('COMMAND_STAR_STATS'), i18n('COMMAND_STAR_STATS_DESCRIPTION', { messages: totalMessages, stars: totalStars }))
+				.addField(i18n('commandStarStats'), i18n('commandStarStatsDescription', { messages: totalMessages, stars: totalStars }))
 				.addField(
-					i18n('COMMAND_STAR_TOPSTARRED'),
-					topThreeMessages.map(([mID, stars], index) =>
-						i18n('COMMAND_STAR_TOPSTARRED_DESCRIPTION', { medal: MEDALS[index], id: mID, stars })
-					)
+					i18n('commandStarTopstarred'),
+					topThreeMessages.map(([mID, stars], index) => i18n('commandStarTopstarredDescription', { medal: MEDALS[index], id: mID, stars }))
 				)
 				.addField(
-					i18n('COMMAND_STAR_TOPRECEIVERS'),
+					i18n('commandStarTopreceivers'),
 					topThreeReceivers.map(([uID, stars], index) =>
-						i18n('COMMAND_STAR_TOPRECEIVERS_DESCRIPTION', { medal: MEDALS[index], id: uID, stars })
+						i18n('commandStarTopreceiversDescription', { medal: MEDALS[index], id: uID, stars })
 					)
 				)
 				.setTimestamp()

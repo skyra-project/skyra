@@ -2,8 +2,9 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { cutText } from '@sapphire/utilities';
 import { MessageLogsEnum } from '@utils/constants';
-import { cutText, getContent, getImage } from '@utils/util';
+import { getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, KlasaMessage } from 'klasa';
 
@@ -41,7 +42,7 @@ export default class extends Event {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(cutText(getContent(message) || '', 1900))
-				.setFooter(`${message.language.get('EVENTS_MESSAGE_DELETE')} • ${channel.name}`)
+				.setFooter(`${message.language.get('eventsMessageDelete')} • ${channel.name}`)
 				.setImage(getImage(message)!)
 				.setTimestamp()
 		);

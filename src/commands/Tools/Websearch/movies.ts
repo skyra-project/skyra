@@ -3,17 +3,18 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { TOKENS } from '@root/config';
+import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cutText, fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['movie', 'tmdb'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_MOVIES_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_MOVIES_EXTENDED'),
+	description: (language) => language.get('commandMoviesDescription'),
+	extendedHelp: (language) => language.get('commandMoviesExtended'),
 	usage: '<movie:str> [year:str]',
 	usageDelim: 'y:'
 })
@@ -22,11 +23,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [movie, year]: [string, string?]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, movie, year);
-		if (!entries.length) throw message.language.get('SYSTEM_NO_RESULTS');
+		if (!entries.length) throw message.language.get('systemNoResults');
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -43,7 +44,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbMovieList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
@@ -54,13 +55,13 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbMovie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	}
 
 	private async buildDisplay(movies: Tmdb.TmdbMovieList['results'], message: KlasaMessage) {
-		const titles = message.language.get('COMMAND_MOVIES_TITLES');
-		const fieldsData = message.language.get('COMMAND_MOVIES_DATA');
+		const titles = message.language.get('commandMoviesTitles');
+		const fieldsData = message.language.get('commandMoviesData');
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(message, movie.id)));
@@ -74,21 +75,21 @@ export default class extends RichDisplayCommand {
 					.setThumbnail(`https://image.tmdb.org/t/p/original${movie.poster_path}`)
 					.setDescription(cutText(movie.overview, 750))
 					.addField(
-						titles.RUNTIME,
-						movie.runtime ? message.language.duration(movie.runtime * 60 * 1000) : fieldsData.MOVIE_IN_PRODUCTION,
+						titles.runtime,
+						movie.runtime ? message.language.duration(movie.runtime * 60 * 1000) : fieldsData.movieInProduction,
 						true
 					)
-					.addField(titles.USER_SCORE, movie.vote_average ? movie.vote_average : fieldsData.MOVIE_IN_PRODUCTION, true)
-					.addField(titles.STATUS, movie.status, true)
-					.addField(titles.RELEASE_DATE, this.releaseDateTimestamp.displayUTC(movie.release_date), true)
+					.addField(titles.userScore, movie.vote_average ? movie.vote_average : fieldsData.movieInProduction, true)
+					.addField(titles.status, movie.status, true)
+					.addField(titles.releaseDate, this.releaseDateTimestamp.displayUTC(movie.release_date), true)
 					.addField(
-						titles.IMDB_PAGE,
-						movie.imdb_id ? `[${fieldsData.LINK_CLICK_HERE}](http://www.imdb.com/title/${movie.imdb_id})` : fieldsData.NONE,
+						titles.imdbPage,
+						movie.imdb_id ? `[${fieldsData.linkClickHere}](http://www.imdb.com/title/${movie.imdb_id})` : fieldsData.none,
 						true
 					)
-					.addField(titles.HOME_PAGE, movie.homepage ? `[${fieldsData.LINK_CLICK_HERE}](${movie.homepage})` : fieldsData.NONE, true)
-					.addField(titles.COLLECTION, movie.belongs_to_collection ? movie.belongs_to_collection.name : fieldsData.NOT_PART_OF_COLLECTION)
-					.addField(titles.GENRES, movie.genres.length ? movie.genres.map((genre) => genre.name).join(', ') : fieldsData.NO_GENRES)
+					.addField(titles.homePage, movie.homepage ? `[${fieldsData.linkClickHere}](${movie.homepage})` : fieldsData.none, true)
+					.addField(titles.collection, movie.belongs_to_collection ? movie.belongs_to_collection.name : fieldsData.notPartOfCollection)
+					.addField(titles.genres, movie.genres.length ? movie.genres.map((genre) => genre.name).join(', ') : fieldsData.noGenres)
 			);
 		}
 

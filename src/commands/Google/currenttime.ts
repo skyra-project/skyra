@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ctime'],
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_CURRENTTIME_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_CURRENTTIME_EXTENDED'),
+			description: (language) => language.get('commandCurrentTimeDescription'),
+			extendedHelp: (language) => language.get('commandCurrentTimeExtended'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<location:string>'
 		});
@@ -24,18 +24,18 @@ export default class extends SkyraCommand {
 
 		if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, this.client));
 
-		const TITLES = message.language.get('COMMAND_CURRENTTIME_TITLES', { dst: Number(timeData.dst) });
+		const titles = message.language.get('commandCurrentTimeTitles', { dst: Number(timeData.dst) });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)
 				.setDescription(
 					[
-						`**${TITLES.CURRENT_TIME}**: ${timeData.formatted.split(' ')[1]}`,
-						`**${TITLES.CURRENT_DATE}**: ${timeData.formatted.split(' ')[0]}`,
-						`**${TITLES.COUNTRY}**: ${timeData.countryName}`,
-						`**${TITLES.GMT_OFFSET}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
-						`${TITLES.DST}`
+						`**${titles.currentTime}**: ${timeData.formatted.split(' ')[1]}`,
+						`**${titles.currentDate}**: ${timeData.formatted.split(' ')[0]}`,
+						`**${titles.country}**: ${timeData.countryName}`,
+						`**${titles.gmsOffset}**: ${message.language.duration(timeData.gmtOffset * 1000)}`,
+						`${titles.dst}`
 					].join('\n')
 				)
 		);
@@ -50,7 +50,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
 		return fetch<TimeResult>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get('COMMAND_CURRENTTIME_LOCATION_NOT_FOUND');
+			throw message.language.get('commandCurrentTimeLocationNotFound');
 		});
 	}
 }

@@ -21,15 +21,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		if (!user) throw message.language.get('USER_NOT_EXISTENT');
+		if (!user) throw message.language.get('userNotExistent');
 		const member = await message.guild!.members.fetch(user.id).catch(() => {
-			throw message.language.get('USER_NOT_IN_GUILD');
+			throw message.language.get('userNotInGuild');
 		});
 
 		const { permissions } = member;
 		const list = [ZeroWidhSpace];
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-			list.push(message.language.get('COMMAND_PERMISSIONS_ALL'));
+			list.push(message.language.get('commandPermissionsAll'));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
 				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${message.language.PERMISSIONS[flag] || flag}`);
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setTitle(message.language.get('COMMAND_PERMISSIONS', { username: user.tag, id: user.id }))
+			.setTitle(message.language.get('commandPermissions', { username: user.tag, id: user.id }))
 			.setDescription(list.join('\n'));
 
 		return message.sendMessage({ embed });

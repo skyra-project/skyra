@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cutText, fetch, FetchResultTypes } from '@utils/util';
+import { cutText } from '@sapphire/utilities';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 
@@ -9,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['wiki'],
 			cooldown: 15,
-			description: (language) => language.get('COMMAND_WIKIPEDIA_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_WIKIPEDIA_EXTENDED'),
+			description: (language) => language.get('commandWikipediaDescription'),
+			extendedHelp: (language) => language.get('commandWikipediaExtended'),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<query:string>'
 		});
@@ -30,7 +31,7 @@ export default class extends SkyraCommand {
 		const text = await fetch<WikipediaResultOk>(url, FetchResultTypes.JSON);
 
 		if (text.query.pageids[0] === '-1') {
-			throw message.language.get('COMMAND_WIKIPEDIA_NOTFOUND');
+			throw message.language.get('commandWikipediaNotfound');
 		}
 
 		const pageURL = `https://en.wikipedia.org/wiki/${url.searchParams.get('titles')}`;
@@ -54,7 +55,7 @@ export default class extends SkyraCommand {
 
 	private content(definition: string, url: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('SYSTEM_TEXT_TRUNCATED', { definition: cutText(definition, 750), url });
+		return i18n.get('systemTextTruncated', { definition: cutText(definition, 750), url });
 	}
 }
 

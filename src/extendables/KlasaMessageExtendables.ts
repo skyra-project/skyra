@@ -1,6 +1,6 @@
-import { sleep } from '@klasa/utils';
 import { Events } from '@lib/types/Enums';
 import { APIErrors } from '@utils/constants';
+import { sleep } from '@utils/sleep';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 
@@ -13,7 +13,7 @@ export default class extends Extendable {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
-		if (responses.size === 0) throw this.language.get('MESSAGE_PROMPT_TIMEOUT');
+		if (responses.size === 0) throw this.language.get('messagePromptTimeout');
 		return responses.first();
 	}
 

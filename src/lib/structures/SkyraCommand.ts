@@ -1,4 +1,4 @@
-import { mergeDefault } from '@klasa/utils';
+import { mergeDefault } from '@sapphire/utilities';
 import { PermissionResolvable, Permissions } from 'discord.js';
 import { Command, CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 

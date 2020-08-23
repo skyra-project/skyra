@@ -4,8 +4,8 @@ import { requireDj, requireSkyraInVoiceChannel } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('COMMAND_LEAVE_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_LEAVE_EXTENDED'),
+	description: (language) => language.get('commandLeaveDescription'),
+	extendedHelp: (language) => language.get('commandLeaveExtended'),
 	flagSupport: true
 })
 export default class extends MusicCommand {

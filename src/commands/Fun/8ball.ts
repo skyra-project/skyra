@@ -1,16 +1,16 @@
-import { codeBlock } from '@klasa/utils';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { codeBlock } from '@sapphire/utilities';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 
-const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HOW_MANY', 'HOW_MUCH', 'WHAT', 'WHEN', 'WHO', 'WHY'];
+const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['howMany', 'howMuch', 'what', 'when', 'who', 'why'];
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('COMMAND_8BALL_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_8BALL_EXTENDED'),
+			description: (language) => language.get('command8ballDescription'),
+			extendedHelp: (language) => language.get('command8ballExtended'),
 			spam: true,
 			usage: '<question:string>'
 		});
@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		return message.sendLocale(
-			'COMMAND_8BALL_OUTPUT',
+			'command8ballOutput',
 			[
 				{
 					author: message.author.toString(),
@@ -31,13 +31,13 @@ export default class extends SkyraCommand {
 	}
 
 	private generator(input: string, i18n: Language) {
-		const prefixes = ((i18n.language.COMMAND_8BALL_QUESTIONS ||
-			this.client.languages.default.language.COMMAND_8BALL_QUESTIONS) as unknown) as EightBallLanguage;
+		const prefixes = ((i18n.language.command8ballQuestions ||
+			this.client.languages.default.language.command8ballQuestions) as unknown) as EightBallLanguage;
 
 		for (const key of QUESTION_KEYS) {
-			if (this.check(prefixes[key], input)) return i18n.get(`COMMAND_8BALL_${key}` as any);
+			if (this.check(prefixes[key], input)) return i18n.get(`command8ball${key}` as any);
 		}
-		return i18n.get('COMMAND_8BALL_ELSE');
+		return i18n.get('command8ballElse');
 	}
 
 	private check(prefix: string | RegExp, input: string) {
@@ -46,10 +46,10 @@ export default class extends SkyraCommand {
 }
 
 interface EightBallLanguage {
-	WHEN: string | RegExp;
-	WHAT: string | RegExp;
-	HOW_MUCH: string | RegExp;
-	HOW_MANY: string | RegExp;
-	WHY: string | RegExp;
-	WHO: string | RegExp;
+	when: string | RegExp;
+	what: string | RegExp;
+	howMuch: string | RegExp;
+	howMany: string | RegExp;
+	why: string | RegExp;
+	who: string | RegExp;
 }

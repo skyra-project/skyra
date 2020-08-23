@@ -15,8 +15,8 @@ export default class extends SkyraCommand {
 			bucket: 2,
 			cooldown: 10,
 			permissionLevel: PermissionLevels.Administrator,
-			description: (language) => language.get('COMMAND_PERMISSIONNODES_DESCRIPTION'),
-			extendedHelp: (language) => language.get('COMMAND_PERMISSIONNODES_EXTENDED'),
+			description: (language) => language.get('commandPermissionNodesDescription'),
+			extendedHelp: (language) => language.get('commandPermissionNodesExtended'),
 			subcommands: true,
 			usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
 			usageDelim: ' '
@@ -28,12 +28,12 @@ export default class extends SkyraCommand {
 		}).createCustomResolver('type', (arg, _possible, message, [action]: string[]) => {
 			if (action === 'reset' || action === 'show') return undefined;
 			if (/allow|deny/i.test(arg)) return arg.toLowerCase();
-			throw message.language.get('COMMAND_PERMISSIONNODES_INVALID_TYPE');
+			throw message.language.get('commandPermissionNodesInvalidType');
 		});
 	}
 
 	public async add(message: KlasaMessage, [target, action, command]: [Role | KeyedMemberTag, 'allow' | 'deny', Command]) {
-		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
+		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
@@ -60,20 +60,20 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		return message.sendLocale('COMMAND_PERMISSIONNODES_ADD');
+		return message.sendLocale('commandPermissionNodesAdd');
 	}
 
 	public async remove(message: KlasaMessage, [target, action, command]: [Role | KeyedMemberTag, 'allow' | 'deny', Command]) {
-		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
+		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-		if (nodeIndex === -1) throw message.language.get('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
+		if (nodeIndex === -1) throw message.language.get('commandPermissionNodesNodeNotExists');
 
 		const previous = nodes[nodeIndex];
 		const commandIndex = previous[action].indexOf(command.name);
-		if (commandIndex === -1) throw message.language.get('COMMAND_PERMISSIONNODES_COMMAND_NOT_EXISTS');
+		if (commandIndex === -1) throw message.language.get('commandPermissionNodesCommandNotExists');
 
 		const node: Nodes[number] = {
 			id: target.id,
@@ -86,16 +86,16 @@ export default class extends SkyraCommand {
 			arrayIndex: nodeIndex,
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_PERMISSIONNODES_REMOVE');
+		return message.sendLocale('commandPermissionNodesRemove');
 	}
 
 	public async reset(message: KlasaMessage, [target]: [Role | KeyedMemberTag]) {
-		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
+		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
 		const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-		if (nodeIndex === -1) throw message.language.get('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
+		if (nodeIndex === -1) throw message.language.get('commandPermissionNodesNodeNotExists');
 
 		const clone = nodes.slice();
 		clone.splice(nodeIndex, 1);
@@ -103,19 +103,19 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('COMMAND_PERMISSIONNODES_RESET');
+		return message.sendLocale('commandPermissionNodesReset');
 	}
 
 	public show(message: KlasaMessage, [target]: [Role | KeyedMemberTag]) {
-		if (!this.checkPermissions(message, target)) throw message.language.get('COMMAND_PERMISSIONNODES_HIGHER');
+		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
 		const node = nodes.find((n) => n.id === target.id);
-		if (typeof node === 'undefined') throw message.language.get('COMMAND_PERMISSIONNODES_NODE_NOT_EXISTS');
+		if (typeof node === 'undefined') throw message.language.get('commandPermissionNodesNodeNotExists');
 
-		return message.sendLocale('COMMAND_PERMISSIONNODES_SHOW', [
+		return message.sendLocale('commandPermissionNodesShow', [
 			{
 				name: isRole ? (target as Role).name : (target as KeyedMemberTag).nickname || this.client.userTags.get(target.id)!.username,
 				allow: node.allow.map((command) => `\`${command}\``),

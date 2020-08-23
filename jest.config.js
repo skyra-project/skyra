@@ -18,6 +18,7 @@ module.exports = {
 		}
 	},
 	coveragePathIgnorePatterns: [
+		'<rootDir>/tests/mocks',
 		'<rootDir>/src/arguments',
 		'<rootDir>/src/commands',
 		'<rootDir>/src/events',
@@ -35,7 +36,6 @@ module.exports = {
 		'<rootDir>/src/config.ts',
 		'<rootDir>/src/config.example.ts',
 		'<rootDir>/src/Skyra.ts',
-		'<rootDir>/tests/testutils.ts',
 		'<rootDir>/src/lib/structures',
 		'<rootDir>/src/lib/util/Models'
 	]

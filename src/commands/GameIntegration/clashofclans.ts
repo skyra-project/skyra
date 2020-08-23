@@ -1,8 +1,8 @@
-import { toTitleCase } from '@klasa/utils';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
+import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
@@ -21,8 +21,8 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_CLASHOFCLANS_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_CLASHOFCLANS_EXTENDED'),
+	description: (language) => language.get('commandClashofclansDescription'),
+	extendedHelp: (language) => language.get('commandClashofclansExtended'),
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
@@ -38,22 +38,22 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 			if (action === 'player') {
 				if (kPlayerTagRegex.test(arg)) return arg;
-				throw message.language.get('COMMAND_CLASHOFCLANS_INVALID_PLAYER_TAG', { playertag: arg });
+				throw message.language.get('commandClashofclansInvalidPlayerTag', { playertag: arg });
 			}
 
-			throw message.language.get('SYSTEM_QUERY_FAIL');
+			throw message.language.get('systemQueryFail');
 		}
 	]
 ])
 export default class extends RichDisplayCommand {
 	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('SYSTEM_LOADING')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
 		);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(message, clan, ClashOfClansFetchCategories.CLANS);
 
-		if (!clanData.length) throw message.language.get('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan });
+		if (!clanData.length) throw message.language.get('commandClashOfClansClansQueryFail', { clan });
 
 		const display = await this.buildClanDisplay(message, clanData);
 
@@ -87,13 +87,13 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.get('COMMAND_CLASHOFCLANS_CLANS_QUERY_FAIL', { clan: query });
-			else throw message.language.get('COMMAND_CLASHOFCLANS_PLAYERS_QUERY_FAIL', { playertag: query });
+			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.get('commandClashOfClansClansQueryFail', { clan: query });
+			else throw message.language.get('commandClashofclansPlayersQueryFail', { playertag: query });
 		}
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, player: ClashOfClans.Player) {
-		const TITLES = message.language.get('COMMAND_CLASHOFCLANS_PLAYER_EMBED_TITLES');
+		const titles = message.language.get('commandClashofclansPlayerEmbedTitles');
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -107,22 +107,22 @@ export default class extends RichDisplayCommand {
 			)
 			.setDescription(
 				[
-					`**${TITLES.XP_LEVEL}**: ${player.expLevel}`,
-					`**${TITLES.BUILDER_HALL_LEVEL}**: ${player.builderHallLevel}`,
-					`**${TITLES.TOWNHALL_LEVEL}**: ${player.townHallLevel}`,
-					`**${TITLES.TOWNHALL_WEAPON_LEVEL}**: ${player.townHallWeaponLevel ?? TITLES.NO_TOWNHALL_WEAPON_LEVEL}`,
-					`**${TITLES.TROPHIES}**: ${player.trophies}`,
-					`**${TITLES.BEST_TROPHIES}**: ${player.bestTrophies}`,
-					`**${TITLES.WAR_STARS}**: ${player.warStars}`,
-					`**${TITLES.ATTACK_WINS}**: ${player.attackWins}`,
-					`**${TITLES.DEFENSE_WINS}**: ${player.defenseWins}`,
-					`**${TITLES.AMOUNT_OF_ACHIEVEMENTS}**: ${player.achievements.length}`,
-					`**${TITLES.VERSUS_TROPHIES}**: ${player.versusTrophies}`,
-					`**${TITLES.BEST_VERSUS_TROPHIES}**: ${player.bestVersusTrophies}`,
-					`**${TITLES.VERSUS_BATTLE_WINS}**: ${player.versusBattleWins}`,
-					`**${TITLES.CLAN_ROLE}**: ${toTitleCase(player.role ?? TITLES.NO_ROLE)}`,
-					`**${TITLES.CLAN_NAME}**: ${player.clan?.name ?? TITLES.NO_CLAN}`,
-					`**${TITLES.LEAGUE_NAME}**: ${player.league?.name ?? TITLES.NO_LEAGUE}`
+					`**${titles.xpLevel}**: ${player.expLevel}`,
+					`**${titles.builderHallLevel}**: ${player.builderHallLevel}`,
+					`**${titles.townhallLevel}**: ${player.townHallLevel}`,
+					`**${titles.townhallWeaponLevel}**: ${player.townHallWeaponLevel ?? titles.noTownhallWeaponLevel}`,
+					`**${titles.trophies}**: ${player.trophies}`,
+					`**${titles.bestTrophies}**: ${player.bestTrophies}`,
+					`**${titles.warStars}**: ${player.warStars}`,
+					`**${titles.attackWins}**: ${player.attackWins}`,
+					`**${titles.defenseWins}**: ${player.defenseWins}`,
+					`**${titles.amountOfAchievements}**: ${player.achievements.length}`,
+					`**${titles.versusTrophies}**: ${player.versusTrophies}`,
+					`**${titles.bestVersusTrophies}**: ${player.bestVersusTrophies}`,
+					`**${titles.versusBattleWins}**: ${player.versusBattleWins}`,
+					`**${titles.clanRole}**: ${toTitleCase(player.role ?? titles.noRole)}`,
+					`**${titles.clanName}**: ${player.clan?.name ?? titles.noClan}`,
+					`**${titles.leagueName}**: ${player.league?.name ?? titles.noLeague}`
 				].join('\n')
 			);
 	}
@@ -131,7 +131,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
-			const TITLES = message.language.get('COMMAND_CLASHOFCLANS_CLAN_EMBED_TITLES', { isWarLogPublic: clan.isWarLogPublic });
+			const titles = message.language.get('commandClashofclansClanEmbedTitles', { isWarLogPublic: clan.isWarLogPublic });
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)
@@ -143,23 +143,23 @@ export default class extends RichDisplayCommand {
 					)
 					.setDescription(
 						[
-							`**${TITLES.CLAN_LEVEL}**: ${clan.clanLevel}`,
-							`**${TITLES.CLAN_POINTS}**: ${clan.clanPoints}`,
-							`**${TITLES.CLAN_VERSUS_POINTS}**: ${clan.clanVersusPoints}`,
-							`**${TITLES.AMOUNT_OF_MEMBERS}**: ${clan.members}`,
-							clan.description ? `**${TITLES.DESCRIPTION}**: ${clan.description}` : null,
+							`**${titles.clanLevel}**: ${clan.clanLevel}`,
+							`**${titles.clanPoints}**: ${clan.clanPoints}`,
+							`**${titles.clanVersusPoints}**: ${clan.clanVersusPoints}`,
+							`**${titles.amountOfMembers}**: ${clan.members}`,
+							clan.description ? `**${titles.description}**: ${clan.description}` : null,
 							clan.location
-								? `**${TITLES.LOCATION_NAME}**: ${
+								? `**${titles.locationName}**: ${
 										clan.location.isCountry ? `:flag_${clan.location.countryCode.toLowerCase()}:` : ''
 								  } ${clan.location.name}`
 								: null,
 							// Adding TITLES.UNKNOWN in here in case the API changes the designation for war frequency
-							`**${TITLES.WAR_FREQUENCY}**: ${TITLES.WAR_FREQUENCY_DESCR[clan.warFrequency] ?? TITLES.UNKNOWN}`,
-							`**${TITLES.WAR_WIN_STREAK}**: ${clan.warWinStreak}`,
-							`**${TITLES.WAR_WINS}**: ${clan.warWins}`,
-							`**${TITLES.WAR_TIES}**: ${clan.warTies ?? TITLES.UNKNOWN}`,
-							`**${TITLES.WAR_LOSSES}**: ${clan.warLosses ?? TITLES.UNKNOWN}`,
-							`**${TITLES.WAR_LOG_PUBLIC}**: ${TITLES.WAR_LOG_PUBLIC_DESCR}`
+							`**${titles.warFrequency}**: ${titles.warFrequencyDescr[clan.warFrequency] ?? titles.unknown}`,
+							`**${titles.warWinStreak}**: ${clan.warWinStreak}`,
+							`**${titles.warWins}**: ${clan.warWins}`,
+							`**${titles.warTies}**: ${clan.warTies ?? titles.unknown}`,
+							`**${titles.warLosses}**: ${clan.warLosses ?? titles.unknown}`,
+							`**${titles.warLogPublic}**: ${titles.warLogPublicDescr}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

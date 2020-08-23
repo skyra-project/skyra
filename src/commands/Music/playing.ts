@@ -7,7 +7,7 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['np', 'nowplaying'],
-	description: (language) => language.get('COMMAND_PLAYING_DESCRIPTION'),
+	description: (language) => language.get('commandPlayingDescription'),
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends MusicCommand {
@@ -17,15 +17,15 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage) {
 		const queue = message.guild!.music;
 		const song = queue.song || (queue.queue.length ? queue.queue[0] : null);
-		if (!song) throw message.language.get('COMMAND_PLAYING_QUEUE_EMPTY');
-		if (!queue.playing) throw message.language.get('COMMAND_PLAYING_QUEUE_NOT_PLAYING');
+		if (!song) throw message.language.get('commandPlayingQueueEmpty');
+		if (!queue.playing) throw message.language.get('commandPlayingQueueNotPlaying');
 
 		const embed = new MessageEmbed()
 			.setColor(12916736)
 			.setTitle(song.title)
 			.setURL(song.url)
 			.setAuthor(song.author)
-			.setDescription(message.language.get('COMMAND_PLAYING_DURATION', { duration: song.friendlyDuration }))
+			.setDescription(message.language.get('commandPlayingDuration', { duration: song.friendlyDuration }))
 			.setTimestamp();
 
 		const imageUrl = this.getSongImage(song.url, song.identifier);

@@ -13,8 +13,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('COMMAND_SHIP_DESCRIPTION'),
-	extendedHelp: (language) => language.get('COMMAND_SHIP_EXTENDED'),
+	description: (language) => language.get('commandShipDescription'),
+	extendedHelp: (language) => language.get('commandShipExtended'),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	usage: '(firstUser:user) (secondUser:user)',
@@ -77,12 +77,12 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const DATA = message.language.get('COMMAND_SHIP_DATA', {
+		const data = message.language.get('commandShipData', {
 			romeoUsername: firstUserTag.username,
 			julietUsername: secondUserTag.username,
 			shipName: this.getShipName([...firstUserTag.username], [...secondUserTag.username])
 		});
-		return message.sendMessage([DATA.TITLE, DATA.DESCRIPTION].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
+		return message.sendMessage([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */

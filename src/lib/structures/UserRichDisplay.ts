@@ -1,4 +1,4 @@
-import { mergeDefault } from '@klasa/utils';
+import { mergeDefault } from '@sapphire/utilities';
 import { Time } from '@utils/constants';
 import { Client, DMChannel, MessageEmbed, MessageReaction, Permissions, TextChannel, User } from 'discord.js';
 import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';

@@ -46,19 +46,19 @@ export default class extends Event {
 		const isModerationAction = await this.isModerationAction(guild, data);
 
 		const footer = isModerationAction.kicked
-			? guild.language.get('EVENTS_GUILDMEMBERKICKED')
+			? guild.language.get('eventsGuildMemberKicked')
 			: isModerationAction.banned
-			? guild.language.get('EVENTS_GUILDMEMBERBANNED')
+			? guild.language.get('eventsGuildMemberBanned')
 			: isModerationAction.softbanned
-			? guild.language.get('EVENTS_GUILDMEMBERSOFTBANNED')
-			: guild.language.get('EVENTS_GUILDMEMBERREMOVE');
+			? guild.language.get('eventsGuildMemberSoftBanned')
+			: guild.language.get('eventsGuildMemberRemove');
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(
-					guild.language.get('EVENTS_GUILDMEMBERREMOVE_DESCRIPTION', {
+					guild.language.get('eventsGuildMemberRemoveDescription', {
 						mention: `<@${data.user.id}>`,
 						time: this.processJoinedTimestamp(memberTag)
 					})

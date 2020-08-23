@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { isNumber } from '@klasa/utils';
 import type { ModerationManager, ModerationManagerUpdateData } from '@lib/structures/managers/ModerationManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import type { AnyObject } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
+import { isNumber, parseURL } from '@sapphire/utilities';
 import { Moderation, Time } from '@utils/constants';
-import { parseURL } from '@utils/util';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { Duration } from 'klasa';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
@@ -308,8 +307,8 @@ export class ModerationEntity extends BaseEntity {
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
 		const prefix = manager.guild.settings.get(GuildSettings.Prefix);
-		const formattedDuration = this.duration ? manager.guild.language.get('MODERATION_LOG_EXPIRES_IN', { duration: this.duration }) : '';
-		const description = manager.guild.language.get('MODERATION_LOG_DESCRIPTION', {
+		const formattedDuration = this.duration ? manager.guild.language.get('moderationLogExpiresIn', { duration: this.duration }) : '';
+		const description = manager.guild.language.get('moderationLogDescription', {
 			data: {
 				type: this.title,
 				userName: user.username,
@@ -327,7 +326,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
 			.setFooter(
-				manager.guild.language.get('MODERATION_LOG_FOOTER', { caseID: this.caseID }),
+				manager.guild.language.get('moderationLogFooter', { caseID: this.caseID }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

@@ -14,9 +14,9 @@ import {
 	Entity,
 	JoinTable,
 	ManyToMany,
+	OneToMany,
 	OneToOne,
-	PrimaryColumn,
-	OneToMany
+	PrimaryColumn
 } from 'typeorm';
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';

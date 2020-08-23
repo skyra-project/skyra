@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColu
 import { UserEntity } from './UserEntity';
 
 @Entity('user_game_integration', { schema: 'public' })
-export class UserGameIntegrationEntity extends BaseEntity {
+export class UserGameIntegrationEntity<T> extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	public id!: number;
 
@@ -14,5 +14,5 @@ export class UserGameIntegrationEntity extends BaseEntity {
 	public game!: string;
 
 	@Column('jsonb')
-	public extraData!: unknown;
+	public extraData?: T;
 }

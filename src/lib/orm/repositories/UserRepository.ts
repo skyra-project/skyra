@@ -2,8 +2,11 @@
 import { AsyncQueue } from '@klasa/async-queue';
 import { Cache } from '@klasa/cache';
 import { TimerManager } from '@klasa/timer-manager';
+import { DbSet } from '@lib/structures/DbSet';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
+import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEntity';
 import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
+import { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';
 
@@ -51,6 +54,24 @@ export class UserRepository extends Repository<UserEntity> {
 		}
 
 		return user as UserEntity & { profile: NonNullable<UserEntity['profile']>; cooldowns: NonNullable<UserEntity['cooldowns']> };
+	}
+
+	public async fetchIntegration<T>(gameName: string, user: User): Promise<UserGameIntegrationEntity<T>> {
+		const { userGameIntegrations } = await DbSet.connect();
+		let gameIntegration = (await userGameIntegrations.findOne({
+			where: {
+				user: {
+					id: user.id
+				}
+			}
+		})) as UserGameIntegrationEntity<T>;
+
+		if (gameIntegration) return gameIntegration;
+
+		gameIntegration = new UserGameIntegrationEntity<T>();
+		gameIntegration.game = gameName;
+		gameIntegration.user = await this.ensure(user.id);
+		return gameIntegration;
 	}
 
 	public async fetchSpouse(a: string, b: string): Promise<RawSpouseEntry | null> {

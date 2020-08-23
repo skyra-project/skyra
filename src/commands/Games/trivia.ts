@@ -29,7 +29,7 @@ import { KlasaMessage } from 'klasa';
 		'timespan-seconds',
 		(arg, _, message) => {
 			let duration = message.client.arguments.get('timespan')!.run(arg, _, message);
-			// In case a duration of more than 1 minute was passed then reset it to the default of 30 seconds
+			// In case of a duration of more than 1 minute then reset it to the default of 30 seconds
 			if (duration > Time.Minute) duration = Time.Minute * 0.5;
 			return duration / 1000;
 		}

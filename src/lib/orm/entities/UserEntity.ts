@@ -50,7 +50,7 @@ export class UserEntity extends BaseEntity {
 	public profile?: UserProfileEntity;
 
 	@OneToMany(() => UserGameIntegrationEntity, (gi) => gi.user, { cascade: true })
-	public gi?: UserGameIntegrationEntity[];
+	public gi?: UserGameIntegrationEntity<unknown>[];
 
 	@OneToOne(() => UserCooldownEntity, (cooldown) => cooldown.user, { cascade: true })
 	public cooldowns?: UserCooldownEntity;

@@ -1,12 +1,12 @@
-import { ApplyOptions } from '@skyra/decorators';
 import { ZeroWidhSpace } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
-import { Extendable, ExtendableOptions } from 'klasa';
+import { Extendable, ExtendableStore } from 'klasa';
 
-@ApplyOptions<ExtendableOptions>({
-	appliesTo: [MessageEmbed]
-})
 export default class extends Extendable {
+	public constructor(store: ExtendableStore, file: string[], directory: string) {
+		super(store, file, directory, { appliesTo: [MessageEmbed] });
+	}
+
 	public splitFields(this: MessageEmbed, contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 

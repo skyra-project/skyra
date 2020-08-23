@@ -2993,12 +2993,12 @@ export default class extends Language {
 
 		command8ballOutput: ({ author, question, response }) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
 		command8ballQuestions: {
-			when: /^¿?cu[áa]ndo/i,
-			what: /^¿?qu[ée]/i,
-			howMuch: /^¿?cu[áa]nto/i,
-			howMany: /^¿?cu[áa]nto/i,
-			why: /^¿?por qu[ée]/i,
-			who: /^¿?qui[ée]n/i
+			When: /^¿?cu[áa]ndo/i,
+			What: /^¿?qu[ée]/i,
+			HowMuch: /^¿?cu[áa]nto/i,
+			HowMany: /^¿?cu[áa]nto/i,
+			Why: /^¿?por qu[ée]/i,
+			Who: /^¿?qui[ée]n/i
 		},
 		command8ballWhen: createPick(['Pronto™', 'Quizá mañana.', 'Quizá el año que viene...', 'Ahora mismo.', 'En unos cuantos meses.']),
 		command8ballWhat: createPick(['Un avión.', '¿Qué? Pregunta de nuevo.', '¡Un regalo!', 'Nada.', 'Un anillo.', 'No lo sé, quizá sea algo.']),

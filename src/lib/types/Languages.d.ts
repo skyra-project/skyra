@@ -1,5 +1,6 @@
 import type { Song } from '@lib/structures/music/Song';
 import type { ScheduleEntity } from '@orm/entities/ScheduleEntity';
+import { EightBallLanguage } from '@root/commands/Fun/8ball';
 import type { HungerGamesGame } from '@root/commands/Games/hungergames';
 import type { LevelTitles } from '@root/commands/Social/level';
 import type { ProfileTitles } from '@root/commands/Social/profile';
@@ -1280,7 +1281,7 @@ declare module 'klasa' {
 		command8ballDescription: string;
 		command8ballExtended: LanguageHelpDisplayOptions;
 		command8ballOutput: (params: { author: string; question: string; response: string }) => string;
-		command8ballQuestions: Record<string, string | RegExp>;
+		command8ballQuestions: EightBallLanguage;
 		command8ballWhen: () => string;
 		command8ballWhat: () => string;
 		command8ballHowMuch: () => string;

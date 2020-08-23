@@ -15,7 +15,7 @@ import type { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	@requireQueueNotEmpty()
 	public async run(message: KlasaMessage) {
-		const data = JSON.stringify(message.guild!.music.queue.map((v) => v.track));
+		const data = JSON.stringify(message.guild!.music.queue.slice(0, 100).map((v) => v.track));
 		await message.send(
 			message.language.get('commandExportQueueSuccess', { guildName: message.guild!.name }),
 			new MessageAttachment(Buffer.from(data), `${message.guild!.name}-${Date.now()}.squeue`)

@@ -342,6 +342,7 @@ export default class extends Language {
 				"Use `exportqueue` and I'll pack the music in your queue into a neat file you can either save or share with your friends!",
 				'When you want to play it back, just use it with `play`, `add` or `importqueue`!'
 			],
+			reminder: 'If your queue is longer than 100 words, I will only include the first 100, to prevent abuse of my systems',
 			multiline: true
 		},
 		commandExportQueueSuccess: ({ guildName }) => `${GREENTICK} Here's the current queue for ${guildName}!`,

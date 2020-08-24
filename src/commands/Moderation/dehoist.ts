@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 			if (!displayName) continue;
 
 			const char = displayName.codePointAt(0)!;
-			if (char > this.kLowestCode) continue;
+			if (char >= this.kLowestCode) continue;
 
 			// Replace the first character of the offending user's with an UTF-16 character, bringing'em down, down, down.
 			// The ternary cuts 2 characters if the 1st codepoint belongs in UTF-16

@@ -3499,7 +3499,7 @@ export default class extends Language {
 		commandMuteUserNotMuted: 'This user is not muted.',
 		commandMuteUnconfigured: 'This guild does not have a **Muted** role. Aborting command execution.',
 		commandMutecreateMissingPermission: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
-		commandRestrictLowlevel: `${REDCROSS} I am sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set i up.`,
+		commandRestrictLowlevel: `${REDCROSS} I'm sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set it up.`,
 		commandPruneInvalid: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		commandPrune: ({ amount, total }) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
 		commandPruneInvalidPosition: `${REDCROSS} Position must be one of "before" or "after".`,

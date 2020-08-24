@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { BrandingColors } from '@utils/constants';
-import { GuildMember, MessageEmbed, Permissions, PermissionString, Role, User } from 'discord.js';
+import { GuildMember, MessageEmbed, PermissionString, Permissions, Role, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;

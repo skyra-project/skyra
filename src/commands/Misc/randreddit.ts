@@ -1,7 +1,7 @@
 import { FetchError } from '@lib/errors/FetchError';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Reddit } from '@lib/types/definitions/Reddit';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, fetch } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

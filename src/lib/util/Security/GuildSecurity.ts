@@ -3,6 +3,7 @@ import { Adder } from '@utils/Adder';
 import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Guild } from 'discord.js';
 import { RateLimitManager } from 'klasa';
+
 import { AntiRaid } from './AntiRaid';
 import { ModerationActions } from './ModerationActions';
 import { create } from './RegexCreator';

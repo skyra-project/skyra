@@ -6,7 +6,7 @@ import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, cleanMentions, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 

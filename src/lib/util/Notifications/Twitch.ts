@@ -1,3 +1,5 @@
+import { createHmac } from 'crypto';
+
 import {
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,
@@ -7,8 +9,7 @@ import {
 } from '@lib/types/definitions/Twitch';
 import { TOKENS, TWITCH_CALLBACK } from '@root/config';
 import { Mime, Time } from '@utils/constants';
-import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
-import { createHmac } from 'crypto';
+import { FetchMethods, FetchResultTypes, enumerable, fetch } from '@utils/util';
 import { RateLimitManager } from 'klasa';
 
 export const enum TwitchHooksAction {

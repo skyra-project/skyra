@@ -1,5 +1,6 @@
 import { Client, Collection, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+
 import { Cell } from './ConnectFour/Board';
 import { Game } from './ConnectFour/Game';
 import { PlayerColor } from './ConnectFour/Player';

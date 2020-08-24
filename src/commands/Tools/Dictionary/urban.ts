@@ -4,7 +4,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
 

@@ -1,13 +1,14 @@
+import { extname } from 'path';
+
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { isNumber } from '@sapphire/utilities';
 import { MessageLogsEnum } from '@utils/constants';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
+import { FetchResultTypes, IMAGE_EXTENSION, fetch } from '@utils/util';
 import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Monitor } from 'klasa';
-import { extname } from 'path';
 
 const MAXIMUM_SIZE = 300;
 // 1024 = 1 kilobyte

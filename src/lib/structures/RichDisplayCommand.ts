@@ -1,5 +1,6 @@
 import { PermissionResolvable } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class RichDisplayCommand extends SkyraCommand {

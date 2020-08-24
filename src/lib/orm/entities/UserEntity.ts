@@ -18,6 +18,7 @@ import {
 	OneToOne,
 	PrimaryColumn
 } from 'typeorm';
+
 import { RpgUserEntity } from './RpgUserEntity';
 import { UserCooldownEntity } from './UserCooldownEntity';
 import { UserGameIntegrationEntity } from './UserGameIntegrationEntity';

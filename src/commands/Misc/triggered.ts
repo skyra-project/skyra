@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, streamToBuffer } from '@utils/util';
@@ -5,7 +7,7 @@ import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { join } from 'path';
+
 import GIFEncoder = require('gifencoder');
 
 const COORDINATES: readonly [number, number][] = [

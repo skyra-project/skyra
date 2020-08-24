@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { UserEntity } from '@orm/entities/UserEntity';
@@ -6,7 +8,6 @@ import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
-import { join } from 'path';
 
 const enum Arrows {
 	UpDiagonalLeft = 0.2,

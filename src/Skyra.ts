@@ -1,12 +1,15 @@
 import 'module-alias/register';
 import '@utils/initClean';
 import 'reflect-metadata';
+
+import { inspect } from 'util';
+
 import { SkyraClient } from '@lib/SkyraClient';
 import { DbSet } from '@lib/structures/DbSet';
 import { TOKENS } from '@root/config';
 import * as sentry from '@sentry/node';
 import { floatPromise } from '@utils/util';
-import { inspect } from 'util';
+
 inspect.defaultOptions.depth = 1;
 
 const client = new SkyraClient();

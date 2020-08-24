@@ -6,7 +6,7 @@ import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
-import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { FetchMethods, FetchResultTypes, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 

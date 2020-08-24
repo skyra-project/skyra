@@ -1,3 +1,5 @@
+import { stringify } from 'querystring';
+
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
@@ -7,10 +9,9 @@ import { ApplyOptions } from '@skyra/decorators';
 import { canManage } from '@utils/API';
 import { Mime, Time } from '@utils/constants';
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '@utils/Models/ApiTransform';
-import { authenticated, fetch, FetchResultTypes, ratelimit } from '@utils/util';
+import { FetchResultTypes, authenticated, fetch, ratelimit } from '@utils/util';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
-import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
 export default class extends Route {

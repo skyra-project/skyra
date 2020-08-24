@@ -8,7 +8,7 @@ import { APIErrors, Moderation } from '@utils/constants';
 import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
-import { constants, KlasaGuild, KlasaMessage, Timestamp } from 'klasa';
+import { KlasaGuild, KlasaMessage, Timestamp, constants } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],

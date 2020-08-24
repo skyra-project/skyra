@@ -4,7 +4,7 @@ import { TOKENS } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors, BrawlStarsEmojis, Emojis } from '@utils/constants';
 import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 

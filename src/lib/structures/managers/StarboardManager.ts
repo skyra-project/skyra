@@ -2,6 +2,7 @@ import { Cache } from '@klasa/cache';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { StarboardEntity } from '@orm/entities/StarboardEntity';
 import { Client, Guild, TextChannel } from 'discord.js';
+
 import { DbSet } from '../DbSet';
 
 /**

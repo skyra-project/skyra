@@ -1,3 +1,5 @@
+import { stringify } from 'querystring';
+
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
@@ -5,9 +7,8 @@ import { Events } from '@lib/types/Enums';
 import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
-import { fetch, FetchResultTypes, ratelimit } from '@utils/util';
+import { FetchResultTypes, fetch, ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
-import { stringify } from 'querystring';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/logout', authenticated: true })
 export default class extends Route {

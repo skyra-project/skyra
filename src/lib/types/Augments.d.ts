@@ -17,6 +17,7 @@ import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
 import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
 import type { Client as VezaClient } from 'veza';
+
 import type { APIUserData, WSGuildMemberUpdate } from './DiscordAPI';
 import type { Events } from './Enums';
 import type { CustomGet } from './settings/Shared';

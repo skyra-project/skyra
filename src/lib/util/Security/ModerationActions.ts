@@ -13,8 +13,8 @@ import {
 	GuildMember,
 	MessageEmbed,
 	PermissionOverwriteOption,
-	Permissions,
 	PermissionString,
+	Permissions,
 	Role,
 	RoleData,
 	User

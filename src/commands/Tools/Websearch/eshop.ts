@@ -1,3 +1,5 @@
+import { stringify } from 'querystring';
+
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -5,11 +7,10 @@ import { TOKENS } from '@root/config';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { FetchMethods, FetchResultTypes, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage, Timestamp } from 'klasa';
-import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 

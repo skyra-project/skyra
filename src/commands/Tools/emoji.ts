@@ -1,5 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { fetch, FetchResultTypes, twemoji } from '@utils/util';
+import { FetchResultTypes, fetch, twemoji } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 const REG_EMOJI = /^<a?:\w{2,32}:\d{17,21}>$/;

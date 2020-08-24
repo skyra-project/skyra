@@ -2,6 +2,7 @@ import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { flattenSong } from '@utils/Models/ApiTransform';
 import { cleanMentions, enumerable, showSeconds } from '@utils/util';
 import { TrackData } from 'lavacord';
+
 import { MusicHandler } from './MusicHandler';
 
 export class Song {

@@ -3,10 +3,11 @@ import { Events } from '@lib/types/Enums';
 import { LavalinkPlayerEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
-import { enumerable, fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, enumerable, fetch } from '@utils/util';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { LoadType, TrackData, TrackResponse } from 'lavacord';
+
 import { Song } from './Song';
 
 export class MusicHandler {

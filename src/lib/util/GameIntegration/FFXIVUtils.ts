@@ -1,8 +1,9 @@
 import { TOKENS } from '@root/config';
 import { toTitleCase } from '@sapphire/utilities';
 import { Mime } from '@utils/constants';
-import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { FetchMethods, FetchResultTypes, fetch } from '@utils/util';
 import { Language } from 'klasa';
+
 import { FFXIV } from './FFXIVTypings';
 
 export const FFXIVServers = [

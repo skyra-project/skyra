@@ -1,8 +1,9 @@
 import { TOKENS, VERSION } from '@root/config';
 import { mergeDefault } from '@sapphire/utilities';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, fetch } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, LanguageKeys, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
+
 import { DbSet } from './DbSet';
 import { SkyraCommand } from './SkyraCommand';
 

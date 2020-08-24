@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
@@ -9,7 +11,6 @@ import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
 import { KlasaMessage } from 'klasa';
-import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,

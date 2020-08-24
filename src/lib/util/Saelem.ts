@@ -1,6 +1,7 @@
 import { Query, QueryGetHoroscopeArgs } from '@skyra/saelem';
+
 import { Mime } from './constants';
-import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
+import { FetchMethods, FetchResultTypes, fetch, gql } from './util';
 
 export const getHoroscope = gql`
 	query getHoroscope($sunsign: Sunsigns!, $day: Days!) {

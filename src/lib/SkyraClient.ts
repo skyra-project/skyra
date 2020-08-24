@@ -1,55 +1,51 @@
-/* eslint-disable @typescript-eslint/no-invalid-this */
-// Import all dependencies
-import { Client as VezaClient } from 'veza';
-import { Colors } from '@klasa/console';
-import { container } from 'tsyringe';
-import { DashboardClient } from 'klasa-dashboard-hooks';
-import { FSWatcher } from 'chokidar';
+// Import all extensions and schemas
+import './extensions/SkyraGuild';
+import './schemas/Guilds';
+// Import setup files
+import './setup/PermissionsLevels';
+import './setup/Canvas';
+
 import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
-import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
-import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
-import { mergeDefault } from '@sapphire/utilities';
-import { Webhook } from 'discord.js';
-
-// Import all types
-import { Events } from './types/Enums';
-
-// Import all structures
-import { GiveawayManager } from './structures/managers/GiveawayManager';
-import { IPCMonitorStore } from './structures/IPCMonitorStore';
-import { ScheduleManager } from './structures/managers/ScheduleManager';
-
-// Import all utils
-import { clientOptions } from './util/constants';
-import { ConnectFourManager } from './util/Games/ConnectFourManager';
-import { enumerable } from './util/util';
-import { Leaderboard } from './util/Leaderboard';
-import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
-import { Twitch } from './util/Notifications/Twitch';
-import { UserTags } from './util/Cache/UserTags';
-
+import { Colors } from '@klasa/console';
 // Import all configuration
 import {
 	CLIENT_OPTIONS,
 	ENABLE_INFLUX,
 	EVLYN_PORT,
 	INFLUX_OPTIONS,
-	INFLUX_ORG_ANALYTICS_BUCKET,
 	INFLUX_ORG,
+	INFLUX_ORG_ANALYTICS_BUCKET,
 	VERSION,
 	WEBHOOK_DATABASE,
 	WEBHOOK_ERROR,
 	WEBHOOK_FEEDBACK
 } from '@root/config';
+import { mergeDefault } from '@sapphire/utilities';
+import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
+import { FSWatcher } from 'chokidar';
+import { Webhook } from 'discord.js';
+import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
+import { DashboardClient } from 'klasa-dashboard-hooks';
+import { container } from 'tsyringe';
+/* eslint-disable @typescript-eslint/no-invalid-this */
+// Import all dependencies
+import { Client as VezaClient } from 'veza';
 
-// Import all extensions and schemas
-import './extensions/SkyraGuild';
-import './schemas/Guilds';
-
-// Import setup files
-import './setup/PermissionsLevels';
-import './setup/Canvas';
 import { InviteStore } from './structures/InviteStore';
+import { IPCMonitorStore } from './structures/IPCMonitorStore';
+// Import all structures
+import { GiveawayManager } from './structures/managers/GiveawayManager';
+import { ScheduleManager } from './structures/managers/ScheduleManager';
+// Import all types
+import { Events } from './types/Enums';
+import { UserTags } from './util/Cache/UserTags';
+// Import all utils
+import { clientOptions } from './util/constants';
+import { ConnectFourManager } from './util/Games/ConnectFourManager';
+import { Leaderboard } from './util/Leaderboard';
+import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
+import { Twitch } from './util/Notifications/Twitch';
+import { enumerable } from './util/util';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');

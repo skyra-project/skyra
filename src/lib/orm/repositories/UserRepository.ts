@@ -8,6 +8,7 @@ import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEnti
 import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
 import { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
+
 import { UserEntity } from '../entities/UserEntity';
 
 @EntityRepository(UserEntity)

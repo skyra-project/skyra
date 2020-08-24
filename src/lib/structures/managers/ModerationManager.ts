@@ -3,9 +3,10 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { StrictRequired } from '@lib/types/util';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Time } from '@utils/constants';
-import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
+import { ReferredPromise, createReferPromise, floatPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
+
 import { DbSet } from '../DbSet';
 
 enum CacheActions {

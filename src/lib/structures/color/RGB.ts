@@ -1,3 +1,5 @@
+import { HEX } from './HEX';
+import { HSL } from './HSL';
 import { ColorHandler } from './index';
 
 export class RGB implements ColorHandler {
@@ -77,6 +79,3 @@ export class RGB implements ColorHandler {
 		return String(`rgb(${this.r}, ${this.g}, ${this.b})`);
 	}
 }
-
-import { HEX } from './HEX';
-import { HSL } from './HSL';

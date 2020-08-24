@@ -1,7 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import { KlasaMessage } from 'klasa';
-import { fetch, FetchMethods, FetchResultTypes } from './util';
+
+import { FetchMethods, FetchResultTypes, fetch } from './util';
 
 export async function handleMessage<ED extends ExtraDataPartial>(
 	message: KlasaMessage,

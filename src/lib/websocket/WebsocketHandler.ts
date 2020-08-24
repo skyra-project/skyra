@@ -7,6 +7,7 @@ import { isObject } from '@sapphire/utilities';
 import { enumerable } from '@utils/util';
 import { Util } from 'klasa-dashboard-hooks';
 import WebSocket, { Server } from 'ws';
+
 import { CloseCodes, WebsocketEvents } from './types';
 import WebsocketUser from './WebsocketUser';
 

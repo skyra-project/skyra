@@ -1,3 +1,5 @@
+import { resolve } from 'path';
+
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { codeBlock, cutText } from '@sapphire/utilities';
@@ -7,7 +9,6 @@ import { exec } from '@utils/exec';
 import { sleep } from '@utils/sleep';
 import { remove } from 'fs-nextra';
 import { KlasaMessage } from 'klasa';
-import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pull'],

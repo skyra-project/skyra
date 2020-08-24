@@ -1,3 +1,5 @@
+import { inspect } from 'util';
+
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
@@ -5,7 +7,6 @@ import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { authenticated, ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
-import { inspect } from 'util';
 
 interface BodyData {
 	darkTheme?: boolean;

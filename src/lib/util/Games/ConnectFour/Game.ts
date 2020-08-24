@@ -4,6 +4,7 @@ import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector'
 import { floatPromise } from '@utils/util';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+
 import { Board } from './Board';
 import { Player } from './Player';
 

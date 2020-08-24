@@ -4,7 +4,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
-import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
+import { FFXIVClasses, FFXIV_BASE_URL, SubCategoryEmotes, getCharacterDetails, searchCharacter, searchItem } from '@utils/GameIntegration/FFXIVUtils';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
 

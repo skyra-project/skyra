@@ -3,7 +3,7 @@ import { Events } from '@lib/types/Enums';
 import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
 import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '@root/config';
 import { Mime } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, fetch } from '@utils/util';
 import { Task } from 'klasa';
 
 const r = new Colors({ text: 'red' });

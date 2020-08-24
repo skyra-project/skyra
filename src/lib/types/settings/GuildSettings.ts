@@ -1,4 +1,5 @@
 import { SelfModeratorHardActionFlags } from '@lib/structures/SelfModeratorBitField';
+
 import { T } from './Shared';
 
 /* eslint-disable @typescript-eslint/no-namespace */

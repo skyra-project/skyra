@@ -1,9 +1,10 @@
+import { join } from 'path';
+
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { assetsFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { join } from 'path';
 
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;

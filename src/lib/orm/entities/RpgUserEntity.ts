@@ -1,5 +1,6 @@
 import { kBigIntTransformer } from '@utils/util';
 import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
+
 import { RpgBattleEntity } from './RpgBattleEntity';
 import { RpgClassEntity } from './RpgClassEntity';
 import { RpgGuildEntity } from './RpgGuildEntity';

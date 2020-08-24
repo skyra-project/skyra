@@ -1,6 +1,7 @@
 import { Cache } from '@klasa/cache';
 import { DbSet } from '@lib/structures/DbSet';
 import { Client } from 'discord.js';
+
 import { Time } from './constants';
 import { PreciseTimeout } from './PreciseTimeout';
 

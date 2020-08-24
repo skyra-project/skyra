@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
+import { FetchResultTypes, IMAGE_EXTENSION, fetch } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {

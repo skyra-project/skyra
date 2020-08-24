@@ -3,6 +3,7 @@ import { Events } from '@lib/types/Enums';
 import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
 import WebSocket, { Data } from 'ws';
+
 import {
 	CloseCodes,
 	IncomingWebsocketAction,

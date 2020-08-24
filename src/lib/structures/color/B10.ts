@@ -1,3 +1,4 @@
+import { HEX } from './HEX';
 import { ColorHandler } from './index';
 
 export class B10 implements ColorHandler {
@@ -38,5 +39,3 @@ export class B10 implements ColorHandler {
 		return String(this.value);
 	}
 }
-
-import { HEX } from './HEX';

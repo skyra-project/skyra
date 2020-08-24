@@ -6,6 +6,7 @@ import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/Set
 import { floatPromise } from '@utils/util';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
+
 import { DbSet } from './DbSet';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };

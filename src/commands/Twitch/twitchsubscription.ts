@@ -5,9 +5,9 @@ import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
 import {
 	GuildSettings,
+	NotificationsStreamTwitch,
 	NotificationsStreamsTwitchEventStatus,
-	NotificationsStreamsTwitchStreamer,
-	NotificationsStreamTwitch
+	NotificationsStreamsTwitchStreamer
 } from '@lib/types/settings/GuildSettings';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { chunk } from '@sapphire/utilities';

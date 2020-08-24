@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { fetch, FetchResultTypes, isImageURL } from '@utils/util';
+import { FetchResultTypes, fetch, isImageURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 

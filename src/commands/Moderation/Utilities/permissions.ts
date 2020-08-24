@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { ZeroWidhSpace } from '@utils/constants';
-import { MessageEmbed, Permissions, PermissionString, User } from 'discord.js';
+import { MessageEmbed, PermissionString, Permissions, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];

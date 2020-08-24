@@ -4,6 +4,7 @@ import { Moderation } from '@utils/constants';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';
 import { Task } from 'klasa';
+
 import { DbSet } from './DbSet';
 
 export abstract class ModerationTask<T = unknown> extends Task {

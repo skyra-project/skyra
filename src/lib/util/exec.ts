@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { exec as childProcessExec, ExecOptions, PromiseWithChild } from 'child_process';
+import { ExecOptions, PromiseWithChild, exec as childProcessExec } from 'child_process';
 import { promisify } from 'util';
 
 interface PromisifiedExec {

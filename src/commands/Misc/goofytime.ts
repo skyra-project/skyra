@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
@@ -6,7 +8,6 @@ import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],

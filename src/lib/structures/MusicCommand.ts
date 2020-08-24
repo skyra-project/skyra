@@ -1,6 +1,7 @@
 import { ENABLE_LAVALINK } from '@root/config';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
+
 import { MusicHandlerRequestContext } from './music/MusicHandler';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 

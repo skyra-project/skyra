@@ -1,9 +1,10 @@
+import { join } from 'path';
+
 import { InfluxDB, Point, WritePrecision } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { readJson } from 'fs-nextra';
-import { join } from 'path';
 import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 'typeorm';
 
 const CATEGORIES_FILE = '1594757329224-V13_MigrateAnalytics.json';

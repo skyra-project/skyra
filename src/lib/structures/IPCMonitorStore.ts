@@ -1,6 +1,7 @@
 import { Constructor } from 'discord.js';
 import { KlasaClient, Store } from 'klasa';
 import { NodeMessage } from 'veza';
+
 import { IPCMonitor } from './IPCMonitor';
 
 export class IPCMonitorStore extends Store<string, IPCMonitor, Constructor<IPCMonitor>> {

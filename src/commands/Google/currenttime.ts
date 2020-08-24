@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { TOKENS } from '@root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchResultTypes, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

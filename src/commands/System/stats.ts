@@ -1,9 +1,10 @@
+import { cpus, uptime } from 'os';
+
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { roundNumber } from '@sapphire/utilities';
 import { MessageEmbed, version } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { cpus, uptime } from 'os';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {

@@ -2,7 +2,7 @@
 import { QueryBuilder } from '@klasa/querybuilder';
 import { AnyObject } from '@lib/types/util';
 import { isNumber, makeObject, mergeDefault } from '@sapphire/utilities';
-import { PostgresOptions, SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLProvider, Type } from 'klasa';
+import { PostgresOptions, SQLProvider, SchemaEntry, SchemaFolder, SettingsUpdateResults, Type } from 'klasa';
 import { Pool, QueryArrayConfig, QueryArrayResult, QueryConfig, QueryResult, QueryResultRow, Submittable } from 'pg';
 
 export default class extends SQLProvider {

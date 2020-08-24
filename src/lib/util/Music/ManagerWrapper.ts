@@ -15,7 +15,7 @@
  */
 
 import type { SkyraClient } from '@lib/SkyraClient';
-import { LavalinkNodeOptions, Manager as LavacordManager, ManagerOptions } from 'lavacord';
+import { Manager as LavacordManager, LavalinkNodeOptions, ManagerOptions } from 'lavacord';
 
 export class Manager extends LavacordManager {
 	public constructor(public readonly client: SkyraClient, nodes: LavalinkNodeOptions[], options?: ManagerOptions) {

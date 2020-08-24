@@ -1,6 +1,7 @@
 import { Collection } from '@discordjs/collection';
 import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
+
 import { levenshtein } from './External/levenshtein';
 
 type FuzzySearchAccess<V> = (value: V) => string;

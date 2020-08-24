@@ -1,3 +1,5 @@
+import { join } from 'path';
+
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { cdnFolder } from '@utils/constants';
@@ -6,7 +8,6 @@ import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { join } from 'path';
 
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 

@@ -2,6 +2,7 @@ import { CLIENT_ID } from '@root/config';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { Guild, MessageEmbed } from 'discord.js';
 import { Event } from 'klasa';
+
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationEvent<V extends unknown[], T = unknown> extends Event {

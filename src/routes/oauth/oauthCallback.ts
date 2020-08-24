@@ -1,3 +1,6 @@
+import { stringify } from 'querystring';
+import { URL } from 'url';
+
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { OauthData } from '@lib/types/DiscordAPI';
@@ -8,8 +11,7 @@ import { Mime } from '@utils/constants';
 import { ratelimit } from '@utils/util';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
-import { stringify } from 'querystring';
-import { URL } from 'url';
+
 import type OauthUser from './oauthUser';
 
 @ApplyOptions<RouteOptions>({ route: 'oauth/callback' })

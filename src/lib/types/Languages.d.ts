@@ -9,6 +9,7 @@ import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import type { Guild, GuildMember, PermissionString, Role, User } from 'discord.js';
 import type { SchemaEntry } from 'klasa';
+
 import type { Kitsu } from './definitions/Kitsu';
 import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';

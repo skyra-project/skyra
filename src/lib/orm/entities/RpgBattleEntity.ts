@@ -1,4 +1,5 @@
 import { BaseEntity, Check, Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+
 import { RpgUserEntity } from './RpgUserEntity';
 import { RpgUserItemEntity } from './RpgUserItemEntity';
 

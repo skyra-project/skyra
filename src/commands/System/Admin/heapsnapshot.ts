@@ -23,10 +23,11 @@
  * SOFTWARE.
  */
 
+import { writeHeapSnapshot } from 'v8';
+
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { CommandStore, KlasaMessage } from 'klasa';
-import { writeHeapSnapshot } from 'v8';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {

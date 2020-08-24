@@ -1,8 +1,9 @@
+import { createGunzip, createInflate } from 'zlib';
+
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { ApplyOptions } from '@skyra/decorators';
 import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
-import { createGunzip, createInflate } from 'zlib';
 
 @ApplyOptions<MiddlewareOptions>({ priority: 20 })
 export default class extends Middleware {

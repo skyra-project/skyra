@@ -1,5 +1,6 @@
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { Guild, GuildMember, Permissions } from 'discord.js';
+
 import { MemberTag } from './Cache/MemberTags';
 
 export function canManage(guild: Guild, member: GuildMember) {

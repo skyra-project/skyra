@@ -1,6 +1,6 @@
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
+import { CATEGORIES, QuestionData, QuestionDifficulty, QuestionType, getQuestion } from '@utils/Games/TriviaManager';
 import { shuffle } from '@utils/util';
 import { MessageCollector, MessageEmbed, User } from 'discord.js';
 import { decode } from 'he';

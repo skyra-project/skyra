@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+
 import { UserEntity } from './UserEntity';
 
 @Entity('user_cooldown', { schema: 'public' })

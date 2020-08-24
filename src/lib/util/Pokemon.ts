@@ -8,8 +8,9 @@ import {
 	QueryGetTypeMatchupArgs
 } from '@favware/graphql-pokemon';
 import { ENABLE_LOCAL_POKEDEX } from '@root/config';
+
 import { Mime } from './constants';
-import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
+import { FetchMethods, FetchResultTypes, fetch, gql } from './util';
 
 const FlavorsFrament = gql`
 	fragment flavors on FlavorEntry {

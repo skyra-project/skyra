@@ -2,7 +2,8 @@ import { Events } from '@lib/types/Enums';
 import { TOKENS } from '@root/config';
 import { Client, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { fetch, FetchResultTypes } from './util';
+
+import { FetchResultTypes, fetch } from './util';
 
 const GOOGLE_MAPS_API_URL = 'https://maps.googleapis.com/maps/api/geocode/json';
 const GOOGLE_CUSTOM_SEARCH_API_URL = 'https://www.googleapis.com/customsearch/v1';

@@ -5,7 +5,7 @@ import { TOKENS } from '@root/config';
 import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
+import { FetchResultTypes, IMAGE_EXTENSION, fetch } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 

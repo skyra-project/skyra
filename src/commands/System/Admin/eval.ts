@@ -1,3 +1,5 @@
+import { inspect } from 'util';
+
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { codeBlock, isThenable } from '@sapphire/utilities';
@@ -6,7 +8,6 @@ import { clean } from '@utils/clean';
 import { EvalExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { sleep } from '@utils/sleep';
 import { KlasaMessage, Stopwatch, Type } from 'klasa';
-import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['ev'],

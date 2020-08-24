@@ -1,4 +1,5 @@
 import { ColorHandler } from './index';
+import { RGB } from './RGB';
 
 export class HSL implements ColorHandler {
 	public h: number;
@@ -75,5 +76,3 @@ export class HSL implements ColorHandler {
 		return p;
 	}
 }
-
-import { RGB } from './RGB';

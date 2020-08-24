@@ -8,6 +8,7 @@ import * as Sentry from '@sentry/node';
 import { floatPromise } from '@utils/util';
 import { inspect } from 'util';
 import { RewriteFrames } from '@sentry/integrations';
+import { rootFolder } from '@utils/constants';
 inspect.defaultOptions.depth = 1;
 
 const client = new SkyraClient();
@@ -22,7 +23,7 @@ async function main() {
 				new Sentry.Integrations.LinkedErrors(),
 				new Sentry.Integrations.Console(),
 				new Sentry.Integrations.Http({ breadcrumbs: true, tracing: true }),
-				new RewriteFrames({ root: __dirname || process.cwd() })
+				new RewriteFrames({ root: rootFolder })
 			]
 		});
 	}

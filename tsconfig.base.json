@@ -3,6 +3,8 @@
 	"compilerOptions": {
 		"target": "ESNext",
 		"useDefineForClassFields": true,
-		"resolveJsonModule": true
+		"resolveJsonModule": true,
+		"noEmitHelpers": true,
+		"importHelpers": true
 	}
 }

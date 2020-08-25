@@ -27,7 +27,7 @@ export default class extends Argument {
 
 		if (Reflect.has(message.flagArgs, 'import')) {
 			if (message.attachments.size === 0 && !arg) throw message.language.get('musicManagerImportQueueNotFound');
-			const url = message.attachments.size > 0 ? message.attachments.first()!.url : arg!;
+			const url = message.attachments.first()?.url ?? arg;
 
 			tracks = this.filter(message, remainingUserEntries, await message.guild!.music.parseQueue(url));
 			returnAll = true;

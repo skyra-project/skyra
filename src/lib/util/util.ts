@@ -57,9 +57,6 @@ export interface ReferredPromise<T> {
 	reject(error?: Error): void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export function noop() {}
-
 export function radians(degrees: number) {
 	return (degrees * Math.PI) / 180;
 }

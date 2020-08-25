@@ -1,5 +1,6 @@
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { Time } from '@utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
 import { shuffle } from '@utils/util';
 import { MessageCollector, MessageEmbed, User } from 'discord.js';
@@ -10,16 +11,42 @@ import { KlasaMessage } from 'klasa';
 	cooldown: 5,
 	description: (language) => language.get('commandTriviaDescription'),
 	extendedHelp: (language) => language.get('commandTriviaExtended'),
-	usage: '(category:category) [boolean|multiple] [easy|hard|medium] [duration:int{30,60}]',
+	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
 	usageDelim: ' '
 })
+@CreateResolvers([
+	[
+		'category',
+		(arg, _, message) => {
+			if (!arg) return CATEGORIES.general;
+			arg = arg.toLowerCase();
+			const category = Reflect.get(CATEGORIES, arg);
+			if (!category) throw message.language.get('commandTriviaInvalidCategory');
+			return category;
+		}
+	],
+	[
+		'timespan-seconds',
+		(arg, _, message) => {
+			let duration = message.client.arguments.get('timespan')!.run(arg, _, message);
+			// In case of a duration of more than 1 minute then reset it to the default of 30 seconds
+			if (duration > Time.Minute) duration = Time.Minute * 0.5;
+			return duration / 1000;
+		}
+	]
+])
 export default class extends RichDisplayCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#channels = new Set<string>();
 
 	public async run(
 		message: KlasaMessage,
-		[category, questionType = undefined, difficulty = undefined, duration = 30]: [number, QuestionType?, QuestionDifficulty?, number?]
+		[category = CATEGORIES.general, questionType = undefined, difficulty = undefined, duration = 30]: [
+			number,
+			QuestionType?,
+			QuestionDifficulty?,
+			number?
+		]
 	) {
 		if (this.#channels.has(message.channel.id)) throw message.language.get('commandTriviaActiveGame');
 
@@ -29,7 +56,7 @@ export default class extends RichDisplayCommand {
 			await message.sendLocale('systemLoading', []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
-				questionType === QuestionType.Boolean
+				questionType === QuestionType.Boolean || QuestionType.TrueFalse
 					? ['True', 'False']
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
@@ -76,15 +103,5 @@ export default class extends RichDisplayCommand {
 			.setColor(0xf37917)
 			.setThumbnail('http://i.imgur.com/zPtu5aP.png')
 			.setDescription([`${titles.difficulty}: ${data.difficulty}`, '', decode(data.question), '', questionDisplay.join('\n')].join('\n'));
-	}
-
-	public async init() {
-		this.createCustomResolver('category', (arg, possible, message) => {
-			if (!arg) return CATEGORIES.general;
-			arg = arg.toLowerCase();
-			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw message.language.get('commandTriviaInvalidCategory');
-			return category;
-		});
 	}
 }

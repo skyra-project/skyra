@@ -16,7 +16,7 @@ export default class extends MusicCommand {
 		const { music } = message.guild!;
 
 		if (songs) {
-			// If there are songs, add them
+			// If there are songs or a queue, add them
 			await this.client.commands.get('add')!.run(message, [songs]);
 			if (music.playing) return;
 		} else if (!music.canPlay) {

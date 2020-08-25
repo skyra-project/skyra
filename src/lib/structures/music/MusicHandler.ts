@@ -1,9 +1,11 @@
 import { SkyraClient } from '@lib/SkyraClient';
+import { DecodeResponse } from '@lib/types/definitions/Music';
 import { Events } from '@lib/types/Enums';
 import { LavalinkPlayerEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
 import { enumerable, fetch, FetchResultTypes } from '@utils/util';
+import { deserialize } from 'binarytf';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { LoadType, TrackData, TrackResponse } from 'lavacord';
@@ -295,6 +297,49 @@ export class MusicHandler {
 			return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return message.hasAtLeastPermissionLevel(5);
+	}
+
+	/**
+	 * Decode TrackData from a track string
+	 * @param trackdata The track string
+	 */
+	public decodeSong(trackdata: string): Promise<DecodeResponse> {
+		const [node] = this.client.lavalink.idealNodes;
+		const params = new URLSearchParams();
+		params.append('track', trackdata);
+		return fetch<DecodeResponse>(
+			`http://${node.host}:${node.port}/decodetrack?${params}`,
+			{ headers: { Authorization: node.password } },
+			FetchResultTypes.JSON
+		);
+	}
+
+	/**
+	 * Downloads and parses a Skyra Queue
+	 * @param url The URL to the `.squeue` file
+	 */
+	public async parseQueue(url: string): Promise<TrackData[]> {
+		try {
+			const rawData = await fetch(url, FetchResultTypes.Buffer);
+			const derializedData = deserialize<string[]>(rawData);
+			return Promise.all(
+				derializedData.map(async (track) => {
+					return {
+						track,
+						info: await this.decodeSong(track)
+					};
+				})
+			);
+		} catch {
+			throw this.guild.language.get('musicManagerImportQueueError');
+		}
+	}
+
+	public getRemainingUserEntries(userId: string) {
+		const maximumEntriesPerUser = this.guild!.settings.get(GuildSettings.Music.MaximumEntriesPerUser);
+		const userEntries =
+			this.queue.reduce((acc, song) => (song.requester === userId ? acc + 1 : acc), 0) + (this.song?.requester === userId ? 1 : 0);
+		return Math.max(0, maximumEntriesPerUser - userEntries);
 	}
 
 	public *websocketUserIterator() {

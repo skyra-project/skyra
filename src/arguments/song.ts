@@ -6,6 +6,12 @@ export default class extends Argument {
 	public async run(arg: string, _: Possible, message: KlasaMessage) {
 		if (!arg) {
 			if (message.guild && message.guild.music.queue.length) return null;
+			if (message.attachments.size > 0)
+				return this.filter(
+					message,
+					this.getRemainingUserEntries(message),
+					await message.guild!.music.parseQueue(message.attachments.first()!.url)
+				);
 			throw message.language.get('musicManagerFetchNoArguments');
 		}
 		if (!message.guild) return null;
@@ -18,7 +24,14 @@ export default class extends Argument {
 		let returnAll = false;
 		let tracks: TrackData[] = [];
 		let soundcloud = true;
-		if (parsedURL) {
+
+		if (Reflect.has(message.flagArgs, 'import')) {
+			if (message.attachments.size === 0 && !arg) throw message.language.get('musicManagerImportQueueNotFound');
+			const url = message.attachments.first()?.url ?? arg;
+
+			tracks = this.filter(message, remainingUserEntries, await message.guild!.music.parseQueue(url));
+			returnAll = true;
+		} else if (parsedURL) {
 			tracks = await this.fetchSongs(message, remainingUserEntries, arg);
 			returnAll = parsedURL.playlist;
 		} else if (Reflect.has(message.flagArgs, 'sc') || Reflect.has(message.flagArgs, 'soundcloud')) {

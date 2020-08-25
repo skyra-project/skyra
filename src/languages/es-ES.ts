@@ -312,7 +312,8 @@ export default class extends Language {
 				'- Para reproducir desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
 				'- Para reproducir desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluya `--sc` o` --soundcloud` en su mensaje.',
 				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
-				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.'
+				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.',
+				'- Para reproducir una cola previamente exportada, incluya `--import` y adjunte el archivo de la lista a su mensaje o deme de URL a la.'
 			].join('\n'),
 			explainedUsage: [['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']],
 			examples: [
@@ -322,7 +323,8 @@ export default class extends Language {
 				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
 				'https://vimeo.com/channels/music/239029778',
 				'https://mixer.com/Ninja',
-				'https://thedisappointed.bandcamp.com/album/escapism-2'
+				'https://thedisappointed.bandcamp.com/album/escapism-2',
+				'--import https://cdn.skyra.pw/favsongs.squeue'
 			],
 			multiline: true
 		},
@@ -333,6 +335,27 @@ export default class extends Language {
 		commandClearDenied: '¡No puedes ejecutar este comando mientras que hayan más de 4 usuarios! ¡Debes ser el Dj de esta fiesta!',
 		commandClearSuccess: ({ amount }) =>
 			amount === 1 ? '🗑 Una canción fue borrada de la cola.' : `🗑 ${amount} canciones fueron borradas de la cola.`,
+		commandExportQueueDescription: 'Exports your queue to a `.squeue` file.',
+		commandExportQueueExtended: {
+			extendedHelp: [
+				"Have a queue you liked and want to replay later? Or maybe you want to send your friends what you're listening right now",
+				"Use `exportqueue` and I'll pack the music in your queue into a neat file you can either save or share with your friends!",
+				'When you want to play it back, just use it with `play`, `add` or `importqueue`!'
+			],
+			reminder: 'If your queue is longer than 100 words, I will only include the first 100, to prevent abuse of my systems',
+			multiline: true
+		},
+		commandExportQueueSuccess: ({ guildName }) => `${GREENTICK} Here's the current queue for ${guildName}!`,
+		commandImportQueueDescription: 'Imports a queue saved as an `.squeue` file.',
+		commandImportQueueExtended: {
+			extendedHelp: [
+				'Did a friend send you a queue? Or you maybe want to play back a queue you have saved?',
+				'With `importqueue`, I can load the queue for you, and then you can jam to your favourite tracks!'
+			],
+			reminder: 'You can either give me a link to the `.squeue` file, or attach it along your commands!',
+			multiline: true
+		},
+
 		commandJoinDescription: 'Unirse al canal de voz del autor del mensaje.',
 		commandJoinNoMember:
 			'Lo siento, pero Discord no me ha mandado la información necesaria que necesito para saber en qué canal de voz estás conectado/a...',
@@ -369,7 +392,8 @@ export default class extends Language {
 				'- Para reproducir desde YouTube, dame algo para buscar, un enlace de video o un enlace de lista de reproducción.',
 				'- Para reproducir desde SoundCloud, dame un enlace de SoundCloud, o si quieres que busque, incluya `--sc` o` --soundcloud` en su mensaje.',
 				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
-				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.'
+				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.',
+				'- Para reproducir una cola previamente exportada, incluya `--import` y adjunte el archivo de la lista a su mensaje o deme de URL a la.'
 			].join('\n'),
 			explainedUsage: [['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']],
 			examples: [
@@ -508,6 +532,8 @@ export default class extends Language {
 		musicManagerFetchNoArguments: '¡Necesito que me des el nombre de una canción!',
 		musicManagerFetchNoMatches: 'Lo siento, ¡pero no he sido capaz de encontrar la canción que querías',
 		musicManagerFetchLoadFailed: 'Lo siento, ¡pero no he podido cargar esta canción! Por si acaso, ¡intenta con otra canción!',
+		musicManagerImportQueueError: `${REDCROSS} Sorry, but I'm having issues trying to import that playlist. Are you sure it's from my own DJ deck?`,
+		musicManagerImportQueueNotFound: `${REDCROSS} I need a queue to import!`,
 		musicManagerTooManySongs: `${REDCROSS} ¡Ah, estás agregando más canciones de las permitidas!`,
 		musicManagerSetvolumeSilent: 'Woah, ¡podrías simplemente salir del canal de voz si quieres silencio!',
 		musicManagerSetvolumeLoud: 'Seré honesta, ¡las turbinas de un avión serían menos ruidosos que esto!',

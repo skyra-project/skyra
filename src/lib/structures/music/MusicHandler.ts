@@ -301,9 +301,8 @@ export class MusicHandler {
 	/**
 	 * Decode TrackData from a track string
 	 * @param trackdata The track string
-	 * @returns {DecodeResponse}
 	 */
-	public decodeSong(trackdata: string) {
+	public decodeSong(trackdata: string): Promise<DecodeResponse> {
 		const [node] = this.client.lavalink.idealNodes;
 		const params = new URLSearchParams();
 		params.append('track', trackdata);
@@ -317,16 +316,15 @@ export class MusicHandler {
 	/**
 	 * Downloads and parses a Skyra Queue
 	 * @param url The URL to the `.squeue` file
-	 * @returns {TrackData[]}
 	 */
-	public async parseQueue(url: string) {
+	public async parseQueue(url: string): Promise<TrackData[]> {
 		try {
 			const rawData = await fetch<string[]>(url, FetchResultTypes.JSON);
 			return Promise.all(
 				rawData.map(async (track) => {
 					return {
 						track,
-						info: await this.guild.music.decodeSong(track)
+						info: await this.decodeSong(track)
 					};
 				})
 			);

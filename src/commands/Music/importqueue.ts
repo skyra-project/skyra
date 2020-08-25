@@ -3,6 +3,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import type { KlasaMessage } from 'klasa';
 import type { TrackData } from 'lavacord';
+import { maximumExportQueueSize } from './exportqueue';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['iq'],
@@ -34,13 +35,11 @@ export default class extends MusicCommand {
 	}
 
 	private filter(message: KlasaMessage, remainingUserEntries: number, tracks: TrackData[]) {
-		if (message.member!.isDJ) return tracks.slice(0, remainingUserEntries);
-
 		const maximumDuration = message.guild!.settings.get(GuildSettings.Music.MaximumDuration);
 		const allowStreams = message.guild!.settings.get(GuildSettings.Music.AllowStreams);
 
 		return tracks
 			.filter((track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration)
-			.slice(0, remainingUserEntries);
+			.slice(0, message.member!.isDJ ? maximumExportQueueSize : remainingUserEntries);
 	}
 }

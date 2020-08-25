@@ -44,6 +44,8 @@ jobs:
         with:
           path: node_modules
           key: ${{ runner.os }}-14-${{ hashFiles('**/yarn.lock') }}
+      - name: Install Dependencies
+        run: yarn --ignore-scripts --frozen-lockfile
       - name: Run Prettier
         run: yarn format:check
 

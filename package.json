@@ -61,6 +61,7 @@
 		"@sentry/node": "^5.21.1",
 		"@skyra/char": "^1.0.1",
 		"@skyra/decorators": "discordjs",
+		"binarytf": "^2.0.0",
 		"canvas": "^2.6.1",
 		"canvas-constructor": "^4.1.0",
 		"confusables": "^1.0.0",

@@ -5,6 +5,7 @@ import { LavalinkPlayerEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
 import { enumerable, fetch, FetchResultTypes } from '@utils/util';
+import { deserialize } from 'binarytf';
 import { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { LoadType, TrackData, TrackResponse } from 'lavacord';
@@ -319,9 +320,10 @@ export class MusicHandler {
 	 */
 	public async parseQueue(url: string): Promise<TrackData[]> {
 		try {
-			const rawData = await fetch<string[]>(url, FetchResultTypes.JSON);
+			const rawData = await fetch(url, FetchResultTypes.Buffer);
+			const derializedData = deserialize<string[]>(rawData);
 			return Promise.all(
-				rawData.map(async (track) => {
+				derializedData.map(async (track) => {
 					return {
 						track,
 						info: await this.decodeSong(track)

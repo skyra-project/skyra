@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 		const char = displayName.codePointAt(0)!;
 
 		// If it's lower than '0' or is higher than '9' and lower than 'A', then it's hoisting
-		return char < this.kLowestCode || (char >= kLowestNumberCode && char <= kHighestNumberCode);
+		return char < this.kLowestCode && (char < kLowestNumberCode || char > kHighestNumberCode);
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {

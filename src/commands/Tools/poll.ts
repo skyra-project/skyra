@@ -4,34 +4,7 @@ import { KlasaMessage } from 'klasa';
 
 const NUMBER_OPTS = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟'];
 
-const ALPHABET_OPTS = [
-	'🇦',
-	'🇧',
-	'🇨',
-	'🇩',
-	'🇪',
-	'🇫',
-	'🇬',
-	'🇭',
-	'🇮',
-	'🇯',
-	'🇰',
-	'🇱',
-	'🇲',
-	'🇳',
-	'🇴',
-	'🇵',
-	'🇶',
-	'🇷',
-	'🇸',
-	'🇹',
-	'🇺',
-	'🇻',
-	'🇼',
-	'🇽',
-	'🇾',
-	'🇿'
-];
+const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶', '🇷', '🇸', '🇹'];
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['spoll'],
@@ -55,6 +28,6 @@ export default class extends SkyraCommand {
 			await loadingMsg.react(emoji);
 		}
 
-		await message.send(options.map((option, i) => `${i + 1}. *${option.trim()}*`).join('\n'));
+		await message.send(options.map((option, i) => `${emojis[i]} → *${option.trim()}*`).join('\n'));
 	}
 }

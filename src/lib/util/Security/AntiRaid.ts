@@ -1,5 +1,5 @@
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { noop } from '@utils/util';
+import { noop } from '@sapphire/utilities';
 import { Collection, Guild, GuildMember } from 'discord.js';
 
 /**

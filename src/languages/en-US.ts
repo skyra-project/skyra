@@ -2529,6 +2529,7 @@ export default class extends Language {
 			extendedHelp: 'Separate your options using commas.',
 			examples: ['Make an anime channel, Make a gaming channel, Make a serious-discussion channel']
 		},
+		commandPollReactionLimit: "Please don't add emojis while I am reacting!",
 		commandVoteDescription: 'Simplified reaction-based vote.',
 		commandVoteExtended: {
 			examples: ['Should I implement the #anime channel?']

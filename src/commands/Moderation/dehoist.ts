@@ -7,7 +7,6 @@ import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { sleep } from '@utils/sleep';
 import { MemberTag } from '@utils/Cache/MemberTags';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
@@ -29,8 +28,10 @@ export default class extends SkyraCommand {
 		const errored: ErroredChange[] = [];
 		const members = message.guild!.memberTags;
 
-		const manageableMembers = Array.from(members.manageableMembers());
-		const hoistedMembers = manageableMembers.filter(this.shouldDehoist.bind(this));
+		const hoistedMembers = [];
+		for (const member of members.manageableMembers()) {
+			if (this.shouldDehoist(member)) hoistedMembers.push(member);
+		}
 
 		const response = await message.sendLocale('commandDehoistStarting', [{ count: hoistedMembers.length }]);
 
@@ -58,7 +59,6 @@ export default class extends SkyraCommand {
 			if ((i + 1) % 10 === 0) {
 				const dehoistPercentage = (i / hoistedMembers.length) * 100;
 				await message.sendLocale('commandDehoistProgress', [{ count: i + 1, percentage: Math.round(dehoistPercentage) }]);
-				await sleep(5000);
 			}
 		}
 
@@ -76,8 +76,7 @@ export default class extends SkyraCommand {
 		const char = displayName.codePointAt(0)!;
 
 		// number char codes are greater than kLowestCode, but still hoist the
-		if (char >= this.kLowestCode && !(char >= kLowestNumberCode && char <= kHighestNumberCode)) return false;
-		return true;
+		return !(char >= this.kLowestCode && !(char >= kLowestNumberCode && char <= kHighestNumberCode));
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {

@@ -3474,6 +3474,8 @@ export default class extends Language {
 			cooldown === 0 ? 'The cooldown for this channel has been reset.' : `The cooldown for this channel has been set to ${duration(cooldown)}.`,
 		commandSlowmodeTooLong: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		commandBanNotBannable: 'The target is not bannable for me.',
+		commandDehoistStarting: ({ count }) => `I will start dehoisting ${count} members...`,
+		commandDehoistProgress: ({ count, percentage }) => `Dehoisted ${count} members so far! (${percentage}%)`,
 		commandDehoistEmbed: ({ users, dehoistedMemberCount, dehoistedWithErrorsCount, errored }) => ({
 			title: `Finished dehoisting ${users} members`,
 			descriptionNoone: 'No members were dehoisted. A round of applause for your law-abiding users!',

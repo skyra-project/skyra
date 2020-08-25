@@ -1615,6 +1615,8 @@ declare module 'klasa' {
 		commandSlowmodeSet: (params: { cooldown: number }) => string;
 		commandSlowmodeTooLong: string;
 		commandBanNotBannable: string;
+		commandDehoistStarting: (params: { count: number }) => string;
+		commandDehoistProgress: (params: { count: number; percentage: number }) => string;
 		commandDehoistEmbed: (params: {
 			users: number;
 			dehoistedMemberCount: number;

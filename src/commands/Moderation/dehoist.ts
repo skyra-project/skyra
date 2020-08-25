@@ -7,6 +7,10 @@ import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
+import { sleep } from '@utils/sleep';
+import { MemberTag } from '@utils/Cache/MemberTags';
+
+const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['dh'],
@@ -24,14 +28,17 @@ export default class extends SkyraCommand {
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const members = message.guild!.memberTags;
-		const response = await message.sendLocale('systemLoading', []);
 
-		for (const [memberId, memberTag] of members.manageableMembers()) {
+		const manageableMembers = Array.from(members.manageableMembers());
+		const hoistedMembers = manageableMembers.filter(this.shouldDehoist.bind(this));
+
+		const response = await message.sendLocale('commandDehoistStarting', [{ count: hoistedMembers.length }]);
+
+		for (let i = 0; i < hoistedMembers.length; i++) {
+			const [memberId, memberTag] = hoistedMembers[i];
 			const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
-			if (!displayName) continue;
 
 			const char = displayName.codePointAt(0)!;
-			if (char >= this.kLowestCode) continue;
 
 			// Replace the first character of the offending user's with an UTF-16 character, bringing'em down, down, down.
 			// The ternary cuts 2 characters if the 1st codepoint belongs in UTF-16
@@ -46,6 +53,13 @@ export default class extends SkyraCommand {
 			}
 
 			++counter;
+
+			// update the counter every 10 dehoists
+			if ((i + 1) % 10 === 0) {
+				const dehoistPercentage = (i / hoistedMembers.length) * 100;
+				await message.sendLocale('commandDehoistProgress', [{ count: i + 1, percentage: Math.round(dehoistPercentage) }]);
+				await sleep(5000);
+			}
 		}
 
 		// We're done!
@@ -55,6 +69,17 @@ export default class extends SkyraCommand {
 		});
 	}
 
+	private shouldDehoist([memberId, memberTag]: [string, MemberTag]) {
+		const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
+		if (!displayName) return false;
+
+		const char = displayName.codePointAt(0)!;
+
+		// number char codes are greater than kLowestCode, but still hoist the
+		if (char >= this.kLowestCode && !(char >= kLowestNumberCode && char <= kHighestNumberCode)) return false;
+		return true;
+	}
+
 	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
 		const embedLanguage = message.language.get('commandDehoistEmbed', {
 			dehoistedMemberCount: dehoistedMembers,
@@ -62,9 +87,7 @@ export default class extends SkyraCommand {
 			errored: erroredChanges.length,
 			users: message.guild!.memberTags.size
 		});
-		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message)) //
-			.setTitle(embedLanguage.title);
+		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.title);
 
 		let { description } = embedLanguage;
 		if (dehoistedMembers <= 0) description = embedLanguage.descriptionNoone;

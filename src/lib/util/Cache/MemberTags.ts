@@ -88,6 +88,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 		} else {
 			for (const tag of this.entries()) {
 				if (tag[1].roles.some((role) => nonManageableRoles.has(role))) continue;
+				if (tag[0] === this.kGuild.ownerID) continue;
 				yield tag;
 			}
 		}

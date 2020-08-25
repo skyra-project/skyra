@@ -1121,6 +1121,8 @@ declare module 'klasa' {
 		commandSearchExtended: LanguageHelpDisplayOptions;
 		commandPollDescription: string;
 		commandPollExtended: LanguageHelpDisplayOptions;
+		commandVoteDescription: string;
+		commandVoteExtended: LanguageHelpDisplayOptions;
 		commandTopInvitesDescription: string;
 		commandTopInvitesExtended: LanguageHelpDisplayOptions;
 		commandTopInvitesNoInvites: string;

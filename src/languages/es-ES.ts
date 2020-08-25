@@ -2556,11 +2556,13 @@ export default class extends Language {
 		},
 		commandSearchDescription: 'Search things from the Internet with DuckDuckGo.',
 		commandSearchExtended: {},
-		commandPollDescription: 'Simplified reaction-based poll.',
+		commandPollDescription: 'Simplifies reaction-based polls.',
 		commandPollExtended: {
-			extendedHelp: `spoll stands for "simplified poll". You may want to use this command if you don't want to deal the
-					complexity of the other command. Simplified Polls do not track the users who vote nor it filters, it merely reacts
-					to your message with three emojis and let the users vote.`,
+			extendedHelp: 'Separate your options using commas.',
+			examples: ['Make an anime channel, Make a gaming channel, Make a serious-discussion channel']
+		},
+		commandVoteDescription: 'Simplified reaction-based vote.',
+		commandVoteExtended: {
 			examples: ['Should I implement the #anime channel?']
 		},
 		commandTopInvitesDescription: 'Muestra las 10 invitaciones más utilizadas para este servidor.',

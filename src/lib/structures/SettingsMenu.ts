@@ -7,6 +7,7 @@ import { floatPromise } from '@utils/util';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { DbSet } from './DbSet';
+import { toTitleCase } from '@sapphire/utilities';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -88,7 +89,7 @@ export class SettingsMenu {
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if (this.schema.configurable) {
 				description.push(
-					i18n.get(`SETTINGS_${this.schema.path.replace(/[.-]/g, '_').toUpperCase()}` as any),
+					i18n.get(`settings${this.schema.path.split(/[.-]/g).map(toTitleCase).join('')}` as any),
 					'',
 					i18n.get('commandConfMenuRenderTctitle'),
 					i18n.get('commandConfMenuRenderUpdate'),

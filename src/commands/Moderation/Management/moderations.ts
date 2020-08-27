@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -96,7 +96,7 @@ export default class extends RichDisplayCommand {
 		};
 	}
 
-	private async fetchAllUsers(entries: Cache<number, ModerationEntity>) {
+	private async fetchAllUsers(entries: Collection<number, ModerationEntity>) {
 		const users = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
 			const id = entry.userID!;
@@ -105,7 +105,7 @@ export default class extends RichDisplayCommand {
 		return users;
 	}
 
-	private async fetchAllModerators(entries: Cache<number, ModerationEntity>) {
+	private async fetchAllModerators(entries: Collection<number, ModerationEntity>) {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
 			const id = entry.moderatorID!;

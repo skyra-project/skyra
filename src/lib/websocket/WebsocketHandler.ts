@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { SkyraClient } from '@lib/SkyraClient';
 import { ApiRequest, UserAuthObject } from '@lib/structures/api/ApiRequest';
 import { CookieStore } from '@lib/structures/api/CookieStore';
@@ -12,7 +12,7 @@ import WebsocketUser from './WebsocketUser';
 
 export class WebsocketHandler {
 	public wss: Server;
-	public users = new Cache<string, WebsocketUser>();
+	public users = new Collection<string, WebsocketUser>();
 
 	@enumerable(false)
 	public client: SkyraClient;

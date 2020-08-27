@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/structures/DbSet';
 import { Client } from 'discord.js';
 import { Time } from './constants';
@@ -17,18 +17,18 @@ export class Leaderboard {
 	/**
 	 * The cached global leaderboard
 	 */
-	private readonly kUsers = new Cache<string, LeaderboardUser>();
+	private readonly kUsers = new Collection<string, LeaderboardUser>();
 
 	/**
 	 * The cached collection for local leaderboards
 	 */
-	private readonly kGuilds = new Cache<string, Cache<string, LeaderboardUser>>();
+	private readonly kGuilds = new Collection<string, Collection<string, LeaderboardUser>>();
 
 	/**
 	 * The timeouts object
 	 */
 	private readonly kTimeouts: LeaderboardTimeouts = {
-		guilds: new Cache(),
+		guilds: new Collection(),
 		users: null
 	};
 
@@ -36,7 +36,7 @@ export class Leaderboard {
 	 * The temporal promises
 	 */
 	private readonly kTempPromises: LeaderboardPromises = {
-		guilds: new Cache(),
+		guilds: new Collection(),
 		users: null
 	};
 
@@ -124,7 +124,7 @@ export class Leaderboard {
 
 		// Clear the leaderboards for said guild
 		if (this.kGuilds.has(guild)) this.kGuilds.get(guild)!.clear();
-		else this.kGuilds.set(guild, new Cache());
+		else this.kGuilds.set(guild, new Collection());
 
 		// Get the store and initialize the position number, then save all entries
 		const store = this.kGuilds.get(guild)!;
@@ -187,7 +187,7 @@ export interface LeaderboardUser {
 
 interface LeaderboardTimeouts {
 	users: PreciseTimeout | null;
-	guilds: Cache<string, PreciseTimeout>;
+	guilds: Collection<string, PreciseTimeout>;
 }
 
 interface LeaderboardPromises {
@@ -198,5 +198,5 @@ interface LeaderboardPromises {
 	/**
 	 * The collection of Promises that are running for each guild leaderboard, if syncing
 	 */
-	guilds: Cache<string, Promise<void>>;
+	guilds: Collection<string, Promise<void>>;
 }

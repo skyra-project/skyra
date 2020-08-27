@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { StrictRequired } from '@lib/types/util';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
@@ -14,7 +14,7 @@ enum CacheActions {
 	Insert
 }
 
-export class ModerationManager extends Cache<number, ModerationEntity> {
+export class ModerationManager extends Collection<number, ModerationEntity> {
 	/**
 	 * The Guild instance that manages this manager
 	 */
@@ -90,9 +90,9 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	}
 
 	public async fetch(id: number): Promise<ModerationEntity | null>;
-	public async fetch(id: string | number[]): Promise<Cache<number, ModerationEntity>>;
+	public async fetch(id: string | number[]): Promise<Collection<number, ModerationEntity>>;
 	public async fetch(id?: null): Promise<this>;
-	public async fetch(id?: string | number | number[] | null): Promise<ModerationEntity | Cache<number, ModerationEntity> | this | null> {
+	public async fetch(id?: string | number | number[] | null): Promise<ModerationEntity | Collection<number, ModerationEntity> | this | null> {
 		// Case number
 		if (typeof id === 'number') {
 			return (
@@ -126,7 +126,7 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	}
 
 	public insert(data: ModerationEntity): ModerationEntity;
-	public insert(data: ModerationEntity[]): Cache<number, ModerationEntity>;
+	public insert(data: ModerationEntity[]): Collection<number, ModerationEntity>;
 	public insert(data: ModerationEntity | ModerationEntity[]) {
 		// @ts-expect-error TypeScript is being brain-dead
 		return this._cache(data, CacheActions.Insert);
@@ -154,11 +154,11 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 	}
 
 	private _cache(entry: ModerationEntity | null, type: CacheActions): ModerationEntity;
-	private _cache(entries: ModerationEntity[], type: CacheActions): Cache<number, ModerationEntity>;
+	private _cache(entries: ModerationEntity[], type: CacheActions): Collection<number, ModerationEntity>;
 	private _cache(
 		entries: ModerationEntity | ModerationEntity[] | null,
 		type: CacheActions
-	): Cache<number, ModerationEntity> | ModerationEntity | null {
+	): Collection<number, ModerationEntity> | ModerationEntity | null {
 		if (!entries) return null;
 
 		const parsedEntries = Array.isArray(entries) ? entries : [entries];
@@ -176,11 +176,11 @@ export class ModerationManager extends Cache<number, ModerationEntity> {
 			}, 1000);
 		}
 
-		return Array.isArray(entries) ? new Cache<number, ModerationEntity>(entries.map((entry) => [entry.caseID, entry])) : entries;
+		return Array.isArray(entries) ? new Collection<number, ModerationEntity>(entries.map((entry) => [entry.caseID, entry])) : entries;
 	}
 
 	public static get [Symbol.species]() {
-		return (Cache as unknown) as typeof Cache;
+		return (Collection as unknown) as typeof Collection;
 	}
 }
 

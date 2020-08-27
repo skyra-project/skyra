@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { StarboardEntity } from '@orm/entities/StarboardEntity';
 import { Client, Guild, TextChannel } from 'discord.js';
@@ -8,7 +8,7 @@ import { DbSet } from '../DbSet';
  * The StarboardManager class that manages the starboard channel
  * @version 4.0.0
  */
-export class StarboardManager extends Cache<string, StarboardEntity> {
+export class StarboardManager extends Collection<string, StarboardEntity> {
 	/**
 	 * The Client instance that manages this manager
 	 */
@@ -36,8 +36,8 @@ export class StarboardManager extends Cache<string, StarboardEntity> {
 	public set(key: string, value: StarboardEntity) {
 		if (this.size >= 25) {
 			const entry =
-				this.findValue((sMes) => sMes.stars < this.minimum) ||
-				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.firstValue!);
+				this.find((sMes) => sMes.stars < this.minimum) ||
+				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
 			this.delete(entry.messageID);
 		}
 		return super.set(key, value);

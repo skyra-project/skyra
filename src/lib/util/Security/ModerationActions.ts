@@ -876,7 +876,7 @@ export class ModerationActions {
 		const logs = await this.guild.moderation.fetch(userID);
 
 		// Filter all logs by valid and by type of mute (isType will include temporary and invisible).
-		return logs.filter((log) => !log.invalidated && log.isType(type) && extra(log)).lastValue;
+		return logs.filter((log) => !log.invalidated && log.isType(type) && extra(log)).last();
 	}
 
 	private static getRoleDataKeyFromSchemaKey(key: ModerationSetupRestriction): RoleDataKey {

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility, @typescript-eslint/unified-signatures */
 import { AsyncQueue } from '@klasa/async-queue';
-import { Cache } from '@klasa/cache';
+import Ccollection from '@discordjs/collection';
 import { TimerManager } from '@klasa/timer-manager';
 import { DbSet } from '@lib/structures/DbSet';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
@@ -116,7 +116,7 @@ export class UserRepository extends Repository<UserEntity> {
 		}
 	}
 
-	private static queues = new Cache<string, AsyncQueue>();
+	private static queues = new Ccollection<string, AsyncQueue>();
 }
 
 TimerManager.setInterval(() => {

@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { LeaderboardUser } from '@utils/Leaderboard';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
-	public async generatePage(message: KlasaMessage, list: Cache<string, LeaderboardUser>, index: number, position: number) {
+	public async generatePage(message: KlasaMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
 		if (index > list.size / 10 || index < 0) index = 0;
 		const retrievedPage: LeaderboardUser[] = [];
 		const promises: Promise<void>[] = [];

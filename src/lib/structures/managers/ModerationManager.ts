@@ -178,10 +178,6 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 
 		return Array.isArray(entries) ? new Collection<number, ModerationEntity>(entries.map((entry) => [entry.caseID, entry])) : entries;
 	}
-
-	public static get [Symbol.species]() {
-		return (Collection as unknown) as typeof Collection;
-	}
 }
 
 export type ModerationManagerUpdateData = Partial<Pick<ModerationEntity, 'duration' | 'extraData' | 'moderatorID' | 'reason' | 'imageURL'>>;

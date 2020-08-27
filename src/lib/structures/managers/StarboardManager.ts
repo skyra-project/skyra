@@ -36,8 +36,8 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	public set(key: string, value: StarboardEntity) {
 		if (this.size >= 25) {
 			const entry =
-				this.findValue((sMes) => sMes.stars < this.minimum) ||
-				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.firstValue!);
+				this.find((sMes) => sMes.stars < this.minimum) ||
+				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
 			this.delete(entry.messageID);
 		}
 		return super.set(key, value);

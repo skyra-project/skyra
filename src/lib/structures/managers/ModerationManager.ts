@@ -1,4 +1,4 @@
-import Collection from '@discordjs/collection';
+import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { StrictRequired } from '@lib/types/util';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
@@ -177,6 +177,10 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 		}
 
 		return Array.isArray(entries) ? new Collection<number, ModerationEntity>(entries.map((entry) => [entry.caseID, entry])) : entries;
+	}
+
+	public static get [Symbol.species]() {
+		return (Collection as unknown) as CollectionConstructor;
 	}
 }
 

@@ -75,7 +75,7 @@ export class FuzzySearch<K extends string, V> {
 				codeblock: codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
 			})
 		);
-		if (n.toLowerCase() === 'abort') return null;
+		if (n.toLowerCase() === 'abort') throw message.language.get('fuzzySearchAborted');
 		const parsed = Number(n);
 		if (!Number.isSafeInteger(parsed)) throw message.language.get('fuzzySearchInvalidNumber');
 		if (parsed < 0 || parsed >= results.length) throw message.language.get('fuzzySearchInvalidIndex');

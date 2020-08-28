@@ -4968,6 +4968,7 @@ export default class extends Language {
 
 		fuzzySearchMatches: ({ matches, codeblock }) =>
 			`¡Encontré múltiples resultados! **Por favor selecciona un número entre 0 y ${matches}**:\n${codeblock}\nEscribe **ABORT** para cancelar la solicitud.`,
+		fuzzySearchAborted: 'Successfully aborted the prompt.',
 		fuzzySearchInvalidNumber: 'Esperaba que me dieras un número de un dígito, pero recibí una patata.',
 		fuzzySearchInvalidIndex: 'Cancelando solicitud... El número no estaba dentro del rango.',
 

@@ -2174,6 +2174,7 @@ declare module 'klasa' {
 		promptlistAttemptFailed: (params: { list: string; attempt: number; maxAttempts: number }) => string;
 		promptlistAborted: string;
 		fuzzySearchMatches: (params: { matches: number; codeblock: string }) => string;
+		fuzzySearchAborted: string;
 		fuzzySearchInvalidNumber: string;
 		fuzzySearchInvalidIndex: string;
 		eventsErrorWtf: string;

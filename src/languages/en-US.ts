@@ -4910,6 +4910,7 @@ export default class extends Language {
 
 		fuzzySearchMatches: ({ matches, codeblock }) =>
 			`I found multiple matches! **Please select a number within 0 and ${matches}**:\n${codeblock}\nWrite **ABORT** if you want to exit the prompt.`,
+		fuzzySearchAborted: 'Successfully aborted the prompt.',
 		fuzzySearchInvalidNumber: 'I expected you to give me a (single digit) number, got a potato.',
 		fuzzySearchInvalidIndex: 'That number was out of range, aborting prompt.',
 

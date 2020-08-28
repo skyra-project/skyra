@@ -19,7 +19,7 @@
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.foldingStrategy": "auto",
 		"editor.fontFamily": "Fira Code, MesloLGS NF",
-		"editor.renderWhitespace": "none",
+		"editor.renderWhitespace": "all",
 		"editor.fontLigatures": true,
 		"editor.fontSize": 16,
 		"editor.formatOnPaste": false,
@@ -85,7 +85,7 @@
 	// VSCode Extension by their IDs
 	"extensions": [
 		"dbaeumer.vscode-eslint",
-		"coenraads.bracket-pair-colorizer-2",
+		"coenraads.bracket-pair-colorizer",
 		"bierner.github-markdown-preview",
 		"eamodio.gitlens",
 		"ldez.ignore-files",

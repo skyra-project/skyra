@@ -3086,7 +3086,7 @@ export default class extends Language {
 		commandMarkovTimer: ({ timer }) => `Processed in ${timer}.`,
 		commandMarkovNoMessages: 'The channel or user has no messages.',
 		commandNorrisOutput: 'Chuck Norris',
-		commandRateOutput: ({ author, userToRate, rate, emoji }) => `**${author}**, Uhm... le daría a **${userToRate}** un **${rate}**/100 ${emoji}`,
+		commandRateOutput: ({ author, userToRate, rate, emoji }) => `**${author}**, I would give **${userToRate}** a **${rate}**/100 ${emoji}`,
 		commandRateMyself: ['I love myself a lot 😊', 'myself'],
 		commandPunError: 'Something went wrong. Try again later.',
 		commandXkcdComics: ({ amount }) => `There are only ${amount} comics.`,

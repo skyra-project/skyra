@@ -1724,6 +1724,7 @@ declare module 'klasa' {
 		commandDailyGrace: (params: { remaining: number }) => string;
 		commandDailyGraceAccepted: (params: { amount: number; remaining: number }) => string;
 		commandDailyGraceDenied: string;
+		commandDailyCollect: string;
 		commandLevel: LevelTitles;
 		commandDivorceNotTaken: string;
 		commandDivorcePrompt: string;

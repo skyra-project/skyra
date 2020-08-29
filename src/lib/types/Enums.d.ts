@@ -93,5 +93,6 @@ export const enum Schedules {
 	Poststats = 'poststats',
 	Cleanup = 'cleanup',
 	SyncResourceAnalytics = 'syncResourceAnalytics',
-	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions'
+	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions',
+	Reminder = 'reminder'
 }

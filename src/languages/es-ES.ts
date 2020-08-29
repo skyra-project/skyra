@@ -2371,7 +2371,8 @@ export default class extends Language {
 			extendedHelp: 'Shiiiiny!',
 			reminder: [
 				'Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.',
-				'You can claim dailies once every 12 hours.'
+				'You can claim dailies once every 12 hours.',
+				"If you use the --reminder flag, I will remind you when it's time to collect dailies again."
 			].join('\n')
 		},
 		commandLeaderboardDescription: 'Check the leaderboards.',
@@ -3691,6 +3692,7 @@ export default class extends Language {
 		commandDailyGraceAccepted: ({ amount, remaining }) =>
 			`¡Dinero dinero! ¡Has recibido ${amount}${SHINY}! Siguiente pago en: ${duration(remaining)}`,
 		commandDailyGraceDenied: '¡De acuerdo! ¡Vuelve pronto!',
+		commandDailyCollect: 'Collect dailies',
 		commandLevel: {
 			level: 'Nivel',
 			experience: 'Experiencia',

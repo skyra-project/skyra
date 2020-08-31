@@ -70,7 +70,7 @@ export default class extends SkyraCommand {
 	}
 
 	private shouldDehoist([memberId, memberTag]: [string, MemberTag]) {
-		const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
+		const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)?.username;
 		if (!displayName) return false;
 
 		const char = displayName.codePointAt(0)!;

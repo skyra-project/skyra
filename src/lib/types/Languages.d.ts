@@ -1786,11 +1786,6 @@ declare module 'klasa' {
 		commandRequireRole: string;
 		commandScoreboardPosition: (params: { position: number }) => string;
 		commandSetColor: (params: { color: string }) => string;
-		commandSocialProfileNotfound: string;
-		commandSocialProfileBot: string;
-		commandSocialProfileDelete: (params: { user: string; points: number }) => string;
-		commandSocialPoints: string;
-		commandSocialUpdate: (params: { action: string; amount: number; user: string; before: number; now: number }) => string;
 		commandSuggestNoSetup: (params: { username: string }) => string;
 		commandSuggestNoSetupAsk: (params: { username: string }) => string;
 		commandSuggestNoSetupAbort: string;

@@ -3751,15 +3751,6 @@ export default class extends Language {
 		commandRequireRole: 'I am sorry, but you must provide a role for this command.',
 		commandScoreboardPosition: ({ position }) => `Your placing position is: ${position}`,
 		commandSetColor: ({ color }) => `Color changed to ${color}`,
-		commandSocialProfileNotfound: 'I am sorry, but this user profile does not exist.',
-		commandSocialProfileBot: 'I am sorry, but Bots do not have a __Member Profile__.',
-		commandSocialProfileDelete: ({ user, points }) =>
-			`${GREENTICK} **Success**. Deleted the __Member Profile__ for **${user}**, which had ${points} points.`,
-		commandSocialPoints: 'May you specify the amount of points you want to add or remove?',
-		commandSocialUpdate: ({ action, amount, user, before, now }) =>
-			`You have just ${action === 'add' ? 'added' : 'removed'} ${amount} ${
-				amount === 1 ? 'point' : 'points'
-			} to the __Member Profile__ for ${user}. Before: ${before}; Now: ${now}.`,
 
 		/**
 		 * ##################

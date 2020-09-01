@@ -1780,8 +1780,8 @@ declare module 'klasa' {
 		commandReputationGive: (params: { user: string }) => string;
 		commandReputationsBots: string;
 		commandReputationsSelf: (params: { points: number }) => string;
-		commandReputation: string;
-		commandReputationPlural: (params: { points: number }) => string;
+		commandReputation: (params: { count: number }) => string;
+		commandReputationPlural: (params: { count: number }) => string;
 		commandReputations: (params: { user: string; points: string }) => string;
 		commandRequireRole: string;
 		commandScoreboardPosition: (params: { position: number }) => string;

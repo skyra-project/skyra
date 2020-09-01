@@ -1,14 +1,13 @@
-/* eslint-disable @typescript-eslint/no-invalid-this */
+/* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
 import { Filter, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
-import ShinyWager from '@root/arguments/shinywager';
 import { CLIENT_ID, VERSION } from '@root/config';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
-import { createPick } from '@utils/util';
+import { createPick, random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
 
 const LOADING = Emojis.Loading;
@@ -49,90 +48,40 @@ const TIMES: DurationFormatAssetsTime = {
 	}
 };
 
-const PERMS = {
-	ADMINISTRATOR: 'Administrator',
-	VIEW_AUDIT_LOG: 'View Audit Log',
-	MANAGE_GUILD: 'Manage Server',
-	MANAGE_ROLES: 'Manage Roles',
-	MANAGE_CHANNELS: 'Manage Channels',
-	KICK_MEMBERS: 'Kick Members',
-	BAN_MEMBERS: 'Ban Members',
-	CREATE_INSTANT_INVITE: 'Create Instant Invite',
-	CHANGE_NICKNAME: 'Change Nickname',
-	MANAGE_NICKNAMES: 'Manage Nicknames',
-	MANAGE_EMOJIS: 'Manage Emojis',
-	MANAGE_WEBHOOKS: 'Manage Webhooks',
-	VIEW_CHANNEL: 'Read Messages',
-	SEND_MESSAGES: 'Send Messages',
-	SEND_TTS_MESSAGES: 'Send TTS Messages',
-	MANAGE_MESSAGES: 'Manage Messages',
-	EMBED_LINKS: 'Embed Links',
-	ATTACH_FILES: 'Attach Files',
-	READ_MESSAGE_HISTORY: 'Read Message History',
-	MENTION_EVERYONE: 'Mention Everyone',
-	USE_EXTERNAL_EMOJIS: 'Use External Emojis',
-	ADD_REACTIONS: 'Add Reactions',
-	CONNECT: 'Connect',
-	SPEAK: 'Speak',
-	STREAM: 'Stream',
-	MUTE_MEMBERS: 'Mute Members',
-	DEAFEN_MEMBERS: 'Deafen Members',
-	MOVE_MEMBERS: 'Move Members',
-	USE_VAD: 'Use Voice Activity',
-	PRIORITY_SPEAKER: 'Priority Speaker'
-};
-
-const random = (num: number) => Math.round(Math.random() * num);
-
-function duration(time: number, precision?: number) {
-	return friendlyDuration(time, TIMES, precision);
-}
-
-/** Parses cardinal numbers to the ordinal counterparts */
-function ordinal(cardinal: number) {
-	const cent = cardinal % 100;
-	const dec = cardinal % 10;
-
-	if (cent >= 10 && cent <= 20) {
-		return `${cardinal}th`;
-	}
-
-	switch (dec) {
-		case 1:
-			return `${cardinal}st`;
-		case 2:
-			return `${cardinal}nd`;
-		case 3:
-			return `${cardinal}rd`;
-		default:
-			return `${cardinal}th`;
-	}
-}
-
-const list = (andValue: string, orString: string) => (values: readonly string[], conjuction: typeof andValue | typeof orString) => {
-	switch (values.length) {
-		case 0:
-			return '';
-		case 1:
-			return values[0];
-		case 2:
-			return `${values[0]} ${conjuction} ${values[1]}`;
-		default: {
-			const trail = values.slice(0, -1);
-			const head = values[values.length - 1];
-			return `${trail.join(', ')}, ${conjuction} ${head}`;
-		}
-	}
-};
-
-function groupDigits(number: number) {
-	return number.toLocaleString('en-US', { useGrouping: true });
-}
-
 export default class extends Language {
-	public andString = 'and';
-	public orString = 'or';
-	public PERMISSIONS = PERMS;
+	public PERMISSIONS = {
+		ADMINISTRATOR: 'Administrator',
+		VIEW_AUDIT_LOG: 'View Audit Log',
+		MANAGE_GUILD: 'Manage Server',
+		MANAGE_ROLES: 'Manage Roles',
+		MANAGE_CHANNELS: 'Manage Channels',
+		KICK_MEMBERS: 'Kick Members',
+		BAN_MEMBERS: 'Ban Members',
+		CREATE_INSTANT_INVITE: 'Create Instant Invite',
+		CHANGE_NICKNAME: 'Change Nickname',
+		MANAGE_NICKNAMES: 'Manage Nicknames',
+		MANAGE_EMOJIS: 'Manage Emojis',
+		MANAGE_WEBHOOKS: 'Manage Webhooks',
+		VIEW_CHANNEL: 'Read Messages',
+		SEND_MESSAGES: 'Send Messages',
+		SEND_TTS_MESSAGES: 'Send TTS Messages',
+		MANAGE_MESSAGES: 'Manage Messages',
+		EMBED_LINKS: 'Embed Links',
+		ATTACH_FILES: 'Attach Files',
+		READ_MESSAGE_HISTORY: 'Read Message History',
+		MENTION_EVERYONE: 'Mention Everyone',
+		USE_EXTERNAL_EMOJIS: 'Use External Emojis',
+		ADD_REACTIONS: 'Add Reactions',
+		CONNECT: 'Connect',
+		SPEAK: 'Speak',
+		STREAM: 'Stream',
+		MUTE_MEMBERS: 'Mute Members',
+		DEAFEN_MEMBERS: 'Deafen Members',
+		MOVE_MEMBERS: 'Move Members',
+		USE_VAD: 'Use Voice Activity',
+		PRIORITY_SPEAKER: 'Priority Speaker'
+	};
+
 	public HUMAN_LEVELS = {
 		0: 'None',
 		1: 'Low',
@@ -141,10 +90,50 @@ export default class extends Language {
 		4: 'Highest'
 	};
 
-	public duration = duration;
-	public ordinal = ordinal;
-	public list = list(this.andString, this.orString);
-	public groupDigits = groupDigits;
+	public duration(time: number, precision?: number) {
+		return friendlyDuration(time, TIMES, precision);
+	}
+
+	/** Parses cardinal numbers to the ordinal counterparts */
+	public ordinal(cardinal: number) {
+		const cent = cardinal % 100;
+		const dec = cardinal % 10;
+
+		if (cent >= 10 && cent <= 20) {
+			return `${cardinal}th`;
+		}
+
+		switch (dec) {
+			case 1:
+				return `${cardinal}st`;
+			case 2:
+				return `${cardinal}nd`;
+			case 3:
+				return `${cardinal}rd`;
+			default:
+				return `${cardinal}th`;
+		}
+	}
+
+	public list(values: readonly string[], conjuction: 'or' | 'and') {
+		switch (values.length) {
+			case 0:
+				return '';
+			case 1:
+				return values[0];
+			case 2:
+				return `${values[0]} ${conjuction} ${values[1]}`;
+			default: {
+				const trail = values.slice(0, -1);
+				const head = values[values.length - 1];
+				return `${trail.join(', ')}, ${conjuction} ${head}`;
+			}
+		}
+	}
+
+	public groupDigits(number: number) {
+		return number.toLocaleString(this.name, { useGrouping: true });
+	}
 
 	public language: LanguageKeys = {
 		/**
@@ -156,10 +145,14 @@ export default class extends Language {
 
 		default: ({ key }) => `${key} has not been localized for en-US yet.`,
 		defaultLanguage: 'Default Language',
-		yes: 'Yes',
-		no: 'No',
+		globalYes: 'Yes',
+		globalNo: 'No',
+		globalNone: 'None',
+		globalIs: 'is',
+		globalAnd: 'and',
+		globalOr: 'or',
 		settingGatewayKeyNoext: ({ key }) => `The key "${key}" does not exist in the data schema.`,
-		settingGatewayChooseKey: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
+		settingGatewayChooseKey: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys}"`,
 		settingGatewayUnconfigurableFolder: 'This settings group does not have any configurable sub-key.',
 		settingGatewayUnconfigurableKey: ({ key }) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
 		settingGatewayMissingValue: ({ entry, value }) =>
@@ -167,7 +160,7 @@ export default class extends Language {
 		settingGatewayDuplicateValue: ({ entry, value }) =>
 			`The value "${value}" cannot be added to the key "${entry.path}" because it was already set.`,
 		settingGatewayInvalidFilteredValue: ({ entry, value }) => `The settings key "${entry.path}" does not accept the value "${value}".`,
-		resolverMultiTooFew: ({ name, min = 1 }) => `Provided too few ${name}s. At least ${min} ${min === 1 ? 'is' : 'are'} required.`,
+		resolverMultiTooFew: ({ name, min, conjunctionWord }) => `Provided too few ${name}s. At least ${min} ${conjunctionWord} required.`,
 		resolverInvalidBool: ({ name }) => `${name} must be true or false.`,
 		resolverInvalidChannel: ({ name }) => `${name} must be a channel tag or valid channel id.`,
 		resolverInvalidCustom: ({ name, type }) => `${name} must be a valid ${type}.`,
@@ -178,10 +171,8 @@ export default class extends Language {
 		resolverInvalidGuild: ({ name }) => `${name} must be a valid guild id.`,
 		resolverInvalidInt: ({ name }) => `${name} must be an integer.`,
 		resolverInvalidInvite: ({ name }) => `${name} must be a valid invite link.`,
-		resolverInvalidWager: ({ bet }) =>
-			`I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${ShinyWager.kValidBetAmounts
-				.map((amount) => `\`${amount}\``)
-				.join(', ')}`,
+		resolverInvalidWager: ({ bet, validAmounts }) =>
+			`I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${validAmounts}`,
 		resolverInvalidLiteral: ({ name }) => `Your option did not match the only possibility: ${name}`,
 		resolverInvalidMember: ({ name }) => `${name} must be a mention or valid user id.`,
 		resolverInvalidMessage: ({ name }) => `${name} must be a valid message id.`,
@@ -223,7 +214,7 @@ export default class extends Language {
 				'**, **'
 			)}** to cancel this prompt.`,
 		monitorCommandHandlerAborted: 'Aborted',
-		inhibitorCooldown: ({ remaining }) => `You have just used this command. You can use this command again in ${duration(remaining)}.`,
+		inhibitorCooldown: ({ remaining }) => `You have just used this command. You can use this command again in ${this.duration(remaining)}.`,
 		inhibitorMissingBotPerms: ({ missing }) => `I don't have sufficient permissions! I'm missing: ${this.list(missing, 'and')}`,
 		inhibitorNsfw: 'You may not use NSFW commands in this channel!',
 		inhibitorPermissions: 'You do not have permission to use this command!',
@@ -359,7 +350,7 @@ export default class extends Language {
 		commandJoinSuccess: ({ channel }) => `${GREENTICK} Successfully joined the voice channel ${channel}`,
 		commandJoinVoiceDifferent: `${REDCROSS} I think you confused the channels! Earth to Moon, we are in another voice channel!`,
 		commandJoinVoiceFull: `${REDCROSS} I cannot join your voice channel, it's full... kick somebody or make room for me!`,
-		commandJoinVoiceNoConnect: `${REDCROSS} I do not have enough permissions to connect to your voice channel. I am missing the **${PERMS.CONNECT}** permission.`,
+		commandJoinVoiceNoConnect: `${REDCROSS} I do not have enough permissions to connect to your voice channel. I am missing the **${this.PERMISSIONS.CONNECT}** permission.`,
 		commandJoinVoiceNoSpeak: `${REDCROSS} I can connect... but not speak. Please turn on this permission so I can emit music.`,
 		commandJoinVoiceSame: `${REDCROSS} Turn on your volume! I am playing music there!`,
 		commandJoinFailed: `${REDCROSS} I could not join your voice channel because there is something wrong with my music player. Please join the support server by using \`@Skyra support\` and alert my developers.`,
@@ -446,7 +437,7 @@ export default class extends Language {
 		commandRemoveDenied: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
 		commandRemoveSuccess: ({ song }) => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
 		commandSeekDescription: 'Change the player time for the current song.',
-		commandSeekSuccess: ({ time }) => `${GREENTICK} Successfully changed the time! Now at ${duration(time)}!`,
+		commandSeekSuccess: ({ time }) => `${GREENTICK} Successfully changed the time! Now at ${this.duration(time)}!`,
 		commandResumeDescription: 'Resumes the current song.',
 		commandResumeSuccess: '▶ Resumed.',
 		commandRolesetDescription: 'Manage unique role sets.',
@@ -527,9 +518,9 @@ export default class extends Language {
 		musicManagerSetvolumeLoud: "I'll be honest, an airplane's nacelle would be less noisy than this!",
 		musicManagerPlayNoSongs: 'There are no songs left in the queue!',
 		musicManagerPlayPlaying: "The deck's spinning, can't you hear it?",
-		musicManagerStuck: ({ milliseconds }) => `${LOADING} Hold on, I got a little problem, I'll be back in: ${duration(milliseconds)}!`,
+		musicManagerStuck: ({ milliseconds }) => `${LOADING} Hold on, I got a little problem, I'll be back in: ${this.duration(milliseconds)}!`,
 
-		commandConfMenuNopermissions: `I need the ${PERMS.ADD_REACTIONS} and ${PERMS.MANAGE_MESSAGES} permissions to be able to run the menu.`,
+		commandConfMenuNopermissions: `I need the ${this.PERMISSIONS.ADD_REACTIONS} and ${this.PERMISSIONS.MANAGE_MESSAGES} permissions to be able to run the menu.`,
 		commandConfMenuRenderAtFolder: ({ path }) => `Currently at: 📁 ${path}`,
 		commandConfMenuRenderAtPiece: ({ path }) => `Currently at: ⚙️ ${path}`,
 		commandConfMenuRenderNokeys: 'There are no configurable keys for this folder',
@@ -609,7 +600,7 @@ export default class extends Language {
 			'The minimum amount of "points" a user must accumulate before landing the hammer. A user mention will count as 1 point, a role mention as 2 points, and an everyone/here mention as 5 points.',
 		settingsNoMentionSpamTimeperiod:
 			'The amount of time in seconds in which the mention bucket should refresh. For example, if this is set to `8` and you mentioned two users 7 seconds apart, the bucket would run from start with the accumulated amount of points.',
-		settingsRolesAdmin: `The administrator role, their priviledges in Skyra will be upon moderative, covering management. Defaults to anyone with the ${PERMS.MANAGE_GUILD} permission.`,
+		settingsRolesAdmin: `The administrator role, their priviledges in Skyra will be upon moderative, covering management. Defaults to anyone with the ${this.PERMISSIONS.MANAGE_GUILD} permission.`,
 		settingsRolesDj: "The DJ role for this server. DJs have more advanced control over Skyra's music commands.",
 		settingsRolesInitial: 'The initial role, if configured, I will give it to users as soon as they join.',
 		settingsRolesModerator:
@@ -1166,7 +1157,7 @@ export default class extends Language {
 		commandCreateMuteExtended: {
 			extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to
 					the guild settings. This command also modifies all channels (where possible) permissions and disables
-					the permission **${PERMS.SEND_MESSAGES}** in text channels and **${PERMS.CONNECT}** in voice channels for said role.`
+					the permission **${this.PERMISSIONS.SEND_MESSAGES}** in text channels and **${this.PERMISSIONS.CONNECT}** in voice channels for said role.`
 		},
 		commandGiveawayDescription: 'Start a new giveaway.',
 		commandGiveawayExtended: {
@@ -1217,7 +1208,7 @@ export default class extends Language {
 		commandNickDescription: "Change Skyra's nickname for this server.",
 		commandNickExtended: {
 			extendedHelp: "This command allows you to change Skyra's nickname easily for the server.",
-			reminder: `This command requires the **${PERMS.CHANGE_NICKNAME}** permission. Make sure Skyra has it.`,
+			reminder: `This command requires the **${this.PERMISSIONS.CHANGE_NICKNAME}** permission. Make sure Skyra has it.`,
 			explainedUsage: [['nick', "The new nickname. If you don't put any, it'll reset it instead."]],
 			examples: ['SkyNET', 'Assistant', '']
 		},
@@ -1242,7 +1233,7 @@ export default class extends Language {
 					a piece that can active other functions. For example, the aliases are triggers that get executed when the command does not
 					exist in bot, triggering the unknown command event. When this happens, the alias system executes and tries to find an entry
 					that matches with the input.`,
-			reminder: `This command requires the **${PERMS.ADD_REACTIONS}** permission so it can test reactions. Make sure Skyra has it.`,
+			reminder: `This command requires the **${this.PERMISSIONS.ADD_REACTIONS}** permission so it can test reactions. Make sure Skyra has it.`,
 			explainedUsage: [
 				['list', 'List all current triggers.'],
 				['add <type> <input> <output>', 'Add a new trigger given a type, input and output.'],
@@ -1297,7 +1288,7 @@ export default class extends Language {
 		commandSetIgnoreChannelsDescription: 'Set a channel to the ignore channel list.',
 		commandSetIgnoreChannelsExtended: {
 			extendedHelp: `This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators
-					can use Skyra's commands. Unlike removing the **${PERMS.SEND_MESSAGES}** permission, Skyra is still able to send (and therefore
+					can use Skyra's commands. Unlike removing the **${this.PERMISSIONS.SEND_MESSAGES}** permission, Skyra is still able to send (and therefore
 					execute commands) messages, which allows moderators to use moderation commands in the channel. Use this if you want to ban
 					any command usage from the bot in a specific channel.`,
 			explainedUsage: [
@@ -1312,7 +1303,7 @@ export default class extends Language {
 		commandSetImageLogsDescription: 'Set the image logs channel.',
 		commandSetImageLogsExtended: {
 			extendedHelp: `This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with
-					the attachment re-uploaded. All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra.`,
+					the attachment re-uploaded. All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra.`,
 			explainedUsage: [
 				[
 					'channel',
@@ -1325,7 +1316,7 @@ export default class extends Language {
 		commandSetMemberLogsExtended: {
 			extendedHelp: `This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: "Member Join" and
 					"Member Leave". If a muted user joins, it will send a special "Muted Member Join" event. All messages are in embeds so you will need to enable
-					the permission **${PERMS.EMBED_LINKS}** for Skyra. You also need to individually set the "events" you want to listen: "events.memberAdd" and
+					the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra. You also need to individually set the "events" you want to listen: "events.memberAdd" and
 					"events.memberRemove". For roles, you would enable "events.memberNicknameChange" and/or "events.memberRoleUpdate" via the "config" command.`,
 			explainedUsage: [
 				[
@@ -1338,7 +1329,7 @@ export default class extends Language {
 		commandSetmessagelogsDescription: 'Set the message logs channel.',
 		commandSetmessagelogsExtended: {
 			extendedHelp: `This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: "Message Delete",
-					"Message Edit", and "Message Prune". All messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. You
+					"Message Edit", and "Message Prune". All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra. You
 					also need to individually set the "events" you want to listen: "events.messageDelete" and "events.messageEdit" via the
 					"config" command.`,
 			explainedUsage: [
@@ -1348,14 +1339,14 @@ export default class extends Language {
 				]
 			],
 			reminder: `Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the
-				permission **${PERMS.VIEW_AUDIT_LOG}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.`,
+				permission **${this.PERMISSIONS.VIEW_AUDIT_LOG}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.`,
 			examples: ['#message-logs', 'here']
 		},
 		commandSetmodlogsDescription: 'Set the mod logs channel.',
 		commandSetmodlogsExtended: {
 			extendedHelp: `This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with
 					"claimable" reasons and moderators. This channel is not a must and you can always retrieve specific modlogs with the "case" command. All
-					messages are in embeds so you will need to enable the permission **${PERMS.EMBED_LINKS}** for Skyra. For auto-detection, you need to individually
+					messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra. For auto-detection, you need to individually
 					set the "events" you want to listen: "events.banAdd", "events.banRemove" via the "config" command.`,
 			explainedUsage: [
 				[
@@ -1393,7 +1384,7 @@ export default class extends Language {
 		commandSetrolemessageDescription: 'Set the role message for role reactions.',
 		commandSetrolemessageExtended: {
 			extendedHelp: `This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first, and if none is given,
-					Skyra will listen to any reaction in the channel. Additionally, Skyra requires **${PERMS.READ_MESSAGE_HISTORY}** in order to fetch the message for
+					Skyra will listen to any reaction in the channel. Additionally, Skyra requires **${this.PERMISSIONS.READ_MESSAGE_HISTORY}** in order to fetch the message for
 					validation.`,
 			explainedUsage: [['message', 'An ID, they are 17-18 characters long and numeric.']],
 			reminder: 'You must execute this command in the role channel.',
@@ -1852,7 +1843,7 @@ export default class extends Language {
 		commandModerationsDescription: 'List all running moderation logs from this guild.',
 		commandModerationsExtended: {
 			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
-					reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}** to execute correctly.`,
+					reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}** to execute correctly.`,
 			examples: ['', '@Pete', 'mutes @Pete', 'warnings']
 		},
 		commandModerationsEmpty: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
@@ -1860,14 +1851,14 @@ export default class extends Language {
 		commandMutesDescription: 'List all mutes from this guild or from a user.',
 		commandMutesExtended: {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
-					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
+					for a specific user. This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}**
 					to execute correctly.`,
 			examples: ['', '@Pete']
 		},
 		commandWarningsDescription: 'List all warnings from this guild or from a user.',
 		commandWarningsExtended: {
 			extendedHelp: `This command shows either all warnings filed in this guild, or all warnings filed in this guild
-					for a specific user. This command uses a reaction-based menu and requires the permission **${PERMS.MANAGE_MESSAGES}**
+					for a specific user. This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}**
 					to execute correctly.`,
 			examples: ['', '@Pete']
 		},
@@ -1903,7 +1894,7 @@ export default class extends Language {
 		},
 		commandSlowmodeDescription: "Set the channel's slowmode value in seconds.",
 		commandSlowmodeExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per
 					user to any value between 0 and 120 seconds.`,
 			examples: ['0', 'reset', '4'],
 			reminder: "To reset a channel's ratelimit per user, you can use either 0 or 'reset'."
@@ -1916,7 +1907,7 @@ export default class extends Language {
 
 		commandBanDescription: 'Hit somebody with the ban hammer.',
 		commandBanExtended: {
-			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**, and only members with lower role hierarchy position
 					can be banned by me. No, the guild's owner cannot be banned. This action can be optionally timed to create
 					a temporary ban.`,
 			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
@@ -1926,26 +1917,26 @@ export default class extends Language {
 			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
 			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
 			with a special character that drags them to the bottom of the list.`,
-			reminder: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+			reminder: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
 			can be dehoisted.`
 		},
 		commandKickDescription: 'Hit somebody with the 👢.',
 		commandKickExtended: {
-			extendedHelp: `This command requires **${PERMS.KICK_MEMBERS}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.KICK_MEMBERS}**, and only members with lower role hierarchy position
 					can be kicked by me. No, the guild's owner cannot be kicked.`,
 			examples: ['@Sarah', '@Sarah Spamming general chat.']
 		},
 		commandLockdownDescription: 'Close the gates for this channel!',
 		commandLockdownExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_CHANNELS}** in order to be able to manage the permissions for
-					a channel. This command removes the permission **${PERMS.SEND_MESSAGES}** to the \`@everyone\` role so nobody but
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_CHANNELS}** in order to be able to manage the permissions for
+					a channel. This command removes the permission **${this.PERMISSIONS.SEND_MESSAGES}** to the \`@everyone\` role so nobody but
 					the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can
 					send messages. Optionally, you can pass time as second argument.`,
 			examples: ['', '#general', '#general 5m']
 		},
 		commandMuteDescription: 'Mute a user in all text and voice channels.',
 		commandMuteExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be muted. This action can be optionally timed to create
 					a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.
 					The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
@@ -1953,19 +1944,19 @@ export default class extends Language {
 		},
 		commandSetNicknameDescription: 'Change the nickname of a user.',
 		commandSetNicknameExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
 						can be managed by me. No, the guild's owner nickname cannot be changed.`,
 			examples: ['@Pete peeehteeerrr', '@ꓑ𝗲੮ẻ Pete Unmentionable name']
 		},
 		commandAddRoleDescription: 'Adds a role to a user.',
 		commandAddRoleExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 						can be managed by me. No, the guild's owner roles cannot be changed.`,
 			examples: ['@John member', '@John member Make John a member']
 		},
 		commandRemoveroleDescription: '',
 		commandRemoveroleExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 						can be managed by me. No, the guild's owner roles cannot be changed.`,
 			examples: ['@Paula member', '@Paula member Remove member permissions from Paula']
 		},
@@ -2000,7 +1991,7 @@ export default class extends Language {
 		},
 		commandRestrictAttachmentDescription: 'Restrict a user from sending attachments in all channels.',
 		commandRestrictAttachmentExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
@@ -2008,7 +1999,7 @@ export default class extends Language {
 		},
 		commandRestrictEmbedDescription: 'Restrict a user from attaching embeds in all channels.',
 		commandRestrictEmbedExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
@@ -2016,7 +2007,7 @@ export default class extends Language {
 		},
 		commandRestrictEmojiDescription: 'Restrict a user from using external emojis in all channels.',
 		commandRestrictEmojiExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
@@ -2026,7 +2017,7 @@ export default class extends Language {
 		},
 		commandRestrictReactionDescription: 'Restrict a user from reacting to messages in all channels.',
 		commandRestrictReactionExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
@@ -2034,7 +2025,7 @@ export default class extends Language {
 		},
 		commandRestrictVoiceDescription: 'Restrict a user from joining any voice channel.',
 		commandRestrictVoiceExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
 					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
 					a temporary restriction.
 					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
@@ -2042,7 +2033,7 @@ export default class extends Language {
 		},
 		commandSoftBanDescription: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
 		commandSoftBanExtended: {
-			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**, and only members with lower role hierarchy position
 					can be banned by me. No, the guild's owner cannot be banned. The ban feature from Discord has a feature that
 					allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being
 					a number between 0 (no days) and 7. The user gets unbanned right after the ban, so it is like a kick, but
@@ -2057,39 +2048,39 @@ export default class extends Language {
 		},
 		commandUnbanDescription: 'Unban somebody from this guild!.',
 		commandUnbanExtended: {
-			extendedHelp: `This command requires **${PERMS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
+			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
 					cleans them up, and allows the pass to this guild's gates.`,
 			examples: ['@Pete', '@Pete Turns out he was not the one who spammed all channels ¯\\_(ツ)_/¯']
 		},
 		commandUnmuteDescription: 'Remove the scotch tape from a user.',
 		commandUnmuteExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the muted people's list,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the muted people's list,
 					and gives the old roles back if the user had them.`,
 			examples: ['@Pete', '@Pete (Insert random joke here).']
 		},
 		commandUnrestrictAttachmentDescription: 'Remove the attachment restriction from one or more users.',
 		commandUnrestrictAttachmentExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
 		},
 		commandUnrestrictEmbedDescription: 'Remove the embed restriction from one or more users.',
 		commandUnrestrictEmbedExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
 		},
 		commandUnrestrictEmojiDescription: 'Remove the external emoji restriction from one or more users.',
 		commandUnrestrictEmojiExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
 		},
 		commandUnrestrictReactionDescription: 'Remove the reaction restriction from one or more users.',
 		commandUnrestrictReactionExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
 		},
 		commandUnrestrictVoiceDescription: 'Remove the voice restriction from one or more users.',
 		commandUnrestrictVoiceExtended: {
-			extendedHelp: `This command requires **${PERMS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the restricted people's list.`,
 			examples: ['@Pete']
 		},
 		commandUnwarnDescription: 'Appeal a warning moderation log case.',
@@ -2100,15 +2091,15 @@ export default class extends Language {
 		},
 		commandVmuteDescription: "Throw somebody's microphone out the window.",
 		commandVmuteExtended: {
-			extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
 					can be silenced by me. No, the guild's owner cannot be silenced. This action can be optionally timed to create
 					a temporary voice mute.`,
 			examples: ['@Pete', '@Pete Singing too loud', '@Pete Literally sang hear rape, for 24 hours.']
 		},
 		commandVoiceKickDescription: 'Hit somebody with the 👢 for singing so bad and loud.',
 		commandVoiceKickExtended: {
-			extendedHelp: `This command requires the permissions **${PERMS.MANAGE_CHANNELS}** to create a temporary (hidden)
-					voice channel, and **${PERMS.MOVE_MEMBERS}** to move the user to the temporary channel. After this, the channel
+			extendedHelp: `This command requires the permissions **${this.PERMISSIONS.MANAGE_CHANNELS}** to create a temporary (hidden)
+					voice channel, and **${this.PERMISSIONS.MOVE_MEMBERS}** to move the user to the temporary channel. After this, the channel
 					is quickly deleted, making the user leave the voice channel. For scared moderators, this command has almost no
 					impact in the average user, as the channel is created in a way only me and the selected user can see and join,
 					then quickly deleted.`,
@@ -2116,7 +2107,7 @@ export default class extends Language {
 		},
 		commandVunmuteDescription: "Get somebody's microphone back so they can talk.",
 		commandVunmuteExtended: {
-			extendedHelp: `This command requires **${PERMS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
+			extendedHelp: `This command requires **${this.PERMISSIONS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
 					can be un-silenced by me. No, the guild's owner cannot be un-silenced.`,
 			examples: ['@Pete', '@Pete Appealed his times signing hear rape.']
 		},
@@ -2455,7 +2446,7 @@ export default class extends Language {
 					The --lang and --language flags allow different syntax highlight for the output.
 					The --json flag converts the output to json
 					The --no-timeout flag disables the timeout
-					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${PERMS.ATTACH_FILES} permission.`,
+					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${this.PERMISSIONS.ATTACH_FILES} permission.`,
 			examples: ['msg.author!.username;', '1 + 1;'],
 			multiline: true
 		},
@@ -3275,9 +3266,9 @@ export default class extends Language {
 		giveawayTime: 'A giveaway must last at least 10 seconds.',
 		giveawayTimeTooLong: "Hey! That's an incredibly long time to keep track of!",
 		giveawayEndsAt: 'Ends at:',
-		giveawayDuration: ({ time }) => `This giveaway ends in **${duration(time)}**! React to this message with 🎉 to join.`,
+		giveawayDuration: ({ time }) => `This giveaway ends in **${this.duration(time)}**! React to this message with 🎉 to join.`,
 		giveawayTitle: '🎉 **GIVEAWAY** 🎉',
-		giveawayLastchance: ({ time }) => `**LAST CHANCE**! Remaining time: **${duration(time)}**. React to this message with 🎉 to join.`,
+		giveawayLastchance: ({ time }) => `**LAST CHANCE**! Remaining time: **${this.duration(time)}**. React to this message with 🎉 to join.`,
 		giveawayLastchanceTitle: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
 		giveawayEnded: ({ winners }) => (winners.length === 1 ? `Winner: ${winners[0]}` : `Winners: ${winners.join(' ')}`),
 		giveawayEndedNoWinner: 'No winner...',
@@ -3285,7 +3276,7 @@ export default class extends Language {
 		giveawayEndedTitle: '🎉 **GIVEAWAY ENDED** 🎉',
 		giveawayEndedMessage: ({ winners, title }) => `Congratulations ${winners.join(' ')}! You won the giveaway **${title}**`,
 		giveawayEndedMessageNoWinner: ({ title }) => `The giveaway **${title}** ended without enough participants.`,
-		giveawayScheduled: ({ scheduledTime }) => `The giveaway will start in ${duration(scheduledTime)}.`,
+		giveawayScheduled: ({ scheduledTime }) => `The giveaway will start in ${this.duration(scheduledTime)}.`,
 
 		/**
 		 * ###################
@@ -3348,7 +3339,7 @@ export default class extends Language {
 			].join('\n'),
 		commandRoleInfoAll: 'All Permissions granted.',
 		commandRoleInfoPermissions: ({ permissions }) =>
-			permissions.length > 0 ? permissions.map((key) => `+ **${PERMS[key]}**`).join('\n') : 'Permissions not granted.',
+			permissions.length > 0 ? permissions.map((key) => `+ **${this.PERMISSIONS[key]}**`).join('\n') : 'Permissions not granted.',
 		commandFilterUndefinedWord: 'You must write what you want me to filter.',
 		commandFilterFiltered: ({ filtered }) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 		commandFilterAdded: ({ word }) => `| ✅ | Success! Added the word ${word} to the filter.`,
@@ -3359,8 +3350,9 @@ export default class extends Language {
 		commandManageAttachmentsRequiredValue: 'You must input a value for this type.',
 		commandManageAttachmentsInvalidAction: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
 		commandManageAttachmentsMaximum: ({ value }) => `${GREENTICK} Successfully set the maximum amount of attachments to ${value}.`,
-		commandManageAttachmentsExpire: ({ value }) => `${GREENTICK} Successfully set the lifetime for the manager's entries to ${duration(value)}.`,
-		commandManageAttachmentsDuration: ({ value }) => `${GREENTICK} Successfully set the duration for moderation logs to ${duration(value)}.`,
+		commandManageAttachmentsExpire: ({ value }) =>
+			`${GREENTICK} Successfully set the lifetime for the manager's entries to ${this.duration(value)}.`,
+		commandManageAttachmentsDuration: ({ value }) => `${GREENTICK} Successfully set the duration for moderation logs to ${this.duration(value)}.`,
 		commandManageAttachmentsAction: `${GREENTICK} Successfully changed the moderative action for the manager.`,
 		commandManageAttachmentsLogs: `${GREENTICK} Successfully changed the preferences for message logging.`,
 		commandManageAttachmentsEnabled: ({ value }) => `${GREENTICK} Successfully ${value ? 'enabled' : 'disabled'} the attachment management.`,
@@ -3376,7 +3368,7 @@ export default class extends Language {
 		commandManageCommandAutoDeleteShowEmpty: 'There are no command autodelete configured right now.',
 		commandManageCommandAutoDeleteShow: ({ codeblock }) => `All command autodeletes configured:${codeblock}`,
 		commandManageCommandAutoDeleteAdd: ({ channel, time }) =>
-			`${GREENTICK} Success! All successful commands in ${channel} will be deleted after ${duration(time)}!`,
+			`${GREENTICK} Success! All successful commands in ${channel} will be deleted after ${this.duration(time)}!`,
 		commandManageCommandAutoDeleteRemove: ({ channel }) =>
 			`${GREENTICK} Success! Commands will not be automatically deleted in ${channel} anymore!`,
 		commandManageCommandAutoDeleteRemoveNotset: ({ channel }) =>
@@ -3482,7 +3474,7 @@ export default class extends Language {
 		commandPermissions: ({ username, id }) => `Permissions for ${username} (${id})`,
 		commandPermissionsAll: 'All Permissions',
 		commandRaidDisabled: 'The Anti-RAID system is not enabled in this server.',
-		commandRaidMissingKick: `As I do not have the **${PERMS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
+		commandRaidMissingKick: `As I do not have the **${this.PERMISSIONS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
 		commandRaidList: 'List of users in the RAID queue',
 		commandRaidClear: 'Successfully cleared the RAID list.',
 		commandRaidCool: 'Successfully deactivated the RAID.',
@@ -3493,7 +3485,7 @@ export default class extends Language {
 		commandTimeNotScheduled: 'This task is not scheduled.',
 		commandTimeAborted: ({ title }) => `Successfully aborted the schedule for ${title}`,
 		commandTimeScheduled: ({ title, user, time }) =>
-			`✅ Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${duration(
+			`✅ Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id}) with a duration of ${this.duration(
 				time
 			)}`,
 
@@ -3503,7 +3495,9 @@ export default class extends Language {
 		 */
 
 		commandSlowmodeSet: ({ cooldown }) =>
-			cooldown === 0 ? 'The cooldown for this channel has been reset.' : `The cooldown for this channel has been set to ${duration(cooldown)}.`,
+			cooldown === 0
+				? 'The cooldown for this channel has been reset.'
+				: `The cooldown for this channel has been set to ${this.duration(cooldown)}.`,
 		commandSlowmodeTooLong: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
 		commandBanNotBannable: 'The target is not bannable for me.',
 		commandDehoistStarting: ({ count }) => `I will start dehoisting ${count} members...`,
@@ -3532,7 +3526,7 @@ export default class extends Language {
 		commandMuteMuted: 'The target user is already muted.',
 		commandMuteUserNotMuted: 'This user is not muted.',
 		commandMuteUnconfigured: 'This guild does not have a **Muted** role. Aborting command execution.',
-		commandMutecreateMissingPermission: `I need the **${PERMS.MANAGE_ROLES}** permission to create the role and **${PERMS.MANAGE_CHANNELS}** to edit the channels permissions.`,
+		commandMutecreateMissingPermission: `I need the **${this.PERMISSIONS.MANAGE_ROLES}** permission to create the role and **${this.PERMISSIONS.MANAGE_CHANNELS}** to edit the channels permissions.`,
 		commandRestrictLowlevel: `${REDCROSS} I'm sorry, there is no restriction role configured. Please ask an Administrator or the server owner to set it up.`,
 		commandPruneInvalid: `${REDCROSS} You did not specify the arguments correctly, please make sure you gave a correct limit or filter.`,
 		commandPrune: ({ amount, total }) => `Successfully deleted ${amount} ${amount === 1 ? 'message' : 'messages'} from ${total}.`,
@@ -3576,9 +3570,9 @@ export default class extends Language {
 			].join('\n'),
 		commandToggleModerationDmToggled: ({ value }) =>
 			value ? `${GREENTICK} Successfully enabled moderation DMs.` : `${GREENTICK} Successfully disabled moderation DMs.`,
-		commandUnbanMissingPermission: `I will need the **${PERMS.BAN_MEMBERS}** permission to be able to unban.`,
-		commandUnmuteMissingPermission: `I will need the **${PERMS.MANAGE_ROLES}** permission to be able to unmute.`,
-		commandVmuteMissingPermission: `I will need the **${PERMS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
+		commandUnbanMissingPermission: `I will need the **${this.PERMISSIONS.BAN_MEMBERS}** permission to be able to unban.`,
+		commandUnmuteMissingPermission: `I will need the **${this.PERMISSIONS.MANAGE_ROLES}** permission to be able to unmute.`,
+		commandVmuteMissingPermission: `I will need the **${this.PERMISSIONS.MUTE_MEMBERS}** permission to be able to voice unmute.`,
 		commandVmuteUserNotMuted: 'This user is not voice muted.',
 		commandWarnDm: ({ moderator, guild, reason }) => `You have been warned by ${moderator} in ${guild} for the reason: ${reason}`,
 		commandWarnMessage: ({ user, log }) => `|\`🔨\`| [Case::${log}] **WARNED**: ${user.tag} (${user.id})`,
@@ -3591,7 +3585,7 @@ export default class extends Language {
 			description: [
 				`**❯ Server**: ${guild}`,
 				`**❯ Type**: ${title}`,
-				pDuration ? `**❯ Duration**: ${duration(pDuration)}` : null,
+				pDuration ? `**❯ Duration**: ${this.duration(pDuration)}` : null,
 				`**❯ Reason**: ${reason || 'None specified'}`
 			]
 				.filter((line) => line !== null)
@@ -3642,14 +3636,14 @@ export default class extends Language {
 			'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
 		commandToggleDarkModeToggled: ({ enabled }) =>
 			enabled ? `${GREENTICK} Successfully enabled the dark mode.` : `${GREENTICK} Successfully disabled the dark mode.`,
-		commandDailyTime: ({ time }) => `Next dailies are available in ${duration(time)}`,
+		commandDailyTime: ({ time }) => `Next dailies are available in ${this.duration(time)}`,
 		commandDailyTimeSuccess: ({ amount }) => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
 		commandDailyGrace: ({ remaining }) =>
 			[
 				'Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.',
-				`Remaining time: ${duration(remaining)}`
+				`Remaining time: ${this.duration(remaining)}`
 			].join('\n'),
-		commandDailyGraceAccepted: ({ amount, remaining }) => `Successfully claimed ${amount}${SHINY}! Next dailies in: ${duration(remaining)}`,
+		commandDailyGraceAccepted: ({ amount, remaining }) => `Successfully claimed ${amount}${SHINY}! Next dailies in: ${this.duration(remaining)}`,
 		commandDailyGraceDenied: 'Got it! Come back soon!',
 		commandDailyCollect: 'Collect dailies',
 		commandLevel: {
@@ -3704,7 +3698,7 @@ export default class extends Language {
 		commandRemindmeCreateNoDescription: 'Something, you did not tell me what.',
 		commandRemindmeDeleteNoId: 'You must give a valid ID, you can get them using the `list` sub-command.',
 		commandRemindmeDelete: ({ task }) =>
-			`The reminder with ID \`${task.id}\` and with a remaining time of **${duration(
+			`The reminder with ID \`${task.id}\` and with a remaining time of **${this.duration(
 				task.time.getTime() - Date.now()
 			)}** has been successfully deleted.`,
 		commandRemindmeListEmpty: 'You do not have any active reminder',
@@ -3712,7 +3706,7 @@ export default class extends Language {
 		commandRemindmeInvalidId: 'I am sorry, but the ID provided does not seem to be valid.',
 		commandRemindmeNotfound: 'I cannot find something here. The reminder either never existed or it ended.',
 
-		commandReputationTime: ({ remaining }) => `You can give a reputation point in ${duration(remaining)}`,
+		commandReputationTime: ({ remaining }) => `You can give a reputation point in ${this.duration(remaining)}`,
 		commandReputationUsable: 'You can give a reputation point now.',
 		commandReputationUserNotfound: 'You must mention a user to give a reputation point.',
 		commandReputationSelf: 'You cannot give a reputation point to yourself.',
@@ -3830,9 +3824,9 @@ export default class extends Language {
 				`• **Klasa**: ${klasaVersion}`
 			].join('\n'),
 			uptime: [
-				`• **Host**: ${duration(uptime.host, 2)}`,
-				`• **Total**: ${duration(uptime.total, 2)}`,
-				`• **Client**: ${duration(uptime.client, 2)}`
+				`• **Host**: ${this.duration(uptime.host, 2)}`,
+				`• **Total**: ${this.duration(uptime.total, 2)}`,
+				`• **Client**: ${this.duration(uptime.client, 2)}`
 			].join('\n'),
 			serverUsage: [`• **CPU Load**: ${usage.cpuLoad.join('% | ')}%`, `• **Heap**: ${usage.ramUsed} (Total: ${usage.ramTotal})`].join('\n')
 		}),
@@ -4100,9 +4094,9 @@ export default class extends Language {
 		},
 		commandWhoisMemberFields: ({ member }) => ({
 			joined: member.joinedTimestamp
-				? `${timestamp.displayUTC(member.joinedTimestamp)}\n${duration(Date.now() - member.joinedTimestamp, 2)} ago`
+				? `${timestamp.displayUTC(member.joinedTimestamp)}\n${this.duration(Date.now() - member.joinedTimestamp, 2)} ago`
 				: 'Unknown',
-			createdAt: `${timestamp.displayUTC(member.user.createdAt)}\n${duration(Date.now() - member.user.createdTimestamp, 2)} ago`,
+			createdAt: `${timestamp.displayUTC(member.user.createdAt)}\n${this.duration(Date.now() - member.user.createdTimestamp, 2)} ago`,
 			footer: `ID: ${member.id}`
 		}),
 		commandWhoisMemberRoles: ({ amount }) => (amount === 1 ? 'Role [1]' : `Roles [${amount}]`),
@@ -4112,10 +4106,10 @@ export default class extends Language {
 			createdAt: 'Created At'
 		},
 		commandWhoisUserFields: ({ user }) => ({
-			createdAt: `${timestamp.displayUTC(user.createdAt)}\n${duration(Date.now() - user.createdTimestamp, 2)} ago`,
+			createdAt: `${timestamp.displayUTC(user.createdAt)}\n${this.duration(Date.now() - user.createdTimestamp, 2)} ago`,
 			footer: `ID: ${user.id}`
 		}),
-		commandFollowage: ({ user, channel, time }) => `${user} has been following ${channel} for ${duration(time, 2)}.`,
+		commandFollowage: ({ user, channel, time }) => `${user} has been following ${channel} for ${this.duration(time, 2)}.`,
 		commandFollowageMissingEntries: 'Either the user or the channel do not exist. Make sure you wrote their names correctly.',
 		commandFollowageNotFollowing: 'That user is not following the specified channel.',
 		commandTwitchNoEntries: 'There are no entries. Are you sure you wrote the user name correctly?',
@@ -4689,7 +4683,7 @@ export default class extends Language {
 		selfModerationCommandHardAction: ({ value }) => `${GREENTICK} Successfully set punishment: ${value}`,
 		selfModerationCommandHardActionDuration: ({ value }) =>
 			value
-				? `${GREENTICK} Successfully set the punishment appeal timer to: ${duration(value)}`
+				? `${GREENTICK} Successfully set the punishment appeal timer to: ${this.duration(value)}`
 				: `${GREENTICK} Successfully removed the punishment appeal timer.`,
 		selfModerationCommandThresholdMaximum: ({ value }) =>
 			value
@@ -4697,7 +4691,7 @@ export default class extends Language {
 				: `${GREENTICK} Successfully removed the threshold maximum, punishment will take place instantly if set.`,
 		selfModerationCommandThresholdDuration: ({ value }) =>
 			value
-				? `${GREENTICK} Successfully set the threshold duration to: ${duration(value)}`
+				? `${GREENTICK} Successfully set the threshold duration to: ${this.duration(value)}`
 				: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
 		selfModerationCommandShow: ({ kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration }) =>
 			[
@@ -4708,10 +4702,10 @@ export default class extends Language {
 				` - Delete    : ${kDelete}`,
 				'Punishment',
 				` - Type      : ${kHardAction}`,
-				` - Duration  : ${hardActionDuration === null ? 'Permanent' : duration(hardActionDuration)}`,
+				` - Duration  : ${hardActionDuration === null ? 'Permanent' : this.duration(hardActionDuration)}`,
 				'Threshold',
 				` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
-				` - Duration  : ${thresholdDuration ? duration(thresholdDuration) : 'Unset'}`
+				` - Duration  : ${thresholdDuration ? this.duration(thresholdDuration) : 'Unset'}`
 			].join('\n'),
 		selfModerationSoftActionAlert: 'Alert',
 		selfModerationSoftActionLog: 'Log',
@@ -4727,9 +4721,9 @@ export default class extends Language {
 		selfModerationMaximumTooShort: ({ minimum, value }) => `${REDCROSS} The value (${value}) was too short, expected at least ${minimum}.`,
 		selfModerationMaximumTooLong: ({ maximum, value }) => `${REDCROSS} The value (${value}) was too long, expected maximum ${maximum}.`,
 		selfModerationDurationTooShort: ({ minimum, value }) =>
-			`${REDCROSS} The value (${duration(value)}) was too short, expected at least ${duration(minimum)}.`,
+			`${REDCROSS} The value (${this.duration(value)}) was too short, expected at least ${this.duration(minimum)}.`,
 		selfModerationDurationTooLong: ({ maximum, value }) =>
-			`${REDCROSS} The value (${duration(value)}) was too long, expected maximum ${duration(maximum)}.`,
+			`${REDCROSS} The value (${this.duration(value)}) was too long, expected maximum ${this.duration(maximum)}.`,
 
 		actionMuteReason: ({ reason }) => (reason === null ? '[Action] Applied Mute.' : `[Action] Applied Mute | Reason: ${reason}`),
 		actionUnmuteReason: ({ reason }) => (reason === null ? '[Action] Revoked Mute.' : `[Action] Revoked Mute | Reason: ${reason}`),
@@ -4770,7 +4764,7 @@ export default class extends Language {
 		restrictionNotConfigured: 'The restriction role must be configured for this action to happen',
 		muteNotInMember: 'The muted role is not set in the member.',
 		muteLowHierarchy: 'I cannot mute a user which higher role hierarchy than me.',
-		muteCannotManageRoles: `I must have **${PERMS.MANAGE_ROLES}** permissions to be able to mute.`,
+		muteCannotManageRoles: `I must have **${this.PERMISSIONS.MANAGE_ROLES}** permissions to be able to mute.`,
 		muteNotExists: 'The specified user is not muted.',
 
 		resolverDateSuffix: ' seconds',
@@ -4796,7 +4790,7 @@ export default class extends Language {
 		systemParseError: `${REDCROSS} I failed to process the data I was given, sorry~!`,
 		systemHighestRole: "This role's hierarchy position is higher or equal than me, I am not able to grant it to anyone.",
 		systemChannelNotPostable: 'I am not allowed to send messages to this channel.',
-		systemFetchbansFail: `Failed to fetch bans. Do I have the **${PERMS.BAN_MEMBERS}** permission?`,
+		systemFetchbansFail: `Failed to fetch bans. Do I have the **${this.PERMISSIONS.BAN_MEMBERS}** permission?`,
 		systemLoading: createPick([
 			`${LOADING} Watching hamsters run...`,
 			`${LOADING} Finding people at hide-and-seek...`,
@@ -4859,7 +4853,7 @@ export default class extends Language {
 			'I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.',
 		guildBansEmpty: 'There are no bans registered in this server.',
 		guildBansNotFound: 'I tried and failed to find this user from the ban list. Are you certain this user is banned?',
-		channelNotReadable: `I am sorry, but I need the permissions **${PERMS.VIEW_CHANNEL}** and **${PERMS.READ_MESSAGE_HISTORY}**`,
+		channelNotReadable: `I am sorry, but I need the permissions **${this.PERMISSIONS.VIEW_CHANNEL}** and **${this.PERMISSIONS.READ_MESSAGE_HISTORY}**`,
 
 		userNotInGuild: 'This user is not in this server.',
 		userNotExistent: 'This user does not exist. Are you sure you used a valid user ID?',
@@ -4867,13 +4861,13 @@ export default class extends Language {
 		eventsGuildMemberAdd: 'User Joined',
 		eventsGuildMemberAddMute: 'Muted User joined',
 		eventsGuildMemberAddRaid: 'Raid Detected',
-		eventsGuildMemberAddDescription: ({ mention, time }) => `${mention} | **Joined Discord**: ${duration(time, 2)} ago.`,
+		eventsGuildMemberAddDescription: ({ mention, time }) => `${mention} | **Joined Discord**: ${this.duration(time, 2)} ago.`,
 		eventsGuildMemberRemove: 'User Left',
 		eventsGuildMemberKicked: 'User Kicked',
 		eventsGuildMemberBanned: 'User Banned',
 		eventsGuildMemberSoftBanned: 'User Softbanned',
 		eventsGuildMemberRemoveDescription: ({ mention, time }) =>
-			`${mention} | **Joined Server**: ${time === -1 ? 'Unknown' : `${duration(time, 2)} ago`}.`,
+			`${mention} | **Joined Server**: ${time === -1 ? 'Unknown' : `${this.duration(time, 2)} ago`}.`,
 		eventsGuildMemberUpdateNickname: ({ previous, current }) => `Updated the nickname from **${previous}** to **${current}**`,
 		eventsGuildMemberAddedNickname: ({ current }) => `Added a new nickname **${current}**`,
 		eventsGuildMemberRemovedNickname: ({ previous }) => `Removed the nickname **${previous}**`,
@@ -4900,7 +4894,7 @@ export default class extends Language {
 		settingsDeleteRolesInitial: 'Reseated the value for `roles.initial`',
 		settingsDeleteRolesMute: 'Reseated the value for `roles.muted`',
 
-		modlogTimed: ({ remaining }) => `This moderation log is already timed. Expires in ${duration(remaining)}`,
+		modlogTimed: ({ remaining }) => `This moderation log is already timed. Expires in ${this.duration(remaining)}`,
 
 		guildWarnNotFound: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 		guildMemberNotVoicechannel: 'I cannot execute this action in a member that is not connected to a voice channel.',

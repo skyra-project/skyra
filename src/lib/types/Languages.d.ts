@@ -36,17 +36,21 @@ declare module 'klasa' {
 		default: (params: { key: string }) => string;
 		defaultLanguage: string;
 
-		yes: string;
-		no: string;
+		globalYes: string;
+		globalNo: string;
+		globalNone: string;
+		globalIs: string;
+		globalAnd: string;
+		globalOr: string;
 
 		settingGatewayKeyNoext: (params: { key: string }) => string;
-		settingGatewayChooseKey: (params: { keys: string[] }) => string;
+		settingGatewayChooseKey: (params: { keys: string }) => string;
 		settingGatewayUnconfigurableFolder: string;
 		settingGatewayUnconfigurableKey: (params: { key: string }) => string;
 		settingGatewayMissingValue: (params: { entry: SchemaEntry; value: string }) => string;
 		settingGatewayDuplicateValue: (params: { entry: SchemaEntry; value: string }) => string;
 		settingGatewayInvalidFilteredValue: (params: { entry: SchemaEntry; value: unknown }) => string;
-		resolverMultiTooFew: (params: { name: string; min?: number }) => string;
+		resolverMultiTooFew: (params: { name: string; min?: number; conjunctionWord: string }) => string;
 		resolverInvalidBool: (params: { name: string }) => string;
 		resolverInvalidChannel: (params: { name: string }) => string;
 		resolverInvalidCustom: (params: { name: string; type: string }) => string;
@@ -57,7 +61,7 @@ declare module 'klasa' {
 		resolverInvalidGuild: (params: { name: string }) => string;
 		resolverInvalidInt: (params: { name: string }) => string;
 		resolverInvalidInvite: (params: { name: string }) => string;
-		resolverInvalidWager: (params: { bet: number }) => string;
+		resolverInvalidWager: (params: { bet: number; validAmounts: string }) => string;
 		resolverInvalidLiteral: (params: { name: string }) => string;
 		resolverInvalidMember: (params: { name: string }) => string;
 		resolverInvalidMessage: (params: { name: string }) => string;

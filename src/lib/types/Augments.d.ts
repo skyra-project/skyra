@@ -120,8 +120,6 @@ declare module 'klasa' {
 	}
 
 	interface Language {
-		andString: string;
-		orString: string;
 		PERMISSIONS: Record<PermissionString, string>;
 		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
 		duration(time: number, precision?: number): string;

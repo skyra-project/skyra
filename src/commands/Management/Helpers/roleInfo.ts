@@ -27,8 +27,8 @@ export default class extends SkyraCommand {
 				.setDescription(
 					message.language.get('commandRoleInfo', {
 						role,
-						hoisted: message.language.get(role.hoist ? 'yes' : 'no'),
-						mentionable: message.language.get(role.mentionable ? 'yes' : 'no')
+						hoisted: message.language.get(role.hoist ? 'globalYes' : 'globalNo'),
+						mentionable: message.language.get(role.mentionable ? 'globalYes' : 'globalNo')
 					})
 				)
 				.addField(

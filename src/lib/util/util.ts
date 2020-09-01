@@ -676,6 +676,8 @@ export const shuffle = <T>(array: T[]): T[] => {
 	return array;
 };
 
+export const random = (num: number) => Math.round(Math.random() * num);
+
 export interface UtilOneToTenEntry {
 	emoji: string;
 	color: number;

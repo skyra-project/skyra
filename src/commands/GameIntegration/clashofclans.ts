@@ -159,7 +159,7 @@ export default class extends RichDisplayCommand {
 							`**${titles.warWins}**: ${clan.warWins}`,
 							`**${titles.warTies}**: ${clan.warTies ?? titles.unknown}`,
 							`**${titles.warLosses}**: ${clan.warLosses ?? titles.unknown}`,
-							`**${titles.warLogPublic}**: ${message.language.get(clan.isWarLogPublic ? 'yes' : 'no')}`
+							`**${titles.warLogPublic}**: ${message.language.get(clan.isWarLogPublic ? 'globalYes' : 'globalNo')}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

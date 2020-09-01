@@ -35,6 +35,10 @@ declare module 'klasa' {
 	export interface LanguageKeys {
 		default: (params: { key: string }) => string;
 		defaultLanguage: string;
+
+		yes: string;
+		no: string;
+
 		settingGatewayKeyNoext: (params: { key: string }) => string;
 		settingGatewayChooseKey: (params: { keys: string[] }) => string;
 		settingGatewayUnconfigurableFolder: string;
@@ -258,7 +262,7 @@ declare module 'klasa' {
 		commandItemDescription: string;
 		commandItemExtended: LanguageHelpDisplayOptions;
 		commandItemEmebedData: (params: {
-			availableInGen8: boolean;
+			availableInGen8: string;
 		}) => {
 			ITEM: string;
 			generationIntroduced: string;
@@ -287,7 +291,7 @@ declare module 'klasa' {
 		commandMoveDescription: string;
 		commandMoveExtended: LanguageHelpDisplayOptions;
 		commandMoveEmbedData: (params: {
-			availableInGen8: boolean;
+			availableInGen8: string;
 		}) => {
 			move: string;
 			types: string;
@@ -605,9 +609,7 @@ declare module 'klasa' {
 			noClan: string;
 			noLeague: string;
 		};
-		commandClashofclansClanEmbedTitles: (params: {
-			isWarLogPublic: boolean;
-		}) => {
+		commandClashofclansClanEmbedTitles: {
 			clanLevel: string;
 			clanPoints: string;
 			clanVersusPoints: string;
@@ -628,7 +630,6 @@ declare module 'klasa' {
 				oncePerWeek: string;
 				lessThanOncePerWeek: string;
 			};
-			warLogPublicDescr: string;
 		};
 		commandClashofclansInvalidPlayerTag: (params: { playertag: string }) => string;
 		commandClashOfClansClansQueryFail: (params: { clan: string }) => string;
@@ -1477,7 +1478,7 @@ declare module 'klasa' {
 		commandGuildInfoMembers: (params: { count: string; owner: User }) => string;
 		commandGuildInfoOther: (params: { size: number; region: string; createdAt: number; verificationLevel: 0 | 1 | 2 | 3 | 4 }) => string;
 		commandRoleInfoTitles: Record<string, string>;
-		commandRoleInfo: (params: { role: Role }) => string;
+		commandRoleInfo: (params: { role: Role; hoisted: string; mentionable: string }) => string;
 		commandRoleInfoAll: string;
 		commandRoleInfoPermissions: (params: { permissions: readonly PermissionString[] }) => string;
 		commandFilterUndefinedWord: string;
@@ -1775,7 +1776,9 @@ declare module 'klasa' {
 		commandReputationGive: (params: { user: string }) => string;
 		commandReputationsBots: string;
 		commandReputationsSelf: (params: { points: number }) => string;
-		commandReputations: (params: { user: string; points: number }) => string;
+		commandReputation: string;
+		commandReputationPlural: (params: { points: number }) => string;
+		commandReputations: (params: { user: string; points: string }) => string;
 		commandRequireRole: string;
 		commandScoreboardPosition: (params: { position: number }) => string;
 		commandSetColor: (params: { color: string }) => string;

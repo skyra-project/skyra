@@ -156,6 +156,8 @@ export default class extends Language {
 
 		default: ({ key }) => `${key} has not been localized for en-US yet.`,
 		defaultLanguage: 'Default Language',
+		yes: 'Yes',
+		no: 'No',
 		settingGatewayKeyNoext: ({ key }) => `The key "${key}" does not exist in the data schema.`,
 		settingGatewayChooseKey: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys.join('", "')}"`,
 		settingGatewayUnconfigurableFolder: 'This settings group does not have any configurable sub-key.',
@@ -961,7 +963,7 @@ export default class extends Language {
 			noClan: 'This player is not in a clan',
 			noLeague: 'This user is not in any league'
 		},
-		commandClashofclansClanEmbedTitles: ({ isWarLogPublic }) => ({
+		commandClashofclansClanEmbedTitles: {
 			clanLevel: 'Clan level',
 			clanPoints: 'Clan points',
 			clanVersusPoints: 'Clan versus points',
@@ -981,9 +983,8 @@ export default class extends Language {
 				lessThanOncePerWeek: 'Less than once per week',
 				oncePerWeek: 'Once per week',
 				unknown: 'Unknown'
-			},
-			warLogPublicDescr: isWarLogPublic ? 'Yes' : 'No'
-		}),
+			}
+		},
 		commandClashofclansInvalidPlayerTag: ({ playertag }) =>
 			`I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
 		commandClashOfClansClansQueryFail: ({ clan }) => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
@@ -2159,7 +2160,7 @@ export default class extends Language {
 			ITEM: 'Item',
 			generationIntroduced: 'Generation introduced',
 			availableInGeneration8Title: 'Available in generation 8',
-			availableInGeneration8Data: availableInGen8 ? 'Yes' : 'No'
+			availableInGeneration8Data: availableInGen8
 		}),
 		commandItemQueryFail: ({ item }) => `I am sorry, but that query failed. Are you sure \`${item}\` is actually a item in Pokémon?`,
 		commandLearnDescription: 'Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.',
@@ -2218,7 +2219,7 @@ export default class extends Language {
 			zCrystal: 'Z-Crystal',
 			gmaxPokemon: 'G-MAX Pokémon',
 			availableInGeneration8Title: 'Available in Generation 8',
-			availableInGeneration8Data: availableInGen8 ? 'Yes' : 'No',
+			availableInGeneration8Data: availableInGen8,
 			none: 'None',
 			maxMovePower: 'Base power as MAX move (Dynamax)',
 			zMovePower: 'Base power as Z-Move (Z-Crystal)'
@@ -3336,14 +3337,14 @@ export default class extends Language {
 				`• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**`
 			].join('\n'),
 		commandRoleInfoTitles: { PERMISSIONS: 'Permissions' },
-		commandRoleInfo: ({ role }) =>
+		commandRoleInfo: ({ role, hoisted, mentionable }) =>
 			[
 				`ID: **${role.id}**`,
 				`Name: **${role.name}**`,
 				`Color: **${role.hexColor}**`,
-				`Hoisted: **${role.hoist ? 'Yes' : 'No'}**`,
+				`Hoisted: **${hoisted}**`,
 				`Position: **${role.rawPosition}**`,
-				`Mentionable: **${role.mentionable ? 'Yes' : 'No'}**`
+				`Mentionable: **${mentionable}**`
 			].join('\n'),
 		commandRoleInfoAll: 'All Permissions granted.',
 		commandRoleInfoPermissions: ({ permissions }) =>
@@ -3719,8 +3720,9 @@ export default class extends Language {
 		commandReputationGive: ({ user }) => `You have given a reputation point to **${user}**!`,
 		commandReputationsBots: 'Bots cannot have reputation points...',
 		commandReputationsSelf: ({ points }) => `You have a total of ${points} reputation points.`,
-		commandReputations: ({ user, points }) =>
-			`The user ${user} has a total of ${points === 1 ? 'one reputation point' : `${points} reputation points`}.`,
+		commandReputation: 'one reputation point',
+		commandReputationPlural: ({ points }) => `${points} reputation points`,
+		commandReputations: ({ user, points }) => `The user ${user} has a total of ${points}.`,
 		commandRequireRole: 'I am sorry, but you must provide a role for this command.',
 		commandScoreboardPosition: ({ position }) => `Your placing position is: ${position}`,
 		commandSetColor: ({ color }) => `Color changed to ${color}`,

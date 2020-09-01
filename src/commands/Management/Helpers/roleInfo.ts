@@ -24,7 +24,13 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(role.color || BrandingColors.Secondary)
 				.setTitle(`${role.name} [${role.id}]`)
-				.setDescription(message.language.get('commandRoleInfo', { role }))
+				.setDescription(
+					message.language.get('commandRoleInfo', {
+						role,
+						hoisted: message.language.get(role.hoist ? 'yes' : 'no'),
+						mentionable: message.language.get(role.mentionable ? 'yes' : 'no')
+					})
+				)
 				.addField(
 					roleInfoTitles.PERMISSIONS,
 					permissions.has(Permissions.FLAGS.ADMINISTRATOR)

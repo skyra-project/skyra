@@ -131,7 +131,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
-			const titles = message.language.get('commandClashofclansClanEmbedTitles', { isWarLogPublic: clan.isWarLogPublic });
+			const titles = message.language.get('commandClashofclansClanEmbedTitles');
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)
@@ -159,7 +159,7 @@ export default class extends RichDisplayCommand {
 							`**${titles.warWins}**: ${clan.warWins}`,
 							`**${titles.warTies}**: ${clan.warTies ?? titles.unknown}`,
 							`**${titles.warLosses}**: ${clan.warLosses ?? titles.unknown}`,
-							`**${titles.warLogPublic}**: ${titles.warLogPublicDescr}`
+							`**${titles.warLogPublic}**: ${message.language.get(clan.isWarLogPublic ? 'yes' : 'no')}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

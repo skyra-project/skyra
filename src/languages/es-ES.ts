@@ -216,7 +216,9 @@ export default class extends Language {
 		inhibitorNsfw: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		inhibitorPermissions: 'No tienes permisos para usar este comando',
 		inhibitorRequiredSettings: ({ settings }) =>
-			`El servidor requiere el/los ajuste(s) del servidor **${settings}**, y por lo tanto, no puedo ejecutar el comando.`,
+			`El servidor requiere el ajuste del servidor **${settings}**, y por lo tanto, no puedo ejecutar el comando.`,
+		inhibitorRequiredSettingsPlural: ({ settings }) =>
+			`El servidor requiere los ajustes del servidor **${settings}**, y por lo tanto, no puedo ejecutar el comando.`,
 		inhibitorRunin: ({ type }) => `Éste comando sólo está disponible en los canales de ${type}`,
 		inhibitorRuninNone: ({ name }) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
 		inhibitorDisabledGuild: 'This command has been disabled by an admin in this guild!.',
@@ -255,7 +257,8 @@ export default class extends Language {
 		commandHelpNodm: `${REDCROSS} | Parece que tienes tus mensajes privados desactivados, no pude mandarte el mensaje.`,
 		commandHelpAllFlag: ({ prefix }) =>
 			`Mostrando una categoría por página. ¿Problemas con el mensaje? Envía \`${prefix}help --all\` para la lista de todos los comandos en tus Mensajes Directos.`,
-		commandHelpCommandCount: ({ n }) => `${n} comando${n === 1 ? '' : 's'}`,
+		commandHelpCommandCount: ({ count }) => `${count} comando`,
+		commandHelpCommandCountPlural: ({ count }) => `${count} comandos`,
 		commandEnable: ({ type, name }) => `+ Activado con éxito la pieza tipo ${type}: ${name}`,
 		commandEnableDescription: 'Re-activa o activa temporalmente una pieza de Klasa. El estado por defecto es restaurado al recargar.',
 		commandDisable: ({ type, name }) => `+ Desactivado con éxito la pieza tipo ${type}: ${name}`,

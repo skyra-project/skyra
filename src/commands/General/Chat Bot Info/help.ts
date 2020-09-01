@@ -65,7 +65,12 @@ export default class extends SkyraCommand {
 			const commandCategories: string[] = [];
 			for (const [category, commands] of commandsByCategory) {
 				const line = String(++i).padStart(2, '0');
-				commandCategories.push(`\`${line}.\` **${category}** → ${language.get('commandHelpCommandCount', { n: commands.length })}`);
+				commandCategories.push(
+					`\`${line}.\` **${category}** → ${language.get(
+						commands.length === 1 ? 'commandHelpCommandCount' : 'commandHelpCommandCountPlural',
+						{ count: commands.length }
+					)}`
+				);
 			}
 			return message.sendMessage(commandCategories);
 		}

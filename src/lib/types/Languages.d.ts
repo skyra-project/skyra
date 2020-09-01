@@ -94,7 +94,8 @@ declare module 'klasa' {
 		inhibitorMissingBotPerms: (params: { missing: string }) => string;
 		inhibitorNsfw: string;
 		inhibitorPermissions: string;
-		inhibitorRequiredSettings: (params: { settings: string }) => string;
+		inhibitorRequiredSettings: (params: { settings: string; count: number }) => string;
+		inhibitorRequiredSettingsPlural: (params: { settings: string; count: number }) => string;
 		inhibitorRunin: (params: { type: string }) => string;
 		inhibitorRuninNone: (params: { name: string }) => string;
 		inhibitorDisabledGuild: string;
@@ -135,7 +136,8 @@ declare module 'klasa' {
 		commandHelpDm: string;
 		commandHelpNodm: string;
 		commandHelpAllFlag: (params: { prefix: string }) => string;
-		commandHelpCommandCount: (params: { n: number }) => string;
+		commandHelpCommandCount: (params: { count: number }) => string;
+		commandHelpCommandCountPlural: (params: { count: number }) => string;
 		commandEnable: (params: { type: string; name: string }) => string;
 		commandEnableDescription: string;
 		commandDisable: (params: { type: string; name: string }) => string;

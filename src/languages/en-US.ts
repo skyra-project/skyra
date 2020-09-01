@@ -169,8 +169,8 @@ export default class extends Language {
 		resolverInvalidGuild: ({ name }) => `${name} must be a valid guild id.`,
 		resolverInvalidInt: ({ name }) => `${name} must be an integer.`,
 		resolverInvalidInvite: ({ name }) => `${name} must be a valid invite link.`,
-		resolverInvalidWager: ({ bet, validAmounts, shinyEmote }) =>
-			`I am sorry, but ${bet} ${shinyEmote} is an invalid amount to bet. You can bet one of ${validAmounts}`,
+		resolverInvalidWager: ({ bet, validAmounts }) =>
+			`I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${validAmounts}`,
 		resolverInvalidLiteral: ({ name }) => `Your option did not match the only possibility: ${name}`,
 		resolverInvalidMember: ({ name }) => `${name} must be a mention or valid user id.`,
 		resolverInvalidMessage: ({ name }) => `${name} must be a valid message id.`,

@@ -60,7 +60,7 @@ declare module 'klasa' {
 		resolverInvalidGuild: (params: { name: string }) => string;
 		resolverInvalidInt: (params: { name: string }) => string;
 		resolverInvalidInvite: (params: { name: string }) => string;
-		resolverInvalidWager: (params: { bet: number; validAmounts: string; shinyEmote: string }) => string;
+		resolverInvalidWager: (params: { bet: number; validAmounts: string }) => string;
 		resolverInvalidLiteral: (params: { name: string }) => string;
 		resolverInvalidMember: (params: { name: string }) => string;
 		resolverInvalidMessage: (params: { name: string }) => string;

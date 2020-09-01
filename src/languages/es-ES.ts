@@ -172,8 +172,8 @@ export default class extends Language {
 		resolverInvalidGuild: ({ name }) => `${name} debe ser una id de servidor válida.`,
 		resolverInvalidInt: ({ name }) => `${name} debe ser un número entero válido.`,
 		resolverInvalidInvite: ({ name }) => `${name} debe ser una invitación de servidor válida.`,
-		resolverInvalidWager: ({ bet, validAmounts, shinyEmote }) =>
-			`Lo siento, pero ${bet} ${shinyEmote} es una cantidad no válida para apostar. Puedes apostar una de las siguientes cantidades ${validAmounts}`,
+		resolverInvalidWager: ({ bet, validAmounts }) =>
+			`Lo siento, pero ${bet} ${SHINY} es una cantidad no válida para apostar. Puedes apostar una de las siguientes cantidades ${validAmounts}`,
 		resolverInvalidLiteral: ({ name }) => `La opción no coincide con la única posibilidad: ${name}`,
 		resolverInvalidMember: ({ name }) => `${name} debe ser una mención de usuario o una id de usuario válida.`,
 		resolverInvalidMessage: ({ name }) => `${name} debe ser una id de mensaje válida.`,

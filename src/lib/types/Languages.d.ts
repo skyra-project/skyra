@@ -78,10 +78,10 @@ declare module 'klasa' {
 		resolverMinmaxExactlyExclusive: (params: { name: string; min: number }) => string;
 		resolverMinmaxBothInclusive: (params: { name: string; min: number; max: number }) => string;
 		resolverMinmaxBothExclusive: (params: { name: string; min: number; max: number }) => string;
-		resolverMinmaxMinInclusive: (params: { name: string; min: number; inclusive: boolean }) => string;
-		resolverMinmaxMinExclusive: (params: { name: string; min: number; inclusive: boolean }) => string;
-		resolverMinmaxMaxInclusive: (params: { name: string; max: number; inclusive: boolean }) => string;
-		resolverMinmaxMaxExclusive: (params: { name: string; max: number; inclusive: boolean }) => string;
+		resolverMinmaxMinInclusive: (params: { name: string; min: number }) => string;
+		resolverMinmaxMinExclusive: (params: { name: string; min: number }) => string;
+		resolverMinmaxMaxInclusive: (params: { name: string; max: number }) => string;
+		resolverMinmaxMaxExclusive: (params: { name: string; max: number }) => string;
 		reactionhandlerPrompt: string;
 		commandmessageMissing: string;
 		commandmessageMissingRequired: (params: { name: string }) => string;

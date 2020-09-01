@@ -155,11 +155,9 @@ export default class extends Language {
 		settingGatewayChooseKey: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys}"`,
 		settingGatewayUnconfigurableFolder: 'This settings group does not have any configurable sub-key.',
 		settingGatewayUnconfigurableKey: ({ key }) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
-		settingGatewayMissingValue: ({ entry, value }) =>
-			`The value "${value}" cannot be removed from the key "${entry.path}" because it does not exist.`,
-		settingGatewayDuplicateValue: ({ entry, value }) =>
-			`The value "${value}" cannot be added to the key "${entry.path}" because it was already set.`,
-		settingGatewayInvalidFilteredValue: ({ entry, value }) => `The settings key "${entry.path}" does not accept the value "${value}".`,
+		settingGatewayMissingValue: ({ path, value }) => `The value "${value}" cannot be removed from the key "${path}" because it does not exist.`,
+		settingGatewayDuplicateValue: ({ path, value }) => `The value "${value}" cannot be added to the key "${path}" because it was already set.`,
+		settingGatewayInvalidFilteredValue: ({ path, value }) => `The settings key "${path}" does not accept the value "${value}".`,
 		resolverMultiTooFew: ({ name, min, conjunctionWord }) => `Provided too few ${name}s. At least ${min} ${conjunctionWord} required.`,
 		resolverInvalidBool: ({ name }) => `${name} must be true or false.`,
 		resolverInvalidChannel: ({ name }) => `${name} must be a channel tag or valid channel id.`,

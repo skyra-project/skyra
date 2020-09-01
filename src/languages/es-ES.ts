@@ -223,16 +223,8 @@ export default class extends Language {
 		inhibitorRuninNone: ({ name }) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
 		inhibitorDisabledGuild: 'This command has been disabled by an admin in this guild!.',
 		inhibitorDisabledGlobal: 'This command has been globally disabled by the bot owner.',
-		commandBlacklistDescription: 'Pone o quita usuarios and servidores de mi lista negra.',
-		commandBlacklistSuccess: ({ usersAdded, usersRemoved, guildsAdded, guildsRemoved }) =>
-			[
-				usersAdded.length ? `**Usuarios Añadidos**\n${codeBlock('', usersAdded.join(', '))}` : '',
-				usersRemoved.length ? `**Usuarios Eliminados**\n${codeBlock('', usersRemoved.join(', '))}` : '',
-				guildsAdded.length ? `**Servidores Añadidos**\n${codeBlock('', guildsAdded.join(', '))}` : '',
-				guildsRemoved.length ? `**Servidores Eliminados**\n${codeBlock('', guildsRemoved.join(', '))}` : ''
-			]
-				.filter((val) => val !== '')
-				.join('\n'),
+		commandBlocklistDescription: 'Bloquear o permitir que usuarios y gremios utilicen mis funcionalidades.',
+		commandBlocklistSuccess: `${GREENTICK} Successfully updated blocked users and/or guilds`,
 		commandUnload: ({ type, name }) => `${GREENTICK} Eliminado con éxito la pieza tipo ${type}: ${name}`,
 		commandUnloadDescription: 'Elimina una pieza de Klasa.',
 		commandTransferError: `${REDCROSS} El archivo ya había sido transferido o nunca existió.`,

@@ -107,13 +107,8 @@ declare module 'klasa' {
 			examples: string;
 			reminders: string;
 		};
-		commandBlacklistDescription: string;
-		commandBlacklistSuccess: (params: {
-			usersAdded: readonly string[];
-			usersRemoved: readonly string[];
-			guildsAdded: readonly string[];
-			guildsRemoved: readonly string[];
-		}) => string;
+		commandBlocklistDescription: string;
+		commandBlocklistSuccess: string;
 		commandUnload: (params: { type: string; name: string }) => string;
 		commandUnloadDescription: string;
 		commandTransferError: string;

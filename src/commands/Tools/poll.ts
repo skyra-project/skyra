@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, options: string[]) {
 		// since klasa usage is trash
 		if (options.length < 2 || options.length > 20)
-			throw message.language.get('resolverMinmaxBoth', { name: 'options', min: 2, max: 20, inclusive: true });
+			throw message.language.get('resolverMinmaxBothInclusive', { name: 'options', min: 2, max: 20 });
 
 		const emojis = (options.length > 10 ? ALPHABET_OPTS : NUMBER_OPTS).slice(0, options.length);
 		const loadingMsg = await message.sendLocale('systemLoading', []);

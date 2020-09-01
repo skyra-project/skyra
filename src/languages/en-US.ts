@@ -169,8 +169,8 @@ export default class extends Language {
 		resolverInvalidGuild: ({ name }) => `${name} must be a valid guild id.`,
 		resolverInvalidInt: ({ name }) => `${name} must be an integer.`,
 		resolverInvalidInvite: ({ name }) => `${name} must be a valid invite link.`,
-		resolverInvalidWager: ({ bet, validAmounts }) =>
-			`I am sorry, but ${bet} ${SHINY} is an invalid amount to bet. You can bet one of ${validAmounts}`,
+		resolverInvalidWager: ({ bet, validAmounts, shinyEmote }) =>
+			`I am sorry, but ${bet} ${shinyEmote} is an invalid amount to bet. You can bet one of ${validAmounts}`,
 		resolverInvalidLiteral: ({ name }) => `Your option did not match the only possibility: ${name}`,
 		resolverInvalidMember: ({ name }) => `${name} must be a mention or valid user id.`,
 		resolverInvalidMessage: ({ name }) => `${name} must be a valid message id.`,
@@ -184,13 +184,14 @@ export default class extends Language {
 		resolverInvalidSnowflake: ({ name }) => `${name} must be a valid Discord snowflake.`,
 		resolverInvalidStore: ({ store }) => `${store} must be a valid Store.`,
 		resolverStringSuffix: ' characters',
-		resolverMinmaxExactly: ({ name, min }) => `${name} must be exactly ${min}.`,
-		resolverMinmaxBoth: ({ name, min, max, inclusive }) =>
-			inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
-		resolverMinmaxMin: ({ name, min, inclusive }) =>
-			inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
-		resolverMinmaxMax: ({ name, max, inclusive }) =>
-			inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
+		resolverMinmaxExactlyInclusive: ({ name, min }) => `${name} must be exactly ${min}.`,
+		resolverMinmaxExactlyExclusive: ({ name, min }) => `${name} must be exactly ${min}.`,
+		resolverMinmaxBothInclusive: ({ name, min, max }) => `${name} must be between ${min} and ${max} inclusively.`,
+		resolverMinmaxBothExclusive: ({ name, min, max }) => `${name} must be between ${min} and ${max} exclusively.`,
+		resolverMinmaxMinInclusive: ({ name, min }) => `${name} must be greater than ${min} inclusively.`,
+		resolverMinmaxMinExclusive: ({ name, min }) => `${name} must be greater than ${min} exclusively.`,
+		resolverMinmaxMaxInclusive: ({ name, max }) => `${name} must be less than ${max} inclusively`,
+		resolverMinmaxMaxExclusive: ({ name, max }) => `${name} must be less than ${max} exclusively.`,
 		reactionhandlerPrompt: 'Which page would you like to jump to?',
 		// used for help command
 		systemHelpTitles: {
@@ -204,20 +205,15 @@ export default class extends Language {
 		commandmessageMissingOptionals: ({ possibles }) => `Missing a required option: (${possibles})`,
 		commandmessageNomatch: ({ possibles }) => `Your option didn't match any of the possibilities: (${possibles})`,
 		monitorCommandHandlerReprompt: ({ tag, name, time, cancelOptions }) =>
-			`${tag} | **${name}** | You have **${time}** seconds to respond to this prompt with a valid argument. Type **${cancelOptions.join(
-				'**, **'
-			)}** to abort this prompt.`,
+			`${tag} | **${name}** | You have **${time}** seconds to respond to this prompt with a valid argument. Type **${cancelOptions}** to abort this prompt.`,
 		monitorCommandHandlerRepeatingReprompt: ({ tag, name, time, cancelOptions }) =>
-			`${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **${cancelOptions.join(
-				'**, **'
-			)}** to cancel this prompt.`,
+			`${tag} | **${name}** is a repeating argument | You have **${time}** seconds to respond to this prompt with additional valid arguments. Type **${cancelOptions}** to cancel this prompt.`,
 		monitorCommandHandlerAborted: 'Aborted',
-		inhibitorCooldown: ({ remaining }) => `You have just used this command. You can use this command again in ${this.duration(remaining)}.`,
-		inhibitorMissingBotPerms: ({ missing }) => `I don't have sufficient permissions! I'm missing: ${this.list(missing, 'and')}`,
+		inhibitorCooldown: ({ remaining }) => `You have just used this command. You can use this command again in ${remaining}.`,
+		inhibitorMissingBotPerms: ({ missing }) => `I don't have sufficient permissions! I'm missing: ${missing}`,
 		inhibitorNsfw: 'You may not use NSFW commands in this channel!',
 		inhibitorPermissions: 'You do not have permission to use this command!',
-		inhibitorRequiredSettings: ({ settings }) =>
-			`The guild is missing the **${settings.join(', ')}** guild setting${settings.length === 1 ? '' : 's'} and thus the command cannot run.`,
+		inhibitorRequiredSettings: ({ settings }) => `The guild is missing the **${settings}** guild setting(s) and thus the command cannot run.`,
 		inhibitorRunin: ({ type }) => `This command is only available in ${type} channels.`,
 		inhibitorRuninNone: ({ name }) => `The ${name} command is not configured to run in any channel.`,
 		inhibitorDisabledGuild: 'This command has been disabled by an admin in this guild!',

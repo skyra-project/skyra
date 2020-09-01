@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 			if (type === 'maximum') {
 				const maximum = await this.client.arguments.get('integer')!.run(arg, possible, message);
 				if (maximum >= 0 && maximum <= 60) return maximum;
-				throw message.language.get('resolverMinmaxBoth', { name: possible.name, min: 0, max: 60, inclusive: true });
+				throw message.language.get('resolverMinmaxBothInclusive', { name: possible.name, min: 0, max: 60 });
 			}
 
 			if (type === 'action') {
@@ -79,11 +79,10 @@ export default class extends SkyraCommand {
 			const duration =
 				Math.round(((await this.client.arguments.get('duration')!.run(arg, possible, message)).getTime() - Date.now()) / 1000) * 1000;
 			if (duration < min || duration > max)
-				throw message.language.get('resolverMinmaxBoth', {
+				throw message.language.get('resolverMinmaxBothInclusive', {
 					name: possible.name,
 					min: min / 1000,
-					max: max / 1000,
-					inclusive: true
+					max: max / 1000
 				});
 			return duration;
 		});

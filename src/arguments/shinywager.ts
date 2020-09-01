@@ -1,4 +1,5 @@
 import { ApplyOptions } from '@skyra/decorators';
+import { Emojis } from '@utils/constants';
 import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
@@ -14,7 +15,8 @@ export default class ShinyWager extends Argument {
 				validAmounts: message.language.list(
 					ShinyWager.kValidBetAmounts.map((a) => a.toString()),
 					message.language.get('globalOr')
-				)
+				),
+				shinyEmote: Emojis.Shiny
 			});
 
 		return this.integerArg.run(arg, possible, message);

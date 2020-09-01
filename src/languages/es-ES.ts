@@ -172,8 +172,8 @@ export default class extends Language {
 		resolverInvalidGuild: ({ name }) => `${name} debe ser una id de servidor válida.`,
 		resolverInvalidInt: ({ name }) => `${name} debe ser un número entero válido.`,
 		resolverInvalidInvite: ({ name }) => `${name} debe ser una invitación de servidor válida.`,
-		resolverInvalidWager: ({ bet, validAmounts }) =>
-			`Lo siento, pero ${bet} ${SHINY} es una cantidad no válida para apostar. Puedes apostar una de las siguientes cantidades ${validAmounts}`,
+		resolverInvalidWager: ({ bet, validAmounts, shinyEmote }) =>
+			`Lo siento, pero ${bet} ${shinyEmote} es una cantidad no válida para apostar. Puedes apostar una de las siguientes cantidades ${validAmounts}`,
 		resolverInvalidLiteral: ({ name }) => `La opción no coincide con la única posibilidad: ${name}`,
 		resolverInvalidMember: ({ name }) => `${name} debe ser una mención de usuario o una id de usuario válida.`,
 		resolverInvalidMessage: ({ name }) => `${name} debe ser una id de mensaje válida.`,
@@ -187,13 +187,14 @@ export default class extends Language {
 		resolverInvalidSnowflake: ({ name }) => `${name} debe ser un snowflake válido de Discord.`,
 		resolverInvalidStore: ({ store }) => `${store} debe ser una tienda válido.`,
 		resolverStringSuffix: ' carácteres',
-		resolverMinmaxExactly: ({ name, min }) => `${name} must be exactly ${min}.`,
-		resolverMinmaxBoth: ({ name, min, max, inclusive }) =>
-			inclusive ? `${name} must be between ${min} and ${max} inclusively.` : `${name} must be between ${min} and ${max} exclusively.`,
-		resolverMinmaxMin: ({ name, min, inclusive }) =>
-			inclusive ? `${name} must be greater than ${min} inclusively.` : `${name} must be greater than ${min} exclusively.`,
-		resolverMinmaxMax: ({ name, max, inclusive }) =>
-			inclusive ? `${name} must be less than ${max} inclusively` : `${name} must be less than ${max} exclusively.`,
+		resolverMinmaxExactlyInclusive: ({ name, min }) => `${name} must be exactly ${min}.`,
+		resolverMinmaxExactlyExclusive: ({ name, min }) => `${name} must be exactly ${min}.`,
+		resolverMinmaxBothInclusive: ({ name, min, max }) => `${name} must be between ${min} and ${max} inclusively.`,
+		resolverMinmaxBothExclusive: ({ name, min, max }) => `${name} must be between ${min} and ${max} exclusively.`,
+		resolverMinmaxMinInclusive: ({ name, min }) => `${name} must be greater than ${min} inclusively.`,
+		resolverMinmaxMinExclusive: ({ name, min }) => `${name} must be greater than ${min} exclusively.`,
+		resolverMinmaxMaxInclusive: ({ name, max }) => `${name} must be less than ${max} inclusively`,
+		resolverMinmaxMaxExclusive: ({ name, max }) => `${name} must be less than ${max} exclusively.`,
 		reactionhandlerPrompt: '¿A qué página te gustaría saltar?',
 		systemHelpTitles: {
 			explainedUsage: '⚙ | ***Uso Explicado***',
@@ -206,22 +207,16 @@ export default class extends Language {
 		commandmessageMissingOptionals: ({ possibles }) => `Falta una opción requerida: (${possibles})`,
 		commandmessageNomatch: ({ possibles }) => `Su opción no se pudo encontrar en ninguna de las posibilidades: (${possibles})`,
 		monitorCommandHandlerReprompt: ({ tag, name, time, cancelOptions }) =>
-			`${tag} | **${name}** | Tienes **${time}** segundos para responder a este mensaje con un argumento válido. Escribe **${cancelOptions.join(
-				'**, **'
-			)}** para cancelar la solicitud.`,
+			`${tag} | **${name}** | Tienes **${time}** segundos para responder a este mensaje con un argumento válido. Escribe **${cancelOptions}** para cancelar la solicitud.`,
 		monitorCommandHandlerRepeatingReprompt: ({ tag, name, time, cancelOptions }) =>
-			`${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions.join(
-				'**, **'
-			)}** para cancelar la solicitud.`,
+			`${tag} | El argumento **${name}** puede aceptar multiples valores | Tienes **${time}** segundos para responder a esta solicitud con valores adicionales. Escribe **${cancelOptions}** para cancelar la solicitud.`,
 		monitorCommandHandlerAborted: 'Cancelado.',
-		inhibitorCooldown: ({ remaining }) => `Acabas de usar este comando. Puedes usarlo de nuevo en ${this.duration(remaining)}.`,
-		inhibitorMissingBotPerms: ({ missing }) => `No tengo los permisos suficientes, me faltan: ${this.list(missing, 'y')}`,
+		inhibitorCooldown: ({ remaining }) => `Acabas de usar este comando. Puedes usarlo de nuevo en ${remaining}.`,
+		inhibitorMissingBotPerms: ({ missing }) => `No tengo los permisos suficientes, me faltan: ${missing}`,
 		inhibitorNsfw: 'Este comando no es apto para este canal, no es un canal marcado como "NSFW"',
 		inhibitorPermissions: 'No tienes permisos para usar este comando',
 		inhibitorRequiredSettings: ({ settings }) =>
-			`El servidor requiere ${settings.length === 1 ? 'el ajuste' : 'los ajustes'} del servidor **${settings.join(
-				', '
-			)}**, y por lo tanto, no puedo ejecutar el comando.`,
+			`El servidor requiere el/los ajuste(s) del servidor **${settings}**, y por lo tanto, no puedo ejecutar el comando.`,
 		inhibitorRunin: ({ type }) => `Éste comando sólo está disponible en los canales de ${type}`,
 		inhibitorRuninNone: ({ name }) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
 		inhibitorDisabledGuild: 'This command has been disabled by an admin in this guild!.',

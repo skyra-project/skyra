@@ -6,7 +6,7 @@ export type Mutable<T> = {
 	-readonly [P in keyof T]: T[P] extends Array<unknown> | AnyObject | {} ? Mutable<T[P]> : T[P];
 };
 
-type StrictRequired<T> = {
+export type StrictRequired<T> = {
 	[P in keyof T]-?: NonNullable<T[P]>;
 };
 

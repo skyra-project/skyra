@@ -37,7 +37,7 @@ export abstract class WeebCommand extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, params?: User[]) {
-		const query = new URL('https://api-v2.weeb.sh/images/random');
+		const query = new URL('https://api.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
 
@@ -68,7 +68,7 @@ export abstract class WeebCommand extends SkyraCommand {
 	}
 }
 
-interface WeebCommandOptions extends CommandOptions {
+export interface WeebCommandOptions extends CommandOptions {
 	queryType: string;
 	responseName: keyof LanguageKeys;
 }

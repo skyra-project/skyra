@@ -39,7 +39,7 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
 		const embedTranslations = message.language.get('commandMoveEmbedData', {
-			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? 'no' : 'yes')
+			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? 'globalNo' : 'globalYes')
 		});
 		const externalResources = message.language.get('systemPokedexExternalResource');
 		const externalSources = [

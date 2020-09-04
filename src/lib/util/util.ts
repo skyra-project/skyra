@@ -57,9 +57,6 @@ export interface ReferredPromise<T> {
 	reject(error?: Error): void;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-function
-export function noop() {}
-
 export function radians(degrees: number) {
 	return (degrees * Math.PI) / 180;
 }
@@ -678,6 +675,8 @@ export const shuffle = <T>(array: T[]): T[] => {
 	}
 	return array;
 };
+
+export const random = (num: number) => Math.round(Math.random() * num);
 
 export interface UtilOneToTenEntry {
 	emoji: string;

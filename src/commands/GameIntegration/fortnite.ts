@@ -60,39 +60,40 @@ export default class extends RichDisplayCommand {
 		);
 		const embedSectionTitles = message.language.get('commandFortniteEmbedSectionTitles');
 
-		display
-			.addPage((embed) => {
-				const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
-				const ltsData = message.language.get('commandFortniteEmbedStats', {
-					winCount: lts.find((el) => el.key === 'wins')!.value,
-					killCount: lts.find((el) => el.key === 'kills')!.value,
-					kdrCount: lts.find((el) => el.key === 'k/d')!.value,
-					matchesPlayedCount: lts.find((el) => el.key === 'matches played')!.value,
-					top1Count: '',
-					top3Count: lts.find((el) => el.key === 'top 3s')!.value,
-					top5Count: lts.find((el) => el.key === 'top 5s')!.value,
-					top6Count: lts.find((el) => el.key === 'top 6s')!.value,
-					top10Count: lts.find((el) => el.key === 'top 10')!.value,
-					top12Count: lts.find((el) => el.key === 'top 12s')!.value,
-					top25Count: lts.find((el) => el.key === 'top 25s')!.value
-				});
-				return embed.setDescription(
-					[
-						embedSectionTitles.lifetimeStats,
-						ltsData.wins,
-						ltsData.kills,
-						ltsData.kdr,
-						ltsData.matchesPlayed,
-						ltsData.top3s,
-						ltsData.top5s,
-						ltsData.top6s,
-						ltsData.top10s,
-						ltsData.top12s,
-						ltsData.top25s
-					].join('\n')
-				);
-			})
-			.addPage((embed) => {
+		display.addPage((embed) => {
+			const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
+			const ltsData = message.language.get('commandFortniteEmbedStats', {
+				winCount: lts.find((el) => el.key === 'wins')!.value,
+				killCount: lts.find((el) => el.key === 'kills')!.value,
+				kdrCount: lts.find((el) => el.key === 'k/d')!.value,
+				matchesPlayedCount: lts.find((el) => el.key === 'matches played')!.value,
+				top1Count: '',
+				top3Count: lts.find((el) => el.key === 'top 3s')!.value,
+				top5Count: lts.find((el) => el.key === 'top 5s')!.value,
+				top6Count: lts.find((el) => el.key === 'top 6s')!.value,
+				top10Count: lts.find((el) => el.key === 'top 10')!.value,
+				top12Count: lts.find((el) => el.key === 'top 12s')!.value,
+				top25Count: lts.find((el) => el.key === 'top 25s')!.value
+			});
+			return embed.setDescription(
+				[
+					embedSectionTitles.lifetimeStats,
+					ltsData.wins,
+					ltsData.kills,
+					ltsData.kdr,
+					ltsData.matchesPlayed,
+					ltsData.top3s,
+					ltsData.top5s,
+					ltsData.top6s,
+					ltsData.top10s,
+					ltsData.top12s,
+					ltsData.top25s
+				].join('\n')
+			);
+		});
+
+		if (p2) {
+			display.addPage((embed) => {
 				const p2Data = message.language.get('commandFortniteEmbedStats', {
 					winCount: p2.top1.value,
 					killCount: p2.kills.value,
@@ -123,6 +124,7 @@ export default class extends RichDisplayCommand {
 					].join('\n')
 				);
 			});
+		}
 
 		if (p10) {
 			display.addPage((embed) => {

@@ -1,6 +1,5 @@
 import Collection from '@discordjs/collection';
 import { client } from '@mocks/MockInstances';
-import { expectCalledStrict, expectReturnedStrict } from '@mocks/testutils';
 import { Mime, Time } from '@utils/constants';
 import * as utils from '@utils/util';
 import { Image } from 'canvas';
@@ -17,27 +16,13 @@ import {
 	VoiceChannel
 } from 'discord.js';
 import { createReadStream, promises as fsPromises } from 'fs';
+import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
 import { DeepPartial } from 'typeorm';
 import nock = require('nock');
 
 describe('Utils', () => {
-	describe('noop', () => {
-		test('GIVEN function THEN matches function type', () => {
-			expect(utils.noop).toEqual(expect.any(Function));
-		});
-
-		test('GIVEN call THEN should return undefined', () => {
-			jest.spyOn(utils, 'noop');
-
-			utils.noop();
-
-			expectCalledStrict(utils.noop, 1);
-			expectReturnedStrict(utils.noop, 1, undefined);
-		});
-	});
-
 	describe('IMAGE_EXTENSION', () => {
 		test('GIVEN valid extensions THEN passes test', () => {
 			expect(utils.IMAGE_EXTENSION.test('.bmp')).toBe(true);
@@ -802,6 +787,14 @@ describe('Utils', () => {
 			const shuffled = utils.shuffle(array.slice());
 			expect(shuffled.length).toBe(array.length);
 			expect(array === shuffled).toBe(false);
+		});
+	});
+
+	describe('random', () => {
+		test('GIVEN 2 calls to random THEN returns floored mocked values', () => {
+			mockRandom(0.6);
+			expect(utils.random(50)).toEqual(30);
+			resetMockRandom();
 		});
 	});
 });

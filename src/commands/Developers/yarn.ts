@@ -3,7 +3,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
-import { cutText, toTitleCase } from '@sapphire/utilities';
+import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';
@@ -69,11 +69,11 @@ export default class extends SkyraCommand {
 			description: cutText(result.description ?? '', 1000),
 			latestVersionNumber: result['dist-tags'].latest,
 			license: result.license,
-			mainFile: latestVersion.main ?? 'index.js',
+			mainFile: latestVersion.main || 'index.js',
 			maintainers
 		});
 		return new MessageEmbed()
-			.setTitle(toTitleCase(result.name))
+			.setTitle(result.name)
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))

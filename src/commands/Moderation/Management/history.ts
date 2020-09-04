@@ -1,4 +1,4 @@
-import { Cache } from '@klasa/cache';
+import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
@@ -111,7 +111,7 @@ export default class extends SkyraCommand {
 		};
 	}
 
-	private async fetchAllModerators(entries: Cache<number, ModerationEntity>) {
+	private async fetchAllModerators(entries: Collection<number, ModerationEntity>) {
 		const moderators = new Map() as Map<string, string>;
 		for (const entry of entries.values()) {
 			const id = entry.moderatorID!;

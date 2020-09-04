@@ -1,13 +1,10 @@
-import { WeebCommand } from '@lib/structures/WeebCommand';
-import { CommandStore } from 'klasa';
+import { WeebCommand, WeebCommandOptions } from '@lib/structures/WeebCommand';
+import { ApplyOptions } from '@skyra/decorators';
 
-export default class extends WeebCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			description: (language) => language.get('commandWsleepyDescription'),
-			extendedHelp: (language) => language.get('commandWsleepyExtended'),
-			queryType: 'sleepy',
-			responseName: 'commandWsleepy'
-		});
-	}
-}
+@ApplyOptions<WeebCommandOptions>({
+	description: (language) => language.get('commandWsleepyDescription'),
+	extendedHelp: (language) => language.get('commandWsleepyExtended'),
+	queryType: 'sleepy',
+	responseName: 'commandWsleepy'
+})
+export default class extends WeebCommand {}

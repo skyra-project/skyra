@@ -52,7 +52,7 @@ export namespace FFXIV {
 		subcategory: ClassSubcategory;
 	}
 
-	interface CharacterResult {
+	export interface CharacterResult {
 		Achievements: Achievements;
 		AchievementsPublic: boolean;
 		Character: Character;

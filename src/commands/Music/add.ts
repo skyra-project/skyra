@@ -1,7 +1,7 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
-import { TrackData } from 'lavacord';
+import type { KlasaMessage } from 'klasa';
+import type { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get('commandAddDescription'),

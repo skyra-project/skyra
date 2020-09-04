@@ -21,7 +21,7 @@ const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VI
 })
 export default class extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
-	private kChannelPrompt = this.definePrompt('<channel:textChannel>');
+	private kChannelPrompt = this.definePrompt('<channel:textChannel|here>');
 
 	public async run(message: KlasaMessage, [suggestion]: [string]) {
 		// If including a flag of `--global` send suggestions to #feedbacks in Skyra Lounge
@@ -106,13 +106,15 @@ export default class extends SkyraCommand {
 		}
 
 		// Get the channel
-		const [channel] = await this.kChannelPrompt
+		let [channel] = await this.kChannelPrompt
 			.createPrompt(message, {
 				target: message.author,
 				limit: 1,
 				time: 30000
 			})
-			.run<TextChannel[]>(message.language.get('commandSuggestChannelPrompt'));
+			.run<TextChannel[] | string[]>(message.language.get('commandSuggestChannelPrompt'));
+
+		channel = (typeof channel === 'string' ? message.channel : channel) as TextChannel;
 
 		if (!channel || channel.guild.id !== message.guild!.id) {
 			await message.sendLocale('resolverInvalidChannelName', [{ name: channel.name }]);
@@ -123,7 +125,12 @@ export default class extends SkyraCommand {
 
 		if (missingPermissions.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.get('inhibitorMissingBotPerms', { missing: missingPermissions.map((permission) => permissions[permission]) });
+			throw message.language.get('inhibitorMissingBotPerms', {
+				missing: message.language.list(
+					missingPermissions.map((permission) => permissions[permission]),
+					message.language.get('globalAnd')
+				)
+			});
 		}
 
 		// Update settings

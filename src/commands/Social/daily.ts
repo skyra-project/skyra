@@ -5,16 +5,20 @@ import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { KlasaMessage } from 'klasa';
+import { Schedules } from '@lib/types/Enums';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;
+
+const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['dailies'],
 	cooldown: 30,
 	description: (language) => language.get('commandDailyDescription'),
 	extendedHelp: (language) => language.get('commandDailyExtended'),
-	spam: true
+	spam: true,
+	flagSupport: true
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
@@ -24,11 +28,13 @@ export default class extends SkyraCommand {
 		return connection.users.lock([message.author.id], async (id) => {
 			const settings = await connection.users.ensureCooldowns(id);
 
+			const toRemind = REMINDER_FLAGS.some((flag) => Reflect.has(message.flagArgs, flag));
+
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
 				return message.sendLocale('commandDailyTimeSuccess', [
 					{
-						amount: await this.claimDaily(message, connection, settings, now + DAILY_PERIOD)
+						amount: await this.claimDaily(message, connection, settings, now + DAILY_PERIOD, toRemind)
 					}
 				]);
 			}
@@ -45,19 +51,28 @@ export default class extends SkyraCommand {
 			// The user accepted the grace period
 			return message.sendLocale('commandDailyGraceAccepted', [
 				{
-					amount: await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD),
+					amount: await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD, toRemind),
 					remaining: remaining + DAILY_PERIOD
 				}
 			]);
 		});
 	}
 
-	private async claimDaily(message: KlasaMessage, connection: DbSet, settings: UserEntity, nextTime: number) {
+	private async claimDaily(message: KlasaMessage, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
 		const money = this.calculateDailies(message, await connection.clients.ensure(), settings);
 
 		settings.money += money;
 		settings.cooldowns!.daily = new Date(nextTime);
 		await settings.save();
+
+		if (remind) {
+			await this.client.schedules.add(Schedules.Reminder, nextTime, {
+				data: {
+					content: message.language.get('commandDailyCollect'),
+					user: message.author.id
+				}
+			});
+		}
 
 		return money;
 	}

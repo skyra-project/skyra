@@ -7,6 +7,7 @@ import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContex
 import { BrandingColors, Time } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
+import { Schedules } from '@lib/types/Enums';
 
 const enum Actions {
 	List = 'list',
@@ -21,8 +22,6 @@ interface ReminderScheduledTask extends ScheduleEntity {
 		user: string;
 	};
 }
-
-const kReminderTaskName = 'reminder';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['remind', 'reminder', 'reminders'],
@@ -79,7 +78,7 @@ const kReminderTaskName = 'reminder';
 					const id = await message.client.arguments.get('string')!.run(arg, { ...possible, max: 9, min: 9 }, message);
 					for (const task of message.client.schedules.queue) {
 						if (task.id !== id) continue;
-						if (task.taskID !== kReminderTaskName || !task.data || task.data.user !== message.author.id) break;
+						if (task.taskID !== Schedules.Reminder || !task.data || task.data.user !== message.author.id) break;
 						return task;
 					}
 					throw message.language.get('commandRemindmeNotfound');
@@ -104,7 +103,7 @@ export default class extends SkyraCommand {
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
 
 	public async create(message: KlasaMessage, [duration, description]: [number, string]) {
-		const task = await this.client.schedules.add(kReminderTaskName, Date.now() + duration, {
+		const task = await this.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,
 			data: {
 				content: description,

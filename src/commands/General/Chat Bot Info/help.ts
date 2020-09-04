@@ -2,11 +2,10 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { isFunction, isNumber } from '@sapphire/utilities';
+import { isFunction, isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { LanguageHelp, LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import { noop } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
 
@@ -66,7 +65,13 @@ export default class extends SkyraCommand {
 			const commandCategories: string[] = [];
 			for (const [category, commands] of commandsByCategory) {
 				const line = String(++i).padStart(2, '0');
-				commandCategories.push(`\`${line}.\` **${category}** → ${language.get('commandHelpCommandCount', { n: commands.length })}`);
+				commandCategories.push(
+					`\`${line}.\` **${category}** → ${language.get(
+						// TODO: i18next should do this automatically
+						commands.length === 1 ? 'commandHelpCommandCount' : 'commandHelpCommandCountPlural',
+						{ count: commands.length }
+					)}`
+				);
 			}
 			return message.sendMessage(commandCategories);
 		}

@@ -2,7 +2,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { codeBlock } from '@sapphire/utilities';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 
-const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['howMany', 'howMuch', 'what', 'when', 'who', 'why'];
+const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What', 'When', 'Who', 'Why'];
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -45,11 +45,11 @@ export default class extends SkyraCommand {
 	}
 }
 
-interface EightBallLanguage {
-	when: string | RegExp;
-	what: string | RegExp;
-	howMuch: string | RegExp;
-	howMany: string | RegExp;
-	why: string | RegExp;
-	who: string | RegExp;
+export interface EightBallLanguage {
+	When: string | RegExp;
+	What: string | RegExp;
+	HowMuch: string | RegExp;
+	HowMany: string | RegExp;
+	Why: string | RegExp;
+	Who: string | RegExp;
 }

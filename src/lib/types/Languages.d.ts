@@ -1,6 +1,6 @@
 import type { Song } from '@lib/structures/music/Song';
 import type { ScheduleEntity } from '@orm/entities/ScheduleEntity';
-import { EightBallLanguage } from '@root/commands/Fun/8ball';
+import type { EightBallLanguage } from '@root/commands/Fun/8ball';
 import type { HungerGamesGame } from '@root/commands/Games/hungergames';
 import type { LevelTitles } from '@root/commands/Social/level';
 import type { ProfileTitles } from '@root/commands/Social/profile';

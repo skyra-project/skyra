@@ -3702,13 +3702,8 @@ export default class extends Language {
 		commandReputationGive: ({ user }) => `You have given a reputation point to **${user}**!`,
 		commandReputationsBots: 'Bots cannot have reputation points...',
 		commandReputationsSelf: ({ points }) => `You have a total of ${points} reputation points.`,
-<<<<<<< HEAD
-		commandReputation: 'one reputation point',
-		commandReputationPlural: ({ points }) => `${points} reputation points`,
-=======
 		commandReputation: ({ count }) => `${count} reputation point`,
 		commandReputationPlural: ({ count }) => `${count} reputation points`,
->>>>>>> e2220e6835b36705932bdaa2a60e4e555483d649
 		commandReputations: ({ user, points }) => `The user ${user} has a total of ${points}.`,
 		commandRequireRole: 'I am sorry, but you must provide a role for this command.',
 		commandScoreboardPosition: ({ position }) => `Your placing position is: ${position}`,

@@ -41,7 +41,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(
 		message: KlasaMessage,
-		[category = CATEGORIES.general, questionType = undefined, difficulty = undefined, duration = 30]: [
+		[category = CATEGORIES.general, questionType = QuestionType.Multiple, difficulty = QuestionDifficulty.Easy, duration = 30]: [
 			number,
 			QuestionType?,
 			QuestionDifficulty?,
@@ -56,7 +56,7 @@ export default class extends RichDisplayCommand {
 			await message.sendLocale('systemLoading', []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
-				questionType === QuestionType.Boolean || QuestionType.TrueFalse
+				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
 					? ['True', 'False']
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
@@ -72,22 +72,22 @@ export default class extends RichDisplayCommand {
 			// users who have already participated
 			const participants = new Set<string>();
 
-			collector.on('collect', (collected: KlasaMessage) => {
-				if (participants.has(collected.author.id)) return;
-				const attempt = possibleAnswers[parseInt(collected.content, 10) - 1];
-				if (attempt === decode(data.correct_answer)) {
-					winner = collected.author;
-					return collector.stop();
-				}
-				participants.add(collected.author.id);
-				return message.channel.sendLocale('commandTriviaIncorrect', [{ attempt }]);
-			});
-
-			collector.on('end', () => {
-				this.#channels.delete(message.channel.id);
-				if (!winner) return message.channel.sendLocale('commandTriviaNoAnswer', [{ correctAnswer }]);
-				return message.channel.sendLocale('commandTriviaWinner', [{ winner: winner.toString(), correctAnswer }]);
-			});
+			collector
+				.on('collect', (collected: KlasaMessage) => {
+					if (participants.has(collected.author.id)) return;
+					const attempt = possibleAnswers[parseInt(collected.content, 10) - 1];
+					if (attempt === decode(data.correct_answer)) {
+						winner = collected.author;
+						return collector.stop();
+					}
+					participants.add(collected.author.id);
+					return message.channel.sendLocale('commandTriviaIncorrect', [{ attempt }]);
+				})
+				.on('end', () => {
+					this.#channels.delete(message.channel.id);
+					if (!winner) return message.channel.sendLocale('commandTriviaNoAnswer', [{ correctAnswer }]);
+					return message.channel.sendLocale('commandTriviaWinner', [{ winner: winner.toString(), correctAnswer }]);
+				});
 		} catch {
 			this.#channels.delete(message.channel.id);
 			throw message.language.get('unexpectedIssue');

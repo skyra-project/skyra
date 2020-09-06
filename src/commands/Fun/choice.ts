@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { CommandStore, KlasaMessage, Language } from 'klasa';
+import { cleanMentions } from '@utils/util';
+import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -16,7 +17,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, options: string[]) {
-		const words = this.filterWords(options, message.language);
+		const words = this.filterWords(message, options);
 		return message.sendLocale('commandChoiceOutput', [
 			{
 				user: message.author.toString(),
@@ -25,13 +26,15 @@ export default class extends SkyraCommand {
 		]);
 	}
 
-	private filterWords(words: string[], i18n: Language) {
+	private filterWords(message: KlasaMessage, words: string[]) {
+		const i18n = message.language;
 		if (words.length < 2) throw i18n.get('commandChoiceMissing');
 
+		const clean = message.guild ? cleanMentions.bind(null, message.guild) : (input: string) => input;
 		const output = new Set<string>();
 		const filtered = new Set<string>();
 		for (const raw of words) {
-			const word = raw.trim();
+			const word = clean(raw.trim());
 			if (!word) continue;
 			if (output.has(word)) filtered.add(word);
 			else output.add(word);

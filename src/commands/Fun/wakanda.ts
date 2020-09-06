@@ -12,6 +12,7 @@ import { join } from 'path';
 	cooldown: 15,
 	description: (language) => language.get('commandWakandaDescription'),
 	extendedHelp: (language) => language.get('commandWakandaExtended'),
+	requiredPermissions: ['ATTACH_FILES'],
 	usage: '[user:username]'
 })
 export default class extends SkyraCommand {

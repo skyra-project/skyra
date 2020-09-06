@@ -1818,7 +1818,11 @@ declare module 'klasa' {
 		commandResolveSuggestionSuccess: (params: { id: number; action: 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c' }) => string;
 		commandStarNostars: string;
 		commandStarStats: string;
-		commandStarStatsDescription: (params: { messages: number; stars: number }) => string;
+		commandStarStatsDescription: (params: { messages: string; stars: string }) => string;
+		commandStarMessages: (params: { count: number }) => string;
+		commandStarMessagesPlural: (params: { count: number }) => string;
+		commandStars: (params: { count: number }) => string;
+		commandStarsPlural: (params: { count: number }) => string;
 		commandStarTopstarred: string;
 		commandStarTopstarredDescription: (params: { medal: string; id: string; stars: number }) => string;
 		commandStarTopreceivers: string;

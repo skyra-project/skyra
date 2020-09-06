@@ -3716,8 +3716,11 @@ export default class extends Language {
 
 		commandStarNostars: 'There is no starred message.',
 		commandStarStats: 'Starboard Stats',
-		commandStarStatsDescription: ({ messages, stars }) =>
-			`${messages} ${messages === 1 ? 'message' : 'messages'} starred with a total of ${stars} ${stars === 1 ? 'star' : 'stars'}.`,
+		commandStarMessages: ({ count }) => `${count} message`,
+		commandStarMessagesPlural: ({ count }) => `${count} messages`,
+		commandStars: ({ count }) => `${count} star`,
+		commandStarsPlural: ({ count }) => `${count} stars`,
+		commandStarStatsDescription: ({ messages, stars }) => `${messages} starred with a total of ${stars}`,
 		commandStarTopstarred: 'Top Starred Posts',
 		commandStarTopstarredDescription: ({ medal, id, stars }) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
 		commandStarTopreceivers: 'Top Star Receivers',

@@ -123,7 +123,13 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(Colors.Amber)
-				.addField(i18n('commandStarStats'), i18n('commandStarStatsDescription', { messages: totalMessages, stars: totalStars }))
+				.addField(
+					i18n('commandStarStats'),
+					i18n('commandStarStatsDescription', {
+						messages: i18n(totalMessages === 1 ? 'commandStarMessages' : 'commandStarMessagesPlural', { count: totalMessages }),
+						stars: i18n(totalStars === 1 ? 'commandStars' : 'commandStarsPlural', { count: totalStars })
+					})
+				)
 				.addField(
 					i18n('commandStarTopstarred'),
 					topThreeMessages.map(([mID, stars], index) => i18n('commandStarTopstarredDescription', { medal: MEDALS[index], id: mID, stars }))

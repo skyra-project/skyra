@@ -74,7 +74,7 @@
 		"klasa-dashboard-hooks": "github:skyra-project/klasa-dashboard-hooks#master",
 		"lavacord": "^1.1.9",
 		"module-alias": "^2.2.2",
-		"node-fetch": "^2.6.0",
+		"node-fetch": "^2.6.1",
 		"pg": "^8.3.3",
 		"tslib": "1.11.2",
 		"tsyringe": "^4.3.0",

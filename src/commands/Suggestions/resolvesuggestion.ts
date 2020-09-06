@@ -45,7 +45,7 @@ const enum SuggestionsColors {
 			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
 			if (!suggestionData) throw message.language.get('commandResolveSuggestionIdNotFound');
 
-			const channel = message.client.channels.get(channelID) as TextChannel;
+			const channel = message.client.channels.cache.get(channelID) as TextChannel;
 			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
 			if (suggestionMessage === null) {
 				await suggestionData.remove();

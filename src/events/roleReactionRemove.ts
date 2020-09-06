@@ -22,7 +22,7 @@ export default class extends Event {
 
 		try {
 			const member = await channel.guild.members.fetch(data.user_id);
-			if (member.roles.has(roleEntry.role)) await member.roles.remove(roleEntry.role);
+			if (member.roles.cache.has(roleEntry.role)) await member.roles.remove(roleEntry.role);
 		} catch (error) {
 			this.client.emit(Events.ApiError, error);
 		}

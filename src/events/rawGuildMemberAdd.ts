@@ -30,7 +30,7 @@ export default class extends Event {
 	}
 
 	public async run(data: WSGuildMemberAdd) {
-		const guild = this.client.guilds.get(data.guild_id);
+		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
 		guild.memberTags.set(data.user.id, {
@@ -73,7 +73,7 @@ export default class extends Event {
 		const channelsGreeting = guild.settings.get(GuildSettings.Channels.Greeting);
 		const messagesGreeting = guild.settings.get(GuildSettings.Messages.Greeting);
 		if (channelsGreeting && messagesGreeting) {
-			const channel = guild.channels.get(channelsGreeting) as TextChannel;
+			const channel = guild.channels.cache.get(channelsGreeting) as TextChannel;
 			if (channel && channel.postable) {
 				channel.send(this.transformMessage(messagesGreeting, guild, member.user)).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {
@@ -85,7 +85,7 @@ export default class extends Event {
 	private handleInitialRole(guild: Guild, member: GuildMember) {
 		const initialRole = guild.settings.get(GuildSettings.Roles.Initial);
 		if (initialRole) {
-			const role = guild.roles.get(initialRole);
+			const role = guild.roles.cache.get(initialRole);
 			if (!role || role.position >= guild.me!.roles.highest.position) {
 				guild.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit(Events.Wtf, error));
 			} else {
@@ -128,7 +128,7 @@ export default class extends Event {
 		const rolesMuted = guild.settings.get(GuildSettings.Roles.Muted);
 		if (rolesMuted && stickyRoles.includes(rolesMuted)) {
 			// Handle mute
-			const role = guild.roles.get(rolesMuted);
+			const role = guild.roles.cache.get(rolesMuted);
 			if (role) {
 				member.roles.add(role).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {

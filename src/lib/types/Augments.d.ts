@@ -123,7 +123,7 @@ declare module 'klasa' {
 		andString: string;
 		orString: string;
 		PERMISSIONS: Record<PermissionString, string>;
-		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
+		HUMAN_LEVELS: Record<'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH', string>;
 		duration(time: number, precision?: number): string;
 		ordinal(cardinal: number): string;
 		list(values: readonly string[], conjunction: string): string;

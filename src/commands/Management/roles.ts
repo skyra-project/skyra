@@ -26,7 +26,7 @@ export default class extends RichDisplayCommand {
 			if (!arg) return [];
 
 			const search = new FuzzySearch(
-				message.guild!.roles,
+				message.guild!.roles.cache,
 				(role) => role.name,
 				(role) => rolesPublic.includes(role.id)
 			);
@@ -52,7 +52,7 @@ export default class extends RichDisplayCommand {
 			if (message.args.some((v) => v.length !== 0)) throw message.language.get('commandRolesAbort', { prefix });
 			return this.list(message, rolesPublic);
 		}
-		const memberRoles = new Set(message.member!.roles.keys());
+		const memberRoles = new Set(message.member!.roles.cache.keys());
 		// Remove the everyone role
 		memberRoles.delete(message.guild!.id);
 
@@ -90,7 +90,7 @@ export default class extends RichDisplayCommand {
 							// If the member has this role we need to delete it
 							memberRoles.delete(id);
 							// get to the role object so we can get the name of the role to show the user it was removed
-							const roleToRemove = message.guild!.roles.get(id)!;
+							const roleToRemove = message.guild!.roles.cache.get(id)!;
 							removedRoles.push(roleToRemove.name);
 						}
 					}
@@ -104,9 +104,9 @@ export default class extends RichDisplayCommand {
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild!.roles.has(rolesInitial))
+			if (!message.guild!.roles.cache.has(rolesInitial))
 				message.guild!.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit(Events.Wtf, error));
-			else if (message.member!.roles.has(rolesInitial)) memberRoles.delete(rolesInitial);
+			else if (message.member!.roles.cache.has(rolesInitial)) memberRoles.delete(rolesInitial);
 		}
 
 		// Apply the roles
@@ -124,7 +124,7 @@ export default class extends RichDisplayCommand {
 		const remove: string[] = [];
 		const roles: string[] = [];
 		for (const roleID of publicRoles) {
-			const role = message.guild!.roles.get(roleID);
+			const role = message.guild!.roles.cache.get(roleID);
 			if (role) roles.push(role.name);
 			else remove.push(roleID);
 		}

@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		if (message.guild!.security.lockdowns.has(channel.id)) throw message.language.get('commandLockdownLocked', { channel: channel.toString() });
 
 		// Get the role, then check if the user could send messages
-		const role = message.guild!.roles.get(message.guild!.id)!;
+		const role = message.guild!.roles.cache.get(message.guild!.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
 		if (!couldSend) throw message.language.get('commandLockdownLocked', { channel: channel.toString() });
 

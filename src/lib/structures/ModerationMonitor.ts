@@ -177,7 +177,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		if (ignoredRoles.length === 0) return true;
 
 		const { roles } = member;
-		return !ignoredRoles.some((id) => roles.has(id));
+		return !ignoredRoles.some((id) => roles.cache.has(id));
 	}
 }
 

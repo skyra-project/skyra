@@ -44,7 +44,7 @@ export default class extends Monitor {
 		const autoRole = this.getLatestRole(autoRoles, points);
 		if (!autoRole) return null;
 
-		const role = message.guild!.roles.get(autoRole.id);
+		const role = message.guild!.roles.cache.get(autoRole.id);
 		if (!role || role.position > message.guild!.me!.roles.highest.position) {
 			message
 				.guild!.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove' })
@@ -53,7 +53,7 @@ export default class extends Monitor {
 			return;
 		}
 
-		if (message.member!.roles.has(role.id)) return null;
+		if (message.member!.roles.cache.has(role.id)) return null;
 
 		await message.member!.roles.add(role);
 		if (message.guild!.settings.get(GuildSettings.Social.Achieve) && message.channel.postable) {

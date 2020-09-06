@@ -18,10 +18,10 @@ export default class extends Event {
 	}
 
 	public run(data: WSGuildMemberUpdate) {
-		const guild = this.client.guilds.get(data.guild_id);
+		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (typeof guild === 'undefined') return;
 
-		const member = guild.members.get(data.user.id);
+		const member = guild.members.cache.get(data.user.id);
 		if (typeof member !== 'undefined') member._patch(data);
 
 		this.handleMemberChange(guild, data);
@@ -66,10 +66,10 @@ export default class extends Event {
 			// Check which roles are added and which are removed and
 			// get the names of each role for logging
 			for (const oldRole of previous.roles) {
-				if (!next.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.get(oldRole)?.name || 'Removed Role'}\``);
+				if (!next.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.cache.get(oldRole)?.name || 'Removed Role'}\``);
 			}
 			for (const newRole of next.roles) {
-				if (!previous.roles.includes(newRole)) addedRoles.push(`\`${guild.roles.get(newRole)!.name}\``);
+				if (!previous.roles.includes(newRole)) addedRoles.push(`\`${guild.roles.cache.get(newRole)!.name}\``);
 			}
 
 			// Set the Role change log

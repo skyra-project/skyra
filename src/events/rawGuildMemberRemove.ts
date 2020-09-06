@@ -25,11 +25,11 @@ export default class extends Event {
 	}
 
 	public async run(data: WSGuildMemberRemove) {
-		const guild = this.client.guilds.get(data.guild_id);
+		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		if (!this.client.guilds.some((g) => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
-		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
+		if (!this.client.guilds.cache.some((g) => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
+		if (guild.members.cache.has(data.user.id)) guild.members.cache.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
 		this.handleFarewellMessage(guild, data.user);
 
@@ -98,7 +98,7 @@ export default class extends Event {
 		const channelsFarewell = guild.settings.get(GuildSettings.Channels.Farewell);
 		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell);
 		if (channelsFarewell && messagesFarewell) {
-			const channel = guild.channels.get(channelsFarewell) as TextChannel;
+			const channel = guild.channels.cache.get(channelsFarewell) as TextChannel;
 			if (channel && channel.postable) {
 				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {

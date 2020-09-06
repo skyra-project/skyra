@@ -81,7 +81,7 @@ export default class extends Route {
 		);
 
 		for (const oauthGuild of oauthGuilds) {
-			const guild = this.client.guilds.get(oauthGuild.id);
+			const guild = this.client.guilds.cache.get(oauthGuild.id);
 			const serialized: PartialOauthFlattenedGuild =
 				typeof guild === 'undefined'
 					? {
@@ -94,7 +94,7 @@ export default class extends Route {
 							defaultMessageNotifications: 'MENTIONS',
 							description: null,
 							embedEnabled: false,
-							explicitContentFilter: 0,
+							explicitContentFilter: 'DISABLED',
 							features: oauthGuild.features,
 							icon: oauthGuild.icon,
 							id: oauthGuild.id,
@@ -109,7 +109,7 @@ export default class extends Route {
 							splash: null,
 							systemChannelID: null,
 							vanityURLCode: null,
-							verificationLevel: 0
+							verificationLevel: 'NONE'
 					  }
 					: flattenGuild(guild);
 

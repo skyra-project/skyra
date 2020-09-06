@@ -23,7 +23,7 @@ export default class extends RichDisplayCommand {
 		const animEmotes: string[] = [];
 		const staticEmotes: string[] = [];
 
-		for (const [id, emote] of [...message.guild!.emojis.entries()]) {
+		for (const [id, emote] of [...message.guild!.emojis.cache.entries()]) {
 			if (emote.animated) animEmotes.push(`<a:${emote.name}:${id}>`);
 			else staticEmotes.push(`<:${emote.name}:${id}>`);
 		}
@@ -39,7 +39,7 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(
-					[`${message.guild!.emojis.size}`, `${message.language.get('commandEmotesTitle')}`, `${message.guild!.name}`].join(' '),
+					[`${message.guild!.emojis.cache.size}`, `${message.language.get('commandEmotesTitle')}`, `${message.guild!.name}`].join(' '),
 					message.guild!.iconURL({ format: 'png' })!
 				)
 		);

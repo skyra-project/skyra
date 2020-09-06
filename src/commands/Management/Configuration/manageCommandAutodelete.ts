@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 
 		const list: string[] = [];
 		for (const entry of commandAutodelete) {
-			const channel = this.client.channels.get(entry[0]) as TextChannel;
+			const channel = this.client.channels.cache.get(entry[0]) as TextChannel;
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${message.language.duration(entry[1] / 60000)}`);
 		}
 		if (!list.length) throw message.language.get('commandManageCommandAutoDeleteShowEmpty');

@@ -57,17 +57,17 @@ export default class extends SkyraCommand {
 					if (index >= results.length) return;
 					if (index === results.length - 1) {
 						// at the final page, remove the next emoji
-						await sent.reactions.get(EMOJIS.next)?.remove();
+						await sent.reactions.cache.get(EMOJIS.next)?.remove();
 					}
 
 					// add the previous emoji to go back
-					if (!sent.reactions.has(EMOJIS.previous)) {
+					if (!sent.reactions.cache.has(EMOJIS.previous)) {
 						// remove all reactions to preserve the order: previous, stop, next
 						await sent.reactions.removeAll();
 						for (const emoji of Object.values(EMOJIS)) await sent.react(emoji);
 					}
 					await sent.edit(this.getLink(results[index]));
-					await sent.reactions.get(EMOJIS.next)?.users.remove(reaction.userID);
+					await sent.reactions.cache.get(EMOJIS.next)?.users.remove(reaction.userID);
 					break;
 
 				case EMOJIS.previous:
@@ -75,12 +75,12 @@ export default class extends SkyraCommand {
 					if (index < 0) return;
 					if (index === 0) {
 						// at the first page, remove the previous emoji
-						await sent.reactions.get(EMOJIS.previous)?.remove();
+						await sent.reactions.cache.get(EMOJIS.previous)?.remove();
 					}
 
-					if (!sent.reactions.has(EMOJIS.next)) await sent.react(EMOJIS.next);
+					if (!sent.reactions.cache.has(EMOJIS.next)) await sent.react(EMOJIS.next);
 					await sent.edit(this.getLink(results[index]));
-					await sent.reactions.get(EMOJIS.previous)?.users.remove(reaction.userID);
+					await sent.reactions.cache.get(EMOJIS.previous)?.users.remove(reaction.userID);
 					break;
 
 				case EMOJIS.stop:

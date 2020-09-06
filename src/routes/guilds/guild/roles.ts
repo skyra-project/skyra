@@ -13,7 +13,7 @@ export default class extends Route {
 	public async get(request: ApiRequest, response: ApiResponse) {
 		const guildID = request.params.guild;
 
-		const guild = this.client.guilds.get(guildID);
+		const guild = this.client.guilds.cache.get(guildID);
 		if (!guild) return response.error(400);
 
 		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
@@ -21,6 +21,6 @@ export default class extends Route {
 
 		if (!canManage(guild, member)) return response.error(403);
 
-		return response.json(guild.roles.map(flattenRole));
+		return response.json(guild.roles.cache.map(flattenRole));
 	}
 }

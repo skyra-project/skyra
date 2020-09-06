@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		const loadingMsg = await message.sendLocale('systemLoading', []);
 
 		for (const emoji of emojis) {
-			if (loadingMsg.reactions.size === 20) throw message.language.get('commandPollReactionLimit');
+			if (loadingMsg.reactions.cache.size === 20) throw message.language.get('commandPollReactionLimit');
 			await loadingMsg.react(emoji);
 		}
 

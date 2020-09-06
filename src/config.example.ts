@@ -117,7 +117,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		postgres: PGSQL_DATABASE_OPTIONS
 	},
 	readyMessage: (client) =>
-		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.size} [G]] [ ${client.guilds
+		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.cache.size} [G]] [ ${client.guilds.cache
 			.reduce((a, b) => a + b.memberCount, 0)
 			.toLocaleString()} [U]].`,
 	regexPrefix: DEV ? undefined : /^(hey +)?(eva|skyra)[,! ]/i,

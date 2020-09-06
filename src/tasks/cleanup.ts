@@ -47,24 +47,24 @@ export default class extends Task {
 		let users = 0;
 
 		// Per-Guild sweeper
-		for (const guild of this.client.guilds.values()) {
+		for (const guild of this.client.guilds.cache.values()) {
 			// Clear presences
-			presences += guild.presences.size;
-			guild.presences.clear();
+			presences += guild.presences.cache.size;
+			guild.presences.cache.clear();
 
 			// Clear members that haven't send a message in the last 30 minutes
 			const { me } = guild;
-			for (const [id, member] of guild.members) {
+			for (const [id, member] of guild.members.cache) {
 				if (member === me) continue;
 				if (member.voice.channelID) continue;
 				if (member.lastMessageID && member.lastMessageID > OLD_SNOWFLAKE) continue;
-				guild.members.delete(id);
+				guild.members.cache.delete(id);
 				guildMembers++;
 			}
 		}
 
 		// Per-Channel sweeper
-		for (const channel of this.client.channels.values()) {
+		for (const channel of this.client.channels.cache.values()) {
 			if (this.isTextChannel(channel) && channel.lastMessageID) {
 				channel.lastMessageID = null;
 				lastMessages++;
@@ -72,9 +72,9 @@ export default class extends Task {
 		}
 
 		// Per-User sweeper
-		for (const user of this.client.users.values()) {
+		for (const user of this.client.users.cache.values()) {
 			if (user.lastMessageID && user.lastMessageID > OLD_SNOWFLAKE) continue;
-			this.client.users.delete(user.id);
+			this.client.users.cache.delete(user.id);
 			users++;
 		}
 

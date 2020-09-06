@@ -6,7 +6,7 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import assert from 'assert';
-import { DMChannel, MessageEmbed, TextChannel, User } from 'discord.js';
+import { DMChannel, MessageEmbed, TextChannel, User, NewsChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
@@ -18,7 +18,7 @@ enum YesNoAnswer {
 	Yes
 }
 
-async function askYesNo(channel: TextChannel | DMChannel, user: User, question: string): Promise<YesNoAnswer> {
+async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: User, question: string): Promise<YesNoAnswer> {
 	await channel.send(question);
 	const messages = await channel.awaitMessages((msg) => msg.author.id === user.id, { time: 60000, max: 1 });
 	if (!messages.size) return YesNoAnswer.Timeout;

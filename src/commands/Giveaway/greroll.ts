@@ -32,9 +32,9 @@ export default class extends SkyraCommand {
 		const content = winners
 			? message.language.get('giveawayEndedMessage', {
 					winners: winners.map((winner) => `<@${winner}>`),
-					title
+					title: title!
 			  })
-			: message.language.get('giveawayEndedMessageNoWinner', { title });
+			: message.language.get('giveawayEndedMessageNoWinner', { title: title! });
 		return message.sendMessage(content);
 	}
 
@@ -82,7 +82,7 @@ export default class extends SkyraCommand {
 	 * Validates that this message is a message from Skyra and is a giveaway
 	 */
 	private validateMessage(message: Message) {
-		return message.author !== null && message.author.id === CLIENT_ID && message.embeds.length === 1 && message.reactions.has(kRawEmoji);
+		return message.author !== null && message.author.id === CLIENT_ID && message.embeds.length === 1 && message.reactions.cache.has(kRawEmoji);
 	}
 
 	/**

@@ -37,10 +37,10 @@ export default class extends SkyraCommand {
 
 	private get generalStatistics(): StatsGeneral {
 		return {
-			channels: this.client.channels.size.toLocaleString(),
-			guilds: this.client.guilds.size.toLocaleString(),
+			channels: this.client.channels.cache.size.toLocaleString(),
+			guilds: this.client.guilds.cache.size.toLocaleString(),
 			nodeJs: process.version,
-			users: this.client.guilds.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+			users: this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
 			version: `v${version}`
 		};
 	}

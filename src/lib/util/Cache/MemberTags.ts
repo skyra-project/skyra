@@ -82,7 +82,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 		if (skyraHighestRole === null) throw new Error('Unreachable.');
 
 		const skyraPosition = skyraHighestRole.position;
-		const nonManageableRoles = this.kGuild.roles.filter((role) => role.position >= skyraPosition);
+		const nonManageableRoles = this.kGuild.roles.cache.filter((role) => role.position >= skyraPosition);
 		if (nonManageableRoles.size === 0) {
 			yield* this.entries();
 		} else {
@@ -122,7 +122,7 @@ export class MemberTags extends Collection<string, MemberTag> {
 
 		let highest: Role | null = null;
 		for (const roleID of rawGuildSelfMember.roles) {
-			const role = this.kGuild.roles.get(roleID);
+			const role = this.kGuild.roles.cache.get(roleID);
 			if (typeof role === 'undefined') continue;
 
 			if (highest === null || highest.position < role.position) highest = role;

@@ -242,7 +242,7 @@ export class SettingsMenu {
 
 	private stop(): void {
 		if (this.response) {
-			if (this.response.reactions.size) {
+			if (this.response.reactions.cache.size) {
 				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
 			}
 			this.response

@@ -24,7 +24,7 @@ export default class extends Event {
 		const id = guild.settings.get(key) as string;
 		if (!id) return;
 
-		const channel = guild.channels.get(id) as TextChannel;
+		const channel = guild.channels.cache.get(id) as TextChannel;
 		if (!channel) {
 			await guild.settings.reset(key);
 			return;

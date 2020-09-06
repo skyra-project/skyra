@@ -92,7 +92,19 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	clientID: CLIENT_ID,
 	clientSecret: CLIENT_SECRET,
 	dev: DEV,
-	disabledEvents: ['CHANNEL_PINS_UPDATE', 'GUILD_CREATE', 'GUILD_MEMBER_UPDATE', 'PRESENCE_UPDATE', 'TYPING_START', 'USER_UPDATE'],
+	ws: {
+		intents: [
+			'GUILDS',
+			'GUILD_MEMBERS',
+			'GUILD_BANS',
+			'GUILD_EMOJIS',
+			'GUILD_VOICE_STATES',
+			'GUILD_MESSAGES',
+			'GUILD_MESSAGE_REACTIONS',
+			'DIRECT_MESSAGES',
+			'DIRECT_MESSAGE_REACTIONS'
+		]
+	},
 	lavalink: [
 		{
 			id: CLIENT_ID,

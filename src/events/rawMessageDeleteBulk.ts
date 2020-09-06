@@ -13,8 +13,8 @@ export default class extends Event {
 	}
 
 	public async run(data: WSMessageDeleteBulk): Promise<void> {
-		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild.channels.has(data.channel_id)) return;
+		const guild = this.client.guilds.cache.get(data.guild_id);
+		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 		for (const id of data.ids) guild.starboard.delete(id);
 
 		// Delete entries from starboard if it exists

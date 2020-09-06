@@ -21,14 +21,14 @@ export default class extends SkyraCommand {
 		let tChannels = 0;
 		let vChannels = 0;
 		let cChannels = 0;
-		for (const channel of message.guild!.channels.values()) {
+		for (const channel of message.guild!.channels.cache.values()) {
 			if (channel.type === 'text') tChannels++;
 			else if (channel.type === 'voice') vChannels++;
 			else cChannels++;
 		}
 
 		const serverInfoTitles = (message.language.get('commandGuildInfoTitles') as unknown) as ServerInfoTitles;
-		const roles = [...message.guild!.roles.values()].sort(SORT);
+		const roles = [...message.guild!.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild!.ownerID);
 		return message.sendEmbed(
@@ -59,10 +59,10 @@ export default class extends SkyraCommand {
 				.addField(
 					serverInfoTitles.OTHER,
 					message.language.get('commandGuildInfoOther', {
-						size: message.guild!.roles.size,
+						size: message.guild!.roles.cache.size,
 						region: message.guild!.region,
 						createdAt: message.guild!.createdTimestamp,
-						verificationLevel: message.guild!.verificationLevel as 0 | 1 | 2 | 3 | 4
+						verificationLevel: message.guild!.verificationLevel
 					}),
 					true
 				)

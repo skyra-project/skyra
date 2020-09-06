@@ -79,7 +79,8 @@ const PERMS = {
 	DEAFEN_MEMBERS: 'Deafen Members',
 	MOVE_MEMBERS: 'Move Members',
 	USE_VAD: 'Use Voice Activity',
-	PRIORITY_SPEAKER: 'Priority Speaker'
+	PRIORITY_SPEAKER: 'Priority Speaker',
+	VIEW_GUILD_INSIGHTS: 'View Guild Insights'
 };
 
 const random = (num: number) => Math.round(Math.random() * num);
@@ -134,11 +135,11 @@ export default class extends Language {
 	public orString = 'or';
 	public PERMISSIONS = PERMS;
 	public HUMAN_LEVELS = {
-		0: 'None',
-		1: 'Low',
-		2: 'Medium',
-		3: 'High',
-		4: 'Highest'
+		NONE: 'None',
+		LOW: 'Low',
+		MEDIUM: 'Medium',
+		HIGH: 'High',
+		VERY_HIGH: 'Highest'
 	};
 
 	public duration = duration;

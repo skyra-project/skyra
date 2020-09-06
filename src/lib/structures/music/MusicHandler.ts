@@ -46,7 +46,7 @@ export class MusicHandler {
 	}
 
 	public get channel() {
-		return (this.channelID && (this.client.channels.get(this.channelID) as TextChannel)) || null;
+		return (this.channelID && (this.client.channels.cache.get(this.channelID) as TextChannel)) || null;
 	}
 
 	public get playingTime() {

@@ -9,7 +9,7 @@ export default class extends Argument {
 		if (!message.guild) throw message.language.get('resolverChannelNotInGuild');
 
 		const channelID = CHANNEL_REGEXP.exec(arg);
-		const channel = channelID === null ? null : message.guild.channels.get(channelID[1]);
+		const channel = channelID === null ? null : message.guild.channels.cache.get(channelID[1]);
 		if (channel) return this.validateAccess(channel, message);
 
 		throw message.language.get('resolverInvalidChannel', { name: possible.name });

@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);
 		if (!announcementID) throw message.language.get('commandSubscribeNoChannel');
 
-		const channel = message.guild!.channels.get(announcementID) as TextChannel;
+		const channel = message.guild!.channels.cache.get(announcementID) as TextChannel;
 		if (!channel) throw message.language.get('commandSubscribeNoChannel');
 
 		if (!channel.postable) throw message.language.get('systemChannelNotPostable');

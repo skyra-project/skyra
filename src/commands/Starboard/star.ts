@@ -56,14 +56,14 @@ export default class extends SkyraCommand {
 
 		// If there is no configured starboard channel, return no stars
 		// TODO(kyranet): Change this to a more descriptive message
-		const starboardChannel = message.guild!.channels.get(starboardChannelID) as TextChannel;
+		const starboardChannel = message.guild!.channels.cache.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {
 			await message.guild!.settings.reset(GuildSettings.Starboard.Channel);
 			return message.sendLocale('commandStarNostars');
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
-		const starredMessageChannel = message.guild!.channels.get(starboardData.channelID) as TextChannel;
+		const starredMessageChannel = message.guild!.channels.cache.get(starboardData.channelID) as TextChannel;
 		if (!starredMessageChannel) {
 			await starboardData.remove();
 			return this.random(message, [user]);

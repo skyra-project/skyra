@@ -10,7 +10,7 @@ export default class extends Serializer {
 			Object.keys(data).length === 2 &&
 			typeof data.user === 'string' &&
 			Array.isArray(data.roles) &&
-			data.roles.every((role) => typeof role === 'string' && guild!.roles.has(role))
+			data.roles.every((role) => typeof role === 'string' && guild!.roles.cache.has(role))
 		)
 			return data;
 
@@ -19,7 +19,7 @@ export default class extends Serializer {
 
 	public stringify(value: StickyRole, guild: Guild) {
 		const username = this.client.userTags.get(value.user)?.username ?? guild.language.get('unknownUser');
-		const roles = value.roles.map((role) => guild.roles.get(role)?.name ?? guild.language.get('unknownRole'));
+		const roles = value.roles.map((role) => guild.roles.cache.get(role)?.name ?? guild.language.get('unknownRole'));
 		return `[${username} -> ${roles}]`;
 	}
 }

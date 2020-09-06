@@ -10,7 +10,7 @@ export default class extends Serializer {
 			Object.keys(data).length === 2 &&
 			typeof data.name === 'string' &&
 			Array.isArray(data.roles) &&
-			data.roles.every((role) => typeof role === 'string' && guild!.roles.has(role))
+			data.roles.every((role) => typeof role === 'string' && guild!.roles.cache.has(role))
 		)
 			return data;
 
@@ -18,6 +18,6 @@ export default class extends Serializer {
 	}
 
 	public stringify(value: UniqueRoleSet, guild: Guild) {
-		return `[${value.name} -> ${value.roles.map((role) => guild.roles.get(role)?.name ?? guild.language.get('unknownRole'))}]`;
+		return `[${value.name} -> ${value.roles.map((role) => guild.roles.cache.get(role)?.name ?? guild.language.get('unknownRole'))}]`;
 	}
 }

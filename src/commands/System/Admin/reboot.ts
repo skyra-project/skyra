@@ -24,8 +24,8 @@ export default class extends SkyraCommand {
 			if (ENABLE_INFLUX) {
 				this.client.emit(
 					Events.AnalyticsSync,
-					this.client.guilds.size,
-					this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0)
+					this.client.guilds.cache.size,
+					this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
 				);
 
 				await this.client.analytics!.flush();

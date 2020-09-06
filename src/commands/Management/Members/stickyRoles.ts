@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 		if (!roles.length) throw message.language.get('commandStickyRolesShowEmpty');
 
 		const guildRoles = message.guild!.roles;
-		const names = roles.map((role) => guildRoles.get(role)!.name);
+		const names = roles.map((role) => guildRoles.cache.get(role)!.name);
 		return message.sendLocale('commandStickyRolesShowSingle', [{ user: user.username, roles: names }]);
 	}
 }

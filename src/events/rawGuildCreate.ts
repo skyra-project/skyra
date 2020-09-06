@@ -13,7 +13,7 @@ export default class extends Event {
 		// Early sweep presences
 		data.presences = [];
 
-		let guild = this.client.guilds.get(data.id);
+		let guild = this.client.guilds.cache.get(data.id);
 		if (guild) {
 			if (!guild.available && !data.unavailable) {
 				// A newly available guild
@@ -37,7 +37,7 @@ export default class extends Event {
 		const membersInVoice: GuildMember[] = [];
 
 		// Cache all tags and prepare for sweep
-		for (const member of guild.members.values()) {
+		for (const member of guild.members.cache.values()) {
 			this.client.userTags.create(member.user);
 			guild.memberTags.create(member);
 
@@ -47,19 +47,19 @@ export default class extends Event {
 		const { me } = guild;
 
 		// Sweep redundant data
-		guild.members.clear();
-		this.client.users.clear();
+		guild.members.cache.clear();
+		this.client.users.cache.clear();
 
 		// Populate useful data
 		for (const member of membersInVoice) {
-			guild.members.set(member.id, member);
-			this.client.users.set(member.id, member.user);
+			guild.members.cache.set(member.id, member);
+			this.client.users.cache.set(member.id, member.user);
 		}
 
 		// Populate Skyra's data
 		if (me !== null) {
-			guild.members.set(me.id, me);
-			this.client.users.set(me.id, me.user);
+			guild.members.cache.set(me.id, me);
+			this.client.users.cache.set(me.id, me.user);
 		}
 	}
 }

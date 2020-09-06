@@ -92,7 +92,7 @@ export function announcementCheck(message: Message) {
 	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
 	if (!announcementID) throw message.language.get('commandSubscribeNoRole');
 
-	const role = message.guild!.roles.get(announcementID);
+	const role = message.guild!.roles.cache.get(announcementID);
 	if (!role) throw message.language.get('commandSubscribeNoRole');
 
 	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('systemHighestRole');
@@ -475,11 +475,11 @@ export function cleanMentions(guild: Guild, input: string) {
 				return tag ? `@${tag.username}` : `<${type}${ZeroWidhSpace}${id}>`;
 			}
 			case '@&': {
-				const role = guild.roles.get(id);
+				const role = guild.roles.cache.get(id);
 				return role ? `@${role.name}` : match;
 			}
 			case '#': {
-				const channel = guild.channels.get(id);
+				const channel = guild.channels.cache.get(id);
 				return channel ? `#${channel.name}` : `<${type}${ZeroWidhSpace}${id}>`;
 			}
 			default:
@@ -630,7 +630,7 @@ export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
 	let highest: Role | null = null;
 	let position = 0;
 	for (const roleID of roles) {
-		const role = guild.roles.get(roleID);
+		const role = guild.roles.cache.get(roleID);
 		if (typeof role === 'undefined') continue;
 		if (role.position > position) {
 			highest = role;

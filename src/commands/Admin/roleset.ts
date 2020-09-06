@@ -168,7 +168,7 @@ export default class extends SkyraCommand {
 		// Get all rolesets from settings
 		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 		if (!allRolesets.length) return message.sendLocale('commandRolesetNoRolesets');
-		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild!.roles.get(id)!.name).join(', ')}`);
+		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild!.roles.cache.get(id)!.name).join(', ')}`);
 		return message.send(list);
 	}
 }

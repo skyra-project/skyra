@@ -79,7 +79,8 @@ const PERMS = {
 	DEAFEN_MEMBERS: 'Ensordecer Miembros',
 	MOVE_MEMBERS: 'Mover Miembros',
 	USE_VAD: 'Usar la actividad de voz',
-	PRIORITY_SPEAKER: 'Orador Prioritario'
+	PRIORITY_SPEAKER: 'Orador Prioritario',
+	VIEW_GUILD_INSIGHTS: 'View Guild Insights'
 };
 
 const random = (num: number) => Math.round(Math.random() * num);
@@ -136,11 +137,11 @@ export default class extends Language {
 	public orString = 'o';
 	public PERMISSIONS = PERMS;
 	public HUMAN_LEVELS = {
-		0: 'Ninguno',
-		1: 'Bajo',
-		2: 'Medio',
-		3: 'Alto',
-		4: 'Muy alto'
+		NONE: 'Ninguno',
+		LOW: 'Bajo',
+		MEDIUM: 'Medio',
+		HIGH: 'Alto',
+		VERY_HIGH: 'Muy alto'
 	};
 
 	public duration = duration;

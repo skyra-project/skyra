@@ -23,7 +23,7 @@ export default class extends ModerationCommand {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(GuildSettings.Roles.Muted);
-		const role = (id && message.guild.roles.get(id)) || null;
+		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {
 			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandMuteLowlevel');
 			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {

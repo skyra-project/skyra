@@ -24,8 +24,8 @@ export default class extends Task {
 	public async run(): Promise<PartialResponseValue | null> {
 		if (!this.client.ready) return { type: ResponseType.Delay, value: 30000 };
 
-		const rawGuilds = this.client.guilds.size;
-		const rawUsers = this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0);
+		const rawGuilds = this.client.guilds.cache.size;
+		const rawUsers = this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0);
 
 		this.processAnalytics(rawGuilds, rawUsers);
 		if (DEV) return { type: ResponseType.Finished };

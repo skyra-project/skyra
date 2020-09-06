@@ -107,7 +107,9 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 				// If the defaultRole is defined and the member has two roles but doesn't have it
 				//   ^ Only possible if the role got removed and added another, i.e. the Muted role
 				//     or given by a moderator
-				if (member && member.kickable && member.roles.size <= minRolesAmount && initialRole ? member.roles.has(initialRole) : true) {
+				if (
+					member && member.kickable && member.roles.cache.size <= minRolesAmount && initialRole ? member.roles.cache.has(initialRole) : true
+				) {
 					return { done: false, value: member as GuildMember };
 				}
 

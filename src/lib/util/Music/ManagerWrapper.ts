@@ -23,7 +23,7 @@ export class Manager extends LavacordManager {
 		this.client = client;
 
 		this.send = (packet) => {
-			const guild = this.client.guilds.get(packet.d.guild_id);
+			const guild = this.client.guilds.cache.get(packet.d.guild_id);
 			if (guild) return guild.shard.send(packet);
 		};
 

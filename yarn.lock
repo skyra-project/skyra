@@ -3855,9 +3855,9 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.3.tgz#07c05034a6c349fa06e24fa35aa76db4580ce4dd"
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
-"klasa-dashboard-hooks@github:skyra-project/klasa-dashboard-hooks#master":
+klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks:
   version "0.0.1-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/1b11e25a0bf9f3768d38d40823c28ad312c51fb8"
+  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/bfed6df8ad4c21e30944c05b62aaf039081df0ea"
   dependencies:
     node-fetch "^2.6.0"
 

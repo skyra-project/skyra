@@ -62,7 +62,8 @@ export class UserRepository extends Repository<UserEntity> {
 			where: {
 				user: {
 					id: user.id
-				}
+				},
+				game: gameName
 			}
 		})) as UserGameIntegrationEntity<T>;
 

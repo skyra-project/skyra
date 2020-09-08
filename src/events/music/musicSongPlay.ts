@@ -1,6 +1,6 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
-import { cleanMentions, floatPromise } from '@utils/util';
+import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
@@ -14,8 +14,11 @@ export default class extends Event {
 
 		if (song) {
 			if (channel) {
-				const name = cleanMentions(manager.guild, await song.fetchRequesterName());
-				floatPromise(this, channel.sendLocale('commandPlayNext', [{ title: song.safeTitle, requester: name }]));
+				const name = await song.fetchRequesterName();
+				floatPromise(
+					this,
+					channel.sendLocale('commandPlayNext', [{ title: song.safeTitle, requester: name }], { disableMentions: 'everyone' })
+				);
 			}
 
 			for (const subscription of manager.websocketUserIterator()) {

@@ -1,7 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Schedules } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { cleanMentions } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -35,7 +34,7 @@ export default class extends SkyraCommand {
 		// This creates an single time task to start the giveaway
 		await this.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {
-				title: cleanMentions(message.guild!, title),
+				title,
 				endsAt: duration.getTime() + scheduleOffset + 500,
 				guildID: message.guild!.id,
 				channelID: channel.id,

@@ -1,7 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
-import { cleanMentions } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -40,7 +39,7 @@ export default class extends SkyraCommand {
 			guildID: message.guild!.id,
 			minimum: 1,
 			minimumWinners: winners,
-			title: cleanMentions(message.guild!, title)
+			title
 		});
 	}
 }

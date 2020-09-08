@@ -6,7 +6,7 @@ import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 
@@ -24,7 +24,7 @@ import { KlasaMessage, LanguageKeys } from 'klasa';
 		'package',
 		(arg, _, message) => {
 			if (!arg) throw message.language.get('commandYarnNoPackage');
-			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
+			return arg.replace(/ /g, '-').toLowerCase();
 		}
 	]
 ])

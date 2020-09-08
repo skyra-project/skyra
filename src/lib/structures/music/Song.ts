@@ -1,6 +1,6 @@
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { flattenSong } from '@utils/Models/ApiTransform';
-import { cleanMentions, enumerable, showSeconds } from '@utils/util';
+import { enumerable, showSeconds } from '@utils/util';
 import { TrackData } from 'lavacord';
 import { MusicHandler } from './MusicHandler';
 
@@ -48,10 +48,10 @@ export class Song {
 	}
 
 	/**
-	 * The cleaned and escaped title
+	 * The escaped title
 	 */
 	public get safeTitle() {
-		return cleanMentions(this.queue.guild, escapeMarkdown(this.title));
+		return escapeMarkdown(this.title);
 	}
 
 	public get friendlyDuration(): string {
@@ -69,7 +69,7 @@ export class Song {
 				.fetch(this.requester)
 				.then((user) => user.username)
 				.catch(() => this.queue.guild.language.get('unknownUser')));
-		return escapeMarkdown(cleanMentions(this.queue.guild, display));
+		return escapeMarkdown(display);
 	}
 
 	public toString(): string {

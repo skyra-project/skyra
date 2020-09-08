@@ -20,6 +20,8 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.update(GuildSettings.Prefix, prefix, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('commandSetPrefixSet', [{ prefix }]);
+		return message.sendLocale('commandSetPrefixSet', [{ prefix }], {
+			allowedMentions: { users: [message.author.id], roles: [] }
+		});
 	}
 }

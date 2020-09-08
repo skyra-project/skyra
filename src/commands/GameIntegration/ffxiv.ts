@@ -89,7 +89,7 @@ export default class extends RichDisplayCommand {
 				.addField(titles.cityState, character.Town.Name, true)
 				.addField(titles.grandCompany, character.GrandCompany.Company?.Name || titles.none, true)
 				.addField(titles.rank, character.GrandCompany.Rank?.Name || titles.none, true)
-				.addField('\u200b', '\u200b', true)
+				.addBlankField(true)
 		);
 
 		if (
@@ -117,7 +117,7 @@ export default class extends RichDisplayCommand {
 			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheHandJobs;
 				// addBlankField equivalent
-				embed.setTitle(titles.dohClasses).addField('\u200b', '\u200b', true);
+				embed.setTitle(titles.dohClasses).addBlankField(true);
 				return embed;
 			});
 		}

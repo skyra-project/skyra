@@ -1,4 +1,4 @@
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
@@ -7,12 +7,13 @@ import { MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage } from 'klasa';
 
-@ApplyOptions<RichDisplayCommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
 	description: (language) => language.get('commandTriviaDescription'),
 	extendedHelp: (language) => language.get('commandTriviaExtended'),
 	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
-	usageDelim: ' '
+	usageDelim: ' ',
+	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 @CreateResolvers([
 	[
@@ -35,7 +36,7 @@ import { KlasaMessage } from 'klasa';
 		}
 	]
 ])
-export default class extends RichDisplayCommand {
+export default class extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#channels = new Set<string>();
 

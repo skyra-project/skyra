@@ -17,7 +17,7 @@ export default class extends Event {
 				const name = await song.fetchRequesterName();
 				floatPromise(
 					this,
-					channel.sendLocale('commandPlayNext', [{ title: song.safeTitle, requester: name }], { disableMentions: 'everyone' })
+					channel.sendLocale('commandPlayNext', [{ title: song.safeTitle, requester: name }], { allowedMentions: { users: [], roles: [] } })
 				);
 			}
 

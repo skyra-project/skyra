@@ -15,7 +15,7 @@ export default class extends Event {
 					songs.length === 1
 						? channel.guild.language.get('commandAddSong', { title: songs[0].safeTitle })
 						: channel.guild.language.get('commandAddPlaylist', { amount: songs.length }),
-					{ disableMentions: 'everyone' }
+					{ allowedMentions: { users: [], roles: [] } }
 				)
 			);
 		}

@@ -26,6 +26,7 @@ export abstract class WeebCommand extends SkyraCommand {
 			store,
 			file,
 			directory,
+			// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 			mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>(
 				{
 					bucket: 2,

@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		}
 
 		return message.sendLocale('commandRateOutput', [{ author: message.author.username, userToRate: user, rate, emoji: ratewaifu }], {
-			disableMentions: 'all'
+			allowedMentions: { users: [], roles: [] }
 		});
 	}
 }

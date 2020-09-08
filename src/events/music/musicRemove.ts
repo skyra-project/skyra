@@ -9,7 +9,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('commandRemoveSuccess', [{ song }], { disableMentions: 'everyone' }));
+			floatPromise(this, channel.sendLocale('commandRemoveSuccess', [{ song }], { allowedMentions: { users: [], roles: [] } }));
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {

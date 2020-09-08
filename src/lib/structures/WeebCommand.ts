@@ -16,12 +16,16 @@ export abstract class WeebCommand extends SkyraCommand {
 	 */
 	public responseName: keyof LanguageKeys;
 
+	private readonly kHeaders = {
+		Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
+		'User-Agent': `Skyra/${VERSION}`
+	} as const;
+
 	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
 		super(
 			store,
 			file,
 			directory,
-			// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 			mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>(
 				{
 					bucket: 2,
@@ -42,16 +46,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
 
-		const { url } = await fetch<WeebCommandResult>(
-			query,
-			{
-				headers: {
-					Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
-					'User-Agent': `Skyra/${VERSION}`
-				}
-			},
-			FetchResultTypes.JSON
-		);
+		const { url } = await fetch<WeebCommandResult>(query, { headers: this.kHeaders }, FetchResultTypes.JSON);
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)

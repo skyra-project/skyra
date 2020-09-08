@@ -18,8 +18,7 @@ export default class extends Event {
 		if (typeof error === 'string') {
 			try {
 				return await message.alert(message.language.get('eventsErrorString', { mention: message.author.toString(), message: error }), {
-					allowedMentions: { users: [message.author.id] },
-					disableMentions: 'everyone'
+					allowedMentions: { users: [message.author.id], roles: [] }
 				});
 			} catch (err) {
 				return this.client.emit(Events.ApiError, err);

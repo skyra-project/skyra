@@ -3,7 +3,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
 import { shuffle } from '@utils/util';
-import { MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
+import { DMChannel, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage } from 'klasa';
 
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
 			};
-			const collector = new MessageCollector(message.channel as TextChannel, filter, { time: duration * 1000 });
+			const collector = new MessageCollector(message.channel as TextChannel | DMChannel, filter, { time: duration * 1000 });
 
 			let winner: User | null = null;
 			// users who have already participated

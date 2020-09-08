@@ -7,6 +7,7 @@ export abstract class RichDisplayCommand extends SkyraCommand {
 		super(store, file, directory, {
 			// Merge in all given options
 			...options,
+			runIn: ['text'],
 			// Add all requiredPermissions set in the command, along with the permissions required for UserRichDisplay
 			requiredPermissions: [
 				...((options.requiredPermissions as PermissionResolvable[] | undefined) ?? []),

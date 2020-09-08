@@ -27,7 +27,7 @@ export default class extends ModerationMonitor {
 		adderDuration: GuildSettings.Selfmod.Invites.ThresholdDuration
 	};
 
-	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus)\/|discord(?:app)?\.com\/invite\/)(?<code>[\w\d-]{2,})/gi;
+	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus)\/|discord(?:app)?\.com\/invite\/)(?<code>[\w-]{2,})/gi;
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message) && message.content.length > 0;

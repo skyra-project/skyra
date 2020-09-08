@@ -15,20 +15,23 @@ services:
     volumes:
       - postgres-data:/var/lib/postgresql/data
   lavalink:
-    network_mode: host
     container_name: lavalink
     image: skyrabot/lavalink:main
     restart: always
     ports:
       - '2333:2333'
   saelem:
-    network_mode: host
     container_name: saelem
     image: skyrabot/saelem:main
     restart: always
+    environment:
+      SAELEM_REDIS_HOST: redis
+      SAELEM_REDIS_PORT: 6379
+      SAELEM_REDIS_PASSWORD: redis
+      SAELEM_REDIS_DATABASE: 0
+      PORT: 8284
     ports:
-      - '8284:8080'
-    env_file: ./configs/.env.local
+      - '8284:8284'
   influx:
     container_name: influxdb
     image: quay.io/influxdb/influxdb:2.0.0-beta
@@ -42,11 +45,9 @@ services:
     container_name: redis
     image: redis:alpine
     restart: always
-    volumes:
-      - ./configs/redis.local.conf:/usr/local/etc/redis/redis.conf
     ports:
-      - '8287:8287'
-    command: redis-server /usr/local/etc/redis/redis.conf
+      - '6379:6379'
+    command: redis-server --requirepass redis
 
 volumes:
   postgres-data:

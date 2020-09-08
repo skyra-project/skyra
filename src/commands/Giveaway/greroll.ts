@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 					title: title!
 			  })
 			: message.language.get('giveawayEndedMessageNoWinner', { title: title! });
-		return message.sendMessage(content);
+		return message.sendMessage(content, { allowedMentions: { users: [message.author.id], roles: [] } });
 	}
 
 	private async resolveMessage(message: KlasaMessage, rawTarget: KlasaMessage | undefined) {

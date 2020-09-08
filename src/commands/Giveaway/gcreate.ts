@@ -30,7 +30,8 @@ export default class extends SkyraCommand {
 		if (durationOffset > YEAR || scheduleOffset > YEAR) throw message.language.get('giveawayTimeTooLong');
 
 		// Resolve the amount of winners the giveaway will have
-		const winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
+		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
+		if (winners > 25) winners = 25;
 		// This creates an single time task to start the giveaway
 		await this.client.schedules.add(Schedules.DelayedGiveawayCreate, schedule.getTime(), {
 			data: {

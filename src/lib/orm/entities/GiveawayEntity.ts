@@ -200,7 +200,7 @@ export class GiveawayEntity extends BaseEntity {
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
-				.messages.post({ data: { content } });
+				.messages.post({ data: { content, allowed_mentions: { users: this.#winners ?? [], roles: [] } } });
 		} catch (error) {
 			this.#client.emit(Events.ApiError, error);
 		}

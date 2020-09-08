@@ -1,5 +1,4 @@
 import { TOKENS, VERSION } from '@root/config';
-import { mergeDefault } from '@sapphire/utilities';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, LanguageKeys, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
@@ -22,21 +21,13 @@ export abstract class WeebCommand extends SkyraCommand {
 	} as const;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
-		super(
-			store,
-			file,
-			directory,
-			// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
-			mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>(
-				{
-					bucket: 2,
-					cooldown: 30,
-					requiredPermissions: ['EMBED_LINKS'],
-					runIn: ['text']
-				},
-				options
-			) as WeebCommandOptions
-		);
+		super(store, file, directory, {
+			bucket: 2,
+			cooldown: 30,
+			requiredPermissions: ['EMBED_LINKS'],
+			runIn: ['text'],
+			...options
+		});
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;

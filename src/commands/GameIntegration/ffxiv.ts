@@ -116,7 +116,6 @@ export default class extends RichDisplayCommand {
 		if (discipleOfTheHandJobs.length) {
 			display.addPage((embed: MessageEmbed) => {
 				embed.fields = discipleOfTheHandJobs;
-				// addBlankField equivalent
 				embed.setTitle(titles.dohClasses).addBlankField(true);
 				return embed;
 			});

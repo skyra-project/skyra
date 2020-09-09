@@ -25,16 +25,16 @@ import { join } from 'path';
 		(arg, possible, message, [firstUser]: GuildMember[]) => {
 			if (!arg) {
 				// Prefer self if there is already a firstUser, that is not self
-				if (firstUser !== undefined && firstUser.id !== message.author.id) return { id: message.author.id };
+				if (firstUser !== undefined && firstUser.id !== message.author.id) return { user: message.author };
 
 				// Fetch 2 random IDs
-				const ids = message.guild!.members.cache.randomKey(2)!;
+				const users = message.guild!.members.cache.random(2);
 
 				// If firstUser is already determined and the IDs match, then grab the second random ID
-				if (firstUser !== undefined && firstUser.id === ids[0]) return { id: ids[1] };
+				if (firstUser !== undefined && firstUser.id === users[0].id) return { user: users[1] };
 
 				// Else return the first random ID
-				return { id: ids[0] };
+				return { user: users[0] };
 			}
 
 			return message.client.arguments.get('membername')!.run(arg, possible, message);

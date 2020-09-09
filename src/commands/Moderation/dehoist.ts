@@ -4,6 +4,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
+import { BrandingColors } from '@utils/constants';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -22,6 +23,11 @@ export default class extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
 	public async run(message: KlasaMessage) {
+		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
+			await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary));
+			await message.guild!.members.fetch();
+		}
+
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const hoistedMembers: GuildMember[] = [];

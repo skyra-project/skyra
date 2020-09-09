@@ -91,7 +91,6 @@ export const enum PermissionLevels {
 export const enum Schedules {
 	DelayedGiveawayCreate = 'delayedGiveawayCreate',
 	Poststats = 'poststats',
-	Cleanup = 'cleanup',
 	SyncResourceAnalytics = 'syncResourceAnalytics',
 	TwitchRefreshSubscriptions = 'twitchRefreshSubscriptions',
 	Reminder = 'reminder'

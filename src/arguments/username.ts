@@ -1,5 +1,5 @@
 import { FuzzySearch } from '@utils/FuzzySearch';
-import { User } from 'discord.js';
+import { GuildMember, User } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 const USER_REGEXP = Argument.regex.userOrMember;
@@ -10,17 +10,17 @@ export default class extends Argument {
 		return this.store.get('user')!;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildMember) => boolean): Promise<User> {
 		if (!arg) throw message.language.get('resolverInvalidUsername', { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(
-			message.guild.members.cache.mapValues((member) => member.displayName),
-			(entry) => entry,
-			filter
-		).run(message, arg, possible.min || undefined);
+		const result = await new FuzzySearch(message.guild.members.cache, (entry) => entry.displayName, filter).run(
+			message,
+			arg,
+			possible.min || undefined
+		);
 		if (result) {
 			return this.client.users.fetch(result[0]).catch(() => {
 				throw message.language.get('userNotExistent');

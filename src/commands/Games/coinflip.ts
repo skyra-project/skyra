@@ -1,7 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { cleanMentions } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -58,7 +57,7 @@ export default class extends SkyraCommand {
 			if (!arg) return null;
 			const lArg = arg.toLowerCase();
 			const face = message.language.get('commandCoinFlipCoinnames').findIndex((coin) => coin.toLowerCase() === lArg);
-			if (face === -1) throw message.language.get('commandCoinFlipInvalidCoinname', { arg: cleanMentions(message.guild!, arg) });
+			if (face === -1) throw message.language.get('commandCoinFlipInvalidCoinname', { arg });
 			return face;
 		});
 

@@ -1,5 +1,4 @@
 import { TOKENS, VERSION } from '@root/config';
-import { mergeDefault } from '@sapphire/utilities';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, LanguageKeys, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
@@ -16,21 +15,19 @@ export abstract class WeebCommand extends SkyraCommand {
 	 */
 	public responseName: keyof LanguageKeys;
 
+	private readonly kHeaders = {
+		Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
+		'User-Agent': `Skyra/${VERSION}`
+	} as const;
+
 	protected constructor(store: CommandStore, file: string[], directory: string, options: WeebCommandOptions) {
-		super(
-			store,
-			file,
-			directory,
-			mergeDefault<Partial<WeebCommandOptions>, WeebCommandOptions>(
-				{
-					bucket: 2,
-					cooldown: 30,
-					requiredPermissions: ['EMBED_LINKS'],
-					runIn: ['text']
-				},
-				options
-			) as WeebCommandOptions
-		);
+		super(store, file, directory, {
+			bucket: 2,
+			cooldown: 30,
+			requiredPermissions: ['EMBED_LINKS'],
+			runIn: ['text'],
+			...options
+		});
 
 		this.queryType = options.queryType;
 		this.responseName = options.responseName;
@@ -41,16 +38,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
 
-		const { url } = await fetch<WeebCommandResult>(
-			query,
-			{
-				headers: {
-					Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
-					'User-Agent': `Skyra/${VERSION}`
-				}
-			},
-			FetchResultTypes.JSON
-		);
+		const { url } = await fetch<WeebCommandResult>(query, { headers: this.kHeaders }, FetchResultTypes.JSON);
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)

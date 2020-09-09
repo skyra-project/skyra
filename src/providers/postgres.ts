@@ -1,8 +1,9 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { QueryBuilder } from '@klasa/querybuilder';
 import { AnyObject } from '@lib/types/util';
-import { isNumber, makeObject, mergeDefault } from '@sapphire/utilities';
-import { PostgresOptions, SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLProvider, Type } from 'klasa';
+import { PGSQL_DATABASE_HOST, PGSQL_DATABASE_NAME, PGSQL_DATABASE_PORT } from '@root/config';
+import { isNumber, makeObject } from '@sapphire/utilities';
+import { SchemaEntry, SchemaFolder, SettingsUpdateResults, SQLProvider, Type } from 'klasa';
 import { Pool, QueryArrayConfig, QueryArrayResult, QueryConfig, QueryResult, QueryResultRow, Submittable } from 'pg';
 
 export default class extends SQLProvider {
@@ -44,19 +45,15 @@ export default class extends SQLProvider {
 	public pgsql: Pool | null = null;
 
 	public async init() {
-		const poolOptions = mergeDefault<PostgresOptions, PostgresOptions>(
-			{
-				host: 'localhost',
-				port: 5432,
-				database: 'klasa',
-				max: 20,
-				idleTimeoutMillis: 30000,
-				connectionTimeoutMillis: 2000
-			},
-			this.client.options.providers.postgres
-		);
-
-		this.pgsql = new Pool(poolOptions);
+		this.pgsql = new Pool({
+			host: PGSQL_DATABASE_HOST,
+			port: PGSQL_DATABASE_PORT,
+			database: PGSQL_DATABASE_NAME,
+			max: 20,
+			idleTimeoutMillis: 30000,
+			connectionTimeoutMillis: 2000,
+			...this.client.options.providers.postgres
+		});
 		this.pgsql.on('error', (err) => this.client.emit('error', err));
 		return Promise.resolve();
 	}

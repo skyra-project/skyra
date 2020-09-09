@@ -14,7 +14,7 @@ export default class extends Inhibitor {
 		if (channelID === message.channel.id) return;
 		if (await message.hasAtLeastPermissionLevel(5)) return;
 
-		const channel = message.guild.channels.get(channelID);
+		const channel = message.guild.channels.cache.get(channelID);
 		if (!channel) {
 			await message.guild.settings.reset(GuildSettings.Channels.Spam);
 			return;

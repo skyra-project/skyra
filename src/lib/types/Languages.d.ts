@@ -1473,9 +1473,14 @@ declare module 'klasa' {
 		commandGuildInfoTitles: Record<string, string>;
 		commandGuildInfoRoles: (params: { roles: string }) => string;
 		commandGuildInfoNoroles: string;
-		commandGuildInfoChannels: (params: { text: number; voice: number; categories: number; afkChannel: string; afkTime: number }) => string;
+		commandGuildInfoChannels: (params: { text: number; voice: number; categories: number; afkChannel: string | null; afkTime: number }) => string;
 		commandGuildInfoMembers: (params: { count: string; owner: User }) => string;
-		commandGuildInfoOther: (params: { size: number; region: string; createdAt: number; verificationLevel: 0 | 1 | 2 | 3 | 4 }) => string;
+		commandGuildInfoOther: (params: {
+			size: number;
+			region: string;
+			createdAt: number;
+			verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
+		}) => string;
 		commandRoleInfoTitles: Record<string, string>;
 		commandRoleInfo: (params: { role: Role }) => string;
 		commandRoleInfoAll: string;

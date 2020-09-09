@@ -51,7 +51,7 @@ export default class DashboardWebsocketUser {
 		if (!message.data.music_action || !message.data.guild_id || !this.musicSubscriptions.subscribed(message.data.guild_id)) return;
 
 		// Check for the existence of the guild:
-		const guild = this.client.guilds.get(message.data.guild_id);
+		const guild = this.client.guilds.cache.get(message.data.guild_id);
 		if (!guild) {
 			this.musicSubscriptions.unsubscribe(message.data.guild_id);
 			this.send({ action: OutgoingWebsocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });
@@ -107,7 +107,7 @@ export default class DashboardWebsocketUser {
 		if (message.data.subscription_name === SubscriptionName.Music) {
 			if (!message.data.guild_id) return;
 
-			const guild = this.client.guilds.get(message.data.guild_id);
+			const guild = this.client.guilds.cache.get(message.data.guild_id);
 			if (!guild) return;
 
 			this.musicSubscriptions.subscribe({ id: guild.id });

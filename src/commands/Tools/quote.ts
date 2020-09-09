@@ -60,10 +60,10 @@ export default class extends SkyraCommand {
 		if (!extract) return null;
 
 		const [, _guild, _channel, _message] = extract;
-		const guild = this.client.guilds.get(_guild);
+		const guild = this.client.guilds.cache.get(_guild);
 		if (guild !== message.guild!) return null;
 
-		const channel = guild.channels.get(_channel);
+		const channel = guild.channels.cache.get(_channel);
 		if (!channel) return null;
 		if (!(channel instanceof TextChannel)) throw message.language.get('resolverInvalidChannel', { name: 'Channel' });
 		if (!channel.readable) throw message.language.get('systemMessageNotFound');

@@ -126,12 +126,12 @@ export default class extends SkyraCommand {
 			if (game.running) game.turn++;
 		}
 
-		if (game.response.reactions.size > 0) await game.response.reactions.removeAll();
+		if (game.response.reactions.cache.size > 0) await game.response.reactions.removeAll();
 		return game.response;
 	}
 
 	private async listenForReaction(game: HigherLowerGameData, emojis: readonly HigherLowerReactions[]) {
-		if (game.response.reactions.size > 0) await game.response.reactions.removeAll();
+		if (game.response.reactions.cache.size > 0) await game.response.reactions.removeAll();
 
 		game.emojis = emojis;
 		for (const emoji of game.emojis) {

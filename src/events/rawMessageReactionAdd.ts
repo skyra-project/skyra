@@ -21,7 +21,7 @@ export default class extends Event {
 	}
 
 	public run(raw: WSMessageReactionAdd) {
-		const channel = this.client.channels.get(raw.channel_id) as TextChannel | undefined;
+		const channel = this.client.channels.cache.get(raw.channel_id) as TextChannel | undefined;
 		if (!channel || !isTextBasedChannel(channel) || !channel.readable) return;
 
 		const data: LLRCData = {
@@ -113,7 +113,7 @@ export default class extends Event {
 			const ignoreChannels = data.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
 			if (!channel || ignoreChannels.includes(data.channel.id)) return;
 
-			const starboardChannel = data.guild.channels.get(channel) as TextChannel | undefined;
+			const starboardChannel = data.guild.channels.cache.get(channel) as TextChannel | undefined;
 			if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {
 				await data.guild.settings.reset(GuildSettings.Starboard.Channel);
 				return;

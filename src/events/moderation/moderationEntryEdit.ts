@@ -40,7 +40,7 @@ export default class extends Event {
 	private fetchModerationLogMessage(entry: ModerationEntity, channel: TextChannel) {
 		if (entry.caseID === -1) throw new TypeError('UNREACHABLE.');
 
-		for (const message of channel.messages.values()) {
+		for (const message of channel.messages.cache.values()) {
 			if (this.validateModerationLogMessage(message, entry.caseID)) return message;
 		}
 

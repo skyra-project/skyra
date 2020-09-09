@@ -1,5 +1,4 @@
 import { PermissionLevels } from '@lib/types/Enums';
-import { mergeDefault } from '@sapphire/utilities';
 import { Adder } from '@utils/Adder';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { Command, CommandOptions, CommandStore, Duration, KlasaMessage, SchemaEntry } from 'klasa';
@@ -81,21 +80,14 @@ export const kHardActions = new Map<string, SelfModeratorHardActionFlags>([
 
 export abstract class SelfModerationCommand extends Command {
 	protected constructor(store: CommandStore, file: string[], directory: string, options: CommandOptions = {}) {
-		super(
-			store,
-			file,
-			directory,
-			mergeDefault<Partial<CommandOptions>, CommandOptions>(
-				{
-					cooldown: 5,
-					permissionLevel: PermissionLevels.Administrator,
-					runIn: ['text'],
-					usage: '(action:action) (value:value)',
-					usageDelim: ' '
-				},
-				options
-			) as CommandOptions
-		);
+		super(store, file, directory, {
+			cooldown: 5,
+			permissionLevel: PermissionLevels.Administrator,
+			runIn: ['text'],
+			usage: '(action:action) (value:value)',
+			usageDelim: ' ',
+			...options
+		});
 
 		this.createCustomResolver('action', (arg, _possible, message) => {
 			if (typeof arg === 'undefined') return AKeys.Show;

@@ -14,7 +14,7 @@ export default class extends Event {
 	}
 
 	public run(data: APIUserData) {
-		const user = this.client.users.get(data.id);
+		const user = this.client.users.cache.get(data.id);
 
 		if (user) user._patch(data);
 
@@ -27,7 +27,7 @@ export default class extends Event {
 
 		if (typeof previous === 'undefined' || previous.username === next.username) return;
 
-		for (const guild of this.client.guilds.values()) {
+		for (const guild of this.client.guilds.cache.values()) {
 			if (!guild.memberTags.has(data.id)) continue;
 			if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>

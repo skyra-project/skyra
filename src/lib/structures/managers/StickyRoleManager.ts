@@ -169,7 +169,7 @@ export class StickyRoleManager {
 	private *cleanRoles(roleIDs: readonly string[]) {
 		const { roles } = this.#guild;
 		for (const roleID of roleIDs) {
-			if (roles.has(roleID)) yield roleID;
+			if (roles.cache.has(roleID)) yield roleID;
 		}
 	}
 }

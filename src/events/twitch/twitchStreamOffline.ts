@@ -17,7 +17,7 @@ export default class extends Event {
 		// Iterate over all the guilds that are subscribed to the streamer.
 		for (const guildID of streamer.guildIds) {
 			// Retrieve the guild, if not found, skip to the next loop cycle.
-			const guild = this.client.guilds.get(guildID);
+			const guild = this.client.guilds.cache.get(guildID);
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
@@ -31,7 +31,7 @@ export default class extends Event {
 				if (this.client.twitch.streamNotificationDrip(`${subscriptions[0]}-${subscription.channel}-${subscription.status}`)) continue;
 
 				// Retrieve the channel, then check if it exists or if it's postable.
-				const channel = guild.channels.get(subscription.channel) as TextChannel | undefined;
+				const channel = guild.channels.cache.get(subscription.channel) as TextChannel | undefined;
 				if (typeof channel === 'undefined' || !channel.postable) continue;
 
 				// If the message could not be retrieved then skip this notification.

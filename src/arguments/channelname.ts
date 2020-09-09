@@ -12,7 +12,7 @@ export default class extends Argument {
 
 	public resolveChannel(query: string, guild: KlasaGuild) {
 		const channelID = CHANNEL_REGEXP.exec(query);
-		return (channelID !== null && guild.channels.get(channelID[1])) ?? null;
+		return (channelID !== null && guild.channels.cache.get(channelID[1])) ?? null;
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
@@ -23,7 +23,11 @@ export default class extends Argument {
 		const resChannel = this.resolveChannel(arg, message.guild);
 		if (resChannel && filter(resChannel)) return resChannel;
 
-		const result = await new FuzzySearch(message.guild.channels, (entry) => entry.name, filter).run(message, arg, possible.min || undefined);
+		const result = await new FuzzySearch(message.guild.channels.cache, (entry) => entry.name, filter).run(
+			message,
+			arg,
+			possible.min || undefined
+		);
 		if (result) return result[1];
 		throw message.language.get('resolverInvalidChannelName', { name: possible.name });
 	}

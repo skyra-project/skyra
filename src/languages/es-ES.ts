@@ -79,7 +79,8 @@ const PERMS = {
 	DEAFEN_MEMBERS: 'Ensordecer Miembros',
 	MOVE_MEMBERS: 'Mover Miembros',
 	USE_VAD: 'Usar la actividad de voz',
-	PRIORITY_SPEAKER: 'Orador Prioritario'
+	PRIORITY_SPEAKER: 'Orador Prioritario',
+	VIEW_GUILD_INSIGHTS: 'View Guild Insights'
 };
 
 const random = (num: number) => Math.round(Math.random() * num);
@@ -136,11 +137,11 @@ export default class extends Language {
 	public orString = 'o';
 	public PERMISSIONS = PERMS;
 	public HUMAN_LEVELS = {
-		0: 'Ninguno',
-		1: 'Bajo',
-		2: 'Medio',
-		3: 'Alto',
-		4: 'Muy alto'
+		NONE: 'Ninguno',
+		LOW: 'Bajo',
+		MEDIUM: 'Medio',
+		HIGH: 'Alto',
+		VERY_HIGH: 'Muy alto'
 	};
 
 	public duration = duration;
@@ -1193,19 +1194,21 @@ export default class extends Language {
 		},
 		commandGiveawayDescription: 'Start a new giveaway.',
 		commandGiveawayExtended: {
-			extendedHelp: `This command is designed to manage giveaways. You can start them with this command by giving it the
-					time and a title. When a giveaway has been created, Skyra will send a giveaway message and react to it with 🎉
-					so the members of the server can participate on it. Once the timer ends, Skyra will retrieve all the users who
-					reacted and send the owner of the giveaway a message in direct messages with the winner, and other 10 possible
-					winners (in case of needing to re-roll).
-					You can also pass a flag of \`--winners=Xw\`, wherein X is a number (for example 2w for 2 winners),
-					to allow multiple people to win this giveaway.`,
+			extendedHelp: [
+				'This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.',
+				'',
+				'When a giveaway has been created, I will send a giveaway message and react to it with 🎉 so the members of the server can participate on it.',
+				'',
+				'You can pass a flag of `--winners=Xw`, wherein X is a number (for example 2w for 2 winners) to allow multiple people to win a giveaway.',
+				'Please note that there is a maximum of 25 winners.'
+			].join('\n'),
 			explainedUsage: [
 				['channel', '(Optional) The channel in which to start the giveaway'],
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
 			],
-			examples: ['6h A hug from Skyra.', '60m 5w A mysterious Steam game', '1d Free Discord Nitro! --winners=2w']
+			examples: ['6h A hug from Skyra.', '60m 5w A mysterious Steam game', '1d Free Discord Nitro! --winners=2w'],
+			multiline: true
 		},
 		commandGiveawayRerollDescription: 'Re-roll the winners from a giveaway.',
 		commandGiveawayRerollExtended: {
@@ -1221,7 +1224,8 @@ export default class extends Language {
 		commandGiveawayScheduleExtended: {
 			extendedHelp: `
 				This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.
-				You can also pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway..
+				You can pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway.
+				Please note that there is a maximum of 25 winners.
 			`,
 			explainedUsage: [
 				['channel', '(Optional) The channel in which to start the giveaway'],
@@ -1229,7 +1233,8 @@ export default class extends Language {
 				['time', 'The time the giveaway should last.'],
 				['title', 'The title of the giveaway.']
 			],
-			examples: ['30m 6h A hug from Skyra.']
+			examples: ['30m 6h A hug from Skyra.'],
+			multiline: true
 		},
 
 		/**

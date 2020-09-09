@@ -42,7 +42,7 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 	}
 
 	private generateSorted(rawNodes: readonly PermissionsNode[]) {
-		const sortedRoles = [...this.guild.roles.values()].sort(sort);
+		const sortedRoles = [...this.guild.roles.cache.values()].sort(sort);
 		const nodes = rawNodes.slice();
 
 		const sortedNodes: PermissionsNode[] = [];

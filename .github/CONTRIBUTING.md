@@ -19,6 +19,8 @@ To run Skyra locally a few steps should be taken.
 
 1. Install [Node.JS], [Yarn] and [Docker]
 1. Follow [the wiki page on setting up a PostgreSQL schema for Skyra][]
+1. In the Discord Developer portal go to your application and then to the "Bot" menu.
+1. At "Privileged Gateway Intents" enable "SERVER MEMBERS INTENT"
 1. Copy and paste the [`config.example.ts`] file in the `src` directory and rename it to `config.ts`.
 1. Scroll down to `export const TOKENS = {`
 1. At this section enter your own bot's API token at `BOT_TOKEN`.

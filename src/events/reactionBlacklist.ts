@@ -108,7 +108,7 @@ export default class extends ModerationEvent<ArgumentType> {
 
 	private hasPermissions(member: GuildMember) {
 		return member.guild.settings.get(GuildSettings.Roles.Moderator)
-			? member.roles.has(member.guild.settings.get(GuildSettings.Roles.Moderator))
+			? member.roles.cache.has(member.guild.settings.get(GuildSettings.Roles.Moderator))
 			: member.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
 	}
 }

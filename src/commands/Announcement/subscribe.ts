@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		// Get all the role ids that the member has and remove the guild id so we dont assign the everyone role
-		const memberRolesSet = new Set(message.member!.roles.keys());
+		const memberRolesSet = new Set(message.member!.roles.cache.keys());
 		// Remove the everyone role from the set
 		memberRolesSet.delete(message.guild!.id);
 

@@ -143,6 +143,7 @@ export class SkyraClient extends KlasaClient {
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
+		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 
 		// Register the API handler

@@ -1,7 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
-import { cleanMentions } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -33,6 +32,7 @@ export default class extends SkyraCommand {
 
 		if (offset < 9500) throw message.language.get('giveawayTime');
 		if (offset > Time.Year) throw message.language.get('giveawayTimeTooLong');
+		if (winners > 25) winners = 25;
 
 		await this.client.giveaways.create({
 			channelID: channel.id,
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 			guildID: message.guild!.id,
 			minimum: 1,
 			minimumWinners: winners,
-			title: cleanMentions(message.guild!, title)
+			title
 		});
 	}
 }

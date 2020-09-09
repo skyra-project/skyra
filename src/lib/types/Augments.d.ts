@@ -98,6 +98,11 @@ declare module 'discord.js' {
 	interface MessageEmbed {
 		splitFields(title: string, content: string | string[]): this;
 		splitFields(content: string | string[]): this;
+		/**
+		 * Adds a field with both title and content set to a Zero Width Space
+		 * @param inline whether the field should be inline, defaults to `false`
+		 */
+		addBlankField(inline?: boolean): this;
 	}
 }
 
@@ -123,7 +128,7 @@ declare module 'klasa' {
 		andString: string;
 		orString: string;
 		PERMISSIONS: Record<PermissionString, string>;
-		HUMAN_LEVELS: Record<0 | 1 | 2 | 3 | 4, string>;
+		HUMAN_LEVELS: Record<'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH', string>;
 		duration(time: number, precision?: number): string;
 		ordinal(cardinal: number): string;
 		list(values: readonly string[], conjunction: string): string;

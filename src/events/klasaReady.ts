@@ -17,14 +17,12 @@ export default class extends Event {
 				// Initialize giveaways
 				this.client.giveaways.init().catch((error) => this.client.emit(Events.Wtf, error)),
 				// Update guild permission managers
-				this.client.guilds.map((guild) => guild.permissionsManager.update()),
+				this.client.guilds.cache.map((guild) => guild.permissionsManager.update()),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				this.initAnalytics()
 			]);
 
-			// Setup the cleanup task
-			await this.initCleanupTask().catch((error) => this.client.emit(Events.Wtf, error));
 			// Setup the stat updating task
 			await this.initPostStatsTask().catch((error) => this.client.emit(Events.Wtf, error));
 			// Setup the Twitch subscriptions refresh task
@@ -38,15 +36,6 @@ export default class extends Event {
 		const { queue } = this.client.schedules;
 		if (!queue.some((task) => task.taskID === Schedules.Poststats)) {
 			await this.client.schedules.add(Schedules.Poststats, '*/10 * * * *', {});
-		}
-	}
-
-	// If this task is not being run, let's create the
-	// ScheduledTask and make it run every 10 minutes.
-	private async initCleanupTask() {
-		const { queue } = this.client.schedules;
-		if (!queue.some((task) => task.taskID === Schedules.Cleanup)) {
-			await this.client.schedules.add(Schedules.Cleanup, '*/10 * * * *', {});
 		}
 	}
 
@@ -68,8 +57,8 @@ export default class extends Event {
 		if (ENABLE_INFLUX) {
 			this.client.emit(
 				Events.AnalyticsSync,
-				this.client.guilds.size,
-				this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0)
+				this.client.guilds.cache.size,
+				this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
 			);
 
 			await this.initSyncResourceAnalyticsTask().catch((error) => this.client.emit(Events.Wtf, error));

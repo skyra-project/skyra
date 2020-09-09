@@ -15,14 +15,14 @@ export default class extends AnalyticsEvent {
 			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
 			// TODO: Adjust for traditional sharding
-			.intField('value', this.client.guilds.size);
+			.intField('value', this.client.guilds.cache.size);
 		const users = new Point(AnalyticsSchema.Points.Users)
 			.tag(AnalyticsSchema.Tags.Shard, guild.shardID.toString())
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Addition)
 			// TODO: Adjust for traditional sharding
 			.intField(
 				'value',
-				this.client.guilds.reduce((acc, val) => acc + val.memberCount, 0)
+				this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
 			);
 
 		return this.writePoints([guilds, users]);

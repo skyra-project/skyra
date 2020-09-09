@@ -62,7 +62,7 @@ export default class extends Inhibitor {
 
 		// Assume sorted data
 		for (const [id, node] of message.guild!.permissionsManager.entries()) {
-			if (!member.roles.has(id)) continue;
+			if (!member.roles.cache.has(id)) continue;
 			if (node.allow.has(command.name)) return PermissionNodeResult.Allow;
 			if (node.deny.has(command.name)) return PermissionNodeResult.Disallow;
 		}

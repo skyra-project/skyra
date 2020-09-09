@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
-		await message.channel.bulkDelete(filteredKeys).catch((error) => {
+		await (message.channel as TextChannel).bulkDelete(filteredKeys).catch((error) => {
 			if (error.code !== APIErrors.UnknownMessage) throw error;
 		});
 
@@ -130,7 +130,7 @@ export default class extends SkyraCommand {
 		const channelID = message.guild!.settings.get(GuildSettings.Channels.PruneLogs);
 		if (channelID === null) return;
 
-		const channel = message.guild!.channels.get(channelID) as TextChannel | undefined;
+		const channel = message.guild!.channels.cache.get(channelID) as TextChannel | undefined;
 		if (typeof channel === 'undefined') {
 			await message.guild!.settings.reset(GuildSettings.Channels.PruneLogs);
 			return;
@@ -220,11 +220,11 @@ export default class extends SkyraCommand {
 	}
 
 	private formatEmbedVideo(embed: MessageEmbed) {
-		return `📹 [${embed.url}]${typeof embed.provider === 'undefined' ? '' : ` From ${embed.provider.name}.`}`;
+		return `📹 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
 	}
 
 	private formatEmbedImage(embed: MessageEmbed) {
-		return `🖼️ [${embed.url}]${typeof embed.provider === 'undefined' ? '' : ` From ${embed.provider.name}.`}`;
+		return `🖼️ [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
 	}
 
 	private formatEmbedRich(guild: KlasaGuild, embed: MessageEmbed) {
@@ -268,6 +268,6 @@ export default class extends SkyraCommand {
 	}
 
 	private formatEmbedRichProvider(embed: MessageEmbed) {
-		return `🔖 [${embed.url}]${typeof embed.provider === 'undefined' ? '' : ` From ${embed.provider.name}.`}`;
+		return `🔖 [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
 	}
 }

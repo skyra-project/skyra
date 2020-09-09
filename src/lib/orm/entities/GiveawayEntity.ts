@@ -78,7 +78,7 @@ export class GiveawayEntity extends BaseEntity {
 	}
 
 	public get guild() {
-		return this.#client.guilds.get(this.guildID) ?? null;
+		return this.#client.guilds.cache.get(this.guildID) ?? null;
 	}
 
 	public get language() {
@@ -200,7 +200,7 @@ export class GiveawayEntity extends BaseEntity {
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
-				.messages.post({ data: { content } });
+				.messages.post({ data: { content, allowed_mentions: { users: this.#winners ?? [], roles: [] } } });
 		} catch (error) {
 			this.#client.emit(Events.ApiError, error);
 		}
@@ -215,10 +215,7 @@ export class GiveawayEntity extends BaseEntity {
 			.setDescription(description)
 			.setFooter(footer)
 			.setTimestamp(this.endsAt)
-			[
-				// eslint-disable-next-line @typescript-eslint/dot-notation, no-unexpected-multiline
-				'_apiTransform'
-			]();
+			.toJSON();
 	}
 
 	private getDescription(state: States, language: Language) {

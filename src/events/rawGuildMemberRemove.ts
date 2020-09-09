@@ -4,10 +4,9 @@ import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
-import { Guild, MessageEmbed, TextChannel } from 'discord.js';
+import { Guild, GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 const enum Matches {
@@ -25,24 +24,19 @@ export default class extends Event {
 	}
 
 	public async run(data: WSGuildMemberRemove) {
-		const guild = this.client.guilds.get(data.guild_id);
+		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
-		if (!this.client.guilds.some((g) => g.memberTags.has(data.user.id))) this.client.userTags.delete(data.user.id);
-		if (guild.members.has(data.user.id)) guild.members.delete(data.user.id);
 		if (guild.security.raid.has(data.user.id)) guild.security.raid.delete(data.user.id);
 		this.handleFarewellMessage(guild, data.user);
 
 		if (guild.settings.get(GuildSettings.Events.MemberRemove)) {
 			await this.handleMemberLog(guild, data);
 		}
-
-		guild.memberTags.delete(data.user.id);
 	}
 
 	private async handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
-		const memberTag = guild.memberTags.get(data.user.id);
-
+		const member = guild.members.cache.get(data.user.id);
 		const isModerationAction = await this.isModerationAction(guild, data);
 
 		const footer = isModerationAction.kicked
@@ -60,7 +54,7 @@ export default class extends Event {
 				.setDescription(
 					guild.language.get('eventsGuildMemberRemoveDescription', {
 						mention: `<@${data.user.id}>`,
-						time: this.processJoinedTimestamp(memberTag)
+						time: this.processJoinedTimestamp(member)
 					})
 				)
 				.setFooter(footer)
@@ -88,17 +82,17 @@ export default class extends Event {
 		};
 	}
 
-	private processJoinedTimestamp(memberTag: MemberTag | undefined) {
-		if (typeof memberTag === 'undefined') return -1;
-		if (memberTag.joinedAt === null) return -1;
-		return Date.now() - memberTag.joinedAt;
+	private processJoinedTimestamp(member: GuildMember | undefined) {
+		if (typeof member === 'undefined') return -1;
+		if (member.joinedTimestamp === null) return -1;
+		return Date.now() - member.joinedTimestamp;
 	}
 
 	private handleFarewellMessage(guild: Guild, user: APIUserData) {
 		const channelsFarewell = guild.settings.get(GuildSettings.Channels.Farewell);
 		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell);
 		if (channelsFarewell && messagesFarewell) {
-			const channel = guild.channels.get(channelsFarewell) as TextChannel;
+			const channel = guild.channels.cache.get(channelsFarewell) as TextChannel;
 			if (channel && channel.postable) {
 				channel.send(this.transformMessage(guild, user)).catch((error) => this.client.emit(Events.ApiError, error));
 			} else {

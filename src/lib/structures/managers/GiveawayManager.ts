@@ -15,7 +15,7 @@ export class GiveawayManager {
 	public async init() {
 		const { giveaways } = await DbSet.connect();
 		const qb = giveaways.createQueryBuilder().select();
-		if (this.client.shard) qb.where('guild_id IN (:...ids)', { ids: [...this.client.guilds.keys()] });
+		if (this.client.shard) qb.where('guild_id IN (:...ids)', { ids: [...this.client.guilds.cache.keys()] });
 
 		for (const entry of await qb.getMany()) this.insert(entry.setup(this).resume());
 		this.check();

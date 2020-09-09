@@ -49,7 +49,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 */
 	public get channel() {
 		const channelID = this.guild.settings.get(GuildSettings.Channels.ModerationLogs);
-		return (channelID && (this.guild.channels.get(channelID) as TextChannel)) || null;
+		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) || null;
 	}
 
 	/**

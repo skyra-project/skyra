@@ -48,7 +48,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 */
 	public get starboardChannel() {
 		const channelID = this.guild.settings.get(GuildSettings.Starboard.Channel);
-		return (channelID && (this.guild.channels.get(channelID) as TextChannel)) || null;
+		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) || null;
 	}
 
 	/**

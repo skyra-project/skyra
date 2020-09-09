@@ -7,6 +7,10 @@ export default class extends Extendable {
 		super(store, file, directory, { appliesTo: [MessageEmbed] });
 	}
 
+	public addBlankField(this: MessageEmbed, inline?: boolean) {
+		return this.addField(ZeroWidhSpace, ZeroWidhSpace, inline ?? false);
+	}
+
 	public splitFields(this: MessageEmbed, contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 

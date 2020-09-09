@@ -12,7 +12,9 @@ import {
 	Role,
 	TextChannel,
 	User,
-	VoiceChannel
+	VoiceChannel,
+	VerificationLevel,
+	ExplicitContentFilterLevel
 } from 'discord.js';
 
 // #region Guild
@@ -21,8 +23,8 @@ export function flattenGuild(guild: Guild): FlattenedGuild {
 	return {
 		id: guild.id,
 		available: guild.available,
-		channels: guild.channels.map(flattenChannel) as FlattenedGuildChannel[],
-		roles: guild.roles.map(flattenRole),
+		channels: guild.channels.cache.map(flattenChannel) as FlattenedGuildChannel[],
+		roles: guild.roles.cache.map(flattenRole),
 		name: guild.name,
 		icon: guild.icon,
 		splash: guild.splash,
@@ -64,8 +66,8 @@ export interface FlattenedGuild {
 	embedEnabled: boolean;
 	premiumTier: number;
 	premiumSubscriptionCount: number | null;
-	verificationLevel: number;
-	explicitContentFilter: number;
+	verificationLevel: VerificationLevel;
+	explicitContentFilter: ExplicitContentFilterLevel;
 	mfaLevel: number;
 	joinedTimestamp: number;
 	defaultMessageNotifications: number | 'ALL' | 'MENTIONS';
@@ -272,7 +274,7 @@ export function flattenMember(member: GuildMember): FlattenedMember {
 		user: flattenUser(member.user),
 		joinedTimestamp: member.joinedTimestamp,
 		premiumSinceTimestamp: member.premiumSinceTimestamp,
-		roles: member.roles.map(flattenRole)
+		roles: member.roles.cache.map(flattenRole)
 	};
 }
 

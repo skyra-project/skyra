@@ -14,8 +14,8 @@ export default class extends Event {
 	}
 
 	public async run(data: WSMessageReactionRemoveEmoji) {
-		const guild = this.client.guilds.get(data.guild_id);
-		if (!guild || !guild.channels.has(data.channel_id)) return;
+		const guild = this.client.guilds.cache.get(data.guild_id);
+		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 		if (!compareEmoji(guild.settings.get(GuildSettings.Starboard.Emoji), data.emoji)) return;
 		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
 

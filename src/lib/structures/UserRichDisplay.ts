@@ -1,6 +1,5 @@
-import { mergeDefault } from '@sapphire/utilities';
 import { Time } from '@utils/constants';
-import { Client, DMChannel, MessageEmbed, MessageReaction, Permissions, TextChannel, User } from 'discord.js';
+import { Client, DMChannel, MessageEmbed, MessageReaction, NewsChannel, Permissions, TextChannel, User } from 'discord.js';
 import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
 
 export class UserRichDisplay extends RichDisplay {
@@ -9,14 +8,12 @@ export class UserRichDisplay extends RichDisplay {
 		this.useCustomFooters();
 	}
 
-	public async start(message: KlasaMessage, target: string = message.author.id, options: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
-		mergeDefault(
-			{
-				filter: (_: MessageReaction, user: User) => user.id === target,
-				time: Time.Minute * 5
-			},
-			options
-		);
+	public async start(message: KlasaMessage, target: string = message.author.id, rawOptions: RichDisplayRunOptions = {}): Promise<ReactionHandler> {
+		const options = {
+			filter: (_: MessageReaction, user: User) => user.id === target,
+			time: Time.Minute * 5,
+			...rawOptions
+		};
 		if (target) {
 			// Stop the previous display and cache the new one
 			const display = UserRichDisplay.handlers.get(target);
@@ -39,11 +36,11 @@ export class UserRichDisplay extends RichDisplay {
 		return handler;
 	}
 
-	private isDmChannel(channel: TextChannel | DMChannel): channel is DMChannel {
+	private isDmChannel(channel: TextChannel | DMChannel | NewsChannel): channel is DMChannel {
 		return channel.type === 'dm';
 	}
 
-	private setAuthorizedFooter(client: Client, channel: TextChannel | DMChannel) {
+	private setAuthorizedFooter(client: Client, channel: TextChannel | DMChannel | NewsChannel) {
 		const priviledged = this.isDmChannel(channel) ? true : channel.permissionsFor(client.user!)?.has(UserRichDisplay.kPermissions) ?? false;
 
 		if (priviledged) {

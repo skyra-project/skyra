@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 					response: codeBlock('', this.generator(input.toLowerCase(), message.language))
 				}
 			],
-			{ disableEveryone: true }
+			{ allowedMentions: { users: [], roles: [] } }
 		);
 	}
 

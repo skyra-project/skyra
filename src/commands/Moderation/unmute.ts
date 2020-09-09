@@ -18,7 +18,7 @@ export default class extends ModerationCommand {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(this.kPath);
-		if (id && message.guild.roles.has(id)) return false;
+		if (id && message.guild.roles.cache.has(id)) return false;
 		throw message.language.get('guildSettingsRolesRestricted', { prefix: message.guild.settings.get(GuildSettings.Prefix), path: this.kPath });
 	}
 

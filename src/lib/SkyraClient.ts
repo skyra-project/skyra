@@ -26,7 +26,6 @@ import { enumerable } from './util/util';
 import { Leaderboard } from './util/Leaderboard';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
-import { UserTags } from './util/Cache/UserTags';
 
 // Import all configuration
 import {
@@ -117,9 +116,6 @@ export class SkyraClient extends KlasaClient {
 	public connectFour: ConnectFourManager = new ConnectFourManager(this);
 
 	@enumerable(false)
-	public userTags: UserTags = new UserTags(this);
-
-	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
@@ -143,6 +139,7 @@ export class SkyraClient extends KlasaClient {
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
+		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 
 		// Register the API handler

@@ -6,7 +6,7 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import assert from 'assert';
-import { DMChannel, MessageEmbed, TextChannel, User } from 'discord.js';
+import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
@@ -18,7 +18,7 @@ enum YesNoAnswer {
 	Yes
 }
 
-async function askYesNo(channel: TextChannel | DMChannel, user: User, question: string): Promise<YesNoAnswer> {
+async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: User, question: string): Promise<YesNoAnswer> {
 	await channel.send(question);
 	const messages = await channel.awaitMessages((msg) => msg.author.id === user.id, { time: 60000, max: 1 });
 	if (!messages.size) return YesNoAnswer.Timeout;
@@ -58,7 +58,7 @@ export default class extends RichDisplayCommand {
 		if (spouses.length === 0) return message.sendLocale('commandMarryNotTaken');
 
 		const usernames = chunk(
-			await Promise.all(spouses.map(async (user) => `${await this.client.userTags.fetchUsername(user)} (\`${user}\`)`)),
+			await Promise.all(spouses.map(async (user) => `${await this.client.users.fetch(user).then((user) => user.username)} (\`${user}\`)`)),
 			20
 		);
 
@@ -115,7 +115,9 @@ export default class extends RichDisplayCommand {
 			if (spouses.length === 1) {
 				const answer = await askYesNo(channel, author, language.get('commandMarryAuthorTaken', { author }));
 				if (answer !== YesNoAnswer.Yes)
-					return message.sendLocale('commandMarryAuthorMultipleCancel', [{ user: await this.client.userTags.fetchUsername(spouses[0]) }]);
+					return message.sendLocale('commandMarryAuthorMultipleCancel', [
+						{ user: await this.client.users.fetch(spouses[0]).then((user) => user.username) }
+					]);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
 				const answer = await askYesNo(channel, author, language.get('commandMarryTaken', { spousesCount: targetSpouses.length }));

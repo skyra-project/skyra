@@ -228,7 +228,7 @@ export class ModerationActions {
 	}
 
 	private get manageableChannelCount() {
-		return this.guild.channels.reduce((acc, channel) => (channel.manageable ? acc + 1 : acc), 0);
+		return this.guild.channels.cache.reduce((acc, channel) => (channel.manageable ? acc + 1 : acc), 0);
 	}
 
 	public async warning(rawOptions: ModerationActionOptions, sendOptions?: ModerationActionsSendOptions) {
@@ -250,7 +250,7 @@ export class ModerationActions {
 	}
 
 	public async setNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
-		const oldName = this.guild.memberTags.get(rawOptions.userID)?.nickname || '';
+		const oldName = this.guild.members.cache.get(rawOptions.userID)?.nickname || '';
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { oldName } }, Moderation.TypeCodes.SetNickname);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
@@ -571,8 +571,8 @@ export class ModerationActions {
 
 	public muteSetup(message: KlasaMessage) {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
-		if (roleID && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.get('actionSetupMuteExists'));
-		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.get('actionSetupTooManyRoles'));
+		if (roleID && this.guild.roles.cache.has(roleID)) return Promise.reject(this.guild.language.get('actionSetupMuteExists'));
+		if (this.guild.roles.cache.size >= 250) return Promise.reject(this.guild.language.get('actionSetupTooManyRoles'));
 
 		// Set up the shared role setup
 		return this.sharedRoleSetup(message, RoleDataKey.Muted, GuildSettings.Roles.Muted);
@@ -580,8 +580,8 @@ export class ModerationActions {
 
 	public restrictionSetup(message: KlasaMessage, path: ModerationSetupRestriction) {
 		const roleID = this.guild.settings.get(path) as string | null;
-		if (roleID !== null && this.guild.roles.has(roleID)) return Promise.reject(this.guild.language.get('actionSetupRestrictionExists'));
-		if (this.guild.roles.size >= 250) return Promise.reject(this.guild.language.get('actionSetupTooManyRoles'));
+		if (roleID !== null && this.guild.roles.cache.has(roleID)) return Promise.reject(this.guild.language.get('actionSetupRestrictionExists'));
+		if (this.guild.roles.cache.size >= 250) return Promise.reject(this.guild.language.get('actionSetupTooManyRoles'));
 
 		// Set up the shared role setup
 		return this.sharedRoleSetup(message, ModerationActions.getRoleDataKeyFromSchemaKey(path), path);
@@ -709,7 +709,7 @@ export class ModerationActions {
 		const roleID = this.guild.settings.get(GuildSettings.Roles.Muted);
 		if (roleID === null) throw this.guild.language.get('muteNotConfigured');
 
-		const role = this.guild.roles.get(roleID);
+		const role = this.guild.roles.cache.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.settings.reset(GuildSettings.Roles.Muted);
 			throw this.guild.language.get('muteNotConfigured');
@@ -764,14 +764,14 @@ export class ModerationActions {
 		if (roleID === null) throw this.guild.language.get('muteNotConfigured');
 
 		// Retrieve the role instance from the role ID, reset and return false if it does not exist.
-		const role = this.guild.roles.get(roleID);
+		const role = this.guild.roles.cache.get(roleID);
 		if (typeof role === 'undefined') {
 			await this.guild.settings.reset(GuildSettings.Roles.Muted);
 			throw this.guild.language.get('muteNotConfigured');
 		}
 
 		// If the user has the role, begin processing the data.
-		if (member.roles.has(roleID)) {
+		if (member.roles.cache.has(roleID)) {
 			// Fetch self and check if the bot has enough role hierarchy to manage the role, return false when not.
 			const { position } = (await this.fetchMe()).roles.highest;
 			if (role.position >= position) throw this.guild.language.get('muteLowHierarchy');
@@ -788,11 +788,11 @@ export class ModerationActions {
 
 		const rawRoles: Role[] = [];
 		for (const id of rawIdentifiers) {
-			const role = this.guild.roles.get(id);
+			const role = this.guild.roles.cache.get(id);
 			if (typeof role !== 'undefined') rawRoles.push(role);
 		}
 
-		const roles = new Set<string>(member.roles.keys());
+		const roles = new Set<string>(member.roles.cache.keys());
 		for (const rawRole of rawRoles) {
 			if (rawRole.position < selfPosition) roles.add(rawRole.id);
 		}
@@ -833,7 +833,7 @@ export class ModerationActions {
 	private async updatePermissionsForCategoryChannels(role: Role, dataKey: RoleDataKey) {
 		const options = kRoleChannelOverwriteOptions.get(dataKey)!;
 		const promises: Promise<unknown>[] = [];
-		for (const channel of this.guild.channels.values()) {
+		for (const channel of this.guild.channels.cache.values()) {
 			if (channel.type === 'category' && channel.manageable) {
 				promises.push(ModerationActions.updatePermissionsForChannel(role, channel, options.category));
 			}
@@ -845,7 +845,7 @@ export class ModerationActions {
 	private async updatePermissionsForTextOrVoiceChannels(role: Role, dataKey: RoleDataKey) {
 		const options = kRoleChannelOverwriteOptions.get(dataKey)!;
 		const promises: Promise<unknown>[] = [];
-		for (const channel of this.guild.channels.values()) {
+		for (const channel of this.guild.channels.cache.values()) {
 			if (!channel.manageable) continue;
 			if (channel.type === 'text' || channel.type === 'news' || channel.type === 'store') {
 				promises.push(ModerationActions.updatePermissionsForChannel(role, channel, options.text));
@@ -906,7 +906,7 @@ export class ModerationActions {
 		const removedRoles: string[] = [];
 
 		// Iterate over all the member's roles.
-		for (const [id, role] of member.roles.entries()) {
+		for (const [id, role] of member.roles.cache.entries()) {
 			// Managed roles cannot be removed.
 			if (role.managed) keepRoles.push(id);
 			// Roles with higher hierarchy position cannot be removed.

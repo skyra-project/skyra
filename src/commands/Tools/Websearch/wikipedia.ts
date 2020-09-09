@@ -16,7 +16,8 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const text = await this.fetchText(message, input);
-		const image = await this.fetchImage(input);
+		// Only fetch images if the channel is NSFW permitted
+		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
 			throw message.language.get('commandWikipediaNotfound');

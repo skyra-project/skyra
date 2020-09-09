@@ -1,5 +1,4 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cleanMentions } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -30,11 +29,10 @@ export default class extends SkyraCommand {
 		const i18n = message.language;
 		if (words.length < 2) throw i18n.get('commandChoiceMissing');
 
-		const clean = message.guild ? cleanMentions.bind(null, message.guild) : (input: string) => input;
 		const output = new Set<string>();
 		const filtered = new Set<string>();
 		for (const raw of words) {
-			const word = clean(raw.trim());
+			const word = raw.trim();
 			if (!word) continue;
 			if (output.has(word)) filtered.add(word);
 			else output.add(word);

@@ -2,11 +2,11 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
-import { isNullOrUndefined, mergeDefault } from '@sapphire/utilities';
+import { isNullOrUndefined } from '@sapphire/utilities';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { floatPromise } from '@utils/util';
 import { User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -27,26 +27,19 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	public optionalDuration: boolean;
 
 	protected constructor(store: CommandStore, file: string[], directory: string, options: ModerationCommandOptions) {
-		super(
-			store,
-			file,
-			directory,
-			mergeDefault<Partial<ModerationCommandOptions>, ModerationCommandOptions>(
-				{
-					flagSupport: true,
-					optionalDuration: false,
-					permissionLevel: PermissionLevels.Moderator,
-					requiredMember: false,
-					runIn: ['text'],
-					usage:
-						options.usage ?? options.optionalDuration
-							? '<users:...user{,10}> [duration:timespan] [reason:...string]'
-							: '<users:...user{,10}> [reason:...string]',
-					usageDelim: ' '
-				},
-				options
-			) as CommandOptions
-		);
+		super(store, file, directory, {
+			flagSupport: true,
+			optionalDuration: false,
+			permissionLevel: PermissionLevels.Moderator,
+			requiredMember: false,
+			runIn: ['text'],
+			usage:
+				options.usage ?? options.optionalDuration
+					? '<users:...user{,10}> [duration:timespan] [reason:...string]'
+					: '<users:...user{,10}> [reason:...string]',
+			usageDelim: ' ',
+			...options
+		});
 
 		this.requiredMember = options.requiredMember!;
 		this.optionalDuration = options.optionalDuration!;

@@ -19,10 +19,10 @@ export default class extends Event {
 
 		try {
 			const member = await parsed.guild.members.fetch(parsed.userID);
-			if (member.roles.has(roleEntry.role)) return;
+			if (member.roles.cache.has(roleEntry.role)) return;
 
 			// Conver the array into a set
-			const memberRoles = new Set(member.roles.keys());
+			const memberRoles = new Set(member.roles.cache.keys());
 			// Remove the eveeryone role from the set
 			memberRoles.delete(parsed.guild.id);
 

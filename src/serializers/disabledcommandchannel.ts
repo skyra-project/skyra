@@ -18,6 +18,6 @@ export default class extends Serializer {
 	}
 
 	public stringify(value: DisabledCommandChannel, guild: Guild) {
-		return `[${guild.channels.get(value.channel)?.name ?? guild.language.get('unknownChannel')} -> ${value.commands.join(' | ')}]`;
+		return `[${guild.channels.cache.get(value.channel)?.name ?? guild.language.get('unknownChannel')} -> ${value.commands.join(' | ')}]`;
 	}
 }

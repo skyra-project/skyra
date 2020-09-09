@@ -14,7 +14,7 @@ export namespace YarnPkg {
 		readme: string;
 		readmeFilename: string;
 		repository: Repository;
-		time: Record<string, Date>;
+		time?: Record<string, Date>;
 		versions: Record<string, VersionInfo>;
 	}
 

@@ -46,8 +46,8 @@ export default class extends SkyraCommand {
 			retrievedPage.push(value);
 			if (!value.name) {
 				promises.push(
-					this.client.userTags.fetchUsername(id).then((username) => {
-						value.name = username || `Unknown: ${id}`;
+					this.client.users.fetch(id).then((user) => {
+						value.name = user.username || `Unknown: ${id}`;
 					})
 				);
 			}
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 	}
 
 	public keyUser(str: string) {
-		const user = this.client.users.get(str);
+		const user = this.client.users.cache.get(str);
 		if (user) str = user.username;
 		if (str.length < 25) return str;
 		return `${str.substring(0, 22)}...`;

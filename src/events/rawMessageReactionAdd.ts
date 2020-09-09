@@ -7,7 +7,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
-import { floatPromise, getDisplayAvatar, isTextBasedChannel, resolveEmoji, twemoji } from '@utils/util';
+import { floatPromise, isTextBasedChannel, resolveEmoji, twemoji } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -21,7 +21,7 @@ export default class extends Event {
 	}
 
 	public run(raw: WSMessageReactionAdd) {
-		const channel = this.client.channels.get(raw.channel_id) as TextChannel | undefined;
+		const channel = this.client.channels.cache.get(raw.channel_id) as TextChannel | undefined;
 		if (!channel || !isTextBasedChannel(channel) || !channel.readable) return;
 
 		const data: LLRCData = {
@@ -74,13 +74,13 @@ export default class extends Event {
 
 		if ((await this.retrieveCount(data, emoji)) > 1) return;
 
-		const userTag = await this.client.userTags.fetch(data.userID);
-		if (userTag.bot) return;
+		const user = await this.client.users.fetch(data.userID);
+		if (user.bot) return;
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Reaction, data.guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Green)
-				.setAuthor(`${userTag.username}#${userTag.discriminator} (${data.userID})`, getDisplayAvatar(data.userID, userTag))
+				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setThumbnail(
 					data.emoji.id === null
 						? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
@@ -113,7 +113,7 @@ export default class extends Event {
 			const ignoreChannels = data.guild.settings.get(GuildSettings.Starboard.IgnoreChannels);
 			if (!channel || ignoreChannels.includes(data.channel.id)) return;
 
-			const starboardChannel = data.guild.channels.get(channel) as TextChannel | undefined;
+			const starboardChannel = data.guild.channels.cache.get(channel) as TextChannel | undefined;
 			if (typeof starboardChannel === 'undefined' || !starboardChannel.postable) {
 				await data.guild.settings.reset(GuildSettings.Starboard.Channel);
 				return;

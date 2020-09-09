@@ -77,9 +77,9 @@ export default class extends SkyraCommand {
 	}
 
 	private applyMemberRoles(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
-		if (member.roles.size <= 1) return;
+		if (member.roles.cache.size <= 1) return;
 
-		const roles = member.roles.sorted(sortRanks);
+		const roles = member.roles.cache.sorted(sortRanks);
 		roles.delete(member.guild.id);
 		embed.splitFields(message.language.get('commandWhoisMemberRoles', { amount: roles.size }), [...roles.values()].join(' '));
 	}

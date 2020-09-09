@@ -1,4 +1,5 @@
-import { FuzzySearch } from '@utils/FuzzySearch';
+import { api } from '@utils/Models/Api';
+import { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
 import { GuildMember } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
@@ -6,26 +7,17 @@ const USER_REGEXP = Argument.regex.userOrMember;
 const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildMember) => boolean): Promise<GuildMember> {
+	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: APIGuildMember) => boolean): Promise<GuildMember> {
 		if (!arg) throw message.language.get('resolverInvalidUsername', { name: possible.name });
 		const resMember = await this.resolveMember(message, arg);
 		if (resMember) return resMember;
 
-		const result = await new FuzzySearch(message.guild!.members.cache, (entry) => entry.displayName, filter).run(
-			message,
-			arg,
-			possible.min || undefined
-		);
-		if (result) {
-			const id = result[0];
-			const member = message.guild!.members.cache.get(id);
-			if (member) return member;
-			throw message.language.get('resolverMembernameUserLeftDuringPrompt');
-		}
+		const result = await this.fetchMember(arg, message, filter);
+		if (result) return message.guild!.members.add(result);
 		throw message.language.get('resolverInvalidUsername', { name: possible.name });
 	}
 
-	public async resolveMember(message: KlasaMessage, query: string): Promise<GuildMember | null> {
+	private async resolveMember(message: KlasaMessage, query: string): Promise<GuildMember | null> {
 		const id = USER_REGEXP.test(query) ? USER_REGEXP.exec(query)![1] : USER_TAG.test(query) ? this.client.users.getFromTag(query)?.id : null;
 
 		if (id) {
@@ -34,5 +26,12 @@ export default class extends Argument {
 			throw message.language.get('userNotExistent');
 		}
 		return null;
+	}
+
+	private async fetchMember(query: string, message: KlasaMessage, filter?: (entry: APIGuildMember) => boolean) {
+		const results = (await api(this.client)
+			.guilds(message.guild!.id)
+			.members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
+		return (filter ? results.filter(filter) : results)[0];
 	}
 }

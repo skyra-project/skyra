@@ -15,7 +15,7 @@ export default class extends Route {
 
 		const guilds: FlattenedGuild[] = [];
 		for (const guild of this.client.guilds.cache.values()) {
-			if (guild.memberTags.has(user.id)) guilds.push(flattenGuild(guild));
+			if (guild.members.cache.has(user.id)) guilds.push(flattenGuild(guild));
 		}
 		return response.json({ ...flattenUser(user), guilds });
 	}

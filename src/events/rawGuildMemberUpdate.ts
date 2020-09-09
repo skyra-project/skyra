@@ -5,7 +5,6 @@ import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { MemberTag } from '@utils/Cache/MemberTags';
 import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { floatPromise, getDisplayAvatar } from '@utils/util';
@@ -30,46 +29,37 @@ export default class extends Event {
 
 	private handleMemberChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
 		// Get the currently stored dataset
-		const previous = guild.memberTags.get(data.user.id);
-
-		// Setup the next stored dataset
-		const next: MemberTag = {
-			nickname: data.nick || null,
-			joinedAt: typeof previous === 'undefined' ? null : previous.joinedAt,
-			roles: data.roles
-		};
-
-		// Store the next data set in the MemberTags store
-		guild.memberTags.set(data.user.id, next);
+		const previous = guild.members.cache.get(data.user.id);
 
 		// If the previous was unset then skip all
 		if (typeof previous === 'undefined') return;
 
 		// Retrieve whether or not nickname logs should be sent from Guild Settings and
 		// whether or not the nicknames are identical.
-		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
+		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== data.nick) {
 			// Send the Nickname log
 			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 				this.buildEmbed(data, guild.language, 'eventsNameDifference', 'eventsNicknameUpdate', {
 					previous: previous.nickname,
-					next: next.nickname
+					next: data.nick
 				})
 			);
 		}
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and
 		// whether or not the roles are the same.
-		if (guild.settings.get(GuildSettings.Events.MemberRoleUpdate) && !arrayStrictEquals(previous.roles, next.roles)) {
+		const roles = previous.roles.cache;
+		if (guild.settings.get(GuildSettings.Events.MemberRoleUpdate) && !arrayStrictEquals([...roles.keys()], data.roles)) {
 			const addedRoles: string[] = [];
 			const removedRoles: string[] = [];
 
 			// Check which roles are added and which are removed and
 			// get the names of each role for logging
-			for (const oldRole of previous.roles) {
-				if (!next.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.cache.get(oldRole)?.name || 'Removed Role'}\``);
+			for (const oldRole of roles.keys()) {
+				if (!data.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.cache.get(oldRole)?.name || 'Removed Role'}\``);
 			}
-			for (const newRole of next.roles) {
-				if (!previous.roles.includes(newRole)) addedRoles.push(`\`${guild.roles.cache.get(newRole)!.name}\``);
+			for (const newRole of data.roles) {
+				if (!roles.has(newRole)) addedRoles.push(`\`${guild.roles.cache.get(newRole)!.name}\``);
 			}
 
 			// Set the Role change log

@@ -250,7 +250,7 @@ export class ModerationActions {
 	}
 
 	public async setNickname(rawOptions: ModerationActionOptions, nickname: string, sendOptions?: ModerationActionsSendOptions) {
-		const oldName = this.guild.memberTags.get(rawOptions.userID)?.nickname || '';
+		const oldName = this.guild.members.cache.get(rawOptions.userID)?.nickname || '';
 		const options = ModerationActions.fillOptions({ ...rawOptions, extraData: { oldName } }, Moderation.TypeCodes.SetNickname);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);

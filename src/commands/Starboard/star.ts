@@ -2,9 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Colors } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { KeyedMemberTag } from '@root/arguments/membername';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 const MEDALS = ['🥇', '🥈', '🥉'];
@@ -31,7 +30,7 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 	]
 ])
 export default class extends SkyraCommand {
-	public async random(message: KlasaMessage, [user]: [KeyedMemberTag?]): Promise<KlasaMessage | KlasaMessage[]> {
+	public async random(message: KlasaMessage, [member]: [GuildMember?]): Promise<KlasaMessage | KlasaMessage[]> {
 		const minimum = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const { starboards } = await DbSet.connect();
 		const qb = starboards
@@ -42,7 +41,7 @@ export default class extends SkyraCommand {
 			.andWhere('enabled = TRUE')
 			.andWhere('stars >= :minimum', { minimum });
 
-		if (user) qb.andWhere('user_id = :user', { user: user.id });
+		if (member) qb.andWhere('user_id = :user', { user: member.id });
 
 		const starboardData = await qb.orderBy('RANDOM()').limit(1).getOne();
 
@@ -66,7 +65,7 @@ export default class extends SkyraCommand {
 		const starredMessageChannel = message.guild!.channels.cache.get(starboardData.channelID) as TextChannel;
 		if (!starredMessageChannel) {
 			await starboardData.remove();
-			return this.random(message, [user]);
+			return this.random(message, [member]);
 		}
 
 		// If the starred message does not longer exist in the starboard channel, assume it was deleted by a
@@ -74,13 +73,13 @@ export default class extends SkyraCommand {
 		const starredMessage = await starboardChannel.messages.fetch(starboardData.starMessageID!).catch(() => null);
 		if (!starredMessage) {
 			await starboardData.remove();
-			return this.random(message, [user]);
+			return this.random(message, [member]);
 		}
 
 		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
 	}
 
-	public async top(message: KlasaMessage, [user, timespan]: [KeyedMemberTag?, number?]) {
+	public async top(message: KlasaMessage, [member, timespan]: [GuildMember?, number?]) {
 		const minimum = message.guild!.settings.get(GuildSettings.Starboard.Minimum);
 		const { starboards } = await DbSet.connect();
 		const qb = starboards
@@ -91,7 +90,7 @@ export default class extends SkyraCommand {
 			.andWhere('enabled = TRUE')
 			.andWhere('stars >= :minimum', { minimum });
 
-		if (user) qb.andWhere('user_id = :user', { user: user.id });
+		if (member) qb.andWhere('user_id = :user', { user: member.id });
 
 		const starboardMessages = await qb.getMany();
 		if (starboardMessages.length === 0) return message.sendLocale('commandStarNostars');

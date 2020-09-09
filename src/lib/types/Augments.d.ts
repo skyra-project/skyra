@@ -4,7 +4,6 @@ import type { InviteStore } from '@lib/structures/InviteStore';
 import type { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
 import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
-import type { UserTags } from '@utils/Cache/UserTags';
 import type { ConnectFourManager } from '@utils/Games/ConnectFourManager';
 import type { Leaderboard } from '@utils/Leaderboard';
 import type { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
@@ -34,7 +33,6 @@ declare module 'discord.js' {
 		analyticsReader: QueryApi | null;
 		connectFour: ConnectFourManager;
 		lavalink: LavalinkManager;
-		userTags: UserTags;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		ipc: VezaClient;
 		webhookError: Webhook;
@@ -93,6 +91,10 @@ declare module 'discord.js' {
 	interface User {
 		fetchRank(): Promise<number>;
 		_patch(data: APIUserData): void;
+	}
+
+	interface UserManager {
+		getFromTag(tag: string): User | null;
 	}
 
 	interface MessageEmbed {

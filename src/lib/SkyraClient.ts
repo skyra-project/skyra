@@ -26,7 +26,6 @@ import { enumerable } from './util/util';
 import { Leaderboard } from './util/Leaderboard';
 import { LongLivingReactionCollector } from './util/LongLivingReactionCollector';
 import { Twitch } from './util/Notifications/Twitch';
-import { UserTags } from './util/Cache/UserTags';
 
 // Import all configuration
 import {
@@ -115,9 +114,6 @@ export class SkyraClient extends KlasaClient {
 	 */
 	@enumerable(false)
 	public connectFour: ConnectFourManager = new ConnectFourManager(this);
-
-	@enumerable(false)
-	public userTags: UserTags = new UserTags(this);
 
 	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();

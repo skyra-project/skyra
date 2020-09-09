@@ -1,9 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
-import { KeyedMemberTag } from '@root/arguments/membername';
-import { getHighestRole } from '@utils/util';
-import { Role } from 'discord.js';
+import { GuildMember, Role } from 'discord.js';
 import { Command, CommandStore, KlasaMessage } from 'klasa';
 
 type Nodes = readonly PermissionsNode[];
@@ -32,7 +30,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async add(message: KlasaMessage, [target, action, command]: [Role | KeyedMemberTag, 'allow' | 'deny', Command]) {
+	public async add(message: KlasaMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
 		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
@@ -63,7 +61,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('commandPermissionNodesAdd');
 	}
 
-	public async remove(message: KlasaMessage, [target, action, command]: [Role | KeyedMemberTag, 'allow' | 'deny', Command]) {
+	public async remove(message: KlasaMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
 		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
@@ -89,7 +87,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('commandPermissionNodesRemove');
 	}
 
-	public async reset(message: KlasaMessage, [target]: [Role | KeyedMemberTag]) {
+	public async reset(message: KlasaMessage, [target]: [Role | GuildMember]) {
 		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
@@ -106,7 +104,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale('commandPermissionNodesReset');
 	}
 
-	public show(message: KlasaMessage, [target]: [Role | KeyedMemberTag]) {
+	public show(message: KlasaMessage, [target]: [Role | GuildMember]) {
 		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
@@ -117,14 +115,14 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale('commandPermissionNodesShow', [
 			{
-				name: isRole ? (target as Role).name : (target as KeyedMemberTag).nickname || this.client.userTags.get(target.id)!.username,
+				name: isRole ? (target as Role).name : (target as GuildMember).displayName,
 				allow: node.allow.map((command) => `\`${command}\``),
 				deny: node.deny.map((command) => `\`${command}\``)
 			}
 		]);
 	}
 
-	private checkPermissions(message: KlasaMessage, target: Role | KeyedMemberTag) {
+	private checkPermissions(message: KlasaMessage, target: Role | GuildMember) {
 		// If it's to itself, always block
 		if (message.member!.id === target.id) return false;
 
@@ -135,7 +133,7 @@ export default class extends SkyraCommand {
 		if (message.author.id === message.guild!.ownerID) return true;
 
 		// Check hierarchy role positions, allow when greater, block otherwise
-		const targetPosition = target instanceof Role ? target.position : getHighestRole(message.guild!, target.roles)!.position;
+		const targetPosition = target instanceof Role ? target.position : target.roles.highest.position;
 		const authorPosition = message.member!.roles.highest?.position ?? 0;
 		return authorPosition > targetPosition;
 	}

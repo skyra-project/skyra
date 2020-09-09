@@ -16,11 +16,11 @@ export default class extends Argument {
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(message.guild.memberTags.mapUsernames(), (entry) => entry, filter).run(
-			message,
-			arg,
-			possible.min || undefined
-		);
+		const result = await new FuzzySearch(
+			message.guild.members.cache.mapValues((member) => member.displayName),
+			(entry) => entry,
+			filter
+		).run(message, arg, possible.min || undefined);
 		if (result) {
 			return this.client.users.fetch(result[0]).catch(() => {
 				throw message.language.get('userNotExistent');
@@ -30,11 +30,7 @@ export default class extends Argument {
 	}
 
 	public resolveUser(message: KlasaMessage, query: string) {
-		const id = USER_REGEXP.test(query)
-			? USER_REGEXP.exec(query)![1]
-			: USER_TAG.test(query)
-			? this.client.userTags.getKeyFromTag(query) || null
-			: null;
+		const id = USER_REGEXP.test(query) ? USER_REGEXP.exec(query)![1] : USER_TAG.test(query) ? this.client.users.getFromTag(query)?.id : null;
 
 		if (id) {
 			return this.client.users.fetch(id).catch(() => {

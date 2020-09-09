@@ -59,13 +59,13 @@ export class Song {
 	}
 
 	public async fetchRequesterName() {
-		const nickname = await this.queue.guild.memberTags
+		const nickname = await this.queue.guild.members
 			.fetch(this.requester)
 			.then((member) => member?.nickname)
 			.catch(() => null);
 		const display =
 			nickname ??
-			(await this.queue.client.userTags
+			(await this.queue.client.users
 				.fetch(this.requester)
 				.then((user) => user.username)
 				.catch(() => this.queue.guild.language.get('unknownUser')));

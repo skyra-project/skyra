@@ -1,5 +1,5 @@
 import { api } from '@utils/Models/Api';
-import { APIGuildMember, RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
+import { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
 import { User } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
@@ -11,13 +11,13 @@ export default class extends Argument {
 		return this.store.get('user')!;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: APIGuildMember) => boolean): Promise<User> {
+	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<User> {
 		if (!arg) throw message.language.get('resolverInvalidUsername', { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await this.fetchMember(arg, message, filter);
+		const result = await this.fetchMember(arg, message);
 		if (result) return message.guild!.members.add(result).user;
 		throw message.language.get('resolverInvalidUsername', { name: possible.name });
 	}
@@ -33,10 +33,10 @@ export default class extends Argument {
 		return null;
 	}
 
-	private async fetchMember(query: string, message: KlasaMessage, filter?: (entry: APIGuildMember) => boolean) {
-		const results = (await api(this.client)
+	private async fetchMember(query: string, message: KlasaMessage) {
+		const [result] = (await api(this.client)
 			.guilds(message.guild!.id)
 			.members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
-		return (filter ? results.filter(filter) : results)[0];
+		return result;
 	}
 }

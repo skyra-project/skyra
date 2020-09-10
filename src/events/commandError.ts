@@ -35,9 +35,6 @@ export default class extends Event {
 			}
 		}
 
-		// Else send a detailed message:
-		await this._sendErrorChannel(message, command, error);
-
 		// Extract useful information about the DiscordAPIError
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
 			if (BLACKLISTED_CODES.includes(error.code)) return;
@@ -45,6 +42,9 @@ export default class extends Event {
 		} else {
 			this.client.emit(Events.Warn, `${this._getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 		}
+
+		// Send a detailed message:
+		await this._sendErrorChannel(message, command, error);
 
 		// Emit where the error was emitted
 		this.client.emit(Events.Wtf, `[COMMAND] ${command.path}\n${error.stack || error.message}`);

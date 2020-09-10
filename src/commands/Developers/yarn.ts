@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 
 		const result = await this.fetchApi(message, pkg);
 
-		if (Reflect.has(result.time, 'unpublished')) throw message.language.get('commandYarnUnpublishedPackage', { pkg });
+		if (result.time && Reflect.has(result.time, 'unpublished')) throw message.language.get('commandYarnUnpublishedPackage', { pkg });
 
 		const dataEmbed = await this.buildEmbed(result, message);
 		return response.edit(undefined, dataEmbed);
@@ -62,13 +62,13 @@ export default class extends SkyraCommand {
 
 		const description = message.language.get('commandYarnEmbedDescription', {
 			author: this.parseAuthor(result.author),
-			dateCreated: this.#dateTimestamp.displayUTC(result.time.created),
-			dateModified: this.#dateTimestamp.displayUTC(result.time.modified),
+			dateCreated: result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get('globalUnknown'),
+			dateModified: result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get('globalUnknown'),
 			dependencies,
 			deprecated: latestVersion.deprecated,
 			description: cutText(result.description ?? '', 1000),
 			latestVersionNumber: result['dist-tags'].latest,
-			license: result.license,
+			license: result.license || message.language.get('globalNone'),
 			mainFile: latestVersion.main || 'index.js',
 			maintainers
 		});

@@ -33,6 +33,8 @@ export const enum Filter {
 
 declare module 'klasa' {
 	export interface LanguageKeys {
+		globalUnknown: string;
+		globalNone: string;
 		default: (params: { key: string }) => string;
 		defaultLanguage: string;
 		settingGatewayKeyNoext: (params: { key: string }) => string;
@@ -1278,8 +1280,8 @@ declare module 'klasa' {
 		commandYarnPackageNotFound: (params: { pkg: string }) => string;
 		commandYarnEmbedDescription: (params: {
 			author?: string;
-			dateCreated: string;
-			dateModified: string;
+			dateCreated?: string;
+			dateModified?: string;
 			dependencies: string[] | null;
 			deprecated?: string;
 			description: string;

@@ -1,52 +1,88 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { cutText } from '@sapphire/utilities';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { ApplyOptions } from '@skyra/decorators';
+import { fetch, FetchResultTypes, isImageURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Language } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['wiki'],
+	cooldown: 15,
+	description: (language) => language.get('commandWikipediaDescription'),
+	extendedHelp: (language) => language.get('commandWikipediaExtended'),
+	requiredPermissions: ['EMBED_LINKS'],
+	usage: '<query:string>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['wiki'],
-			cooldown: 15,
-			description: (language) => language.get('commandWikipediaDescription'),
-			extendedHelp: (language) => language.get('commandWikipediaExtended'),
-			requiredPermissions: ['EMBED_LINKS'],
-			usage: '<query:string>'
-		});
-	}
-
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const url = new URL('https://en.wikipedia.org/w/api.php');
-		url.searchParams.append('action', 'query');
-		url.searchParams.append('format', 'json');
-		url.searchParams.append('prop', 'extracts');
-		url.searchParams.append('indexpageids', '1');
-		url.searchParams.append('redirects', '1');
-		url.searchParams.append('explaintext', '1');
-		url.searchParams.append('exsectionformat', 'plain');
-		url.searchParams.append('exlimit', '1');
-		url.searchParams.append('titles', this.parseURL(input));
-		const text = await fetch<WikipediaResultOk>(url, FetchResultTypes.JSON);
+		const text = await this.fetchText(message, input);
+		const image = await this.fetchImage(input);
 
 		if (text.query.pageids[0] === '-1') {
 			throw message.language.get('commandWikipediaNotfound');
 		}
 
-		const pageURL = `https://en.wikipedia.org/wiki/${url.searchParams.get('titles')}`;
+		const pageURL = `https://en.wikipedia.org/wiki/${this.parseURL(input)}`;
 		const content = text.query.pages[text.query.pageids[0]];
 		const definition = this.content(content.extract, pageURL, message.language);
 
-		return message.sendEmbed(
-			new MessageEmbed()
-				.setTitle(content.title)
-				.setURL(pageURL)
-				.setColor(await DbSet.fetchColor(message))
-				.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
-				.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
-				.setFooter('© Wikipedia')
-		);
+		const embed = new MessageEmbed()
+			.setTitle(content.title)
+			.setURL(pageURL)
+			.setColor(await DbSet.fetchColor(message))
+			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
+			.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
+			.setFooter('© Wikipedia');
+
+		// If there is an image and it is also a valid image URL then add it to the embed
+		if (
+			image &&
+			image.query.pageids[0] !== '-1' &&
+			image.query.pages[image.query.pageids[0]].thumbnail &&
+			isImageURL(image.query.pages[image.query.pageids[0]].thumbnail.source)
+		)
+			embed.setImage(image.query.pages[image.query.pageids[0]].thumbnail.source);
+
+		return message.sendEmbed(embed);
+	}
+
+	private async fetchText(message: KlasaMessage, input: string) {
+		try {
+			const url = this.getBaseUrl(input);
+			url.searchParams.append('prop', 'extracts');
+			url.searchParams.append('explaintext', 'true');
+			url.searchParams.append('exsectionformat', 'plain');
+			url.searchParams.append('exchars', '300');
+
+			return await fetch<WikipediaResultOk<'extracts'>>(url, FetchResultTypes.JSON);
+		} catch {
+			throw message.language.get('systemQueryFail');
+		}
+	}
+
+	private async fetchImage(input: string) {
+		try {
+			const url = this.getBaseUrl(input);
+			url.searchParams.append('prop', 'pageimages');
+			url.searchParams.append('pithumbsize', '1000');
+
+			return await fetch<WikipediaResultOk<'pageimages'>>(url, FetchResultTypes.JSON);
+		} catch {
+			return undefined;
+		}
+	}
+
+	private getBaseUrl(input: string) {
+		const url = new URL('https://en.wikipedia.org/w/api.php');
+		url.searchParams.append('action', 'query');
+		url.searchParams.append('format', 'json');
+		url.searchParams.append('indexpageids', 'true');
+		url.searchParams.append('redirects', 'true');
+		url.searchParams.append('converttitles', 'true');
+		url.searchParams.append('exlimit', '1');
+		url.searchParams.append('titles', input);
+
+		return url;
 	}
 
 	private parseURL(url: string) {
@@ -54,32 +90,47 @@ export default class extends SkyraCommand {
 	}
 
 	private content(definition: string, url: string, i18n: Language) {
-		if (definition.length < 750) return definition;
-		return i18n.get('systemTextTruncated', { definition: cutText(definition, 750), url });
+		if (definition.length < 300) return definition;
+		return i18n.get('systemTextTruncated', { definition, url });
 	}
 }
 
-export interface WikipediaResultOk {
+interface WikipediaResultOk<T extends 'extracts' | 'pageimages'> {
 	batchcomplete: string;
-	query: WikipediaResultOkQuery;
+	query: WikipediaResultOkQuery<T>;
 }
 
-export interface WikipediaResultOkQuery {
+interface WikipediaResultOkQuery<T extends 'extracts' | 'pageimages'> {
 	normalized: WikipediaResultOkNormalized[];
 	pageids: string[];
-	pages: WikipediaResultOkPages;
+	pages: WikipediaResultOkPages<T>;
 }
 
-export interface WikipediaResultOkNormalized {
+interface WikipediaResultOkNormalized {
 	from: string;
 	to: string;
 }
 
-export interface WikipediaResultOkPages extends Record<string, WikipediaResultOkPage> {}
+interface WikipediaResultOkPages<T extends 'extracts' | 'pageimages'>
+	extends Record<string, T extends 'extracts' ? WikipediaExtractResultsOkPage : WikipediaPageImagesResultsOkPage> {}
 
-export interface WikipediaResultOkPage {
+interface WikipediaResultsOkPageGeneral {
 	pageid: number;
 	ns: number;
 	title: string;
+}
+
+interface WikipediaExtractResultsOkPage extends WikipediaResultsOkPageGeneral {
 	extract: string;
+}
+
+interface WikipediaPageImagesResultsOkPage extends WikipediaResultsOkPageGeneral {
+	thumbnail: WikipediaPageImageThumbnail;
+	pageimage: string;
+}
+
+interface WikipediaPageImageThumbnail {
+	source: string;
+	width: number;
+	height: number;
 }

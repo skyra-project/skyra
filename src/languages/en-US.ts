@@ -202,6 +202,8 @@ export default class extends Language {
 			examples: '🔗 | ***Examples***',
 			reminders: '⏰ | ***Reminder***'
 		},
+		globalUnknown: 'Unknown',
+		globalNone: 'None',
 		commandmessageMissing: 'Missing one or more required arguments after end of input.',
 		commandmessageMissingRequired: ({ name }) => `${name} is a required argument.`,
 		commandmessageMissingOptionals: ({ possibles }) => `Missing a required option: (${possibles})`,

@@ -21,18 +21,6 @@ export default class extends Event {
 					})
 				);
 			}
-
-			// Send the Username log
-			const prevUsername = previous.user.username;
-			const nextUserName = next.user.username;
-			if (prevUsername !== nextUserName) {
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
-					this.buildEmbed(next.user, next.guild.language, 'eventsNameDifference', 'eventsUsernameUpdate', {
-						previous: prevUsername,
-						next: nextUserName
-					})
-				);
-			}
 		}
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and

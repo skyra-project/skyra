@@ -36,7 +36,6 @@ export default class extends SkyraCommand {
 			.setFooter('© Wikipedia');
 
 		// If there is an image and it is also a valid image URL then add it to the embed
-
 		if (
 			image &&
 			image.query.pageids[0] !== '-1' &&

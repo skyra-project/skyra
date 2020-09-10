@@ -210,6 +210,8 @@ export default class extends Language {
 			examples: '🔗 | ***Ejemplos***',
 			reminders: '⏰ | ***Recordatorio***'
 		},
+		globalUnknown: 'Unknown',
+		globalNone: 'None',
 		commandmessageMissing: 'Faltan uno o más argumentos al final de la entrada.',
 		commandmessageMissingRequired: ({ name }) => `El argumento ${name} es requerido.`,
 		commandmessageMissingOptionals: ({ possibles }) => `Falta una opción requerida: (${possibles})`,

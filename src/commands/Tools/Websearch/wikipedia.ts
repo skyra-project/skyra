@@ -16,7 +16,8 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const text = await this.fetchText(message, input);
-		const image = await this.fetchImage(input);
+		// Only fetch images if the channel is NSFW permitted (nsfw channels or DMs)
+		const image = Reflect.get(message.channel, 'nsfw') ?? true ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
 			throw message.language.get('commandWikipediaNotfound');
@@ -35,6 +36,7 @@ export default class extends SkyraCommand {
 			.setFooter('© Wikipedia');
 
 		// If there is an image and it is also a valid image URL then add it to the embed
+
 		if (
 			image &&
 			image.query.pageids[0] !== '-1' &&

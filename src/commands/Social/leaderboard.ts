@@ -46,8 +46,8 @@ export default class extends SkyraCommand {
 			retrievedPage.push(value);
 			if (!value.name) {
 				promises.push(
-					this.client.userTags.fetchUsername(id).then((username) => {
-						value.name = username || `Unknown: ${id}`;
+					this.client.users.fetch(id).then((user) => {
+						value.name = user.username || `Unknown: ${id}`;
 					})
 				);
 			}

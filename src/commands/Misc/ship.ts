@@ -1,13 +1,12 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
-import { KeyedMemberTag } from '@root/arguments/membername';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { socialFolder } from '@utils/constants';
-import { getDisplayAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';
+import { GuildMember, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
@@ -23,19 +22,19 @@ import { join } from 'path';
 @CreateResolvers([
 	[
 		'user',
-		(arg, possible, message, [firstUser]: KeyedMemberTag[]) => {
+		(arg, possible, message, [firstUser]: GuildMember[]) => {
 			if (!arg) {
 				// Prefer self if there is already a firstUser, that is not self
-				if (firstUser !== undefined && firstUser.id !== message.author.id) return { id: message.author.id };
+				if (firstUser !== undefined && firstUser.id !== message.author.id) return { user: message.author };
 
 				// Fetch 2 random IDs
-				const ids = message.guild!.memberTags.randomKey(2)!;
+				const users = message.guild!.members.cache.random(2);
 
 				// If firstUser is already determined and the IDs match, then grab the second random ID
-				if (firstUser !== undefined && firstUser.id === ids[0]) return { id: ids[1] };
+				if (firstUser !== undefined && firstUser.id === users[0].id) return { user: users[1] };
 
 				// Else return the first random ID
-				return { id: ids[0] };
+				return { user: users[0] };
 			}
 
 			return message.client.arguments.get('membername')!.run(arg, possible, message);
@@ -48,18 +47,9 @@ export default class extends SkyraCommand {
 	private darkThemeTemplate: Image = null!;
 	private heartIcon: Image = null!;
 
-	public async run(message: KlasaMessage, [firstUser, secondUser]: [KeyedMemberTag, KeyedMemberTag]) {
-		// We need the UserTags to resolve the avatar and username
-		const [firstUserTag, secondUserTag] = await Promise.all([
-			this.client.userTags.fetch(firstUser.id),
-			this.client.userTags.fetch(secondUser.id)
-		]);
-
+	public async run(message: KlasaMessage, [{ user: firstUser }, { user: secondUser }]: [GuildMember, GuildMember]) {
 		// Get the avatars and sync the author's settings for dark mode preference
-		const [avatarFirstUser, avatarSecondUser] = await Promise.all([
-			this.fetchAvatar(firstUser.id, firstUserTag, { size: 64 }),
-			this.fetchAvatar(secondUser.id, secondUserTag, { size: 64 })
-		]);
+		const [avatarFirstUser, avatarSecondUser] = await Promise.all([this.fetchAvatar(firstUser), this.fetchAvatar(secondUser)]);
 
 		const { users } = await DbSet.connect();
 		const settings = await users.ensureProfile(message.author.id);
@@ -78,9 +68,9 @@ export default class extends SkyraCommand {
 
 		// Return the lovely message
 		const data = message.language.get('commandShipData', {
-			romeoUsername: firstUserTag.username,
-			julietUsername: secondUserTag.username,
-			shipName: this.getShipName([...firstUserTag.username], [...secondUserTag.username])
+			romeoUsername: firstUser.username,
+			julietUsername: secondUser.username,
+			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
 		});
 		return message.sendMessage([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
 	}
@@ -111,10 +101,9 @@ export default class extends SkyraCommand {
 	 * @details Losely based on fetchAvatar from utils, but customized for ship to account for not having a User object.
 	 * @param args The args to pass to getDisplayAvatar util function. Argument types match exactly.
 	 */
-	private async fetchAvatar(...args: Parameters<typeof getDisplayAvatar>): Promise<Image> {
-		const url = getDisplayAvatar(...args);
+	private async fetchAvatar(user: User): Promise<Image> {
 		try {
-			return await loadImage(url);
+			return await loadImage(user.displayAvatarURL({ size: 64, format: 'png', dynamic: true }));
 		} catch (error) {
 			throw `Could not download the profile avatar: ${error.response}`;
 		}

@@ -23,8 +23,6 @@ export default class extends Event {
 				this.initAnalytics()
 			]);
 
-			// Setup the cleanup task
-			await this.initCleanupTask().catch((error) => this.client.emit(Events.Wtf, error));
 			// Setup the stat updating task
 			await this.initPostStatsTask().catch((error) => this.client.emit(Events.Wtf, error));
 			// Setup the Twitch subscriptions refresh task
@@ -38,15 +36,6 @@ export default class extends Event {
 		const { queue } = this.client.schedules;
 		if (!queue.some((task) => task.taskID === Schedules.Poststats)) {
 			await this.client.schedules.add(Schedules.Poststats, '*/10 * * * *', {});
-		}
-	}
-
-	// If this task is not being run, let's create the
-	// ScheduledTask and make it run every 10 minutes.
-	private async initCleanupTask() {
-		const { queue } = this.client.schedules;
-		if (!queue.some((task) => task.taskID === Schedules.Cleanup)) {
-			await this.client.schedules.add(Schedules.Cleanup, '*/10 * * * *', {});
 		}
 	}
 

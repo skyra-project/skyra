@@ -1,4 +1,5 @@
-import { FuzzySearch } from '@utils/FuzzySearch';
+import { api } from '@utils/Models/Api';
+import { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
 import { User } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
@@ -10,31 +11,19 @@ export default class extends Argument {
 		return this.store.get('user')!;
 	}
 
-	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: string) => boolean): Promise<User> {
+	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<User> {
 		if (!arg) throw message.language.get('resolverInvalidUsername', { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
-		const result = await new FuzzySearch(message.guild.memberTags.mapUsernames(), (entry) => entry, filter).run(
-			message,
-			arg,
-			possible.min || undefined
-		);
-		if (result) {
-			return this.client.users.fetch(result[0]).catch(() => {
-				throw message.language.get('userNotExistent');
-			});
-		}
+		const result = await this.fetchMember(arg, message);
+		if (result) return message.guild!.members.add(result).user;
 		throw message.language.get('resolverInvalidUsername', { name: possible.name });
 	}
 
-	public resolveUser(message: KlasaMessage, query: string) {
-		const id = USER_REGEXP.test(query)
-			? USER_REGEXP.exec(query)![1]
-			: USER_TAG.test(query)
-			? this.client.userTags.getKeyFromTag(query) || null
-			: null;
+	private resolveUser(message: KlasaMessage, query: string) {
+		const id = USER_REGEXP.test(query) ? USER_REGEXP.exec(query)![1] : USER_TAG.test(query) ? this.client.users.getFromTag(query)?.id : null;
 
 		if (id) {
 			return this.client.users.fetch(id).catch(() => {
@@ -42,5 +31,12 @@ export default class extends Argument {
 			});
 		}
 		return null;
+	}
+
+	private async fetchMember(query: string, message: KlasaMessage) {
+		const [result] = (await api(this.client)
+			.guilds(message.guild!.id)
+			.members.search.get({ query: { query } })) as RESTGetAPIGuildMembersSearchResult;
+		return result;
 	}
 }

@@ -1,16 +1,13 @@
-import { Colors } from '@lib/types/constants/Constants';
-import { AuditLogResult, WSGuildMemberUpdate } from '@lib/types/DiscordAPI';
-import { Events } from '@lib/types/Enums';
+import { AuditLogResult } from '@lib/types/DiscordAPI';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
-import { arrayStrictEquals } from '@sapphire/utilities';
-import { MemberTag } from '@utils/Cache/MemberTags';
-import { MessageLogsEnum } from '@utils/constants';
 import { api } from '@utils/Models/Api';
-import { floatPromise, getDisplayAvatar } from '@utils/util';
-import { MessageEmbed } from 'discord.js';
-import { Event, EventStore, KlasaGuild, Language, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
+import { floatPromise } from '@utils/util';
+import { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
+import { Event, EventStore, KlasaGuild } from 'klasa';
+
+type WSGuildMemberUpdate = GatewayGuildMemberUpdateDispatch['d'];
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
@@ -21,65 +18,10 @@ export default class extends Event {
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (typeof guild === 'undefined') return;
 
-		const member = guild.members.cache.get(data.user.id);
-		if (typeof member !== 'undefined') member._patch(data);
-
-		this.handleMemberChange(guild, data);
 		floatPromise(this, this.handleRoleSets(guild, data));
 	}
 
-	private handleMemberChange(guild: KlasaGuild, data: WSGuildMemberUpdate) {
-		// Get the currently stored dataset
-		const previous = guild.memberTags.get(data.user.id);
-
-		// Setup the next stored dataset
-		const next: MemberTag = {
-			nickname: data.nick || null,
-			joinedAt: typeof previous === 'undefined' ? null : previous.joinedAt,
-			roles: data.roles
-		};
-
-		// Store the next data set in the MemberTags store
-		guild.memberTags.set(data.user.id, next);
-
-		// If the previous was unset then skip all
-		if (typeof previous === 'undefined') return;
-
-		// Retrieve whether or not nickname logs should be sent from Guild Settings and
-		// whether or not the nicknames are identical.
-		if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
-			// Send the Nickname log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'eventsNameDifference', 'eventsNicknameUpdate', {
-					previous: previous.nickname,
-					next: next.nickname
-				})
-			);
-		}
-
-		// Retrieve whether or not role logs should be sent from Guild Settings and
-		// whether or not the roles are the same.
-		if (guild.settings.get(GuildSettings.Events.MemberRoleUpdate) && !arrayStrictEquals(previous.roles, next.roles)) {
-			const addedRoles: string[] = [];
-			const removedRoles: string[] = [];
-
-			// Check which roles are added and which are removed and
-			// get the names of each role for logging
-			for (const oldRole of previous.roles) {
-				if (!next.roles.includes(oldRole)) removedRoles.push(`\`${guild.roles.cache.get(oldRole)?.name || 'Removed Role'}\``);
-			}
-			for (const newRole of next.roles) {
-				if (!previous.roles.includes(newRole)) addedRoles.push(`\`${guild.roles.cache.get(newRole)!.name}\``);
-			}
-
-			// Set the Role change log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-				this.buildEmbed(data, guild.language, 'eventsRoleDifference', 'eventsRoleUpdate', { addedRoles, removedRoles })
-			);
-		}
-	}
-
-	private async handleRoleSets(guild: KlasaGuild, data: WSGuildMemberUpdate) {
+	private async handleRoleSets(guild: KlasaGuild, data: Readonly<WSGuildMemberUpdate>) {
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
 		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets);
@@ -114,7 +56,7 @@ export default class extends Event {
 			});
 
 		const entry = auditLogs.audit_log_entries.find(
-			(e) => e.user_id !== CLIENT_ID && e.target_id === data.user.id && e.changes.find((c) => c.key === '$add' && c.new_value.length)
+			(e) => e.user_id !== CLIENT_ID && e.target_id === data.user!.id && e.changes.find((c) => c.key === '$add' && c.new_value.length)
 		);
 		if (typeof entry === 'undefined') return;
 
@@ -127,16 +69,7 @@ export default class extends Event {
 
 		await api(this.client)
 			.guilds(guild.id)
-			.members(data.user.id)
+			.members(data.user!.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
-	}
-
-	private buildEmbed(data: WSGuildMemberUpdate, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, value: any) {
-		return new MessageEmbed()
-			.setColor(Colors.Yellow)
-			.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
-			.setDescription(i18n.get(descriptionKey, value))
-			.setFooter(i18n.get(footerKey))
-			.setTimestamp();
 	}
 }

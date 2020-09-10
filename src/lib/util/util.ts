@@ -24,7 +24,6 @@ import {
 import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
-import { UserTag } from './Cache/UserTags';
 import { APIErrors, Time, ZeroWidhSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
@@ -199,8 +198,8 @@ export async function fetchAllLeaderboardEntries(client: Client, results: readon
 	for (const [id, element] of results) {
 		if (element.name === null) {
 			promises.push(
-				client.userTags.fetchUsername(id).then((username) => {
-					element.name = username;
+				client.users.fetch(id).then((user) => {
+					element.name = user.username;
 				})
 			);
 		}
@@ -209,11 +208,11 @@ export async function fetchAllLeaderboardEntries(client: Client, results: readon
 
 	const payload: Payload[] = [];
 	for (const [id, element] of results) {
-		const userTag = client.userTags.get(id)!;
+		const user = client.users.cache.get(id)!;
 		payload.push({
-			avatar: userTag.avatar,
-			username: userTag.username,
-			discriminator: userTag.discriminator,
+			avatar: user.avatar,
+			username: user.username,
+			discriminator: user.discriminator,
 			points: element.points,
 			position: element.position
 		});
@@ -405,7 +404,7 @@ export function getImage(message: Message): string | null {
 }
 
 const ROOT = 'https://cdn.discordapp.com';
-export function getDisplayAvatar(id: string, user: UserTag | User | APIUserData, options: ImageURLOptions = {}) {
+export function getDisplayAvatar(id: string, user: User | APIUserData, options: ImageURLOptions = {}) {
 	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
 	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
@@ -471,7 +470,7 @@ export function cleanMentions(guild: Guild, input: string) {
 		switch (type) {
 			case '@':
 			case '@!': {
-				const tag = guild.client.userTags.get(id);
+				const tag = guild.client.users.cache.get(id);
 				return tag ? `@${tag.username}` : `<${type}${ZeroWidhSpace}${id}>`;
 			}
 			case '@&': {

@@ -485,6 +485,8 @@ interface ApiGuildsGuildMembers {
 
 	'@me': ApiGuildsGuildMembersMe;
 
+	search: APiGuildsGuildMembersFetch;
+
 	(memberID: '@me'): ApiGuildsGuildMembersMe;
 	<T extends R<ApiGuildsGuildMembersMe>>(memberID: '@me', key: T): ApiGuildsGuildMembersMe[T];
 
@@ -553,6 +555,10 @@ interface ApiGuildsGuildMembersMemberRolesRole {
 
 interface ApiGuildsGuildMembersMe {
 	nick: ApiGuildsGuildMembersMeNick;
+}
+
+interface APiGuildsGuildMembersFetch {
+	get: ApiMethods['get'];
 }
 
 /**

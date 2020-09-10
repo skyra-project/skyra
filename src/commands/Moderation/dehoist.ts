@@ -4,10 +4,9 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { api } from '@utils/Models/Api';
-import { MessageEmbed } from 'discord.js';
+import { BrandingColors } from '@utils/constants';
+import { GuildMember, MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { MemberTag } from '@utils/Cache/MemberTags';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
@@ -24,20 +23,23 @@ export default class extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
 	public async run(message: KlasaMessage) {
+		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
+			await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary));
+			await message.guild!.members.fetch();
+		}
+
 		let counter = 0;
 		const errored: ErroredChange[] = [];
-		const members = message.guild!.memberTags;
-
-		const hoistedMembers = [];
-		for (const member of members.manageableMembers()) {
-			if (this.shouldDehoist(member)) hoistedMembers.push(member);
+		const hoistedMembers: GuildMember[] = [];
+		for (const member of message.guild!.members.cache.values()) {
+			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
 		}
 
 		const response = await message.sendLocale('commandDehoistStarting', [{ count: hoistedMembers.length }]);
 
 		for (let i = 0; i < hoistedMembers.length; i++) {
-			const [memberId, memberTag] = hoistedMembers[i];
-			const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)!.username;
+			const member = hoistedMembers[i];
+			const { displayName } = member;
 
 			const char = displayName.codePointAt(0)!;
 
@@ -45,10 +47,7 @@ export default class extends SkyraCommand {
 			// The ternary cuts 2 characters if the 1st codepoint belongs in UTF-16
 			const newNick = `🠷${displayName.slice(char <= 0xff ? 1 : 2)}`;
 			try {
-				await api(this.client)
-					.guilds(message.guild!.id)
-					.members(memberId)
-					.patch({ data: { nick: newNick }, reason: 'Dehoisting' });
+				await member.setNickname(newNick, 'Dehoisting');
 			} catch {
 				errored.push({ oldNick: displayName, newNick });
 			}
@@ -69,8 +68,8 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private shouldDehoist([memberId, memberTag]: [string, MemberTag]) {
-		const displayName = memberTag.nickname ?? this.client.userTags.get(memberId)?.username;
+	private shouldDehoist(member: GuildMember) {
+		const { displayName } = member;
 		if (!displayName) return false;
 
 		const char = displayName.codePointAt(0)!;
@@ -84,7 +83,7 @@ export default class extends SkyraCommand {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,
-			users: message.guild!.memberTags.size
+			users: message.guild!.members.cache.size
 		});
 		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.title);
 

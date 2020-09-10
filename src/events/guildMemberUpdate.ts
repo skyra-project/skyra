@@ -9,14 +9,30 @@ export default class extends Event {
 	public run(previous: GuildMember, next: GuildMember) {
 		// Retrieve whether or not nickname logs should be sent from Guild Settings and
 		// whether or not the nicknames are identical.
-		if (next.guild.settings.get(GuildSettings.Events.MemberNicknameUpdate) && previous.nickname !== next.nickname) {
+		if (next.guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
 			// Send the Nickname log
-			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
-				this.buildEmbed(next.user, next.guild.language, 'eventsNameDifference', 'eventsNicknameUpdate', {
-					previous: previous.nickname,
-					next: next.nickname
-				})
-			);
+			const prevNickname = previous.nickname;
+			const nextNickname = next.nickname;
+			if (prevNickname !== nextNickname) {
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
+					this.buildEmbed(next.user, next.guild.language, 'eventsNameDifference', 'eventsNicknameUpdate', {
+						previous: prevNickname,
+						next: nextNickname
+					})
+				);
+			}
+
+			// Send the Username log
+			const prevUsername = previous.user.username;
+			const nextUserName = next.user.username;
+			if (prevUsername !== nextUserName) {
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, next.guild, () =>
+					this.buildEmbed(next.user, next.guild.language, 'eventsNameDifference', 'eventsUsernameUpdate', {
+						previous: prevUsername,
+						next: nextUserName
+					})
+				);
+			}
 		}
 
 		// Retrieve whether or not role logs should be sent from Guild Settings and

@@ -32,8 +32,9 @@ export function allowedPermissionsNodeUser(guild: Guild, userID: string) {
 
 export function allowedPermissionsNodeRole(guild: Guild, member: GuildMember) {
 	// Assume sorted data
+	const roles = member.roles.cache;
 	for (const [id, node] of guild.permissionsManager.entries()) {
-		if (!member.roles.cache.has(id)) continue;
+		if (!roles.has(id)) continue;
 		if (node.allow.has('conf')) return true;
 		if (node.deny.has('conf')) return false;
 	}

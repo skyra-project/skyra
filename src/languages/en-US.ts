@@ -2893,12 +2893,10 @@ export default class extends Language {
 				'If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms` or `--nopermissions` to the command.',
 			examples: ['', 'noperms', '--noperms', '--nopermissions']
 		},
-		commandInvite: ({ invite }) =>
-			[
-				`To add Skyra to your server: <${invite}>`,
-				"Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions."
-			].join('\n'),
-		commandInviteNoPerms: ({ invite }) => `To add Skyra to your server: <${invite}>`,
+		commandInvitePermissionInviteText: 'Invite Skyra to your server',
+		commandInvitePermissionSupportServerText: 'Join Support Server',
+		commandInvitePermissionsDescription:
+			"Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions.",
 		commandInfo: [
 			`Skyra ${VERSION} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 			"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",

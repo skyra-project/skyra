@@ -1261,8 +1261,9 @@ declare module 'klasa' {
 		commandAnnouncementEmbedMentions: (params: { header: string; mentions: readonly string[] }) => string;
 		commandInviteDescription: string;
 		commandInviteExtended: LanguageHelpDisplayOptions;
-		commandInvite: (params: { invite: string }) => string;
-		commandInviteNoPerms: (params: { invite: string }) => string;
+		commandInvitePermissionInviteText: string;
+		commandInvitePermissionSupportServerText: string;
+		commandInvitePermissionsDescription: string;
 		commandInfo: string;
 		commandHelpData: (params: {
 			titleDescription: string;

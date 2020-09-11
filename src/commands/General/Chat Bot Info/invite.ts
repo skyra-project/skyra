@@ -1,7 +1,8 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
+import { BrandingColors } from '@utils/constants';
+import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -10,37 +11,37 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: (language) => language.get('commandInviteExtended'),
 	usage: '[noperms]',
 	flagSupport: true,
-	guarded: true
+	guarded: true,
+	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
-	private get inviteWithPerms() {
-		const url = new URL('https://discord.com/oauth2/authorize');
-		url.searchParams.append('client_id', CLIENT_ID);
-		url.searchParams.append('permissions', '491121748');
-		url.searchParams.append('scope', 'bot');
-		url.searchParams.append('response_type', 'code');
-		url.searchParams.append('redirect_uri', encodeURIComponent('https://skyra.pw'));
-		return url.toString();
-	}
-
-	private get inviteWithoutPerms() {
-		const url = new URL('https://discord.com/oauth2/authorize');
-		url.searchParams.append('client_id', CLIENT_ID);
-		url.searchParams.append('scope', 'bot');
-		url.searchParams.append('response_type', 'code');
-		url.searchParams.append('redirect_uri', encodeURIComponent('https://skyra.pw'));
-		return url.toString();
-	}
-
 	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
 		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.sendLocale('commandInviteNoPerms', [{ invite: this.inviteWithoutPerms }]);
+			return message.sendEmbed(this.getEmbed(message, { permissions: false }));
 		}
 
-		return message.sendLocale('commandInvite', [{ invite: this.inviteWithPerms }]);
+		return message.sendEmbed(this.getEmbed(message, { permissions: true }));
 	}
 
 	public async init() {
 		if (this.client.application && !this.client.application.botPublic) this.permissionLevel = PermissionLevels.BotOwner;
+	}
+
+	private getEmbed(message: KlasaMessage, { permissions }: { permissions: boolean }): MessageEmbed {
+		return new MessageEmbed() //
+			.setColor(BrandingColors.Primary)
+			.setDescription(
+				[
+					[
+						`[${message.language.get('commandInvitePermissionInviteText')}](https://invite.skyra.pw${
+							permissions ? '' : '/no-permissions'
+						})`,
+						`[${message.language.get('commandInvitePermissionSupportServerText')}](https://join.skyra.pw)`
+					].join(' | '),
+					permissions ? message.language.get('commandInvitePermissionsDescription') : undefined
+				]
+					.filter(Boolean)
+					.join('\n')
+			);
 	}
 }

@@ -97,14 +97,12 @@ export default class extends RichDisplayCommand {
 					.setTitle(title)
 					.setURL(animeURL)
 					.setDescription(
-						message.language
-							.get('commandAnimeOutputDescription', {
-								englishTitle,
-								japaneseTitle,
-								canonicalTitle,
-								synopsis: synopsis ?? message.language.get('commandAnimeNoSynopsis')
-							})
-							.join('\n')
+						message.language.get('commandAnimeOutputDescription', {
+							englishTitle,
+							japaneseTitle,
+							canonicalTitle,
+							synopsis: synopsis ?? message.language.get('commandAnimeNoSynopsis')
+						})
 					)
 					.setThumbnail(entry.posterImage?.original ?? '')
 					.addField(embedData.type, message.language.get('commandAnimeTypes')[type.toUpperCase()] || type, true)

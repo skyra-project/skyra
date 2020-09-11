@@ -11,7 +11,7 @@ export default class extends Argument {
 	}
 
 	public run(arg: string, possible: Possible, message: KlasaMessage): string {
-		if (!arg) throw message.language.get('commandOverwatchInvalidPlayerName', { playerTag: arg }).join('\n');
+		if (!arg) throw message.language.get('commandOverwatchInvalidPlayerName', { playerTag: arg });
 		// eslint-disable-next-line dot-notation
 		const {
 			args,

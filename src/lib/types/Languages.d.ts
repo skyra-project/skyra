@@ -158,7 +158,8 @@ declare module 'klasa' {
 		commandLoadError: (params: { type: string; name: string; error: string }) => string;
 		commandLoadDescription: string;
 		argumentRangeInvalid: (params: { name: string }) => string;
-		argumentRangeMax: (params: { name: string; maximum: number }) => string;
+		argumentRangeMax: (params: { name: string; maximum: number; count: number }) => string;
+		argumentRangeMaxPlural: (params: { name: string; maximum: number; count: number }) => string;
 		commandAddDescription: string;
 		commandAddExtended: LanguageHelpDisplayOptions;
 		commandAddPlaylist: (params: { songs: string }) => string;
@@ -201,12 +202,13 @@ declare module 'klasa' {
 		commandPlayingQueueEmpty: string;
 		commandPlayingQueueNotPlaying: string;
 		commandRepeatDescription: string;
-		commandRepeatSuccess: (params: { enabled: boolean }) => string;
+		commandRepeatSuccessEnabled: string;
+		commandRepeatSuccessDisabled: string;
 		commandQueueDescription: string;
 		commandQueueLast: string;
 		commandQueueTitle: (params: { guildname: string }) => string;
 		commandQueueLine: (params: { position: number; duration: string; title: string; url: string; requester: string }) => string;
-		commandQueueNowplaying: (context: { title: string; url: string; requester: string }) => string[];
+		commandQueueNowplaying: (context: { title: string; url: string; requester: string }) => string;
 		commandQueueNowplayingTimeRemaining: (params: { timeRemaining: string }) => string;
 		commandQueueNowplayingLiveStream: string;
 		commandQueueNowplayingTitle: string;
@@ -705,8 +707,8 @@ declare module 'klasa' {
 		};
 		commandOverwatchDescription: string;
 		commandOverwatchExtended: LanguageHelpDisplayOptions;
-		commandOverwatchInvalidPlayerName: (params: { playerTag: string }) => string[];
-		commandOverwatchQueryFail: (params: { player: string; platform: string }) => string[];
+		commandOverwatchInvalidPlayerName: (params: { playerTag: string }) => string;
+		commandOverwatchQueryFail: (params: { player: string; platform: string }) => string;
 		commandOverwatchNoStats: (params: { player: string }) => string;
 		commandOverwatchNoAverage: string;
 		commandOverwatchEmbedDataStats: (params: {
@@ -809,8 +811,8 @@ declare module 'klasa' {
 		commandSetImageLogsExtended: LanguageHelpDisplayOptions;
 		commandSetMemberLogsDescription: string;
 		commandSetMemberLogsExtended: LanguageHelpDisplayOptions;
-		commandSetmessagelogsDescription: string;
-		commandSetmessagelogsExtended: LanguageHelpDisplayOptions;
+		commandSetMessageLogsDescription: string;
+		commandSetMessageLogsExtended: LanguageHelpDisplayOptions;
 		commandSetmodlogsDescription: string;
 		commandSetmodlogsExtended: LanguageHelpDisplayOptions;
 		commandSetprefixDescription: string;
@@ -885,10 +887,6 @@ declare module 'klasa' {
 		commandAddRoleExtended: LanguageHelpDisplayOptions;
 		commandRemoveroleDescription: string;
 		commandRemoveroleExtended: LanguageHelpDisplayOptions;
-		commandArchiveDescription: string;
-		commandArchiveExtended: LanguageHelpDisplayOptions;
-		commandCaseDescription: string;
-		commandCaseExtended: LanguageHelpDisplayOptions;
 		commandSlowmodeDescription: string;
 		commandSlowmodeExtended: LanguageHelpDisplayOptions;
 		commandBanDescription: string;
@@ -1216,12 +1214,7 @@ declare module 'klasa' {
 			[index: string]: string;
 		};
 		commandAnimeInvalidChoice: string;
-		commandAnimeOutputDescription: (params: {
-			englishTitle: string;
-			japaneseTitle: string;
-			canonicalTitle: string;
-			synopsis: string;
-		}) => string[];
+		commandAnimeOutputDescription: (params: { englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }) => string;
 		commandAnimeNoSynopsis: string;
 		commandAnimeEmbedData: {
 			type: string;
@@ -1233,12 +1226,7 @@ declare module 'klasa' {
 			watchIt: string;
 			stillAiring: string;
 		};
-		commandMangaOutputDescription: (params: {
-			englishTitle: string;
-			japaneseTitle: string;
-			canonicalTitle: string;
-			synopsis: string;
-		}) => string[];
+		commandMangaOutputDescription: (params: { englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }) => string;
 		commandMangaEmbedData: {
 			type: string;
 			score: string;
@@ -1616,7 +1604,24 @@ declare module 'klasa' {
 
 		commandHistoryDescription: string;
 		commandHistoryExtended: LanguageHelpDisplayOptions;
-		commandHistoryFooter: (params: { warnings: number; mutes: number; kicks: number; bans: number }) => string;
+		commandHistoryFooterNew: (params: {
+			warnings: number;
+			mutes: number;
+			kicks: number;
+			bans: number;
+			warningsText: string;
+			mutesText: string;
+			kicksText: string;
+			bansText: string;
+		}) => string;
+		commandHistoryFooterWarning: (params: { count: number }) => string;
+		commandHistoryFooterWarningPlural: (params: { count: number }) => string;
+		commandHistoryFooterMutes: (params: { count: number }) => string;
+		commandHistoryFooterMutesPlural: (params: { count: number }) => string;
+		commandHistoryFooterKicks: (params: { count: number }) => string;
+		commandHistoryFooterKicksPlural: (params: { count: number }) => string;
+		commandHistoryFooterBans: (params: { count: number }) => string;
+		commandHistoryFooterBansPlural: (params: { count: number }) => string;
 		commandModerationsDescription: string;
 		commandModerationsExtended: LanguageHelpDisplayOptions;
 		commandModerationsEmpty: string;

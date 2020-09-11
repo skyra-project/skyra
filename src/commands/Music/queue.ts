@@ -35,7 +35,7 @@ export default class extends MusicCommand {
 		if (song) {
 			const nowPlayingDescription = [
 				song.stream ? message.language.get('commandQueueNowplayingLiveStream') : song.friendlyDuration,
-				...message.language.get('commandQueueNowplaying', {
+				message.language.get('commandQueueNowplaying', {
 					title: song.safeTitle,
 					url: song.url,
 					requester: await song.fetchRequesterName()

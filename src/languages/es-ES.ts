@@ -286,7 +286,8 @@ export default class extends Language {
 		 */
 
 		argumentRangeInvalid: ({ name }) => `${name} debe ser un número o un rango de números.`,
-		argumentRangeMax: ({ name, maximum }) => `El argumento ${name} acepta un rango de máximo ${maximum} ${maximum === 1 ? 'número' : 'números'}`,
+		argumentRangeMax: ({ name, maximum }) => `El argumento ${name} acepta un rango de máximo ${maximum} 'número`,
+		argumentRangeMaxPlural: ({ name, maximum }) => `El argumento ${name} acepta un rango de máximo ${maximum} 'números`,
 
 		commandAddDescription: 'Añade una canción a la cola.',
 		commandAddExtended: {
@@ -298,7 +299,7 @@ export default class extends Language {
 				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
 				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.',
 				'- Para reproducir una cola previamente exportada, incluya `--import` y adjunte el archivo de la lista a su mensaje o deme de URL a la.'
-			].join('\n'),
+			],
 			explainedUsage: [['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']],
 			examples: [
 				'The Pokémon Theme song',
@@ -355,13 +356,15 @@ export default class extends Language {
 		commandJoinFailed: `${REDCROSS} I could not join your voice channel because there is something wrong with my music player. Please join the support server by using \`@Skyra support\` and alert my developers.`,
 		commandLeaveDescription: 'Desconecta del canal de voz.',
 		commandLeaveExtended: {
-			extendedHelp: `Use este comando para que Skyra deje el canal de voz actual.
-			Por defecto, dejaré el canal, me olvidaré de la canción que se está reproduciendo actualmente,
-			ero dejaré la cola intacta. Esto significa que una vez que hagas Skyra, \`play\`
-			después del comando de salida, continuaré tocando con la primera canción que estaba en la cola antes de irme.
-
-			Este comportamiento predeterminado se puede modificar con banderas:
-			\`--removeall\` o \`--ra\` para seguir el comportamiento predeterminado, así como borrar la cola, la próxima vez que quieras que comience a jugar tendrás que crear una nueva cola`,
+			extendedHelp: [
+				'Use este comando para que Skyra deje el canal de voz actual.',
+				'Por defecto, dejaré el canal, me olvidaré de la canción que se está reproduciendo actualmente, ero dejaré la cola intacta.',
+				'Esto significa que una vez que hagas Skyra, `play`',
+				'después del comando de salida, continuaré tocando con la primera canción que estaba en la cola antes de irme.',
+				'',
+				'Este comportamiento predeterminado se puede modificar con banderas:',
+				'`--removeall` o `--ra` para seguir el comportamiento predeterminado, así como borrar la cola, la próxima vez que quieras que comience a jugar tendrás que crear una nueva cola'
+			],
 			examples: ['leave', 'leave --removeall', 'leave --ra', 'leave --soft'],
 			multiline: true
 		},
@@ -379,7 +382,7 @@ export default class extends Language {
 				'- Para reproducir desde Mixer, escribe la URL de un streamer de Mixer, lo siento pero no puedo (todavía) reproducir VODs.',
 				'- Para reproducir desde Bandcamp, Twitch o Vimeo, solo necesita escribir un enlace a un video o lista de reproducción.',
 				'- Para reproducir una cola previamente exportada, incluya `--import` y adjunte el archivo de la lista a su mensaje o deme de URL a la.'
-			].join('\n'),
+			],
 			explainedUsage: [['song', 'La canción para incluirlo en la cola. Puede ser un enlace o el nombre de un vídeo o tema musical.']],
 			examples: [
 				'The Pokémon Theme song',
@@ -404,16 +407,14 @@ export default class extends Language {
 		commandPlayingQueueEmpty: '¿Es conmigo? Porque no hay nada en reproducción...',
 		commandPlayingQueueNotPlaying: 'Creo que estás escuchando ruido de fondo, no estoy reproduciendo nada.',
 		commandRepeatDescription: 'Se alterna repitiendo la canción actual.',
-		commandRepeatSuccess: ({ enabled }) =>
-			enabled
-				? "This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!"
-				: 'En realidad, también me estaba cansando de esto, pero no quería decir nada.',
+		commandRepeatSuccessEnabled: "This is your JAM isn't it? No te preocupes, repetiremos esto una y otra vez!",
+		commandRepeatSuccessDisabled: 'En realidad, también me estaba cansando de esto, pero no quería decir nada.',
 		commandQueueDescription: 'Check the queue list.',
 		commandQueueLast: 'There are no more songs! After the one playing is over, the session will end!',
 		commandQueueTitle: ({ guildname }) => `Music queue for ${guildname}`,
 		commandQueueLine: ({ position, duration, title, url, requester }) =>
 			`**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
-		commandQueueNowplaying: ({ title, url, requester }) => [`[${title}](${url})`, `Requester: **${requester}**`],
+		commandQueueNowplaying: ({ title, url, requester }) => `[${title}](${url})\nRequester: **${requester}**`,
 		commandQueueNowplayingLiveStream: 'Live Stream',
 		commandQueueNowplayingTimeRemaining: ({ timeRemaining }) => `🕰 Tiempo restante: ${timeRemaining}.`,
 		commandQueueNowplayingTitle: 'Now Playing:',
@@ -436,11 +437,13 @@ export default class extends Language {
 		commandResumeSuccess: '▶ Reanudado.',
 		commandRolesetDescription: 'Gestionar conjuntos de roles únicos.',
 		commandRolesetExtended: {
-			extendedHelp: `A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles \`Africa\`, \`America\`, \`Asia\`, and \`Europe\`, and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:
-
-					- When somebody claims a role via the \`Skyra, roles\`.
-					- When somebody claims a role via reaction roles.
-					- When somebody receives a role either manually or from another bot.`,
+			extendedHelp: [
+				'A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:',
+				'',
+				'- When somebody claims a role via the `Skyra, roles`.',
+				'- When somebody claims a role via reaction roles.',
+				'- When somebody receives a role either manually or from another bot.'
+			],
 			explainedUsage: [
 				['add', 'Create a new roleset or add a role to an existing one.'],
 				['remove', 'Remove a role from an existing roleset.'],
@@ -740,42 +743,29 @@ export default class extends Language {
 		commandAnnouncementDescription: 'Send new announcements, mentioning the announcement role.',
 		commandAnnouncementExtended: {
 			extendedHelp: [
-				`This command requires an announcement channel (**channels.announcement** in the configuration command)
-					which tells Skyra where she should post the announcement messages.`,
+				'This command requires an announcement channel (**channels.announcement** in the configuration command) which tells Skyra where she should post the announcement messages.',
 				'',
-				`Question is, is this command needed? Well, nothing stops you from making your announcements by yourself, however, there are many people who hate
-					being mentioned by at everyone/here.`,
+				'Question is, is this command needed? Well, nothing stops you from making your announcements by yourself, however, there are many people who hate being mentioned by at everyone/here.',
 				'',
-				`To avoid this, Skyra gives you the option of creating a subscriber role,
-					which is unmentionable (to avoid people spam mentioning the role), and once you run this command,
-					Skyra will set the role to be mentionable, post the message, and back to unmentionable.`,
+				'To avoid this, Skyra gives you the option of creating a subscriber role, which is unmentionable (to avoid people spam mentioning the role), and once you run this command, Skyra will set the role to be mentionable, post the message, and back to unmentionable.',
 				'',
-				`Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed**
-					option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone
-					by providing the \`--excludeMentions\` flag to the announcement.`
-			].join('\n'),
+				'Furthermore, you can configure Skyra to send the announcement as a message embed by setting the **messages.announcement-embed** option in the configuration command. When sending the message as an an embed you can exclude the mentions of any users, @here or @everyone by providing the `--excludeMentions` flag to the announcement.'
+			],
 			explainedUsage: [['announcement', 'The announcement text to post.']],
 			examples: ['I am glad to announce that we have a bot able to safely send announcements for our subscribers!'],
-			reminder: `If you want to edit the message you send in an announcement,
-				just edit the message you used to have Skyra send that announcement.
-				Skyra will then edit the message she sent previously. She can do this
-				up to 15 minutes after the initial announcement, so be sure to not wait
-				long!`,
+			reminder:
+				'If you want to edit the message you send in an announcement, just edit the message you used to have Skyra send that announcement. Skyra will then edit the message she sent previously. She can do this up to 15 minutes after the initial announcement, so be sure to not wait long!',
 			multiline: true
 		},
 		commandSubscribeDescription: "Subscribe to this server's announcements.",
 		commandSubscribeExtended: {
-			extendedHelp: `This command serves the purpose of **giving** you the subscriber role, which must be configured by the
-				server's administrators. When a moderator or administrator use the **announcement** command, you
-					will be mentioned. This feature is meant to replace everyone/here tags and mention only the interested
-					users.`
+			extendedHelp:
+				"This command serves the purpose of **giving** you the subscriber role, which must be configured by the server's administrators. When a moderator or administrator use the **announcement** command, you will be mentioned. This feature is meant to replace everyone/here tags and mention only the interested users."
 		},
 		commandUnsubscribeDescription: "Unsubscribe from this server's announcements.",
 		commandUnsubscribeExtended: {
-			extendedHelp: `This command serves the purpose of **removing** you the subscriber role, which must be configured by the
-					server's administrators. When a moderator or administrator use the **announcement** command, you
-					will **not longer** be mentioned. This feature is meant to replace everyone/here tags and mention
-					only the interested users.`
+			extendedHelp:
+				"This command serves the purpose of **removing** you the subscriber role, which must be configured by the server's administrators. When a moderator or administrator use the **announcement** command, you will **not longer** be mentioned. This feature is meant to replace everyone/here tags and mention only the interested users."
 		},
 
 		/**
@@ -791,9 +781,8 @@ export default class extends Language {
 		},
 		commandChoiceDescription: 'Eeny, meeny, miny, moe, catch a tiger by the toe...',
 		commandChoiceExtended: {
-			extendedHelp: `I have an existencial doubt... should I wash the dishes or throw them through the window? The search
-					continues. List me items separated by comma and I will choose one them. On a side note, I am not
-					responsible of what happens next.`,
+			extendedHelp:
+				'I have an existencial doubt... should I wash the dishes or throw them through the window? The search continues. List me items separated by comma and I will choose one them. On a side note, I am not responsible of what happens next.',
 			explainedUsage: [['words', 'A list of words separated by comma.']],
 			examples: ['Should Wash the dishes, Throw the dishes out the window', 'Cat, Dog']
 		},
@@ -805,12 +794,8 @@ export default class extends Language {
 		},
 		commandDiceDescription: 'Roll the dice using d20 syntax.',
 		commandDiceExtended: {
-			extendedHelp: `The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice
-				can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once.
-				However, you can change the amount of rolls for the dice, and this command will 'roll' (get a random
-				number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave
-				a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will
-				return 10 as output.`,
+			extendedHelp:
+				"The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once. However, you can change the amount of rolls for the dice, and this command will 'roll' (get a random number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will return 10 as output.",
 			examples: ['370d24', '100d6', '6']
 		},
 		commandEscaperopeDescription: 'Use the escape rope from Pokemon.',
@@ -819,44 +804,38 @@ export default class extends Language {
 		},
 		commandHowToFlirtDescription: 'Captain America, you do not know how to flirt.',
 		commandHowToFlirtExtended: {
-			extendedHelp: `Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain
-				America, I can guarantee that you'll get him.`,
+			extendedHelp:
+				"Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain America, I can guarantee that you'll get him.",
 			explainedUsage: [['user', 'The user to flirt with.']],
 			examples: ['Skyra']
 		},
 		commandLoveDescription: 'Lovemeter, online!',
 		commandLoveExtended: {
-			extendedHelp: `Hey! Wanna check the lovemeter? I know it's a ridiculous machine, but many humans love it!
-					Don't be shy and try it!`,
+			extendedHelp: "Hey! Wanna check the lovemeter? I know it's a ridiculous machine, but many humans love it! Don't be shy and try it!",
 			explainedUsage: [['user', 'The user to rate.']],
 			examples: ['Skyra']
 		},
 		commandMarkovDescription: 'Generate a Markov Chain from the text channel.',
 		commandMarkovExtended: {
-			extendedHelp: `A Markov chain is a stocha... what? Okay, something something a probability theory made by a
-					Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random
-					message given the content of the messages in the channel.`,
-			examples: ['']
+			extendedHelp:
+				'A Markov chain is a stocha... what? Okay, something something a probability theory made by a Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random message given the content of the messages in the channel.'
 		},
 		commandNorrisDescription: "Enjoy your day reading Chuck Norris' jokes.",
 		commandNorrisExtended: {
-			extendedHelp: `Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone?
-					Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io
-					and retrieves a fact (do not assume they're false, not in front of him) so you can read it`
+			extendedHelp:
+				"Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone? Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io and retrieves a fact (do not assume they're false, not in front of him) so you can read it"
 		},
 		commandRateDescription: 'Let bots have opinions and rate somebody.',
 		commandRateExtended: {
-			extendedHelp: `Just because I am a bot doesn't mean I cannot rate you properly. I can grade you with a random number
-					generator to ease the process. Okay okay, it's not fair, but I mean... I can also give you a 💯.`,
+			extendedHelp:
+				"Just because I am a bot doesn't mean I cannot rate you properly. I can grade you with a random number generator to ease the process. Okay okay, it's not fair, but I mean... I can also give you a 💯.",
 			explainedUsage: [['user', 'The user to rate.']],
 			examples: ['Skyra', 'me']
 		},
 		commandXkcdDescription: 'Read comics from XKCD.',
 		commandXkcdExtended: {
-			extendedHelp: `**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't
-					provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve
-					the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches
-					with your input and display it. For example, \`Skyra, xkcd Curiosity\` will show the comic number 1091.`,
+			extendedHelp:
+				"**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
 			explainedUsage: [['query', 'Either the number of the comic, or a title to search for.']],
 			examples: ['1091', 'Curiosity']
 		},
@@ -865,13 +844,13 @@ export default class extends Language {
 			extendedHelp: [
 				'A steak pun is a rare medium well done.',
 				'Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks.'
-			].join('\n'),
+			],
 			multiline: true
 		},
 		commandWakandaDescription: "Helpful descriptions? We don't do that here",
 		commandWakandaExtended: {
-			extendedHelp: `Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here)
-			using the given user.`
+			extendedHelp:
+				"Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."
 		},
 
 		/**
@@ -987,13 +966,16 @@ export default class extends Language {
 			`Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
 		commandFFXIVDescription: 'Consulta la API de Final Fantasy 14 para obtener datos del juego',
 		commandFFXIVExtended: {
-			extendedHelp: `Este comando le permite datos de caracteres y elementos para FFXIV.
-				Para el elemento, se realiza una búsqueda con comodines, por lo que si su término está en el medio del nombre, aún puede coincidir.`,
+			extendedHelp: [
+				'Este comando le permite datos de caracteres y elementos para FFXIV.',
+				'Para el elemento, se realiza una búsqueda con comodines, por lo que si su término está en el medio del nombre, aún puede coincidir.'
+			],
 			explainedUsage: [
 				['Tipo de búsqueda', '(opcional, el valor predeterminado es `character`)` character` o `item`'],
 				['consulta', 'El jugador o cosa a buscar.']
 			],
-			examples: ['character Laytlan Ardevon', 'Laytlan Ardevon', 'item potion']
+			examples: ['character Laytlan Ardevon', 'Laytlan Ardevon', 'item potion'],
+			multiline: true
 		},
 		commandFFXIVCharacterFields: {
 			serverAndDc: 'Servidor - Centro de datos',
@@ -1034,10 +1016,8 @@ export default class extends Language {
 			],
 			examples: ['ninja', 'pc ninja', 'xbox TTV R1xbox', 'psn TTV IllusionOG']
 		},
-		commandFortniteNoUser: [
-			'Lo siento, pero no pude encontrar un usuario con ese nombre.',
-			'¿Estás seguro de que juegan en la plataforma proporcionada? (PC [predeterminado], Xbox o PSN son compatibles)'
-		].join('\n'),
+		commandFortniteNoUser:
+			'Lo siento, pero no pude encontrar un usuario con ese nombre.\n¿Estás seguro de que juegan en la plataforma proporcionada? (PC [predeterminado], Xbox o PSN son compatibles)',
 		commandFortniteEmbedTitle: ({ epicUserHandle }) => `Estadísticas de jugadores de Fortnite para ${epicUserHandle}`,
 		commandFortniteEmbedSectionTitles: {
 			lifetimeStats: '**_Estadísticas de por vida_**',
@@ -1072,10 +1052,11 @@ export default class extends Language {
 		}),
 		commandOverwatchDescription: 'Obtiene estadísticas de jugador para un jugador de Overwatch',
 		commandOverwatchExtended: {
-			extendedHelp: `Este comando recupera estadísticas para cualquier jugador de Overwatch que juegue en PC, Xbox o Playstation.
-				De manera predeterminada, buscará en los reproductores de PC, si desea comprobar si hay reproductores de
-				Xbox o Playstation, configure la plataforma en \`xbl\` o \`psn\` respectivamente.
-				IMPORTANTE: **¡Los nombres de los jugadores distinguen entre mayúsculas y minúsculas!**`,
+			extendedHelp: [
+				'Este comando recupera estadísticas para cualquier jugador de Overwatch que juegue en PC, Xbox o Playstation.',
+				'De manera predeterminada, buscará en los reproductores de PC, si desea comprobar si hay reproductores de',
+				'Xbox o Playstation, configure la plataforma en `xbl` o `psn` respectivamente.'
+			],
 			explainedUsage: [
 				['platform', '(opcional, predeterminado en `pc`) Plataforma en la que se reproduce el reproductor, una de `pc`, `xbl` o `psn`'],
 				[
@@ -1083,17 +1064,14 @@ export default class extends Language {
 					'Para PC, la etiqueta de tormenta de nieve completa, para la consola, el nombre de usuario. ¡Distingue mayúsculas y minúsculas!'
 				]
 			],
-			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
+			reminder: '**¡Los nombres de los jugadores distinguen entre mayúsculas y minúsculas!**',
+			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24'],
+			multiline: true
 		},
-		commandOverwatchInvalidPlayerName: ({ playerTag }) => [
-			`\`${playerTag}\` es un nombre de jugador no válido`,
-			'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `MagicPants#112369`.',
-			'Para Xbox y Playstation tiene que ser su nombre de usuario.'
-		],
-		commandOverwatchQueryFail: ({ player, platform }) => [
-			`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?`,
-			'También asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.'
-		],
+		commandOverwatchInvalidPlayerName: ({ playerTag }) =>
+			`\`${playerTag}\` es un nombre de jugador no válido\nPara PC tiene que ser su Blizzard BattleTag completo, por ejemplo \`MagicPants#112369\`.\nPara Xbox y Playstation tiene que ser su nombre de usuario.`,
+		commandOverwatchQueryFail: ({ player, platform }) =>
+			`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?\nTambién asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.`,
 		commandOverwatchNoStats: ({ player }) =>
 			`Encontré un jugador con la etiqueta \`${player}\` pero no había estadísticas disponibles para ellos.`,
 		commandOverwatchNoAverage: 'No hay suficientes datos para determinar el promedio.',
@@ -1156,9 +1134,7 @@ export default class extends Language {
 
 		commandCreateMuteDescription: 'Prepare the mute system.',
 		commandCreateMuteExtended: {
-			extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to
-					the guild settings. This command also modifies all channels (where possible) permissions and disables
-					the permission **${this.PERMISSIONS.SEND_MESSAGES}** in text channels and **${this.PERMISSIONS.CONNECT}** in voice channels for said role.`
+			extendedHelp: `This command prepares the mute system by creating a role called 'muted', and configuring it to the guild settings. This command also modifies all channels (where possible) permissions and disables the permission **${this.PERMISSIONS.SEND_MESSAGES}** in text channels and **${this.PERMISSIONS.CONNECT}** in voice channels for said role.`
 		},
 		commandGiveawayDescription: 'Start a new giveaway.',
 		commandGiveawayExtended: {
@@ -1169,7 +1145,7 @@ export default class extends Language {
 				'',
 				'You can pass a flag of `--winners=Xw`, wherein X is a number (for example 2w for 2 winners) to allow multiple people to win a giveaway.',
 				'Please note that there is a maximum of 25 winners.'
-			].join('\n'),
+			],
 			explainedUsage: [
 				['channel', '(Optional) The channel in which to start the giveaway'],
 				['time', 'The time the giveaway should last.'],
@@ -1180,8 +1156,7 @@ export default class extends Language {
 		},
 		commandGiveawayRerollDescription: 'Re-roll the winners from a giveaway.',
 		commandGiveawayRerollExtended: {
-			extendedHelp: `This command is designed to re-roll finished giveaways. Please check \`Skyra, help gstart\` for more information
-					about creating one.`,
+			extendedHelp: `This command is designed to re-roll finished giveaways. Please check \`Skyra, help gstart\` for more information about creating one.`,
 			explainedUsage: [
 				['winners', 'The amount of winners to pick.'],
 				['message', 'The message to target. Defaults to last giveaway message.']
@@ -1190,11 +1165,11 @@ export default class extends Language {
 		},
 		commandGiveawayScheduleDescription: 'Schedule a giveaway to start at a certain time.',
 		commandGiveawayScheduleExtended: {
-			extendedHelp: `
-				This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.
-				You can pass a flag of \`--winners=X\`, wherein X is a number, to allow multiple people to win this giveaway.
-				Please note that there is a maximum of 25 winners.
-			`,
+			extendedHelp: [
+				'This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.',
+				'You can pass a flag of `--winners=X`, wherein X is a number, to allow multiple people to win this giveaway.',
+				'Please note that there is a maximum of 25 winners.'
+			],
 			explainedUsage: [
 				['channel', '(Optional) The channel in which to start the giveaway'],
 				['schedule', 'The time to wait before starting the giveaway.'],
@@ -1219,10 +1194,10 @@ export default class extends Language {
 		},
 		commandPermissionNodesDescription: 'Configure the permission nodes for this server.',
 		commandPermissionNodesExtended: {
-			extendedHelp: `Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.
-					For example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved
-					to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command
-					for the staff role now.`,
+			extendedHelp: [
+				'Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.',
+				'For example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command for the staff role now.'
+			],
 			explainedUsage: [
 				['action', 'Either `add`, `remove`, `reset`, or `show`. Defaults to `show`.'],
 				['target', 'Either a role name or a user name, allowing IDs and mentions for either.'],
@@ -1230,14 +1205,17 @@ export default class extends Language {
 				['command', 'The name of the command to allow or deny. This is ignored when `action` is not `add` nor `remove`.']
 			],
 			examples: ['add staff allow warn', 'add moderators deny ban', 'remove staff allow warn', 'reset staff', 'show staff'],
-			reminder: 'The server owner cannot have any actions, nor the `everyone` role can have allowed commands.'
+			reminder: 'The server owner cannot have any actions, nor the `everyone` role can have allowed commands.',
+			multiline: true
 		},
 		commandTriggersDescription: 'Set custom triggers for your guild!.',
 		commandTriggersExtended: {
-			extendedHelp: `This command allows administrators to go further with the personalization of Skyra in the guild!. A trigger is
-					a piece that can active other functions. For example, the aliases are triggers that get executed when the command does not
-					exist in bot, triggering the unknown command event. When this happens, the alias system executes and tries to find an entry
-					that matches with the input.`,
+			extendedHelp: [
+				'This command allows administrators to go further with the personalization of Skyra in the guild!.',
+				'A trigger is a piece that can active other functions.',
+				'For example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.',
+				'When this happens, the alias system executes and tries to find an entry that matches with the input.'
+			],
 			reminder: `This command requires the **${this.PERMISSIONS.ADD_REACTIONS}** permission so it can test reactions. Make sure Skyra has it.`,
 			explainedUsage: [
 				['list', 'List all current triggers.'],
@@ -1267,8 +1245,8 @@ export default class extends Language {
 		},
 		commandManageCommandChannelDescription: 'Manage per-channel command blacklist.',
 		commandManageCommandChannelExtended: {
-			extendedHelp: `This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want
-					to be used in certain channels (to disable a command globally, use the \`disabledCommands\` settings key to disable in all channels.`,
+			extendedHelp:
+				"This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
 			explainedUsage: [
 				['show [channel]', 'Show the command blacklist for the selected channel.'],
 				['add [channel] <command>', "Add a command to the specified channel's command blacklist."],
@@ -1280,22 +1258,25 @@ export default class extends Language {
 		},
 		commandManageReactionRolesDescription: 'Manage the reaction roles for this server.',
 		commandManageReactionRolesExtended: {
-			extendedHelp: `Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind
-				the first reaction from you alongside the channel and the message, with the specified role. Otherwise, if a channel is specified, a prompt will
-				not be created, and the reaction role will be bound to all of the channel's messages.`,
+			extendedHelp: [
+				'Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind the first reaction from you alongside the channel and the message, with the specified role.',
+				"Otherwise, if a channel is specified, a prompt will not be created, and the reaction role will be bound to all of the channel's messages."
+			],
 			explainedUsage: [
 				['show', 'Retrieve the list of all reaction roles.'],
 				['add <role>', 'Adds a reaction role binding the first reacted message since the execution with the role.'],
 				['remove <role> <message>', 'Removes a reaction role, use `show` to get a list of them.'],
 				['reset', 'Removes all reaction roles.']
-			]
+			],
+			multiline: true
 		},
 		commandSetIgnoreChannelsDescription: 'Set a channel to the ignore channel list.',
 		commandSetIgnoreChannelsExtended: {
-			extendedHelp: `This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators
-					can use Skyra's commands. Unlike removing the **${this.PERMISSIONS.SEND_MESSAGES}** permission, Skyra is still able to send (and therefore
-					execute commands) messages, which allows moderators to use moderation commands in the channel. Use this if you want to ban
-					any command usage from the bot in a specific channel.`,
+			extendedHelp: [
+				"This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators can use Skyra's commands.",
+				`Unlike removing the **${this.PERMISSIONS.SEND_MESSAGES}** permission, Skyra is still able to send (and therefore execute commands) messages, which allows moderators to use moderation commands in the channel.`,
+				'Use this if you want to ban any command usage from the bot in a specific channel.'
+			],
 			explainedUsage: [
 				[
 					'channel',
@@ -1303,56 +1284,67 @@ export default class extends Language {
 				]
 			],
 			reminder: 'You cannot set the same channel twice, instead, Skyra will remove it.',
-			examples: ['#general', 'here']
+			examples: ['#general', 'here'],
+			multiline: true
 		},
 		commandSetImageLogsDescription: 'Set the image logs channel.',
 		commandSetImageLogsExtended: {
-			extendedHelp: `This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with
-					the attachment re-uploaded. All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra.`,
+			extendedHelp: [
+				'This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with the attachment re-uploaded.',
+				`All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra.`
+			],
 			explainedUsage: [
 				[
 					'channel',
 					'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.'
 				]
 			],
-			examples: ['#image-logs', 'here']
+			examples: ['#image-logs', 'here'],
+			multiline: true
 		},
 		commandSetMemberLogsDescription: 'Set the member logs channel.',
 		commandSetMemberLogsExtended: {
-			extendedHelp: `This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: "Member Join" and
-					"Member Leave". If a muted user joins, it will send a special "Muted Member Join" event. All messages are in embeds so you will need to enable
-					the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra. You also need to individually set the "events" you want to listen: "events.memberAdd" and
-					"events.memberRemove". For roles, you would enable "events.memberNicknameChange" and/or "events.memberRoleUpdate" via the "config" command.`,
+			extendedHelp: [
+				'This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: "Member Join" and "Member Leave".',
+				'If a muted user joins, it will send a special "Muted Member Join" event.',
+				`All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra.`,
+				`You also need to individually set the "events" you want to listen: "events.memberAdd" and "events.memberRemove".`,
+				'For roles, you would enable "events.memberNicknameChange" and/or "events.memberRoleUpdate" via the "config" command.'
+			],
 			explainedUsage: [
 				[
 					'channel',
 					'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.'
 				]
 			],
-			examples: ['#member-logs', 'here']
+			examples: ['#member-logs', 'here'],
+			multiline: true
 		},
-		commandSetmessagelogsDescription: 'Set the message logs channel.',
-		commandSetmessagelogsExtended: {
-			extendedHelp: `This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: "Message Delete",
-					"Message Edit", and "Message Prune". All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra. You
-					also need to individually set the "events" you want to listen: "events.messageDelete" and "events.messageEdit" via the
-					"config" command.`,
+		commandSetMessageLogsDescription: 'Set the message logs channel.',
+		commandSetMessageLogsExtended: {
+			extendedHelp: [
+				'This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: "Message Delete", "Message Edit", and "Message Prune".',
+				`All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra.`,
+				'You also need to individually set the "events" you want to listen: "events.messageDelete" and "events.messageEdit" via the "config" command.'
+			],
 			explainedUsage: [
 				[
 					'channel',
 					'A TextChannel. You can either put the name of the channel, tag it, or type in "here" to select the channel the message was sent.'
 				]
 			],
-			reminder: `Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the
-				permission **${this.PERMISSIONS.VIEW_AUDIT_LOG}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.`,
-			examples: ['#message-logs', 'here']
+			reminder: `Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **${this.PERMISSIONS.VIEW_AUDIT_LOG}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.`,
+			examples: ['#message-logs', 'here'],
+			multiline: true
 		},
 		commandSetmodlogsDescription: 'Set the mod logs channel.',
 		commandSetmodlogsExtended: {
-			extendedHelp: `This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with
-					"claimable" reasons and moderators. This channel is not a must and you can always retrieve specific modlogs with the "case" command. All
-					messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra. For auto-detection, you need to individually
-					set the "events" you want to listen: "events.banAdd", "events.banRemove" via the "config" command.`,
+			extendedHelp: [
+				'This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with "claimable" reasons and moderators.',
+				'This channel is not a must and you can always retrieve specific modlogs with the "case" command.',
+				`All messages are in embeds so you will need to enable the permission **${this.PERMISSIONS.EMBED_LINKS}** for Skyra.`,
+				'For auto-detection, you need to individually set the "events" you want to listen: "events.banAdd", "events.banRemove" via the "config" command.'
+			],
 			explainedUsage: [
 				[
 					'channel',
@@ -1361,22 +1353,26 @@ export default class extends Language {
 			],
 			reminder: `Due to Discord limitations, the auto-detection does not detect kicks. You need to use the "kick" command if you want to document them as
 				a formal moderation log case.`,
-			examples: ['#mod-logs', 'here']
+			examples: ['#mod-logs', 'here'],
+			multiline: true
 		},
 		commandSetprefixDescription: "Set Skyra's prefix.",
 		commandSetprefixExtended: {
-			extendedHelp: `This command helps you setting up Skyra's prefix. A prefix is an affix that is added in front of the word, in this case, the message.
-					It allows bots to distinguish between a regular message and a command. By nature, the prefix between should be different to avoid conflicts. If
-					you forget Skyra's prefix, simply mention her with nothing else and she will tell you the current prefix. Alternatively, you can take advantage
-					of Skyra's NLP (Natural Language Processing) and prefix the commands with her name and a comma. For example, "Skyra, ping".`,
+			extendedHelp: [
+				"This command helps you setting up Skyra's prefix. A prefix is an affix that is added in front of the word, in this case, the message.",
+				'It allows bots to distinguish between a regular message and a command. By nature, the prefix between should be different to avoid conflicts.',
+				"If you forget Skyra's prefix, simply mention her with nothing else and she will tell you the current prefix.",
+				'Alternatively, you can prefix the commands with her name and a comma (for example `Skyra, ping`).'
+			],
 			explainedUsage: [['prefix', `The prefix to set. Default one in Skyra is "${this.client.options.prefix}".`]],
 			reminder: 'Your prefix should only contain characters everyone can write and type.',
-			examples: ['&', '=']
+			examples: ['&', '='],
+			multiline: true
 		},
 		commandSetrolechannelDescription: 'Set the role channel for role reactions.',
 		commandSetrolechannelExtended: {
-			extendedHelp: `This command sets up the role channel to lock the reactions to, it is a requirement to set up before setting up the **role message**,
-					and if none is given, the role reactions module will not run.`,
+			extendedHelp:
+				'This command sets up the role channel to lock the reactions to, it is a requirement to set up before setting up the **role message**, and if none is given, the role reactions module will not run.',
 			explainedUsage: [
 				[
 					'channel',
@@ -1388,17 +1384,20 @@ export default class extends Language {
 		},
 		commandSetrolemessageDescription: 'Set the role message for role reactions.',
 		commandSetrolemessageExtended: {
-			extendedHelp: `This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first, and if none is given,
-					Skyra will listen to any reaction in the channel. Additionally, Skyra requires **${this.PERMISSIONS.READ_MESSAGE_HISTORY}** in order to fetch the message for
-					validation.`,
+			extendedHelp: [
+				'This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first.',
+				'If none is given, Skyra will listen to any reaction in the channel.',
+				`Additionally, Skyra requires **${this.PERMISSIONS.READ_MESSAGE_HISTORY}** in order to fetch the message for validation.`
+			],
 			explainedUsage: [['message', 'An ID, they are 17-18 characters long and numeric.']],
 			reminder: 'You must execute this command in the role channel.',
-			examples: ['434096799847022598']
+			examples: ['434096799847022598'],
+			multiline: true
 		},
 		commandSetStarboardEmojiDescription: 'Set the emoji reaction for starboard.',
 		commandSetStarboardEmojiExtended: {
-			extendedHelp: `This command sets up the starboard emoji for the starboard, which is, by default, ⭐. Once this is changed, Skyra will ignore any star and
-					will count users who reacted to said emoji.`,
+			extendedHelp:
+				'This command sets up the starboard emoji for the starboard, which is, by default, ⭐. Once this is changed, Skyra will ignore any star and will count users who reacted to said emoji.',
 			explainedUsage: [['emoji', 'The emoji to set.']],
 			reminder: 'Use this wisely, not everyone expects the starboard to listen to a custom emoji.',
 			examples: ['⭐']
@@ -1418,17 +1417,21 @@ export default class extends Language {
 
 		commandRoleInfoDescription: 'Check the information for a role.',
 		commandRoleInfoExtended: {
-			extendedHelp: `The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted
-					(displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said
-					role, and its permissions. It sends an embedded message with the color of the role.`,
+			extendedHelp: [
+				"The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted (displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said role, and its permissions.",
+				'It sends an embedded message with the color of the role.'
+			],
 			explainedUsage: [['role', 'The role name, partial name, mention or id.']],
-			examples: ['Administrator', 'Moderator', '']
+			examples: ['Administrator', 'Moderator', ''],
+			multiline: true
 		},
 		commandGuildInfoDescription: 'Check the information of the guild!.',
 		commandGuildInfoExtended: {
-			extendedHelp: `The serverinfo command displays information for the guild the message got sent. It shows the amount of channels,
-					with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles,
-					region, creation date, verification level... between others.`
+			extendedHelp: [
+				'The serverinfo command displays information for the guild the message got sent.',
+				'It shows the amount of channels, with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles, region, creation date, verification level... between others.'
+			],
+			multiline: true
 		},
 
 		/**
@@ -1438,8 +1441,8 @@ export default class extends Language {
 
 		commandStickyRolesDescription: 'Manage sticky roles for users.',
 		commandStickyRolesExtended: {
-			extendedHelp: `The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when
-				you leave, and are applied back as soon as they join.`,
+			extendedHelp:
+				"The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when you leave, and are applied back as soon as they join.",
 			explainedUsage: [
 				['action', 'Either you want to check the sticky roles, add one, remove one, or remove all of them.'],
 				['user', 'The user target for all the actions.'],
@@ -1475,9 +1478,11 @@ export default class extends Language {
 
 		commandCapitalsModeDescription: "Manage this guild's flags for the caps filter.",
 		commandCapitalsModeExtended: {
-			extendedHelp: `The capitalsMode command manages the behavior of the caps system.
-				The minimum amount of characters before filtering can be set with \`Skyra, settings set selfmod.capitals.minimum <number>\`.
-				The percentage of uppercase letters can be set with \`Skyra, settings set selfmod.capitals.maximum <number>\`.`,
+			extendedHelp: [
+				'The capitalsMode command manages the behavior of the caps system.',
+				'The minimum amount of characters before filtering can be set with `Skyra, settings set selfmod.capitals.minimum <number>`.',
+				'The percentage of uppercase letters can be set with `Skyra, settings set selfmod.capitals.maximum <number>`.'
+			],
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1507,14 +1512,15 @@ export default class extends Language {
 		},
 		commandFilterDescription: "Manage this guild's word blacklist.",
 		commandFilterExtended: {
-			extendedHelp: `The filter command manages the word blacklist for this server and must have a filter mode set up, check \`Skyra, help filterMode\`.
-					Skyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters
-					duplicated characters for enhanced filtering.`
+			extendedHelp: [
+				'The filter command manages the word blacklist for this server and must have a filter mode set up, check `Skyra, help filterMode`.',
+				"Skyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters duplicated characters for enhanced filtering."
+			],
+			multiline: true
 		},
 		commandFilterModeDescription: "Manage this server's word filter modes.",
 		commandFilterModeExtended: {
-			extendedHelp: `The filterMode command manages the behavior of the word filter system.
-				Run \`Skyra, help filter\` for how to add words.`,
+			extendedHelp: 'The filterMode command manages the behavior of the word filter system. Run `Skyra, help filter` for how to add words.',
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1630,8 +1636,10 @@ export default class extends Language {
 		},
 		commandNewlineModeDescription: 'Manage the behavior for the new line filter system.',
 		commandNewlineModeExtended: {
-			extendedHelp: `The newLineMode command manages the behavior of the new line filter system.
-				The maximum amount of lines allowed can be set with \`Skyra, settings set selfmod.newlines.maximum <number>\``,
+			extendedHelp: [
+				'The newLineMode command manages the behavior of the new line filter system.',
+				'The maximum amount of lines allowed can be set with `Skyra, settings set selfmod.newlines.maximum <number>`'
+			],
 			explainedUsage: [
 				['Enable', 'Enable the sub-system.'],
 				['Disable', 'Disable the sub-system'],
@@ -1656,7 +1664,8 @@ export default class extends Language {
 				'punishment-duration 1m',
 				'threshold-maximum 5',
 				'threshold-duration 30s'
-			]
+			],
+			multiline: true
 		},
 		commandReactionModeDescription: 'Manage the behavior for the reaction filter system.',
 		commandReactionModeExtended: {
@@ -1695,22 +1704,22 @@ export default class extends Language {
 
 		commandCuddleDescription: 'Cuddle somebody!',
 		commandCuddleExtended: {
-			extendedHelp: `Do you know something that I envy from humans? The warm feeling when somebody cuddles you. It's so cute ❤! I can
-				imagine and draw a image of you cuddling somebody in the bed, I hope you like it!`,
+			extendedHelp:
+				"Do you know something that I envy from humans? The warm feeling when somebody cuddles you. It's so cute ❤! I can imagine and draw a image of you cuddling somebody in the bed, I hope you like it!",
 			explainedUsage: [['user', 'The user to cuddle with.']],
 			examples: ['Skyra']
 		},
 		commandDeletthisDescription: '*Sees offensive post* DELETTHIS!',
 		commandDeletthisExtended: {
-			extendedHelp: `I see it! I see the hammer directly from your hand going directly to the user you want! Unless... unless it's me! If
-				you try to tell me this, I'm going to take the MJOLNIR! Same if you do with my creator!`,
+			extendedHelp:
+				"I see it! I see the hammer directly from your hand going directly to the user you want! Unless... unless it's me! If you try to tell me this, I'm going to take the MJOLNIR! Same if you do with my creator!",
 			explainedUsage: [['user', 'The user that should start deleting his post.']],
 			examples: ['John Doe']
 		},
 		commandFDescription: 'Press F to pay respects.',
 		commandFExtended: {
-			extendedHelp: `This command generates an image... to pay respects reacting with 🇫. This command also makes Skyra
-				react the image if she has permissions to react messages.`,
+			extendedHelp:
+				'This command generates an image... to pay respects reacting with 🇫. This command also makes Skyra react the image if she has permissions to react messages.',
 			explainedUsage: [['user', 'The user to pray respects to.']],
 			examples: ['John Doe', 'Jake']
 		},
@@ -1722,25 +1731,28 @@ export default class extends Language {
 		},
 		commandGoofytimeDescription: "It's Goofy time!",
 		commandGoofytimeExtended: {
-			extendedHelp: `IT'S GOOFY TIME! *Screams loudly in the background* NO, DAD! NO! This is a command based on the Goofy Time meme,
-					what else would it be?`,
+			extendedHelp:
+				"IT'S GOOFY TIME! *Screams loudly in the background* NO, DAD! NO! This is a command based on the Goofy Time meme, what else would it be?",
 			explainedUsage: [['user', "The user who will say IT'S GOOFY TIME!"]],
 			examples: ['TotallyNotADaddy']
 		},
 		commandHugDescription: 'Hugs!',
 		commandHugExtended: {
-			extendedHelp: `What would be two people in the middle of the snow with coats and hugging each other? Wait! I get it!
-				Mention somebody you want to hug with, and I'll try my best to draw it in a canvas!`,
+			extendedHelp:
+				"What would be two people in the middle of the snow with coats and hugging each other? Wait! I get it! Mention somebody you want to hug with, and I'll try my best to draw it in a canvas!",
 			explainedUsage: [['user', 'The user to hug with.']],
 			examples: ['Bear']
 		},
 		commandIneedhealingDescription: "*Genji's voice* I NEED HEALING!",
 		commandIneedhealingExtended: {
-			extendedHelp: `Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES! You know it,
-				it's a cool cyborg ninja that looks like a XBOX and is always yelling "I NEED HEALING" loudly during the entire match.
-				Well, don't expect so much, this command actually shows a medic with some tool in your chest.`,
+			extendedHelp: [
+				'Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES!',
+				'You know it, it\'s a cool cyborg ninja that looks like a XBOX and is always yelling "I NEED HEALING" loudly during the entire match.',
+				"Well, don't expect so much, this command actually shows a medic with some tool in your chest."
+			],
 			explainedUsage: [['healer', 'The healer you need to heal you.']],
-			examples: ['Mercy']
+			examples: ['Mercy'],
+			multiline: true
 		},
 		commandRandRedditDescription: 'Retrieve a random Reddit post.',
 		commandRandRedditExtended: {
@@ -1756,16 +1768,17 @@ export default class extends Language {
 		},
 		commandShipDescription: 'Ships 2 members',
 		commandShipExtended: {
-			extendedHelp: `
-				This commands generates a ship name between two users and creates more love in the world.
-				Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.
-			`,
+			extendedHelp: [
+				'This commands generates a ship name between two users and creates more love in the world.',
+				'Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.'
+			],
 			explainedUsage: [
 				['firstUser', 'The first user to ship'],
 				['secondUser', 'The second user to ship']
 			],
 			examples: ['romeo juliet'],
-			reminder: 'If I cannot find either given user then I will pick someone randomly.'
+			reminder: 'If I cannot find either given user then I will pick someone randomly.',
+			multiline: true
 		},
 		commandShipData: ({ romeoUsername, julietUsername, shipName }) => ({
 			title: `**Shipping \`${romeoUsername}\` and \`${julietUsername}\`**`,
@@ -1779,11 +1792,13 @@ export default class extends Language {
 		},
 		commandShindeiruDescription: 'Omae wa mou shindeiru.',
 		commandShindeiruExtended: {
-			extendedHelp: `"You are already dead" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga
-				and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words,
-				which makes the opponent reply with "nani?" (what?).`,
+			extendedHelp: [
+				'"You are already dead" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star.',
+				'This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with "nani?" (what?).'
+			],
 			explainedUsage: [['user', "The person you're telling that phrase to."]],
-			examples: ['Jack']
+			examples: ['Jack'],
+			multiline: true
 		},
 		commandPeepoloveDescription: 'Genera una imagen peepoLove con avatar de usuario.',
 		commandPeepoloveExtended: {
@@ -1802,8 +1817,7 @@ export default class extends Language {
 		},
 		commandSnipeDescription: 'Retrieve the last deleted message from a channel',
 		commandSnipeExtended: {
-			extendedHelp: `This just sends the last deleted message from this channel, somebody is misbehaving? This will
-				catch them.`
+			extendedHelp: 'This just sends the last deleted message from this channel, somebody is misbehaving? This will catch them.'
 		},
 		commandThesearchDescription: 'Are we the only one in the universe, this man on earth probably knows.',
 		commandThesearchExtended: {
@@ -1813,20 +1827,20 @@ export default class extends Language {
 		},
 		commandTriggeredDescription: 'I am getting TRIGGERED!',
 		commandTriggeredExtended: {
-			extendedHelp: `What? My commands are not enough userfriendly?! (╯°□°）╯︵ ┻━┻. This command generates a GIF image
-					your avatar wiggling fast, with a TRIGGERED footer, probably going faster than I thought, I don't know.`,
+			extendedHelp:
+				"What? My commands are not userfriendly enough?! (╯°□°）╯︵ ┻━┻. This command generates a GIF image your avatar wiggling fast, with a TRIGGERED footer, probably going faster than I thought, I don't know.",
 			explainedUsage: [['user', 'The user that is triggered.']],
 			examples: ['kyra']
 		},
 		commandUpvoteDescription: 'Get a link to upvote Skyra in **Bots For Discord**',
 		commandUpvoteExtended: {
-			extendedHelp: `Bots For Discord is a website where you can find amazing bots for your website. If you really love me,
-					you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!`
+			extendedHelp:
+				'Bots For Discord is a website where you can find amazing bots for your website. If you really love me, you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!'
 		},
 		commandVaporwaveDescription: 'Vapowave characters!',
 		commandVaporwaveExtended: {
-			extendedHelp: `Well, what can I tell you? This command turns your messages into unicode monospaced characters. That
-					is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...`,
+			extendedHelp:
+				"Well, what can I tell you? This command turns your messages into unicode monospaced characters. That is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...",
 			explainedUsage: [['phrase', 'The phrase to convert']],
 			examples: ['A E S T H E T I C']
 		},
@@ -1837,18 +1851,22 @@ export default class extends Language {
 
 		commandHistoryDescription: 'Display the count of moderation cases from this guild or from a user.',
 		commandHistoryExtended: {
-			extendedHelp: `This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been
-					appealed.`,
+			extendedHelp: 'This command shows the amount of bans, mutes, kicks, and warnings, including temporary, that have not been appealed.',
 			examples: ['', '@Pete']
 		},
-		commandHistoryFooter: ({ warnings, mutes, kicks, bans }) =>
-			`This user has ${warnings} ${warnings === 1 ? 'warning' : 'warnings'}, ${mutes} ${mutes === 1 ? 'mute' : 'mutes'}, ${kicks} ${
-				kicks === 1 ? 'kick' : 'kicks'
-			}, ${bans} ${bans === 1 ? 'ban' : 'bans'}.`,
+		commandHistoryFooterNew: ({ warnings, mutes, kicks, bans, warningsText, mutesText, kicksText, bansText }) =>
+			`This user has ${warnings} ${warningsText}, ${mutes} ${mutesText}, ${kicks} ${kicksText}, and ${bans} ${bansText}`,
+		commandHistoryFooterWarning: () => 'warning',
+		commandHistoryFooterWarningPlural: () => 'warnings',
+		commandHistoryFooterMutes: () => 'mute',
+		commandHistoryFooterMutesPlural: () => 'mutes',
+		commandHistoryFooterKicks: () => 'kick',
+		commandHistoryFooterKicksPlural: () => 'kicks',
+		commandHistoryFooterBans: () => 'ban',
+		commandHistoryFooterBansPlural: () => 'bans',
 		commandModerationsDescription: 'List all running moderation logs from this guild.',
 		commandModerationsExtended: {
-			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a
-					reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}** to execute correctly.`,
+			extendedHelp: `This command shows you all the temporary moderation actions that are still running. This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}** to execute correctly.`,
 			examples: ['', '@Pete', 'mutes @Pete', 'warnings']
 		},
 		commandModerationsEmpty: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
@@ -1856,17 +1874,21 @@ export default class extends Language {
 		commandModerationsAmountPlural: ({ count }) => `There are ${count} entries.`,
 		commandMutesDescription: 'List all mutes from this guild or from a user.',
 		commandMutesExtended: {
-			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
-					for a specific user. This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}**
-					to execute correctly.`,
-			examples: ['', '@Pete']
+			extendedHelp: [
+				'This command shows either all mutes filed in this guild, or all mutes filed in this guild for a specific user.',
+				`This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}** to execute correctly.`
+			],
+			examples: ['', '@Pete'],
+			multiline: true
 		},
 		commandWarningsDescription: 'List all warnings from this guild or from a user.',
 		commandWarningsExtended: {
-			extendedHelp: `This command shows either all warnings filed in this guild, or all warnings filed in this guild
-					for a specific user. This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}**
-					to execute correctly.`,
-			examples: ['', '@Pete']
+			extendedHelp: [
+				'This command shows either all warnings filed in this guild, or all warnings filed in this guild for a specific user.',
+				`This command uses a reaction-based menu and requires the permission **${this.PERMISSIONS.MANAGE_MESSAGES}** to execute correctly.`
+			],
+			examples: ['', '@Pete'],
+			multiline: true
 		},
 
 		/**
@@ -1874,34 +1896,9 @@ export default class extends Language {
 		 * MODERATION/UTILITIES COMMANDS
 		 */
 
-		commandArchiveDescription: '[BETA] Temporarily save all messages from the current channel.',
-		commandArchiveExtended: {
-			extendedHelp: `The archive command fetches multiple messages from a channel with an optional filter. How does
-					this command work? First, I fetch all the messages, apply the filter, and then it's when the magic happens,
-					I make a "message gist", to respect End-User Data policies, all of this is encrypted and the gist requires
-					a key to unlock so you can read the contents. You unlock and read the contents from the website.`,
-			explainedUsage: [
-				['Messages', 'The amount of messages to archive.'],
-				['Filter', 'The filter to apply.'],
-				['(Filter) Link', 'Filters messages that have links on the content.'],
-				['(Filter) Invite', 'Filters messages that have invite links on the content.'],
-				['(Filter) Bots', 'Filters messages sent by bots.'],
-				['(Filter) You', 'Filters messages sent by Skyra.'],
-				['(Filter) Me', 'Filters your messages.'],
-				['(Filter) Upload', 'Filters messages that have attachments.'],
-				['(Filter) User', 'Filters messages sent by the specified user.']
-			],
-			examples: ['50 me', '75 @kyra', '20 bots'],
-			reminder: 'Message gists last 30 days, after that, they are deleted, you also need the encryption key.'
-		},
-		commandCaseDescription: 'Get the information from a case given its index.',
-		commandCaseExtended: {
-			extendedHelp: ''
-		},
 		commandSlowmodeDescription: "Set the channel's slowmode value in seconds.",
 		commandSlowmodeExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per
-					user to any value between 0 and 120 seconds.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_CHANNELS}** and will modify the channel's ratelimit per user to any value between 0 and 120 seconds.`,
 			examples: ['0', 'reset', '4'],
 			reminder: "To reset a channel's ratelimit per user, you can use either 0 or 'reset'."
 		},
@@ -1913,64 +1910,70 @@ export default class extends Language {
 
 		commandBanDescription: 'Hit somebody with the ban hammer.',
 		commandBanExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**, and only members with lower role hierarchy position
-					can be banned by me. No, the guild's owner cannot be banned. This action can be optionally timed to create
-					a temporary ban.`,
-			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.BAN_MEMBERS}**, and only members with lower role hierarchy position can be banned by me.`,
+				"No, the guild's owner cannot be banned.",
+				'This action can be optionally timed to create a temporary ban.'
+			],
+			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.'],
+			multiline: true
 		},
 		commandDehoistDescription: 'Shoot everyone with the dehoist-inator 3000',
 		commandDehoistExtended: {
-			extendedHelp: `The act of hoisting involves adding special characters in front of your nickname
-			in order to appear higher in the members list. This command replaces any member's nickname that includes those special characters
-			with a special character that drags them to the bottom of the list.`,
-			reminder: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
-			can be dehoisted.`
+			extendedHelp: [
+				'The act of hoisting involves adding special characters in front of your nickname in order to appear higher in the members list.',
+				"This command replaces any member's nickname that includes those special characters with a special character that drags them to the bottom of the list."
+			],
+			reminder: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position can be dehoisted.`,
+			multiline: true
 		},
 		commandKickDescription: 'Hit somebody with the 👢.',
 		commandKickExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.KICK_MEMBERS}**, and only members with lower role hierarchy position
-					can be kicked by me. No, the guild's owner cannot be kicked.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.KICK_MEMBERS}**, and only members with lower role hierarchy position can be kicked by me. No, the guild's owner cannot be kicked.`,
 			examples: ['@Sarah', '@Sarah Spamming general chat.']
 		},
 		commandLockdownDescription: 'Close the gates for this channel!',
 		commandLockdownExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_CHANNELS}** in order to be able to manage the permissions for
-					a channel. This command removes the permission **${this.PERMISSIONS.SEND_MESSAGES}** to the \`@everyone\` role so nobody but
-					the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can
-					send messages. Optionally, you can pass time as second argument.`,
-			examples: ['', '#general', '#general 5m']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_CHANNELS}** in order to be able to manage the permissions for a channel.`,
+				`This command removes the permission **${this.PERMISSIONS.SEND_MESSAGES}** to the \`@everyone\` role so nobody but the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can send messages.`,
+				'Optionally, you can pass time as second argument.'
+			],
+			examples: ['', '#general', '#general 5m'],
+			multiline: true
 		},
 		commandMuteDescription: 'Mute a user in all text and voice channels.',
 		commandMuteExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-					can be managed by me. No, the guild's owner cannot be muted. This action can be optionally timed to create
-					a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.
-					The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Alphonse', '@Alphonse Spamming all channels', '@Alphonse 24h Spamming all channels']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner cannot be muted.",
+				"This action can be optionally timed to create a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.",
+				'The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.'
+			],
+			examples: ['@Alphonse', '@Alphonse Spamming all channels', '@Alphonse 24h Spamming all channels'],
+			multiline: true
 		},
 		commandSetNicknameDescription: 'Change the nickname of a user.',
 		commandSetNicknameExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position
-						can be managed by me. No, the guild's owner nickname cannot be changed.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position can be managed by me. No, the guild's owner nickname cannot be changed.`,
 			examples: ['@Pete peeehteeerrr', '@ꓑ𝗲੮ẻ Pete Unmentionable name']
 		},
 		commandAddRoleDescription: 'Adds a role to a user.',
 		commandAddRoleExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-						can be managed by me. No, the guild's owner roles cannot be changed.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me. No, the guild's owner roles cannot be changed.`,
 			examples: ['@John member', '@John member Make John a member']
 		},
 		commandRemoveroleDescription: '',
 		commandRemoveroleExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-						can be managed by me. No, the guild's owner roles cannot be changed.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me. No, the guild's owner roles cannot be changed.`,
 			examples: ['@Paula member', '@Paula member Remove member permissions from Paula']
 		},
 		commandPruneDescription: 'Prunes a certain amount of messages w/o filter.',
 		commandPruneExtended: {
-			extendedHelp: `This command deletes the given amount of messages given a filter within the last 100 messages sent
-					in the channel the command has been run. Optionally, you can add \`--silent\` to tell Skyra not to send a
-					response message.`,
+			extendedHelp: [
+				'This command deletes the given amount of messages given a filter within the last 100 messages sent in the channel the command has been run.',
+				'Optionally, you can add `--silent` to tell Skyra not to send a response message.'
+			],
 			explainedUsage: [
 				['Messages', 'The amount of messages to prune.'],
 				['Filter', 'The filter to apply.'],
@@ -1983,85 +1986,101 @@ export default class extends Language {
 				['(Filter) User', 'Filters messages sent by the specified user.']
 			],
 			examples: ['50 me', '75 @kyra', '20 bots', '60 humans before 629992398700675082'],
-			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.'
+			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.',
+			multiline: true
 		},
 		commandReasonDescription: 'Edit the reason field from a moderation log case.',
 		commandReasonExtended: {
-			extendedHelp: `This command allows moderation log case management, it allows moderators to update the reason.
-						If you want to modify multiple cases at once you provide a range.
-						For example \`1..3\` for the \`<range>\` will edit cases 1, 2, and 3.
-						Alternatively you can also give ranges with commas:
-						\`1,3..6\` will result in cases 1, 3, 4, 5, and 6
-						\`1,2,3\` will result in cases 1, 2, and 3`,
-			examples: ['420 Spamming all channels', '419..421 Bad memes', '1..3,4,7..9 Posting NSFW', 'latest Woops, I did a mistake!']
+			extendedHelp: [
+				'This command allows moderation log case management, it allows moderators to update the reason.',
+				'If you want to modify multiple cases at once you provide a range.',
+				'For example `1..3` for the `<range>` will edit cases 1, 2, and 3.',
+				'Alternatively you can also give ranges with commas:',
+				'`1,3..6` will result in cases 1, 3, 4, 5, and 6',
+				'`1,2,3` will result in cases 1, 2, and 3'
+			],
+			examples: ['420 Spamming all channels', '419..421 Bad memes', '1..3,4,7..9 Posting NSFW', 'latest Woops, I did a mistake!'],
+			multiline: true
 		},
 		commandRestrictAttachmentDescription: 'Restrict a user from sending attachments in all channels.',
 		commandRestrictAttachmentExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction.
-					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Pete', '@Pete Sending weird images', '@Pete 24h Sending NSFW images']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner cannot be restricted.",
+				'This action can be optionally timed to create a temporary restriction.',
+				'The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.'
+			],
+			examples: ['@Pete', '@Pete Sending weird images', '@Pete 24h Sending NSFW images'],
+			multiline: true
 		},
 		commandRestrictEmbedDescription: 'Restrict a user from attaching embeds in all channels.',
 		commandRestrictEmbedExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction.
-					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Pete', '@Pete Sending weird links', '@Pete 24h Posted a spam link']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner cannot be restricted.",
+				'This action can be optionally timed to create a temporary restriction.',
+				'The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.'
+			],
+			examples: ['@Pete', '@Pete Sending weird links', '@Pete 24h Posted a spam link'],
+			multiline: true
 		},
 		commandRestrictEmojiDescription: 'Restrict a user from using external emojis in all channels.',
 		commandRestrictEmojiExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction.
-					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner cannot be restricted.",
+				'This action can be optionally timed to create a temporary restriction.',
+				'The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.'
+			],
 			examples: ['@Pete', '@Pete Spamming external emojis', '@Pete 24h Posted cringe'],
-			reminder: `This will only prevent the usage of external emojis and so will have no effect for non-nitro users,
-			your own server's emojis and regular build in twemojis can still be used by members with this role.`
+			reminder: `This will only prevent the usage of external emojis and so will have no effect for non-nitro users, your own server's emojis and regular build in twemojis can still be used by members with this role.`,
+			multiline: true
 		},
 		commandRestrictReactionDescription: 'Restrict a user from reacting to messages in all channels.',
 		commandRestrictReactionExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction.
-					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Pete', '@Pete Spamming reactions', '@Pete 24h Posting weird reactions']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner cannot be restricted.",
+				'This action can be optionally timed to create a temporary restriction.',
+				'The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.'
+			],
+			examples: ['@Pete', '@Pete Spamming reactions', '@Pete 24h Posting weird reactions'],
+			multiline: true
 		},
 		commandRestrictVoiceDescription: 'Restrict a user from joining any voice channel.',
 		commandRestrictVoiceExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position
-					can be managed by me. No, the guild's owner cannot be restricted. This action can be optionally timed to create
-					a temporary restriction.
-					The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.`,
-			examples: ['@Pete', '@Pete Earraping in general voice channels', '@Pete 24h Making weird noises']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner cannot be restricted.",
+				'This action can be optionally timed to create a temporary restriction.',
+				'The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.'
+			],
+			examples: ['@Pete', '@Pete Earraping in general voice channels', '@Pete 24h Making weird noises'],
+			multiline: true
 		},
 		commandSoftBanDescription: 'Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.',
 		commandSoftBanExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**, and only members with lower role hierarchy position
-					can be banned by me. No, the guild's owner cannot be banned. The ban feature from Discord has a feature that
-					allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being
-					a number between 0 (no days) and 7. The user gets unbanned right after the ban, so it is like a kick, but
-					that can prune many many messages.`,
-			examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.BAN_MEMBERS}**, and only members with lower role hierarchy position can be banned by me.`,
+				"No, the guild's owner cannot be banned.",
+				"The ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.",
+				'The user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages.'
+			],
+			examples: ['@Pete', '@Pete Spamming all channels', '@Pete 7 All messages sent in 7 are gone now, YEE HAH!'],
+			multiline: true
 		},
 		commandToggleModerationDmDescription: 'Toggle moderation DMs.',
 		commandToggleModerationDmExtended: {
-			extendedHelp: `This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation
-					action (automatic or manual) will DM you, but you can disable them with this command.`,
-			examples: ['']
+			extendedHelp: `This command allows you to toggle moderation DMs. By default, they are on, meaning that any moderation action (automatic or manual) will DM you, but you can disable them with this command.`
 		},
 		commandUnbanDescription: 'Unban somebody from this guild!.',
 		commandUnbanExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin,
-					cleans them up, and allows the pass to this guild's gates.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.BAN_MEMBERS}**. It literally gets somebody from the rubbish bin, cleans them up, and allows the pass to this guild's gates.`,
 			examples: ['@Pete', '@Pete Turns out he was not the one who spammed all channels ¯\\_(ツ)_/¯']
 		},
 		commandUnmuteDescription: 'Remove the scotch tape from a user.',
 		commandUnmuteExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the muted people's list,
-					and gives the old roles back if the user had them.`,
+			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}** and removes a user from the muted people's list, and gives the old roles back if the user had them.`,
 			examples: ['@Pete', '@Pete (Insert random joke here).']
 		},
 		commandUnrestrictAttachmentDescription: 'Remove the attachment restriction from one or more users.',
@@ -2091,16 +2110,18 @@ export default class extends Language {
 		},
 		commandUnwarnDescription: 'Appeal a warning moderation log case.',
 		commandUnwarnExtended: {
-			extendedHelp: `This command appeals a warning, it requires no permissions, you only give me the moderation log
-					case to appeal and the reason.`,
+			extendedHelp: `This command appeals a warning, it requires no permissions, you only give me the moderation log case to appeal and the reason.`,
 			examples: ['0 Whoops, wrong dude.', '42 Turns out this was the definition of life.']
 		},
 		commandVmuteDescription: "Throw somebody's microphone out the window.",
 		commandVmuteExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
-					can be silenced by me. No, the guild's owner cannot be silenced. This action can be optionally timed to create
-					a temporary voice mute.`,
-			examples: ['@Pete', '@Pete Singing too loud', '@Pete Literally sang hear rape, for 24 hours.']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MUTE_MEMBERS}**, and only members with lower role hierarchy position can be silenced by me.`,
+				"No, the guild's owner cannot be silenced.",
+				'This action can be optionally timed to create a temporary voice mute.'
+			],
+			examples: ['@Pete', '@Pete Singing too loud', '@Pete Literally sang hear rape, for 24 hours.'],
+			multiline: true
 		},
 		commandVoiceKickDescription: 'Hit somebody with the 👢 for singing so bad and loud.',
 		commandVoiceKickExtended: {
@@ -2845,12 +2866,8 @@ export default class extends Language {
 			special: '🎴 Especial'
 		},
 		commandAnimeInvalidChoice: '¡Esa opción no es válida! Selecciona otra opción, por favor.',
-		commandAnimeOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) => [
-			`**Título inglés:** ${englishTitle}`,
-			`**Título japonés:** ${japaneseTitle}`,
-			`**Título canónico:** ${canonicalTitle}`,
-			synopsis
-		],
+		commandAnimeOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) =>
+			`**Título inglés:** ${englishTitle}\n**Título japonés:** ${japaneseTitle}\n**Título canónico:** ${canonicalTitle}\n${synopsis}`,
 		commandAnimeNoSynopsis: 'No hay sinopsis disponible para este título.',
 		commandAnimeEmbedData: {
 			type: 'Tipo',
@@ -2862,12 +2879,8 @@ export default class extends Language {
 			watchIt: 'Míralo Aquí:',
 			stillAiring: 'Aún se transmite'
 		},
-		commandMangaOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) => [
-			`**Título inglés:** ${englishTitle}`,
-			`**Título japonés:** ${japaneseTitle}`,
-			`**Título canónico:** ${canonicalTitle}`,
-			synopsis
-		],
+		commandMangaOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) =>
+			`**Título inglés:** ${englishTitle}\n**Título japonés:** ${japaneseTitle}\n**Título canónico:** ${canonicalTitle}\n${synopsis}`,
 		commandMangaTypes: {
 			manga: '📘 Manga',
 			novel: '📕 Novela',

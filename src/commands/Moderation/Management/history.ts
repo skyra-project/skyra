@@ -54,7 +54,30 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setFooter(message.language.get('commandHistoryFooter', { warnings, mutes, kicks, bans }))
+				.setFooter(
+					message.language.get('commandHistoryFooterNew', {
+						warnings,
+						mutes,
+						kicks,
+						bans,
+						warningsText:
+							warnings === 1
+								? message.language.get('commandHistoryFooterWarning', { count: warnings })
+								: message.language.get('commandHistoryFooterWarningPlural', { count: warnings }),
+						mutesText:
+							mutes === 1
+								? message.language.get('commandHistoryFooterMutes', { count: mutes })
+								: message.language.get('commandHistoryFooterMutesPlural', { count: mutes }),
+						kicksText:
+							kicks === 1
+								? message.language.get('commandHistoryFooterKicks', { count: kicks })
+								: message.language.get('commandHistoryFooterKicksPlural', { count: kicks }),
+						bansText:
+							bans === 1
+								? message.language.get('commandHistoryFooterBans', { count: bans })
+								: message.language.get('commandHistoryFooterBansPlural', { count: bans })
+					})
+				)
 		);
 	}
 

@@ -43,7 +43,7 @@ export default class extends RichDisplayCommand {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('commandOverwatchQueryFail', { player: this.decodePlayerName(player), platform }).join('\n');
+			throw message.language.get('commandOverwatchQueryFail', { player: this.decodePlayerName(player), platform });
 		}
 	}
 

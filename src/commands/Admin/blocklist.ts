@@ -22,8 +22,8 @@ export default class extends SkyraCommand {
 		const clientEntity = await connection.clients.findOneOrFail({ id: CLIENT_ID });
 
 		const guilds = clientEntity.guildBlocklist.map((guildId) => {
-			if (this.client.guilds.has(guildId)) {
-				const guild = this.client.guilds.get(guildId)!;
+			if (this.client.guilds.cache.has(guildId)) {
+				const guild = this.client.guilds.cache.get(guildId)!;
 				return `${guild.name} (\`${guildId}\`)`;
 			}
 
@@ -31,8 +31,8 @@ export default class extends SkyraCommand {
 		});
 		const users = await Promise.all(
 			clientEntity.userBlocklist.map(async (userId) => {
-				if (this.client.userTags.has(userId)) {
-					const user = this.client.userTags.get(userId)!;
+				if (this.client.users.cache.has(userId)) {
+					const user = this.client.users.cache.get(userId)!;
 					return `${user.username}#${user.discriminator} (\`${userId}\`)`;
 				}
 

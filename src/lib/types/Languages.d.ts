@@ -32,8 +32,6 @@ export const enum Filter {
 
 declare module 'klasa' {
 	export interface LanguageKeys {
-		globalUnknown: string;
-		globalNone: string;
 		default: (params: { key: string }) => string;
 		defaultLanguage: string;
 
@@ -43,6 +41,7 @@ declare module 'klasa' {
 		globalIs: string;
 		globalAnd: string;
 		globalOr: string;
+		globalUnknown: string;
 
 		settingGatewayKeyNoext: (params: { key: string }) => string;
 		settingGatewayChooseKey: (params: { keys: string }) => string;

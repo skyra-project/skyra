@@ -1085,17 +1085,15 @@ export default class extends Language {
 			],
 			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
 		},
-		commandOverwatchInvalidPlayerName: ({ playerTag }) =>
-			[
-				`\`${playerTag}\` es un nombre de jugador no válido`,
-				'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `MagicPants#112369`.',
-				'Para Xbox y Playstation tiene que ser su nombre de usuario.'
-			].join('\n'),
-		commandOverwatchQueryFail: ({ player, platform }) =>
-			[
-				`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?`,
-				'También asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.'
-			].join('\n'),
+		commandOverwatchInvalidPlayerName: ({ playerTag }) => [
+			`\`${playerTag}\` es un nombre de jugador no válido`,
+			'Para PC tiene que ser su Blizzard BattleTag completo, por ejemplo `MagicPants#112369`.',
+			'Para Xbox y Playstation tiene que ser su nombre de usuario.'
+		],
+		commandOverwatchQueryFail: ({ player, platform }) => [
+			`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?`,
+			'También asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.'
+		],
 		commandOverwatchNoStats: ({ player }) =>
 			`Encontré un jugador con la etiqueta \`${player}\` pero no había estadísticas disponibles para ellos.`,
 		commandOverwatchNoAverage: 'No hay suficientes datos para determinar el promedio.',
@@ -1125,18 +1123,13 @@ export default class extends Language {
 			bronzeMedals: `**Medallas de bronce ganadas:** ${this.groupDigits(bronzeMedals)}`
 		}),
 		commandOverwatchEmbedDataTopHero: ({ name, playTime }) => `**${toTitleCase(name)}** (${playTime})`,
-		commandOverwatchEmbedData: ({ authorName, playerLevel, prestigeLevel, ratings, totalGamesWon }) => ({
+		commandOverwatchEmbedData: ({ authorName, playerLevel, prestigeLevel, totalGamesWon }) => ({
 			title: 'Haga clic aquí para obtener más detalles en overwatchtracker.com',
 			ratingsTitle: 'Calificaciones',
 			author: `Estadísticas de jugador de Overwatch para ${authorName}`,
 			playerLevel: `**Nivel de jugador:** ${this.groupDigits(playerLevel)}`,
 			prestigeLevel: `**Nivel de prestigio:** ${this.groupDigits(prestigeLevel)}`,
 			totalGamesWon: `**Total de juegos ganados:** ${totalGamesWon ? this.groupDigits(totalGamesWon) : 'None'}`,
-			ratings: ratings
-				.map(
-					(rating) => `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`
-				)
-				.join('\n'),
 			headers: {
 				account: '__Estadísticas de cuenta__',
 				quickplay: '__Estadísticas de Quickplay__',
@@ -1859,7 +1852,8 @@ export default class extends Language {
 			examples: ['', '@Pete', 'mutes @Pete', 'warnings']
 		},
 		commandModerationsEmpty: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		commandModerationsAmount: ({ amount }) => (amount === 1 ? 'There is 1 entry.' : `There are ${amount} entries.`),
+		commandModerationsAmount: () => 'There is 1 entry.',
+		commandModerationsAmountPlural: ({ count }) => `There are ${count} entries.`,
 		commandMutesDescription: 'List all mutes from this guild or from a user.',
 		commandMutesExtended: {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
@@ -2284,10 +2278,7 @@ export default class extends Language {
 		}),
 		commandTypeTooManyTypes: 'Lo siento, pero puedes obtener el emparejamiento para 2 tipos como máximo',
 		commandTypeNotAType: ({ type }) => `${type} no es un tipo de Pokémon válido`,
-		commandTypeQueryFail: ({ types }) =>
-			`Lo siento, pero esa consulta falló. ¿Estás seguro de que los ${types
-				.map((val) => `\`${val}\``)
-				.join(' and ')} son realmente tipos en Pokémon?`,
+		commandTypeQueryFail: ({ types }) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que los ${types} son realmente tipos en Pokémon?`,
 
 		/**
 		 * ##################
@@ -2854,13 +2845,13 @@ export default class extends Language {
 			special: '🎴 Especial'
 		},
 		commandAnimeInvalidChoice: '¡Esa opción no es válida! Selecciona otra opción, por favor.',
-		commandAnimeOutputDescription: ({ entry, synopsis }) =>
-			[
-				`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
-				`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
-				`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
-				synopsis ?? 'No hay sinopsis disponible para este título.'
-			].join('\n'),
+		commandAnimeOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) => [
+			`**Título inglés:** ${englishTitle}`,
+			`**Título japonés:** ${japaneseTitle}`,
+			`**Título canónico:** ${canonicalTitle}`,
+			synopsis
+		],
+		commandAnimeNoSynopsis: 'No hay sinopsis disponible para este título.',
 		commandAnimeEmbedData: {
 			type: 'Tipo',
 			score: 'Puntuación',
@@ -2871,13 +2862,12 @@ export default class extends Language {
 			watchIt: 'Míralo Aquí:',
 			stillAiring: 'Aún se transmite'
 		},
-		commandMangaOutputDescription: ({ entry, synopsis }) =>
-			[
-				`**Título inglés:** ${entry.titles.en || entry.titles.en_us || 'Ninguno'}`,
-				`**Título japonés:** ${entry.titles.ja_jp || 'Ninguno'}`,
-				`**Título canónico:** ${entry.canonicalTitle || 'Ninguno'}`,
-				synopsis ?? 'No hay sinopsis disponible para este título.'
-			].join('\n'),
+		commandMangaOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) => [
+			`**Título inglés:** ${englishTitle}`,
+			`**Título japonés:** ${japaneseTitle}`,
+			`**Título canónico:** ${canonicalTitle}`,
+			synopsis
+		],
 		commandMangaTypes: {
 			manga: '📘 Manga',
 			novel: '📕 Novela',

@@ -71,7 +71,9 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get('commandModerationsAmount', { amount: entries.size }))
+				.setTitle(
+					message.language.get(entries.size === 1 ? 'commandModerationsAmount' : 'commandModerationsAmountPlural', { count: entries.size })
+				)
 		);
 
 		// Fetch usernames

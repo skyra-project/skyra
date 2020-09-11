@@ -70,7 +70,9 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw message.language.get('commandTypeQueryFail', { types });
+			throw message.language.get('commandTypeQueryFail', {
+				types: types.map((val) => `\`${val}\``).join(` ${message.language.get('globalAnd')} `)
+			});
 		}
 	}
 

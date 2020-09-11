@@ -9,8 +9,6 @@ import type { Moderation } from '@utils/constants';
 import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import type { Guild, GuildMember, PermissionString, Role, User } from 'discord.js';
-import type { Kitsu } from './definitions/Kitsu';
-import type { OverwatchRating } from './definitions/Overwatch';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export const enum Position {
@@ -358,7 +356,7 @@ declare module 'klasa' {
 		};
 		commandTypeTooManyTypes: string;
 		commandTypeNotAType: (params: { type: string }) => string;
-		commandTypeQueryFail: (params: { types: string[] }) => string;
+		commandTypeQueryFail: (params: { types: string }) => string;
 		inhibitorMusicQueueEmpty: string;
 		inhibitorMusicNotPlaying: string;
 		inhibitorMusicPaused: string;
@@ -707,8 +705,8 @@ declare module 'klasa' {
 		};
 		commandOverwatchDescription: string;
 		commandOverwatchExtended: LanguageHelpDisplayOptions;
-		commandOverwatchInvalidPlayerName: (params: { playerTag: string }) => string;
-		commandOverwatchQueryFail: (params: { player: string; platform: string }) => string;
+		commandOverwatchInvalidPlayerName: (params: { playerTag: string }) => string[];
+		commandOverwatchQueryFail: (params: { player: string; platform: string }) => string[];
 		commandOverwatchNoStats: (params: { player: string }) => string;
 		commandOverwatchNoAverage: string;
 		commandOverwatchEmbedDataStats: (params: {
@@ -741,7 +739,6 @@ declare module 'klasa' {
 			authorName: string;
 			playerLevel: number;
 			prestigeLevel: number;
-			ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] | string }>;
 			totalGamesWon: number;
 		}) => {
 			title: string;
@@ -749,7 +746,6 @@ declare module 'klasa' {
 			author: string;
 			playerLevel: string;
 			prestigeLevel: string;
-			ratings: string;
 			totalGamesWon: string;
 			headers: {
 				account: string;
@@ -1220,7 +1216,13 @@ declare module 'klasa' {
 			[index: string]: string;
 		};
 		commandAnimeInvalidChoice: string;
-		commandAnimeOutputDescription: (params: { entry: Kitsu.KitsuHit; synopsis: string | null }) => string;
+		commandAnimeOutputDescription: (params: {
+			englishTitle: string;
+			japaneseTitle: string;
+			canonicalTitle: string;
+			synopsis: string;
+		}) => string[];
+		commandAnimeNoSynopsis: string;
 		commandAnimeEmbedData: {
 			type: string;
 			score: string;
@@ -1231,7 +1233,12 @@ declare module 'klasa' {
 			watchIt: string;
 			stillAiring: string;
 		};
-		commandMangaOutputDescription: (params: { entry: Kitsu.KitsuHit; synopsis: string | null }) => string;
+		commandMangaOutputDescription: (params: {
+			englishTitle: string;
+			japaneseTitle: string;
+			canonicalTitle: string;
+			synopsis: string;
+		}) => string[];
 		commandMangaEmbedData: {
 			type: string;
 			score: string;
@@ -1613,7 +1620,8 @@ declare module 'klasa' {
 		commandModerationsDescription: string;
 		commandModerationsExtended: LanguageHelpDisplayOptions;
 		commandModerationsEmpty: string;
-		commandModerationsAmount: (params: { amount: number }) => string;
+		commandModerationsAmount: (params: { count: number }) => string;
+		commandModerationsAmountPlural: (params: { count: number }) => string;
 		commandMutesDescription: string;
 		commandMutesExtended: LanguageHelpDisplayOptions;
 		commandWarningsDescription: string;

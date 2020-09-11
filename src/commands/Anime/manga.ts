@@ -86,11 +86,26 @@ export default class extends RichDisplayCommand {
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
+			const [englishTitle, japaneseTitle, canonicalTitle] = [
+				entry.titles.en || entry.titles.en_us,
+				entry.titles.ja_jp,
+				entry.canonicalTitle
+			].map((title) => title || message.language.get('globalNone'));
+
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(mangaURL)
-					.setDescription(message.language.get('commandMangaOutputDescription', { entry, synopsis }))
+					.setDescription(
+						message.language
+							.get('commandMangaOutputDescription', {
+								englishTitle,
+								japaneseTitle,
+								canonicalTitle,
+								synopsis: synopsis ?? message.language.get('commandAnimeNoSynopsis')
+							})
+							.join('\n')
+					)
 					.setThumbnail(entry.posterImage?.original || '')
 					.addField(embedData.type, message.language.get('commandMangaTypes')[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)

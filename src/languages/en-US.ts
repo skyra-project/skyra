@@ -1063,17 +1063,15 @@ export default class extends Language {
 			],
 			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24']
 		},
-		commandOverwatchInvalidPlayerName: ({ playerTag }) =>
-			[
-				`\`${playerTag}\` is an invalid player name`,
-				'For PC it has to be their full Blizzard BattleTag, for example `MagicPants#112369`.',
-				'For Xbox and Playstation it just has to be their username.'
-			].join('\n'),
-		commandOverwatchQueryFail: ({ player, platform }) =>
-			[
-				`Failed to get data for \`${player}\`, are you sure they play on \`${platform}\`?`,
-				'Also make sure to get the casing right, names are case sensitive.'
-			].join('\n'),
+		commandOverwatchInvalidPlayerName: ({ playerTag }) => [
+			`\`${playerTag}\` is an invalid player name`,
+			'For PC it has to be their full Blizzard BattleTag, for example `MagicPants#112369`.',
+			'For Xbox and Playstation it just has to be their username.'
+		],
+		commandOverwatchQueryFail: ({ player, platform }) => [
+			`Failed to get data for \`${player}\`, are you sure they play on \`${platform}\`?`,
+			'Also make sure to get the casing right, names are case sensitive.'
+		],
 		commandOverwatchNoStats: ({ player }) => `I found a player with the tag \`${player}\` but no stats were available for them.`,
 		commandOverwatchNoAverage: 'Not enough data to determine average.',
 		commandOverwatchEmbedDataStats: ({
@@ -1102,18 +1100,13 @@ export default class extends Language {
 			bronzeMedals: `**Bronze medals earned:** ${this.groupDigits(bronzeMedals)}`
 		}),
 		commandOverwatchEmbedDataTopHero: ({ name, playTime }) => `**${toTitleCase(name)}** (${playTime})`,
-		commandOverwatchEmbedData: ({ authorName, playerLevel, prestigeLevel, ratings, totalGamesWon }) => ({
+		commandOverwatchEmbedData: ({ authorName, playerLevel, prestigeLevel, totalGamesWon }) => ({
 			title: 'Click here for more details on overwatchtracker.com',
 			ratingsTitle: 'Ratings',
 			author: `Overwatch Player Statistics for ${authorName}`,
 			playerLevel: `**Player level:** ${this.groupDigits(playerLevel)}`,
 			prestigeLevel: `**Prestige level:** ${this.groupDigits(prestigeLevel)}`,
 			totalGamesWon: `**Total games won:** ${totalGamesWon ? this.groupDigits(totalGamesWon) : 'None'}`,
-			ratings: ratings
-				.map(
-					(rating) => `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? this.groupDigits(rating.level) : rating.level}`
-				)
-				.join('\n'),
 			headers: {
 				account: '__Account Stats__',
 				quickplay: '__Quickplay Stats__',
@@ -1836,7 +1829,8 @@ export default class extends Language {
 			examples: ['', '@Pete', 'mutes @Pete', 'warnings']
 		},
 		commandModerationsEmpty: 'Nobody has behaved badly yet, who will be the first user to be listed here?',
-		commandModerationsAmount: ({ amount }) => (amount === 1 ? 'There is 1 entry.' : `There are ${amount} entries.`),
+		commandModerationsAmount: () => 'There is 1 entry.',
+		commandModerationsAmountPlural: ({ count }) => `There are ${count} entries.`,
 		commandMutesDescription: 'List all mutes from this guild or from a user.',
 		commandMutesExtended: {
 			extendedHelp: `This command shows either all mutes filed in this guild, or all mutes filed in this guild
@@ -2256,8 +2250,7 @@ export default class extends Language {
 		}),
 		commandTypeTooManyTypes: 'I am sorry, but you can get the matchup for at most 2 types',
 		commandTypeNotAType: ({ type }) => `${type} is not a valid Pokémon type`,
-		commandTypeQueryFail: ({ types }) =>
-			`I am sorry, but that query failed. Are you sure ${types.map((val) => `\`${val}\``).join(' and ')} are actually types in Pokémon?`,
+		commandTypeQueryFail: ({ types }) => `I am sorry, but that query failed. Are you sure ${types} are actually types in Pokémon?`,
 
 		/**
 		 * ##################
@@ -2820,13 +2813,13 @@ export default class extends Language {
 			special: '🎴 Special'
 		},
 		commandAnimeInvalidChoice: "That's an invalid choice! Please try with another option.",
-		commandAnimeOutputDescription: ({ entry, synopsis }) =>
-			[
-				`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
-				`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
-				`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
-				synopsis ?? 'No synopsis available for this title.'
-			].join('\n'),
+		commandAnimeOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) => [
+			`**English title:** ${englishTitle}`,
+			`**Japanese title:** ${japaneseTitle}`,
+			`**Canonical title:** ${canonicalTitle}`,
+			synopsis
+		],
+		commandAnimeNoSynopsis: 'No synopsis available for this title.',
 		commandAnimeEmbedData: {
 			type: 'Type',
 			score: 'Score',
@@ -2837,13 +2830,12 @@ export default class extends Language {
 			watchIt: 'Watch it here:',
 			stillAiring: 'Still airing'
 		},
-		commandMangaOutputDescription: ({ entry, synopsis }) =>
-			[
-				`**English title:** ${entry.titles.en || entry.titles.en_us || 'None'}`,
-				`**Japanese title:** ${entry.titles.ja_jp || 'None'}`,
-				`**Canonical title:** ${entry.canonicalTitle || 'None'}`,
-				synopsis ?? 'No synopsis available for this title.'
-			].join('\n'),
+		commandMangaOutputDescription: ({ englishTitle, japaneseTitle, canonicalTitle, synopsis }) => [
+			`**English title:** ${englishTitle}`,
+			`**Japanese title:** ${japaneseTitle}`,
+			`**Canonical title:** ${canonicalTitle}`,
+			synopsis
+		],
 		commandMangaTypes: {
 			manga: '📘 Manga',
 			novel: '📕 Novel',

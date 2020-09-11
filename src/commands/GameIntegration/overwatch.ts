@@ -6,7 +6,8 @@ import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } fro
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
-import { MessageEmbed } from 'discord.js';
+import { toTitleCase } from '@sapphire/utilities';
+import { Collection, MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
@@ -42,26 +43,31 @@ export default class extends RichDisplayCommand {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('commandOverwatchQueryFail', { player: this.decodePlayerName(player), platform });
+			throw message.language.get('commandOverwatchQueryFail', { player: this.decodePlayerName(player), platform }).join('\n');
 		}
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
 	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
-		const ratings = this.ratingsToMap(
-			overwatchData.ratings ?? [],
-			(r) => r.role,
-			(r) => r
-		);
+		let ratings = Array.from(
+			this.ratingsToCollection(
+				overwatchData.ratings ?? [],
+				(r) => r.role,
+				(r) => r
+			)
+				.mapValues((rating) => {
+					return `**${toTitleCase(rating.role)}:** ${
+						typeof rating.level === 'number' ? message.language.groupDigits(rating.level) : rating.level
+					}`;
+				})
+				.values()
+		).join('\n');
+
 		const embedData = message.language.get('commandOverwatchEmbedData', {
 			authorName: overwatchData.name,
 			playerLevel: overwatchData.level,
 			prestigeLevel: overwatchData.level + overwatchData.prestige * 100,
-			totalGamesWon: overwatchData.gamesWon,
-			ratings: [
-				...ratings.values(),
-				{ role: 'average', level: overwatchData.rating === 0 ? message.language.get('commandOverwatchNoAverage') : overwatchData.rating }
-			]
+			totalGamesWon: overwatchData.gamesWon
 		});
 
 		return new UserRichDisplay(
@@ -75,7 +81,7 @@ export default class extends RichDisplayCommand {
 			.addPage((embed: MessageEmbed) =>
 				embed
 					.setDescription([embedData.headers.account, embedData.playerLevel, embedData.prestigeLevel, embedData.totalGamesWon].join('\n'))
-					.addField(embedData.ratingsTitle, embedData.ratings)
+					.addField(embedData.ratingsTitle, ratings)
 			)
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(message, overwatchData, 'quickPlayStats', embedData)))
 			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(message, overwatchData, 'competitiveStats', embedData)))
@@ -92,10 +98,10 @@ export default class extends RichDisplayCommand {
 	 * @param valueExtractor A function that describes where to find the `value` for the `Map`
 	 * @returns a `Map<Key, Value>` of the values, mapped by the given key
 	 */
-	private ratingsToMap<I, K, V>(inputArray: readonly I[], keyExtractor: (_: I) => K, valueExtractor: (_: I) => V): Map<K, V> {
-		return inputArray.reduce<Map<K, V>>(
-			(accumulator: Map<K, V>, element: I) => accumulator.set(keyExtractor(element), valueExtractor(element)),
-			new Map<K, V>()
+	private ratingsToCollection<I, K, V>(inputArray: readonly I[], keyExtractor: (_: I) => K, valueExtractor: (_: I) => V): Collection<K, V> {
+		return inputArray.reduce<Collection<K, V>>(
+			(accumulator: Collection<K, V>, element: I) => accumulator.set(keyExtractor(element), valueExtractor(element)),
+			new Collection<K, V>()
 		);
 	}
 

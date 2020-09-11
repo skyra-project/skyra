@@ -312,13 +312,14 @@ export default class extends Language {
 			],
 			multiline: true
 		},
-		commandAddPlaylist: ({ amount }) =>
-			amount === 1 ? '🎵 Añadida **una** canción a la cola 🎶' : `🎵 Añadidas **${amount}** canciones a la cola 🎶`,
+		commandAddPlaylist: ({ songs }) => `🎵 Añadida ${songs} a la cola 🎶`,
+		commandAddPlaylistSongs: () => `**una** canción`,
+		commandAddPlaylistSongsPlural: ({ count }) => `**${count}** canciones`,
 		commandAddSong: ({ title }) => `🎵 Añadida la canción **${title}** a la cola 🎶`,
 		commandClearDescription: 'Borra las canciones de la cola.',
 		commandClearDenied: '¡No puedes ejecutar este comando mientras que hayan más de 4 usuarios! ¡Debes ser el Dj de esta fiesta!',
-		commandClearSuccess: ({ amount }) =>
-			amount === 1 ? '🗑 Una canción fue borrada de la cola.' : `🗑 ${amount} canciones fueron borradas de la cola.`,
+		commandClearSuccess: () => '🗑 Una canción fue borrada de la cola.',
+		commandClearSuccessPlural: ({ count }) => `🗑 ${count} canciones fueron borradas de la cola.`,
 		commandExportQueueDescription: 'Exports your queue to a `.squeue` file.',
 		commandExportQueueExtended: {
 			extendedHelp: [
@@ -412,26 +413,18 @@ export default class extends Language {
 		commandQueueTitle: ({ guildname }) => `Music queue for ${guildname}`,
 		commandQueueLine: ({ position, duration, title, url, requester }) =>
 			`**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
-		commandQueueNowplaying: ({ duration, title, url, requester, timeRemaining }) =>
-			[
-				duration ? `\`${duration}\`` : 'Live Stream',
-				`[${title}](${url})`,
-				`Requester: **${requester}**`,
-				timeRemaining ? `🕰 Tiempo restante: ${timeRemaining}.` : null
-			]
-				.filter(Boolean)
-				.join(' | '),
+		commandQueueNowplaying: ({ title, url, requester }) => [`[${title}](${url})`, `Requester: **${requester}**`],
+		commandQueueNowplayingLiveStream: 'Live Stream',
+		commandQueueNowplayingTimeRemaining: ({ timeRemaining }) => `🕰 Tiempo restante: ${timeRemaining}.`,
 		commandQueueNowplayingTitle: 'Now Playing:',
 		commandQueueTotalTitle: 'Total songs:',
-		commandQueueTotal: ({ songs, remainingTime }) =>
-			`${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
+		commandQueueTotal: ({ songs, remainingTime }) => `${songs} in the queue, with a total duration of ${remainingTime}`,
 		commandQueueEmpty: 'parece que nada se está reproduciendo en este momento y la cola está vacía, ¿por qué no inicias el disco?',
 		commandQueueDashboardInfo: ({ guild }) =>
 			`¿Sabías que también puedes administrar tu música usando una aplicación web elegante? [Haga clic aquí para ir allí](https://skyra.pw/music/${guild.id})`,
 		commandRemoveDescription: 'Elimina una canción de la lista de cola.',
 		commandRemoveIndexInvalid: 'mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
-		commandRemoveIndexOut: ({ amount }) =>
-			`he intentado acceder a esa canción por tí, ¡pero sólo tengo ${amount} ${amount === 1 ? 'canción' : 'canciones'} en mi mesa!`,
+		commandRemoveIndexOut: ({ songs }) => `he intentado acceder a esa canción por tí, ¡pero sólo tengo ${songs} en mi mesa!`,
 		commandRemoveDenied: [
 			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
 			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'

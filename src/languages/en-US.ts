@@ -309,11 +309,14 @@ export default class extends Language {
 			],
 			multiline: true
 		},
-		commandAddPlaylist: ({ amount }) => `${GREENTICK} Added **${amount}** ${amount === 1 ? 'song' : 'songs'} to the queue 🎶`,
+		commandAddPlaylist: ({ songs }) => `${GREENTICK} Added ${songs} to the queue 🎶`,
+		commandAddPlaylistSongs: ({ count }) => `**${count}** song`,
+		commandAddPlaylistSongsPlural: ({ count }) => `**${count}** songs`,
 		commandAddSong: ({ title }) => `${GREENTICK} Added **${title}** to the queue 🎶`,
 		commandClearDescription: 'Clears the queue list.',
 		commandClearDenied: `${REDCROSS} You can't execute this command when there are over 4 members! You must be a dee-jay or a moderator!`,
-		commandClearSuccess: ({ amount }) => `${REDCROSS}  Pruned ${amount} ${amount === 1 ? 'song' : 'songs'}.`,
+		commandClearSuccess: ({ count }) => `${REDCROSS}  Pruned ${count} song.`,
+		commandClearSuccessPlural: ({ count }) => `${REDCROSS}  Pruned ${count} songs.`,
 		commandExportQueueDescription: 'Exports your queue to a `.squeue` file.',
 		commandExportQueueExtended: {
 			extendedHelp: [
@@ -404,26 +407,18 @@ export default class extends Language {
 		commandQueueTitle: ({ guildname }) => `Music queue for ${guildname}`,
 		commandQueueLine: ({ position, duration, title, url, requester }) =>
 			`**[\`${position}\`]** │ \`${duration}\` │ [${title}](${url}) │ Requester: **${requester}**.`,
-		commandQueueNowplaying: ({ duration, title, url, requester, timeRemaining }) =>
-			[
-				duration ? `\`${duration}\`` : 'Live Stream',
-				`[${title}](${url})`,
-				`Requester: **${requester}**`,
-				timeRemaining ? `🕰 Time remaining: ${timeRemaining}.` : null
-			]
-				.filter(Boolean)
-				.join(' | '),
+		commandQueueNowplaying: ({ title, url, requester }) => [`[${title}](${url})`, `Requester: **${requester}**`],
+		commandQueueNowplayingLiveStream: 'Live Stream',
+		commandQueueNowplayingTimeRemaining: ({ timeRemaining }) => `🕰 Time remaining: ${timeRemaining}.`,
 		commandQueueNowplayingTitle: 'Now Playing:',
 		commandQueueTotalTitle: 'Total songs:',
-		commandQueueTotal: ({ songs, remainingTime }) =>
-			`${songs} song${songs === 1 ? '' : 's'} in the queue, with a total duration of ${remainingTime}`,
+		commandQueueTotal: ({ songs, remainingTime }) => `${songs} in the queue, with a total duration of ${remainingTime}`,
 		commandQueueEmpty: "looks like nothing is playing right now and the queue is empty, why don't you start the disc?",
 		commandQueueDashboardInfo: ({ guild }) =>
 			`Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/${guild.id})`,
 		commandRemoveDescription: 'Remove a song from the queue list.',
 		commandRemoveIndexInvalid: `I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
-		commandRemoveIndexOut: ({ amount }) =>
-			`maybe time happened too fast for you, there are ${amount} ${amount === 1 ? 'song' : 'songs'} in the queue!`,
+		commandRemoveIndexOut: ({ songs }) => `maybe time happened too fast for you, there are ${songs} in the queue!`,
 		commandRemoveDenied: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
 		commandRemoveSuccess: ({ song }) => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
 		commandSeekDescription: 'Change the player time for the current song.',

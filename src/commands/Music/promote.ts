@@ -24,7 +24,12 @@ export default class extends MusicCommand {
 		if (index <= 0) throw message.language.get('commandRemoveIndexInvalid');
 
 		const { music } = message.guild!;
-		if (index > music.queue.length) throw message.language.get('commandRemoveIndexOut', { amount: music.queue.length });
+		if (index > music.queue.length)
+			throw message.language.get('commandRemoveIndexOut', {
+				songs: message.language.get(music.queue.length === 1 ? 'commandAddPlaylistSongs' : 'commandAddPlaylistSongsPlural', {
+					count: music.queue.length
+				})
+			});
 
 		// Promote the song to the top of the queue
 		message.guild!.music.promote(index, this.getContext(message));

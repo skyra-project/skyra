@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
 import { Filter, Position } from '@lib/types/Languages';
 import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
-import { CLIENT_ID, VERSION } from '@root/config';
+import { VERSION } from '@root/config';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
@@ -2893,12 +2893,12 @@ export default class extends Language {
 				'If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms` or `--nopermissions` to the command.',
 			examples: ['', 'noperms', '--noperms', '--nopermissions']
 		},
-		commandInvite: () =>
+		commandInvite: ({ invite }) =>
 			[
-				`To add Skyra to your server: <${this.client.invite}>`,
+				`To add Skyra to your server: <${invite}>`,
 				"Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions."
 			].join('\n'),
-		commandInviteNoPerms: () => `To add Skyra to your server: <https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=bot>`,
+		commandInviteNoPerms: ({ invite }) => `To add Skyra to your server: <${invite}>`,
 		commandInfo: [
 			`Skyra ${VERSION} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 			"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",

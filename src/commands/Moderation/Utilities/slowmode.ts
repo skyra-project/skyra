@@ -28,6 +28,8 @@ export default class extends SkyraCommand {
 		else if (cooldown > MAXIMUM_TIME) throw message.language.get('commandSlowmodeTooLong');
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown);
-		return message.sendLocale('commandSlowmodeSet', [{ cooldown: cooldown * 1000 }]);
+		return cooldown === 0
+			? message.sendLocale('commandSlowmodeReset')
+			: message.sendLocale('commandSlowmodeSet', [{ cooldown: cooldown * 1000 }]);
 	}
 }

@@ -1552,7 +1552,7 @@ declare module 'klasa' {
 		commandStickyRolesAddExists: (params: { user: string }) => string;
 		commandStickyRolesAdd: (params: { user: string }) => string;
 		commandStickyRolesShowEmpty: string;
-		commandStickyRolesShowSingle: (params: { user: string; roles: readonly string[] }) => string;
+		commandStickyRolesShowSingle: (params: { user: string; roles: string }) => string;
 		commandRandRedditRequiredReddit: string;
 		commandRandRedditInvalidArgument: string;
 		commandRandRedditBanned: string;
@@ -1653,6 +1653,7 @@ declare module 'klasa' {
 		commandTimeAborted: (params: { title: string }) => string;
 		commandTimeScheduled: (params: { title: string; user: User; time: number }) => string;
 		commandSlowmodeSet: (params: { cooldown: number }) => string;
+		commandSlowmodeReset: string;
 		commandSlowmodeTooLong: string;
 		commandBanNotBannable: string;
 		commandDehoistStarting: (params: { count: number }) => string;
@@ -1685,40 +1686,53 @@ declare module 'klasa' {
 		commandMutecreateMissingPermission: string;
 		commandRestrictLowlevel: string;
 		commandPruneInvalid: string;
-		commandPrune: (params: { amount: number; total: number }) => string;
+		commandPruneAlert: (params: { count: number; total: number }) => string;
+		commandPruneAlertPlural: (params: { count: number; total: number }) => string;
 		commandPruneInvalidPosition: string;
 		commandPruneInvalidFilter: string;
 		commandPruneNoDeletes: string;
 		commandPruneLogHeader: string;
-		commandPruneLogMessage: (params: { channel: string; author: string; amount: number }) => string;
+		commandPruneLogMessage: (params: { channel: string; author: string; count: number }) => string;
+		commandPruneLogMessagePlural: (params: { channel: string; author: string; count: number }) => string;
 		commandPrunePositions: Map<string, Position>;
 		commandPruneFilters: Map<string, Filter>;
 		commandReasonMissingCase: string;
 		commandReasonNotExists: (params: { range: boolean }) => string;
-		commandReasonUpdated: (params: { entries: readonly number[]; newReason: string }) => string;
-		commandToggleModerationDmToggled: (params: { value: boolean }) => string;
+		commandReasonUpdated: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];
+		commandReasonUpdatedPlural: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];
+		commandToggleModerationDmToggledEnabled: string;
+		commandToggleModerationDmToggledDisabled: string;
 		commandUnbanMissingPermission: string;
 		commandUnmuteMissingPermission: string;
 		commandVmuteMissingPermission: string;
 		commandVmuteUserNotMuted: string;
 		commandWarnDm: (params: { moderator: string; guild: string; reason: string }) => string;
 		commandWarnMessage: (params: { user: User; log: number }) => string;
-		commandModerationOutput: (params: {
-			cases: readonly number[];
-			range: string | number;
-			users: readonly string[];
-			reason: string | null;
-		}) => string;
-		commandModerationFailed: (params: { users: readonly string[] }) => string;
-		commandModerationDm: (params: {
+		commandModerationOutput: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationOutputPlural: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationOutputWithReason: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationOutputWithReasonPlural: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationFailed: (params: { users: string }) => string;
+		commandModerationDmFooter: string;
+		commandModerationDmDescription: (params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[];
+		commandModerationDmDescriptionWithReason: (params: {
 			guild: string;
 			title: string;
 			reason: string | null;
 			duration: number | null;
-		}) => {
-			description: string;
-			footer: string;
-		};
+		}) => string[];
+		commandModerationDmDescriptionWithDuration: (params: {
+			guild: string;
+			title: string;
+			reason: string | null;
+			duration: number | null;
+		}) => string[];
+		commandModerationDmDescriptionWithReasonWithDuration: (params: {
+			guild: string;
+			title: string;
+			reason: string | null;
+			duration: number | null;
+		}) => string[];
 		commandModerationDays: RegExp;
 		commandAutoRolePointsRequired: string;
 		commandAutoRoleUpdateConfigured: string;

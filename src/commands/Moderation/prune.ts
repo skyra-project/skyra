@@ -88,7 +88,12 @@ export default class extends SkyraCommand {
 		floatPromise(this, this.sendPruneLogs(message, filtered, filteredKeys));
 		return Reflect.has(message.flagArgs, 'silent')
 			? null
-			: message.alert(message.language.get('commandPrune', { amount: filteredKeys.length, total: limit }));
+			: message.alert(
+					message.language.get(filteredKeys.length === 1 ? 'commandPruneAlert' : 'commandPruneAlertPlural', {
+						count: filteredKeys.length,
+						total: limit
+					})
+			  );
 	}
 
 	private resolveKeys(messages: readonly string[], position: 'before' | 'after', limit: number) {
@@ -148,10 +153,10 @@ export default class extends SkyraCommand {
 						message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 					)
 					.setDescription(
-						message.language.get('commandPruneLogMessage', {
+						message.language.get(messages.size === 1 ? 'commandPruneLogMessage' : 'commandPruneLogMessagePlural', {
 							channel: (message.channel as TextChannel).toString(),
 							author: message.author.toString(),
-							amount: messages.size
+							count: messages.size
 						})
 					)
 					.setColor(this.kColor)

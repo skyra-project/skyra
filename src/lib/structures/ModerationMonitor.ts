@@ -157,7 +157,16 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
 	protected abstract softPunishmentPath: CustomGet<string, number>;
 	protected abstract hardPunishmentPath: HardPunishment | null;
-	protected abstract reasonLanguageKey: LanguageKeysComplex;
+	protected abstract reasonLanguageKey: Extract<
+		LanguageKeysComplex,
+		| 'moderationMonitorCapitals'
+		| 'moderationMonitorInvites'
+		| 'moderationMonitorLinks'
+		| 'moderationMonitorMessages'
+		| 'moderationMonitorNewlines'
+		| 'moderationMonitorWords'
+	>;
+
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
 	protected abstract onAlert(message: KlasaMessage, value: T): unknown;

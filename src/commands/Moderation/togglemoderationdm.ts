@@ -19,6 +19,6 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendLocale('commandToggleModerationDmToggled', [{ value: updated.moderationDM }]);
+		return message.sendLocale(updated.moderationDM ? 'commandToggleModerationDmToggledEnabled' : 'commandToggleModerationDmToggledDisabled');
 	}
 }

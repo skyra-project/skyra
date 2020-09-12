@@ -668,13 +668,22 @@ export class ModerationActions {
 	}
 
 	private buildEmbed(entry: ModerationEntity, sendOptions: ModerationActionsSendOptions) {
-		const embedData = this.guild.language.get('commandModerationDm', {
-			guild: this.guild.name,
-			title: entry.title,
-			reason: entry.reason,
-			duration: entry.duration
-		});
-		const embed = new MessageEmbed().setDescription(embedData.description).setFooter(embedData.footer);
+		const descriptionKey = entry.reason
+			? entry.duration
+				? 'commandModerationDmDescriptionWithReasonWithDuration'
+				: 'commandModerationDmDescriptionWithReason'
+			: entry.duration
+			? 'commandModerationDmDescriptionWithDuration'
+			: 'commandModerationDmDescription';
+		const description = this.guild.language
+			.get(descriptionKey, {
+				guild: this.guild.name,
+				title: entry.title,
+				reason: entry.reason,
+				duration: entry.duration
+			})
+			.join('\n');
+		const embed = new MessageEmbed().setDescription(description).setFooter(this.guild.language.get('commandModerationDmFooter'));
 
 		if (sendOptions.moderator) {
 			embed.setAuthor(sendOptions.moderator.username, sendOptions.moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }));

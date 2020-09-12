@@ -1064,8 +1064,8 @@ export default class extends Language {
 					'Para PC, la etiqueta de tormenta de nieve completa, para la consola, el nombre de usuario. ¡Distingue mayúsculas y minúsculas!'
 				]
 			],
-			reminder: '**¡Los nombres de los jugadores distinguen entre mayúsculas y minúsculas!**',
 			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24'],
+			reminder: '**¡Los nombres de los jugadores distinguen entre mayúsculas y minúsculas!**',
 			multiline: true
 		},
 		commandOverwatchInvalidPlayerName: ({ playerTag }) =>
@@ -1222,7 +1222,8 @@ export default class extends Language {
 				['add <type> <input> <output>', 'Add a new trigger given a type, input and output.'],
 				['remove <type> <input>', 'Remove a trigger given the type and input.']
 			],
-			examples: ['', 'list', 'add reaction "good night" 🌛', 'remove reaction "good night"']
+			examples: ['', 'list', 'add reaction "good night" 🌛', 'remove reaction "good night"'],
+			multiline: true
 		},
 
 		/**

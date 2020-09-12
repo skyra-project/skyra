@@ -3560,7 +3560,7 @@ export default class extends Language {
 		commandSnipeEmpty: 'There are no sniped messages in this channel.',
 		commandSnipeTitle: 'Sniped Message',
 		commandUpvoteMessage:
-			'Here is the link: **<https://botsfordiscord.com/bot/266624760782258186>**! Some perks for upvoters are coming very soon! Remember, you can vote every 24 hours.',
+			'Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.',
 		commandVaporwaveOutput: ({ str }) => `Here is your converted message:\n${str}`,
 
 		/**

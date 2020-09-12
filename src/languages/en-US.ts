@@ -2652,8 +2652,10 @@ export default class extends Language {
 			currentDate: 'Current Date',
 			country: 'Country',
 			gmsOffset: 'GMT Offset',
-			dst: `**DST**: ${dst === 0 ? 'Does not observe DST right now' : 'Observes DST right now'}`
+			dst: `**DST**: ${dst}`
 		}),
+		commandCurrentTimeDst: 'Does not observe DST right now',
+		commandCurrentTimeNoDst: 'Observes DST right now',
 		commandGsearchDescription: 'Find your favourite things on Google',
 		commandGsearchExtended: {
 			extendedHelp: `This command queries the powerful Google Search engine to find websites for your query.
@@ -3330,8 +3332,7 @@ export default class extends Language {
 				`Mentionable: **${mentionable}**`
 			].join('\n'),
 		commandRoleInfoAll: 'All Permissions granted.',
-		commandRoleInfoPermissions: ({ permissions }) =>
-			permissions.length > 0 ? permissions.map((key) => `+ **${this.PERMISSIONS[key]}**`).join('\n') : 'Permissions not granted.',
+		commandRoleInfoNoPermissions: 'Permissions not granted.',
 		commandFilterUndefinedWord: 'You must write what you want me to filter.',
 		commandFilterFiltered: ({ filtered }) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 		commandFilterAdded: ({ word }) => `| ✅ | Success! Added the word ${word} to the filter.`,

@@ -8,7 +8,7 @@ import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/Syste
 import type { Moderation } from '@utils/constants';
 import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import type { Guild, GuildMember, PermissionString, Role, User } from 'discord.js';
+import type { Guild, GuildMember, Role, User } from 'discord.js';
 import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export const enum Position {
@@ -771,7 +771,7 @@ declare module 'klasa' {
 		commandCurrentTimeExtended: LanguageHelpDisplayOptions;
 		commandCurrentTimeLocationNotFound: string;
 		commandCurrentTimeTitles: (params: {
-			dst: number;
+			dst: string;
 		}) => {
 			currentTime: string;
 			currentDate: string;
@@ -779,6 +779,8 @@ declare module 'klasa' {
 			gmsOffset: string;
 			dst: string;
 		};
+		commandCurrentTimeDst: string;
+		commandCurrentTimeNoDst: string;
 		commandGsearchDescription: string;
 		commandGsearchExtended: LanguageHelpDisplayOptions;
 		commandGimageDescription: string;
@@ -1485,7 +1487,7 @@ declare module 'klasa' {
 		commandRoleInfoTitles: Record<string, string>;
 		commandRoleInfo: (params: { role: Role; hoisted: string; mentionable: string }) => string;
 		commandRoleInfoAll: string;
-		commandRoleInfoPermissions: (params: { permissions: readonly PermissionString[] }) => string;
+		commandRoleInfoNoPermissions: string;
 		commandFilterUndefinedWord: string;
 		commandFilterFiltered: (params: { filtered: boolean }) => string;
 		commandFilterAdded: (params: { word: string }) => string;

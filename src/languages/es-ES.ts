@@ -2681,10 +2681,10 @@ export default class extends Language {
 			currentDate: 'Fecha actual',
 			country: 'País',
 			gmsOffset: 'GMT Offset',
-			dst: `**Horario de verano**: ${
-				dst === 0 ? 'No observa el horario de verano en este momento' : 'Observa el horario de verano en este momento'
-			}`
+			dst: `**Horario de verano**: ${dst}`
 		}),
+		commandCurrentTimeDst: 'Observa el horario de verano en este momento',
+		commandCurrentTimeNoDst: 'No observa el horario de verano en este momento',
 		commandGsearchDescription: 'Encuentra tus cosas favoritas en Google',
 		commandGsearchExtended: {
 			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar sitios web para su consulta.
@@ -3362,8 +3362,7 @@ export default class extends Language {
 				`Mentionable: **${mentionable}**`
 			].join('\n'),
 		commandRoleInfoAll: 'All Permissions granted.',
-		commandRoleInfoPermissions: ({ permissions }) =>
-			permissions.length > 0 ? permissions.map((key) => `+ **${this.PERMISSIONS[key]}**`).join('\n') : 'Permissions not granted.',
+		commandRoleInfoNoPermissions: 'Permissions not granted.',
 		commandFilterUndefinedWord: 'You must write what you want me to filter.',
 		commandFilterFiltered: ({ filtered }) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
 		commandFilterAdded: ({ word }) => `${GREENTICK} Success! Added the word ${word} to the filter.`,

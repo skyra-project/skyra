@@ -19,7 +19,16 @@ export default class extends SkyraCommand {
 
 	public run(message: KlasaMessage, [role = message.member!.roles.highest]: [Role?]) {
 		const roleInfoTitles = (message.language.get('commandRoleInfoTitles') as unknown) as RoleInfoTitles;
-		const { permissions } = role;
+
+		const permissions = role.permissions.has(Permissions.FLAGS.ADMINISTRATOR)
+			? message.language.get('commandRoleInfoAll')
+			: role.permissions.toArray().length > 0
+			? role.permissions
+					.toArray()
+					.map((key) => `+ **${message.language.PERMISSIONS[key]}**`)
+					.join('\n')
+			: message.language.get('commandRoleInfoNoPermissions');
+
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(role.color || BrandingColors.Secondary)
@@ -31,12 +40,7 @@ export default class extends SkyraCommand {
 						mentionable: message.language.get(role.mentionable ? 'globalYes' : 'globalNo')
 					})
 				)
-				.addField(
-					roleInfoTitles.PERMISSIONS,
-					permissions.has(Permissions.FLAGS.ADMINISTRATOR)
-						? message.language.get('commandRoleInfoAll')
-						: message.language.get('commandRoleInfoPermissions', { permissions: permissions.toArray() })
-				)
+				.addField(roleInfoTitles.PERMISSIONS, permissions)
 		);
 	}
 }

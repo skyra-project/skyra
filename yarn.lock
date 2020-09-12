@@ -3878,7 +3878,7 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
 
 klasa@skyra-project/klasa#build:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/b233421474cf96fab3cc7a07bbdeeed0d26a8d72"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/1650d0b26f3db682a03d0e138cee309c89ab87b3"
   dependencies:
     "@klasa/querybuilder" "^0.0.1"
     "@klasa/settings-gateway" "github:skyra-project/settings-gateway#build"

@@ -788,7 +788,6 @@ export const TLDs = [
 	'men',
 	'menu',
 	'merckmsd',
-	'metlife',
 	'mg',
 	'mh',
 	'miami',

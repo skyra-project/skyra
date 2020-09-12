@@ -464,6 +464,8 @@ export function isImageURL(url: string) {
  * @param guild The guild for context
  * @param input The input to clean
  * @returns The input cleaned of mentions
+ * @license Apache-2.0
+ * @copyright 2019 Antonio Román
  */
 export function cleanMentions(guild: Guild, input: string) {
 	return input.replace(/@(here|everyone)/g, `@${ZeroWidhSpace}$1`).replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {

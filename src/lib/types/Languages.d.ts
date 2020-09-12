@@ -123,7 +123,7 @@ declare module 'klasa' {
 		commandRebootDescription: string;
 		commandPing: string;
 		commandPingDescription: string;
-		commandPingPong: (params: { diff: string; ping: string }) => string;
+		commandPingPong: (params: { diff: number; ping: number }) => string;
 		commandInfoDescription: string;
 		commandHelpDescription: string;
 		commandHelpNoExtended: string;
@@ -289,8 +289,8 @@ declare module 'klasa' {
 		};
 		commandLearnInvalidGeneration: (params: { generation: string }) => string;
 		commandLearnMethod: (params: { generation: number; pokemon: string; move: string; method: string }) => string;
-		commandLearnQueryFailed: (params: { pokemon: string; moves: string[] }) => string;
-		commandLearnCannotLearn: (params: { pokemon: string; moves: string[] }) => string;
+		commandLearnQueryFailed: (params: { pokemon: string; moves: string }) => string;
+		commandLearnCannotLearn: (params: { pokemon: string; moves: string }) => string;
 		commandLearnTitle: (params: { pokemon: string; generation: number }) => string;
 		commandMoveDescription: string;
 		commandMoveExtended: LanguageHelpDisplayOptions;
@@ -1125,8 +1125,8 @@ declare module 'klasa' {
 		commandQuoteExtended: LanguageHelpDisplayOptions;
 		commandRolesDescription: string;
 		commandRolesExtended: LanguageHelpDisplayOptions;
-		commandSearchDescription: string;
-		commandSearchExtended: LanguageHelpDisplayOptions;
+		commandDuckDuckGoDescription: string;
+		commandDuckDuckGoExtended: LanguageHelpDisplayOptions;
 		commandPollDescription: string;
 		commandPollExtended: LanguageHelpDisplayOptions;
 		commandPollReactionLimit: string;
@@ -1260,7 +1260,7 @@ declare module 'klasa' {
 		commandInvitePermissionInviteText: string;
 		commandInvitePermissionSupportServerText: string;
 		commandInvitePermissionsDescription: string;
-		commandInfo: string;
+		commandInfoBody: string[];
 		commandHelpData: (params: {
 			titleDescription: string;
 			usage: string;
@@ -1290,7 +1290,7 @@ declare module 'klasa' {
 			license: string;
 			mainFile: string;
 			maintainers: string[];
-		}) => string;
+		}) => (string | undefined)[];
 		commandYarnEmbedMoreText: string;
 		command8ballDescription: string;
 		command8ballExtended: LanguageHelpDisplayOptions;
@@ -1401,7 +1401,8 @@ declare module 'klasa' {
 			previous: string;
 			new: string;
 		};
-		commandSlotmachineCanvasText: (params: { won: boolean }) => string;
+		commandSlotmachineCanvasTextWon: string;
+		commandSlotmachineCanvasTextLost: string;
 		commandTicTacToeDescription: string;
 		commandTicTacToeExtended: LanguageHelpDisplayOptions;
 		commandWheelOfFortuneDescription: string;
@@ -1476,20 +1477,22 @@ declare module 'klasa' {
 		commandGuildInfoTitles: Record<string, string>;
 		commandGuildInfoRoles: (params: { roles: string }) => string;
 		commandGuildInfoNoroles: string;
-		commandGuildInfoChannels: (params: { text: number; voice: number; categories: number; afkChannel: string | null; afkTime: number }) => string;
-		commandGuildInfoMembers: (params: { count: string; owner: User }) => string;
+		commandGuildInfoChannels: (params: { text: number; voice: number; categories: number; afkChannelText: string }) => string[];
+		commandGuildInfoChannelsAfkChannelText: (params: { afkChannel: string; afkTime: number }) => string;
+		commandGuildInfoMembers: (params: { count: string; owner: User }) => string[];
 		commandGuildInfoOther: (params: {
 			size: number;
 			region: string;
 			createdAt: number;
 			verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
-		}) => string;
+		}) => string[];
 		commandRoleInfoTitles: Record<string, string>;
-		commandRoleInfo: (params: { role: Role; hoisted: string; mentionable: string }) => string;
+		commandRoleInfoData: (params: { role: Role; hoisted: string; mentionable: string }) => string[];
 		commandRoleInfoAll: string;
 		commandRoleInfoNoPermissions: string;
 		commandFilterUndefinedWord: string;
-		commandFilterFiltered: (params: { filtered: boolean }) => string;
+		commandFilterAlreadyFiltered: string;
+		commandFilterNotFiltered: string;
 		commandFilterAdded: (params: { word: string }) => string;
 		commandFilterRemoved: (params: { word: string }) => string;
 		commandFilterReset: string;
@@ -1502,7 +1505,8 @@ declare module 'klasa' {
 		commandManageAttachmentsDuration: (params: { value: number }) => string;
 		commandManageAttachmentsAction: string;
 		commandManageAttachmentsLogs: string;
-		commandManageAttachmentsEnabled: (params: { value: boolean }) => string;
+		commandManageAttachmentsEnabled: string;
+		commandManageAttachmentsDisabled: string;
 		commandManageCommandAutoDeleteTextChannel: string;
 		commandManageCommandAutoDeleteRequiredDuration: string;
 		commandManageCommandAutoDeleteShowEmpty: string;

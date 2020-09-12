@@ -40,16 +40,21 @@ export default class extends SkyraCommand {
 		return i18n.get('command8ballElse');
 	}
 
-	private check(prefix: string | RegExp, input: string) {
-		return prefix instanceof RegExp ? prefix.test(input) : input.startsWith(prefix);
+	private check(prefix: string, input: string) {
+		let regexpOrPrefix: string | RegExp = prefix;
+
+		// If the prefix starts with a ^ then create a RegExp from it
+		if (regexpOrPrefix.startsWith('^')) regexpOrPrefix = new RegExp(regexpOrPrefix, 'i');
+
+		return regexpOrPrefix instanceof RegExp ? regexpOrPrefix.test(input) : input.startsWith(regexpOrPrefix);
 	}
 }
 
 export interface EightBallLanguage {
-	When: string | RegExp;
-	What: string | RegExp;
-	HowMuch: string | RegExp;
-	HowMany: string | RegExp;
-	Why: string | RegExp;
-	Who: string | RegExp;
+	When: string;
+	What: string;
+	HowMuch: string;
+	HowMany: string;
+	Why: string;
+	Who: string;
 }

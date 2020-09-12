@@ -47,7 +47,10 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy, { pokemon, moves, generation });
 			return data.getPokemonLearnsetByFuzzy;
 		} catch {
-			throw message.language.get('commandLearnQueryFailed', { pokemon, moves });
+			throw message.language.get('commandLearnQueryFailed', {
+				pokemon,
+				moves: message.language.list(moves, message.language.get('globalAnd'))
+			});
 		}
 	}
 
@@ -70,7 +73,12 @@ export default class extends RichDisplayCommand {
 
 		if (learnableMethods.length === 0) {
 			return display.addPage((embed: MessageEmbed) =>
-				embed.setDescription(message.language.get('commandLearnCannotLearn', { pokemon: learnsetData.species, moves }))
+				embed.setDescription(
+					message.language.get('commandLearnCannotLearn', {
+						pokemon: learnsetData.species,
+						moves: message.language.list(moves, message.language.get('globalOr'))
+					})
+				)
 			);
 		}
 

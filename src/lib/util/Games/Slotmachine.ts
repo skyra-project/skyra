@@ -126,7 +126,7 @@ export class Slotmachine {
 			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
-			.printText(this.message.language.get('commandSlotmachineCanvasText', { won: playerHasWon }), 280, 60)
+			.printText(this.message.language.get(playerHasWon ? 'commandSlotmachineCanvasTextWon' : 'commandSlotmachineCanvasTextLost'), 280, 60)
 			.printText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
 			.printImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();

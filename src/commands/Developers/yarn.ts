@@ -60,18 +60,21 @@ export default class extends SkyraCommand {
 			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get('commandYarnEmbedMoreText'))
 			: null;
 
-		const description = message.language.get('commandYarnEmbedDescription', {
-			author: this.parseAuthor(result.author),
-			dateCreated: result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get('globalUnknown'),
-			dateModified: result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get('globalUnknown'),
-			dependencies,
-			deprecated: latestVersion.deprecated,
-			description: cutText(result.description ?? '', 1000),
-			latestVersionNumber: result['dist-tags'].latest,
-			license: result.license || message.language.get('globalNone'),
-			mainFile: latestVersion.main || 'index.js',
-			maintainers
-		});
+		const description = message.language
+			.get('commandYarnEmbedDescription', {
+				author: this.parseAuthor(result.author),
+				dateCreated: result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get('globalUnknown'),
+				dateModified: result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get('globalUnknown'),
+				dependencies,
+				deprecated: latestVersion.deprecated,
+				description: cutText(result.description ?? '', 1000),
+				latestVersionNumber: result['dist-tags'].latest,
+				license: result.license || message.language.get('globalNone'),
+				mainFile: latestVersion.main || 'index.js',
+				maintainers
+			})
+			.filter((part) => part !== undefined)
+			.join('\n');
 		return new MessageEmbed()
 			.setTitle(result.name)
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)

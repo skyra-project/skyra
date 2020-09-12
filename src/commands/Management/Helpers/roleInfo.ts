@@ -34,11 +34,13 @@ export default class extends SkyraCommand {
 				.setColor(role.color || BrandingColors.Secondary)
 				.setTitle(`${role.name} [${role.id}]`)
 				.setDescription(
-					message.language.get('commandRoleInfo', {
-						role,
-						hoisted: message.language.get(role.hoist ? 'globalYes' : 'globalNo'),
-						mentionable: message.language.get(role.mentionable ? 'globalYes' : 'globalNo')
-					})
+					message.language
+						.get('commandRoleInfoData', {
+							role,
+							hoisted: message.language.get(role.hoist ? 'globalYes' : 'globalNo'),
+							mentionable: message.language.get(role.mentionable ? 'globalYes' : 'globalNo')
+						})
+						.join('\n')
 				)
 				.addField(roleInfoTitles.PERMISSIONS, permissions)
 		);

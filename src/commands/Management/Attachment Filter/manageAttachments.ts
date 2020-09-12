@@ -12,7 +12,7 @@ const TYPES = {
 	},
 	disable: {
 		key: GuildSettings.Selfmod.Attachment,
-		language: 'commandManageAttachmentsEnabled'
+		language: 'commandManageAttachmentsDisabled'
 	},
 	duration: {
 		key: GuildSettings.Selfmod.AttachmentPunishmentDuration,
@@ -124,6 +124,8 @@ export default class extends SkyraCommand {
 		switch (languageKey) {
 			case 'commandManageAttachmentsAction':
 			case 'commandManageAttachmentsLogs':
+			case 'commandManageAttachmentsEnabled':
+			case 'commandManageAttachmentsDisabled':
 				return message.language.get(languageKey);
 			default:
 				return message.language.get(languageKey, { value });

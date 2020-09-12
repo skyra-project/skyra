@@ -43,8 +43,12 @@ export default class extends SkyraCommand {
 						text: tChannels,
 						voice: vChannels,
 						categories: cChannels,
-						afkChannel: message.guild!.afkChannelID,
-						afkTime: message.guild!.afkTimeout
+						afkChannelText: message.guild!.afkChannelID
+							? message.language.get('commandGuildInfoChannelsAfkChannelText', {
+									afkChannel: message.guild!.afkChannelID,
+									afkTime: message.guild!.afkTimeout
+							  })
+							: `**${message.language.get('globalNone')}**`
 					}),
 					true
 				)

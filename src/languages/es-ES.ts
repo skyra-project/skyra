@@ -158,7 +158,7 @@ export default class extends Language {
 		settingGatewayKeyNoext: ({ key }) => `The key "${key}" does not exist in the data schema.`,
 		settingGatewayChooseKey: ({ keys }) => `You cannot edit a settings group, pick any of the following: "${keys}"`,
 		settingGatewayUnconfigurableFolder: 'This settings group does not have any configurable sub-key.',
-		settingGatewayUnconfigurableKey: ({ key }) => `The settings key "${key}" has been marked as non-configurable by the bot owner.`,
+		settingGatewayUnconfigurableKey: ({ key }) => `The settings key "${key}" has been marked as non-configurable by the bot owners.`,
 		settingGatewayMissingValue: ({ path, value }) => `The value "${value}" cannot be removed from the key "${path}" because it does not exist.`,
 		settingGatewayDuplicateValue: ({ path, value }) => `The value "${value}" cannot be added to the key "${path}" because it was already set.`,
 		settingGatewayInvalidFilteredValue: ({ path, value }) => `The settings key "${path}" does not accept the value "${value}".`,
@@ -224,7 +224,7 @@ export default class extends Language {
 		inhibitorRunin: ({ type }) => `Éste comando sólo está disponible en los canales de ${type}`,
 		inhibitorRuninNone: ({ name }) => `El comando ${name} no está configurado para ejecutarse en algún canal.`,
 		inhibitorDisabledGuild: 'This command has been disabled by an admin in this guild!.',
-		inhibitorDisabledGlobal: 'This command has been globally disabled by the bot owner.',
+		inhibitorDisabledGlobal: 'This command has been globally disabled by the bot owners.',
 		commandBlocklistDescription: 'Bloquear o permitir que usuarios y gremios utilicen mis funcionalidades.',
 		commandBlocklistSuccess: `${GREENTICK} Successfully updated blocked users and/or guilds`,
 		commandUnload: ({ type, name }) => `${GREENTICK} Eliminado con éxito la pieza tipo ${type}: ${name}`,
@@ -1956,18 +1956,30 @@ export default class extends Language {
 		},
 		commandSetNicknameDescription: 'Change the nickname of a user.',
 		commandSetNicknameExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position can be managed by me. No, the guild's owner nickname cannot be changed.`,
-			examples: ['@Pete peeehteeerrr', '@ꓑ𝗲੮ẻ Pete Unmentionable name']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_NICKNAMES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner nickname cannot be changed."
+			],
+			examples: ['@Pete peeehteeerrr', '@ꓑ𝗲੮ẻ Pete Unmentionable name'],
+			multiline: true
 		},
 		commandAddRoleDescription: 'Adds a role to a user.',
 		commandAddRoleExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me. No, the guild's owner roles cannot be changed.`,
-			examples: ['@John member', '@John member Make John a member']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner roles cannot be changed."
+			],
+			examples: ['@John member', '@John member Make John a member'],
+			multiline: true
 		},
 		commandRemoveroleDescription: '',
 		commandRemoveroleExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me. No, the guild's owner roles cannot be changed.`,
-			examples: ['@Paula member', '@Paula member Remove member permissions from Paula']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
+				"No, the guild's owner roles cannot be changed."
+			],
+			examples: ['@Paula member', '@Paula member Remove member permissions from Paula'],
+			multiline: true
 		},
 		commandPruneDescription: 'Prunes a certain amount of messages w/o filter.',
 		commandPruneExtended: {
@@ -2126,25 +2138,32 @@ export default class extends Language {
 		},
 		commandVoiceKickDescription: 'Hit somebody with the 👢 for singing so bad and loud.',
 		commandVoiceKickExtended: {
-			extendedHelp: `This command requires the permissions **${this.PERMISSIONS.MANAGE_CHANNELS}** to create a temporary (hidden)
-					voice channel, and **${this.PERMISSIONS.MOVE_MEMBERS}** to move the user to the temporary channel. After this, the channel
-					is quickly deleted, making the user leave the voice channel. For scared moderators, this command has almost no
-					impact in the average user, as the channel is created in a way only me and the selected user can see and join,
-					then quickly deleted.`,
-			examples: ['@Pete', '@Pete Spamming all channels']
+			extendedHelp: [
+				`This command requires the permissions **${this.PERMISSIONS.MANAGE_CHANNELS}** to create a temporary (hidden) voice channel, and **${this.PERMISSIONS.MOVE_MEMBERS}** to move the user to the temporary channel.`,
+				'After this, the channel is quickly deleted, making the user leave the voice channel.',
+				'For scared moderators, this command has almost no impact in the average user, as the channel is created in a way only me and the selected user can see and join, then quickly deleted.'
+			],
+			examples: ['@Pete', '@Pete Spamming all channels'],
+			multiline: true
 		},
 		commandVunmuteDescription: "Get somebody's microphone back so they can talk.",
 		commandVunmuteExtended: {
-			extendedHelp: `This command requires **${this.PERMISSIONS.MUTE_MEMBERS}**, and only members with lower role hierarchy position
-					can be un-silenced by me. No, the guild's owner cannot be un-silenced.`,
-			examples: ['@Pete', '@Pete Appealed his times signing hear rape.']
+			extendedHelp: [
+				`This command requires **${this.PERMISSIONS.MUTE_MEMBERS}**, and only members with lower role hierarchy position can be un-silenced by me.`,
+				"No, the guild's owner cannot be un-silenced."
+			],
+			examples: ['@Pete', '@Pete Appealed his times signing hear rape.'],
+			multiline: true
 		},
 		commandWarnDescription: 'File a warning to somebody.',
 		commandWarnExtended: {
-			extendedHelp: `This command files a warning to a user. This kind of warning is meant to be **formal warnings**, as
-					they will be shown in the 'warnings' command. It is a good practise to do an informal warning before using this
-					command.`,
-			examples: ['@Pete Attempted to mention everyone.']
+			extendedHelp: [
+				'This command files a warning to a user.',
+				"This kind of warning is meant to be **formal warnings**, as they will be shown in the 'warnings' command.",
+				'It is a good practise to do an informal warning before using this command.'
+			],
+			examples: ['@Pete Attempted to mention everyone.'],
+			multiline: true
 		},
 
 		/**
@@ -2162,12 +2181,13 @@ export default class extends Language {
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
 		commandFlavorsDescription: 'Obtiene las entradas de dex en varios juegos para un Pokémon.',
 		commandFlavorsExtended: {
-			extendedHelp: `
-				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
-				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
-			`,
+			extendedHelp: [
+				'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
+				'Puede proporcionar una bandera de `--shiny` para obtener el sprite brillante.'
+			],
 			explainedUsage: [['pokemon', 'El Pokémon para el que quieres obtener textos de sabor.']],
-			examples: ['dragonite', 'pikachu', 'pikachu --shiny']
+			examples: ['dragonite', 'pikachu', 'pikachu --shiny'],
+			multiline: true
 		},
 		commandFlavorsQueryFail: ({ pokemon }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
@@ -2187,18 +2207,18 @@ export default class extends Language {
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${item}\` es realmente un elemento en Pokémon?`,
 		commandLearnDescription: 'Recupera si un Pokémon dado puede aprender uno o más movimientos dados usando mi conjunto de datos Pokémon.',
 		commandLearnExtended: {
-			extendedHelp: `
-				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
-				Los movimientos se dividen en cada \`, \` (coma y espacio)
-				y puedes proporcionar tantos movimientos como desee.
-				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
-			`,
+			extendedHelp: [
+				'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
+				'Los movimientos se dividen en cada `, ` (coma y espacio) y puedes proporcionar tantos movimientos como desee.',
+				'Puede proporcionar una bandera de `--shiny` para obtener el sprite brillante.'
+			],
 			explainedUsage: [
 				['generation', '(Opcional), la generación para la cual verificar los datos'],
 				['pokemon', 'El Pokémon cuyo conjunto de aprendizaje quieres comprobar'],
 				['movimiento', 'Los movimientos que desea verificar']
 			],
-			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder']
+			examples: ['7 dragonite dragon dance', 'pikachu thunder bolt', 'pikachu thunder bolt --shiny', 'pikachu thunder bolt, thunder'],
+			multiline: true
 		},
 		commandLearnMethodTypes: ({ level }) => ({
 			levelUpMoves: `por subir de nivel en el nivel ${level}`,
@@ -2213,20 +2233,22 @@ export default class extends Language {
 		commandLearnMethod: ({ generation, pokemon, move, method }) =>
 			`En la generacion ${generation} ${pokemon} __**puede**__ aprender **${move}** ${method}`,
 		commandLearnQueryFailed: ({ pokemon, moves }) =>
-			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon y ${moves
-				.map((move) => `\`${move}\``)
-				.join('y')} son realmente movimientos?`,
-		commandLearnCannotLearn: ({ pokemon, moves }) => `Parece que ${toTitleCase(pokemon)} no puede aprender ${this.list(moves, 'o')}`,
+			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${toTitleCase(
+				pokemon
+			)}\` es en realidad un Pokémon y ${moves} son realmente movimientos?`,
+		commandLearnCannotLearn: ({ pokemon, moves }) => `Parece que ${toTitleCase(pokemon)} no puede aprender ${moves}`,
 		commandLearnTitle: ({ pokemon, generation }) => `Datos de Learnset para ${toTitleCase(pokemon)} en la generación ${generation}`,
 		commandMoveDescription: 'Obtiene datos para cualquier movimiento Pokémon usando mi conjunto de datos Pokémon',
 		commandMoveExtended: {
 			extendedHelp: 'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
 			explainedUsage: [['movimiento', 'El movimiento para el que desea buscar datos']],
 			examples: ['dragon dance', 'GMax Wildfire', 'Genesis Supernova'],
-			reminder: `
-				Los Movimientos Z muestran la potencia para los movimientos en la Octava Generación ya que son calculados con una tabla de conversión.
-				Si Pokémon añade los Movimientos Z al juego, éstos serían sus niveles de poder teóricos. Sin embargo,
-				al día de escritura, los Movimientos Z NO están disponibles en la Octava Generación.`
+			reminder: [
+				'Los Movimientos Z muestran la potencia para los movimientos en la Octava Generación ya que son calculados con una tabla de conversión.',
+				'Si Pokémon añade los Movimientos Z al juego, éstos serían sus niveles de poder teóricos. Sin embargo,',
+				'al día de escritura, los Movimientos Z NO están disponibles en la Octava Generación.'
+			],
+			multiline: true
 		},
 		commandMoveEmbedData: ({ availableInGen8 }) => ({
 			move: 'Movimiento',
@@ -2250,14 +2272,17 @@ export default class extends Language {
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,
 		commandPokedexDescription: 'Obtiene datos de cualquier Pokémon usando mi conjunto de datos Pokémon.',
 		commandPokedexExtended: {
-			extendedHelp: `
-				Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.
-				Puede proporcionar una bandera de \`--shiny\` para obtener el sprite brillante.
-			`,
+			extendedHelp: [
+				'Utiliza una búsqueda difusa para comparar también con coincidencias cercanas.',
+				'Puede proporcionar una bandera de `--shiny` para obtener el sprite brillante.'
+			],
 			explainedUsage: [['Pokémon', 'El Pokémon para el que quieres encontrar datos']],
 			examples: ['dragonite', 'pikachu'],
-			reminder:
-				'Si hay algún "Otro (s) formulario (s)" en la cuarta página opcional, también se pueden solicitar. Las formas cosméticas en esa página enumeran cambios puramente cosméticos y estos no tienen entradas separadas en la Pokédex.'
+			reminder: [
+				'Si hay algún "Otro (s) formulario (s)" en la cuarta página opcional, también se pueden solicitar.',
+				'Las formas cosméticas en esa página enumeran cambios puramente cosméticos y estos no tienen entradas separadas en la Pokédex.'
+			],
+			multiline: true
 		},
 		commandPokedexEmbedData: ({ otherFormes, cosmeticFormes }) => ({
 			types: 'Tipo(s)',
@@ -2303,11 +2328,6 @@ export default class extends Language {
 		commandTypeQueryFail: ({ types }) => `Lo siento, pero esa consulta falló. ¿Estás seguro de que los ${types} son realmente tipos en Pokémon?`,
 
 		/**
-		 * ##################
-		 * OVERWATCH COMMANDS
-		 */
-
-		/**
 		 * ###############
 		 * SOCIAL COMMANDS
 		 */
@@ -2336,15 +2356,16 @@ export default class extends Language {
 		},
 		commandToggleDarkModeDescription: 'Toggle between light and dark templates for your profile and rank cards.',
 		commandToggleDarkModeExtended: {
-			extendedHelp: 'This command lets you toggle the template used to generate your profile.',
-			examples: ['']
+			extendedHelp: 'This command lets you toggle the template used to generate your profile.'
 		},
 
-		commandAutoRoleDescription: '(ADM) List or configure the autoroles for a guild.',
+		commandAutoRoleDescription: 'List or configure the autoroles for a guild.',
 		commandAutoRoleExtended: {
-			extendedHelp: `Autoroles? They are roles that are available for everyone, and automatically given when they reach an
-					amount of (local) points, an administrator must configure them through a setting command.
-					Note that if the role name has spaces in the name you need to put \`'quotes'\` around the name!`,
+			extendedHelp: [
+				'Autoroles are roles that are available for everyone, and automatically given when they reach a configured',
+				'amount of (local) points, an administrator must configure them through a setting command.',
+				"Note that if the role name has spaces in the name you need to put `'quotes'` around the name!"
+			],
 			explainedUsage: [
 				['list', 'Lists all the current autoroles.'],
 				['add <role> <amount>', 'Add a new autorole.'],
@@ -2352,7 +2373,8 @@ export default class extends Language {
 				['update <role> <amount>', 'Change the required amount of points for an existing autorole.']
 			],
 			reminder: 'The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.',
-			examples: ['list', "add 'Trusted Member' 20000", "update 'Trusted Member' 15000", "remove 'Trusted Member'"]
+			examples: ['list', "add 'Trusted Member' 20000", "update 'Trusted Member' 15000", "remove 'Trusted Member'"],
+			multiline: true
 		},
 
 		commandBalanceDescription: 'Check your current balance.',
@@ -2366,14 +2388,17 @@ export default class extends Language {
 				'Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.',
 				'You can claim dailies once every 12 hours.',
 				"If you use the --reminder flag, I will remind you when it's time to collect dailies again."
-			].join('\n')
+			],
+			multiline: true
 		},
 		commandLeaderboardDescription: 'Check the leaderboards.',
 		commandLeaderboardExtended: {
-			extendedHelp: `The leaderboard command shows a list of users sorted by their local or global amount of points,
-				by default, when using no arguments, it will show the local leaderboard. The leaderboards refresh after 10
-					minutes.`,
-			reminder: '"Local" leaderboards refer to the guild\'s top list. "Global" refers to all scores from all guilds.'
+			extendedHelp: [
+				'The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.',
+				'The leaderboards refresh every 10 minutes.'
+			],
+			reminder: '"Local" leaderboards refer to the guild\'s top list. "Global" refers to all scores from all guilds.',
+			multiline: true
 		},
 		commandLevelDescription: 'Check your global level.',
 		commandLevelExtended: {
@@ -2382,8 +2407,8 @@ export default class extends Language {
 		},
 		commandDivorceDescription: 'Break up with your couple!',
 		commandDivorceExtended: {
-			extendedHelp: `Sniff... This command is used to break up with your couple, hopefully in this virtual world, you are
-					allowed to marry the user again.`
+			extendedHelp:
+				'Sniff... This command is used to break up with your couple, hopefully in this virtual world, you are allowed to marry the user again.'
 		},
 		commandMarryDescription: 'Marry somebody!',
 		commandMarryExtended: {
@@ -2407,9 +2432,12 @@ export default class extends Language {
 		},
 		commandProfileDescription: 'Check your user profile.',
 		commandProfileExtended: {
-			extendedHelp: `This command sends a card image with some of your user profile such as your global rank, experience...
-				Additionally, you are able to customize your colours with the 'setColor' command.`,
-			explainedUsage: [['user', "(Optional) The user's profile to show. Defaults to the message's author!."]]
+			extendedHelp: [
+				'This command sends a card image with some of your user profile such as your global rank, experience...',
+				"Additionally, you are able to customize your colours with the 'setColor' command."
+			],
+			explainedUsage: [['user', "(Optional) The user's profile to show. Defaults to the message's author!."]],
+			multiline: true
 		},
 		commandRemindmeDescription: 'Manage your reminders.',
 		commandRemindmeExtended: {
@@ -2423,14 +2451,17 @@ export default class extends Language {
 		},
 		commandReputationDescription: 'Give somebody a reputation point.',
 		commandReputationExtended: {
-			extendedHelp: `This guy is so helpful... I'll give him a reputation point! Additionally, you can check how many
-					reputation points a user has by writing 'check' before the mention.`,
+			extendedHelp: [
+				"This guy is so helpful... I'll give him a reputation point!",
+				"Additionally, you can check how many reputation points a user has by writing 'check' before the mention."
+			],
 			explainedUsage: [
 				['check', '(Optional) Whether you want to check somebody (or yours) amount of reputation.'],
 				['user', 'The user to give a reputation point.']
 			],
 			reminder: 'You can give a reputation point once every 24 hours.',
-			examples: ['check @kyra', 'check', '@kyra', 'check "User With Spaces"', '"User With Spaces"']
+			examples: ['check @kyra', 'check', '@kyra', 'check "User With Spaces"', '"User With Spaces"'],
+			multiline: true
 		},
 		commandSetColorDescription: "Change your user profile's color.",
 		commandSetColorExtended: {
@@ -2459,27 +2490,30 @@ export default class extends Language {
 		 * SYSTEM COMMANDS
 		 */
 
-		commandDmDescription: 'Sends a Direct Message. Reserved for bot owner for replying purposes.',
+		commandDmDescription: 'Sends a Direct Message.',
 		commandDmExtended: {
-			extendedHelp: `The DM command is reserved for bot owner, and it's only used for very certain purposes, such as replying feedback
-				messages sent by users.`
+			extendedHelp: `The DM command is reserved for bot owners, and it's only used for very certain purposes, such as replying feedback messages sent by users.`,
+			reminder: 'Reserved for bot owners for replying purposes.'
 		},
-		commandEvalDescription: 'Evaluates arbitrary Javascript. Reserved for bot owner.',
+		commandEvalDescription: 'Evaluates arbitrary Javascript.',
 		commandEvalExtended: {
-			extendedHelp: `The eval command evaluates code as-in, any error thrown from it will be handled.
-					It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.
-					The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.
-					The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.
-					The --delete flag makes the command delete the message that executed the message after evaluation.
-					The --silent flag will make it output nothing.
-					The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.
-					The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword
-					The --showHidden flag will enable the showHidden option in util.inspect.
-					The --lang and --language flags allow different syntax highlight for the output.
-					The --json flag converts the output to json
-					The --no-timeout flag disables the timeout
-					If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${this.PERMISSIONS.ATTACH_FILES} permission.`,
+			extendedHelp: [
+				'The eval command evaluates code as-in, any error thrown from it will be handled.',
+				'It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.',
+				'The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.',
+				"The --output and --output-to flag accept either 'file', 'log', 'haste' or 'hastebin'.",
+				'The --delete flag makes the command delete the message that executed the message after evaluation.',
+				'The --silent flag will make it output nothing.',
+				"The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.",
+				'The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword',
+				'The --showHidden flag will enable the showHidden option in util.inspect.',
+				'The --lang and --language flags allow different syntax highlight for the output.',
+				'The --json flag converts the output to json',
+				'The --no-timeout flag disables the timeout',
+				`If the output is too large, it'll send the output as a file, or in the console if the bot does not have the ${this.PERMISSIONS.ATTACH_FILES} permission.`
+			],
 			examples: ['msg.author!.username;', '1 + 1;'],
+			reminder: 'Reserved for bot owners.',
 			multiline: true
 		},
 		commandExecDescription: 'Execute Order 66.',
@@ -2488,29 +2522,31 @@ export default class extends Language {
 		},
 		commandSetAvatarDescription: "Set Skyra's avatar.",
 		commandSetAvatarExtended: {
-			extendedHelp: "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel."
+			extendedHelp: "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.",
+			reminder: 'Reserved for bot owners.'
 		},
 		commandDonateDescription: 'Get information about how to donate to keep Skyra alive longer.',
 		commandDonateExtended: {
-			extendedHelp: `
-				Skyra Project started on 24th October 2016, if you are reading this, you are
-				using the version ${VERSION}, which is the twelfth rewrite. I have
-				improved a lot every single function from Skyra, and now, she is extremely fast.
-
-				However, not everything is free, I need your help to keep Skyra alive in a VPS so
-				you can enjoy her functions longer. I will be very thankful if you help me, really,
-				I have been working on a lot of things, but she is my beautiful baby, take care of her ❤
-
-				Do you want to support this amazing project? Feel free to do so! https://www.patreon.com/kyranet`
+			extendedHelp: [
+				'Skyra Project started on 24th October 2016, if you are reading this, you are',
+				`using version ${VERSION}. The development team improves a lot in every iteration of Skyra.`,
+				'',
+				'However, not everything is free and we need your help to keep Skyra alive.',
+				'We will be very thankful if you help us.',
+				'We have been working on a lot of things, and Skyra is precious to us. Take care of her ❤',
+				'',
+				'Do you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi'
+			],
+			multiline: true
 		},
 		commandEchoDescription: 'Make Skyra send a message to this (or another) channel.',
 		commandEchoExtended: {
-			extendedHelp: 'This should be very obvious...'
+			extendedHelp: 'This should be very obvious...',
+			reminder: 'Reserved for bot owners.'
 		},
 		commandFeedbackDescription: "Send a feedback message to the bot's owner.",
 		commandFeedbackExtended: {
-			extendedHelp: `This command sends a message to a feedback channel where the bot's owner can read. You'll be replied
-					as soon as an update comes.`
+			extendedHelp: `This command sends a message to a feedback channel which the bot's owners can read. You'll get a reply from me in your DMs when one of the owners has an update for you.`
 		},
 		commandStatsDescription: 'Provides some details about the bot and stats.',
 		commandStatsExtended: {
@@ -2524,8 +2560,9 @@ export default class extends Language {
 
 		commandAvatarDescription: "View somebody's avatar in full size.",
 		commandAvatarExtended: {
-			extendedHelp: "As this command's name says, it shows somebody's avatar. Use the --size flag to change the avatar's size.",
-			explainedUsage: [['user', '(Optional) A user mention. Defaults to the author if the input is invalid or not given.']]
+			extendedHelp: "As this command's name says, it shows somebody's avatar.",
+			explainedUsage: [['user', '(Optional) A user mention. Defaults to the author if the input is invalid or not given.']],
+			reminder: "Use the --size flag to change the avatar's size."
 		},
 		commandColorDescription: 'Display some awesome colours.',
 		commandColorExtended: {
@@ -2540,9 +2577,19 @@ export default class extends Language {
 			examples: ['#dfdfdf >25', 'rgb(200, 130, 75)']
 		},
 		commandContentDescription: 'Obtener el contenido sin formato de los mensajes.',
-		commandContentExtended: {},
+		commandContentExtended: {
+			extendedHelp: 'Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting',
+			explainedUsage: [
+				['channel', '(optional) The channel in which the message is to get the content from'],
+				['message', 'ID of the message to get the raw content for']
+			]
+		},
 		commandEmojiDescription: 'Obtén información sobre un emoji.',
-		commandEmojiExtended: {},
+		commandEmojiExtended: {
+			extendedHelp: "I'll give you the emoji name, whether it is a custom emoji or not, the emoji ID and a large image preview of the emoji.",
+			explainedUsage: [['emoji', 'The emoji to get information about']],
+			reminder: "It doesn't matter whether I share a server with a custom emoji or not!"
+		},
 		commandEmotesDescription: 'Muestra todos los gestos personalizados disponibles en este servidor.',
 		commandEmotesExtended: {
 			extendedHelp: 'La lista de emotes se divide por 50 emotes..'
@@ -2559,7 +2606,13 @@ export default class extends Language {
 			examples: ['EUR USD', 'USD EUR 5', 'USD BAT 10']
 		},
 		commandQuoteDescription: "Quote another person's message.",
-		commandQuoteExtended: {},
+		commandQuoteExtended: {
+			extendedHelp: "Quotes also include the message's image, if any",
+			explainedUsage: [
+				['channel', '(optional) The channel in which the message is to quote'],
+				['message', 'ID of the message to quote']
+			]
+		},
 		commandRolesDescription: 'List all public roles from a guild, or claim/unclaim them.',
 		commandRolesExtended: {
 			extendedHelp: `Public roles? They are roles that are available for everyone, an administrator must configure them with a configuration command.`,
@@ -2570,12 +2623,15 @@ export default class extends Language {
 				'You can specify which roles by writting their ID, name, or a section of the name.',
 				'',
 				'Administrators can add public roles using `Skyra, conf set roles.public MyPublicRole`.'
-			].join('\n'),
+			],
 			examples: ['', 'Designer, Programmer', 'Designer'],
 			multiline: true
 		},
-		commandSearchDescription: 'Search things from the Internet with DuckDuckGo.',
-		commandSearchExtended: {},
+		commandDuckDuckGoDescription: 'Search the Internet with DuckDuckGo.',
+		commandDuckDuckGoExtended: {
+			extendedHelp: 'This uses the alternative search enginge DuckDuckGo to search the web',
+			reminder: 'If you want to search google use `Skyra, google`'
+		},
 		commandPollDescription: 'Simplifies reaction-based polls.',
 		commandPollExtended: {
 			extendedHelp: 'Separate your options using commas.',
@@ -2587,7 +2643,10 @@ export default class extends Language {
 			examples: ['Should I implement the #anime channel?']
 		},
 		commandTopInvitesDescription: 'Muestra las 10 invitaciones más utilizadas para este servidor.',
-		commandTopInvitesExtended: {},
+		commandTopInvitesExtended: {
+			extendedHelp:
+				'Use esto para obtener información sobre el servidor si su servidor no tiene acceso a la información sobre el servidor oficial de Discord.'
+		},
 		commandTopInvitesNoInvites: '¡No hay invitaciones, o ninguna de ellas ha sido utilizada!',
 		commandTopInvitesTop10InvitesFor: ({ guild }) => `Las 10 mejores invitaciones para ${guild}`,
 		commandTopInvitesEmbedData: {
@@ -2610,7 +2669,9 @@ export default class extends Language {
 			examples: ['spam']
 		},
 		commandWhoisDescription: 'Who are you?',
-		commandWhoisExtended: {},
+		commandWhoisExtended: {
+			extendedHelp: 'Gets information on any server member. Also known as `userinfo` in many other bots.'
+		},
 		commandFollowageDescription: 'Check how long a Twitch user has been following a channel.',
 		commandFollowageExtended: {
 			extendedHelp: 'Just... that.',
@@ -2623,28 +2684,28 @@ export default class extends Language {
 		},
 		commandTwitchSubscriptionDescription: 'Manage the subscriptions for your server.',
 		commandTwitchSubscriptionExtended: {
-			extendedHelp: `
-				Manage the subscriptions for this server.
-				__Online Notifications__
-				For content, the best way is writing \`--embed\`, the notifications will then show up in MessageEmbeds
-				with all available data. Alternatively you can set your own content and it will post as a regular message.
-				This content can contain some parameters that will be replaced with Twitch data:
-				- \`%TITLE%\` for the stream's title
-				- \`%VIEWER_COUNT%\` for the amount of current viewers,
-				- \`%GAME_NAME%\` for the title being streamed
-				- \`%GAME_ID%\` for the game's ID as seen by Twitch
-				- \`%LANGUAGE%\` for the language the stream is in
-				- \`%USER_ID%\` for the streamer's ID as seen by Twitch
-				- and \`%USER_NAME%\` for the Streamer's twitch username.
-
-				__Offline Notifications__
-				For offline events none of the variables above are available and you'll have to write your own content.
-				You can still use the \`--embed\` flag for the notification to show in a nice Twitch-purple MessageEmbed.`,
+			extendedHelp: [
+				'Manage the subscriptions for this server.',
+				'__Online Notifications__',
+				'For content, the best way is writing `--embed`, the notifications will then show up in MessageEmbeds with all available data.',
+				'Alternatively you can set your own content and it will post as a regular message.',
+				'This content can contain some parameters that will be replaced with Twitch data:',
+				"- `%TITLE%` for the stream's title",
+				'- `%VIEWER_COUNT%` for the amount of current viewers,',
+				'- `%GAME_NAME%` for the title being streamed',
+				"- `%GAME_ID%` for the game's ID as seen by Twitch",
+				'- `%LANGUAGE%` for the language the stream is in',
+				"- `%USER_ID%` for the streamer's ID as seen by Twitch",
+				"- and `%USER_NAME%` for the Streamer's twitch username.",
+				'',
+				'__Offline Notifications__',
+				"For offline events none of the variables above are available and you'll have to write your own content.",
+				'You can still use the `--embed` flag for the notification to show in a nice Twitch-purple MessageEmbed.'
+			],
 			explainedUsage: [
-				[this.list(['add', 'remove', 'reset', 'show'], 'o'), 'The subcommand to trigger.'],
 				['streamer', 'The Twitch username of the streamer to get notifications for.'],
 				['channel', 'A Discord channel where to post the notifications in.'],
-				['status', `The status that the Twitch streamer should get for an notification, one of ${this.list(['online', 'offline'], 'o')}.`],
+				['status', `The status that the Twitch streamer should get for an notification, one of online or offline.`],
 				['content', 'The message to send in Discord chat. Refer to extended help above for more information.']
 			],
 			examples: [
@@ -2659,9 +2720,15 @@ export default class extends Language {
 			multiline: true
 		},
 		commandWikipediaDescription: 'Search something through Wikipedia.',
-		commandWikipediaExtended: {},
+		commandWikipediaExtended: {
+			extendedHelp:
+				'In NSFW channels I will also add the page image. This restriction is in place because Wikipedia has NSFW images for NSFW pages as they have to be accurate (i.e. diseases or human body parts).',
+			reminder: 'Most Wikipedia page titles are case sensitive. Some celeberties will have lowercase redirects, but not many.'
+		},
 		commandYoutubeDescription: 'Search something through YouTube.',
-		commandYoutubeExtended: {},
+		commandYoutubeExtended: {
+			extendedHelp: `If I have the ${this.PERMISSIONS.MANAGE_MESSAGES} ${this.PERMISSIONS.ADD_REACTIONS} permissions then I will provide the option to navigate through the top 10 results.`
+		},
 
 		/**
 		 * ################
@@ -2670,11 +2737,13 @@ export default class extends Language {
 
 		commandCurrentTimeDescription: 'Obtiene la hora actual en cualquier lugar del mundo',
 		commandCurrentTimeExtended: {
-			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
-				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
-				Una vez que este comando obtuvo las coordenadas, consulta TimezoneDB para obtener los datos de tiempo`,
+			extendedHelp: [
+				'Este comando usa Google Maps para obtener las coordenadas del lugar.',
+				'Una vez que este comando obtuvo las coordenadas, consulta TimezoneDB para obtener los datos de tiempo'
+			],
 			explainedUsage: [['ubicación', 'La localidad, el gobierno, el país o el continente para consultar la hora.']],
-			examples: ['Madrid', 'Barcelona']
+			examples: ['Madrid', 'Barcelona'],
+			multiline: true
 		},
 		commandCurrentTimeLocationNotFound: 'Lo siento, pero no pude encontrar datos de tiempo para esa ubicación.',
 		commandCurrentTimeTitles: ({ dst }) => ({
@@ -2688,18 +2757,17 @@ export default class extends Language {
 		commandCurrentTimeNoDst: 'No observa el horario de verano en este momento',
 		commandGsearchDescription: 'Encuentra tus cosas favoritas en Google',
 		commandGsearchExtended: {
-			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar sitios web para su consulta.
-			Para imágenes, utilice el comando \`gimage\`.`,
+			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar sitios web para su consulta. Para imágenes, utilice el comando \`gimage\`.`,
 			explainedUsage: [['consulta', 'Lo que quieres encontrar en Google']],
 			examples: ['Discord', 'Skyra']
 		},
 		commandGimageDescription: 'Encuentra tus imágenes favoritas en Google',
 		commandGimageExtended: {
-			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar imágenes para su consulta.
-				Para obtener resultados web regulares, utilice el comando \`gsearch\`.
-				Este comando se ha marcado como NSFW porque es inevitable que cuando consulta contenido explícito, obtendrá resultados explícitos.`,
+			extendedHelp: `Este comando consulta el poderoso motor de búsqueda de Google para encontrar imágenes para su consulta. Para obtener resultados web regulares, utilice el comando \`gsearch\`.`,
 			explainedUsage: [['consulta', 'La imagen que quieres encontrar en Google']],
-			examples: ['Discord', 'Skyra']
+			examples: ['Discord', 'Skyra'],
+			reminder:
+				'Este comando se ha marcado como NSFW porque es inevitable que cuando consulta contenido explícito, obtendrá resultados explícitos.'
 		},
 		commandLmgtfyDescription: 'Moleste a otro usuario enviándole un enlace LMGTFY (Permítame Google eso para usted).',
 		commandLmgtfyExtended: {
@@ -2707,12 +2775,14 @@ export default class extends Language {
 		},
 		commandWeatherDescription: 'Check the weather status in a location.',
 		commandWeatherExtended: {
-			extendedHelp: `Este comando usa Google Maps para obtener las coordenadas del lugar,
-				este paso también permite el soporte en varios idiomas, ya que es ... Búsqueda de Google.
-				Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.
-				Nota: la temperatura está en ** Celsius **`,
+			extendedHelp: [
+				'Este comando usa Google Maps para obtener las coordenadas del lugar.',
+				'Una vez que este comando obtuvo las coordenadas, consulta a DarkSky para recuperar información sobre el clima.'
+			],
 			explainedUsage: [['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']],
-			examples: ['Madrid', 'Barcelona']
+			examples: ['Madrid', 'Barcelona'],
+			reminder: 'La temperatura está en **Celsius**',
+			multiline: true
 		},
 		googleErrorZeroResults: 'La aplicación no devolvió resultados.',
 		googleErrorRequestDenied: 'La aplicación GeoCode ha rechazado su solicitud.',
@@ -2769,8 +2839,7 @@ export default class extends Language {
 		},
 		commandWnekoDescription: 'Human kittens!',
 		commandWnekoExtended: {
-			extendedHelp: `Unlike the original kitten command, this one displays random weeb images, the difference is that
-					they're weebs... and humans, enjoy!`
+			extendedHelp: `Unlike the original kitten command, this one displays random weeb images, the difference is that they're weebs... and humans, enjoy!`
 		},
 		commandWpatDescription: "Pats somebody's head!",
 		commandWpatExtended: {
@@ -2850,12 +2919,6 @@ export default class extends Language {
 		},
 
 		/**
-		 * #################################
-		 * #       COMMAND RESPONSES       #
-		 * #################################
-		 */
-
-		/**
 		 * ##############
 		 * ANIME COMMANDS
 		 */
@@ -2930,7 +2993,7 @@ export default class extends Language {
 		commandInvitePermissionSupportServerText: 'Únase al servidor de soporte',
 		commandInvitePermissionsDescription:
 			'No tengas miedo de quitar algunos permisos, Skyra te hará saber si estás intentando ejecutar un comando sin los permisos requeridos.',
-		commandInfo: [
+		commandInfoBody: [
 			`Skyra ${VERSION} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.`,
 			"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",
 			'',
@@ -2944,7 +3007,7 @@ export default class extends Language {
 			'• Role management',
 			'• Weeb commands (+10)!',
 			'And more!'
-		].join('\n'),
+		],
 		commandHelpData: ({ titleDescription, usage, extendedHelp, footerName }) => ({
 			title: `${titleDescription}`,
 			usage: `📝 | ***Uso del Comando***\n\`${usage}\`\n`,
@@ -2980,23 +3043,21 @@ export default class extends Language {
 			license,
 			mainFile,
 			maintainers
-		}) =>
-			[
-				description,
-				'',
-				`❯ Autor: ${author}`,
-				`❯ Mantenedores: ${this.list(maintainers, 'y')}`,
-				`❯ Ultima versión: ${latestVersionNumber}`,
-				`❯ Licencia: ${license}`,
-				`❯ Archivo principal: ${mainFile}`,
-				`❯ Fecha de creacion: ${dateCreated}`,
-				`❯ Fecha modificada: ${dateModified}`,
-				deprecated ? `❯ Aviso de desuso: **${deprecated}**` : undefined,
-				'',
-				dependencies && dependencies.length ? this.list(dependencies, 'y') : `Sin dependencias ${GREENTICK}!`
-			]
-				.filter((part) => part !== undefined)
-				.join('\n'),
+		}) => [
+			description,
+			'',
+			author ? `❯ Autor: ${author}` : undefined,
+			`❯ Mantenedores: ${this.list(maintainers, 'y')}`,
+			`❯ Ultima versión: ${latestVersionNumber}`,
+			`❯ Licencia: ${license}`,
+			`❯ Archivo principal: ${mainFile}`,
+			`❯ Fecha de creacion: ${dateCreated}`,
+			`❯ Fecha modificada: ${dateModified}`,
+			deprecated ? `❯ Aviso de desuso: **${deprecated}**` : undefined,
+			'',
+			'__*Dependencies:*__',
+			dependencies && dependencies.length ? this.list(dependencies, 'y') : `Sin dependencias ${GREENTICK}!`
+		],
 		commandYarnEmbedMoreText: 'más...',
 
 		/**
@@ -3006,12 +3067,12 @@ export default class extends Language {
 
 		command8ballOutput: ({ author, question, response }) => `🎱 Pregunta por ${author}: *${question}*\n${response}`,
 		command8ballQuestions: {
-			When: /^¿?cu[áa]ndo/i,
-			What: /^¿?qu[ée]/i,
-			HowMuch: /^¿?cu[áa]nto/i,
-			HowMany: /^¿?cu[áa]nto/i,
-			Why: /^¿?por qu[ée]/i,
-			Who: /^¿?qui[ée]n/i
+			When: '^¿?cu[áa]ndo',
+			What: '^¿?qu[ée]',
+			HowMuch: '^¿?cu[áa]nto',
+			HowMany: '^¿?cu[áa]nto',
+			Why: '^¿?por qu[ée]',
+			Who: '^¿?qui[ée]n'
 		},
 		command8ballWhen: createPick(['Pronto™', 'Quizá mañana.', 'Quizá el año que viene...', 'Ahora mismo.', 'En unos cuantos meses.']),
 		command8ballWhat: createPick(['Un avión.', '¿Qué? Pregunta de nuevo.', '¡Un regalo!', 'Nada.', 'Un anillo.', 'No lo sé, quizá sea algo.']),
@@ -3135,16 +3196,22 @@ export default class extends Language {
 		commandC4GameNext: ({ user, turn }) => `Turn for: ${user} (${turn === 0 ? 'blue' : 'red'}).`,
 		commandC4Description: 'Play Connect-Four with somebody.',
 		commandC4Extended: {
-			extendedHelp: `This game is better played on PC. Connect Four (also known as Captain's Mistress, Four Up, Plot
-					Four, Find Four, Four in a Row, Four in a Line and Gravitrips (in Soviet Union)) is a two-player connection
-					game in which the players first choose a color and then take turns dropping colored discs from the top into a
-					seven-column, ~~six~~ five-row vertically suspended grid.`
+			extendedHelp: [
+				'This game is best played on PC.',
+				'Connect Four is a two-player connection game in which the players first choose a color and then take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid.'
+			],
+			multiline: true
 		},
 		commandCoinFlipDescription: '¡Lanza una moneda!',
 		commandCoinFlipExtended: {
-			extendedHelp: `Lanza una moneda. Si adivina el lado que aparece, recupera su apuesta, duplicada.
-			Si no lo haces, pierdes tu apuesta. Ahora consigue esas monedas volteando.`,
-			examples: ['heads 50', 'tails 200']
+			extendedHelp: [
+				'Lanza una moneda. Si adivina el lado que aparece, recupera su apuesta, duplicada.',
+				'Si no lo haces, pierdes tu apuesta.',
+				'También puede ejecutar un giro sin efectivo, que no cuesta nada, pero tampoco lo recompensa con nada.',
+				'Ahora consigue esas monedas volteando.'
+			],
+			examples: ['heads 50', 'tails 200'],
+			multiline: true
 		},
 		commandCoinFlipInvalidCoinname: ({ arg }) => `Disculpe, pero ${arg} no es una cara de moneda!`,
 		commandCoinFlipCoinnames: ['Cabezas', 'Cruz'],
@@ -3158,9 +3225,13 @@ export default class extends Language {
 		commandCoinFlipNoguessDescription: ({ result }) => `La moneda fue lanzada y mostró ${result}.`,
 		commandHigherLowerDescription: 'Comenzar un juego de Mayor/Menor',
 		commandHigherLowerExtended: {
-			extendedHelp: `Mayor/Menor es un juego de suerte. Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis
-			Sus ganancias aumentan a medida que avanza en las rondas, y puede retirar dinero en cualquier momento presionando el 💰 reacción emoji .
-			¡Pero ten cuidado! ¡Cuanto más lejos vayas, más posibilidades tendrás de perderlo todo!`
+			extendedHelp: [
+				'Mayor/Menor es un juego de suerte.',
+				'Elegiré un número y tendrás que adivinar si el próximo número que elijo será **mayor** o **menor** que el actual, usando los ⬆ o ⬇ emojis.',
+				'Sus ganancias aumentan a medida que avanza en las rondas, y puede retirar dinero en cualquier momento presionando el 💰 reacción emoji .',
+				'¡Pero ten cuidado! ¡Cuanto más lejos vayas, más posibilidades tendrás de perderlo todo!'
+			],
+			multiline: true
 		},
 		commandHigherLowerLoading: `${LOADING} Comenzar un nuevo juego de Mayor/Meno`,
 		commandHigherLowerNewround: 'Bien. Comenzando una nueva ronda',
@@ -3196,26 +3267,25 @@ export default class extends Language {
 		},
 		commandSlotmachineDescription: `I bet 100${SHINY} you ain't winning this round.`,
 		commandSlotmachineExtended: {
-			extendedHelp: `Una máquina tragamonedas (inglés americano), conocida como máquina de frutas (inglés británico),
-					puggy (inglés escocés), máquinas tragamonedas (inglés canadiense y americano), máquinas de póquer / pokies
-					(inglés australiano e inglés de Nueva Zelanda), o simplemente tragamonedas (Inglés americano),
-					es una máquina de juego de casino con tres o más carretes que giran cuando se presiona un botón.`,
+			extendedHelp: `Gira una máquina tragamonedas de 3 carretes y juega tus brillos para obtener recompensas más grandes`,
 			explainedUsage: [['Cantidad', 'Ya sea 50, 100, 200, 500 o incluso, 1000 shinies para apostar.']],
 			reminder: 'Recibirá al menos 5 veces la cantidad (cerezas / tada) al ganar, y hasta 24 veces (siete, diamante sin piel).'
 		},
 		commandSlotmachinesWin: ({ roll, winnings }) => `**You rolled:**\n${roll}\n**Congratulations!**\nYou won ${winnings}${SHINY}!`,
 		commandSlotmachinesLoss: ({ roll }) => `**You rolled:**\n${roll}\n**Mission failed!**\nWe'll get em next time!`,
-		commandSlotmachineCanvasText: ({ won }) => (won ? 'Tú ganaste' : 'Tú perdiste'),
+		commandSlotmachineCanvasTextWon: 'Tú ganaste',
+		commandSlotmachineCanvasTextLost: 'Tú perdiste',
 		commandSlotmachineTitles: {
 			previous: 'Anterior',
 			new: 'Nuevo'
 		},
 		commandTicTacToeDescription: 'Play Tic-Tac-Toe with somebody.',
 		commandTicTacToeExtended: {
-			extendedHelp: `Tic-tac-toe (también conocido como ceros y cruces o Xs y Os) es un juego de papel y lápiz para dos jugadores,
-				X y O, que se turnan para marcar los espacios en una cuadrícula de 3 × 3.
-				El jugador que logra colocar tres de sus marcas en una fila horizontal,
-				vertical o diagonal gana el juego.`
+			extendedHelp: [
+				'Tic-tac-toe (también conocido como ceros y cruces o Xs y Os) es un juego de papel y lápiz para dos jugadores, X y O, que se turnan para marcar los espacios en una cuadrícula de 3 × 3.',
+				'El jugador que logra colocar tres de sus marcas en una fila horizontal, vertical o diagonal gana el juego.'
+			],
+			multiline: true
 		},
 		commandTicTacToePrompt: ({ challenger, challengee }) =>
 			`Querido ${challenger}, ${challengee} te ha desafiado en un partido de tres en raya. Responda con **yes** para aceptar`,
@@ -3228,7 +3298,7 @@ export default class extends Language {
 				'Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)',
 				'',
 				`**Categories**: ${Object.keys(CATEGORIES).join(', ')}`
-			].join('\n'),
+			],
 			explainedUsage: [
 				['category', 'The category questions are asked from.'],
 				['type', 'The type of question asked: can be boolean (true/false) or multiple choice.'],
@@ -3249,13 +3319,16 @@ export default class extends Language {
 		commandTriviaWinner: ({ winner, correctAnswer }) => `We have a winner! ${winner} had a right answer with **${correctAnswer}**!`,
 		commandVaultDescription: `Guarde sus ${SHINY} de forma segura en una bóveda para que no pueda gastarlos accidentalmente en juegos de azar.`,
 		commandVaultExtended: {
-			extendedHelp: `Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.
-				Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`,
+			extendedHelp: [
+				'Esto es para los gastadores codiciosos entre nosotros que tienden a jugar demasiado en la máquina tragamonedas o girar la rueda de la fortuna.',
+				`Debes retirar activamente a los ${SHINY} de tu bóveda antes de que puedan gastarse el juego.`
+			],
 			explainedUsage: [
 				['acción', 'La acción a realizar: **retirarse** para retirarse de su bóveda o **depositar** para depositar en su bóveda.'],
 				['dinero', `La cantidad de ${SHINY} para retirar o depositar.`]
 			],
-			examples: ['depositar 10000.', 'retirar 10000.']
+			examples: ['depositar 10000.', 'retirar 10000.'],
+			multiline: true
 		},
 		commandVaultEmbedData: ({ coins }) => ({
 			depositedDescription: `Depositó ${coins} ${SHINY} del saldo de su cuenta en su bóveda.`,
@@ -3271,8 +3344,7 @@ export default class extends Language {
 			`Lo siento, ¡pero no tienes suficiente almacenado en tu bóveda para hacer esa retirada! Su saldo actual es ${vault}${SHINY}`,
 		commandWheelOfFortuneDescription: 'Juega con tus shinies haciendo girar una rueda de la fortuna.',
 		commandWheelOfFortuneExtended: {
-			extendedHelp: `Puede perder 0.1, 0.2, 0.3 o 0.5 veces su entrada
-				o ganar 1.2, 1.5, 1.7 o 2.4 veces su entrada.`
+			extendedHelp: `Puede perder 0.1, 0.2, 0.3 o 0.5 veces su entrada o ganar 1.2, 1.5, 1.7 o 2.4 veces su entrada.`
 		},
 		commandWheelOfFortuneTitles: {
 			previous: 'Anterior',
@@ -3339,33 +3411,32 @@ export default class extends Language {
 		},
 		commandGuildInfoRoles: ({ roles }) => `**Roles**\n\n${roles}`,
 		commandGuildInfoNoroles: 'Roles? Where? There is no other than the `@everyone` role!',
-		commandGuildInfoChannels: ({ text, voice, categories, afkChannel, afkTime }) =>
-			[
-				`• **${text}** Text, **${voice}** Voice, **${categories}** categories.`,
-				`• AFK: ${afkChannel ? `**<#${afkChannel}>** after **${afkTime / 60}**min` : '**None**.'}`
-			].join('\n'),
-		commandGuildInfoMembers: ({ count, owner }) => [`• **${count}** members`, `• Owner: **${owner.tag}**`, `  (ID: **${owner.id}**)`].join('\n'),
-		commandGuildInfoOther: ({ size, region, createdAt, verificationLevel }) =>
-			[
-				`• Roles: **${size}**`,
-				`• Region: **${region}**`,
-				`• Created at: **${timestamp.displayUTC(createdAt)}** (UTC - YYYY/MM/DD)`,
-				`• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**`
-			].join('\n'),
+		commandGuildInfoChannels: ({ text, voice, categories, afkChannelText }) => [
+			`• **${text}** Text, **${voice}** Voice, **${categories}** categories.`,
+			`• AFK: ${afkChannelText}`
+		],
+		commandGuildInfoChannelsAfkChannelText: ({ afkChannel, afkTime }) => `**<#${afkChannel}>** after **${afkTime / 60}**min`,
+		commandGuildInfoMembers: ({ count, owner }) => [`• **${count}** members`, `• Owner: **${owner.tag}**`, `  (ID: **${owner.id}**)`],
+		commandGuildInfoOther: ({ size, region, createdAt, verificationLevel }) => [
+			`• Roles: **${size}**`,
+			`• Region: **${region}**`,
+			`• Created at: **${timestamp.displayUTC(createdAt)}** (UTC - YYYY/MM/DD)`,
+			`• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**`
+		],
 		commandRoleInfoTitles: { PERMISSIONS: 'Permissions' },
-		commandRoleInfo: ({ role, hoisted, mentionable }) =>
-			[
-				`ID: **${role.id}**`,
-				`Name: **${role.name}**`,
-				`Color: **${role.hexColor}**`,
-				`Hoisted: **${hoisted}**`,
-				`Position: **${role.rawPosition}**`,
-				`Mentionable: **${mentionable}**`
-			].join('\n'),
+		commandRoleInfoData: ({ role, hoisted, mentionable }) => [
+			`ID: **${role.id}**`,
+			`Name: **${role.name}**`,
+			`Color: **${role.hexColor}**`,
+			`Hoisted: **${hoisted}**`,
+			`Position: **${role.rawPosition}**`,
+			`Mentionable: **${mentionable}**`
+		],
 		commandRoleInfoAll: 'All Permissions granted.',
 		commandRoleInfoNoPermissions: 'Permissions not granted.',
 		commandFilterUndefinedWord: 'You must write what you want me to filter.',
-		commandFilterFiltered: ({ filtered }) => `This word is ${filtered ? 'already' : 'not'} filtered.`,
+		commandFilterAlreadyFiltered: `This word is already filtered.`,
+		commandFilterNotFiltered: `This word is not filtered.`,
 		commandFilterAdded: ({ word }) => `${GREENTICK} Success! Added the word ${word} to the filter.`,
 		commandFilterRemoved: ({ word }) => `${GREENTICK} Success! Removed the word ${word} from the filter.`,
 		commandFilterReset: `${GREENTICK} Success! The filter has been reset.`,
@@ -3380,8 +3451,8 @@ export default class extends Language {
 			`${GREENTICK} Successfully set the duration for moderation logs to ${this.duration(time)}.`,
 		commandManageAttachmentsAction: `${GREENTICK} Successfully changed the moderative action for the manager.`,
 		commandManageAttachmentsLogs: `${GREENTICK} Successfully changed the preferences for message logging.`,
-		commandManageAttachmentsEnabled: ({ value: enabled }) =>
-			`${GREENTICK} Successfully ${enabled ? 'enabled' : 'disabled'} the attachment management.`,
+		commandManageAttachmentsEnabled: `${GREENTICK} Successfully enabled the attachment management.`,
+		commandManageAttachmentsDisabled: `${GREENTICK} Successfully disabled the attachment management.`,
 
 		/**
 		 * #################################

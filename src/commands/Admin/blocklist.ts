@@ -3,6 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { PermissionLevels } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
+import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
 import { Guild, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -24,14 +25,14 @@ export default class extends SkyraCommand {
 
 		const guilds = await Promise.all(
 			clientEntity.guildBlocklist.map(async (guildId) => {
-				const guild = await resolveOnErrorCodes(this.client.guilds.fetch(guildId));
+				const guild = await resolveOnErrorCodes(this.client.guilds.fetch(guildId), APIErrors.UnknownGuild);
 				if (guild) return `${guild.name} (\`${guildId}\`)`;
 				return `Unknown Guild (\`${guildId}\`)`;
 			})
 		);
 		const users = await Promise.all(
 			clientEntity.userBlocklist.map(async (userId) => {
-				const user = await resolveOnErrorCodes(this.client.users.fetch(userId));
+				const user = await resolveOnErrorCodes(this.client.users.fetch(userId), APIErrors.UnknownUser);
 				if (user) return `${user.tag} (\`${userId}\`)`;
 				return `Unknown User (\`${userId}\`()`;
 			})

@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || BrandingColors.Secondary)
-			.addField(titles.joined, fields.joined)
+			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown)
 			.addField(titles.createdAt, fields.createdAt)
 			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(member.toString())
@@ -81,7 +81,10 @@ export default class extends SkyraCommand {
 
 		const roles = member.roles.cache.sorted(sortRanks);
 		roles.delete(member.guild.id);
-		embed.splitFields(message.language.get('commandWhoisMemberRoles', { amount: roles.size }), [...roles.values()].join(' '));
+		embed.splitFields(
+			message.language.get(roles.size === 1 ? 'commandWhoisMemberRoles' : 'commandWhoisMemberRolesPlural', { count: roles.size }),
+			[...roles.values()].join(' ')
+		);
 	}
 
 	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {

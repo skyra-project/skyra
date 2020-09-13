@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
 import { Filter, Position } from '@lib/types/Languages';
-import { NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
 import { VERSION } from '@root/config';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
@@ -3661,7 +3660,7 @@ export default class extends Language {
 			`**❯ Duration**: ${this.duration(pDuration!)}`,
 			`**❯ Reason**: ${reason}`
 		],
-		commandModerationDays: /days?/i,
+		commandModerationDays: 'days?',
 
 		/**
 		 * ###############
@@ -3681,10 +3680,11 @@ export default class extends Language {
 		commandBalanceSelf: ({ amount }) => `You have a total of ${amount}${SHINY}`,
 		commandBalanceBots: `I think they have 5 gears as much, bots don't have ${SHINY}`,
 		commandSocialMemberNotexists: `${REDCROSS} The member is not in this server, and is not in my database either.`,
-		commandSocialAdd: ({ user, amount, added }) =>
-			`${GREENTICK} Successfully added ${added} point${added === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
-		commandSocialRemove: ({ user, amount, removed }) =>
-			`${GREENTICK} Successfully removed ${removed} point${removed === 1 ? '' : 's'} to ${user}. Current amount: ${amount}.`,
+		commandSocialAdd: ({ user, amount, count }) => `${GREENTICK} Successfully added ${count} point to ${user}. Current amount: ${amount}.`,
+		commandSocialAddPlural: ({ user, amount, count }) => `${GREENTICK} Successfully added ${count} points to ${user}. Current amount: ${amount}.`,
+		commandSocialRemove: ({ user, amount, count }) => `${GREENTICK} Successfully removed ${count} point to ${user}. Current amount: ${amount}.`,
+		commandSocialRemovePlural: ({ user, amount, count }) =>
+			`${GREENTICK} Successfully removed ${count} points to ${user}. Current amount: ${amount}.`,
 		commandSocialUnchanged: ({ user }) => `${REDCROSS} The user ${user} already had the given amount of points, no update was needed.`,
 		commandSocialReset: ({ user }) => `${GREENTICK} The user ${user} got his points removed.`,
 		commandBannerMissing: ({ type }) => `You must specify a banner id to ${type}.`,
@@ -3703,15 +3703,14 @@ export default class extends Language {
 		commandBannerBuy: ({ banner }) => `|\`✅\`| **Success**. You have bought the banner: __${banner}__`,
 		commandBannerPrompt:
 			'Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.',
-		commandToggleDarkModeToggled: ({ enabled }) =>
-			enabled ? `${GREENTICK} Successfully enabled the dark mode.` : `${GREENTICK} Successfully disabled the dark mode.`,
+		commandToggleDarkModeEnabled: `${GREENTICK} Successfully enabled the dark mode.`,
+		commandToggleDarkModeDisabled: `${GREENTICK} Successfully disabled the dark mode.`,
 		commandDailyTime: ({ time }) => `Next dailies are available in ${this.duration(time)}`,
 		commandDailyTimeSuccess: ({ amount }) => `Yay! You earned ${amount}${SHINY}! Next dailies in: 12 hours.`,
-		commandDailyGrace: ({ remaining }) =>
-			[
-				'Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.',
-				`Remaining time: ${this.duration(remaining)}`
-			].join('\n'),
+		commandDailyGrace: ({ remaining }) => [
+			'Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.',
+			`Remaining time: ${this.duration(remaining)}`
+		],
 		commandDailyGraceAccepted: ({ amount, remaining }) => `Successfully claimed ${amount}${SHINY}! Next dailies in: ${this.duration(remaining)}`,
 		commandDailyGraceDenied: 'Got it! Come back soon!',
 		commandDailyCollect: 'Collect dailies',
@@ -3734,8 +3733,9 @@ export default class extends Language {
 		commandMarryAuthorTaken: ({ author }) =>
 			`You are already married. Is your love big enough for two people? <@${author.id}>, reply with **yes** to confirm!`,
 		commandMarryAuthorMultipleCancel: ({ user }) => `Cancelling. Your commitment to ${user} is admirable.`,
-		commandMarryTaken: ({ spousesCount }) =>
-			`This user is already married to ${spousesCount === 1 ? 'someone' : `${spousesCount} people`}. Would you like to join their harem?`,
+		commandMarryTaken: () => `This user is already married to someone. Would you like to join their harem?`,
+		commandMarryTakenPlural: ({ count: spousesCount }) =>
+			`This user is already married to ${spousesCount} people. Would you like to join their harem?`,
 		commandMarryAlreadyMarried: ({ user }) => `You are already married with ${user}, did you forget it?`,
 		commandMarryAuthorTooMany: ({ limit }) => `${REDCROSS} You are married to too many people, your maximum is ${limit}!`,
 		commandMarryTargetTooMany: ({ limit }) =>
@@ -3803,9 +3803,11 @@ export default class extends Language {
 		commandStarsPlural: ({ count }) => `${count} stars`,
 		commandStarStatsDescription: ({ messages, stars }) => `${messages} starred with a total of ${stars}`,
 		commandStarTopstarred: 'Top Starred Posts',
-		commandStarTopstarredDescription: ({ medal, id, stars }) => `${medal}: ${id} (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+		commandStarTopstarredDescription: ({ medal, id, count }) => `${medal}: ${id} (${count} star)`,
+		commandStarTopstarredDescriptionPlural: ({ medal, id, count }) => `${medal}: ${id} (${count} stars)`,
 		commandStarTopreceivers: 'Top Star Receivers',
-		commandStarTopreceiversDescription: ({ medal, id, stars }) => `${medal}: <@${id}> (${stars} ${stars === 1 ? 'star' : 'stars'})`,
+		commandStarTopreceiversDescription: ({ medal, id, count }) => `${medal}: <@${id}> (${count} star)`,
+		commandStarTopreceiversDescriptionPlural: ({ medal, id, count }) => `${medal}: <@${id}> (${count} stars)`,
 
 		/**
 		 * ####################
@@ -3839,8 +3841,11 @@ export default class extends Language {
 				'1 deny There is no way this is going to happen.',
 				'1 d There is no way this is going to happen.'
 			],
-			reminder: `Suggestions also can be configured to DM the author regarding the status of their suggestion, with the \`suggestions.on-action.dm\` setting.
-			Furthermore, in case you wish to preserve anonymity, you can hide your name using the \`suggestions.on-action\` setting, which can be overridden with the \`--hide-author\` and \`--show-author\` flags`
+			reminder: [
+				'Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.',
+				'Furthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags.'
+			],
+			multiline: true
 		},
 		commandResolveSuggestionInvalidId: `${REDCROSS} That\'s not a valid suggestion ID!`,
 		commandResolveSuggestionMessageNotFound: `${REDCROSS} I was not able to retrieve the suggestion as its message has been deleted.`,
@@ -3859,10 +3864,10 @@ export default class extends Language {
 			deny: `${author} denied this suggestion in ${guild}:`
 		}),
 		commandResolveSuggestionDmFail: `${REDCROSS} I wasn\'t able to send the author a DM. Are their DMs closed?`,
-		commandResolveSuggestionSuccess: ({ id, action }) =>
-			`${GREENTICK} Successfully ${
-				action === 'a' || action === 'accept' ? 'accepted' : action === 'd' || action === 'deny' ? 'denied' : 'considered'
-			} suggestion \`${id}\`!`,
+		commandResolveSuggestionSuccess: ({ id, actionText }) => `${GREENTICK} Successfully ${actionText} suggestion \`${id}\`!`,
+		commandResolveSuggestionSuccessAcceptedText: 'accepted',
+		commandResolveSuggestionSuccessDeniedText: 'denied',
+		commandResolveSuggestionSuccessConsideredText: 'considered',
 
 		/**
 		 * ###############
@@ -3885,13 +3890,13 @@ export default class extends Language {
 				`• **Discord.js**: ${stats.version}`,
 				`• **Node.js**: ${stats.nodeJs}`,
 				`• **Klasa**: ${klasaVersion}`
-			].join('\n'),
+			],
 			uptime: [
 				`• **Host**: ${this.duration(uptime.host, 2)}`,
 				`• **Total**: ${this.duration(uptime.total, 2)}`,
 				`• **Client**: ${this.duration(uptime.client, 2)}`
-			].join('\n'),
-			serverUsage: [`• **CPU Load**: ${usage.cpuLoad.join('% | ')}%`, `• **Heap**: ${usage.ramUsed} (Total: ${usage.ramTotal})`].join('\n')
+			],
+			serverUsage: [`• **CPU Load**: ${usage.cpuLoad.join('% | ')}%`, `• **Heap**: ${usage.ramUsed} (Total: ${usage.ramTotal})`]
 		}),
 
 		/**
@@ -3909,7 +3914,7 @@ export default class extends Language {
 				'The content will be in the description, so you can use all the markdown you wish. for example, adding [masked links](https://skyra.pw).',
 				'❯ Add `--color=<a color>` or `--colour=<a colour>` to have Skyra colourize the embed. Does nothing unless also specifying `--embed`.',
 				'Colours can be RGB, HSL, HEX or Decimal.'
-			].join('\n'),
+			],
 			explainedUsage: [
 				[
 					'action',
@@ -3944,20 +3949,11 @@ export default class extends Language {
 		commandTagNameTooLong: 'A tag name must be 50 or less characters long.',
 		commandTagExists: ({ tag }) => `The tag '${tag}' already exists.`,
 		commandTagContentRequired: 'You must provide a content for this tag.',
-		commandTagAdded: ({ name, content }) =>
-			[
-				`Successfully added a new tag: **${name}** with a content of:`,
-				`**${content.endsWith('...') ? `${content} (truncated for Discord message length, full tag has been saved)` : content}**`
-			].join('\n'),
+		commandTagAdded: ({ name, content }) => `Successfully added a new tag: **${name}** with a content of:\n${content}`,
 		commandTagRemoved: ({ name }) => `Successfully removed the tag **${name}**.`,
 		commandTagNotexists: ({ tag }) => `The tag '${tag}' does not exist.`,
-		commandTagEdited: ({ name, content }) =>
-			[
-				`Successfully edited the tag **${name}** with a content of`,
-				`**${content.endsWith('...') ? `${content} (truncated for Discord message length, full tag has been saved)` : content}**`
-			].join('\n'),
+		commandTagEdited: ({ name, content }) => `Successfully edited the tag **${name}** with a content of:\n${content}`,
 		commandTagListEmpty: 'The tag list for this server is empty.',
-		commandTagList: ({ tags }) => `${tags.length === 1 ? 'There is 1 tag: ' : `There are ${tags.length} tags: `}${tags.join(', ')}`,
 		commandTagReset: 'All tags have been successfully removed from this server.',
 
 		/**
@@ -3966,19 +3962,17 @@ export default class extends Language {
 		 */
 
 		commandAvatarNone: 'The user does not have an avatar set.',
-		commandColor: ({ hex, rgb, hsl }) => [`HEX: **${hex}**`, `RGB: **${rgb}**`, `HSL: **${hsl}**`].join('\n'),
-		commandEmojiCustom: ({ emoji, id }) =>
-			[
-				`→ ${inlineCodeBlock('Emoji ::')} **${emoji}**`,
-				`→ ${inlineCodeBlock('Type  ::')} **Custom**`,
-				`→ ${inlineCodeBlock('ID    ::')} **${id}**`
-			].join('\n'),
-		commandEmojiTwemoji: ({ emoji, id }) =>
-			[
-				`→ ${inlineCodeBlock('Emoji ::')} \`${emoji}\``,
-				`→ ${inlineCodeBlock('Type  ::')} **Twemoji**`,
-				`→ ${inlineCodeBlock('ID    ::')} **${id}**`
-			].join('\n'),
+		commandColor: ({ hex, rgb, hsl }) => [`HEX: **${hex}**`, `RGB: **${rgb}**`, `HSL: **${hsl}**`],
+		commandEmojiCustom: ({ emoji, id }) => [
+			`→ ${inlineCodeBlock('Emoji ::')} **${emoji}**`,
+			`→ ${inlineCodeBlock('Type  ::')} **Custom**`,
+			`→ ${inlineCodeBlock('ID    ::')} **${id}**`
+		],
+		commandEmojiTwemoji: ({ emoji, id }) => [
+			`→ ${inlineCodeBlock('Emoji ::')} \`${emoji}\``,
+			`→ ${inlineCodeBlock('Type  ::')} **Twemoji**`,
+			`→ ${inlineCodeBlock('ID    ::')} **${id}**`
+		],
 		commandEmojiInvalid: `The argument you provided is not a valid emoji.`,
 		commandEmojiTooLarge: ({ emoji }) => `'${emoji}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?`,
 		commandCountryDescription: 'Shows information about a country.',
@@ -4022,7 +4016,8 @@ export default class extends Language {
 			nsuid: 'NSUID',
 			esrb: 'ESRB'
 		},
-		commandEshopPrice: ({ price }) => (price > 0 ? `$${price} USD` : 'Free'),
+		commandEshopPricePaid: ({ price }) => `$${price} USD`,
+		commandEshopPriceFree: 'Free',
 		commandHoroscopeDescription: 'Get your latest horoscope',
 		commandHoroscopeExtended: {
 			extendedHelp: "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
@@ -4039,12 +4034,7 @@ export default class extends Language {
 		commandHoroscopeTitles: ({ sign, intensity, keywords, mood, rating }) => ({
 			dailyHoroscope: `Daily horoscope for ${sign}`,
 			metadataTitle: 'Metadata',
-			metadata: [
-				`**Intensity:** ${intensity}`,
-				`**Keywords:** ${this.list(keywords, 'and')}`,
-				`**Mood:** ${mood}`,
-				`**Rating:** ${rating}`
-			].join('\n')
+			metadata: [`**Intensity:** ${intensity}`, `**Keywords:** ${this.list(keywords, 'and')}`, `**Mood:** ${mood}`, `**Rating:** ${rating}`]
 		}),
 		commandIgdbDescription: 'Searches IGDB (Internet Game Database) for your favourite games',
 		commandIgdbExtended: {
@@ -4094,7 +4084,8 @@ export default class extends Language {
 				"Tip: You can use the 'y:' filter to narrow your results by year. Example: 'star wars y:1977'."
 			],
 			explainedUsage: [['query', 'The name of the movie']],
-			examples: ["Ocean's Eleven y:2001", 'Star Wars Revenge of the Sith', 'Spirited Away']
+			examples: ["Ocean's Eleven y:2001", 'Star Wars Revenge of the Sith', 'Spirited Away'],
+			multiline: true
 		},
 		commandMoviesTitles: {
 			runtime: 'Runtime',
@@ -4156,13 +4147,13 @@ export default class extends Language {
 			createdAt: 'Created At'
 		},
 		commandWhoisMemberFields: ({ member }) => ({
-			joined: member.joinedTimestamp
-				? `${timestamp.displayUTC(member.joinedTimestamp)}\n${this.duration(Date.now() - member.joinedTimestamp, 2)} ago`
-				: 'Unknown',
+			joinedWithTimestamp: `${timestamp.displayUTC(member.joinedTimestamp!)}\n${this.duration(Date.now() - member.joinedTimestamp!, 2)} ago`,
+			joinedUnknown: 'Unknown',
 			createdAt: `${timestamp.displayUTC(member.user.createdAt)}\n${this.duration(Date.now() - member.user.createdTimestamp, 2)} ago`,
 			footer: `ID: ${member.id}`
 		}),
-		commandWhoisMemberRoles: ({ amount }) => (amount === 1 ? 'Role [1]' : `Roles [${amount}]`),
+		commandWhoisMemberRoles: () => 'Role [1]',
+		commandWhoisMemberRolesPlural: ({ count }) => `Roles [${count}]`,
 		commandWhoisMemberPermissions: 'Key Permissions',
 		commandWhoisMemberPermissionsAll: 'All Permissions',
 		commandWhoisUserTitles: {
@@ -4182,9 +4173,7 @@ export default class extends Language {
 			clickToVisit: "Click to go to streamer's channel",
 			partner: 'Partner'
 		},
-		commandTwitchMaturity: ({ mature }) => (mature ? 'This is a mature channel.' : 'This channel is safe for everyone.'),
-		commandTwitchPartnership: ({ affiliateStatus }) =>
-			affiliateStatus === false ? 'This channel is not part of the Twitch affiliate program.' : affiliateStatus,
+		commandTwitchPartnershipWithoutAffiliate: 'This channel is not part of the Twitch affiliate program.',
 		commandTwitchAffiliateStatus: {
 			affiliated: 'This is an affiliated channel.',
 			partnered: 'This is a partnered channel.'
@@ -4198,22 +4187,25 @@ export default class extends Language {
 		commandTwitchSubscriptionInvalidStatus: `${REDCROSS} Woah there! I expected "online" or "offline", but I cannot understand what you gave me instead.`,
 		commandTwitchSubscriptionRequiredContent: `${REDCROSS} Mhmm, I wonder what you want me to send when the user goes live or something. Can you give me a hint please?`,
 		commandTwitchSubscriptionAddDuplicated: `${REDCROSS} You're already subscribed to that streamer in this channel for that status.`,
-		commandTwitchSubscriptionAddSuccess: ({ name, channel, status }) =>
-			`${GREENTICK} Success! Whenever ${name} goes ${
-				status === NotificationsStreamsTwitchEventStatus.Offline ? 'offline' : 'live'
-			}, I will post a new message in ${channel}.`,
+		commandTwitchSubscriptionAddSuccessOffline: ({ name, channel }) =>
+			`${GREENTICK} Success! Whenever ${name} goes offline, I will post a new message in ${channel}.`,
+		commandTwitchSubscriptionAddSuccessLive: ({ name, channel }) =>
+			`${GREENTICK} Success! Whenever ${name} goes live, I will post a new message in ${channel}.`,
 		commandTwitchSubscriptionRemoveStreamerNotSubscribed: `${REDCROSS} I'm sorry, you cannot unsubscribe from a channel you're not subscribed to. Please subscribe to be able to unsubscribe.`,
 		commandTwitchSubscriptionRemoveEntryNotExists: `${REDCROSS} I'm sorry; while you're subscribed to this user, their subscriptions are not posted in that channel.`,
-		commandTwitchSubscriptionRemoveSuccess: ({ name, channel, status }) =>
-			`${GREENTICK} Success! I will not longer post messages to ${channel} whenever ${name} goes ${
-				status === NotificationsStreamsTwitchEventStatus.Offline ? 'offline' : 'live'
-			}.`,
+		commandTwitchSubscriptionRemoveSuccessOffline: ({ name, channel }) =>
+			`${GREENTICK} Success! I will not longer post messages to ${channel} whenever ${name} goes offline.`,
+		commandTwitchSubscriptionRemoveSuccessLive: ({ name, channel }) =>
+			`${GREENTICK} Success! I will not longer post messages to ${channel} whenever ${name} goes live.`,
 		commandTwitchSubscriptionResetEmpty: `${REDCROSS} You were not subscribed to any streamer, mission abort!`,
-		commandTwitchSubscriptionResetSuccess: ({ entries }) =>
-			`${GREENTICK} Success! ${entries} subscription${entries === 1 ? ' has' : 's have'} been removed from this server.`,
+		commandTwitchSubscriptionResetSuccess: ({ count }) => `${GREENTICK} Success! ${count} subscription has been removed from this server.`,
+		commandTwitchSubscriptionResetSuccessPlural: ({ count }) =>
+			`${GREENTICK} Success! ${count} subscriptions have been removed from this server.`,
 		commandTwitchSubscriptionResetStreamerNotSubscribed: `${REDCROSS} You were not subscribed to this streamer. Are you sure you specified the right one?`,
-		commandTwitchSubscriptionResetChannelSuccess: ({ name, entries }) =>
-			`${GREENTICK} Success! Removed ${entries} subscription${entries === 1 ? '' : 's'} from the streamer ${name}.`,
+		commandTwitchSubscriptionResetChannelSuccess: ({ name, count }) =>
+			`${GREENTICK} Success! Removed ${count} subscription from the streamer ${name}.`,
+		commandTwitchSubscriptionResetChannelSuccessPlural: ({ name, count }) =>
+			`${GREENTICK} Success! Removed ${count} subscriptions from the streamer ${name}.`,
 		commandTwitchSubscriptionShowStreamerNotSubscribed: `${REDCROSS} You wanted to see all subscriptions from this streamer, but there are none!`,
 		commandTwitchSubscriptionShowStatus: ['Online', 'Offline'],
 		commandTwitchSubscriptionShowEmpty: `${REDCROSS} There are no subscriptions, who will be the first?`,

@@ -45,7 +45,7 @@ export default class extends ModerationCommand {
 	}
 
 	private getDays(message: KlasaMessage) {
-		const regex = message.language.get('commandModerationDays');
+		const regex = new RegExp(message.language.get('commandModerationDays'), 'i');
 		for (const [key, value] of Object.entries(message.flagArgs)) {
 			if (regex.test(key)) {
 				const parsed = Number(value);

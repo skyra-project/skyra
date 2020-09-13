@@ -120,7 +120,11 @@ export default class extends RichDisplayCommand {
 					]);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
-				const answer = await askYesNo(channel, author, language.get('commandMarryTaken', { spousesCount: targetSpouses.length }));
+				const answer = await askYesNo(
+					channel,
+					author,
+					language.get(targetSpouses.length === 1 ? 'commandMarryTaken' : 'commandMarryTakenPlural', { count: targetSpouses.length })
+				);
 				if (answer !== YesNoAnswer.Yes) return message.sendLocale('commandMarryMultipleCancel');
 			}
 

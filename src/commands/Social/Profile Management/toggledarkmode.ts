@@ -21,6 +21,6 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendLocale('commandToggleDarkModeToggled', [{ enabled: updated.profile.darkTheme }]);
+		return message.sendLocale(updated.profile.darkTheme ? 'commandToggleDarkModeEnabled' : 'commandToggleDarkModeDisabled');
 	}
 }

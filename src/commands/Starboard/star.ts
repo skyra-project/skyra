@@ -131,12 +131,22 @@ export default class extends SkyraCommand {
 				)
 				.addField(
 					i18n('commandStarTopstarred'),
-					topThreeMessages.map(([mID, stars], index) => i18n('commandStarTopstarredDescription', { medal: MEDALS[index], id: mID, stars }))
+					topThreeMessages.map(([mID, stars], index) =>
+						i18n(stars === 1 ? 'commandStarTopstarredDescription' : 'commandStarTopstarredDescriptionPlural', {
+							medal: MEDALS[index],
+							id: mID,
+							count: stars
+						})
+					)
 				)
 				.addField(
 					i18n('commandStarTopreceivers'),
 					topThreeReceivers.map(([uID, stars], index) =>
-						i18n('commandStarTopreceiversDescription', { medal: MEDALS[index], id: uID, stars })
+						i18n(stars === 1 ? 'commandStarTopreceiversDescription' : 'commandStarTopreceiversDescriptionPlural', {
+							medal: MEDALS[index],
+							id: uID,
+							count: stars
+						})
 					)
 				)
 				.setTimestamp()

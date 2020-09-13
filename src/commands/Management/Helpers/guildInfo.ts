@@ -36,7 +36,10 @@ export default class extends SkyraCommand {
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(message.guild!.iconURL()!)
 				.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
-				.splitFields(message.language.get('commandWhoisMemberRoles', { amount: roles.length }), roles.join(' '))
+				.splitFields(
+					message.language.get(roles.length === 1 ? 'commandWhoisMemberRoles' : 'commandWhoisMemberRolesPlural', { count: roles.length }),
+					roles.join(' ')
+				)
 				.addField(
 					serverInfoTitles.CHANNELS,
 					message.language.get('commandGuildInfoChannels', {

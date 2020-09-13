@@ -9,7 +9,6 @@ import type { Moderation } from '@utils/constants';
 import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
-import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
 
 export const enum Position {
 	Before,
@@ -1038,7 +1037,8 @@ declare module 'klasa' {
 			nsuid: 'NSUID';
 			esrb: 'ESRB';
 		};
-		commandEshopPrice: (params: { price: number }) => string;
+		commandEshopPricePaid: (params: { price: number }) => string;
+		commandEshopPriceFree: string;
 		commandHoroscopeDescription: string;
 		commandHoroscopeExtended: LanguageHelpDisplayOptions;
 		commandHoroscopeInvalidSunsign: (params: { sign: string; maybe: string }) => string;
@@ -1051,7 +1051,7 @@ declare module 'klasa' {
 		}) => {
 			dailyHoroscope: string;
 			metadataTitle: string;
-			metadata: string;
+			metadata: readonly string[];
 		};
 		commandIgdbDescription: string;
 		commandIgdbExtended: LanguageHelpDisplayOptions;
@@ -1733,7 +1733,7 @@ declare module 'klasa' {
 			reason: string | null;
 			duration: number | null;
 		}) => string[];
-		commandModerationDays: RegExp;
+		commandModerationDays: string;
 		commandAutoRolePointsRequired: string;
 		commandAutoRoleUpdateConfigured: string;
 		commandAutoRoleUpdateUnconfigured: string;
@@ -1746,8 +1746,10 @@ declare module 'klasa' {
 		commandBalanceSelf: (params: { amount: string }) => string;
 		commandBalanceBots: string;
 		commandSocialMemberNotexists: string;
-		commandSocialAdd: (params: { user: string; amount: number; added: number }) => string;
-		commandSocialRemove: (params: { user: string; amount: number; removed: number }) => string;
+		commandSocialAdd: (params: { user: string; amount: number; count: number }) => string;
+		commandSocialAddPlural: (params: { user: string; amount: number; count: number }) => string;
+		commandSocialRemove: (params: { user: string; amount: number; count: number }) => string;
+		commandSocialRemovePlural: (params: { user: string; amount: number; count: number }) => string;
 		commandSocialUnchanged: (params: { user: string }) => string;
 		commandSocialReset: (params: { user: string }) => string;
 		commandBannerMissing: (params: { type: string }) => string;
@@ -1762,10 +1764,11 @@ declare module 'klasa' {
 		commandBannerPaymentCancelled: string;
 		commandBannerBuy: (params: { banner: string }) => string;
 		commandBannerPrompt: string;
-		commandToggleDarkModeToggled: (params: { enabled: boolean }) => string;
+		commandToggleDarkModeEnabled: string;
+		commandToggleDarkModeDisabled: string;
 		commandDailyTime: (params: { time: number }) => string;
 		commandDailyTimeSuccess: (params: { amount: number }) => string;
-		commandDailyGrace: (params: { remaining: number }) => string;
+		commandDailyGrace: (params: { remaining: number }) => string[];
 		commandDailyGraceAccepted: (params: { amount: number; remaining: number }) => string;
 		commandDailyGraceDenied: string;
 		commandDailyCollect: string;
@@ -1783,7 +1786,8 @@ declare module 'klasa' {
 		commandMarrySelf: string;
 		commandMarryAuthorTaken: (params: { author: User }) => string;
 		commandMarryAuthorMultipleCancel: (params: { user: string }) => string;
-		commandMarryTaken: (params: { spousesCount: number }) => string;
+		commandMarryTaken: (params: { count: number }) => string;
+		commandMarryTakenPlural: (params: { count: number }) => string;
 		commandMarryAlreadyMarried: (params: { user: User }) => string;
 		commandMarryAuthorTooMany: (params: { limit: number }) => string;
 		commandMarryTargetTooMany: (params: { limit: number }) => string;
@@ -1854,7 +1858,10 @@ declare module 'klasa' {
 			deny: string;
 		};
 		commandResolveSuggestionDmFail: string;
-		commandResolveSuggestionSuccess: (params: { id: number; action: 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c' }) => string;
+		commandResolveSuggestionSuccess: (params: { id: number; actionText: string }) => string;
+		commandResolveSuggestionSuccessAcceptedText: string;
+		commandResolveSuggestionSuccessDeniedText: string;
+		commandResolveSuggestionSuccessConsideredText: string;
 		commandStarNostars: string;
 		commandStarStats: string;
 		commandStarStatsDescription: (params: { messages: string; stars: string }) => string;
@@ -1863,9 +1870,11 @@ declare module 'klasa' {
 		commandStars: (params: { count: number }) => string;
 		commandStarsPlural: (params: { count: number }) => string;
 		commandStarTopstarred: string;
-		commandStarTopstarredDescription: (params: { medal: string; id: string; stars: number }) => string;
+		commandStarTopstarredDescription: (params: { medal: string; id: string; count: number }) => string;
+		commandStarTopstarredDescriptionPlural: (params: { medal: string; id: string; count: number }) => string;
 		commandStarTopreceivers: string;
-		commandStarTopreceiversDescription: (params: { medal: string; id: string; stars: number }) => string;
+		commandStarTopreceiversDescription: (params: { medal: string; id: string; count: number }) => string;
+		commandStarTopreceiversDescriptionPlural: (params: { medal: string; id: string; count: number }) => string;
 		commandEvalTimeout: (params: { seconds: number }) => string;
 		commandEvalError: (params: { time: string; output: string; type: string }) => string;
 		commandStatsTitles: {
@@ -1878,9 +1887,9 @@ declare module 'klasa' {
 			uptime: StatsUptime;
 			usage: StatsUsage;
 		}) => {
-			stats: string;
-			uptime: string;
-			serverUsage: string;
+			stats: string[];
+			uptime: string[];
+			serverUsage: string[];
 		};
 		commandTagDescription: string;
 		commandTagExtended: LanguageHelpDisplayOptions;
@@ -1894,12 +1903,11 @@ declare module 'klasa' {
 		commandTagRemoved: (params: { name: string }) => string;
 		commandTagNotexists: (params: { tag: string }) => string;
 		commandTagEdited: (params: { name: string; content: string }) => string;
-		commandTagList: (params: { tags: readonly string[] }) => string;
 		commandTagReset: string;
 		commandAvatarNone: string;
-		commandColor: (params: { hex: string; rgb: string; hsl: string }) => string;
-		commandEmojiCustom: (params: { emoji: string; id: string }) => string;
-		commandEmojiTwemoji: (params: { emoji: string; id: string }) => string;
+		commandColor: (params: { hex: string; rgb: string; hsl: string }) => string[];
+		commandEmojiCustom: (params: { emoji: string; id: string }) => string[];
+		commandEmojiTwemoji: (params: { emoji: string; id: string }) => string[];
 		commandEmojiInvalid: string;
 		commandEmojiTooLarge: (params: { emoji: string }) => string;
 		commandEmotesDescription: string;
@@ -1928,11 +1936,13 @@ declare module 'klasa' {
 		commandWhoisMemberFields: (params: {
 			member: GuildMember;
 		}) => {
-			joined: string;
+			joinedUnknown: string;
+			joinedWithTimestamp: string;
 			createdAt: string;
 			footer: string;
 		};
-		commandWhoisMemberRoles: (params: { amount: number }) => string;
+		commandWhoisMemberRoles: (params: { count: number }) => string;
+		commandWhoisMemberRolesPlural: (params: { count: number }) => string;
 		commandWhoisMemberPermissions: string;
 		commandWhoisMemberPermissionsAll: string;
 		commandWhoisUserTitles: {
@@ -1954,8 +1964,7 @@ declare module 'klasa' {
 			clickToVisit: string;
 			partner: string;
 		};
-		commandTwitchMaturity: (params: { mature: boolean }) => string;
-		commandTwitchPartnership: (params: { affiliateStatus: string | false }) => string;
+		commandTwitchPartnershipWithoutAffiliate: string;
 		commandTwitchAffiliateStatus: {
 			affiliated: string;
 			partnered: string;
@@ -1969,14 +1978,18 @@ declare module 'klasa' {
 		commandTwitchSubscriptionInvalidStatus: string;
 		commandTwitchSubscriptionRequiredContent: string;
 		commandTwitchSubscriptionAddDuplicated: string;
-		commandTwitchSubscriptionAddSuccess: (params: { name: string; channel: string; status: NotificationsStreamsTwitchEventStatus }) => string;
+		commandTwitchSubscriptionAddSuccessOffline: (params: { name: string; channel: string }) => string;
+		commandTwitchSubscriptionAddSuccessLive: (params: { name: string; channel: string }) => string;
 		commandTwitchSubscriptionRemoveStreamerNotSubscribed: string;
 		commandTwitchSubscriptionRemoveEntryNotExists: string;
-		commandTwitchSubscriptionRemoveSuccess: (params: { name: string; channel: string; status: NotificationsStreamsTwitchEventStatus }) => string;
+		commandTwitchSubscriptionRemoveSuccessOffline: (params: { name: string; channel: string }) => string;
+		commandTwitchSubscriptionRemoveSuccessLive: (params: { name: string; channel: string }) => string;
 		commandTwitchSubscriptionResetEmpty: string;
-		commandTwitchSubscriptionResetSuccess: (params: { entries: number }) => string;
+		commandTwitchSubscriptionResetSuccess: (params: { count: number }) => string;
+		commandTwitchSubscriptionResetSuccessPlural: (params: { count: number }) => string;
 		commandTwitchSubscriptionResetStreamerNotSubscribed: string;
-		commandTwitchSubscriptionResetChannelSuccess: (params: { name: string; entries: number }) => string;
+		commandTwitchSubscriptionResetChannelSuccess: (params: { name: string; count: number }) => string;
+		commandTwitchSubscriptionResetChannelSuccessPlural: (params: { name: string; count: number }) => string;
 		commandTwitchSubscriptionShowStreamerNotSubscribed: string;
 		commandTwitchSubscriptionShowStatus: [string, string];
 		commandTwitchSubscriptionShowEmpty: string;

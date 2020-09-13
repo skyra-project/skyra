@@ -20,6 +20,7 @@ export default class extends SkyraCommand {
 		const { total: followersTotal } = await this.client.twitch.fetchUserFollowage('', channel.id);
 
 		const titles = message.language.get('commandTwitchTitles');
+		const affiliateStatus = this.parseAffiliateProgram(message, channel.broadcaster_type);
 
 		return message.sendEmbed(
 			new MessageEmbed()
@@ -31,12 +32,7 @@ export default class extends SkyraCommand {
 				.setThumbnail(channel.profile_image_url)
 				.addField(titles.followers, message.language.groupDigits(followersTotal), true)
 				.addField(titles.views, message.language.groupDigits(channel.view_count), true)
-				.addField(
-					titles.partner,
-					message.language.get('commandTwitchPartnership', {
-						affiliateStatus: this.parseAffiliateProgram(message, channel.broadcaster_type)
-					})
-				)
+				.addField(titles.partner, affiliateStatus ? affiliateStatus : message.language.get('commandTwitchPartnershipWithoutAffiliate'))
 		);
 	}
 

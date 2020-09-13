@@ -1488,7 +1488,9 @@ declare module 'klasa' {
 		commandPermissionNodesCommandNotExists: string;
 		commandPermissionNodesRemove: string;
 		commandPermissionNodesReset: string;
-		commandPermissionNodesShow: (params: { name: string; allow: readonly string[]; deny: readonly string[] }) => string;
+		commandPermissionNodesShowName: (params: { name: string }) => string;
+		commandPermissionNodesShowAllow: (params: { allow: string }) => string;
+		commandPermissionNodesShowDeny: (params: { deny: string }) => string;
 		commandTriggersNotype: string;
 		commandTriggersNooutput: string;
 		commandTriggersInvalidreaction: string;
@@ -2162,8 +2164,10 @@ declare module 'klasa' {
 		actionUnSoftbanReason: (params: { reason: string }) => string;
 		actionSoftbanNoReason: string;
 		actionUnSoftbanNoReason: string;
-		actionSetNickname: (params: { reason: string; nickname: string }) => string;
-		actionSetNicknameNoReason: (params: { nickname: string }) => string;
+		actionSetNicknameSet: (params: { reason: string }) => string;
+		actionSetNicknameRemoved: (params: { reason: string }) => string;
+		actionSetNicknameNoReasonSet: string;
+		actionSetNicknameNoReasonRemoved: string;
 		actionSetupMuteExists: string;
 		actionSetupRestrictionExists: string;
 		actionSetupTooManyRoles: string;

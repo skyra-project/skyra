@@ -261,8 +261,8 @@ export class ModerationActions {
 			.patch({
 				data: { nick: nickname },
 				reason: moderationLog.reason
-					? this.guild.language.get('actionSetNickname', { reason: moderationLog.reason, nickname })
-					: this.guild.language.get('actionSetNicknameNoReason', { nickname })
+					? this.guild.language.get(nickname ? 'actionSetNicknameSet' : 'actionSetNicknameRemoved', { reason: moderationLog.reason })
+					: this.guild.language.get(nickname ? 'actionSetNicknameNoReasonSet' : 'actionSetNicknameNoReasonRemoved')
 			});
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.SetNickname);

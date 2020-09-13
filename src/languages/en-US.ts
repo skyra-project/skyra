@@ -3341,12 +3341,9 @@ export default class extends Language {
 		commandPermissionNodesCommandNotExists: `${REDCROSS} The selected command does not exist in the permision node.`,
 		commandPermissionNodesRemove: `${GREENTICK} Successfully removed the command from the permission node.`,
 		commandPermissionNodesReset: `${GREENTICK} Successfully removed all commands from the permission node.`,
-		commandPermissionNodesShow: ({ name, allow, deny }) =>
-			[
-				`Permissions for: __${name}__`,
-				`**Allow**: ${allow.length ? allow.join(', ') : 'None'}`,
-				`**Deny**: ${deny.length ? deny.join(', ') : 'None'}`
-			].join('\n'),
+		commandPermissionNodesShowName: ({ name }) => `Permissions for: __${name}__`,
+		commandPermissionNodesShowAllow: ({ allow }) => `**Allow**: ${allow}`,
+		commandPermissionNodesShowDeny: ({ deny }) => `**Deny**: ${deny}`,
 		commandTriggersNotype: 'You need to insert a trigger type (**alias**|**reaction**)',
 		commandTriggersNooutput: 'You need to insert the trigger output.',
 		commandTriggersInvalidreaction: 'This reaction does not seem valid for me, either it is not valid unicode or I do not have access to it.',
@@ -4790,8 +4787,10 @@ export default class extends Language {
 		actionApplyNoReason: ({ action }) => `[Action] Applied ${action}`,
 		actionRevokeReason: ({ action, reason }) => `[Action] Revoked ${action} | Reason: ${reason}`,
 		actionRevokeNoReason: ({ action }) => `[Action] Revoked ${action}`,
-		actionSetNickname: ({ reason, nickname }) => `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
-		actionSetNicknameNoReason: ({ nickname }) => `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`,
+		actionSetNicknameSet: ({ reason }) => `[Action] Set Nickname | Reason: ${reason}`,
+		actionSetNicknameRemoved: ({ reason }) => `[Action] Removed Nickname | Reason: ${reason}`,
+		actionSetNicknameNoReasonSet: `[Action] Set Nickname.`,
+		actionSetNicknameNoReasonRemoved: `[Action] Removed Nickname.`,
 		actionSoftbanNoReason: '[Action] Applying Softban.',
 		actionSoftbanReason: ({ reason }) => `[Action] Applying Softban | Reason: ${reason}`,
 		actionUnSoftbanNoReason: '[Action] Applied Softban.',
@@ -4858,7 +4857,9 @@ export default class extends Language {
 		systemGuildMutecreateApplying: ({ channels, role }) => `Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels} to ${role}...`,
 		systemGuildMutecreateExceptions: ({ denied }) => (denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. '),
 		systemGuildMutecreateApplied: ({ accepted, exceptions, author, role }) =>
-			`Permissions applied for ${accepted} channels${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
+			`Permissions applied for ${accepted} channel${
+				accepted === 1 ? '' : 's'
+			}${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
 		systemQueryFail: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 		systemNoResults: "I wasn't able to find any results for that query",
 		systemCannotAccessChannel: 'I am sorry, but you do not have permission to see that channel.',

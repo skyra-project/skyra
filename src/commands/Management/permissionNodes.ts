@@ -113,12 +113,24 @@ export default class extends SkyraCommand {
 		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') throw message.language.get('commandPermissionNodesNodeNotExists');
 
-		return message.sendLocale('commandPermissionNodesShow', [
-			{
-				name: isRole ? (target as Role).name : (target as GuildMember).displayName,
-				allow: node.allow.map((command) => `\`${command}\``),
-				deny: node.deny.map((command) => `\`${command}\``)
-			}
+		return message.send([
+			message.language.get('commandPermissionNodesShowName', { name: isRole ? (target as Role).name : (target as GuildMember).displayName }),
+			message.language.get('commandPermissionNodesShowAllow', {
+				allow: node.allow.length
+					? message.language.list(
+							node.allow.map((command) => `\`${command}\``),
+							message.language.get('globalAnd')
+					  )
+					: message.language.get('globalNone')
+			}),
+			message.language.get('commandPermissionNodesShowDeny', {
+				deny: node.deny.length
+					? message.language.list(
+							node.deny.map((command) => `\`${command}\``),
+							message.language.get('globalAnd')
+					  )
+					: message.language.get('globalNone')
+			})
 		]);
 	}
 

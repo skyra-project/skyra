@@ -258,7 +258,12 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
-			.patch({ data: { nick: nickname }, reason: this.guild.language.get('actionSetNickname', { reason: moderationLog.reason!, nickname }) });
+			.patch({
+				data: { nick: nickname },
+				reason: moderationLog.reason
+					? this.guild.language.get('actionSetNickname', { reason: moderationLog.reason, nickname })
+					: this.guild.language.get('actionSetNicknameNoReason', { nickname })
+			});
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.SetNickname);
 		return (await moderationLog.create())!;
@@ -642,10 +647,13 @@ export class ModerationActions {
 
 		if (
 			await message.ask(
-				this.guild.language.get('actionSharedRoleSetup', {
+				this.guild.language.get('actionSharedRoleSetupAsk', {
 					role: role.name,
 					channels: this.manageableChannelCount,
-					permissions: this.displayPermissions(key)
+					permissions: message.language.list(
+						this.displayPermissions(key).map((permission) => `\`${permission}\``),
+						message.language.get('globalAnd')
+					)
 				})
 			)
 		) {

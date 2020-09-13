@@ -4842,10 +4842,8 @@ export default class extends Language {
 		actionApplyNoReason: ({ action }) => `[Action] Applied ${action}`,
 		actionRevokeReason: ({ action, reason }) => `[Action] Revoked ${action} | Reason: ${reason}`,
 		actionRevokeNoReason: ({ action }) => `[Action] Revoked ${action}`,
-		actionSetNickname: ({ reason, nickname }) =>
-			reason === null
-				? `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`
-				: `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
+		actionSetNickname: ({ reason, nickname }) => `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
+		actionSetNicknameNoReason: ({ nickname }) => `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`,
 		actionSoftbanNoReason: '[Action] Applying Softban.',
 		actionSoftbanReason: ({ reason }) => `[Action] Applying Softban | Reason: ${reason}`,
 		actionUnSoftbanNoReason: '[Action] Applied Softban.',
@@ -4857,10 +4855,14 @@ export default class extends Language {
 		actionSharedRoleSetupExisting: 'I could not find a configured role. Do you want to configure an existing one?',
 		actionSharedRoleSetupExistingName: 'Please give me the name of the role you want to use for further actions of this type.',
 		actionSharedRoleSetupNew: 'Do you want me to create a new role and configure it automatically?',
-		actionSharedRoleSetup: ({ role, channels, permissions }) =>
-			`${LOADING} Can I modify ${channels} ${channels === 1 ? 'channel' : 'channels'} to apply the role ${role} the following ${
-				permissions.length === 1 ? 'permission' : 'permissions'
-			}: \`${permissions.join('`, `')}\`?`,
+		actionSharedRoleSetupAsk: ({ role, channels, permissions }) =>
+			`${LOADING} Can I modify ${channels} channel to apply the role ${role} the following permission: ${permissions}?`,
+		actionSharedRoleSetupAskMultipleChannels: ({ role, channels, permissions }) =>
+			`${LOADING} Can I modify ${channels} channels to apply the role ${role} the following permission: ${permissions}?`,
+		actionSharedRoleSetupAskMultiplePermissions: ({ role, channels, permissions }) =>
+			`${LOADING} Can I modify ${channels} channel to apply the role ${role} the following permissions: ${permissions}?`,
+		actionSharedRoleSetupAskMultipleChannelsMultiplePermissions: ({ role, channels, permissions }) =>
+			`${LOADING} Can I modify ${channels} channels to apply the role ${role} the following permissions: ${permissions}?`,
 		muteNotConfigured: 'The muted role must be configured for this action to happen.',
 		restrictionNotConfigured: 'The restriction role must be configured for this action to happen',
 		muteNotInMember: 'The muted role is not set in the member.',

@@ -26,7 +26,6 @@ export default class extends SkyraCommand {
 			clientEntity.guildBlocklist.map(async (guildId) => {
 				const guild = await resolveOnErrorCodes(this.client.guilds.fetch(guildId));
 				if (guild) return `${guild.name} (\`${guildId}\`)`;
-
 				return `Unknown Guild (\`${guildId}\`)`;
 			})
 		);

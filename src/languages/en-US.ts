@@ -4912,13 +4912,15 @@ export default class extends Language {
 		eventsGuildMemberRemovedNickname: ({ previous }) => `Removed the nickname **${previous}**`,
 		eventsNicknameUpdate: 'Nickname Edited',
 		eventsUsernameUpdate: 'Username Edited',
-		eventsNameDifference: ({ previous, next }) =>
-			[`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`, `**Next**: ${next === null ? 'Unset' : `\`${next}\``}`].join('\n'),
-		eventsRoleDifference: ({ addedRoles, removedRoles }) =>
-			[
-				addedRoles.length ? `**Added role${addedRoles.length === 1 ? '' : 's'}**: ${addedRoles.join(', ')}` : null,
-				removedRoles.length ? `**Removed role${removedRoles.length === 1 ? '' : 's'}**: ${removedRoles.join(', ')}` : ''
-			].join('\n'),
+		eventsNameUpdatePreviousWasSet: ({ previousName }) => `**Previous**: \`${previousName}\``,
+		eventsNameUpdatePreviousWasNotSet: () => `**Previous**: Unset`,
+		eventsNameUpdateNextWasSet: ({ nextName }) => `**Next**: \`${nextName}\``,
+		eventsNameUpdateNextWasNotSet: () => `**Next**: Unset`,
+		eventsGuildMemberNoUpdate: 'No update detected',
+		eventsGuildMemberAddedRoles: ({ addedRoles }) => `**Added role**: ${addedRoles}`,
+		eventsGuildMemberAddedRolesPlural: ({ addedRoles }) => `**Added roles**: ${addedRoles}`,
+		eventsGuildMemberRemovedRoles: ({ removedRoles }) => `**Removed role**: ${removedRoles}`,
+		eventsGuildMemberRemovedRolesPlural: ({ removedRoles }) => `**Removed roles**: ${removedRoles}`,
 		eventsRoleUpdate: 'Roles Edited',
 		eventsMessageUpdate: 'Message Edited',
 		eventsMessageDelete: 'Message Deleted',

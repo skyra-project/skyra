@@ -2251,8 +2251,15 @@ declare module 'klasa' {
 		eventsGuildMemberRemovedNickname: (params: { previous: string }) => string;
 		eventsNicknameUpdate: string;
 		eventsUsernameUpdate: string;
-		eventsNameDifference: (params: { previous: string | null; next: string | null }) => string;
-		eventsRoleDifference: (params: { addedRoles: string[]; removedRoles: string[] }) => string;
+		eventsNameUpdatePreviousWasSet: (params: { previousName: string | null }) => string;
+		eventsNameUpdatePreviousWasNotSet: (params: { previousName: string | null }) => string;
+		eventsNameUpdateNextWasSet: (params: { nextName: string | null }) => string;
+		eventsNameUpdateNextWasNotSet: (params: { nextName: string | null }) => string;
+		eventsGuildMemberNoUpdate: string;
+		eventsGuildMemberAddedRoles: (params: { addedRoles: string }) => string;
+		eventsGuildMemberAddedRolesPlural: (params: { addedRoles: string }) => string;
+		eventsGuildMemberRemovedRoles: (params: { removedRoles: string }) => string;
+		eventsGuildMemberRemovedRolesPlural: (params: { removedRoles: string }) => string;
 		eventsRoleUpdate: string;
 		eventsMessageUpdate: string;
 		eventsMessageDelete: string;

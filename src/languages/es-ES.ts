@@ -116,18 +116,18 @@ export default class extends Language {
 		}
 	}
 
-	public list(values: readonly string[], conjuction: 'o' | 'y') {
+	public list(values: readonly string[], conjunction: 'o' | 'y') {
 		switch (values.length) {
 			case 0:
 				return '';
 			case 1:
 				return values[0];
 			case 2:
-				return `${values[0]} ${conjuction} ${values[1]}`;
+				return `${values[0]} ${conjunction} ${values[1]}`;
 			default: {
 				const trail = values.slice(0, -1);
 				const head = values[values.length - 1];
-				return `${trail.join(', ')}, ${conjuction} ${head}`;
+				return `${trail.join(', ')}, ${conjunction} ${head}`;
 			}
 		}
 	}
@@ -4972,13 +4972,15 @@ export default class extends Language {
 		eventsGuildMemberRemovedNickname: ({ previous }) => `Eliminado el apodo **${previous}**`,
 		eventsNicknameUpdate: 'Nickname Edited',
 		eventsUsernameUpdate: 'Username Edited',
-		eventsNameDifference: ({ previous, next }) =>
-			[`**Previous**: ${previous === null ? 'Unset' : `\`${previous}\``}`, `**Next**: ${next === null ? 'Unset' : `\`${next}\``}`].join('\n'),
-		eventsRoleDifference: ({ addedRoles, removedRoles }) =>
-			[
-				`**Added roles**: ${addedRoles.length ? addedRoles.join(', ') : 'None'}`,
-				`**Removed roles**: ${removedRoles.length ? removedRoles.join(', ') : 'None'}`
-			].join('\n'),
+		eventsNameUpdatePreviousWasSet: ({ previousName }) => `**Previous**: \`${previousName}\``,
+		eventsNameUpdatePreviousWasNotSet: () => `**Previous**: Unset`,
+		eventsNameUpdateNextWasSet: ({ nextName }) => `**Next**: \`${nextName}\``,
+		eventsNameUpdateNextWasNotSet: () => `**Next**: Unset`,
+		eventsGuildMemberNoUpdate: 'No update detected',
+		eventsGuildMemberAddedRoles: ({ addedRoles }) => `**Added role**: ${addedRoles}`,
+		eventsGuildMemberAddedRolesPlural: ({ addedRoles }) => `**Added roles**: ${addedRoles}`,
+		eventsGuildMemberRemovedRoles: ({ removedRoles }) => `**Removed role**: ${removedRoles}`,
+		eventsGuildMemberRemovedRolesPlural: ({ removedRoles }) => `**Removed roles**: ${removedRoles}`,
 		eventsRoleUpdate: 'Roles Edited',
 		eventsMessageUpdate: 'Mensaje Editado',
 		eventsMessageDelete: 'Mensaje Eliminado',

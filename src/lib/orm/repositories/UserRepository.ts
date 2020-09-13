@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility, @typescript-eslint/unified-signatures */
-import { AsyncQueue } from '@klasa/async-queue';
 import Ccollection from '@discordjs/collection';
+import { AsyncQueue } from '@klasa/async-queue';
 import { TimerManager } from '@klasa/timer-manager';
 import { DbSet } from '@lib/structures/DbSet';
 import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';

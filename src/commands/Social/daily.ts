@@ -1,11 +1,11 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { Schedules } from '@lib/types/Enums';
 import { ClientEntity } from '@orm/entities/ClientEntity';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { KlasaMessage } from 'klasa';
-import { Schedules } from '@lib/types/Enums';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;

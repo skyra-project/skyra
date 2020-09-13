@@ -4910,12 +4910,6 @@ export default class extends Language {
 		systemDiscordAborterror: 'He tenido un pequeño error de red al mandar un mensaje a Discord, ¡por favor ejecuta el comando de nuevo!',
 		systemMessageNotFound: 'Lo siento, pero la id del mensaje que escribiste no era correcto, o el mensaje fue borrado.',
 		systemNotenoughParameters: 'Lo siento, pero no proporcionaste suficientes parámetros...',
-		systemGuildMutecreateApplying: ({ channels, role }) => `Aplicando permisos en ${channels} para el rol ${role}...`,
-		systemGuildMutecreateExceptions: ({ denied }) => (denied.length > 1 ? `, con excepción de los canales ${denied.join(', ')}` : ''),
-		systemGuildMutecreateApplied: ({ accepted, exceptions, author, role }) =>
-			`Permisos aplicados para ${accepted} ${
-				accepted === 1 ? 'canal' : 'canales'
-			}${exceptions}. Querido ${author}, puedes modificar los permisos de los canales que quieras para el rol ${role}, por ejemplo si quieres un canal de reclamaciones.`,
 		systemQueryFail: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		systemNoResults: 'No pude encontrar ningún resultado para esa consulta',
 		systemCannotAccessChannel: 'Lo siento, pero no tienes permiso para ver ese canal.',

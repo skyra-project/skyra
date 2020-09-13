@@ -2210,9 +2210,6 @@ declare module 'klasa' {
 		systemNoResults: string;
 		systemMessageNotFound: string;
 		systemNotenoughParameters: string;
-		systemGuildMutecreateApplying: (params: { channels: number; role: string }) => string;
-		systemGuildMutecreateExceptions: (params: { denied: readonly string[] }) => string;
-		systemGuildMutecreateApplied: (params: { accepted: number; exceptions: string; author: string; role: string }) => string;
 		systemCannotAccessChannel: string;
 		systemExceededLengthOutput: (params: { output: string; time?: string; type?: string }) => string;
 		systemExceededLengthOutputConsole: (params: { time?: string; type?: string }) => string;

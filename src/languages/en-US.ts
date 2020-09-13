@@ -4854,12 +4854,6 @@ export default class extends Language {
 		systemDiscordAborterror: 'I had a small network error when messaging Discord, please run this command again!',
 		systemMessageNotFound: 'I am sorry, but either you wrote the message ID incorrectly, or it got deleted.',
 		systemNotenoughParameters: 'I am sorry, but you did not provide enough parameters...',
-		systemGuildMutecreateApplying: ({ channels, role }) => `Applying permissions (\`SEND_MESSAGES\`:\`false\`) for ${channels} to ${role}...`,
-		systemGuildMutecreateExceptions: ({ denied }) => (denied.length > 1 ? `, with exception of ${denied.join(', ')}.` : '. '),
-		systemGuildMutecreateApplied: ({ accepted, exceptions, author, role }) =>
-			`Permissions applied for ${accepted} channel${
-				accepted === 1 ? '' : 's'
-			}${exceptions}Dear ${author}, don't forget to tweak the permissions in the channels you want ${role} to send messages.`,
 		systemQueryFail: 'I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?',
 		systemNoResults: "I wasn't able to find any results for that query",
 		systemCannotAccessChannel: 'I am sorry, but you do not have permission to see that channel.',

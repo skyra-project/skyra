@@ -114,18 +114,18 @@ export default class extends Language {
 		}
 	}
 
-	public list(values: readonly string[], conjuction: 'or' | 'and') {
+	public list(values: readonly string[], conjunction: 'or' | 'and') {
 		switch (values.length) {
 			case 0:
 				return '';
 			case 1:
 				return values[0];
 			case 2:
-				return `${values[0]} ${conjuction} ${values[1]}`;
+				return `${values[0]} ${conjunction} ${values[1]}`;
 			default: {
 				const trail = values.slice(0, -1);
 				const head = values[values.length - 1];
-				return `${trail.join(', ')}, ${conjuction} ${head}`;
+				return `${trail.join(', ')}, ${conjunction} ${head}`;
 			}
 		}
 	}
@@ -353,7 +353,7 @@ export default class extends Language {
 				`By default I will leave the channel, forget about the currently playing song, but leave the queue intact.`,
 				'This means that once you do `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.',
 				'',
-				`This default behaviour can be modified with flags:`,
+				`This default behavior can be modified with flags:`,
 				'`--removeall` or `--ra` to follow the default behavior as well clear the queue, next time you want me to start playing you will have build a new queue'
 			],
 			examples: ['leave', 'leave --removeall', 'leave --ra', 'leave --soft'],
@@ -553,7 +553,7 @@ export default class extends Language {
 		settingsChannelsIgnoreReactionAdd: 'Channels I should ignore when checking for added reactions.',
 		settingsChannelsIgnoreAll: 'Channels I should ignore for all types of logging.',
 		settingsDisabledchannels:
-			'A list of channels for disabled commands, for example, setting up a channel called general will forbid all users from using my commands there. Moderators+ override this purposedly to allow them to moderate without switching channels.',
+			'A list of channels for disabled commands, for example, setting up a channel called general will forbid all users from using my commands there. Moderators+ override this purposely to allow them to moderate without switching channels.',
 		settingsEventsBanadd: 'This event posts anonymous moderation logs when a user gets banned. You must set up `channels.moderation-logs`.',
 		settingsEventsBanremove: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
 		settingsEventsMemberadd: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',

@@ -4842,14 +4842,14 @@ export default class extends Language {
 		actionApplyNoReason: ({ action }) => `[Action] Applied ${action}`,
 		actionRevokeReason: ({ action, reason }) => `[Action] Revoked ${action} | Reason: ${reason}`,
 		actionRevokeNoReason: ({ action }) => `[Action] Revoked ${action}`,
-		actionSoftbanNoReason: '[Action] Applying Softban.',
-		actionSoftbanReason: ({ reason }) => `[Action] Applying Softban | Reason: ${reason}`,
-		actionUnSoftbanNoReason: '[Action] Applied Softban.',
-		actionUnSoftbanReason: ({ reason }) => `[Action] Applied Softban | Reason: ${reason}`,
 		actionSetNickname: ({ reason, nickname }) =>
 			reason === null
 				? `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`
 				: `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
+		actionSoftbanNoReason: '[Action] Applying Softban.',
+		actionSoftbanReason: ({ reason }) => `[Action] Applying Softban | Reason: ${reason}`,
+		actionUnSoftbanNoReason: '[Action] Applied Softban.',
+		actionUnSoftbanReason: ({ reason }) => `[Action] Applied Softban | Reason: ${reason}`,
 		actionRequiredMember: 'The user does not exist or is not in this server.',
 		actionSetupMuteExists: '**Cancelando la creación del rol de silenciado**: Ya existe un rol de silenciado.',
 		actionSetupRestrictionExists: '**Cancelando la creación del rol de restricción**: Ya existe un rol de restricción.',

@@ -3358,7 +3358,8 @@ export default class extends Language {
 		giveawayTitle: '🎉 **GIVEAWAY** 🎉',
 		giveawayLastchance: ({ time }) => `**LAST CHANCE**! Remaining time: **${this.duration(time)}**. React to this message with 🎉 to join.`,
 		giveawayLastchanceTitle: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
-		giveawayEnded: ({ winners }) => (winners.length === 1 ? `Ganador/a: ${winners[0]}` : `Ganadores: ${winners.join(', ')}`),
+		giveawayEnded: ({ winners }) => `Ganador: ${winners}`,
+		giveawayEndedPlural: ({ winners }) => `Ganadores: ${winners}`,
 		giveawayEndedNoWinner: 'No winner...',
 		giveawayEndedAt: 'Ended at:',
 		giveawayEndedTitle: '🎉 **GIVEAWAY ENDED** 🎉',
@@ -4996,10 +4997,10 @@ export default class extends Language {
 		guildWarnNotFound: 'Fallé al buscar el caso de moderación para su reclamación. O no existe, o no es una advertencia, o ya estaba reclamada.',
 		guildMemberNotVoicechannel: 'No puedo tomar acción en un miembro que no está conectado a un canal de voz.',
 
-		promptlistMultipleChoice: ({ list, amount }) =>
-			`He encontrado ${amount} ${
-				amount === 1 ? 'resultado' : 'resultados'
-			}. Por favor escriba un número entre 1 y ${amount}, o escriba **"CANCELAR"** para cancelar la solicitud.\n${list}`,
+		promptlistMultipleChoice: ({ list, count }) =>
+			`He encontrado ${count} resultado. Por favor escriba un número entre 1 y ${count}, o escriba **"CANCELAR"** para cancelar la solicitud.\n${list}`,
+		promptlistMultipleChoicePlural: ({ list, count }) =>
+			`He encontrado ${count} resultados. Por favor escriba un número entre 1 y ${count}, o escriba **"CANCELAR"** para cancelar la solicitud.\n${list}`,
 		promptlistAttemptFailed: ({ list, attempt, maxAttempts }) => `Valor inválido. Intento **${attempt}** de **${maxAttempts}**\n${list}`,
 		promptlistAborted: 'Cancelada la solicitud con éxito.',
 

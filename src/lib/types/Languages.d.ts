@@ -1471,7 +1471,8 @@ declare module 'klasa' {
 		giveawayTitle: string;
 		giveawayLastchance: (params: { time: number }) => string;
 		giveawayLastchanceTitle: string;
-		giveawayEnded: (params: { winners: readonly string[] }) => string;
+		giveawayEnded: (params: { winners: string; count: number }) => string;
+		giveawayEndedPlural: (params: { winners: string; count: number }) => string;
 		giveawayEndedNoWinner: string;
 		giveawayEndedAt: string;
 		giveawayEndedTitle: string;
@@ -2271,7 +2272,8 @@ declare module 'klasa' {
 		modlogTimed: (params: { remaining: number }) => string;
 		guildWarnNotFound: string;
 		guildMemberNotVoicechannel: string;
-		promptlistMultipleChoice: (params: { list: string; amount: number }) => string;
+		promptlistMultipleChoice: (params: { list: string; count: number }) => string;
+		promptlistMultipleChoicePlural: (params: { list: string; count: number }) => string;
 		promptlistAttemptFailed: (params: { list: string; attempt: number; maxAttempts: number }) => string;
 		promptlistAborted: string;
 		fuzzySearchMatches: (params: { matches: number; codeblock: string }) => string;

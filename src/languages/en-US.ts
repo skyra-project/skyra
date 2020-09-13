@@ -3318,7 +3318,8 @@ export default class extends Language {
 		giveawayTitle: '🎉 **GIVEAWAY** 🎉',
 		giveawayLastchance: ({ time }) => `**LAST CHANCE**! Remaining time: **${this.duration(time)}**. React to this message with 🎉 to join.`,
 		giveawayLastchanceTitle: '🎉 **LAST CHANCE GIVEAWAY** 🎉',
-		giveawayEnded: ({ winners }) => (winners.length === 1 ? `Winner: ${winners[0]}` : `Winners: ${winners.join(' ')}`),
+		giveawayEnded: ({ winners }) => `Winner: ${winners}`,
+		giveawayEndedPlural: ({ winners }) => `Winners: ${winners}`,
 		giveawayEndedNoWinner: 'No winner...',
 		giveawayEndedAt: 'Ended at:',
 		giveawayEndedTitle: '🎉 **GIVEAWAY ENDED** 🎉',
@@ -4936,10 +4937,10 @@ export default class extends Language {
 		guildWarnNotFound: 'I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.',
 		guildMemberNotVoicechannel: 'I cannot execute this action in a member that is not connected to a voice channel.',
 
-		promptlistMultipleChoice: ({ list, amount }) =>
-			`There are ${amount} ${
-				amount === 1 ? 'result' : 'results'
-			}. Please choose a number between 1 and ${amount}, or write **"CANCEL"** to cancel the prompt.\n${list}`,
+		promptlistMultipleChoice: ({ list, count }) =>
+			`There are ${count} result. Please choose a number between 1 and ${count}, or write **"CANCEL"** to cancel the prompt.\n${list}`,
+		promptlistMultipleChoicePlural: ({ list, count }) =>
+			`There are ${count} results. Please choose a number between 1 and ${count}, or write **"CANCEL"** to cancel the prompt.\n${list}`,
 		promptlistAttemptFailed: ({ list, attempt, maxAttempts }) => `Invalid input. Attempt **${attempt}** out of **${maxAttempts}**\n${list}`,
 		promptlistAborted: 'Successfully aborted the prompt.',
 

@@ -24,7 +24,9 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
 async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
-	const responseMessage = await message.channel.sendLocale('promptlistMultipleChoice', [{ list: codeblock, amount: possibles }]);
+	const responseMessage = await message.channel.sendLocale(possibles === 1 ? 'promptlistMultipleChoice' : 'promptlistMultipleChoicePlural', [
+		{ list: codeblock, count: possibles }
+	]);
 	const abortOptions = message.language.get('textPromptAbortOptions');
 	const promptFilter = (m: Message) =>
 		m.author === message.author && (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));

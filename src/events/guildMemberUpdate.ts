@@ -48,7 +48,13 @@ export default class extends Event {
 		}
 	}
 
-	private buildEmbed(user: User, i18n: Language, descriptionKey: LanguageKeysComplex, footerKey: LanguageKeysSimple, value: any) {
+	private buildEmbed(
+		user: User,
+		i18n: Language,
+		descriptionKey: Extract<LanguageKeysComplex, 'eventsNameDifference' | 'eventsRoleDifference'>,
+		footerKey: Extract<LanguageKeysSimple, 'eventsNicknameUpdate' | 'eventsRoleUpdate'>,
+		value: any
+	) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

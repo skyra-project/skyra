@@ -1296,18 +1296,16 @@ declare module 'klasa' {
 		commandYarnNoPackage: string;
 		commandYarnUnpublishedPackage: (params: { pkg: string }) => string;
 		commandYarnPackageNotFound: (params: { pkg: string }) => string;
-		commandYarnEmbedDescription: (params: {
-			author?: string;
-			dateCreated?: string;
-			dateModified?: string;
-			dependencies: string[] | null;
-			deprecated?: string;
-			description: string;
-			latestVersionNumber: string;
-			license: string;
-			mainFile: string;
-			maintainers: string[];
-		}) => (string | undefined)[];
+		commandYarnEmbedDescriptionAuthor: (params: { author: string }) => string;
+		commandYarnEmbedDescriptionMaintainers: (params: { maintainers: string }) => string;
+		commandYarnEmbedDescriptionLatestVersion: (params: { latestVersionNumber: string }) => string;
+		commandYarnEmbedDescriptionLicense: (params: { license: string }) => string;
+		commandYarnEmbedDescriptionMainFile: (params: { mainFile: string }) => string;
+		commandYarnEmbedDescriptionDateCreated: (params: { dateCreated: string }) => string;
+		commandYarnEmbedDescriptionDateModified: (params: { dateModified: string }) => string;
+		commandYarnEmbedDescriptionDeprecated: (params: { deprecated: string }) => string;
+		commandYarnEmbedDescriptionDependenciesLabel: string;
+		commandYarnEmbedDescriptionDependenciesNoDeps: string;
 		commandYarnEmbedMoreText: string;
 		command8ballDescription: string;
 		command8ballExtended: LanguageHelpDisplayOptions;
@@ -1431,7 +1429,8 @@ declare module 'klasa' {
 		commandTicTacToeExtended: LanguageHelpDisplayOptions;
 		commandWheelOfFortuneDescription: string;
 		commandWheelOfFortuneExtended: LanguageHelpDisplayOptions;
-		commandWheelOfFortuneCanvasText: (params: { won: boolean }) => string;
+		commandWheelOfFortuneCanvasTextWon: string;
+		commandWheelOfFortuneCanvasTextLost: string;
 		commandWheelOfFortuneTitles: {
 			previous: string;
 			new: string;
@@ -1723,7 +1722,7 @@ declare module 'klasa' {
 		commandPrunePositions: Map<string, Position>;
 		commandPruneFilters: Map<string, Filter>;
 		commandReasonMissingCase: string;
-		commandReasonNotExists: (params: { range: boolean }) => string;
+		commandReasonNotExists: string;
 		commandReasonUpdated: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];
 		commandReasonUpdatedPlural: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];
 		commandToggleModerationDmToggledEnabled: string;
@@ -2246,10 +2245,10 @@ declare module 'klasa' {
 		eventsGuildMemberBanned: string;
 		eventsGuildMemberSoftBanned: string;
 		eventsGuildMemberRemoveDescription: (params: { mention: string; time: number }) => string;
+		eventsGuildMemberRemoveDescriptionWithJoinedAt: (params: { mention: string; time: number }) => string;
 		eventsGuildMemberUpdateNickname: (params: { previous: string; current: string }) => string;
 		eventsGuildMemberAddedNickname: (params: { previous: string; current: string }) => string;
 		eventsGuildMemberRemovedNickname: (params: { previous: string }) => string;
-		eventsGuildMemberUpdateRoles: (params: { removed: readonly string[]; added: readonly string[] }) => string;
 		eventsNicknameUpdate: string;
 		eventsUsernameUpdate: string;
 		eventsNameDifference: (params: { previous: string | null; next: string | null }) => string;

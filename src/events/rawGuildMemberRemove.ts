@@ -47,14 +47,15 @@ export default class extends Event {
 			? guild.language.get('eventsGuildMemberSoftBanned')
 			: guild.language.get('eventsGuildMemberRemove');
 
+		const time = this.processJoinedTimestamp(member);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(
-					guild.language.get('eventsGuildMemberRemoveDescription', {
+					guild.language.get(time === -1 ? 'eventsGuildMemberRemoveDescription' : 'eventsGuildMemberRemoveDescriptionWithJoinedAt', {
 						mention: `<@${data.user.id}>`,
-						time: this.processJoinedTimestamp(member)
+						time
 					})
 				)
 				.setFooter(footer)

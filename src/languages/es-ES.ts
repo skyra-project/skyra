@@ -3031,32 +3031,16 @@ export default class extends Language {
 		commandYarnNoPackage: `${REDCROSS} Lo siento, pero tienes que darme el nombre de un paquete para buscarlo.`,
 		commandYarnUnpublishedPackage: ({ pkg }) => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
 		commandYarnPackageNotFound: ({ pkg }) => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
-		commandYarnEmbedDescription: ({
-			author,
-			dateCreated,
-			dateModified,
-			dependencies,
-			deprecated,
-			description,
-			latestVersionNumber,
-			license,
-			mainFile,
-			maintainers
-		}) => [
-			description,
-			'',
-			author ? `❯ Autor: ${author}` : undefined,
-			`❯ Mantenedores: ${this.list(maintainers, 'y')}`,
-			`❯ Ultima versión: ${latestVersionNumber}`,
-			`❯ Licencia: ${license}`,
-			`❯ Archivo principal: ${mainFile}`,
-			`❯ Fecha de creacion: ${dateCreated}`,
-			`❯ Fecha modificada: ${dateModified}`,
-			deprecated ? `❯ Aviso de desuso: **${deprecated}**` : undefined,
-			'',
-			'__*Dependencies:*__',
-			dependencies && dependencies.length ? this.list(dependencies, 'y') : `Sin dependencias ${GREENTICK}!`
-		],
+		commandYarnEmbedDescriptionAuthor: ({ author }) => `❯ Autor: ${author}`,
+		commandYarnEmbedDescriptionMaintainers: ({ maintainers }) => `❯ Mantenedores: **${maintainers}**`,
+		commandYarnEmbedDescriptionLatestVersion: ({ latestVersionNumber }) => `❯ Ultima versión: **${latestVersionNumber}**`,
+		commandYarnEmbedDescriptionLicense: ({ license }) => `❯ Licencia: **${license}**`,
+		commandYarnEmbedDescriptionMainFile: ({ mainFile }) => `❯ Archivo principal: **${mainFile}**`,
+		commandYarnEmbedDescriptionDateCreated: ({ dateCreated }) => `❯ Fecha de creacion: **${dateCreated}**`,
+		commandYarnEmbedDescriptionDateModified: ({ dateModified }) => `❯ Fecha modificada: **${dateModified}**`,
+		commandYarnEmbedDescriptionDeprecated: ({ deprecated }) => `❯ Aviso de desuso: **${deprecated}**`,
+		commandYarnEmbedDescriptionDependenciesLabel: '__*Dependencias:*__',
+		commandYarnEmbedDescriptionDependenciesNoDeps: `Sin dependencias ${GREENTICK}!`,
 		commandYarnEmbedMoreText: 'más...',
 
 		/**
@@ -3356,7 +3340,8 @@ export default class extends Language {
 			previous: 'Anterior',
 			new: 'Nuevo'
 		},
-		commandWheelOfFortuneCanvasText: ({ won }) => (won ? 'Tú ganaste' : 'Tú perdiste'),
+		commandWheelOfFortuneCanvasTextWon: 'Tú ganaste',
+		commandWheelOfFortuneCanvasTextLost: 'Tú perdiste',
 		gamesNotEnoughMoney: ({ money }) =>
 			`Lo siento, ¡pero no tienes suficiente dinero para pagar tu apuesta! El saldo de su cuenta corriente es ${money}${SHINY}`,
 		gamesCannotHaveNegativeMoney: `No puedes tener una cantidad negativa de ${SHINY}s`,
@@ -3666,7 +3651,7 @@ export default class extends Language {
 			['tú', Filter.Skyra]
 		]),
 		commandReasonMissingCase: 'You need to provide a case or a case range.',
-		commandReasonNotExists: ({ range }) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
+		commandReasonNotExists: `The selected modlog doen't seem to exist.`,
 		commandReasonUpdated: ({ newReason }) => [`${GREENTICK} Actualizado 1 caso.`, ` └─ **Set the reason to:** ${newReason}`],
 		commandReasonUpdatedPlural: ({ entries, newReason }) => [
 			`${GREENTICK} Actualizados ${entries.length} casos.`,
@@ -4979,15 +4964,12 @@ export default class extends Language {
 		eventsGuildMemberKicked: 'Usuario Pateado',
 		eventsGuildMemberBanned: 'Usuario Baneado',
 		eventsGuildMemberSoftBanned: 'Usuario Levemente Baneado',
-		eventsGuildMemberRemoveDescription: ({ mention, time }) =>
-			`${mention} | **Se Unió al Servidor**: ${time === -1 ? 'Desconocido' : `Hace ${this.duration(time, 2)}`}.`,
+		eventsGuildMemberRemoveDescription: ({ mention }) => `${mention} | **Se Unió al Servidor**: Desconocido.`,
+		eventsGuildMemberRemoveDescriptionWithJoinedAt: ({ mention, time }) =>
+			`${mention} | **Se Unió al Servidor**: Hace ${this.duration(time, 2)}.`,
 		eventsGuildMemberUpdateNickname: ({ previous, current }) => `Actualizado el apodo de **${previous}** a **${current}**`,
 		eventsGuildMemberAddedNickname: ({ current }) => `Añadido un nuevo apodo **${current}**`,
 		eventsGuildMemberRemovedNickname: ({ previous }) => `Eliminado el apodo **${previous}**`,
-		eventsGuildMemberUpdateRoles: ({ removed, added }) =>
-			`${removed.length > 0 ? `${removed.length === 1 ? 'Eliminado el rol' : 'Eliminados los roles'}: ${removed.join(', ')}\n` : ''}${
-				added.length > 0 ? `${added.length === 1 ? 'Añadido el rol' : 'Añadidos los roles'}: ${added.join(', ')}` : ''
-			}`,
 		eventsNicknameUpdate: 'Nickname Edited',
 		eventsUsernameUpdate: 'Username Edited',
 		eventsNameDifference: ({ previous, next }) =>

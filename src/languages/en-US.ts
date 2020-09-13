@@ -2993,32 +2993,16 @@ export default class extends Language {
 		commandYarnNoPackage: `${REDCROSS} I am sorry, but you have to give me the name of a package to look up.`,
 		commandYarnUnpublishedPackage: ({ pkg }) => `What a silly developer who made ${pkg}! They unpublished it!`,
 		commandYarnPackageNotFound: ({ pkg }) => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
-		commandYarnEmbedDescription: ({
-			author,
-			dateCreated,
-			dateModified,
-			dependencies,
-			deprecated,
-			description,
-			latestVersionNumber,
-			license,
-			mainFile,
-			maintainers
-		}) => [
-			description,
-			'',
-			author ? `❯ Author: ${author}` : undefined,
-			`❯ Maintainers: **${this.list(maintainers, 'and')}**`,
-			`❯ Latest version: **${latestVersionNumber}**`,
-			`❯ License: **${license}**`,
-			`❯ Main File: **${mainFile}**`,
-			`❯ Date Created: **${dateCreated}**`,
-			`❯ Date Modified: **${dateModified}**`,
-			deprecated ? `❯ Deprecation Notice: **${deprecated}**` : undefined,
-			'',
-			'__*Dependencies:*__',
-			dependencies && dependencies.length ? this.list(dependencies, 'and') : `No dependencies ${GREENTICK}!`
-		],
+		commandYarnEmbedDescriptionAuthor: ({ author }) => `❯ Author: ${author}`,
+		commandYarnEmbedDescriptionMaintainers: ({ maintainers }) => `❯ Maintainers: **${maintainers}**`,
+		commandYarnEmbedDescriptionLatestVersion: ({ latestVersionNumber }) => `❯ Latest version: **${latestVersionNumber}**`,
+		commandYarnEmbedDescriptionLicense: ({ license }) => `❯ License: **${license}**`,
+		commandYarnEmbedDescriptionMainFile: ({ mainFile }) => `❯ Main File: **${mainFile}**`,
+		commandYarnEmbedDescriptionDateCreated: ({ dateCreated }) => `❯ Date Created: **${dateCreated}**`,
+		commandYarnEmbedDescriptionDateModified: ({ dateModified }) => `❯ Date Modified: **${dateModified}**`,
+		commandYarnEmbedDescriptionDeprecated: ({ deprecated }) => `❯ Deprecation Notice: **${deprecated}**`,
+		commandYarnEmbedDescriptionDependenciesLabel: '__*Dependencies:*__',
+		commandYarnEmbedDescriptionDependenciesNoDeps: `No dependencies ${GREENTICK}!`,
 		commandYarnEmbedMoreText: 'more...',
 
 		/**
@@ -3316,7 +3300,8 @@ export default class extends Language {
 			previous: 'Previous',
 			new: 'New'
 		},
-		commandWheelOfFortuneCanvasText: ({ won }) => (won ? 'You won' : 'You lost'),
+		commandWheelOfFortuneCanvasTextWon: 'You won',
+		commandWheelOfFortuneCanvasTextLost: 'You lost',
 		gamesNotEnoughMoney: ({ money }) =>
 			`I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money} ${SHINY}`,
 		gamesCannotHaveNegativeMoney: `You cannot have a negative amount of ${SHINY}s`,
@@ -3621,7 +3606,7 @@ export default class extends Language {
 			['you', Filter.Skyra]
 		]),
 		commandReasonMissingCase: 'You need to provide a case or a case range.',
-		commandReasonNotExists: ({ range }) => `The selected modlog${range ? 's' : ''} don't seem to exist.`,
+		commandReasonNotExists: `The selected modlog  doesn't seem to exist.`,
 		commandReasonUpdated: ({ newReason }) => [`${GREENTICK} Updated 1 case`, ` └─ **Set its reason to:** ${newReason}`],
 		commandReasonUpdatedPlural: ({ entries, newReason }) => [
 			`${GREENTICK} Updated ${entries.length} cases`,
@@ -4920,15 +4905,11 @@ export default class extends Language {
 		eventsGuildMemberKicked: 'User Kicked',
 		eventsGuildMemberBanned: 'User Banned',
 		eventsGuildMemberSoftBanned: 'User Softbanned',
-		eventsGuildMemberRemoveDescription: ({ mention, time }) =>
-			`${mention} | **Joined Server**: ${time === -1 ? 'Unknown' : `${this.duration(time, 2)} ago`}.`,
+		eventsGuildMemberRemoveDescription: ({ mention }) => `${mention} | **Joined Server**: Unknown.`,
+		eventsGuildMemberRemoveDescriptionWithJoinedAt: ({ mention, time }) => `${mention} | **Joined Server**: ${this.duration(time, 2)} ago.`,
 		eventsGuildMemberUpdateNickname: ({ previous, current }) => `Updated the nickname from **${previous}** to **${current}**`,
 		eventsGuildMemberAddedNickname: ({ current }) => `Added a new nickname **${current}**`,
 		eventsGuildMemberRemovedNickname: ({ previous }) => `Removed the nickname **${previous}**`,
-		eventsGuildMemberUpdateRoles: ({ removed, added }) =>
-			`${removed.length > 0 ? `Removed the role${removed.length > 1 ? 's' : ''}: ${removed.join(', ')}\n` : ''}${
-				added.length > 0 ? `Added the role${added.length > 1 ? 's' : ''}: ${added.join(', ')}` : ''
-			}`,
 		eventsNicknameUpdate: 'Nickname Edited',
 		eventsUsernameUpdate: 'Username Edited',
 		eventsNameDifference: ({ previous, next }) =>

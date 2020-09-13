@@ -241,16 +241,28 @@ export abstract class SelfModerationCommand extends Command {
 				return message.language.get('selfModerationCommandEnabled');
 			case AKeys.Disable:
 				return message.language.get('selfModerationCommandDisabled');
-			case AKeys.SoftAction:
-				return message.language.get('selfModerationCommandSoftAction', { value: value as string });
+			case AKeys.SoftAction: {
+				return value
+					? message.language.get('selfModerationCommandSoftActionWithValue', { value: value as string })
+					: message.language.get('selfModerationCommandSoftAction');
+			}
 			case AKeys.HardAction:
 				return message.language.get('selfModerationCommandHardAction', { value: value as string });
-			case AKeys.HardActionDuration:
-				return message.language.get('selfModerationCommandHardActionDuration', { value: value as number });
-			case AKeys.ThresholdMaximum:
-				return message.language.get('selfModerationCommandThresholdMaximum', { value: value as number });
-			case AKeys.ThresholdDuration:
-				return message.language.get('selfModerationCommandThresholdDuration', { value: value as number });
+			case AKeys.HardActionDuration: {
+				return value
+					? message.language.get('selfModerationCommandHardActionDurationWithValue', { value: value as number })
+					: message.language.get('selfModerationCommandHardActionDuration');
+			}
+			case AKeys.ThresholdMaximum: {
+				return value
+					? message.language.get('selfModerationCommandThresholdMaximumWithValue', { value: value as number })
+					: message.language.get('selfModerationCommandThresholdMaximum');
+			}
+			case AKeys.ThresholdDuration: {
+				return value
+					? message.language.get('selfModerationCommandThresholdDurationWithValue', { value: value as number })
+					: message.language.get('selfModerationCommandThresholdDuration');
+			}
 			default:
 				throw new Error('Unexpected.');
 		}

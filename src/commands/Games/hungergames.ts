@@ -79,7 +79,7 @@ export default class extends SkyraCommand {
 				const events = game.bloodbath ? 'hgBloodbath' : game.sun ? 'hgDay' : 'hgNight';
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, message.language.get(events));
+				const { results, deaths } = this.makeResultEvents(game, message.language.get(events).map(HungerGamesUsage.create));
 				const texts = this.buildTexts(message.language, game, results, deaths);
 
 				// Ask for the user to proceed:

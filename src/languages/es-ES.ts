@@ -4,7 +4,6 @@ import { VERSION } from '@root/config';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
-import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { createPick, random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
@@ -4322,36 +4321,30 @@ export default class extends Language {
 		constMonitorMessagefilter: 'Too Many Message Duplicates',
 		constMonitorNewlinefilter: 'Too Many Lines',
 		constMonitorReactionfilter: 'Reacción Eliminada',
-		moderationMonitorAttachments: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered attachment filter, no threshold.'
-				: `[Auto-Moderation] Triggered attachment filter, reached ${amount} out of ${maximum} infractions.`,
-		moderationMonitorCapitals: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered capital filter, no threshold.'
-				: `[Auto-Moderation] Triggered capital filter, reached ${amount} out of ${maximum} infractions.`,
-		moderationMonitorInvites: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered invite filter, no threshold.'
-				: `[Auto-Moderation] Triggered invite filter, reached ${amount} out of ${maximum} infractions.`,
-		moderationMonitorLinks: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered link filter, no threshold.'
-				: `[Auto-Moderation] Triggered link filter, reached ${amount} out of ${maximum} infractions.`,
-		moderationMonitorMessages: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered duplicated message filter, no threshold.'
-				: `[Auto-Moderation] Triggered duplicated message filter, reached ${amount} out of ${maximum} infractions.`,
-		moderationMonitorNewlines: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered newline filter, no threshold.'
-				: `[Auto-Moderation] Triggered newline filter, reached ${amount} out of ${maximum} infractions.`,
-		moderationMonitorWords: ({ amount, maximum }) =>
-			maximum === 0
-				? '[Auto-Moderation] Triggered word filter, no threshold.'
-				: `[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorAttachments: '[Auto-Moderation] Triggered attachment filter, no threshold.',
+		moderationMonitorAttachmentsWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered attachment filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorCapitals: '[Auto-Moderation] Triggered capital filter, no threshold.',
+		moderationMonitorCapitalsWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered capital filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorInvites: '[Auto-Moderation] Triggered invite filter, no threshold.',
+		moderationMonitorInvitesWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered invite filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorLinks: '[Auto-Moderation] Triggered link filter, no threshold.',
+		moderationMonitorLinksWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered link filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorMessages: '[Auto-Moderation] Triggered duplicated message filter, no threshold.',
+		moderationMonitorMessagesWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered duplicated message filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorNewlines: '[Auto-Moderation] Triggered newline filter, no threshold.',
+		moderationMonitorNewlinesWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered newline filter, reached ${amount} out of ${maximum} infractions.`,
+		moderationMonitorWords: '[Auto-Moderation] Triggered word filter, no threshold.',
+		moderationMonitorWordsWithMaximum: ({ amount, maximum }) =>
+			`[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
 		monitorInviteFilterAlert: ({ user }) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
-		monitorInviteFilterLog: ({ links }) => `**Enlace${links.length === 1 ? '' : 's'}**: ${this.list(links, 'y')}`,
+		monitorInviteFilterLog: ({ links }) => `**Enlace**: ${this.list(links, 'y')}`,
+		monitorInviteFilterLogPlural: ({ links }) => `**Enlaces**: ${this.list(links, 'y')}`,
 		monitorNolink: ({ user }) => `${REDCROSS} Perdona ${user}, los enlaces no están permitidos en este servidor.`,
 		monitorWordFilterDm: ({ filtered }) =>
 			`¡Parece que dijiste algo malo! Pero como te esforzaste en escribir el mensaje, te lo he mandado por aquí:\n${filtered}`,
@@ -4361,11 +4354,10 @@ export default class extends Language {
 		monitorMessageFilter: ({ user }) => `${REDCROSS} Woah woah woah, please stop re-posting so much ${user}!`,
 		monitorNewlineFilter: ({ user }) => `${REDCROSS} Wall of text incoming from ${user}, wall of text taken down!`,
 		monitorReactionsFilter: ({ user }) => `${REDCROSS} Hey ${user}, please do not add that reaction!`,
-		monitorNmsMessage: ({ user }) =>
-			[
-				`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
-				'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
-			].join('\n'),
+		monitorNmsMessage: ({ user }) => [
+			`El MJOLNIR ha aterrizado y ahora, el usuario ${user.tag} cuya ID es ${user.id} ha sido baneado por spamming de menciones.`,
+			'¡No te preocupes! ¡Estoy aquí para ayudarte! 😄'
+		],
 		monitorNmsModlog: ({ threshold }) => `[NOMENTIONSPAM] Automático: Límite de Spam de Menciones alcanzado.\nLímite: ${threshold}.`,
 		monitorNmsAlert:
 			'Ten cuidado con mencionar otra vez más, estás a punto de ser expulsado por exceder el límite de spam de menciones de este servidor.',
@@ -4472,7 +4464,7 @@ export default class extends Language {
 			'{1T} trips over while running from the cornucopia, and is killed by {2}.',
 			'{1} trips over while running from the cornucopia, {2} picks them up, they run off together.',
 			"{1} aims an arrow at {2}'s head and shoots, {3T} jumps in the way and sacrifies their life to save them."
-		].map(HungerGamesUsage.create),
+		],
 		hgDay: [
 			'{1} goes hunting.',
 			'{1} injures themself.',
@@ -4607,7 +4599,7 @@ export default class extends Language {
 			'{1} sneaks up behind {2T}, and snaps their neck.',
 			'{1T} challenges {2} to a fight, and promptly dies.',
 			'{1} murders their partner, {2T}, to have more supplies for themself.'
-		].map(HungerGamesUsage.create),
+		],
 		hgNight: [
 			'{1} starts a fire.',
 			'{1} sets up camp for the night.',
@@ -4735,7 +4727,7 @@ export default class extends Language {
 			'{1} repeatedly stabs {2T} to death with sais.',
 			'{1} writes in their journal.',
 			'{1} watches {2} sitting at their campfire, and considers killing them.'
-		].map(HungerGamesUsage.create),
+		],
 
 		/**
 		 * #################################
@@ -4769,8 +4761,8 @@ export default class extends Language {
 		 * #################################
 		 */
 		notificationsTwitchNoGameName: '*Nombre del juego no establecido*',
-		notificationsTwitchEmbedDescription: ({ userName, gameName }) =>
-			`${userName} ya está en vivo${gameName ? ` - ¡transmitiendo ${gameName}!` : '!'}`,
+		notificationsTwitchEmbedDescription: ({ userName }) => `${userName} ya está en vivo!`,
+		notificationsTwitchEmbedDescriptionWithGame: ({ userName, gameName }) => `${userName} ya está en vivo - ¡transmitiendo ${gameName}!`,
 		notificationTwitchEmbedFooter: 'Skyra Twitch Notificaciones',
 
 		/**
@@ -4789,35 +4781,30 @@ export default class extends Language {
 			`${REDCROSS} Value must be any of the following: \`none\`, \`warn\`, \`mute\`, \`kick\`, \`softban\`, or \`ban\`. Check \`Skyra, help ${name}\` for more information.`,
 		selfModerationCommandEnabled: `${GREENTICK} Successfully enabled sub-system.`,
 		selfModerationCommandDisabled: `${GREENTICK} Successfully disabled sub-system.`,
-		selfModerationCommandSoftAction: ({ value }) =>
-			value ? `${GREENTICK} Successfully set actions to: \`${value}\`` : `${GREENTICK} Successfully disabled actions.`,
+		selfModerationCommandSoftAction: `${GREENTICK} Successfully disabled actions.`,
+		selfModerationCommandSoftActionWithValue: ({ value }) => `${GREENTICK} Successfully set actions to: \`${value}\``,
 		selfModerationCommandHardAction: ({ value }) => `${GREENTICK} Successfully set punishment: ${value}`,
-		selfModerationCommandHardActionDuration: ({ value }) =>
-			value
-				? `${GREENTICK} Successfully set the punishment appeal timer to: ${this.duration(value)}`
-				: `${GREENTICK} Successfully removed the punishment appeal timer.`,
-		selfModerationCommandThresholdMaximum: ({ value }) =>
-			value
-				? `${GREENTICK} Successfully set the threshold maximum to: ${value}`
-				: `${GREENTICK} Successfully removed the threshold maximum, punishment will take place instantly if set.`,
-		selfModerationCommandThresholdDuration: ({ value }) =>
-			value
-				? `${GREENTICK} Successfully set the threshold duration to: ${this.duration(value)}`
-				: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
-		selfModerationCommandShow: ({ kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration }) =>
-			[
-				`Enabled      : ${kEnabled}`,
-				'Action',
-				` - Alert     : ${kAlert}`,
-				` - Log       : ${kLog}`,
-				` - Delete    : ${kDelete}`,
-				'Punishment',
-				` - Type      : ${kHardAction}`,
-				` - Duration  : ${hardActionDuration ? 'Permanent' : this.duration(hardActionDuration)}`,
-				'Threshold',
-				` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
-				` - Duration  : ${thresholdDuration ? this.duration(thresholdDuration) : 'Unset'}`
-			].join('\n'),
+		selfModerationCommandHardActionDuration: `${GREENTICK} Successfully removed the punishment appeal timer.`,
+		selfModerationCommandHardActionDurationWithValue: ({ value }) =>
+			`${GREENTICK} Successfully set the punishment appeal timer to: ${this.duration(value)}`,
+		selfModerationCommandThresholdMaximum: `${GREENTICK} Successfully removed the threshold maximum, punishment will take place instantly if set.`,
+		selfModerationCommandThresholdMaximumWithValue: ({ value }) => `${GREENTICK} Successfully set the threshold maximum to: ${value}`,
+		selfModerationCommandThresholdDuration: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
+		selfModerationCommandThresholdDurationWithValue: ({ value }) =>
+			`${GREENTICK} Successfully set the threshold duration to: ${this.duration(value)}`,
+		selfModerationCommandShow: ({ kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration }) => [
+			`Enabled      : ${kEnabled}`,
+			'Action',
+			` - Alert     : ${kAlert}`,
+			` - Log       : ${kLog}`,
+			` - Delete    : ${kDelete}`,
+			'Punishment',
+			` - Type      : ${kHardAction}`,
+			` - Duration  : ${hardActionDuration ? 'Permanent' : this.duration(hardActionDuration)}`,
+			'Threshold',
+			` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
+			` - Duration  : ${thresholdDuration ? this.duration(thresholdDuration) : 'Unset'}`
+		],
 		selfModerationSoftActionAlert: 'Alert',
 		selfModerationSoftActionLog: 'Log',
 		selfModerationSoftActionDelete: 'Delete',

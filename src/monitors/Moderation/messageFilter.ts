@@ -7,6 +7,7 @@ import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = 'moderationMonitorMessages';
+	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorMessagesWithMaximum';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Messages.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Messages.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Messages.IgnoredRoles;

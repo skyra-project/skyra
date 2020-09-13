@@ -6,7 +6,6 @@ import type { LevelTitles } from '@root/commands/Social/level';
 import type { ProfileTitles } from '@root/commands/Social/profile';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
 import type { Moderation } from '@utils/constants';
-import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
 
@@ -2033,15 +2032,23 @@ declare module 'klasa' {
 		constMonitorCapsfilter: string;
 		constMonitorAttachmentfilter: string;
 		constMonitorReactionfilter: string;
-		moderationMonitorAttachments: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorCapitals: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorInvites: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorLinks: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorMessages: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorNewlines: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorWords: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorAttachments: string;
+		moderationMonitorAttachmentsWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorCapitals: string;
+		moderationMonitorCapitalsWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorInvites: string;
+		moderationMonitorInvitesWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorLinks: string;
+		moderationMonitorLinksWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorMessages: string;
+		moderationMonitorMessagesWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorNewlines: string;
+		moderationMonitorNewlinesWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorWords: string;
+		moderationMonitorWordsWithMaximum: (params: { amount: number; maximum: number }) => string;
 		monitorInviteFilterAlert: (params: { user: string }) => string;
-		monitorInviteFilterLog: (params: { links: readonly string[] }) => string;
+		monitorInviteFilterLog: (params: { links: readonly string[]; count: number }) => string;
+		monitorInviteFilterLogPlural: (params: { links: readonly string[]; count: number }) => string;
 		monitorNolink: (params: { user: string }) => string;
 		monitorWordFilterDm: (params: { filtered: string }) => string;
 		monitorCapsFilterDm: (params: { message: string }) => string;
@@ -2050,14 +2057,14 @@ declare module 'klasa' {
 		monitorMessageFilter: (params: { user: string }) => string;
 		monitorNewlineFilter: (params: { user: string }) => string;
 		monitorReactionsFilter: (params: { user: string }) => string;
-		monitorNmsMessage: (params: { user: User }) => string;
+		monitorNmsMessage: (params: { user: User }) => string[];
 		monitorNmsModlog: (params: { threshold: number }) => string;
 		monitorNmsAlert: string;
 		monitorSocialAchievement: string;
 		inhibitorSpam: (params: { channel: string }) => string;
-		hgBloodbath: readonly HungerGamesUsage[];
-		hgDay: readonly HungerGamesUsage[];
-		hgNight: readonly HungerGamesUsage[];
+		hgBloodbath: readonly string[];
+		hgDay: readonly string[];
+		hgNight: readonly string[];
 		serializerAutoRoleInvalid: string;
 		serializerCommandAutoDeleteInvalid: string;
 		serializerCustomCommandInvalid: string;
@@ -2082,11 +2089,15 @@ declare module 'klasa' {
 		selfModerationCommandInvalidHardaction: (params: { name: string }) => string;
 		selfModerationCommandEnabled: string;
 		selfModerationCommandDisabled: string;
-		selfModerationCommandSoftAction: (params: { value: string }) => string;
+		selfModerationCommandSoftAction: string;
+		selfModerationCommandSoftActionWithValue: (params: { value: string }) => string;
 		selfModerationCommandHardAction: (params: { value: string }) => string;
-		selfModerationCommandHardActionDuration: (params: { value: number }) => string;
-		selfModerationCommandThresholdMaximum: (params: { value: number }) => string;
-		selfModerationCommandThresholdDuration: (params: { value: number }) => string;
+		selfModerationCommandHardActionDuration: string;
+		selfModerationCommandHardActionDurationWithValue: (params: { value: number }) => string;
+		selfModerationCommandThresholdMaximum: string;
+		selfModerationCommandThresholdMaximumWithValue: (params: { value: number }) => string;
+		selfModerationCommandThresholdDuration: string;
+		selfModerationCommandThresholdDurationWithValue: (params: { value: number }) => string;
 		selfModerationCommandShow: (params: {
 			kEnabled: string;
 			kAlert: string;
@@ -2096,7 +2107,7 @@ declare module 'klasa' {
 			hardActionDuration: number;
 			thresholdMaximum: number | null;
 			thresholdDuration: number | null;
-		}) => string;
+		}) => readonly string[];
 		selfModerationSoftActionAlert: string;
 		selfModerationSoftActionLog: string;
 		selfModerationSoftActionDelete: string;
@@ -2245,7 +2256,8 @@ declare module 'klasa' {
 		unknownRole: string;
 		unknownUser: string;
 		notificationsTwitchNoGameName: string;
-		notificationsTwitchEmbedDescription: (params: { userName: string; gameName: string | undefined }) => string;
+		notificationsTwitchEmbedDescription: (params: { userName: string }) => string;
+		notificationsTwitchEmbedDescriptionWithGame: (params: { userName: string; gameName: string }) => string;
 		notificationTwitchEmbedFooter: string;
 	}
 }

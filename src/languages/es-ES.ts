@@ -5,7 +5,7 @@ import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
-import { createPick, random } from '@utils/util';
+import { random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
 
 const LOADING = Emojis.Loading;
@@ -492,11 +492,7 @@ export default class extends Language {
 		commandVolumeSuccess: ({ volume }) => `📢 Volumen: ${volume}%`,
 		commandVolumeChanged: ({ emoji, volume }) => `${emoji} Volumen ajustado a: ${volume}%`,
 		commandVolumeChangedExtreme: ({ emoji, text, volume }) => `${emoji} ${text} ajustado a: ${volume}%`,
-		commandVolumeChangedTexts: createPick([
-			'**VOLUMEN EXTREMO**',
-			'**VOLUMEN TIPO NACELLE DE AVIÓN**',
-			'**VOLUMEN TIPO LANZAMIENTO DE FALCON HEAVY**'
-		]),
+		commandVolumeChangedTexts: ['**VOLUMEN EXTREMO**', '**VOLUMEN TIPO NACELLE DE AVIÓN**', '**VOLUMEN TIPO LANZAMIENTO DE FALCON HEAVY**'],
 
 		inhibitorMusicQueueEmpty: `${REDCROSS} ¡La cola está sin discos! ¡Añade algunas canciones así podemos empezar una fiesta!`,
 		inhibitorMusicNotPlaying: `${REDCROSS} Hmm, no parece que esté jugando nada ahora.`,
@@ -3057,9 +3053,9 @@ export default class extends Language {
 			Why: '^¿?por qu[ée]',
 			Who: '^¿?qui[ée]n'
 		},
-		command8ballWhen: createPick(['Pronto™', 'Quizá mañana.', 'Quizá el año que viene...', 'Ahora mismo.', 'En unos cuantos meses.']),
-		command8ballWhat: createPick(['Un avión.', '¿Qué? Pregunta de nuevo.', '¡Un regalo!', 'Nada.', 'Un anillo.', 'No lo sé, quizá sea algo.']),
-		command8ballHowMuch: createPick([
+		command8ballWhen: ['Pronto™', 'Quizá mañana.', 'Quizá el año que viene...', 'Ahora mismo.', 'En unos cuantos meses.'],
+		command8ballWhat: ['Un avión.', '¿Qué? Pregunta de nuevo.', '¡Un regalo!', 'Nada.', 'Un anillo.', 'No lo sé, quizá sea algo.'],
+		command8ballHowMuch: [
 			'Un montón.',
 			'Un poco.',
 			'Un poquillo.',
@@ -3071,8 +3067,8 @@ export default class extends Language {
 			'2 o 3 litros, no recuerdo.',
 			'¡Infinito!',
 			'1010 litros.'
-		]),
-		command8ballHowMany: createPick([
+		],
+		command8ballHowMany: [
 			'Un montón.',
 			'Un poco.',
 			'Un poquillo.',
@@ -3084,8 +3080,8 @@ export default class extends Language {
 			'2 o 3, no recuerdo.',
 			'¡Infinito!',
 			'1010.'
-		]),
-		command8ballWhy: createPick([
+		],
+		command8ballWhy: [
 			'Probablemente genética.',
 			'Porque alguien decidió que fuera así.',
 			'¡Por la gloria de Satán, por supuesto!',
@@ -3096,8 +3092,8 @@ export default class extends Language {
 			'Pregunta de nuevo.',
 			'Para llegar al otro lado.',
 			'Lo dice en la Biblia.'
-		]),
-		command8ballWho: createPick([
+		],
+		command8ballWho: [
 			'Un humano.',
 			'Un robot.',
 			'Un avión.',
@@ -3106,8 +3102,8 @@ export default class extends Language {
 			'Un puñado de zeros y unos.',
 			'No tengo ni idea, ¿es material?',
 			'Eso no es lógico.'
-		]),
-		command8ballElse: createPick([
+		],
+		command8ballElse: [
 			'Probablemente.',
 			'No.',
 			'¡SÍ!',
@@ -3128,7 +3124,7 @@ export default class extends Language {
 			'Sin duda.',
 			'Definitivamente, sí.',
 			'Puedes confiar en ello.'
-		]),
+		],
 
 		commandCatfactTitle: 'Hecho Gatuno',
 		commandChoiceOutput: ({ user, word }) => `🕺 *Pito, pito, gorgorito, ¿dónde vas tan bonito?...* ${user}, Elijo:${codeBlock('', word)}`,
@@ -4888,23 +4884,18 @@ export default class extends Language {
 		commandToskyra: '¿Por qué...? ¡Pensaba que me amabas! 💔',
 		commandUserself: '¿Por qué te harías eso a tí mismo?',
 
-		systemFetching: createPick([
-			`${LOADING} Descargando datos...`,
-			`${LOADING} Buscando al Comandante Data...`,
-			`${LOADING} Persiguiendo otras naves estelares...`
-		]),
 		systemParseError: `${REDCROSS} I failed to process the data I was given, sorry~!`,
 		systemHighestRole: 'La posición del rol es más alta o equivalente al mío, por lo tanto no puedo concederlo a nadie.',
 		systemChannelNotPostable: 'No tengo permisos para mandar mensajes a éste canal.',
 		systemFetchbansFail: `He fallado al buscar la lista de baneos. ¿Tengo el permiso **${this.PERMISSIONS.BAN_MEMBERS}**?`,
-		systemLoading: createPick([
+		systemLoading: [
 			`${LOADING} Observando a los hamsters correr...`,
 			`${LOADING} Encontrando a los jugadores en el escondite...`,
 			`${LOADING} Intentando resolver este comando...`,
 			`${LOADING} Buscando data desde la nube...`,
 			`${LOADING} Calibrando lentes...`,
 			`${LOADING} Jugando a Piedra, Papel, Tijeras...`
-		]),
+		],
 		systemError: `¡Algo malo sucedio! Inténtalo de nuevo, o si el problema continúa, únete al servidor de soporte (sugerencia: usa \`Skyra, support\`)`,
 		systemDatabaseError: `¡No pude conseguir eso en mi base de datos! Inténtalo de nuevo, o si el problema continúa, únete al servidor de soporte (sugerencia: usa \`Skyra, support\`)`,
 		systemDiscordAborterror: 'He tenido un pequeño error de red al mandar un mensaje a Discord, ¡por favor ejecuta el comando de nuevo!',

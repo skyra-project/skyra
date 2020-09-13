@@ -6,6 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '@utils/Pokemon';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 
@@ -32,7 +33,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const movesList = moves.split(', ');

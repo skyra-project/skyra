@@ -5,7 +5,7 @@ import { parseURL } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
-import { IMAGE_EXTENSION } from '@utils/util';
+import { IMAGE_EXTENSION, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -28,7 +28,9 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
-			message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)),
+			message.sendEmbed(
+				new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 

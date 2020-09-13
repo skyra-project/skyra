@@ -5,6 +5,7 @@ import { CLIENT_ID } from '@root/config';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import assert from 'assert';
 import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -50,7 +51,7 @@ export default class extends RichDisplayCommand {
 
 	private async display(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const { users } = await DbSet.connect();

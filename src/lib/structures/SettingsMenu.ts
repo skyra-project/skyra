@@ -1,13 +1,13 @@
 import { Events } from '@lib/types/Enums';
+import { toTitleCase } from '@sapphire/utilities';
 import { APIErrors, BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
-import { floatPromise } from '@utils/util';
+import { floatPromise, pickRandom } from '@utils/util';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { DbSet } from './DbSet';
-import { toTitleCase } from '@sapphire/utilities';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
@@ -51,7 +51,7 @@ export class SettingsMenu {
 
 	public async init(): Promise<void> {
 		this.response = await this.message.sendEmbed(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(this.message.language.get('systemLoading'))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.message.language.get('systemLoading')))
 		);
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));

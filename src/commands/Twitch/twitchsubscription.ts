@@ -14,6 +14,7 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
+import { pickRandom } from '@utils/util';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Any } from 'typeorm';
@@ -260,7 +261,7 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		// Create the response message.
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		// Fetch the content.

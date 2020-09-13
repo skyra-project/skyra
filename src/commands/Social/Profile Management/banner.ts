@@ -7,6 +7,7 @@ import { UserEntity } from '@orm/entities/UserEntity';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';
@@ -166,7 +167,7 @@ export default class extends SkyraCommand {
 	private async runDisplay(message: KlasaMessage, display: UserRichDisplay | null) {
 		if (display !== null) {
 			const response = await message.sendEmbed(
-				new MessageEmbed({ description: message.language.get('systemLoading'), color: BrandingColors.Secondary })
+				new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
 			);
 			await display.start(response, message.author.id);
 			return response;

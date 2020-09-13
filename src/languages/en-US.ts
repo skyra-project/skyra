@@ -5,7 +5,7 @@ import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
 import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
-import { createPick, random } from '@utils/util';
+import { random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
 
 const LOADING = Emojis.Loading;
@@ -483,7 +483,7 @@ export default class extends Language {
 		commandVolumeSuccess: ({ volume }) => `📢 Volume: ${volume}%`,
 		commandVolumeChanged: ({ emoji, volume }) => `${emoji} Volume set to: ${volume}%`,
 		commandVolumeChangedExtreme: ({ emoji, text, volume }) => `${emoji} ${text} set to: ${volume}%`,
-		commandVolumeChangedTexts: createPick(['**EXTREME VOLUME**', '**AIRPLANE NACELLE-LIKE VOLUME**', '**FALCON HEAVY LAUNCH-LIKE VOLUME**']),
+		commandVolumeChangedTexts: ['**EXTREME VOLUME**', '**AIRPLANE NACELLE-LIKE VOLUME**', '**FALCON HEAVY LAUNCH-LIKE VOLUME**'],
 
 		inhibitorMusicQueueEmpty: `${REDCROSS} The queue\'s empty! The session will start as soon as we have some songs queued.`,
 		inhibitorMusicNotPlaying: `${REDCROSS} Hmm, doesn't look like I'm playing anything right now.`,
@@ -3019,9 +3019,9 @@ export default class extends Language {
 			Why: 'why',
 			Who: 'who'
 		},
-		command8ballWhen: createPick(['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.']),
-		command8ballWhat: createPick(['A plane.', 'What? Ask again.', 'A gift.', 'Nothing.', 'A ring.', 'I do not know, maybe something.']),
-		command8ballHowMuch: createPick([
+		command8ballWhen: ['Soon™', 'Maybe tomorrow.', 'Maybe next year...', 'Right now.', 'In a few months.'],
+		command8ballWhat: ['A plane.', 'What? Ask again.', 'A gift.', 'Nothing.', 'A ring.', 'I do not know, maybe something.'],
+		command8ballHowMuch: [
 			'A lot.',
 			'A bit.',
 			'A few.',
@@ -3033,8 +3033,8 @@ export default class extends Language {
 			"2 or 3 liters, I don't remember.",
 			'Infinity.',
 			'1010 liters.'
-		]),
-		command8ballHowMany: createPick([
+		],
+		command8ballHowMany: [
 			'A lot.',
 			'A bit.',
 			'A few.',
@@ -3046,8 +3046,8 @@ export default class extends Language {
 			'2 or 3, I do not remember.',
 			'Infinity',
 			'1010.'
-		]),
-		command8ballWhy: createPick([
+		],
+		command8ballWhy: [
 			'Maybe genetics.',
 			'Because somebody decided it.',
 			'For the glory of satan, of course!',
@@ -3058,8 +3058,8 @@ export default class extends Language {
 			'Ask again.',
 			'To get to the other side.',
 			'It says so in the Bible.'
-		]),
-		command8ballWho: createPick([
+		],
+		command8ballWho: [
 			'A human.',
 			'A robot.',
 			'An airplane.',
@@ -3068,8 +3068,8 @@ export default class extends Language {
 			'A bunch of zeroes and ones.',
 			'I have no clue, is it material?',
 			'That is not logical.'
-		]),
-		command8ballElse: createPick([
+		],
+		command8ballElse: [
 			'Most likely.',
 			'Nope.',
 			'YES!',
@@ -3090,7 +3090,7 @@ export default class extends Language {
 			'Without a doubt.',
 			'Yes – definitely.',
 			'You may rely on it.'
-		]),
+		],
 
 		commandCatfactTitle: 'Cat Fact',
 		commandChoiceOutput: ({ user, word }) => `🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* ${user}, I choose:${codeBlock('', word)}`,
@@ -4832,23 +4832,18 @@ export default class extends Language {
 		commandToskyra: 'Why... I thought you loved me! 💔',
 		commandUserself: 'Why would you do that to yourself?',
 
-		systemFetching: createPick([
-			`${LOADING} Downloading data...`,
-			`${LOADING} Fetching Commander Data...`,
-			`${LOADING} Chasing after starships...`
-		]),
 		systemParseError: `${REDCROSS} I failed to process the data I was given, sorry~!`,
 		systemHighestRole: "This role's hierarchy position is higher or equal than me, I am not able to grant it to anyone.",
 		systemChannelNotPostable: 'I am not allowed to send messages to this channel.',
 		systemFetchbansFail: `Failed to fetch bans. Do I have the **${this.PERMISSIONS.BAN_MEMBERS}** permission?`,
-		systemLoading: createPick([
+		systemLoading: [
 			`${LOADING} Watching hamsters run...`,
 			`${LOADING} Finding people at hide-and-seek...`,
 			`${LOADING} Trying to figure out this command...`,
 			`${LOADING} Fetching data from the cloud...`,
 			`${LOADING} Calibrating lenses...`,
 			`${LOADING} Playing rock, scissors, paper...`
-		]),
+		],
 		systemError: `Something bad happened! Please try again, or if the issue keeps happening join the support server (hint: use \`Skyra, support\`)`,
 		systemDatabaseError: `I wasn't able get that in my database! Please try again, or if the issue keeps happening join the support server (hint: use \`Skyra, support\`)`,
 		systemDiscordAborterror: 'I had a small network error when messaging Discord, please run this command again!',

@@ -1,6 +1,6 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
-import { floatPromise } from '@utils/util';
+import { floatPromise, pickRandom } from '@utils/util';
 import { Event } from 'klasa';
 
 export default class extends Event {
@@ -13,7 +13,7 @@ export default class extends Event {
 				next > 200
 					? language.get('commandVolumeChangedExtreme', {
 							emoji: '📢',
-							text: language.get('commandVolumeChangedTexts'),
+							text: pickRandom(language.get('commandVolumeChangedTexts')),
 							volume: next
 					  })
 					: language.get('commandVolumeChanged', {

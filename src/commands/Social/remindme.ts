@@ -1,13 +1,14 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { Schedules } from '@lib/types/Enums';
 import { ScheduleEntity } from '@orm/entities/ScheduleEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
-import { Schedules } from '@lib/types/Enums';
 
 const enum Actions {
 	List = 'list',
@@ -135,7 +136,7 @@ export default class extends SkyraCommand {
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: message.language.get('systemLoading'), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;

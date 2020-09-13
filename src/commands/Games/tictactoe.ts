@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
-import { floatPromise } from '@utils/util';
+import { floatPromise, pickRandom } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage, Usage } from 'klasa';
 
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 				.run(message.language.get('commandTicTacToePrompt', { challenger: message.author.toString(), challengee: user.toString() }));
 			if (response) {
 				try {
-					const gameMessage = await message.sendLocale('systemLoading', []);
+					const gameMessage = await message.send(pickRandom(message.language.get('systemLoading')), []);
 					await this.game(
 						gameMessage,
 						[message.author, user].sort(() => Math.random() - 0.5)

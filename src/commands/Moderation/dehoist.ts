@@ -5,6 +5,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -24,7 +25,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
-			await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary));
+			await message.sendEmbed(
+				new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			);
 			await message.guild!.members.fetch();
 		}
 

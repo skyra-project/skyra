@@ -3,7 +3,7 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -18,7 +18,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [song]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, song);

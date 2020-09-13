@@ -511,6 +511,17 @@ export function createPick<T>(array: T[]): () => T {
 	return () => array[Math.floor(Math.random() * length)];
 }
 
+/**
+ * Picks a random item from an array
+ * @param array The array to pick a random item from
+ * @example
+ * const randomEntry = pickRandom([1, 2, 3, 4]) // 1
+ */
+export function pickRandom<T>(array: readonly T[]): T {
+	const { length } = array;
+	return array[Math.floor(Math.random() * length)];
+}
+
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
 	if (isThenable(promise)) promise.catch((error) => ctx.client.emit(Events.Wtf, error));
 }

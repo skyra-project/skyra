@@ -6,6 +6,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FuzzySearch } from '@utils/FuzzySearch';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -151,7 +152,7 @@ export default class extends RichDisplayCommand {
 		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: message.language.get('systemLoading'), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;

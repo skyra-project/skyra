@@ -5,7 +5,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, ZeroWidhSpace } from '@utils/constants';
-import { showSeconds } from '@utils/util';
+import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -22,7 +22,7 @@ export default class extends MusicCommand {
 
 		// Send the loading message
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(message.language.get('systemLoading'))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get('systemLoading')))
 		);
 
 		// Generate the pages with 5 songs each

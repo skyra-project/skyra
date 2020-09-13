@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { codeBlock } from '@sapphire/utilities';
-import { CommandStore, KlasaMessage, Language } from 'klasa';
+import { pickRandom } from '@utils/util';
+import { CommandStore, KlasaMessage, Language, LanguageKeysSimple } from 'klasa';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What', 'When', 'Who', 'Why'];
 
@@ -35,9 +36,9 @@ export default class extends SkyraCommand {
 			this.client.languages.default.language.command8ballQuestions) as unknown) as EightBallLanguage;
 
 		for (const key of QUESTION_KEYS) {
-			if (this.check(prefixes[key], input)) return i18n.get(`command8ball${key}` as any);
+			if (this.check(prefixes[key], input)) return pickRandom(i18n.get(`command8ball${key}` as ReplyTypes));
 		}
-		return i18n.get('command8ballElse');
+		return pickRandom(i18n.get('command8ballElse'));
 	}
 
 	private check(prefix: string, input: string) {
@@ -49,6 +50,12 @@ export default class extends SkyraCommand {
 		return regexpOrPrefix instanceof RegExp ? regexpOrPrefix.test(input) : input.startsWith(regexpOrPrefix);
 	}
 }
+
+// TODO: Utilize template strings in types when available
+type ReplyTypes = Extract<
+	LanguageKeysSimple,
+	'command8ballWhen' | 'command8ballWhat' | 'command8ballHowMuch' | 'command8ballHowMany' | 'command8ballWhy' | 'command8ballWho'
+>;
 
 export interface EightBallLanguage {
 	When: string;

@@ -3,10 +3,10 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
+import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
-import { toTitleCase } from '@sapphire/utilities';
+import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys, Timestamp } from 'klasa';
 
@@ -23,7 +23,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const overwatchData = await this.fetchAPI(message, player, platform);

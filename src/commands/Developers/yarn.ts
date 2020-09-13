@@ -6,7 +6,7 @@ import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';
+import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, pkg);

@@ -6,6 +6,7 @@ import { isFunction, isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { LanguageHelp, LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { pickRandom } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage } from 'klasa';
 
@@ -87,7 +88,7 @@ export default class extends SkyraCommand {
 		) {
 			const response = await message.sendMessage(
 				message.language.get('commandHelpAllFlag', { prefix: message.guildSettings.get(GuildSettings.Prefix) }),
-				new MessageEmbed({ description: message.language.get('systemLoading'), color: BrandingColors.Secondary })
+				new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
 			);
 			const display = await this.buildDisplay(message);
 

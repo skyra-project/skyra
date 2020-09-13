@@ -684,6 +684,22 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('pickRandom', () => {
+		beforeAll(() => {
+			// Mock out random so the result is predictable
+			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+		});
+
+		afterAll(() => {
+			(global.Math.random as any).mockRestore();
+		});
+
+		test('GIVEN simple picker THEN picks first value', () => {
+			const randomEntry = utils.pickRandom([1, 2, 3, 4]);
+			expect(randomEntry).toEqual(1);
+		});
+	});
+
 	describe('getFromPath', () => {
 		const obj = {
 			keyOne: 'valueOne',

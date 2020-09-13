@@ -6,7 +6,7 @@ import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
-import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -32,7 +32,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = await this.fetchAPI(message, game);

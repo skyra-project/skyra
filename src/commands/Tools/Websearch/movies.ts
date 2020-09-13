@@ -6,7 +6,7 @@ import { TOKENS } from '@root/config';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
@@ -23,7 +23,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [movie, year]: [string, string?]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, movie, year);

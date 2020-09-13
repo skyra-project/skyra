@@ -5,7 +5,7 @@ import { Reddit } from '@lib/types/definitions/Reddit';
 import { cutText, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage, Timestamp } from 'klasa';
@@ -31,7 +31,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [user]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const [about, comments, posts] = await this.fetchData(user, message);

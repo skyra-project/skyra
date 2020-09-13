@@ -1062,12 +1062,12 @@ export default class extends Language {
 					'Para PC, la etiqueta de tormenta de nieve completa, para la consola, el nombre de usuario. ¡Distingue mayúsculas y minúsculas!'
 				]
 			],
-			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24'],
+			examples: ['bame#1784', 'xbl Dorus NL gamer', 'psn decoda_24'],
 			reminder: '**¡Los nombres de los jugadores distinguen entre mayúsculas y minúsculas!**',
 			multiline: true
 		},
 		commandOverwatchInvalidPlayerName: ({ playerTag }) =>
-			`\`${playerTag}\` es un nombre de jugador no válido\nPara PC tiene que ser su Blizzard BattleTag completo, por ejemplo \`MagicPants#112369\`.\nPara Xbox y Playstation tiene que ser su nombre de usuario.`,
+			`\`${playerTag}\` es un nombre de jugador no válido\nPara PC tiene que ser su Blizzard BattleTag completo, por ejemplo \`bame#1784\`.\nPara Xbox y Playstation tiene que ser su nombre de usuario.`,
 		commandOverwatchQueryFail: ({ player, platform }) =>
 			`No se pudieron obtener datos para \`${player}\`, ¿estás seguro de que juegan en la \`${platform}\`?\nTambién asegúrese de tener la carcasa correcta, los nombres distinguen mayúsculas de minúsculas.`,
 		commandOverwatchNoStats: ({ player }) =>
@@ -1105,7 +1105,8 @@ export default class extends Language {
 			author: `Estadísticas de jugador de Overwatch para ${authorName}`,
 			playerLevel: `**Nivel de jugador:** ${this.groupDigits(playerLevel)}`,
 			prestigeLevel: `**Nivel de prestigio:** ${this.groupDigits(prestigeLevel)}`,
-			totalGamesWon: `**Total de juegos ganados:** ${totalGamesWon ? this.groupDigits(totalGamesWon) : 'None'}`,
+			totalGamesWon: `**Total de juegos ganados:** ${this.groupDigits(totalGamesWon)}`,
+			noGamesWon: `**Total de juegos ganados:** ${this.language.globalNone}`,
 			headers: {
 				account: '__Estadísticas de cuenta__',
 				quickplay: '__Estadísticas de Quickplay__',
@@ -2973,8 +2974,8 @@ export default class extends Language {
 		commandAnnouncementSuccess: 'Se ha publicado un nuevo anuncio con éxito.',
 		commandAnnouncementCancelled: 'Se ha cancelado el anuncio con éxito.',
 		commandAnnouncementPrompt: 'Éste es el contenido que será mandado al canal de anuncios. ¿Quiere enviarlo ahora?',
-		commandAnnouncementEmbedMentions: ({ header, mentions }) =>
-			`${header}${mentions.length ? `, y mencionando a: ${this.list(mentions, 'y')}` : ''}:`,
+		commandAnnouncementEmbedMentions: ({ header }) => `${header}:`,
+		commandAnnouncementEmbedMentionsWithMentions: ({ header, mentions }) => `${header}, y mencionando a: ${mentions}:`,
 
 		/**
 		 * ################
@@ -3189,9 +3190,11 @@ export default class extends Language {
 			`Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		commandC4Start: ({ player }) => `Let's play! Turn for: **${player}**.`,
 		commandC4GameColumnFull: 'This column is full. Please try another. ',
-		commandC4GameWin: ({ user, turn }) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		commandC4GameWin: ({ user }) => `${user} (red) won!`,
+		commandC4GameWinTurn0: ({ user }) => `${user} (blue) won!`,
 		commandC4GameDraw: 'This match concluded in a **draw**!',
-		commandC4GameNext: ({ user, turn }) => `Turn for: ${user} (${turn === 0 ? 'blue' : 'red'}).`,
+		commandC4GameNext: ({ user }) => `Turn for: ${user} (red).`,
+		commandC4GameNextTurn0: ({ user }) => `Turn for: ${user} (blue).`,
 		commandC4Description: 'Play Connect-Four with somebody.',
 		commandC4Extended: {
 			extendedHelp: [
@@ -3216,10 +3219,12 @@ export default class extends Language {
 		commandCoinFlipWinTitle: '¡Ganaste!',
 		commandCoinFlipLoseTitle: 'Perdiste.',
 		commandCoinFlipNoguessTitle: 'Lanzaste una moneda.',
-		commandCoinFlipWinDescription: ({ result, wager }) =>
-			`La moneda fue lanzada y mostró ${result}. ${wager ? `Adivinaste correctamente y ganaste ${wager} ${SHINY}` : 'Lo entendiste bien'}!`,
-		commandCoinFlipLoseDescription: ({ result, wager }) =>
-			`La moneda fue lanzada y mostró${result}. No adivinaste correctamente ${wager ? `y perdido ${wager} ${SHINY}.` : ''}.`,
+		commandCoinFlipWinDescription: ({ result }) => `La moneda fue lanzada y mostró ${result}. Lo entendiste bien!`,
+		commandCoinFlipWinDescriptionWithWager: ({ result, wager }) =>
+			`La moneda fue lanzada y mostró ${result}. Adivinaste correctamente y ganaste ${wager} ${SHINY}!`,
+		commandCoinFlipLoseDescription: ({ result }) => `La moneda fue lanzada y mostró${result}. No adivinaste correctamente.`,
+		commandCoinFlipLoseDescriptionWithWager: ({ result, wager }) =>
+			`La moneda fue lanzada y mostró${result}. No adivinaste correctamente y perdido ${wager} ${SHINY}..`,
 		commandCoinFlipNoguessDescription: ({ result }) => `La moneda fue lanzada y mostró ${result}.`,
 		commandHigherLowerDescription: 'Comenzar un juego de Mayor/Menor',
 		commandHigherLowerExtended: {
@@ -3253,8 +3258,11 @@ export default class extends Language {
 			description: `Gracias por jugar, ¡${username}! Estaré aquí por si quieres continuar.`
 		}),
 		commandHigherLowerCashout: ({ amount }) => `${amount} ${SHINY} fueron directo a a su cuenta. ¡Espero que haya sido divertido!`,
-		commandHungerGamesResultHeader: ({ game }) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
-		commandHungerGamesResultDeaths: ({ deaths }) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		commandHungerGamesResultHeaderBloodbath: () => 'Bloodbath',
+		commandHungerGamesResultHeaderSun: ({ game }) => `Day ${game.turn}`,
+		commandHungerGamesResultHeaderMoon: ({ game }) => `Night ${game.turn}`,
+		commandHungerGamesResultDeaths: ({ deaths }) => `**${deaths} cannon shot can be heard in the distance.**`,
+		commandHungerGamesResultDeathsPlural: ({ deaths }) => `**${deaths} cannon shots can be heard in the distance.**`,
 		commandHungerGamesResultProceed: 'Proceed?',
 		commandHungerGamesStop: 'Game finished by choice! See you later!',
 		commandHungerGamesWinner: ({ winner }) => `And the winner is... ${winner}!`,
@@ -3598,12 +3606,10 @@ export default class extends Language {
 		commandDehoistEmbed: ({ users, dehoistedMemberCount, dehoistedWithErrorsCount, errored }) => ({
 			title: `Finished dehoisting ${users} members`,
 			descriptionNoone: 'No members were dehoisted. A round of applause for your law-abiding users!',
-			descriptionWitherrors: `${dehoistedWithErrorsCount} member${dehoistedWithErrorsCount > 1 ? 's' : ''} ${
-				dehoistedWithErrorsCount > 1 ? 'were' : 'was'
-			} dehoisted. We also tried to dehoist an additional ${errored} member${dehoistedWithErrorsCount > 1 ? 's' : ''}, but they errored out`,
-			description: `${dehoistedMemberCount} member${dehoistedMemberCount > 1 ? 's' : ''} ${
-				dehoistedMemberCount > 1 ? 'were' : 'was'
-			} dehoisted`,
+			descriptionWithError: `${dehoistedWithErrorsCount} member was dehoisted. We also tried to dehoist an additional ${errored} member, but they errored out`,
+			descriptionWithMultipleErrors: `${dehoistedWithErrorsCount} members were dehoisted. We also tried to dehoist an additional ${errored} members, but they errored out`,
+			description: `${dehoistedMemberCount} member was dehoisted`,
+			descriptionMultipleMembers: `${dehoistedMemberCount} members were dehoisted`,
 			fieldErrorTitle: 'The users we encountered an error for:'
 		}),
 		commandKickNotKickable: 'The target is not kickable for me.',
@@ -3680,7 +3686,8 @@ export default class extends Language {
 			`${GREENTICK} Created case ${range} | ${users}.\nWith the reason of: ${reason}`,
 		commandModerationOutputWithReasonPlural: ({ range, users, reason }) =>
 			`${GREENTICK} Created cases ${range} | ${users}.\nWith the reason of: ${reason}`,
-		commandModerationFailed: ({ users }) => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users}`,
+		commandModerationFailed: ({ users }) => `${REDCROSS} Failed to moderate user:\n${users}`,
+		commandModerationFailedPlural: ({ users }) => `${REDCROSS} Failed to moderate users:\n${users}`,
 		commandModerationDmFooter: 'To disable moderation DMs, write `toggleModerationDM`.',
 		commandModerationDmDescription: ({ guild, title }) => [
 			`**❯ Server**: ${guild}`, //

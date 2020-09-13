@@ -103,7 +103,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
-					message.language.get('commandModerationFailed', { users: message.language.list(users, message.language.get('globalAnd')) })
+					message.language.get(users.length === 1 ? 'commandModerationFailed' : 'commandModerationFailedPlural', {
+						users: message.language.list(users, message.language.get('globalAnd')),
+						count: users.length
+					})
 				);
 			}
 

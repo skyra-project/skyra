@@ -156,9 +156,17 @@ export default class extends SkyraCommand {
 	}
 
 	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
-		const header = language.get('commandHungerGamesResultHeader', { game });
+		const headerKey = game.bloodbath
+			? 'commandHungerGamesResultHeaderBloodbath'
+			: game.sun
+			? 'commandHungerGamesResultHeaderSun'
+			: 'commandHungerGamesResultHeaderMoon';
+
+		const header = language.get(headerKey, { game });
 		const death = deaths.length
-			? `${language.get('commandHungerGamesResultDeaths', { deaths: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
+			? `${language.get(deaths.length === 1 ? 'commandHungerGamesResultDeaths' : 'commandHungerGamesResultDeathsPlural', {
+					deaths: deaths.length
+			  })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
 			: '';
 		const proceed = language.get('commandHungerGamesResultProceed');
 		const panels = chunk(results, 5);

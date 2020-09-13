@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 			(await this.buildEmbed(message, result))
 				.setTitle(message.language.get(won ? 'commandCoinFlipWinTitle' : 'commandCoinFlipLoseTitle'))
 				.setDescription(
-					message.language.get(won ? 'commandCoinFlipWinDescription' : 'commandCoinFlipLoseDescription', {
+					message.language.get(won ? 'commandCoinFlipWinDescriptionWithWager' : 'commandCoinFlipLoseDescriptionWithWager', {
 						result: message.language.get('commandCoinFlipCoinnames')[result],
 						wager
 					})

@@ -763,6 +763,7 @@ declare module 'klasa' {
 			playerLevel: string;
 			prestigeLevel: string;
 			totalGamesWon: string;
+			noGamesWon: string;
 			headers: {
 				account: string;
 				quickplay: string;
@@ -1269,7 +1270,8 @@ declare module 'klasa' {
 		commandAnnouncementSuccess: string;
 		commandAnnouncementCancelled: string;
 		commandAnnouncementPrompt: string;
-		commandAnnouncementEmbedMentions: (params: { header: string; mentions: readonly string[] }) => string;
+		commandAnnouncementEmbedMentions: (params: { header: string }) => string;
+		commandAnnouncementEmbedMentionsWithMentions: (params: { header: string; mentions: string }) => string;
 		commandInviteDescription: string;
 		commandInviteExtended: LanguageHelpDisplayOptions;
 		commandInvitePermissionInviteText: string;
@@ -1353,9 +1355,11 @@ declare module 'klasa' {
 		commandC4Prompt: (params: { challenger: string; challengee: string }) => string;
 		commandC4Start: (params: { player: string }) => string;
 		commandC4GameColumnFull: string;
-		commandC4GameWin: (params: { user: string; turn: number }) => string;
+		commandC4GameWin: (params: { user: string }) => string;
+		commandC4GameWinTurn0: (params: { user: string }) => string;
 		commandC4GameDraw: string;
-		commandC4GameNext: (params: { user: string; turn: number }) => string;
+		commandC4GameNext: (params: { user: string }) => string;
+		commandC4GameNextTurn0: (params: { user: string }) => string;
 		commandCoinFlipDescription: string;
 		commandCoinFlipExtended: LanguageHelpDisplayOptions;
 		commandCoinFlipInvalidCoinname: (params: { arg: string }) => string;
@@ -1363,8 +1367,10 @@ declare module 'klasa' {
 		commandCoinFlipWinTitle: string;
 		commandCoinFlipLoseTitle: string;
 		commandCoinFlipNoguessTitle: string;
-		commandCoinFlipWinDescription: (params: { result: string; wager?: number }) => string;
-		commandCoinFlipLoseDescription: (params: { result: string; wager?: number }) => string;
+		commandCoinFlipWinDescription: (params: { result: string }) => string;
+		commandCoinFlipWinDescriptionWithWager: (params: { result: string; wager: number }) => string;
+		commandCoinFlipLoseDescription: (params: { result: string }) => string;
+		commandCoinFlipLoseDescriptionWithWager: (params: { result: string; wager: number }) => string;
 		commandCoinFlipNoguessDescription: (params: { result: string }) => string;
 		commandHigherLowerDescription: string;
 		commandHigherLowerExtended: LanguageHelpDisplayOptions;
@@ -1403,8 +1409,11 @@ declare module 'klasa' {
 		commandHigherLowerCashout: (params: { amount: number }) => string;
 		commandHungerGamesDescription: string;
 		commandHungerGamesExtended: LanguageHelpDisplayOptions;
-		commandHungerGamesResultHeader: (params: { game: HungerGamesGame }) => string;
+		commandHungerGamesResultHeaderBloodbath: (params: { game: HungerGamesGame }) => string;
+		commandHungerGamesResultHeaderSun: (params: { game: HungerGamesGame }) => string;
+		commandHungerGamesResultHeaderMoon: (params: { game: HungerGamesGame }) => string;
 		commandHungerGamesResultDeaths: (params: { deaths: number }) => string;
+		commandHungerGamesResultDeathsPlural: (params: { deaths: number }) => string;
 		commandHungerGamesResultProceed: string;
 		commandHungerGamesStop: string;
 		commandHungerGamesWinner: (params: { winner: string }) => string;
@@ -1681,8 +1690,10 @@ declare module 'klasa' {
 		}) => {
 			title: string;
 			descriptionNoone: string;
-			descriptionWitherrors: string;
+			descriptionWithError: string;
+			descriptionWithMultipleErrors: string;
 			description: string;
+			descriptionMultipleMembers: string;
 			fieldErrorTitle: string;
 		};
 		commandKickNotKickable: string;
@@ -1727,7 +1738,8 @@ declare module 'klasa' {
 		commandModerationOutputPlural: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
 		commandModerationOutputWithReason: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
 		commandModerationOutputWithReasonPlural: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
-		commandModerationFailed: (params: { users: string }) => string;
+		commandModerationFailed: (params: { users: string; count: number }) => string;
+		commandModerationFailedPlural: (params: { users: string; count: number }) => string;
 		commandModerationDmFooter: string;
 		commandModerationDmDescription: (params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[];
 		commandModerationDmDescriptionWithReason: (params: {

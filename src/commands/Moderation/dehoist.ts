@@ -89,8 +89,9 @@ export default class extends SkyraCommand {
 
 		let { description } = embedLanguage;
 		if (dehoistedMembers <= 0) description = embedLanguage.descriptionNoone;
+		if (dehoistedMembers > 1) description = embedLanguage.descriptionMultipleMembers;
 		if (erroredChanges.length > 0) {
-			description = embedLanguage.descriptionWitherrors;
+			description = erroredChanges.length > 1 ? embedLanguage.descriptionWithMultipleErrors : embedLanguage.descriptionWithError;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.fieldErrorTitle, codeblock);

@@ -1039,12 +1039,12 @@ export default class extends Language {
 				['platform', '(optional, defaults to `pc`) Platform the player plays on, one of `pc`, `xbl`, or `psn`'],
 				['player', 'For PC the full blizzard tag, for console the username. Case sensitive!']
 			],
-			examples: ['MagicPants#112369', 'xbl Dorus NL gamer', 'psn decoda_24'],
+			examples: ['bame#1784', 'xbl Dorus NL gamer', 'psn decoda_24'],
 			reminder: '**Player names are case sensitive!**',
 			multiline: true
 		},
 		commandOverwatchInvalidPlayerName: ({ playerTag }) =>
-			`\`${playerTag}\` is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \`MagicPants#112369\`.\nFor Xbox and Playstation it just has to be their username.`,
+			`\`${playerTag}\` is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \`bame#1784\`.\nFor Xbox and Playstation it just has to be their username.`,
 		commandOverwatchQueryFail: ({ player, platform }) =>
 			`Failed to get data for \`${player}\`, are you sure they play on \`${platform}\`?\nAlso make sure to get the casing right, names are case sensitive.`,
 		commandOverwatchNoStats: ({ player }) => `I found a player with the tag \`${player}\` but no stats were available for them.`,
@@ -1081,7 +1081,8 @@ export default class extends Language {
 			author: `Overwatch Player Statistics for ${authorName}`,
 			playerLevel: `**Player level:** ${this.groupDigits(playerLevel)}`,
 			prestigeLevel: `**Prestige level:** ${this.groupDigits(prestigeLevel)}`,
-			totalGamesWon: `**Total games won:** ${totalGamesWon ? this.groupDigits(totalGamesWon) : 'None'}`,
+			totalGamesWon: `**Total games won:** ${this.groupDigits(totalGamesWon)}`,
+			noGamesWon: `**Total games won:** ${this.language.globalNone}`,
 			headers: {
 				account: '__Account Stats__',
 				quickplay: '__Quickplay Stats__',
@@ -2935,8 +2936,8 @@ export default class extends Language {
 		commandAnnouncementSuccess: 'Successfully posted a new announcement.',
 		commandAnnouncementCancelled: 'Cancelled the message.',
 		commandAnnouncementPrompt: 'This will be the message sent in the announcement channel. Are you OK with this?',
-		commandAnnouncementEmbedMentions: ({ header, mentions }) =>
-			`${header}${mentions.length ? `, and mentioning: ${this.list(mentions, 'and')}` : ''}:`,
+		commandAnnouncementEmbedMentions: ({ header }) => `${header}:`,
+		commandAnnouncementEmbedMentionsWithMentions: ({ header, mentions }) => `${header}, and mentioning: ${mentions}:`,
 
 		/**
 		 * ################
@@ -3149,9 +3150,11 @@ export default class extends Language {
 			`Dear ${challengee}, you have been challenged by ${challenger} in a Connect-Four match. Reply with **yes** to accept!`,
 		commandC4Start: ({ player }) => `Let's play! Turn for: **${player}**.`,
 		commandC4GameColumnFull: 'This column is full. Please try another. ',
-		commandC4GameWin: ({ user, turn }) => `${user} (${turn === 0 ? 'blue' : 'red'}) won!`,
+		commandC4GameWin: ({ user }) => `${user} (red) won!`,
+		commandC4GameWinTurn0: ({ user }) => `${user} (blue) won!`,
 		commandC4GameDraw: 'This match concluded in a **draw**!',
-		commandC4GameNext: ({ user, turn }) => `Turn for: ${user} (${turn === 0 ? 'blue' : 'red'}).`,
+		commandC4GameNext: ({ user }) => `Turn for: ${user} (red).`,
+		commandC4GameNextTurn0: ({ user }) => `Turn for: ${user} (blue).`,
 		commandC4Description: 'Play Connect-Four with somebody.',
 		commandC4Extended: {
 			extendedHelp: [
@@ -3176,10 +3179,12 @@ export default class extends Language {
 		commandCoinFlipWinTitle: 'You won!',
 		commandCoinFlipLoseTitle: 'You lost.',
 		commandCoinFlipNoguessTitle: 'You flipped a coin.',
-		commandCoinFlipWinDescription: ({ result, wager }) =>
-			`The coin was flipped, and it showed ${result}. ${wager ? `You guessed correctly and won ${wager} ${SHINY}` : 'You got it right'}!`,
-		commandCoinFlipLoseDescription: ({ result, wager }) =>
-			`The coin was flipped, and it showed ${result}. You didn\'t guess corectly ${wager ? `and lost ${wager} ${SHINY}` : ''}.`,
+		commandCoinFlipWinDescription: ({ result }) => `The coin was flipped, and it showed ${result}. You got it right!`,
+		commandCoinFlipWinDescriptionWithWager: ({ result, wager }) =>
+			`The coin was flipped, and it showed ${result}. You guessed correctly and won ${wager} ${SHINY}!`,
+		commandCoinFlipLoseDescription: ({ result }) => `The coin was flipped, and it showed ${result}. You didn\'t guess corectly.`,
+		commandCoinFlipLoseDescriptionWithWager: ({ result, wager }) =>
+			`The coin was flipped, and it showed ${result}. You didn\'t guess corectly and lost ${wager} ${SHINY}.`,
 		commandCoinFlipNoguessDescription: ({ result }) => `The coin was flipped, and it showed ${result}.`,
 		commandHigherLowerDescription: 'Play a game of Higher/Lower',
 		commandHigherLowerExtended: {
@@ -3213,8 +3218,11 @@ export default class extends Language {
 			description: `Thanks for playing, ${username}! I'll be here when you want to play again.`
 		}),
 		commandHigherLowerCashout: ({ amount }) => `Paid out ${amount} ${SHINY} to your account. Hope you had fun!`,
-		commandHungerGamesResultHeader: ({ game }) => (game.bloodbath ? 'Bloodbath' : game.sun ? `Day ${game.turn}` : `Night ${game.turn}`),
-		commandHungerGamesResultDeaths: ({ deaths }) => `**${deaths} cannon ${deaths === 1 ? 'shot' : 'shots'} can be heard in the distance.**`,
+		commandHungerGamesResultHeaderBloodbath: () => 'Bloodbath',
+		commandHungerGamesResultHeaderSun: ({ game }) => `Day ${game.turn}`,
+		commandHungerGamesResultHeaderMoon: ({ game }) => `Night ${game.turn}`,
+		commandHungerGamesResultDeaths: ({ deaths }) => `**${deaths} cannon shot can be heard in the distance.**`,
+		commandHungerGamesResultDeathsPlural: ({ deaths }) => `**${deaths} cannon shots can be heard in the distance.**`,
 		commandHungerGamesResultProceed: 'Proceed?',
 		commandHungerGamesStop: 'Game finished by choice! See you later!',
 		commandHungerGamesWinner: ({ winner }) => `And the winner is... ${winner}!`,
@@ -3557,12 +3565,10 @@ export default class extends Language {
 		commandDehoistEmbed: ({ users, dehoistedMemberCount, dehoistedWithErrorsCount, errored }) => ({
 			title: `Finished dehoisting ${users} members`,
 			descriptionNoone: 'No members were dehoisted. A round of applause for your law-abiding users!',
-			descriptionWitherrors: `${dehoistedWithErrorsCount} member${dehoistedWithErrorsCount > 1 ? 's' : ''} ${
-				dehoistedWithErrorsCount > 1 ? 'were' : 'was'
-			} dehoisted. We also tried to dehoist an additional ${errored} member${dehoistedWithErrorsCount > 1 ? 's' : ''}, but they errored out`,
-			description: `${dehoistedMemberCount} member${dehoistedMemberCount > 1 ? 's' : ''} ${
-				dehoistedMemberCount > 1 ? 'were' : 'was'
-			} dehoisted`,
+			descriptionWithError: `${dehoistedWithErrorsCount} member was dehoisted. We also tried to dehoist an additional ${errored} member, but they errored out`,
+			descriptionWithMultipleErrors: `${dehoistedWithErrorsCount} members were dehoisted. We also tried to dehoist an additional ${errored} members, but they errored out`,
+			description: `${dehoistedMemberCount} member was dehoisted`,
+			descriptionMultipleMembers: `${dehoistedMemberCount} members were dehoisted`,
 			fieldErrorTitle: 'The users we encountered an error for:'
 		}),
 		commandKickNotKickable: 'The target is not kickable for me.',
@@ -3635,7 +3641,8 @@ export default class extends Language {
 			`${GREENTICK} Created case ${range} | ${users}.\nWith the reason of: ${reason}`,
 		commandModerationOutputWithReasonPlural: ({ range, users, reason }) =>
 			`${GREENTICK} Created cases ${range} | ${users}.\nWith the reason of: ${reason}`,
-		commandModerationFailed: ({ users }) => `${REDCROSS} Failed to moderate ${users.length === 1 ? 'user' : 'users'}:\n${users}`,
+		commandModerationFailed: ({ users }) => `${REDCROSS} Failed to moderate user:\n${users}`,
+		commandModerationFailedPlural: ({ users }) => `${REDCROSS} Failed to moderate users:\n${users}`,
 		commandModerationDmFooter: 'To disable moderation DMs, write `toggleModerationDM`.',
 		commandModerationDmDescription: ({ guild, title }) => [
 			`**❯ Server**: ${guild}`, //

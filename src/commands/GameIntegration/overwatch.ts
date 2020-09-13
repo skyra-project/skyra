@@ -78,15 +78,22 @@ export default class extends RichDisplayCommand {
 				.setURL(`https://overwatchtracker.com/profile/${platform}/global/${player}`)
 				.setThumbnail(overwatchData.icon)
 		)
-			.addPage((embed: MessageEmbed) =>
+			.addPage((embed) =>
 				embed
-					.setDescription([embedData.headers.account, embedData.playerLevel, embedData.prestigeLevel, embedData.totalGamesWon].join('\n'))
-					.addField(embedData.ratingsTitle, ratings)
+					.setDescription(
+						[
+							embedData.headers.account,
+							embedData.playerLevel,
+							embedData.prestigeLevel,
+							overwatchData.gamesWon ? embedData.totalGamesWon : embedData.noGamesWon
+						].join('\n')
+					)
+					.addField(embedData.ratingsTitle, ratings || message.language.get('globalNone'))
 			)
-			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(message, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractStats(message, overwatchData, 'competitiveStats', embedData)))
-			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractTopHeroes(message, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed: MessageEmbed) => embed.setDescription(this.extractTopHeroes(message, overwatchData, 'competitiveStats', embedData)));
+			.addPage((embed) => embed.setDescription(this.extractStats(message, overwatchData, 'quickPlayStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractStats(message, overwatchData, 'competitiveStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractTopHeroes(message, overwatchData, 'quickPlayStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractTopHeroes(message, overwatchData, 'competitiveStats', embedData)));
 	}
 
 	/**

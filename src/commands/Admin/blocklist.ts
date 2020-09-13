@@ -3,6 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { PermissionLevels } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
+import { resolveOnErrorCodes } from '@utils/util';
 import { Guild, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -21,22 +22,17 @@ export default class extends SkyraCommand {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.findOneOrFail({ id: CLIENT_ID });
 
-		const guilds = clientEntity.guildBlocklist.map((guildId) => {
-			if (this.client.guilds.cache.has(guildId)) {
-				const guild = this.client.guilds.cache.get(guildId)!;
-				return `${guild.name} (\`${guildId}\`)`;
-			}
+		const guilds = await Promise.all(
+			clientEntity.guildBlocklist.map(async (guildId) => {
+				const guild = await resolveOnErrorCodes(this.client.guilds.fetch(guildId));
+				if (guild) return `${guild.name} (\`${guildId}\`)`;
 
-			return `Unknown Guild (\`${guildId}\`)`;
-		});
+				return `Unknown Guild (\`${guildId}\`)`;
+			})
+		);
 		const users = await Promise.all(
 			clientEntity.userBlocklist.map(async (userId) => {
-				if (this.client.users.cache.has(userId)) {
-					const user = this.client.users.cache.get(userId)!;
-					return `${user.username}#${user.discriminator} (\`${userId}\`)`;
-				}
-
-				const user = await this.client.users.fetch(userId);
+				const user = await resolveOnErrorCodes(this.client.users.fetch(userId));
 				if (user) return `${user.tag} (\`${userId}\`)`;
 				return `Unknown User (\`${userId}\`()`;
 			})

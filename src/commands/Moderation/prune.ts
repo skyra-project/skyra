@@ -1,6 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { Filter, Position } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
@@ -9,6 +8,23 @@ import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import { constants, KlasaGuild, KlasaMessage, Timestamp } from 'klasa';
+
+const enum Position {
+	Before,
+	After
+}
+
+const enum Filter {
+	Attachments,
+	Author,
+	Bots,
+	Humans,
+	Invites,
+	Links,
+	None,
+	Skyra,
+	User
+}
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],
@@ -28,17 +44,42 @@ export default class extends SkyraCommand {
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
 	private readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus)\/|discord(?:app)?\.com\/invite\/)[\w-]{2,}/i;
 	private readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
+	private readonly kCommandPrunePositions: Record<string, Position> = {
+		before: Position.Before,
+		b: Position.Before,
+		after: Position.After,
+		a: Position.After
+	};
+
+	private readonly kCommandPruneFilters: Record<string, Filter> = {
+		file: Filter.Attachments,
+		files: Filter.Attachments,
+		upload: Filter.Attachments,
+		uploads: Filter.Attachments,
+		author: Filter.Author,
+		me: Filter.Author,
+		bot: Filter.Bots,
+		bots: Filter.Bots,
+		human: Filter.Humans,
+		humans: Filter.Humans,
+		invite: Filter.Invites,
+		invites: Filter.Invites,
+		link: Filter.Links,
+		links: Filter.Links,
+		skyra: Filter.Skyra,
+		you: Filter.Skyra
+	};
 
 	public async init() {
 		this.createCustomResolver('filter', (argument, _possible, message) => {
 			if (!argument) return undefined;
-			const filter = message.language.get('commandPruneFilters').get(argument.toLowerCase());
+			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
 			if (typeof filter === 'undefined') throw message.language.get('commandPruneInvalidFilter');
 			return filter;
 		})
 			.createCustomResolver('position', (argument, _possible, message) => {
 				if (!argument) return null;
-				const position = message.language.get('commandPrunePositions').get(argument.toLowerCase());
+				const position = this.kCommandPrunePositions[argument.toLowerCase()];
 				if (typeof position === 'undefined') throw message.language.get('commandPruneInvalidPosition');
 				return position;
 			})

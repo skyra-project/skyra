@@ -9,23 +9,6 @@ import type { Moderation } from '@utils/constants';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
 
-export const enum Position {
-	Before,
-	After
-}
-
-export const enum Filter {
-	Attachments,
-	Author,
-	Bots,
-	Humans,
-	Invites,
-	Links,
-	None,
-	Skyra,
-	User
-}
-
 export interface ModerationAction {
 	addRole: string;
 	mute: string;
@@ -1722,8 +1705,6 @@ declare module 'klasa' {
 		commandPruneLogHeader: string;
 		commandPruneLogMessage: (params: { channel: string; author: string; count: number }) => string;
 		commandPruneLogMessagePlural: (params: { channel: string; author: string; count: number }) => string;
-		commandPrunePositions: Map<string, Position>;
-		commandPruneFilters: Map<string, Filter>;
 		commandReasonMissingCase: string;
 		commandReasonNotExists: string;
 		commandReasonUpdated: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];

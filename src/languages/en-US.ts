@@ -4767,31 +4767,33 @@ export default class extends Language {
 			`${REDCROSS} The value (${this.duration(value)}) was too short, expected at least ${this.duration(minimum)}.`,
 		selfModerationDurationTooLong: ({ maximum, value }) =>
 			`${REDCROSS} The value (${this.duration(value)}) was too long, expected maximum ${this.duration(maximum)}.`,
-
-		actionMuteReason: ({ reason }) => (reason === null ? '[Action] Applied Mute.' : `[Action] Applied Mute | Reason: ${reason}`),
-		actionUnmuteReason: ({ reason }) => (reason === null ? '[Action] Revoked Mute.' : `[Action] Revoked Mute | Reason: ${reason}`),
-		actionKickReason: ({ reason }) => (reason === null ? '[Action] Applied Kick.' : `[Action] Applied Kick | Reason: ${reason}`),
-		actionSoftbanReason: ({ reason }) => (reason === null ? '[Action] Applying Softban.' : `[Action] Applying Softban | Reason: ${reason}`),
-		actionUnsoftbanReason: ({ reason }) => (reason === null ? '[Action] Applied Softban.' : `[Action] Applied Softban | Reason: ${reason}`),
-		actionBanReason: ({ reason }) => (reason === null ? '[Action] Applied Ban' : `[Action] Applied Ban | Reason: ${reason}`),
-		actionUnbanReason: ({ reason }) => (reason === null ? '[Action] Applied Unban.' : `[Action] Applied Unban | Reason: ${reason}`),
-		actionVmuteReason: ({ reason }) => (reason === null ? '[Action] Applied Voice Mute.' : `[Action] Applied Voice Mute | Reason: ${reason}`),
-		actionUnvmuteReason: ({ reason }) => (reason === null ? '[Action] Revoked Voice Mute.' : `[Action] Revoked Voice Mute | Reason: ${reason}`),
-		actionVkickReason: ({ reason }) => (reason === null ? '[Action] Applied Voice Kick.' : `[Action] Applied Voice Kick | Reason: ${reason}`),
-		actionRestrictedReactReason: ({ reason }) =>
-			reason === null ? '[Action] Applied Reaction Restriction.' : `[Action] Applied Reaction Restriction | Reason: ${reason}`,
-		actionRestrictedEmbedReason: ({ reason }) =>
-			reason === null ? '[Action] Applied Embed Restriction.' : `[Action] Applied Embed Restriction | Reason: ${reason}`,
-		actionRestrictedAttachmentReason: ({ reason }) =>
-			reason === null ? '[Action] Applied Attachment Restriction.' : `[Action] Applied Attachment Restriction | Reason: ${reason}`,
-		actionRestrictedVoiceReason: ({ reason }) =>
-			reason === null ? '[Action] Applied Voice Restriction.' : `[Action] Applied Voice Restriction | Reason: ${reason}`,
+		moderationActions: {
+			addRole: 'Added Role',
+			mute: 'Mute',
+			ban: 'Ban',
+			kick: 'Kick',
+			softban: 'Softban',
+			vkick: 'Voice Kick',
+			vmute: 'Voice Mute',
+			restrictedReact: 'Reaction Restriction',
+			restrictedEmbed: 'Embed Restriction',
+			restrictedAttachment: 'Attachment Restriction',
+			restrictedVoice: 'Voice Restriction',
+			setNickname: 'Set Nickname',
+			removeRole: 'Remove Role'
+		},
+		actionApplyReason: ({ action, reason }) => `[Action] Applied ${action} | Reason: ${reason}`,
+		actionApplyNoReason: ({ action }) => `[Action] Applied ${action}`,
+		actionRevokeReason: ({ action, reason }) => `[Action] Revoked ${action} | Reason: ${reason}`,
+		actionRevokeNoReason: ({ action }) => `[Action] Revoked ${action}`,
 		actionSetNickname: ({ reason, nickname }) =>
 			reason === null
 				? `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'}.`
 				: `[Action] ${nickname ? 'Set Nickname' : 'Removed Nickname'} | Reason: ${reason}`,
-		actionAddRole: ({ reason }) => (reason === null ? '[Action] Added Role.' : `[Action] Added Role | Reason: ${reason}`),
-		actionRemoveRole: ({ reason }) => (reason === null ? '[Action] Removed Role.' : `[Action] Removed Role | Reason: ${reason}`),
+		actionSoftbanNoReason: '[Action] Applying Softban.',
+		actionSoftbanReason: ({ reason }) => `[Action] Applying Softban | Reason: ${reason}`,
+		actionUnSoftbanNoReason: '[Action] Applied Softban.',
+		actionUnSoftbanReason: ({ reason }) => `[Action] Applied Softban | Reason: ${reason}`,
 		actionRequiredMember: 'The user does not exist or is not in this server.',
 		actionSetupMuteExists: '**Aborting mute role creation**: There is already one that exists.',
 		actionSetupRestrictionExists: '**Aborting restriction role creation**: There is already one that exists.',

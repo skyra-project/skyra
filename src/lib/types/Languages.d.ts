@@ -26,6 +26,22 @@ export const enum Filter {
 	User
 }
 
+export interface ModerationAction {
+	addRole: string;
+	mute: string;
+	ban: string;
+	kick: string;
+	softban: string;
+	vkick: string;
+	vmute: string;
+	restrictedReact: string;
+	restrictedEmbed: string;
+	restrictedAttachment: string;
+	restrictedVoice: string;
+	setNickname: string;
+	removeRole: string;
+}
+
 declare module 'klasa' {
 	export interface LanguageKeys {
 		default: (params: { key: string }) => string;
@@ -2123,23 +2139,16 @@ declare module 'klasa' {
 		selfModerationMaximumTooLong: (params: { maximum: number; value: number }) => string;
 		selfModerationDurationTooShort: (params: { minimum: number; value: number }) => string;
 		selfModerationDurationTooLong: (params: { maximum: number; value: number }) => string;
-		actionMuteReason: (params: { reason: string | null }) => string;
-		actionUnmuteReason: (params: { reason: string | null }) => string;
-		actionKickReason: (params: { reason: string | null }) => string;
-		actionSoftbanReason: (params: { reason: string | null }) => string;
-		actionUnsoftbanReason: (params: { reason: string | null }) => string;
-		actionBanReason: (params: { reason: string | null }) => string;
-		actionUnbanReason: (params: { reason: string | null }) => string;
-		actionVmuteReason: (params: { reason: string | null }) => string;
-		actionUnvmuteReason: (params: { reason: string | null }) => string;
-		actionVkickReason: (params: { reason: string | null }) => string;
-		actionRestrictedReactReason: (params: { reason: string | null }) => string;
-		actionRestrictedEmbedReason: (params: { reason: string | null }) => string;
-		actionRestrictedAttachmentReason: (params: { reason: string | null }) => string;
-		actionRestrictedVoiceReason: (params: { reason: string | null }) => string;
+		moderationActions: ModerationAction;
+		actionApplyReason: (params: { action: string; reason: string }) => string;
+		actionApplyNoReason: (params: { action: string }) => string;
+		actionRevokeReason: (params: { action: string; reason: string }) => string;
+		actionRevokeNoReason: (params: { action: string }) => string;
+		actionSoftbanReason: (params: { reason: string }) => string;
+		actionUnSoftbanReason: (params: { reason: string }) => string;
+		actionSoftbanNoReason: string;
+		actionUnSoftbanNoReason: string;
 		actionSetNickname: (params: { reason: string | null; nickname: string }) => string;
-		actionAddRole: (params: { reason: string | null }) => string;
-		actionRemoveRole: (params: { reason: string | null }) => string;
 		actionSetupMuteExists: string;
 		actionSetupRestrictionExists: string;
 		actionSetupTooManyRoles: string;

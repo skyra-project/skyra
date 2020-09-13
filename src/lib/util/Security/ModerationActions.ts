@@ -1,5 +1,6 @@
 import { ModerationManagerCreateData } from '@lib/structures/managers/ModerationManager';
 import { Events } from '@lib/types/Enums';
+import { ModerationAction } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
@@ -284,7 +285,9 @@ export class ModerationActions {
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.roles(role.id)
-			.put({ reason: this.guild.language.get('actionAddRole', { reason: moderationLog.reason! }) });
+			.put({
+				reason: this.getReason('addRole', moderationLog.reason)
+			});
 
 		await this.cancelLastLogTaskFromUser(
 			options.userID,
@@ -316,7 +319,7 @@ export class ModerationActions {
 			.guilds(this.guild.id)
 			.members(rawOptions.userID)
 			.roles(role.id)
-			.delete({ reason: this.guild.language.get('actionRemoveRole', { reason: moderationLog.reason! }) });
+			.delete({ reason: this.getReason('removeRole', moderationLog.reason) });
 
 		await this.cancelLastLogTaskFromUser(
 			options.userID,
@@ -374,7 +377,9 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.delete({ reason: this.guild.language.get('actionKickReason', { reason: moderationLog.reason! }) });
+			.delete({
+				reason: this.getReason('kick', moderationLog.reason)
+			});
 		return (await moderationLog.create())!;
 	}
 
@@ -387,12 +392,18 @@ export class ModerationActions {
 			.bans(options.userID)
 			.put({
 				query: { 'delete-message-days': days },
-				reason: this.guild.language.get('actionSoftbanReason', { reason: moderationLog.reason! })
+				reason: moderationLog.reason
+					? this.guild.language.get('actionSoftbanReason', { reason: moderationLog.reason! })
+					: this.guild.language.get('actionSoftbanNoReason')
 			});
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.delete({ reason: this.guild.language.get('actionUnsoftbanReason', { reason: moderationLog.reason! }) });
+			.delete({
+				reason: moderationLog.reason
+					? this.guild.language.get('actionUnSoftbanReason', { reason: moderationLog.reason! })
+					: this.guild.language.get('actionUnSoftbanNoReason')
+			});
 		return (await moderationLog.create())!;
 	}
 
@@ -403,7 +414,10 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.put({ query: { 'delete-message-days': days }, reason: this.guild.language.get('actionBanReason', { reason: moderationLog.reason! }) });
+			.put({
+				query: { 'delete-message-days': days },
+				reason: this.getReason('ban', moderationLog.reason)
+			});
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.Ban);
 		return (await moderationLog.create())!;
@@ -415,7 +429,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
-			.delete({ reason: this.guild.language.get('actionUnbanReason', { reason: moderationLog.reason! }) });
+			.delete({ reason: this.getReason('ban', moderationLog.reason, true) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.Ban);
@@ -428,7 +442,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.patch({ data: { mute: true }, reason: this.guild.language.get('actionVmuteReason', { reason: moderationLog.reason! }) });
+			.patch({ data: { mute: true }, reason: this.getReason('vmute', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.VoiceMute);
@@ -441,7 +455,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.patch({ data: { mute: false }, reason: this.guild.language.get('actionUnvmuteReason', { reason: moderationLog.reason! }) });
+			.patch({ data: { mute: false }, reason: this.getReason('vmute', moderationLog.reason, true) });
 		await this.sendDM(moderationLog, sendOptions);
 
 		await this.cancelLastLogTaskFromUser(options.userID, Moderation.TypeCodes.VoiceMute);
@@ -454,7 +468,7 @@ export class ModerationActions {
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.members(options.userID)
-			.patch({ data: { channel_id: null }, reason: this.guild.language.get('actionVkickReason', { reason: moderationLog.reason! }) });
+			.patch({ data: { channel_id: null }, reason: this.getReason('vkick', moderationLog.reason) });
 		await this.sendDM(moderationLog, sendOptions);
 		return (await moderationLog.create())!;
 	}
@@ -707,7 +721,7 @@ export class ModerationActions {
 	private async muteUser(rawOptions: ModerationActionOptions) {
 		try {
 			const member = await this.guild.members.fetch(rawOptions.userID);
-			return this.muteUserInGuild(member, this.guild.language.get('actionMuteReason', { reason: rawOptions.reason || null }));
+			return this.muteUserInGuild(member, this.getReason('mute', rawOptions.reason || null));
 		} catch (error) {
 			if (error.code === APIErrors.UnknownMember) throw this.guild.language.get('actionRequiredMember');
 			throw error;
@@ -736,8 +750,8 @@ export class ModerationActions {
 		try {
 			const member = await this.guild.members.fetch(options.userID);
 			return moderationLog === null
-				? this.unmuteUserInGuildWithoutData(member, this.guild.language.get('actionUnmuteReason', { reason: options.reason }))
-				: this.unmuteUserInGuildWithData(member, this.guild.language.get('actionUnmuteReason', { reason: options.reason }), moderationLog);
+				? this.unmuteUserInGuildWithoutData(member, this.getReason('mute', options.reason, true))
+				: this.unmuteUserInGuildWithData(member, this.getReason('mute', options.reason, true), moderationLog);
 		} catch (error) {
 			if (error.code !== APIErrors.UnknownMember) throw error;
 		}
@@ -878,6 +892,17 @@ export class ModerationActions {
 		const { task } = log;
 		if (task && !task.running) await task.delete();
 		return log;
+	}
+
+	private getReason(action: keyof ModerationAction, reason: string | null, revoke = false) {
+		const actions = this.guild.language.get('moderationActions');
+		if (!reason)
+			return revoke
+				? this.guild.language.get('actionRevokeNoReason', { action: actions[action] })
+				: this.guild.language.get('actionApplyNoReason', { action: actions[action] });
+		return revoke
+			? this.guild.language.get('actionRevokeReason', { action: actions[action], reason })
+			: this.guild.language.get('actionApplyReason', { action: actions[action], reason });
 	}
 
 	private async retrieveLastLogFromUser(userID: string, type: Moderation.TypeCodes, extra: (log: ModerationEntity) => boolean = () => true) {

@@ -90,7 +90,7 @@ export default class extends SkyraCommand {
 						amount,
 						count: variation
 				  })
-				: message.language.get(variation === 1 ? 'commandSocialRemove' : 'commandSocialRemovePlural', {
+				: message.language.get(variation === -1 ? 'commandSocialRemove' : 'commandSocialRemovePlural', {
 						user: user.username,
 						amount,
 						count: -variation

@@ -2298,8 +2298,8 @@ export default class extends Language {
 			flavourText: 'Entrada de Pokédex',
 			otherFormesTitle: 'Otras formas',
 			cosmeticFormesTitle: 'Formas cosméticas',
-			otherFormesList: this.list(otherFormes ?? [], 'y'),
-			cosmeticFormesList: this.list(cosmeticFormes ?? [], 'y')
+			otherFormesList: this.list(otherFormes, 'y'),
+			cosmeticFormesList: this.list(cosmeticFormes, 'y')
 		}),
 		commandPokedexQueryFail: ({ pokemon }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${pokemon}\` es en realidad un Pokémon?`,
@@ -4913,14 +4913,15 @@ export default class extends Language {
 		systemQueryFail: 'Lo siento, pero la aplicación no pudo resolver su solicitud. ¿Estás seguro/a que escribiste el nombre correctamente?',
 		systemNoResults: 'No pude encontrar ningún resultado para esa consulta',
 		systemCannotAccessChannel: 'Lo siento, pero no tienes permiso para ver ese canal.',
-		systemExceededLengthOutput: ({ output, time, type }) =>
-			`**Salida**:${output}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
-		systemExceededLengthOutputConsole: ({ time, type }) =>
-			`Enviado el resultado a la consola.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
-		systemExceededLengthOutputFile: ({ time, type }) =>
-			`Enviado el resultado como un archivo.${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}`,
-		systemExceededLengthOutputHastebin: ({ url, time, type }) =>
-			`Enviado el resultado a hastebin: ${url}${type !== undefined && time !== undefined ? `\n**Type**:${type}\n${time}` : ''}\n`,
+		systemExceededLengthOutput: ({ output }) => `**Salida**:${output}`,
+		systemExceededLengthOutputWithTypeAndTime: ({ output, time, type }) => `**Salida**:${output}\n**Type**:${type}\n${time}`,
+		systemExceededLengthOutputConsole: ({}) => `Enviado el resultado a la consola.`,
+		systemExceededLengthOutputConsoleWithTypeAndTime: ({ time, type }) => `Enviado el resultado a la consola.\n**Type**:${type}\n${time}`,
+		systemExceededLengthOutputFile: ({}) => `Enviado el resultado como un archivo.`,
+		systemExceededLengthOutputFileWithTypeAndTime: ({ time, type }) => `Enviado el resultado como un archivo.\n**Type**:${type}\n${time}`,
+		systemExceededLengthOutputHastebin: ({ url }) => `Enviado el resultado a hastebin: ${url}`,
+		systemExceededLengthOutputHastebinWithTypeAndTime: ({ url, time, type }) =>
+			`Enviado el resultado a hastebin: ${url}\n**Type**:${type}\n${time}`,
 		systemExceededLengthChooseOutput: ({ output }) => `Elija una de las siguientes opciones: ${this.list(output, 'o')}`,
 		systemExternalServerError: 'El servicio externo que utilizamos no pudo procesar nuestro mensaje, por favor, inténtelo de nuevo más tarde.',
 		systemPokedexExternalResource: 'Recursos Externos',

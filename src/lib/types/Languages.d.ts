@@ -332,8 +332,8 @@ declare module 'klasa' {
 		commandPokedexDescription: string;
 		commandPokedexExtended: LanguageHelpDisplayOptions;
 		commandPokedexEmbedData: (params: {
-			otherFormes?: readonly string[] | null;
-			cosmeticFormes?: readonly string[] | null;
+			otherFormes: readonly string[];
+			cosmeticFormes: readonly string[];
 		}) => {
 			types: string;
 			abilities: string;
@@ -2212,9 +2212,13 @@ declare module 'klasa' {
 		systemNotenoughParameters: string;
 		systemCannotAccessChannel: string;
 		systemExceededLengthOutput: (params: { output: string; time?: string; type?: string }) => string;
+		systemExceededLengthOutputWithTypeAndTime: (params: { output: string; time?: string; type?: string }) => string;
 		systemExceededLengthOutputConsole: (params: { time?: string; type?: string }) => string;
+		systemExceededLengthOutputConsoleWithTypeAndTime: (params: { time?: string; type?: string }) => string;
 		systemExceededLengthOutputFile: (params: { time?: string; type?: string }) => string;
+		systemExceededLengthOutputFileWithTypeAndTime: (params: { time?: string; type?: string }) => string;
 		systemExceededLengthOutputHastebin: (params: { url: string; time?: string; type?: string }) => string;
+		systemExceededLengthOutputHastebinWithTypeAndTime: (params: { url: string; time?: string; type?: string }) => string;
 		systemExceededLengthChooseOutput: (params: { output: string[] }) => string;
 		systemExternalServerError: string;
 		systemPokedexExternalResource: string;

@@ -150,8 +150,8 @@ export default class extends RichDisplayCommand {
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
 		const embedTranslations = message.language.get('commandPokedexEmbedData', {
-			otherFormes: pokeDetails.otherFormes,
-			cosmeticFormes: pokeDetails.cosmeticFormes
+			otherFormes: pokeDetails.otherFormes ?? [],
+			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });

@@ -178,6 +178,7 @@ export abstract class SelfModerationCommand extends Command {
 		) as [boolean, number, number, number, number, number];
 
 		const i18n = message.language.get.bind(message.language);
+		const duration = message.language.duration.bind(message.language);
 		const [yes, no] = [i18n('selfModerationEnabled'), i18n('selfModerationDisabled')];
 		return message.sendCode(
 			'prolog',
@@ -187,9 +188,10 @@ export abstract class SelfModerationCommand extends Command {
 				kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
 				kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
 				kHardAction: i18n(SelfModerationCommand.displayHardAction(hardAction)),
-				hardActionDuration,
-				thresholdMaximum,
-				thresholdDuration
+				hardActionDurationText:
+					hardActionDuration === null ? i18n('selfModerationCommandShowDurationPermanent') : duration(hardActionDuration),
+				thresholdMaximumText: thresholdMaximum ? thresholdMaximum : i18n('selfModerationCommandShowUnset'),
+				thresholdDurationText: thresholdDuration ? duration(thresholdDuration) : i18n('selfModerationCommandShowUnset')
 			})
 		);
 	}

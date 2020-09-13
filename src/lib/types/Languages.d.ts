@@ -2132,10 +2132,12 @@ declare module 'klasa' {
 			kLog: string;
 			kDelete: string;
 			kHardAction: string;
-			hardActionDuration: number;
-			thresholdMaximum: number | null;
-			thresholdDuration: number | null;
+			hardActionDurationText: string;
+			thresholdMaximumText: string | number;
+			thresholdDurationText: string;
 		}) => readonly string[];
+		selfModerationCommandShowDurationPermanent: string;
+		selfModerationCommandShowUnset: string;
 		selfModerationSoftActionAlert: string;
 		selfModerationSoftActionLog: string;
 		selfModerationSoftActionDelete: string;

@@ -4785,7 +4785,16 @@ export default class extends Language {
 		selfModerationCommandThresholdDuration: `${GREENTICK} Successfully removed the threshold duration, punishments will take place instantly if set.`,
 		selfModerationCommandThresholdDurationWithValue: ({ value }) =>
 			`${GREENTICK} Successfully set the threshold duration to: ${this.duration(value)}`,
-		selfModerationCommandShow: ({ kEnabled, kAlert, kLog, kDelete, kHardAction, hardActionDuration, thresholdMaximum, thresholdDuration }) => [
+		selfModerationCommandShow: ({
+			kEnabled,
+			kAlert,
+			kLog,
+			kDelete,
+			kHardAction,
+			hardActionDurationText,
+			thresholdMaximumText,
+			thresholdDurationText
+		}) => [
 			`Enabled      : ${kEnabled}`,
 			'Action',
 			` - Alert     : ${kAlert}`,
@@ -4793,11 +4802,13 @@ export default class extends Language {
 			` - Delete    : ${kDelete}`,
 			'Punishment',
 			` - Type      : ${kHardAction}`,
-			` - Duration  : ${hardActionDuration ? 'Permanent' : this.duration(hardActionDuration)}`,
+			` - Duration  : ${hardActionDurationText}`,
 			'Threshold',
-			` - Maximum   : ${thresholdMaximum ? thresholdMaximum : 'Unset'}`,
-			` - Duration  : ${thresholdDuration ? this.duration(thresholdDuration) : 'Unset'}`
+			` - Maximum   : ${thresholdMaximumText}`,
+			` - Duration  : ${thresholdDurationText}`
 		],
+		selfModerationCommandShowDurationPermanent: 'Permanent',
+		selfModerationCommandShowUnset: 'Unset',
 		selfModerationSoftActionAlert: 'Alert',
 		selfModerationSoftActionLog: 'Log',
 		selfModerationSoftActionDelete: 'Delete',

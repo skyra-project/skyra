@@ -3709,8 +3709,8 @@ export default class extends Language {
 		commandRemindmeCreateNoDuration: 'You must tell me what you want me to remind you and when.',
 		commandRemindmeCreateNoDescription: 'Something, you did not tell me what.',
 		commandRemindmeDeleteNoId: 'You must give a valid ID, you can get them using the `list` sub-command.',
-		commandRemindmeDelete: ({ task }) =>
-			`The reminder with ID \`${task.id}\` and with a remaining time of **${duration(
+		commandRemindmeDelete: ({ task, id }) =>
+			`The reminder with ID \`${id}\` and with a remaining time of **${duration(
 				task.time.getTime() - Date.now()
 			)}** has been successfully deleted.`,
 		commandRemindmeListEmpty: 'You do not have any active reminder',

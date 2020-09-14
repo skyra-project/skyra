@@ -75,7 +75,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 				case Actions.Show:
 				case Actions.Delete: {
 					if (!arg) throw message.language.get('commandRemindmeDeleteNoId');
-					const id = await message.client.arguments.get('string')!.run(arg, { ...possible, max: 9, min: 9 }, message);
+					const id: number = await message.client.arguments.get('integer')!.run(arg, possible, message);
 					for (const task of message.client.schedules.queue) {
 						if (task.id !== id) continue;
 						if (task.taskID !== Schedules.Reminder || !task.data || task.data.user !== message.author.id) break;
@@ -157,7 +157,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
+		const { id } = task;
 		await task.delete();
-		return message.sendLocale('commandRemindmeDelete', [{ task }]);
+		return message.sendLocale('commandRemindmeDelete', [{ task, id }]);
 	}
 }

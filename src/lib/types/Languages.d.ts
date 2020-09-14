@@ -104,7 +104,8 @@ declare module 'klasa' {
 			reminders: string;
 		};
 		commandBlocklistDescription: string;
-		commandBlocklistSuccess: string;
+		commandBlocklistSaveSuccess: string;
+		commandBlocklistResetSuccess: string;
 		commandUnload: (params: { type: string; name: string }) => string;
 		commandUnloadDescription: string;
 		commandTransferError: string;

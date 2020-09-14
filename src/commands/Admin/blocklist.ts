@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
 import { Guild, User } from 'discord.js';
@@ -14,10 +14,26 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get('commandBlocklistDescription'),
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
-	usage: '<show|set:default> [User:user|Guild:guild] [...]',
+	usage: '<show|reset|remove|set:default> (user:optionalUser|guild:optionalGuild) [...]',
 	usageDelim: ' ',
 	subcommands: true
 })
+@CreateResolvers([
+	[
+		'optionalUser',
+		(arg, possible, message, [action]) => {
+			if (action === 'show' || action === 'reset') return undefined;
+			return message.client.arguments.get('username')!.run(arg, possible, message);
+		}
+	],
+	[
+		'optionalGuild',
+		(arg, possible, message, [action]) => {
+			if (action === 'show' || action === 'reset') return undefined;
+			return message.client.arguments.get('guild')!.run(arg, possible, message);
+		}
+	]
+])
 export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const connection = await DbSet.connect();
@@ -51,6 +67,39 @@ export default class extends SkyraCommand {
 		);
 	}
 
+	public async reset(message: KlasaMessage) {
+		const connection = await DbSet.connect();
+		const clientEntity = await connection.clients.ensure();
+
+		clientEntity.guildBlocklist = [];
+		clientEntity.userBlocklist = [];
+
+		await clientEntity.save();
+
+		return message.sendLocale('commandBlocklistResetSuccess');
+	}
+
+	public async remove(message: KlasaMessage, usersAndGuilds: User[] | Guild[]) {
+		const connection = await DbSet.connect();
+		const clientEntity = await connection.clients.ensure();
+
+		for (const userOrGuild of new Set<User | Guild>(usersAndGuilds)) {
+			if (userOrGuild instanceof User) {
+				if (clientEntity.userBlocklist.includes(userOrGuild.id)) {
+					clientEntity.userBlocklist.splice(clientEntity.userBlocklist.indexOf(userOrGuild.id), 1);
+				}
+			} else if (userOrGuild instanceof Guild) {
+				if (clientEntity.guildBlocklist.includes(userOrGuild.id)) {
+					clientEntity.guildBlocklist.splice(clientEntity.guildBlocklist.indexOf(userOrGuild.id), 1);
+				}
+			}
+		}
+
+		await clientEntity.save();
+
+		return message.sendLocale('commandBlocklistSaveSuccess');
+	}
+
 	public async set(message: KlasaMessage, usersAndGuilds: User[] | Guild[]) {
 		const connection = await DbSet.connect();
 		const clientEntity = await connection.clients.ensure();
@@ -73,6 +122,6 @@ export default class extends SkyraCommand {
 
 		await clientEntity.save();
 
-		return message.sendLocale('commandBlocklistSuccess');
+		return message.sendLocale('commandBlocklistSaveSuccess');
 	}
 }

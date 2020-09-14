@@ -3768,8 +3768,8 @@ export default class extends Language {
 		commandRemindmeCreateNoDuration: 'You must tell me what you want me to remind you and when.',
 		commandRemindmeCreateNoDescription: 'Algo, no me dijiste qué.',
 		commandRemindmeDeleteNoId: "To delete a previously created reminder, you must type 'delete' followed by the ID.",
-		commandRemindmeDelete: ({ task }) =>
-			`The reminder with ID \`${task.id}\` and with a remaining time of **${this.duration(
+		commandRemindmeDelete: ({ task, id }) =>
+			`The reminder with ID \`${id}\` and with a remaining time of **${this.duration(
 				task.time.getTime() - Date.now()
 			)}** has been successfully deleted.`,
 		commandRemindmeListEmpty: 'You do not have any active reminder',

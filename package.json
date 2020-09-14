@@ -85,8 +85,8 @@
 		"zlib-sync": "^0.1.7"
 	},
 	"devDependencies": {
-		"@commitlint/cli": "^9.1.2",
-		"@commitlint/config-conventional": "^9.1.2",
+		"@commitlint/cli": "^11.0.0",
+		"@commitlint/config-conventional": "^11.0.0",
 		"@discordjs/collection": "^0.1.6",
 		"@favware/graphql-pokemon": "^4.3.0",
 		"@klasa/dapi-types": "^0.3.0",

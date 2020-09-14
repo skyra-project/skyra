@@ -1769,7 +1769,7 @@ declare module 'klasa' {
 		commandRemindmeCreateNoDuration: string;
 		commandRemindmeCreateNoDescription: string;
 		commandRemindmeDeleteNoId: string;
-		commandRemindmeDelete: (params: { task: ScheduleEntity }) => string;
+		commandRemindmeDelete: (params: { task: ScheduleEntity; id: number }) => string;
 		commandRemindmeListEmpty: string;
 		commandRemindmeShowFooter: (params: { id: number }) => string;
 		commandRemindmeInvalidId: string;

@@ -14,7 +14,11 @@ export default class extends Event {
 				channel.sendMessage(
 					songs.length === 1
 						? channel.guild.language.get('commandAddSong', { title: songs[0].safeTitle })
-						: channel.guild.language.get('commandAddPlaylist', { amount: songs.length }),
+						: channel.guild.language.get('commandAddPlaylist', {
+								songs: channel.guild.language.get(songs.length === 1 ? 'commandAddPlaylistSongs' : 'commandAddPlaylistSongsPlural', {
+									count: songs.length
+								})
+						  }),
 					{ allowedMentions: { users: [], roles: [] } }
 				)
 			);

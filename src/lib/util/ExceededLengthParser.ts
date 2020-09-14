@@ -13,7 +13,12 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				return message.channel.sendFile(
 					Buffer.from(options.content ? options.content : options.result!),
 					options.targetId ? `${options.targetId}.txt` : 'output.txt',
-					message.language.get('systemExceededLengthOutputFile', { time: options.time, type: options.footer })
+					message.language.get(
+						options.time !== undefined && options.footer !== undefined
+							? 'systemExceededLengthOutputFileWithTypeAndTime'
+							: 'systemExceededLengthOutputFile',
+						{ time: options.time, type: options.footer }
+					)
 				);
 			}
 
@@ -25,7 +30,12 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			if (!options.url)
 				options.url = await getHaste(options.content ? options.content : options.result!, options.language ?? 'md').catch(() => null);
 			if (options.url)
-				return message.sendLocale('systemExceededLengthOutputHastebin', [{ url: options.url, time: options.time, type: options.footer }]);
+				return message.sendLocale(
+					options.time !== undefined && options.footer !== undefined
+						? 'systemExceededLengthOutputHastebinWithTypeAndTime'
+						: 'systemExceededLengthOutputHastebin',
+					[{ url: options.url, time: options.time, type: options.footer }]
+				);
 			options.hastebinUnavailable = true;
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -34,7 +44,12 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 		case 'log': {
 			if (options.canLogToConsole) {
 				message.client.emit(Events.Log, options.result);
-				return message.sendLocale('systemExceededLengthOutputConsole', [{ time: options.time, type: options.footer }]);
+				return message.sendLocale(
+					options.time !== undefined && options.footer !== undefined
+						? 'systemExceededLengthOutputConsoleWithTypeAndTime'
+						: 'systemExceededLengthOutputConsole',
+					[{ time: options.time, type: options.footer }]
+				);
 			}
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -56,13 +71,20 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 					{ code: 'md' }
 				);
 			}
-			return message.sendLocale(options.success ? 'systemExceededLengthOutput' : 'commandEvalError', [
-				{
-					output: codeBlock(options.language!, options.result!),
-					time: options.time,
-					type: options.footer
-				}
-			]);
+			return message.sendLocale(
+				options.success
+					? options.time !== undefined && options.footer !== undefined
+						? 'systemExceededLengthOutputWithTypeAndTime'
+						: 'systemExceededLengthOutput'
+					: 'commandEvalError',
+				[
+					{
+						output: codeBlock(options.language!, options.result!),
+						time: options.time,
+						type: options.footer
+					}
+				]
+			);
 		}
 	}
 }

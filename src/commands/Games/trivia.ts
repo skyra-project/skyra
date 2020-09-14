@@ -2,7 +2,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
-import { shuffle } from '@utils/util';
+import { pickRandom, shuffle } from '@utils/util';
 import { DMChannel, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
 import { KlasaMessage } from 'klasa';
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.sendLocale('systemLoading', []);
+			await message.send(pickRandom(message.language.get('systemLoading')), []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse

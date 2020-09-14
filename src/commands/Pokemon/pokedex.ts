@@ -6,6 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 
@@ -30,7 +31,7 @@ enum BaseStats {
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
 
@@ -150,8 +151,8 @@ export default class extends RichDisplayCommand {
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
 		const embedTranslations = message.language.get('commandPokedexEmbedData', {
-			otherFormes: pokeDetails.otherFormes,
-			cosmeticFormes: pokeDetails.cosmeticFormes
+			otherFormes: pokeDetails.otherFormes ?? [],
+			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });

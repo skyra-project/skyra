@@ -222,7 +222,13 @@ export class GiveawayEntity extends BaseEntity {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
-					? language.get('giveawayEnded', { winners: this.#winners.map((winner) => `<@${winner}>`) })
+					? language.get(this.#winners.length === 1 ? 'giveawayEnded' : 'giveawayEndedPlural', {
+							winners: language.list(
+								this.#winners.map((winner) => `<@${winner}>`),
+								language.get('globalAnd')
+							),
+							count: this.#winners.length
+					  })
 					: language.get('giveawayEndedNoWinner');
 			case States.LastChance:
 				return language.get('giveawayLastchance', { time: this.remaining });

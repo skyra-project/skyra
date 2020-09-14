@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandSetmessagelogsDescription'),
-			extendedHelp: (language) => language.get('commandSetmessagelogsExtended'),
+			description: (language) => language.get('commandSetMessageLogsDescription'),
+			extendedHelp: (language) => language.get('commandSetMessageLogsExtended'),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<here|channel:channelname>'

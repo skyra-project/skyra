@@ -125,7 +125,12 @@ export default class extends SkyraCommand {
 
 		if (missingPermissions.length) {
 			const permissions = message.language.PERMISSIONS;
-			throw message.language.get('inhibitorMissingBotPerms', { missing: missingPermissions.map((permission) => permissions[permission]) });
+			throw message.language.get('inhibitorMissingBotPerms', {
+				missing: message.language.list(
+					missingPermissions.map((permission) => permissions[permission]),
+					message.language.get('globalAnd')
+				)
+			});
 		}
 
 		// Update settings

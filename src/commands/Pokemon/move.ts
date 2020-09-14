@@ -7,6 +7,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -19,7 +20,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [move]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 		const moveData = await this.fetchAPI(message, move.toLowerCase());
 
@@ -38,7 +39,9 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.get('commandMoveEmbedData', { availableInGen8: moveData.isNonstandard !== 'Past' });
+		const embedTranslations = message.language.get('commandMoveEmbedData', {
+			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? 'globalNo' : 'globalYes')
+		});
 		const externalResources = message.language.get('systemPokedexExternalResource');
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,

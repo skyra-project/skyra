@@ -10,6 +10,7 @@ import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
 import { BrandingColors } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandOptions, KlasaMessage } from 'klasa';
 
@@ -103,7 +104,7 @@ export default class extends SkyraCommand {
 		if (!tags.length) throw message.language.get('commandTagListEmpty');
 
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(message.language.get('systemLoading'))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get('systemLoading')))
 		);
 
 		// Get prefix and display all tags

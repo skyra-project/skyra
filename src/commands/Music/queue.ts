@@ -5,7 +5,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, ZeroWidhSpace } from '@utils/constants';
-import { showSeconds } from '@utils/util';
+import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -22,7 +22,7 @@ export default class extends MusicCommand {
 
 		// Send the loading message
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(message.language.get('systemLoading'))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get('systemLoading')))
 		);
 
 		// Generate the pages with 5 songs each
@@ -33,22 +33,33 @@ export default class extends MusicCommand {
 		);
 
 		if (song) {
-			const nowPlayingDescription = message.language.get('commandQueueNowplaying', {
-				duration: song.stream ? null : song.friendlyDuration,
-				title: song.safeTitle,
-				url: song.url,
-				requester: await song.fetchRequesterName(),
-				timeRemaining: song.stream ? null : showSeconds(message.guild!.music.trackRemaining)
-			});
+			const nowPlayingDescription = [
+				song.stream ? message.language.get('commandQueueNowplayingLiveStream') : song.friendlyDuration,
+				message.language.get('commandQueueNowplaying', {
+					title: song.safeTitle,
+					url: song.url,
+					requester: await song.fetchRequesterName()
+				})
+			];
 
-			queueDisplay.embedTemplate.addField(message.language.get('commandQueueNowplayingTitle'), nowPlayingDescription);
+			if (!song.stream)
+				nowPlayingDescription.push(
+					message.language.get('commandQueueNowplayingTimeRemaining', { timeRemaining: showSeconds(message.guild!.music.trackRemaining) })
+				);
+
+			queueDisplay.embedTemplate.addField(message.language.get('commandQueueNowplayingTitle'), nowPlayingDescription.join(' | '));
 		}
 
 		if (queue && queue.length) {
 			// Format the song entries
 			const songFields = await Promise.all(queue.map((song, position) => this.generateSongField(message, position, song)));
 			const totalDuration = this.calculateTotalDuration(queue);
-			const totalDescription = message.language.get('commandQueueTotal', { songs: queue.length, remainingTime: showSeconds(totalDuration) });
+			const totalDescription = message.language.get('commandQueueTotal', {
+				songs: message.language.get(queue.length === 1 ? 'commandAddPlaylistSongs' : 'commandAddPlaylistSongsPlural', {
+					count: queue.length
+				}),
+				remainingTime: showSeconds(totalDuration)
+			});
 
 			queueDisplay.embedTemplate.addField(message.language.get('commandQueueTotalTitle'), totalDescription);
 			queueDisplay.embedTemplate.addField(ZeroWidhSpace, message.language.get('commandQueueDashboardInfo', { guild: message.guild! }));

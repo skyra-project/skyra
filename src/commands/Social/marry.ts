@@ -5,6 +5,7 @@ import { CLIENT_ID } from '@root/config';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import assert from 'assert';
 import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -50,7 +51,7 @@ export default class extends RichDisplayCommand {
 
 	private async display(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const { users } = await DbSet.connect();
@@ -120,7 +121,11 @@ export default class extends RichDisplayCommand {
 					]);
 				// Check if the author's first potential spouse is already married.
 			} else if (spouses.length === 0 && targetSpouses.length > 0) {
-				const answer = await askYesNo(channel, author, language.get('commandMarryTaken', { spousesCount: targetSpouses.length }));
+				const answer = await askYesNo(
+					channel,
+					author,
+					language.get(targetSpouses.length === 1 ? 'commandMarryTaken' : 'commandMarryTakenPlural', { count: targetSpouses.length })
+				);
 				if (answer !== YesNoAnswer.Yes) return message.sendLocale('commandMarryMultipleCancel');
 			}
 

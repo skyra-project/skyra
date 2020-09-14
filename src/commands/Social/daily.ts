@@ -1,11 +1,11 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { Schedules } from '@lib/types/Enums';
 import { ClientEntity } from '@orm/entities/ClientEntity';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { KlasaMessage } from 'klasa';
-import { Schedules } from '@lib/types/Enums';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 			if (remaining > GRACE_PERIOD) return message.sendLocale('commandDailyTime', [{ time: remaining }]);
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(message.language.get('commandDailyGrace', { remaining }));
+			const accepted = await message.ask(message.language.get('commandDailyGrace', { remaining }).join('\n'));
 			if (!accepted) return message.sendLocale('commandDailyGraceDenied');
 
 			// The user accepted the grace period

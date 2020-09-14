@@ -117,7 +117,14 @@ export default class extends SkyraCommand {
 			await suggestionData.message.channel.send(messageContent, { embed: newEmbed });
 		} else if (suggestionData.message.author.id === CLIENT_ID) await suggestionData.message.edit(newEmbed);
 
-		return message.sendLocale('commandResolveSuggestionSuccess', [{ id: suggestionData.id, action }]);
+		const actionText =
+			action === 'a' || action === 'accept'
+				? message.language.get('commandResolveSuggestionSuccessAcceptedText')
+				: action === 'd' || action === 'deny'
+				? message.language.get('commandResolveSuggestionSuccessDeniedText')
+				: message.language.get('commandResolveSuggestionSuccessConsideredText');
+
+		return message.sendLocale('commandResolveSuggestionSuccess', [{ id: suggestionData.id, actionText }]);
 	}
 
 	public async inhibit(message: KlasaMessage) {

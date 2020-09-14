@@ -83,12 +83,31 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const cases = sorted.map(({ log }) => log.caseID);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
-				output.push(message.language.get('commandModerationOutput', { cases, range, users, reason: logReason }));
+				const langKey = logReason
+					? cases.length === 1
+						? 'commandModerationOutputWithReason'
+						: 'commandModerationOutputWithReasonPlural'
+					: cases.length === 1
+					? 'commandModerationOutput'
+					: 'commandModerationOutputPlural';
+				output.push(
+					message.language.get(langKey, {
+						count: cases.length,
+						range,
+						users: message.language.list(users, message.language.get('globalAnd')),
+						reason: logReason
+					})
+				);
 			}
 
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
-				output.push(message.language.get('commandModerationFailed', { users }));
+				output.push(
+					message.language.get(users.length === 1 ? 'commandModerationFailed' : 'commandModerationFailedPlural', {
+						users: message.language.list(users, message.language.get('globalAnd')),
+						count: users.length
+					})
+				);
 			}
 
 			// Else send the message as usual.

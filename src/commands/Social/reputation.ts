@@ -35,10 +35,15 @@ export default class extends SkyraCommand {
 
 		if (check) {
 			if (user.bot) throw message.language.get('commandReputationBots');
+			// TODO: i18next should do this automatically
+			const reputationPoints =
+				extSettings!.reputations === 1
+					? message.language.get('commandReputation', { count: extSettings!.reputations })
+					: message.language.get('commandReputationPlural', { count: extSettings!.reputations });
 			return message.sendMessage(
 				message.author === user
 					? message.language.get('commandReputationsSelf', { points: selfSettings.reputations })
-					: message.language.get('commandReputations', { user: user.username, points: extSettings!.reputations })
+					: message.language.get('commandReputations', { user: user.username, points: reputationPoints })
 			);
 		}
 

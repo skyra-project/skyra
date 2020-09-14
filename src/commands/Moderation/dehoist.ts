@@ -5,6 +5,7 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -24,7 +25,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
-			await message.sendEmbed(new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary));
+			await message.sendEmbed(
+				new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			);
 			await message.guild!.members.fetch();
 		}
 
@@ -89,8 +92,9 @@ export default class extends SkyraCommand {
 
 		let { description } = embedLanguage;
 		if (dehoistedMembers <= 0) description = embedLanguage.descriptionNoone;
+		if (dehoistedMembers > 1) description = embedLanguage.descriptionMultipleMembers;
 		if (erroredChanges.length > 0) {
-			description = embedLanguage.descriptionWitherrors;
+			description = erroredChanges.length > 1 ? embedLanguage.descriptionWithMultipleErrors : embedLanguage.descriptionWithError;
 			const erroredNicknames = erroredChanges.map((entry) => `${entry.oldNick} => ${entry.newNick}`).join('\n');
 			const codeblock = codeBlock('js', erroredNicknames);
 			embed.addField(embedLanguage.fieldErrorTitle, codeblock);

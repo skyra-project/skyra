@@ -7,6 +7,7 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -54,14 +55,37 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setFooter(message.language.get('commandHistoryFooter', { warnings, mutes, kicks, bans }))
+				.setFooter(
+					message.language.get('commandHistoryFooterNew', {
+						warnings,
+						mutes,
+						kicks,
+						bans,
+						warningsText:
+							warnings === 1
+								? message.language.get('commandHistoryFooterWarning', { count: warnings })
+								: message.language.get('commandHistoryFooterWarningPlural', { count: warnings }),
+						mutesText:
+							mutes === 1
+								? message.language.get('commandHistoryFooterMutes', { count: mutes })
+								: message.language.get('commandHistoryFooterMutesPlural', { count: mutes }),
+						kicksText:
+							kicks === 1
+								? message.language.get('commandHistoryFooterKicks', { count: kicks })
+								: message.language.get('commandHistoryFooterKicksPlural', { count: kicks }),
+						bansText:
+							bans === 1
+								? message.language.get('commandHistoryFooterBans', { count: bans })
+								: message.language.get('commandHistoryFooterBansPlural', { count: bans })
+					})
+				)
 		);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: KlasaMessage, [target = message.author]: [User]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = (await message.guild!.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
@@ -71,7 +95,9 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get('commandModerationsAmount', { amount: entries.size }))
+				.setTitle(
+					message.language.get(entries.size === 1 ? 'commandModerationsAmount' : 'commandModerationsAmountPlural', { count: entries.size })
+				)
 		);
 
 		// Fetch usernames

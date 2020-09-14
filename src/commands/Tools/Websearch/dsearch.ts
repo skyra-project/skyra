@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
-			description: (language) => language.get('commandSearchDescription'),
-			extendedHelp: (language) => language.get('commandSearchExtended'),
+			description: (language) => language.get('commandDuckDuckGoDescription'),
+			extendedHelp: (language) => language.get('commandDuckDuckGoExtended'),
 			usage: '<query:string>',
 			usageDelim: ' ',
 			requiredPermissions: ['EMBED_LINKS']

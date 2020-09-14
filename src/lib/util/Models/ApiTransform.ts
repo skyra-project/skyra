@@ -3,6 +3,7 @@ import { Song } from '@lib/structures/music/Song';
 import {
 	Channel,
 	DMChannel,
+	ExplicitContentFilterLevel,
 	Guild,
 	GuildChannel,
 	GuildFeatures,
@@ -12,9 +13,8 @@ import {
 	Role,
 	TextChannel,
 	User,
-	VoiceChannel,
 	VerificationLevel,
-	ExplicitContentFilterLevel
+	VoiceChannel
 } from 'discord.js';
 
 // #region Guild

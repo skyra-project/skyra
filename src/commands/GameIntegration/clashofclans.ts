@@ -6,7 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -48,7 +48,7 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 export default class extends RichDisplayCommand {
 	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(message, clan, ClashOfClansFetchCategories.CLANS);
@@ -131,7 +131,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
-			const titles = message.language.get('commandClashofclansClanEmbedTitles', { isWarLogPublic: clan.isWarLogPublic });
+			const titles = message.language.get('commandClashofclansClanEmbedTitles');
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)
@@ -159,7 +159,7 @@ export default class extends RichDisplayCommand {
 							`**${titles.warWins}**: ${clan.warWins}`,
 							`**${titles.warTies}**: ${clan.warTies ?? titles.unknown}`,
 							`**${titles.warLosses}**: ${clan.warLosses ?? titles.unknown}`,
-							`**${titles.warLogPublic}**: ${titles.warLogPublicDescr}`
+							`**${titles.warLogPublic}**: ${message.language.get(clan.isWarLogPublic ? 'globalYes' : 'globalNo')}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

@@ -6,7 +6,7 @@ import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, LanguageKeysComplex, Monitor } from 'klasa';
+import { KlasaMessage, LanguageKeysComplex, LanguageKeysSimple, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
@@ -88,7 +88,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
+				reason:
+					maximum === 0
+						? message.language.get(this.reasonLanguageKey)
+						: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 			})
 		);
@@ -99,7 +102,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string
+				reason:
+					maximum === 0
+						? message.language.get(this.reasonLanguageKey)
+						: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 			})
 		);
 	}
@@ -109,7 +115,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.guild!.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
+				reason:
+					maximum === 0
+						? message.language.get(this.reasonLanguageKey)
+						: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 			})
 		);
@@ -121,7 +130,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string
+					reason:
+						maximum === 0
+							? message.language.get(this.reasonLanguageKey)
+							: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 				},
 				1
 			)
@@ -134,7 +146,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum }) as string,
+					reason:
+						maximum === 0
+							? message.language.get(this.reasonLanguageKey)
+							: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 					duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
 				},
 				0
@@ -157,7 +172,26 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
 	protected abstract softPunishmentPath: CustomGet<string, number>;
 	protected abstract hardPunishmentPath: HardPunishment | null;
-	protected abstract reasonLanguageKey: LanguageKeysComplex;
+	protected abstract reasonLanguageKey: Extract<
+		LanguageKeysSimple,
+		| 'moderationMonitorCapitals'
+		| 'moderationMonitorInvites'
+		| 'moderationMonitorLinks'
+		| 'moderationMonitorMessages'
+		| 'moderationMonitorNewlines'
+		| 'moderationMonitorWords'
+	>;
+
+	protected abstract reasonLanguageKeyWithMaximum: Extract<
+		LanguageKeysComplex,
+		| 'moderationMonitorCapitalsWithMaximum'
+		| 'moderationMonitorInvitesWithMaximum'
+		| 'moderationMonitorLinksWithMaximum'
+		| 'moderationMonitorMessagesWithMaximum'
+		| 'moderationMonitorNewlinesWithMaximum'
+		| 'moderationMonitorWordsWithMaximum'
+	>;
+
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
 	protected abstract onAlert(message: KlasaMessage, value: T): unknown;

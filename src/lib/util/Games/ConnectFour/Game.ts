@@ -1,11 +1,11 @@
 import { Events } from '@lib/types/Enums';
 import { APIErrors, ConnectFourConstants } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { floatPromise } from '@utils/util';
+import { floatPromise, pickRandom } from '@utils/util';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Board } from './Board';
-import { Player } from './Player';
+import { Player, PlayerColor } from './Player';
 
 export class Game {
 	public readonly board: Board;
@@ -66,9 +66,11 @@ export class Game {
 	}
 
 	public async run() {
-		this.message = await this.message.send(this.language.get('systemLoading'));
+		this.message = await this.message.send(pickRandom(this.language.get('systemLoading')));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
-		this.content = this.language.get('commandC4GameNext', { user: this.next!.name, turn: this.next!.color });
+		this.content = this.language.get(this.next!.color === PlayerColor.Blue ? 'commandC4GameNextTurn0' : 'commandC4GameNext', {
+			user: this.next!.name
+		});
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
 		let stop = false;

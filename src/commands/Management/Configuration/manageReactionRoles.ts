@@ -7,7 +7,7 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { displayEmoji, resolveEmoji } from '@utils/util';
+import { displayEmoji, pickRandom, resolveEmoji } from '@utils/util';
 import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { ArrayActions, KlasaMessage } from 'klasa';
 
@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 		}
 
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));

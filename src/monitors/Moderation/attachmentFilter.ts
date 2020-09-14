@@ -12,6 +12,7 @@ const { FLAGS } = Permissions;
 
 export default class extends Monitor {
 	protected readonly reasonLanguageKey = 'moderationMonitorAttachments';
+	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorAttachmentsWithMaximum';
 
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
@@ -39,7 +40,10 @@ export default class extends Monitor {
 							message.guild!.security.actions.kick({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
-								reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
+								reason:
+									maximum === 0
+										? message.language.get(this.reasonLanguageKey)
+										: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
@@ -51,7 +55,10 @@ export default class extends Monitor {
 							message.guild!.security.actions.mute({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
-								reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
+								reason:
+									maximum === 0
+										? message.language.get(this.reasonLanguageKey)
+										: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
@@ -64,7 +71,10 @@ export default class extends Monitor {
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
-									reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
+									reason:
+										maximum === 0
+											? message.language.get(this.reasonLanguageKey)
+											: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								1
 							)
@@ -79,7 +89,10 @@ export default class extends Monitor {
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
-									reason: message.language.get(this.reasonLanguageKey, { amount: points, maximum })
+									reason:
+										maximum === 0
+											? message.language.get(this.reasonLanguageKey)
+											: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								0
 							)

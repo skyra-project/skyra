@@ -14,6 +14,7 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
+import { pickRandom } from '@utils/util';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Any } from 'typeorm';
@@ -149,7 +150,12 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		return message.sendLocale('commandTwitchSubscriptionAddSuccess', [{ name: streamer.display_name, channel: channel.name, status }]);
+		return message.sendLocale(
+			status === NotificationsStreamsTwitchEventStatus.Offline
+				? 'commandTwitchSubscriptionAddSuccessOffline'
+				: 'commandTwitchSubscriptionAddSuccessLive',
+			[{ name: streamer.display_name, channel: channel.name }]
+		);
 	}
 
 	public async remove(message: KlasaMessage, [streamer, channel, status]: [Streamer, Channel, Status]) {
@@ -188,7 +194,12 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		return message.sendLocale('commandTwitchSubscriptionRemoveSuccess', [{ name: streamer.display_name, channel: channel.name, status }]);
+		return message.sendLocale(
+			status === NotificationsStreamsTwitchEventStatus.Offline
+				? 'commandTwitchSubscriptionRemoveSuccessOffline'
+				: 'commandTwitchSubscriptionRemoveSuccessLive',
+			[{ name: streamer.display_name, channel: channel.name }]
+		);
 	}
 
 	public async reset(message: KlasaMessage, [streamer]: [Streamer?]) {
@@ -223,7 +234,10 @@ export default class extends SkyraCommand {
 				await em.save(toUpdate);
 			});
 
-			return message.sendLocale('commandTwitchSubscriptionResetSuccess', [{ entries: subscriptionEntries }]);
+			return message.sendLocale(
+				subscriptionEntries === 1 ? 'commandTwitchSubscriptionResetSuccess' : 'commandTwitchSubscriptionResetSuccessPlural',
+				[{ count: subscriptionEntries }]
+			);
 		}
 
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
@@ -237,14 +251,17 @@ export default class extends SkyraCommand {
 		});
 
 		await this.removeSubscription(message.guild!, streamer);
-		return message.sendLocale('commandTwitchSubscriptionResetChannelSuccess', [{ name: streamer.display_name, entries }]);
+		return message.sendLocale(
+			entries === 1 ? 'commandTwitchSubscriptionResetChannelSuccess' : 'commandTwitchSubscriptionResetChannelSuccessPlural',
+			[{ name: streamer.display_name, count: entries }]
+		);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		// Create the response message.
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		// Fetch the content.

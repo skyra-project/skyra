@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 					name,
 					roles: message.language.list(
 						roles.map((role) => role.name),
-						message.language.andString
+						message.language.get('globalAnd')
 					)
 				}
 			]);
@@ -81,7 +81,7 @@ export default class extends SkyraCommand {
 				name,
 				roles: message.language.list(
 					roles.map((role) => role.name),
-					message.language.andString
+					message.language.get('globalAnd')
 				)
 			}
 		]);
@@ -106,7 +106,7 @@ export default class extends SkyraCommand {
 				name,
 				roles: message.language.list(
 					roles.map((role) => role.name),
-					message.language.andString
+					message.language.get('globalAnd')
 				)
 			}
 		]);

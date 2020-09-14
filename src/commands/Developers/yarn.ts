@@ -6,7 +6,7 @@ import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
-import { cleanMentions, fetch, FetchResultTypes } from '@utils/util';
+import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, pkg);
@@ -60,24 +60,44 @@ export default class extends SkyraCommand {
 			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get('commandYarnEmbedMoreText'))
 			: null;
 
-		const description = message.language.get('commandYarnEmbedDescription', {
-			author: this.parseAuthor(result.author),
-			dateCreated: result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get('globalUnknown'),
-			dateModified: result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get('globalUnknown'),
-			dependencies,
-			deprecated: latestVersion.deprecated,
-			description: cutText(result.description ?? '', 1000),
-			latestVersionNumber: result['dist-tags'].latest,
-			license: result.license || message.language.get('globalNone'),
-			mainFile: latestVersion.main || 'index.js',
-			maintainers
-		});
+		const author = this.parseAuthor(result.author);
+		const dateCreated = result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get('globalUnknown');
+		const dateModified = result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get('globalUnknown');
+
+		const { deprecated } = latestVersion;
+		const description = cutText(result.description ?? '', 1000);
+		const latestVersionNumber = result['dist-tags'].latest;
+		const license = result.license || message.language.get('globalNone');
+		const mainFile = latestVersion.main || 'index.js';
+
 		return new MessageEmbed()
 			.setTitle(result.name)
 			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(description);
+			.setDescription(
+				[
+					description,
+					'',
+					author ? message.language.get('commandYarnEmbedDescriptionAuthor', { author }) : undefined,
+					message.language.get('commandYarnEmbedDescriptionMaintainers', {
+						maintainers: message.language.list(maintainers, message.language.get('globalAnd'))
+					}),
+					message.language.get('commandYarnEmbedDescriptionLatestVersion', { latestVersionNumber }),
+					message.language.get('commandYarnEmbedDescriptionLicense', { license }),
+					message.language.get('commandYarnEmbedDescriptionMainFile', { mainFile }),
+					message.language.get('commandYarnEmbedDescriptionDateCreated', { dateCreated }),
+					message.language.get('commandYarnEmbedDescriptionDateModified', { dateModified }),
+					deprecated ? message.language.get('commandYarnEmbedDescriptionDeprecated', { deprecated }) : undefined,
+					'',
+					message.language.get('commandYarnEmbedDescriptionDependenciesLabel'),
+					dependencies && dependencies.length
+						? message.language.list(dependencies, message.language.get('globalAnd'))
+						: message.language.get('commandYarnEmbedDescriptionDependenciesNoDeps')
+				]
+					.filter((part) => part !== undefined)
+					.join('\n')
+			);
 	}
 
 	/**

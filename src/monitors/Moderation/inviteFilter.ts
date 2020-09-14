@@ -15,6 +15,7 @@ const enum CodeType {
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = 'moderationMonitorInvites';
+	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorInvitesWithMaximum';
 	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Invites.IgnoredRoles;
@@ -68,7 +69,9 @@ export default class extends ModerationMonitor {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(message.language.get('monitorInviteFilterLog', { links }))
+			.setDescription(
+				message.language.get(links.length === 1 ? 'monitorInviteFilterLog' : 'monitorInviteFilterLogPlural', { links, count: links.length })
+			)
 			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorInvitelink')}`)
 			.setTimestamp();
 	}

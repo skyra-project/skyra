@@ -5,6 +5,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
+import { pickRandom } from '@utils/util';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
 
@@ -21,7 +22,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async character(message: KlasaMessage, [name]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
@@ -33,7 +34,7 @@ export default class extends RichDisplayCommand {
 
 	public async item(message: KlasaMessage, [item]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const itemDetails = await this.fetchItems(message.language, item);

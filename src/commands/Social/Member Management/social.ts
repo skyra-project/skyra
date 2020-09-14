@@ -34,7 +34,9 @@ export default class extends SkyraCommand {
 			settings.points = newAmount;
 			await settings.save();
 
-			return message.sendLocale('commandSocialAdd', [{ user: user.username, amount: newAmount, added: amount }]);
+			return message.sendLocale(amount === 1 ? 'commandSocialAdd' : 'commandSocialAddPlural', [
+				{ user: user.username, amount: newAmount, count: amount }
+			]);
 		}
 
 		const created = new MemberEntity();
@@ -43,7 +45,7 @@ export default class extends SkyraCommand {
 		created.points = amount;
 		await members.insert(created);
 
-		return message.sendLocale('commandSocialAdd', [{ user: user.username, amount, added: amount }]);
+		return message.sendLocale(amount === 1 ? 'commandSocialAdd' : 'commandSocialAddPlural', [{ user: user.username, amount, count: amount }]);
 	}
 
 	public async remove(message: KlasaMessage, [user, amount]: [User, number]) {
@@ -55,7 +57,9 @@ export default class extends SkyraCommand {
 		settings.points = newAmount;
 		await settings.save();
 
-		return message.sendLocale('commandSocialRemove', [{ user: user.username, amount: newAmount, removed: amount }]);
+		return message.sendLocale(amount === 1 ? 'commandSocialRemove' : 'commandSocialRemovePlural', [
+			{ user: user.username, amount: newAmount, count: amount }
+		]);
 	}
 
 	public async set(message: KlasaMessage, [user, amount]: [User, number]) {
@@ -81,8 +85,16 @@ export default class extends SkyraCommand {
 		if (variation === 0) return message.sendLocale('commandSocialUnchanged', [{ user: user.username }]);
 		return message.sendMessage(
 			variation > 0
-				? message.language.get('commandSocialAdd', { user: user.username, amount, added: variation })
-				: message.language.get('commandSocialRemove', { user: user.username, amount, removed: -variation })
+				? message.language.get(variation === 1 ? 'commandSocialAdd' : 'commandSocialAddPlural', {
+						user: user.username,
+						amount,
+						count: variation
+				  })
+				: message.language.get(variation === -1 ? 'commandSocialRemove' : 'commandSocialRemovePlural', {
+						user: user.username,
+						amount,
+						count: -variation
+				  })
 		);
 	}
 

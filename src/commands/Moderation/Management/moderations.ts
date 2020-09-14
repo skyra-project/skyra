@@ -7,6 +7,7 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -24,7 +25,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = (await (target ? message.guild!.moderation.fetch(target.id) : message.guild!.moderation.fetch())).filter(
@@ -36,7 +37,9 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get('commandModerationsAmount', { amount: entries.size }))
+				.setTitle(
+					message.language.get(entries.size === 1 ? 'commandModerationsAmount' : 'commandModerationsAmountPlural', { count: entries.size })
+				)
 		);
 
 		// Fetch usernames

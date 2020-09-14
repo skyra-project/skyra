@@ -16,6 +16,7 @@ import {
 	VoiceChannel
 } from 'discord.js';
 import { createReadStream, promises as fsPromises } from 'fs';
+import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
 import { DeepPartial } from 'typeorm';
@@ -683,6 +684,22 @@ describe('Utils', () => {
 		});
 	});
 
+	describe('pickRandom', () => {
+		beforeAll(() => {
+			// Mock out random so the result is predictable
+			jest.spyOn(global.Math, 'random').mockReturnValue(0.123456789);
+		});
+
+		afterAll(() => {
+			(global.Math.random as any).mockRestore();
+		});
+
+		test('GIVEN simple picker THEN picks first value', () => {
+			const randomEntry = utils.pickRandom([1, 2, 3, 4]);
+			expect(randomEntry).toEqual(1);
+		});
+	});
+
 	describe('getFromPath', () => {
 		const obj = {
 			keyOne: 'valueOne',
@@ -786,6 +803,14 @@ describe('Utils', () => {
 			const shuffled = utils.shuffle(array.slice());
 			expect(shuffled.length).toBe(array.length);
 			expect(array === shuffled).toBe(false);
+		});
+	});
+
+	describe('random', () => {
+		test('GIVEN 2 calls to random THEN returns floored mocked values', () => {
+			mockRandom(0.6);
+			expect(utils.random(50)).toEqual(30);
+			resetMockRandom();
 		});
 	});
 });

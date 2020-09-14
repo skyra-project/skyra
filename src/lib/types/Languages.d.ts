@@ -1,50 +1,51 @@
 import type { Song } from '@lib/structures/music/Song';
 import type { ScheduleEntity } from '@orm/entities/ScheduleEntity';
-import { EightBallLanguage } from '@root/commands/Fun/8ball';
+import type { EightBallLanguage } from '@root/commands/Fun/8ball';
 import type { HungerGamesGame } from '@root/commands/Games/hungergames';
 import type { LevelTitles } from '@root/commands/Social/level';
 import type { ProfileTitles } from '@root/commands/Social/profile';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
 import type { Moderation } from '@utils/constants';
-import type { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
 import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import type { Guild, GuildMember, PermissionString, Role, User } from 'discord.js';
-import type { SchemaEntry } from 'klasa';
-import type { Kitsu } from './definitions/Kitsu';
-import type { OverwatchRating } from './definitions/Overwatch';
-import type { NotificationsStreamsTwitchEventStatus } from './settings/GuildSettings';
+import type { Guild, GuildMember, Role, User } from 'discord.js';
 
-export const enum Position {
-	Before,
-	After
-}
-
-export const enum Filter {
-	Attachments,
-	Author,
-	Bots,
-	Humans,
-	Invites,
-	Links,
-	None,
-	Skyra,
-	User
+export interface ModerationAction {
+	addRole: string;
+	mute: string;
+	ban: string;
+	kick: string;
+	softban: string;
+	vkick: string;
+	vmute: string;
+	restrictedReact: string;
+	restrictedEmbed: string;
+	restrictedAttachment: string;
+	restrictedVoice: string;
+	setNickname: string;
+	removeRole: string;
 }
 
 declare module 'klasa' {
 	export interface LanguageKeys {
-		globalUnknown: string;
-		globalNone: string;
 		default: (params: { key: string }) => string;
 		defaultLanguage: string;
+
+		globalYes: string;
+		globalNo: string;
+		globalNone: string;
+		globalIs: string;
+		globalAnd: string;
+		globalOr: string;
+		globalUnknown: string;
+
 		settingGatewayKeyNoext: (params: { key: string }) => string;
-		settingGatewayChooseKey: (params: { keys: string[] }) => string;
+		settingGatewayChooseKey: (params: { keys: string }) => string;
 		settingGatewayUnconfigurableFolder: string;
 		settingGatewayUnconfigurableKey: (params: { key: string }) => string;
-		settingGatewayMissingValue: (params: { entry: SchemaEntry; value: string }) => string;
-		settingGatewayDuplicateValue: (params: { entry: SchemaEntry; value: string }) => string;
-		settingGatewayInvalidFilteredValue: (params: { entry: SchemaEntry; value: unknown }) => string;
-		resolverMultiTooFew: (params: { name: string; min?: number }) => string;
+		settingGatewayMissingValue: (params: { path: string; value: string }) => string;
+		settingGatewayDuplicateValue: (params: { path: string; value: string }) => string;
+		settingGatewayInvalidFilteredValue: (params: { path: string; value: unknown }) => string;
+		resolverMultiTooFew: (params: { name: string; min?: number; conjunctionWord: string }) => string;
 		resolverInvalidBool: (params: { name: string }) => string;
 		resolverInvalidChannel: (params: { name: string }) => string;
 		resolverInvalidCustom: (params: { name: string; type: string }) => string;
@@ -55,7 +56,7 @@ declare module 'klasa' {
 		resolverInvalidGuild: (params: { name: string }) => string;
 		resolverInvalidInt: (params: { name: string }) => string;
 		resolverInvalidInvite: (params: { name: string }) => string;
-		resolverInvalidWager: (params: { bet: number }) => string;
+		resolverInvalidWager: (params: { bet: number; validAmounts: string }) => string;
 		resolverInvalidLiteral: (params: { name: string }) => string;
 		resolverInvalidMember: (params: { name: string }) => string;
 		resolverInvalidMessage: (params: { name: string }) => string;
@@ -69,23 +70,28 @@ declare module 'klasa' {
 		resolverInvalidSnowflake: (params: { name: string }) => string;
 		resolverInvalidStore: (params: { store: string }) => string;
 		resolverStringSuffix: string;
-		resolverMinmaxExactly: (params: { name: string; min: number }) => string;
-		resolverMinmaxBoth: (params: { name: string; min: number; max: number; inclusive: boolean }) => string;
-		resolverMinmaxMin: (params: { name: string; min: number; inclusive: boolean }) => string;
-		resolverMinmaxMax: (params: { name: string; max: number; inclusive: boolean }) => string;
+		resolverMinmaxExactlyInclusive: (params: { name: string; min: number }) => string;
+		resolverMinmaxExactlyExclusive: (params: { name: string; min: number }) => string;
+		resolverMinmaxBothInclusive: (params: { name: string; min: number; max: number }) => string;
+		resolverMinmaxBothExclusive: (params: { name: string; min: number; max: number }) => string;
+		resolverMinmaxMinInclusive: (params: { name: string; min: number }) => string;
+		resolverMinmaxMinExclusive: (params: { name: string; min: number }) => string;
+		resolverMinmaxMaxInclusive: (params: { name: string; max: number }) => string;
+		resolverMinmaxMaxExclusive: (params: { name: string; max: number }) => string;
 		reactionhandlerPrompt: string;
 		commandmessageMissing: string;
 		commandmessageMissingRequired: (params: { name: string }) => string;
 		commandmessageMissingOptionals: (params: { possibles: string }) => string;
 		commandmessageNomatch: (params: { possibles: string }) => string;
-		monitorCommandHandlerReprompt: (params: { tag: string; name: string; time: string; cancelOptions: readonly string[] }) => string;
-		monitorCommandHandlerRepeatingReprompt: (params: { tag: string; name: string; time: string; cancelOptions: readonly string[] }) => string;
+		monitorCommandHandlerReprompt: (params: { tag: string; name: string; time: string; cancelOptions: string }) => string;
+		monitorCommandHandlerRepeatingReprompt: (params: { tag: string; name: string; time: string; cancelOptions: string }) => string;
 		monitorCommandHandlerAborted: string;
-		inhibitorCooldown: (params: { remaining: number }) => string;
-		inhibitorMissingBotPerms: (params: { missing: string[] }) => string;
+		inhibitorCooldown: (params: { remaining: string }) => string;
+		inhibitorMissingBotPerms: (params: { missing: string }) => string;
 		inhibitorNsfw: string;
 		inhibitorPermissions: string;
-		inhibitorRequiredSettings: (params: { settings: readonly string[] }) => string;
+		inhibitorRequiredSettings: (params: { settings: string; count: number }) => string;
+		inhibitorRequiredSettingsPlural: (params: { settings: string; count: number }) => string;
 		inhibitorRunin: (params: { type: string }) => string;
 		inhibitorRuninNone: (params: { name: string }) => string;
 		inhibitorDisabledGuild: string;
@@ -97,13 +103,9 @@ declare module 'klasa' {
 			examples: string;
 			reminders: string;
 		};
-		commandBlacklistDescription: string;
-		commandBlacklistSuccess: (params: {
-			usersAdded: readonly string[];
-			usersRemoved: readonly string[];
-			guildsAdded: readonly string[];
-			guildsRemoved: readonly string[];
-		}) => string;
+		commandBlocklistDescription: string;
+		commandBlocklistSaveSuccess: string;
+		commandBlocklistResetSuccess: string;
 		commandUnload: (params: { type: string; name: string }) => string;
 		commandUnloadDescription: string;
 		commandTransferError: string;
@@ -119,14 +121,15 @@ declare module 'klasa' {
 		commandRebootDescription: string;
 		commandPing: string;
 		commandPingDescription: string;
-		commandPingPong: (params: { diff: string; ping: string }) => string;
+		commandPingPong: (params: { diff: number; ping: number }) => string;
 		commandInfoDescription: string;
 		commandHelpDescription: string;
 		commandHelpNoExtended: string;
 		commandHelpDm: string;
 		commandHelpNodm: string;
 		commandHelpAllFlag: (params: { prefix: string }) => string;
-		commandHelpCommandCount: (params: { n: number }) => string;
+		commandHelpCommandCount: (params: { count: number }) => string;
+		commandHelpCommandCountPlural: (params: { count: number }) => string;
 		commandEnable: (params: { type: string; name: string }) => string;
 		commandEnableDescription: string;
 		commandDisable: (params: { type: string; name: string }) => string;
@@ -153,14 +156,18 @@ declare module 'klasa' {
 		commandLoadError: (params: { type: string; name: string; error: string }) => string;
 		commandLoadDescription: string;
 		argumentRangeInvalid: (params: { name: string }) => string;
-		argumentRangeMax: (params: { name: string; maximum: number }) => string;
+		argumentRangeMax: (params: { name: string; maximum: number; count: number }) => string;
+		argumentRangeMaxPlural: (params: { name: string; maximum: number; count: number }) => string;
 		commandAddDescription: string;
 		commandAddExtended: LanguageHelpDisplayOptions;
-		commandAddPlaylist: (params: { amount: number }) => string;
+		commandAddPlaylist: (params: { songs: string }) => string;
+		commandAddPlaylistSongs: (params: { count: number }) => string;
+		commandAddPlaylistSongsPlural: (params: { count: number }) => string;
 		commandAddSong: (params: { title: string }) => string;
 		commandClearDescription: string;
 		commandClearDenied: string;
-		commandClearSuccess: (params: { amount: number }) => string;
+		commandClearSuccess: (params: { count: number }) => string;
+		commandClearSuccessPlural: (params: { count: number }) => string;
 		commandExportQueueDescription: string;
 		commandExportQueueExtended: LanguageHelpDisplayOptions;
 		commandExportQueueSuccess: (params: { guildName: string }) => string;
@@ -193,26 +200,23 @@ declare module 'klasa' {
 		commandPlayingQueueEmpty: string;
 		commandPlayingQueueNotPlaying: string;
 		commandRepeatDescription: string;
-		commandRepeatSuccess: (params: { enabled: boolean }) => string;
+		commandRepeatSuccessEnabled: string;
+		commandRepeatSuccessDisabled: string;
 		commandQueueDescription: string;
 		commandQueueLast: string;
 		commandQueueTitle: (params: { guildname: string }) => string;
 		commandQueueLine: (params: { position: number; duration: string; title: string; url: string; requester: string }) => string;
-		commandQueueNowplaying: (context: {
-			duration: string | null;
-			title: string;
-			url: string;
-			requester: string;
-			timeRemaining: string | null;
-		}) => string;
+		commandQueueNowplaying: (context: { title: string; url: string; requester: string }) => string;
+		commandQueueNowplayingTimeRemaining: (params: { timeRemaining: string }) => string;
+		commandQueueNowplayingLiveStream: string;
 		commandQueueNowplayingTitle: string;
 		commandQueueTotalTitle: string;
-		commandQueueTotal: (params: { songs: number; remainingTime: string }) => string;
+		commandQueueTotal: (params: { songs: string; remainingTime: string }) => string;
 		commandQueueEmpty: string;
 		commandQueueDashboardInfo: (params: { guild: Guild }) => string;
 		commandRemoveDescription: string;
 		commandRemoveIndexInvalid: string;
-		commandRemoveIndexOut: (params: { amount: number }) => string;
+		commandRemoveIndexOut: (params: { songs: string }) => string;
 		commandRemoveDenied: string;
 		commandRemoveSuccess: (params: { song: Song }) => string;
 		commandSeekDescription: string;
@@ -249,7 +253,7 @@ declare module 'klasa' {
 		commandVolumeSuccess: (params: { volume: number }) => string;
 		commandVolumeChanged: (params: { emoji: string; volume: number }) => string;
 		commandVolumeChangedExtreme: (params: { emoji: string; text: string; volume: number }) => string;
-		commandVolumeChangedTexts: () => string;
+		commandVolumeChangedTexts: readonly string[];
 		commandAbilityDescription: string;
 		commandAbilityExtended: LanguageHelpDisplayOptions;
 		commandAbilityEmbedTitle: string;
@@ -260,7 +264,7 @@ declare module 'klasa' {
 		commandItemDescription: string;
 		commandItemExtended: LanguageHelpDisplayOptions;
 		commandItemEmebedData: (params: {
-			availableInGen8: boolean;
+			availableInGen8: string;
 		}) => {
 			ITEM: string;
 			generationIntroduced: string;
@@ -283,13 +287,13 @@ declare module 'klasa' {
 		};
 		commandLearnInvalidGeneration: (params: { generation: string }) => string;
 		commandLearnMethod: (params: { generation: number; pokemon: string; move: string; method: string }) => string;
-		commandLearnQueryFailed: (params: { pokemon: string; moves: string[] }) => string;
-		commandLearnCannotLearn: (params: { pokemon: string; moves: string[] }) => string;
+		commandLearnQueryFailed: (params: { pokemon: string; moves: string }) => string;
+		commandLearnCannotLearn: (params: { pokemon: string; moves: string }) => string;
 		commandLearnTitle: (params: { pokemon: string; generation: number }) => string;
 		commandMoveDescription: string;
 		commandMoveExtended: LanguageHelpDisplayOptions;
 		commandMoveEmbedData: (params: {
-			availableInGen8: boolean;
+			availableInGen8: string;
 		}) => {
 			move: string;
 			types: string;
@@ -312,8 +316,8 @@ declare module 'klasa' {
 		commandPokedexDescription: string;
 		commandPokedexExtended: LanguageHelpDisplayOptions;
 		commandPokedexEmbedData: (params: {
-			otherFormes?: readonly string[] | null;
-			cosmeticFormes?: readonly string[] | null;
+			otherFormes: readonly string[];
+			cosmeticFormes: readonly string[];
 		}) => {
 			types: string;
 			abilities: string;
@@ -352,7 +356,7 @@ declare module 'klasa' {
 		};
 		commandTypeTooManyTypes: string;
 		commandTypeNotAType: (params: { type: string }) => string;
-		commandTypeQueryFail: (params: { types: string[] }) => string;
+		commandTypeQueryFail: (params: { types: string }) => string;
 		inhibitorMusicQueueEmpty: string;
 		inhibitorMusicNotPlaying: string;
 		inhibitorMusicPaused: string;
@@ -607,9 +611,7 @@ declare module 'klasa' {
 			noClan: string;
 			noLeague: string;
 		};
-		commandClashofclansClanEmbedTitles: (params: {
-			isWarLogPublic: boolean;
-		}) => {
+		commandClashofclansClanEmbedTitles: {
 			clanLevel: string;
 			clanPoints: string;
 			clanVersusPoints: string;
@@ -630,7 +632,6 @@ declare module 'klasa' {
 				oncePerWeek: string;
 				lessThanOncePerWeek: string;
 			};
-			warLogPublicDescr: string;
 		};
 		commandClashofclansInvalidPlayerTag: (params: { playertag: string }) => string;
 		commandClashOfClansClansQueryFail: (params: { clan: string }) => string;
@@ -738,7 +739,6 @@ declare module 'klasa' {
 			authorName: string;
 			playerLevel: number;
 			prestigeLevel: number;
-			ratings: Array<{ role: OverwatchRating['role'] | 'average'; level: OverwatchRating['level'] | string }>;
 			totalGamesWon: number;
 		}) => {
 			title: string;
@@ -746,8 +746,8 @@ declare module 'klasa' {
 			author: string;
 			playerLevel: string;
 			prestigeLevel: string;
-			ratings: string;
 			totalGamesWon: string;
+			noGamesWon: string;
 			headers: {
 				account: string;
 				quickplay: string;
@@ -770,7 +770,7 @@ declare module 'klasa' {
 		commandCurrentTimeExtended: LanguageHelpDisplayOptions;
 		commandCurrentTimeLocationNotFound: string;
 		commandCurrentTimeTitles: (params: {
-			dst: number;
+			dst: string;
 		}) => {
 			currentTime: string;
 			currentDate: string;
@@ -778,6 +778,8 @@ declare module 'klasa' {
 			gmsOffset: string;
 			dst: string;
 		};
+		commandCurrentTimeDst: string;
+		commandCurrentTimeNoDst: string;
 		commandGsearchDescription: string;
 		commandGsearchExtended: LanguageHelpDisplayOptions;
 		commandGimageDescription: string;
@@ -810,8 +812,8 @@ declare module 'klasa' {
 		commandSetImageLogsExtended: LanguageHelpDisplayOptions;
 		commandSetMemberLogsDescription: string;
 		commandSetMemberLogsExtended: LanguageHelpDisplayOptions;
-		commandSetmessagelogsDescription: string;
-		commandSetmessagelogsExtended: LanguageHelpDisplayOptions;
+		commandSetMessageLogsDescription: string;
+		commandSetMessageLogsExtended: LanguageHelpDisplayOptions;
 		commandSetmodlogsDescription: string;
 		commandSetmodlogsExtended: LanguageHelpDisplayOptions;
 		commandSetprefixDescription: string;
@@ -886,10 +888,6 @@ declare module 'klasa' {
 		commandAddRoleExtended: LanguageHelpDisplayOptions;
 		commandRemoveroleDescription: string;
 		commandRemoveroleExtended: LanguageHelpDisplayOptions;
-		commandArchiveDescription: string;
-		commandArchiveExtended: LanguageHelpDisplayOptions;
-		commandCaseDescription: string;
-		commandCaseExtended: LanguageHelpDisplayOptions;
 		commandSlowmodeDescription: string;
 		commandSlowmodeExtended: LanguageHelpDisplayOptions;
 		commandBanDescription: string;
@@ -1039,7 +1037,8 @@ declare module 'klasa' {
 			nsuid: 'NSUID';
 			esrb: 'ESRB';
 		};
-		commandEshopPrice: (params: { price: number }) => string;
+		commandEshopPricePaid: (params: { price: number }) => string;
+		commandEshopPriceFree: string;
 		commandHoroscopeDescription: string;
 		commandHoroscopeExtended: LanguageHelpDisplayOptions;
 		commandHoroscopeInvalidSunsign: (params: { sign: string; maybe: string }) => string;
@@ -1052,7 +1051,7 @@ declare module 'klasa' {
 		}) => {
 			dailyHoroscope: string;
 			metadataTitle: string;
-			metadata: string;
+			metadata: readonly string[];
 		};
 		commandIgdbDescription: string;
 		commandIgdbExtended: LanguageHelpDisplayOptions;
@@ -1126,8 +1125,8 @@ declare module 'klasa' {
 		commandQuoteExtended: LanguageHelpDisplayOptions;
 		commandRolesDescription: string;
 		commandRolesExtended: LanguageHelpDisplayOptions;
-		commandSearchDescription: string;
-		commandSearchExtended: LanguageHelpDisplayOptions;
+		commandDuckDuckGoDescription: string;
+		commandDuckDuckGoExtended: LanguageHelpDisplayOptions;
 		commandPollDescription: string;
 		commandPollExtended: LanguageHelpDisplayOptions;
 		commandPollReactionLimit: string;
@@ -1217,7 +1216,8 @@ declare module 'klasa' {
 			[index: string]: string;
 		};
 		commandAnimeInvalidChoice: string;
-		commandAnimeOutputDescription: (params: { entry: Kitsu.KitsuHit; synopsis: string | null }) => string;
+		commandAnimeOutputDescription: (params: { englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }) => string;
+		commandAnimeNoSynopsis: string;
 		commandAnimeEmbedData: {
 			type: string;
 			score: string;
@@ -1228,7 +1228,7 @@ declare module 'klasa' {
 			watchIt: string;
 			stillAiring: string;
 		};
-		commandMangaOutputDescription: (params: { entry: Kitsu.KitsuHit; synopsis: string | null }) => string;
+		commandMangaOutputDescription: (params: { englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }) => string;
 		commandMangaEmbedData: {
 			type: string;
 			score: string;
@@ -1254,12 +1254,14 @@ declare module 'klasa' {
 		commandAnnouncementSuccess: string;
 		commandAnnouncementCancelled: string;
 		commandAnnouncementPrompt: string;
-		commandAnnouncementEmbedMentions: (params: { header: string; mentions: readonly string[] }) => string;
+		commandAnnouncementEmbedMentions: (params: { header: string }) => string;
+		commandAnnouncementEmbedMentionsWithMentions: (params: { header: string; mentions: string }) => string;
 		commandInviteDescription: string;
 		commandInviteExtended: LanguageHelpDisplayOptions;
-		commandInvite: () => string;
-		commandInviteNoPerms: () => string;
-		commandInfo: string;
+		commandInvitePermissionInviteText: string;
+		commandInvitePermissionSupportServerText: string;
+		commandInvitePermissionsDescription: string;
+		commandInfoBody: string[];
 		commandHelpData: (params: {
 			titleDescription: string;
 			usage: string;
@@ -1278,30 +1280,28 @@ declare module 'klasa' {
 		commandYarnNoPackage: string;
 		commandYarnUnpublishedPackage: (params: { pkg: string }) => string;
 		commandYarnPackageNotFound: (params: { pkg: string }) => string;
-		commandYarnEmbedDescription: (params: {
-			author?: string;
-			dateCreated?: string;
-			dateModified?: string;
-			dependencies: string[] | null;
-			deprecated?: string;
-			description: string;
-			latestVersionNumber: string;
-			license: string;
-			mainFile: string;
-			maintainers: string[];
-		}) => string;
+		commandYarnEmbedDescriptionAuthor: (params: { author: string }) => string;
+		commandYarnEmbedDescriptionMaintainers: (params: { maintainers: string }) => string;
+		commandYarnEmbedDescriptionLatestVersion: (params: { latestVersionNumber: string }) => string;
+		commandYarnEmbedDescriptionLicense: (params: { license: string }) => string;
+		commandYarnEmbedDescriptionMainFile: (params: { mainFile: string }) => string;
+		commandYarnEmbedDescriptionDateCreated: (params: { dateCreated: string }) => string;
+		commandYarnEmbedDescriptionDateModified: (params: { dateModified: string }) => string;
+		commandYarnEmbedDescriptionDeprecated: (params: { deprecated: string }) => string;
+		commandYarnEmbedDescriptionDependenciesLabel: string;
+		commandYarnEmbedDescriptionDependenciesNoDeps: string;
 		commandYarnEmbedMoreText: string;
 		command8ballDescription: string;
 		command8ballExtended: LanguageHelpDisplayOptions;
 		command8ballOutput: (params: { author: string; question: string; response: string }) => string;
 		command8ballQuestions: EightBallLanguage;
-		command8ballWhen: () => string;
-		command8ballWhat: () => string;
-		command8ballHowMuch: () => string;
-		command8ballHowMany: () => string;
-		command8ballWhy: () => string;
-		command8ballWho: () => string;
-		command8ballElse: () => string;
+		command8ballWhen: readonly string[];
+		command8ballWhat: readonly string[];
+		command8ballHowMuch: readonly string[];
+		command8ballHowMany: readonly string[];
+		command8ballWhy: readonly string[];
+		command8ballWho: readonly string[];
+		command8ballElse: readonly string[];
 		commandCatfactTitle: string;
 		commandChoiceOutput: (params: { user: string; word: string }) => string;
 		commandChoiceMissing: string;
@@ -1337,9 +1337,11 @@ declare module 'klasa' {
 		commandC4Prompt: (params: { challenger: string; challengee: string }) => string;
 		commandC4Start: (params: { player: string }) => string;
 		commandC4GameColumnFull: string;
-		commandC4GameWin: (params: { user: string; turn: number }) => string;
+		commandC4GameWin: (params: { user: string }) => string;
+		commandC4GameWinTurn0: (params: { user: string }) => string;
 		commandC4GameDraw: string;
-		commandC4GameNext: (params: { user: string; turn: number }) => string;
+		commandC4GameNext: (params: { user: string }) => string;
+		commandC4GameNextTurn0: (params: { user: string }) => string;
 		commandCoinFlipDescription: string;
 		commandCoinFlipExtended: LanguageHelpDisplayOptions;
 		commandCoinFlipInvalidCoinname: (params: { arg: string }) => string;
@@ -1347,8 +1349,10 @@ declare module 'klasa' {
 		commandCoinFlipWinTitle: string;
 		commandCoinFlipLoseTitle: string;
 		commandCoinFlipNoguessTitle: string;
-		commandCoinFlipWinDescription: (params: { result: string; wager?: number }) => string;
-		commandCoinFlipLoseDescription: (params: { result: string; wager?: number }) => string;
+		commandCoinFlipWinDescription: (params: { result: string }) => string;
+		commandCoinFlipWinDescriptionWithWager: (params: { result: string; wager: number }) => string;
+		commandCoinFlipLoseDescription: (params: { result: string }) => string;
+		commandCoinFlipLoseDescriptionWithWager: (params: { result: string; wager: number }) => string;
 		commandCoinFlipNoguessDescription: (params: { result: string }) => string;
 		commandHigherLowerDescription: string;
 		commandHigherLowerExtended: LanguageHelpDisplayOptions;
@@ -1387,8 +1391,11 @@ declare module 'klasa' {
 		commandHigherLowerCashout: (params: { amount: number }) => string;
 		commandHungerGamesDescription: string;
 		commandHungerGamesExtended: LanguageHelpDisplayOptions;
-		commandHungerGamesResultHeader: (params: { game: HungerGamesGame }) => string;
+		commandHungerGamesResultHeaderBloodbath: (params: { game: HungerGamesGame }) => string;
+		commandHungerGamesResultHeaderSun: (params: { game: HungerGamesGame }) => string;
+		commandHungerGamesResultHeaderMoon: (params: { game: HungerGamesGame }) => string;
 		commandHungerGamesResultDeaths: (params: { deaths: number }) => string;
+		commandHungerGamesResultDeathsPlural: (params: { deaths: number }) => string;
 		commandHungerGamesResultProceed: string;
 		commandHungerGamesStop: string;
 		commandHungerGamesWinner: (params: { winner: string }) => string;
@@ -1400,12 +1407,14 @@ declare module 'klasa' {
 			previous: string;
 			new: string;
 		};
-		commandSlotmachineCanvasText: (params: { won: boolean }) => string;
+		commandSlotmachineCanvasTextWon: string;
+		commandSlotmachineCanvasTextLost: string;
 		commandTicTacToeDescription: string;
 		commandTicTacToeExtended: LanguageHelpDisplayOptions;
 		commandWheelOfFortuneDescription: string;
 		commandWheelOfFortuneExtended: LanguageHelpDisplayOptions;
-		commandWheelOfFortuneCanvasText: (params: { won: boolean }) => string;
+		commandWheelOfFortuneCanvasTextWon: string;
+		commandWheelOfFortuneCanvasTextLost: string;
 		commandWheelOfFortuneTitles: {
 			previous: string;
 			new: string;
@@ -1446,7 +1455,8 @@ declare module 'klasa' {
 		giveawayTitle: string;
 		giveawayLastchance: (params: { time: number }) => string;
 		giveawayLastchanceTitle: string;
-		giveawayEnded: (params: { winners: readonly string[] }) => string;
+		giveawayEnded: (params: { winners: string; count: number }) => string;
+		giveawayEndedPlural: (params: { winners: string; count: number }) => string;
 		giveawayEndedNoWinner: string;
 		giveawayEndedAt: string;
 		giveawayEndedTitle: string;
@@ -1462,7 +1472,9 @@ declare module 'klasa' {
 		commandPermissionNodesCommandNotExists: string;
 		commandPermissionNodesRemove: string;
 		commandPermissionNodesReset: string;
-		commandPermissionNodesShow: (params: { name: string; allow: readonly string[]; deny: readonly string[] }) => string;
+		commandPermissionNodesShowName: (params: { name: string }) => string;
+		commandPermissionNodesShowAllow: (params: { allow: string }) => string;
+		commandPermissionNodesShowDeny: (params: { deny: string }) => string;
 		commandTriggersNotype: string;
 		commandTriggersNooutput: string;
 		commandTriggersInvalidreaction: string;
@@ -1475,20 +1487,22 @@ declare module 'klasa' {
 		commandGuildInfoTitles: Record<string, string>;
 		commandGuildInfoRoles: (params: { roles: string }) => string;
 		commandGuildInfoNoroles: string;
-		commandGuildInfoChannels: (params: { text: number; voice: number; categories: number; afkChannel: string | null; afkTime: number }) => string;
-		commandGuildInfoMembers: (params: { count: string; owner: User }) => string;
+		commandGuildInfoChannels: (params: { text: number; voice: number; categories: number; afkChannelText: string }) => string[];
+		commandGuildInfoChannelsAfkChannelText: (params: { afkChannel: string; afkTime: number }) => string;
+		commandGuildInfoMembers: (params: { count: string; owner: User }) => string[];
 		commandGuildInfoOther: (params: {
 			size: number;
 			region: string;
 			createdAt: number;
 			verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH';
-		}) => string;
+		}) => string[];
 		commandRoleInfoTitles: Record<string, string>;
-		commandRoleInfo: (params: { role: Role }) => string;
+		commandRoleInfoData: (params: { role: Role; hoisted: string; mentionable: string }) => string[];
 		commandRoleInfoAll: string;
-		commandRoleInfoPermissions: (params: { permissions: readonly PermissionString[] }) => string;
+		commandRoleInfoNoPermissions: string;
 		commandFilterUndefinedWord: string;
-		commandFilterFiltered: (params: { filtered: boolean }) => string;
+		commandFilterAlreadyFiltered: string;
+		commandFilterNotFiltered: string;
 		commandFilterAdded: (params: { word: string }) => string;
 		commandFilterRemoved: (params: { word: string }) => string;
 		commandFilterReset: string;
@@ -1501,7 +1515,8 @@ declare module 'klasa' {
 		commandManageAttachmentsDuration: (params: { value: number }) => string;
 		commandManageAttachmentsAction: string;
 		commandManageAttachmentsLogs: string;
-		commandManageAttachmentsEnabled: (params: { value: boolean }) => string;
+		commandManageAttachmentsEnabled: string;
+		commandManageAttachmentsDisabled: string;
 		commandManageCommandAutoDeleteTextChannel: string;
 		commandManageCommandAutoDeleteRequiredDuration: string;
 		commandManageCommandAutoDeleteShowEmpty: string;
@@ -1547,7 +1562,7 @@ declare module 'klasa' {
 		commandStickyRolesAddExists: (params: { user: string }) => string;
 		commandStickyRolesAdd: (params: { user: string }) => string;
 		commandStickyRolesShowEmpty: string;
-		commandStickyRolesShowSingle: (params: { user: string; roles: readonly string[] }) => string;
+		commandStickyRolesShowSingle: (params: { user: string; roles: string }) => string;
 		commandRandRedditRequiredReddit: string;
 		commandRandRedditInvalidArgument: string;
 		commandRandRedditBanned: string;
@@ -1605,11 +1620,29 @@ declare module 'klasa' {
 
 		commandHistoryDescription: string;
 		commandHistoryExtended: LanguageHelpDisplayOptions;
-		commandHistoryFooter: (params: { warnings: number; mutes: number; kicks: number; bans: number }) => string;
+		commandHistoryFooterNew: (params: {
+			warnings: number;
+			mutes: number;
+			kicks: number;
+			bans: number;
+			warningsText: string;
+			mutesText: string;
+			kicksText: string;
+			bansText: string;
+		}) => string;
+		commandHistoryFooterWarning: (params: { count: number }) => string;
+		commandHistoryFooterWarningPlural: (params: { count: number }) => string;
+		commandHistoryFooterMutes: (params: { count: number }) => string;
+		commandHistoryFooterMutesPlural: (params: { count: number }) => string;
+		commandHistoryFooterKicks: (params: { count: number }) => string;
+		commandHistoryFooterKicksPlural: (params: { count: number }) => string;
+		commandHistoryFooterBans: (params: { count: number }) => string;
+		commandHistoryFooterBansPlural: (params: { count: number }) => string;
 		commandModerationsDescription: string;
 		commandModerationsExtended: LanguageHelpDisplayOptions;
 		commandModerationsEmpty: string;
-		commandModerationsAmount: (params: { amount: number }) => string;
+		commandModerationsAmount: (params: { count: number }) => string;
+		commandModerationsAmountPlural: (params: { count: number }) => string;
 		commandMutesDescription: string;
 		commandMutesExtended: LanguageHelpDisplayOptions;
 		commandWarningsDescription: string;
@@ -1630,6 +1663,7 @@ declare module 'klasa' {
 		commandTimeAborted: (params: { title: string }) => string;
 		commandTimeScheduled: (params: { title: string; user: User; time: number }) => string;
 		commandSlowmodeSet: (params: { cooldown: number }) => string;
+		commandSlowmodeReset: string;
 		commandSlowmodeTooLong: string;
 		commandBanNotBannable: string;
 		commandDehoistStarting: (params: { count: number }) => string;
@@ -1642,8 +1676,10 @@ declare module 'klasa' {
 		}) => {
 			title: string;
 			descriptionNoone: string;
-			descriptionWitherrors: string;
+			descriptionWithError: string;
+			descriptionWithMultipleErrors: string;
 			description: string;
+			descriptionMultipleMembers: string;
 			fieldErrorTitle: string;
 		};
 		commandKickNotKickable: string;
@@ -1662,41 +1698,53 @@ declare module 'klasa' {
 		commandMutecreateMissingPermission: string;
 		commandRestrictLowlevel: string;
 		commandPruneInvalid: string;
-		commandPrune: (params: { amount: number; total: number }) => string;
+		commandPruneAlert: (params: { count: number; total: number }) => string;
+		commandPruneAlertPlural: (params: { count: number; total: number }) => string;
 		commandPruneInvalidPosition: string;
 		commandPruneInvalidFilter: string;
 		commandPruneNoDeletes: string;
 		commandPruneLogHeader: string;
-		commandPruneLogMessage: (params: { channel: string; author: string; amount: number }) => string;
-		commandPrunePositions: Map<string, Position>;
-		commandPruneFilters: Map<string, Filter>;
+		commandPruneLogMessage: (params: { channel: string; author: string; count: number }) => string;
+		commandPruneLogMessagePlural: (params: { channel: string; author: string; count: number }) => string;
 		commandReasonMissingCase: string;
-		commandReasonNotExists: (params: { range: boolean }) => string;
-		commandReasonUpdated: (params: { entries: readonly number[]; newReason: string }) => string;
-		commandToggleModerationDmToggled: (params: { value: boolean }) => string;
+		commandReasonNotExists: string;
+		commandReasonUpdated: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];
+		commandReasonUpdatedPlural: (params: { entries: readonly number[]; newReason: string; count: number }) => string[];
+		commandToggleModerationDmToggledEnabled: string;
+		commandToggleModerationDmToggledDisabled: string;
 		commandUnbanMissingPermission: string;
 		commandUnmuteMissingPermission: string;
 		commandVmuteMissingPermission: string;
 		commandVmuteUserNotMuted: string;
 		commandWarnDm: (params: { moderator: string; guild: string; reason: string }) => string;
 		commandWarnMessage: (params: { user: User; log: number }) => string;
-		commandModerationOutput: (params: {
-			cases: readonly number[];
-			range: string | number;
-			users: readonly string[];
-			reason: string | null;
-		}) => string;
-		commandModerationFailed: (params: { users: readonly string[] }) => string;
-		commandModerationDm: (params: {
+		commandModerationOutput: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationOutputPlural: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationOutputWithReason: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationOutputWithReasonPlural: (params: { count: number; range: string | number; users: string; reason: string | null }) => string;
+		commandModerationFailed: (params: { users: string; count: number }) => string;
+		commandModerationFailedPlural: (params: { users: string; count: number }) => string;
+		commandModerationDmFooter: string;
+		commandModerationDmDescription: (params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[];
+		commandModerationDmDescriptionWithReason: (params: {
 			guild: string;
 			title: string;
 			reason: string | null;
 			duration: number | null;
-		}) => {
-			description: string;
-			footer: string;
-		};
-		commandModerationDays: RegExp;
+		}) => string[];
+		commandModerationDmDescriptionWithDuration: (params: {
+			guild: string;
+			title: string;
+			reason: string | null;
+			duration: number | null;
+		}) => string[];
+		commandModerationDmDescriptionWithReasonWithDuration: (params: {
+			guild: string;
+			title: string;
+			reason: string | null;
+			duration: number | null;
+		}) => string[];
+		commandModerationDays: string;
 		commandAutoRolePointsRequired: string;
 		commandAutoRoleUpdateConfigured: string;
 		commandAutoRoleUpdateUnconfigured: string;
@@ -1709,8 +1757,10 @@ declare module 'klasa' {
 		commandBalanceSelf: (params: { amount: string }) => string;
 		commandBalanceBots: string;
 		commandSocialMemberNotexists: string;
-		commandSocialAdd: (params: { user: string; amount: number; added: number }) => string;
-		commandSocialRemove: (params: { user: string; amount: number; removed: number }) => string;
+		commandSocialAdd: (params: { user: string; amount: number; count: number }) => string;
+		commandSocialAddPlural: (params: { user: string; amount: number; count: number }) => string;
+		commandSocialRemove: (params: { user: string; amount: number; count: number }) => string;
+		commandSocialRemovePlural: (params: { user: string; amount: number; count: number }) => string;
 		commandSocialUnchanged: (params: { user: string }) => string;
 		commandSocialReset: (params: { user: string }) => string;
 		commandBannerMissing: (params: { type: string }) => string;
@@ -1725,10 +1775,11 @@ declare module 'klasa' {
 		commandBannerPaymentCancelled: string;
 		commandBannerBuy: (params: { banner: string }) => string;
 		commandBannerPrompt: string;
-		commandToggleDarkModeToggled: (params: { enabled: boolean }) => string;
+		commandToggleDarkModeEnabled: string;
+		commandToggleDarkModeDisabled: string;
 		commandDailyTime: (params: { time: number }) => string;
 		commandDailyTimeSuccess: (params: { amount: number }) => string;
-		commandDailyGrace: (params: { remaining: number }) => string;
+		commandDailyGrace: (params: { remaining: number }) => string[];
 		commandDailyGraceAccepted: (params: { amount: number; remaining: number }) => string;
 		commandDailyGraceDenied: string;
 		commandDailyCollect: string;
@@ -1746,7 +1797,8 @@ declare module 'klasa' {
 		commandMarrySelf: string;
 		commandMarryAuthorTaken: (params: { author: User }) => string;
 		commandMarryAuthorMultipleCancel: (params: { user: string }) => string;
-		commandMarryTaken: (params: { spousesCount: number }) => string;
+		commandMarryTaken: (params: { count: number }) => string;
+		commandMarryTakenPlural: (params: { count: number }) => string;
 		commandMarryAlreadyMarried: (params: { user: User }) => string;
 		commandMarryAuthorTooMany: (params: { limit: number }) => string;
 		commandMarryTargetTooMany: (params: { limit: number }) => string;
@@ -1782,15 +1834,12 @@ declare module 'klasa' {
 		commandReputationGive: (params: { user: string }) => string;
 		commandReputationsBots: string;
 		commandReputationsSelf: (params: { points: number }) => string;
-		commandReputations: (params: { user: string; points: number }) => string;
+		commandReputation: (params: { count: number }) => string;
+		commandReputationPlural: (params: { count: number }) => string;
+		commandReputations: (params: { user: string; points: string }) => string;
 		commandRequireRole: string;
 		commandScoreboardPosition: (params: { position: number }) => string;
 		commandSetColor: (params: { color: string }) => string;
-		commandSocialProfileNotfound: string;
-		commandSocialProfileBot: string;
-		commandSocialProfileDelete: (params: { user: string; points: number }) => string;
-		commandSocialPoints: string;
-		commandSocialUpdate: (params: { action: string; amount: number; user: string; before: number; now: number }) => string;
 		commandSuggestNoSetup: (params: { username: string }) => string;
 		commandSuggestNoSetupAsk: (params: { username: string }) => string;
 		commandSuggestNoSetupAbort: string;
@@ -1820,14 +1869,23 @@ declare module 'klasa' {
 			deny: string;
 		};
 		commandResolveSuggestionDmFail: string;
-		commandResolveSuggestionSuccess: (params: { id: number; action: 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c' }) => string;
+		commandResolveSuggestionSuccess: (params: { id: number; actionText: string }) => string;
+		commandResolveSuggestionSuccessAcceptedText: string;
+		commandResolveSuggestionSuccessDeniedText: string;
+		commandResolveSuggestionSuccessConsideredText: string;
 		commandStarNostars: string;
 		commandStarStats: string;
-		commandStarStatsDescription: (params: { messages: number; stars: number }) => string;
+		commandStarStatsDescription: (params: { messages: string; stars: string }) => string;
+		commandStarMessages: (params: { count: number }) => string;
+		commandStarMessagesPlural: (params: { count: number }) => string;
+		commandStars: (params: { count: number }) => string;
+		commandStarsPlural: (params: { count: number }) => string;
 		commandStarTopstarred: string;
-		commandStarTopstarredDescription: (params: { medal: string; id: string; stars: number }) => string;
+		commandStarTopstarredDescription: (params: { medal: string; id: string; count: number }) => string;
+		commandStarTopstarredDescriptionPlural: (params: { medal: string; id: string; count: number }) => string;
 		commandStarTopreceivers: string;
-		commandStarTopreceiversDescription: (params: { medal: string; id: string; stars: number }) => string;
+		commandStarTopreceiversDescription: (params: { medal: string; id: string; count: number }) => string;
+		commandStarTopreceiversDescriptionPlural: (params: { medal: string; id: string; count: number }) => string;
 		commandEvalTimeout: (params: { seconds: number }) => string;
 		commandEvalError: (params: { time: string; output: string; type: string }) => string;
 		commandStatsTitles: {
@@ -1840,9 +1898,9 @@ declare module 'klasa' {
 			uptime: StatsUptime;
 			usage: StatsUsage;
 		}) => {
-			stats: string;
-			uptime: string;
-			serverUsage: string;
+			stats: string[];
+			uptime: string[];
+			serverUsage: string[];
 		};
 		commandTagDescription: string;
 		commandTagExtended: LanguageHelpDisplayOptions;
@@ -1856,12 +1914,11 @@ declare module 'klasa' {
 		commandTagRemoved: (params: { name: string }) => string;
 		commandTagNotexists: (params: { tag: string }) => string;
 		commandTagEdited: (params: { name: string; content: string }) => string;
-		commandTagList: (params: { tags: readonly string[] }) => string;
 		commandTagReset: string;
 		commandAvatarNone: string;
-		commandColor: (params: { hex: string; rgb: string; hsl: string }) => string;
-		commandEmojiCustom: (params: { emoji: string; id: string }) => string;
-		commandEmojiTwemoji: (params: { emoji: string; id: string }) => string;
+		commandColor: (params: { hex: string; rgb: string; hsl: string }) => string[];
+		commandEmojiCustom: (params: { emoji: string; id: string }) => string[];
+		commandEmojiTwemoji: (params: { emoji: string; id: string }) => string[];
 		commandEmojiInvalid: string;
 		commandEmojiTooLarge: (params: { emoji: string }) => string;
 		commandEmotesDescription: string;
@@ -1890,11 +1947,13 @@ declare module 'klasa' {
 		commandWhoisMemberFields: (params: {
 			member: GuildMember;
 		}) => {
-			joined: string;
+			joinedUnknown: string;
+			joinedWithTimestamp: string;
 			createdAt: string;
 			footer: string;
 		};
-		commandWhoisMemberRoles: (params: { amount: number }) => string;
+		commandWhoisMemberRoles: (params: { count: number }) => string;
+		commandWhoisMemberRolesPlural: (params: { count: number }) => string;
 		commandWhoisMemberPermissions: string;
 		commandWhoisMemberPermissionsAll: string;
 		commandWhoisUserTitles: {
@@ -1916,8 +1975,7 @@ declare module 'klasa' {
 			clickToVisit: string;
 			partner: string;
 		};
-		commandTwitchMaturity: (params: { mature: boolean }) => string;
-		commandTwitchPartnership: (params: { affiliateStatus: string | false }) => string;
+		commandTwitchPartnershipWithoutAffiliate: string;
 		commandTwitchAffiliateStatus: {
 			affiliated: string;
 			partnered: string;
@@ -1931,14 +1989,18 @@ declare module 'klasa' {
 		commandTwitchSubscriptionInvalidStatus: string;
 		commandTwitchSubscriptionRequiredContent: string;
 		commandTwitchSubscriptionAddDuplicated: string;
-		commandTwitchSubscriptionAddSuccess: (params: { name: string; channel: string; status: NotificationsStreamsTwitchEventStatus }) => string;
+		commandTwitchSubscriptionAddSuccessOffline: (params: { name: string; channel: string }) => string;
+		commandTwitchSubscriptionAddSuccessLive: (params: { name: string; channel: string }) => string;
 		commandTwitchSubscriptionRemoveStreamerNotSubscribed: string;
 		commandTwitchSubscriptionRemoveEntryNotExists: string;
-		commandTwitchSubscriptionRemoveSuccess: (params: { name: string; channel: string; status: NotificationsStreamsTwitchEventStatus }) => string;
+		commandTwitchSubscriptionRemoveSuccessOffline: (params: { name: string; channel: string }) => string;
+		commandTwitchSubscriptionRemoveSuccessLive: (params: { name: string; channel: string }) => string;
 		commandTwitchSubscriptionResetEmpty: string;
-		commandTwitchSubscriptionResetSuccess: (params: { entries: number }) => string;
+		commandTwitchSubscriptionResetSuccess: (params: { count: number }) => string;
+		commandTwitchSubscriptionResetSuccessPlural: (params: { count: number }) => string;
 		commandTwitchSubscriptionResetStreamerNotSubscribed: string;
-		commandTwitchSubscriptionResetChannelSuccess: (params: { name: string; entries: number }) => string;
+		commandTwitchSubscriptionResetChannelSuccess: (params: { name: string; count: number }) => string;
+		commandTwitchSubscriptionResetChannelSuccessPlural: (params: { name: string; count: number }) => string;
 		commandTwitchSubscriptionShowStreamerNotSubscribed: string;
 		commandTwitchSubscriptionShowStatus: [string, string];
 		commandTwitchSubscriptionShowEmpty: string;
@@ -1982,15 +2044,23 @@ declare module 'klasa' {
 		constMonitorCapsfilter: string;
 		constMonitorAttachmentfilter: string;
 		constMonitorReactionfilter: string;
-		moderationMonitorAttachments: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorCapitals: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorInvites: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorLinks: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorMessages: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorNewlines: (params: { amount: number; maximum: number }) => string;
-		moderationMonitorWords: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorAttachments: string;
+		moderationMonitorAttachmentsWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorCapitals: string;
+		moderationMonitorCapitalsWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorInvites: string;
+		moderationMonitorInvitesWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorLinks: string;
+		moderationMonitorLinksWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorMessages: string;
+		moderationMonitorMessagesWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorNewlines: string;
+		moderationMonitorNewlinesWithMaximum: (params: { amount: number; maximum: number }) => string;
+		moderationMonitorWords: string;
+		moderationMonitorWordsWithMaximum: (params: { amount: number; maximum: number }) => string;
 		monitorInviteFilterAlert: (params: { user: string }) => string;
-		monitorInviteFilterLog: (params: { links: readonly string[] }) => string;
+		monitorInviteFilterLog: (params: { links: readonly string[]; count: number }) => string;
+		monitorInviteFilterLogPlural: (params: { links: readonly string[]; count: number }) => string;
 		monitorNolink: (params: { user: string }) => string;
 		monitorWordFilterDm: (params: { filtered: string }) => string;
 		monitorCapsFilterDm: (params: { message: string }) => string;
@@ -1999,14 +2069,14 @@ declare module 'klasa' {
 		monitorMessageFilter: (params: { user: string }) => string;
 		monitorNewlineFilter: (params: { user: string }) => string;
 		monitorReactionsFilter: (params: { user: string }) => string;
-		monitorNmsMessage: (params: { user: User }) => string;
+		monitorNmsMessage: (params: { user: User }) => string[];
 		monitorNmsModlog: (params: { threshold: number }) => string;
 		monitorNmsAlert: string;
 		monitorSocialAchievement: string;
 		inhibitorSpam: (params: { channel: string }) => string;
-		hgBloodbath: readonly HungerGamesUsage[];
-		hgDay: readonly HungerGamesUsage[];
-		hgNight: readonly HungerGamesUsage[];
+		hgBloodbath: readonly string[];
+		hgDay: readonly string[];
+		hgNight: readonly string[];
 		serializerAutoRoleInvalid: string;
 		serializerCommandAutoDeleteInvalid: string;
 		serializerCustomCommandInvalid: string;
@@ -2031,21 +2101,27 @@ declare module 'klasa' {
 		selfModerationCommandInvalidHardaction: (params: { name: string }) => string;
 		selfModerationCommandEnabled: string;
 		selfModerationCommandDisabled: string;
-		selfModerationCommandSoftAction: (params: { value: string }) => string;
+		selfModerationCommandSoftAction: string;
+		selfModerationCommandSoftActionWithValue: (params: { value: string }) => string;
 		selfModerationCommandHardAction: (params: { value: string }) => string;
-		selfModerationCommandHardActionDuration: (params: { value: number }) => string;
-		selfModerationCommandThresholdMaximum: (params: { value: number }) => string;
-		selfModerationCommandThresholdDuration: (params: { value: number }) => string;
+		selfModerationCommandHardActionDuration: string;
+		selfModerationCommandHardActionDurationWithValue: (params: { value: number }) => string;
+		selfModerationCommandThresholdMaximum: string;
+		selfModerationCommandThresholdMaximumWithValue: (params: { value: number }) => string;
+		selfModerationCommandThresholdDuration: string;
+		selfModerationCommandThresholdDurationWithValue: (params: { value: number }) => string;
 		selfModerationCommandShow: (params: {
 			kEnabled: string;
 			kAlert: string;
 			kLog: string;
 			kDelete: string;
 			kHardAction: string;
-			hardActionDuration: number;
-			thresholdMaximum: number | null;
-			thresholdDuration: number | null;
-		}) => string;
+			hardActionDurationText: string;
+			thresholdMaximumText: string | number;
+			thresholdDurationText: string;
+		}) => readonly string[];
+		selfModerationCommandShowDurationPermanent: string;
+		selfModerationCommandShowUnset: string;
 		selfModerationSoftActionAlert: string;
 		selfModerationSoftActionLog: string;
 		selfModerationSoftActionDelete: string;
@@ -2061,30 +2137,29 @@ declare module 'klasa' {
 		selfModerationMaximumTooLong: (params: { maximum: number; value: number }) => string;
 		selfModerationDurationTooShort: (params: { minimum: number; value: number }) => string;
 		selfModerationDurationTooLong: (params: { maximum: number; value: number }) => string;
-		actionMuteReason: (params: { reason: string | null }) => string;
-		actionUnmuteReason: (params: { reason: string | null }) => string;
-		actionKickReason: (params: { reason: string | null }) => string;
-		actionSoftbanReason: (params: { reason: string | null }) => string;
-		actionUnsoftbanReason: (params: { reason: string | null }) => string;
-		actionBanReason: (params: { reason: string | null }) => string;
-		actionUnbanReason: (params: { reason: string | null }) => string;
-		actionVmuteReason: (params: { reason: string | null }) => string;
-		actionUnvmuteReason: (params: { reason: string | null }) => string;
-		actionVkickReason: (params: { reason: string | null }) => string;
-		actionRestrictedReactReason: (params: { reason: string | null }) => string;
-		actionRestrictedEmbedReason: (params: { reason: string | null }) => string;
-		actionRestrictedAttachmentReason: (params: { reason: string | null }) => string;
-		actionRestrictedVoiceReason: (params: { reason: string | null }) => string;
-		actionSetNickname: (params: { reason: string | null; nickname: string }) => string;
-		actionAddRole: (params: { reason: string | null }) => string;
-		actionRemoveRole: (params: { reason: string | null }) => string;
+		moderationActions: ModerationAction;
+		actionApplyReason: (params: { action: string; reason: string }) => string;
+		actionApplyNoReason: (params: { action: string }) => string;
+		actionRevokeReason: (params: { action: string; reason: string }) => string;
+		actionRevokeNoReason: (params: { action: string }) => string;
+		actionSoftbanReason: (params: { reason: string }) => string;
+		actionUnSoftbanReason: (params: { reason: string }) => string;
+		actionSoftbanNoReason: string;
+		actionUnSoftbanNoReason: string;
+		actionSetNicknameSet: (params: { reason: string }) => string;
+		actionSetNicknameRemoved: (params: { reason: string }) => string;
+		actionSetNicknameNoReasonSet: string;
+		actionSetNicknameNoReasonRemoved: string;
 		actionSetupMuteExists: string;
 		actionSetupRestrictionExists: string;
 		actionSetupTooManyRoles: string;
 		actionSharedRoleSetupExisting: string;
 		actionSharedRoleSetupExistingName: string;
 		actionSharedRoleSetupNew: string;
-		actionSharedRoleSetup: (params: { role: string; channels: number; permissions: string[] }) => string;
+		actionSharedRoleSetupAsk: (params: { role: string; channels: number; permissions: string }) => string;
+		actionSharedRoleSetupAskMultipleChannels: (params: { role: string; channels: number; permissions: string }) => string;
+		actionSharedRoleSetupAskMultiplePermissions: (params: { role: string; channels: number; permissions: string }) => string;
+		actionSharedRoleSetupAskMultipleChannelsMultiplePermissions: (params: { role: string; channels: number; permissions: string }) => string;
 		actionRequiredMember: string;
 		muteNotConfigured: string;
 		restrictionNotConfigured: string;
@@ -2104,12 +2179,11 @@ declare module 'klasa' {
 		commandSuccess: string;
 		commandToskyra: string;
 		commandUserself: string;
-		systemFetching: () => string;
 		systemParseError: string;
 		systemHighestRole: string;
 		systemChannelNotPostable: string;
 		systemFetchbansFail: string;
-		systemLoading: () => string;
+		systemLoading: readonly string[];
 		systemError: string;
 		systemDatabaseError: string;
 		systemDiscordAborterror: string;
@@ -2117,14 +2191,15 @@ declare module 'klasa' {
 		systemNoResults: string;
 		systemMessageNotFound: string;
 		systemNotenoughParameters: string;
-		systemGuildMutecreateApplying: (params: { channels: number; role: string }) => string;
-		systemGuildMutecreateExceptions: (params: { denied: readonly string[] }) => string;
-		systemGuildMutecreateApplied: (params: { accepted: number; exceptions: string; author: string; role: string }) => string;
 		systemCannotAccessChannel: string;
 		systemExceededLengthOutput: (params: { output: string; time?: string; type?: string }) => string;
+		systemExceededLengthOutputWithTypeAndTime: (params: { output: string; time?: string; type?: string }) => string;
 		systemExceededLengthOutputConsole: (params: { time?: string; type?: string }) => string;
+		systemExceededLengthOutputConsoleWithTypeAndTime: (params: { time?: string; type?: string }) => string;
 		systemExceededLengthOutputFile: (params: { time?: string; type?: string }) => string;
+		systemExceededLengthOutputFileWithTypeAndTime: (params: { time?: string; type?: string }) => string;
 		systemExceededLengthOutputHastebin: (params: { url: string; time?: string; type?: string }) => string;
+		systemExceededLengthOutputHastebinWithTypeAndTime: (params: { url: string; time?: string; type?: string }) => string;
 		systemExceededLengthChooseOutput: (params: { output: string[] }) => string;
 		systemExternalServerError: string;
 		systemPokedexExternalResource: string;
@@ -2159,14 +2234,21 @@ declare module 'klasa' {
 		eventsGuildMemberBanned: string;
 		eventsGuildMemberSoftBanned: string;
 		eventsGuildMemberRemoveDescription: (params: { mention: string; time: number }) => string;
+		eventsGuildMemberRemoveDescriptionWithJoinedAt: (params: { mention: string; time: number }) => string;
 		eventsGuildMemberUpdateNickname: (params: { previous: string; current: string }) => string;
 		eventsGuildMemberAddedNickname: (params: { previous: string; current: string }) => string;
 		eventsGuildMemberRemovedNickname: (params: { previous: string }) => string;
-		eventsGuildMemberUpdateRoles: (params: { removed: readonly string[]; added: readonly string[] }) => string;
 		eventsNicknameUpdate: string;
 		eventsUsernameUpdate: string;
-		eventsNameDifference: (params: { previous: string | null; next: string | null }) => string;
-		eventsRoleDifference: (params: { addedRoles: string[]; removedRoles: string[] }) => string;
+		eventsNameUpdatePreviousWasSet: (params: { previousName: string | null }) => string;
+		eventsNameUpdatePreviousWasNotSet: (params: { previousName: string | null }) => string;
+		eventsNameUpdateNextWasSet: (params: { nextName: string | null }) => string;
+		eventsNameUpdateNextWasNotSet: (params: { nextName: string | null }) => string;
+		eventsGuildMemberNoUpdate: string;
+		eventsGuildMemberAddedRoles: (params: { addedRoles: string }) => string;
+		eventsGuildMemberAddedRolesPlural: (params: { addedRoles: string }) => string;
+		eventsGuildMemberRemovedRoles: (params: { removedRoles: string }) => string;
+		eventsGuildMemberRemovedRolesPlural: (params: { removedRoles: string }) => string;
 		eventsRoleUpdate: string;
 		eventsMessageUpdate: string;
 		eventsMessageDelete: string;
@@ -2178,7 +2260,8 @@ declare module 'klasa' {
 		modlogTimed: (params: { remaining: number }) => string;
 		guildWarnNotFound: string;
 		guildMemberNotVoicechannel: string;
-		promptlistMultipleChoice: (params: { list: string; amount: number }) => string;
+		promptlistMultipleChoice: (params: { list: string; count: number }) => string;
+		promptlistMultipleChoicePlural: (params: { list: string; count: number }) => string;
 		promptlistAttemptFailed: (params: { list: string; attempt: number; maxAttempts: number }) => string;
 		promptlistAborted: string;
 		fuzzySearchMatches: (params: { matches: number; codeblock: string }) => string;
@@ -2194,7 +2277,8 @@ declare module 'klasa' {
 		unknownRole: string;
 		unknownUser: string;
 		notificationsTwitchNoGameName: string;
-		notificationsTwitchEmbedDescription: (params: { userName: string; gameName: string | undefined }) => string;
+		notificationsTwitchEmbedDescription: (params: { userName: string }) => string;
+		notificationsTwitchEmbedDescriptionWithGame: (params: { userName: string; gameName: string }) => string;
 		notificationTwitchEmbedFooter: string;
 	}
 }

@@ -6,7 +6,7 @@ import { TOKENS } from '@root/config';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
-import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
@@ -24,7 +24,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [animeName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const { hits: entries } = await this.fetchAPI(message, animeName);
@@ -86,11 +86,24 @@ export default class extends RichDisplayCommand {
 			const type = entry.subtype;
 			const title = entry.titles.en || entry.titles.en_jp || entry.canonicalTitle || '--';
 
+			const [englishTitle, japaneseTitle, canonicalTitle] = [
+				entry.titles.en || entry.titles.en_us,
+				entry.titles.ja_jp,
+				entry.canonicalTitle
+			].map((title) => title || message.language.get('globalNone'));
+
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(animeURL)
-					.setDescription(message.language.get('commandAnimeOutputDescription', { entry, synopsis }))
+					.setDescription(
+						message.language.get('commandAnimeOutputDescription', {
+							englishTitle,
+							japaneseTitle,
+							canonicalTitle,
+							synopsis: synopsis ?? message.language.get('commandAnimeNoSynopsis')
+						})
+					)
 					.setThumbnail(entry.posterImage?.original ?? '')
 					.addField(embedData.type, message.language.get('commandAnimeTypes')[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)

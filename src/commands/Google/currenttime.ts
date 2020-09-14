@@ -24,7 +24,9 @@ export default class extends SkyraCommand {
 
 		if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, this.client));
 
-		const titles = message.language.get('commandCurrentTimeTitles', { dst: Number(timeData.dst) });
+		const dstEnabled = message.language.get(Number(timeData.dst) === 0 ? 'commandCurrentTimeNoDst' : 'commandCurrentTimeNoDst');
+
+		const titles = message.language.get('commandCurrentTimeTitles', { dst: dstEnabled });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))

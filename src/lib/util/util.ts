@@ -464,6 +464,8 @@ export function isImageURL(url: string) {
  * @param guild The guild for context
  * @param input The input to clean
  * @returns The input cleaned of mentions
+ * @license Apache-2.0
+ * @copyright 2019 Antonio Román
  */
 export function cleanMentions(guild: Guild, input: string) {
 	return input.replace(/@(here|everyone)/g, `@${ZeroWidhSpace}$1`).replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
@@ -507,6 +509,17 @@ export const extractMentions = (input: string) => input.match(/@(?:here|everyone
 export function createPick<T>(array: T[]): () => T {
 	const { length } = array;
 	return () => array[Math.floor(Math.random() * length)];
+}
+
+/**
+ * Picks a random item from an array
+ * @param array The array to pick a random item from
+ * @example
+ * const randomEntry = pickRandom([1, 2, 3, 4]) // 1
+ */
+export function pickRandom<T>(array: readonly T[]): T {
+	const { length } = array;
+	return array[Math.floor(Math.random() * length)];
 }
 
 export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
@@ -674,6 +687,8 @@ export const shuffle = <T>(array: T[]): T[] => {
 	}
 	return array;
 };
+
+export const random = (num: number) => Math.round(Math.random() * num);
 
 export interface UtilOneToTenEntry {
 	emoji: string;

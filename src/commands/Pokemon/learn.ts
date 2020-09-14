@@ -6,6 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '@utils/Pokemon';
+import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, LanguageKeys } from 'klasa';
 
@@ -32,7 +33,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(message.language.get('systemLoading')).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
 		);
 
 		const movesList = moves.split(', ');
@@ -47,7 +48,10 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy, { pokemon, moves, generation });
 			return data.getPokemonLearnsetByFuzzy;
 		} catch {
-			throw message.language.get('commandLearnQueryFailed', { pokemon, moves });
+			throw message.language.get('commandLearnQueryFailed', {
+				pokemon,
+				moves: message.language.list(moves, message.language.get('globalAnd'))
+			});
 		}
 	}
 
@@ -70,7 +74,12 @@ export default class extends RichDisplayCommand {
 
 		if (learnableMethods.length === 0) {
 			return display.addPage((embed: MessageEmbed) =>
-				embed.setDescription(message.language.get('commandLearnCannotLearn', { pokemon: learnsetData.species, moves }))
+				embed.setDescription(
+					message.language.get('commandLearnCannotLearn', {
+						pokemon: learnsetData.species,
+						moves: message.language.list(moves, message.language.get('globalOr'))
+					})
+				)
 			);
 		}
 

@@ -1,6 +1,7 @@
 import Collection from '@discordjs/collection';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { LeaderboardUser } from '@utils/Leaderboard';
+import { pickRandom } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 const titles = {
@@ -54,7 +55,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (promises.length) {
-			await message.sendLocale('systemLoading', []);
+			await message.send(pickRandom(message.language.get('systemLoading')), []);
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {

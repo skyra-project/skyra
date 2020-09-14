@@ -67,7 +67,14 @@ export default class extends SkyraCommand {
 			try {
 				const resultMessage = shouldSendAsEmbed
 					? await previous.edit(
-							message.language.get('commandAnnouncementEmbedMentions', { header, mentions }),
+							mentions.length
+								? message.language.get('commandAnnouncementEmbedMentionsWithMentions', {
+										header,
+										mentions: message.language.list(mentions, message.language.get('globalAnd'))
+								  })
+								: message.language.get('commandAnnouncementEmbedMentions', {
+										header
+								  }),
 							this.buildEmbed(announcement)
 					  )
 					: await previous.edit(`${header}:\n${announcement}`);
@@ -77,7 +84,14 @@ export default class extends SkyraCommand {
 					const resultMessage = shouldSendAsEmbed
 						? await channel.sendEmbed(
 								this.buildEmbed(announcement),
-								message.language.get('commandAnnouncementEmbedMentions', { header, mentions })
+								mentions.length
+									? message.language.get('commandAnnouncementEmbedMentionsWithMentions', {
+											header,
+											mentions: message.language.list(mentions, message.language.get('globalAnd'))
+									  })
+									: message.language.get('commandAnnouncementEmbedMentions', {
+											header
+									  })
 						  )
 						: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
@@ -91,7 +105,14 @@ export default class extends SkyraCommand {
 			const resultMessage = shouldSendAsEmbed
 				? await channel.sendEmbed(
 						this.buildEmbed(announcement),
-						message.language.get('commandAnnouncementEmbedMentions', { header, mentions })
+						mentions.length
+							? message.language.get('commandAnnouncementEmbedMentionsWithMentions', {
+									header,
+									mentions: message.language.list(mentions, message.language.get('globalAnd'))
+							  })
+							: message.language.get('commandAnnouncementEmbedMentions', {
+									header
+							  })
 				  )
 				: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
 			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);

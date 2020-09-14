@@ -19,7 +19,7 @@ export default class extends Monitor {
 			this.enabled &&
 			message.guild !== null &&
 			message.author !== null &&
-			message.editedTimestamp === null &&
+			message.editedTimestamp === 0 &&
 			message.content.length > 0 &&
 			!message.system &&
 			!message.author.bot &&

@@ -3,13 +3,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { api } from '@utils/Models/Api';
 import { floatPromise } from '@utils/util';
-import {
-	APIAuditLogChangeKey$Add,
-	AuditLogEvent,
-	GatewayGuildMemberUpdateDispatch,
-	RESTGetAPIAuditLogQuery,
-	RESTGetAPIAuditLogResult
-} from 'discord-api-types/v6';
+import { AuditLogEvent, GatewayGuildMemberUpdateDispatch, RESTGetAPIAuditLogQuery, RESTGetAPIAuditLogResult } from 'discord-api-types/v6';
 import { Event, EventStore, KlasaGuild } from 'klasa';
 
 export default class extends Event {
@@ -57,13 +51,9 @@ export default class extends Event {
 			query
 		});
 
-		const entry = auditLogs.audit_log_entries.find(
-			(e) => e.user_id !== CLIENT_ID && e.target_id === data.user!.id && e.changes?.find((c) => c.key === '$add')
-		);
-		if (typeof entry === 'undefined') return;
+		const updatedRoleID = this.getChange(auditLogs, data.user!.id);
+		if (updatedRoleID === null) return;
 
-		const change = entry.changes!.find((c) => c.key === '$add') as APIAuditLogChangeKey$Add;
-		const updatedRoleID = change.new_value![0].id;
 		let memberRoles = data.roles;
 		for (const set of allRoleSets) {
 			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter((id) => !set.roles.includes(id) || id === updatedRoleID);
@@ -73,5 +63,27 @@ export default class extends Event {
 			.guilds(guild.id)
 			.members(data.user!.id)
 			.patch({ data: { roles: memberRoles }, reason: 'Automatic Role Group Modification' });
+	}
+
+	private getChange(results: RESTGetAPIAuditLogResult, userID: string): string | null {
+		// Scan the audit logs.
+		for (const result of results.audit_log_entries) {
+			// If it was given by Skyra, continue.
+			if (result.user_id === CLIENT_ID) continue;
+
+			// If the target isn't the edited user, continue.
+			if (result.target_id !== userID) continue;
+
+			// If there are no changes, continue.
+			if (typeof result.changes === 'undefined') continue;
+
+			// Scan the changes.
+			for (const change of result.changes) {
+				if (change.key === '$add') return change.new_value![0].id;
+			}
+		}
+
+		// No changes found.
+		return null;
 	}
 }

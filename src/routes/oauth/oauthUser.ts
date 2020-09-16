@@ -1,6 +1,5 @@
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { REDIRECT_URI, SCOPE } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
@@ -163,6 +162,14 @@ export default class extends Route {
 
 		return canManage(guild, member);
 	}
+}
+
+interface OauthData {
+	access_token: string;
+	expires_in: number;
+	refresh_token: string;
+	scope: string;
+	token_type: string;
 }
 
 interface RawOauthUser {

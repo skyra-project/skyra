@@ -84,7 +84,7 @@ export interface LLRCDataEmoji {
 	animated: boolean;
 	id: string | null;
 	managed: boolean | null;
-	name: string;
+	name: string | null;
 	requireColons: boolean | null;
 	roles: string[] | null;
 	user: User | { id: string };

@@ -21,11 +21,12 @@ export class PlayerHuman extends Player {
 			this.game.llrc?.setTime(Time.Minute * 5);
 			this.game.llrc?.setEndListener(() => resolve(''));
 			this.game.llrc?.setListener((data) => {
-				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(data.emoji.name)) {
+				const reactionID = data.emoji.id ?? data.emoji.name!;
+				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(reactionID)) {
 					if (this.game.manageMessages) {
 						this.removeEmoji(data.emoji, data.userID).catch((error) => this.game.message.client.emit(Events.ApiError, error));
 					}
-					resolve(data.emoji.name);
+					resolve(reactionID);
 				}
 			});
 		});

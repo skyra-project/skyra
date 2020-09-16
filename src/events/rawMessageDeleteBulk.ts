@@ -1,9 +1,9 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { WSMessageDeleteBulk } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
+import { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -12,9 +12,12 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.MessageDeleteBulk, emitter: store.client.ws });
 	}
 
-	public async run(data: WSMessageDeleteBulk): Promise<void> {
+	public async run(data: GatewayMessageDeleteBulkDispatch['d']): Promise<void> {
+		if (!data.guild_id) return;
+
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
+
 		for (const id of data.ids) guild.starboard.delete(id);
 
 		// Delete entries from starboard if it exists

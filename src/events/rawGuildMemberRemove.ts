@@ -1,11 +1,11 @@
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Colors } from '@lib/types/constants/Constants';
-import { APIUserData, WSGuildMemberRemove } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
+import { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -23,7 +23,7 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.GuildMemberRemove, emitter: store.client.ws });
 	}
 
-	public async run(data: WSGuildMemberRemove) {
+	public async run(data: GatewayGuildMemberRemoveDispatch['d']) {
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.available) return;
 
@@ -35,7 +35,7 @@ export default class extends Event {
 		}
 	}
 
-	private async handleMemberLog(guild: Guild, data: WSGuildMemberRemove) {
+	private async handleMemberLog(guild: Guild, data: GatewayGuildMemberRemoveDispatch['d']) {
 		const member = guild.members.cache.get(data.user.id);
 		const isModerationAction = await this.isModerationAction(guild, data);
 
@@ -63,7 +63,7 @@ export default class extends Event {
 		);
 	}
 
-	private async isModerationAction(guild: SkyraGuild, data: WSGuildMemberRemove): Promise<IsModerationAction> {
+	private async isModerationAction(guild: SkyraGuild, data: GatewayGuildMemberRemoveDispatch['d']): Promise<IsModerationAction> {
 		await guild.moderation.waitLock();
 
 		const latestLogForUser = guild.moderation.getLatestLogForUser(data.user.id);
@@ -89,7 +89,7 @@ export default class extends Event {
 		return Date.now() - member.joinedTimestamp;
 	}
 
-	private handleFarewellMessage(guild: Guild, user: APIUserData) {
+	private handleFarewellMessage(guild: Guild, user: APIUser) {
 		const channelsFarewell = guild.settings.get(GuildSettings.Channels.Farewell);
 		const messagesFarewell = guild.settings.get(GuildSettings.Messages.Farewell);
 		if (channelsFarewell && messagesFarewell) {
@@ -102,7 +102,7 @@ export default class extends Event {
 		}
 	}
 
-	private transformMessage(guild: Guild, user: APIUserData) {
+	private transformMessage(guild: Guild, user: APIUser) {
 		return guild.settings.get(GuildSettings.Messages.Farewell).replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
 				case Matches.Member:

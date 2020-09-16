@@ -1,6 +1,5 @@
 import Collection from '@discordjs/collection';
 import { Colors } from '@lib/types/constants/Constants';
-import { APIUserData, WSMessageReactionAdd } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
@@ -8,6 +7,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { floatPromise, isTextBasedChannel, resolveEmoji, twemoji } from '@utils/util';
+import { APIUser, GatewayMessageReactionAddDispatch } from 'discord-api-types/v6';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -20,14 +20,14 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.MessageReactionAdd, emitter: store.client.ws });
 	}
 
-	public run(raw: WSMessageReactionAdd) {
+	public run(raw: GatewayMessageReactionAddDispatch['d']) {
 		const channel = this.client.channels.cache.get(raw.channel_id) as TextChannel | undefined;
 		if (!channel || !isTextBasedChannel(channel) || !channel.readable) return;
 
 		const data: LLRCData = {
 			channel,
 			emoji: {
-				animated: raw.emoji.animated,
+				animated: raw.emoji.animated ?? false,
 				id: raw.emoji.id,
 				managed: 'managed' in raw.emoji ? raw.emoji.managed! : null,
 				name: raw.emoji.name,
@@ -83,7 +83,7 @@ export default class extends Event {
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setThumbnail(
 					data.emoji.id === null
-						? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
+						? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name!)}.png`
 						: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 				)
 				.setDescription(
@@ -150,7 +150,7 @@ export default class extends Event {
 	}
 
 	private async fetchCount(data: LLRCData, emoji: string, id: string) {
-		const users = (await api(this.client).channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUserData[];
+		const users = (await api(this.client).channels(data.channel.id).messages(data.messageID).reactions(emoji).get()) as APIUser[];
 		const count: InternalCacheEntry = { count: users.length, sweepAt: Date.now() + 120000 };
 		this.kCountCache.set(id, count);
 		this.kSyncCache.delete(id);

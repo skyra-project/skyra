@@ -92,7 +92,7 @@ export default class extends ModerationEvent<ArgumentType> {
 			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setThumbnail(
 				data.emoji.id === null
-					? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name)}.png`
+					? `https://twemoji.maxcdn.com/72x72/${twemoji(data.emoji.name!)}.png`
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(

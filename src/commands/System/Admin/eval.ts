@@ -5,6 +5,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { clean } from '@utils/clean';
 import { EvalExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { sleep } from '@utils/sleep';
+import { cast } from '@utils/util';
 import { KlasaMessage, Stopwatch, Type } from 'klasa';
 import { inspect } from 'util';
 
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 
 		if (message.flagArgs.silent) {
-			if (!success && result && ((result as unknown) as Error).stack) this.client.emit(Events.Wtf, ((result as unknown) as Error).stack);
+			if (!success && result && cast<Error>(result).stack) this.client.emit(Events.Wtf, cast<Error>(result).stack);
 			return null;
 		}
 

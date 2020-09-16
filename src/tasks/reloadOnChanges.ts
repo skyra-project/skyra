@@ -3,7 +3,7 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { PartialResponseValue } from '@orm/entities/ScheduleEntity';
 import { WATCH_FILES } from '@root/config';
-import { floatPromise } from '@utils/util';
+import { cast, floatPromise } from '@utils/util';
 import { watch } from 'chokidar';
 import { KlasaMessage, Piece, Stopwatch, Task } from 'klasa';
 import { basename, extname, join, sep } from 'path';
@@ -16,14 +16,14 @@ const nodeModules = `${sep}node_modules${sep}`;
  * your bot. Test this piece on a test bot before using it in production.
  */
 
-const fakeMessage = ({
+const fakeMessage = cast<KlasaMessage>({
 	sendLocale() {
 		return Promise.resolve({});
 	},
 	sendMessage() {
 		return Promise.resolve({});
 	}
-} as unknown) as KlasaMessage;
+});
 
 interface Reload extends SkyraCommand {
 	everything(message: KlasaMessage): Promise<unknown>;

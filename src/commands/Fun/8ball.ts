@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { codeBlock } from '@sapphire/utilities';
-import { pickRandom } from '@utils/util';
+import { cast, pickRandom } from '@utils/util';
 import { CommandStore, KlasaMessage, Language, LanguageKeysSimple } from 'klasa';
 
 const QUESTION_KEYS: (keyof EightBallLanguage)[] = ['HowMany', 'HowMuch', 'What', 'When', 'Who', 'Why'];
@@ -32,8 +32,7 @@ export default class extends SkyraCommand {
 	}
 
 	private generator(input: string, i18n: Language) {
-		const prefixes = ((i18n.language.command8ballQuestions ||
-			this.client.languages.default.language.command8ballQuestions) as unknown) as EightBallLanguage;
+		const prefixes = cast<EightBallLanguage>(i18n.language.command8ballQuestions || this.client.languages.default.language.command8ballQuestions);
 
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) return pickRandom(i18n.get(`command8ball${key}` as ReplyTypes));

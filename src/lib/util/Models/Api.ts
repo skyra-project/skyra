@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 
 export function api(client: Client) {
-	return ((client as unknown) as { api: Api }).api;
+	return Reflect.get(client, 'api') as Api;
 }
 
 interface Api {

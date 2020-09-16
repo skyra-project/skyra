@@ -4,7 +4,7 @@ import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
-import { floatPromise } from '@utils/util';
+import { cast, floatPromise } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
@@ -119,7 +119,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	protected prehandle(message: KlasaMessage, context: CommandContext): Promise<T> | T {
-		return (null as unknown) as T;
+		return cast<T>(null);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars

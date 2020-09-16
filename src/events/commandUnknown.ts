@@ -2,8 +2,8 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CommandHandler } from '@lib/types/definitions/Internals';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { floatPromise } from '@utils/util';
-import { Command, CommandPrompt, Event, KlasaMessage, Stopwatch } from 'klasa';
+import { cast, floatPromise } from '@utils/util';
+import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
 
 export default class extends Event {
 	public run(message: KlasaMessage, command: string) {
@@ -27,14 +27,18 @@ export default class extends Event {
 	}
 
 	public runCommand(message: KlasaMessage, command: Command) {
-		const commandHandler = (this.client.monitors.get('commandHandler') as unknown) as CommandHandler;
+		const commandHandler = cast<CommandHandler>(this.client.monitors.get('commandHandler'));
 		message.command = command;
-		((message as unknown) as { prompter: CommandPrompt }).prompter = message.command.usage.createPrompt(message, {
-			flagSupport: message.command.flagSupport,
-			quotedStringSupport: message.command.quotedStringSupport,
-			time: message.command.promptTime,
-			limit: message.command.promptLimit
-		});
+		Reflect.set(
+			message,
+			'prompter',
+			message.command.usage.createPrompt(message, {
+				flagSupport: message.command.flagSupport,
+				quotedStringSupport: message.command.quotedStringSupport,
+				time: message.command.promptTime,
+				limit: message.command.promptLimit
+			})
+		);
 		return commandHandler.runCommand(message);
 	}
 

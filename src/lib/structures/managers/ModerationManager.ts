@@ -3,7 +3,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { StrictRequired } from '@lib/types/util';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Time } from '@utils/constants';
-import { createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
+import { cast, createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
 import { DbSet } from '../DbSet';
@@ -180,7 +180,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	}
 
 	public static get [Symbol.species]() {
-		return (Collection as unknown) as CollectionConstructor;
+		return cast<CollectionConstructor>(Collection);
 	}
 }
 

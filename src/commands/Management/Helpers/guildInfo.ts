@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { cast } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -27,7 +28,7 @@ export default class extends SkyraCommand {
 			else cChannels++;
 		}
 
-		const serverInfoTitles = (message.language.get('commandGuildInfoTitles') as unknown) as ServerInfoTitles;
+		const serverInfoTitles = cast<ServerInfoTitles>(message.language.get('commandGuildInfoTitles'));
 		const roles = [...message.guild!.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild!.ownerID);

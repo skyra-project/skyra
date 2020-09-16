@@ -1,5 +1,6 @@
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { noop } from '@sapphire/utilities';
+import { cast } from '@utils/util';
 import { Collection, Guild, GuildMember } from 'discord.js';
 
 /**
@@ -48,7 +49,7 @@ export class AntiRaid extends Collection<string, AntiRaidEntry> {
 	public create(id: string) {
 		const rateLimit = { id, time: Date.now() + 20000 };
 		this.set(id, rateLimit);
-		if (!this._sweepInterval) this._sweepInterval = (setInterval(this.sweep.bind(this), 30000) as unknown) as NodeJS.Timeout;
+		if (!this._sweepInterval) this._sweepInterval = cast<NodeJS.Timeout>(setInterval(this.sweep.bind(this), 30000));
 		return rateLimit;
 	}
 

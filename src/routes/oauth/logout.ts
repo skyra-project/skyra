@@ -1,6 +1,5 @@
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { OauthData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
@@ -38,4 +37,13 @@ export default class extends Route {
 		response.cookies.add('SKYRA_AUTH', '', { expires: new Date(0) });
 		response.json({ success: true });
 	}
+}
+
+// TODO(kyranet): remove cast once @vladfrangu adds OAuth data
+interface OauthData {
+	access_token: string;
+	expires_in: number;
+	refresh_token: string;
+	scope: string;
+	token_type: string;
 }

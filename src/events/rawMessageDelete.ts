@@ -1,10 +1,10 @@
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { DbSet } from '@lib/structures/DbSet';
-import { WSMessageDelete } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
+import { GatewayMessageDeleteDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -13,14 +13,16 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.MessageDelete, emitter: store.client.ws });
 	}
 
-	public async run(data: WSMessageDelete): Promise<void> {
+	public async run(data: GatewayMessageDeleteDispatch['d']): Promise<void> {
+		if (!data.guild_id) return;
+
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
 
 		await this.handleStarboard(guild, data);
 	}
 
-	private async handleStarboard(guild: SkyraGuild, data: WSMessageDelete) {
+	private async handleStarboard(guild: SkyraGuild, data: GatewayMessageDeleteDispatch['d']) {
 		guild.starboard.delete(data.id);
 
 		// Delete entry from starboard if it exists

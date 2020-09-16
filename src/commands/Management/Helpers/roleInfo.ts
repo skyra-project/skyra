@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { BrandingColors } from '@utils/constants';
+import { cast } from '@utils/util';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage, [role = message.member!.roles.highest]: [Role?]) {
-		const roleInfoTitles = (message.language.get('commandRoleInfoTitles') as unknown) as RoleInfoTitles;
+		const roleInfoTitles = cast<RoleInfoTitles>(message.language.get('commandRoleInfoTitles'));
 
 		const permissions = role.permissions.has(Permissions.FLAGS.ADMINISTRATOR)
 			? message.language.get('commandRoleInfoAll')

@@ -1,8 +1,9 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors, ConnectFourConstants, Time } from '@utils/constants';
+import { ConnectFourConstants, Time } from '@utils/constants';
 import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { resolveEmoji } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, User } from 'discord.js';
 import { Cell } from './Board';
 import { Game } from './Game';
@@ -21,11 +22,12 @@ export class PlayerHuman extends Player {
 			this.game.llrc?.setTime(Time.Minute * 5);
 			this.game.llrc?.setEndListener(() => resolve(''));
 			this.game.llrc?.setListener((data) => {
-				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(data.emoji.name)) {
+				const reactionID = data.emoji.id ?? data.emoji.name!;
+				if (data.userID === this.player.id && ConnectFourConstants.Reactions.includes(reactionID)) {
 					if (this.game.manageMessages) {
 						this.removeEmoji(data.emoji, data.userID).catch((error) => this.game.message.client.emit(Events.ApiError, error));
 					}
-					resolve(data.emoji.name);
+					resolve(reactionID);
 				}
 			});
 		});
@@ -51,7 +53,7 @@ export class PlayerHuman extends Player {
 			await api(message.client).channels(message.channel.id).messages(message.id).reactions(resolveEmoji(emoji)!)(userID).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return;
+				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return;
 			}
 
 			this.game.message.client.emit(Events.ApiError, error);

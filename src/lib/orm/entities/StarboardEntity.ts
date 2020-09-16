@@ -3,8 +3,8 @@ import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { cutText } from '@sapphire/utilities';
-import { APIErrors } from '@utils/constants';
 import { fetchReactionUsers, getImage } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
@@ -210,7 +210,7 @@ export class StarboardEntity extends BaseEntity {
 			this.#starMessage = await channel.messages.fetch(this.starMessageID);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage) await this.destroy();
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.destroy();
 			}
 		}
 	}
@@ -231,8 +231,8 @@ export class StarboardEntity extends BaseEntity {
 			this.#users.delete(this.#message.author.id);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.MissingAccess) return;
-				if (error.code === APIErrors.UnknownMessage) await this.destroy();
+				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.destroy();
 				return;
 			}
 		}
@@ -257,8 +257,8 @@ export class StarboardEntity extends BaseEntity {
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-				if (error.code === APIErrors.MissingAccess) return;
-				if (error.code === APIErrors.UnknownMessage) await this.edit({ starMessageID: null, enabled: false });
+				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.edit({ starMessageID: null, enabled: false });
 			}
 		} else {
 			const promise = this.#manager.starboardChannel
@@ -270,7 +270,7 @@ export class StarboardEntity extends BaseEntity {
 				.catch((error) => {
 					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-					if (error.code === APIErrors.MissingAccess) return;
+					if (error.code === RESTJSONErrorCodes.MissingAccess) return;
 					// Emit to console
 					this.#client.emit(Events.Wtf, error);
 				})

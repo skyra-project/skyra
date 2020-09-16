@@ -4,9 +4,10 @@ import { ModerationAction } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
-import { APIErrors, Moderation } from '@utils/constants';
+import { Moderation } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { floatPromise } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	DiscordAPIError,
 	Guild,
@@ -612,7 +613,7 @@ export class ModerationActions {
 			return true;
 		} catch (error) {
 			if (!(error instanceof DiscordAPIError)) throw this.guild.language.get('systemFetchbansFail');
-			if (error.code === APIErrors.UnknownBan) return false;
+			if (error.code === RESTJSONErrorCodes.UnknownBan) return false;
 			throw error;
 		}
 	}
@@ -627,7 +628,7 @@ export class ModerationActions {
 			const member = await this.guild.members.fetch(user.id);
 			return member.voice.serverMute;
 		} catch (error) {
-			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownUser) {
+			if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownUser) {
 				return false;
 			}
 
@@ -683,7 +684,7 @@ export class ModerationActions {
 				const embed = this.buildEmbed(entry, sendOptions);
 				floatPromise({ client: this.guild.client }, target.sendEmbed(embed));
 			} catch (error) {
-				if (error.code === APIErrors.CannotMessageUser) return;
+				if (error.code === RESTJSONErrorCodes.CannotSendMessagesToThisUser) return;
 				this.guild.client.emit(Events.Error, error);
 			}
 		}
@@ -731,7 +732,7 @@ export class ModerationActions {
 			const member = await this.guild.members.fetch(rawOptions.userID);
 			return this.muteUserInGuild(member, this.getReason('mute', rawOptions.reason || null));
 		} catch (error) {
-			if (error.code === APIErrors.UnknownMember) throw this.guild.language.get('actionRequiredMember');
+			if (error.code === RESTJSONErrorCodes.UnknownMember) throw this.guild.language.get('actionRequiredMember');
 			throw error;
 		}
 	}
@@ -761,7 +762,7 @@ export class ModerationActions {
 				? this.unmuteUserInGuildWithoutData(member, this.getReason('mute', options.reason, true))
 				: this.unmuteUserInGuildWithData(member, this.getReason('mute', options.reason, true), moderationLog);
 		} catch (error) {
-			if (error.code !== APIErrors.UnknownMember) throw error;
+			if (error.code !== RESTJSONErrorCodes.UnknownMember) throw error;
 		}
 	}
 
@@ -857,7 +858,7 @@ export class ModerationActions {
 		try {
 			await api(this.guild.client).guilds(this.guild.id).members(id).roles(roleID).delete();
 		} catch (error) {
-			if (error.code !== APIErrors.UnknownMember) throw error;
+			if (error.code !== RESTJSONErrorCodes.UnknownMember) throw error;
 		}
 	}
 

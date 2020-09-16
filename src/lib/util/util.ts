@@ -1,12 +1,12 @@
 import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { APIUserData } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
+import { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	Channel,
 	Client,
@@ -24,7 +24,7 @@ import {
 import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
-import { APIErrors, Time, ZeroWidhSpace } from './constants';
+import { Time, ZeroWidhSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -99,11 +99,11 @@ export function announcementCheck(message: Message) {
 }
 
 export interface EmojiObject extends EmojiObjectPartial {
-	animated: boolean;
+	animated?: boolean;
 }
 
 export interface EmojiObjectPartial {
-	name: string;
+	name: string | null;
 	id: string | null;
 }
 
@@ -121,7 +121,7 @@ export function resolveEmoji(emoji: string | EmojiObject): string | null {
 	}
 
 	// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
-	return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name);
+	return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name!.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name!);
 }
 
 export function displayEmoji(emoji: string): string {
@@ -145,7 +145,7 @@ export function compareEmoji(emoji: string, matching: string | EmojiObjectPartia
 	}
 
 	return (
-		emojiExecResult[2] === matching.name.replace(/~\d+/, '') && emojiExecResult[3] === matching.id // name
+		emojiExecResult[2] === matching.name!.replace(/~\d+/, '') && emojiExecResult[3] === matching.id // name
 	); // id
 }
 
@@ -282,7 +282,7 @@ export async function fetchAvatar(user: User, size: ImageSize = 512): Promise<Im
 
 export async function fetchReactionUsers(client: Client, channelID: string, messageID: string, reaction: string) {
 	const users: Set<string> = new Set();
-	let rawUsers: APIUserData[] = [];
+	let rawUsers: APIUser[] = [];
 
 	// Fetch loop, to get +100 users
 	do {
@@ -290,7 +290,7 @@ export async function fetchReactionUsers(client: Client, channelID: string, mess
 			.channels(channelID)
 			.messages(messageID)
 			.reactions(reaction)
-			.get<APIUserData[]>({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } });
+			.get<APIUser[]>({ query: { limit: 100, after: rawUsers.length ? rawUsers[rawUsers.length - 1].id : undefined } });
 		for (const user of rawUsers) users.add(user.id);
 	} while (rawUsers.length === 100);
 
@@ -404,7 +404,7 @@ export function getImage(message: Message): string | null {
 }
 
 const ROOT = 'https://cdn.discordapp.com';
-export function getDisplayAvatar(id: string, user: User | APIUserData, options: ImageURLOptions = {}) {
+export function getDisplayAvatar(id: string, user: User | APIUser, options: ImageURLOptions = {}) {
 	if (user.avatar === null) return `${ROOT}/embed/avatars/${Number(user.discriminator) % 5}.png`;
 	const format = typeof options.format === 'undefined' ? (user.avatar.startsWith('a_') ? 'gif' : 'png') : options.format;
 	const size = typeof options.size === 'undefined' ? '' : `?size=${options.size}`;
@@ -537,13 +537,17 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 	return value;
 }
 
-export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly APIErrors[]) {
+export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly RESTJSONErrorCodes[]) {
 	try {
 		return await promise;
 	} catch (error) {
 		if (error instanceof DiscordAPIError && codes.includes(error.code)) return null;
 		throw error;
 	}
+}
+
+export function cast<T>(value: unknown): T {
+	return value as T;
 }
 
 export interface BidirectionalReplaceOptions<T> {

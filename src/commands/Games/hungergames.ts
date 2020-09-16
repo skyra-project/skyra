@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 						(await this.collectorInhibitor(message, gameMessage!, reaction))
 					)
 						return;
-					resolve(Boolean(this.kEmojis.indexOf(reaction.emoji.name)));
+					resolve(Boolean(this.kEmojis.indexOf(reaction.emoji.id ?? reaction.emoji.name!)));
 					resolve = null;
 				},
 				() => {
@@ -128,7 +128,7 @@ export default class extends SkyraCommand {
 		if (reaction.messageID !== gameMessage.id) return true;
 
 		// If the emoji reacted is not valid, inhibit
-		if (!this.kEmojis.includes(reaction.emoji.name)) return true;
+		if (!this.kEmojis.includes(reaction.emoji.id ?? reaction.emoji.name!)) return true;
 
 		// If the user who reacted is the author, don't inhibit
 		if (reaction.userID === message.author.id) return false;

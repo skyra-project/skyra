@@ -3,7 +3,7 @@
 import { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { APIWebhookData } from '@lib/types/DiscordAPI';
+import { APIWebhook } from 'discord-api-types/v6';
 import { KlasaClientOptions, PostgresOptions } from 'klasa';
 
 export const WATCH_FILES = true;
@@ -148,9 +148,9 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	}
 };
 
-export const WEBHOOK_FEEDBACK: APIWebhookData | null = null;
+export const WEBHOOK_FEEDBACK: Partial<APIWebhook> | null = null;
 
-export const WEBHOOK_ERROR: APIWebhookData = {
+export const WEBHOOK_ERROR: Partial<APIWebhook> = {
 	avatar: '33f84e7a6a5596bafb2b56d218ee8c8d',
 	channel_id: '648663012345118741',
 	guild_id: '541738403230777351',
@@ -159,7 +159,7 @@ export const WEBHOOK_ERROR: APIWebhookData = {
 	token: ''
 };
 
-export const WEBHOOK_DATABASE: APIWebhookData | null = null;
+export const WEBHOOK_DATABASE: Partial<APIWebhook> | null = null;
 
 export const TOKENS = {
 	BLIZZARD_KEY: '',

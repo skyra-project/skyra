@@ -1,12 +1,12 @@
 import { Snowflake } from '@klasa/snowflake';
 import { DbSet } from '@lib/structures/DbSet';
-import { WSChannelDelete } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { APIErrors, Time } from '@utils/constants';
+import { Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { resolveOnErrorCodes } from '@utils/util';
+import { GatewayChannelDeleteDispatch, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
@@ -14,13 +14,13 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.ChannelDelete, emitter: store.client.ws });
 	}
 
-	public async run(data: WSChannelDelete) {
+	public async run(data: GatewayChannelDeleteDispatch['d']) {
 		if (!data.guild_id) return;
 
 		const guild = this.client.guilds.cache.get(data.guild_id);
-		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
+		if (!guild || !guild.channels.cache.has(data.id)) return;
 		for (const [key, value] of guild.starboard.entries()) {
-			if (data.channel_id === value.channelID) guild.starboard.delete(key);
+			if (data.id === value.channelID) guild.starboard.delete(key);
 		}
 
 		// Delete entries from starboard if it exists
@@ -30,7 +30,7 @@ export default class extends Event {
 				.createQueryBuilder()
 				.delete()
 				.where('guild_id = :guild', { guild: data.guild_id })
-				.andWhere('channel_id = :channel', { channel: data.channel_id })
+				.andWhere('channel_id = :channel', { channel: data.id })
 				.returning('*')
 				.execute();
 
@@ -69,14 +69,14 @@ export default class extends Event {
 	private deleteMessage(channel: string, message: string) {
 		return resolveOnErrorCodes(
 			api(this.client).channels(channel).messages(message).delete({ reason: 'Starboard Management: Message Deleted' }),
-			APIErrors.UnknownMessage
+			RESTJSONErrorCodes.UnknownMessage
 		);
 	}
 
 	private deleteMessages(channel: string, messages: readonly string[]) {
 		return resolveOnErrorCodes(
 			api(this.client).channels(channel).messages['bulk-delete'].post({ data: { messages }, reason: 'Starboard Management: Message Deleted' }),
-			APIErrors.UnknownMessage
+			RESTJSONErrorCodes.UnknownMessage
 		);
 	}
 }

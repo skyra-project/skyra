@@ -4,8 +4,8 @@ import { PermissionsManager } from '@lib/structures/managers/PermissionsManager'
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '@lib/structures/managers/StickyRoleManager';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
-import { WSGuildCreate } from '@lib/types/DiscordAPI';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Structures } from 'discord.js';
 
 export class SkyraGuild extends Structures.get('Guild') {
@@ -26,7 +26,7 @@ declare module 'discord.js' {
 		readonly music: MusicHandler;
 		readonly stickyRoles: StickyRoleManager;
 
-		_patch(data: WSGuildCreate & { shardID: number }): void;
+		_patch(data: GatewayGuildCreateDispatch['d'] & { shardID: number }): void;
 	}
 }
 

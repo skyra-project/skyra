@@ -1,7 +1,8 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors, ConnectFourConstants } from '@utils/constants';
+import { ConnectFourConstants } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { floatPromise, pickRandom } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { Board } from './Board';
@@ -91,8 +92,11 @@ export class Game {
 			await this.message.edit(`${this.content}\n${this.board.render()}`);
 			this._retries = 3;
 		} catch (error) {
-			if (error instanceof DiscordAPIError && (error.code === APIErrors.UnknownChannel || error.code === APIErrors.UnknownMessage)) {
-				if (error.code !== APIErrors.UnknownChannel) await this.message.alert(this.message.language.get('commandC4GameDraw'));
+			if (
+				error instanceof DiscordAPIError &&
+				(error.code === RESTJSONErrorCodes.UnknownChannel || error.code === RESTJSONErrorCodes.UnknownMessage)
+			) {
+				if (error.code !== RESTJSONErrorCodes.UnknownChannel) await this.message.alert(this.message.language.get('commandC4GameDraw'));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

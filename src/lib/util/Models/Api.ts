@@ -1,7 +1,7 @@
 import { Client } from 'discord.js';
 
 export function api(client: Client) {
-	return ((client as unknown) as { api: Api }).api;
+	return Reflect.get(client, 'api') as Api;
 }
 
 interface Api {
@@ -1096,7 +1096,8 @@ interface ApiWebhooksWebhookTokenGitHub {
 }
 
 interface ApiMethods {
-	get<T extends unknown>(data?: { query?: Record<string, string | number | undefined> }): Promise<T>;
+	// eslint-disable-next-line @typescript-eslint/ban-types
+	get<T extends unknown>(data?: { query?: {} }): Promise<T>;
 	post<T extends unknown>(data: unknown): Promise<T>;
 	put<T extends unknown>(data?: unknown): Promise<T>;
 	patch<T extends unknown>(data: unknown): Promise<T>;

@@ -1,10 +1,11 @@
 import { Events } from '@lib/types/Enums';
 import { toTitleCase } from '@sapphire/utilities';
-import { APIErrors, BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
+import { BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
 import { floatPromise, pickRandom } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
 import { DbSet } from './DbSet';
@@ -167,13 +168,13 @@ export class SettingsMenu {
 				.delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage) {
+				if (error.code === RESTJSONErrorCodes.UnknownMessage) {
 					this.response = null;
 					this.llrc?.end();
 					return this;
 				}
 
-				if (error.code === APIErrors.UnknownEmoji) {
+				if (error.code === RESTJSONErrorCodes.UnknownEmoji) {
 					return this;
 				}
 			}
@@ -188,7 +189,7 @@ export class SettingsMenu {
 		try {
 			await this.response.react(emoji);
 		} catch (error) {
-			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
+			if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
 				this.response = null;
 				this.llrc?.end();
 			} else {
@@ -202,7 +203,7 @@ export class SettingsMenu {
 		try {
 			await this.response.edit(await this.render());
 		} catch (error) {
-			if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
+			if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
 				this.response = null;
 				this.llrc?.end();
 			} else {

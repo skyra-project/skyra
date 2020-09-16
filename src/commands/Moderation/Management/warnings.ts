@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { cast } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -18,7 +19,7 @@ export default class extends SkyraCommand {
 	}
 
 	public run(message: KlasaMessage, [target]: [User?]) {
-		const moderations = (this.store.get('moderations') as unknown) as Moderations | undefined;
+		const moderations = cast<Moderations | undefined>(this.store.get('moderations'));
 		if (typeof moderations === 'undefined') throw new Error('Moderations command not loaded yet.');
 		return moderations.run(message, ['warnings', target]);
 	}

@@ -1,9 +1,9 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { WSMessageReactionRemoveAll } from '@lib/types/DiscordAPI';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { api } from '@utils/Models/Api';
+import { GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
@@ -12,9 +12,12 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.MessageReactionRemoveAll, emitter: store.client.ws });
 	}
 
-	public async run(data: WSMessageReactionRemoveAll): Promise<void> {
+	public async run(data: GatewayMessageReactionRemoveAllDispatch['d']): Promise<void> {
+		if (!data.guild_id) return;
+
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
+
 		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
 
 		// Delete entry from starboard if it exists

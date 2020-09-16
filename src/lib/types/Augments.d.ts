@@ -11,13 +11,12 @@ import type { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import type { Twitch } from '@utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import type { FSWatcher } from 'chokidar';
-import { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
+import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import type { PermissionString } from 'discord.js';
 import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
 import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
 import type { Client as VezaClient } from 'veza';
-import type { APIUserData } from './DiscordAPI';
 import type { Events } from './Enums';
 import type { CustomGet } from './settings/Shared';
 
@@ -91,7 +90,7 @@ declare module 'discord.js' {
 
 	interface User {
 		fetchRank(): Promise<number>;
-		_patch(data: APIUserData): void;
+		_patch(data: APIUser): void;
 	}
 
 	interface UserManager {

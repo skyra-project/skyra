@@ -1,6 +1,6 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors } from '@utils/constants';
 import { sleep } from '@utils/sleep';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 
@@ -81,7 +81,7 @@ async function nuke(message: Message) {
 	try {
 		return await message.delete();
 	} catch (error) {
-		if (error.code === APIErrors.UnknownMessage) return message;
+		if (error.code === RESTJSONErrorCodes.UnknownMessage) return message;
 		throw error;
 	}
 }

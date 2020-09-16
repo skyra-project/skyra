@@ -3,9 +3,10 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
-import { APIErrors, Moderation } from '@utils/constants';
+import { Moderation } from '@utils/constants';
 import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
 import { constants, KlasaGuild, KlasaMessage, Timestamp } from 'klasa';
 
@@ -122,7 +123,7 @@ export default class extends SkyraCommand {
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
 		await (message.channel as TextChannel).bulkDelete(filteredKeys).catch((error) => {
-			if (error.code !== APIErrors.UnknownMessage) throw error;
+			if (error.code !== RESTJSONErrorCodes.UnknownMessage) throw error;
 		});
 
 		// Send prune logs and reply to the channel

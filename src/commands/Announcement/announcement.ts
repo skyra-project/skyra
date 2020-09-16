@@ -2,8 +2,9 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ApplyOptions } from '@skyra/decorators';
-import { APIErrors, BrandingColors } from '@utils/constants';
+import { BrandingColors } from '@utils/constants';
 import { announcementCheck, extractMentions } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -80,7 +81,7 @@ export default class extends SkyraCommand {
 					: await previous.edit(`${header}:\n${announcement}`);
 				this.client.emit(Events.GuildAnnouncementEdit, message, resultMessage, channel, role, header);
 			} catch (error) {
-				if (error instanceof DiscordAPIError && error.code === APIErrors.UnknownMessage) {
+				if (error instanceof DiscordAPIError && error.code === RESTJSONErrorCodes.UnknownMessage) {
 					const resultMessage = shouldSendAsEmbed
 						? await channel.sendEmbed(
 								this.buildEmbed(announcement),

@@ -5,8 +5,8 @@ import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import type { KlasaMessage } from 'klasa';
 
@@ -46,7 +46,7 @@ const enum SuggestionsColors {
 			if (!suggestionData) throw message.language.get('commandResolveSuggestionIdNotFound');
 
 			const channel = message.client.channels.cache.get(channelID) as TextChannel;
-			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), APIErrors.UnknownMessage);
+			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), RESTJSONErrorCodes.UnknownMessage);
 			if (suggestionMessage === null) {
 				await suggestionData.remove();
 				throw message.language.get('commandResolveSuggestionMessageNotFound');

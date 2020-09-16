@@ -1,4 +1,5 @@
-import { Extendable, ExtendableStore, Language } from 'klasa';
+import { cast } from '@utils/util';
+import { Extendable, ExtendableStore, Language, LanguageStore } from 'klasa';
 
 export default class extends Extendable {
 	public constructor(store: ExtendableStore, file: string[], directory: string) {
@@ -9,7 +10,7 @@ export default class extends Extendable {
 		const languageKey = Reflect.get(this.language, key);
 		if (languageKey) return languageKey;
 
-		const deft = Reflect.get(this.store, 'default') as Language;
+		const deft = cast<LanguageStore>(this.store).default;
 		return (this !== deft && Reflect.get(deft.language, key)) || null;
 	}
 }

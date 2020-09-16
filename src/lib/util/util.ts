@@ -546,6 +546,10 @@ export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: read
 	}
 }
 
+export function cast<T>(value: unknown): T {
+	return value as T;
+}
+
 export interface BidirectionalReplaceOptions<T> {
 	onMatch(match: RegExpExecArray): T;
 	outMatch(content: string, previous: number, next: number): T;

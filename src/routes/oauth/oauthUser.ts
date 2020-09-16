@@ -7,6 +7,7 @@ import { canManage } from '@utils/API';
 import { Mime, Time } from '@utils/constants';
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '@utils/Models/ApiTransform';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '@utils/util';
+import { APIUser } from 'discord-api-types/v6';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';
@@ -14,7 +15,7 @@ import { stringify } from 'querystring';
 @ApplyOptions<RouteOptions>({ route: 'oauth/user' })
 export default class extends Route {
 	public async api(token: string) {
-		const oauthUser = await fetch<RawOauthUser>(
+		const oauthUser = await fetch<APIUser>(
 			'https://discord.com/api/users/@me',
 			{
 				headers: { Authorization: `Bearer ${token}` }
@@ -164,23 +165,13 @@ export default class extends Route {
 	}
 }
 
+// TODO(kyranet): remove cast once @vladfrangu adds OAuth data
 interface OauthData {
 	access_token: string;
 	expires_in: number;
 	refresh_token: string;
 	scope: string;
 	token_type: string;
-}
-
-interface RawOauthUser {
-	id: string;
-	username: string;
-	avatar: string;
-	discriminator: string;
-	locale: string;
-	mfa_enabled: boolean;
-	flags: number;
-	premium_type: number;
 }
 
 interface RawOauthGuild {

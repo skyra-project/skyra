@@ -39,6 +39,7 @@ export default class extends Route {
 	}
 }
 
+// TODO(kyranet): remove cast once @vladfrangu adds OAuth data
 interface OauthData {
 	access_token: string;
 	expires_in: number;

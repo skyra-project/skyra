@@ -2409,7 +2409,7 @@ export default class extends Language {
 				['idOrDuration', 'Dependent of action; "list" → ignored; "delete"/"show" → reminder ID; else → duration.'],
 				['description', '(Optional) Dependent of action, this is only read when creating a new reminder.']
 			],
-			examples: ['me 6h to fix this command.', 'list', 'show jedbcuywb', 'delete jedbcuywb']
+			examples: ['me 6h to fix this command.', 'list', 'show 1234', 'delete 1234']
 		},
 		commandReputationDescription: 'Give somebody a reputation point.',
 		commandReputationExtended: {

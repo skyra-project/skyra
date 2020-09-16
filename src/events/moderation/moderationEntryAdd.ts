@@ -1,7 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
-import { APIErrors, Moderation } from '@utils/constants';
+import { Moderation } from '@utils/constants';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event } from 'klasa';
 
@@ -18,7 +19,10 @@ export default class extends Event {
 		try {
 			await channel.send(messageEmbed);
 		} catch (error) {
-			if (error instanceof DiscordAPIError && (error.code === APIErrors.MissingAccess || error.code === APIErrors.MissingPermissions)) {
+			if (
+				error instanceof DiscordAPIError &&
+				(error.code === RESTJSONErrorCodes.MissingAccess || error.code === RESTJSONErrorCodes.MissingPermissions)
+			) {
 				await entry.guild.settings.reset(GuildSettings.Channels.ModerationLogs);
 			}
 		}

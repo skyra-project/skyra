@@ -6,7 +6,7 @@ import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
-import { APIUser } from 'discord-api-types/v6';
+import { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import {
 	Channel,
 	Client,
@@ -24,7 +24,7 @@ import {
 import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
-import { APIErrors, Time, ZeroWidhSpace } from './constants';
+import { Time, ZeroWidhSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -537,7 +537,7 @@ export function getFromPath(object: Record<string, unknown>, path: string | read
 	return value;
 }
 
-export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly APIErrors[]) {
+export async function resolveOnErrorCodes<T>(promise: Promise<T>, ...codes: readonly RESTJSONErrorCodes[]) {
 	try {
 		return await promise;
 	} catch (error) {

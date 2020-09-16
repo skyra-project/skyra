@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Events } from '@lib/types/Enums';
-import { APIErrors } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import WebSocket, { Data } from 'ws';
 import {
 	CloseCodes,
@@ -59,7 +59,7 @@ export default class DashboardWebsocketUser {
 		}
 
 		// Check for the existence of the member:
-		const member = await resolveOnErrorCodes(guild.members.fetch(this.#userID), APIErrors.UnknownMember);
+		const member = await resolveOnErrorCodes(guild.members.fetch(this.#userID), RESTJSONErrorCodes.UnknownMember);
 		if (!member) {
 			this.musicSubscriptions.unsubscribe(message.data.guild_id);
 			this.send({ action: OutgoingWebsocketAction.MusicWebsocketDisconnect, data: { id: message.data.guild_id } });

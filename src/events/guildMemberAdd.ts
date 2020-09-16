@@ -1,8 +1,9 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { APIErrors, MessageLogsEnum } from '@utils/constants';
+import { MessageLogsEnum } from '@utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
 import { Event, LanguageKeysSimple } from 'klasa';
 
@@ -84,7 +85,10 @@ export default class extends Event {
 		if (messagesJoinDM) {
 			floatPromise(
 				this,
-				resolveOnErrorCodes(member.user.send(this.transformMessage(messagesJoinDM, member.guild, member.user)), APIErrors.CannotMessageUser)
+				resolveOnErrorCodes(
+					member.user.send(this.transformMessage(messagesJoinDM, member.guild, member.user)),
+					RESTJSONErrorCodes.CannotSendMessagesToThisUser
+				)
 			);
 		}
 	}

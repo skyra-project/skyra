@@ -3,9 +3,10 @@ import { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
-import { APIErrors, Time } from '@utils/constants';
+import { Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { fetchReactionUsers, resolveEmoji } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
@@ -19,19 +20,19 @@ const enum States {
 
 export const kRawEmoji = '🎉';
 export const kEmoji = resolveEmoji(kRawEmoji)!;
-export const kGiveawayBlockListEditErrors: APIErrors[] = [
-	APIErrors.UnknownMessage,
-	APIErrors.UnknownChannel,
-	APIErrors.UnknownGuild,
-	APIErrors.MissingAccess,
-	APIErrors.InvalidFormBody
+export const kGiveawayBlockListEditErrors: RESTJSONErrorCodes[] = [
+	RESTJSONErrorCodes.UnknownMessage,
+	RESTJSONErrorCodes.UnknownChannel,
+	RESTJSONErrorCodes.UnknownGuild,
+	RESTJSONErrorCodes.MissingAccess,
+	RESTJSONErrorCodes.InvalidFormBodyOrContentType
 ];
-export const kGiveawayBlockListReactionErrors: APIErrors[] = [
-	APIErrors.UnknownMessage,
-	APIErrors.UnknownChannel,
-	APIErrors.UnknownGuild,
-	APIErrors.MissingAccess,
-	APIErrors.UnknownEmoji
+export const kGiveawayBlockListReactionErrors: RESTJSONErrorCodes[] = [
+	RESTJSONErrorCodes.UnknownMessage,
+	RESTJSONErrorCodes.UnknownChannel,
+	RESTJSONErrorCodes.UnknownGuild,
+	RESTJSONErrorCodes.MissingAccess,
+	RESTJSONErrorCodes.UnknownEmoji
 ];
 
 export type GiveawayEntityData = Pick<GiveawayEntity, 'title' | 'endsAt' | 'guildID' | 'channelID' | 'messageID' | 'minimum' | 'minimumWinners'>;
@@ -267,7 +268,7 @@ export class GiveawayEntity extends BaseEntity {
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return [];
+				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants();
 				this.#client.emit(Events.ApiError, error);

@@ -1,8 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { ApplyOptions } from '@skyra/decorators';
-import { APIErrors } from '@utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 				this,
 				resolveOnErrorCodes(
 					user.send(message.language.get('commandDivorceDm', { user: message.author.username })),
-					APIErrors.CannotMessageUser
+					RESTJSONErrorCodes.CannotSendMessagesToThisUser
 				)
 			);
 			return message.sendLocale('commandDivorceSuccess', [{ user: user.toString() }]);

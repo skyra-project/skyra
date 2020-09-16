@@ -1,8 +1,9 @@
 import { Events } from '@lib/types/Enums';
-import { APIErrors, ConnectFourConstants, Time } from '@utils/constants';
+import { ConnectFourConstants, Time } from '@utils/constants';
 import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { resolveEmoji } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, User } from 'discord.js';
 import { Cell } from './Board';
 import { Game } from './Game';
@@ -52,7 +53,7 @@ export class PlayerHuman extends Player {
 			await api(message.client).channels(message.channel.id).messages(message.id).reactions(resolveEmoji(emoji)!)(userID).delete();
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return;
+				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return;
 			}
 
 			this.game.message.client.emit(Events.ApiError, error);

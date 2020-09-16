@@ -3,8 +3,8 @@ import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { kRawEmoji } from '@orm/entities/GiveawayEntity';
 import { CLIENT_ID } from '@root/config';
-import { APIErrors } from '@utils/constants';
 import { fetchReactionUsers, resolveEmoji } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { FetchError } from 'node-fetch';
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 			return [...users];
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
-				if (error.code === APIErrors.UnknownMessage || error.code === APIErrors.UnknownEmoji) return [];
+				if (error.code === RESTJSONErrorCodes.UnknownMessage || error.code === RESTJSONErrorCodes.UnknownEmoji) return [];
 			} else if (error instanceof HTTPError || error instanceof FetchError) {
 				if (error.code === 'ECONNRESET') return this.fetchParticipants(message);
 				this.store.client.emit(Events.ApiError, error);

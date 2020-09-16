@@ -2,8 +2,14 @@ import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/settings/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { api } from '@utils/Models/Api';
-import { cast, floatPromise } from '@utils/util';
-import { APIRole, AuditLogEvent, GatewayGuildMemberUpdateDispatch, RESTGetAPIAuditLogQuery, RESTGetAPIAuditLogResult } from 'discord-api-types/v6';
+import { floatPromise } from '@utils/util';
+import {
+	APIAuditLogChangeKey$Add,
+	AuditLogEvent,
+	GatewayGuildMemberUpdateDispatch,
+	RESTGetAPIAuditLogQuery,
+	RESTGetAPIAuditLogResult
+} from 'discord-api-types/v6';
 import { Event, EventStore, KlasaGuild } from 'klasa';
 
 export default class extends Event {
@@ -51,17 +57,13 @@ export default class extends Event {
 			query
 		});
 
-		// TODO(kyranet): remove cast once @vladfrangu fixes audit-logs
 		const entry = auditLogs.audit_log_entries.find(
-			(e) =>
-				e.user_id !== CLIENT_ID &&
-				e.target_id === data.user!.id &&
-				e.changes?.find((c) => c.key === '$add' && cast<APIRole[]>(c.new_value)!.length)
+			(e) => e.user_id !== CLIENT_ID && e.target_id === data.user!.id && e.changes?.find((c) => c.key === '$add')
 		);
 		if (typeof entry === 'undefined') return;
 
-		const change = entry.changes!.find((c) => c.key === '$add' && cast<APIRole[]>(c.new_value)!.length)!;
-		const updatedRoleID = change.new_value!.$add![0].id;
+		const change = entry.changes!.find((c) => c.key === '$add') as APIAuditLogChangeKey$Add;
+		const updatedRoleID = change.new_value![0].id;
 		let memberRoles = data.roles;
 		for (const set of allRoleSets) {
 			if (set.roles.includes(updatedRoleID)) memberRoles = memberRoles.filter((id) => !set.roles.includes(id) || id === updatedRoleID);

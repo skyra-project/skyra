@@ -76,27 +76,31 @@ export default class extends SkyraCommand {
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
 			.setDescription(
-				[
-					description,
-					'',
-					author ? message.language.get('commandYarnEmbedDescriptionAuthor', { author }) : undefined,
-					message.language.get('commandYarnEmbedDescriptionMaintainers', {
-						maintainers: message.language.list(maintainers, message.language.get('globalAnd'))
-					}),
-					message.language.get('commandYarnEmbedDescriptionLatestVersion', { latestVersionNumber }),
-					message.language.get('commandYarnEmbedDescriptionLicense', { license }),
-					message.language.get('commandYarnEmbedDescriptionMainFile', { mainFile }),
-					message.language.get('commandYarnEmbedDescriptionDateCreated', { dateCreated }),
-					message.language.get('commandYarnEmbedDescriptionDateModified', { dateModified }),
-					deprecated ? message.language.get('commandYarnEmbedDescriptionDeprecated', { deprecated }) : undefined,
-					'',
-					message.language.get('commandYarnEmbedDescriptionDependenciesLabel'),
-					dependencies && dependencies.length
-						? message.language.list(dependencies, message.language.get('globalAnd'))
-						: message.language.get('commandYarnEmbedDescriptionDependenciesNoDeps')
-				]
-					.filter((part) => part !== undefined)
-					.join('\n')
+				cutText(
+					[
+						description,
+						'',
+						author ? message.language.get('commandYarnEmbedDescriptionAuthor', { author }) : undefined,
+						`${message.language.get('commandYarnEmbedDescriptionMaintainers')}: **${cutText(
+							message.language.list(maintainers, message.language.get('globalAnd')),
+							500
+						)}**`,
+						message.language.get('commandYarnEmbedDescriptionLatestVersion', { latestVersionNumber }),
+						message.language.get('commandYarnEmbedDescriptionLicense', { license }),
+						message.language.get('commandYarnEmbedDescriptionMainFile', { mainFile }),
+						message.language.get('commandYarnEmbedDescriptionDateCreated', { dateCreated }),
+						message.language.get('commandYarnEmbedDescriptionDateModified', { dateModified }),
+						deprecated ? message.language.get('commandYarnEmbedDescriptionDeprecated', { deprecated }) : undefined,
+						'',
+						message.language.get('commandYarnEmbedDescriptionDependenciesLabel'),
+						dependencies && dependencies.length
+							? message.language.list(dependencies, message.language.get('globalAnd'))
+							: message.language.get('commandYarnEmbedDescriptionDependenciesNoDeps')
+					]
+						.filter((part) => part !== undefined)
+						.join('\n'),
+					2000
+				)
 			);
 	}
 

@@ -1281,7 +1281,7 @@ declare module 'klasa' {
 		commandYarnUnpublishedPackage: (params: { pkg: string }) => string;
 		commandYarnPackageNotFound: (params: { pkg: string }) => string;
 		commandYarnEmbedDescriptionAuthor: (params: { author: string }) => string;
-		commandYarnEmbedDescriptionMaintainers: (params: { maintainers: string }) => string;
+		commandYarnEmbedDescriptionMaintainers: string;
 		commandYarnEmbedDescriptionLatestVersion: (params: { latestVersionNumber: string }) => string;
 		commandYarnEmbedDescriptionLicense: (params: { license: string }) => string;
 		commandYarnEmbedDescriptionMainFile: (params: { mainFile: string }) => string;

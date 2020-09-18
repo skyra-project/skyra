@@ -3028,7 +3028,7 @@ export default class extends Language {
 		commandYarnUnpublishedPackage: ({ pkg }) => `¡Qué desarrollador tan tonto que hizo \`${pkg}\`! ¡No lo publicaron!`,
 		commandYarnPackageNotFound: ({ pkg }) => `Lo siento, pero no pude encontrar ningún paquete con el nombre de \`${pkg}\` en el registro.`,
 		commandYarnEmbedDescriptionAuthor: ({ author }) => `❯ Autor: ${author}`,
-		commandYarnEmbedDescriptionMaintainers: ({ maintainers }) => `❯ Mantenedores: **${maintainers}**`,
+		commandYarnEmbedDescriptionMaintainers: `❯ Mantenedores: `,
 		commandYarnEmbedDescriptionLatestVersion: ({ latestVersionNumber }) => `❯ Ultima versión: **${latestVersionNumber}**`,
 		commandYarnEmbedDescriptionLicense: ({ license }) => `❯ Licencia: **${license}**`,
 		commandYarnEmbedDescriptionMainFile: ({ mainFile }) => `❯ Archivo principal: **${mainFile}**`,

@@ -72,7 +72,11 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setTitle(result.name)
-			.setURL(`https://yarnpkg.com/en/package/${result.name}`)
+			.setURL(
+				message.commandText!.includes('yarn')
+					? `https://yarnpkg.com/en/package/${result.name}`
+					: `https://www.npmjs.com/package/${result.name}`
+			)
 			.setThumbnail(CdnUrls.NodeJSLogo)
 			.setColor(await DbSet.fetchColor(message))
 			.setDescription(

@@ -2994,7 +2994,7 @@ export default class extends Language {
 		commandYarnUnpublishedPackage: ({ pkg }) => `What a silly developer who made ${pkg}! They unpublished it!`,
 		commandYarnPackageNotFound: ({ pkg }) => `I'm sorry, but I could not find any package by the name of \`${pkg}\` in the registry.`,
 		commandYarnEmbedDescriptionAuthor: ({ author }) => `❯ Author: ${author}`,
-		commandYarnEmbedDescriptionMaintainers: ({ maintainers }) => `❯ Maintainers: **${maintainers}**`,
+		commandYarnEmbedDescriptionMaintainers: `❯ Maintainers: `,
 		commandYarnEmbedDescriptionLatestVersion: ({ latestVersionNumber }) => `❯ Latest version: **${latestVersionNumber}**`,
 		commandYarnEmbedDescriptionLicense: ({ license }) => `❯ License: **${license}**`,
 		commandYarnEmbedDescriptionMainFile: ({ mainFile }) => `❯ Main File: **${mainFile}**`,

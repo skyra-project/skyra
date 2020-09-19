@@ -38,7 +38,7 @@ export const config: ConnectionOptions = {
 				type: 'ioredis',
 				options: REDIS_OPTIONS
 		  }
-		: {}
+		: false
 };
 
 export const connect = (): Promise<Connection> => {

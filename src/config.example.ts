@@ -1,10 +1,11 @@
 // Remove `.example` from the file extension to configure Skyra
 
-import { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
+import type { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxdb-client';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { APIWebhook } from 'discord-api-types/v6';
-import { KlasaClientOptions, PostgresOptions } from 'klasa';
+import type { APIWebhook } from 'discord-api-types/v6';
+import type { RedisOptions } from 'ioredis';
+import type { KlasaClientOptions, PostgresOptions } from 'klasa';
 
 export const WATCH_FILES = true;
 export const DEV = 'DEV' in process.env ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -28,6 +29,9 @@ export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
 export const PGSQL_DATABASE_PORT = 5432;
 export const PGSQL_DATABASE_HOST = 'localhost';
+export const PGSQL_CACHE_REDIS = false;
+
+export const REDIS_OPTIONS: RedisOptions = {};
 
 export const LAVALINK_HOST = 'localhost';
 export const LAVALINK_PORT = '2333';

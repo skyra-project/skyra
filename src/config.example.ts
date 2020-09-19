@@ -31,7 +31,10 @@ export const PGSQL_DATABASE_PORT = 5432;
 export const PGSQL_DATABASE_HOST = 'localhost';
 export const PGSQL_CACHE_REDIS = false;
 
-export const REDIS_OPTIONS: RedisOptions = {};
+export const REDIS_OPTIONS: RedisOptions = {
+	port: 8287,
+	db: 1
+};
 
 export const LAVALINK_HOST = 'localhost';
 export const LAVALINK_PORT = '2333';

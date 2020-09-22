@@ -58,27 +58,7 @@ export default class extends RichDisplayCommand {
 						...this.igdbRequestHeaders,
 						Authorization: `Bearer ${await this.client.twitch.fetchBearer()}`
 					},
-					body: [
-						`search: "${game}"`,
-						'fields',
-						[
-							'name',
-							'url',
-							'summary',
-							'summary',
-							'rating',
-							'involved_companies.developer',
-							'involved_companies.company.name',
-							'genres.name',
-							'release_dates.date',
-							'platforms.name',
-							'cover.url',
-							'age_ratings.rating',
-							'age_ratings.category'
-						].join(','),
-						'limit 10',
-						'offset 0'
-					].join('; ')
+					body: this.buildBody(game)
 				},
 				FetchResultTypes.JSON
 			);
@@ -162,5 +142,25 @@ export default class extends RichDisplayCommand {
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {
 		if (!platforms || isArrayOfNumbers(platforms)) return fallback;
 		return platforms.map((platform) => platform.name).join(', ');
+	}
+
+	private buildBody(game: string) {
+		return [
+			[`search "${game}"`, 'limit 10', 'offset 0;'].join('; '),
+			`fields ${[
+				'name',
+				'url',
+				'summary',
+				'rating',
+				'involved_companies.developer',
+				'involved_companies.company.name',
+				'genres.name',
+				'release_dates.date',
+				'platforms.name',
+				'cover.url',
+				'age_ratings.rating',
+				'age_ratings.category;'
+			].join(',')}`
+		].join(' ');
 	}
 }

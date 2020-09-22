@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings, TriggerIncludes } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, TriggerIncludes } from '@lib/types/namespaces/GuildSettings';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { KlasaMessage, Monitor } from 'klasa';
 

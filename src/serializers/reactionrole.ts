@@ -1,4 +1,4 @@
-import type { ReactionRole } from '@lib/types/settings/GuildSettings';
+import type { ReactionRole } from '@lib/types/namespaces/GuildSettings';
 import { isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';
 import { Guild } from 'discord.js';

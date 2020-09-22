@@ -1,6 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';

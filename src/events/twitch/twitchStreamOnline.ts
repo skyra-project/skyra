@@ -1,7 +1,7 @@
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
 import { TwitchHelixGameSearchResult } from '@lib/types/definitions/Twitch';
-import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/namespaces/GuildSettings';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';

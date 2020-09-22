@@ -2,7 +2,7 @@ import Collection from '@discordjs/collection';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';

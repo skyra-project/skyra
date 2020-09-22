@@ -2167,7 +2167,7 @@ export default class extends Language {
 			explainedUsage: [['item', 'The item for which you want to find data']],
 			examples: ['life orb', 'choice specs']
 		},
-		commandItemEmebedData: ({ availableInGen8 }) => ({
+		commandItemEmbedData: ({ availableInGen8 }) => ({
 			ITEM: 'Item',
 			generationIntroduced: 'Generation introduced',
 			availableInGeneration8Title: 'Available in generation 8',

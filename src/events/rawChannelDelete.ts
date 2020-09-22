@@ -2,7 +2,7 @@ import { Snowflake } from '@klasa/snowflake';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { resolveOnErrorCodes } from '@utils/util';

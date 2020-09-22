@@ -2,7 +2,7 @@ import { SkyraClient } from '@lib/SkyraClient';
 import { DecodeResponse } from '@lib/types/definitions/Music';
 import { Events } from '@lib/types/Enums';
 import { LavalinkPlayerEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { flattenMusicHandler } from '@utils/Models/ApiTransform';
 import { enumerable, fetch, FetchResultTypes } from '@utils/util';
 import { deserialize } from 'binarytf';

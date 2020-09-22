@@ -1,4 +1,4 @@
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import type { TrackData } from 'lavacord';
 

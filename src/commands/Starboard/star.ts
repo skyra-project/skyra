@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';

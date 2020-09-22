@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { cutText } from '@sapphire/utilities';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

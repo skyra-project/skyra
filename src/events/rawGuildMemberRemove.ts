@@ -2,7 +2,7 @@ import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
 import { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';

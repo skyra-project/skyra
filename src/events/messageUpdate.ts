@@ -1,6 +1,6 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { diffWordsWithSpace } from 'diff';

@@ -1,6 +1,6 @@
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { CustomGet } from '@lib/types/settings/Shared';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { CustomGet } from '@lib/types/Shared';
 import { CLIENT_ID } from '@root/config';
 import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';

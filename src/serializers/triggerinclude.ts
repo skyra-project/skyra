@@ -1,4 +1,4 @@
-import { TriggerIncludes } from '@lib/types/settings/GuildSettings';
+import { TriggerIncludes } from '@lib/types/namespaces/GuildSettings';
 import { isObject } from '@sapphire/utilities';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 

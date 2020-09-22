@@ -9,7 +9,7 @@ import type {
 	TriggerAlias,
 	TriggerIncludes,
 	UniqueRoleSet
-} from '@lib/types/settings/GuildSettings';
+} from '@lib/types/namespaces/GuildSettings';
 import { PREFIX } from '@root/config';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 

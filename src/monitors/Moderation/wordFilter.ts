@@ -1,7 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';

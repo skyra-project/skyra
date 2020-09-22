@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { resolveEmoji } from '@utils/util';
 import { Event } from 'klasa';

@@ -1,5 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import type { KlasaMessage } from 'klasa';
 import type { TrackData } from 'lavacord';

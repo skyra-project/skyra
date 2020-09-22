@@ -1,6 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, RolesAuto } from '@lib/types/namespaces/GuildSettings';
 import { Time } from '@utils/constants';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';

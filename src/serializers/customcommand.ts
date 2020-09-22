@@ -1,4 +1,4 @@
-import type { CustomCommand } from '@lib/types/settings/GuildSettings';
+import type { CustomCommand } from '@lib/types/namespaces/GuildSettings';
 import { ZeroWidhSpace } from '@utils/constants';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 

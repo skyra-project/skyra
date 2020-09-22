@@ -2192,7 +2192,7 @@ export default class extends Language {
 			explainedUsage: [['ítem', 'El elemento para el que desea buscar datos']],
 			examples: ['life orb', 'choice specs']
 		},
-		commandItemEmebedData: ({ availableInGen8 }) => ({
+		commandItemEmbedData: ({ availableInGen8 }) => ({
 			ITEM: 'Ítem',
 			generationIntroduced: 'Generación introducida',
 			availableInGeneration8Title: 'Disponible en la generación 8',

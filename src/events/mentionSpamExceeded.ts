@@ -1,6 +1,6 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { Moderation } from '@utils/constants';
 import { Event, KlasaMessage } from 'klasa';

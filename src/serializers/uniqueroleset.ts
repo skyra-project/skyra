@@ -1,4 +1,4 @@
-import { UniqueRoleSet } from '@lib/types/settings/GuildSettings';
+import { UniqueRoleSet } from '@lib/types/namespaces/GuildSettings';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { Serializer, SerializerUpdateContext } from 'klasa';

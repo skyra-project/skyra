@@ -2,7 +2,7 @@ import { HardPunishment, ModerationEvent } from '@lib/structures/ModerationEvent
 import { SelfModeratorBitField } from '@lib/structures/SelfModeratorBitField';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Adder } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';

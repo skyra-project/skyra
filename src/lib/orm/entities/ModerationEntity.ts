@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import type { ModerationManager, ModerationManagerUpdateData } from '@lib/structures/managers/ModerationManager';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import type { AnyObject } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
 import { isNumber, parseURL } from '@sapphire/utilities';

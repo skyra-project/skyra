@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
 		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-		const embedTranslations = message.language.get('commandItemEmebedData', {
+		const embedTranslations = message.language.get('commandItemEmbedData', {
 			availableInGen8: message.language.get(itemDetails.isNonstandard === 'Past' ? 'globalNo' : 'globalYes')
 		});
 		return message.sendEmbed(

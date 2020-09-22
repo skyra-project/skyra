@@ -263,7 +263,7 @@ declare module 'klasa' {
 		commandFlavorsQueryFail: (params: { pokemon: string }) => string;
 		commandItemDescription: string;
 		commandItemExtended: LanguageHelpDisplayOptions;
-		commandItemEmebedData: (params: {
+		commandItemEmbedData: (params: {
 			availableInGen8: string;
 		}) => {
 			ITEM: string;

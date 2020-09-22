@@ -18,7 +18,7 @@ import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
 import type { Client as VezaClient } from 'veza';
 import type { Events } from './Enums';
-import type { CustomGet } from './settings/Shared';
+import type { CustomGet } from './Shared';
 
 declare module 'discord.js' {
 	interface Client {

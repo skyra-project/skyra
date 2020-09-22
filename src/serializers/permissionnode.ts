@@ -1,4 +1,4 @@
-import { PermissionsNode } from '@lib/types/settings/GuildSettings';
+import { PermissionsNode } from '@lib/types/namespaces/GuildSettings';
 import { isObject } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
 import { Command, Serializer, SerializerUpdateContext } from 'klasa';

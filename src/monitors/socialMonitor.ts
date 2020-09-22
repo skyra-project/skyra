@@ -1,6 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings, RolesAuto } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, RolesAuto } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';

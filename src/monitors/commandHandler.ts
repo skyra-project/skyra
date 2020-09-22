@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID, PREFIX } from '@root/config';
 import { floatPromise } from '@utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';

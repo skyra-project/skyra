@@ -1,4 +1,4 @@
-import { RolesAuto } from '@lib/types/settings/GuildSettings';
+import { RolesAuto } from '@lib/types/namespaces/GuildSettings';
 import { isObject } from '@sapphire/utilities';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 

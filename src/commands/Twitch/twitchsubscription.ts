@@ -8,7 +8,7 @@ import {
 	NotificationsStreamsTwitchEventStatus,
 	NotificationsStreamsTwitchStreamer,
 	NotificationsStreamTwitch
-} from '@lib/types/settings/GuildSettings';
+} from '@lib/types/namespaces/GuildSettings';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';

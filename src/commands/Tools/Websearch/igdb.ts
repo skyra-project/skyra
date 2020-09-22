@@ -4,13 +4,13 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TOKENS } from '@root/config';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
+import { BrandingColors, Mime } from '@utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Timestamp } from 'klasa';
 
-const API_URL = 'https://api-v3.igdb.com/games';
+const API_URL = 'https://api.igdb.com/v4/games';
 
 function isArrayOfNumbers(array: unknown[]): array is number[] {
 	return array.every((val) => isNumber(val));
@@ -27,8 +27,13 @@ function isIgdbCompany(company: unknown): company is Company {
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
-	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-	private urlRegex = /https?:/i;
+	private readonly releaseDateTimestamp = new Timestamp('MMMM d YYYY');
+	private readonly urlRegex = /https?:/i;
+	private readonly igdbRequestHeaders = {
+		'Content-Type': Mime.Types.ApplicationJson,
+		Accept: Mime.Types.ApplicationJson,
+		'Client-ID': TOKENS.TWITCH_CLIENT_ID
+	};
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
@@ -50,16 +55,30 @@ export default class extends RichDisplayCommand {
 				{
 					method: FetchMethods.Post,
 					headers: {
-						'user-key': TOKENS.INTERNETGAMEDATABASE_KEY
+						...this.igdbRequestHeaders,
+						Authorization: `Bearer ${await this.client.twitch.fetchBearer()}`
 					},
 					body: [
-						`search: "${game}";`,
-						'fields name, url, summary, rating, involved_companies.developer,',
-						'involved_companies.company.name, genres.name, release_dates.date,',
-						'platforms.name, cover.url, age_ratings.rating, age_ratings.category;',
-						'limit 10;',
-						'offset 0;'
-					].join('')
+						`search: "${game}"`,
+						'fields',
+						[
+							'name',
+							'url',
+							'summary',
+							'summary',
+							'rating',
+							'involved_companies.developer',
+							'involved_companies.company.name',
+							'genres.name',
+							'release_dates.date',
+							'platforms.name',
+							'cover.url',
+							'age_ratings.rating',
+							'age_ratings.category'
+						].join(','),
+						'limit 10',
+						'offset 0'
+					].join('; ')
 				},
 				FetchResultTypes.JSON
 			);

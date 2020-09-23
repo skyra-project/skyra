@@ -48,7 +48,8 @@ export default class extends SkyraCommand {
 		const suggestionID = guild.settings.get(GuildSettings.Suggestions.AscendingID);
 
 		// Post the suggestion
-		const suggestionsMessage = await suggestionsChannel.send(
+		// TODO: This seems to be a bug in discord.js's types
+		const suggestionsMessage = await (suggestionsChannel as TextChannel).send(
 			new MessageEmbed()
 				.setColor(BrandingColors.Primary)
 				.setAuthor(

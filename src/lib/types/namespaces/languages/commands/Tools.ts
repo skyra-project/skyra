@@ -56,14 +56,15 @@ export const EshopPriceFree = T<string>('commandEshopPriceFree');
 export const HoroscopeDescription = T<string>('commandHoroscopeDescription');
 export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commandHoroscopeExtended');
 export const HoroscopeInvalidSunsign = FT<{ sign: string; maybe: string }, string>('commandHoroscopeInvalidSunsign');
-export const HoroscopeTitles = T<
-	(params: {
+export const HoroscopeTitles = FT<
+	{
 		sign: string;
 		intensity: string;
 		keywords: readonly string[];
 		mood: string;
 		rating: string;
-	}) => {
+	},
+	{
 		dailyHoroscope: string;
 		metadataTitle: string;
 		metadata: readonly string[];
@@ -165,9 +166,9 @@ export const UrbanExtended = T<LanguageHelpDisplayOptions>('commandUrbanExtended
 export const WhoisDescription = T<string>('commandWhoisDescription');
 export const WhoisExtended = T<LanguageHelpDisplayOptions>('commandWhoisExtended');
 export const AvatarNone = T<string>('commandAvatarNone');
-export const Color = T<(params: { hex: string; rgb: string; hsl: string }) => string[]>('commandColor');
-export const EmojiCustom = T<(params: { emoji: string; id: string }) => string[]>('commandEmojiCustom');
-export const EmojiTwemoji = T<(params: { emoji: string; id: string }) => string[]>('commandEmojiTwemoji');
+export const Color = FT<{ hex: string; rgb: string; hsl: string }, string[]>('commandColor');
+export const EmojiCustom = FT<{ emoji: string; id: string }, string[]>('commandEmojiCustom');
+export const EmojiTwemoji = FT<{ emoji: string; id: string }, string[]>('commandEmojiTwemoji');
 export const EmojiInvalid = T<string>('commandEmojiInvalid');
 export const EmojiTooLarge = FT<{ emoji: string }, string>('commandEmojiTooLarge');
 export const EmotesDescription = T<string>('commandEmotesDescription');
@@ -184,10 +185,11 @@ export const WhoisMemberTitles = T<{
 	joined: string;
 	createdAt: string;
 }>('commandWhoisMemberTitles');
-export const WhoisMemberFields = T<
-	(params: {
+export const WhoisMemberFields = FT<
+	{
 		member: GuildMember;
-	}) => {
+	},
+	{
 		joinedUnknown: string;
 		joinedWithTimestamp: string;
 		createdAt: string;
@@ -201,10 +203,11 @@ export const WhoisMemberPermissionsAll = T<string>('commandWhoisMemberPermission
 export const WhoisUserTitles = T<{
 	createdAt: string;
 }>('commandWhoisUserTitles');
-export const WhoisUserFields = T<
-	(params: {
+export const WhoisUserFields = FT<
+	{
 		user: User;
-	}) => {
+	},
+	{
 		createdAt: string;
 		footer: string;
 	}

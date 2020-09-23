@@ -35,6 +35,25 @@ export default class extends RichDisplayCommand {
 		'Client-ID': TOKENS.TWITCH_CLIENT_ID
 	};
 
+	private readonly commonQuery = [
+		`fields ${[
+			'name',
+			'url',
+			'summary',
+			'rating',
+			'involved_companies.developer',
+			'involved_companies.company.name',
+			'genres.name',
+			'release_dates.date',
+			'platforms.name',
+			'cover.url',
+			'age_ratings.rating',
+			'age_ratings.category'
+		].join(',')}`,
+		'limit 10',
+		'offset 0'
+	].join('; ');
+
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
@@ -58,7 +77,7 @@ export default class extends RichDisplayCommand {
 						...this.igdbRequestHeaders,
 						Authorization: `Bearer ${await this.client.twitch.fetchBearer()}`
 					},
-					body: this.buildBody(game)
+					body: this.commonQuery.concat(`search: "${game}"`)
 				},
 				FetchResultTypes.JSON
 			);
@@ -142,28 +161,5 @@ export default class extends RichDisplayCommand {
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {
 		if (!platforms || isArrayOfNumbers(platforms)) return fallback;
 		return platforms.map((platform) => platform.name).join(', ');
-	}
-
-	private buildBody(game: string) {
-		return [
-				[
-					`search: "${game}"`,
-					`fields ${[
-						'name',
-						'url',
-						'summary',
-						'rating',
-						'involved_companies.developer',
-						'involved_companies.company.name',
-						'genres.name',
-						'release_dates.date',
-						'platforms.name',
-						'cover.url',
-						'age_ratings.rating',
-						'age_ratings.category'
-					].join(',')}`,
-					'limit 10',
-					'offset 0'
-				].join('; ')
 	}
 }

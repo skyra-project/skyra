@@ -146,21 +146,24 @@ export default class extends RichDisplayCommand {
 
 	private buildBody(game: string) {
 		return [
-			[`search "${game}"`, 'limit 10', 'offset 0;'].join('; '),
-			`fields ${[
-				'name',
-				'url',
-				'summary',
-				'rating',
-				'involved_companies.developer',
-				'involved_companies.company.name',
-				'genres.name',
-				'release_dates.date',
-				'platforms.name',
-				'cover.url',
-				'age_ratings.rating',
-				'age_ratings.category;'
-			].join(',')}`
-		].join(' ');
+				[
+					`search: "${game}"`,
+					`fields ${[
+						'name',
+						'url',
+						'summary',
+						'rating',
+						'involved_companies.developer',
+						'involved_companies.company.name',
+						'genres.name',
+						'release_dates.date',
+						'platforms.name',
+						'cover.url',
+						'age_ratings.rating',
+						'age_ratings.category'
+					].join(',')}`,
+					'limit 10',
+					'offset 0'
+				].join('; ')
 	}
 }

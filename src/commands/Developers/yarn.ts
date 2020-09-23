@@ -3,18 +3,19 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, LanguageKeys } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package'],
 	cooldown: 10,
-	description: (language) => language.get('commandYarnDescription'),
-	extendedHelp: (language) => language.get('commandYarnExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Developers.YarnDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Developers.YarnExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<package:package>'
@@ -23,7 +24,7 @@ import { KlasaMessage, LanguageKeys } from 'klasa';
 	[
 		'package',
 		(arg, _, message) => {
-			if (!arg) throw message.language.get('commandYarnNoPackage');
+			if (!arg) throw message.language.get(LanguageKeys.Commands.Developers.YarnNoPackage);
 			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
 		}
 	]
@@ -34,12 +35,13 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, pkg);
 
-		if (result.time && Reflect.has(result.time, 'unpublished')) throw message.language.get('commandYarnUnpublishedPackage', { pkg });
+		if (result.time && Reflect.has(result.time, 'unpublished'))
+			throw message.language.get(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
 
 		const dataEmbed = await this.buildEmbed(result, message);
 		return response.edit(undefined, dataEmbed);
@@ -49,7 +51,7 @@ export default class extends SkyraCommand {
 		try {
 			return await fetch<YarnPkg.PackageJson>(`https://registry.yarnpkg.com/${pkg}`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('commandYarnPackageNotFound', { pkg });
+			throw message.language.get(LanguageKeys.Commands.Developers.YarnPackageNotFound, { pkg });
 		}
 	}
 
@@ -57,17 +59,17 @@ export default class extends SkyraCommand {
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies
-			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get('commandYarnEmbedMoreText'))
+			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get(LanguageKeys.Commands.Developers.YarnEmbedMoreText))
 			: null;
 
 		const author = this.parseAuthor(result.author);
-		const dateCreated = result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get('globalUnknown');
-		const dateModified = result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get('globalUnknown');
+		const dateCreated = result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get(LanguageKeys.Globals.Unknown);
+		const dateModified = result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get(LanguageKeys.Globals.Unknown);
 
 		const { deprecated } = latestVersion;
 		const description = cutText(result.description ?? '', 1000);
 		const latestVersionNumber = result['dist-tags'].latest;
-		const license = result.license || message.language.get('globalNone');
+		const license = result.license || message.language.get(LanguageKeys.Globals.None);
 		const mainFile = latestVersion.main || 'index.js';
 
 		return new MessageEmbed()
@@ -84,22 +86,24 @@ export default class extends SkyraCommand {
 					[
 						description,
 						'',
-						author ? message.language.get('commandYarnEmbedDescriptionAuthor', { author }) : undefined,
-						`${message.language.get('commandYarnEmbedDescriptionMaintainers')}: **${cutText(
-							message.language.list(maintainers, message.language.get('globalAnd')),
+						author ? message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionAuthor, { author }) : undefined,
+						`${message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers)}: **${cutText(
+							message.language.list(maintainers, message.language.get(LanguageKeys.Globals.And)),
 							500
 						)}**`,
-						message.language.get('commandYarnEmbedDescriptionLatestVersion', { latestVersionNumber }),
-						message.language.get('commandYarnEmbedDescriptionLicense', { license }),
-						message.language.get('commandYarnEmbedDescriptionMainFile', { mainFile }),
-						message.language.get('commandYarnEmbedDescriptionDateCreated', { dateCreated }),
-						message.language.get('commandYarnEmbedDescriptionDateModified', { dateModified }),
-						deprecated ? message.language.get('commandYarnEmbedDescriptionDeprecated', { deprecated }) : undefined,
+						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLatestVersion, { latestVersionNumber }),
+						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLicense, { license }),
+						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMainFile, { mainFile }),
+						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDateCreated, { dateCreated }),
+						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDateModified, { dateModified }),
+						deprecated
+							? message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDeprecated, { deprecated })
+							: undefined,
 						'',
-						message.language.get('commandYarnEmbedDescriptionDependenciesLabel'),
+						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesLabel),
 						dependencies && dependencies.length
-							? message.language.list(dependencies, message.language.get('globalAnd'))
-							: message.language.get('commandYarnEmbedDescriptionDependenciesNoDeps')
+							? message.language.list(dependencies, message.language.get(LanguageKeys.Globals.And))
+							: message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesNoDeps)
 					]
 						.filter((part) => part !== undefined)
 						.join('\n'),
@@ -114,7 +118,7 @@ export default class extends SkyraCommand {
 	 * @param arr The array to trim
 	 * @param moreText The text to show in the last entry of the array
 	 */
-	private trimArray(arr: string[], moreText: LanguageKeys['commandYarnEmbedMoreText']) {
+	private trimArray(arr: string[], moreText: string) {
 		if (arr.length > 10) {
 			const len = arr.length - 10;
 			arr = arr.slice(0, 10);

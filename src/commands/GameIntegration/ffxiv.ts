@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
@@ -12,8 +13,8 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['finalfantasy'],
 	cooldown: 10,
-	description: (language) => language.get('commandFFXIVDescription'),
-	extendedHelp: (language) => language.get('commandFFXIVExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.FFXIVDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.FFXIVExtended),
 	flagSupport: true,
 	subcommands: true,
 	usage: '(item|character:default) <search:...string> ',
@@ -22,7 +23,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async character(message: KlasaMessage, [name]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
@@ -34,7 +35,7 @@ export default class extends RichDisplayCommand {
 
 	public async item(message: KlasaMessage, [item]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const itemDetails = await this.fetchItems(message.language, item);
@@ -48,7 +49,7 @@ export default class extends RichDisplayCommand {
 	private async fetchCharacter(i18n: Language, name: string, server?: string) {
 		const searchResult = await searchCharacter(i18n, name, server);
 
-		if (!searchResult.Results.length) throw i18n.get('commandFFXIVNoCharacterFound');
+		if (!searchResult.Results.length) throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 
 		return getCharacterDetails(i18n, searchResult.Results[0].ID);
 	}
@@ -56,7 +57,7 @@ export default class extends RichDisplayCommand {
 	private async fetchItems(i18n: Language, item: string) {
 		const searchResult = await searchItem(i18n, item);
 
-		if (!searchResult.Results.length) throw i18n.get('commandFFXIVNoItemFound');
+		if (!searchResult.Results.length) throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
 
 		return searchResult.Results;
 	}
@@ -72,7 +73,7 @@ export default class extends RichDisplayCommand {
 			tankClassValues
 		} = this.parseCharacterClasses(character.ClassJobs);
 
-		const titles = message.language.get('commandFFXIVCharacterFields');
+		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -134,7 +135,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
-		const titles = message.language.get('commandFFXIVItemFields');
+		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

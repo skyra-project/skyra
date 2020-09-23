@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ConnectFourConstants } from '@utils/constants';
 import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { floatPromise, pickRandom } from '@utils/util';
@@ -67,7 +68,7 @@ export class Game {
 	}
 
 	public async run() {
-		this.message = await this.message.send(pickRandom(this.language.get('systemLoading')));
+		this.message = await this.message.send(pickRandom(this.language.get(LanguageKeys.System.Loading)));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
 		this.content = this.language.get(this.next!.color === PlayerColor.Blue ? 'commandC4GameNextTurn0' : 'commandC4GameNext', {
 			user: this.next!.name

@@ -1,4 +1,4 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const AnimeDescription = T<string>('commandAnimeDescription');
@@ -15,9 +15,9 @@ export const AnimeTypes = T<{
 	[index: string]: string;
 }>('commandAnimeTypes');
 export const AnimeInvalidChoice = T<string>('commandAnimeInvalidChoice');
-export const AnimeOutputDescription = T<
-	(params: { englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }) => string
->('commandAnimeOutputDescription');
+export const AnimeOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
+	'commandAnimeOutputDescription'
+);
 export const AnimeNoSynopsis = T<string>('commandAnimeNoSynopsis');
 export const AnimeEmbedData = T<{
 	type: string;
@@ -29,9 +29,9 @@ export const AnimeEmbedData = T<{
 	watchIt: string;
 	stillAiring: string;
 }>('commandAnimeEmbedData');
-export const MangaOutputDescription = T<
-	(params: { englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }) => string
->('commandMangaOutputDescription');
+export const MangaOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
+	'commandMangaOutputDescription'
+);
 export const MangaEmbedData = T<{
 	type: string;
 	score: string;

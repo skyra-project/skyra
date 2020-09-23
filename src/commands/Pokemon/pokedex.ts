@@ -2,13 +2,15 @@ import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/gr
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { PokedexEmbedDataReturn } from '@lib/types/namespaces/languages/commands/Pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, LanguageKeys } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 enum BaseStats {
 	hp = 'HP',
@@ -31,7 +33,7 @@ enum BaseStats {
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
 
@@ -260,5 +262,5 @@ interface PokemonToDisplayArgs {
 	abilities: string[];
 	baseStats: string[];
 	evoChain: string;
-	embedTranslations: ReturnType<LanguageKeys['commandPokedexEmbedData']>;
+	embedTranslations: PokedexEmbedDataReturn;
 }

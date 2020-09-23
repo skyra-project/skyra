@@ -1,7 +1,17 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isNumber } from '@sapphire/utilities';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['roll'],
+	cooldown: 5,
+	description: (language) => language.get(LanguageKeys.Commands.Fun.DiceDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.DiceExtended),
+	usage: '[amount:integer|dice:string]',
+	spam: true
+})
 export default class extends SkyraCommand {
 	/**
 	 * Syntax  : {number}?[ ]d[ ]{number}[ ]{.*?}
@@ -21,19 +31,8 @@ export default class extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['roll'],
-			cooldown: 5,
-			description: (language) => language.get('commandDiceDescription'),
-			extendedHelp: (language) => language.get('commandDiceExtended'),
-			usage: '[amount:integer|dice:string]',
-			spam: true
-		});
-	}
-
 	public run(message: KlasaMessage, [amountOrDice = 1]: [number | string | undefined]) {
-		return message.sendLocale('commandDiceOutput', [
+		return message.sendLocale(LanguageKeys.Commands.Fun.DiceOutput, [
 			{
 				result: this.roll(message, amountOrDice)
 			}
@@ -45,17 +44,17 @@ export default class extends SkyraCommand {
 		let dice: number | undefined = undefined;
 		let modifier = 0;
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) throw message.language.get('resolverInvalidInt', { name: 'dice' });
+			if (!isNumber(pattern) || pattern <= 0) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name: 'dice' });
 			amount = pattern;
 			dice = 6;
 		} else {
 			const results = this.kDice20RegExp.exec(pattern);
-			if (results === null) throw message.language.get('commandDiceRollsError');
+			if (results === null) throw message.language.get(LanguageKeys.Commands.Fun.DiceRollsError);
 			amount = typeof results[1] === 'undefined' ? 1 : Number(results[1]);
 			dice = Number(results[2]);
 
-			if (amount <= 0 || amount > 1024) throw message.language.get('commandDiceRollsError');
-			if (dice < 3 || dice > 1024) throw message.language.get('commandDiceSidesError');
+			if (amount <= 0 || amount > 1024) throw message.language.get(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (dice < 3 || dice > 1024) throw message.language.get(LanguageKeys.Commands.Fun.DiceSidesError);
 
 			if (results[3].length > 0) {
 				let modifierResults: RegExpExecArray | null = null;

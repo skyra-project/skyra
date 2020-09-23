@@ -10,10 +10,11 @@ export const FlavorsExtended = T<LanguageHelpDisplayOptions>('commandFlavorsExte
 export const FlavorsQueryFail = FT<{ pokemon: string }, string>('commandFlavorsQueryFail');
 export const ItemDescription = T<string>('commandItemDescription');
 export const ItemExtended = T<LanguageHelpDisplayOptions>('commandItemExtended');
-export const ItemEmbedData = T<
-	(params: {
+export const ItemEmbedData = FT<
+	{
 		availableInGen8: string;
-	}) => {
+	},
+	{
 		ITEM: string;
 		generationIntroduced: string;
 		availableInGeneration8Title: string;
@@ -23,19 +24,7 @@ export const ItemEmbedData = T<
 export const ItemQueryFail = FT<{ item: string }, string>('commandItemQueryFail');
 export const LearnDescription = T<string>('commandLearnDescription');
 export const LearnExtended = T<LanguageHelpDisplayOptions>('commandLearnExtended');
-export const LearnMethodTypes = T<
-	(params: {
-		level?: number | null;
-	}) => {
-		levelUpMoves: string;
-		eventMoves: string;
-		tutorMoves: string;
-		eggMoves: string;
-		virtualTransferMoves: string;
-		tmMoves: string;
-		dreamworldMoves: string;
-	}
->('commandLearnMethodTypes');
+export const LearnMethodTypes = FT<{ level?: number | null }, LearnMethodTypesReturn>('commandLearnMethodTypes');
 export const LearnInvalidGeneration = FT<{ generation: string }, string>('commandLearnInvalidGeneration');
 export const LearnMethod = FT<{ generation: number; pokemon: string; move: string; method: string }, string>('commandLearnMethod');
 export const LearnQueryFailed = FT<{ pokemon: string; moves: string }, string>('commandLearnQueryFailed');
@@ -43,10 +32,11 @@ export const LearnCannotLearn = FT<{ pokemon: string; moves: string }, string>('
 export const LearnTitle = FT<{ pokemon: string; generation: number }, string>('commandLearnTitle');
 export const MoveDescription = T<string>('commandMoveDescription');
 export const MoveExtended = T<LanguageHelpDisplayOptions>('commandMoveExtended');
-export const MoveEmbedData = T<
-	(params: {
+export const MoveEmbedData = FT<
+	{
 		availableInGen8: string;
-	}) => {
+	},
+	{
 		move: string;
 		types: string;
 		basePower: string;
@@ -68,36 +58,17 @@ export const MoveEmbedData = T<
 export const MoveQueryFail = FT<{ move: string }, string>('commandMoveQueryFail');
 export const PokedexDescription = T<string>('commandPokedexDescription');
 export const PokedexExtended = T<LanguageHelpDisplayOptions>('commandPokedexExtended');
-export const PokedexEmbedData = T<
-	(params: {
-		otherFormes: readonly string[];
-		cosmeticFormes: readonly string[];
-	}) => {
-		types: string;
-		abilities: string;
-		genderRatio: string;
-		smogonTier: string;
-		uknownSmogonTier: string;
-		height: string;
-		weight: string;
-		eggGroups: string;
-		evolutionaryLine: string;
-		baseStats: string;
-		baseStatsTotal: string;
-		flavourText: string;
-		otherFormesTitle: string;
-		cosmeticFormesTitle: string;
-		otherFormesList: string;
-		cosmeticFormesList: string;
-	}
->('commandPokedexEmbedData');
+export const PokedexEmbedData = FT<{ otherFormes: readonly string[]; cosmeticFormes: readonly string[] }, PokedexEmbedDataReturn>(
+	'commandPokedexEmbedData'
+);
 export const PokedexQueryFail = FT<{ pokemon: string }, string>('commandPokedexQueryFail');
 export const TypeDescription = T<string>('commandTypeDescription');
 export const TypeExtended = T<LanguageHelpDisplayOptions>('commandTypeExtended');
-export const TypeEmbedData = T<
-	(params: {
+export const TypeEmbedData = FT<
+	{
 		types: string[];
-	}) => {
+	},
+	{
 		offensive: string;
 		defensive: string;
 		superEffectiveAgainst: string;
@@ -114,3 +85,32 @@ export const TypeEmbedData = T<
 export const TypeTooManyTypes = T<string>('commandTypeTooManyTypes');
 export const TypeNotAType = FT<{ type: string }, string>('commandTypeNotAType');
 export const TypeQueryFail = FT<{ types: string }, string>('commandTypeQueryFail');
+
+export interface PokedexEmbedDataReturn {
+	types: string;
+	abilities: string;
+	genderRatio: string;
+	smogonTier: string;
+	uknownSmogonTier: string;
+	height: string;
+	weight: string;
+	eggGroups: string;
+	evolutionaryLine: string;
+	baseStats: string;
+	baseStatsTotal: string;
+	flavourText: string;
+	otherFormesTitle: string;
+	cosmeticFormesTitle: string;
+	otherFormesList: string;
+	cosmeticFormesList: string;
+}
+
+export interface LearnMethodTypesReturn {
+	levelUpMoves: string;
+	eventMoves: string;
+	tutorMoves: string;
+	eggMoves: string;
+	virtualTransferMoves: string;
+	tmMoves: string;
+	dreamworldMoves: string;
+}

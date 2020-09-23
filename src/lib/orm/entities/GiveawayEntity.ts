@@ -2,6 +2,7 @@
 import { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
@@ -226,7 +227,7 @@ export class GiveawayEntity extends BaseEntity {
 					? language.get(this.#winners.length === 1 ? 'giveawayEnded' : 'giveawayEndedPlural', {
 							winners: language.list(
 								this.#winners.map((winner) => `<@${winner}>`),
-								language.get('globalAnd')
+								language.get(LanguageKeys.Globals.And)
 							),
 							count: this.#winners.length
 					  })

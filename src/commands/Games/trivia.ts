@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
@@ -54,7 +55,7 @@ export default class extends SkyraCommand {
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(message.language.get('systemLoading')), []);
+			await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse

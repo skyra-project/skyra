@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
@@ -52,7 +53,7 @@ export class SettingsMenu {
 
 	public async init(): Promise<void> {
 		this.response = await this.message.sendEmbed(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.message.language.get('systemLoading')))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.message.language.get(LanguageKeys.System.Loading)))
 		);
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));

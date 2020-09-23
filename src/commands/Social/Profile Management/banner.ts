@@ -3,6 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
@@ -167,7 +168,7 @@ export default class extends SkyraCommand {
 	private async runDisplay(message: KlasaMessage, display: UserRichDisplay | null) {
 		if (display !== null) {
 			const response = await message.sendEmbed(
-				new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
+				new MessageEmbed({ description: pickRandom(message.language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 			);
 			await display.start(response, message.author.id);
 			return response;

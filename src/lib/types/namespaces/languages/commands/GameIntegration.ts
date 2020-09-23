@@ -126,8 +126,8 @@ export const FortniteEmbedSectionTitles = T<{
 	duos: string;
 	squads: string;
 }>('commandFortniteEmbedSectionTitles');
-export const FortniteEmbedStats = T<
-	(params: {
+export const FortniteEmbedStats = FT<
+	{
 		winCount: string;
 		killCount: string;
 		kdrCount: string;
@@ -139,7 +139,8 @@ export const FortniteEmbedStats = T<
 		top10Count: string;
 		top12Count: string;
 		top25Count: string;
-	}) => {
+	},
+	{
 		wins: string;
 		kills: string;
 		kdr: string;
@@ -159,8 +160,8 @@ export const OverwatchInvalidPlayerName = FT<{ playerTag: string }, string>('com
 export const OverwatchQueryFail = FT<{ player: string; platform: string }, string>('commandOverwatchQueryFail');
 export const OverwatchNoStats = FT<{ player: string }, string>('commandOverwatchNoStats');
 export const OverwatchNoAverage = T<string>('commandOverwatchNoAverage');
-export const OverwatchEmbedDataStats = T<
-	(params: {
+export const OverwatchEmbedDataStats = FT<
+	{
 		finalBlows: number;
 		deaths: number;
 		damageDone: number;
@@ -172,7 +173,8 @@ export const OverwatchEmbedDataStats = T<
 		goldenMedals: number;
 		silverMedals: number;
 		bronzeMedals: number;
-	}) => {
+	},
+	{
 		finalBlows: string;
 		deaths: string;
 		damageDealt: string;
@@ -187,26 +189,29 @@ export const OverwatchEmbedDataStats = T<
 	}
 >('commandOverwatchEmbedDataStats');
 export const OverwatchEmbedDataTopHero = FT<{ name: string; playTime: string }, string>('commandOverwatchEmbedDataTopHero');
-export const OverwatchEmbedData = T<
-	(params: {
+export const OverwatchEmbedData = FT<
+	{
 		authorName: string;
 		playerLevel: number;
 		prestigeLevel: number;
 		totalGamesWon: number;
-	}) => {
-		title: string;
-		ratingsTitle: string;
-		author: string;
-		playerLevel: string;
-		prestigeLevel: string;
-		totalGamesWon: string;
-		noGamesWon: string;
-		headers: {
-			account: string;
-			quickplay: string;
-			competitive: string;
-			topHeroesQuickplay: string;
-			topHeroesCompetitive: string;
-		};
-	}
+	},
+	OverwatchEmbedDataReturn
 >('commandOverwatchEmbedData');
+
+export interface OverwatchEmbedDataReturn {
+	title: string;
+	ratingsTitle: string;
+	author: string;
+	playerLevel: string;
+	prestigeLevel: string;
+	totalGamesWon: string;
+	noGamesWon: string;
+	headers: {
+		account: string;
+		quickplay: string;
+		competitive: string;
+		topHeroesQuickplay: string;
+		topHeroesCompetitive: string;
+	};
+}

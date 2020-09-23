@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cast } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -52,7 +53,7 @@ export default class extends SkyraCommand {
 									afkChannel: message.guild!.afkChannelID,
 									afkTime: message.guild!.afkTimeout
 							  })
-							: `**${message.language.get('globalNone')}**`
+							: `**${message.language.get(LanguageKeys.Globals.None)}**`
 					}),
 					true
 				)

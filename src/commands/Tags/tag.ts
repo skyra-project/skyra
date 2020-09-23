@@ -105,7 +105,7 @@ export default class extends SkyraCommand {
 		if (!tags.length) throw message.language.get(LanguageKeys.Commands.Tags.TagListEmpty);
 
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get('systemLoading')))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading)))
 		);
 
 		// Get prefix and display all tags

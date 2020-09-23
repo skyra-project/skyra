@@ -1,5 +1,6 @@
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { isNullOrUndefined } from '@sapphire/utilities';
@@ -94,7 +95,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 					message.language.get(langKey, {
 						count: cases.length,
 						range,
-						users: message.language.list(users, message.language.get('globalAnd')),
+						users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
 						reason: logReason
 					})
 				);
@@ -104,7 +105,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
 					message.language.get(users.length === 1 ? 'commandModerationFailed' : 'commandModerationFailedPlural', {
-						users: message.language.list(users, message.language.get('globalAnd')),
+						users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
 						count: users.length
 					})
 				);

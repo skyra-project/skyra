@@ -38,40 +38,44 @@ export const HigherLowerDescription = T<string>('commandHigherLowerDescription')
 export const HigherLowerExtended = T<LanguageHelpDisplayOptions>('commandHigherLowerExtended');
 export const HigherLowerLoading = T<string>('commandHigherLowerLoading');
 export const HigherLowerNewround = T<string>('commandHigherLowerNewround');
-export const HigherLowerEmbed = T<
-	(params: {
+export const HigherLowerEmbed = FT<
+	{
 		turn: number;
 		number: number;
-	}) => {
+	},
+	{
 		title: string;
 		description: string;
 		footer: string;
 	}
 >('commandHigherLowerEmbed');
-export const HigherLowerLose = T<
-	(params: {
+export const HigherLowerLose = FT<
+	{
 		number: number;
 		losses: number;
-	}) => {
+	},
+	{
 		title: string;
 		description: string;
 		footer: string;
 	}
 >('commandHigherLowerLose');
-export const HigherLowerWin = T<
-	(params: {
+export const HigherLowerWin = FT<
+	{
 		potentials: number;
 		number: number;
-	}) => {
+	},
+	{
 		title: string;
 		description: string;
 		footer: string;
 	}
 >('commandHigherLowerWin');
-export const HigherLowerCancel = T<
-	(params: {
+export const HigherLowerCancel = FT<
+	{
 		username: string;
-	}) => {
+	},
+	{
 		title: string;
 		description: string;
 	}

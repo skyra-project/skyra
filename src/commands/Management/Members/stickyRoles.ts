@@ -1,5 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Role, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -66,7 +67,7 @@ export default class extends SkyraCommand {
 				user: user.username,
 				roles: message.language.list(
 					names.map((name) => `\`${name}\``),
-					message.language.get('globalAnd')
+					message.language.get(LanguageKeys.Globals.And)
 				)
 			}
 		]);

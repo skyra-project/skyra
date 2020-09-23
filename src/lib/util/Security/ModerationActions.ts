@@ -2,6 +2,7 @@ import { ModerationManagerCreateData } from '@lib/structures/managers/Moderation
 import { Events } from '@lib/types/Enums';
 import { ModerationAction } from '@lib/types/Languages';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { Moderation } from '@utils/constants';
@@ -653,7 +654,7 @@ export class ModerationActions {
 					channels: this.manageableChannelCount,
 					permissions: message.language.list(
 						this.displayPermissions(key).map((permission) => `\`${permission}\``),
-						message.language.get('globalAnd')
+						message.language.get(LanguageKeys.Globals.And)
 					)
 				})
 			)

@@ -2,6 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
 			await message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+				new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
 			await message.guild!.members.fetch();
 		}

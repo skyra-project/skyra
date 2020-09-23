@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings, PermissionsNode } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { GuildMember, Role } from 'discord.js';
 import { Command, CommandStore, KlasaMessage } from 'klasa';
 
@@ -105,31 +106,33 @@ export default class extends SkyraCommand {
 	}
 
 	public show(message: KlasaMessage, [target]: [Role | GuildMember]) {
-		if (!this.checkPermissions(message, target)) throw message.language.get('commandPermissionNodesHigher');
+		if (!this.checkPermissions(message, target)) throw message.language.get(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = message.guild!.settings.get(key);
 		const node = nodes.find((n) => n.id === target.id);
-		if (typeof node === 'undefined') throw message.language.get('commandPermissionNodesNodeNotExists');
+		if (typeof node === 'undefined') throw message.language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 		return message.send([
-			message.language.get('commandPermissionNodesShowName', { name: isRole ? (target as Role).name : (target as GuildMember).displayName }),
-			message.language.get('commandPermissionNodesShowAllow', {
+			message.language.get(LanguageKeys.Commands.Management.PermissionNodesShowName, {
+				name: isRole ? (target as Role).name : (target as GuildMember).displayName
+			}),
+			message.language.get(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
 				allow: node.allow.length
 					? message.language.list(
 							node.allow.map((command) => `\`${command}\``),
-							message.language.get('globalAnd')
+							message.language.get(LanguageKeys.Globals.And)
 					  )
-					: message.language.get('globalNone')
+					: message.language.get(LanguageKeys.Globals.None)
 			}),
-			message.language.get('commandPermissionNodesShowDeny', {
+			message.language.get(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
 				deny: node.deny.length
 					? message.language.list(
 							node.deny.map((command) => `\`${command}\``),
-							message.language.get('globalAnd')
+							message.language.get(LanguageKeys.Globals.And)
 					  )
-					: message.language.get('globalNone')
+					: message.language.get(LanguageKeys.Globals.None)
 			})
 		]);
 	}

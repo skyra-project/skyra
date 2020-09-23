@@ -3,6 +3,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '@utils/Pokemon';
@@ -57,7 +58,7 @@ const kPokemonTypes = new Set([
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [types]: [Types[]]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const typeMatchups = await this.fetchAPI(message, types);
 
@@ -72,7 +73,7 @@ export default class extends RichDisplayCommand {
 			return data.getTypeMatchup;
 		} catch {
 			throw message.language.get('commandTypeQueryFail', {
-				types: types.map((val) => `\`${val}\``).join(` ${message.language.get('globalAnd')} `)
+				types: types.map((val) => `\`${val}\``).join(` ${message.language.get(LanguageKeys.Globals.And)} `)
 			});
 		}
 	}

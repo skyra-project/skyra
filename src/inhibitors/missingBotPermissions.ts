@@ -35,7 +35,7 @@ export default class extends Inhibitor {
 			throw message.language.get(LanguageKeys.Inhibitors.MissingBotPerms, {
 				missing: message.language.list(
 					missing.map((permission) => permissions[permission]),
-					message.language.get('globalAnd')
+					message.language.get(LanguageKeys.Globals.And)
 				)
 			});
 		}

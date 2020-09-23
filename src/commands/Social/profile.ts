@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
@@ -16,8 +17,8 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('commandProfileDescription'),
-	extendedHelp: (language) => language.get('commandProfileExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Social.ProfileDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ProfileExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[user:username]'
@@ -49,7 +50,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = message.language.retrieve('commandProfile');
+		const title = message.language.retrieve(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));

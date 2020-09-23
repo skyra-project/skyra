@@ -2,6 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Schedules } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ScheduleEntity } from '@orm/entities/ScheduleEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
@@ -29,8 +30,8 @@ interface ReminderScheduledTask extends ScheduleEntity {
 	bucket: 2,
 	subcommands: true,
 	cooldown: 30,
-	description: (language) => language.get('commandRemindmeDescription'),
-	extendedHelp: (language) => language.get('commandRemindmeExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Social.RemindmeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.RemindmeExtended),
 	usage: '<action:action> (value:idOrDuration) (description:description)',
 	usageDelim: ' '
 })
@@ -75,17 +76,17 @@ interface ReminderScheduledTask extends ScheduleEntity {
 					return undefined;
 				case Actions.Show:
 				case Actions.Delete: {
-					if (!arg) throw message.language.get('commandRemindmeDeleteNoId');
+					if (!arg) throw message.language.get(LanguageKeys.Commands.Social.RemindmeDeleteNoId);
 					const id: number = await message.client.arguments.get('integer')!.run(arg, possible, message);
 					for (const task of message.client.schedules.queue) {
 						if (task.id !== id) continue;
 						if (task.taskID !== Schedules.Reminder || !task.data || task.data.user !== message.author.id) break;
 						return task;
 					}
-					throw message.language.get('commandRemindmeNotfound');
+					throw message.language.get(LanguageKeys.Commands.Social.RemindmeNotfound);
 				}
 				case Actions.Create: {
-					if (!arg) throw message.language.get('commandRemindmeCreateNoDuration');
+					if (!arg) throw message.language.get(LanguageKeys.Commands.Social.RemindmeCreateNoDuration);
 					return message.client.arguments.get('timespan')!.run(arg, { ...possible, min: Time.Minute }, message);
 				}
 			}
@@ -95,7 +96,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 		'description',
 		(arg, possible, message, [action]: Actions[]) => {
 			if (action !== Actions.Create) return undefined;
-			if (!arg) return message.language.get('commandRemindmeCreateNoDescription');
+			if (!arg) return message.language.get(LanguageKeys.Commands.Social.RemindmeCreateNoDescription);
 			return message.client.arguments.get('...string')!.run(arg, { ...possible, max: 1024 }, message);
 		}
 	]
@@ -112,16 +113,16 @@ export default class extends SkyraCommand {
 			}
 		});
 
-		return message.sendLocale('commandRemindmeCreate', [{ id: task.id.toString() }]);
+		return message.sendLocale(LanguageKeys.Commands.Social.RemindmeCreate, [{ id: task.id.toString() }]);
 	}
 
 	@requiresGuildContext((message: KlasaMessage) =>
-		message.sendLocale('resolverChannelNotInGuildSubcommand', [{ command: message.command!.name, subcommand: 'list' }])
+		message.sendLocale(LanguageKeys.Resolvers.ChannelNotInGuildSubcommand, [{ command: message.command!.name, subcommand: 'list' }])
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
-		if (!tasks.length) return message.sendLocale('commandRemindmeListEmpty');
+		if (!tasks.length) return message.sendLocale(LanguageKeys.Commands.Social.RemindmeListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -136,7 +137,7 @@ export default class extends SkyraCommand {
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: pickRandom(message.language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;
@@ -152,7 +153,7 @@ export default class extends SkyraCommand {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(task.data.content)
-				.setFooter(message.language.get('commandRemindmeShowFooter', { id: task.id }))
+				.setFooter(message.language.get(LanguageKeys.Commands.Social.RemindmeShowFooter, { id: task.id }))
 				.setTimestamp(task.time)
 		);
 	}
@@ -160,6 +161,6 @@ export default class extends SkyraCommand {
 	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
 		const { id } = task;
 		await task.delete();
-		return message.sendLocale('commandRemindmeDelete', [{ task, id }]);
+		return message.sendLocale(LanguageKeys.Commands.Social.RemindmeDelete, [{ task, id }]);
 	}
 }

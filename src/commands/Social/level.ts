@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
@@ -19,8 +20,8 @@ export default class extends SkyraCommand {
 			aliases: ['lvl', 'rank'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('commandLevelDescription'),
-			extendedHelp: (language) => language.get('commandLevelExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.LevelDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.LevelExtended),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,
@@ -47,7 +48,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = message.language.retrieve('commandLevel');
+		const title = message.language.retrieve(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)
 				// Draw the background

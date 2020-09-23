@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -9,21 +10,21 @@ export default class extends SkyraCommand {
 			aliases: ['bal', 'credits'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandBalanceDescription'),
-			extendedHelp: (language) => language.get('commandBalanceExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.BalanceDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.BalanceExtended),
 			usage: '[user:username]',
 			spam: true
 		});
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		if (user.bot) throw message.language.get('commandBalanceBots');
+		if (user.bot) throw message.language.get(LanguageKeys.Commands.Social.BalanceBots);
 
 		const { users } = await DbSet.connect();
 		const money = (await users.findOne(user.id))?.money ?? 0;
 
 		return message.author === user
-			? message.sendLocale('commandBalanceSelf', [{ amount: message.language.groupDigits(money) }])
-			: message.sendLocale('commandBalance', [{ user: user.username, amount: message.language.groupDigits(money) }]);
+			? message.sendLocale(LanguageKeys.Commands.Social.BalanceSelf, [{ amount: message.language.groupDigits(money) }])
+			: message.sendLocale(LanguageKeys.Commands.Social.Balance, [{ user: user.username, amount: message.language.groupDigits(money) }]);
 	}
 }

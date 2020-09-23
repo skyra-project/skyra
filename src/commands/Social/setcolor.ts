@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { parse } from '@utils/Color';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -10,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['setcolour'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandSetColorDescription'),
-			extendedHelp: (language) => language.get('commandSetColorExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.SetColorDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.SetColorExtended),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '<color:string>'
@@ -33,7 +34,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(b10.value)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(message.language.get('commandSetColor', { color: hex.toString() }))
+				.setDescription(message.language.get(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }))
 		);
 	}
 }

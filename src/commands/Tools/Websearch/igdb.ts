@@ -77,7 +77,7 @@ export default class extends RichDisplayCommand {
 						...this.igdbRequestHeaders,
 						Authorization: `Bearer ${await this.client.twitch.fetchBearer()}`
 					},
-					body: this.commonQuery.concat(`search: "${game}"`)
+					body: `search: "${game}"; ${this.commonQuery}`
 				},
 				FetchResultTypes.JSON
 			);

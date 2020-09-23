@@ -1,4 +1,5 @@
 import type { ReactionRole } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';
 import { Guild } from 'discord.js';
@@ -16,7 +17,7 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.get('serializerReactionRoleInvalid');
+		throw language.get(LanguageKeys.Serializers.ReactionRoleInvalid);
 	}
 
 	public stringify(value: ReactionRole, guild: Guild) {

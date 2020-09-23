@@ -1,4 +1,5 @@
 import { Snowflake } from '@klasa/snowflake';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
@@ -18,6 +19,6 @@ export default class extends Serializer {
 			const snowflake = new Snowflake(data);
 			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return data;
 		}
-		throw language.get('resolverInvalidSnowflake', { name: entry.key });
+		throw language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: entry.key });
 	}
 }

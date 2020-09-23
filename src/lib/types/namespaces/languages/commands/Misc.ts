@@ -1,4 +1,4 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const ChaseDescription = T<string>('commandChaseDescription');
@@ -35,7 +35,7 @@ export const RandRedditBanned = T<string>('commandRandRedditBanned');
 export const RandRedditFail = T<string>('commandRandRedditFail');
 export const RandRedditAllNsfw = T<string>('commandRandRedditAllNsfw');
 export const RandRedditAllNsfl = T<string>('commandRandRedditAllNsfl');
-export const RandRedditMessage = T<(params: { title: string; author: string; url: string }) => string>('commandRandRedditMessage');
+export const RandRedditMessage = FT<{ title: string; author: string; url: string }, string>('commandRandRedditMessage');
 export const RandRedditErrorPrivate = T<string>('commandRandRedditErrorPrivate');
 export const RandRedditErrorQuarantined = T<string>('commandRandRedditErrorQuarantined');
 export const RandRedditErrorNotFound = T<string>('commandRandRedditErrorNotFound');
@@ -43,7 +43,7 @@ export const RandRedditErrorBanned = T<string>('commandRandRedditErrorBanned');
 export const RedditUserDescription = T<string>('commandRedditUserDescription');
 export const RedditUserExtended = T<LanguageHelpDisplayOptions>('commandRedditUserExtended');
 export const RedditUserComplexityLevels = T<string[]>('commandRedditUserComplexityLevels');
-export const RedditUserInvalidUser = T<(params: { user: string }) => string>('commandRedditUserInvalidUser');
+export const RedditUserInvalidUser = FT<{ user: string }, string>('commandRedditUserInvalidUser');
 export const RedditUserQueryFailed = T<string>('commandRedditUserQueryFailed');
 export const RedditUserTitles = T<{
 	linkKarma: string;
@@ -86,4 +86,4 @@ export const SnipeTitle = T<string>('commandSnipeTitle');
 export const UpvoteMessage = T<string>('commandUpvoteMessage');
 export const VaporwaveDescription = T<string>('commandVaporwaveDescription');
 export const VaporwaveExtended = T<LanguageHelpDisplayOptions>('commandVaporwaveExtended');
-export const VaporwaveOutput = T<(params: { str: string }) => string>('commandVaporwaveOutput');
+export const VaporwaveOutput = FT<{ str: string }, string>('commandVaporwaveOutput');

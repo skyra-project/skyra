@@ -1,17 +1,17 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const SuggestDescription = T<string>('commandSuggestDescription');
 export const SuggestExtended = T<LanguageHelpDisplayOptions>('commandSuggestExtended');
 export const ResolveSuggestionDescription = T<string>('commandResolveSuggestionDescription');
 export const ResolveSuggestionExtended = T<LanguageHelpDisplayOptions>('commandResolveSuggestionExtended');
-export const SuggestNoSetup = T<(params: { username: string }) => string>('commandSuggestNoSetup');
-export const SuggestNoSetupAsk = T<(params: { username: string }) => string>('commandSuggestNoSetupAsk');
+export const SuggestNoSetup = FT<{ username: string }, string>('commandSuggestNoSetup');
+export const SuggestNoSetupAsk = FT<{ username: string }, string>('commandSuggestNoSetupAsk');
 export const SuggestNoSetupAbort = T<string>('commandSuggestNoSetupAbort');
-export const SuggestNopermissions = T<(params: { username: string; channel: string }) => string>('commandSuggestNopermissions');
+export const SuggestNopermissions = FT<{ username: string; channel: string }, string>('commandSuggestNopermissions');
 export const SuggestChannelPrompt = T<string>('commandSuggestChannelPrompt');
-export const SuggestTitle = T<(params: { id: number }) => string>('commandSuggestTitle');
-export const SuggestSuccess = T<(params: { channel: string }) => string>('commandSuggestSuccess');
+export const SuggestTitle = FT<{ id: number }, string>('commandSuggestTitle');
+export const SuggestSuccess = FT<{ channel: string }, string>('commandSuggestSuccess');
 export const ResolveSuggestionInvalidId = T<string>('commandResolveSuggestionInvalidId');
 export const ResolveSuggestionMessageNotFound = T<string>('commandResolveSuggestionMessageNotFound');
 export const ResolveSuggestionIdNotFound = T<string>('commandResolveSuggestionIdNotFound');
@@ -38,7 +38,7 @@ export const ResolveSuggestionActionsDms = T<
 	}
 >('commandResolveSuggestionActionsDms');
 export const ResolveSuggestionDmFail = T<string>('commandResolveSuggestionDmFail');
-export const ResolveSuggestionSuccess = T<(params: { id: number; actionText: string }) => string>('commandResolveSuggestionSuccess');
+export const ResolveSuggestionSuccess = FT<{ id: number; actionText: string }, string>('commandResolveSuggestionSuccess');
 export const ResolveSuggestionSuccessAcceptedText = T<string>('commandResolveSuggestionSuccessAcceptedText');
 export const ResolveSuggestionSuccessDeniedText = T<string>('commandResolveSuggestionSuccessDeniedText');
 export const ResolveSuggestionSuccessConsideredText = T<string>('commandResolveSuggestionSuccessConsideredText');

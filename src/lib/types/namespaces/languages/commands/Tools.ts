@@ -1,4 +1,4 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { Guild, GuildMember, User } from 'discord.js';
 
@@ -51,11 +51,11 @@ export const EshopTitles = T<{
 	nsuid: 'NSUID';
 	esrb: 'ESRB';
 }>('commandEshopTitles');
-export const EshopPricePaid = T<(params: { price: number }) => string>('commandEshopPricePaid');
+export const EshopPricePaid = FT<{ price: number }, string>('commandEshopPricePaid');
 export const EshopPriceFree = T<string>('commandEshopPriceFree');
 export const HoroscopeDescription = T<string>('commandHoroscopeDescription');
 export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commandHoroscopeExtended');
-export const HoroscopeInvalidSunsign = T<(params: { sign: string; maybe: string }) => string>('commandHoroscopeInvalidSunsign');
+export const HoroscopeInvalidSunsign = FT<{ sign: string; maybe: string }, string>('commandHoroscopeInvalidSunsign');
 export const HoroscopeTitles = T<
 	(params: {
 		sign: string;
@@ -149,7 +149,7 @@ export const VoteExtended = T<LanguageHelpDisplayOptions>('commandVoteExtended')
 export const TopInvitesDescription = T<string>('commandTopInvitesDescription');
 export const TopInvitesExtended = T<LanguageHelpDisplayOptions>('commandTopInvitesExtended');
 export const TopInvitesNoInvites = T<string>('commandTopInvitesNoInvites');
-export const TopInvitesTop10InvitesFor = T<(params: { guild: Guild }) => string>('commandTopInvitesTop10InvitesFor');
+export const TopInvitesTop10InvitesFor = FT<{ guild: Guild }, string>('commandTopInvitesTop10InvitesFor');
 export const TopInvitesEmbedData = T<{
 	channel: string;
 	link: string;
@@ -169,11 +169,11 @@ export const Color = T<(params: { hex: string; rgb: string; hsl: string }) => st
 export const EmojiCustom = T<(params: { emoji: string; id: string }) => string[]>('commandEmojiCustom');
 export const EmojiTwemoji = T<(params: { emoji: string; id: string }) => string[]>('commandEmojiTwemoji');
 export const EmojiInvalid = T<string>('commandEmojiInvalid');
-export const EmojiTooLarge = T<(params: { emoji: string }) => string>('commandEmojiTooLarge');
+export const EmojiTooLarge = FT<{ emoji: string }, string>('commandEmojiTooLarge');
 export const EmotesDescription = T<string>('commandEmotesDescription');
 export const EmotesExtended = T<LanguageHelpDisplayOptions>('commandEmotesExtended');
 export const EmotesTitle = T<string>('commandEmotesTitle');
-export const PriceCurrency = T<(params: { fromCurrency: string; fromAmount: number; worths: string[] }) => string>('commandPriceCurrency');
+export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commandPriceCurrency');
 export const PriceCurrencyNotFound = T<string>('commandPriceCurrencyNotFound');
 export const QuoteMessage = T<string>('commandQuoteMessage');
 export const DuckDuckGoNotfound = T<string>('commandDuckDuckGoNotfound');
@@ -194,8 +194,8 @@ export const WhoisMemberFields = T<
 		footer: string;
 	}
 >('commandWhoisMemberFields');
-export const WhoisMemberRoles = T<(params: { count: number }) => string>('commandWhoisMemberRoles');
-export const WhoisMemberRolesPlural = T<(params: { count: number }) => string>('commandWhoisMemberRolesPlural');
+export const WhoisMemberRoles = FT<{ count: number }, string>('commandWhoisMemberRoles');
+export const WhoisMemberRolesPlural = FT<{ count: number }, string>('commandWhoisMemberRolesPlural');
 export const WhoisMemberPermissions = T<string>('commandWhoisMemberPermissions');
 export const WhoisMemberPermissionsAll = T<string>('commandWhoisMemberPermissionsAll');
 export const WhoisUserTitles = T<{

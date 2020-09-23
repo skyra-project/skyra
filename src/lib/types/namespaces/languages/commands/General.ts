@@ -1,17 +1,17 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const Ping = T<string>('commandPing');
 export const PingDescription = T<string>('commandPingDescription');
-export const PingPong = T<(params: { diff: number; ping: number }) => string>('commandPingPong');
+export const PingPong = FT<{ diff: number; ping: number }, string>('commandPingPong');
 export const InfoDescription = T<string>('commandInfoDescription');
 export const HelpDescription = T<string>('commandHelpDescription');
 export const HelpNoExtended = T<string>('commandHelpNoExtended');
 export const HelpDm = T<string>('commandHelpDm');
 export const HelpNodm = T<string>('commandHelpNodm');
-export const HelpAllFlag = T<(params: { prefix: string }) => string>('commandHelpAllFlag');
-export const HelpCommandCount = T<(params: { count: number }) => string>('commandHelpCommandCount');
-export const HelpCommandCountPlural = T<(params: { count: number }) => string>('commandHelpCommandCountPlural');
+export const HelpAllFlag = FT<{ prefix: string }, string>('commandHelpAllFlag');
+export const HelpCommandCount = FT<{ count: number }, string>('commandHelpCommandCount');
+export const HelpCommandCountPlural = FT<{ count: number }, string>('commandHelpCommandCountPlural');
 export const InviteDescription = T<string>('commandInviteDescription');
 export const InviteExtended = T<LanguageHelpDisplayOptions>('commandInviteExtended');
 export const InvitePermissionInviteText = T<string>('commandInvitePermissionInviteText');

@@ -1,13 +1,13 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 
-export const Cooldown = T<(params: { remaining: string }) => string>('inhibitorCooldown');
-export const MissingBotPerms = T<(params: { missing: string }) => string>('inhibitorMissingBotPerms');
+export const Cooldown = FT<{ remaining: string }, string>('inhibitorCooldown');
+export const MissingBotPerms = FT<{ missing: string }, string>('inhibitorMissingBotPerms');
 export const Nsfw = T<string>('inhibitorNsfw');
 export const Permissions = T<string>('inhibitorPermissions');
-export const RequiredSettings = T<(params: { settings: string; count: number }) => string>('inhibitorRequiredSettings');
-export const RequiredSettingsPlural = T<(params: { settings: string; count: number }) => string>('inhibitorRequiredSettingsPlural');
-export const Runin = T<(params: { type: string }) => string>('inhibitorRunin');
-export const RuninNone = T<(params: { name: string }) => string>('inhibitorRuninNone');
+export const RequiredSettings = FT<{ settings: string; count: number }, string>('inhibitorRequiredSettings');
+export const RequiredSettingsPlural = FT<{ settings: string; count: number }, string>('inhibitorRequiredSettingsPlural');
+export const Runin = FT<{ type: string }, string>('inhibitorRunin');
+export const RuninNone = FT<{ name: string }, string>('inhibitorRuninNone');
 export const DisabledGuild = T<string>('inhibitorDisabledGuild');
 export const DisabledGlobal = T<string>('inhibitorDisabledGlobal');
 export const MusicQueueEmpty = T<string>('inhibitorMusicQueueEmpty');
@@ -18,4 +18,4 @@ export const MusicUserVoiceChannel = T<string>('inhibitorMusicUserVoiceChannel')
 export const MusicBotVoiceChannel = T<string>('inhibitorMusicBotVoiceChannel');
 export const MusicBothVoiceChannel = T<string>('inhibitorMusicBothVoiceChannel');
 export const MusicNothingPlaying = T<string>('inhibitorMusicNothingPlaying');
-export const Spam = T<(params: { channel: string }) => string>('inhibitorSpam');
+export const Spam = FT<{ channel: string }, string>('inhibitorSpam');

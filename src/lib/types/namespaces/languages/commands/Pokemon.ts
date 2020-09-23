@@ -1,13 +1,13 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const AbilityDescription = T<string>('commandAbilityDescription');
 export const AbilityExtended = T<LanguageHelpDisplayOptions>('commandAbilityExtended');
 export const AbilityEmbedTitle = T<string>('commandAbilityEmbedTitle');
-export const AbilityQueryFail = T<(params: { ability: string }) => string>('commandAbilityQueryFail');
+export const AbilityQueryFail = FT<{ ability: string }, string>('commandAbilityQueryFail');
 export const FlavorsDescription = T<string>('commandFlavorsDescription');
 export const FlavorsExtended = T<LanguageHelpDisplayOptions>('commandFlavorsExtended');
-export const FlavorsQueryFail = T<(params: { pokemon: string }) => string>('commandFlavorsQueryFail');
+export const FlavorsQueryFail = FT<{ pokemon: string }, string>('commandFlavorsQueryFail');
 export const ItemDescription = T<string>('commandItemDescription');
 export const ItemExtended = T<LanguageHelpDisplayOptions>('commandItemExtended');
 export const ItemEmbedData = T<
@@ -20,7 +20,7 @@ export const ItemEmbedData = T<
 		availableInGeneration8Data: string;
 	}
 >('commandItemEmbedData');
-export const ItemQueryFail = T<(params: { item: string }) => string>('commandItemQueryFail');
+export const ItemQueryFail = FT<{ item: string }, string>('commandItemQueryFail');
 export const LearnDescription = T<string>('commandLearnDescription');
 export const LearnExtended = T<LanguageHelpDisplayOptions>('commandLearnExtended');
 export const LearnMethodTypes = T<
@@ -36,11 +36,11 @@ export const LearnMethodTypes = T<
 		dreamworldMoves: string;
 	}
 >('commandLearnMethodTypes');
-export const LearnInvalidGeneration = T<(params: { generation: string }) => string>('commandLearnInvalidGeneration');
-export const LearnMethod = T<(params: { generation: number; pokemon: string; move: string; method: string }) => string>('commandLearnMethod');
-export const LearnQueryFailed = T<(params: { pokemon: string; moves: string }) => string>('commandLearnQueryFailed');
-export const LearnCannotLearn = T<(params: { pokemon: string; moves: string }) => string>('commandLearnCannotLearn');
-export const LearnTitle = T<(params: { pokemon: string; generation: number }) => string>('commandLearnTitle');
+export const LearnInvalidGeneration = FT<{ generation: string }, string>('commandLearnInvalidGeneration');
+export const LearnMethod = FT<{ generation: number; pokemon: string; move: string; method: string }, string>('commandLearnMethod');
+export const LearnQueryFailed = FT<{ pokemon: string; moves: string }, string>('commandLearnQueryFailed');
+export const LearnCannotLearn = FT<{ pokemon: string; moves: string }, string>('commandLearnCannotLearn');
+export const LearnTitle = FT<{ pokemon: string; generation: number }, string>('commandLearnTitle');
 export const MoveDescription = T<string>('commandMoveDescription');
 export const MoveExtended = T<LanguageHelpDisplayOptions>('commandMoveExtended');
 export const MoveEmbedData = T<
@@ -65,7 +65,7 @@ export const MoveEmbedData = T<
 		zMovePower: string;
 	}
 >('commandMoveEmbedData');
-export const MoveQueryFail = T<(params: { move: string }) => string>('commandMoveQueryFail');
+export const MoveQueryFail = FT<{ move: string }, string>('commandMoveQueryFail');
 export const PokedexDescription = T<string>('commandPokedexDescription');
 export const PokedexExtended = T<LanguageHelpDisplayOptions>('commandPokedexExtended');
 export const PokedexEmbedData = T<
@@ -91,7 +91,7 @@ export const PokedexEmbedData = T<
 		cosmeticFormesList: string;
 	}
 >('commandPokedexEmbedData');
-export const PokedexQueryFail = T<(params: { pokemon: string }) => string>('commandPokedexQueryFail');
+export const PokedexQueryFail = FT<{ pokemon: string }, string>('commandPokedexQueryFail');
 export const TypeDescription = T<string>('commandTypeDescription');
 export const TypeExtended = T<LanguageHelpDisplayOptions>('commandTypeExtended');
 export const TypeEmbedData = T<
@@ -112,5 +112,5 @@ export const TypeEmbedData = T<
 	}
 >('commandTypeEmbedData');
 export const TypeTooManyTypes = T<string>('commandTypeTooManyTypes');
-export const TypeNotAType = T<(params: { type: string }) => string>('commandTypeNotAType');
-export const TypeQueryFail = T<(params: { types: string }) => string>('commandTypeQueryFail');
+export const TypeNotAType = FT<{ type: string }, string>('commandTypeNotAType');
+export const TypeQueryFail = FT<{ types: string }, string>('commandTypeQueryFail');

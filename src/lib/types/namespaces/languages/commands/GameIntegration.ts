@@ -1,4 +1,4 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const BrawlstarsDescription = T<string>('commandBrawlstarsDescription');
@@ -81,9 +81,9 @@ export const ClashofclansClanEmbedTitles = T<{
 		lessThanOncePerWeek: string;
 	};
 }>('commandClashofclansClanEmbedTitles');
-export const ClashofclansInvalidPlayerTag = T<(params: { playertag: string }) => string>('commandClashofclansInvalidPlayerTag');
-export const ClashOfClansClansQueryFail = T<(params: { clan: string }) => string>('commandClashOfClansClansQueryFail');
-export const ClashofclansPlayersQueryFail = T<(params: { playertag: string }) => string>('commandClashofclansPlayersQueryFail');
+export const ClashofclansInvalidPlayerTag = FT<{ playertag: string }, string>('commandClashofclansInvalidPlayerTag');
+export const ClashOfClansClansQueryFail = FT<{ clan: string }, string>('commandClashOfClansClansQueryFail');
+export const ClashofclansPlayersQueryFail = FT<{ playertag: string }, string>('commandClashofclansPlayersQueryFail');
 export const FFXIVDescription = T<string>('commandFFXIVDescription');
 export const FFXIVExtended = T<LanguageHelpDisplayOptions>('commandFFXIVExtended');
 export const FFXIVCharacterFields = T<{
@@ -119,7 +119,7 @@ export const FFXIVNoItemFound = T<string>('commandFFXIVNoItemFound');
 export const FortniteDescription = T<string>('commandFortniteDescription');
 export const FortniteExtended = T<LanguageHelpDisplayOptions>('commandFortniteExtended');
 export const FortniteNoUser = T<string>('commandFortniteNoUser');
-export const FortniteEmbedTitle = T<(params: { epicUserHandle: string }) => string>('commandFortniteEmbedTitle');
+export const FortniteEmbedTitle = FT<{ epicUserHandle: string }, string>('commandFortniteEmbedTitle');
 export const FortniteEmbedSectionTitles = T<{
 	lifetimeStats: string;
 	solos: string;
@@ -155,9 +155,9 @@ export const FortniteEmbedStats = T<
 >('commandFortniteEmbedStats');
 export const OverwatchDescription = T<string>('commandOverwatchDescription');
 export const OverwatchExtended = T<LanguageHelpDisplayOptions>('commandOverwatchExtended');
-export const OverwatchInvalidPlayerName = T<(params: { playerTag: string }) => string>('commandOverwatchInvalidPlayerName');
-export const OverwatchQueryFail = T<(params: { player: string; platform: string }) => string>('commandOverwatchQueryFail');
-export const OverwatchNoStats = T<(params: { player: string }) => string>('commandOverwatchNoStats');
+export const OverwatchInvalidPlayerName = FT<{ playerTag: string }, string>('commandOverwatchInvalidPlayerName');
+export const OverwatchQueryFail = FT<{ player: string; platform: string }, string>('commandOverwatchQueryFail');
+export const OverwatchNoStats = FT<{ player: string }, string>('commandOverwatchNoStats');
 export const OverwatchNoAverage = T<string>('commandOverwatchNoAverage');
 export const OverwatchEmbedDataStats = T<
 	(params: {
@@ -186,7 +186,7 @@ export const OverwatchEmbedDataStats = T<
 		bronzeMedals: string;
 	}
 >('commandOverwatchEmbedDataStats');
-export const OverwatchEmbedDataTopHero = T<(params: { name: string; playTime: string }) => string>('commandOverwatchEmbedDataTopHero');
+export const OverwatchEmbedDataTopHero = FT<{ name: string; playTime: string }, string>('commandOverwatchEmbedDataTopHero');
 export const OverwatchEmbedData = T<
 	(params: {
 		authorName: string;

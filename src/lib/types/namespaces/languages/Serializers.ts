@@ -1,15 +1,15 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 
 export const AutoRoleInvalid = T<string>('serializerAutoRoleInvalid');
 export const CommandAutoDeleteInvalid = T<string>('serializerCommandAutoDeleteInvalid');
 export const CustomCommandInvalid = T<string>('serializerCustomCommandInvalid');
 export const DisabledCommandChannelInvalid = T<string>('serializerDisabledCommandChannelInvalid');
-export const PermissionNodeDuplicatedCommand = T<(params: { command: string }) => string>('serializerPermissionNodeDuplicatedCommand');
-export const PermissionNodeInvalidCommand = T<(params: { command: string }) => string>('serializerPermissionNodeInvalidCommand');
+export const PermissionNodeDuplicatedCommand = FT<{ command: string }, string>('serializerPermissionNodeDuplicatedCommand');
+export const PermissionNodeInvalidCommand = FT<{ command: string }, string>('serializerPermissionNodeInvalidCommand');
 export const PermissionNodeInvalidTarget = T<string>('serializerPermissionNodeInvalidTarget');
 export const PermissionNodeInvalid = T<string>('serializerPermissionNodeInvalid');
 export const PermissionNodeSecurityEveryoneAllows = T<string>('serializerPermissionNodeSecurityEveryoneAllows');
-export const PermissionNodeSecurityGuarded = T<(params: { command: string }) => string>('serializerPermissionNodeSecurityGuarded');
+export const PermissionNodeSecurityGuarded = FT<{ command: string }, string>('serializerPermissionNodeSecurityGuarded');
 export const PermissionNodeSecurityOwner = T<string>('serializerPermissionNodeSecurityOwner');
 export const ReactionRoleInvalid = T<string>('serializerReactionRoleInvalid');
 export const StickyRoleInvalid = T<string>('serializerStickyRoleInvalid');

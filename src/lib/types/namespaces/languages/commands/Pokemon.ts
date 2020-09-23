@@ -1,0 +1,116 @@
+import { T } from '@lib/types/Shared';
+import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+
+export const AbilityDescription = T<string>('commandAbilityDescription');
+export const AbilityExtended = T<LanguageHelpDisplayOptions>('commandAbilityExtended');
+export const AbilityEmbedTitle = T<string>('commandAbilityEmbedTitle');
+export const AbilityQueryFail = T<(params: { ability: string }) => string>('commandAbilityQueryFail');
+export const FlavorsDescription = T<string>('commandFlavorsDescription');
+export const FlavorsExtended = T<LanguageHelpDisplayOptions>('commandFlavorsExtended');
+export const FlavorsQueryFail = T<(params: { pokemon: string }) => string>('commandFlavorsQueryFail');
+export const ItemDescription = T<string>('commandItemDescription');
+export const ItemExtended = T<LanguageHelpDisplayOptions>('commandItemExtended');
+export const ItemEmbedData = T<
+	(params: {
+		availableInGen8: string;
+	}) => {
+		ITEM: string;
+		generationIntroduced: string;
+		availableInGeneration8Title: string;
+		availableInGeneration8Data: string;
+	}
+>('commandItemEmbedData');
+export const ItemQueryFail = T<(params: { item: string }) => string>('commandItemQueryFail');
+export const LearnDescription = T<string>('commandLearnDescription');
+export const LearnExtended = T<LanguageHelpDisplayOptions>('commandLearnExtended');
+export const LearnMethodTypes = T<
+	(params: {
+		level?: number | null;
+	}) => {
+		levelUpMoves: string;
+		eventMoves: string;
+		tutorMoves: string;
+		eggMoves: string;
+		virtualTransferMoves: string;
+		tmMoves: string;
+		dreamworldMoves: string;
+	}
+>('commandLearnMethodTypes');
+export const LearnInvalidGeneration = T<(params: { generation: string }) => string>('commandLearnInvalidGeneration');
+export const LearnMethod = T<(params: { generation: number; pokemon: string; move: string; method: string }) => string>('commandLearnMethod');
+export const LearnQueryFailed = T<(params: { pokemon: string; moves: string }) => string>('commandLearnQueryFailed');
+export const LearnCannotLearn = T<(params: { pokemon: string; moves: string }) => string>('commandLearnCannotLearn');
+export const LearnTitle = T<(params: { pokemon: string; generation: number }) => string>('commandLearnTitle');
+export const MoveDescription = T<string>('commandMoveDescription');
+export const MoveExtended = T<LanguageHelpDisplayOptions>('commandMoveExtended');
+export const MoveEmbedData = T<
+	(params: {
+		availableInGen8: string;
+	}) => {
+		move: string;
+		types: string;
+		basePower: string;
+		pp: string;
+		category: string;
+		accuracy: string;
+		priority: string;
+		target: string;
+		contestCondition: string;
+		zCrystal: string;
+		gmaxPokemon: string;
+		availableInGeneration8Title: string;
+		availableInGeneration8Data: string;
+		none: string;
+		maxMovePower: string;
+		zMovePower: string;
+	}
+>('commandMoveEmbedData');
+export const MoveQueryFail = T<(params: { move: string }) => string>('commandMoveQueryFail');
+export const PokedexDescription = T<string>('commandPokedexDescription');
+export const PokedexExtended = T<LanguageHelpDisplayOptions>('commandPokedexExtended');
+export const PokedexEmbedData = T<
+	(params: {
+		otherFormes: readonly string[];
+		cosmeticFormes: readonly string[];
+	}) => {
+		types: string;
+		abilities: string;
+		genderRatio: string;
+		smogonTier: string;
+		uknownSmogonTier: string;
+		height: string;
+		weight: string;
+		eggGroups: string;
+		evolutionaryLine: string;
+		baseStats: string;
+		baseStatsTotal: string;
+		flavourText: string;
+		otherFormesTitle: string;
+		cosmeticFormesTitle: string;
+		otherFormesList: string;
+		cosmeticFormesList: string;
+	}
+>('commandPokedexEmbedData');
+export const PokedexQueryFail = T<(params: { pokemon: string }) => string>('commandPokedexQueryFail');
+export const TypeDescription = T<string>('commandTypeDescription');
+export const TypeExtended = T<LanguageHelpDisplayOptions>('commandTypeExtended');
+export const TypeEmbedData = T<
+	(params: {
+		types: string[];
+	}) => {
+		offensive: string;
+		defensive: string;
+		superEffectiveAgainst: string;
+		dealsNormalDamageTo: string;
+		doesNotAffect: string;
+		notVeryEffectiveAgainst: string;
+		vulnerableTo: string;
+		takesNormalDamageFrom: string;
+		resists: string;
+		notAffectedBy: string;
+		typeEffectivenessFor: string;
+	}
+>('commandTypeEmbedData');
+export const TypeTooManyTypes = T<string>('commandTypeTooManyTypes');
+export const TypeNotAType = T<(params: { type: string }) => string>('commandTypeNotAType');
+export const TypeQueryFail = T<(params: { types: string }) => string>('commandTypeQueryFail');

@@ -33,3 +33,11 @@ export const MinmaxMinInclusive = T<(params: { name: string; min: number }) => s
 export const MinmaxMinExclusive = T<(params: { name: string; min: number }) => string>('resolverMinmaxMinExclusive');
 export const MinmaxMaxInclusive = T<(params: { name: string; max: number }) => string>('resolverMinmaxMaxInclusive');
 export const MinmaxMaxExclusive = T<(params: { name: string; max: number }) => string>('resolverMinmaxMaxExclusive');
+export const DateSuffix = T<string>('resolverDateSuffix');
+export const PositiveAmount = T<string>('resolverPositiveAmount');
+export const InvalidChannelName = T<(params: { name: string }) => string>('resolverInvalidChannelName');
+export const ChannelNotInGuild = T<string>('resolverChannelNotInGuild');
+export const ChannelNotInGuildSubcommand = T<(params: { command: string; subcommand: string }) => string>('resolverChannelNotInGuildSubcommand');
+export const InvalidRoleName = T<(params: { name: string }) => string>('resolverInvalidRoleName');
+export const InvalidUsername = T<(params: { name: string }) => string>('resolverInvalidUsername');
+export const MembernameUserLeftDuringPrompt = T<string>('resolverMembernameUserLeftDuringPrompt');

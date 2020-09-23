@@ -1,0 +1,33 @@
+import { T } from '@lib/types/Shared';
+import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+
+export const Ping = T<string>('commandPing');
+export const PingDescription = T<string>('commandPingDescription');
+export const PingPong = T<(params: { diff: number; ping: number }) => string>('commandPingPong');
+export const InfoDescription = T<string>('commandInfoDescription');
+export const HelpDescription = T<string>('commandHelpDescription');
+export const HelpNoExtended = T<string>('commandHelpNoExtended');
+export const HelpDm = T<string>('commandHelpDm');
+export const HelpNodm = T<string>('commandHelpNodm');
+export const HelpAllFlag = T<(params: { prefix: string }) => string>('commandHelpAllFlag');
+export const HelpCommandCount = T<(params: { count: number }) => string>('commandHelpCommandCount');
+export const HelpCommandCountPlural = T<(params: { count: number }) => string>('commandHelpCommandCountPlural');
+export const InviteDescription = T<string>('commandInviteDescription');
+export const InviteExtended = T<LanguageHelpDisplayOptions>('commandInviteExtended');
+export const InvitePermissionInviteText = T<string>('commandInvitePermissionInviteText');
+export const InvitePermissionSupportServerText = T<string>('commandInvitePermissionSupportServerText');
+export const InvitePermissionsDescription = T<string>('commandInvitePermissionsDescription');
+export const InfoBody = T<string[]>('commandInfoBody');
+export const HelpData = T<
+	(params: {
+		titleDescription: string;
+		usage: string;
+		extendedHelp: string;
+		footerName: string;
+	}) => {
+		title: string;
+		usage: string;
+		extended: string;
+		footer: string;
+	}
+>('commandHelpData');

@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetch, FetchResultTypes, isImageURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
@@ -8,8 +9,8 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['wiki'],
 	cooldown: 15,
-	description: (language) => language.get('commandWikipediaDescription'),
-	extendedHelp: (language) => language.get('commandWikipediaExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.WikipediaDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.WikipediaExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<query:string>'
 })
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
-			throw message.language.get('commandWikipediaNotfound');
+			throw message.language.get(LanguageKeys.Commands.Tools.WikipediaNotfound);
 		}
 
 		const pageURL = `https://en.wikipedia.org/wiki/${this.parseURL(input)}`;
@@ -57,7 +58,7 @@ export default class extends SkyraCommand {
 
 			return await fetch<WikipediaResultOk<'extracts'>>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -92,7 +93,7 @@ export default class extends SkyraCommand {
 
 	private content(definition: string, url: string, i18n: Language) {
 		if (definition.length < 300) return definition;
-		return i18n.get('systemTextTruncated', { definition, url });
+		return i18n.get(LanguageKeys.Misc.SystemTextTruncated, { definition, url });
 	}
 }
 

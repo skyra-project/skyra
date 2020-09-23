@@ -1,19 +1,20 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: (language) => language.get('commandRebootDescription'),
+			description: (language) => language.get(LanguageKeys.Commands.System.RebootDescription),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner
 		});
 	}
 
 	public async run(message: KlasaMessage) {
-		await message.sendLocale('commandReboot').catch((err) => this.client.emit(Events.ApiError, err));
+		await message.sendLocale(LanguageKeys.Commands.System.Reboot).catch((err) => this.client.emit(Events.ApiError, err));
 
 		try {
 			if (ENABLE_LAVALINK) {

@@ -1,13 +1,14 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: (language) => language.get('commandSetAvatarDescription'),
-			extendedHelp: (language) => language.get('commandSetAvatarExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.System.SetAvatarDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.SetAvatarExtended),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			usage: '(attachment:attachment)'
@@ -20,7 +21,7 @@ export default class extends SkyraCommand {
 			}
 			const url = ((res) => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, FetchResultTypes.Buffer);
-			throw msg.language.get('resolverInvalidUrl', { name: possible.name });
+			throw msg.language.get(LanguageKeys.Resolvers.InvalidUrl, { name: possible.name });
 		});
 	}
 

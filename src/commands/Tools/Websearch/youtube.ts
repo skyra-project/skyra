@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
@@ -20,8 +21,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['yt'],
 			cooldown: 15,
-			description: (language) => language.get('commandYoutubeDescription'),
-			extendedHelp: (language) => language.get('commandYoutubeExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Tools.YoutubeDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.YoutubeExtended),
 			usage: '<query:string>'
 		});
 	}
@@ -36,7 +37,7 @@ export default class extends SkyraCommand {
 		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
 		const results = data.items.slice(0, 5);
 
-		if (!results.length) throw message.language.get('commandYoutubeNotfound');
+		if (!results.length) throw message.language.get(LanguageKeys.Commands.Tools.YoutubeNotfound);
 
 		const sent = await message.send(this.getLink(results[0]));
 

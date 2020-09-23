@@ -1,5 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { clean } from '@utils/clean';
@@ -11,8 +12,8 @@ import { inspect } from 'util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['ev'],
-	description: (language) => language.get('commandEvalDescription'),
-	extendedHelp: (language) => language.get('commandEvalExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.System.EvalDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.EvalExtended),
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<expression:str>',
@@ -52,7 +53,7 @@ export default class extends SkyraCommand {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
 		return Promise.race([
 			sleep(flagTime).then(() => ({
-				result: message.language.get('commandEvalTimeout', { seconds: flagTime / 1000 }),
+				result: message.language.get(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'

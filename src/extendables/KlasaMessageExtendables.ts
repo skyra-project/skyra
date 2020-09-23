@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { sleep } from '@utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
@@ -13,7 +14,7 @@ export default class extends Extendable {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
-		if (responses.size === 0) throw this.language.get('messagePromptTimeout');
+		if (responses.size === 0) throw this.language.get(LanguageKeys.Misc.MessagePromptTimeout);
 		return responses.first();
 	}
 

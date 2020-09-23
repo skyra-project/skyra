@@ -1,4 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Finalizer, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {
@@ -21,7 +22,7 @@ export default class extends Inhibitor {
 		}
 
 		if (existing && existing.limited)
-			throw message.language.get('inhibitorCooldown', { remaining: message.language.duration(existing.remainingTime) });
+			throw message.language.get(LanguageKeys.Inhibitors.Cooldown, { remaining: message.language.duration(existing.remainingTime) });
 	}
 }
 

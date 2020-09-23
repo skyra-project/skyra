@@ -3,6 +3,7 @@ import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
@@ -95,7 +96,7 @@ export default class extends Event {
 						})`
 					].join('\n')
 				)
-				.setFooter(`${data.guild.language.get('eventsReaction')} • ${data.channel.name}`)
+				.setFooter(`${data.guild.language.get(LanguageKeys.Events.Reaction)} • ${data.channel.name}`)
 				.setTimestamp()
 		);
 	}

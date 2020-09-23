@@ -1,4 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -8,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['duckduckgo'],
 			cooldown: 15,
-			description: (language) => language.get('commandDuckDuckGoDescription'),
-			extendedHelp: (language) => language.get('commandDuckDuckGoExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Tools.DuckDuckGoDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.DuckDuckGoExtended),
 			usage: '<query:string>',
 			usageDelim: ' ',
 			requiredPermissions: ['EMBED_LINKS']
@@ -20,13 +21,13 @@ export default class extends SkyraCommand {
 		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
 
 		if (body.Heading.length === 0) {
-			throw message.language.get('commandDuckDuckGoNotfound');
+			throw message.language.get(LanguageKeys.Commands.Tools.DuckDuckGoNotfound);
 		}
 
 		const embed = new MessageEmbed().setTitle(body.Heading).setURL(body.AbstractURL).setThumbnail(body.Image).setDescription(body.AbstractText);
 
 		if (body.RelatedTopics && body.RelatedTopics.length > 0) {
-			embed.addField(message.language.get('commandDuckDuckGoLookalso'), body.RelatedTopics[0].Text);
+			embed.addField(message.language.get(LanguageKeys.Commands.Tools.DuckDuckGoLookalso), body.RelatedTopics[0].Text);
 		}
 
 		return message.sendMessage({ embed });

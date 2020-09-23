@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -22,8 +23,8 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandIgdbDescription'),
-	extendedHelp: (language) => language.get('commandIgdbExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.IgdbDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.IgdbExtended),
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
@@ -56,11 +57,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = await this.fetchAPI(message, game);
-		if (!entries.length) throw message.language.get('systemNoResults');
+		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -82,13 +83,13 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
 	private async buildDisplay(entries: Game[], message: KlasaMessage) {
-		const titles = message.language.get('commandIgdbTitles');
-		const fieldsData = message.language.get('commandIgdbData');
+		const titles = message.language.get(LanguageKeys.Commands.Tools.IgdbTitles);
+		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.IgdbData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

@@ -1,15 +1,1 @@
-export * as Arguments from './languages/Arguments';
-export * as Commands from './languages/Commands';
-export * as Events from './languages/Events';
-export * as FuzzySearch from './languages/FuzzySearch';
-export * as Giveaway from './languages/Giveaway';
-export * as Globals from './languages/Globals';
-export * as Inhibitors from './languages/Inhibitors';
-export * as Misc from './languages/Misc';
-export * as Monitors from './languages/Monitors';
-export * as Notifications from './languages/Notifications';
-export * as PromptList from './languages/PromptList';
-export * as Resolvers from './languages/Resolvers';
-export * as Serializers from './languages/Serializers';
-export * as Settings from './languages/Settings';
-export * as System from './languages/System';
+export * as LanguageKeys from './languages/All';

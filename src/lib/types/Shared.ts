@@ -9,8 +9,3 @@ export type CustomFunctionGet<K extends string, TArgs, TReturn> = K & { __args__
 export function FT<TArgs, TReturn>(k: string): CustomFunctionGet<string, TArgs, TReturn> {
 	return k as CustomFunctionGet<string, TArgs, TReturn>;
 }
-
-export interface SettingsAuditContext {
-	author?: string;
-	auditIgnore?: boolean;
-}

@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { pickRandom } from '@utils/util';
@@ -10,8 +11,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
 	cooldown: 10,
-	description: (language) => language.get('commandTopInvitesDescription'),
-	extendedHelp: (language) => language.get('commandTopInvitesExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.TopInvitesDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.TopInvitesExtended),
 	requiredGuildPermissions: ['MANAGE_GUILD'],
 	runIn: ['text']
 })
@@ -20,7 +21,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild!.fetchInvites();
@@ -29,7 +30,7 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw message.language.get('commandTopInvitesNoInvites');
+		if (topTen.length === 0) throw message.language.get(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
 		const display = await this.buildDisplay(message, topTen);
 
@@ -40,10 +41,10 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.get('commandTopInvitesTop10InvitesFor', { guild: message.guild! }))
+				.setTitle(message.language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild! }))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedData = message.language.get('commandTopInvitesEmbedData');
+		const embedData = message.language.get(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) =>

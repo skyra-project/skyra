@@ -1,4 +1,5 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
@@ -17,7 +18,9 @@ export default class extends Event {
 				const name = await song.fetchRequesterName();
 				floatPromise(
 					this,
-					channel.sendLocale('commandPlayNext', [{ title: song.safeTitle, requester: name }], { allowedMentions: { users: [], roles: [] } })
+					channel.sendLocale(LanguageKeys.Commands.Music.PlayNext, [{ title: song.safeTitle, requester: name }], {
+						allowedMentions: { users: [], roles: [] }
+					})
 				);
 			}
 

@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -11,14 +12,14 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['emojis'],
 	cooldown: 10,
-	description: (language) => language.get('commandEmotesDescription'),
-	extendedHelp: (language) => language.get('commandEmotesExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.EmotesDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.EmotesExtended),
 	runIn: ['text']
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const animEmotes: string[] = [];
@@ -40,7 +41,11 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(
-					[`${message.guild!.emojis.cache.size}`, `${message.language.get('commandEmotesTitle')}`, `${message.guild!.name}`].join(' '),
+					[
+						`${message.guild!.emojis.cache.size}`,
+						`${message.language.get(LanguageKeys.Commands.Tools.EmotesTitle)}`,
+						`${message.guild!.name}`
+					].join(' '),
 					message.guild!.iconURL({ format: 'png' })!
 				)
 		);

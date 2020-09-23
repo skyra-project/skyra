@@ -1,4 +1,5 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
@@ -8,7 +9,7 @@ export default class extends Event {
 		const channel = context ? context.channel : manager.channel;
 
 		if (channel) {
-			floatPromise(this, channel.sendLocale('commandShuffleSuccess', [{ amount: manager.queue.length }]));
+			floatPromise(this, channel.sendLocale(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount: manager.queue.length }]));
 		}
 
 		for (const subscription of manager.websocketUserIterator()) {

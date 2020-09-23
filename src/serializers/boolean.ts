@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Serializer, SerializerOptions, SerializerUpdateContext } from 'klasa';
 
@@ -12,7 +13,7 @@ export default class extends Serializer {
 		const boolean = String(data).toLowerCase();
 		if (this.kTruths.has(boolean)) return true;
 		if (this.kFalses.has(boolean)) return false;
-		throw language.get('resolverInvalidBool', { name: entry.key });
+		throw language.get(LanguageKeys.Resolvers.InvalidBool, { name: entry.key });
 	}
 
 	public stringify(data: string) {

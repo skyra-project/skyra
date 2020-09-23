@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Channel, Guild } from 'discord.js';
 import { Language, SchemaEntry, Serializer, SerializerUpdateContext } from 'klasa';
 
@@ -9,7 +10,7 @@ export default class extends Serializer {
 			? (guild || this.client).channels.cache.get(Serializer.regex.channel.exec(data)![1])
 			: null;
 		if (channel) return this.checkChannel(channel, entry, language);
-		throw language.get('resolverInvalidChannel', { name: entry.key });
+		throw language.get(LanguageKeys.Resolvers.InvalidChannel, { name: entry.key });
 	}
 
 	public serialize(value: Channel) {
@@ -22,6 +23,6 @@ export default class extends Serializer {
 
 	private checkChannel(data: Channel, entry: SchemaEntry, language: Language) {
 		if (data.type === 'text' || data.type === 'category') return data;
-		throw language.get('resolverInvalidChannel', { name: entry.key });
+		throw language.get(LanguageKeys.Resolvers.InvalidChannel, { name: entry.key });
 	}
 }

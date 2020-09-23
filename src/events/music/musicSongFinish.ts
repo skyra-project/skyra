@@ -1,6 +1,7 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
 import { Song } from '@lib/structures/music/Song';
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
@@ -25,7 +26,7 @@ export default class extends Event {
 
 		manager.reset();
 		if (manager.queue.length === 0) {
-			floatPromise(this, channel!.sendLocale('commandPlayEnd'));
+			floatPromise(this, channel!.sendLocale(LanguageKeys.Commands.Music.PlayEnd));
 			await this.client.lavalink.leave(channel!.guild.id);
 		} else {
 			try {

@@ -1,8 +1,23 @@
-import { ModerationAction } from '@lib/types/Languages';
 import { FT, T } from '@lib/types/Shared';
 import { Moderation } from '@utils/constants';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { User } from 'discord.js';
+
+export interface ModerationAction {
+	addRole: string;
+	mute: string;
+	ban: string;
+	kick: string;
+	softban: string;
+	vkick: string;
+	vmute: string;
+	restrictedReact: string;
+	restrictedEmbed: string;
+	restrictedAttachment: string;
+	restrictedVoice: string;
+	setNickname: string;
+	removeRole: string;
+}
 
 export const HistoryDescription = T<string>('commandHistoryDescription');
 export const HistoryExtended = T<LanguageHelpDisplayOptions>('commandHistoryExtended');

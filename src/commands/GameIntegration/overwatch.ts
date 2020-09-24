@@ -147,7 +147,7 @@ export default class extends RichDisplayCommand {
 		} = overwatchData[type];
 
 		const timePlayedMilliseconds = Number(timePlayed.split(':')[0]) * Time.Hour + Number(timePlayed.split(':')[1]) * Time.Minute;
-		const statsData = message.language.get('commandOverwatchEmbedDataStats', {
+		const statsData = message.language.get(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
 			finalBlows,
 			deaths,
 			damageDone,
@@ -189,7 +189,7 @@ export default class extends RichDisplayCommand {
 		return [
 			embedData.headers[type === 'competitiveStats' ? 'topHeroesCompetitive' : 'topHeroesQuickplay'],
 			...topHeroes.map((topHero) =>
-				message.language.get('commandOverwatchEmbedDataTopHero', {
+				message.language.get(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataTopHero, {
 					name: topHero.hero,
 					playTime: this.kPlayTimestamp.display(topHero.time)
 				})

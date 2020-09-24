@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
-		if (balance < wager) throw message.language.get(LanguageKeys.Misc.GamesNotEnoughMoney, { money: balance });
+		if (balance < wager) throw message.language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 
 		settings.money -= wager;
 		await settings.save();

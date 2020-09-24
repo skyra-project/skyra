@@ -1,5 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Schedules } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -8,8 +9,8 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveawayschedule', 'gs', 'gc', 'gschedule'],
-	description: (language) => language.get('commandGiveawayScheduleDescription'),
-	extendedHelp: (language) => language.get('commandGiveawayScheduleExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayScheduleDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayScheduleExtended),
 	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <schedule:time> <duration:time> <title:...string{,256}>',
@@ -26,8 +27,8 @@ export default class extends SkyraCommand {
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
 
-		if (durationOffset < 9500 || scheduleOffset < 9500) throw message.language.get('giveawayTime');
-		if (durationOffset > YEAR || scheduleOffset > YEAR) throw message.language.get('giveawayTimeTooLong');
+		if (durationOffset < 9500 || scheduleOffset < 9500) throw message.language.get(LanguageKeys.Giveaway.Time);
+		if (durationOffset > YEAR || scheduleOffset > YEAR) throw message.language.get(LanguageKeys.Giveaway.TimeTooLong);
 
 		// Resolve the amount of winners the giveaway will have
 		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
@@ -45,6 +46,6 @@ export default class extends SkyraCommand {
 			catchUp: true
 		});
 
-		return message.sendLocale('giveawayScheduled', [{ scheduledTime: scheduleOffset }]);
+		return message.sendLocale(LanguageKeys.Giveaway.Scheduled, [{ scheduledTime: scheduleOffset }]);
 	}
 }

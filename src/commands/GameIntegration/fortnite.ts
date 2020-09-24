@@ -59,7 +59,7 @@ export default class extends RichDisplayCommand {
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedSectionTitles = message.language.get('commandFortniteEmbedSectionTitles');
+		const embedSectionTitles = message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 
 		display.addPage((embed) => {
 			const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));

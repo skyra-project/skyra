@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 		const balance = settings.money;
 
 		if (balance < wager) {
-			throw message.language.get(LanguageKeys.Misc.GamesNotEnoughMoney, { money: balance });
+			throw message.language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		const result = this.flipCoin();

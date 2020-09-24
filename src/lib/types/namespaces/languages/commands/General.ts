@@ -18,13 +18,14 @@ export const InvitePermissionInviteText = T<string>('commandInvitePermissionInvi
 export const InvitePermissionSupportServerText = T<string>('commandInvitePermissionSupportServerText');
 export const InvitePermissionsDescription = T<string>('commandInvitePermissionsDescription');
 export const InfoBody = T<string[]>('commandInfoBody');
-export const HelpData = T<
-	(params: {
+export const HelpData = FT<
+	{
 		titleDescription: string;
 		usage: string;
 		extendedHelp: string;
 		footerName: string;
-	}) => {
+	},
+	{
 		title: string;
 		usage: string;
 		extended: string;

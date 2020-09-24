@@ -102,7 +102,7 @@ export default class extends RichDisplayCommand {
 							englishTitle,
 							japaneseTitle,
 							canonicalTitle,
-							synopsis: synopsis ?? message.language.get('commandAnimeNoSynopsis')
+							synopsis: synopsis ?? message.language.get(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
 						})
 					)
 					.setThumbnail(entry.posterImage?.original ?? '')

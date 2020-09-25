@@ -19,11 +19,11 @@ const COLORS = {
 	windy: '#33B679'
 };
 
-const farenheitToCelsius = (celsius: number) => celsius * 1.8 + 32;
+const celsiusToFahrenheit = (celsius: number) => celsius * 1.8 + 32;
 
 const enum TemperatureUnit {
 	Celsius,
-	Farenheit
+	Fahrenheit
 }
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 		let country = '';
 		let continent = '';
 
-		const useImperial = Reflect.has(message.flagArgs, 'farenheit') || Reflect.has(message.flagArgs, 'imperial');
+		const useImperial = Reflect.has(message.flagArgs, 'fahrenheit') || Reflect.has(message.flagArgs, 'imperial');
 
 		for (const component of addressComponents) {
 			if (!locality.length && component.types.includes('locality')) locality = component.long_name;
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 		const { icon } = currently;
 		const condition = currently.summary;
 		const chanceOfRain = Math.round((currently.precipProbability * 100) / 5) * 5;
-		const temperature = Math.round(useImperial ? farenheitToCelsius(currently.temperature) : currently.temperature);
+		const temperature = Math.round(useImperial ? celsiusToFahrenheit(currently.temperature) : currently.temperature);
 		const humidity = Math.round(currently.humidity * 100);
 
 		return this.draw(message, {
@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 			chanceOfRain,
 			temperature,
 			humidity,
-			temperatureUnit: useImperial ? TemperatureUnit.Farenheit : TemperatureUnit.Celsius
+			temperatureUnit: useImperial ? TemperatureUnit.Fahrenheit : TemperatureUnit.Celsius
 		});
 	}
 

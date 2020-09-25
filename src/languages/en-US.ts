@@ -3684,12 +3684,12 @@ export default class extends Language {
 			experience: 'Experience',
 			nextIn: 'Next level in'
 		},
+		commandDivorceSelf: 'I am sorry, but you cannot divorce yourself.',
 		commandDivorceNotTaken: 'Who would you divorce? You are not even taken!',
 		commandDivorcePrompt: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
 		commandDivorceCancel: 'Oh lord. I am very glad you will continue with your partner!',
 		commandDivorceDm: ({ user }) => `Pardon... but... do you remember ${user}? They decided to break up with you 💔!`,
 		commandDivorceSuccess: ({ user }) => `Successful divorce 💔... You are no longer married to ${user}!`,
-		commandDivorceSelf: 'I am sorry, but you cannot divorce yourself.',
 		commandMarryWith: ({ users }) => `Dear, how could you forget it... You are currently married to ${this.list(users, 'and')}!`,
 		commandMarryNotTaken: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 		commandMarrySkyra: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',

@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
@@ -29,8 +30,8 @@ const enum TemperatureUnit {
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 120,
-	description: (language) => language.get('commandWeatherDescription'),
-	extendedHelp: (language) => language.get('commandWeatherExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Google.WeatherDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.WeatherExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '<city:string>',
 	flagSupport: true

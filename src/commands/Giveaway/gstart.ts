@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
@@ -8,8 +9,8 @@ const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['giveaway'],
-	description: (language) => language.get('commandGiveawayDescription'),
-	extendedHelp: (language) => language.get('commandGiveawayExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayExtended),
 	requiredPermissions: ['EMBED_LINKS', 'ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[channel:textchannelname{2}] <time:time> [winners:winners] <title:...string{,256}>',
@@ -30,8 +31,8 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, time, winners, title]: [TextChannel, Date, number, string]) {
 		const offset = time.getTime() - Date.now();
 
-		if (offset < 9500) throw message.language.get('giveawayTime');
-		if (offset > Time.Year) throw message.language.get('giveawayTimeTooLong');
+		if (offset < 9500) throw message.language.get(LanguageKeys.Giveaway.Time);
+		if (offset > Time.Year) throw message.language.get(LanguageKeys.Giveaway.TimeTooLong);
 		if (winners > 25) winners = 25;
 
 		await this.client.giveaways.create({

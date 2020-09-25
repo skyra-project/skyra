@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -9,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandManageCommandChannelDescription'),
-			extendedHelp: (language) => language.get('commandManageCommandChannelExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandChannelDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandChannelExtended),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -22,14 +23,14 @@ export default class extends SkyraCommand {
 			if (!arg) return msg.channel;
 			const channel = await this.client.arguments.get('channelname')!.run(arg, possible, msg);
 			if (channel.type === 'text') return channel;
-			throw msg.language.get('commandManageCommandChannelTextChannel');
+			throw msg.language.get(LanguageKeys.Commands.Management.ManageCommandChannelTextChannel);
 		}).createCustomResolver('command', async (arg, possible, msg, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (arg) {
 				const command = await this.client.arguments.get('command')!.run(arg, possible, msg);
 				if (!command.disabled && command.permissionLevel < 9) return command;
 			}
-			throw msg.language.get('commandManageCommandChannelRequiredCommand');
+			throw msg.language.get(LanguageKeys.Commands.Management.ManageCommandChannelRequiredCommand);
 		});
 	}
 
@@ -37,11 +38,11 @@ export default class extends SkyraCommand {
 		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
 		if (entry && entry.commands.length) {
-			return message.sendLocale('commandManageCommandChannelShow', [
+			return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelShow, [
 				{ channel: channel.toString(), commands: `\`${entry.commands.join('` | `')}\`` }
 			]);
 		}
-		throw message.language.get('commandManageCommandChannelShowEmpty');
+		throw message.language.get(LanguageKeys.Commands.Management.ManageCommandChannelShowEmpty);
 	}
 
 	public async add(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
@@ -59,7 +60,7 @@ export default class extends SkyraCommand {
 			);
 		} else {
 			const entry = disabledCommandsChannels[index];
-			if (entry.commands.includes(command.name)) throw message.language.get('commandManageCommandChannelAddAlreadyset');
+			if (entry.commands.includes(command.name)) throw message.language.get(LanguageKeys.Commands.Management.ManageCommandChannelAddAlreadyset);
 
 			await message.guild!.settings.update(
 				GuildSettings.DisabledCommandChannels,
@@ -70,7 +71,7 @@ export default class extends SkyraCommand {
 				}
 			);
 		}
-		return message.sendLocale('commandManageCommandChannelAdd', [{ channel: channel.toString(), command: command.name }]);
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelAdd, [{ channel: channel.toString(), command: command.name }]);
 	}
 
 	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
@@ -98,10 +99,12 @@ export default class extends SkyraCommand {
 					});
 				}
 
-				return message.sendLocale('commandManageCommandChannelRemove', [{ channel: channel.toString(), command: command.name }]);
+				return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelRemove, [
+					{ channel: channel.toString(), command: command.name }
+				]);
 			}
 		}
-		throw message.language.get('commandManageCommandChannelRemoveNotset', { channel: channel.toString() });
+		throw message.language.get(LanguageKeys.Commands.Management.ManageCommandChannelRemoveNotset, { channel: channel.toString() });
 	}
 
 	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
@@ -113,8 +116,8 @@ export default class extends SkyraCommand {
 				arrayAction: 'remove',
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('commandManageCommandChannelReset', [{ channel: channel.toString() }]);
+			return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelReset, [{ channel: channel.toString() }]);
 		}
-		throw message.language.get('commandManageCommandChannelResetEmpty');
+		throw message.language.get(LanguageKeys.Commands.Management.ManageCommandChannelResetEmpty);
 	}
 }

@@ -13,8 +13,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
 	cooldown: 10,
-	description: (language) => language.get('commandGsearchDescription'),
-	extendedHelp: (language) => language.get('commandGsearchExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Google.GsearchDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.GsearchExtended),
 	usage: '<query:query>'
 })
 export default class extends RichDisplayCommand {

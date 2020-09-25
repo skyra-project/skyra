@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -8,8 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['letmegooglethatforyou'],
 			cooldown: 10,
-			description: (language) => language.get('commandLmgtfyDescription'),
-			extendedHelp: (language) => language.get('commandLmgtfyExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyExtended),
 			usage: '<query:string>',
 			requiredPermissions: ['EMBED_LINKS'],
 			flagSupport: true
@@ -22,7 +23,9 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(
-					`[${message.language.get('commandLmgtfyClick')}](https://lmgtfy.com?q=${encodeURIComponent(query)}&s=${searchEngine})`
+					`[${message.language.get(LanguageKeys.Commands.Google.LmgtfyClick)}](https://lmgtfy.com?q=${encodeURIComponent(
+						query
+					)}&s=${searchEngine})`
 				)
 		);
 	}

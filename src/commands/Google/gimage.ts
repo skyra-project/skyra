@@ -14,8 +14,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['googleimage', 'img'],
 	cooldown: 10,
 	nsfw: true, // Google will return explicit results when seaching for explicit terms, even when safe-search is on
-	description: (language) => language.get('commandGimageDescription'),
-	extendedHelp: (language) => language.get('commandGimageExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Google.GimageDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.GimageExtended),
 	usage: '<query:query>'
 })
 export default class extends RichDisplayCommand {

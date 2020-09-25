@@ -1,6 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
@@ -9,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('commandManagecommandautodeleteDescription'),
-	extendedHelp: (language) => language.get('commandManagecommandautodeleteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Management.ManagecommandautodeleteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManagecommandautodeleteExtended),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -25,7 +26,7 @@ import { KlasaMessage } from 'klasa';
 			if (!arg) return message.channel;
 			const channel = await message.client.arguments.get('channelname')!.run(arg, _, message);
 			if (channel.type === 'text') return channel;
-			throw message.language.get('commandManageCommandAutoDeleteTextChannel');
+			throw message.language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteTextChannel);
 		}
 	],
 	['timespan', (arg, _, message, [type]) => (type === 'add' ? message.client.arguments.get('timespan')!.run(arg, _, message) : undefined)]
@@ -33,15 +34,17 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const commandAutodelete = message.guild!.settings.get(GuildSettings.CommandAutodelete);
-		if (!commandAutodelete.length) throw message.language.get('commandManageCommandAutoDeleteShowEmpty');
+		if (!commandAutodelete.length) throw message.language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];
 		for (const entry of commandAutodelete) {
 			const channel = this.client.channels.cache.get(entry[0]) as TextChannel;
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${message.language.duration(entry[1] / 60000)}`);
 		}
-		if (!list.length) throw message.language.get('commandManageCommandAutoDeleteShowEmpty');
-		return message.sendLocale('commandManageCommandAutoDeleteShow', [{ codeblock: codeBlock('asciidoc', list.join('\n')) }]);
+		if (!list.length) throw message.language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShow, [
+			{ codeblock: codeBlock('asciidoc', list.join('\n')) }
+		]);
 	}
 
 	public async add(message: KlasaMessage, [channel, duration]: [TextChannel, number]) {
@@ -60,7 +63,7 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 		}
-		return message.sendLocale('commandManageCommandAutoDeleteAdd', [{ channel: channel.toString(), time: duration }]);
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandAutoDeleteAdd, [{ channel: channel.toString(), time: duration }]);
 	}
 
 	public async remove(message: KlasaMessage, [channel]: [TextChannel]) {
@@ -72,13 +75,13 @@ export default class extends SkyraCommand {
 				arrayIndex: index,
 				extraContext: { author: message.author.id }
 			});
-			return message.sendLocale('commandManageCommandAutoDeleteRemove', [{ channel: channel.toString() }]);
+			return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemove, [{ channel: channel.toString() }]);
 		}
-		throw message.language.get('commandManageCommandAutoDeleteRemoveNotset', { channel: channel.toString() });
+		throw message.language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotset, { channel: channel.toString() });
 	}
 
 	public async reset(message: KlasaMessage) {
 		await message.guild!.settings.reset(GuildSettings.CommandAutodelete);
-		return message.sendLocale('commandManageCommandAutoDeleteReset');
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandAutoDeleteReset);
 	}
 }

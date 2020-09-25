@@ -16,8 +16,8 @@ import { ArrayActions, KlasaMessage } from 'klasa';
 	aliases: ['mrr', 'managereactionrole', 'managerolereaction', 'managerolereactions'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('commandManageReactionRolesDescription'),
-	extendedHelp: (language) => language.get('commandManageReactionRolesExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Management.ManageReactionRolesDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManageReactionRolesExtended),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
-			throw message.language.get('commandManageReactionRolesShowEmpty');
+			throw message.language.get(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
 		}
 
 		const response = await message.sendEmbed(
@@ -82,17 +82,17 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 
-			return message.sendLocale('commandManageReactionRolesAddChannel', [
+			return message.sendLocale(LanguageKeys.Commands.Management.ManageReactionRolesAddChannel, [
 				{ emoji: displayEmoji(reactionRole.emoji), channel: `<#${channel}>` }
 			]);
 		}
 
-		await message.sendLocale('commandManageReactionRolesAddPrompt');
+		await message.sendLocale(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt);
 
 		const reaction = await LongLivingReactionCollector.collectOne(this.client, {
 			filter: (reaction) => reaction.userID === message.author.id && reaction.guild.id === message.guild!.id
 		});
-		if (!reaction) throw message.language.get('commandManageReactionRolesAddMissing');
+		if (!reaction) throw message.language.get(LanguageKeys.Commands.Management.ManageReactionRolesAddMissing);
 
 		const reactionRole: ReactionRole = {
 			emoji: resolveEmoji(reaction.emoji)!,
@@ -106,13 +106,13 @@ export default class extends SkyraCommand {
 		});
 
 		const url = `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>`;
-		return message.sendLocale('commandManageReactionRolesAdd', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageReactionRolesAdd, [{ emoji: displayEmoji(reactionRole.emoji), url }]);
 	}
 
 	public async remove(message: KlasaMessage, [role, messageID]: [Role, string]) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		const reactionRoleIndex = reactionRoles.findIndex((entry) => entry.message === messageID && entry.role === role.id);
-		if (reactionRoleIndex === -1) throw message.language.get('commandManageReactionRolesRemoveNotExists');
+		if (reactionRoleIndex === -1) throw message.language.get(LanguageKeys.Commands.Management.ManageReactionRolesRemoveNotExists);
 
 		const reactionRole = reactionRoles[reactionRoleIndex];
 		await message.guild!.settings.update(GuildSettings.ReactionRoles, reactionRole, {
@@ -123,19 +123,19 @@ export default class extends SkyraCommand {
 		const url = reactionRole.message
 			? `<https://discord.com/channels/${message.guild!.id}/${reactionRole.channel}/${reactionRole.message}>`
 			: `<#${reactionRole.channel}>`;
-		return message.sendLocale('commandManageReactionRolesRemove', [{ emoji: displayEmoji(reactionRole.emoji), url }]);
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageReactionRolesRemove, [{ emoji: displayEmoji(reactionRole.emoji), url }]);
 	}
 
 	public async reset(message: KlasaMessage) {
 		const reactionRoles = message.guild!.settings.get(GuildSettings.ReactionRoles);
 		if (reactionRoles.length === 0) {
-			throw message.language.get('commandManageReactionRolesResetEmpty');
+			throw message.language.get(LanguageKeys.Commands.Management.ManageReactionRolesResetEmpty);
 		}
 
 		await message.guild!.settings.reset(GuildSettings.ReactionRoles, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('commandManageReactionRolesReset');
+		return message.sendLocale(LanguageKeys.Commands.Management.ManageReactionRolesReset);
 	}
 
 	private format(entry: ReactionRole, guild: Guild): string {

@@ -1,13 +1,12 @@
-import { T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
-export const CurrentTimeDescriptio = T<string>('commandCurrentTimeDescription');
-export const CurrentTimeExtende = T<LanguageHelpDisplayOptions>('commandCurrentTimeExtended');
-export const CurrentTimeLocationNotFoun = T<string>('commandCurrentTimeLocationNotFound');
-export const CurrentTimeTitles = T<
-	(params: {
-		dst: string;
-	}) => {
+export const CurrentTimeDescription = T<string>('commandCurrentTimeDescription');
+export const CurrentTimeExtended = T<LanguageHelpDisplayOptions>('commandCurrentTimeExtended');
+export const CurrentTimeLocationNotFound = T<string>('commandCurrentTimeLocationNotFound');
+export const CurrentTimeTitles = FT<
+	{ dst: string },
+	{
 		currentTime: string;
 		currentDate: string;
 		country: string;

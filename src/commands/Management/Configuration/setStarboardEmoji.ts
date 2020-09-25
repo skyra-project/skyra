@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { resolveEmoji } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -9,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandSetStarboardEmojiDescription'),
-			extendedHelp: (language) => language.get('commandSetStarboardEmojiExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Management.SetStarboardEmojiDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetStarboardEmojiExtended),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<Emoji:emoji>'
@@ -19,7 +20,7 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('emoji', (arg, possible, msg) => {
 			const resolved = resolveEmoji(arg);
 			if (resolved) return resolved;
-			throw msg.language.get('resolverInvalidEmoji', { name: possible.name });
+			throw msg.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: possible.name });
 		});
 	}
 
@@ -28,6 +29,6 @@ export default class extends SkyraCommand {
 		await message.guild!.settings.update(GuildSettings.Starboard.Emoji, emoji, {
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('commandSetStarboardEmojiSet', [{ emoji: emoji.includes(':') ? `<${emoji}>` : emoji }]);
+		return message.sendLocale(LanguageKeys.Commands.Management.SetStarboardEmojiSet, [{ emoji: emoji.includes(':') ? `<${emoji}>` : emoji }]);
 	}
 }

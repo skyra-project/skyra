@@ -66,8 +66,8 @@ export const SetModLogsSet = FT<{ channel: string }, string>('commandSetModLogsS
 export const SetPrefixSet = FT<{ prefix: string }, string>('commandSetPrefixSet');
 export const SetStarboardEmojiDescription = T<string>('commandSetStarboardEmojiDescription');
 export const SetStarboardEmojiExtended = T<LanguageHelpDisplayOptions>('commandSetStarboardEmojiExtended');
-export const CreateMuteDescriptio = T<string>('commandCreateMuteDescription');
-export const CreateMuteExtende = T<LanguageHelpDisplayOptions>('commandCreateMuteExtended');
+export const CreateMuteDescription = T<string>('commandCreateMuteDescription');
+export const CreateMuteExtended = T<LanguageHelpDisplayOptions>('commandCreateMuteExtended');
 export const NickDescription = T<string>('commandNickDescription');
 export const NickExtended = T<LanguageHelpDisplayOptions>('commandNickExtended');
 export const PermissionNodesDescription = T<string>('commandPermissionNodesDescription');
@@ -105,16 +105,17 @@ export const ReactionModeExtended = T<LanguageHelpDisplayOptions>('commandReacti
 export const GuildInfoTitles = T<Record<string, string>>('commandGuildInfoTitles');
 export const GuildInfoRoles = FT<{ roles: string }, string>('commandGuildInfoRoles');
 export const GuildInfoNoroles = T<string>('commandGuildInfoNoroles');
-export const GuildInfoChannels = T<(params: { text: number; voice: number; categories: number; afkChannelText: string }) => string[]>(
+export const GuildInfoChannels = FT<{ text: number; voice: number; categories: number; afkChannelText: string }, string[]>(
 	'commandGuildInfoChannels'
 );
 export const GuildInfoChannelsAfkChannelText = FT<{ afkChannel: string; afkTime: number }, string>('commandGuildInfoChannelsAfkChannelText');
-export const GuildInfoMembers = T<(params: { count: string; owner: User }) => string[]>('commandGuildInfoMembers');
-export const GuildInfoOther = T<
-	(params: { size: number; region: string; createdAt: number; verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' }) => string[]
+export const GuildInfoMembers = FT<{ count: string; owner: User }, string[]>('commandGuildInfoMembers');
+export const GuildInfoOther = FT<
+	{ size: number; region: string; createdAt: number; verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' },
+	string[]
 >('commandGuildInfoOther');
 export const RoleInfoTitles = T<Record<string, string>>('commandRoleInfoTitles');
-export const RoleInfoData = T<(params: { role: Role; hoisted: string; mentionable: string }) => string[]>('commandRoleInfoData');
+export const RoleInfoData = FT<{ role: Role; hoisted: string; mentionable: string }, string[]>('commandRoleInfoData');
 export const RoleInfoAll = T<string>('commandRoleInfoAll');
 export const RoleInfoNoPermissions = T<string>('commandRoleInfoNoPermissions');
 export const FilterUndefinedWord = T<string>('commandFilterUndefinedWord');

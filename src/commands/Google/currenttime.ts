@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
 import { fetch, FetchResultTypes } from '@utils/util';
@@ -11,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ctime'],
 			cooldown: 10,
-			description: (language) => language.get('commandCurrentTimeDescription'),
-			extendedHelp: (language) => language.get('commandCurrentTimeExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Google.CurrentTimeDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.CurrentTimeExtended),
 			requiredPermissions: ['EMBED_LINKS'],
 			usage: '<location:string>'
 		});
@@ -24,9 +25,11 @@ export default class extends SkyraCommand {
 
 		if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, this.client));
 
-		const dstEnabled = message.language.get(Number(timeData.dst) === 0 ? 'commandCurrentTimeNoDst' : 'commandCurrentTimeNoDst');
+		const dstEnabled = message.language.get(
+			Number(timeData.dst) === 0 ? LanguageKeys.Commands.Google.CurrentTimeDst : LanguageKeys.Commands.Google.CurrentTimeNoDst
+		);
 
-		const titles = message.language.get('commandCurrentTimeTitles', { dst: dstEnabled });
+		const titles = message.language.get(LanguageKeys.Commands.Google.CurrentTimeTitles, { dst: dstEnabled });
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -52,7 +55,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
 		return fetch<TimeResult>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get('commandCurrentTimeLocationNotFound');
+			throw message.language.get(LanguageKeys.Commands.Google.CurrentTimeLocationNotFound);
 		});
 	}
 }

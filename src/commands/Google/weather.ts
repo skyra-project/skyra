@@ -1,11 +1,12 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { TOKENS } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { queryGoogleMapsAPI } from '@utils/Google';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 const COLORS = {
@@ -18,18 +19,23 @@ const COLORS = {
 	windy: '#33B679'
 };
 
-export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 120,
-			description: (language) => language.get('commandWeatherDescription'),
-			extendedHelp: (language) => language.get('commandWeatherExtended'),
-			requiredPermissions: ['ATTACH_FILES'],
-			usage: '<city:string>'
-		});
-	}
+const farenheitToCelsius = (celsius: number) => celsius * 1.8 + 32;
 
+const enum TemperatureUnit {
+	Celsius,
+	Farenheit
+}
+
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 120,
+	description: (language) => language.get('commandWeatherDescription'),
+	extendedHelp: (language) => language.get('commandWeatherExtended'),
+	requiredPermissions: ['ATTACH_FILES'],
+	usage: '<city:string>',
+	flagSupport: true
+})
+export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const { formattedAddress, lat, lng, addressComponents } = await queryGoogleMapsAPI(message, query);
 
@@ -38,6 +44,8 @@ export default class extends SkyraCommand {
 		let governing = '';
 		let country = '';
 		let continent = '';
+
+		const useImperial = Reflect.has(message.flagArgs, 'farenheit') || Reflect.has(message.flagArgs, 'imperial');
 
 		for (const component of addressComponents) {
 			if (!locality.length && component.types.includes('locality')) locality = component.long_name;
@@ -57,13 +65,25 @@ export default class extends SkyraCommand {
 		const { icon } = currently;
 		const condition = currently.summary;
 		const chanceOfRain = Math.round((currently.precipProbability * 100) / 5) * 5;
-		const temperature = Math.round(currently.temperature);
+		const temperature = Math.round(useImperial ? farenheitToCelsius(currently.temperature) : currently.temperature);
 		const humidity = Math.round(currently.humidity * 100);
 
-		return this.draw(message, { geoCodeLocation: formattedAddress, state, condition, icon, chanceOfRain, temperature, humidity });
+		return this.draw(message, {
+			geoCodeLocation: formattedAddress,
+			state,
+			condition,
+			icon,
+			chanceOfRain,
+			temperature,
+			humidity,
+			temperatureUnit: useImperial ? TemperatureUnit.Farenheit : TemperatureUnit.Celsius
+		});
 	}
 
-	public async draw(message: KlasaMessage, { geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity }: WeatherData) {
+	public async draw(
+		message: KlasaMessage,
+		{ geoCodeLocation, state, condition, icon, chanceOfRain, temperature, humidity, temperatureUnit }: WeatherData
+	) {
 		const [theme, fontColor] = ['snow', 'sleet', 'fog'].includes(icon) ? ['dark', '#444444'] : ['light', '#FFFFFF'];
 		const [conditionBuffer, humidityBuffer, precipicityBuffer] = await Promise.all([
 			loadImage(join(assetsFolder, 'images', 'weather', theme, `${icon}.png`)),
@@ -93,7 +113,7 @@ export default class extends SkyraCommand {
 			// Temperature
 			.setTextFont("48px 'Roboto Mono'")
 			.setColor(fontColor)
-			.printText(`${temperature}°C`, 30, 190)
+			.printText(`${temperature}°${temperatureUnit === TemperatureUnit.Celsius ? 'C' : 'F'}`, 30, 190)
 
 			// Condition
 			.setTextFont('16px Roboto')
@@ -154,6 +174,7 @@ interface WeatherData {
 	chanceOfRain: number;
 	temperature: number;
 	humidity: number;
+	temperatureUnit: TemperatureUnit;
 }
 
 export interface WeatherResultOk {

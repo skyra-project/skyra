@@ -3684,6 +3684,7 @@ export default class extends Language {
 			experience: 'Experience',
 			nextIn: 'Next level in'
 		},
+		commandDivorceSelf: 'I am sorry, but you cannot divorce yourself.',
 		commandDivorceNotTaken: 'Who would you divorce? You are not even taken!',
 		commandDivorcePrompt: 'Ooh... that sounds quite bad 💔... are you 100% sure about this?',
 		commandDivorceCancel: 'Oh lord. I am very glad you will continue with your partner!',

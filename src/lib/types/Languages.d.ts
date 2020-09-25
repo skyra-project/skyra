@@ -1784,6 +1784,7 @@ declare module 'klasa' {
 		commandDailyGraceDenied: string;
 		commandDailyCollect: string;
 		commandLevel: LevelTitles;
+		commandDivorceSelf: string;
 		commandDivorceNotTaken: string;
 		commandDivorcePrompt: string;
 		commandDivorceCancel: string;

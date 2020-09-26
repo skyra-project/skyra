@@ -2776,7 +2776,8 @@ export default class extends Language {
 			],
 			explainedUsage: [['ciudad', 'La localidad, el gobierno, el país o el continente para consultar la hora.']],
 			examples: ['Madrid', 'Barcelona'],
-			reminder: 'La temperatura está en **Celsius**',
+			reminder:
+				'La temperatura está en ** Celsius ** de forma predeterminada. Use la bandera --imperial o --fahrenheit para verla en ** Fahrenheit **.',
 			multiline: true
 		},
 		googleErrorZeroResults: 'La aplicación no devolvió resultados.',

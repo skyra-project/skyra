@@ -2742,7 +2742,7 @@ export default class extends Language {
 			],
 			explainedUsage: [['city', 'The locality, governing, country or continent to check the weather from.']],
 			examples: ['Antarctica', 'Arizona'],
-			reminder: 'Temperature is in **Celsius**',
+			reminder: 'Temperature is in **Celsius** by default. Use the --imperial or --fahrenheit flag to view it in **Fahrenheit**.',
 			multiline: true
 		},
 		googleErrorZeroResults: 'Your request returned no results.',

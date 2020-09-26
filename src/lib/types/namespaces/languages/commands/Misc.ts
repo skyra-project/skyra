@@ -58,11 +58,12 @@ export const RedditUserTitles = T<{
 	bestComment: string;
 	worstComment: string;
 }>('commandRedditUserTitles');
-export const RedditUserData = T<
-	(params: {
+export const RedditUserData = FT<
+	{
 		user: string;
 		timestamp: string;
-	}) => {
+	},
+	{
 		overviewFor: string;
 		permalink: string;
 		dataAvailableFor: string;
@@ -70,13 +71,14 @@ export const RedditUserData = T<
 	}
 >('commandRedditUserData');
 export const ShipDescription = T<string>('commandShipDescription');
-export const ShipExtended = <LanguageHelpDisplayOptions>'commandShipExtended';
-export const ShipData = T<
-	(params: {
+export const ShipExtended = T<LanguageHelpDisplayOptions>('commandShipExtended');
+export const ShipData = FT<
+	{
 		romeoUsername: string;
 		julietUsername: string;
 		shipName: string;
-	}) => {
+	},
+	{
 		title: string;
 		description: string;
 	}

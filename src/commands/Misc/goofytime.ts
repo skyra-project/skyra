@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
@@ -12,8 +13,8 @@ import { join } from 'path';
 	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('commandGoofytimeDescription'),
-	extendedHelp: (language) => language.get('commandGoofytimeExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Misc.GoofytimeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.GoofytimeExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

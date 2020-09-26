@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
@@ -12,8 +13,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandShipDescription'),
-	extendedHelp: (language) => language.get('commandShipExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Misc.ShipDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ShipExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	usage: '(firstUser:user) (secondUser:user)',
@@ -67,7 +68,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const data = message.language.get('commandShipData', {
+		const data = message.language.get(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])

@@ -7,6 +7,7 @@ import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import GIFEncoder = require('gifencoder');
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -22,8 +23,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('commandTriggeredDescription'),
-			extendedHelp: (language) => language.get('commandTriggeredExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredExtended),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,

@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
@@ -13,8 +14,8 @@ import { join } from 'path';
 	aliases: ['deletethis'],
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('commandDeletthisDescription'),
-	extendedHelp: (language) => language.get('commandDeletthisExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Misc.DeletthisDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.DeletthisExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

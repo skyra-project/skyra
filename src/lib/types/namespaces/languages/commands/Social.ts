@@ -37,7 +37,7 @@ export const BannerUserlistEmpty = FT<{ prefix: string }, string>('commandBanner
 export const DailyCollect = T<string>('commandDailyCollect');
 export const DailyDescription = T<string>('commandDailyDescription');
 export const DailyExtended = T<LanguageHelpDisplayOptions>('commandDailyExtended');
-export const DailyGrace = T<(params: { remaining: number }) => string[]>('commandDailyGrace');
+export const DailyGrace = FT<{ remaining: number }, string[]>('commandDailyGrace');
 export const DailyGraceAccepted = FT<{ amount: number; remaining: number }, string>('commandDailyGraceAccepted');
 export const DailyGraceDenied = T<string>('commandDailyGraceDenied');
 export const DailyTime = FT<{ time: number }, string>('commandDailyTime');
@@ -46,6 +46,7 @@ export const DivorceCancel = T<string>('commandDivorceCancel');
 export const DivorceDescription = T<string>('commandDivorceDescription');
 export const DivorceDm = FT<{ user: string }, string>('commandDivorceDm');
 export const DivorceExtended = T<LanguageHelpDisplayOptions>('commandDivorceExtended');
+export const DivorceSelf = T<string>('commandDivorceSelf');
 export const DivorceNotTaken = T<string>('commandDivorceNotTaken');
 export const DivorcePrompt = T<string>('commandDivorcePrompt');
 export const DivorceSuccess = FT<{ user: string }, string>('commandDivorceSuccess');
@@ -131,10 +132,11 @@ export const ToggleDarkModeDisabled = T<string>('commandToggleDarkModeDisabled')
 export const ToggleDarkModeEnabled = T<string>('commandToggleDarkModeEnabled');
 export const ToggleDarkModeExtended = T<LanguageHelpDisplayOptions>('commandToggleDarkModeExtended');
 export const VaultDescription = T<string>('commandVaultDescription');
-export const VaultEmbedData = T<
-	(params: {
+export const VaultEmbedData = FT<
+	{
 		coins?: number;
-	}) => {
+	},
+	{
 		depositedDescription: string;
 		withdrewDescription: string;
 		showDescription: string;

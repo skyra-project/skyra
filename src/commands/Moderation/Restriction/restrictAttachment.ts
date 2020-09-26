@@ -27,7 +27,10 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedAttachment);
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandRestrictLowlevel');
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) {
+				throw message.language.get(LanguageKeys.Commands.Moderation.RestrictLowlevel);
+			}
+
 			if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })

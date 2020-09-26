@@ -22,7 +22,7 @@ export default class extends Serializer {
 
 	public stringify(value: ReactionRole, guild: Guild) {
 		const emoji = displayEmoji(value.emoji);
-		const role = guild.roles.cache.get(value.role)?.name ?? guild.language.get('unknownRole');
+		const role = guild.roles.cache.get(value.role)?.name ?? guild.language.get(LanguageKeys.Misc.UnknownRole);
 		const url = `https://discord.com/channels/${guild.id}/${value.channel}/${value.message}`;
 		return `${emoji} | ${url} -> ${role}`;
 	}

@@ -18,7 +18,7 @@ export default class extends Argument {
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
 		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
-		if (!message.guild) throw message.language.get('resolverChannelNotInGuild');
+		if (!message.guild) throw message.language.get(LanguageKeys.Resolvers.ChannelNotInGuild);
 		filter = this.getFilter(message.author, filter);
 
 		const resChannel = this.resolveChannel(arg, message.guild);

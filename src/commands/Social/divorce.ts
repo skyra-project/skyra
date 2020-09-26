@@ -16,7 +16,7 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user]: [User]) {
-		if (user === message.author) throw message.language.get('commandDivorceSelf');
+		if (user === message.author) throw message.language.get(LanguageKeys.Commands.Social.DivorceSelf);
 
 		const { users } = await DbSet.connect();
 		return users.lock([message.author.id, user.id], async (authorID, targetID) => {

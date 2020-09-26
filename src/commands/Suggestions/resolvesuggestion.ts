@@ -85,8 +85,8 @@ export default class extends SkyraCommand {
 		let messageContent = '';
 
 		const author = await this.getAuthor(message, shouldHideAuthor);
-		const actions = message.language.get('commandResolveSuggestionActions', { author });
-		const DMActions = message.language.get('commandResolveSuggestionActionsDms', { author, guild: message.guild!.name });
+		const actions = message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author });
+		const DMActions = message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, { author, guild: message.guild!.name });
 
 		switch (action) {
 			case 'a':

@@ -107,7 +107,7 @@ export default class extends SkyraCommand {
 				if (postedAt < minimumPostedAt) continue;
 			}
 			const url = this.makeStarLink(starboardMessage.guildID, starboardMessage.channelID, starboardMessage.messageID);
-			const maskedUrl = `[${message.language.get('jumpTo')}](${url})`;
+			const maskedUrl = `[${message.language.get(LanguageKeys.Misc.JumpTo)}](${url})`;
 			topMessages.push([maskedUrl, starboardMessage.stars]);
 			topReceivers.set(starboardMessage.userID, (topReceivers.get(starboardMessage.userID) || 0) + starboardMessage.stars);
 			totalStars += starboardMessage.stars;

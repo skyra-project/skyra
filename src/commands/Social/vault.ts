@@ -89,13 +89,10 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
-		const {
-			accountMoney,
-			accountVault,
-			depositedDescription,
-			withdrewDescription,
-			showDescription
-		} = message.language.get('commandVaultEmbedData', { coins });
+		const { accountMoney, accountVault, depositedDescription, withdrewDescription, showDescription } = message.language.get(
+			LanguageKeys.Commands.Social.VaultEmbedData,
+			{ coins }
+		);
 
 		const description = coins ? (hasDeposited ? depositedDescription : withdrewDescription) : showDescription;
 

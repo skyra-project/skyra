@@ -29,7 +29,11 @@ export default class extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setTitle(message.language.get(LanguageKeys.Commands.Moderation.RaidList))
 			.setDescription([...raid.keys()].map((user) => `<@${user}>`))
-			.setFooter(`${raid.size}/${message.guild!.settings.get(GuildSettings.Selfmod.Raidthreshold)} ${message.language.get('constUsers')}`)
+			.setFooter(
+				`${raid.size}/${message.guild!.settings.get(GuildSettings.Selfmod.Raidthreshold)} ${message.language.get(
+					LanguageKeys.Misc.ConstUsers
+				)}`
+			)
 			.setTimestamp();
 
 		return message.sendMessage({ embed });

@@ -43,12 +43,13 @@ export const StatsTitles = T<{
 	uptime: string;
 	serverUsage: string;
 }>('commandStatsTitles');
-export const StatsFields = T<
-	(params: {
+export const StatsFields = FT<
+	{
 		stats: StatsGeneral;
 		uptime: StatsUptime;
 		usage: StatsUsage;
-	}) => {
+	},
+	{
 		stats: string[];
 		uptime: string[];
 		serverUsage: string[];

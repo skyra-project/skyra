@@ -99,7 +99,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message
-			.prompt(message.language.get('systemExceededLengthChooseOutput', { output: _options }))
+			.prompt(message.language.get(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }))
 			.catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();

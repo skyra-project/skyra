@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 					winners: winners.map((winner) => `<@${winner}>`),
 					title: title!
 			  })
-			: message.language.get('giveawayEndedMessageNoWinner', { title: title! });
+			: message.language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
 		return message.sendMessage(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 

@@ -91,9 +91,9 @@ export default class extends Event {
 					[
 						`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
 						`**Channel**: ${data.channel}`,
-						`**Message**: [${data.guild.language.get('jumpTo')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
-							data.messageID
-						})`
+						`**Message**: [${data.guild.language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${
+							data.channel.id
+						}/${data.messageID})`
 					].join('\n')
 				)
 				.setFooter(`${data.guild.language.get(LanguageKeys.Events.Reaction)} • ${data.channel.name}`)

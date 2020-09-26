@@ -17,7 +17,7 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [prefix]: [string]) {
-		if (message.guild!.settings.get(GuildSettings.Prefix) === prefix) throw message.language.get('configurationEquals');
+		if (message.guild!.settings.get(GuildSettings.Prefix) === prefix) throw message.language.get(LanguageKeys.Misc.ConfigurationEquals);
 		await message.guild!.settings.update(GuildSettings.Prefix, prefix, {
 			extraContext: { author: message.author.id }
 		});

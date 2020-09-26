@@ -117,7 +117,7 @@ export default class extends RichDisplayCommand {
 			// Warn if starting polygamy:
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
-				const answer = await askYesNo(channel, author, language.get('commandMarryAuthorTaken', { author }));
+				const answer = await askYesNo(channel, author, language.get(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
 				if (answer !== YesNoAnswer.Yes)
 					return message.sendLocale(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, [
 						{ user: await this.client.users.fetch(spouses[0]).then((user) => user.username) }

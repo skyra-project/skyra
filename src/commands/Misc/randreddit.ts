@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 		try {
 			parsed = error.toJSON() as RedditError;
 		} catch {
-			throw message.language.get('systemParseError');
+			throw message.language.get(LanguageKeys.System.ParseError);
 		}
 
 		switch (parsed.error) {
@@ -82,7 +82,7 @@ export default class extends SkyraCommand {
 				break;
 			}
 			case 500: {
-				throw message.language.get('systemExternalServerError');
+				throw message.language.get(LanguageKeys.System.ExternalServerError);
 			}
 		}
 

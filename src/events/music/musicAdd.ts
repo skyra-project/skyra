@@ -16,9 +16,14 @@ export default class extends Event {
 					songs.length === 1
 						? channel.guild.language.get(LanguageKeys.Commands.Music.AddSong, { title: songs[0].safeTitle })
 						: channel.guild.language.get(LanguageKeys.Commands.Music.AddPlaylist, {
-								songs: channel.guild.language.get(songs.length === 1 ? 'commandAddPlaylistSongs' : 'commandAddPlaylistSongsPlural', {
-									count: songs.length
-								})
+								songs: channel.guild.language.get(
+									songs.length === 1
+										? LanguageKeys.Commands.Music.AddPlaylistSongs
+										: LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+									{
+										count: songs.length
+									}
+								)
 						  }),
 					{ allowedMentions: { users: [], roles: [] } }
 				)

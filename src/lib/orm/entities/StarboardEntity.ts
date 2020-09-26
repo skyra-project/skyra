@@ -2,6 +2,7 @@
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -87,7 +88,7 @@ export class StarboardEntity extends BaseEntity {
 	 * The formatted masked url
 	 */
 	private get maskedUrl() {
-		return `[${this.#message.language.get('jumpTo')}](${this.#message.url})`;
+		return `[${this.#message.language.get(LanguageKeys.Misc.JumpTo)}](${this.#message.url})`;
 	}
 
 	/**

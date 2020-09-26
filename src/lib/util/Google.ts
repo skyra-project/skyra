@@ -1,4 +1,6 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CustomGet } from '@lib/types/Shared';
 import { TOKENS } from '@root/config';
 import { Client, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -55,19 +57,19 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 	}
 }
 
-export function handleNotOK(status: GoogleResponseCodes, client: Client) {
+export function handleNotOK(status: GoogleResponseCodes, client: Client): CustomGet<string, string> {
 	switch (status) {
 		case GoogleResponseCodes.ZeroResults:
-			return 'googleErrorZeroResults';
+			return LanguageKeys.Commands.Google.MessagesErrorZeroResults;
 		case GoogleResponseCodes.RequestDenied:
-			return 'googleErrorRequestDenied';
+			return LanguageKeys.Commands.Google.MessagesErrorRequestDenied;
 		case GoogleResponseCodes.InvalidRequest:
-			return 'googleErrorInvalidRequest';
+			return LanguageKeys.Commands.Google.MessagesErrorInvalidRequest;
 		case GoogleResponseCodes.OverQueryLimit:
-			return 'googleErrorOverQueryLimit';
+			return LanguageKeys.Commands.Google.MessagesErrorOverQueryLimit;
 		default:
 			client.emit(Events.Wtf, `Google::handleNotOK | Unknown Error: ${status}`);
-			return 'googleErrorUnknown';
+			return LanguageKeys.Commands.Google.MessagesErrorUnknown;
 	}
 }
 

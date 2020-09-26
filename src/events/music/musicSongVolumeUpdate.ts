@@ -14,7 +14,7 @@ export default class extends Event {
 				next > 200
 					? language.get(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
 							emoji: '📢',
-							text: pickRandom(language.get('commandVolumeChangedTexts')),
+							text: pickRandom(language.get(LanguageKeys.Commands.Music.VolumeChangedTexts)),
 							volume: next
 					  })
 					: language.get(LanguageKeys.Commands.Music.VolumeChanged, {

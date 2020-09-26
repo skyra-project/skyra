@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);
-		if (content) embed.setDescription(`[${message.language.get('jumpTo')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
+		if (content) embed.setDescription(`[${message.language.get(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
 		return message.sendEmbed(embed);
 	}

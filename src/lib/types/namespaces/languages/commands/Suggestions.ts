@@ -18,20 +18,22 @@ export const ResolveSuggestionIdNotFound = T<string>('commandResolveSuggestionId
 export const ResolveSuggestionDefaultComment = T<string>('commandResolveSuggestionDefaultComment');
 export const ResolveSuggestionAuthorAdmin = T<string>('commandResolveSuggestionAuthorAdmin');
 export const ResolveSuggestionAuthorModerator = T<string>('commandResolveSuggestionAuthorModerator');
-export const ResolveSuggestionActions = T<
-	(params: {
+export const ResolveSuggestionActions = FT<
+	{
 		author: string;
-	}) => {
+	},
+	{
 		accept: string;
 		consider: string;
 		deny: string;
 	}
 >('commandResolveSuggestionActions');
-export const ResolveSuggestionActionsDms = T<
-	(params: {
+export const ResolveSuggestionActionsDms = FT<
+	{
 		author: string;
 		guild: string;
-	}) => {
+	},
+	{
 		accept: string;
 		consider: string;
 		deny: string;

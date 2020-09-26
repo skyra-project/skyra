@@ -81,8 +81,10 @@ export default class extends Event {
 
 	private getNameDescription(i18n: Language, previousName: string | null, nextName: string | null) {
 		return [
-			i18n.get(previousName === null ? 'eventsNameUpdatePreviousWasNotSet' : 'eventsNameUpdatePreviousWasSet', { previousName }),
-			i18n.get(nextName === null ? 'eventsNameUpdateNextWasNotSet' : 'eventsNameUpdateNextWasSet', { nextName })
+			i18n.get(previousName === null ? LanguageKeys.Events.NameUpdatePreviousWasNotSet : LanguageKeys.Events.NameUpdatePreviousWasSet, {
+				previousName
+			}),
+			i18n.get(nextName === null ? LanguageKeys.Events.NameUpdateNextWasNotSet : LanguageKeys.Events.NameUpdateNextWasSet, { nextName })
 		].join('\n');
 	}
 

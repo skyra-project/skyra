@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 
 		if (!user) return message.sendLocale(LanguageKeys.Commands.Social.ReputationUsable);
 		if (user.bot) throw message.language.get(LanguageKeys.Commands.Social.ReputationsBots);
-		if (user === message.author) throw message.language.get('commandReputationSelf');
+		if (user === message.author) throw message.language.get(LanguageKeys.Commands.Social.ReputationSelf);
 
 		await getManager().transaction(async (em) => {
 			++extSettings!.reputations;

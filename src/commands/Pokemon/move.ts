@@ -14,8 +14,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandMoveDescription'),
-	extendedHelp: (language) => language.get('commandMoveExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.MoveDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.MoveExtended),
 	usage: '<move:str>'
 })
 export default class extends RichDisplayCommand {
@@ -35,15 +35,15 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw message.language.get('commandMoveQueryFail', { move });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
 		}
 	}
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.get('commandMoveEmbedData', {
-			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? 'globalNo' : 'globalYes')
+		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
+			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
-		const externalResources = message.language.get('systemPokedexExternalResource');
+		const externalResources = message.language.get(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
 			`[Serebii](${moveData.serebiiPage})`,

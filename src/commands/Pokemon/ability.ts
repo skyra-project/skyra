@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
@@ -10,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],
 	cooldown: 10,
-	description: (language) => language.get('commandAbilityDescription'),
-	extendedHelp: (language) => language.get('commandAbilityExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.AbilityDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.AbilityExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<ability:str>'
 })
@@ -22,10 +23,13 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(`${message.language.get('commandAbilityEmbedTitle')} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
+				.setAuthor(
+					`${message.language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitle)} - ${toTitleCase(abilityDetails.name)}`,
+					CdnUrls.Pokedex
+				)
 				.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
 				.addField(
-					message.language.get('systemPokedexExternalResource'),
+					message.language.get(LanguageKeys.System.PokedexExternalResource),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
 						`[Serebii](${abilityDetails.serebiiPage})`,
@@ -40,7 +44,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw message.language.get('commandAbilityQueryFail', { ability });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
 		}
 	}
 }

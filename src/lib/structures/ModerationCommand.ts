@@ -135,22 +135,23 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected async checkModeratable(message: KlasaMessage, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw message.language.get('commandUserself');
+			throw message.language.get(LanguageKeys.Misc.CommandUserself);
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw message.language.get('commandToskyra');
+			throw message.language.get(LanguageKeys.Misc.CommandToskyra);
 		}
 
 		const member = await message.guild!.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw message.language.get('userNotInGuild');
+			if (this.requiredMember) throw message.language.get(LanguageKeys.Misc.UserNotInGuild);
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.get('commandRoleHigherSkyra');
-			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get('commandRoleHigher');
+			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position)
+				throw message.language.get(LanguageKeys.Misc.CommandRoleHigherSkyra);
+			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get(LanguageKeys.Misc.CommandRoleHigher);
 		}
 
 		return member;

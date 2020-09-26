@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Cell } from './Board';
 import { Game } from './Game';
 
@@ -26,11 +27,11 @@ export abstract class Player {
 		const { next } = this.game;
 		const languageKey = this.game.winner
 			? next!.color === PlayerColor.Blue
-				? 'commandC4GameWinTurn0'
-				: 'commandC4GameWin'
+				? LanguageKeys.Commands.Games.C4GameWinTurn0
+				: LanguageKeys.Commands.Games.C4GameWin
 			: next!.color === PlayerColor.Blue
-			? 'commandC4GameNextTurn0'
-			: 'commandC4GameNext';
+			? LanguageKeys.Commands.Games.C4GameNextTurn0
+			: LanguageKeys.Commands.Games.C4GameNext;
 		this.game.content = this.game.language.get(languageKey, {
 			user: next!.name
 		});

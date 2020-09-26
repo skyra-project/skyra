@@ -1,7 +1,9 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CustomFunctionGet, CustomGet } from '@lib/types/Shared';
 import { TOKENS, VERSION } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage, LanguageKeys, LanguageKeysComplex, LanguageKeysSimple } from 'klasa';
+import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
@@ -13,7 +15,7 @@ export abstract class WeebCommand extends SkyraCommand {
 	/**
 	 * The response name for Language#get
 	 */
-	public responseName: keyof LanguageKeys;
+	public responseName: SimpleKey | ComplexKey;
 
 	private readonly kHeaders = {
 		Authorization: `Wolke ${TOKENS.WEEB_SH_KEY}`,
@@ -42,15 +44,15 @@ export abstract class WeebCommand extends SkyraCommand {
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)
-				? message.language.get(this.responseName as LanguageKeysComplex, { user: params![0].username })
-				: message.language.get(this.responseName as LanguageKeysSimple),
+				? message.language.get(this.responseName as ComplexKey, { user: params![0].username })
+				: message.language.get(this.responseName as SimpleKey),
 			{
 				embed: new MessageEmbed()
 					.setTitle('→')
 					.setURL(url)
 					.setColor(await DbSet.fetchColor(message))
 					.setImage(url)
-					.setFooter(message.language.get('systemPoweredByWeebsh'))
+					.setFooter(message.language.get(LanguageKeys.System.PoweredByWeebsh))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
@@ -58,9 +60,12 @@ export abstract class WeebCommand extends SkyraCommand {
 
 export interface WeebCommandOptions extends CommandOptions {
 	queryType: string;
-	responseName: keyof LanguageKeys;
+	responseName: SimpleKey | ComplexKey;
 }
 
 interface WeebCommandResult {
 	url: string;
 }
+
+type SimpleKey = CustomGet<string, string>;
+type ComplexKey = CustomFunctionGet<string, { user: string }, string>;

@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
@@ -10,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pokeitem', 'bag'],
 	cooldown: 10,
-	description: (language) => language.get('commandItemDescription'),
-	extendedHelp: (language) => language.get('commandItemExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.ItemDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.ItemExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '<item:str>'
 })
@@ -19,8 +20,8 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
 		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-		const embedTranslations = message.language.get('commandItemEmbedData', {
-			availableInGen8: message.language.get(itemDetails.isNonstandard === 'Past' ? 'globalNo' : 'globalYes')
+		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
+			availableInGen8: message.language.get(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
 		return message.sendEmbed(
 			new MessageEmbed()
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 				.addField(embedTranslations.generationIntroduced, itemDetails.generationIntroduced, true)
 				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
 				.addField(
-					message.language.get('systemPokedexExternalResource'),
+					message.language.get(LanguageKeys.System.PokedexExternalResource),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 						`[Serebii](${itemDetails.serebiiPage})`,
@@ -46,7 +47,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw message.language.get('commandItemQueryFail', { item });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
 		}
 	}
 }

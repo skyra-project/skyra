@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { flattenSong } from '@utils/Models/ApiTransform';
 import { enumerable, showSeconds } from '@utils/util';
@@ -68,7 +69,7 @@ export class Song {
 			(await this.queue.client.users
 				.fetch(this.requester)
 				.then((user) => user.username)
-				.catch(() => this.queue.guild.language.get('unknownUser')));
+				.catch(() => this.queue.guild.language.get(LanguageKeys.Misc.UnknownUser)));
 		return escapeMarkdown(display);
 	}
 

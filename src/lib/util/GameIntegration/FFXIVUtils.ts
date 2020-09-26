@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { toTitleCase } from '@sapphire/utilities';
 import { Mime } from '@utils/constants';
@@ -120,7 +121,7 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw i18n.get('commandFFXIVNoCharacterFound');
+		throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 	}
 }
 
@@ -130,7 +131,7 @@ export async function searchCharacter(i18n: Language, name: string, server?: str
 		url.searchParams.append('name', name);
 		if (server) {
 			if (FFXIVServers.includes(server.toLowerCase())) url.searchParams.append('server', toTitleCase(server));
-			else throw i18n.get('commandFFXIVInvalidServer');
+			else throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer);
 		}
 
 		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(
@@ -143,7 +144,7 @@ export async function searchCharacter(i18n: Language, name: string, server?: str
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw i18n.get('commandFFXIVNoCharacterFound');
+		throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 	}
 }
 
@@ -180,7 +181,7 @@ export async function searchItem(i18n: Language, item: string) {
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw i18n.get('commandFFXIVNoItemFound');
+		throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
 	}
 }
 

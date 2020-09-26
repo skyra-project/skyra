@@ -70,9 +70,12 @@ export class Game {
 	public async run() {
 		this.message = await this.message.send(pickRandom(this.language.get(LanguageKeys.System.Loading)));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
-		this.content = this.language.get(this.next!.color === PlayerColor.Blue ? 'commandC4GameNextTurn0' : 'commandC4GameNext', {
-			user: this.next!.name
-		});
+		this.content = this.language.get(
+			this.next!.color === PlayerColor.Blue ? LanguageKeys.Commands.Games.C4GameNextTurn0 : LanguageKeys.Commands.Games.C4GameNext,
+			{
+				user: this.next!.name
+			}
+		);
 		this.llrc = new LongLivingReactionCollector(this.message.client);
 
 		let stop = false;
@@ -97,7 +100,8 @@ export class Game {
 				error instanceof DiscordAPIError &&
 				(error.code === RESTJSONErrorCodes.UnknownChannel || error.code === RESTJSONErrorCodes.UnknownMessage)
 			) {
-				if (error.code !== RESTJSONErrorCodes.UnknownChannel) await this.message.alert(this.message.language.get('commandC4GameDraw'));
+				if (error.code !== RESTJSONErrorCodes.UnknownChannel)
+					await this.message.alert(this.message.language.get(LanguageKeys.Commands.Games.C4GameDraw));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

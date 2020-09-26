@@ -45,7 +45,7 @@ export default class extends Event {
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setDescription(
-					member.guild.language.get('eventsGuildMemberAddDescription', {
+					member.guild.language.get(LanguageKeys.Events.GuildMemberAddDescription, {
 						mention: member.toString(),
 						time: Date.now() - member.user.createdTimestamp
 					})

@@ -51,7 +51,7 @@ export const QueueDescription = T<string>('commandQueueDescription');
 export const QueueLast = T<string>('commandQueueLast');
 export const QueueTitle = FT<{ guildname: string }, string>('commandQueueTitle');
 export const QueueLine = FT<{ position: number; duration: string; title: string; url: string; requester: string }, string>('commandQueueLine');
-export const QueueNowplaying = T<(context: { title: string; url: string; requester: string }) => string>('commandQueueNowplaying');
+export const QueueNowplaying = FT<{ title: string; url: string; requester: string }, string>('commandQueueNowplaying');
 export const QueueNowplayingTimeRemaining = FT<{ timeRemaining: string }, string>('commandQueueNowplayingTimeRemaining');
 export const QueueNowplayingLiveStream = T<string>('commandQueueNowplayingLiveStream');
 export const QueueNowplayingTitle = T<string>('commandQueueNowplayingTitle');

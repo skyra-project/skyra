@@ -1,4 +1,5 @@
 import { Collection } from '@discordjs/collection';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 import { levenshtein } from './External/levenshtein';
@@ -70,15 +71,15 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length > 10) results.length = 10;
 
 		const { content: n } = await message.prompt(
-			message.language.get('fuzzySearchMatches', {
+			message.language.get(LanguageKeys.FuzzySearch.Matches, {
 				matches: results.length - 1,
 				codeblock: codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
 			})
 		);
-		if (n.toLowerCase() === 'abort') throw message.language.get('fuzzySearchAborted');
+		if (n.toLowerCase() === 'abort') throw message.language.get(LanguageKeys.FuzzySearch.Aborted);
 		const parsed = Number(n);
-		if (!Number.isSafeInteger(parsed)) throw message.language.get('fuzzySearchInvalidNumber');
-		if (parsed < 0 || parsed >= results.length) throw message.language.get('fuzzySearchInvalidIndex');
+		if (!Number.isSafeInteger(parsed)) throw message.language.get(LanguageKeys.FuzzySearch.InvalidNumber);
+		if (parsed < 0 || parsed >= results.length) throw message.language.get(LanguageKeys.FuzzySearch.InvalidIndex);
 		return results[parsed];
 	}
 }

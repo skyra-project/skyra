@@ -197,8 +197,8 @@ export class GiveawayEntity extends BaseEntity {
 
 	private async announceWinners(language: Language) {
 		const content = this.#winners
-			? language.get('giveawayEndedMessage', { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
-			: language.get('giveawayEndedMessageNoWinner', { title: this.title });
+			? language.get(LanguageKeys.Giveaway.EndedMessage, { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
+			: language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: this.title });
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
@@ -224,18 +224,18 @@ export class GiveawayEntity extends BaseEntity {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
-					? language.get(this.#winners.length === 1 ? 'giveawayEnded' : 'giveawayEndedPlural', {
+					? language.get(this.#winners.length === 1 ? LanguageKeys.Giveaway.Ended : LanguageKeys.Giveaway.EndedPlural, {
 							winners: language.list(
 								this.#winners.map((winner) => `<@${winner}>`),
 								language.get(LanguageKeys.Globals.And)
 							),
 							count: this.#winners.length
 					  })
-					: language.get('giveawayEndedNoWinner');
+					: language.get(LanguageKeys.Giveaway.EndedNoWinner);
 			case States.LastChance:
-				return language.get('giveawayLastchance', { time: this.remaining });
+				return language.get(LanguageKeys.Giveaway.Lastchance, { time: this.remaining });
 			default:
-				return language.get('giveawayDuration', { time: this.remaining });
+				return language.get(LanguageKeys.Giveaway.Duration, { time: this.remaining });
 		}
 	}
 
@@ -281,11 +281,11 @@ export class GiveawayEntity extends BaseEntity {
 	private static getContent(state: States, language: Language) {
 		switch (state) {
 			case States.Finished:
-				return language.get('giveawayEndedTitle');
+				return language.get(LanguageKeys.Giveaway.EndedTitle);
 			case States.LastChance:
-				return language.get('giveawayLastchanceTitle');
+				return language.get(LanguageKeys.Giveaway.LastchanceTitle);
 			default:
-				return language.get('giveawayTitle');
+				return language.get(LanguageKeys.Giveaway.Title);
 		}
 	}
 
@@ -301,6 +301,6 @@ export class GiveawayEntity extends BaseEntity {
 	}
 
 	private static getFooter(state: States, language: Language) {
-		return state === States.Running ? language.get('giveawayEndsAt') : language.get('giveawayEndedAt');
+		return state === States.Running ? language.get(LanguageKeys.Giveaway.EndsAt) : language.get(LanguageKeys.Giveaway.EndedAt);
 	}
 }

@@ -2,6 +2,7 @@
 import type { ModerationManager, ModerationManagerUpdateData } from '@lib/structures/managers/ModerationManager';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import type { AnyObject } from '@lib/types/util';
 import { CLIENT_ID } from '@root/config';
 import { isNumber, parseURL } from '@sapphire/utilities';
@@ -307,8 +308,10 @@ export class ModerationEntity extends BaseEntity {
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
 		const prefix = manager.guild.settings.get(GuildSettings.Prefix);
-		const formattedDuration = this.duration ? manager.guild.language.get('moderationLogExpiresIn', { duration: this.duration }) : '';
-		const description = manager.guild.language.get('moderationLogDescription', {
+		const formattedDuration = this.duration
+			? manager.guild.language.get(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration })
+			: '';
+		const description = manager.guild.language.get(LanguageKeys.Commands.Moderation.ModerationLogDescription, {
 			data: {
 				type: this.title,
 				userName: user.username,
@@ -326,7 +329,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
 			.setFooter(
-				manager.guild.language.get('moderationLogFooter', { caseID: this.caseID }),
+				manager.guild.language.get(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

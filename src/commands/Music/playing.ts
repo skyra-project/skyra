@@ -1,4 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireMusicPlaying } from '@utils/Music/Decorators';
 import { IMAGE_EXTENSION } from '@utils/util';
@@ -7,7 +8,7 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['np', 'nowplaying'],
-	description: (language) => language.get('commandPlayingDescription'),
+	description: (language) => language.get(LanguageKeys.Commands.Music.PlayingDescription),
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends MusicCommand {
@@ -17,15 +18,15 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage) {
 		const queue = message.guild!.music;
 		const song = queue.song || (queue.queue.length ? queue.queue[0] : null);
-		if (!song) throw message.language.get('commandPlayingQueueEmpty');
-		if (!queue.playing) throw message.language.get('commandPlayingQueueNotPlaying');
+		if (!song) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueEmpty);
+		if (!queue.playing) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueNotPlaying);
 
 		const embed = new MessageEmbed()
 			.setColor(12916736)
 			.setTitle(song.title)
 			.setURL(song.url)
 			.setAuthor(song.author)
-			.setDescription(message.language.get('commandPlayingDuration', { duration: song.friendlyDuration }))
+			.setDescription(message.language.get(LanguageKeys.Commands.Music.PlayingDuration, { duration: song.friendlyDuration }))
 			.setTimestamp();
 
 		const imageUrl = this.getSongImage(song.url, song.identifier);

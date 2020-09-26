@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		try {
 			return await this.client.twitch.fetchUsers([], usernames);
 		} catch {
-			throw message.language.get('commandTwitchNoEntries');
+			throw message.language.get(LanguageKeys.Commands.Twitch.TwitchNoEntries);
 		}
 	}
 }

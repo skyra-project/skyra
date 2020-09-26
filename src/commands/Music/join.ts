@@ -1,4 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 import { Permissions, VoiceChannel } from 'discord.js';
@@ -7,7 +8,7 @@ const { FLAGS } = Permissions;
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['connect'],
-	description: (language) => language.get('commandJoinDescription')
+	description: (language) => language.get(LanguageKeys.Commands.Music.JoinDescription)
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
@@ -16,11 +17,15 @@ export default class extends MusicCommand {
 		const { channel } = message.member!.voice;
 
 		// If the member is not in a voice channel then throw
-		if (!channel) throw message.language.get('commandJoinNoVoicechannel');
+		if (!channel) throw message.language.get(LanguageKeys.Commands.Music.JoinNoVoicechannel);
 
 		// Check if the bot is already playing in this guild
 		if (message.guild!.music.playing && message.guild!.music.voiceChannel !== null) {
-			throw message.language.get(channel.id === message.guild!.music.voiceChannel.id ? 'commandJoinVoiceSame' : 'commandJoinVoiceDifferent');
+			throw message.language.get(
+				channel.id === message.guild!.music.voiceChannel.id
+					? LanguageKeys.Commands.Music.JoinVoiceSame
+					: LanguageKeys.Commands.Music.JoinVoiceDifferent
+			);
 		}
 
 		// Ensure Skyra has the correct permissions to play music
@@ -43,8 +48,8 @@ export default class extends MusicCommand {
 		const permissions = voiceChannel.permissionsFor(message.guild!.me!)!;
 
 		// Administrators can join voice channels even if they are full
-		if (voiceChannel.full && !permissions.has(FLAGS.ADMINISTRATOR)) throw message.language.get('commandJoinVoiceFull');
-		if (!permissions.has(FLAGS.CONNECT)) throw message.language.get('commandJoinVoiceNoConnect');
-		if (!permissions.has(FLAGS.SPEAK)) throw message.language.get('commandJoinVoiceNoSpeak');
+		if (voiceChannel.full && !permissions.has(FLAGS.ADMINISTRATOR)) throw message.language.get(LanguageKeys.Commands.Music.JoinVoiceFull);
+		if (!permissions.has(FLAGS.CONNECT)) throw message.language.get(LanguageKeys.Commands.Music.JoinVoiceNoConnect);
+		if (!permissions.has(FLAGS.SPEAK)) throw message.language.get(LanguageKeys.Commands.Music.JoinVoiceNoSpeak);
 	}
 }

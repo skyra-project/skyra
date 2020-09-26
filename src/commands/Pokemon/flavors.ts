@@ -14,8 +14,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
-	description: (language) => language.get('commandFlavorsDescription'),
-	extendedHelp: (language) => language.get('commandFlavorsExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.FlavorsDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.FlavorsExtended),
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
@@ -36,7 +36,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.get('commandFlavorsQueryFail', { pokemon });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 

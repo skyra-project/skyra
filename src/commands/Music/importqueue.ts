@@ -1,5 +1,6 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import type { KlasaMessage } from 'klasa';
 import type { TrackData } from 'lavacord';
@@ -8,8 +9,8 @@ import { maximumExportQueueSize } from './exportqueue';
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['iq'],
 	cooldown: 30,
-	description: (language) => language.get('commandImportQueueDescription'),
-	extendedHelp: (language) => language.get('commandImportQueueExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Music.ImportQueueDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.ImportQueueExtended),
 	usage: '<queue:squeue>',
 	flagSupport: true
 })
@@ -17,7 +18,7 @@ import { maximumExportQueueSize } from './exportqueue';
 	[
 		'squeue',
 		(arg, possible, message) => {
-			if (!arg && message.attachments.size === 0) throw message.language.get('musicManagerImportQueueNotFound');
+			if (!arg && message.attachments.size === 0) throw message.language.get(LanguageKeys.MusicManager.ImportQueueNotFound);
 			return message.attachments.first()?.url ?? message.client.arguments.get('url')!.run(arg, possible, message);
 		}
 	]

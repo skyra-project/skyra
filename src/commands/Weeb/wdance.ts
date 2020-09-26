@@ -1,10 +1,11 @@
 import { WeebCommand, WeebCommandOptions } from '@lib/structures/WeebCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: (language) => language.get('commandWdanceDescription'),
-	extendedHelp: (language) => language.get('commandWdanceExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Weeb.DanceDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Weeb.DanceExtended),
 	queryType: 'dance',
-	responseName: 'commandWdance'
+	responseName: LanguageKeys.Commands.Weeb.Dance
 })
 export default class extends WeebCommand {}

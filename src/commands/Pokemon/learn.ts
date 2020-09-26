@@ -17,8 +17,8 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['learnset', 'learnall'],
 	cooldown: 10,
-	description: (language) => language.get('commandLearnDescription'),
-	extendedHelp: (language) => language.get('commandLearnExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.LearnDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.LearnExtended),
 	usage: '[generation:generation] <pokemon:string> <moves:...string> ',
 	usageDelim: ' ',
 	flagSupport: true
@@ -28,7 +28,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 		'generation',
 		(arg, possible, message) => {
 			if (kPokemonGenerations.has(arg)) return message.client.arguments.get('integer')!.run(arg, possible, message);
-			throw message.language.get('commandLearnInvalidGeneration', { generation: arg });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.LearnInvalidGeneration, { generation: arg });
 		}
 	]
 ])
@@ -50,7 +50,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonLearnsetByFuzzy'>(getPokemonLearnsetByFuzzy, { pokemon, moves, generation });
 			return data.getPokemonLearnsetByFuzzy;
 		} catch {
-			throw message.language.get('commandLearnQueryFailed', {
+			throw message.language.get(LanguageKeys.Commands.Pokemon.LearnQueryFailed, {
 				pokemon,
 				moves: message.language.list(moves, message.language.get(LanguageKeys.Globals.And))
 			});
@@ -58,7 +58,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private parseMove(message: KlasaMessage, pokemon: string, generation: number, move: string, method: string) {
-		return message.language.get('commandLearnMethod', { generation, pokemon, move, method });
+		return message.language.get(LanguageKeys.Commands.Pokemon.LearnMethod, { generation, pokemon, move, method });
 	}
 
 	private buildDisplay(message: KlasaMessage, learnsetData: LearnsetEntry, generation: number, moves: string[]) {
@@ -66,7 +66,7 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(resolveColour(learnsetData.color))
 				.setAuthor(`#${learnsetData.num} - ${toTitleCase(learnsetData.species)}`, CdnUrls.Pokedex)
-				.setTitle(message.language.get('commandLearnTitle', { pokemon: learnsetData.species, generation }))
+				.setTitle(message.language.get(LanguageKeys.Commands.Pokemon.LearnTitle, { pokemon: learnsetData.species, generation }))
 				.setThumbnail(message.flagArgs.shiny ? learnsetData.shinySprite : learnsetData.sprite)
 		);
 
@@ -77,7 +77,7 @@ export default class extends RichDisplayCommand {
 		if (learnableMethods.length === 0) {
 			return display.addPage((embed: MessageEmbed) =>
 				embed.setDescription(
-					message.language.get('commandLearnCannotLearn', {
+					message.language.get(LanguageKeys.Commands.Pokemon.LearnCannotLearn, {
 						pokemon: learnsetData.species,
 						moves: message.language.list(moves, message.language.get(LanguageKeys.Globals.Or))
 					})

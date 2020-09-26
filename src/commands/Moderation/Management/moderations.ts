@@ -16,8 +16,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['moderation'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('commandModerationsDescription'),
-	extendedHelp: (language) => language.get('commandModerationsExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.ModerationsDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ModerationsExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
@@ -32,14 +32,19 @@ export default class extends RichDisplayCommand {
 		const entries = (await (target ? message.guild!.moderation.fetch(target.id) : message.guild!.moderation.fetch())).filter(
 			this.getFilter(action, target)
 		);
-		if (!entries.size) throw message.language.get('commandModerationsEmpty');
+		if (!entries.size) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(
-					message.language.get(entries.size === 1 ? 'commandModerationsAmount' : 'commandModerationsAmountPlural', { count: entries.size })
+					message.language.get(
+						entries.size === 1
+							? LanguageKeys.Commands.Moderation.ModerationsAmount
+							: LanguageKeys.Commands.Moderation.ModerationsAmountPlural,
+						{ count: entries.size }
+					)
 				)
 		);
 

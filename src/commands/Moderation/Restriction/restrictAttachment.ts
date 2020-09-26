@@ -1,6 +1,7 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
@@ -10,8 +11,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restricted-attachment', 'ra'],
-	description: (language) => language.get('commandRestrictAttachmentDescription'),
-	extendedHelp: (language) => language.get('commandRestrictAttachmentExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.RestrictAttachmentDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.RestrictAttachmentExtended),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -27,18 +28,18 @@ export default class extends ModerationCommand {
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {
 			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandRestrictLowlevel');
-			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {
+			if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get('actionSharedRoleSetupExistingName'))) as [Role];
+					.run(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.RestrictedAttachment, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.get('actionSharedRoleSetupNew'))) {
+			} else if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Attachment);
-				await message.sendLocale('commandSuccess');
+				await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
 			} else {
-				await message.sendLocale('monitorCommandHandlerAborted');
+				await message.sendLocale(LanguageKeys.Monitors.CommandHandlerAborted);
 			}
 		}
 

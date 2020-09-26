@@ -1,5 +1,6 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes, isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
@@ -8,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sb'],
-	description: (language) => language.get('commandSoftBanDescription'),
-	extendedHelp: (language) => language.get('commandSoftBanExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.SoftBanDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.SoftBanExtended),
 	requiredMember: false,
 	requiredPermissions: ['BAN_MEMBERS']
 })
@@ -40,12 +41,12 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.bannable) throw message.language.get('commandBanNotBannable');
+		if (member && !member.bannable) throw message.language.get(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}
 
 	private getDays(message: KlasaMessage) {
-		const regex = new RegExp(message.language.get('commandModerationDays'), 'i');
+		const regex = new RegExp(message.language.get(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
 		for (const [key, value] of Object.entries(message.flagArgs)) {
 			if (regex.test(key)) {
 				const parsed = Number(value);

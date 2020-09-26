@@ -1,6 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
@@ -30,8 +31,8 @@ const enum Filter {
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['p', 'purge', 'nuke', 'sweep'],
 	cooldown: 5,
-	description: (language) => language.get('commandPruneDescription'),
-	extendedHelp: (language) => language.get('commandPruneExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.PruneDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.PruneExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	flagSupport: true,
 	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
@@ -75,13 +76,13 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('filter', (argument, _possible, message) => {
 			if (!argument) return undefined;
 			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
-			if (typeof filter === 'undefined') throw message.language.get('commandPruneInvalidFilter');
+			if (typeof filter === 'undefined') throw message.language.get(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
 			return filter;
 		})
 			.createCustomResolver('position', (argument, _possible, message) => {
 				if (!argument) return null;
 				const position = this.kCommandPrunePositions[argument.toLowerCase()];
-				if (typeof position === 'undefined') throw message.language.get('commandPruneInvalidPosition');
+				if (typeof position === 'undefined') throw message.language.get(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
 				return position;
 			})
 			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
@@ -103,7 +104,7 @@ export default class extends SkyraCommand {
 		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
 		// are invalid command usages and therefore, for the sake of protection, Skyra should
 		// not execute an erroneous command.
-		if (message.args.length > 4) throw message.language.get('commandPruneInvalid');
+		if (message.args.length > 4) throw message.language.get(LanguageKeys.Commands.Moderation.PruneInvalid);
 
 		const position = this.resolvePosition(rawPosition);
 		const filter = this.resolveFilter(rawFilter);
@@ -118,7 +119,7 @@ export default class extends SkyraCommand {
 		// Filter the messages by their age
 		const now = Date.now();
 		const filtered = messages.filter((m) => now - m.createdTimestamp < 1209600000);
-		if (filtered.size === 0) throw message.language.get('commandPruneNoDeletes');
+		if (filtered.size === 0) throw message.language.get(LanguageKeys.Commands.Moderation.PruneNoDeletes);
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
@@ -131,10 +132,13 @@ export default class extends SkyraCommand {
 		return Reflect.has(message.flagArgs, 'silent')
 			? null
 			: message.alert(
-					message.language.get(filteredKeys.length === 1 ? 'commandPruneAlert' : 'commandPruneAlertPlural', {
-						count: filteredKeys.length,
-						total: limit
-					})
+					message.language.get(
+						filteredKeys.length === 1 ? LanguageKeys.Commands.Moderation.PruneAlert : LanguageKeys.Commands.Moderation.PruneAlertPlural,
+						{
+							count: filteredKeys.length,
+							total: limit
+						}
+					)
 			  );
 	}
 
@@ -195,11 +199,16 @@ export default class extends SkyraCommand {
 						message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 					)
 					.setDescription(
-						message.language.get(messages.size === 1 ? 'commandPruneLogMessage' : 'commandPruneLogMessagePlural', {
-							channel: (message.channel as TextChannel).toString(),
-							author: message.author.toString(),
-							count: messages.size
-						})
+						message.language.get(
+							messages.size === 1
+								? LanguageKeys.Commands.Moderation.PruneLogMessage
+								: LanguageKeys.Commands.Moderation.PruneLogMessagePlural,
+							{
+								channel: (message.channel as TextChannel).toString(),
+								author: message.author.toString(),
+								count: messages.size
+							}
+						)
 					)
 					.setColor(this.kColor)
 					.setTimestamp(),
@@ -209,7 +218,7 @@ export default class extends SkyraCommand {
 	}
 
 	private generateAttachment(message: KlasaMessage, messages: Collection<string, Message>) {
-		const header = message.language.get('commandPruneLogHeader');
+		const header = message.language.get(LanguageKeys.Commands.Moderation.PruneLogHeader);
 		const processed = messages
 			.map((message) => this.formatMessage(message))
 			.reverse()

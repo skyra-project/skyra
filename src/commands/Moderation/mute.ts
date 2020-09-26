@@ -1,6 +1,7 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
@@ -9,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['m'],
-	description: (language) => language.get('commandMuteDescription'),
-	extendedHelp: (language) => language.get('commandMuteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.MuteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.MuteExtended),
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MANAGE_ROLES']
@@ -25,19 +26,20 @@ export default class extends ModerationCommand {
 		const id = message.guild.settings.get(GuildSettings.Roles.Muted);
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {
-			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) throw message.language.get('commandMuteLowlevel');
-			if (await message.ask(message.language.get('actionSharedRoleSetupExisting'))) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)))
+				throw message.language.get(LanguageKeys.Commands.Moderation.MuteLowlevel);
+			if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get('actionSharedRoleSetupExistingName'))) as [Role];
+					.run(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
 				await message.guild.settings.update(GuildSettings.Roles.Muted, role, {
 					extraContext: { author: message.author.id }
 				});
-			} else if (await message.ask(message.language.get('actionSharedRoleSetupNew'))) {
+			} else if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 				await message.guild.security.actions.muteSetup(message);
-				await message.sendLocale('commandSuccess');
+				await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
 			} else {
-				await message.sendLocale('monitorCommandHandlerAborted');
+				await message.sendLocale(LanguageKeys.Monitors.CommandHandlerAborted);
 			}
 		}
 

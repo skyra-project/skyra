@@ -1,12 +1,13 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vk'],
-	description: (language) => language.get('commandVoiceKickDescription'),
-	extendedHelp: (language) => language.get('commandVoiceKickExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.VoiceKickDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.VoiceKickExtended),
 	requiredMember: true,
 	requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
 })
@@ -33,7 +34,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.voice.channelID) throw message.language.get('guildMemberNotVoicechannel');
+		if (member && !member.voice.channelID) throw message.language.get(LanguageKeys.Commands.Moderation.GuildMemberNotVoicechannel);
 		return member;
 	}
 }

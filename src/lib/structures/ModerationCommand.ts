@@ -86,11 +86,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
 					? cases.length === 1
-						? 'commandModerationOutputWithReason'
-						: 'commandModerationOutputWithReasonPlural'
+						? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
+						: LanguageKeys.Commands.Moderation.ModerationOutputWithReasonPlural
 					: cases.length === 1
-					? 'commandModerationOutput'
-					: 'commandModerationOutputPlural';
+					? LanguageKeys.Commands.Moderation.ModerationOutput
+					: LanguageKeys.Commands.Moderation.ModerationOutputPlural;
 				output.push(
 					message.language.get(langKey, {
 						count: cases.length,
@@ -104,10 +104,15 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
-					message.language.get(users.length === 1 ? 'commandModerationFailed' : 'commandModerationFailedPlural', {
-						users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
-						count: users.length
-					})
+					message.language.get(
+						users.length === 1
+							? LanguageKeys.Commands.Moderation.ModerationFailed
+							: LanguageKeys.Commands.Moderation.ModerationFailedPlural,
+						{
+							users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
+							count: users.length
+						}
+					)
 				);
 			}
 

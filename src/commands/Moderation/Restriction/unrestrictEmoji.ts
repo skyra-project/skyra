@@ -1,13 +1,14 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
-	description: (language) => language.get('commandUnrestrictEmojiDescription'),
-	extendedHelp: (language) => language.get('commandUnrestrictEmojiExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended),
 	requiredGuildPermissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
@@ -18,7 +19,10 @@ export default class extends ModerationCommand {
 		if (message.command !== this || message.guild === null) return false;
 		const id = message.guild.settings.get(this.kPath);
 		if (id && message.guild.roles.cache.has(id)) return false;
-		throw message.language.get('guildSettingsRolesRestricted', { prefix: message.guild.settings.get(GuildSettings.Prefix), path: this.kPath });
+		throw message.language.get(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
+			prefix: message.guild.settings.get(GuildSettings.Prefix),
+			path: this.kPath
+		});
 	}
 
 	public async prehandle() {

@@ -21,8 +21,8 @@ export interface ModerationAction {
 
 export const HistoryDescription = T<string>('commandHistoryDescription');
 export const HistoryExtended = T<LanguageHelpDisplayOptions>('commandHistoryExtended');
-export const HistoryFooterNew = T<
-	(params: {
+export const HistoryFooterNew = FT<
+	{
 		warnings: number;
 		mutes: number;
 		kicks: number;
@@ -31,7 +31,8 @@ export const HistoryFooterNew = T<
 		mutesText: string;
 		kicksText: string;
 		bansText: string;
-	}) => string
+	},
+	string
 >('commandHistoryFooterNew');
 export const HistoryFooterWarning = FT<{ count: number }, string>('commandHistoryFooterWarning');
 export const HistoryFooterWarningPlural = FT<{ count: number }, string>('commandHistoryFooterWarningPlural');
@@ -112,13 +113,14 @@ export const SlowmodeTooLong = T<string>('commandSlowmodeTooLong');
 export const BanNotBannable = T<string>('commandBanNotBannable');
 export const DehoistStarting = FT<{ count: number }, string>('commandDehoistStarting');
 export const DehoistProgress = FT<{ count: number; percentage: number }, string>('commandDehoistProgress');
-export const DehoistEmbed = T<
-	(params: {
+export const DehoistEmbed = FT<
+	{
 		users: number;
 		dehoistedMemberCount: number;
 		dehoistedWithErrorsCount: number;
 		errored: number;
-	}) => {
+	},
+	{
 		title: string;
 		descriptionNoone: string;
 		descriptionWithError: string;
@@ -154,10 +156,8 @@ export const PruneLogMessage = FT<{ channel: string; author: string; count: numb
 export const PruneLogMessagePlural = FT<{ channel: string; author: string; count: number }, string>('commandPruneLogMessagePlural');
 export const ReasonMissingCase = T<string>('commandReasonMissingCase');
 export const ReasonNotExists = T<string>('commandReasonNotExists');
-export const ReasonUpdated = T<(params: { entries: readonly number[]; newReason: string; count: number }) => string[]>('commandReasonUpdated');
-export const ReasonUpdatedPlural = T<(params: { entries: readonly number[]; newReason: string; count: number }) => string[]>(
-	'commandReasonUpdatedPlural'
-);
+export const ReasonUpdated = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>('commandReasonUpdated');
+export const ReasonUpdatedPlural = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>('commandReasonUpdatedPlural');
 export const ToggleModerationDmToggledEnabled = T<string>('commandToggleModerationDmToggledEnabled');
 export const ToggleModerationDmToggledDisabled = T<string>('commandToggleModerationDmToggledDisabled');
 export const UnbanMissingPermission = T<string>('commandUnbanMissingPermission');
@@ -189,9 +189,9 @@ export const GuildWarnNotFound = T<string>('guildWarnNotFound');
 export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderationLogExpiresIn');
 export const ModerationLogFooter = FT<{ caseID: number }, string>('moderationLogFooter');
 export const ModerationTimed = FT<{ remaining: number }, string>('modlogTimed');
-export const ModerationOutputWithReasonPlural = T<
-	(params: { count: number; range: string | number; users: string; reason: string | null }) => string
->('commandModerationOutputWithReasonPlural');
+export const ModerationOutputWithReasonPlural = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
+	'commandModerationOutputWithReasonPlural'
+);
 export const ModerationFailed = FT<{ users: string; count: number }, string>('commandModerationFailed');
 export const ModerationFailedPlural = FT<{ users: string; count: number }, string>('commandModerationFailedPlural');
 export const ModerationDmFooter = T<string>('commandModerationDmFooter');

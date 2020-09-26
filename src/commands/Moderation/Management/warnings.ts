@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cast } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -9,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandWarningsDescription'),
-			extendedHelp: (language) => language.get('commandWarningsExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Moderation.WarningsDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.WarningsExtended),
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 			runIn: ['text'],

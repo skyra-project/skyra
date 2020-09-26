@@ -1,14 +1,15 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events, PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('commandReasonDescription'),
-	extendedHelp: (language) => language.get('commandReasonExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.ReasonDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ReasonExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -25,7 +26,12 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [cases, reason]: [number[], string]) {
 		const entries = await message.guild!.moderation.fetch(cases);
-		if (!entries.size) throw message.language.get(cases.length === 1 ? 'moderationCaseNotExists' : 'moderationCasesNotExist');
+		if (!entries.size)
+			throw message.language.get(
+				cases.length === 1
+					? LanguageKeys.Commands.Moderation.ModerationCaseNotExists
+					: LanguageKeys.Commands.Moderation.ModerationCasesNotExist
+			);
 
 		const imageURL = getImage(message);
 		const { moderations } = await DbSet.connect();
@@ -45,7 +51,7 @@ export default class extends SkyraCommand {
 
 		return message.alert(
 			message.language
-				.get(cases.length === 1 ? 'commandReasonUpdated' : 'commandReasonUpdatedPlural', {
+				.get(cases.length === 1 ? LanguageKeys.Commands.Moderation.ReasonUpdated : LanguageKeys.Commands.Moderation.ReasonUpdatedPlural, {
 					entries: cases,
 					newReason: reason,
 					count: cases.length

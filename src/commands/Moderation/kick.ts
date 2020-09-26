@@ -1,5 +1,6 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
@@ -7,8 +8,8 @@ import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['k'],
-	description: (language) => language.get('commandKickDescription'),
-	extendedHelp: (language) => language.get('commandKickExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.KickDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.KickExtended),
 	requiredGuildPermissions: ['KICK_MEMBERS'],
 	requiredMember: true
 })
@@ -35,7 +36,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.kickable) throw message.language.get('commandKickNotKickable');
+		if (member && !member.kickable) throw message.language.get(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;
 	}
 }

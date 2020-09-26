@@ -19,7 +19,7 @@ const COLORS = {
 	windy: '#33B679'
 };
 
-const celsiusToFahrenheit = (celsius: number) => celsius * 1.8 + 32;
+const celsiusToFahrenheit = (celsius: number) => (celsius * 5) / 9 + 32;
 
 const enum TemperatureUnit {
 	Celsius,

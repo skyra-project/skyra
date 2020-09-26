@@ -244,7 +244,7 @@ export default class extends SkyraCommand {
 		}
 
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
-		if (subscriptionIndex === -1) throw message.language.get('commandTwitchSubscriptionResetStreamerNotSubscribed');
+		if (subscriptionIndex === -1) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetStreamerNotSubscribed);
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
 		await message.guild!.settings.update(this.#kSettingsKey, [subscription], {

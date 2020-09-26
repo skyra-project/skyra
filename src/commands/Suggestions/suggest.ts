@@ -141,7 +141,7 @@ export default class extends SkyraCommand {
 
 		// Update settings
 		await message.guild!.settings.update(GuildSettings.Suggestions.SuggestionsChannel, channel);
-		await message.sendLocale('commandConfMenuSaved');
+		await message.sendLocale(LanguageKeys.Commands.Admin.ConfMenuSaved);
 
 		return true;
 	}

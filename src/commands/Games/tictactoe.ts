@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 						[message.author, user].sort(() => Math.random() - 0.5)
 					);
 				} catch {
-					await message.sendLocale('unexpectedIssue').catch((error) => this.client.emit(Events.ApiError, error));
+					await message.sendLocale(LanguageKeys.Misc.UnexpectedIssue).catch((error) => this.client.emit(Events.ApiError, error));
 				}
 			} else {
 				await message.alert(message.language.get(LanguageKeys.Commands.Games.GamesPromptDeny));

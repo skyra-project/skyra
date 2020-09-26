@@ -125,7 +125,7 @@ export default class extends SkyraCommand {
 				? message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessDeniedText)
 				: message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessConsideredText);
 
-		return message.sendLocale('commandResolveSuggestionSuccess', [{ id: suggestionData.id, actionText }]);
+		return message.sendLocale(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccess, [{ id: suggestionData.id, actionText }]);
 	}
 
 	public async inhibit(message: KlasaMessage) {

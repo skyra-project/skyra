@@ -87,7 +87,7 @@ export default class extends SkyraCommand {
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.sendLocale('commandTriviaNoAnswer', [{ correctAnswer }]);
+					if (!winner) return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaNoAnswer, [{ correctAnswer }]);
 					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaWinner, [{ winner: winner.toString(), correctAnswer }]);
 				});
 		} catch {

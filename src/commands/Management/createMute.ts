@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 				extraContext: { author: message.author.id }
 			});
 			if (message.reactable) return message.react(resolveEmoji(Emojis.GreenTick)!);
-			return message.sendLocale('commandConfUpdated', [
+			return message.sendLocale(LanguageKeys.Commands.Admin.ConfUpdated, [
 				{
 					key: GuildSettings.Roles.Muted,
 					response: displayEntry(update.entry, update.next, message.guild!)

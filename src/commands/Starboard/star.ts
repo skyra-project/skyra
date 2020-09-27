@@ -136,7 +136,7 @@ export default class extends SkyraCommand {
 					})
 				)
 				.addField(
-					i18n('commandStarTopstarred'),
+					i18n(LanguageKeys.Commands.Starboard.StarTopstarred),
 					topThreeMessages.map(([mID, stars], index) =>
 						i18n(
 							stars === 1
@@ -151,7 +151,7 @@ export default class extends SkyraCommand {
 					)
 				)
 				.addField(
-					i18n('commandStarTopreceivers'),
+					i18n(LanguageKeys.Commands.Starboard.StarTopreceivers),
 					topThreeReceivers.map(([uID, stars], index) =>
 						i18n(
 							stars === 1

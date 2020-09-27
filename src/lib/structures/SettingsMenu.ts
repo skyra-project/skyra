@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
@@ -52,7 +53,7 @@ export class SettingsMenu {
 
 	public async init(): Promise<void> {
 		this.response = await this.message.sendEmbed(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.message.language.get('systemLoading')))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.message.language.get(LanguageKeys.System.Loading)))
 		);
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
@@ -66,7 +67,7 @@ export class SettingsMenu {
 		const i18n = this.message.language;
 		const description: string[] = [];
 		if (isSchemaFolder(this.schema)) {
-			description.push(i18n.get('commandConfMenuRenderAtFolder', { path: this.schema.path || 'Root' }));
+			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.path || 'Root' }));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
@@ -77,30 +78,30 @@ export class SettingsMenu {
 				else keys.push(key);
 			}
 
-			if (!folders.length && !keys.length) description.push(i18n.get('commandConfMenuRenderNokeys'));
+			if (!folders.length && !keys.length) description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderNokeys));
 			else
 				description.push(
-					i18n.get('commandConfMenuRenderSelect'),
+					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderSelect),
 					'',
 					...folders.map((folder) => `📁 ${folder}`),
 					...keys.map((key) => `⚙️ ${key}`)
 				);
 		} else {
-			description.push(i18n.get('commandConfMenuRenderAtPiece', { path: this.schema.path }));
+			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtPiece, { path: this.schema.path }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
 			if (this.schema.configurable) {
 				description.push(
 					i18n.get(`settings${this.schema.path.split(/[.-]/g).map(toTitleCase).join('')}` as any),
 					'',
-					i18n.get('commandConfMenuRenderTctitle'),
-					i18n.get('commandConfMenuRenderUpdate'),
+					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderTctitle),
+					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate),
 					this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length
-						? i18n.get('commandConfMenuRenderRemove')
+						? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderRemove)
 						: '',
-					this.changedPieceValue ? i18n.get('commandConfMenuRenderReset') : '',
-					this.changedCurrentPieceValue ? i18n.get('commandConfMenuRenderUndo') : '',
+					this.changedPieceValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderReset) : '',
+					this.changedCurrentPieceValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUndo) : '',
 					'',
-					i18n.get('commandConfMenuRenderCvalue', {
+					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
 						value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
 							/``+/g,
 							`\`${ZeroWidhSpace}\``
@@ -118,7 +119,7 @@ export class SettingsMenu {
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
 			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidhSpace}`)
-			.setFooter(parent ? i18n.get('commandConfMenuRenderBack') : '')
+			.setFooter(parent ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
 			.setTimestamp();
 	}
 
@@ -131,7 +132,7 @@ export class SettingsMenu {
 		if (isSchemaFolder(this.schema)) {
 			const schema = this.schema.get(message.content);
 			if (schema && configurableSchemaKeys.has(schema.path)) this.schema = schema;
-			else this.errorMessage = this.message.language.get('commandConfMenuInvalidKey');
+			else this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
@@ -139,7 +140,7 @@ export class SettingsMenu {
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { arrayAction: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
-			else this.errorMessage = this.message.language.get('commandConfMenuInvalidAction');
+			else this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
 		}
 
 		if (!this.errorMessage) floatPromise(this.message, message.nuke());
@@ -217,7 +218,8 @@ export class SettingsMenu {
 			const updated = await (value === null
 				? this.message.guild!.settings.reset(this.schema.path, { ...options, extraContext: { author: this.message.author.id } })
 				: this.message.guild!.settings.update(this.schema.path, value, { ...options, extraContext: { author: this.message.author.id } }));
-			if (updated.length === 0) this.errorMessage = this.message.language.get('commandConfNochange', { key: (this.schema as SchemaEntry).key });
+			if (updated.length === 0)
+				this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: (this.schema as SchemaEntry).key });
 		} catch (error) {
 			this.errorMessage = String(error);
 		}
@@ -237,7 +239,7 @@ export class SettingsMenu {
 				this.errorMessage = String(error);
 			}
 		} else {
-			this.errorMessage = this.message.language.get('commandConfNochange', { key: (this.schema as SchemaEntry).key });
+			this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: (this.schema as SchemaEntry).key });
 		}
 	}
 
@@ -247,7 +249,7 @@ export class SettingsMenu {
 				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
 			}
 			this.response
-				.edit(this.message.language.get('commandConfMenuSaved'), { embed: null })
+				.edit(this.message.language.get(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
 				.catch((error) => this.message.client.emit(Events.ApiError, error));
 		}
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();

@@ -1,4 +1,5 @@
-import type { CustomCommand } from '@lib/types/settings/GuildSettings';
+import type { CustomCommand } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ZeroWidhSpace } from '@utils/constants';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
@@ -12,12 +13,12 @@ export default class extends Serializer {
 			Array.isArray(data.args) &&
 			data.args.every((arg) => typeof arg === 'string')
 		) {
-			if (data.id.length > 50) throw language.get('commandTagNameTooLong');
-			if (data.id.includes('`') || data.id.includes(ZeroWidhSpace)) throw language.get('commandTagNameNotAllowed');
+			if (data.id.length > 50) throw language.get(LanguageKeys.Commands.Tags.TagNameTooLong);
+			if (data.id.includes('`') || data.id.includes(ZeroWidhSpace)) throw language.get(LanguageKeys.Commands.Tags.TagNameNotAllowed);
 			return data;
 		}
 
-		throw language.get('serializerCustomCommandInvalid');
+		throw language.get(LanguageKeys.Serializers.CustomCommandInvalid);
 	}
 
 	public stringify(value: CustomCommand) {

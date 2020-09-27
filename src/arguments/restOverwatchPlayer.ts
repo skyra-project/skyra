@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
@@ -11,7 +12,7 @@ export default class extends Argument {
 	}
 
 	public run(arg: string, possible: Possible, message: KlasaMessage): string {
-		if (!arg) throw message.language.get('commandOverwatchInvalidPlayerName', { playerTag: arg });
+		if (!arg) throw message.language.get(LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlayerName, { playerTag: arg });
 		// eslint-disable-next-line dot-notation
 		const {
 			args,

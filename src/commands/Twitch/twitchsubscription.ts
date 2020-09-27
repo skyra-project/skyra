@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -8,7 +9,7 @@ import {
 	NotificationsStreamsTwitchEventStatus,
 	NotificationsStreamsTwitchStreamer,
 	NotificationsStreamTwitch
-} from '@lib/types/settings/GuildSettings';
+} from '@lib/types/namespaces/GuildSettings';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
@@ -34,8 +35,8 @@ type Entry = NotificationsStreamsTwitchStreamer;
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['twitch-subscription', 't-subscription', 't-sub'],
-	description: (language) => language.get('commandTwitchSubscriptionDescription'),
-	extendedHelp: (language) => language.get('commandTwitchSubscriptionExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionExtended),
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -50,15 +51,15 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		async (argument, _, message, [type]) => {
 			if (!argument) {
 				if (type === Type.Show || type === Type.Reset) return undefined;
-				throw message.language.get('commandTwitchSubscriptionRequiredStreamer');
+				throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredStreamer);
 			}
 
 			try {
 				const { data } = await message.client.twitch.fetchUsers([], [argument]);
-				if (data.length === 0) throw message.language.get('commandTwitchSubscriptionStreamerNotFound');
+				if (data.length === 0) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound);
 				return data[0];
 			} catch {
-				throw message.language.get('commandTwitchSubscriptionStreamerNotFound');
+				throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionStreamerNotFound);
 			}
 		}
 	],
@@ -66,7 +67,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		'channel',
 		(argument, possible, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
-			if (!argument) throw message.language.get('commandTwitchSubscriptionRequiredChannel');
+			if (!argument) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredChannel);
 
 			return message.client.arguments.get('textchannelname')!.run(argument, possible, message);
 		}
@@ -75,10 +76,10 @@ type Entry = NotificationsStreamsTwitchStreamer;
 		'status',
 		(argument, _, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
-			if (!argument) throw message.language.get('commandTwitchSubscriptionRequiredStatus');
+			if (!argument) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredStatus);
 
-			const index = message.language.get('commandTwitchSubscriptionStatusValues').indexOf(argument.toLowerCase());
-			if (index === -1) throw message.language.get('commandTwitchSubscriptionInvalidStatus');
+			const index = message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionStatusValues).indexOf(argument.toLowerCase());
+			if (index === -1) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionInvalidStatus);
 			return index;
 		}
 	],
@@ -94,7 +95,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 				(type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
 			)
 				return undefined;
-			if (!argument) throw message.language.get('commandTwitchSubscriptionRequiredContent');
+			if (!argument) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredContent);
 			return message.client.arguments.get('...string')!.run(argument, possible, message);
 		}
 	]
@@ -139,7 +140,7 @@ export default class extends SkyraCommand {
 
 			// Check if the streamer was already subscribed for thesame channel and status.
 			if (raw[1].some((e) => e.channel === entry.channel && e.status === entry.status)) {
-				throw message.language.get('commandTwitchSubscriptionAddDuplicated');
+				throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionAddDuplicated);
 			}
 
 			// Patch creating a clone of the value.
@@ -152,8 +153,8 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale(
 			status === NotificationsStreamsTwitchEventStatus.Offline
-				? 'commandTwitchSubscriptionAddSuccessOffline'
-				: 'commandTwitchSubscriptionAddSuccessLive',
+				? LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessOffline
+				: LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessLive,
 			[{ name: streamer.display_name, channel: channel.name }]
 		);
 	}
@@ -165,14 +166,14 @@ export default class extends SkyraCommand {
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
 
 		// If the subscription could not be found, throw.
-		if (subscriptionIndex === -1) throw message.language.get('commandTwitchSubscriptionRemoveStreamerNotSubscribed');
+		if (subscriptionIndex === -1) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveStreamerNotSubscribed);
 
 		// Retrieve the subscription, then find the index for the notification desired to delete.
 		const subscription = subscriptions[subscriptionIndex];
 		const entryIndex = subscription[1].findIndex((entry) => entry.channel === channel.id && entry.status === status);
 
 		// If there was no entry with the channel and status specified, throw.
-		if (entryIndex === -1) throw message.language.get('commandTwitchSubscriptionRemoveEntryNotExists');
+		if (entryIndex === -1) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveEntryNotExists);
 
 		// If it was the only entry for said subscription, remove it completely.
 		if (subscription[1].length === 1) {
@@ -196,8 +197,8 @@ export default class extends SkyraCommand {
 
 		return message.sendLocale(
 			status === NotificationsStreamsTwitchEventStatus.Offline
-				? 'commandTwitchSubscriptionRemoveSuccessOffline'
-				: 'commandTwitchSubscriptionRemoveSuccessLive',
+				? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
+				: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
 			[{ name: streamer.display_name, channel: channel.name }]
 		);
 	}
@@ -209,7 +210,7 @@ export default class extends SkyraCommand {
 		// If the streamer was not defined, reset all entries and purge all entries.
 		if (typeof streamer === 'undefined') {
 			const subscriptionEntries = subscriptions.reduce((accumulator, subscription) => accumulator + subscription[1].length, 0);
-			if (subscriptionEntries === 0) throw message.language.get('commandTwitchSubscriptionResetEmpty');
+			if (subscriptionEntries === 0) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetEmpty);
 			await message.guild!.settings.reset(this.#kSettingsKey);
 
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
@@ -235,13 +236,15 @@ export default class extends SkyraCommand {
 			});
 
 			return message.sendLocale(
-				subscriptionEntries === 1 ? 'commandTwitchSubscriptionResetSuccess' : 'commandTwitchSubscriptionResetSuccessPlural',
+				subscriptionEntries === 1
+					? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccess
+					: LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccessPlural,
 				[{ count: subscriptionEntries }]
 			);
 		}
 
 		const subscriptionIndex = subscriptions.findIndex((sub) => sub[0] === streamer.id);
-		if (subscriptionIndex === -1) throw message.language.get('commandTwitchSubscriptionResetStreamerNotSubscribed');
+		if (subscriptionIndex === -1) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetStreamerNotSubscribed);
 		const subscription = subscriptions[subscriptionIndex];
 		const entries = subscription[1].length;
 		await message.guild!.settings.update(this.#kSettingsKey, [subscription], {
@@ -252,7 +255,9 @@ export default class extends SkyraCommand {
 
 		await this.removeSubscription(message.guild!, streamer);
 		return message.sendLocale(
-			entries === 1 ? 'commandTwitchSubscriptionResetChannelSuccess' : 'commandTwitchSubscriptionResetChannelSuccessPlural',
+			entries === 1
+				? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccess
+				: LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccessPlural,
 			[{ name: streamer.display_name, count: entries }]
 		);
 	}
@@ -261,7 +266,7 @@ export default class extends SkyraCommand {
 	public async show(message: KlasaMessage, [streamer]: [Streamer?]) {
 		// Create the response message.
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Fetch the content.
@@ -285,10 +290,11 @@ export default class extends SkyraCommand {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get(this.#kSettingsKey);
 		const subscriptions = guildSubscriptions.find((entry) => entry[0] === streamer.id);
-		if (typeof subscriptions === 'undefined') throw message.language.get('commandTwitchSubscriptionShowStreamerNotSubscribed');
+		if (typeof subscriptions === 'undefined')
+			throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowStreamerNotSubscribed);
 
 		// Print all entries for this guild for this streamer.
-		const statuses = message.language.get('commandTwitchSubscriptionShowStatus');
+		const statuses = message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowStatus);
 		const lines: string[] = [];
 		for (const subscription of subscriptions[1]) {
 			lines.push(`${streamer.display_name} - <#${subscription.channel}> → ${statuses[subscription.status]}`);
@@ -300,7 +306,7 @@ export default class extends SkyraCommand {
 	private async showAll(message: KlasaMessage) {
 		// Retrieve all subscriptions for the guild
 		const guildSubscriptions = message.guild!.settings.get(this.#kSettingsKey);
-		if (guildSubscriptions.length === 0) throw message.language.get('commandTwitchSubscriptionShowEmpty');
+		if (guildSubscriptions.length === 0) throw message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowEmpty);
 
 		// Fetch all usernames and map them by their id.
 		const ids = guildSubscriptions.map((subscriptions) => subscriptions[0]);
@@ -309,10 +315,10 @@ export default class extends SkyraCommand {
 		for (const profile of profiles.data) names.set(profile.id, profile.display_name);
 
 		// Print all entries for this guild.
-		const statuses = message.language.get('commandTwitchSubscriptionShowStatus');
+		const statuses = message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowStatus);
 		const lines: string[] = [];
 		for (const subscriptions of guildSubscriptions) {
-			const name = names.get(subscriptions[0]) || message.language.get('commandTwitchSubscriptionShowUnknownUser');
+			const name = names.get(subscriptions[0]) || message.language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowUnknownUser);
 			for (const subscription of subscriptions[1]) {
 				lines.push(`${name} - <#${subscription.channel}> → ${statuses[subscription.status]}`);
 			}

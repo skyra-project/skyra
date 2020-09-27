@@ -1,19 +1,20 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
 export default class ShinyWager extends Argument {
 	public run(arg: string, possible: Possible, message: KlasaMessage): number {
-		if (!arg) throw message.language.get('resolverInvalidInt', { name: possible.name });
+		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
 
 		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;
-		if (!Number.isInteger(number)) throw message.language.get('resolverInvalidInt', { name: possible.name });
+		if (!Number.isInteger(number)) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
 		if (!ShinyWager.kValidBetAmounts.includes(number))
-			throw message.language.get('resolverInvalidWager', {
+			throw message.language.get(LanguageKeys.Resolvers.InvalidWager, {
 				bet: number,
 				validAmounts: message.language.list(
 					ShinyWager.kValidBetAmounts.map((a) => a.toString()),
-					message.language.get('globalOr')
+					message.language.get(LanguageKeys.Globals.Or)
 				)
 			});
 

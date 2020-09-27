@@ -1,5 +1,5 @@
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Permissions } from 'discord.js';
 import { KlasaClient } from 'klasa';
 

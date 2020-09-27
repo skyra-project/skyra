@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -30,8 +31,8 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 30,
-	description: (language) => language.get('commandMarryDescription'),
-	extendedHelp: (language) => language.get('commandMarryExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Social.MarryDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.MarryExtended),
 	runIn: ['text'],
 	usage: '(user:username)'
 })
@@ -51,12 +52,12 @@ export default class extends RichDisplayCommand {
 
 	private async display(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { users } = await DbSet.connect();
 		const spouses = await users.fetchSpouses(message.author.id);
-		if (spouses.length === 0) return message.sendLocale('commandMarryNotTaken');
+		if (spouses.length === 0) return message.sendLocale(LanguageKeys.Commands.Social.MarryNotTaken);
 
 		const usernames = chunk(
 			await Promise.all(spouses.map(async (user) => `${await this.client.users.fetch(user).then((user) => user.username)} (\`${user}\`)`)),
@@ -66,7 +67,9 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const usernameChunk of usernames) {
-			display.addPage((embed: MessageEmbed) => embed.setDescription(message.language.get('commandMarryWith', { users: usernameChunk })));
+			display.addPage((embed: MessageEmbed) =>
+				embed.setDescription(message.language.get(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk }))
+			);
 		}
 
 		await display.start(response, message.author.id);
@@ -78,13 +81,13 @@ export default class extends RichDisplayCommand {
 
 		switch (user.id) {
 			case CLIENT_ID:
-				return message.sendLocale('commandMarrySkyra');
+				return message.sendLocale(LanguageKeys.Commands.Social.MarrySkyra);
 			case SNEYRA_ID:
-				return message.sendLocale('commandMarrySneyra');
+				return message.sendLocale(LanguageKeys.Commands.Social.MarrySneyra);
 			case author.id:
-				return message.sendLocale('commandMarrySelf');
+				return message.sendLocale(LanguageKeys.Commands.Social.MarrySelf);
 		}
-		if (user.bot) return message.sendLocale('commandMarryBots');
+		if (user.bot) return message.sendLocale(LanguageKeys.Commands.Social.MarryBots);
 
 		const { users, clients } = await DbSet.connect();
 		const clientSettings = await clients.findOne(CLIENT_ID);
@@ -93,13 +96,13 @@ export default class extends RichDisplayCommand {
 			// Retrieve the author's spouses
 			const spouses = await users.fetchSpouses(authorID);
 			if (spouses.includes(targetID)) {
-				throw message.language.get('commandMarryAlreadyMarried', { user });
+				throw message.language.get(LanguageKeys.Commands.Social.MarryAlreadyMarried, { user });
 			}
 
 			// Check if the author can marry another user
 			const authorLimit = premiumUsers.includes(authorID) ? 20 : 10;
 			if (spouses.length >= authorLimit) {
-				throw message.language.get('commandMarryAuthorTooMany', { limit: authorLimit });
+				throw message.language.get(LanguageKeys.Commands.Social.MarryAuthorTooMany, { limit: authorLimit });
 			}
 
 			// Retrieve the target's spouses
@@ -108,15 +111,15 @@ export default class extends RichDisplayCommand {
 			// Check if the target can marry another user
 			const targetLimit = premiumUsers.includes(targetID) ? 20 : 10;
 			if (targetSpouses.length >= targetLimit) {
-				throw message.language.get('commandMarryTargetTooMany', { limit: targetLimit });
+				throw message.language.get(LanguageKeys.Commands.Social.MarryTargetTooMany, { limit: targetLimit });
 			}
 
 			// Warn if starting polygamy:
 			// Check if the author is already monogamous.
 			if (spouses.length === 1) {
-				const answer = await askYesNo(channel, author, language.get('commandMarryAuthorTaken', { author }));
+				const answer = await askYesNo(channel, author, language.get(LanguageKeys.Commands.Social.MarryAuthorTaken, { author }));
 				if (answer !== YesNoAnswer.Yes)
-					return message.sendLocale('commandMarryAuthorMultipleCancel', [
+					return message.sendLocale(LanguageKeys.Commands.Social.MarryAuthorMultipleCancel, [
 						{ user: await this.client.users.fetch(spouses[0]).then((user) => user.username) }
 					]);
 				// Check if the author's first potential spouse is already married.
@@ -124,17 +127,20 @@ export default class extends RichDisplayCommand {
 				const answer = await askYesNo(
 					channel,
 					author,
-					language.get(targetSpouses.length === 1 ? 'commandMarryTaken' : 'commandMarryTakenPlural', { count: targetSpouses.length })
+					language.get(
+						targetSpouses.length === 1 ? LanguageKeys.Commands.Social.MarryTaken : LanguageKeys.Commands.Social.MarryTakenPlural,
+						{ count: targetSpouses.length }
+					)
 				);
-				if (answer !== YesNoAnswer.Yes) return message.sendLocale('commandMarryMultipleCancel');
+				if (answer !== YesNoAnswer.Yes) return message.sendLocale(LanguageKeys.Commands.Social.MarryMultipleCancel);
 			}
 
-			const answer = await askYesNo(channel, user, language.get('commandMarryPetition', { author, user }));
+			const answer = await askYesNo(channel, user, language.get(LanguageKeys.Commands.Social.MarryPetition, { author, user }));
 			switch (answer) {
 				case YesNoAnswer.Timeout:
-					return message.sendLocale('commandMarryNoreply');
+					return message.sendLocale(LanguageKeys.Commands.Social.MarryNoreply);
 				case YesNoAnswer.ImplicitNo:
-					return message.sendLocale('commandMarryDenied');
+					return message.sendLocale(LanguageKeys.Commands.Social.MarryDenied);
 				case YesNoAnswer.Yes:
 					break;
 				default:
@@ -145,7 +151,7 @@ export default class extends RichDisplayCommand {
 			settings.spouses = (settings.spouses ?? []).concat(await users.ensure(targetID));
 			await settings.save();
 
-			return message.sendLocale('commandMarryAccepted', [{ author, user }]);
+			return message.sendLocale(LanguageKeys.Commands.Social.MarryAccepted, [{ author, user }]);
 		});
 	}
 }

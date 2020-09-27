@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ConnectFourConstants, Time } from '@utils/constants';
 import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
@@ -34,7 +35,7 @@ export class PlayerHuman extends Player {
 
 		if (this.game.stopped) return;
 		if (!reaction) {
-			this.game.content = this.game.language.get('commandGamesTimeout');
+			this.game.content = this.game.language.get(LanguageKeys.Commands.Games.GamesTimeout);
 			this.game.stop();
 		} else if (!this.drop(ConnectFourConstants.Reactions.indexOf(reaction))) {
 			return this.start();

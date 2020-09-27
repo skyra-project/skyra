@@ -1,7 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CommandHandler } from '@lib/types/definitions/Internals';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { cast, floatPromise } from '@utils/util';
 import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
 

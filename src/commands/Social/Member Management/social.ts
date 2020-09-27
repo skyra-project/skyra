@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MemberEntity } from '@orm/entities/MemberEntity';
 import { Time } from '@utils/constants';
 import { User } from 'discord.js';
@@ -11,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandSocialDescription'),
-			extendedHelp: (language) => language.get('commandSocialExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.SocialDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.SocialExtended),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			subcommands: true,
@@ -34,7 +35,7 @@ export default class extends SkyraCommand {
 			settings.points = newAmount;
 			await settings.save();
 
-			return message.sendLocale(amount === 1 ? 'commandSocialAdd' : 'commandSocialAddPlural', [
+			return message.sendLocale(amount === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, [
 				{ user: user.username, amount: newAmount, count: amount }
 			]);
 		}
@@ -45,19 +46,21 @@ export default class extends SkyraCommand {
 		created.points = amount;
 		await members.insert(created);
 
-		return message.sendLocale(amount === 1 ? 'commandSocialAdd' : 'commandSocialAddPlural', [{ user: user.username, amount, count: amount }]);
+		return message.sendLocale(amount === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, [
+			{ user: user.username, amount, count: amount }
+		]);
 	}
 
 	public async remove(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
-		if (!settings) throw message.language.get('commandSocialMemberNotexists');
+		if (!settings) throw message.language.get(LanguageKeys.Commands.Social.SocialMemberNotexists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;
 		await settings.save();
 
-		return message.sendLocale(amount === 1 ? 'commandSocialRemove' : 'commandSocialRemovePlural', [
+		return message.sendLocale(amount === 1 ? LanguageKeys.Commands.Social.SocialRemove : LanguageKeys.Commands.Social.SocialRemovePlural, [
 			{ user: user.username, amount: newAmount, count: amount }
 		]);
 	}
@@ -82,25 +85,28 @@ export default class extends SkyraCommand {
 		}
 
 		const variation = amount - oldValue;
-		if (variation === 0) return message.sendLocale('commandSocialUnchanged', [{ user: user.username }]);
+		if (variation === 0) return message.sendLocale(LanguageKeys.Commands.Social.SocialUnchanged, [{ user: user.username }]);
 		return message.sendMessage(
 			variation > 0
-				? message.language.get(variation === 1 ? 'commandSocialAdd' : 'commandSocialAddPlural', {
+				? message.language.get(variation === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, {
 						user: user.username,
 						amount,
 						count: variation
 				  })
-				: message.language.get(variation === -1 ? 'commandSocialRemove' : 'commandSocialRemovePlural', {
-						user: user.username,
-						amount,
-						count: -variation
-				  })
+				: message.language.get(
+						variation === -1 ? LanguageKeys.Commands.Social.SocialRemove : LanguageKeys.Commands.Social.SocialRemovePlural,
+						{
+							user: user.username,
+							amount,
+							count: -variation
+						}
+				  )
 		);
 	}
 
 	public async reset(message: KlasaMessage, [user]: [User]) {
 		const { members } = await DbSet.connect();
 		await members.delete({ userID: user.id, guildID: message.guild!.id });
-		return message.sendLocale('commandSocialReset', [{ user: user.username }]);
+		return message.sendLocale(LanguageKeys.Commands.Social.SocialReset, [{ user: user.username }]);
 	}
 }

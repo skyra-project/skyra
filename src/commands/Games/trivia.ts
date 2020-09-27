@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
@@ -9,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('commandTriviaDescription'),
-	extendedHelp: (language) => language.get('commandTriviaExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Games.TriviaDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.TriviaExtended),
 	usage: '[category:category] [boolean|truefalse|multiple] [easy|hard|medium] [duration:timespan-seconds]',
 	usageDelim: ' ',
 	requiredPermissions: ['ADD_REACTIONS', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
@@ -22,7 +23,7 @@ import { KlasaMessage } from 'klasa';
 			if (!arg) return CATEGORIES.general;
 			arg = arg.toLowerCase();
 			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw message.language.get('commandTriviaInvalidCategory');
+			if (!category) throw message.language.get(LanguageKeys.Commands.Games.TriviaInvalidCategory);
 			return category;
 		}
 	],
@@ -49,12 +50,12 @@ export default class extends SkyraCommand {
 			number?
 		]
 	) {
-		if (this.#channels.has(message.channel.id)) throw message.language.get('commandTriviaActiveGame');
+		if (this.#channels.has(message.channel.id)) throw message.language.get(LanguageKeys.Commands.Games.TriviaActiveGame);
 
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(message.language.get('systemLoading')), []);
+			await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
@@ -82,21 +83,21 @@ export default class extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.channel.sendLocale('commandTriviaIncorrect', [{ attempt }]);
+					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaIncorrect, [{ attempt }]);
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.sendLocale('commandTriviaNoAnswer', [{ correctAnswer }]);
-					return message.channel.sendLocale('commandTriviaWinner', [{ winner: winner.toString(), correctAnswer }]);
+					if (!winner) return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaNoAnswer, [{ correctAnswer }]);
+					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaWinner, [{ winner: winner.toString(), correctAnswer }]);
 				});
 		} catch {
 			this.#channels.delete(message.channel.id);
-			throw message.language.get('unexpectedIssue');
+			throw message.language.get(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}
 
 	public buildQuestionEmbed(message: KlasaMessage, data: QuestionData, possibleAnswers: string[]) {
-		const titles = message.language.get('commandTriviaEmbedTitles');
+		const titles = message.language.get(LanguageKeys.Commands.Games.TriviaEmbedTitles);
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
 			.setAuthor(titles.trivia)

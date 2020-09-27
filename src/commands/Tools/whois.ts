@@ -1,4 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '@utils/constants';
 import { GuildMember, MessageEmbed, Permissions, PermissionString, Role, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -25,8 +26,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['userinfo', 'uinfo'],
 			cooldown: 15,
-			description: (language) => language.get('commandWhoisDescription'),
-			extendedHelp: (language) => language.get('commandWhoisExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Tools.WhoisDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.WhoisExtended),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
 			usage: '(user:username)'
@@ -44,8 +45,8 @@ export default class extends SkyraCommand {
 	}
 
 	private user(message: KlasaMessage, user: User) {
-		const titles = message.language.get('commandWhoisUserTitles');
-		const fields = message.language.get('commandWhoisUserFields', { user });
+		const titles = message.language.get(LanguageKeys.Commands.Tools.WhoisUserTitles);
+		const fields = message.language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
 
 		return new MessageEmbed()
 			.setColor(BrandingColors.Secondary)
@@ -58,8 +59,8 @@ export default class extends SkyraCommand {
 	}
 
 	private member(message: KlasaMessage, member: GuildMember) {
-		const titles = message.language.get('commandWhoisMemberTitles');
-		const fields = message.language.get('commandWhoisMemberFields', { member });
+		const titles = message.language.get(LanguageKeys.Commands.Tools.WhoisMemberTitles);
+		const fields = message.language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || BrandingColors.Secondary)
@@ -82,14 +83,20 @@ export default class extends SkyraCommand {
 		const roles = member.roles.cache.sorted(sortRanks);
 		roles.delete(member.guild.id);
 		embed.splitFields(
-			message.language.get(roles.size === 1 ? 'commandWhoisMemberRoles' : 'commandWhoisMemberRolesPlural', { count: roles.size }),
+			message.language.get(
+				roles.size === 1 ? LanguageKeys.Commands.Tools.WhoisMemberRoles : LanguageKeys.Commands.Tools.WhoisMemberRolesPlural,
+				{ count: roles.size }
+			),
 			[...roles.values()].join(' ')
 		);
 	}
 
 	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
 		if (member.permissions.has(this.kAdministratorPermission)) {
-			embed.addField(message.language.get('commandWhoisMemberPermissions'), message.language.get('commandWhoisMemberPermissionsAll'));
+			embed.addField(
+				message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions),
+				message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissionsAll)
+			);
 			return;
 		}
 
@@ -99,7 +106,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (permissions.length > 0) {
-			embed.addField(message.language.get('commandWhoisMemberPermissions'), permissions.join(', '));
+			embed.addField(message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions), permissions.join(', '));
 		}
 	}
 }

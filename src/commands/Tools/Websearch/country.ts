@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, pickRandom } from '@utils/util';
@@ -12,18 +13,18 @@ const mapNativeName = (data: { name: string; nativeName: string }) => `${data.na
 const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.symbol})`;
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get('commandCountryDescription'),
-	extendedHelp: (language) => language.get('commandCountryExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.CountryDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.CountryExtended),
 	usage: '<country:str>'
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [countryName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const countries = await this.fetchAPI(message, countryName);
-		if (countries.length === 0) throw message.language.get('systemQueryFail');
+		if (countries.length === 0) throw message.language.get(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, countries);
 		await display.start(response, message.author.id);
@@ -32,14 +33,14 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, countryName: string) {
 		const apiResult = await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`).catch(() => {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		});
 		return apiResult;
 	}
 
 	private async buildDisplay(message: KlasaMessage, countries: CountryResultOk) {
-		const titles = message.language.get('commandCountryTitles');
-		const fieldsData = message.language.get('commandCountryFields');
+		const titles = message.language.get(LanguageKeys.Commands.Tools.CountryTitles);
+		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.CountryFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const country of countries) {

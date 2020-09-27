@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
@@ -11,8 +12,8 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['source', 'msg-source', 'message-source'],
 	cooldown: 15,
-	description: (language) => language.get('commandContentDescription'),
-	extendedHelp: (language) => language.get('commandContentExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.ContentDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.ContentExtended),
 	runIn: ['text'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' ',
@@ -21,10 +22,10 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: TextChannel[]) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('resolverInvalidMessage', { name: 'Message' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const target = await channel.messages.fetch(arg).catch(() => null);
 			if (target) return target;
-			throw message.language.get('systemMessageNotFound');
+			throw message.language.get(LanguageKeys.System.MessageNotFound);
 		});
 	}
 

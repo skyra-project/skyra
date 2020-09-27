@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { exec } from '@utils/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
@@ -10,8 +11,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['execute'],
-			description: (language) => language.get('commandExecDescription'),
-			extendedHelp: (language) => language.get('commandExecExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.System.ExecDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.ExecExtended),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			usage: '<expression:string>',

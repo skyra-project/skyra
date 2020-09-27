@@ -1,19 +1,18 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { announcementCheck } from '@utils/util';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 15,
+	description: (language) => language.get(LanguageKeys.Commands.Announcement.SubscribeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Announcement.SubscribeExtended),
+	requiredGuildPermissions: ['MANAGE_ROLES'],
+	runIn: ['text']
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 15,
-			description: (language) => language.get('commandSubscribeDescription'),
-			extendedHelp: (language) => language.get('commandSubscribeExtended'),
-			requiredGuildPermissions: ['MANAGE_ROLES'],
-			runIn: ['text']
-		});
-	}
-
 	public async run(message: KlasaMessage) {
 		const role = announcementCheck(message);
 		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
@@ -34,6 +33,6 @@ export default class extends SkyraCommand {
 
 		await message.member!.roles.set([...memberRolesSet]);
 
-		return message.sendLocale('commandSubscribeSuccess', [{ role: role.name }]);
+		return message.sendLocale(LanguageKeys.Commands.Announcement.SubscribeSuccess, [{ role: role.name }]);
 	}
 }

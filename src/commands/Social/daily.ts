@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Schedules } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ClientEntity } from '@orm/entities/ClientEntity';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
@@ -15,8 +16,8 @@ const REMINDER_FLAGS = ['remind', 'reminder', 'remindme'];
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['dailies'],
 	cooldown: 30,
-	description: (language) => language.get('commandDailyDescription'),
-	extendedHelp: (language) => language.get('commandDailyExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Social.DailyDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.DailyExtended),
 	spam: true,
 	flagSupport: true
 })
@@ -32,7 +33,7 @@ export default class extends SkyraCommand {
 
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
-				return message.sendLocale('commandDailyTimeSuccess', [
+				return message.sendLocale(LanguageKeys.Commands.Social.DailyTimeSuccess, [
 					{
 						amount: await this.claimDaily(message, connection, settings, now + DAILY_PERIOD, toRemind)
 					}
@@ -42,14 +43,14 @@ export default class extends SkyraCommand {
 			const remaining = settings.cooldowns.daily.getTime() - now;
 
 			// If it's not under the grace period (1 hour), tell them the time
-			if (remaining > GRACE_PERIOD) return message.sendLocale('commandDailyTime', [{ time: remaining }]);
+			if (remaining > GRACE_PERIOD) return message.sendLocale(LanguageKeys.Commands.Social.DailyTime, [{ time: remaining }]);
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(message.language.get('commandDailyGrace', { remaining }).join('\n'));
-			if (!accepted) return message.sendLocale('commandDailyGraceDenied');
+			const accepted = await message.ask(message.language.get(LanguageKeys.Commands.Social.DailyGrace, { remaining }).join('\n'));
+			if (!accepted) return message.sendLocale(LanguageKeys.Commands.Social.DailyGraceDenied);
 
 			// The user accepted the grace period
-			return message.sendLocale('commandDailyGraceAccepted', [
+			return message.sendLocale(LanguageKeys.Commands.Social.DailyGraceAccepted, [
 				{
 					amount: await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD, toRemind),
 					remaining: remaining + DAILY_PERIOD
@@ -68,7 +69,7 @@ export default class extends SkyraCommand {
 		if (remind) {
 			await this.client.schedules.add(Schedules.Reminder, nextTime, {
 				data: {
-					content: message.language.get('commandDailyCollect'),
+					content: message.language.get(LanguageKeys.Commands.Social.DailyCollect),
 					user: message.author.id
 				}
 			});

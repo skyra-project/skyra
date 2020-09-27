@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Days, Sunsigns } from '@skyra/saelem';
 import { Emojis } from '@utils/constants';
@@ -27,8 +28,8 @@ const kRandomSunSign = createPick([...kSunSigns]);
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['saelem'],
 	cooldown: 10,
-	description: (language) => language.get('commandHoroscopeDescription'),
-	extendedHelp: (language) => language.get('commandHoroscopeExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.HoroscopeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.HoroscopeExtended),
 	requiredGuildPermissions: ['EMBED_LINKS'],
 	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
 	usageDelim: ' '
@@ -40,7 +41,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.language.get('commandHoroscopeInvalidSunsign', { sign: arg, maybe: kRandomSunSign() });
+			throw message.language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
@@ -48,7 +49,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
 		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(message, sign, day);
 
-		const titles = message.language.get('commandHoroscopeTitles', {
+		const titles = message.language.get(LanguageKeys.Commands.Tools.HoroscopeTitles, {
 			sign,
 			intensity,
 			keywords,
@@ -70,7 +71,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.language.get('commandHoroscopeInvalidSunsign', { sign: sunsign, maybe: kRandomSunSign() });
+			throw message.language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

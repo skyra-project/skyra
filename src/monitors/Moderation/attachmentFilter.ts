@@ -1,6 +1,7 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
@@ -11,8 +12,8 @@ import { KlasaMessage, Monitor } from 'klasa';
 const { FLAGS } = Permissions;
 
 export default class extends Monitor {
-	protected readonly reasonLanguageKey = 'moderationMonitorAttachments';
-	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorAttachmentsWithMaximum';
+	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationAttachments;
+	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
 	public async run(message: KlasaMessage) {
 		if (await message.hasAtLeastPermissionLevel(5)) return;
@@ -109,7 +110,9 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorAttachmentfilter')}`)
+						.setFooter(
+							`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.AttachmentfilterFooter)}`
+						)
 						.setTimestamp()
 				);
 			}

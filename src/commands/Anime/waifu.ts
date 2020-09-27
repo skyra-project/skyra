@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -13,8 +14,8 @@ import { KlasaMessage } from 'klasa';
 const kMaximum = 100000;
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get('commandWaifuDescription'),
-	extendedHelp: (language) => language.get('commandWaifuExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Anime.WaifuDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Anime.WaifuExtended),
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 				.setURL(url)
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(url)
-				.setFooter(message.language.get('commandWaifuFooter'))
+				.setFooter(message.language.get(LanguageKeys.Commands.Anime.WaifuFooter))
 				.setTimestamp()
 		);
 	}

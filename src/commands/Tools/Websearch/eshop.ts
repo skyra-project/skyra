@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -15,8 +16,8 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandEshopDescription'),
-	extendedHelp: (language) => language.get('commandEshopExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.EshopDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.EshopExtended),
 	usage: '<gameName:string>'
 })
 export default class extends RichDisplayCommand {
@@ -24,11 +25,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, gameName);
-		if (!entries.length) throw message.language.get('systemNoResults');
+		if (!entries.length) throw message.language.get(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(entries[0].hits, message);
 		await display.start(response, message.author.id);
@@ -64,24 +65,24 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
 	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
-		const titles = message.language.get('commandEshopTitles');
+		const titles = message.language.get(LanguageKeys.Commands.Tools.EshopTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
 			const price = game.msrp
 				? game.msrp > 0
-					? message.language.get('commandEshopPricePaid', { price: game.msrp })
-					: message.language.get('commandEshopPriceFree')
+					? message.language.get(LanguageKeys.Commands.Tools.EshopPricePaid, { price: game.msrp })
+					: message.language.get(LanguageKeys.Commands.Tools.EshopPriceFree)
 				: 'TBD';
 			const esrbText = game.esrb
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
-				: message.language.get('commandEshopNotInDatabase');
+				: message.language.get(LanguageKeys.Commands.Tools.EshopNotInDatabase);
 
 			display.addPage((embed: MessageEmbed) =>
 				embed

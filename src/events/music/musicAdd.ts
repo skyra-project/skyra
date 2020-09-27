@@ -1,5 +1,6 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
 import { Song } from '@lib/structures/music/Song';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
@@ -13,11 +14,16 @@ export default class extends Event {
 				this,
 				channel.sendMessage(
 					songs.length === 1
-						? channel.guild.language.get('commandAddSong', { title: songs[0].safeTitle })
-						: channel.guild.language.get('commandAddPlaylist', {
-								songs: channel.guild.language.get(songs.length === 1 ? 'commandAddPlaylistSongs' : 'commandAddPlaylistSongsPlural', {
-									count: songs.length
-								})
+						? channel.guild.language.get(LanguageKeys.Commands.Music.AddSong, { title: songs[0].safeTitle })
+						: channel.guild.language.get(LanguageKeys.Commands.Music.AddPlaylist, {
+								songs: channel.guild.language.get(
+									songs.length === 1
+										? LanguageKeys.Commands.Music.AddPlaylistSongs
+										: LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+									{
+										count: songs.length
+									}
+								)
 						  }),
 					{ allowedMentions: { users: [], roles: [] } }
 				)

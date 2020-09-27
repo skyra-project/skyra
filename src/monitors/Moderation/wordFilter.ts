@@ -1,7 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';
@@ -9,8 +10,8 @@ import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'moderationMonitorWords';
-	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorWordsWithMaximum';
+	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationWords;
+	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationWordsWithMaximum;
 	protected readonly keyEnabled = GuildSettings.Selfmod.Filter.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Filter.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Filter.IgnoredRoles;
@@ -37,12 +38,15 @@ export default class extends ModerationMonitor {
 	protected async onDelete(message: KlasaMessage, value: FilterResults) {
 		floatPromise(this, message.nuke());
 		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			floatPromise(this, message.author.sendLocale('monitorWordFilterDm', [{ filtered: codeBlock('md', cutText(value.filtered, 1900)) }]));
+			floatPromise(
+				this,
+				message.author.sendLocale(LanguageKeys.Monitors.WordFilterDm, [{ filtered: codeBlock('md', cutText(value.filtered, 1900)) }])
+			);
 		}
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('monitorWordFilter', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.WordFilter, { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage, results: FilterResults) {
@@ -50,7 +54,7 @@ export default class extends ModerationMonitor {
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorWordfilter')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.WordFooter)}`)
 			.setTimestamp();
 	}
 

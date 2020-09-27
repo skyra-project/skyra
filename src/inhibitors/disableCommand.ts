@@ -1,5 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Inhibitor, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {

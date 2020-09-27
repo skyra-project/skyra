@@ -5,7 +5,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
-import { CustomCommand, GuildSettings } from '@lib/types/settings/GuildSettings';
+import { CustomCommand, GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions, requiresPermission } from '@skyra/decorators';
 import { parse as parseColour } from '@utils/Color';
@@ -16,8 +17,8 @@ import { CommandOptions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<CommandOptions>({
 	aliases: ['tags', 'customcommand', 'copypasta'],
-	description: (language) => language.get('commandTagDescription'),
-	extendedHelp: (language) => language.get('commandTagExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tags.TagDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tags.TagExtended),
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
@@ -32,79 +33,79 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('tagname', (arg, possible, message, [action]) => {
 			if (action === 'list' || action === 'reset') return undefined;
-			if (!arg) throw message.language.get('resolverInvalidString', { name: possible.name });
+			if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidString, { name: possible.name });
 			return arg.toLowerCase();
 		});
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
-		throw message.language.get('commandTagPermissionlevel');
+		throw message.language.get(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async add(message: KlasaMessage, [id, content]: [string, string]) {
 		// Check for permissions and content length
-		if (!content) throw message.language.get('commandTagContentRequired');
+		if (!content) throw message.language.get(LanguageKeys.Commands.Tags.TagContentRequired);
 
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		if (tags.some((command) => command.id === id)) throw message.language.get('commandTagExists', { tag: id });
+		if (tags.some((command) => command.id === id)) throw message.language.get(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayAction: 'add',
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('commandTagAdded', [{ name: id, content: cutText(content, 1850) }]);
+		return message.sendLocale(LanguageKeys.Commands.Tags.TagAdded, [{ name: id, content: cutText(content, 1850) }]);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
-		throw message.language.get('commandTagPermissionlevel');
+		throw message.language.get(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async remove(message: KlasaMessage, [id]: [string]) {
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 
 		const tag = tags.find((command) => command.id === id);
-		if (!tag) throw message.language.get('commandTagNotexists', { tag: id });
+		if (!tag) throw message.language.get(LanguageKeys.Commands.Tags.TagNotexists, { tag: id });
 		await message.guild!.settings.update(GuildSettings.CustomCommands, tag, {
 			arrayAction: 'remove',
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('commandTagRemoved', [{ name: id }]);
+		return message.sendLocale(LanguageKeys.Commands.Tags.TagRemoved, [{ name: id }]);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
-		throw message.language.get('commandTagPermissionlevel');
+		throw message.language.get(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async reset(message: KlasaMessage) {
 		await message.guild!.settings.reset(GuildSettings.CustomCommands);
-		return message.sendLocale('commandTagReset');
+		return message.sendLocale(LanguageKeys.Commands.Tags.TagReset);
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, (message: KlasaMessage) => {
-		throw message.language.get('commandTagPermissionlevel');
+		throw message.language.get(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async edit(message: KlasaMessage, [id, content]: [string, string]) {
-		if (!content) throw message.language.get('commandTagContentRequired');
+		if (!content) throw message.language.get(LanguageKeys.Commands.Tags.TagContentRequired);
 
 		// Get tags, and if it does not exist, throw
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
 		const index = tags.findIndex((command) => command.id === id);
-		if (index === -1) throw message.language.get('commandTagNotexists', { tag: id });
+		if (index === -1) throw message.language.get(LanguageKeys.Commands.Tags.TagNotexists, { tag: id });
 		await message.guild!.settings.update(GuildSettings.CustomCommands, this.createTag(message, id, content), {
 			arrayIndex: index,
 			extraContext: { author: message.author.id }
 		});
 
-		return message.sendLocale('commandTagEdited', [{ name: id, content: cutText(content, 1000) }]);
+		return message.sendLocale(LanguageKeys.Commands.Tags.TagEdited, [{ name: id, content: cutText(content, 1000) }]);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tags = message.guild!.settings.get(GuildSettings.CustomCommands);
-		if (!tags.length) throw message.language.get('commandTagListEmpty');
+		if (!tags.length) throw message.language.get(LanguageKeys.Commands.Tags.TagListEmpty);
 
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get('systemLoading')))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading)))
 		);
 
 		// Get prefix and display all tags

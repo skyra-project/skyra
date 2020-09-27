@@ -1,17 +1,16 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['darkmode', 'toggledarktheme', 'darktheme'],
+	cooldown: 5,
+	description: (language) => language.get(LanguageKeys.Commands.Social.ToggleDarkModeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ToggleDarkModeExtended)
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['darkmode', 'toggledarktheme', 'darktheme'],
-			cooldown: 5,
-			description: (language) => language.get('commandToggleDarkModeDescription'),
-			extendedHelp: (language) => language.get('commandToggleDarkModeExtended')
-		});
-	}
-
 	public async run(message: KlasaMessage, []: []) {
 		const { users } = await DbSet.connect();
 		const updated = await users.lock([message.author.id], async (id) => {
@@ -21,6 +20,8 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendLocale(updated.profile.darkTheme ? 'commandToggleDarkModeEnabled' : 'commandToggleDarkModeDisabled');
+		return message.sendLocale(
+			updated.profile.darkTheme ? LanguageKeys.Commands.Social.ToggleDarkModeEnabled : LanguageKeys.Commands.Social.ToggleDarkModeDisabled
+		);
 	}
 }

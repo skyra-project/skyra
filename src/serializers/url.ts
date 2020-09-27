@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
@@ -7,10 +8,10 @@ export default class extends Serializer {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(data) ? data : `https://${data}`);
 			return hostname.length > 128
-				? Promise.reject(language.get('resolverMinmaxMaxInclusive', { name: entry.path, max: 128 }))
+				? Promise.reject(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.path, max: 128 }))
 				: Promise.resolve(hostname);
 		} catch {
-			return Promise.reject(language.get('resolverInvalidUrl', { name: entry.path }));
+			return Promise.reject(language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.path }));
 		}
 	}
 

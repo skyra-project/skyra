@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -11,8 +12,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandFortniteDescription'),
-	extendedHelp: (language) => language.get('commandFortniteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.FortniteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.FortniteExtended),
 	usage: '<xbox|psn|pc:default> <user:...string>',
 	usageDelim: ' '
 })
@@ -21,7 +22,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const fortniteUser = await this.fetchAPI(message, user, platform);
@@ -44,7 +45,7 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw message.language.get('commandFortniteNoUser');
+			throw message.language.get(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
 	}
 
@@ -54,15 +55,15 @@ export default class extends RichDisplayCommand {
 	) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.get('commandFortniteEmbedTitle', { epicUserHandle }))
+				.setTitle(message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedSectionTitles = message.language.get('commandFortniteEmbedSectionTitles');
+		const embedSectionTitles = message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 
 		display.addPage((embed) => {
 			const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
-			const ltsData = message.language.get('commandFortniteEmbedStats', {
+			const ltsData = message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 				winCount: lts.find((el) => el.key === 'wins')!.value,
 				killCount: lts.find((el) => el.key === 'kills')!.value,
 				kdrCount: lts.find((el) => el.key === 'k/d')!.value,
@@ -94,7 +95,7 @@ export default class extends RichDisplayCommand {
 
 		if (p2) {
 			display.addPage((embed) => {
-				const p2Data = message.language.get('commandFortniteEmbedStats', {
+				const p2Data = message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p2.top1.value,
 					killCount: p2.kills.value,
 					kdrCount: p2.kd.value,
@@ -128,7 +129,7 @@ export default class extends RichDisplayCommand {
 
 		if (p10) {
 			display.addPage((embed) => {
-				const p10Data = message.language.get('commandFortniteEmbedStats', {
+				const p10Data = message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p10.top1.value,
 					killCount: p10.kills.value,
 					kdrCount: p10.kd.value,
@@ -162,7 +163,7 @@ export default class extends RichDisplayCommand {
 
 		if (p9) {
 			display.addPage((embed) => {
-				const p9Data = message.language.get('commandFortniteEmbedStats', {
+				const p9Data = message.language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedStats, {
 					winCount: p9.top1.value,
 					killCount: p9.kills.value,
 					kdrCount: p9.kd.value,

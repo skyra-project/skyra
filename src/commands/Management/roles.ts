@@ -2,7 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FuzzySearch } from '@utils/FuzzySearch';
@@ -12,8 +13,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('commandRolesDescription'),
-	extendedHelp: (language) => language.get('commandRolesExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Management.RolesDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.RolesExtended),
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	requiredPermissions: ['MANAGE_MESSAGES'],
 	runIn: ['text'],
@@ -47,10 +48,10 @@ export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [roles]: [Role[]]) {
 		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
 
-		if (!roles) throw message.language.get('commandRolesListEmpty');
+		if (!roles) throw message.language.get(LanguageKeys.Commands.Management.RolesListEmpty);
 		if (!roles.length) {
 			const prefix = message.guild!.settings.get(GuildSettings.Prefix);
-			if (message.args.some((v) => v.length !== 0)) throw message.language.get('commandRolesAbort', { prefix });
+			if (message.args.some((v) => v.length !== 0)) throw message.language.get(LanguageKeys.Commands.Management.RolesAbort, { prefix });
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member!.roles.cache.keys());
@@ -111,13 +112,17 @@ export default class extends RichDisplayCommand {
 		}
 
 		// Apply the roles
-		if (removedRoles.length || addedRoles.length) await message.member!.roles.set([...memberRoles], message.language.get('commandRolesAuditlog'));
+		if (removedRoles.length || addedRoles.length)
+			await message.member!.roles.set([...memberRoles], message.language.get(LanguageKeys.Commands.Management.RolesAuditlog));
 
 		const output: string[] = [];
-		if (unlistedRoles.length) output.push(message.language.get('commandRolesNotPublic', { roles: unlistedRoles.join('`, `') }));
-		if (unmanageable.length) output.push(message.language.get('commandRolesNotManageable', { roles: unmanageable.join('`, `') }));
-		if (removedRoles.length) output.push(message.language.get('commandRolesRemoved', { roles: removedRoles.join('`, `') }));
-		if (addedRoles.length) output.push(message.language.get('commandRolesAdded', { roles: addedRoles.join('`, `') }));
+		if (unlistedRoles.length)
+			output.push(message.language.get(LanguageKeys.Commands.Management.RolesNotPublic, { roles: unlistedRoles.join('`, `') }));
+		if (unmanageable.length)
+			output.push(message.language.get(LanguageKeys.Commands.Management.RolesNotManageable, { roles: unmanageable.join('`, `') }));
+		if (removedRoles.length)
+			output.push(message.language.get(LanguageKeys.Commands.Management.RolesRemoved, { roles: removedRoles.join('`, `') }));
+		if (addedRoles.length) output.push(message.language.get(LanguageKeys.Commands.Management.RolesAdded, { roles: addedRoles.join('`, `') }));
 		return message.sendMessage(output.join('\n'));
 	}
 
@@ -139,20 +144,20 @@ export default class extends RichDisplayCommand {
 
 		// There's the possibility all roles could be inexistent, therefore the system
 		// would filter and remove them all, causing this to be empty.
-		if (!roles.length) throw message.language.get('commandRolesListEmpty');
+		if (!roles.length) throw message.language.get(LanguageKeys.Commands.Management.RolesListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get('commandRolesListTitle'))
+				.setTitle(message.language.get(LanguageKeys.Commands.Management.RolesListTitle))
 		);
 
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: pickRandom(message.language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;

@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
@@ -10,8 +11,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,
-	description: (language) => language.get('commandWakandaDescription'),
-	extendedHelp: (language) => language.get('commandWakandaExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Fun.WakandaDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.WakandaExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '[user:username]'
 })
@@ -22,11 +23,11 @@ export default class extends SkyraCommand {
 		const userAvatar = await fetchAvatar(user);
 		const image = this.generateImage(userAvatar);
 
-		return message.channel.sendFile(image.toBuffer(), "we-don't-do-that-here.png");
+		return message.channel.sendFile(image.toBuffer(), 'we-do-not-do-that-here.png');
 	}
 
 	public async init() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-dont-do-that-here.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
 	}
 
 	private generateImage(avatar: Image) {

@@ -1,12 +1,12 @@
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
-import { CustomGet } from '@lib/types/settings/Shared';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { CustomFunctionGet, CustomGet } from '@lib/types/Shared';
 import { CLIENT_ID } from '@root/config';
 import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, LanguageKeysComplex, LanguageKeysSimple, Monitor } from 'klasa';
+import { KlasaMessage, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
@@ -172,25 +172,9 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
 	protected abstract softPunishmentPath: CustomGet<string, number>;
 	protected abstract hardPunishmentPath: HardPunishment | null;
-	protected abstract reasonLanguageKey: Extract<
-		LanguageKeysSimple,
-		| 'moderationMonitorCapitals'
-		| 'moderationMonitorInvites'
-		| 'moderationMonitorLinks'
-		| 'moderationMonitorMessages'
-		| 'moderationMonitorNewlines'
-		| 'moderationMonitorWords'
-	>;
+	protected abstract reasonLanguageKey: CustomGet<string, string>;
 
-	protected abstract reasonLanguageKeyWithMaximum: Extract<
-		LanguageKeysComplex,
-		| 'moderationMonitorCapitalsWithMaximum'
-		| 'moderationMonitorInvitesWithMaximum'
-		| 'moderationMonitorLinksWithMaximum'
-		| 'moderationMonitorMessagesWithMaximum'
-		| 'moderationMonitorNewlinesWithMaximum'
-		| 'moderationMonitorWordsWithMaximum'
-	>;
+	protected abstract reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
 
 	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
 	protected abstract onDelete(message: KlasaMessage, value: T): unknown;

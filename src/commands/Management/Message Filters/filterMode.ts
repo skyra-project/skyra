@@ -1,5 +1,6 @@
 import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandStore } from 'klasa';
 
@@ -15,8 +16,8 @@ export default class extends SelfModerationCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['word-filter-mode'],
-			description: (language) => language.get('commandFilterModeDescription'),
-			extendedHelp: (language) => language.get('commandFilterModeExtended')
+			description: (language) => language.get(LanguageKeys.Commands.Management.FilterModeDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.FilterModeDescription)
 		});
 	}
 }

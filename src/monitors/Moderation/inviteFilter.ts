@@ -1,7 +1,8 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -14,8 +15,8 @@ const enum CodeType {
 }
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'moderationMonitorInvites';
-	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorInvitesWithMaximum';
+	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationInvites;
+	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationInvitesWithMaximum;
 	protected readonly keyEnabled = GuildSettings.Selfmod.Invites.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Invites.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Invites.IgnoredRoles;
@@ -62,7 +63,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('monitorInviteFilterAlert', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.InviteFilterAlert, { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage, links: readonly string[]) {
@@ -70,9 +71,12 @@ export default class extends ModerationMonitor {
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(
-				message.language.get(links.length === 1 ? 'monitorInviteFilterLog' : 'monitorInviteFilterLogPlural', { links, count: links.length })
+				message.language.get(links.length === 1 ? LanguageKeys.Monitors.InviteFilterLog : LanguageKeys.Monitors.InviteFilterLogPlural, {
+					links,
+					count: links.length
+				})
 			)
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorInvitelink')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.InviteFooter)}`)
 			.setTimestamp();
 	}
 

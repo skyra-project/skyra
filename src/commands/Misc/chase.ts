@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
@@ -12,8 +13,8 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('commandChaseDescription'),
-	extendedHelp: (language) => language.get('commandChaseExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Misc.ChaseDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ChaseExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

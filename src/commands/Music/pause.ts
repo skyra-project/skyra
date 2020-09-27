@@ -1,4 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import {
 	requireDj,
@@ -10,7 +11,7 @@ import {
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('commandPauseDescription')
+	description: (language) => language.get(LanguageKeys.Commands.Music.PauseDescription)
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

@@ -1,4 +1,5 @@
-import type { DisabledCommandChannel } from '@lib/types/settings/GuildSettings';
+import type { DisabledCommandChannel } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { Serializer, SerializerUpdateContext } from 'klasa';
@@ -14,10 +15,12 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.get('serializerDisabledCommandChannelInvalid');
+		throw language.get(LanguageKeys.Serializers.DisabledCommandChannelInvalid);
 	}
 
 	public stringify(value: DisabledCommandChannel, guild: Guild) {
-		return `[${guild.channels.cache.get(value.channel)?.name ?? guild.language.get('unknownChannel')} -> ${value.commands.join(' | ')}]`;
+		return `[${guild.channels.cache.get(value.channel)?.name ?? guild.language.get(LanguageKeys.Misc.UnknownChannel)} -> ${value.commands.join(
+			' | '
+		)}]`;
 	}
 }

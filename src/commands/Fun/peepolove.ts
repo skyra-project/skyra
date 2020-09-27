@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { radians } from '@utils/util';
@@ -11,8 +12,8 @@ import { join } from 'path';
 	aliases: ['pepelove'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('commandPeepoloveDescription'),
-	extendedHelp: (language) => language.get('commandPeepoloveExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Fun.PeepoloveDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.PeepoloveExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text', 'dm'],
 	spam: true,

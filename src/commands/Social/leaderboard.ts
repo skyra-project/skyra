@@ -1,5 +1,6 @@
 import Collection from '@discordjs/collection';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { LeaderboardUser } from '@utils/Leaderboard';
 import { pickRandom } from '@utils/util';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -15,8 +16,8 @@ export default class extends SkyraCommand {
 			aliases: ['top', 'scoreboard'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandLeaderboardDescription'),
-			extendedHelp: (language) => language.get('commandLeaderboardExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.LeaderboardDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.LeaderboardExtended),
 			runIn: ['text'],
 			usage: '[global|local] [index:integer]',
 			usageDelim: ' ',
@@ -55,7 +56,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (promises.length) {
-			await message.send(pickRandom(message.language.get('systemLoading')), []);
+			await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {
@@ -63,8 +64,8 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(message.language.get('listifyPage', { page: index + 1, pageCount, results: listSize.toLocaleString() }));
-		page.push(message.language.get('commandScoreboardPosition', { position }));
+		page.push(message.language.get(LanguageKeys.FuzzySearch.Page, { page: index + 1, pageCount, results: listSize.toLocaleString() }));
+		page.push(message.language.get(LanguageKeys.Misc.CommandScoreboardPosition, { position }));
 
 		return page;
 	}

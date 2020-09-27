@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
@@ -27,8 +28,8 @@ const imageCoordinates = [
 	aliases: ['pants'],
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get('commandHowToFlirtDescription'),
-	extendedHelp: (language) => language.get('commandHowToFlirtExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Fun.HowToFlirtDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.HowToFlirtExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

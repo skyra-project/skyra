@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -8,8 +9,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['bank'],
-			description: (language) => language.get('commandVaultDescription'),
-			extendedHelp: (language) => language.get('commandVaultExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.VaultDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.VaultExtended),
 			requiredPermissions: ['EMBED_LINKS'],
 			subcommands: true,
 			usage: '<deposit|withdraw|show:default> (coins:coins)',
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 			}
 			const coins = Number(arg);
 			if (coins && coins >= 0) return this.integerArgument.run(arg, possible, message);
-			throw message.language.get('commandVaultInvalidCoins');
+			throw message.language.get(LanguageKeys.Commands.Social.VaultInvalidCoins);
 		});
 	}
 
@@ -43,7 +44,7 @@ export default class extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && money < coins) {
-				throw message.language.get('commandVaultNotEnoughMoney', { money });
+				throw message.language.get(LanguageKeys.Commands.Social.VaultNotEnoughMoney, { money });
 			}
 
 			const newMoney = money - coins;
@@ -64,7 +65,7 @@ export default class extends SkyraCommand {
 			const { vault } = settings.profile;
 
 			if (coins !== undefined && vault < coins) {
-				throw message.language.get('commandVaultNotEnoughInVault', { vault });
+				throw message.language.get(LanguageKeys.Commands.Social.VaultNotEnoughInVault, { vault });
 			}
 
 			const newMoney = money + coins;
@@ -88,13 +89,10 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage, money: number, vault: number, coins?: number, hasDeposited = false) {
-		const {
-			accountMoney,
-			accountVault,
-			depositedDescription,
-			withdrewDescription,
-			showDescription
-		} = message.language.get('commandVaultEmbedData', { coins });
+		const { accountMoney, accountVault, depositedDescription, withdrewDescription, showDescription } = message.language.get(
+			LanguageKeys.Commands.Social.VaultEmbedData,
+			{ coins }
+		);
 
 		const description = coins ? (hasDeposited ? depositedDescription : withdrewDescription) : showDescription;
 

@@ -1,5 +1,5 @@
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { api } from '@utils/Models/Api';
 import { floatPromise } from '@utils/util';

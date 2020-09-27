@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cast } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -11,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['serverinfo'],
 			cooldown: 15,
-			description: (language) => language.get('commandGuildInfoDescription'),
-			extendedHelp: (language) => language.get('commandGuildInfoExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Management.GuildInfoDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.GuildInfoExtended),
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text']
 		});
@@ -28,7 +29,7 @@ export default class extends SkyraCommand {
 			else cChannels++;
 		}
 
-		const serverInfoTitles = cast<ServerInfoTitles>(message.language.get('commandGuildInfoTitles'));
+		const serverInfoTitles = cast<ServerInfoTitles>(message.language.get(LanguageKeys.Commands.Management.GuildInfoTitles));
 		const roles = [...message.guild!.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild!.ownerID);
@@ -38,27 +39,30 @@ export default class extends SkyraCommand {
 				.setThumbnail(message.guild!.iconURL()!)
 				.setTitle(`${message.guild!.name} [${message.guild!.id}]`)
 				.splitFields(
-					message.language.get(roles.length === 1 ? 'commandWhoisMemberRoles' : 'commandWhoisMemberRolesPlural', { count: roles.length }),
+					message.language.get(
+						roles.length === 1 ? LanguageKeys.Commands.Tools.WhoisMemberRoles : LanguageKeys.Commands.Tools.WhoisMemberRolesPlural,
+						{ count: roles.length }
+					),
 					roles.join(' ')
 				)
 				.addField(
 					serverInfoTitles.CHANNELS,
-					message.language.get('commandGuildInfoChannels', {
+					message.language.get(LanguageKeys.Commands.Management.GuildInfoChannels, {
 						text: tChannels,
 						voice: vChannels,
 						categories: cChannels,
 						afkChannelText: message.guild!.afkChannelID
-							? message.language.get('commandGuildInfoChannelsAfkChannelText', {
+							? message.language.get(LanguageKeys.Commands.Management.GuildInfoChannelsAfkChannelText, {
 									afkChannel: message.guild!.afkChannelID,
 									afkTime: message.guild!.afkTimeout
 							  })
-							: `**${message.language.get('globalNone')}**`
+							: `**${message.language.get(LanguageKeys.Globals.None)}**`
 					}),
 					true
 				)
 				.addField(
 					serverInfoTitles.MEMBERS,
-					message.language.get('commandGuildInfoMembers', {
+					message.language.get(LanguageKeys.Commands.Management.GuildInfoMembers, {
 						count: message.guild!.memberCount.toLocaleString(message.language.name),
 						owner
 					}),
@@ -66,7 +70,7 @@ export default class extends SkyraCommand {
 				)
 				.addField(
 					serverInfoTitles.OTHER,
-					message.language.get('commandGuildInfoOther', {
+					message.language.get(LanguageKeys.Commands.Management.GuildInfoOther, {
 						size: message.guild!.roles.cache.size,
 						region: message.guild!.region,
 						createdAt: message.guild!.createdTimestamp,

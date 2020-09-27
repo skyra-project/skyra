@@ -1,27 +1,26 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['cmm'],
+	bucket: 2,
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindExtended),
+	requiredPermissions: ['ATTACH_FILES'],
+	runIn: ['text'],
+	usage: '<text:string{1,50}>'
+})
 export default class extends SkyraCommand {
 	private kTemplate: Image = null!;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['cmm'],
-			bucket: 2,
-			cooldown: 10,
-			description: (language) => language.get('commandChangemymindDescription'),
-			extendedHelp: (language) => language.get('commandChangemymindExtended'),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			usage: '<text:string{1,50}>'
-		});
-	}
 
 	public async run(message: KlasaMessage, [text]: [string]) {
 		const attachment = await this.generate(message.author, text);

@@ -1,4 +1,5 @@
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Command, Inhibitor, KlasaMessage } from 'klasa';
 
 const enum PermissionNodeResult {
@@ -33,7 +34,7 @@ export default class extends Inhibitor {
 		}
 
 		const { broke, permission } = await this.client.permissionLevels.run(message, command.permissionLevel);
-		if (!permission) throw broke ? message.language.get('inhibitorPermissions') : true;
+		if (!permission) throw broke ? message.language.get(LanguageKeys.Inhibitors.Permissions) : true;
 	}
 
 	private checkUser(message: KlasaMessage, command: Command) {
@@ -77,7 +78,7 @@ export default class extends Inhibitor {
 			case PermissionNodeResult.Allow:
 				return true;
 			case PermissionNodeResult.Disallow:
-				throw message.language.get('inhibitorPermissions');
+				throw message.language.get(LanguageKeys.Inhibitors.Permissions);
 			case PermissionNodeResult.NoMatch:
 				return false;
 		}

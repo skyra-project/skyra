@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, radians } from '@utils/util';
@@ -11,8 +12,8 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('commandShindeiruDescription'),
-	extendedHelp: (language) => language.get('commandShindeiruExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Fun.ShindeiruDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ShindeiruExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	runIn: ['text'],
 	spam: true,

@@ -953,8 +953,13 @@ export default class extends Language {
 				unknown: 'Desconocido'
 			}
 		},
+		commandBrawlStarsInvalidPlayerTag: ({ playertag }) =>
+			`Lo siento, \`${playertag}\` no es una etiqueta de jugador de BrawlStars válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
+		commandBrawlStarsClansQueryFail: ({ clan }) => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
+		commandBrawlStarsPlayersQueryFail: ({ playertag }) =>
+			`Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
 		commandClashofclansInvalidPlayerTag: ({ playertag }) =>
-			`Lo siento, \`${playertag}\` no es una etiqueta de jugador de Choque de clanes válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
+			`Lo siento, \`${playertag}\` no es una etiqueta de jugador de Clash of Clans válida. Las etiquetas de jugador deben comenzar con un \`#\` seguido de la ID.`,
 		commandClashOfClansClansQueryFail: ({ clan }) => `Lo siento, pero no pude obtener datos sobre el clan \`${clan}\`.`,
 		commandClashofclansPlayersQueryFail: ({ playertag }) =>
 			`Lo siento, pero no pude obtener datos sobre el jugador con la etiqueta de jugador \`${playertag}\`.`,
@@ -2192,7 +2197,7 @@ export default class extends Language {
 			explainedUsage: [['ítem', 'El elemento para el que desea buscar datos']],
 			examples: ['life orb', 'choice specs']
 		},
-		commandItemEmebedData: ({ availableInGen8 }) => ({
+		commandItemEmbedData: ({ availableInGen8 }) => ({
 			ITEM: 'Ítem',
 			generationIntroduced: 'Generación introducida',
 			availableInGeneration8Title: 'Disponible en la generación 8',

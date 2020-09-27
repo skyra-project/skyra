@@ -1,5 +1,6 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID, PREFIX } from '@root/config';
 import { floatPromise } from '@utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
@@ -29,7 +30,7 @@ export default class extends Monitor {
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(5))) return;
 		}
 		const prefix = message.guildSettings.get(GuildSettings.Prefix);
-		return message.sendLocale('prefixReminder', [{ prefix: prefix.length ? prefix : PREFIX }], {
+		return message.sendLocale(LanguageKeys.Misc.PrefixReminder, [{ prefix: prefix.length ? prefix : PREFIX }], {
 			allowedMentions: { users: [message.author.id], roles: [] }
 		});
 	}

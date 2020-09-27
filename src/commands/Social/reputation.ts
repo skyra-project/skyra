@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Time } from '@utils/constants';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -11,8 +12,8 @@ export default class extends SkyraCommand {
 			aliases: ['rep'],
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('commandReputationDescription'),
-			extendedHelp: (language) => language.get('commandReputationExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Social.ReputationDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ReputationExtended),
 			runIn: ['text'],
 			spam: true,
 			usage: '[check] (user:username)',
@@ -34,28 +35,28 @@ export default class extends SkyraCommand {
 		const extSettings = user ? await users.ensureProfile(user.id) : null;
 
 		if (check) {
-			if (user.bot) throw message.language.get('commandReputationBots');
+			if (user.bot) throw message.language.get(LanguageKeys.Commands.Social.ReputationsBots);
 			// TODO: i18next should do this automatically
 			const reputationPoints =
 				extSettings!.reputations === 1
-					? message.language.get('commandReputation', { count: extSettings!.reputations })
-					: message.language.get('commandReputationPlural', { count: extSettings!.reputations });
+					? message.language.get(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations })
+					: message.language.get(LanguageKeys.Commands.Social.ReputationPlural, { count: extSettings!.reputations });
 			return message.sendMessage(
 				message.author === user
-					? message.language.get('commandReputationsSelf', { points: selfSettings.reputations })
-					: message.language.get('commandReputations', { user: user.username, points: reputationPoints })
+					? message.language.get(LanguageKeys.Commands.Social.ReputationsSelf, { points: selfSettings.reputations })
+					: message.language.get(LanguageKeys.Commands.Social.Reputations, { user: user.username, points: reputationPoints })
 			);
 		}
 
 		const timeReputation = selfSettings.cooldowns.reputation?.getTime();
 
 		if (timeReputation && timeReputation + Time.Day > now) {
-			return message.sendLocale('commandReputationTime', [{ remaining: timeReputation + Time.Day - now }]);
+			return message.sendLocale(LanguageKeys.Commands.Social.ReputationTime, [{ remaining: timeReputation + Time.Day - now }]);
 		}
 
-		if (!user) return message.sendLocale('commandReputationUsable');
-		if (user.bot) throw message.language.get('commandReputationBots');
-		if (user === message.author) throw message.language.get('commandReputationSelf');
+		if (!user) return message.sendLocale(LanguageKeys.Commands.Social.ReputationUsable);
+		if (user.bot) throw message.language.get(LanguageKeys.Commands.Social.ReputationsBots);
+		if (user === message.author) throw message.language.get(LanguageKeys.Commands.Social.ReputationSelf);
 
 		await getManager().transaction(async (em) => {
 			++extSettings!.reputations;
@@ -63,6 +64,6 @@ export default class extends SkyraCommand {
 			await em.save([extSettings, selfSettings]);
 		});
 
-		return message.sendLocale('commandReputationGive', [{ user: user.toString() }]);
+		return message.sendLocale(LanguageKeys.Commands.Social.ReputationGive, [{ user: user.toString() }]);
 	}
 }

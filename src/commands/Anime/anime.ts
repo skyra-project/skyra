@@ -2,6 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Kitsu } from '@lib/types/definitions/Kitsu';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -15,8 +16,8 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandAnimeDescription'),
-	extendedHelp: (language) => language.get('commandAnimeExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Anime.AnimeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Anime.AnimeExtended),
 	usage: '<animeName:string>'
 })
 export default class extends RichDisplayCommand {
@@ -24,11 +25,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [animeName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { hits: entries } = await this.fetchAPI(message, animeName);
-		if (!entries.length) throw message.language.get('systemNoResults');
+		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, message);
 
@@ -58,12 +59,12 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const embedData = message.language.get('commandAnimeEmbedData');
+		const embedData = message.language.get(LanguageKeys.Commands.Anime.AnimeEmbedData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -90,22 +91,22 @@ export default class extends RichDisplayCommand {
 				entry.titles.en || entry.titles.en_us,
 				entry.titles.ja_jp,
 				entry.canonicalTitle
-			].map((title) => title || message.language.get('globalNone'));
+			].map((title) => title || message.language.get(LanguageKeys.Globals.None));
 
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(animeURL)
 					.setDescription(
-						message.language.get('commandAnimeOutputDescription', {
+						message.language.get(LanguageKeys.Commands.Anime.AnimeOutputDescription, {
 							englishTitle,
 							japaneseTitle,
 							canonicalTitle,
-							synopsis: synopsis ?? message.language.get('commandAnimeNoSynopsis')
+							synopsis: synopsis ?? message.language.get(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
 						})
 					)
 					.setThumbnail(entry.posterImage?.original ?? '')
-					.addField(embedData.type, message.language.get('commandAnimeTypes')[type.toUpperCase()] || type, true)
+					.addField(embedData.type, message.language.get(LanguageKeys.Commands.Anime.AnimeTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
 					.addField(embedData.episodeLength, message.language.duration(entry.episodeLength * 60 * 1000), true)

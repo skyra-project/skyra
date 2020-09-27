@@ -1,0 +1,46 @@
+import { FT, T } from '@lib/types/Shared';
+import { User } from 'discord.js';
+
+export const CommandHandlerReprompt = FT<{ tag: string; name: string; time: string; cancelOptions: string }, string>('monitorCommandHandlerReprompt');
+export const CommandHandlerRepeatingReprompt = FT<{ tag: string; name: string; time: string; cancelOptions: string }, string>(
+	'monitorCommandHandlerRepeatingReprompt'
+);
+export const AttachmentfilterFooter = T<string>('constMonitorAttachmentfilter');
+export const CapsFilter = FT<{ user: string }, string>('monitorCapsFilter');
+export const CapsFilterDm = FT<{ message: string }, string>('monitorCapsFilterDm');
+export const CapsfilterFooter = T<string>('constMonitorCapsfilter');
+export const CommandHandlerAborted = T<string>('monitorCommandHandlerAborted');
+export const InviteFilterAlert = FT<{ user: string }, string>('monitorInviteFilterAlert');
+export const InviteFilterLog = FT<{ links: readonly string[]; count: number }, string>('monitorInviteFilterLog');
+export const InviteFilterLogPlural = FT<{ links: readonly string[]; count: number }, string>('monitorInviteFilterLogPlural');
+export const InviteFooter = T<string>('constMonitorInvitelink');
+export const LinkFooter = T<string>('constMonitorLink');
+export const MessageFilter = FT<{ user: string }, string>('monitorMessageFilter');
+export const ModerationAttachments = T<string>('moderationMonitorAttachments');
+export const ModerationAttachmentsWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorAttachmentsWithMaximum');
+export const ModerationCapitals = T<string>('moderationMonitorCapitals');
+export const ModerationCapitalsWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorCapitalsWithMaximum');
+export const ModerationInvites = T<string>('moderationMonitorInvites');
+export const ModerationInvitesWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorInvitesWithMaximum');
+export const ModerationLinks = T<string>('moderationMonitorLinks');
+export const ModerationLinksWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorLinksWithMaximum');
+export const ModerationMessages = T<string>('moderationMonitorMessages');
+export const ModerationMessagesWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorMessagesWithMaximum');
+export const ModerationNewLine = T<string>('moderationMonitorNewlines');
+export const ModerationNewLineWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorNewlinesWithMaximum');
+export const ModerationWords = T<string>('moderationMonitorWords');
+export const ModerationWordsWithMaximum = FT<{ amount: number; maximum: number }, string>('moderationMonitorWordsWithMaximum');
+export const NewLineFilter = FT<{ user: string }, string>('monitorNewlineFilter');
+export const NmsAlert = T<string>('monitorNmsAlert');
+export const NmsFooter = T<string>('constMonitorNms');
+export const NmsMessage = FT<{ user: User }, string[]>('monitorNmsMessage');
+export const NmsModlog = FT<{ threshold: number }, string>('monitorNmsModlog');
+export const LinkMissing = FT<{ user: string }, string>('monitorNolink');
+export const ReactionsFilter = FT<{ user: string }, string>('monitorReactionsFilter');
+export const ReactionsFilterFooter = T<string>('constMonitorReactionfilter');
+export const SocialAchievement = T<string>('monitorSocialAchievement');
+export const WordFilter = FT<{ user: string }, string>('monitorWordFilter');
+export const WordFilterDm = FT<{ filtered: string }, string>('monitorWordFilterDm');
+export const WordFooter = T<string>('constMonitorWordfilter');
+export const MessageFooter = T<string>('constMonitorMessagefilter');
+export const NewLineFooter = T<string>('constMonitorNewlinefilter');

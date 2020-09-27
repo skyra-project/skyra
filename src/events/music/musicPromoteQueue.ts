@@ -1,4 +1,5 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { floatPromise } from '@utils/util';
 import { Event } from 'klasa';
@@ -10,7 +11,9 @@ export default class extends Event {
 		if (channel) {
 			floatPromise(
 				this,
-				channel.sendLocale('commandPromoteSuccess', [{ song: manager.queue[0] }], { allowedMentions: { users: [], roles: [] } })
+				channel.sendLocale(LanguageKeys.Commands.Music.PromoteSuccess, [{ song: manager.queue[0] }], {
+					allowedMentions: { users: [], roles: [] }
+				})
 			);
 		}
 

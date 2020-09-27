@@ -1,4 +1,5 @@
-import { StickyRole } from '@lib/types/settings/GuildSettings';
+import { StickyRole } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { Serializer, SerializerUpdateContext } from 'klasa';
@@ -14,12 +15,12 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.get('serializerStickyRoleInvalid');
+		throw language.get(LanguageKeys.Serializers.StickyRoleInvalid);
 	}
 
 	public stringify(value: StickyRole, guild: Guild) {
-		const username = this.client.users.cache.get(value.user)?.username ?? guild.language.get('unknownUser');
-		const roles = value.roles.map((role) => guild.roles.cache.get(role)?.name ?? guild.language.get('unknownRole'));
+		const username = this.client.users.cache.get(value.user)?.username ?? guild.language.get(LanguageKeys.Misc.UnknownUser);
+		const roles = value.roles.map((role) => guild.roles.cache.get(role)?.name ?? guild.language.get(LanguageKeys.Misc.UnknownRole));
 		return `[${username} -> ${roles}]`;
 	}
 }

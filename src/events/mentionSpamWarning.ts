@@ -1,8 +1,8 @@
-// Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Event, KlasaMessage } from 'klasa';
 
 export default class extends Event {
 	public async run(message: KlasaMessage) {
-		await message.alert(message.language.get('monitorNmsAlert'));
+		await message.alert(message.language.get(LanguageKeys.Monitors.NmsAlert));
 	}
 }

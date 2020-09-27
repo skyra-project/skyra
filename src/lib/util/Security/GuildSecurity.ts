@@ -1,4 +1,4 @@
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Adder } from '@utils/Adder';
 import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Guild } from 'discord.js';

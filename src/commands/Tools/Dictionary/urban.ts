@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -11,8 +12,8 @@ import { KlasaMessage, Language } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
 	cooldown: 15,
-	description: (language) => language.get('commandUrbanDescription'),
-	extendedHelp: (language) => language.get('commandUrbanExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.UrbanDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.UrbanExtended),
 	nsfw: true,
 	runIn: ['text'],
 	usage: '<query:string>'
@@ -20,7 +21,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
@@ -62,7 +63,7 @@ export default class extends RichDisplayCommand {
 
 	private parseDefinition(definition: string, permalink: string, i18n: Language) {
 		if (definition.length < 750) return definition;
-		return i18n.get('systemTextTruncated', { definition: cutText(definition, 750), url: permalink });
+		return i18n.get(LanguageKeys.Misc.SystemTextTruncated, { definition: cutText(definition, 750), url: permalink });
 	}
 }
 

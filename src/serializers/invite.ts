@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
@@ -5,11 +6,11 @@ export default class extends Serializer {
 
 	public async validate(data: string, { entry, language }: SerializerUpdateContext) {
 		const parsed = this.kRegExp.exec(data);
-		if (parsed === null) throw language.get('resolverInvalidInvite', { name: entry.key });
+		if (parsed === null) throw language.get(LanguageKeys.Resolvers.InvalidInvite, { name: entry.key });
 
 		const { code } = parsed.groups!;
 		const invite = await this.client.invites.fetch(code);
-		if (invite === null || !Reflect.has(invite, 'guildID')) throw language.get('resolverInvalidInvite', { name: entry.key });
+		if (invite === null || !Reflect.has(invite, 'guildID')) throw language.get(LanguageKeys.Resolvers.InvalidInvite, { name: entry.key });
 		return code;
 	}
 }

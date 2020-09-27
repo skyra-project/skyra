@@ -2,6 +2,7 @@ import { DexDetails } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -13,15 +14,15 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
-	description: (language) => language.get('commandFlavorsDescription'),
-	extendedHelp: (language) => language.get('commandFlavorsExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.FlavorsDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.FlavorsExtended),
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [pokemon]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const pokemonData = await this.fetchAPI(message, pokemon.toLowerCase());
@@ -35,7 +36,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.get('commandFlavorsQueryFail', { pokemon });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 

@@ -1,5 +1,5 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { StrictRequired } from '@lib/types/util';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Time } from '@utils/constants';

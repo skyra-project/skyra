@@ -1,5 +1,5 @@
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
-import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, PermissionsNode } from '@lib/types/namespaces/GuildSettings';
 import { getFromPath } from '@utils/util';
 import { Event, Settings } from 'klasa';
 

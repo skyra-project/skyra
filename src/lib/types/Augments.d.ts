@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import type { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 import type { SettingsUpdateResults } from '@klasa/settings-gateway';
 import type { InviteStore } from '@lib/structures/InviteStore';
@@ -12,13 +13,13 @@ import type { Twitch } from '@utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import type { FSWatcher } from 'chokidar';
 import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
-import type { PermissionString } from 'discord.js';
+import type { MessageAdditions, MessageOptions, PermissionString, SplitOptions } from 'discord.js';
 import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
 import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
 import type { Client as VezaClient } from 'veza';
 import type { Events } from './Enums';
-import type { CustomGet } from './settings/Shared';
+import type { CustomFunctionGet, CustomGet } from './Shared';
 
 declare module 'discord.js' {
 	interface Client {
@@ -106,6 +107,33 @@ declare module 'discord.js' {
 		 */
 		addBlankField(inline?: boolean): this;
 	}
+
+	interface PartialSendAliases {
+		sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
+		sendLocale<K extends string, TReturn>(
+			key: CustomGet<K, TReturn>,
+			options?: (MessageOptions & { split?: false }) | MessageAdditions
+		): Promise<KlasaMessage>;
+		sendLocale<K extends string, TReturn>(
+			key: CustomGet<K, TReturn>,
+			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+		): Promise<KlasaMessage[]>;
+		sendLocale<K extends string, TArgs, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			localeArgs: [TArgs],
+			options?: MessageOptions | MessageAdditions
+		): Promise<KlasaMessage>;
+		sendLocale<K extends string, TArgs, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			localeArgs: [TArgs],
+			options?: (MessageOptions & { split?: false }) | MessageAdditions
+		): Promise<KlasaMessage>;
+		sendLocale<K extends string, TArgs, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			localeArgs: [TArgs],
+			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+		): Promise<KlasaMessage[]>;
+	}
 }
 
 declare module 'klasa' {
@@ -134,8 +162,11 @@ declare module 'klasa' {
 		list(values: readonly string[], conjunction: string): string;
 		groupDigits(number: number): string;
 
-		retrieve<T extends LanguageKeysSimple>(term: T): LanguageKeys[T];
-		retrieve<T extends LanguageKeysComplex>(term: T, ...args: Parameters<LanguageKeys[T]>): ReturnType<LanguageKeys[T]>;
+		get<K extends string, TReturn>(value: CustomGet<K, TReturn>): TReturn;
+		get<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
+
+		retrieve<K extends string, TReturn>(value: CustomGet<K, TReturn>): TReturn;
+		retrieve<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
 	}
 
 	interface SettingsFolder {

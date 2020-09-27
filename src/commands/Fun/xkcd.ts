@@ -1,29 +1,28 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage, Language, Timestamp } from 'klasa';
+import { KlasaMessage, Language, Timestamp } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Fun.XkcdDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.XkcdExtended),
+	requiredPermissions: ['EMBED_LINKS'],
+	spam: true,
+	usage: '[query:string]'
+})
 export default class extends SkyraCommand {
 	private readonly timestamp = new Timestamp('MMMM, dddd dd YYYY');
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: (language) => language.get('commandXkcdDescription'),
-			extendedHelp: (language) => language.get('commandXkcdExtended'),
-			requiredPermissions: ['EMBED_LINKS'],
-			spam: true,
-			usage: '[query:string]'
-		});
-	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const query = typeof input === 'undefined' ? null : /^\d+$/.test(input) ? Number(input) : input;
 
 		const comicNumber = await this.getNumber(query, message.language);
 		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get('commandXkcdNotfound');
+			throw message.language.get(LanguageKeys.Commands.Fun.XkcdNotfound);
 		});
 
 		return message.sendEmbed(
@@ -47,7 +46,7 @@ export default class extends SkyraCommand {
 
 		if (typeof query === 'number') {
 			if (query <= xkcdInfo.num) return query;
-			throw i18n.get('commandXkcdComics', { amount: xkcdInfo.num });
+			throw i18n.get(LanguageKeys.Commands.Fun.XkcdComics, { amount: xkcdInfo.num });
 		}
 
 		if (query) {

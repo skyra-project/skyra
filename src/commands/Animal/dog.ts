@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetch, FetchResultTypes, isImageURL } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
@@ -8,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['doggo', 'puppy'],
 	cooldown: 10,
-	description: (language) => language.get('commandDogDescription'),
-	extendedHelp: (language) => language.get('commandDogExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Animal.DogDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Animal.DogExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	spam: true
 })

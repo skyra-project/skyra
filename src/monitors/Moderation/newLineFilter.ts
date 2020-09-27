@@ -1,6 +1,7 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { floatPromise, getContent } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -8,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 const NEW_LINE = '\n';
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'moderationMonitorNewlines';
-	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorNewlinesWithMaximum';
+	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationNewLine;
+	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationNewLineWithMaximum;
 	protected readonly keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.NewLines.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.NewLines.IgnoredRoles;
@@ -40,7 +41,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('monitorNewlineFilter', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.NewLineFilter, { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
@@ -48,7 +49,7 @@ export default class extends ModerationMonitor {
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorNewlinefilter')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.NewLineFooter)}`)
 			.setTimestamp();
 	}
 }

@@ -2,7 +2,8 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { displayEmoji, resolveEmoji } from '@utils/util';
@@ -13,8 +14,8 @@ const REG_TYPE = /^(alias|reaction)$/i;
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get('commandTriggersDescription'),
-	extendedHelp: (language) => language.get('commandTriggersExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Management.TriggersDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.TriggersExtended),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -26,30 +27,30 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('type', (arg, _, msg, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
-			throw msg.language.get('commandTriggersNotype');
+			throw msg.language.get(LanguageKeys.Commands.Management.TriggersNotype);
 		})
 			.createCustomResolver('input', (arg, _, msg, [action]) => {
 				if (action === 'show') return undefined;
-				if (!arg) throw msg.language.get('commandTriggersNooutput');
+				if (!arg) throw msg.language.get(LanguageKeys.Commands.Management.TriggersNooutput);
 				return arg.toLowerCase();
 			})
 			.createCustomResolver('output', async (arg, _, message, [action, type]) => {
 				if (action === 'show' || action === 'remove') return undefined;
-				if (!arg) throw message.language.get('commandTriggersNooutput');
+				if (!arg) throw message.language.get(LanguageKeys.Commands.Management.TriggersNooutput);
 				if (type === 'reaction') {
 					const emoji = resolveEmoji(arg);
-					if (!emoji) throw message.language.get('commandTriggersInvalidreaction');
+					if (!emoji) throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidreaction);
 
 					try {
 						await message.react(emoji);
 						return emoji;
 					} catch {
-						throw message.language.get('commandTriggersInvalidreaction');
+						throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidreaction);
 					}
 				} else if (type === 'alias') {
 					const command = this.client.commands.get(arg);
 					if (command && command.permissionLevel < 10) return arg;
-					throw message.language.get('commandTriggersInvalidalias');
+					throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidalias);
 				} else {
 					return null;
 				}
@@ -59,7 +60,7 @@ export default class extends SkyraCommand {
 	public async remove(message: KlasaMessage, [type, input]: [string, string]) {
 		const list = this._getList(message, type);
 		const index = list.findIndex((entry) => entry.input === input);
-		if (index === -1) throw message.language.get('commandTriggersRemoveNottaken');
+		if (index === -1) throw message.language.get(LanguageKeys.Commands.Management.TriggersRemoveNottaken);
 
 		// Create a shallow clone and remove the item
 		const clone = [...list];
@@ -69,18 +70,18 @@ export default class extends SkyraCommand {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('commandTriggersRemove');
+		return message.sendLocale(LanguageKeys.Commands.Management.TriggersRemove);
 	}
 
 	public async add(message: KlasaMessage, [type, input, output]: [string, string, string]) {
 		const list = this._getList(message, type);
-		if (list.some((entry) => entry.input === input)) throw message.language.get('commandTriggersAddTaken');
+		if (list.some((entry) => entry.input === input)) throw message.language.get(LanguageKeys.Commands.Management.TriggersAddTaken);
 
 		await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], {
 			arrayAction: 'overwrite',
 			extraContext: { author: message.author.id }
 		});
-		return message.sendLocale('commandTriggersAdd');
+		return message.sendLocale(LanguageKeys.Commands.Management.TriggersAdd);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -94,7 +95,7 @@ export default class extends SkyraCommand {
 		for (const react of includes) {
 			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
 		}
-		if (!output.length) throw message.language.get('commandTriggersListEmpty');
+		if (!output.length) throw message.language.get(LanguageKeys.Commands.Management.TriggersListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()

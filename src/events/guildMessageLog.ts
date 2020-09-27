@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { MessageLogsEnum } from '@utils/constants';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';

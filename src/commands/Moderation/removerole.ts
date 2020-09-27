@@ -1,5 +1,6 @@
 import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 import { Role, User } from 'discord.js';
@@ -8,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['rro'],
 	cooldown: 10,
-	description: (language) => language.get('commandRemoveroleDescription'),
-	extendedHelp: (language) => language.get('commandRemoveroleExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.RemoveroleDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.RemoveroleExtended),
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],

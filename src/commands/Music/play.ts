@@ -1,12 +1,13 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
 import { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('commandPlayDescription'),
-	extendedHelp: (language) => language.get('commandPlayExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Music.PlayDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.PlayExtended),
 	usage: '(song:song)',
 	flagSupport: true
 })
@@ -20,7 +21,7 @@ export default class extends MusicCommand {
 			await this.client.commands.get('add')!.run(message, [songs]);
 			if (music.playing) return;
 		} else if (!music.canPlay) {
-			await message.sendLocale('commandPlayQueueEmpty');
+			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueueEmpty);
 			return;
 		}
 
@@ -30,10 +31,10 @@ export default class extends MusicCommand {
 		}
 
 		if (music.playing) {
-			await message.sendLocale('commandPlayQueuePlaying');
+			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePlaying);
 		} else if (music.song) {
 			await music.resume(this.getContext(message));
-			await message.sendLocale('commandPlayQueuePaused', [{ song: music.song.toString() }]);
+			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: music.song.toString() }]);
 		} else {
 			music.channelID = message.channel.id;
 			await music.play();

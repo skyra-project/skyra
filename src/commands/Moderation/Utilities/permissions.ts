@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ZeroWidhSpace } from '@utils/constants';
 import { MessageEmbed, Permissions, PermissionString, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -21,15 +22,15 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		if (!user) throw message.language.get('userNotExistent');
+		if (!user) throw message.language.get(LanguageKeys.Misc.UserNotExistent);
 		const member = await message.guild!.members.fetch(user.id).catch(() => {
-			throw message.language.get('userNotInGuild');
+			throw message.language.get(LanguageKeys.Misc.UserNotInGuild);
 		});
 
 		const { permissions } = member;
 		const list = [ZeroWidhSpace];
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-			list.push(message.language.get('commandPermissionsAll'));
+			list.push(message.language.get(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
 				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${message.language.PERMISSIONS[flag] || flag}`);
@@ -38,7 +39,7 @@ export default class extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setTitle(message.language.get('commandPermissions', { username: user.tag, id: user.id }))
+			.setTitle(message.language.get(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
 			.setDescription(list.join('\n'));
 
 		return message.sendMessage({ embed });

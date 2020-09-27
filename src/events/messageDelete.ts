@@ -1,7 +1,8 @@
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { MessageLogsEnum } from '@utils/constants';
 import { getContent, getImage } from '@utils/util';
@@ -42,7 +43,7 @@ export default class extends Event {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(cutText(getContent(message) || '', 1900))
-				.setFooter(`${message.language.get('eventsMessageDelete')} • ${channel.name}`)
+				.setFooter(`${message.language.get(LanguageKeys.Events.MessageDelete)} • ${channel.name}`)
 				.setImage(getImage(message)!)
 				.setTimestamp()
 		);

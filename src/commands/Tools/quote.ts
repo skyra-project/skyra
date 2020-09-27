@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { getContent, getImage, isTextBasedChannel } from '@utils/util';
@@ -11,8 +12,8 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandQuoteDescription'),
-	extendedHelp: (language) => language.get('commandQuoteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.QuoteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.QuoteExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' '
@@ -24,11 +25,11 @@ export default class extends SkyraCommand {
 			const messageUrl = await this.getFromUrl(message, arg);
 			if (messageUrl) return messageUrl;
 
-			if (!isTextBasedChannel(channel)) throw message.language.get('resolverInvalidChannel', { name: 'Channel' });
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get('resolverInvalidMessage', { name: 'Message' });
+			if (!isTextBasedChannel(channel)) throw message.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
-			throw message.language.get('systemMessageNotFound');
+			throw message.language.get(LanguageKeys.System.MessageNotFound);
 		});
 	}
 
@@ -40,7 +41,7 @@ export default class extends SkyraCommand {
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);
-		if (content) embed.setDescription(`[${message.language.get('jumpTo')}](${remoteMessage.url})\n${cutText(content, 1800)}`);
+		if (content) embed.setDescription(`[${message.language.get(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
 		return message.sendEmbed(embed);
 	}
@@ -65,9 +66,10 @@ export default class extends SkyraCommand {
 
 		const channel = guild.channels.cache.get(_channel);
 		if (!channel) return null;
-		if (!(channel instanceof TextChannel)) throw message.language.get('resolverInvalidChannel', { name: 'Channel' });
-		if (!channel.readable) throw message.language.get('systemMessageNotFound');
-		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL)) throw message.language.get('systemCannotAccessChannel');
+		if (!(channel instanceof TextChannel)) throw message.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+		if (!channel.readable) throw message.language.get(LanguageKeys.System.MessageNotFound);
+		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL))
+			throw message.language.get(LanguageKeys.System.CannotAccessChannel);
 
 		return channel.messages.fetch(_message);
 	}

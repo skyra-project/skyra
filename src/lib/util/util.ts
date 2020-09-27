@@ -2,7 +2,8 @@ import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
@@ -89,12 +90,12 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  */
 export function announcementCheck(message: Message) {
 	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.language.get('commandSubscribeNoRole');
+	if (!announcementID) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
 	const role = message.guild!.roles.cache.get(announcementID);
-	if (!role) throw message.language.get('commandSubscribeNoRole');
+	if (!role) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get('systemHighestRole');
+	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get(LanguageKeys.System.HighestRole);
 	return role;
 }
 

@@ -2,6 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -14,8 +15,8 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['dh'],
 	cooldown: 5,
-	description: (language) => language.get('commandDehoistDescription'),
-	extendedHelp: (language) => language.get('commandDehoistExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.DehoistDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.DehoistExtended),
 	runIn: ['text'],
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_NICKNAMES', 'EMBED_LINKS']
@@ -26,7 +27,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
 			await message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+				new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
 			await message.guild!.members.fetch();
 		}
@@ -38,7 +39,7 @@ export default class extends SkyraCommand {
 			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
 		}
 
-		const response = await message.sendLocale('commandDehoistStarting', [{ count: hoistedMembers.length }]);
+		const response = await message.sendLocale(LanguageKeys.Commands.Moderation.DehoistStarting, [{ count: hoistedMembers.length }]);
 
 		for (let i = 0; i < hoistedMembers.length; i++) {
 			const member = hoistedMembers[i];
@@ -60,7 +61,9 @@ export default class extends SkyraCommand {
 			// update the counter every 10 dehoists
 			if ((i + 1) % 10 === 0) {
 				const dehoistPercentage = (i / hoistedMembers.length) * 100;
-				await message.sendLocale('commandDehoistProgress', [{ count: i + 1, percentage: Math.round(dehoistPercentage) }]);
+				await message.sendLocale(LanguageKeys.Commands.Moderation.DehoistProgress, [
+					{ count: i + 1, percentage: Math.round(dehoistPercentage) }
+				]);
 			}
 		}
 
@@ -82,7 +85,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.get('commandDehoistEmbed', {
+		const embedLanguage = message.language.get(LanguageKeys.Commands.Moderation.DehoistEmbed, {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,

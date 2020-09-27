@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {
@@ -17,6 +18,6 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [index]: [number | 'latest']) {
 		const modlog = index === 'latest' ? (await message.guild!.moderation.fetch()).last() : await message.guild!.moderation.fetch(index);
 		if (modlog) return message.sendEmbed(await modlog.prepareEmbed());
-		throw message.language.get('commandReasonNotExists');
+		throw message.language.get(LanguageKeys.Commands.Moderation.ReasonNotExists);
 	}
 }

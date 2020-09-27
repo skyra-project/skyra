@@ -1,5 +1,6 @@
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { isNullOrUndefined } from '@sapphire/utilities';
@@ -85,16 +86,16 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
 					? cases.length === 1
-						? 'commandModerationOutputWithReason'
-						: 'commandModerationOutputWithReasonPlural'
+						? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
+						: LanguageKeys.Commands.Moderation.ModerationOutputWithReasonPlural
 					: cases.length === 1
-					? 'commandModerationOutput'
-					: 'commandModerationOutputPlural';
+					? LanguageKeys.Commands.Moderation.ModerationOutput
+					: LanguageKeys.Commands.Moderation.ModerationOutputPlural;
 				output.push(
 					message.language.get(langKey, {
 						count: cases.length,
 						range,
-						users: message.language.list(users, message.language.get('globalAnd')),
+						users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
 						reason: logReason
 					})
 				);
@@ -103,10 +104,15 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
-					message.language.get(users.length === 1 ? 'commandModerationFailed' : 'commandModerationFailedPlural', {
-						users: message.language.list(users, message.language.get('globalAnd')),
-						count: users.length
-					})
+					message.language.get(
+						users.length === 1
+							? LanguageKeys.Commands.Moderation.ModerationFailed
+							: LanguageKeys.Commands.Moderation.ModerationFailedPlural,
+						{
+							users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
+							count: users.length
+						}
+					)
 				);
 			}
 
@@ -129,22 +135,23 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 
 	protected async checkModeratable(message: KlasaMessage, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw message.language.get('commandUserself');
+			throw message.language.get(LanguageKeys.Misc.CommandUserself);
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw message.language.get('commandToskyra');
+			throw message.language.get(LanguageKeys.Misc.CommandToskyra);
 		}
 
 		const member = await message.guild!.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw message.language.get('userNotInGuild');
+			if (this.requiredMember) throw message.language.get(LanguageKeys.Misc.UserNotInGuild);
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position) throw message.language.get('commandRoleHigherSkyra');
-			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get('commandRoleHigher');
+			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position)
+				throw message.language.get(LanguageKeys.Misc.CommandRoleHigherSkyra);
+			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get(LanguageKeys.Misc.CommandRoleHigher);
 		}
 
 		return member;

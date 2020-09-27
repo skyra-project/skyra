@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
@@ -101,7 +102,7 @@ export class Slotmachine {
 		const winnings = this.winnings * (await this.fetchBoost()) - this.bet;
 		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
-		if (amount < 0) throw this.message.language.get('gamesCannotHaveNegativeMoney');
+		if (amount < 0) throw this.message.language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 
 		this.settings.money += lost ? -this.bet : winnings;
 		await this.settings.save();
@@ -126,7 +127,13 @@ export class Slotmachine {
 			.setColor(darkTheme ? CanvasColors.BackgroundLight : CanvasColors.BackgroundDark)
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
-			.printText(this.message.language.get(playerHasWon ? 'commandSlotmachineCanvasTextWon' : 'commandSlotmachineCanvasTextLost'), 280, 60)
+			.printText(
+				this.message.language.get(
+					playerHasWon ? LanguageKeys.Commands.Games.SlotmachineCanvasTextWon : LanguageKeys.Commands.Games.SlotmachineCanvasTextLost
+				),
+				280,
+				60
+			)
 			.printText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
 			.printImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();

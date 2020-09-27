@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageOptions, TextChannel } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -7,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['talk'],
-			description: (language) => language.get('commandEchoDescription'),
-			extendedHelp: (language) => language.get('commandEchoExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.System.EchoDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.EchoExtended),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			usage: '[channel:channel] [message:...string]',

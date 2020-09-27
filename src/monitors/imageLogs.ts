@@ -1,6 +1,7 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { isNumber } from '@sapphire/utilities';
 import { MessageLogsEnum } from '@utils/constants';
@@ -52,7 +53,7 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setDescription(`[${message.language.get('jumpTo')}](${message.url})`)
+						.setDescription(`[${message.language.get(LanguageKeys.Misc.JumpTo)}](${message.url})`)
 						.setFooter(`#${(message.channel as TextChannel).name}`)
 						.attachFiles([new MessageAttachment(buffer, filename)])
 						.setImage(`attachment://${filename}`)

@@ -1,6 +1,7 @@
 import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { DEV } from '@root/config';
 import { cutText } from '@sapphire/utilities';
 import { BrandingColors } from '@utils/constants';
@@ -26,8 +27,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get('commandMarkovDescription'),
-			extendedHelp: (language) => language.get('commandMarkovExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Fun.MarkovDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.MarkovExtended),
 			runIn: ['text'],
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
 			usage: '[channel:channelname{2}] [user:username]'
@@ -40,7 +41,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
 		// Send loading message
 		await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Process the chain
@@ -59,7 +60,7 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(await DbSet.fetchColor(message))
-			.setFooter(message.language.get('commandMarkovTimer', { timer: time.toString() }));
+			.setFooter(message.language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
 	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
@@ -67,7 +68,7 @@ export default class extends SkyraCommand {
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
-		if (messageBank.size === 0) throw message.language.get('commandMarkovNoMessages');
+		if (messageBank.size === 0) throw message.language.get(LanguageKeys.Commands.Fun.MarkovNoMessages);
 		const contents = messageBank.map(getAllContent).join(' ');
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);

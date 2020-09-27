@@ -1,11 +1,12 @@
 import { WeebCommand, WeebCommandOptions } from '@lib/structures/WeebCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: (language) => language.get('commandWhugDescription'),
-	extendedHelp: (language) => language.get('commandWhugExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Weeb.HugDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Weeb.HugExtended),
 	queryType: 'hug',
-	responseName: 'commandWhug',
+	responseName: LanguageKeys.Commands.Weeb.Hug,
 	usage: '<user:username>'
 })
 export default class extends WeebCommand {}

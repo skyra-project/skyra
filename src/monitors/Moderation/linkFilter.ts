@@ -1,14 +1,15 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { urlRegex } from '@utils/Links/UrlRegex';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 export default class extends ModerationMonitor {
-	protected readonly reasonLanguageKey = 'moderationMonitorLinks';
-	protected readonly reasonLanguageKeyWithMaximum = 'moderationMonitorLinksWithMaximum';
+	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationLinks;
+	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationLinksWithMaximum;
 	protected readonly keyEnabled = GuildSettings.Selfmod.Links.Enabled;
 	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Links.IgnoredChannels;
 	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Links.IgnoredRoles;
@@ -48,14 +49,14 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get('monitorNolink', { user: message.author.toString() })));
+		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.LinkMissing, { user: message.author.toString() })));
 	}
 
 	protected onLogMessage(message: KlasaMessage) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get('constMonitorLink')}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.LinkFooter)}`)
 			.setTimestamp();
 	}
 }

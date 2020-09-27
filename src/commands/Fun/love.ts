@@ -1,23 +1,22 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Fun.LoveDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.LoveExtended),
+	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
+	spam: true,
+	usage: '<user:username>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: (language) => language.get('commandLoveDescription'),
-			extendedHelp: (language) => language.get('commandLoveExtended'),
-			requiredPermissions: ['EMBED_LINKS'],
-			runIn: ['text'],
-			spam: true,
-			usage: '<user:username>'
-		});
-	}
-
 	public async run(message: KlasaMessage, [user]: [User]) {
 		const isSelf = message.author.id === user.id;
 		const percentage = isSelf ? 1 : Math.random();
@@ -25,13 +24,13 @@ export default class extends SkyraCommand {
 
 		let result: string | undefined = undefined;
 		if (estimatedPercentage < 45) {
-			result = message.language.get('commandLoveLess45');
+			result = message.language.get(LanguageKeys.Commands.Fun.LoveLess45);
 		} else if (estimatedPercentage < 75) {
-			result = message.language.get('commandLoveLess75');
+			result = message.language.get(LanguageKeys.Commands.Fun.LoveLess75);
 		} else if (estimatedPercentage < 100) {
-			result = message.language.get('commandLoveLess100');
+			result = message.language.get(LanguageKeys.Commands.Fun.LoveLess100);
 		} else {
-			result = message.language.get(isSelf ? 'commandLoveItself' : 'commandLove100');
+			result = message.language.get(isSelf ? LanguageKeys.Commands.Fun.LoveItself : LanguageKeys.Commands.Fun.Love100);
 		}
 
 		return message.sendEmbed(
@@ -44,7 +43,7 @@ export default class extends SkyraCommand {
 						`💗 **${user.tag}**`,
 						`💗 **${message.author.tag}**\n`,
 						`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
-						`**${message.language.get('commandLoveResult')}**: ${result}`
+						`**${message.language.get(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
 					].join('\n')
 				)
 		);

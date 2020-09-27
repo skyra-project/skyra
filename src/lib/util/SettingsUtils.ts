@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { Schema, SchemaEntry, SettingsFolder } from 'klasa';
@@ -58,7 +59,7 @@ export function displayEntry(entry: SchemaEntry, value: unknown, guild: Guild) {
 }
 
 export function displayEntrySingle(entry: SchemaEntry, value: unknown, guild: Guild) {
-	return value === null ? guild.language.get('commandConfSettingNotSet') : entry.serializer!.stringify(value, guild);
+	return value === null ? guild.language.get(LanguageKeys.Commands.Admin.ConfSettingNotSet) : entry.serializer!.stringify(value, guild);
 }
 
 export function displayEntryMultiple(entry: SchemaEntry, values: readonly unknown[], guild: Guild) {

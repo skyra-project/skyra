@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -9,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['kittenfact'],
 			cooldown: 10,
-			description: (language) => language.get('commandCatfactDescription'),
-			extendedHelp: (language) => language.get('commandCatfactExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Animal.CatfactDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Animal.CatfactExtended),
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true
 		});
@@ -21,7 +22,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.get('commandCatfactTitle'))
+				.setTitle(message.language.get(LanguageKeys.Commands.Animal.CatfactTitle))
 				.setDescription(fact)
 		);
 	}

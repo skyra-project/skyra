@@ -1,4 +1,5 @@
 import { Snowflake } from '@klasa/snowflake';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
@@ -14,12 +15,12 @@ export default class extends Argument {
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
 	public run(arg: string, possible: Possible, message: KlasaMessage) {
-		if (!arg) throw message.language.get('argumentRangeInvalid', { name: possible.name });
+		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 
 		if (this.kRegExp.test(arg)) {
 			const snowflake = new Snowflake(arg);
 			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return arg;
 		}
-		throw message.language.get('resolverInvalidSnowflake', { name: possible.name });
+		throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 	}
 }

@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -13,8 +14,8 @@ const enum CoinType {
 	aliases: ['cf'],
 	bucket: 2,
 	cooldown: 7,
-	description: (language) => language.get('commandCoinFlipDescription'),
-	extendedHelp: (language) => language.get('commandCoinFlipExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Games.CoinFlipDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.CoinFlipExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '(coin:cointype) (wager:coinwager)',
@@ -32,7 +33,7 @@ export default class extends SkyraCommand {
 		const balance = settings.money;
 
 		if (balance < wager) {
-			throw message.language.get('gamesNotEnoughMoney', { money: balance });
+			throw message.language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		const result = this.flipCoin();
@@ -42,12 +43,17 @@ export default class extends SkyraCommand {
 
 		return message.sendEmbed(
 			(await this.buildEmbed(message, result))
-				.setTitle(message.language.get(won ? 'commandCoinFlipWinTitle' : 'commandCoinFlipLoseTitle'))
+				.setTitle(message.language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
-					message.language.get(won ? 'commandCoinFlipWinDescriptionWithWager' : 'commandCoinFlipLoseDescriptionWithWager', {
-						result: message.language.get('commandCoinFlipCoinnames')[result],
-						wager
-					})
+					message.language.get(
+						won
+							? LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager
+							: LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager,
+						{
+							result: message.language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result],
+							wager
+						}
+					)
 				)
 		);
 	}
@@ -56,8 +62,8 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('cointype', (arg, _possible, message) => {
 			if (!arg) return null;
 			const lArg = arg.toLowerCase();
-			const face = message.language.get('commandCoinFlipCoinnames').findIndex((coin) => coin.toLowerCase() === lArg);
-			if (face === -1) throw message.language.get('commandCoinFlipInvalidCoinname', { arg });
+			const face = message.language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames).findIndex((coin) => coin.toLowerCase() === lArg);
+			if (face === -1) throw message.language.get(LanguageKeys.Commands.Games.CoinFlipInvalidCoinname, { arg });
 			return face;
 		});
 
@@ -76,11 +82,14 @@ export default class extends SkyraCommand {
 		const won = result === guess;
 		return message.send(
 			(await this.buildEmbed(message, result))
-				.setTitle(message.language.get(won ? 'commandCoinFlipWinTitle' : 'commandCoinFlipLoseTitle'))
+				.setTitle(message.language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
-					message.language.get(won ? 'commandCoinFlipWinDescription' : 'commandCoinFlipLoseDescription', {
-						result: message.language.get('commandCoinFlipCoinnames')[result]
-					})
+					message.language.get(
+						won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription,
+						{
+							result: message.language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result]
+						}
+					)
 				)
 		);
 	}
@@ -88,9 +97,9 @@ export default class extends SkyraCommand {
 	private async noGuess(message: KlasaMessage) {
 		const result = this.flipCoin();
 		return message.send(
-			(await this.buildEmbed(message, result)).setTitle(message.language.get('commandCoinFlipNoguessTitle')).setDescription(
-				message.language.get('commandCoinFlipNoguessDescription', {
-					result: message.language.get('commandCoinFlipCoinnames')[result]
+			(await this.buildEmbed(message, result)).setTitle(message.language.get(LanguageKeys.Commands.Games.CoinFlipNoguessTitle)).setDescription(
+				message.language.get(LanguageKeys.Commands.Games.CoinFlipNoguessDescription, {
+					result: message.language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result]
 				})
 			)
 		);

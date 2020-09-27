@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { UserEntity } from '@orm/entities/UserEntity';
 import { roundNumber } from '@sapphire/utilities';
 import { socialFolder } from '@utils/constants';
@@ -81,7 +82,7 @@ export class WheelOfFortune {
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
 		if (lost && final < 0) {
-			throw this.message.language.get('gamesCannotHaveNegativeMoney');
+			throw this.message.language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 		}
 
 		this.settings.money += this.winnings;
@@ -126,7 +127,9 @@ export class WheelOfFortune {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				this.message.language.get(playerHasWon ? 'commandWheelOfFortuneCanvasTextWon' : 'commandWheelOfFortuneCanvasTextLost'),
+				this.message.language.get(
+					playerHasWon ? LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextWon : LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextLost
+				),
 				280,
 				60
 			)

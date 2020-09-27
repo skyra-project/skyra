@@ -1,4 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import {
 	requireDj,
@@ -10,8 +11,8 @@ import {
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
-	description: (language) => language.get('commandPromoteDescription'),
-	extendedHelp: (language) => language.get('commandPromoteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Music.PromoteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.PromoteExtended),
 	usage: '<number:integer>'
 })
 export default class extends MusicCommand {
@@ -21,14 +22,17 @@ export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	public run(message: KlasaMessage, [index]: [number]) {
-		if (index <= 0) throw message.language.get('commandRemoveIndexInvalid');
+		if (index <= 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { music } = message.guild!;
 		if (index > music.queue.length)
-			throw message.language.get('commandRemoveIndexOut', {
-				songs: message.language.get(music.queue.length === 1 ? 'commandAddPlaylistSongs' : 'commandAddPlaylistSongsPlural', {
-					count: music.queue.length
-				})
+			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOut, {
+				songs: message.language.get(
+					music.queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+					{
+						count: music.queue.length
+					}
+				)
 			});
 
 		// Promote the song to the top of the queue

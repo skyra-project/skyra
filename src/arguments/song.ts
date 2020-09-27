@@ -1,4 +1,5 @@
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 import type { TrackData } from 'lavacord';
 
@@ -12,12 +13,12 @@ export default class extends Argument {
 					this.getRemainingUserEntries(message),
 					await message.guild!.music.parseQueue(message.attachments.first()!.url)
 				);
-			throw message.language.get('musicManagerFetchNoArguments');
+			throw message.language.get(LanguageKeys.MusicManager.FetchNoArguments);
 		}
 		if (!message.guild) return null;
 
 		const remainingUserEntries = this.getRemainingUserEntries(message);
-		if (remainingUserEntries === 0) throw message.language.get('musicManagerTooManySongs');
+		if (remainingUserEntries === 0) throw message.language.get(LanguageKeys.MusicManager.TooManySongs);
 
 		arg = arg.replace(/^<(.+)>$/g, '$1');
 		const parsedURL = this.parseURL(arg);
@@ -26,7 +27,7 @@ export default class extends Argument {
 		let soundcloud = true;
 
 		if (Reflect.has(message.flagArgs, 'import')) {
-			if (message.attachments.size === 0 && !arg) throw message.language.get('musicManagerImportQueueNotFound');
+			if (message.attachments.size === 0 && !arg) throw message.language.get(LanguageKeys.MusicManager.ImportQueueNotFound);
 			const url = message.attachments.first()?.url ?? arg;
 
 			tracks = this.filter(message, remainingUserEntries, await message.guild!.music.parseQueue(url));
@@ -44,7 +45,7 @@ export default class extends Argument {
 		}
 		if (!tracks.length) {
 			if (soundcloud) tracks.push(...(await this.fetchSongs(message, remainingUserEntries, `scsearch: ${arg}`)));
-			if (!tracks.length) throw message.language.get('musicManagerFetchNoMatches');
+			if (!tracks.length) throw message.language.get(LanguageKeys.MusicManager.FetchNoMatches);
 		}
 		return returnAll ? tracks : [tracks[0]];
 	}

@@ -1,5 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
@@ -7,8 +8,8 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandInviteDescription'),
-	extendedHelp: (language) => language.get('commandInviteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.General.InviteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.General.InviteExtended),
 	usage: '[noperms]',
 	flagSupport: true,
 	guarded: true,
@@ -33,12 +34,12 @@ export default class extends SkyraCommand {
 			.setDescription(
 				[
 					[
-						`[${message.language.get('commandInvitePermissionInviteText')}](https://invite.skyra.pw${
+						`[${message.language.get(LanguageKeys.Commands.General.InvitePermissionInviteText)}](https://invite.skyra.pw${
 							permissions ? '' : '/no-permissions'
 						})`,
-						`[${message.language.get('commandInvitePermissionSupportServerText')}](https://join.skyra.pw)`
+						`[${message.language.get(LanguageKeys.Commands.General.InvitePermissionSupportServerText)}](https://join.skyra.pw)`
 					].join(' | '),
-					permissions ? message.language.get('commandInvitePermissionsDescription') : undefined
+					permissions ? message.language.get(LanguageKeys.Commands.General.InvitePermissionsDescription) : undefined
 				]
 					.filter(Boolean)
 					.join('\n')

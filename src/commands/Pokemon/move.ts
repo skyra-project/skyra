@@ -3,6 +3,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -13,14 +14,14 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get('commandMoveDescription'),
-	extendedHelp: (language) => language.get('commandMoveExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Pokemon.MoveDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.MoveExtended),
 	usage: '<move:str>'
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [move]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const moveData = await this.fetchAPI(message, move.toLowerCase());
 
@@ -34,15 +35,15 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw message.language.get('commandMoveQueryFail', { move });
+			throw message.language.get(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
 		}
 	}
 
 	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.get('commandMoveEmbedData', {
-			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? 'globalNo' : 'globalYes')
+		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
+			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
-		const externalResources = message.language.get('systemPokedexExternalResource');
+		const externalResources = message.language.get(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
 			`[Serebii](${moveData.serebiiPage})`,

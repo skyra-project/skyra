@@ -1,11 +1,13 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CustomGet } from '@lib/types/Shared';
 import { MessageLogsEnum } from '@utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed, Permissions, TextChannel, User } from 'discord.js';
-import { Event, LanguageKeysSimple } from 'klasa';
+import { Event } from 'klasa';
 
 const { FLAGS } = Permissions;
 const enum Matches {
@@ -20,8 +22,8 @@ const enum Matches {
 export default class extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 	private readonly kMessageLogMetaData = {
-		Join: { color: Colors.Green, title: 'eventsGuildMemberAdd' },
-		Mute: { color: Colors.Amber, title: 'eventsGuildMemberAddMute' }
+		Join: { color: Colors.Green, title: LanguageKeys.Events.GuildMemberAdd },
+		Mute: { color: Colors.Amber, title: LanguageKeys.Events.GuildMemberAddMute }
 	} as const;
 
 	public async run(member: GuildMember) {
@@ -43,7 +45,7 @@ export default class extends Event {
 				.setColor(asset.color)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setDescription(
-					member.guild.language.get('eventsGuildMemberAddDescription', {
+					member.guild.language.get(LanguageKeys.Events.GuildMemberAddDescription, {
 						mention: member.toString(),
 						time: Date.now() - member.user.createdTimestamp
 					})
@@ -158,5 +160,5 @@ export default class extends Event {
 
 interface MessageLogMetaData {
 	color: number;
-	title: LanguageKeysSimple;
+	title: CustomGet<string, string>;
 }

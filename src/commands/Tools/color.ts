@@ -1,5 +1,6 @@
 import { RGB } from '@lib/structures/color';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { hexConcat, luminance, parse } from '@utils/Color';
 import { Canvas, rgb } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -14,8 +15,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['colour'],
 			cooldown: 15,
-			description: (language) => language.get('commandColorDescription'),
-			extendedHelp: (language) => language.get('commandColorExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Tools.ColorDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.ColorExtended),
 			requiredPermissions: ['ATTACH_FILES'],
 			usage: '<color:string> [separator:integer{0,255}]',
 			usageDelim: ' >'
@@ -27,7 +28,7 @@ export default class extends SkyraCommand {
 
 		const attachment = await this.showColor(rgb, diff);
 		return message.sendLocale(
-			'commandColor',
+			LanguageKeys.Commands.Tools.Color,
 			[
 				{
 					hex: hex.toString(),

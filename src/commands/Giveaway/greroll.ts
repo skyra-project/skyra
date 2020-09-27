@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { kRawEmoji } from '@orm/entities/GiveawayEntity';
 import { CLIENT_ID } from '@root/config';
 import { fetchReactionUsers, resolveEmoji } from '@utils/util';
@@ -16,8 +17,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['gr', 'groll'],
-			description: (language) => language.get('commandGiveawayRerollDescription'),
-			extendedHelp: (language) => language.get('commandGiveawayRerollExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollExtended),
 			requiredPermissions: ['READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '[winners:number{1,100}] [message:message]',
@@ -30,11 +31,11 @@ export default class extends SkyraCommand {
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? message.language.get('giveawayEndedMessage', {
+			? message.language.get(LanguageKeys.Giveaway.EndedMessage, {
 					winners: winners.map((winner) => `<@${winner}>`),
 					title: title!
 			  })
-			: message.language.get('giveawayEndedMessageNoWinner', { title: title! });
+			: message.language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
 		return message.sendMessage(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
@@ -47,7 +48,7 @@ export default class extends SkyraCommand {
 			: // If rawTarget was undefined then we fetch it from the API and we check embed colour
 			  (await message.channel.messages.fetch({ limit: 100 })).find((msg) => this.validatePossibleMessage(msg)) || null;
 		if (target) return target as KlasaMessage;
-		throw message.language.get('commandGiveawayRerollInvalid');
+		throw message.language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
 	}
 
 	private async pickWinners(message: KlasaMessage, winnerAmount: number) {

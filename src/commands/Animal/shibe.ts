@@ -1,20 +1,19 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Animal.ShibeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Animal.ShibeDescription),
+	requiredPermissions: ['EMBED_LINKS'],
+	spam: true
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 10,
-			description: (language) => language.get('commandShibeDescription'),
-			extendedHelp: (language) => language.get('commandShibeExtended'),
-			requiredPermissions: ['EMBED_LINKS'],
-			spam: true
-		});
-	}
-
 	public async run(message: KlasaMessage) {
 		const urls = await fetch<[string]>('https://shibe.online/api/shibes?count=1', FetchResultTypes.JSON);
 		return message.sendEmbed(

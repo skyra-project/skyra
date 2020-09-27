@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { floatPromise, pickRandom } from '@utils/util';
 import { User } from 'discord.js';
@@ -16,8 +17,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ttt'],
 			cooldown: 10,
-			description: (language) => language.get('commandTicTacToeDescription'),
-			extendedHelp: (language) => language.get('commandTicTacToeExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Games.TicTacToeDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.TicTacToeExtended),
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -27,31 +28,34 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user]: [User]) {
-		if (user.id === CLIENT_ID) throw message.language.get('commandGamesSkyra');
-		if (user.bot) throw message.language.get('commandGamesBot');
-		if (user.id === message.author.id) throw message.language.get('commandGamesSelf');
-		if (this.channels.has(message.channel.id)) throw message.language.get('commandGamesProgress');
+		if (user.id === CLIENT_ID) throw message.language.get(LanguageKeys.Commands.Games.GamesSkyra);
+		if (user.bot) throw message.language.get(LanguageKeys.Commands.Games.GamesBot);
+		if (user.id === message.author.id) throw message.language.get(LanguageKeys.Commands.Games.GamesSelf);
+		if (this.channels.has(message.channel.id)) throw message.language.get(LanguageKeys.Commands.Games.GamesProgress);
 		this.channels.add(message.channel.id);
 
 		try {
-			const [response] = await this.prompt
-				.createPrompt(message, { target: user })
-				.run(message.language.get('commandTicTacToePrompt', { challenger: message.author.toString(), challengee: user.toString() }));
+			const [response] = await this.prompt.createPrompt(message, { target: user }).run(
+				message.language.get(LanguageKeys.Commands.Games.TicTacToePrompt, {
+					challenger: message.author.toString(),
+					challengee: user.toString()
+				})
+			);
 			if (response) {
 				try {
-					const gameMessage = await message.send(pickRandom(message.language.get('systemLoading')), []);
+					const gameMessage = await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
 					await this.game(
 						gameMessage,
 						[message.author, user].sort(() => Math.random() - 0.5)
 					);
 				} catch {
-					await message.sendLocale('unexpectedIssue').catch((error) => this.client.emit(Events.ApiError, error));
+					await message.sendLocale(LanguageKeys.Misc.UnexpectedIssue).catch((error) => this.client.emit(Events.ApiError, error));
 				}
 			} else {
-				await message.alert(message.language.get('commandGamesPromptDeny'));
+				await message.alert(message.language.get(LanguageKeys.Commands.Games.GamesPromptDeny));
 			}
 		} catch {
-			await message.alert(message.language.get('commandGamesPromptTimeout'));
+			await message.alert(message.language.get(LanguageKeys.Commands.Games.GamesPromptTimeout));
 		} finally {
 			this.channels.delete(message.channel.id);
 		}
@@ -66,8 +70,11 @@ export default class extends SkyraCommand {
 			const winner = await this._game(message, players, board);
 			return await message.edit(
 				winner
-					? message.language.get('commandTicTacToeWinner', { winner: players[winner - 1].username, board: this.render(board) })
-					: message.language.get('commandTicTacToeDraw', { board: this.render(board) })
+					? message.language.get(LanguageKeys.Commands.Games.TicTacToeWinner, {
+							winner: players[winner - 1].username,
+							board: this.render(board)
+					  })
+					: message.language.get(LanguageKeys.Commands.Games.TicTacToeDraw, { board: this.render(board) })
 			);
 		} catch (error) {
 			if (typeof error === 'string') return message.edit(error);
@@ -95,7 +102,7 @@ export default class extends SkyraCommand {
 
 				try {
 					await message.edit(
-						message.language.get('commandTicTacToeTurn', {
+						message.language.get(LanguageKeys.Commands.Games.TicTacToeTurn, {
 							icon: PLAYER[turn % 2],
 							player: player.username,
 							board: this.render(board)
@@ -103,7 +110,7 @@ export default class extends SkyraCommand {
 					);
 					timeout = setTimeout(() => {
 						collector.stop();
-						reject(message.language.get('commandGamesTimeout'));
+						reject(message.language.get(LanguageKeys.Commands.Games.GamesTimeout));
 					}, 60000);
 					blocked = false;
 				} catch (error) {

@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -21,8 +22,8 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
-	description: (language) => language.get('commandClashofclansDescription'),
-	extendedHelp: (language) => language.get('commandClashofclansExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.ClashofclansDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.ClashofclansExtended),
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
@@ -38,22 +39,22 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 			if (action === 'player') {
 				if (kPlayerTagRegex.test(arg)) return arg;
-				throw message.language.get('commandClashofclansInvalidPlayerTag', { playertag: arg });
+				throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag, { playertag: arg });
 			}
 
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	]
 ])
 export default class extends RichDisplayCommand {
 	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(message, clan, ClashOfClansFetchCategories.CLANS);
 
-		if (!clanData.length) throw message.language.get('commandClashOfClansClansQueryFail', { clan });
+		if (!clanData.length) throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansClansQueryFail, { clan });
 
 		const display = await this.buildClanDisplay(message, clanData);
 
@@ -87,13 +88,14 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === ClashOfClansFetchCategories.CLANS) throw message.language.get('commandClashOfClansClansQueryFail', { clan: query });
-			else throw message.language.get('commandClashofclansPlayersQueryFail', { playertag: query });
+			throw category === ClashOfClansFetchCategories.CLANS
+				? message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansClansQueryFail, { clan: query })
+				: message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayersQueryFail, { playertag: query });
 		}
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, player: ClashOfClans.Player) {
-		const titles = message.language.get('commandClashofclansPlayerEmbedTitles');
+		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.ClashofclansPlayerEmbedTitles);
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -131,7 +133,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
-			const titles = message.language.get('commandClashofclansClanEmbedTitles');
+			const titles = message.language.get(LanguageKeys.Commands.GameIntegration.ClashofclansClanEmbedTitles);
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)
@@ -159,7 +161,9 @@ export default class extends RichDisplayCommand {
 							`**${titles.warWins}**: ${clan.warWins}`,
 							`**${titles.warTies}**: ${clan.warTies ?? titles.unknown}`,
 							`**${titles.warLosses}**: ${clan.warLosses ?? titles.unknown}`,
-							`**${titles.warLogPublic}**: ${message.language.get(clan.isWarLogPublic ? 'globalYes' : 'globalNo')}`
+							`**${titles.warLogPublic}**: ${message.language.get(
+								clan.isWarLogPublic ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No
+							)}`
 						]
 							.filter((val) => val !== null)
 							.join('\n')

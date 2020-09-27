@@ -1,5 +1,5 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { isTextBasedChannel, resolveEmoji } from '@utils/util';
 import { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import { TextChannel } from 'discord.js';

@@ -1,4 +1,5 @@
-import { TriggerIncludes } from '@lib/types/settings/GuildSettings';
+import { TriggerIncludes } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
@@ -13,7 +14,7 @@ export default class extends Serializer {
 		)
 			return data;
 
-		throw language.get('serializerTriggerIncludeInvalid');
+		throw language.get(LanguageKeys.Serializers.TriggerIncludeInvalid);
 	}
 
 	public stringify(value: TriggerIncludes) {

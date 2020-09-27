@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
@@ -8,8 +9,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['kitten', 'cat'],
 	cooldown: 10,
-	description: (language) => language.get('commandKittyDescription'),
-	extendedHelp: (language) => language.get('commandKittyExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Animal.KittyDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Animal.KittyDescription),
 	requiredPermissions: ['ATTACH_FILES', 'EMBED_LINKS'],
 	spam: true
 })

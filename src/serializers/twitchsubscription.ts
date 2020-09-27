@@ -1,16 +1,17 @@
-import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/settings/GuildSettings';
+import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 	public validate(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {
-			return Promise.reject(language.get('serializerTwitchSubscriptionInvalid'));
+			return Promise.reject(language.get(LanguageKeys.Serializers.TwitchSubscriptionInvalid));
 		}
 
 		// Validate that all entries from the second index in the tuple are indeed correct values.
 		if (data[1].some((streamer) => !this.validateStreamer(streamer))) {
-			return Promise.reject(language.get('serializerTwitchSubscriptionInvalidStreamer'));
+			return Promise.reject(language.get(LanguageKeys.Serializers.TwitchSubscriptionInvalidStreamer));
 		}
 
 		// Return without further modifications

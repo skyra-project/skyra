@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors, BrawlStarsEmojis, Emojis } from '@utils/constants';
@@ -48,8 +49,8 @@ export interface BrawlStarsGIData {
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bs'],
-	description: (language) => language.get('commandBrawlstarsDescription'),
-	extendedHelp: (language) => language.get('commandBrawlstarsExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsExtended),
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
@@ -61,7 +62,7 @@ export interface BrawlStarsGIData {
 		'tag',
 		(arg, _possible, message) => {
 			if (kTagRegex.test(arg)) return arg;
-			throw message.language.get('commandClashofclansInvalidPlayerTag', { playertag: arg });
+			throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag, { playertag: arg });
 		}
 	]
 ])
@@ -73,7 +74,7 @@ export default class extends SkyraCommand {
 		if (!tag && bsData.extraData?.playerTag) {
 			tag = bsData!.extraData.playerTag!;
 		} else if (!tag) {
-			throw message.language.get('resolverInvalidString', { name: 'tag' });
+			throw message.language.get(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
 		const playerData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
@@ -94,7 +95,7 @@ export default class extends SkyraCommand {
 		if (!tag && bsData.extraData?.clubTag) {
 			tag = bsData!.extraData.clubTag!;
 		} else if (!tag) {
-			throw message.language.get('resolverInvalidString', { name: 'tag' });
+			throw message.language.get(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
 		const clubData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.CLUB)) as BrawlStars.Club;
@@ -109,8 +110,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, player: BrawlStars.Player) {
-		const titles = message.language.get('commandBrawlstarsPlayerEmbedTitles');
-		const fields = message.language.get('commandBrawlstarsPlayerEmbedFields');
+		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
+		const fields = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) || BrandingColors.Primary)
@@ -166,8 +167,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildClubEmbed(message: KlasaMessage, club: BrawlStars.Club) {
-		const titles = message.language.get('commandBrawlstarsClubEmbedTitles');
-		const fields = message.language.get('commandBrawlstarsClubEmbedFields');
+		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
+		const fields = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
@@ -206,8 +207,9 @@ export default class extends SkyraCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === BrawlStarsFetchCategories.CLUB) throw message.language.get('commandClashOfClansClansQueryFail', { clan: query });
-			else throw message.language.get('commandClashofclansPlayersQueryFail', { playertag: query });
+			throw category === BrawlStarsFetchCategories.CLUB
+				? message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query })
+				: message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
 }

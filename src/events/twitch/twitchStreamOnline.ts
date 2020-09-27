@@ -1,7 +1,8 @@
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
 import { TwitchHelixGameSearchResult } from '@lib/types/definitions/Twitch';
-import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
@@ -82,7 +83,7 @@ export default class extends Event {
 				case TWITCH_REPLACEABLES_MATCHES.VIEWER_COUNT:
 					return notification.viewer_count.toString();
 				case TWITCH_REPLACEABLES_MATCHES.GAME_NAME:
-					return game?.name ?? i18n.get('notificationsTwitchNoGameName');
+					return game?.name ?? i18n.get(LanguageKeys.Notifications.TwitchNoGameName);
 				case TWITCH_REPLACEABLES_MATCHES.LANGUAGE:
 					return notification.language;
 				case TWITCH_REPLACEABLES_MATCHES.GAME_ID:
@@ -120,10 +121,10 @@ export default class extends Event {
 			.setURL(`https://twitch.tv/${data.user_name}`)
 			.setDescription(
 				data.game_name
-					? i18n.get('notificationsTwitchEmbedDescriptionWithGame', { userName: data.user_name, gameName: data.game_name })
-					: i18n.get('notificationsTwitchEmbedDescription', { userName: data.user_name })
+					? i18n.get(LanguageKeys.Notifications.TwitchEmbedDescriptionWithGame, { userName: data.user_name, gameName: data.game_name })
+					: i18n.get(LanguageKeys.Notifications.TwitchEmbedDescription, { userName: data.user_name })
 			)
-			.setFooter(i18n.get('notificationTwitchEmbedFooter'))
+			.setFooter(i18n.get(LanguageKeys.Notifications.TwitchEmbedFooter))
 			.setTimestamp(data.started_at)
 			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setImage(data.box_art_url ?? '');

@@ -2,6 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -13,8 +14,8 @@ import { KlasaMessage, Timestamp } from 'klasa';
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['show', 'tvdb', 'tv'],
 	cooldown: 10,
-	description: (language) => language.get('commandShowsDescription'),
-	extendedHelp: (language) => language.get('commandShowsExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.ShowsDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.ShowsExtended),
 	usage: '<show:str> [year:str]',
 	usageDelim: 'y:'
 })
@@ -23,11 +24,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [show, year]: [string, string?]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, show, year);
-		if (!entries.length) throw message.language.get('systemNoResults');
+		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -44,7 +45,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -55,13 +56,13 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get('systemQueryFail');
+			throw message.language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
 	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage) {
-		const titles = message.language.get('commandShowsTitles');
-		const fieldsData = message.language.get('commandShowsData');
+		const titles = message.language.get(LanguageKeys.Commands.Tools.ShowsTitles);
+		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.ShowsData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		const showData = await Promise.all(shows.map((show) => this.fetchShowData(message, show.id)));

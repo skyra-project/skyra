@@ -1,6 +1,7 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '@utils/constants';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { diffWordsWithSpace } from 'diff';
@@ -38,7 +39,7 @@ export default class extends Event {
 							.map((result) => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
 							.join(' ')
 					)
-					.setFooter(`${message.language.get('eventsMessageUpdate')} | ${(message.channel as TextChannel).name}`)
+					.setFooter(`${message.language.get(LanguageKeys.Events.MessageUpdate)} | ${(message.channel as TextChannel).name}`)
 					.setTimestamp()
 		);
 	}

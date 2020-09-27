@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';
 import { MessageEmbed, version } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
@@ -11,8 +12,8 @@ export default class extends SkyraCommand {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,
-			description: (language) => language.get('commandStatsDescription'),
-			extendedHelp: (language) => language.get('commandStatsExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.System.StatsDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.StatsExtended),
 			requiredPermissions: ['EMBED_LINKS']
 		});
 	}
@@ -22,8 +23,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage) {
-		const titles = message.language.get('commandStatsTitles');
-		const fields = message.language.get('commandStatsFields', {
+		const titles = message.language.get(LanguageKeys.Commands.System.StatsTitles);
+		const fields = message.language.get(LanguageKeys.Commands.System.StatsFields, {
 			stats: this.generalStatistics,
 			uptime: this.uptimeStatistics,
 			usage: this.usageStatistics

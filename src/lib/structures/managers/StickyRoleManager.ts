@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings, StickyRole } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, StickyRole } from '@lib/types/namespaces/GuildSettings';
 import { Guild } from 'discord.js';
 import { ArrayActions } from 'klasa';
 

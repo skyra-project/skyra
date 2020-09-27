@@ -1,7 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isFunction, isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -35,7 +36,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['commands', 'cmd', 'cmds'],
-	description: (language) => language.get('commandHelpDescription'),
+	description: (language) => language.get(LanguageKeys.Commands.General.HelpDescription),
 	guarded: true,
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
@@ -69,7 +70,7 @@ export default class extends SkyraCommand {
 				commandCategories.push(
 					`\`${line}.\` **${category}** → ${language.get(
 						// TODO: i18next should do this automatically
-						commands.length === 1 ? 'commandHelpCommandCount' : 'commandHelpCommandCountPlural',
+						commands.length === 1 ? LanguageKeys.Commands.General.HelpCommandCount : LanguageKeys.Commands.General.HelpCommandCountPlural,
 						{ count: commands.length }
 					)}`
 				);
@@ -87,8 +88,8 @@ export default class extends SkyraCommand {
 			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
 			const response = await message.sendMessage(
-				message.language.get('commandHelpAllFlag', { prefix: message.guildSettings.get(GuildSettings.Prefix) }),
-				new MessageEmbed({ description: pickRandom(message.language.get('systemLoading')), color: BrandingColors.Secondary })
+				message.language.get(LanguageKeys.Commands.General.HelpAllFlag, { prefix: message.guildSettings.get(GuildSettings.Prefix) }),
+				new MessageEmbed({ description: pickRandom(message.language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 			);
 			const display = await this.buildDisplay(message);
 
@@ -101,9 +102,9 @@ export default class extends SkyraCommand {
 
 		try {
 			const response = await message.author.send(await this.buildHelp(message), { split: { char: '\n' } });
-			return message.channel.type === 'dm' ? response : await message.sendLocale('commandHelpDm');
+			return message.channel.type === 'dm' ? response : await message.sendLocale(LanguageKeys.Commands.General.HelpDm);
 		} catch {
-			return message.channel.type === 'dm' ? null : message.sendLocale('commandHelpNodm');
+			return message.channel.type === 'dm' ? null : message.sendLocale(LanguageKeys.Commands.General.HelpNodm);
 		}
 	}
 
@@ -136,7 +137,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildCommandHelp(message: KlasaMessage, command: Command) {
-		const builderData = message.language.get('systemHelpTitles');
+		const builderData = message.language.get(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
 			.setExplainedUsage(builderData.explainedUsage)
@@ -150,7 +151,7 @@ export default class extends SkyraCommand {
 
 		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
-		const data = message.language.get('commandHelpData', {
+		const data = message.language.get(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
 			titleDescription: isFunction(command.description) ? command.description(message.language) : command.description,
 			usage: command.usage.fullUsage(message),

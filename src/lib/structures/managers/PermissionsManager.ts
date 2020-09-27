@@ -1,4 +1,4 @@
-import { GuildSettings, PermissionsNode } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, PermissionsNode } from '@lib/types/namespaces/GuildSettings';
 import { Guild, Role } from 'discord.js';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;

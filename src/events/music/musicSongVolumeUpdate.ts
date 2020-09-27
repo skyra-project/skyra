@@ -1,4 +1,5 @@
 import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { floatPromise, pickRandom } from '@utils/util';
 import { Event } from 'klasa';
@@ -11,12 +12,12 @@ export default class extends Event {
 			const { language } = channel.guild;
 			const response =
 				next > 200
-					? language.get('commandVolumeChangedExtreme', {
+					? language.get(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
 							emoji: '📢',
-							text: pickRandom(language.get('commandVolumeChangedTexts')),
+							text: pickRandom(language.get(LanguageKeys.Commands.Music.VolumeChangedTexts)),
 							volume: next
 					  })
-					: language.get('commandVolumeChanged', {
+					: language.get(LanguageKeys.Commands.Music.VolumeChanged, {
 							emoji: next > previous ? (next === 200 ? '📢' : '🔊') : next === 0 ? '🔇' : '🔉',
 							volume: next
 					  });

@@ -1,4 +1,4 @@
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { GuildMember, Permissions } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 

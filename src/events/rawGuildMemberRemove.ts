@@ -2,7 +2,8 @@ import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { getDisplayAvatar } from '@utils/util';
 import { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
@@ -40,12 +41,12 @@ export default class extends Event {
 		const isModerationAction = await this.isModerationAction(guild, data);
 
 		const footer = isModerationAction.kicked
-			? guild.language.get('eventsGuildMemberKicked')
+			? guild.language.get(LanguageKeys.Events.GuildMemberKicked)
 			: isModerationAction.banned
-			? guild.language.get('eventsGuildMemberBanned')
+			? guild.language.get(LanguageKeys.Events.GuildMemberBanned)
 			: isModerationAction.softbanned
-			? guild.language.get('eventsGuildMemberSoftBanned')
-			: guild.language.get('eventsGuildMemberRemove');
+			? guild.language.get(LanguageKeys.Events.GuildMemberSoftBanned)
+			: guild.language.get(LanguageKeys.Events.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
@@ -53,10 +54,13 @@ export default class extends Event {
 				.setColor(Colors.Red)
 				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
 				.setDescription(
-					guild.language.get(time === -1 ? 'eventsGuildMemberRemoveDescription' : 'eventsGuildMemberRemoveDescriptionWithJoinedAt', {
-						mention: `<@${data.user.id}>`,
-						time
-					})
+					guild.language.get(
+						time === -1 ? LanguageKeys.Events.GuildMemberRemoveDescription : LanguageKeys.Events.GuildMemberRemoveDescriptionWithJoinedAt,
+						{
+							mention: `<@${data.user.id}>`,
+							time
+						}
+					)
 				)
 				.setFooter(footer)
 				.setTimestamp()

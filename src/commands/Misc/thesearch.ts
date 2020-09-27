@@ -1,4 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { assetsFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
@@ -12,8 +13,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get('commandThesearchDescription'),
-			extendedHelp: (language) => language.get('commandThesearchExtended'),
+			description: (language) => language.get(LanguageKeys.Commands.Misc.ThesearchDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ThesearchExtended),
 			requiredPermissions: ['ATTACH_FILES'],
 			runIn: ['text'],
 			spam: true,

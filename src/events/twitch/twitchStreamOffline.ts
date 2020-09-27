@@ -1,6 +1,7 @@
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
-import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/settings/GuildSettings';
+import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';
 import { floatPromise } from '@utils/util';
@@ -68,7 +69,7 @@ export default class extends Event {
 		return new MessageEmbed()
 			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setDescription(message)
-			.setFooter(i18n.get('notificationTwitchEmbedFooter'))
+			.setFooter(i18n.get(LanguageKeys.Notifications.TwitchEmbedFooter))
 			.setTimestamp();
 	}
 }

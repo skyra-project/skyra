@@ -3,6 +3,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
@@ -16,8 +17,8 @@ const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get('commandHistoryDescription'),
-	extendedHelp: (language) => language.get('commandHistoryExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.HistoryDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.HistoryExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
 	usage: '<details|overview:default> [user:username]',
@@ -56,27 +57,27 @@ export default class extends SkyraCommand {
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setFooter(
-					message.language.get('commandHistoryFooterNew', {
+					message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
 						warnings,
 						mutes,
 						kicks,
 						bans,
 						warningsText:
 							warnings === 1
-								? message.language.get('commandHistoryFooterWarning', { count: warnings })
-								: message.language.get('commandHistoryFooterWarningPlural', { count: warnings }),
+								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings })
+								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarningPlural, { count: warnings }),
 						mutesText:
 							mutes === 1
-								? message.language.get('commandHistoryFooterMutes', { count: mutes })
-								: message.language.get('commandHistoryFooterMutesPlural', { count: mutes }),
+								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes })
+								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutesPlural, { count: mutes }),
 						kicksText:
 							kicks === 1
-								? message.language.get('commandHistoryFooterKicks', { count: kicks })
-								: message.language.get('commandHistoryFooterKicksPlural', { count: kicks }),
+								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks })
+								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicksPlural, { count: kicks }),
 						bansText:
 							bans === 1
-								? message.language.get('commandHistoryFooterBans', { count: bans })
-								: message.language.get('commandHistoryFooterBansPlural', { count: bans })
+								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
+								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterBansPlural, { count: bans })
 					})
 				)
 		);
@@ -85,18 +86,23 @@ export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: KlasaMessage, [target = message.author]: [User]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = (await message.guild!.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
-		if (!entries.size) throw message.language.get('commandModerationsEmpty');
+		if (!entries.size) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(
-					message.language.get(entries.size === 1 ? 'commandModerationsAmount' : 'commandModerationsAmountPlural', { count: entries.size })
+					message.language.get(
+						entries.size === 1
+							? LanguageKeys.Commands.Moderation.ModerationsAmount
+							: LanguageKeys.Commands.Moderation.ModerationsAmountPlural,
+						{ count: entries.size }
+					)
 				)
 		);
 

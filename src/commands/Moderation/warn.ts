@@ -1,13 +1,14 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['w', 'warning'],
-	description: (language) => language.get('commandWarnDescription'),
-	extendedHelp: (language) => language.get('commandWarnExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.WarnDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.WarnExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredMember: true,
 	optionalDuration: true

@@ -1,9 +1,11 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CustomGet } from '@lib/types/Shared';
 import { MessageLogsEnum } from '@utils/constants';
 import { GuildMember, MessageEmbed, User } from 'discord.js';
-import { Event, Language, LanguageKeysSimple } from 'klasa';
+import { Event, Language } from 'klasa';
 
 export default class extends Event {
 	public run(previous: GuildMember, next: GuildMember) {
@@ -19,7 +21,7 @@ export default class extends Event {
 						next.user,
 						next.guild.language,
 						this.getNameDescription(next.guild.language, prevNickname, nextNickname),
-						'eventsNicknameUpdate'
+						LanguageKeys.Events.NicknameUpdate
 					)
 				);
 			}
@@ -49,7 +51,7 @@ export default class extends Event {
 					next.user,
 					next.guild.language,
 					this.getRoleDescription(next.guild.language, addedRoles, removedRoles),
-					'eventsRoleUpdate'
+					LanguageKeys.Events.RoleUpdate
 				)
 			);
 		}
@@ -59,16 +61,19 @@ export default class extends Event {
 		const description = [];
 		if (addedRoles.length) {
 			description.push(
-				i18n.get(addedRoles.length === 1 ? 'eventsGuildMemberAddedRoles' : 'eventsGuildMemberAddedRolesPlural', {
-					addedRoles: i18n.list(addedRoles, i18n.get('globalAnd'))
+				i18n.get(addedRoles.length === 1 ? LanguageKeys.Events.GuildMemberAddedRoles : LanguageKeys.Events.GuildMemberAddedRolesPlural, {
+					addedRoles: i18n.list(addedRoles, i18n.get(LanguageKeys.Globals.And))
 				})
 			);
 		}
 		if (removedRoles.length) {
 			description.push(
-				i18n.get(removedRoles.length === 1 ? 'eventsGuildMemberRemovedRoles' : 'eventsGuildMemberRemovedRolesPlural', {
-					removedRoles: i18n.list(removedRoles, i18n.get('globalAnd'))
-				})
+				i18n.get(
+					removedRoles.length === 1 ? LanguageKeys.Events.GuildMemberRemovedRoles : LanguageKeys.Events.GuildMemberRemovedRolesPlural,
+					{
+						removedRoles: i18n.list(removedRoles, i18n.get(LanguageKeys.Globals.And))
+					}
+				)
 			);
 		}
 		return description.join('\n');
@@ -76,21 +81,18 @@ export default class extends Event {
 
 	private getNameDescription(i18n: Language, previousName: string | null, nextName: string | null) {
 		return [
-			i18n.get(previousName === null ? 'eventsNameUpdatePreviousWasNotSet' : 'eventsNameUpdatePreviousWasSet', { previousName }),
-			i18n.get(nextName === null ? 'eventsNameUpdateNextWasNotSet' : 'eventsNameUpdateNextWasSet', { nextName })
+			i18n.get(previousName === null ? LanguageKeys.Events.NameUpdatePreviousWasNotSet : LanguageKeys.Events.NameUpdatePreviousWasSet, {
+				previousName
+			}),
+			i18n.get(nextName === null ? LanguageKeys.Events.NameUpdateNextWasNotSet : LanguageKeys.Events.NameUpdateNextWasSet, { nextName })
 		].join('\n');
 	}
 
-	private buildEmbed(
-		user: User,
-		i18n: Language,
-		description: string,
-		footerKey: Extract<LanguageKeysSimple, 'eventsNicknameUpdate' | 'eventsRoleUpdate'>
-	) {
+	private buildEmbed(user: User, i18n: Language, description: string, footerKey: CustomGet<string, string>) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(description || i18n.get('eventsGuildMemberNoUpdate'))
+			.setDescription(description || i18n.get(LanguageKeys.Events.GuildMemberNoUpdate))
 			.setFooter(i18n.get(footerKey))
 			.setTimestamp();
 	}

@@ -2,7 +2,8 @@ import { HardPunishment, ModerationEvent } from '@lib/structures/ModerationEvent
 import { SelfModeratorBitField } from '@lib/structures/SelfModeratorBitField';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Adder } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
@@ -81,7 +82,7 @@ export default class extends ModerationEvent<ArgumentType> {
 	protected onAlert([data]: Readonly<ArgumentType>) {
 		floatPromise(
 			this,
-			data.channel.sendLocale('monitorReactionsFilter', [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
+			data.channel.sendLocale(LanguageKeys.Monitors.ReactionsFilter, [{ user: `<@${data.userID}>` }]).then((message) => message.nuke(15000))
 		);
 	}
 
@@ -96,9 +97,11 @@ export default class extends ModerationEvent<ArgumentType> {
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(
-				`[${data.guild.language.get('jumpTo')}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
+				`[${data.guild.language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
+					data.messageID
+				})`
 			)
-			.setFooter(`${data.channel.name} | ${data.guild.language.get('constMonitorReactionfilter')}`)
+			.setFooter(`${data.channel.name} | ${data.guild.language.get(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
 			.setTimestamp();
 	}
 

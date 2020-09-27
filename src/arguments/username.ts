@@ -1,3 +1,4 @@
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { api } from '@utils/Models/Api';
 import { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
 import { User } from 'discord.js';
@@ -12,14 +13,14 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<User> {
-		if (!arg) throw message.language.get('resolverInvalidUsername', { name: possible.name });
+		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
 		const result = await this.fetchMember(arg, message);
 		if (result) return message.guild!.members.add(result).user;
-		throw message.language.get('resolverInvalidUsername', { name: possible.name });
+		throw message.language.get(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 	}
 
 	private resolveUser(message: KlasaMessage, query: string) {
@@ -27,7 +28,7 @@ export default class extends Argument {
 
 		if (id) {
 			return this.client.users.fetch(id).catch(() => {
-				throw message.language.get('userNotExistent');
+				throw message.language.get(LanguageKeys.Misc.UserNotExistent);
 			});
 		}
 		return null;

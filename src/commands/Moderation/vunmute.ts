@@ -1,12 +1,13 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uvm', 'vum', 'unvmute'],
-	description: (language) => language.get('commandVunmuteDescription'),
-	extendedHelp: (language) => language.get('commandVunmuteExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.VunmuteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.VunmuteExtended),
 	requiredMember: true,
 	requiredPermissions: ['MUTE_MEMBERS']
 })
@@ -33,7 +34,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.voice.serverMute) throw message.language.get('guildMuteNotFound');
+		if (member && !member.voice.serverMute) throw message.language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 		return member;
 	}
 }

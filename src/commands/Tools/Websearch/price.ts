@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { NAME, TOKENS, VERSION } from '@root/config';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -11,8 +12,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
-	description: (language) => language.get('commandPriceDescription'),
-	extendedHelp: (language) => language.get('commandPriceExtended'),
+	description: (language) => language.get(LanguageKeys.Commands.Tools.PriceDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.PriceExtended),
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
@@ -20,7 +21,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
 		await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get('systemLoading'))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
@@ -46,7 +47,7 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw message.language.get('commandPriceCurrencyNotFound');
+			throw message.language.get(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
 		}
 	}
 
@@ -58,7 +59,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(message.language.get('commandPriceCurrency', { fromCurrency, fromAmount, worths }))
+			.setDescription(message.language.get(LanguageKeys.Commands.Tools.PriceCurrency, { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}
 }

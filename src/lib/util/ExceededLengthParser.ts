@@ -1,4 +1,5 @@
 import { Events } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { KlasaMessage } from 'klasa';
 import { fetch, FetchMethods, FetchResultTypes } from './util';
@@ -15,8 +16,8 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 					options.targetId ? `${options.targetId}.txt` : 'output.txt',
 					message.language.get(
 						options.time !== undefined && options.footer !== undefined
-							? 'systemExceededLengthOutputFileWithTypeAndTime'
-							: 'systemExceededLengthOutputFile',
+							? LanguageKeys.System.ExceededLengthOutputFileWithTypeAndTime
+							: LanguageKeys.System.ExceededLengthOutputFile,
 						{ time: options.time, type: options.footer }
 					)
 				);
@@ -32,8 +33,8 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			if (options.url)
 				return message.sendLocale(
 					options.time !== undefined && options.footer !== undefined
-						? 'systemExceededLengthOutputHastebinWithTypeAndTime'
-						: 'systemExceededLengthOutputHastebin',
+						? LanguageKeys.System.ExceededLengthOutputHastebinWithTypeAndTime
+						: LanguageKeys.System.ExceededLengthOutputHastebin,
 					[{ url: options.url, time: options.time, type: options.footer }]
 				);
 			options.hastebinUnavailable = true;
@@ -46,8 +47,8 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				message.client.emit(Events.Log, options.result);
 				return message.sendLocale(
 					options.time !== undefined && options.footer !== undefined
-						? 'systemExceededLengthOutputConsoleWithTypeAndTime'
-						: 'systemExceededLengthOutputConsole',
+						? LanguageKeys.System.ExceededLengthOutputConsoleWithTypeAndTime
+						: LanguageKeys.System.ExceededLengthOutputConsole,
 					[{ time: options.time, type: options.footer }]
 				);
 			}
@@ -74,9 +75,9 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			return message.sendLocale(
 				options.success
 					? options.time !== undefined && options.footer !== undefined
-						? 'systemExceededLengthOutputWithTypeAndTime'
-						: 'systemExceededLengthOutput'
-					: 'commandEvalError',
+						? LanguageKeys.System.ExceededLengthOutputWithTypeAndTime
+						: LanguageKeys.System.ExceededLengthOutput
+					: LanguageKeys.Commands.System.EvalError,
 				[
 					{
 						output: codeBlock(options.language!, options.result!),
@@ -98,7 +99,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message
-			.prompt(message.language.get('systemExceededLengthChooseOutput', { output: _options }))
+			.prompt(message.language.get(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }))
 			.catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();

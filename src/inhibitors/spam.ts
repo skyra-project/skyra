@@ -1,5 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings } from '@lib/types/settings/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
 
 export default class extends Inhibitor {
@@ -23,7 +24,7 @@ export default class extends Inhibitor {
 		try {
 			this.ratelimit.acquire(message.channel.id).drip();
 		} catch {
-			throw message.language.get('inhibitorSpam', { channel: channel.toString() });
+			throw message.language.get(LanguageKeys.Inhibitors.Spam, { channel: channel.toString() });
 		}
 	}
 }

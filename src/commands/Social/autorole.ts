@@ -19,17 +19,20 @@ export default class extends SkyraCommand {
 			requiredGuildPermissions: ['MANAGE_ROLES'],
 			runIn: ['text'],
 			subcommands: true,
-			usage: '<add|remove|update|show:default> (role:rolename) [points:points{0,1000000}]',
+			usage: '<add|remove|update|show:default> (role:rolename) (points:points{0,1000000})',
 			usageDelim: ' '
 		});
 
 		this.createCustomResolver('rolename', (arg, possible, msg, [type]) => {
 			if (type === 'show') return undefined;
 			return this.client.arguments.get('rolename')!.run(arg, possible, msg);
-		}).createCustomResolver('points', (arg, possible, msg, [type]) => {
-			if (type === 'show' || type === 'remove') return undefined;
-			return this.client.arguments.get('integer')!.run(arg, possible, msg);
-		});
+		})
+			.createCustomResolver('points', (arg, possible, msg, [type]) => {
+				if (type === 'show' || type === 'remove') return undefined;
+				return this.client.arguments.get('integer')!.run(arg, possible, msg);
+			})
+			.customizeResponse('role', (message) => message.language.get(LanguageKeys.Misc.CommandRequireRole))
+			.customizeResponse('points', (message) => message.language.get(LanguageKeys.Commands.Social.AutoRolePointsRequired));
 	}
 
 	public async show(message: KlasaMessage) {
@@ -51,8 +54,6 @@ export default class extends SkyraCommand {
 	}
 
 	public async add(message: KlasaMessage, [role, points]: [Role, number]) {
-		if (typeof points === 'undefined') throw message.language.get(LanguageKeys.Commands.Social.AutoRolePointsRequired);
-
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		if (autoRoles.length && autoRoles.some((entry) => entry.id === role.id)) {
 			throw message.language.get(LanguageKeys.Commands.Social.AutoRoleUpdateConfigured);
@@ -67,8 +68,6 @@ export default class extends SkyraCommand {
 	}
 
 	public async remove(message: KlasaMessage, [role]: [Role]) {
-		if (typeof role === 'undefined') throw message.language.get(LanguageKeys.Misc.CommandRequireRole);
-
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex((entry) => entry.id === role.id);
 		if (index === -1) {
@@ -85,9 +84,6 @@ export default class extends SkyraCommand {
 	}
 
 	public async update(message: KlasaMessage, [role, points]: [Role, number]) {
-		if (typeof points === 'undefined') throw message.language.get(LanguageKeys.Commands.Social.AutoRolePointsRequired);
-		if (typeof role === 'undefined') throw message.language.get(LanguageKeys.Misc.CommandRequireRole);
-
 		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
 		const index = autoRoles.findIndex((entry) => entry.id === role.id);
 		if (index === -1) {

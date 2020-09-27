@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { CustomGet, FT, T } from '@lib/types/Shared';
 import { EightBallLanguage } from '@root/commands/Fun/8ball';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { User } from 'discord.js';
@@ -63,3 +63,22 @@ export const XkcdComics = FT<{ amount: number }, string>('commandXkcdComics');
 export const XkcdDescription = T<string>('commandXkcdDescription');
 export const XkcdExtended = T<LanguageHelpDisplayOptions>('commandXkcdExtended');
 export const XkcdNotfound = T<string>('commandXkcdNotfound');
+
+export const Resolve8BallQuestionKey = (key: keyof EightBallLanguage): CustomGet<string, readonly string[]> => {
+	switch (key) {
+		case 'HowMany':
+			return EightballHowMany;
+		case 'HowMuch':
+			return EightballHowMuch;
+		case 'What':
+			return EightballWhat;
+		case 'When':
+			return EightballWhen;
+		case 'Who':
+			return EightballWho;
+		case 'Why':
+			return EightballWhy;
+		default:
+			return EightballElse;
+	}
+};

@@ -1,6 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomGet } from '@lib/types/Shared';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { cast, pickRandom } from '@utils/util';
@@ -35,7 +34,7 @@ export default class extends SkyraCommand {
 		const prefixes = cast<EightBallLanguage>(i18n.language.command8ballQuestions || this.client.languages.default.language.command8ballQuestions);
 
 		for (const key of QUESTION_KEYS) {
-			if (this.check(prefixes[key], input)) return pickRandom(i18n.get(`command8ball${key}` as CustomGet<string, string[]>));
+			if (this.check(prefixes[key], input)) return pickRandom(i18n.get(LanguageKeys.Commands.Fun.Resolve8BallQuestionKey(key)));
 		}
 		return pickRandom(i18n.get(LanguageKeys.Commands.Fun.EightballElse));
 	}

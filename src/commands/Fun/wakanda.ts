@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async init() {
-		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-dont-do-that-here.png'));
+		this.kTemplate = await loadImage(join(assetsFolder, './images/memes/we-do-not-do-that-here.png'));
 	}
 
 	private generateImage(avatar: Image) {

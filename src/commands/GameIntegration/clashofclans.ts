@@ -88,9 +88,9 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === ClashOfClansFetchCategories.CLANS)
-				throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansClansQueryFail, { clan: query });
-			else throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayersQueryFail, { playertag: query });
+			throw category === ClashOfClansFetchCategories.CLANS
+				? message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansClansQueryFail, { clan: query })
+				: message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayersQueryFail, { playertag: query });
 		}
 	}
 

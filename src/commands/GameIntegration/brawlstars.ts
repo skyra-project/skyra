@@ -207,9 +207,9 @@ export default class extends SkyraCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			if (category === BrawlStarsFetchCategories.CLUB)
-				throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query });
-			else throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
+			throw category === BrawlStarsFetchCategories.CLUB
+				? message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query })
+				: message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
 }

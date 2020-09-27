@@ -13,7 +13,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		try {
-			// TODO: This is not formatted
+			// TODO(Soumil07): Extract i18n help formatter so it's useable here
 			const response = await message.author.sendLocale(LanguageKeys.Commands.System.DonateExtended);
 			return message.channel.type === 'dm' ? await message.alert(message.language.get(LanguageKeys.Commands.System.DmSent)) : response;
 		} catch {

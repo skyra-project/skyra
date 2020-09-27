@@ -1,4 +1,3 @@
-// Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { KlasaMessage, Monitor } from 'klasa';

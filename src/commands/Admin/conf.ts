@@ -9,7 +9,7 @@ import { KlasaMessage, SettingsFolder } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
-	description: (language) => language.get(LanguageKeys.Commands.Admin.ConfServerDescription),
+	description: (language) => language.get(LanguageKeys.Commands.Admin.ConfDescription),
 	guarded: true,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 			]);
 		}
 
-		return message.sendLocale(LanguageKeys.Commands.Admin.ConfServer, [
+		return message.sendLocale(LanguageKeys.Commands.Admin.Conf, [
 			{
 				key: key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '',
 				list: codeBlock('asciidoc', displayFolder(value as SettingsFolder))

@@ -62,7 +62,7 @@ export interface BrawlStarsGIData {
 		'tag',
 		(arg, _possible, message) => {
 			if (kTagRegex.test(arg)) return arg;
-			throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashofclansInvalidPlayerTag, { playertag: arg });
+			throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag, { playertag: arg });
 		}
 	]
 ])
@@ -208,8 +208,8 @@ export default class extends SkyraCommand {
 			);
 		} catch {
 			if (category === BrawlStarsFetchCategories.CLUB)
-				throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansClansQueryFail, { clan: query });
-			else throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashofclansPlayersQueryFail, { playertag: query });
+				throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query });
+			else throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
 }

@@ -39,7 +39,7 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 
 			if (action === 'player') {
 				if (kPlayerTagRegex.test(arg)) return arg;
-				throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashofclansInvalidPlayerTag, { playertag: arg });
+				throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag, { playertag: arg });
 			}
 
 			throw message.language.get(LanguageKeys.System.QueryFail);
@@ -90,7 +90,7 @@ export default class extends RichDisplayCommand {
 		} catch {
 			if (category === ClashOfClansFetchCategories.CLANS)
 				throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansClansQueryFail, { clan: query });
-			else throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashofclansPlayersQueryFail, { playertag: query });
+			else throw message.language.get(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayersQueryFail, { playertag: query });
 		}
 	}
 

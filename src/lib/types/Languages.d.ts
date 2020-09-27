@@ -633,6 +633,9 @@ declare module 'klasa' {
 				lessThanOncePerWeek: string;
 			};
 		};
+		commandBrawlStarsInvalidPlayerTag: (params: { playertag: string }) => string;
+		commandBrawlStarsClansQueryFail: (params: { clan: string }) => string;
+		commandBrawlStarsPlayersQueryFail: (params: { playertag: string }) => string;
 		commandClashofclansInvalidPlayerTag: (params: { playertag: string }) => string;
 		commandClashOfClansClansQueryFail: (params: { clan: string }) => string;
 		commandClashofclansPlayersQueryFail: (params: { playertag: string }) => string;

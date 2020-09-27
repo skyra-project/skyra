@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['choose', 'choise', 'pick'],
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindExtended),
+	description: (language) => language.get(LanguageKeys.Commands.Fun.ChoiceDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ChoiceExtended),
 	usage: '<words:string> [...]',
 	usageDelim: ',',
 	spam: true

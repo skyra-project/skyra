@@ -81,9 +81,12 @@ export const ClashofclansClanEmbedTitles = T<{
 		lessThanOncePerWeek: string;
 	};
 }>('commandClashofclansClanEmbedTitles');
-export const ClashofclansInvalidPlayerTag = FT<{ playertag: string }, string>('commandClashofclansInvalidPlayerTag');
+export const BrawlStarsInvalidPlayerTag = FT<{ playertag: string }, string>('commandBrawlStarsInvalidPlayerTag');
+export const BrawlStarsClansQueryFail = FT<{ clan: string }, string>('commandBrawlStarsClansQueryFail');
+export const BrawlStarsPlayersQueryFail = FT<{ playertag: string }, string>('commandBrawlStarsPlayersQueryFail');
+export const ClashOfClansInvalidPlayerTag = FT<{ playertag: string }, string>('commandClashofclansInvalidPlayerTag');
 export const ClashOfClansClansQueryFail = FT<{ clan: string }, string>('commandClashOfClansClansQueryFail');
-export const ClashofclansPlayersQueryFail = FT<{ playertag: string }, string>('commandClashofclansPlayersQueryFail');
+export const ClashOfClansPlayersQueryFail = FT<{ playertag: string }, string>('commandClashofclansPlayersQueryFail');
 export const FFXIVDescription = T<string>('commandFFXIVDescription');
 export const FFXIVExtended = T<LanguageHelpDisplayOptions>('commandFFXIVExtended');
 export const FFXIVCharacterFields = T<{

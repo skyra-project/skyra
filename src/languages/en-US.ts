@@ -938,6 +938,11 @@ export default class extends Language {
 				unknown: 'Unknown'
 			}
 		},
+		commandBrawlStarsInvalidPlayerTag: ({ playertag }) =>
+			`I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
+		commandBrawlStarsClansQueryFail: ({ clan }) => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,
+		commandBrawlStarsPlayersQueryFail: ({ playertag }) =>
+			`I am sorry, but I was unable to get data on the player with player tag \`${playertag}\`.`,
 		commandClashofclansInvalidPlayerTag: ({ playertag }) =>
 			`I am sorry, \`${playertag}\` is not a valid Clash of Clans player tag. Player tags have to start with a \`#\` followed by the ID.`,
 		commandClashOfClansClansQueryFail: ({ clan }) => `I am sorry, but I was unable to get data on the clan \`${clan}\`.`,

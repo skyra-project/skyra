@@ -246,8 +246,8 @@ export const AutomaticParameterThresholdMaximum = T<string>('selfModerationComma
 export const AutomaticParameterThresholdMaximumWithValue = FT<{ value: number }, string>('selfModerationCommandThresholdMaximumWithValue');
 export const AutomaticParameterThresholdDuration = T<string>('selfModerationCommandThresholdDuration');
 export const AutomaticParameterThresholdDurationWithValue = FT<{ value: number }, string>('selfModerationCommandThresholdDurationWithValue');
-export const AutomaticParameterShow = T<
-	(params: {
+export const AutomaticParameterShow = FT<
+	{
 		kEnabled: string;
 		kAlert: string;
 		kLog: string;
@@ -256,7 +256,8 @@ export const AutomaticParameterShow = T<
 		hardActionDurationText: string;
 		thresholdMaximumText: string | number;
 		thresholdDurationText: string;
-	}) => readonly string[]
+	},
+	readonly string[]
 >('selfModerationCommandShow');
 export const AutomaticParameterShowDurationPermanent = T<string>('selfModerationCommandShowDurationPermanent');
 export const AutomaticParameterShowUnset = T<string>('selfModerationCommandShowUnset');

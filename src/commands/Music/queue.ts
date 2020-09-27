@@ -19,7 +19,7 @@ export default class extends MusicCommand {
 	public async run(message: KlasaMessage) {
 		const { queue, song } = message.guild!.music;
 
-		if (song === null && queue.length === 0) throw message.language.get('commandQueueEmpty');
+		if (song === null && queue.length === 0) throw message.language.get(LanguageKeys.Commands.Music.QueueEmpty);
 
 		// Send the loading message
 		const response = await message.send(
@@ -60,7 +60,7 @@ export default class extends MusicCommand {
 			// Format the song entries
 			const songFields = await Promise.all(queue.map((song, position) => this.generateSongField(message, position, song)));
 			const totalDuration = this.calculateTotalDuration(queue);
-			const totalDescription = message.language.get('commandQueueTotal', {
+			const totalDescription = message.language.get(LanguageKeys.Commands.Music.QueueTotal, {
 				songs: message.language.get(
 					queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{

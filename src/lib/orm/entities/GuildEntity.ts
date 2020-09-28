@@ -303,9 +303,11 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.attachmentDuration', default: 20000 })
 	public selfmodAttachmentDuration = 20000;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.attachmentAction', default: 0 })
 	public selfmodAttachmentAction = 0;
 
+	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.attachmentPunishmentDuration', nullable: true })
 	public selfmodAttachmentPunishmentDuration?: number | null;
 

@@ -216,7 +216,7 @@ declare module 'klasa' {
 		commandQueueDashboardInfo: (params: { guild: Guild }) => string;
 		commandRemoveDescription: string;
 		commandRemoveIndexInvalid: string;
-		commandRemoveIndexOut: (params: { songs: string }) => string;
+		commandRemoveIndexOutOfBounds: (params: { songs: string }) => string;
 		commandRemoveDenied: string;
 		commandRemoveSuccess: (params: { song: Song }) => string;
 		commandSeekDescription: string;

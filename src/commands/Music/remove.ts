@@ -15,7 +15,7 @@ export default class extends MusicCommand {
 
 		const { music } = message.guild!;
 		if (index > music.queue.length)
-			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOut, {
+			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
 					music.queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{

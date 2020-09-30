@@ -13,7 +13,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: 'Check the permission for a member, or yours.',
+			description: (language) => language.get(LanguageKeys.Commands.Moderation.PermissionsDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.PermissionsExtended),
 			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],

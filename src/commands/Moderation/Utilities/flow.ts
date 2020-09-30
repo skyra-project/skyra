@@ -9,7 +9,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
-			description: 'Check the messages/minute from a channel.',
+			description: (language) => language.get(LanguageKeys.Commands.Moderation.FlowDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.FlowExtended),
 			permissionLevel: PermissionLevels.Moderator,
 			runIn: ['text'],
 			usage: '[channel:channelname]'

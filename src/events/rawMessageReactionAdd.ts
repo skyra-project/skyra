@@ -30,7 +30,7 @@ export default class extends Event {
 			emoji: {
 				animated: raw.emoji.animated ?? false,
 				id: raw.emoji.id,
-				managed: Reflect.get(raw.emoji, 'managed') || null,
+				managed: Reflect.get(raw.emoji, 'managed') ?? null,
 				name: raw.emoji.name,
 				requireColons: 'require_colons' in raw.emoji ? raw.emoji.require_colons! : null,
 				roles: raw.emoji.roles || null,

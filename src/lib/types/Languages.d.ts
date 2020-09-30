@@ -905,6 +905,14 @@ declare module 'klasa' {
 		commandMuteExtended: LanguageHelpDisplayOptions;
 		commandPruneDescription: string;
 		commandPruneExtended: LanguageHelpDisplayOptions;
+		commandCaseDescription: string;
+		commandCaseExtended: LanguageHelpDisplayOptions;
+		commandRaidDescription: string;
+		commandRaidExtended: LanguageHelpDisplayOptions;
+		commandPermissionsDescription: string;
+		commandPermissionsExtended: LanguageHelpDisplayOptions;
+		commandFlowDescription: string;
+		commandFlowExtended: LanguageHelpDisplayOptions;
 		commandReasonDescription: string;
 		commandReasonExtended: LanguageHelpDisplayOptions;
 		commandRestrictAttachmentDescription: string;

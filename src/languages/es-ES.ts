@@ -2002,6 +2002,26 @@ export default class extends Language {
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.',
 			multiline: true
 		},
+		commandCaseDescription: 'Get the information from a case by its index.',
+		commandCaseExtended: {
+			extendedHelp: 'You can also get the latest moderation case by specifying the case ID as "latest"',
+			explainedUsage: [['Case', 'Number of the case ID to get or "latest"']],
+			examples: ['5', 'latest']
+		},
+		commandRaidDescription: 'Manage the Anti-RAID system.',
+		commandRaidExtended: {
+			extendedHelp: 'Please note that the Anti-RAID system is flawed and needs redesigning. In its current state it should not be relied on.',
+			reminder: 'Want to know when you can use this feature? Join the support server for updates: https://invite.skyra.pw'
+		},
+		commandPermissionsDescription: 'Check the permission for a member, or yours.',
+		commandPermissionsExtended: {
+			extendedHelp: 'Ideal if you want to know the what permissions are granted to a member when they have a certain set of roles.'
+		},
+		commandFlowDescription: 'Shows the amount of messages per minute in a channel.',
+		commandFlowExtended: {
+			extendedHelp: 'This helps you determine the overall activity of a channel',
+			explainedUsage: [['channel', '(Optional): The channel to check, if omitted current channel is used']]
+		},
 		commandReasonDescription: 'Edit the reason field from a moderation log case.',
 		commandReasonExtended: {
 			extendedHelp: [

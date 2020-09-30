@@ -4866,8 +4866,8 @@ export default class extends Language {
 				`❯ **Reason:** ${reason || `Please use \`${prefix}reason ${caseID} <reason>\` to set the reason.`}${formattedDuration}`
 			].join('\n'),
 		moderationLogFooter: ({ caseID }) => `Case ${caseID}`,
-		moderationCaseNotExists: `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
-		moderationCasesNotExist: `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
+		moderationCaseNotExists: () => `${REDCROSS} I am sorry, but the selected moderation log case does not exist.`,
+		ModerationCaseNotExistsPlural: () => `${REDCROSS} I am sorry, but none of the selected moderation log cases exist.`,
 
 		guildSettingsChannelsMod: 'You need to configure a modlog channel. Use `Skyra, conf set channels.moderation-logs #modlogs`.',
 		guildSettingsRolesRestricted: ({ prefix, path }) =>

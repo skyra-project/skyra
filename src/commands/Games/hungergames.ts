@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
@@ -152,7 +153,7 @@ export default class extends SkyraCommand {
 					guild: member.guild,
 					member
 				},
-				5
+				PermissionLevels.Moderator
 			);
 			return !hasLevel;
 		} catch {

@@ -1,6 +1,6 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { CommandHandler } from '@lib/types/definitions/Internals';
-import { Events } from '@lib/types/Enums';
+import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { cast, floatPromise } from '@utils/util';
 import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
@@ -10,7 +10,7 @@ export default class extends Event {
 		if (!message.guild) return null;
 
 		const disabledChannels = message.guild.settings.get(GuildSettings.DisabledChannels);
-		if (disabledChannels.includes(message.channel.id) && !message.hasAtLeastPermissionLevel(5)) return null;
+		if (disabledChannels.includes(message.channel.id) && !message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return null;
 
 		command = command.toLowerCase();
 

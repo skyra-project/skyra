@@ -1,4 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
@@ -13,7 +14,7 @@ export default class extends Inhibitor {
 
 		const channelID = message.guild.settings.get(GuildSettings.Channels.Spam);
 		if (channelID === message.channel.id) return;
-		if (await message.hasAtLeastPermissionLevel(5)) return;
+		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const channel = message.guild.channels.cache.get(channelID);
 		if (!channel) {

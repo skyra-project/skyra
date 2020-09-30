@@ -30,7 +30,8 @@ export default class extends SkyraCommand {
 			throw message.language.get(
 				cases.length === 1
 					? LanguageKeys.Commands.Moderation.ModerationCaseNotExists
-					: LanguageKeys.Commands.Moderation.ModerationCasesNotExist
+					: LanguageKeys.Commands.Moderation.ModerationCaseNotExistsPlural,
+				{ count: cases.length }
 			);
 
 		const imageURL = getImage(message);

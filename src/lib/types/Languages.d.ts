@@ -2219,8 +2219,8 @@ declare module 'klasa' {
 		moderationLogExpiresIn: (params: { duration: number }) => string;
 		moderationLogDescription: (params: { data: Moderation.ModerationManagerDescriptionData }) => string;
 		moderationLogFooter: (params: { caseID: number }) => string;
-		moderationCaseNotExists: string;
-		moderationCasesNotExist: string;
+		moderationCaseNotExists: (params: { count: number }) => string;
+		ModerationCaseNotExistsPlural: (params: { count: number }) => string;
 		guildSettingsChannelsMod: string;
 		guildSettingsRolesRestricted: (params: { prefix: string; path: string }) => string;
 		guildMuteNotFound: string;

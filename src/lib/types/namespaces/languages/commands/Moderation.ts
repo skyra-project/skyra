@@ -175,8 +175,8 @@ export const ModerationOutputPlural = FT<{ count: number; range: string | number
 export const ModerationOutputWithReason = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
 	'commandModerationOutputWithReason'
 );
-export const ModerationCaseNotExists = T<string>('moderationCaseNotExists');
-export const ModerationCasesNotExist = T<string>('moderationCasesNotExist');
+export const ModerationCaseNotExists = FT<{ count: number }, string>('moderationCaseNotExists');
+export const ModerationCaseNotExistsPlural = FT<{ count: number }, string>('ModerationCaseNotExistsPlural');
 export const ModerationLogAppealed = T<string>('moderationLogAppealed');
 export const ModerationLogDescription = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>('moderationLogDescription');
 export const GuildBansEmpty = T<string>('guildBansEmpty');

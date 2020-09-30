@@ -3589,7 +3589,7 @@ export default class extends Language {
 		commandFlow: ({ amount }) => `${amount} messages have been sent within the last minute.`,
 		commandTimeTimed: 'The selected moderation case has already been timed.',
 		commandTimeUndefinedTime: 'You must specify a time.',
-		commandTimeUnsupportedTipe: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
+		commandTimeUnsupportedType: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
 		commandTimeNotScheduled: 'This task is not scheduled.',
 		commandTimeAborted: ({ title }) => `Successfully aborted the schedule for ${title}`,
 		commandTimeScheduled: ({ title, user, time }) =>

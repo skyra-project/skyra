@@ -176,10 +176,10 @@ export class StarboardEntity extends BaseEntity {
 		const previousUpdate = this.#manager.syncMessageMap.get(this);
 		if (previousUpdate) await previousUpdate;
 
-		if ('enabled' in options) {
+		if (Reflect.has(options, 'enabled')) {
 			this.enabled = options.enabled!;
 		}
-		if ('stars' in options && this.enabled) {
+		if (Reflect.has(options, 'stars') && this.enabled) {
 			this.stars = options.stars!;
 			await this.updateStarMessage();
 		}

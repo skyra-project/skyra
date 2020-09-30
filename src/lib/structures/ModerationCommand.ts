@@ -162,7 +162,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			moderator:
 				'no-author' in message.flagArgs
 					? null
-					: 'authored' in message.flagArgs || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay)
+					: Reflect.has(message.flagArgs, 'authored') || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay)
 					? message.author
 					: null,
 			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))

@@ -13,10 +13,10 @@ export default class extends Route {
 		const guild = this.client.guilds.cache.get(guildID);
 		if (!guild) return response.error(400);
 
-		const limit = 'limit' in request.query ? Number(request.query.limit) : 10;
+		const limit = Reflect.has(request.query, 'limit') ? Number(request.query.limit) : 10;
 		if (!Number.isInteger(limit) || limit <= 0 || limit > 100) return response.error(400);
 
-		const after = 'after' in request.query ? Number(request.query.after) : 1;
+		const after = Reflect.has(request.query, 'after') ? Number(request.query.after) : 1;
 		if (!Number.isInteger(after) || after <= 0 || after > 2500 - limit) return response.error(400);
 
 		const leaderboard = await this.client.leaderboard.fetch(guildID);

@@ -21,10 +21,12 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const result = await exec(input, { timeout: 'timeout' in message.flagArgs ? Number(message.flagArgs.timeout) : 60000 }).catch((error) => ({
-			stdout: null,
-			stderr: error
-		}));
+		const result = await exec(input, { timeout: Reflect.has(message.flagArgs, 'timeout') ? Number(message.flagArgs.timeout) : 60000 }).catch(
+			(error) => ({
+				stdout: null,
+				stderr: error
+			})
+		);
 		const output = result.stdout ? `**\`OUTPUT\`**${codeBlock('prolog', result.stdout)}` : '';
 		const outerr = result.stderr ? `**\`ERROR\`**${codeBlock('prolog', result.stderr)}` : '';
 		const joined = [output, outerr].join('\n') || 'No output';

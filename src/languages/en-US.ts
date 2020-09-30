@@ -3698,7 +3698,7 @@ export default class extends Language {
 		commandMarryWith: ({ users }) => `Dear, how could you forget it... You are currently married to ${this.list(users, 'and')}!`,
 		commandMarryNotTaken: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 		commandMarrySkyra: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
-		commandMarrySneyra: 'In your dreams. She is my sister, I am not letting somebody harm her!',
+		commandMarryAelia: 'In your dreams. She is my sister, I am not letting somebody harm her!',
 		commandMarryBots: 'Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!',
 		commandMarrySelf: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
 		commandMarryAuthorTaken: ({ author }) =>

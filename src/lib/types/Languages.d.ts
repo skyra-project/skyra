@@ -1796,7 +1796,7 @@ declare module 'klasa' {
 		commandMarryWith: (params: { users: readonly string[] }) => string;
 		commandMarryNotTaken: string;
 		commandMarrySkyra: string;
-		commandMarrySneyra: string;
+		commandMarryAelia: string;
 		commandMarryBots: string;
 		commandMarrySelf: string;
 		commandMarryAuthorTaken: (params: { author: User }) => string;

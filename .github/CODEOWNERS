@@ -33,5 +33,6 @@
 /src/lib/util/GameIntegration/FFXIVUtils.ts @quantumlytangled
 /src/lib/util/Notifications/ @quantumlytangled
 /src/lib/util/Tracking/ @quantumlytangled
+/src/monitors/analytics/ @quantumlytangled
 /src/routes/twitch/twitchStreamChange.ts @quantumlytangled
 /src/tasks/syncResourceAnalytics.ts @quantumlytangled

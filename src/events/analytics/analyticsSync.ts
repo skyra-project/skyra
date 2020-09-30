@@ -1,6 +1,7 @@
 import { Point } from '@influxdata/influxdb-client';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
+import MessageRecieved from '@root/monitors/analytics/messageRecieved';
 import { ApplyOptions } from '@skyra/decorators';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { AnalyticsEvent } from '@utils/Tracking/Analytics/structures/AnalyticsEvent';
@@ -20,7 +21,8 @@ export default class extends AnalyticsEvent {
 			this.syncVoiceConnections(),
 			this.syncEconomy(economyHealth.total_money, AnalyticsSchema.EconomyType.Money),
 			this.syncEconomy(economyHealth.total_vault, AnalyticsSchema.EconomyType.Vault),
-			this.syncTwitchSubscriptions(twitchSubscriptionCount)
+			this.syncTwitchSubscriptions(twitchSubscriptionCount),
+			this.syncMessageCount()
 		]);
 
 		return this.analytics.flush();
@@ -64,6 +66,15 @@ export default class extends AnalyticsEvent {
 		return new Point(AnalyticsSchema.Points.TwitchSubscriptions)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 			.intField('count', value);
+	}
+
+	private syncMessageCount() {
+		const value = MessageRecieved.messageCount;
+		MessageRecieved.messageCount = 0;
+
+		return new Point(AnalyticsSchema.Points.MessageCount) //
+			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
+			.intField('value', value);
 	}
 
 	private async fetchEconomyHealth(dbSet: DbSet): Promise<{ total_money: string; total_vault: string }> {

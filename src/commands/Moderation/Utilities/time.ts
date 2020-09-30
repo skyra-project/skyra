@@ -98,7 +98,7 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.TemporaryRestrictionVoice:
 				return;
 			default:
-				throw message.language.get(LanguageKeys.Commands.Moderation.TimeUnsupportedTipe);
+				throw message.language.get(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
 		}
 	}
 

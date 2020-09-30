@@ -1661,7 +1661,7 @@ declare module 'klasa' {
 		commandFlow: (params: { amount: number }) => string;
 		commandTimeTimed: string;
 		commandTimeUndefinedTime: string;
-		commandTimeUnsupportedTipe: string;
+		commandTimeUnsupportedType: string;
 		commandTimeNotScheduled: string;
 		commandTimeAborted: (params: { title: string }) => string;
 		commandTimeScheduled: (params: { title: string; user: User; time: number }) => string;

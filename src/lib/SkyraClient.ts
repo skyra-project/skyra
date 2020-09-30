@@ -4,7 +4,6 @@ import { Client as VezaClient } from 'veza';
 import { Colors } from '@klasa/console';
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { FSWatcher } from 'chokidar';
 import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
@@ -100,8 +99,6 @@ export class SkyraClient extends KlasaClient {
 	 * The invite store
 	 */
 	public invites: InviteStore = new InviteStore(this);
-
-	public fsWatcher: FSWatcher | null = null;
 
 	public analytics: WriteApi | null = null;
 	public analyticsReader: QueryApi | null = null;

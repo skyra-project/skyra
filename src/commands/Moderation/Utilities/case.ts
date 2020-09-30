@@ -7,7 +7,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: 'Get the information from a case by its index.',
+			description: (language) => language.get(LanguageKeys.Commands.Moderation.CaseDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.CaseExtended),
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],

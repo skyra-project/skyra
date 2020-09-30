@@ -7,7 +7,6 @@ import type { APIWebhook } from 'discord-api-types/v6';
 import type { RedisOptions } from 'ioredis';
 import type { KlasaClientOptions, PostgresOptions } from 'klasa';
 
-export const WATCH_FILES = true;
 export const DEV = Reflect.has(process.env, 'DEV') ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
 export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
@@ -17,8 +16,10 @@ export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
 export const PREFIX = 'sd!';
+// #region secrets
 export const CLIENT_ID = '';
 export const CLIENT_SECRET = '';
+// #endregion
 export const REDIRECT_URI = 'http://localhost.org:3000/oauth/callback';
 export const SCOPE = 'identify guilds';
 export const DOMAIN = 'http://localhost.org:3000';
@@ -47,7 +48,9 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 };
 
 export const INFLUX_URL = 'http://localhost:8285';
+// #region secrets
 export const INFLUX_TOKEN = '';
+// #endregion
 export const INFLUX_ORG = 'Skyra-Project';
 export const INFLUX_ORG_ANALYTICS_BUCKET = 'analytics';
 export const INFLUX_OPTIONS: InfluxDBClientOptions = {
@@ -155,6 +158,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	}
 };
 
+// #region secrets
 export const WEBHOOK_FEEDBACK: Partial<APIWebhook> | null = null;
 
 export const WEBHOOK_ERROR: Partial<APIWebhook> = {
@@ -167,42 +171,45 @@ export const WEBHOOK_ERROR: Partial<APIWebhook> = {
 };
 
 export const WEBHOOK_DATABASE: Partial<APIWebhook> | null = null;
+// #endregion
 
 export const TOKENS = {
+	// #region secrets
 	BLIZZARD_KEY: '',
 	BOT_TOKEN: '',
 	BOTLIST_SPACE_KEY: '',
 	BOTS_FOR_DISCORD_KEY: '',
 	BOTS_ON_DISCORD_KEY: '',
+	BRAWL_STARS_KEY: '',
+	CLASH_OF_CLANS_KEY: '',
 	CRYPTOCOMPARE_KEY: '',
 	DARKSKY_WEATHER_KEY: '',
 	DISCORD_BOT_LIST: '',
-	TOP_GG: '',
 	DISCORD_BOTS: '',
+	FORTNITE_KEY: '',
 	GOOGLE_API_KEY: '',
-	GOOGLE_MAPS_API_KEY: '',
 	// CUSTOM_SEARCH keys can be identical, there are 2 keys so IMAGE can be set to exclusively search for images.
 	GOOGLE_CUSTOM_SEARCH_IMAGE_KEY: '',
 	GOOGLE_CUSTOM_SEARCH_WEB_KEY: '',
+	GOOGLE_MAPS_API_KEY: '',
 	INTERNETGAMEDATABASE_KEY: '',
 	KITSU_ID: 'AWQO5J657S',
 	KITSU_KEY:
 		'NzYxODA5NmY0ODRjYTRmMzQ2YjMzNzNmZmFhNjY5ZGRmYjZlMzViN2VkZDIzMGUwYjM5ZjQ5NjAwZGI4ZTc5MHJlc3RyaWN0SW5kaWNlcz1wcm9kdWN0aW9uX21lZGlhJmZpbHRlcnM9Tk9UK2FnZVJhdGluZyUzQVIxOA==',
 	NINTENDO_ID: 'U3B6GR4UA3',
 	NINTENDO_KEY: '9a20c93440cf63cf1a7008d75f7438bf',
+	OWLBOT: '',
+	SENTRY_URL: '',
 	THEMOVIEDATABASE_KEY: '',
 	TIMEZONEDB_KEY: '',
+	TOP_GG: '',
 	TWITCH_CLIENT_ID: '',
 	TWITCH_SECRET: '',
 	TWITCH_WEBHOOK_SECRET: '',
-	WEEB_SH_KEY: '',
-	WOLFRAM_KEY: '',
-	CLASH_OF_CLANS_KEY: '',
-	BRAWL_STARS_KEY: '',
-	XIVAPI_KEY: '',
-	FORTNITE_KEY: '',
 	WEBHOOK_B4D: '',
 	WEBHOOK_TOPGG: '',
-	SENTRY_URL: '',
-	OWLBOT: ''
+	WEEB_SH_KEY: '',
+	WOLFRAM_KEY: '',
+	XIVAPI_KEY: ''
+	// #endregion
 };

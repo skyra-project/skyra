@@ -11,7 +11,6 @@ import type { LongLivingReactionCollector } from '@utils/LongLivingReactionColle
 import type { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import type { Twitch } from '@utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
-import type { FSWatcher } from 'chokidar';
 import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import type { MessageAdditions, MessageOptions, PermissionString, SplitOptions } from 'discord.js';
 import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
@@ -39,7 +38,6 @@ declare module 'discord.js' {
 		webhookError: Webhook;
 		webhookFeedback: Webhook | null;
 		webhookDatabase: Webhook | null;
-		fsWatcher: FSWatcher | null;
 		twitch: Twitch;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;

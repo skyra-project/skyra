@@ -216,7 +216,7 @@ declare module 'klasa' {
 		commandQueueDashboardInfo: (params: { guild: Guild }) => string;
 		commandRemoveDescription: string;
 		commandRemoveIndexInvalid: string;
-		commandRemoveIndexOut: (params: { songs: string }) => string;
+		commandRemoveIndexOutOfBounds: (params: { songs: string }) => string;
 		commandRemoveDenied: string;
 		commandRemoveSuccess: (params: { song: Song }) => string;
 		commandSeekDescription: string;
@@ -905,6 +905,14 @@ declare module 'klasa' {
 		commandMuteExtended: LanguageHelpDisplayOptions;
 		commandPruneDescription: string;
 		commandPruneExtended: LanguageHelpDisplayOptions;
+		commandCaseDescription: string;
+		commandCaseExtended: LanguageHelpDisplayOptions;
+		commandRaidDescription: string;
+		commandRaidExtended: LanguageHelpDisplayOptions;
+		commandPermissionsDescription: string;
+		commandPermissionsExtended: LanguageHelpDisplayOptions;
+		commandFlowDescription: string;
+		commandFlowExtended: LanguageHelpDisplayOptions;
 		commandReasonDescription: string;
 		commandReasonExtended: LanguageHelpDisplayOptions;
 		commandRestrictAttachmentDescription: string;
@@ -1661,7 +1669,7 @@ declare module 'klasa' {
 		commandFlow: (params: { amount: number }) => string;
 		commandTimeTimed: string;
 		commandTimeUndefinedTime: string;
-		commandTimeUnsupportedTipe: string;
+		commandTimeUnsupportedType: string;
 		commandTimeNotScheduled: string;
 		commandTimeAborted: (params: { title: string }) => string;
 		commandTimeScheduled: (params: { title: string; user: User; time: number }) => string;
@@ -1796,7 +1804,7 @@ declare module 'klasa' {
 		commandMarryWith: (params: { users: readonly string[] }) => string;
 		commandMarryNotTaken: string;
 		commandMarrySkyra: string;
-		commandMarrySneyra: string;
+		commandMarryAelia: string;
 		commandMarryBots: string;
 		commandMarrySelf: string;
 		commandMarryAuthorTaken: (params: { author: User }) => string;
@@ -2219,8 +2227,8 @@ declare module 'klasa' {
 		moderationLogExpiresIn: (params: { duration: number }) => string;
 		moderationLogDescription: (params: { data: Moderation.ModerationManagerDescriptionData }) => string;
 		moderationLogFooter: (params: { caseID: number }) => string;
-		moderationCaseNotExists: string;
-		moderationCasesNotExist: string;
+		moderationCaseNotExists: (params: { count: number }) => string;
+		ModerationCaseNotExistsPlural: (params: { count: number }) => string;
 		guildSettingsChannelsMod: string;
 		guildSettingsRolesRestricted: (params: { prefix: string; path: string }) => string;
 		guildMuteNotFound: string;

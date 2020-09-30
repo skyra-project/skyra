@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 		if (caseID === 'latest') caseID = await message.guild!.moderation.count();
 
 		const entry = await message.guild!.moderation.fetch(caseID);
-		if (!entry) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationCaseNotExists);
+		if (!entry) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
 		if (!cancel && entry.temporaryType) throw message.language.get(LanguageKeys.Commands.Moderation.TimeTimed);
 
 		const user = await entry.fetchUser();
@@ -98,7 +98,7 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.TemporaryRestrictionVoice:
 				return;
 			default:
-				throw message.language.get(LanguageKeys.Commands.Moderation.TimeUnsupportedTipe);
+				throw message.language.get(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
 		}
 	}
 

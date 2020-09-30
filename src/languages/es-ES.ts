@@ -423,7 +423,7 @@ export default class extends Language {
 			`¿Sabías que también puedes administrar tu música usando una aplicación web elegante? [Haga clic aquí para ir allí](https://skyra.pw/music/${guild.id})`,
 		commandRemoveDescription: 'Elimina una canción de la lista de cola.',
 		commandRemoveIndexInvalid: 'mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
-		commandRemoveIndexOut: ({ songs }) => `he intentado acceder a esa canción por tí, ¡pero sólo tengo ${songs} en mi mesa!`,
+		commandRemoveIndexOutOfBounds: ({ songs }) => `he intentado acceder a esa canción por tí, ¡pero sólo tengo ${songs} en mi mesa!`,
 		commandRemoveDenied: [
 			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
 			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'
@@ -2002,6 +2002,26 @@ export default class extends Language {
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.',
 			multiline: true
 		},
+		commandCaseDescription: 'Get the information from a case by its index.',
+		commandCaseExtended: {
+			extendedHelp: 'You can also get the latest moderation case by specifying the case ID as "latest"',
+			explainedUsage: [['Case', 'Number of the case ID to get or "latest"']],
+			examples: ['5', 'latest']
+		},
+		commandRaidDescription: 'Manage the Anti-RAID system.',
+		commandRaidExtended: {
+			extendedHelp: 'Please note that the Anti-RAID system is flawed and needs redesigning. In its current state it should not be relied on.',
+			reminder: 'Want to know when you can use this feature? Join the support server for updates: https://invite.skyra.pw'
+		},
+		commandPermissionsDescription: 'Check the permission for a member, or yours.',
+		commandPermissionsExtended: {
+			extendedHelp: 'Ideal if you want to know the what permissions are granted to a member when they have a certain set of roles.'
+		},
+		commandFlowDescription: 'Shows the amount of messages per minute in a channel.',
+		commandFlowExtended: {
+			extendedHelp: 'This helps you determine the overall activity of a channel',
+			explainedUsage: [['channel', '(Optional): The channel to check, if omitted current channel is used']]
+		},
 		commandReasonDescription: 'Edit the reason field from a moderation log case.',
 		commandReasonExtended: {
 			extendedHelp: [
@@ -3569,7 +3589,7 @@ export default class extends Language {
 		commandFlow: ({ amount }) => `${amount} messages have been sent within the last minute.`,
 		commandTimeTimed: 'The selected moderation case has already been timed.',
 		commandTimeUndefinedTime: 'You must specify a time.',
-		commandTimeUnsupportedTipe: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
+		commandTimeUnsupportedType: 'The type of action for the selected case cannot be reverse, therefore this action is unsupported.',
 		commandTimeNotScheduled: 'This task is not scheduled.',
 		commandTimeAborted: ({ title }) => `Successfully aborted the schedule for ${title}`,
 		commandTimeScheduled: ({ title, user, time }) =>
@@ -3737,7 +3757,7 @@ export default class extends Language {
 		commandMarryWith: ({ users }) => `Dear, how could you forget it... You are currently married to ${this.list(users, 'y')}!`,
 		commandMarryNotTaken: 'Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?',
 		commandMarrySkyra: 'I am sorry, I know you love me, but I am already taken by a brave man I love 💞!',
-		commandMarrySneyra: 'In your dreams. She is my sister, I am not letting somebody harm her!',
+		commandMarryAelia: 'In your dreams. She is my sister, I am not letting somebody harm her!',
 		commandMarryBots: 'Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!',
 		commandMarrySelf: 'No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔',
 		commandMarryAuthorTaken: ({ author }) =>
@@ -4917,8 +4937,8 @@ export default class extends Language {
 				`❯ **Razón:** ${reason || `Por favor use \`${prefix}reason ${caseID} <razón>\` para establecer la razón.`}${formattedDuration}`
 			].join('\n'),
 		moderationLogFooter: ({ caseID }) => `Caso ${caseID}`,
-		moderationCaseNotExists: `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
-		moderationCasesNotExist: `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
+		moderationCaseNotExists: () => `${REDCROSS} Lo siento, pero el caso de moderación seleccionado no existe.`,
+		ModerationCaseNotExistsPlural: () => `${REDCROSS} Lo siento, pero los casos de moderación seleccionados no existen.`,
 
 		guildSettingsChannelsMod: 'Necesitas configurar un canal de moderación. Utiliza `Skyra, settings set channels.modlog <NombreDeCanal>`.',
 		guildSettingsRolesRestricted: ({ prefix, path }) =>

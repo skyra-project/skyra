@@ -9,7 +9,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			cooldown: 5,
-			description: 'Manage the Anti-RAID system.',
+			description: (language) => language.get(LanguageKeys.Commands.Moderation.RaidDescription),
+			extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.RaidExtended),
 			permissionLevel: PermissionLevels.Administrator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],

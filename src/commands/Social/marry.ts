@@ -12,7 +12,7 @@ import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord
 import { KlasaMessage } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
-const SNEYRA_ID = '338249781594030090';
+const AELIA_ID = '338249781594030090';
 
 enum YesNoAnswer {
 	Timeout,
@@ -82,8 +82,8 @@ export default class extends RichDisplayCommand {
 		switch (user.id) {
 			case CLIENT_ID:
 				return message.sendLocale(LanguageKeys.Commands.Social.MarrySkyra);
-			case SNEYRA_ID:
-				return message.sendLocale(LanguageKeys.Commands.Social.MarrySneyra);
+			case AELIA_ID:
+				return message.sendLocale(LanguageKeys.Commands.Social.MarryAelia);
 			case author.id:
 				return message.sendLocale(LanguageKeys.Commands.Social.MarrySelf);
 		}

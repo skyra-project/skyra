@@ -423,7 +423,7 @@ export default class extends Language {
 			`¿Sabías que también puedes administrar tu música usando una aplicación web elegante? [Haga clic aquí para ir allí](https://skyra.pw/music/${guild.id})`,
 		commandRemoveDescription: 'Elimina una canción de la lista de cola.',
 		commandRemoveIndexInvalid: 'mira, no soy una experta en mates, pero esperaba un número igual o mayor que 1...',
-		commandRemoveIndexOut: ({ songs }) => `he intentado acceder a esa canción por tí, ¡pero sólo tengo ${songs} en mi mesa!`,
+		commandRemoveIndexOutOfBounds: ({ songs }) => `he intentado acceder a esa canción por tí, ¡pero sólo tengo ${songs} en mi mesa!`,
 		commandRemoveDenied: [
 			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
 			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'

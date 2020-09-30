@@ -417,7 +417,7 @@ export default class extends Language {
 			`Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/${guild.id})`,
 		commandRemoveDescription: 'Remove a song from the queue list.',
 		commandRemoveIndexInvalid: `I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
-		commandRemoveIndexOut: ({ songs }) => `maybe time happened too fast for you, there are ${songs} in the queue!`,
+		commandRemoveIndexOutOfBounds: ({ songs }) => `maybe time happened too fast for you, there are ${songs} in the queue!`,
 		commandRemoveDenied: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
 		commandRemoveSuccess: ({ song }) => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
 		commandSeekDescription: 'Change the player time for the current song.',

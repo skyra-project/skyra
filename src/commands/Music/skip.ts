@@ -17,8 +17,9 @@ export default class extends MusicCommand {
 
 		if (music.listeners.length >= 4) {
 			if (force) {
-				if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)))
+				if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) {
 					throw message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
+				}
 			} else {
 				const response = this.handleSkips(music, message.author.id);
 				if (response) return message.sendMessage(response);

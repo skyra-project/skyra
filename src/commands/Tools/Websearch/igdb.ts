@@ -31,7 +31,7 @@ export default class extends RichDisplayCommand {
 	private readonly releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 	private readonly urlRegex = /https?:/i;
 	private readonly igdbRequestHeaders = {
-		'Content-Type': Mime.Types.ApplicationJson,
+		'Content-Type': Mime.Types.TextPlain,
 		Accept: Mime.Types.ApplicationJson,
 		'Client-ID': TOKENS.TWITCH_CLIENT_ID
 	};
@@ -78,7 +78,7 @@ export default class extends RichDisplayCommand {
 						...this.igdbRequestHeaders,
 						Authorization: `Bearer ${await this.client.twitch.fetchBearer()}`
 					},
-					body: `search: "${game}"; ${this.commonQuery}`
+					body: `search: "${game}"; ${this.commonQuery};`
 				},
 				FetchResultTypes.JSON
 			);

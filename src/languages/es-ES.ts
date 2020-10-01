@@ -2011,7 +2011,7 @@ export default class extends Language {
 		commandRaidDescription: 'Manage the Anti-RAID system.',
 		commandRaidExtended: {
 			extendedHelp: 'Please note that the Anti-RAID system is flawed and needs redesigning. In its current state it should not be relied on.',
-			reminder: 'Want to know when you can use this feature? Join the support server for updates: https://invite.skyra.pw'
+			reminder: 'Want to know when you can use this feature? We recommend joining [Skyra Lounge](https://join.skyra.pw)'
 		},
 		commandPermissionsDescription: 'Check the permission for a member, or yours.',
 		commandPermissionsExtended: {

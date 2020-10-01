@@ -1,5 +1,6 @@
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireSongPresent } from '@utils/Music/Decorators';
@@ -16,7 +17,9 @@ export default class extends MusicCommand {
 
 		if (music.listeners.length >= 4) {
 			if (force) {
-				if (!(await message.hasAtLeastPermissionLevel(5))) throw message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
+				if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) {
+					throw message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
+				}
 			} else {
 				const response = this.handleSkips(music, message.author.id);
 				if (response) return message.sendMessage(response);

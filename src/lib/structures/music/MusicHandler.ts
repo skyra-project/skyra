@@ -1,6 +1,6 @@
 import { SkyraClient } from '@lib/SkyraClient';
 import { DecodeResponse } from '@lib/types/definitions/Music';
-import { Events } from '@lib/types/Enums';
+import { Events, PermissionLevels } from '@lib/types/Enums';
 import { LavalinkPlayerEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -297,7 +297,7 @@ export class MusicHandler {
 		if ((this.song ? this.song.requester === message.author.id : true) && this.queue.every((song) => song.requester === message.author.id))
 			return true;
 		// Else if the author is a moderator+, queues are always manageable for them.
-		return message.hasAtLeastPermissionLevel(5);
+		return message.hasAtLeastPermissionLevel(PermissionLevels.Moderator);
 	}
 
 	/**

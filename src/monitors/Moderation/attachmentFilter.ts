@@ -1,5 +1,5 @@
 import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
+import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
@@ -16,7 +16,7 @@ export default class extends Monitor {
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
 	public async run(message: KlasaMessage) {
-		if (await message.hasAtLeastPermissionLevel(5)) return;
+		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const action = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction);
 		const maximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);

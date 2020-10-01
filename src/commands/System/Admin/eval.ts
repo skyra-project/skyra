@@ -23,7 +23,8 @@ export default class extends SkyraCommand {
 	private readonly kTimeout = 60000;
 
 	public async run(message: KlasaMessage, [code]: [string]) {
-		const flagTime = 'no-timeout' in message.flagArgs ? ('wait' in message.flagArgs ? Number(message.flagArgs.wait) : this.kTimeout) : Infinity;
+		const flagTime =
+			'no-timeout' in message.flagArgs ? (Reflect.has(message.flagArgs, 'wait') ? Number(message.flagArgs.wait) : this.kTimeout) : Infinity;
 		const language = message.flagArgs.lang || message.flagArgs.language || (message.flagArgs.json ? 'json' : 'js');
 		const { success, result, time, type } = await this.timedEval(message, code, flagTime);
 

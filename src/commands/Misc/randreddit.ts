@@ -77,8 +77,8 @@ export default class extends SkyraCommand {
 				break;
 			}
 			case 404: {
-				if (!('reason' in parsed)) throw message.language.get(LanguageKeys.Commands.Misc.RandRedditErrorNotFound);
-				if (parsed.reason === 'banned') throw message.language.get(LanguageKeys.Commands.Misc.RandRedditErrorBanned);
+				if (!Reflect.has(parsed, 'reason')) throw message.language.get(LanguageKeys.Commands.Misc.RandRedditErrorNotFound);
+				if (Reflect.get(parsed, 'reason') === 'banned') throw message.language.get(LanguageKeys.Commands.Misc.RandRedditErrorBanned);
 				break;
 			}
 			case 500: {

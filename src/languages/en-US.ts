@@ -217,7 +217,8 @@ export default class extends Language {
 		inhibitorRunin: ({ type }) => `This command is only available in ${type} channels.`,
 		inhibitorRuninNone: ({ name }) => `The ${name} command is not configured to run in any channel.`,
 		inhibitorDisabledGuild: 'This command has been disabled by an admin in this guild!',
-		inhibitorDisabledGlobal: 'This command has been globally disabled by the bot owners!',
+		inhibitorDisabledGlobal:
+			'This command has been globally disabled by the bot owners. Want to know why and find out when it will be back? Join the official Skyra server: <https://join.skyra.pw>',
 		commandBlocklistDescription: 'Block or allow users and guilds from using my functionalities.',
 		commandBlocklistSaveSuccess: `${GREENTICK} Successfully updated blocked users and/or guilds`,
 		commandBlocklistResetSuccess: `${GREENTICK} Successfully reset blocked users and guilds`,

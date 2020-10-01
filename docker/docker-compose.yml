@@ -26,7 +26,7 @@ services:
     restart: always
     environment:
       SAELEM_REDIS_HOST: redis
-      SAELEM_REDIS_PORT: 6379
+      SAELEM_REDIS_PORT: 8287
       SAELEM_REDIS_PASSWORD: redis
       SAELEM_REDIS_DATABASE: 0
       PORT: 8284
@@ -46,8 +46,8 @@ services:
     image: redis:alpine
     restart: always
     ports:
-      - '6379:6379'
-    command: redis-server --requirepass redis
+      - '8287:8287'
+    command: redis-server --port 8287 --requirepass redis
 
 volumes:
   postgres-data:

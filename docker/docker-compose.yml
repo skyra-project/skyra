@@ -34,12 +34,12 @@ services:
       - '8284:8284'
   influx:
     container_name: influxdb
-    image: quay.io/influxdb/influxdb:2.0.0-beta
+    image: quay.io/influxdb/influxdb:2.0.0-rc
     restart: always
     volumes:
       - influx-data:/var/lib/influxdb2
     ports:
-      - '8285:9999'
+      - '8285:8086'
     command: influxd run --bolt-path /var/lib/influxdb2/influxd.bolt --engine-path /var/lib/influxdb2/engine --store bolt
   redis:
     container_name: redis

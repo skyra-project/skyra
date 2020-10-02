@@ -4,7 +4,6 @@ import { Client as VezaClient } from 'veza';
 import { Colors } from '@klasa/console';
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
 import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
 import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { mergeDefault } from '@sapphire/utilities';
@@ -27,18 +26,7 @@ import { LongLivingReactionCollector } from './util/LongLivingReactionCollector'
 import { Twitch } from './util/Notifications/Twitch';
 
 // Import all configuration
-import {
-	CLIENT_OPTIONS,
-	ENABLE_INFLUX,
-	EVLYN_PORT,
-	INFLUX_OPTIONS,
-	INFLUX_ORG_ANALYTICS_BUCKET,
-	INFLUX_ORG,
-	VERSION,
-	WEBHOOK_DATABASE,
-	WEBHOOK_ERROR,
-	WEBHOOK_FEEDBACK
-} from '@root/config';
+import { CLIENT_OPTIONS, ENABLE_INFLUX, EVLYN_PORT, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
@@ -49,6 +37,7 @@ import './setup/PermissionsLevels';
 import './setup/Canvas';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
+import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 
 const g = new Colors({ text: 'green' }).format('[IPC   ]');
 const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
@@ -100,11 +89,7 @@ export class SkyraClient extends KlasaClient {
 	 */
 	public invites: InviteStore = new InviteStore(this);
 
-	public analytics: WriteApi | null = null;
-	public analyticsReader: QueryApi | null = null;
-
-	@enumerable(false)
-	public influx: InfluxDB | null = ENABLE_INFLUX ? new InfluxDB(INFLUX_OPTIONS) : null;
+	public readonly analytics: AnalyticsData | null = null;
 
 	/**
 	 * The ConnectFour manager
@@ -148,10 +133,7 @@ export class SkyraClient extends KlasaClient {
 			});
 		}
 
-		if (ENABLE_INFLUX) {
-			this.analytics = this.influx!.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
-			this.analyticsReader = this.influx!.getQueryApi(INFLUX_ORG);
-		}
+		if (ENABLE_INFLUX) this.analytics = new AnalyticsData();
 
 		container.registerInstance(SkyraClient, this);
 	}

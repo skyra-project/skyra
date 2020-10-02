@@ -29,8 +29,8 @@ export default class extends SkyraCommand {
 					this.client.guilds.cache.reduce((acc, val) => acc + val.memberCount, 0)
 				);
 
-				await this.client.analytics!.flush();
-				await this.client.analytics!.close();
+				await this.client.analytics!.writeApi.flush();
+				await this.client.analytics!.writeApi.close();
 			}
 
 			this.client.destroy();

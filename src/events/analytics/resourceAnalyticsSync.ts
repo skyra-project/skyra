@@ -13,7 +13,7 @@ export default class extends AnalyticsEvent {
 	public run() {
 		this.writePoints([this.syncPerCoreLoad(), this.syncMem()]);
 
-		return this.analytics.flush();
+		return this.client.analytics!.writeApi.flush();
 	}
 
 	private syncPerCoreLoad() {

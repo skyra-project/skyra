@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 import type { SettingsUpdateResults } from '@klasa/settings-gateway';
 import type { InviteStore } from '@lib/structures/InviteStore';
 import type { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
@@ -11,8 +10,9 @@ import type { LongLivingReactionCollector } from '@utils/LongLivingReactionColle
 import type { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import type { Twitch } from '@utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
+import type { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
-import type { MessageAdditions, MessageOptions, PermissionString, SplitOptions } from 'discord.js';
+import type { PermissionString } from 'discord.js';
 import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
 import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
@@ -28,9 +28,7 @@ declare module 'discord.js' {
 		giveaways: GiveawayManager;
 		schedules: ScheduleManager;
 		invites: InviteStore;
-		influx: InfluxDB | null;
-		analytics: WriteApi | null;
-		analyticsReader: QueryApi | null;
+		analytics: AnalyticsData | null;
 		connectFour: ConnectFourManager;
 		lavalink: LavalinkManager;
 		llrCollectors: Set<LongLivingReactionCollector>;

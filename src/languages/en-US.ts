@@ -1977,7 +1977,11 @@ export default class extends Language {
 				['(Filter) You', 'Filters messages sent by Skyra.'],
 				['(Filter) Me', 'Filters your messages.'],
 				['(Filter) Upload', 'Filters messages that have attachments.'],
-				['(Filter) User', 'Filters messages sent by the specified user.']
+				['(Filter) User', 'Filters messages sent by the specified user.'],
+				['(Filter) Human', 'Filters messages sent by humans.'],
+				['Position', 'Lets you delete messages before or after a specific message.'],
+				['(Position) Before', 'Deletes all messages before the given message.'],
+				['(Position) After', 'Deletes all messages after the given message.']
 			],
 			examples: ['50 me', '75 @kyra', '20 bots', '60 humans before 629992398700675082'],
 			reminder: 'Due to a Discord limitation, bots cannot delete messages older than 14 days.',

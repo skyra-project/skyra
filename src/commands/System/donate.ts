@@ -13,7 +13,6 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		try {
-			// TODO(Soumil07): Extract i18n help formatter so it's useable here
 			const extended = (message.language.get(LanguageKeys.Commands.System.DonateExtended).extendedHelp as string[]).join('\n');
 			const response = await message.author.send(extended);
 			return message.channel.type === 'text' ? await message.alert(message.language.get(LanguageKeys.Commands.System.DmSent)) : response;

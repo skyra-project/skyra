@@ -1,7 +1,6 @@
 import { Point } from '@influxdata/influxdb-client';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import MessageRecieved from '@root/monitors/analytics/messageRecieved';
 import { ApplyOptions } from '@skyra/decorators';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { AnalyticsEvent } from '@utils/Tracking/Analytics/structures/AnalyticsEvent';
@@ -25,7 +24,7 @@ export default class extends AnalyticsEvent {
 			this.syncMessageCount()
 		]);
 
-		return this.analytics.flush();
+		return this.client.analytics!.writeApi.flush();
 	}
 
 	private syncGuilds(value: number) {
@@ -69,8 +68,8 @@ export default class extends AnalyticsEvent {
 	}
 
 	private syncMessageCount() {
-		const value = MessageRecieved.messageCount;
-		MessageRecieved.messageCount = 0;
+		const value = this.client.analytics!.messageCount;
+		this.client.analytics!.messageCount = 0;
 
 		return new Point(AnalyticsSchema.Points.MessageCount) //
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)

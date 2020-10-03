@@ -1,31 +1,26 @@
-import { Point, QueryApi, WriteApi } from '@influxdata/influxdb-client';
+import { Point } from '@influxdata/influxdb-client';
 import { CLIENT_ID, ENABLE_INFLUX } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { enumerable } from '@utils/util';
 import { Event } from 'klasa';
 
 export abstract class AnalyticsEvent extends Event {
-	public analytics!: WriteApi;
-	public analyticsReader!: QueryApi;
-
 	@enumerable(false)
 	public tags: [AnalyticsSchema.Tags, string][] = [];
 
 	// eslint-disable-next-line @typescript-eslint/require-await
 	public async init() {
 		if (!ENABLE_INFLUX) return this.disable();
-		this.analytics = this.client.analytics!;
-		this.analyticsReader = this.client.analyticsReader!;
 		this.initTags();
 	}
 
 	public writePoint(point: Point) {
-		return this.analytics.writePoint(this.injectTags(point));
+		return this.client.analytics!.writeApi.writePoint(this.injectTags(point));
 	}
 
 	public writePoints(points: Point[]) {
 		points = points.map((point) => this.injectTags(point));
-		return this.analytics.writePoints(points);
+		return this.client.analytics!.writeApi.writePoints(points);
 	}
 
 	protected injectTags(point: Point) {

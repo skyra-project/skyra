@@ -1,6 +1,5 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -10,6 +9,7 @@ import {
 	NotificationsStreamsTwitchStreamer,
 	NotificationsStreamTwitch
 } from '@lib/types/namespaces/GuildSettings';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
@@ -216,7 +216,7 @@ export default class extends SkyraCommand {
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
 			const { twitchStreamSubscriptions } = await DbSet.connect();
 			await twitchStreamSubscriptions.manager.transaction(async (em) => {
-				const entries = await em.find(TwitchStreamSubscriptionEntity, { guildIds: Any([message.guild!.id]) });
+				const entries = await em.find(TwitchStreamSubscriptionEntity, { where: { guildIds: Any([message.guild!.id]) } });
 				const toUpdate: TwitchStreamSubscriptionEntity[] = [];
 				const toDelete: TwitchStreamSubscriptionEntity[] = [];
 				for (const entry of entries) {

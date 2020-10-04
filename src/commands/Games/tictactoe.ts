@@ -145,19 +145,39 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private checkBoard(board: number[]) {
-		for (let i = 0; i < 3; i++) {
-			const n = i * 3;
-			if (board[i] === 0) continue;
-			// Check rows, then columns
-			if (board[i] === board[n + 1] && board[n + 1] === board[n + 2]) return board[i];
-			if (board[i] === board[i + 3] && board[i + 3] === board[i + 6]) return board[i];
-		}
-		// check diagonals
-		if (board[0] !== 0 && board[0] === board[4] && board[4] === board[8]) return board[0];
-		if (board[2] !== 0 && board[2] === board[4] && board[4] === board[6]) return board[2];
+	private equals(a: number, b: number, c: number): boolean {
+		return a === b && b === c;
+	}
 
-		// no winner
+	private checkBoard(board: readonly number[]) {
+		// 0 1 2
+		// 3 4 5
+		// 6 7 8
+
+		let a: number | undefined = undefined;
+
+		// Check rows
+		for (let i = 0; i < 9; i += 3) {
+			a = board[i];
+			if (a !== 0 && this.equals(a, board[i + 1], board[i + 2])) return a;
+		}
+
+		// Check columns
+		for (let i = 0; i < 3; ++i) {
+			a = board[i];
+			if (a !== 0 && this.equals(a, board[i + 3], board[i + 6])) return a;
+		}
+
+		// Check descending diagonal
+		// eslint-disable-next-line prefer-destructuring
+		a = board[0];
+		if (a !== 0 && this.equals(a, board[4], board[8])) return a;
+
+		// Check ascending diagonal
+		// eslint-disable-next-line prefer-destructuring
+		a = board[6];
+		if (a !== 0 && this.equals(a, board[4], board[2])) return a;
+
 		return null;
 	}
 

@@ -1,14 +1,4 @@
-import {
-	DEV,
-	PGSQL_CACHE_REDIS,
-	PGSQL_DATABASE_HOST,
-	PGSQL_DATABASE_NAME,
-	PGSQL_DATABASE_PASSWORD,
-	PGSQL_DATABASE_PORT,
-	PGSQL_DATABASE_USER,
-	REDIS_OPTIONS
-} from '@root/config';
-import { Time } from '@utils/constants';
+import { DEV, PGSQL_DATABASE_HOST, PGSQL_DATABASE_NAME, PGSQL_DATABASE_PASSWORD, PGSQL_DATABASE_PORT, PGSQL_DATABASE_USER } from '@root/config';
 import { join } from 'path';
 import { Connection, ConnectionOptions, createConnection, getConnection } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
@@ -31,14 +21,7 @@ export const config: ConnectionOptions = {
 		subscribersDir: 'src/lib/orm/subscribers'
 	},
 	namingStrategy: new SnakeNamingStrategy(),
-	logging: DEV,
-	cache: PGSQL_CACHE_REDIS
-		? {
-				duration: Time.Minute,
-				type: 'ioredis',
-				options: REDIS_OPTIONS
-		  }
-		: false
+	logging: DEV
 };
 
 export const connect = (): Promise<Connection> => {

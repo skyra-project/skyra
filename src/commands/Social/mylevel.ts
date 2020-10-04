@@ -2,7 +2,6 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildSettings, RolesAuto } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Time } from '@utils/constants';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -22,7 +21,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
-		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
 		const memberPoints = memberSettings?.points ?? 0;
 		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
 		const title = nextRole

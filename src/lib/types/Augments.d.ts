@@ -179,7 +179,7 @@ declare module 'klasa' {
 	type PostgresOptions = Omit<PoolConfig, 'stream' | 'ssl'> & Record<PropertyKey, unknown>;
 
 	export interface ProvidersOptions extends Record<string, any> {
-		default?: 'postgres' | 'cache' | 'json' | string;
+		default?: 'postgres' | string;
 		postgres: PostgresOptions;
 	}
 }

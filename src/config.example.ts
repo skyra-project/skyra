@@ -4,7 +4,6 @@ import type { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxd
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import type { APIWebhook } from 'discord-api-types/v6';
-import type { RedisOptions } from 'ioredis';
 import type { KlasaClientOptions, PostgresOptions } from 'klasa';
 
 export const DEV = Reflect.has(process.env, 'DEV') ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -30,12 +29,6 @@ export const PGSQL_DATABASE_PASSWORD = '';
 export const PGSQL_DATABASE_USER = '';
 export const PGSQL_DATABASE_PORT = 5432;
 export const PGSQL_DATABASE_HOST = 'localhost';
-export const PGSQL_CACHE_REDIS = false;
-
-export const REDIS_OPTIONS: RedisOptions = {
-	port: 8287,
-	db: 1
-};
 
 export const LAVALINK_HOST = 'localhost';
 export const LAVALINK_PORT = '2333';

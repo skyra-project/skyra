@@ -3,7 +3,6 @@ import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MemberEntity } from '@orm/entities/MemberEntity';
-import { Time } from '@utils/constants';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -29,7 +28,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
 		if (settings) {
 			const newAmount = settings.points + amount;
 			settings.points = newAmount;
@@ -53,7 +52,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: KlasaMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
 		if (!settings) throw message.language.get(LanguageKeys.Commands.Social.SocialMemberNotexists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
@@ -70,7 +69,7 @@ export default class extends SkyraCommand {
 		if (amount === 0) return this.reset(message, [user]);
 
 		const { members } = await DbSet.connect();
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id }, cache: Time.Minute * 15 });
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
 		let oldValue = 0;
 		if (settings) {
 			oldValue = settings.points;

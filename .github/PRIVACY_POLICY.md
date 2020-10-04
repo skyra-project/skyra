@@ -1,16 +1,13 @@
 <div style="text-align:center;"><h1>SKYRA PRIVACY POLICY</h1></div>
 
-Last updated and effective: July 20, 2020
+Last updated and effective: October 4, 2020
 
 ---
 
 **OWNER AND DATA CONTROLLER**  
-Skyra Project  
-56 Calle María de Guzmán  
-Madrid 28003  
-Spain
+Skyra Project
 
-**Owner contact email**: skyra.project@gmail.com
+**Owner contact email**: contact@skyra.pw
 
 ---
 
@@ -70,7 +67,7 @@ When you interact with us through the Services, we may collect information from 
 
 ## WHERE INFORMATION IS PROCESSED
 
-The Company is based in Spain and the Services are hosted from Germany. No matter where you are located you consent to processing and transferring of your information in and to Germany, Spain, and other countries. The laws of Germany, Spain, and other countries governing data collection and use may not be as comprehensive or protective as the laws of the country where you live.
+The Company is based in Spain and the Services are hosted from Germany (by netcup GmbH). No matter where you are located you consent to processing and transferring of your information in and to Germany, Spain, and other countries. The laws of Germany, Spain, and other countries governing data collection and use may not be as comprehensive or protective as the laws of the country where you live.
 
 ## OUR USE OF YOUR INFORMATION
 
@@ -103,7 +100,7 @@ You may provide us with ideas for new products or modifications to existing prod
 
 ## CHILDREN
 
-Our Services are for users age 13 and over and we do not knowingly collect personal information from children under the age of 13. If you are a parent or guardian of a child under the age of 13 and believe he or she has disclosed personal information to us please contact us at skyra.project@gmail.com. Note: In some countries, the age of digital consent is older than 13. If you are in those countries, you must be at least that age to use the Services. For example, for residents of the EEA, where processing of personal information is based on consent, Skyra Project will not knowingly engage in that processing for users under the age of consent established by applicable data protection law. If we learn that we are engaged in that processing with such users, we will halt such processing and will take reasonable measures to promptly remove applicable information from our records.
+Our Services are for users age 13 and over and we do not knowingly collect personal information from children under the age of 13. If you are a parent or guardian of a child under the age of 13 and believe he or she has disclosed personal information to us please contact us at contact@skyra.pw. Note: In some countries, the age of digital consent is older than 13. If you are in those countries, you must be at least that age to use the Services. For example, for residents of the EEA, where processing of personal information is based on consent, Skyra Project will not knowingly engage in that processing for users under the age of consent established by applicable data protection law. If we learn that we are engaged in that processing with such users, we will halt such processing and will take reasonable measures to promptly remove applicable information from our records.
 
 ## LINKS TO OTHER WEB SITES
 
@@ -125,11 +122,11 @@ Individuals in California, the European Economic Area, Canada, Costa Rica and so
 
 -   **How can I access the personal data you have about me?**
 
-If you would like to submit a data access request, you can do so by sending an email to skyra.project@gmail.com. Upon request we will start the process and provide you a link to access the personal data the Services has on you within 30 standard working days.
+If you would like to submit a data access request, you can do so by sending an email to contact@skyra.pw. Upon request we will start the process and provide you a link to access the personal data the Services has on you within 30 standard working days.
 
 -   **How do I correct, update, amend, or delete the personal data you have about me?**
 
-You can request modifications to your data from us directly. Please write us at skyra.project@gmail.com with the words "Personal Data Request" in the subject or body of your message, along with an explanation of what data subject right you are seeking to exercise. For your protection, we may take steps to verify identity before responding to your request.
+You can request modifications to your data from us directly. Please write us at contact@skyra.pw with the words "Personal Data Request" in the subject or body of your message, along with an explanation of what data subject right you are seeking to exercise. For your protection, we may take steps to verify identity before responding to your request.
 
 ## WHO IS SKYRA PROJECT'S EEA REPRESENTATIVE?
 
@@ -159,4 +156,4 @@ We reserve the right to update or modify this Privacy Policy at any time and fro
 
 ## CONTACTING US
 
-Please also feel free to contact us if you have any questions about this Privacy Policy or the information practices of the Services. You may contact us as follows: skyra.project@gmail.com.
+Please also feel free to contact us if you have any questions about this Privacy Policy or the information practices of the Services. You may contact us as follows: contact@skyra.pw.

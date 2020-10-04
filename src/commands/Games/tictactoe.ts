@@ -159,17 +159,13 @@ export default class extends SkyraCommand {
 		// Check rows
 		for (let i = 0; i < 9; i += 3) {
 			a = board[i];
-			if (a === 0) continue;
-
-			if (this.equals(a, board[i + 1], board[i + 2])) return a;
+			if (a !== 0 && this.equals(a, board[i + 1], board[i + 2])) return a;
 		}
 
 		// Check columns
 		for (let i = 0; i < 3; ++i) {
 			a = board[i];
-			if (a === 0) continue;
-
-			if (this.equals(a, board[i + 3], board[i + 6])) return a;
+			if (a !== 0 && this.equals(a, board[i + 3], board[i + 6])) return a;
 		}
 
 		// Check descending diagonal

@@ -232,102 +232,100 @@ export class GuildEntity extends BaseEntity {
 	@Column('simple-json', { name: 'reaction-roles', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public reactionRoles: ReactionRole[] = [];
 
-	// TODO(kyranet): continue from here.
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesAdmin, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.admin', nullable: true, length: 19 })
 	public rolesAdmin?: string | null;
 
 	@Column('simple-json', { name: 'roles.auto', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public rolesAuto: RolesAuto[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitial, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.initial', nullable: true, length: 19 })
 	public rolesInitial?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesModerator, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.moderator', nullable: true, length: 19 })
 	public rolesModerator?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesMuted, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.muted', nullable: true, length: 19 })
 	public rolesMuted?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedReaction, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.restricted-reaction', nullable: true, length: 19 })
 	public rolesRestrictedReaction?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedEmbed, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.restricted-embed', nullable: true, length: 19 })
 	public rolesRestrictedEmbed?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedEmoji, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.restricted-emoji', nullable: true, length: 19 })
 	public rolesRestrictedEmoji?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedAttachment, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.restricted-attachment', nullable: true, length: 19 })
 	public rolesRestrictedAttachment?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedVoice, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.restricted-voice', nullable: true, length: 19 })
 	public rolesRestrictedVoice?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesPublic, type: 'role', array: true })
 	@Column('varchar', { name: 'roles.public', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public rolesPublic: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRemoveInitial })
 	@Column('boolean', { name: 'roles.removeInitial', default: false })
 	public rolesRemoveInitial = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role', array: true })
 	@Column('varchar', { name: 'roles.dj', nullable: true, length: 19 })
 	public rolesDj?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesSubscriber, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.subscriber', nullable: true, length: 19 })
 	public rolesSubscriber?: string | null;
 
 	@Column('simple-json', { name: 'roles.uniqueRoleSets', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public rolesUniqueRoleSets: UniqueRoleSet[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachment })
 	@Column('boolean', { name: 'selfmod.attachment', default: false })
 	public selfmodAttachment = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentMaximum, minimum: 0, maximum: 60 })
 	@Column('smallint', { name: 'selfmod.attachmentMaximum', default: 20 })
 	public selfmodAttachmentMaximum = 20;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	// TODO: add missing language key for attachmentDuration
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachment, minimum: 5000, maximum: 120000 })
 	@Column('smallint', { name: 'selfmod.attachmentDuration', default: 20000 })
 	public selfmodAttachmentDuration = 20000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.attachmentAction', default: 0 })
 	public selfmodAttachmentAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.attachmentPunishmentDuration', nullable: true })
 	public selfmodAttachmentPunishmentDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsEnabled })
 	@Column('boolean', { name: 'selfmod.capitals.enabled', default: false })
 	public selfmodCapitalsEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredRoles, type: 'role', array: true })
 	@Column('varchar', { name: 'selfmod.capitals.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels, type: 'role', array: true })
 	@Column('varchar', { name: 'selfmod.capitals.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsMinimum, minimum: 5, maximum: 2000 })
 	@Column('smallint', { name: 'selfmod.capitals.minimum', default: 15 })
 	public selfmodCapitalsMinimum = 15;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsMaximum, minimum: 10, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.capitals.maximum', default: 50 })
 	public selfmodCapitalsMaximum = 50;
 

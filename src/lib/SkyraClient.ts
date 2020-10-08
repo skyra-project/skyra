@@ -1,7 +1,5 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
 // Import all dependencies
-import { Client as VezaClient } from 'veza';
-import { Colors } from '@klasa/console';
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
 import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
@@ -9,12 +7,8 @@ import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { mergeDefault } from '@sapphire/utilities';
 import { Webhook } from 'discord.js';
 
-// Import all types
-import { Events } from './types/Enums';
-
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
-import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { ScheduleManager } from './structures/managers/ScheduleManager';
 
 // Import all utils
@@ -26,7 +20,7 @@ import { LongLivingReactionCollector } from './util/LongLivingReactionCollector'
 import { Twitch } from './util/Notifications/Twitch';
 
 // Import all configuration
-import { CLIENT_OPTIONS, ENABLE_INFLUX, EVLYN_PORT, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
+import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
@@ -39,10 +33,6 @@ import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 
-const g = new Colors({ text: 'green' }).format('[IPC   ]');
-const y = new Colors({ text: 'yellow' }).format('[IPC   ]');
-const r = new Colors({ text: 'red' }).format('[IPC   ]');
-
 export class SkyraClient extends KlasaClient {
 	/**
 	 * The version of Skyra
@@ -53,11 +43,6 @@ export class SkyraClient extends KlasaClient {
 	 * The loaded Leaderboard singleton instance
 	 */
 	public leaderboard: Leaderboard = new Leaderboard(this);
-
-	/**
-	 * The IPC monitor store
-	 */
-	public ipcMonitors: IPCMonitorStore = new IPCMonitorStore(this);
 
 	/**
 	 * The Giveaway manager
@@ -89,7 +74,7 @@ export class SkyraClient extends KlasaClient {
 	 */
 	public invites: InviteStore = new InviteStore(this);
 
-	public readonly analytics: AnalyticsData | null = null;
+	public readonly analytics: AnalyticsData | null;
 
 	/**
 	 * The ConnectFour manager
@@ -106,34 +91,12 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
 
-	public ipc = new VezaClient('skyra-master')
-		.on('disconnect', (client) => {
-			this.emit(Events.Warn, `${y} Disconnected: ${client.name}`);
-		})
-		.on('ready', (client) => {
-			this.emit(Events.Verbose, `${g} Ready ${client.name}`);
-		})
-		.on('error', (error, client) => {
-			this.emit(Events.Error, `${r} Error from ${client.name}`, error);
-		})
-		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
-
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
 		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
-
-		// Register the API handler
-		this.registerStore(this.ipcMonitors);
-
-		if (!this.options.dev) {
-			this.ipc.connectTo(EVLYN_PORT).catch((error: Error) => {
-				this.console.error(error);
-			});
-		}
-
-		if (ENABLE_INFLUX) this.analytics = new AnalyticsData();
+		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
 
 		container.registerInstance(SkyraClient, this);
 	}

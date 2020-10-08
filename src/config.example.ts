@@ -10,7 +10,6 @@ export const DEV = Reflect.has(process.env, 'DEV') ? process.env.DEV === 'true' 
 export const ENABLE_LAVALINK = 'ENABLE_LAVALINK' in process.env ? process.env.ENABLE_LAVALINK === 'true' : !DEV;
 export const ENABLE_INFLUX = 'ENABLE_INFLUX' in process.env ? process.env.ENABLE_INFLUX === 'true' : !DEV;
 export const ENABLE_LOCAL_POKEDEX = 'ENABLE_LOCAL_POKEDEX' in process.env ? process.env.ENABLE_LOCAL_POKEDEX === 'true' : !DEV;
-export const EVLYN_PORT = 3100;
 export const WSS_PORT = 565;
 
 export const NAME = 'Skyra';
@@ -121,7 +120,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	messageSweepInterval: 180,
 	pieceDefaults: {
 		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
-		ipcMonitors: { enabled: true },
 		monitors: { ignoreOthers: false },
 		rawEvents: { enabled: true }
 	},

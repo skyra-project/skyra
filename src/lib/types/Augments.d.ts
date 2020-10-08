@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { SettingsUpdateResults } from '@klasa/settings-gateway';
 import type { InviteStore } from '@lib/structures/InviteStore';
-import type { IPCMonitorStore } from '@lib/structures/IPCMonitorStore';
 import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
 import type { ConnectFourManager } from '@utils/Games/ConnectFourManager';
@@ -16,7 +15,6 @@ import type { PermissionString } from 'discord.js';
 import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
 import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
-import type { Client as VezaClient } from 'veza';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Shared';
 
@@ -24,7 +22,6 @@ declare module 'discord.js' {
 	interface Client {
 		version: string;
 		leaderboard: Leaderboard;
-		ipcMonitors: IPCMonitorStore;
 		giveaways: GiveawayManager;
 		schedules: ScheduleManager;
 		invites: InviteStore;
@@ -32,7 +29,6 @@ declare module 'discord.js' {
 		connectFour: ConnectFourManager;
 		lavalink: LavalinkManager;
 		llrCollectors: Set<LongLivingReactionCollector>;
-		ipc: VezaClient;
 		webhookError: Webhook;
 		webhookFeedback: Webhook | null;
 		webhookDatabase: Webhook | null;
@@ -146,7 +142,6 @@ declare module 'klasa' {
 	}
 
 	interface PieceDefaults {
-		ipcMonitors?: PieceOptions;
 		rawEvents?: PieceOptions;
 	}
 

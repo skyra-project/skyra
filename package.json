@@ -80,7 +80,6 @@
 		"tsyringe": "^4.3.0",
 		"typeorm": "0.2.28",
 		"typeorm-naming-strategies": "^2.0.0",
-		"veza": "^1.1.0",
 		"ws": "^7.3.1",
 		"zlib-sync": "^0.1.7"
 	},

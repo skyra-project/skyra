@@ -17,7 +17,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 	}
 
 	protected handle(value: number, player: BaseController<number>): void {
-		this.board[value] = player.turn + 1;
+		if (value !== -1) this.board[value] = player.turn + 1;
 	}
 
 	protected render(status: GameStatus): string {

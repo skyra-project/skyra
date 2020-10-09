@@ -29,7 +29,7 @@ export class LongLivingReactionCollector {
 	}
 
 	public get ended(): boolean {
-		return this.client.llrCollectors.has(this);
+		return !this.client.llrCollectors.has(this);
 	}
 
 	public send(reaction: LLRCData): void {

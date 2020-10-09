@@ -13,7 +13,7 @@ export const enum GameStatus {
 }
 
 export abstract class BaseGame<T> {
-	public readonly message: Message;
+	public message: Message;
 	public readonly playerA: BaseController<T>;
 	public readonly playerB: BaseController<T>;
 	public turn: GameTurn;
@@ -38,11 +38,16 @@ export abstract class BaseGame<T> {
 	public async run() {
 		await this.onStart();
 
-		while (!this.finished) {
+		while (true) {
+			// Read player's move:
 			const { player } = this;
 			const value = await player.await();
 			await this.handle(value, player);
 
+			// If finished, break loop:
+			if (this.finished) break;
+
+			// Query an update and switch player:
 			this.nextPlayer();
 			await this.onUpdate();
 		}

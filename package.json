@@ -58,6 +58,7 @@
 		"@sapphire/utilities": "^1.0.1",
 		"@sentry/integrations": "^5.24.2",
 		"@sentry/node": "^5.24.2",
+		"@skyra/ai": "^1.0.2",
 		"@skyra/char": "^1.0.1",
 		"@skyra/decorators": "discordjs",
 		"binarytf": "^2.0.0",

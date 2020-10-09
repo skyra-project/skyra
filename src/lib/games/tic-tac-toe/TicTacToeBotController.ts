@@ -1,15 +1,11 @@
 import { ticTacToe } from '@skyra/ai';
 import { cast } from '@utils/util';
-import { BaseReactionController } from '../base/BaseReactionController';
+import { BaseBotController } from '../base/BaseBotController';
 import type { TicTacToeGame } from './TicTacToeGame';
 
-export class TicTacToeBotController extends BaseReactionController<number> {
+export class TicTacToeBotController extends BaseBotController<number> {
 	public await(): number {
 		const game = cast<TicTacToeGame>(this.game);
 		return ticTacToe(game.board);
-	}
-
-	protected resolveCollectedValidity(): boolean {
-		return true;
 	}
 }

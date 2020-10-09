@@ -13,11 +13,11 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 	}
 
 	public get finished() {
-		return super.finished && this.board.every((cell) => cell !== 0);
+		return super.finished || this.board.every((cell) => cell !== 0) || this.check() !== null;
 	}
 
 	protected handle(value: number, player: BaseController<number>): void {
-		this.board[value] = player.turn;
+		this.board[value] = player.turn + 1;
 	}
 
 	protected render(status: GameStatus): string {
@@ -36,7 +36,7 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 
 	protected renderOnUpdateOrStart(): string {
 		return this.message.language.get(LanguageKeys.Commands.Games.TicTacToeTurn, {
-			icon: TicTacToeGame.kPlayer[this.turn - 1],
+			icon: TicTacToeGame.kPlayer[this.turn],
 			player: this.player.name,
 			board: this.renderBoard()
 		});

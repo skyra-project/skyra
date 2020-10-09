@@ -14,7 +14,8 @@ export class TicTacToeHumanController extends BaseReactionController<number> {
 
 	protected resolveCollectedValidity(collected: string): boolean {
 		const game = cast<TicTacToeGame>(this.game);
-		return game.reactions.indexOf(collected) !== -1;
+		const index = game.reactions.indexOf(collected);
+		return index !== -1 && game.board[index] === 0;
 	}
 
 	protected resolveCollectedData(reaction: LLRCData): string | null {

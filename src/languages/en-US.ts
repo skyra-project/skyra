@@ -4849,7 +4849,9 @@ export default class extends Language {
 			`${LOADING} Trying to figure out this command...`,
 			`${LOADING} Fetching data from the cloud...`,
 			`${LOADING} Calibrating lenses...`,
-			`${LOADING} Playing rock, scissors, paper...`
+			`${LOADING} Playing rock, paper, scissors...`,
+			`${LOADING} Tuning in to the right frequencies...`,
+			`${LOADING} Reticulating splines...`
 		],
 		systemError: `Something bad happened! Please try again, or if the issue keeps happening join the support server (hint: use \`Skyra, support\`)`,
 		systemDatabaseError: `I wasn't able get that in my database! Please try again, or if the issue keeps happening join the support server (hint: use \`Skyra, support\`)`,

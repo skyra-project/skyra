@@ -616,7 +616,6 @@ export const TLDs = [
 	'insurance',
 	'insure',
 	'int',
-	'intel',
 	'international',
 	'intuit',
 	'investments',

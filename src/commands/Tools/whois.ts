@@ -51,10 +51,8 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(Colors.White)
-			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setURL(user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true }))
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
-			.setDescription(user.toString())
+			.setDescription(this.getUserInformation(user, ''))
 			.addField(titles.createdAt, fields.createdAt)
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
@@ -66,14 +64,9 @@ export default class extends SkyraCommand {
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || Colors.White)
-			.setAuthor(
-				`${member.user.tag}${member.user.bot ? ` [BOT]` : ''}`,
-				member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
-			)
-			.setURL(member.user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true }))
 			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
-			.setDescription(`${member.toString()}${this.getBoostIcon(member.premiumSinceTimestamp)}`)
-			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown)
+			.setDescription(this.getUserInformation(member.user, this.getBoostIcon(member.premiumSinceTimestamp)))
+			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown, true)
 			.addField(titles.createdAt, fields.createdAt, true)
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
@@ -81,6 +74,12 @@ export default class extends SkyraCommand {
 		this.applyMemberRoles(message, member, embed);
 		this.applyMemberKeyPermissions(message, member, embed);
 		return embed;
+	}
+
+	private getUserInformation(user: User, extras: string): string {
+		const bot = user.bot ? ` ${Emojis.Bot}` : '';
+		const avatar = `[Avatar ${Emojis.Frame}](${user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true })})`;
+		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 
 	private applyMemberRoles(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {

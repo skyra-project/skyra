@@ -51,7 +51,8 @@ export default class extends Event {
 			const oldDate = Date.now() - Time.Day * 14;
 			for (const result of filteredResults) {
 				const snowflake = DiscordSnowflake.deconstruct(result);
-				if (Number(snowflake.timestamp) >= oldDate) newMessages.push(result);
+				const timestamp = Number(snowflake.timestamp);
+				if (timestamp >= oldDate) newMessages.push(result);
 				else oldMessages.push(result);
 			}
 

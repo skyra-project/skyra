@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 			)
 			.setURL(member.user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true }))
 			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
-			.setDescription(`${this.getBoostIcon(member.premiumSinceTimestamp)}${member.toString()}`)
+			.setDescription(`${member.toString()}${this.getBoostIcon(member.premiumSinceTimestamp)}`)
 			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown)
 			.addField(titles.createdAt, fields.createdAt, true)
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -118,7 +118,7 @@ export default class extends SkyraCommand {
 
 	private getBoostIcon(boostingSince: number | null): string {
 		if (boostingSince === null) return '';
-		return `${this.getBoostEmoji(Date.now() - boostingSince)} `;
+		return ` ${this.getBoostEmoji(Date.now() - boostingSince)}`;
 	}
 
 	private getBoostEmoji(duration: number): string {

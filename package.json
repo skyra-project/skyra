@@ -63,6 +63,7 @@
 		"binarytf": "^2.0.0",
 		"canvas": "^2.6.1",
 		"canvas-constructor": "^4.1.0",
+		"colorette": "^1.2.1",
 		"confusables": "^1.0.0",
 		"diff": "^4.0.2",
 		"discord.js": "^12.3.1",

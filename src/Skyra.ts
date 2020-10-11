@@ -4,12 +4,15 @@ import 'reflect-metadata';
 import { SkyraClient } from '@lib/SkyraClient';
 import { DbSet } from '@lib/structures/DbSet';
 import { TOKENS } from '@root/config';
-import * as Sentry from '@sentry/node';
-import { floatPromise } from '@utils/util';
-import { inspect } from 'util';
 import { RewriteFrames } from '@sentry/integrations';
+import * as Sentry from '@sentry/node';
 import { rootFolder } from '@utils/constants';
+import { floatPromise } from '@utils/util';
+import * as colorette from 'colorette';
+import { inspect } from 'util';
+
 inspect.defaultOptions.depth = 1;
+colorette.options.enabled = true;
 
 const client = new SkyraClient();
 

@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setColor(Colors.White)
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
-			.setDescription(this.getUserInformation(user, ''))
+			.setDescription(this.getUserInformation(user))
 			.addField(titles.createdAt, fields.createdAt)
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
@@ -76,7 +76,7 @@ export default class extends SkyraCommand {
 		return embed;
 	}
 
-	private getUserInformation(user: User, extras: string): string {
+	private getUserInformation(user: User, extras = ''): string {
 		const bot = user.bot ? ` ${Emojis.Bot}` : '';
 		const avatar = `[Avatar ${Emojis.Frame}](${user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true })})`;
 		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;

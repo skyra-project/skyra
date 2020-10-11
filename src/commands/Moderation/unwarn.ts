@@ -1,7 +1,7 @@
+import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { floatPromise, getImage } from '@utils/util';

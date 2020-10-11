@@ -1,8 +1,8 @@
+import { UserEntity } from '@lib/database/entities/UserEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { getManager } from 'typeorm';

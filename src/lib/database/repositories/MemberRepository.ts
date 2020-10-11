@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { MemberEntity } from '@orm/entities/MemberEntity';
+import { MemberEntity } from '@lib/database/entities/MemberEntity';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 
 @EntityRepository(MemberEntity)

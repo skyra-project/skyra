@@ -64,7 +64,7 @@ export class ScheduleEntity extends BaseEntity {
 	 * If the task should catch up in the event the bot is down
 	 */
 	@Column('boolean', { default: true })
-	public catchUp: boolean = true;
+	public catchUp = true;
 
 	/**
 	 * The stored metadata to send to the Task

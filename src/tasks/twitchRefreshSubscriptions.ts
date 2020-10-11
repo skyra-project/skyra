@@ -1,8 +1,8 @@
 import { Colors } from '@klasa/console';
+import { PartialResponseValue, ResponseType } from '@lib/database/entities/ScheduleEntity';
+import { TwitchStreamSubscriptionEntity } from '@lib/database/entities/TwitchStreamSubscriptionEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
-import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
 import { Task } from 'klasa';
 import { Repository } from 'typeorm';

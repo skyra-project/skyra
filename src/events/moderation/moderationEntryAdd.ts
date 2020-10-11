@@ -1,6 +1,6 @@
+import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Moderation } from '@utils/constants';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';

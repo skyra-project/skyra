@@ -12,7 +12,7 @@ import type {
 } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
-import { ConfigurableKey } from '@utils/Database/ConfigurableKey';
+import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('guilds', { schema: 'public' })

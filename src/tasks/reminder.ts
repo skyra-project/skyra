@@ -1,4 +1,4 @@
-import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
+import { PartialResponseValue, ResponseType } from '@lib/database/entities/ScheduleEntity';
 import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Task, Timestamp } from 'klasa';

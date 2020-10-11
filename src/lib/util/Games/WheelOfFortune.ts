@@ -1,7 +1,7 @@
+import { UserEntity } from '@lib/database/entities/UserEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { roundNumber } from '@sapphire/utilities';
 import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';

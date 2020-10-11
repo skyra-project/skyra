@@ -1,7 +1,7 @@
+import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { CLIENT_ID } from '@root/config';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';

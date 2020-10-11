@@ -1,9 +1,9 @@
+import { ScheduleEntity } from '@lib/database/entities/ScheduleEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Schedules } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ScheduleEntity } from '@orm/entities/ScheduleEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';

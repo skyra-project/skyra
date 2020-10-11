@@ -4,8 +4,8 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { Cron } from '@klasa/cron';
 import { TimerManager } from '@klasa/timer-manager';
+import { ResponseType, ResponseValue, ScheduleEntity } from '@lib/database/entities/ScheduleEntity';
 import { Events } from '@lib/types/Enums';
-import { ResponseType, ResponseValue, ScheduleEntity } from '@orm/entities/ScheduleEntity';
 import { KlasaClient } from 'klasa';
 import { DbSet } from '../DbSet';
 

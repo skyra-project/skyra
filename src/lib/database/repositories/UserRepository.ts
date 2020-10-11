@@ -2,10 +2,10 @@
 import Ccollection from '@discordjs/collection';
 import { AsyncQueue } from '@klasa/async-queue';
 import { TimerManager } from '@klasa/timer-manager';
+import { UserCooldownEntity } from '@lib/database/entities/UserCooldownEntity';
+import { UserGameIntegrationEntity } from '@lib/database/entities/UserGameIntegrationEntity';
+import { UserProfileEntity } from '@lib/database/entities/UserProfileEntity';
 import { DbSet } from '@lib/structures/DbSet';
-import { UserCooldownEntity } from '@orm/entities/UserCooldownEntity';
-import { UserGameIntegrationEntity } from '@orm/entities/UserGameIntegrationEntity';
-import { UserProfileEntity } from '@orm/entities/UserProfileEntity';
 import { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';
 import { UserEntity } from '../entities/UserEntity';

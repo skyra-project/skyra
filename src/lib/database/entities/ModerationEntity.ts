@@ -23,7 +23,7 @@ export class ModerationEntity extends BaseEntity {
 	#timeout = Date.now() + Time.Minute * 15;
 
 	@PrimaryColumn('integer')
-	public caseID: number = -1;
+	public caseID = -1;
 
 	@Column('timestamp without time zone', { nullable: true, default: () => 'null' })
 	public createdAt: Date | null = null;

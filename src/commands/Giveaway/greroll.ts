@@ -1,8 +1,8 @@
+import { kRawEmoji } from '@lib/database/entities/GiveawayEntity';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { kRawEmoji } from '@orm/entities/GiveawayEntity';
 import { CLIENT_ID } from '@root/config';
 import { fetchReactionUsers, resolveEmoji } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

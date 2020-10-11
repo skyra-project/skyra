@@ -1,8 +1,8 @@
+import { UserEntity } from '@lib/database/entities/UserEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';

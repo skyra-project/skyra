@@ -1,10 +1,10 @@
 import Collection from '@discordjs/collection';
+import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';

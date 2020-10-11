@@ -1,8 +1,8 @@
+import { MemberEntity } from '@lib/database/entities/MemberEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { MemberEntity } from '@orm/entities/MemberEntity';
 import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

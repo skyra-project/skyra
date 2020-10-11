@@ -1,7 +1,7 @@
+import { UserEntity } from '@lib/database/entities/UserEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';

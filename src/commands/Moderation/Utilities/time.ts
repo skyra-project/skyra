@@ -1,7 +1,7 @@
+import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { Moderation } from '@utils/constants';
 import { Permissions, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';

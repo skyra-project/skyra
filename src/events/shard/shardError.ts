@@ -5,6 +5,6 @@ export default class extends ShardEvent {
 	protected readonly title = red('Error');
 
 	public run(error: Error, id: number) {
-		this.client.console.error(`${this.header(id)}: ${error.message}`);
+		this.client.console.error(`${this.header(id)}: ${error.stack ?? error.message}`);
 	}
 }

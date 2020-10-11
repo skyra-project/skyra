@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || Colors.White)
 			.setAuthor(
-				`${member.user.tag}${member.user.bot ? ` ${Emojis.Bot}` : ''}`,
+				`${member.user.tag}${member.user.bot ? ` [BOT]` : ''}`,
 				member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setURL(member.user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true }))
@@ -117,7 +117,7 @@ export default class extends SkyraCommand {
 	}
 
 	private getBoostIcon(boostingSince: number | null): string {
-		if (boostingSince === null) return '';
+		if (boostingSince === null || boostingSince <= 0) return '';
 		return ` ${this.getBoostEmoji(Date.now() - boostingSince)}`;
 	}
 

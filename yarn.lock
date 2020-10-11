@@ -702,11 +702,6 @@
     "@klasa/utils" "^0.1.0"
     "@sapphire/utilities" "github:sapphire-project/utilities#build-utilities"
 
-"@klasa/snowflake@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@klasa/snowflake/-/snowflake-0.0.1.tgz#f64b2f49a5023a4e4e617b12d2fffb601d29992a"
-  integrity sha512-elUPFvucXTle1ZsI4RchlpuiWqBcMoCdaNBzYKKOUElzwKiv+BcKh1a4znYuw2V1cnPg0GVZYkgOiH5AGP5c5g==
-
 "@klasa/timer-manager@^0.0.1":
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/@klasa/timer-manager/-/timer-manager-0.0.1.tgz#977903d92453e9602c1803af15f1713d5ca028b9"
@@ -781,6 +776,11 @@
     node-ipc "9.0.1"
     parse-glob "3.0.4"
     promise-retry "1.1.1"
+
+"@sapphire/snowflake@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-1.0.1.tgz#51519a821c64e24afa0b783bf06e906eda79c617"
+  integrity sha512-AldLLmRX/0jjObbp6qH73K95KXvGTseBco/3Kubktx6YTu7xtA0es+PDSJyMqbhLKqBhnNLw163NKyy6ZQeWMA==
 
 "@sapphire/utilities@^1.0.1":
   version "1.0.1"

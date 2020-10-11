@@ -1,4 +1,4 @@
-import { Snowflake } from '@klasa/snowflake';
+import { DiscordSnowflake } from '@sapphire/snowflake';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
@@ -16,8 +16,9 @@ export default class extends Serializer {
 
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
 		if (this.kRegExp.test(data)) {
-			const snowflake = new Snowflake(data);
-			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return data;
+			const snowflake = DiscordSnowflake.deconstruct(data);
+			const timestamp = Number(snowflake);
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return data;
 		}
 		throw language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: entry.key });
 	}

@@ -3,6 +3,7 @@ export const enum Databases {
 }
 
 export const enum Colors {
+	White = 0xe7e7e8,
 	Amber = 0xffc107,
 	Amber300 = 0xffd54f,
 	Blue = 0x2196f3,

@@ -1,6 +1,7 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { Colors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { BrandingColors } from '@utils/constants';
+import { Emojis, Time } from '@utils/constants';
 import { GuildMember, MessageEmbed, Permissions, PermissionString, Role, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -49,11 +50,10 @@ export default class extends SkyraCommand {
 		const fields = message.language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
 
 		return new MessageEmbed()
-			.setColor(BrandingColors.Secondary)
-			.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(user.toString())
-			.addField(titles.createdAt, fields.createdAt)
+			.setColor(Colors.White)
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
+			.setDescription(this.getUserInformation(user))
+			.addField(titles.createdAt, fields.createdAt)
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 	}
@@ -63,18 +63,23 @@ export default class extends SkyraCommand {
 		const fields = message.language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
 
 		const embed = new MessageEmbed()
-			.setColor(member.displayColor || BrandingColors.Secondary)
-			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown)
-			.addField(titles.createdAt, fields.createdAt)
-			.setAuthor(member.user.tag, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(member.toString())
+			.setColor(member.displayColor || Colors.White)
 			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
+			.setDescription(this.getUserInformation(member.user, this.getBoostIcon(member.premiumSinceTimestamp)))
+			.addField(titles.joined, member.joinedTimestamp ? fields.joinedWithTimestamp : fields.joinedUnknown, true)
+			.addField(titles.createdAt, fields.createdAt, true)
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 
 		this.applyMemberRoles(message, member, embed);
 		this.applyMemberKeyPermissions(message, member, embed);
 		return embed;
+	}
+
+	private getUserInformation(user: User, extras = ''): string {
+		const bot = user.bot ? ` ${Emojis.Bot}` : '';
+		const avatar = `[Avatar ${Emojis.Frame}](${user.displayAvatarURL({ size: 4096, format: 'png', dynamic: true })})`;
+		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 
 	private applyMemberRoles(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
@@ -108,5 +113,22 @@ export default class extends SkyraCommand {
 		if (permissions.length > 0) {
 			embed.addField(message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions), permissions.join(', '));
 		}
+	}
+
+	private getBoostIcon(boostingSince: number | null): string {
+		if (boostingSince === null || boostingSince <= 0) return '';
+		return ` ${this.getBoostEmoji(Date.now() - boostingSince)}`;
+	}
+
+	private getBoostEmoji(duration: number): string {
+		if (duration >= Time.Month * 24) return Emojis.BoostLevel9;
+		if (duration >= Time.Month * 18) return Emojis.BoostLevel8;
+		if (duration >= Time.Month * 15) return Emojis.BoostLevel7;
+		if (duration >= Time.Month * 12) return Emojis.BoostLevel6;
+		if (duration >= Time.Month * 9) return Emojis.BoostLevel5;
+		if (duration >= Time.Month * 6) return Emojis.BoostLevel4;
+		if (duration >= Time.Month * 3) return Emojis.BoostLevel3;
+		if (duration >= Time.Month * 2) return Emojis.BoostLevel2;
+		return Emojis.BoostLevel1;
 	}
 }

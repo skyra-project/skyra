@@ -17,7 +17,7 @@ export default class extends Serializer {
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
 		if (this.kRegExp.test(data)) {
 			const snowflake = DiscordSnowflake.deconstruct(data);
-			const timestamp = Number(snowflake);
+			const timestamp = Number(snowflake.timestamp);
 			if (timestamp >= this.kMinimum && timestamp < Date.now()) return data;
 		}
 		throw language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: entry.key });

@@ -19,7 +19,7 @@ export default class extends Argument {
 
 		if (this.kRegExp.test(arg)) {
 			const snowflake = DiscordSnowflake.deconstruct(arg);
-			const timestamp = Number(snowflake);
+			const timestamp = Number(snowflake.timestamp);
 			if (timestamp >= this.kMinimum && timestamp < Date.now()) return arg;
 		}
 		throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });

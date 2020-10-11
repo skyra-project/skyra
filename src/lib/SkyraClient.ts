@@ -98,7 +98,7 @@ export class SkyraClient extends KlasaClient {
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
 
-		container.registerInstance(SkyraClient, this);
+		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);
 	}
 
 	public async login(token?: string) {

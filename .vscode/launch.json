@@ -13,7 +13,8 @@
 			},
 			"skipFiles": ["<node_internals>/**", "node_modules/tslib/**"],
 			"console": "internalConsole",
-			"outputCapture": "std"
+			"outputCapture": "std",
+			"outFiles": ["${workspaceFolder}/dist/**/*.js"]
 		}
 	]
 }

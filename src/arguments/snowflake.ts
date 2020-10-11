@@ -1,4 +1,4 @@
-import { Snowflake } from '@klasa/snowflake';
+import { DiscordSnowflake } from '@sapphire/snowflake';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
@@ -18,8 +18,9 @@ export default class extends Argument {
 		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 
 		if (this.kRegExp.test(arg)) {
-			const snowflake = new Snowflake(arg);
-			if (snowflake.timestamp >= this.kMinimum && snowflake.timestamp < Date.now()) return arg;
+			const snowflake = DiscordSnowflake.deconstruct(arg);
+			const timestamp = Number(snowflake.timestamp);
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return arg;
 		}
 		throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 	}

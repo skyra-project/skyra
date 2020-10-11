@@ -1,4 +1,4 @@
-import { Snowflake } from '@klasa/snowflake';
+import { DiscordSnowflake } from '@sapphire/snowflake';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
@@ -50,8 +50,9 @@ export default class extends Event {
 			const newMessages: string[] = [];
 			const oldDate = Date.now() - Time.Day * 14;
 			for (const result of filteredResults) {
-				const snowflake = new Snowflake(result);
-				if (snowflake.timestamp >= oldDate) newMessages.push(result);
+				const snowflake = DiscordSnowflake.deconstruct(result);
+				const timestamp = Number(snowflake.timestamp);
+				if (timestamp >= oldDate) newMessages.push(result);
 				else oldMessages.push(result);
 			}
 

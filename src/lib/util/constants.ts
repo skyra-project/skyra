@@ -17,6 +17,7 @@ export const enum Time {
 	Minute = 1000 * 60,
 	Hour = 1000 * 60 * 60,
 	Day = 1000 * 60 * 60 * 24,
+	Month = 1000 * 60 * 60 * 24 * (365 / 12),
 	Year = 1000 * 60 * 60 * 24 * 365
 }
 
@@ -33,21 +34,31 @@ export const enum BrawlStarsEmojis {
 }
 
 export const enum Emojis {
+	ArrowB = '<:ArrowB:694594285269680179>',
+	ArrowBL = '<:ArrowBL:694594285118685259>',
+	ArrowBR = '<:ArrowBR:694594285445578792>',
+	ArrowL = '<:ArrowL:694594285521207436>',
+	ArrowR = '<:ArrowR:694594285466812486>',
+	ArrowT = '<:ArrowT:694594285487652954>',
+	ArrowTL = '<:ArrowTL:694594285625933854>',
+	ArrowTR = '<:ArrowTR:694594285412155393>',
+	BoostLevel1 = '<:boostlvl1:764785872117170176>',
+	BoostLevel2 = '<:boostlvl2:764785872108781578>',
+	BoostLevel3 = '<:boostlvl3:764785871810461708>',
+	BoostLevel4 = '<:boostlvl4:764785872171827220>',
+	BoostLevel5 = '<:boostlvl5:764785871823699999>',
+	BoostLevel6 = '<:boostlvl6:764785872218095638>',
+	BoostLevel7 = '<:boostlvl7:764785872017031199>',
+	BoostLevel8 = '<:boostlvl8:764785872167632896>',
+	BoostLevel9 = '<:boostlvl9:764785871831957525>',
+	Bot = '<:bot:764788923851079702>',
 	GreenTick = '<:greenTick:637706251253317669>',
 	Loading = '<a:sloading:656988867403972629>',
 	RedCross = '<:redCross:637706251257511973>',
 	Shiny = '<:shiny:612364146792726539>',
-	ArrowTL = '<:ArrowTL:694594285625933854>',
-	ArrowT = '<:ArrowT:694594285487652954>',
-	ArrowTR = '<:ArrowTR:694594285412155393>',
-	ArrowL = '<:ArrowL:694594285521207436>',
-	ArrowR = '<:ArrowR:694594285466812486>',
-	ArrowBL = '<:ArrowBL:694594285118685259>',
-	ArrowB = '<:ArrowB:694594285269680179>',
-	ArrowBR = '<:ArrowBR:694594285445578792>',
 	Star = '<:Star:736337719982030910>',
-	StarHalf = '<:StarHalf:736337529900499034>',
-	StarEmpty = '<:StarEmpty:736337232738254849>'
+	StarEmpty = '<:StarEmpty:736337232738254849>',
+	StarHalf = '<:StarHalf:736337529900499034>'
 }
 
 export namespace ConnectFourConstants {

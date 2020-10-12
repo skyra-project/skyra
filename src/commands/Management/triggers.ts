@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 					}
 				} else if (type === 'alias') {
 					const command = this.client.commands.get(arg);
-					if (command && command.permissionLevel < 10) return arg;
+					if (command && command.permissionLevel < 10) return command.name;
 					throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidalias);
 				} else {
 					return null;

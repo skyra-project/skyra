@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
+import type { QueueClient, QueueClientOptions } from '@lib/audio';
 import type { SettingsUpdateResults } from '@klasa/settings-gateway';
 import type { InviteStore } from '@lib/structures/InviteStore';
 import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
@@ -20,6 +21,7 @@ import type { CustomFunctionGet, CustomGet } from './Shared';
 
 declare module 'discord.js' {
 	interface Client {
+		audio: QueueClient;
 		version: string;
 		leaderboard: Leaderboard;
 		giveaways: GiveawayManager;
@@ -27,6 +29,7 @@ declare module 'discord.js' {
 		invites: InviteStore;
 		analytics: AnalyticsData | null;
 		connectFour: ConnectFourManager;
+		// TODO(kyranet): Remove this.
 		lavalink: LavalinkManager;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		webhookError: Webhook;
@@ -130,6 +133,7 @@ declare module 'discord.js' {
 
 declare module 'klasa' {
 	interface KlasaClientOptions {
+		audio: QueueClientOptions;
 		dev?: boolean;
 		nms?: {
 			role?: number;

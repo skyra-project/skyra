@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
+import { Queue } from '@lib/audio';
 import { ModerationManager } from '@lib/structures/managers/ModerationManager';
 import { PermissionsManager } from '@lib/structures/managers/PermissionsManager';
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
@@ -15,14 +16,20 @@ export class SkyraGuild extends Structures.get('Guild') {
 	public readonly permissionsManager: PermissionsManager = new PermissionsManager(this);
 	public readonly music: MusicHandler = new MusicHandler(this);
 	public readonly stickyRoles: StickyRoleManager = new StickyRoleManager(this);
+
+	public get audio(): Queue {
+		return this.client.audio.queues.get(this.id);
+	}
 }
 
 declare module 'discord.js' {
 	export interface Guild {
+		readonly audio: Queue;
 		readonly security: GuildSecurity;
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly permissionsManager: PermissionsManager;
+		// TODO(kyranet): Remove this.
 		readonly music: MusicHandler;
 		readonly stickyRoles: StickyRoleManager;
 

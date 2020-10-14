@@ -1,17 +1,17 @@
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { ENABLE_LAVALINK } from '@root/config';
+import { GatewayVoiceState } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
-import { VoiceStateUpdate } from 'lavacord';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
 		super(store, file, directory, { name: DiscordEvents.VoiceStateUpdate, emitter: store.client.ws });
 	}
 
-	public async run(data: VoiceStateUpdate): Promise<void> {
+	public async run(data: GatewayVoiceState): Promise<void> {
 		try {
-			await this.client.lavalink.voiceStateUpdate(data);
+			await this.client.audio.voiceStateUpdate(data);
 		} catch (error) {
 			this.client.emit(Events.Error, error);
 		}

@@ -902,6 +902,13 @@
     bindings "^1.5.0"
     node-addon-api "*"
 
+"@skyra/audio@skyra-project/audio#build":
+  version "0.0.1"
+  resolved "https://codeload.github.com/skyra-project/audio/tar.gz/80cb7b679e9c96626110c5549eac1e0955f45f54"
+  dependencies:
+    backoff "^2.5.0"
+    ws "^7.3.1"
+
 "@skyra/char@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@skyra/char/-/char-1.0.1.tgz#d1d88a9bde2b436f83fd4995b3f0926c1de6a7fa"
@@ -1481,6 +1488,13 @@ babel-runtime@6.23.0:
   dependencies:
     core-js "^2.4.0"
     regenerator-runtime "^0.10.0"
+
+backoff@^2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/backoff/-/backoff-2.5.0.tgz#f616eda9d3e4b66b8ca7fca79f695722c5f8e26f"
+  integrity sha1-9hbtqdPktmuMp/ynn2lXIsX44m8=
+  dependencies:
+    precond "0.2"
 
 balanced-match@^1.0.0:
   version "1.0.0"
@@ -4832,6 +4846,11 @@ postgres-interval@^1.1.0:
   integrity sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==
   dependencies:
     xtend "^4.0.0"
+
+precond@0.2:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/precond/-/precond-0.2.3.tgz#aa9591bcaa24923f1e0f4849d240f47efc1075ac"
+  integrity sha1-qpWRvKokkj8eD0hJ0kD0fvwQdaw=
 
 prelude-ls@^1.2.1:
   version "1.2.1"

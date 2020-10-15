@@ -20,12 +20,13 @@ export default class extends Route {
 			category: cmd.category,
 			cooldown: cmd.cooldown,
 			description: isFunction(cmd.description) && !isPrimitive(language) ? cmd.description(language) : cmd.description,
+			extendedHelp: isFunction(cmd.extendedHelp) && !isPrimitive(language) ? cmd.extendedHelp(language) : cmd.extendedHelp,
 			guarded: cmd.guarded,
 			guildOnly: !cmd.runIn.includes('dm'),
 			name: cmd.name,
 			permissionLevel: cmd.permissionLevel,
 			requiredPermissions: cmd.requiredPermissions.toArray(),
-			usage: cmd.usageString
+			usage: cmd.usage.nearlyFullUsage
 		}));
 		return response.json(serializedCommands);
 	}

@@ -1,4 +1,6 @@
+/* eslint-disable @typescript-eslint/unified-signatures */
 import { map, reverse } from '@lib/misc';
+import { Events } from '@lib/types/Enums';
 import { Player } from '@skyra/audio';
 import { EventEmitter } from 'events';
 import { QueueStore } from './QueueStore';
@@ -24,15 +26,27 @@ function deserializeEntry(value: string): QueueEntry {
 	return { author, track };
 }
 
+interface QueueKeys {
+	readonly next: string;
+	readonly position: string;
+	readonly current: string;
+	readonly replay: string;
+	readonly volume: string;
+	readonly text: string;
+}
+
 export class Queue extends EventEmitter {
-	public readonly keys: { next: string; pos: string; prev: string };
+	public readonly keys: QueueKeys;
 
 	public constructor(public readonly store: QueueStore, public readonly guildID: string) {
 		super();
 		this.keys = {
-			next: `playlists.${this.guildID}.next`, // stored in reverse order: right-most (last) element is the next in queue
-			pos: `playlists.${this.guildID}.pos`,
-			prev: `playlists.${this.guildID}.prev` // left-most (first) element is the currently playing track
+			next: `skyra.a.${this.guildID}.n`, // stored in reverse order: right-most (last) element is the next in queue
+			position: `skyra.a.${this.guildID}.p`,
+			current: `skyra.a.${this.guildID}.c`, // left-most (first) element is the currently playing track,
+			replay: `skyra.a.${this.guildID}.r`,
+			volume: `skyra.a.${this.guildID}.v`,
+			text: `skyra.a.${this.guildID}.t`
 		};
 
 		this.on('event', async (d) => {
@@ -52,7 +66,7 @@ export class Queue extends EventEmitter {
 
 		this.on('playerUpdate', async (d) => {
 			try {
-				await this.store.redis.set(this.keys.pos, d.state.position);
+				await this.store.redis.set(this.keys.position, d.state.position);
 			} catch (e) {
 				this.store.client.emit('error', e);
 			}
@@ -70,6 +84,10 @@ export class Queue extends EventEmitter {
 		const np = await this.current();
 		if (!np) return this.handleNext();
 
+		// Emit to the websocket that we skipped a song.
+		this.store.client.emit(Events.MusicSongSkip, this, np.entry);
+
+		// Play next song.
 		await this.player.play(np.entry.track, { start: np.position });
 		return true;
 	}
@@ -78,18 +96,102 @@ export class Queue extends EventEmitter {
 	 * Adds tracks to the end of the queue.
 	 * @param tracks The tracks to be added.
 	 */
-	public add(...tracks: QueueEntry[]): Promise<number> {
-		if (!tracks.length) return Promise.resolve(0);
-		return this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
+	public async add(...tracks: QueueEntry[]): Promise<void> {
+		if (!tracks.length) return Promise.resolve();
+		await this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
+		this.store.client.emit(Events.MusicAdd, this, tracks);
 	}
 
 	/**
-	 * Adds tracks to the start of the queue.
-	 * @param tracks The tracks to be added.
+	 * Retrieves whether or not the system should repeat the current track.
 	 */
-	public unshift(...tracks: QueueEntry[]): Promise<number> {
-		if (!tracks.length) return Promise.resolve(0);
-		return this.store.redis.rpush(this.keys.next, ...map(tracks.values(), serializeEntry));
+	public replay(): Promise<boolean>;
+
+	/**
+	 * Sets the repeat mode.
+	 * @param value Whether or not the system should repeat the current track.
+	 */
+	public replay(value: boolean): Promise<boolean>;
+	public async replay(value?: boolean): Promise<boolean> {
+		if (typeof value === 'undefined') {
+			return (await this.store.redis.get(this.keys.replay)) === '1';
+		}
+
+		await this.store.redis.set(this.keys.replay, value ? '1' : '0');
+		this.store.client.emit(Events.MusicReplayUpdate, this, value);
+		return value;
+	}
+
+	/**
+	 * Retrieves the volume of the track in the queue.
+	 */
+	public volume(): Promise<number>;
+
+	/**
+	 * Sets the volume.
+	 * @param value The new volume for the queue.
+	 */
+	public volume(value: number): Promise<number>;
+	public async volume(value?: number): Promise<number> {
+		if (typeof value === 'undefined') {
+			const raw = await this.store.redis.get(this.keys.volume);
+			return raw ? Number(raw) : 100;
+		}
+
+		await this.store.redis.set(this.keys.volume, value);
+		this.store.client.emit(Events.MusicSongVolumeUpdate, this, value);
+		return value;
+	}
+
+	/**
+	 * Sets the seek position in the track.
+	 * @param position The position in milliseconds in the track.
+	 */
+	public async seek(position: number): Promise<void> {
+		await this.player.seek(position);
+		this.store.client.emit(Events.MusicSongSeekUpdate, this, position);
+	}
+
+	/**
+	 * Connects to a voice channel.
+	 * @param channelID The [[VoiceChannel]] to connect to.
+	 */
+	public async connect(channelID: string): Promise<void> {
+		await this.player.join(channelID, { deaf: true });
+		this.store.client.emit(Events.MusicConnect, this, channelID);
+	}
+
+	/**
+	 * Leaves the voice channel.
+	 */
+	public async leave(): Promise<void> {
+		await this.player.leave();
+		await this.textChannel(null);
+		this.store.client.emit(Events.MusicLeave, this);
+	}
+
+	/**
+	 * Gets the text channel from cache.
+	 */
+	public textChannel(): Promise<string | null>;
+
+	/**
+	 * Unsets the notifications channel.
+	 */
+	public textChannel(channelID: null): Promise<null>;
+
+	/**
+	 * Sets a text channel to send notifications to.
+	 * @param channelID The text channel to set.
+	 */
+	public async textChannel(channelID: string): Promise<string>;
+	public async textChannel(channelID?: string | null): Promise<string | null> {
+		if (typeof channelID === 'undefined') {
+			return this.store.redis.get(this.keys.text);
+		}
+
+		await (channelID === null ? this.store.redis.del(this.keys.text) : this.store.redis.set(this.keys.text, channelID));
+		return channelID;
 	}
 
 	/**
@@ -129,15 +231,15 @@ export class Queue extends EventEmitter {
 	 * @param from The position of the track to move.
 	 * @param to The position of the new position for the track.
 	 */
-	public move(from: number, to: number): Promise<'OK'> {
-		return this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
+	public async move(from: number, to: number): Promise<void> {
+		await this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
 	}
 
 	/**
 	 * Shuffles the queue.
 	 */
-	public shuffle(): Promise<'OK'> {
-		return this.store.redis.lshuffle(this.keys.next, Date.now());
+	public async shuffle(): Promise<void> {
+		await this.store.redis.lshuffle(this.keys.next, Date.now());
 	}
 
 	/**
@@ -151,7 +253,7 @@ export class Queue extends EventEmitter {
 	 * Clears the queue.
 	 */
 	public clear(): Promise<number> {
-		return this.store.redis.del(this.keys.next, this.keys.prev, this.keys.pos);
+		return this.store.redis.del(this.keys.next, this.keys.position, this.keys.current, this.keys.replay, this.keys.volume, this.keys.text);
 	}
 
 	/**
@@ -159,8 +261,8 @@ export class Queue extends EventEmitter {
 	 */
 	public async current(): Promise<NP | null> {
 		const [entry, position] = await Promise.all([
-			this.store.redis.lindex(this.keys.prev, 0).then(deserializeEntry),
-			this.store.redis.get(this.keys.pos)
+			this.store.redis.get(this.keys.current).then((v) => (v ? deserializeEntry(v) : null)),
+			this.store.redis.get(this.keys.position)
 		]);
 		return entry ? { entry, position: parseInt(position!, 10) || 0 } : null;
 	}
@@ -173,16 +275,14 @@ export class Queue extends EventEmitter {
 	}
 
 	protected async handleNext({ count, previous }: { count?: number; previous?: NP | null } = {}): Promise<boolean> {
-		await this.store.redis.set(this.keys.pos, 0);
+		// Sets the current position to 0.
+		await this.store.redis.set(this.keys.position, 0);
 
 		if (!previous) previous = await this.current();
-		if (count === undefined && previous) {
-			const length = await this.length();
-			count = this.store.client.advanceBy(this, { previous: previous.entry.track, remaining: length });
-		}
+		if (count === undefined && previous) count = (await this.replay()) ? 0 : 1;
 		if (count === 0) return this.start();
 
-		const skipped = await this.store.redis.multirpoplpush(this.keys.next, this.keys.prev, count ?? 1);
+		const skipped = await this.store.redis.rpopset(this.keys.next, this.keys.current);
 		if (skipped) return this.start();
 
 		await this.clear(); // we're at the end of the queue, so clear everything out

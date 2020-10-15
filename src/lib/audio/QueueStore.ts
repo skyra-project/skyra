@@ -24,7 +24,7 @@ const commands: RedisCommand[] = [
 		keys: 1
 	},
 	{
-		name: 'multirpoplpush',
+		name: 'rpopset',
 		keys: 2
 	}
 ];
@@ -33,7 +33,7 @@ export interface ExtendedRedis extends Redis {
 	lmove: (key: KeyType, from: number, to: number) => Promise<'OK'>;
 	lremat: (key: KeyType, index: number) => Promise<'OK'>;
 	lshuffle: (key: KeyType, seed: number) => Promise<'OK'>;
-	multirpoplpush: (source: KeyType, dest: string, count: number) => Promise<number>;
+	rpopset: (source: KeyType, destination: KeyType) => Promise<string | null>;
 }
 
 export class QueueStore extends Collection<string, Queue> {

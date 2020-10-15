@@ -2,13 +2,13 @@ local SOURCE = KEYS[1]
 local DESTINATION = KEYS[2]
 local COUNT = tonumber(ARGV[1])
 
-if COUNT == 0 then return {} end
+if COUNT == 0 then return 0 end
 
 if COUNT == 1 then -- if there's only one, redis has a built-in command for this
   local key = redis.call('rpoplpush', SOURCE, DESTINATION)
 
-  if key then return {key} end
-  return {}
+  if key then return 1 end
+  return 0
 end
 
 local elems = {}
@@ -28,4 +28,4 @@ else
   if #elems > 0 then redis.call('lpush', DESTINATION, unpack(elems)) end
 end
 
-return elems
+return table.getn(elems)

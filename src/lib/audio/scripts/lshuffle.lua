@@ -16,4 +16,4 @@ if #list > 0 then
   redis.call('lpush', KEY, unpack(list))
 end
 
-return list
+return 'OK'

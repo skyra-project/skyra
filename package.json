@@ -98,6 +98,7 @@
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",
 		"@types/he": "^1.1.1",
+		"@types/ioredis": "^4.17.5",
 		"@types/jest": "^26.0.14",
 		"@types/module-alias": "^2.0.0",
 		"@types/node": "^14.11.8",

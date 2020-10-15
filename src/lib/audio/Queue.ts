@@ -1,10 +1,27 @@
+import { map, reverse } from '@lib/misc';
 import { Player } from '@skyra/audio';
 import { EventEmitter } from 'events';
-import { ExtendedRedis, QueueStore } from './QueueStore';
+import { QueueStore } from './QueueStore';
+
+export interface QueueEntry {
+	author: string;
+	track: string;
+}
 
 export interface NP {
+	entry: QueueEntry;
 	position: number;
-	track: string;
+}
+
+function serializeEntry(value: QueueEntry): string {
+	return `${value.author} ${value.track}`;
+}
+
+function deserializeEntry(value: string): QueueEntry {
+	const index = value.indexOf(' ');
+	const author = value.substring(0, index);
+	const track = value.substring(index + 1);
+	return { author, track };
 }
 
 export class Queue extends EventEmitter {
@@ -26,7 +43,7 @@ export class Queue extends EventEmitter {
 			) {
 				let count = d.type === 'TrackEndEvent' ? undefined : 1;
 				try {
-					await this._next({ count, previous: d });
+					await this.handleNext({ count, previous: d });
 				} catch (e) {
 					this.store.client.emit('error', e);
 				}
@@ -35,7 +52,7 @@ export class Queue extends EventEmitter {
 
 		this.on('playerUpdate', async (d) => {
 			try {
-				await this._redis.set(this.keys.pos, d.state.position);
+				await this.store.redis.set(this.keys.pos, d.state.position);
 			} catch (e) {
 				this.store.client.emit('error', e);
 			}
@@ -46,97 +63,129 @@ export class Queue extends EventEmitter {
 		return this.store.client.players.get(this.guildID);
 	}
 
+	/**
+	 * Starts the queue.
+	 */
 	public async start(): Promise<boolean> {
 		const np = await this.current();
-		if (!np) return this._next();
+		if (!np) return this.handleNext();
 
-		await this.player.play(np.track, { start: np.position });
+		await this.player.play(np.entry.track, { start: np.position });
 		return true;
 	}
 
-	public add(...tracks: string[]): Promise<number> {
+	/**
+	 * Adds tracks to the end of the queue.
+	 * @param tracks The tracks to be added.
+	 */
+	public add(...tracks: QueueEntry[]): Promise<number> {
 		if (!tracks.length) return Promise.resolve(0);
-		return this._redis.lpush(this.keys.next, ...tracks);
+		return this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
 	}
 
-	public unshift(...tracks: string[]): Promise<number> {
+	/**
+	 * Adds tracks to the start of the queue.
+	 * @param tracks The tracks to be added.
+	 */
+	public unshift(...tracks: QueueEntry[]): Promise<number> {
 		if (!tracks.length) return Promise.resolve(0);
-		return this._redis.rpush(this.keys.next, ...tracks);
+		return this.store.redis.rpush(this.keys.next, ...map(tracks.values(), serializeEntry));
 	}
 
-	public remove(track: string): PromiseLike<number> {
-		return this._redis.lrem(this.keys.next, 1, track);
+	/**
+	 * Retrieves an element from the queue.
+	 * @param index The index at which to retrieve the element.
+	 */
+	public get(index: number): Promise<QueueEntry> {
+		return this.store.redis.lindex(this.keys.next, index).then(deserializeEntry);
 	}
 
+	/**
+	 * Removes a track at the specified index.
+	 * @param position The position of the element to remove.
+	 */
+	public removeAt(position: number): Promise<'OK'> {
+		return this.store.redis.lremat(this.keys.next, -position - 1);
+	}
+
+	/**
+	 * Skips to the next song, pass negatives to advance in reverse, or 0 to repeat.
+	 * @param count The amount of songs to skip.
+	 * @returns Whether or not the queue is not empty.
+	 */
 	public next(count = 1): Promise<boolean> {
-		return this._next({ count });
+		return this.handleNext({ count });
 	}
 
-	public length(): PromiseLike<number> {
-		return this._redis.llen(this.keys.next);
+	/**
+	 * Retrieves the length of the queue.
+	 */
+	public length(): Promise<number> {
+		return this.store.redis.llen(this.keys.next);
 	}
 
-	public async sort(predicate?: (a: string, b: string) => number): Promise<number> {
-		const tracks = await this.tracks();
-		tracks.sort(predicate);
-		return this._redis.loverride(this.keys.next, ...tracks);
+	/**
+	 * Moves a track by index from a position to another.
+	 * @param from The position of the track to move.
+	 * @param to The position of the new position for the track.
+	 */
+	public move(from: number, to: number): Promise<'OK'> {
+		return this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
 	}
 
-	public async move(from: number, to: number): Promise<string[]> {
-		const list = await this._redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
-		return list.reverse();
+	/**
+	 * Shuffles the queue.
+	 */
+	public shuffle(): Promise<'OK'> {
+		return this.store.redis.lshuffle(this.keys.next, Date.now());
 	}
 
-	public shuffle(): Promise<string[]> {
-		return this._redis.lshuffle(this.keys.next, Date.now());
-	}
-
-	public splice(start: number, deleteCount?: number, ...tracks: string[]): Promise<string[]> {
-		return this._redis.lrevsplice(this.keys.next, start, deleteCount, ...tracks);
-	}
-
-	public trim(start: number, end: number): PromiseLike<string> {
-		return this._redis.ltrim(this.keys.next, start, end);
-	}
-
+	/**
+	 * Stops the playback.
+	 */
 	public async stop() {
 		await this.player.stop();
 	}
 
+	/**
+	 * Clears the queue.
+	 */
 	public clear(): Promise<number> {
-		return this._redis.del(this.keys.next, this.keys.prev, this.keys.pos);
+		return this.store.redis.del(this.keys.next, this.keys.prev, this.keys.pos);
 	}
 
+	/**
+	 * Gets the current track and position.
+	 */
 	public async current(): Promise<NP | null> {
-		const [track, position] = await Promise.all([this._redis.lindex(this.keys.prev, 0), this._redis.get(this.keys.pos)]);
-		return track ? { track, position: parseInt(position!, 10) || 0 } : null;
+		const [entry, position] = await Promise.all([
+			this.store.redis.lindex(this.keys.prev, 0).then(deserializeEntry),
+			this.store.redis.get(this.keys.pos)
+		]);
+		return entry ? { entry, position: parseInt(position!, 10) || 0 } : null;
 	}
 
-	public async tracks(start = 0, end = -1): Promise<string[]> {
+	public async tracks(start = 0, end = -1): Promise<QueueEntry[]> {
 		if (end === Infinity) end = -1;
 
-		const tracks = await this._redis.lrange(this.keys.next, start, end);
-		return tracks.reverse();
+		const tracks = await this.store.redis.lrange(this.keys.next, start, end);
+		return [...map(reverse(tracks), deserializeEntry)];
 	}
 
-	protected async _next({ count, previous }: { count?: number; previous?: NP | null } = {}): Promise<boolean> {
-		await this._redis.set(this.keys.pos, 0);
+	protected async handleNext({ count, previous }: { count?: number; previous?: NP | null } = {}): Promise<boolean> {
+		await this.store.redis.set(this.keys.pos, 0);
 
 		if (!previous) previous = await this.current();
 		if (count === undefined && previous) {
 			const length = await this.length();
-			count = this.store.client.advanceBy(this, { previous: previous.track, remaining: length });
+			count = this.store.client.advanceBy(this, { previous: previous.entry.track, remaining: length });
 		}
 		if (count === 0) return this.start();
 
-		const skipped = await this._redis.multirpoplpush(this.keys.next, this.keys.prev, count || 1);
-		if (skipped.length) return this.start();
+		const skipped = await this.store.redis.multirpoplpush(this.keys.next, this.keys.prev, count ?? 1);
+		if (skipped) return this.start();
 
 		await this.clear(); // we're at the end of the queue, so clear everything out
 		return false;
-	}
-
-	protected get _redis(): ExtendedRedis {
-		return this.store.redis;
 	}
 }

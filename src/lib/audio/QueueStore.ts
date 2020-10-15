@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
 import { readFileSync } from 'fs';
-import type { Redis } from 'ioredis';
+import type { KeyType, Redis } from 'ioredis';
 import { resolve } from 'path';
 import { Queue } from './Queue';
 import type { QueueClient } from './QueueClient';
@@ -16,11 +16,7 @@ const commands: RedisCommand[] = [
 		keys: 1
 	},
 	{
-		name: 'loverride',
-		keys: 1
-	},
-	{
-		name: 'lrevsplice',
+		name: 'lremat',
 		keys: 1
 	},
 	{
@@ -34,11 +30,10 @@ const commands: RedisCommand[] = [
 ];
 
 export interface ExtendedRedis extends Redis {
-	lmove: (key: string, from: number, to: number) => Promise<string[]>;
-	loverride: (key: string, ...args: any[]) => Promise<number>;
-	lrevsplice: (key: string, start: number, deleteCount?: number, ...args: any[]) => Promise<string[]>;
-	lshuffle: (key: string, seed: number) => Promise<string[]>;
-	multirpoplpush: (source: string, dest: string, count: number) => Promise<string[]>;
+	lmove: (key: KeyType, from: number, to: number) => Promise<'OK'>;
+	lremat: (key: KeyType, index: number) => Promise<'OK'>;
+	lshuffle: (key: KeyType, seed: number) => Promise<'OK'>;
+	multirpoplpush: (source: KeyType, dest: string, count: number) => Promise<number>;
 }
 
 export class QueueStore extends Collection<string, Queue> {
@@ -68,7 +63,7 @@ export class QueueStore extends Collection<string, Queue> {
 	}
 
 	public async start(filter?: (guildID: string) => boolean) {
-		const keys = await this._scan('playlists.*');
+		const keys = await this.scan('playlists.*');
 		const guilds = keys.map((key) => {
 			const match = key.match(/^playlists\.(\d+)/);
 			if (match) return match[1];
@@ -83,7 +78,9 @@ export class QueueStore extends Collection<string, Queue> {
 		);
 	}
 
-	protected async _scan(pattern: string, cursor = 0, keys: string[] = []): Promise<string[]> {
+	protected async scan(pattern: string, cursor = 0): Promise<string[]> {
+		const keys: string[] = [];
+
 		// eslint-disable-next-line @typescript-eslint/init-declarations
 		let response: [string, string[]];
 		do {

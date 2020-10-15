@@ -28,7 +28,6 @@ export default class extends SkyraCommand {
 				await this.client.analytics!.writeApi.close();
 			}
 
-			this.client.destroy();
 			await Promise.all(this.client.providers.map((provider) => provider.shutdown()));
 		} catch {}
 

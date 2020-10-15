@@ -20,7 +20,7 @@ import { LongLivingReactionCollector } from './util/LongLivingReactionCollector'
 import { Twitch } from './util/Notifications/Twitch';
 
 // Import all configuration
-import { CLIENT_OPTIONS, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
+import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
@@ -110,18 +110,8 @@ export class SkyraClient extends KlasaClient {
 	}
 
 	public async login(token?: string) {
-		await this.onPreLogin();
-		const output = await super.login(token);
-		this.onPostLogin();
-		return output;
-	}
-
-	protected async onPreLogin() {
 		await this.schedules.init();
-	}
-
-	protected onPostLogin() {
-		if (ENABLE_LAVALINK) this.audio.connect();
+		return super.login(token);
 	}
 }
 

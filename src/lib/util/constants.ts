@@ -284,7 +284,7 @@ export namespace Mime {
 	}
 }
 
-export const clientOptions: KlasaClientOptions = {
+export const clientOptions: Partial<KlasaClientOptions> = {
 	nms: {
 		everyone: 5,
 		role: 2

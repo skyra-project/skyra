@@ -63,13 +63,7 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		userID: CLIENT_ID,
 		host: `${LAVALINK_HOST}:${LAVALINK_PORT}`,
 		password: LAVALINK_PASSWORD,
-		redis: REDIS_OPTIONS,
-		// TODO(kyranet): Move this elsewhere.
-		send(guildID, packet) {
-			// @ts-ignore: To be added later
-			const guild = client.guilds.cache.get(guildID);
-			if (guild) return guild.shard.send(packet);
-		}
+		redis: REDIS_OPTIONS
 	},
 	shards: 'auto',
 	commandEditing: true,

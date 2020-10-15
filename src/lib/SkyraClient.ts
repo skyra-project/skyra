@@ -100,7 +100,10 @@ export class SkyraClient extends KlasaClient {
 	public constructor() {
 		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
-		this.audio = new QueueClient(this.options.audio);
+		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
+			const guild = this.guilds.cache.get(guildID);
+			return Promise.resolve(guild?.shard.send(packet));
+		});
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
 
 		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);

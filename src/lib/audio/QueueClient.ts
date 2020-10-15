@@ -1,4 +1,4 @@
-import { Node, NodeOptions } from '@skyra/audio';
+import { Node, NodeOptions, NodeSend } from '@skyra/audio';
 import * as Redis from 'ioredis';
 import { Queue } from './Queue';
 import { QueueStore } from './QueueStore';
@@ -12,10 +12,10 @@ export class QueueClient extends Node {
 	public readonly queues: QueueStore;
 	public advanceBy: (queue: Queue, info: { previous: string; remaining: number }) => number;
 
-	public constructor(opts: QueueClientOptions) {
-		super(opts);
-		this.queues = new QueueStore(this, opts.redis instanceof Redis ? opts.redis : new Redis(opts.redis));
-		this.advanceBy = opts.advanceBy || (() => 1);
+	public constructor(options: QueueClientOptions, send: NodeSend) {
+		super(options, send);
+		this.queues = new QueueStore(this, options.redis instanceof Redis ? options.redis : new Redis(options.redis));
+		this.advanceBy = options.advanceBy || (() => 1);
 
 		for (const name of ['event', 'playerUpdate']) {
 			this.on(name, (d) => {

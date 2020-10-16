@@ -1,9 +1,9 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Track } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 import { KlasaMessage } from 'klasa';
-import { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PlayDescription),
@@ -13,31 +13,35 @@ import { TrackData } from 'lavacord';
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
-	public async run(message: KlasaMessage, [songs]: [TrackData[]]) {
-		const { music } = message.guild!;
+	public async run(message: KlasaMessage, [songs]: [Track[]]) {
+		const { audio } = message.guild!;
 
 		if (songs) {
 			// If there are songs or a queue, add them
 			await this.client.commands.get('add')!.run(message, [songs]);
-			if (music.playing) return;
-		} else if (!music.canPlay) {
-			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueueEmpty);
-			return;
+			if (audio.playing) return;
+		} else if (!audio.canStart()) {
+			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueueEmpty);
 		}
 
 		// If Skyra is not in a voice channel, join
-		if (!music.voiceChannel) {
+		if (!audio.voiceChannelID) {
 			await this.client.commands.get('join')!.run(message, []);
 		}
 
-		if (music.playing) {
-			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePlaying);
-		} else if (music.song) {
-			await music.resume(this.getContext(message));
-			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: music.song.toString() }]);
+		// If Skyra is already playing, send a message.
+		if (audio.playing) {
+			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePlaying);
+		}
+
+		const current = await audio.current();
+		if (current === null) {
+			await audio.textChannel(message.channel.id);
+			await audio.start();
 		} else {
-			music.channelID = message.channel.id;
-			await music.play();
+			await audio.resume();
+			const track = await audio.player.node.decode(current.entry.track);
+			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: `<${track.uri}>` }]);
 		}
 	}
 }

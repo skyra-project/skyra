@@ -11,7 +11,9 @@ import { KlasaMessage } from 'klasa';
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	@requireDj()
-	public run(message: KlasaMessage) {
-		message.guild!.music.prune(this.getContext(message));
+	public async run(message: KlasaMessage) {
+		await message.guild!.audio.clear();
+
+		// TODO(kyranet): add message reply.
 	}
 }

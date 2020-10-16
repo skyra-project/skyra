@@ -77,6 +77,18 @@ export class Queue extends EventEmitter {
 		return this.store.client.players.get(this.guildID);
 	}
 
+	public get playing(): boolean {
+		return this.player.playing;
+	}
+
+	public get paused(): boolean {
+		return this.player.paused;
+	}
+
+	public get voiceChannelID(): string | null {
+		return this.player.voiceState?.channel_id ?? null;
+	}
+
 	/**
 	 * Starts the queue.
 	 */
@@ -93,13 +105,37 @@ export class Queue extends EventEmitter {
 	}
 
 	/**
+	 * Returns whether or not there are songs that can be played.
+	 */
+	public async canStart(): Promise<boolean> {
+		return (await this.current()) !== null || (await this.length()) !== 0;
+	}
+
+	/**
 	 * Adds tracks to the end of the queue.
 	 * @param tracks The tracks to be added.
 	 */
-	public async add(...tracks: QueueEntry[]): Promise<void> {
-		if (!tracks.length) return Promise.resolve();
+	public async add(...tracks: QueueEntry[]): Promise<number> {
+		if (!tracks.length) return 0;
 		await this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
 		this.store.client.emit(Events.MusicAdd, this, tracks);
+		return tracks.length;
+	}
+
+	public async pause() {
+		const { player } = this;
+		if (player.playing && !player.paused) {
+			await player.pause(true);
+			// this.systemPaused = systemPaused;
+			this.store.client.emit(Events.MusicSongPause, this);
+		}
+	}
+
+	public async resume() {
+		if (this.playing && this.paused) {
+			await this.player.pause(false);
+			this.store.client.emit(Events.MusicSongResume, this);
+		}
 	}
 
 	/**

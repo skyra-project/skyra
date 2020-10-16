@@ -21,21 +21,25 @@ export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
-	public run(message: KlasaMessage, [index]: [number]) {
+	public async run(message: KlasaMessage, [index]: [number]) {
 		if (index <= 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		--index;
 
-		const { music } = message.guild!;
-		if (index > music.queue.length)
+		const { audio } = message.guild!;
+		const length = await audio.length();
+		if (index >= length) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
-					music.queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+					length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{
-						count: music.queue.length
+						count: length
 					}
 				)
 			});
+		}
 
-		// Promote the song to the top of the queue
-		message.guild!.music.promote(index, this.getContext(message));
+		await audio.move(index, 0);
+
+		// TODO(kyranet): add message reply.
 	}
 }

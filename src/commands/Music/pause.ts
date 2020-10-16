@@ -20,6 +20,6 @@ export default class extends MusicCommand {
 	@requireDj()
 	@requireMusicPlaying()
 	public async run(message: KlasaMessage) {
-		await message.guild!.music.pause(false, this.getContext(message));
+		await message.guild!.audio.pause();
 	}
 }

@@ -1,9 +1,9 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ApplyOptions } from '@skyra/decorators';
-import type { KlasaMessage } from 'klasa';
 import type { Track } from '@skyra/audio';
-import { map } from '@lib/misc';
+import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.AddDescription),
@@ -12,10 +12,11 @@ import { map } from '@lib/misc';
 	flagSupport: true
 })
 export default class extends MusicCommand {
-	public async run(message: KlasaMessage, [songs]: [Track[]]) {
+	public async run(message: GuildMessage, [songs]: [Track[]]) {
 		if (!songs || !songs.length) throw message.language.get(LanguageKeys.MusicManager.FetchNoMatches);
-		await message.guild!.audio.add(...map(songs.values(), (song) => ({ author: message.author.id, track: song.track })));
 
-		// TODO(kyranet): add message reply
+		const tracks = songs.map((song) => ({ author: message.author.id, track: song.track }));
+		await message.guild.audio.add(...tracks);
+		this.client.emit(Events.MusicAddNotify, message.channel, tracks);
 	}
 }

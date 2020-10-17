@@ -1,3 +1,4 @@
+import { Queue } from '@lib/audio';
 import { MusicHandler } from '@lib/structures/music/MusicHandler';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -13,28 +14,28 @@ import { KlasaMessage } from 'klasa';
 export default class extends MusicCommand {
 	@requireSongPresent()
 	public async run(message: KlasaMessage, [force = false]: [boolean]) {
-		const { music } = message.guild!;
+		const { audio } = message.guild!;
 
-		if (music.listeners.length >= 4) {
+		if (audio.listeners.length >= 4) {
 			if (force) {
 				if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) {
 					throw message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
 				}
 			} else {
-				const response = this.handleSkips(music, message.author.id);
+				const response = this.handleSkips(audio, message.author.id);
 				if (response) return message.sendMessage(response);
 			}
 		}
 
-		await music.skip(this.getContext(message));
+		await audio.next();
 	}
 
-	public handleSkips(musicManager: MusicHandler, user: string): string | false {
-		const song = musicManager.song || musicManager.queue[0];
-		if (song.skips.has(user)) return musicManager.guild.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
+	public handleSkips(audio: Queue, user: string): string | false {
+		const song = audio.song || audio.queue[0];
+		if (song.skips.has(user)) return audio.guild.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
 		song.skips.add(user);
-		const members = musicManager.listeners.length;
-		return this.shouldInhibit(musicManager, members, song.skips.size);
+		const members = audio.listeners.length;
+		return this.shouldInhibit(audio, members, song.skips.size);
 	}
 
 	public shouldInhibit(musicManager: MusicHandler, total: number, size: number): false | string {

@@ -1,5 +1,6 @@
 import { Queue } from '@lib/audio';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
@@ -13,14 +14,14 @@ const { FLAGS } = Permissions;
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		// Get the voice channel the member is in
-		const { channel } = message.member!.voice;
+		const { channel } = message.member.voice;
 
 		// If the member is not in a voice channel then throw
 		if (!channel) throw message.language.get(LanguageKeys.Commands.Music.JoinNoVoicechannel);
 
-		const { audio } = message.guild!;
+		const { audio } = message.guild;
 
 		// Check if the bot is already playing in this guild
 		this.checkSkyraPlaying(message, audio, channel);
@@ -29,10 +30,14 @@ export default class extends MusicCommand {
 		this.resolvePermissions(message, channel);
 
 		// Set the ChannelID to the current channel
-		await audio.textChannel(message.channel.id);
+		await audio.textChannelID(message.channel.id);
 
-		// Connect to Lavalink and join the voice channel
-		await audio.connect(channel.id);
+		try {
+			// Connect to Lavalink and join the voice channel
+			await audio.connect(channel.id);
+		} catch {
+			return message.sendLocale(LanguageKeys.Commands.Music.JoinFailed);
+		}
 	}
 
 	private resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

@@ -76,7 +76,6 @@
 		"ioredis": "^4.17.3",
 		"klasa": "skyra-project/klasa#build",
 		"klasa-dashboard-hooks": "skyra-project/klasa-dashboard-hooks#master",
-		"lavacord": "^1.1.9",
 		"module-alias": "^2.2.2",
 		"node-fetch": "^2.6.1",
 		"pg": "^8.4.1",

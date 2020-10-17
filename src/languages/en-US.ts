@@ -420,7 +420,7 @@ export default class extends Language {
 		commandRemoveIndexInvalid: `I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.`,
 		commandRemoveIndexOutOfBounds: ({ songs }) => `maybe time happened too fast for you, there are ${songs} in the queue!`,
 		commandRemoveDenied: `${REDCROSS} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.`,
-		commandRemoveSuccess: ({ song }) => `${GREENTICK} Removed the song **${song.safeTitle}** requested by <@${song.requester}>.`,
+		commandRemoveSuccess: ({ title, requester }) => `${GREENTICK} Removed the song **${title}** requested by <@${requester}>.`,
 		commandSeekDescription: 'Change the player time for the current song.',
 		commandSeekSuccess: ({ time }) => `${GREENTICK} Successfully changed the time! Now at ${this.duration(time)}!`,
 		commandResumeDescription: 'Resumes the current song.',
@@ -479,7 +479,7 @@ export default class extends Language {
 			examples: ['5'],
 			reminder: 'This command requires that you are a DJ or a Moderator to use it'
 		},
-		commandPromoteSuccess: ({ song }) => `${GREENTICK} Successfully promoted **${song.safeTitle}** (${song}) to the top of the queue`,
+		commandPromoteSuccess: ({ title, url }) => `${GREENTICK} Successfully promoted **${title}** (<${url}>) to the top of the queue`,
 		commandVolumeDescription: 'Manage the volume for current song.',
 		commandVolumeSuccess: ({ volume }) => `📢 Volume: ${volume}%`,
 		commandVolumeChanged: ({ emoji, volume }) => `${emoji} Volume set to: ${volume}%`,

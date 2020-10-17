@@ -1,38 +1,18 @@
-import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { NP, Queue } from '@lib/audio';
+import { callOnceAsync } from '@lib/misc';
+import { AudioEvent } from '@lib/structures/AudioEvent';
+import { Events } from '@lib/types/Enums';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
-import { floatPromise } from '@utils/util';
-import { Event } from 'klasa';
 
-export default class extends Event {
-	public async run(manager: MusicHandler, song: MusicHandler['song'], context: MusicHandlerRequestContext | null) {
-		const channel = context ? context.channel : manager.channel;
+export default class extends AudioEvent {
+	public async run(queue: Queue, status: NP) {
+		const entry = queue.player.node.decode(status.entry.track);
+		const channel = await queue.textChannel();
+		if (channel) this.client.emit(Events.MusicSongPlayNotify, channel, entry);
 
-		manager.position = 0;
-		manager.lastUpdate = 0;
-		manager.song = song;
-		manager.systemPaused = false;
-
-		if (song) {
-			if (channel) {
-				const name = await song.fetchRequesterName();
-				floatPromise(
-					this,
-					channel.sendLocale(LanguageKeys.Commands.Music.PlayNext, [{ title: song.safeTitle, requester: name }], {
-						allowedMentions: { users: [], roles: [] }
-					})
-				);
-			}
-
-			for (const subscription of manager.websocketUserIterator()) {
-				subscription.send({
-					action: OutgoingWebsocketAction.MusicSongPlay,
-					data: {
-						song: song.toJSON(),
-						queue: manager.queue.map((s) => s.toJSON())
-					}
-				});
-			}
+		const getTracks = callOnceAsync(() => queue.decodedTracks());
+		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
+			subscription.send({ action: OutgoingWebsocketAction.MusicSongPlay, data: { status, tracks: await getTracks() } });
 		}
 	}
 }

@@ -3,7 +3,6 @@
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
 import { KlasaClient, KlasaClientOptions } from 'klasa';
-import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import { mergeDefault } from '@sapphire/utilities';
 import { Webhook } from 'discord.js';
 
@@ -87,10 +86,6 @@ export class SkyraClient extends KlasaClient {
 
 	@enumerable(false)
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
-
-	// TODO(kyranet): Remove this.
-	@enumerable(false)
-	public lavalink: LavalinkManager = new LavalinkManager(this, this.options.lavalink);
 
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();

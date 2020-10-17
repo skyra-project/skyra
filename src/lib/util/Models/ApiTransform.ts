@@ -1,5 +1,3 @@
-import { MusicHandler } from '@lib/structures/music/MusicHandler';
-import { Song } from '@lib/structures/music/Song';
 import {
 	Channel,
 	DMChannel,
@@ -288,66 +286,3 @@ export interface FlattenedMember {
 }
 
 // #endregion Member
-
-// #region Music
-
-export function flattenSong(song: Song): FlattenedSong {
-	return {
-		id: song.id,
-		track: song.track,
-		requester: song.requester,
-		identifier: song.identifier,
-		seekable: song.seekable,
-		author: song.author,
-		duration: song.duration,
-		stream: song.stream,
-		position: song.position,
-		title: song.title,
-		url: song.url,
-		skips: [...song.skips.values()]
-	};
-}
-
-export interface FlattenedSong {
-	id: string;
-	track: string;
-	requester: string;
-	identifier: string;
-	seekable: boolean;
-	author: string;
-	duration: number;
-	stream: boolean;
-	position: number;
-	title: string;
-	url: string;
-	skips: string[];
-}
-
-export function flattenMusicHandler(handler: MusicHandler): FlattenedMusicHandler {
-	const { voiceChannel } = handler;
-	return {
-		id: handler.guild.id,
-		voiceChannel: voiceChannel === null ? null : voiceChannel.id,
-		song: handler.song === null ? null : handler.song.toJSON(),
-		position: handler.position,
-		playing: handler.playing ?? false,
-		paused: handler.paused ?? false,
-		queue: handler.queue.map((q) => q.toJSON()),
-		volume: handler.volume,
-		replay: handler.replay
-	};
-}
-
-export interface FlattenedMusicHandler {
-	id: string;
-	voiceChannel: string | null;
-	song: FlattenedSong | null;
-	position: number;
-	playing: boolean;
-	paused: boolean;
-	replay: boolean;
-	volume: number;
-	queue: readonly FlattenedSong[];
-}
-
-// #endregion Music

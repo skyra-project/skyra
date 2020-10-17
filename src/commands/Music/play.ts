@@ -36,7 +36,7 @@ export default class extends MusicCommand {
 
 		const current = await audio.current();
 		if (current === null) {
-			await audio.textChannel(message.channel.id);
+			await audio.textChannelID(message.channel.id);
 			await audio.start();
 		} else {
 			await audio.resume();

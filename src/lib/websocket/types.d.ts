@@ -1,4 +1,5 @@
-import { FlattenedMusicHandler } from '@utils/Models/ApiTransform';
+import { NP } from '@lib/audio';
+import { Track } from '@skyra/audio';
 
 export const enum WebsocketEvents {
 	Message = 'message',
@@ -77,7 +78,14 @@ export interface IncomingWebsocketMessage {
 
 export interface OutgoingWebsocketMessage {
 	action?: OutgoingWebsocketAction;
-	data?: Partial<FlattenedMusicHandler>;
+	data?: {
+		id?: string;
+		tracks?: Track[];
+		status?: NP | null;
+		volume?: number;
+		replay?: boolean;
+		voiceChannel?: string | null;
+	};
 	error?: string;
 	success?: boolean;
 }

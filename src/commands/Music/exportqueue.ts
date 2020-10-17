@@ -1,12 +1,12 @@
 import { NP, QueueEntry } from '@lib/audio';
 import { map, prependIfNotNull, take } from '@lib/misc';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { serialize } from 'binarytf';
 import { MessageAttachment } from 'discord.js';
-import type { KlasaMessage } from 'klasa';
 
 export const maximumExportQueueSize = 100;
 
@@ -20,8 +20,8 @@ export const maximumExportQueueSize = 100;
 })
 export default class extends SkyraCommand {
 	@requireQueueNotEmpty()
-	public async run(message: KlasaMessage) {
-		const { audio } = message.guild!;
+	public async run(message: GuildMessage) {
+		const { audio } = message.guild;
 		const head = await audio.current().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 

@@ -8,6 +8,15 @@ export function* empty<T>(): IterableIterator<T> {
 	// noop
 }
 
+export function count<T>(iterator: IterableIterator<T>, cb: (value: T) => boolean): number {
+	let n = 0;
+	for (const value of iterator) {
+		if (cb(value)) ++n;
+	}
+
+	return n;
+}
+
 export function* map<T, R>(iterator: IterableIterator<T>, cb: (value: T) => R): IterableIterator<R> {
 	let result: IteratorResult<T> | null = null;
 	while (!(result = iterator.next()).done) {

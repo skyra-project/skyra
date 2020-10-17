@@ -119,14 +119,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 			'DIRECT_MESSAGE_REACTIONS'
 		]
 	},
-	lavalink: [
-		{
-			id: CLIENT_ID,
-			host: LAVALINK_HOST,
-			port: LAVALINK_PORT,
-			password: LAVALINK_PASSWORD
-		}
-	],
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,

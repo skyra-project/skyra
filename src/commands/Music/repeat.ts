@@ -13,8 +13,8 @@ export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	@requireMusicPlaying()
-	public run(message: KlasaMessage) {
+	public async run(message: KlasaMessage) {
 		// Toggle the repeat option with its opposite value
-		message.guild!.music.setReplay(!message.guild!.music.replay, this.getContext(message));
+		await message.guild!.audio.replay(!(await message.guild!.audio.replay()));
 	}
 }

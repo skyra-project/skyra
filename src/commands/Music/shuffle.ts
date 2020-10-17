@@ -10,7 +10,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	@requireDj()
-	public run(message: KlasaMessage) {
-		message.guild!.music.shuffle(this.getContext(message));
+	public async run(message: KlasaMessage) {
+		await message.guild!.audio.shuffle();
 	}
 }

@@ -3972,14 +3972,6 @@ kleur@^3.0.3:
   resolved "https://registry.yarnpkg.com/kleur/-/kleur-3.0.3.tgz#a79c9ecc86ee1ce3fa6206d1216c501f147fc07e"
   integrity sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==
 
-lavacord@^1.1.9:
-  version "1.1.9"
-  resolved "https://registry.yarnpkg.com/lavacord/-/lavacord-1.1.9.tgz#e7e355f969eb082a36e20814fdc6a9b01f3f81a1"
-  integrity sha512-haZghbblO1w3Hodc9q63ZWgV5zA/jB6xFKS17fImK5aIdn0PkKuZ6AsJBxMFpR275v8GNYOxg6cTQBYBQ+batQ==
-  dependencies:
-    node-fetch "^2.6.0"
-    ws "^7.3.0"
-
 leven@2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/leven/-/leven-2.1.0.tgz#c2e7a9f772094dee9d34202ae8acce4687875580"
@@ -6159,7 +6151,7 @@ write@1.0.3:
   dependencies:
     mkdirp "^0.5.1"
 
-ws@^7.3.0, ws@^7.3.1:
+ws@^7.3.1:
   version "7.3.1"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
   integrity sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==

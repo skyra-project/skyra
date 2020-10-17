@@ -1,20 +1,19 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { QueueClient, QueueClientOptions } from '@lib/audio';
 import type { SettingsUpdateResults } from '@klasa/settings-gateway';
+import type { QueueClient, QueueClientOptions } from '@lib/audio';
 import type { InviteStore } from '@lib/structures/InviteStore';
 import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
+import type { WebsocketHandler } from '@lib/websocket/WebsocketHandler';
 import type { ConnectFourManager } from '@utils/Games/ConnectFourManager';
 import type { Leaderboard } from '@utils/Leaderboard';
 import type { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import type { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
 import type { Twitch } from '@utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import type { PermissionString } from 'discord.js';
 import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
-import type { LavalinkNodeOptions } from 'lavacord';
 import type { PoolConfig } from 'pg';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Shared';
@@ -29,8 +28,7 @@ declare module 'discord.js' {
 		invites: InviteStore;
 		analytics: AnalyticsData | null;
 		connectFour: ConnectFourManager;
-		// TODO(kyranet): Remove this.
-		lavalink: LavalinkManager;
+		websocket: WebsocketHandler;
 		llrCollectors: Set<LongLivingReactionCollector>;
 		webhookError: Webhook;
 		webhookFeedback: Webhook | null;
@@ -74,12 +72,17 @@ declare module 'discord.js' {
 		toString(): string;
 	}
 
+	interface VoiceChannel {
+		readonly listeners: string[];
+	}
+
 	interface GuildMember {
 		fetchRank(): Promise<number>;
 		isDJ: boolean;
 		isStaff: boolean;
 		isMod: boolean;
 		isAdmin: boolean;
+		canManage(channel: VoiceChannel): Promise<boolean>;
 
 		_patch(data: GatewayGuildMemberUpdateDispatch['d']): void;
 	}
@@ -142,7 +145,6 @@ declare module 'klasa' {
 		schedule?: {
 			interval: number;
 		};
-		lavalink?: LavalinkNodeOptions[];
 	}
 
 	interface PieceDefaults {

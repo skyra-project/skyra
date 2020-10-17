@@ -12,11 +12,5 @@ export class QueueClient extends Node {
 	public constructor(options: QueueClientOptions, send: NodeSend) {
 		super(options, send);
 		this.queues = new QueueStore(this, options.redis instanceof Redis ? options.redis : new Redis(options.redis));
-
-		for (const name of ['event', 'playerUpdate']) {
-			this.on(name, (d) => {
-				this.queues.get(d.guildId).emit(name, d);
-			});
-		}
 	}
 }

@@ -12,6 +12,6 @@ export default class extends MusicCommand {
 	@requireDj()
 	@requireMusicPlaying()
 	public async run(message: KlasaMessage, [timespan]: [number]) {
-		await message.guild!.music.seek(timespan, this.getContext(message));
+		await message.guild!.audio.seek(timespan);
 	}
 }

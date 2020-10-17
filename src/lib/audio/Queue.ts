@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import { map, reverse } from '@lib/misc';
+import type { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
-import { Player } from '@skyra/audio';
-import { EventEmitter } from 'events';
-import { QueueStore } from './QueueStore';
+import type { Player, Track } from '@skyra/audio';
+import { Guild, TextChannel } from 'discord.js';
+import { container } from 'tsyringe';
+import type { QueueStore } from './QueueStore';
 
 export interface QueueEntry {
 	author: string;
@@ -35,11 +37,10 @@ interface QueueKeys {
 	readonly text: string;
 }
 
-export class Queue extends EventEmitter {
+export class Queue {
 	public readonly keys: QueueKeys;
 
 	public constructor(public readonly store: QueueStore, public readonly guildID: string) {
-		super();
 		this.keys = {
 			next: `skyra.a.${this.guildID}.n`, // stored in reverse order: right-most (last) element is the next in queue
 			position: `skyra.a.${this.guildID}.p`,
@@ -48,29 +49,10 @@ export class Queue extends EventEmitter {
 			volume: `skyra.a.${this.guildID}.v`,
 			text: `skyra.a.${this.guildID}.t`
 		};
+	}
 
-		this.on('event', async (d) => {
-			// if the track wasn't replaced or manually stopped, continue playing the next song
-			if (
-				!['TrackEndEvent', 'TrackStartEvent', 'WebSocketClosedEvent'].includes(d.type) ||
-				(d.type === 'TrackEndEvent' && !['REPLACED', 'STOPPED'].includes(d.reason))
-			) {
-				let count = d.type === 'TrackEndEvent' ? undefined : 1;
-				try {
-					await this.handleNext({ count, previous: d });
-				} catch (e) {
-					this.store.client.emit('error', e);
-				}
-			}
-		});
-
-		this.on('playerUpdate', async (d) => {
-			try {
-				await this.store.redis.set(this.keys.position, d.state.position);
-			} catch (e) {
-				this.store.client.emit('error', e);
-			}
-		});
+	public get client(): SkyraClient {
+		return container.resolve<SkyraClient>('SkyraClient');
 	}
 
 	public get player(): Player {
@@ -85,6 +67,10 @@ export class Queue extends EventEmitter {
 		return this.player.paused;
 	}
 
+	public get guild(): Guild {
+		return this.client.guilds.cache.get(this.guildID)!;
+	}
+
 	public get voiceChannelID(): string | null {
 		return this.player.voiceState?.channel_id ?? null;
 	}
@@ -92,15 +78,14 @@ export class Queue extends EventEmitter {
 	/**
 	 * Starts the queue.
 	 */
-	public async start(): Promise<boolean> {
+	public async start(replaying = false): Promise<boolean> {
 		const np = await this.current();
 		if (!np) return this.handleNext();
 
-		// Emit to the websocket that we skipped a song.
-		this.store.client.emit(Events.MusicSongSkip, this, np.entry);
-
 		// Play next song.
 		await this.player.play(np.entry.track, { start: np.position });
+
+		this.client.emit(replaying ? Events.MusicSongReplay : Events.MusicSongPlay, this, np);
 		return true;
 	}
 
@@ -115,10 +100,10 @@ export class Queue extends EventEmitter {
 	 * Adds tracks to the end of the queue.
 	 * @param tracks The tracks to be added.
 	 */
-	public async add(...tracks: QueueEntry[]): Promise<number> {
+	public async add(...tracks: readonly QueueEntry[]): Promise<number> {
 		if (!tracks.length) return 0;
 		await this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
-		this.store.client.emit(Events.MusicAdd, this, tracks);
+		this.client.emit(Events.MusicQueueSync, this);
 		return tracks.length;
 	}
 
@@ -127,14 +112,14 @@ export class Queue extends EventEmitter {
 		if (player.playing && !player.paused) {
 			await player.pause(true);
 			// this.systemPaused = systemPaused;
-			this.store.client.emit(Events.MusicSongPause, this);
+			this.client.emit(Events.MusicSongPause, this);
 		}
 	}
 
 	public async resume() {
 		if (this.playing && this.paused) {
 			await this.player.pause(false);
-			this.store.client.emit(Events.MusicSongResume, this);
+			this.client.emit(Events.MusicSongResume, this);
 		}
 	}
 
@@ -154,7 +139,7 @@ export class Queue extends EventEmitter {
 		}
 
 		await this.store.redis.set(this.keys.replay, value ? '1' : '0');
-		this.store.client.emit(Events.MusicReplayUpdate, this, value);
+		this.client.emit(Events.MusicReplayUpdate, this, value);
 		return value;
 	}
 
@@ -175,7 +160,7 @@ export class Queue extends EventEmitter {
 		}
 
 		await this.store.redis.set(this.keys.volume, value);
-		this.store.client.emit(Events.MusicSongVolumeUpdate, this, value);
+		this.client.emit(Events.MusicSongVolumeUpdate, this, value);
 		return value;
 	}
 
@@ -185,7 +170,7 @@ export class Queue extends EventEmitter {
 	 */
 	public async seek(position: number): Promise<void> {
 		await this.player.seek(position);
-		this.store.client.emit(Events.MusicSongSeekUpdate, this, position);
+		this.client.emit(Events.MusicSongSeekUpdate, this, position);
 	}
 
 	/**
@@ -194,7 +179,7 @@ export class Queue extends EventEmitter {
 	 */
 	public async connect(channelID: string): Promise<void> {
 		await this.player.join(channelID, { deaf: true });
-		this.store.client.emit(Events.MusicConnect, this, channelID);
+		this.client.emit(Events.MusicConnect, this, channelID);
 	}
 
 	/**
@@ -202,26 +187,39 @@ export class Queue extends EventEmitter {
 	 */
 	public async leave(): Promise<void> {
 		await this.player.leave();
-		await this.textChannel(null);
-		this.store.client.emit(Events.MusicLeave, this);
+		await this.textChannelID(null);
+		this.client.emit(Events.MusicLeave, this);
+	}
+
+	public async textChannel(): Promise<TextChannel | null> {
+		const id = await this.textChannelID();
+		if (id === null) return null;
+
+		const channel = this.guild.channels.cache.get(id) ?? null;
+		if (channel === null) {
+			await this.textChannelID(null);
+			return null;
+		}
+
+		return channel as TextChannel;
 	}
 
 	/**
 	 * Gets the text channel from cache.
 	 */
-	public textChannel(): Promise<string | null>;
+	public textChannelID(): Promise<string | null>;
 
 	/**
 	 * Unsets the notifications channel.
 	 */
-	public textChannel(channelID: null): Promise<null>;
+	public textChannelID(channelID: null): Promise<null>;
 
 	/**
 	 * Sets a text channel to send notifications to.
 	 * @param channelID The text channel to set.
 	 */
-	public async textChannel(channelID: string): Promise<string>;
-	public async textChannel(channelID?: string | null): Promise<string | null> {
+	public async textChannelID(channelID: string): Promise<string>;
+	public async textChannelID(channelID?: string | null): Promise<string | null> {
 		if (typeof channelID === 'undefined') {
 			return this.store.redis.get(this.keys.text);
 		}
@@ -242,17 +240,17 @@ export class Queue extends EventEmitter {
 	 * Removes a track at the specified index.
 	 * @param position The position of the element to remove.
 	 */
-	public removeAt(position: number): Promise<'OK'> {
-		return this.store.redis.lremat(this.keys.next, -position - 1);
+	public async removeAt(position: number): Promise<void> {
+		await this.store.redis.lremat(this.keys.next, -position - 1);
+		this.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**
 	 * Skips to the next song, pass negatives to advance in reverse, or 0 to repeat.
-	 * @param count The amount of songs to skip.
 	 * @returns Whether or not the queue is not empty.
 	 */
-	public next(count = 1): Promise<boolean> {
-		return this.handleNext({ count });
+	public next(): Promise<boolean> {
+		return this.handleNext();
 	}
 
 	/**
@@ -310,16 +308,21 @@ export class Queue extends EventEmitter {
 		return [...map(reverse(tracks), deserializeEntry)];
 	}
 
-	protected async handleNext({ count, previous }: { count?: number; previous?: NP | null } = {}): Promise<boolean> {
+	public async decodedTracks(start = 0, end = -1): Promise<Track[]> {
+		const tracks = await this.tracks(start, end);
+		return this.player.node.decode(tracks.map((track) => track.track));
+	}
+
+	protected async handleNext(): Promise<boolean> {
 		// Sets the current position to 0.
 		await this.store.redis.set(this.keys.position, 0);
 
-		if (!previous) previous = await this.current();
-		if (count === undefined && previous) count = (await this.replay()) ? 0 : 1;
-		if (count === 0) return this.start();
+		if (await this.replay()) {
+			return this.start(true);
+		}
 
 		const skipped = await this.store.redis.rpopset(this.keys.next, this.keys.current);
-		if (skipped) return this.start();
+		if (skipped) return this.start(false);
 
 		await this.clear(); // we're at the end of the queue, so clear everything out
 		return false;

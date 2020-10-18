@@ -688,24 +688,25 @@ export default class extends Language {
 		},
 		commandDogDescription: 'Cute doggos! ❤',
 		commandDogExtended: {
-			extendedHelp: `Do **you** know how cute dogs are? They are so beautiful! This command uses a tiny selection of images
-					From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
-					some images that, sadly, got deleted and I cannot retrieve them 💔.`
+			extendedHelp: [
+				'Do **you** know how cute dogs are? They are so beautiful!',
+				'This command uses [dog.ceo](https://dog.ceo) to show pictures of the cuttest doggos!'
+			]
 		},
 		commandFoxDescription: 'Let me show you an image of a fox!',
 		commandFoxExtended: {
-			extendedHelp: `This command provides you a random image from PixaBay, always showing 'fox' results. However,
-				it may not be exactly accurate and show you other kinds of foxes.`
+			extendedHelp: 'This command gives a random image from [randomfox.ca](https://randomfox.ca/)'
 		},
 		commandKittyDescription: 'KITTENS!',
 		commandKittyExtended: {
-			extendedHelp: `Do **you** know how cute are kittens? They are so beautiful! This command uses a tiny selection of images
-				From WallHaven, but the ones with the greatest quality! I need to find more of them, and there are
-				some images that, sadly, got deleted and I cannot retrieve them 💔.`
+			extendedHelp: [
+				'Do **you** know how cute are kittens? They are so beautiful!',
+				'This command uses [cataas.com](https://cataas.com/) to show pictures of the cuttest cats!'
+			]
 		},
-		commandShibeDescription: 'Cute shibes!',
+		commandShibeDescription: 'Cute shibas!',
 		commandShibeExtended: {
-			extendedHelp: "Everyone loves shibes, I shall love them aswell! They're so adorable ❤."
+			extendedHelp: "Everyone loves shibas, I shall love them aswell! They're so adorable ❤."
 		},
 
 		/**

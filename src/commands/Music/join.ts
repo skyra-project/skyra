@@ -5,7 +5,6 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 import { Permissions, VoiceChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 const { FLAGS } = Permissions;
 
 @ApplyOptions<MusicCommandOptions>({
@@ -39,11 +38,11 @@ export default class extends MusicCommand {
 			return message.sendLocale(LanguageKeys.Commands.Music.JoinFailed);
 		}
 
-		return message.sendLocale(LanguageKeys.Commands.Music.JoinSuccess, [{ channel: `<${channel.id}>` }]);
+		return message.sendLocale(LanguageKeys.Commands.Music.JoinSuccess, [{ channel: `<#${channel.id}>` }]);
 	}
 
-	private resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {
-		const permissions = voiceChannel.permissionsFor(message.guild!.me!)!;
+	private resolvePermissions(message: GuildMessage, voiceChannel: VoiceChannel): void {
+		const permissions = voiceChannel.permissionsFor(message.guild.me!)!;
 
 		// Administrators can join voice channels even if they are full
 		if (voiceChannel.full && !permissions.has(FLAGS.ADMINISTRATOR)) throw message.language.get(LanguageKeys.Commands.Music.JoinVoiceFull);
@@ -51,16 +50,12 @@ export default class extends MusicCommand {
 		if (!permissions.has(FLAGS.SPEAK)) throw message.language.get(LanguageKeys.Commands.Music.JoinVoiceNoSpeak);
 	}
 
-	private checkSkyraPlaying(message: KlasaMessage, audio: Queue, voiceChannel: VoiceChannel) {
-		const selfVoiceChannel = audio.player.playing ? this.getSelfVoiceChannelID(audio) : null;
+	private checkSkyraPlaying(message: GuildMessage, audio: Queue, voiceChannel: VoiceChannel) {
+		const selfVoiceChannel = audio.player.playing ? audio.voiceChannelID : null;
 		if (selfVoiceChannel === null) return;
 
 		throw message.language.get(
 			voiceChannel.id === selfVoiceChannel ? LanguageKeys.Commands.Music.JoinVoiceSame : LanguageKeys.Commands.Music.JoinVoiceDifferent
 		);
-	}
-
-	private getSelfVoiceChannelID(audio: Queue): string | null {
-		return audio.player.voiceState?.channel_id ?? null;
 	}
 }

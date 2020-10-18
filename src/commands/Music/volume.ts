@@ -1,9 +1,9 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '@utils/Music/Decorators';
-import { VoiceChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['vol'],
@@ -15,21 +15,22 @@ export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	@requireMusicPlaying()
-	public async run(message: KlasaMessage, [volume]: [number]) {
-		const { audio } = message.guild!;
-		const previousVolume = await audio.volume();
+	public async run(message: GuildMessage, [volume]: [number]) {
+		const { audio } = message.guild;
+		const previous = await audio.volume();
 
 		// If no argument was given
-		if (typeof volume === 'undefined' || volume === previousVolume) {
-			return message.sendLocale(LanguageKeys.Commands.Music.VolumeSuccess, [{ volume: previousVolume }]);
+		if (typeof volume === 'undefined' || volume === previous) {
+			return message.sendLocale(LanguageKeys.Commands.Music.VolumeSuccess, [{ volume: previous }]);
 		}
 
-		const channel = message.guild!.channels.cache.get(audio.voiceChannelID!) as VoiceChannel;
-		if (channel.listeners.length >= 4 && !(await message.member!.canManage(channel))) {
+		const channel = audio.voiceChannel!;
+		if (channel.listeners.length >= 4 && !(await message.member.canManage(channel))) {
 			throw message.language.get(LanguageKeys.Inhibitors.MusicDjMember);
 		}
 
 		// Set the volume
 		await audio.volume(volume);
+		this.client.emit(Events.MusicSongVolumeUpdateNotify, message, previous, volume);
 	}
 }

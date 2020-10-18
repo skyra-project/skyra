@@ -22,8 +22,10 @@ export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	public async run(message: GuildMessage, [index]: [number]) {
-		if (index <= 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
+
+		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
 		const length = await audio.length();

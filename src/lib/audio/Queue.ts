@@ -214,7 +214,9 @@ export class Queue {
 			return raw ? Number(raw) : 100;
 		}
 
+		await this.player.setVolume(value);
 		const previous = await this.store.redis.getset(this.keys.volume, value);
+
 		this.client.emit(Events.MusicSongVolumeUpdate, this, value);
 		return { previous: previous === null ? 100 : Number(previous), next: value };
 	}
@@ -317,7 +319,8 @@ export class Queue {
 		// Sets the current position to 0.
 		await this.store.redis.set(this.keys.position, 0);
 
-		if (await this.replay()) {
+		if (!skipped && (await this.replay())) {
+			await this.replay(false);
 			return this.start(true);
 		}
 
@@ -329,7 +332,6 @@ export class Queue {
 		}
 
 		// We're at the end of the queue, so clear everything out
-		await this.clear();
 		this.client.emit(Events.MusicFinish, this);
 		return false;
 	}
@@ -360,12 +362,19 @@ export class Queue {
 	/**
 	 * Stops the playback.
 	 */
-	public async stop() {
+	public async stop(): Promise<void> {
 		await this.player.stop();
 	}
 
 	/**
-	 * Clears the queue.
+	 * Clear all the tracks from the queue.
+	 */
+	public async clearTracks(): Promise<void> {
+		await this.store.redis.del(this.keys.next);
+	}
+
+	/**
+	 * Clears the entire queue's state.
 	 */
 	public clear(): Promise<number> {
 		return this.store.redis.del(

@@ -61,9 +61,18 @@ export const VERSION = '5.4.1 Nirom';
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	audio: {
 		userID: CLIENT_ID,
-		host: `${LAVALINK_HOST}:${LAVALINK_PORT}`,
 		password: LAVALINK_PASSWORD,
-		redis: REDIS_OPTIONS
+		redis: REDIS_OPTIONS,
+		hosts: {
+			rest: `http://${LAVALINK_HOST}:${LAVALINK_PORT}`,
+			ws: {
+				url: `ws://${LAVALINK_HOST}:${LAVALINK_PORT}`,
+				options: {
+					resumeKey: 'SKYRA-RESUME-KEY',
+					resumeTimeout: 60
+				}
+			}
+		}
 	},
 	shards: 'auto',
 	commandEditing: true,

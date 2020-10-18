@@ -18,9 +18,9 @@ export default class extends Event {
 			}
 		} else if (audio.voiceChannelID) {
 			if (audio.playing) {
-				if (audio.listeners.length === 0) await audio.pause(true);
+				if (audio.voiceChannel?.listeners.length === 0) await audio.pause({ system: true });
 			} else if (audio.paused && audio.systemPaused) {
-				if (audio.listeners.length !== 0) await audio.resume();
+				if (audio.voiceChannel?.listeners.length !== 0) await audio.resume();
 			}
 		}
 	}

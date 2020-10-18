@@ -1,14 +1,16 @@
+import { Queue } from '@lib/audio';
 import { DbSet } from '@lib/structures/DbSet';
-import { Song } from '@lib/structures/music/Song';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
+import { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, ZeroWidhSpace } from '@utils/constants';
+import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['q', 'playing-time', 'pt'],
@@ -16,11 +18,8 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']
 })
 export default class extends MusicCommand {
-	public async run(message: KlasaMessage) {
-		const { queue, song } = message.guild!.music;
-
-		if (song === null && queue.length === 0) throw message.language.get(LanguageKeys.Commands.Music.QueueEmpty);
-
+	@requireQueueNotEmpty()
+	public async run(message: GuildMessage) {
 		// Send the loading message
 		const response = await message.send(
 			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading)))
@@ -30,25 +29,31 @@ export default class extends MusicCommand {
 		const queueDisplay = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.get(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild!.name }))
+				.setTitle(message.language.get(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }))
 		);
 
-		if (song) {
+		const { audio } = message.guild;
+		const current = await audio.current();
+		const tracks = await this.getTrackInformation(audio);
+
+		if (current) {
+			const track = await audio.player.node.decode(current.entry.track);
 			const nowPlayingDescription = [
-				song.stream ? message.language.get(LanguageKeys.Commands.Music.QueueNowplayingLiveStream) : song.friendlyDuration,
+				track.isStream ? message.language.get(LanguageKeys.Commands.Music.QueueNowplayingLiveStream) : showSeconds(track.length),
 				message.language.get(LanguageKeys.Commands.Music.QueueNowplaying, {
-					title: song.safeTitle,
-					url: song.url,
-					requester: await song.fetchRequesterName()
+					title: track.title,
+					url: track.uri,
+					requester: await this.fetchRequesterName(message, current.entry.author)
 				})
 			];
 
-			if (!song.stream)
+			if (!track.isStream) {
 				nowPlayingDescription.push(
 					message.language.get(LanguageKeys.Commands.Music.QueueNowplayingTimeRemaining, {
-						timeRemaining: showSeconds(message.guild!.music.trackRemaining)
+						timeRemaining: showSeconds(track.length - current.position)
 					})
 				);
+			}
 
 			queueDisplay.embedTemplate.addField(
 				message.language.get(LanguageKeys.Commands.Music.QueueNowplayingTitle),
@@ -56,15 +61,15 @@ export default class extends MusicCommand {
 			);
 		}
 
-		if (queue && queue.length) {
+		if (tracks.length) {
 			// Format the song entries
-			const songFields = await Promise.all(queue.map((song, position) => this.generateSongField(message, position, song)));
-			const totalDuration = this.calculateTotalDuration(queue);
+			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, position, track)));
+			const totalDuration = this.calculateTotalDuration(tracks);
 			const totalDescription = message.language.get(LanguageKeys.Commands.Music.QueueTotal, {
 				songs: message.language.get(
-					queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+					tracks.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{
-						count: queue.length
+						count: tracks.length
 					}
 				),
 				remainingTime: showSeconds(totalDuration)
@@ -91,24 +96,53 @@ export default class extends MusicCommand {
 		return response.edit(undefined, queueDisplay.template);
 	}
 
-	private async generateSongField(message: KlasaMessage, position: number, song: Song) {
-		const username = await song.fetchRequesterName();
+	private async generateTrackField(message: GuildMessage, position: number, entry: DecodedQueueEntry) {
+		const username = await this.fetchRequesterName(message, entry.author);
 		return message.language.get(LanguageKeys.Commands.Music.QueueLine, {
 			position: position + 1,
-			duration: song.friendlyDuration,
-			title: song.safeTitle,
-			url: song.url,
+			duration: showSeconds(entry.data.length),
+			title: entry.data.title,
+			url: entry.data.uri,
 			requester: username
 		});
 	}
 
-	private calculateTotalDuration(songs: Song[]) {
+	private calculateTotalDuration(entries: readonly DecodedQueueEntry[]) {
 		let accumulator = 0;
-		for (const song of songs) {
-			if (song.stream) return -1;
-			accumulator += song.duration;
+		for (const entry of entries) {
+			if (entry.data.isStream) return -1;
+			accumulator += entry.data.length;
 		}
 
 		return accumulator;
 	}
+
+	private async fetchRequesterName(message: GuildMessage, userID: string): Promise<string> {
+		try {
+			return (await message.guild.members.fetch(userID)).displayName;
+		} catch {}
+
+		try {
+			return (await this.client.users.fetch(userID)).username;
+		} catch {}
+
+		return message.language.get(LanguageKeys.Misc.UnknownUser);
+	}
+
+	private async getTrackInformation(audio: Queue): Promise<readonly DecodedQueueEntry[]> {
+		const tracks = await audio.tracks();
+		const decodedTracks = await audio.player.node.decode(tracks.map((track) => track.track));
+
+		const map = new Map<string, TrackInfo>();
+		for (const entry of decodedTracks) {
+			map.set(entry.track, entry.info);
+		}
+
+		return tracks.map((track) => ({ author: track.author, data: map.get(track.track)! }));
+	}
+}
+
+interface DecodedQueueEntry {
+	author: string;
+	data: TrackInfo;
 }

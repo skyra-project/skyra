@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 		}
 
 		const channel = message.guild!.channels.cache.get(audio.voiceChannelID!) as VoiceChannel;
-		if (audio.listeners.length >= 4 && !(await message.member!.canManage(channel))) {
+		if (channel.listeners.length >= 4 && !(await message.member!.canManage(channel))) {
 			throw message.language.get(LanguageKeys.Inhibitors.MusicDjMember);
 		}
 

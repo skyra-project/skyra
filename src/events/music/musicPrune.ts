@@ -5,7 +5,7 @@ import { OutgoingWebsocketAction } from '@lib/websocket/types';
 export default class extends AudioEvent {
 	public run(queue: Queue) {
 		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicAdd, data: { tracks: [] } });
+			subscription.send({ action: OutgoingWebsocketAction.MusicPrune, data: { tracks: [] } });
 		}
 	}
 }

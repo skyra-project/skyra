@@ -1,11 +1,11 @@
 local SOURCE = KEYS[1]
 local DESTINATION = KEYS[2]
 
-local key = redis.call('rpop', SOURCE)
+local value = redis.call('rpop', SOURCE)
 
-if key then
-  redis.call('set', DESTINATION, key)
-  return key
+if value then
+  redis.call('set', DESTINATION, value)
+  return value
 end
 
 return nil

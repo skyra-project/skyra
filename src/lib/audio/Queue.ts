@@ -3,7 +3,7 @@ import { map, reverse } from '@lib/misc';
 import type { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
 import type { Player, Track } from '@skyra/audio';
-import { Guild, TextChannel } from 'discord.js';
+import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { container } from 'tsyringe';
 import type { QueueStore } from './QueueStore';
 
@@ -32,6 +32,8 @@ interface QueueKeys {
 	readonly next: string;
 	readonly position: string;
 	readonly current: string;
+	readonly skips: string;
+	readonly systemPause: string;
 	readonly replay: string;
 	readonly volume: string;
 	readonly text: string;
@@ -45,6 +47,8 @@ export class Queue {
 			next: `skyra.a.${this.guildID}.n`, // stored in reverse order: right-most (last) element is the next in queue
 			position: `skyra.a.${this.guildID}.p`,
 			current: `skyra.a.${this.guildID}.c`, // left-most (first) element is the currently playing track,
+			skips: `skyra.a.${this.guildID}.s`,
+			systemPause: `skyra.a.${this.guildID}.sp`,
 			replay: `skyra.a.${this.guildID}.r`,
 			volume: `skyra.a.${this.guildID}.v`,
 			text: `skyra.a.${this.guildID}.t`
@@ -71,6 +75,11 @@ export class Queue {
 		return this.client.guilds.cache.get(this.guildID)!;
 	}
 
+	public get voiceChannel(): VoiceChannel | null {
+		const id = this.voiceChannelID;
+		return id ? (this.guild.channels.cache.get(id) as VoiceChannel) ?? null : null;
+	}
+
 	public get voiceChannelID(): string | null {
 		return this.player.voiceState?.channel_id ?? null;
 	}
@@ -80,7 +89,7 @@ export class Queue {
 	 */
 	public async start(replaying = false): Promise<boolean> {
 		const np = await this.current();
-		if (!np) return this.handleNext();
+		if (!np) return this.next();
 
 		// Play next song.
 		await this.player.play(np.entry.track, { start: np.position });
@@ -107,20 +116,66 @@ export class Queue {
 		return tracks.length;
 	}
 
-	public async pause() {
-		const { player } = this;
-		if (player.playing && !player.paused) {
-			await player.pause(true);
-			// this.systemPaused = systemPaused;
-			this.client.emit(Events.MusicSongPause, this);
-		}
+	public async pause({ system = false } = {}) {
+		await this.player.pause(true);
+		await this.systemPaused(system);
+		this.client.emit(Events.MusicSongPause, this);
 	}
 
 	public async resume() {
-		if (this.playing && this.paused) {
-			await this.player.pause(false);
-			this.client.emit(Events.MusicSongResume, this);
+		await this.player.pause(false);
+		await this.systemPaused(false);
+		this.client.emit(Events.MusicSongResume, this);
+	}
+
+	/**
+	 * Retrieves all the skip votes.
+	 */
+	public skips(): Promise<string[]>;
+
+	/**
+	 * Empties the skip list.
+	 * @param value The value to add.
+	 * @returns Whether or not the votes were removed.
+	 */
+	public skips(value: null): Promise<boolean>;
+
+	/**
+	 * Adds a vote.
+	 * @param value The value to add to the skip list.
+	 * @returns Whether or not the vote was added.
+	 */
+	public skips(value: string): Promise<boolean>;
+	public async skips(value?: string | null): Promise<boolean | string[]> {
+		if (typeof value === 'undefined') {
+			return this.store.redis.smembers(this.keys.skips);
 		}
+
+		if (value === null) {
+			return (await this.store.redis.del(this.keys.skips)) === 1;
+		}
+
+		return (await this.store.redis.sadd(this.keys.skips, value)) === 1;
+	}
+
+	/**
+	 * Retrieves whether or not the queue was paused automatically.
+	 */
+	public systemPaused(): Promise<boolean>;
+
+	/**
+	 * Sets the system pause mode.
+	 * @param value Whether or not the queue should be paused automatically.
+	 */
+	public systemPaused(value: boolean): Promise<boolean>;
+	public async systemPaused(value?: boolean): Promise<boolean> {
+		if (typeof value === 'undefined') {
+			return (await this.store.redis.get(this.keys.systemPause)) === '1';
+		}
+
+		await this.store.redis.set(this.keys.systemPause, value ? '1' : '0');
+		this.client.emit(Events.MusicSongPause, this, value);
+		return value;
 	}
 
 	/**
@@ -152,16 +207,16 @@ export class Queue {
 	 * Sets the volume.
 	 * @param value The new volume for the queue.
 	 */
-	public volume(value: number): Promise<number>;
-	public async volume(value?: number): Promise<number> {
+	public volume(value: number): Promise<{ previous: number; next: number }>;
+	public async volume(value?: number): Promise<number | { previous: number; next: number }> {
 		if (typeof value === 'undefined') {
 			const raw = await this.store.redis.get(this.keys.volume);
 			return raw ? Number(raw) : 100;
 		}
 
-		await this.store.redis.set(this.keys.volume, value);
+		const previous = await this.store.redis.getset(this.keys.volume, value);
 		this.client.emit(Events.MusicSongVolumeUpdate, this, value);
-		return value;
+		return { previous: previous === null ? 100 : Number(previous), next: value };
 	}
 
 	/**
@@ -249,8 +304,23 @@ export class Queue {
 	 * Skips to the next song, pass negatives to advance in reverse, or 0 to repeat.
 	 * @returns Whether or not the queue is not empty.
 	 */
-	public next(): Promise<boolean> {
-		return this.handleNext();
+	public async next({ skipped = false } = {}): Promise<boolean> {
+		// Sets the current position to 0.
+		await this.store.redis.set(this.keys.position, 0);
+
+		if (await this.replay()) {
+			return this.start(true);
+		}
+
+		const entry = await this.store.redis.rpopset(this.keys.next, this.keys.current);
+		if (entry) {
+			if (skipped) this.client.emit(Events.MusicSongSkip, this, deserializeEntry(entry));
+			await this.skips(null);
+			return this.start(false);
+		}
+
+		await this.clear(); // we're at the end of the queue, so clear everything out
+		return false;
 	}
 
 	/**
@@ -287,7 +357,16 @@ export class Queue {
 	 * Clears the queue.
 	 */
 	public clear(): Promise<number> {
-		return this.store.redis.del(this.keys.next, this.keys.position, this.keys.current, this.keys.replay, this.keys.volume, this.keys.text);
+		return this.store.redis.del(
+			this.keys.next,
+			this.keys.position,
+			this.keys.current,
+			this.keys.skips,
+			this.keys.systemPause,
+			this.keys.replay,
+			this.keys.volume,
+			this.keys.text
+		);
 	}
 
 	/**
@@ -311,20 +390,5 @@ export class Queue {
 	public async decodedTracks(start = 0, end = -1): Promise<Track[]> {
 		const tracks = await this.tracks(start, end);
 		return this.player.node.decode(tracks.map((track) => track.track));
-	}
-
-	protected async handleNext(): Promise<boolean> {
-		// Sets the current position to 0.
-		await this.store.redis.set(this.keys.position, 0);
-
-		if (await this.replay()) {
-			return this.start(true);
-		}
-
-		const skipped = await this.store.redis.rpopset(this.keys.next, this.keys.current);
-		if (skipped) return this.start(false);
-
-		await this.clear(); // we're at the end of the queue, so clear everything out
-		return false;
 	}
 }

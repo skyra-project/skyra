@@ -1,11 +1,11 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireMusicPlaying } from '@utils/Music/Decorators';
 import { IMAGE_EXTENSION, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['np', 'nowplaying'],
@@ -16,8 +16,8 @@ export default class extends MusicCommand {
 	private readonly kYoutubeUrlRegex = /(youtu\.be|youtube)/i;
 
 	@requireMusicPlaying()
-	public async run(message: KlasaMessage) {
-		const { audio } = message.guild!;
+	public async run(message: GuildMessage) {
+		const { audio } = message.guild;
 
 		const raw = await audio.current();
 		if (!raw) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueEmpty);
@@ -27,7 +27,7 @@ export default class extends MusicCommand {
 		return message.sendEmbed(embed);
 	}
 
-	private getMessageEmbed(message: KlasaMessage, track: TrackInfo): MessageEmbed {
+	private getMessageEmbed(message: GuildMessage, track: TrackInfo): MessageEmbed {
 		const embed = new MessageEmbed()
 			.setColor(12916736)
 			.setTitle(track.title)

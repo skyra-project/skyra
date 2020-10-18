@@ -1,9 +1,9 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Track } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PlayDescription),
@@ -13,8 +13,8 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
-	public async run(message: KlasaMessage, [songs]: [Track[]]) {
-		const { audio } = message.guild!;
+	public async run(message: GuildMessage, [songs]: [Track[]]) {
+		const { audio } = message.guild;
 
 		if (songs) {
 			// If there are songs or a queue, add them

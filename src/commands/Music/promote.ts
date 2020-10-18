@@ -1,4 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import {
@@ -8,7 +9,6 @@ import {
 	requireSkyraInVoiceChannel,
 	requireUserInVoiceChannel
 } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PromoteDescription),
@@ -21,11 +21,11 @@ export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
-	public async run(message: KlasaMessage, [index]: [number]) {
+	public async run(message: GuildMessage, [index]: [number]) {
 		if (index <= 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 		--index;
 
-		const { audio } = message.guild!;
+		const { audio } = message.guild;
 		const length = await audio.length();
 		if (index >= length) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {

@@ -1,8 +1,8 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	aliases: ['replay'],
@@ -13,8 +13,8 @@ export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
 	@requireMusicPlaying()
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		// Toggle the repeat option with its opposite value
-		await message.guild!.audio.replay(!(await message.guild!.audio.replay()));
+		await message.guild.audio.replay(!(await message.guild!.audio.replay()));
 	}
 }

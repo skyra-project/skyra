@@ -1,10 +1,14 @@
-import { QueueEntry } from '@lib/audio';
+import type { QueueEntry } from '@lib/audio';
 import { AudioEvent } from '@lib/structures/AudioEvent';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TextChannel } from 'discord.js';
+import type { TextChannel } from 'discord.js';
 
 export default class extends AudioEvent {
-	public async run(channel: TextChannel, track: readonly QueueEntry[]) {
-		await channel.sendLocale(LanguageKeys.Commands.Music.RemoveSuccess, [{ song: track }], { allowedMentions: { users: [], roles: [] } });
+	public async run(channel: TextChannel, entry: QueueEntry) {
+		const [title, requester] = await Promise.all([
+			channel.guild.audio.player.node.decode(entry.track).then((data) => data.title),
+			this.client.users.fetch(entry.author).then((data) => data.username)
+		]);
+		await channel.sendLocale(LanguageKeys.Commands.Music.RemoveSuccess, [{ title, requester }], { allowedMentions: { users: [], roles: [] } });
 	}
 }

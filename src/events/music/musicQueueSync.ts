@@ -7,7 +7,7 @@ export default class extends AudioEvent {
 	public async run(queue: Queue) {
 		const getTracks = callOnceAsync(() => queue.decodedTracks());
 		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicAdd, data: { tracks: await getTracks() } });
+			subscription.send({ action: OutgoingWebsocketAction.MusicSync, data: { tracks: await getTracks() } });
 		}
 	}
 }

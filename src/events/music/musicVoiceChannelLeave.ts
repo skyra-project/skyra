@@ -1,12 +1,12 @@
-import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Queue } from '@lib/audio';
+import { AudioEvent } from '@lib/structures/AudioEvent';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
-import { Event } from 'klasa';
 
-export default class extends Event {
-	public async run(manager: MusicHandler) {
-		await manager.pause(true);
+export default class extends AudioEvent {
+	public async run(queue: Queue) {
+		await queue.stop();
 
-		for (const subscription of manager.websocketUserIterator()) {
+		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
 			subscription.send({ action: OutgoingWebsocketAction.MusicVoiceChannelLeave });
 		}
 	}

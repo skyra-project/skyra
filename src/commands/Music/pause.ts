@@ -21,5 +21,6 @@ export default class extends MusicCommand {
 	@requireMusicPlaying()
 	public async run(message: GuildMessage) {
 		await message.guild.audio.pause();
+		await message.sendLocale(LanguageKeys.Commands.Music.PauseSuccess);
 	}
 }

@@ -1,8 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { ENABLE_LAVALINK } from '@root/config';
+import { VoiceServerUpdate } from '@skyra/audio';
 import { Event, EventStore } from 'klasa';
-import { VoiceServerUpdate } from 'lavacord';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {

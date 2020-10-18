@@ -8,6 +8,7 @@ export default class extends AudioEvent {
 		const channel = await queue.getTextChannel();
 		if (channel) this.client.emit(Events.MusicFinishNotify, channel);
 
+		await queue.leave();
 		await queue.clear();
 
 		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {

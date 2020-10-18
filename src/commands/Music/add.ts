@@ -2,7 +2,6 @@ import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand'
 import { GuildMessage } from '@lib/types/Discord';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import type { Track } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommandOptions>({
@@ -12,10 +11,10 @@ import { ApplyOptions } from '@skyra/decorators';
 	flagSupport: true
 })
 export default class extends MusicCommand {
-	public async run(message: GuildMessage, [songs]: [Track[]]) {
+	public async run(message: GuildMessage, [songs]: [string[]]) {
 		if (!songs || !songs.length) throw message.language.get(LanguageKeys.MusicManager.FetchNoMatches);
 
-		const tracks = songs.map((song) => ({ author: message.author.id, track: song.track }));
+		const tracks = songs.map((track) => ({ author: message.author.id, track }));
 		await message.guild.audio.add(...tracks);
 		this.client.emit(Events.MusicAddNotify, message.channel, tracks);
 	}

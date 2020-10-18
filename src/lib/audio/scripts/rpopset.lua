@@ -8,4 +8,5 @@ if value then
   return value
 end
 
+redis.call('del', DESTINATION)
 return nil

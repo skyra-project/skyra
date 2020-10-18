@@ -904,7 +904,7 @@
 
 "@skyra/audio@skyra-project/audio#build":
   version "0.0.1"
-  resolved "https://codeload.github.com/skyra-project/audio/tar.gz/a3ba042b860855b855fbc79490bf9a4049066e45"
+  resolved "https://codeload.github.com/skyra-project/audio/tar.gz/6edcdcb69751084f5d2e1ea1b446b537dbb8a0e3"
   dependencies:
     backoff "^2.5.0"
     ws "^7.3.1"

@@ -38,8 +38,10 @@ export default class extends MusicCommand {
 			});
 		}
 
-		await audio.move(index, 0);
+		const entry = await audio.get(index);
+		const track = await audio.player.node.decode(entry!.track);
 
-		// TODO(kyranet): add message reply.
+		await audio.move(index, 0);
+		await message.channel.sendLocale(LanguageKeys.Commands.Music.PromoteSuccess, [{ title: track.title, url: track.uri }]);
 	}
 }

@@ -39,7 +39,7 @@ export default class extends MusicCommand {
 
 		if (current && audio.paused) {
 			await audio.resume();
-			const track = await audio.player.node.decode(current.entry.track);
+			const track = await audio.player.node.decode(current.track);
 			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: `<${track.uri}>` }]);
 		} else {
 			await audio.textChannelID(message.channel.id);

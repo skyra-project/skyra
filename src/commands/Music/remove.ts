@@ -1,5 +1,6 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
@@ -15,7 +16,7 @@ export default class extends MusicCommand {
 
 		const { audio } = message.guild;
 		const count = await audio.length();
-		if (index >= count)
+		if (index >= count) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
 					count === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
@@ -24,8 +25,13 @@ export default class extends MusicCommand {
 					}
 				)
 			});
+		}
 
-		// Remove the song from the queue
+		// Retrieve information about the song to be removed.
+		const entry = await audio.get(index);
+
+		// Remove the song from the queue.
 		await audio.removeAt(index);
+		this.client.emit(Events.MusicRemoveNotify, message, entry);
 	}
 }

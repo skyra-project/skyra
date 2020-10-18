@@ -12,8 +12,9 @@ export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	@requireDj()
 	public async run(message: GuildMessage) {
-		await message.guild.audio.clear();
-
-		// TODO(kyranet): add message reply.
+		const { audio } = message.guild;
+		const count = await audio.length();
+		await audio.clear();
+		return message.sendLocale(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
 	}
 }

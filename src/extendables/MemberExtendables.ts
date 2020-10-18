@@ -55,7 +55,7 @@ export default class extends Extendable {
 		const [current, tracks] = await Promise.all([this.guild.audio.current(), this.guild.audio.tracks()]);
 
 		// If the current song and all queued songs are requested by the author, the queue is still manageable.
-		if ((current ? current.entry.author === id : true) && tracks.every((track) => track.author === id)) return true;
+		if ((current ? current.author === id : true) && tracks.every((track) => track.author === id)) return true;
 
 		// Else if the author is a moderator+, queues are always manageable for them.
 		return this.isStaff;

@@ -16,6 +16,6 @@ export default class extends MusicCommand {
 
 		const tracks = songs.map((track) => ({ author: message.author.id, track }));
 		await message.guild.audio.add(...tracks);
-		this.client.emit(Events.MusicAddNotify, message.channel, tracks);
+		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 }

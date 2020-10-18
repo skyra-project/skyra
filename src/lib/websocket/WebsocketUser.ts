@@ -114,7 +114,7 @@ export default class DashboardWebsocketUser {
 			const { audio } = guild;
 			const [rawTracks, status, volume, voiceChannel] = await Promise.all([
 				audio.tracks(),
-				audio.current(),
+				audio.nowPlaying(),
 				audio.volume(),
 				audio.voiceChannelID
 			]);

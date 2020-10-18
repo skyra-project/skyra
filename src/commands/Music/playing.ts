@@ -19,10 +19,10 @@ export default class extends MusicCommand {
 	public async run(message: GuildMessage) {
 		const { audio } = message.guild;
 
-		const raw = await audio.current();
-		if (!raw) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueEmpty);
+		const entry = await audio.current();
+		if (!entry) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
-		const track = await audio.player.node.decode(raw.entry.author);
+		const track = await audio.player.node.decode(entry.track);
 		const embed = this.getMessageEmbed(message, track);
 		return message.sendEmbed(embed);
 	}

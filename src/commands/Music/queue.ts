@@ -33,7 +33,7 @@ export default class extends MusicCommand {
 		);
 
 		const { audio } = message.guild;
-		const current = await audio.current();
+		const current = await audio.nowPlaying();
 		const tracks = await this.getTrackInformation(audio);
 
 		if (current) {

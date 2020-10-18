@@ -11,6 +11,10 @@ export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	@requireDj()
 	public async run(message: GuildMessage) {
-		await message.guild.audio.shuffle();
+		const { audio } = message.guild;
+		await audio.shuffle();
+
+		const amount = await audio.length();
+		await message.sendLocale(LanguageKeys.Commands.Music.ShuffleSuccess, [{ amount }]);
 	}
 }

@@ -38,6 +38,8 @@ export default class extends MusicCommand {
 		} catch {
 			return message.sendLocale(LanguageKeys.Commands.Music.JoinFailed);
 		}
+
+		return message.sendLocale(LanguageKeys.Commands.Music.JoinSuccess, [{ channel: `<${channel.id}>` }]);
 	}
 
 	private resolvePermissions(message: KlasaMessage, voiceChannel: VoiceChannel): void {

@@ -1,14 +1,14 @@
 import { AudioEvent } from '@lib/structures/AudioEvent';
+import { MessageAcknowledgeable } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { pickRandom } from '@utils/util';
-import { TextChannel } from 'discord.js';
 
 export default class extends AudioEvent {
-	public async run(channel: TextChannel, previous: number, next: number) {
+	public async run(channel: MessageAcknowledgeable, previous: number, next: number) {
 		await channel.sendMessage(next > 200 ? this.getExtremeVolume(channel, next) : this.getRegularVolume(channel, previous, next));
 	}
 
-	private getExtremeVolume(channel: TextChannel, volume: number): string {
+	private getExtremeVolume(channel: MessageAcknowledgeable, volume: number): string {
 		return channel.guild.language.get(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
 			emoji: '📢',
 			text: pickRandom(channel.guild.language.get(LanguageKeys.Commands.Music.VolumeChangedTexts)),
@@ -16,7 +16,7 @@ export default class extends AudioEvent {
 		});
 	}
 
-	private getRegularVolume(channel: TextChannel, previous: number, next: number): string {
+	private getRegularVolume(channel: MessageAcknowledgeable, previous: number, next: number): string {
 		return channel.guild.language.get(LanguageKeys.Commands.Music.VolumeChanged, {
 			emoji: this.getEmoji(previous, next),
 			volume: next

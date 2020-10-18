@@ -88,7 +88,7 @@ export class Queue {
 	 * Starts the queue.
 	 */
 	public async start(replaying = false): Promise<boolean> {
-		const np = await this.current();
+		const np = await this.nowPlaying();
 		if (!np) return this.next();
 
 		// Play next song.
@@ -131,7 +131,7 @@ export class Queue {
 	/**
 	 * Retrieves all the skip votes.
 	 */
-	public skips(): Promise<string[]>;
+	public skips(): Promise<number>;
 
 	/**
 	 * Empties the skip list.
@@ -146,9 +146,9 @@ export class Queue {
 	 * @returns Whether or not the vote was added.
 	 */
 	public skips(value: string): Promise<boolean>;
-	public async skips(value?: string | null): Promise<boolean | string[]> {
+	public async skips(value?: string | null): Promise<boolean | number> {
 		if (typeof value === 'undefined') {
-			return this.store.redis.smembers(this.keys.skips);
+			return this.store.redis.scard(this.keys.skips);
 		}
 
 		if (value === null) {
@@ -284,11 +284,20 @@ export class Queue {
 	}
 
 	/**
+	 * Retrieves the current track.
+	 */
+	public async current(): Promise<QueueEntry | null> {
+		const value = await this.store.redis.get(this.keys.current);
+		return value ? deserializeEntry(value) : null;
+	}
+
+	/**
 	 * Retrieves an element from the queue.
 	 * @param index The index at which to retrieve the element.
 	 */
-	public get(index: number): Promise<QueueEntry> {
-		return this.store.redis.lindex(this.keys.next, index).then(deserializeEntry);
+	public async get(index: number): Promise<QueueEntry | null> {
+		const value = await this.store.redis.lindex(this.keys.next, -index - 1);
+		return value ? deserializeEntry(value) : null;
 	}
 
 	/**
@@ -374,11 +383,8 @@ export class Queue {
 	/**
 	 * Gets the current track and position.
 	 */
-	public async current(): Promise<NP | null> {
-		const [entry, position] = await Promise.all([
-			this.store.redis.get(this.keys.current).then((v) => (v ? deserializeEntry(v) : null)),
-			this.store.redis.get(this.keys.position)
-		]);
+	public async nowPlaying(): Promise<NP | null> {
+		const [entry, position] = await Promise.all([this.current(), this.store.redis.get(this.keys.position)]);
 		return entry ? { entry, position: parseInt(position!, 10) || 0 } : null;
 	}
 

@@ -32,7 +32,7 @@ export function requireDj(): MethodDecorator {
 
 export function requireQueueNotEmpty(): MethodDecorator {
 	return createFunctionInhibitor(
-		(message: GuildMessage) => message.guild.audio.length().then((value) => value !== 0),
+		(message: GuildMessage) => message.guild.audio.canStart(),
 		(message: GuildMessage) => message.sendLocale(LanguageKeys.Inhibitors.MusicQueueEmpty)
 	);
 }

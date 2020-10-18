@@ -1,5 +1,6 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import {
@@ -21,6 +22,6 @@ export default class extends MusicCommand {
 	@requireMusicPlaying()
 	public async run(message: GuildMessage) {
 		await message.guild.audio.pause();
-		await message.sendLocale(LanguageKeys.Commands.Music.PauseSuccess);
+		this.client.emit(Events.MusicSongPauseNotify, message);
 	}
 }

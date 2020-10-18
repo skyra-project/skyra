@@ -40,7 +40,7 @@ export default class extends MusicCommand {
 		const added = await audio.add(...tracks);
 		if (added === 0) throw message.language.get(LanguageKeys.MusicManager.TooManySongs);
 
-		this.client.emit(Events.MusicAddNotify, message.channel, tracks);
+		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 
 	private async fetchRawData(message: GuildMessage, url: string) {

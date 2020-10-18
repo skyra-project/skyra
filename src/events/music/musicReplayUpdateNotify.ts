@@ -1,9 +1,9 @@
 import { AudioEvent } from '@lib/structures/AudioEvent';
+import { MessageAcknowledgeable } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TextChannel } from 'discord.js';
 
 export default class extends AudioEvent {
-	public async run(channel: TextChannel, repeating: boolean) {
+	public async run(channel: MessageAcknowledgeable, repeating: boolean) {
 		await channel.sendLocale(repeating ? LanguageKeys.Commands.Music.RepeatSuccessEnabled : LanguageKeys.Commands.Music.RepeatSuccessDisabled);
 	}
 }

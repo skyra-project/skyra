@@ -1,8 +1,11 @@
+import { Queue } from '@lib/audio';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireSongPresent } from '@utils/Music/Decorators';
+import { VoiceChannel } from 'discord.js';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.SkipDescription),
@@ -12,34 +15,33 @@ export default class extends MusicCommand {
 	@requireSongPresent()
 	public async run(message: GuildMessage, [force = false]: [boolean]) {
 		const { audio } = message.guild;
+		const { voiceChannel } = audio;
 
-		// if (audio.listeners.length >= 4) {
-		// 	if (force) {
-		// 		if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) {
-		// 			throw message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
-		// 		}
-		// 	} else {
-		// 		const response = this.handleSkips(audio, message.author.id);
-		// 		if (response) return message.sendMessage(response);
-		// 	}
-		// }
+		const listeners = voiceChannel?.listeners.length ?? 0;
+		if (listeners >= 4) {
+			const response = force ? await this.canSkipWithForce(message, voiceChannel!) : await this.canSkipWithoutForce(message, audio, listeners);
+			if (response !== null) return message.sendMessage(response);
+		}
 
-		void force;
+		const track = await audio.current();
 		await audio.next({ skipped: true });
+		this.client.emit(Events.MusicSongSkipNotify, message, track!);
 	}
 
-	// public handleSkips(audio: Queue, user: string): string | false {
-	// 	const song = audio.song || audio.queue[0];
-	// 	if (song.skips.has(user)) return audio.guild.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
-	// 	song.skips.add(user);
-	// 	const members = audio.listeners.length;
-	// 	return this.shouldInhibit(audio, members, song.skips.size);
-	// }
+	private async canSkipWithForce(message: GuildMessage, voiceChannel: VoiceChannel): Promise<string | null> {
+		return (await message.member.canManage(voiceChannel)) ? null : message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
+	}
 
-	// public shouldInhibit(musicManager: MusicHandler, total: number, size: number): false | string {
-	// 	if (total <= 3) return false;
+	private async canSkipWithoutForce(message: GuildMessage, audio: Queue, listeners: number): Promise<string | null> {
+		const added = await audio.skips(message.author.id);
+		if (!added) return message.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
 
-	// 	const needed = Math.ceil(total * 0.4);
-	// 	return size >= needed ? false : musicManager.guild.language.get(LanguageKeys.Commands.Music.SkipVotesTotal, { amount: size, needed });
-	// }
+		const amount = await audio.skips();
+		if (amount <= 3) return null;
+
+		const needed = Math.ceil(listeners * 0.4);
+		if (needed <= amount) return null;
+
+		return message.language.get(LanguageKeys.Commands.Music.SkipVotesTotal, { amount, needed });
+	}
 }

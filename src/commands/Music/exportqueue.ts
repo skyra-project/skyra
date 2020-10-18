@@ -1,4 +1,4 @@
-import { NP, QueueEntry } from '@lib/audio';
+import { QueueEntry } from '@lib/audio';
 import { map, prependIfNotNull, take } from '@lib/misc';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types/Discord';
@@ -31,8 +31,8 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private serializeCurrent(value: NP | null): string | null {
-		return value?.entry.track ?? null;
+	private serializeCurrent(entry: QueueEntry | null): string | null {
+		return entry?.track ?? null;
 	}
 
 	private serializeQueue(tracks: QueueEntry[], head: string | null) {

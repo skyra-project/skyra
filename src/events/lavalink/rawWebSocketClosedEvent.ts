@@ -10,7 +10,11 @@ export default class extends Event {
 	private readonly kHeader = magenta('[LAVALINK]');
 
 	public run(payload: IncomingEventWebSocketClosedPayload) {
-		if (payload.code === VoiceCloseCodes.Disconnected) return null;
+		// Ignore normal close codes:
+		if (payload.code < 4000) return;
+
+		// Ignore normal disconnection:
+		if (payload.code === VoiceCloseCodes.Disconnected) return;
 
 		this.client.emit(Events.Error, [
 			`${this.kHeader} Websocket Close (${payload.guildId})`,

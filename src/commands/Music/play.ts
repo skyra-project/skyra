@@ -22,8 +22,8 @@ export default class extends MusicCommand {
 		}
 
 		// Retrieve the currently playing track, then check if there is at least one track to be played.
-		const current = await audio.current();
-		if (!current && (await audio.length()) === 0) {
+		const current = await audio.getCurrentTrack();
+		if (!current && (await audio.count()) === 0) {
 			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueueEmpty);
 		}
 
@@ -42,7 +42,7 @@ export default class extends MusicCommand {
 			const track = await audio.player.node.decode(current.track);
 			await message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePaused, [{ song: `<${track.uri}>` }]);
 		} else {
-			await audio.textChannelID(message.channel.id);
+			await audio.setTextChannelID(message.channel.id);
 			await audio.start();
 		}
 	}

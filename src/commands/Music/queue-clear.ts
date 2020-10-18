@@ -13,7 +13,7 @@ export default class extends MusicCommand {
 	@requireDj()
 	public async run(message: GuildMessage) {
 		const { audio } = message.guild;
-		const count = await audio.length();
+		const count = await audio.count();
 		await audio.clearTracks();
 		return message.sendLocale(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
 	}

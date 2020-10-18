@@ -28,7 +28,7 @@ export default class extends MusicCommand {
 		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
-		const length = await audio.length();
+		const length = await audio.count();
 		if (index >= length) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
@@ -40,10 +40,10 @@ export default class extends MusicCommand {
 			});
 		}
 
-		const entry = await audio.get(index);
+		const entry = await audio.getAt(index);
 		const track = await audio.player.node.decode(entry!.track);
 
-		await audio.move(index, 0);
+		await audio.moveTracks(index, 0);
 		await message.channel.sendLocale(LanguageKeys.Commands.Music.PromoteSuccess, [{ title: track.title, url: track.uri }]);
 	}
 }

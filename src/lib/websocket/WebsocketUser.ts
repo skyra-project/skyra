@@ -112,13 +112,8 @@ export default class DashboardWebsocketUser {
 			this.musicSubscriptions.subscribe({ id: guild.id });
 
 			const { audio } = guild;
-			const [rawTracks, status, volume, voiceChannel] = await Promise.all([
-				audio.tracks(),
-				audio.nowPlaying(),
-				audio.volume(),
-				audio.voiceChannelID
-			]);
-			const tracks = await audio.player.node.decode(rawTracks.map((track) => track.track));
+			const [tracks, status, volume] = await Promise.all([audio.decodedTracks(), audio.nowPlaying(), audio.getVolume()]);
+			const voiceChannel = audio.voiceChannelID;
 			this.send({ action: OutgoingWebsocketAction.MusicSync, data: { id: message.data.guild_id, tracks, status, volume, voiceChannel } });
 		}
 	}

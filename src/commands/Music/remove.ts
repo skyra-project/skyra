@@ -18,7 +18,7 @@ export default class extends MusicCommand {
 		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
-		const count = await audio.length();
+		const count = await audio.count();
 		if (index >= count) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
@@ -31,7 +31,7 @@ export default class extends MusicCommand {
 		}
 
 		// Retrieve information about the song to be removed.
-		const entry = await audio.get(index);
+		const entry = await audio.getAt(index);
 
 		// Remove the song from the queue.
 		await audio.removeAt(index);

@@ -29,7 +29,7 @@ export default class extends MusicCommand {
 		this.resolvePermissions(message, channel);
 
 		// Set the ChannelID to the current channel
-		await audio.textChannelID(message.channel.id);
+		await audio.setTextChannelID(message.channel.id);
 
 		try {
 			// Connect to Lavalink and join the voice channel

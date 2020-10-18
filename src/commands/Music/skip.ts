@@ -23,7 +23,7 @@ export default class extends MusicCommand {
 			if (response !== null) return message.sendMessage(response);
 		}
 
-		const track = await audio.current();
+		const track = await audio.getCurrentTrack();
 		await audio.next({ skipped: true });
 		this.client.emit(Events.MusicSongSkipNotify, message, track!);
 	}
@@ -33,10 +33,10 @@ export default class extends MusicCommand {
 	}
 
 	private async canSkipWithoutForce(message: GuildMessage, audio: Queue, listeners: number): Promise<string | null> {
-		const added = await audio.skips(message.author.id);
+		const added = await audio.addSkipVote(message.author.id);
 		if (!added) return message.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
 
-		const amount = await audio.skips();
+		const amount = await audio.countSkipVotes();
 		if (amount <= 3) return null;
 
 		const needed = Math.ceil(listeners * 0.4);

@@ -18,8 +18,8 @@ export default class extends MusicCommand {
 		const { audio } = message.guild;
 
 		// Toggle the repeat option with its opposite value
-		const current = await message.guild!.audio.replay();
-		await audio.replay(!current);
+		const current = await message.guild!.audio.getReplay();
+		await audio.setReplay(!current);
 
 		this.client.emit(Events.MusicReplayUpdateNotify, message, !current);
 	}

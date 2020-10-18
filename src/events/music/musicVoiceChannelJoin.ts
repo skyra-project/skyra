@@ -5,7 +5,7 @@ import { VoiceChannel } from 'discord.js';
 
 export default class extends AudioEvent {
 	public async run(queue: Queue, voiceChannel: VoiceChannel) {
-		if (await queue.systemPaused()) {
+		if (await queue.getSystemPaused()) {
 			if (voiceChannel.listeners.length > 0) await queue.resume();
 		} else if (voiceChannel.listeners.length === 0) {
 			await queue.pause({ system: true });

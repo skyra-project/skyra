@@ -19,7 +19,7 @@ export default class extends MusicCommand {
 	public async run(message: GuildMessage) {
 		const { audio } = message.guild;
 
-		const entry = await audio.current();
+		const entry = await audio.getCurrentTrack();
 		if (!entry) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);

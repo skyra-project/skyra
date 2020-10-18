@@ -17,7 +17,7 @@ export default class extends MusicCommand {
 	@requireMusicPlaying()
 	public async run(message: GuildMessage, [volume]: [number]) {
 		const { audio } = message.guild;
-		const previous = await audio.volume();
+		const previous = await audio.getVolume();
 
 		// If no argument was given
 		if (typeof volume === 'undefined' || volume === previous) {
@@ -30,7 +30,7 @@ export default class extends MusicCommand {
 		}
 
 		// Set the volume
-		await audio.volume(volume);
+		await audio.setVolume(volume);
 		this.client.emit(Events.MusicSongVolumeUpdateNotify, message, previous, volume);
 	}
 }

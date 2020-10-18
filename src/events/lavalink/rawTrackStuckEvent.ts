@@ -1,7 +1,6 @@
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { IncomingEventTrackStuckPayload } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
-import { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: 'TrackStuckEvent' })
@@ -18,15 +17,8 @@ export default class extends Event {
 		const queue = guild.audio;
 
 		// If there is no text channel set-up, skip.
-		const channelID = await queue.textChannelID();
-		if (!channelID) return;
-
-		// If a channel ID was set but none was found, set as null and skip.
-		const channel = guild.channels.cache.get(channelID) as TextChannel | undefined;
-		if (!channel) {
-			await queue.textChannelID(null);
-			return;
-		}
+		const channel = await queue.getTextChannel();
+		if (!channel) return;
 
 		// Send the message and automatically delete it once the threshold is reached.
 		const response = await channel.sendLocale(LanguageKeys.MusicManager.Stuck, [{ milliseconds: payload.thresholdMs }]);

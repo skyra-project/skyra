@@ -102,7 +102,7 @@ export class Queue {
 	 * Returns whether or not there are songs that can be played.
 	 */
 	public async canStart(): Promise<boolean> {
-		return (await this.current()) !== null || (await this.length()) !== 0;
+		return (await this.store.redis.exists(this.keys.current, this.keys.next)) > 0;
 	}
 
 	/**
@@ -118,61 +118,53 @@ export class Queue {
 
 	public async pause({ system = false } = {}) {
 		await this.player.pause(true);
-		await this.systemPaused(system);
+		await this.setSystemPaused(system);
 		this.client.emit(Events.MusicSongPause, this);
 	}
 
 	public async resume() {
 		await this.player.pause(false);
-		await this.systemPaused(false);
+		await this.setSystemPaused(false);
 		this.client.emit(Events.MusicSongResume, this);
 	}
 
 	/**
 	 * Retrieves all the skip votes.
 	 */
-	public skips(): Promise<number>;
+	public countSkipVotes(): Promise<number> {
+		return this.store.redis.scard(this.keys.skips);
+	}
 
 	/**
 	 * Empties the skip list.
 	 * @param value The value to add.
 	 * @returns Whether or not the votes were removed.
 	 */
-	public skips(value: null): Promise<boolean>;
+	public async resetSkipVotes(): Promise<boolean> {
+		return this.store.redis.del(this.keys.skips).then((d) => d === 1);
+	}
 
 	/**
 	 * Adds a vote.
 	 * @param value The value to add to the skip list.
 	 * @returns Whether or not the vote was added.
 	 */
-	public skips(value: string): Promise<boolean>;
-	public async skips(value?: string | null): Promise<boolean | number> {
-		if (typeof value === 'undefined') {
-			return this.store.redis.scard(this.keys.skips);
-		}
-
-		if (value === null) {
-			return (await this.store.redis.del(this.keys.skips)) === 1;
-		}
-
-		return (await this.store.redis.sadd(this.keys.skips, value)) === 1;
+	public async addSkipVote(value: string): Promise<boolean> {
+		return this.store.redis.sadd(this.keys.skips, value).then((d) => d === 1);
 	}
 
 	/**
 	 * Retrieves whether or not the queue was paused automatically.
 	 */
-	public systemPaused(): Promise<boolean>;
+	public getSystemPaused(): Promise<boolean> {
+		return this.store.redis.get(this.keys.systemPause).then((d) => d === '1');
+	}
 
 	/**
 	 * Sets the system pause mode.
 	 * @param value Whether or not the queue should be paused automatically.
 	 */
-	public systemPaused(value: boolean): Promise<boolean>;
-	public async systemPaused(value?: boolean): Promise<boolean> {
-		if (typeof value === 'undefined') {
-			return (await this.store.redis.get(this.keys.systemPause)) === '1';
-		}
-
+	public async setSystemPaused(value: boolean): Promise<boolean> {
 		await this.store.redis.set(this.keys.systemPause, value ? '1' : '0');
 		this.client.emit(Events.MusicSongPause, this, value);
 		return value;
@@ -181,18 +173,15 @@ export class Queue {
 	/**
 	 * Retrieves whether or not the system should repeat the current track.
 	 */
-	public replay(): Promise<boolean>;
+	public getReplay(): Promise<boolean> {
+		return this.store.redis.get(this.keys.replay).then((d) => d === '1');
+	}
 
 	/**
 	 * Sets the repeat mode.
 	 * @param value Whether or not the system should repeat the current track.
 	 */
-	public replay(value: boolean): Promise<boolean>;
-	public async replay(value?: boolean): Promise<boolean> {
-		if (typeof value === 'undefined') {
-			return (await this.store.redis.get(this.keys.replay)) === '1';
-		}
-
+	public async setReplay(value: boolean): Promise<boolean> {
 		await this.store.redis.set(this.keys.replay, value ? '1' : '0');
 		this.client.emit(Events.MusicReplayUpdate, this, value);
 		return value;
@@ -201,19 +190,16 @@ export class Queue {
 	/**
 	 * Retrieves the volume of the track in the queue.
 	 */
-	public volume(): Promise<number>;
+	public async getVolume(): Promise<number> {
+		const raw = await this.store.redis.get(this.keys.volume);
+		return raw ? Number(raw) : 100;
+	}
 
 	/**
 	 * Sets the volume.
 	 * @param value The new volume for the queue.
 	 */
-	public volume(value: number): Promise<{ previous: number; next: number }>;
-	public async volume(value?: number): Promise<number | { previous: number; next: number }> {
-		if (typeof value === 'undefined') {
-			const raw = await this.store.redis.get(this.keys.volume);
-			return raw ? Number(raw) : 100;
-		}
-
+	public async setVolume(value: number): Promise<{ previous: number; next: number }> {
 		await this.player.setVolume(value);
 		const previous = await this.store.redis.getset(this.keys.volume, value);
 
@@ -244,17 +230,17 @@ export class Queue {
 	 */
 	public async leave(): Promise<void> {
 		await this.player.leave();
-		await this.textChannelID(null);
+		await this.setTextChannelID(null);
 		this.client.emit(Events.MusicLeave, this);
 	}
 
-	public async textChannel(): Promise<TextChannel | null> {
-		const id = await this.textChannelID();
+	public async getTextChannel(): Promise<TextChannel | null> {
+		const id = await this.getTextChannelID();
 		if (id === null) return null;
 
 		const channel = this.guild.channels.cache.get(id) ?? null;
 		if (channel === null) {
-			await this.textChannelID(null);
+			await this.setTextChannelID(null);
 			return null;
 		}
 
@@ -264,23 +250,21 @@ export class Queue {
 	/**
 	 * Gets the text channel from cache.
 	 */
-	public textChannelID(): Promise<string | null>;
+	public getTextChannelID(): Promise<string | null> {
+		return this.store.redis.get(this.keys.text);
+	}
 
 	/**
 	 * Unsets the notifications channel.
 	 */
-	public textChannelID(channelID: null): Promise<null>;
+	public setTextChannelID(channelID: null): Promise<null>;
 
 	/**
 	 * Sets a text channel to send notifications to.
 	 * @param channelID The text channel to set.
 	 */
-	public async textChannelID(channelID: string): Promise<string>;
-	public async textChannelID(channelID?: string | null): Promise<string | null> {
-		if (typeof channelID === 'undefined') {
-			return this.store.redis.get(this.keys.text);
-		}
-
+	public async setTextChannelID(channelID: string): Promise<string>;
+	public async setTextChannelID(channelID: string | null): Promise<string | null> {
 		await (channelID === null ? this.store.redis.del(this.keys.text) : this.store.redis.set(this.keys.text, channelID));
 		return channelID;
 	}
@@ -288,7 +272,7 @@ export class Queue {
 	/**
 	 * Retrieves the current track.
 	 */
-	public async current(): Promise<QueueEntry | null> {
+	public async getCurrentTrack(): Promise<QueueEntry | null> {
 		const value = await this.store.redis.get(this.keys.current);
 		return value ? deserializeEntry(value) : null;
 	}
@@ -297,7 +281,7 @@ export class Queue {
 	 * Retrieves an element from the queue.
 	 * @param index The index at which to retrieve the element.
 	 */
-	public async get(index: number): Promise<QueueEntry | null> {
+	public async getAt(index: number): Promise<QueueEntry | null> {
 		const value = await this.store.redis.lindex(this.keys.next, -index - 1);
 		return value ? deserializeEntry(value) : null;
 	}
@@ -319,15 +303,15 @@ export class Queue {
 		// Sets the current position to 0.
 		await this.store.redis.set(this.keys.position, 0);
 
-		if (!skipped && (await this.replay())) {
-			await this.replay(false);
+		if (!skipped && (await this.getReplay())) {
+			await this.setReplay(false);
 			return this.start(true);
 		}
 
 		const entry = await this.store.redis.rpopset(this.keys.next, this.keys.current);
 		if (entry) {
 			if (skipped) this.client.emit(Events.MusicSongSkip, this, deserializeEntry(entry));
-			await this.skips(null);
+			await this.resetSkipVotes();
 			return this.start(false);
 		}
 
@@ -339,7 +323,7 @@ export class Queue {
 	/**
 	 * Retrieves the length of the queue.
 	 */
-	public length(): Promise<number> {
+	public count(): Promise<number> {
 		return this.store.redis.llen(this.keys.next);
 	}
 
@@ -348,14 +332,14 @@ export class Queue {
 	 * @param from The position of the track to move.
 	 * @param to The position of the new position for the track.
 	 */
-	public async move(from: number, to: number): Promise<void> {
+	public async moveTracks(from: number, to: number): Promise<void> {
 		await this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
 	}
 
 	/**
 	 * Shuffles the queue.
 	 */
-	public async shuffle(): Promise<void> {
+	public async shuffleTracks(): Promise<void> {
 		await this.store.redis.lshuffle(this.keys.next, Date.now());
 	}
 
@@ -393,7 +377,7 @@ export class Queue {
 	 * Gets the current track and position.
 	 */
 	public async nowPlaying(): Promise<NP | null> {
-		const [entry, position] = await Promise.all([this.current(), this.store.redis.get(this.keys.position)]);
+		const [entry, position] = await Promise.all([this.getCurrentTrack(), this.store.redis.get(this.keys.position)]);
 		return entry ? { entry, position: parseInt(position!, 10) || 0 } : null;
 	}
 

@@ -18,7 +18,7 @@ export function requireMusicPaused(): MethodDecorator {
 
 export function requireSongPresent(): MethodDecorator {
 	return createFunctionInhibitor(
-		(message: GuildMessage) => message.guild.audio.current().then((value) => value !== null),
+		(message: GuildMessage) => message.guild.audio.getCurrentTrack().then((value) => value !== null),
 		(message: GuildMessage) => message.sendLocale(LanguageKeys.Inhibitors.MusicNothingPlaying)
 	);
 }

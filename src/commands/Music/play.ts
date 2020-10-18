@@ -19,7 +19,11 @@ export default class extends MusicCommand {
 			// If there are songs or a queue, add them
 			await this.client.commands.get('add')!.run(message, [songs]);
 			if (audio.playing) return;
-		} else if (!audio.canStart()) {
+		}
+
+		// Retrieve the currently playing track, then check if there is at least one track to be played.
+		const current = await audio.current();
+		if (!current && (await audio.length()) === 0) {
 			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueueEmpty);
 		}
 
@@ -33,7 +37,6 @@ export default class extends MusicCommand {
 			return message.sendLocale(LanguageKeys.Commands.Music.PlayQueuePlaying);
 		}
 
-		const current = await audio.current();
 		if (current && audio.paused) {
 			await audio.resume();
 			const track = await audio.player.node.decode(current.entry.track);

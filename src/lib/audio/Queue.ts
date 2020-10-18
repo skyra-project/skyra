@@ -319,7 +319,9 @@ export class Queue {
 			return this.start(false);
 		}
 
-		await this.clear(); // we're at the end of the queue, so clear everything out
+		// We're at the end of the queue, so clear everything out
+		await this.clear();
+		this.client.emit(Events.MusicFinish, this);
 		return false;
 	}
 

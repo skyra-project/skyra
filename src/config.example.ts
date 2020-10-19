@@ -42,7 +42,8 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 
 export const REDIS_OPTIONS: RedisOptions = {
 	port: 8287,
-	db: 1
+	db: 1,
+	password: 'redis'
 };
 
 export const INFLUX_URL = 'http://localhost:8285';

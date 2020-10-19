@@ -7,6 +7,7 @@ import { cutText } from '@sapphire/utilities';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
+import debounce from 'lodash.debounce';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [
@@ -37,6 +38,9 @@ export class StarboardEntity extends BaseEntity {
 	#client: Client = null!;
 	#message: Message = null!;
 	#starMessage: Message | null = null;
+	#updateStarMessage = debounce(this.updateStarMessage.bind(this), 2500, {
+		maxWait: 10000
+	});
 
 	@Column('boolean')
 	public enabled = true;
@@ -181,7 +185,7 @@ export class StarboardEntity extends BaseEntity {
 		}
 		if (Reflect.has(options, 'stars') && this.enabled) {
 			this.stars = options.stars!;
-			await this.updateStarMessage();
+			await this.#updateStarMessage();
 		}
 		if (options.starMessageID === null) {
 			this.starMessageID = null;

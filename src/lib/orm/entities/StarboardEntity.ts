@@ -4,10 +4,10 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
+import { debounce } from '@utils/debounce';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
-import { debounce } from '@utils/debounce';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [
@@ -38,9 +38,7 @@ export class StarboardEntity extends BaseEntity {
 	#client: Client = null!;
 	#message: Message = null!;
 	#starMessage: Message | null = null;
-	#updateStarMessage = debounce(this.updateStarMessage.bind(this), 2500, {
-		maxWait: 10000
-	});
+	#updateStarMessage = debounce(this.updateStarMessage.bind(this), { wait: 2500, maxWait: 10000 });
 
 	@Column('boolean')
 	public enabled = true;

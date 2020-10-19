@@ -10,22 +10,19 @@
 
 interface DebounceSettings {
 	/**
-	 * @see _.leading
+	 * The number of milliseconds to delay.
+	 * @default 0
 	 */
-	leading?: boolean;
+	wait?: number;
 
 	/**
-	 * @see _.maxWait
+	 * The maximum time `func` is allowed to be delayed before it's invoked
+	 * @default null
 	 */
-	maxWait?: number;
-
-	/**
-	 * @see _.trailing
-	 */
-	trailing?: boolean;
+	maxWait?: number | null;
 }
 
-interface DebouncedFunc<T extends (...args: any[]) => any> {
+interface DebouncedFunc<FnArgumentsType extends any[], FnReturnType> {
 	/**
 	 * Call the original function, but applying the debounce rules.
 	 *
@@ -35,7 +32,7 @@ interface DebouncedFunc<T extends (...args: any[]) => any> {
 	 * Otherwise, it returns the return value of the last invokation, or undefined if the debounced
 	 * function was not invoked yet.
 	 */
-	(...args: Parameters<T>): ReturnType<T> | undefined;
+	(...args: FnArgumentsType): FnReturnType | undefined;
 
 	/**
 	 * Throw away any pending invokation of the debounced function.
@@ -49,7 +46,7 @@ interface DebouncedFunc<T extends (...args: any[]) => any> {
 	 * Otherwise, return the value from the last invokation, or undefined if the debounced function
 	 * was never invoked.
 	 */
-	flush(): ReturnType<T> | undefined;
+	flush(): FnReturnType | undefined;
 }
 
 /**
@@ -69,19 +66,18 @@ interface DebouncedFunc<T extends (...args: any[]) => any> {
  * @param options The options object.
  * @return Returns the new debounced function.
  */
-export function debounce<T extends (...args: any) => any>(func: T, wait = 0, options: DebounceSettings = {}): DebouncedFunc<T> {
-	let lastArgs: IArguments | undefined;
-	let result: ReturnType<T> | undefined;
+export function debounce<FnArgumentsType extends any[], FnReturnType>(
+	func: (...args: FnArgumentsType) => FnReturnType,
+	options: DebounceSettings = {}
+): DebouncedFunc<FnArgumentsType, FnReturnType> {
+	let lastArgs: FnArgumentsType | undefined;
+	let result: FnReturnType | undefined;
 	let timerId: NodeJS.Timeout | undefined;
 	let lastCallTime: number | undefined;
 	let lastInvokeTime = 0;
 
-	wait = Number() || 0;
-
-	const leading = options.leading ?? false;
-	const maxing = 'maxWait' in options;
-	const maxWait = maxing ? Math.max(options.maxWait ?? 0, wait) : 0;
-	const trailing = options.trailing ?? false;
+	const wait = options.wait ?? 0;
+	const maxWait = typeof options.maxWait === 'number' ? Math.max(options.maxWait, wait) : null;
 
 	function invokeFunc(time: number) {
 		let args = lastArgs;
@@ -98,7 +94,7 @@ export function debounce<T extends (...args: any) => any>(func: T, wait = 0, opt
 		// Start the timer for the trailing edge.
 		timerId = setTimeout(timerExpired, wait);
 		// Invoke the leading edge.
-		return leading ? invokeFunc(time) : result;
+		return result;
 	}
 
 	function remainingWait(time: number) {
@@ -106,7 +102,7 @@ export function debounce<T extends (...args: any) => any>(func: T, wait = 0, opt
 		let timeSinceLastInvoke = time - lastInvokeTime;
 		let result = wait - timeSinceLastCall;
 
-		return maxing ? Math.min(result, maxWait - timeSinceLastInvoke) : result;
+		return maxWait === null ? result : Math.min(result, maxWait - timeSinceLastInvoke);
 	}
 
 	function shouldInvoke(time: number) {
@@ -116,7 +112,12 @@ export function debounce<T extends (...args: any) => any>(func: T, wait = 0, opt
 		// Either this is the first call, activity has stopped and we're at the
 		// trailing edge, the system time has gone backwards and we're treating
 		// it as the trailing edge, or we've hit the `maxWait` limit.
-		return lastCallTime === undefined || timeSinceLastCall >= wait || timeSinceLastCall < 0 || (maxing && timeSinceLastInvoke >= maxWait);
+		return (
+			lastCallTime === undefined || //
+			timeSinceLastCall >= wait ||
+			timeSinceLastCall < 0 ||
+			(maxWait !== null && timeSinceLastInvoke >= maxWait)
+		);
 	}
 
 	function timerExpired() {
@@ -130,15 +131,7 @@ export function debounce<T extends (...args: any) => any>(func: T, wait = 0, opt
 
 	function trailingEdge(time: number) {
 		timerId = undefined;
-
-		// Only invoke if we have `lastArgs` which means `func` has been
-		// debounced at least once.
-		if (trailing && lastArgs) {
-			return invokeFunc(time);
-		}
-
-		lastArgs = undefined;
-		return result;
+		return invokeFunc(time);
 	}
 
 	function cancel() {
@@ -156,18 +149,18 @@ export function debounce<T extends (...args: any) => any>(func: T, wait = 0, opt
 		return timerId === undefined ? result : trailingEdge(Date.now());
 	}
 
-	function debounced() {
+	function debounced(...args: FnArgumentsType) {
 		let time = Date.now();
 		let isInvoking = shouldInvoke(time);
 
-		lastArgs = arguments;
+		lastArgs = args;
 		lastCallTime = time;
 
 		if (isInvoking) {
 			if (timerId === undefined) {
 				return leadingEdge(lastCallTime);
 			}
-			if (maxing) {
+			if (maxWait !== null) {
 				// Handle invocations in a tight loop.
 				timerId = setTimeout(timerExpired, wait);
 				return invokeFunc(lastCallTime);

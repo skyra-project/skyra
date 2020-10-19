@@ -7,7 +7,6 @@ import { TOKENS } from '@root/config';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import { rootFolder } from '@utils/constants';
-import { floatPromise } from '@utils/util';
 import * as colorette from 'colorette';
 import { inspect } from 'util';
 
@@ -30,8 +29,15 @@ async function main() {
 			]
 		});
 	}
-	await DbSet.connect();
-	await client.login(TOKENS.BOT_TOKEN);
+
+	try {
+		await DbSet.connect();
+		await client.login(TOKENS.BOT_TOKEN);
+	} catch (error) {
+		client.console.error(error);
+		client.destroy();
+		process.exit(1);
+	}
 }
 
-floatPromise({ client }, main());
+main().catch(client.console.error);

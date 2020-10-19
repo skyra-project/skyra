@@ -1,4 +1,6 @@
-module.exports = {
+import type { Config } from '@jest/types';
+
+export default async (): Promise<Config.InitialOptions> => ({
 	displayName: 'unit test',
 	preset: 'ts-jest',
 	testEnvironment: 'node',
@@ -39,4 +41,4 @@ module.exports = {
 		'<rootDir>/src/lib/structures',
 		'<rootDir>/src/lib/util/Models'
 	]
-};
+});

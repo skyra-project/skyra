@@ -1,5 +1,4 @@
 import { NP, Queue } from '@lib/audio';
-import { callOnceAsync } from '@lib/misc';
 import { AudioEvent } from '@lib/structures/AudioEvent';
 import { Events } from '@lib/types/Enums';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
@@ -9,9 +8,9 @@ export default class extends AudioEvent {
 		const channel = await queue.getTextChannel();
 		if (channel) this.client.emit(Events.MusicSongPlayNotify, channel, status.entry);
 
-		const getTracks = callOnceAsync(() => queue.decodedTracks());
-		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongPlay, data: { status, tracks: await getTracks() } });
-		}
+		return this.broadcastMessageForGuild(queue.guildID, async () => ({
+			action: OutgoingWebsocketAction.MusicSync,
+			data: { status, tracks: await queue.decodedTracks() }
+		}));
 	}
 }

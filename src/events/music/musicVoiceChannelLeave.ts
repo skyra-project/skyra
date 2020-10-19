@@ -6,8 +6,8 @@ export default class extends AudioEvent {
 	public async run(queue: Queue) {
 		await queue.stop();
 
-		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicVoiceChannelLeave });
-		}
+		return this.broadcastMessageForGuild(queue.guildID, () => ({
+			action: OutgoingWebsocketAction.MusicVoiceChannelLeave
+		}));
 	}
 }

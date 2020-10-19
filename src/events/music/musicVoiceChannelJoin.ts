@@ -11,8 +11,9 @@ export default class extends AudioEvent {
 			await queue.pause({ system: true });
 		}
 
-		for (const subscription of this.getWebSocketListenersFor(queue.guildID)) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicVoiceChannelJoin, data: { voiceChannel: voiceChannel.id } });
-		}
+		return this.broadcastMessageForGuild(queue.guildID, () => ({
+			action: OutgoingWebsocketAction.MusicVoiceChannelJoin,
+			data: { voiceChannel: voiceChannel.id }
+		}));
 	}
 }

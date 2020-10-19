@@ -89,15 +89,14 @@ export default class DashboardWebsocketUser {
 		}
 	}
 
-	private async handleSubscriptionUpdate(message: IncomingWebsocketMessage) {
+	private async handleSubscriptionUpdate(message: IncomingWebsocketMessage): Promise<void> {
 		if (!message.data.subscription_name || !message.data.subscription_action) return;
 
 		switch (message.data.subscription_action) {
 			case SubscriptionAction.Subscribe:
 				return this.handleSubscribeMessage(message);
 			case SubscriptionAction.Unsubscribe: {
-				this.handleUnSubscribeMessage(message);
-				break;
+				return this.handleUnSubscribeMessage(message);
 			}
 		}
 	}

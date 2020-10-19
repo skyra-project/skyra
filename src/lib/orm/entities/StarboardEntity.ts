@@ -7,7 +7,7 @@ import { cutText } from '@sapphire/utilities';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
-import debounce from 'lodash.debounce';
+import { debounce } from '@utils/debounce';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [

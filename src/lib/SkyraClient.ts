@@ -2,8 +2,7 @@
 // Import all dependencies
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { KlasaClient, KlasaClientOptions, Schema } from 'klasa';
-import { Manager as LavalinkManager } from '@utils/Music/ManagerWrapper';
+import { KlasaClient, KlasaClientOptions } from 'klasa';
 import { mergeDefault } from '@sapphire/utilities';
 import { Webhook } from 'discord.js';
 
@@ -32,6 +31,7 @@ import './setup/Canvas';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
+import { QueueClient } from '@lib/audio';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -74,6 +74,8 @@ export class SkyraClient extends KlasaClient {
 	 */
 	public invites: InviteStore = new InviteStore(this);
 
+	public readonly audio: QueueClient;
+
 	public readonly analytics: AnalyticsData | null;
 
 	/**
@@ -86,9 +88,6 @@ export class SkyraClient extends KlasaClient {
 	public llrCollectors: Set<LongLivingReactionCollector> = new Set();
 
 	@enumerable(false)
-	public lavalink: LavalinkManager = new LavalinkManager(this, this.options.lavalink);
-
-	@enumerable(false)
 	public twitch: Twitch = new Twitch();
 
 	public websocket = new WebsocketHandler(this);
@@ -96,6 +95,10 @@ export class SkyraClient extends KlasaClient {
 	public constructor() {
 		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
+		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
+			const guild = this.guilds.cache.get(guildID);
+			return Promise.resolve(guild?.shard.send(packet));
+		});
 		this.analytics = ENABLE_INFLUX ? new AnalyticsData() : null;
 
 		container.registerInstance(SkyraClient, this).registerInstance('SkyraClient', this);
@@ -105,8 +108,6 @@ export class SkyraClient extends KlasaClient {
 		await this.schedules.init();
 		return super.login(token);
 	}
-
-	public static defaultMemberSchema = new Schema().add('points', 'Number', { configurable: false });
 }
 
 SkyraClient.use(DashboardClient);

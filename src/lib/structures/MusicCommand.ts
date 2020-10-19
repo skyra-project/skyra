@@ -1,7 +1,5 @@
 import { ENABLE_LAVALINK } from '@root/config';
-import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
-import { MusicHandlerRequestContext } from './music/MusicHandler';
+import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class MusicCommand extends SkyraCommand {
@@ -12,10 +10,6 @@ export abstract class MusicCommand extends SkyraCommand {
 	public init() {
 		if (!ENABLE_LAVALINK) this.disable();
 		return Promise.resolve();
-	}
-
-	protected getContext(message: KlasaMessage): MusicHandlerRequestContext {
-		return { channel: message.channel as TextChannel, userID: message.author.id };
 	}
 }
 

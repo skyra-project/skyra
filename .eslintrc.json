@@ -21,6 +21,12 @@
 			"rules": {
 				"@typescript-eslint/no-inferrable-types": 0
 			}
+		},
+		{
+			"files": ["jest.config.ts"],
+			"rules": {
+				"@typescript-eslint/require-await": 0
+			}
 		}
 	]
 }

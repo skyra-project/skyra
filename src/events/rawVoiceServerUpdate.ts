@@ -1,8 +1,8 @@
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { ENABLE_LAVALINK } from '@root/config';
+import { VoiceServerUpdate } from '@skyra/audio';
 import { Event, EventStore } from 'klasa';
-import { VoiceServerUpdate } from 'lavacord';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
@@ -11,7 +11,7 @@ export default class extends Event {
 
 	public async run(data: VoiceServerUpdate): Promise<void> {
 		try {
-			await this.client.lavalink.voiceServerUpdate(data);
+			await this.client.audio.voiceServerUpdate(data);
 		} catch (error) {
 			this.client.emit(Events.Error, error);
 		}

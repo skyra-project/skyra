@@ -1,4 +1,6 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import {
@@ -8,7 +10,6 @@ import {
 	requireSkyraInVoiceChannel,
 	requireUserInVoiceChannel
 } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PauseDescription)
@@ -19,7 +20,8 @@ export default class extends MusicCommand {
 	@requireSameVoiceChannel()
 	@requireDj()
 	@requireMusicPlaying()
-	public async run(message: KlasaMessage) {
-		await message.guild!.music.pause(false, this.getContext(message));
+	public async run(message: GuildMessage) {
+		await message.guild.audio.pause();
+		this.client.emit(Events.MusicSongPauseNotify, message);
 	}
 }

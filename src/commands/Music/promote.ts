@@ -1,4 +1,5 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import {
@@ -8,7 +9,6 @@ import {
 	requireSkyraInVoiceChannel,
 	requireUserInVoiceChannel
 } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PromoteDescription),
@@ -21,21 +21,29 @@ export default class extends MusicCommand {
 	@requireUserInVoiceChannel()
 	@requireSkyraInVoiceChannel()
 	@requireSameVoiceChannel()
-	public run(message: KlasaMessage, [index]: [number]) {
-		if (index <= 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+	public async run(message: GuildMessage, [index]: [number]) {
+		// Minus one as user input is 1-based while the code is 0-based:
+		--index;
 
-		const { music } = message.guild!;
-		if (index > music.queue.length)
+		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+
+		const { audio } = message.guild;
+		const length = await audio.count();
+		if (index >= length) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
-					music.queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+					length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{
-						count: music.queue.length
+						count: length
 					}
 				)
 			});
+		}
 
-		// Promote the song to the top of the queue
-		message.guild!.music.promote(index, this.getContext(message));
+		const entry = await audio.getAt(index);
+		const track = await audio.player.node.decode(entry!.track);
+
+		await audio.moveTracks(index, 0);
+		await message.channel.sendLocale(LanguageKeys.Commands.Music.PromoteSuccess, [{ title: track.title, url: track.uri }]);
 	}
 }

@@ -1,4 +1,3 @@
-import type { Song } from '@lib/structures/music/Song';
 import type { ScheduleEntity } from '@orm/entities/ScheduleEntity';
 import type { EightBallLanguage } from '@root/commands/Fun/8ball';
 import type { HungerGamesGame } from '@root/commands/Games/hungergames';
@@ -218,7 +217,7 @@ declare module 'klasa' {
 		commandRemoveIndexInvalid: string;
 		commandRemoveIndexOutOfBounds: (params: { songs: string }) => string;
 		commandRemoveDenied: string;
-		commandRemoveSuccess: (params: { song: Song }) => string;
+		commandRemoveSuccess: (params: { title: string; requester: string }) => string;
 		commandSeekDescription: string;
 		commandSeekSuccess: (params: { time: number }) => string;
 		commandResumeDescription: string;
@@ -248,7 +247,7 @@ declare module 'klasa' {
 		commandPlayingTimeQueueEmpty: string;
 		commandPromoteDescription: string;
 		commandPromoteExtended: LanguageHelpDisplayOptions;
-		commandPromoteSuccess: (params: { song: Song }) => string;
+		commandPromoteSuccess: (params: { title: string; url: string }) => string;
 		commandVolumeDescription: string;
 		commandVolumeSuccess: (params: { volume: number }) => string;
 		commandVolumeChanged: (params: { emoji: string; volume: number }) => string;

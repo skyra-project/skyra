@@ -1,23 +1,11 @@
-import { MusicHandler, MusicHandlerRequestContext } from '@lib/structures/music/MusicHandler';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Queue } from '@lib/audio';
+import { AudioEvent } from '@lib/structures/AudioEvent';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
-import { floatPromise } from '@utils/util';
-import { Event } from 'klasa';
 
-export default class extends Event {
-	public run(manager: MusicHandler, context: MusicHandlerRequestContext | null) {
-		if (manager.systemPaused) {
-			manager.systemPaused = false;
-		} else {
-			const channel = context ? context.channel : manager.channel;
-
-			if (channel) {
-				floatPromise(this, channel.sendLocale(LanguageKeys.Commands.Music.ResumeSuccess));
-			}
-		}
-
-		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongResume });
-		}
+export default class extends AudioEvent {
+	public run(queue: Queue) {
+		return this.broadcastMessageForGuild(queue.guildID, () => ({
+			action: OutgoingWebsocketAction.MusicSongResume
+		}));
 	}
 }

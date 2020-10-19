@@ -1,4 +1,3 @@
-import { Song } from '@lib/structures/music/Song';
 import { FT, T } from '@lib/types/Shared';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { Guild } from 'discord.js';
@@ -63,7 +62,7 @@ export const RemoveDescription = T<string>('commandRemoveDescription');
 export const RemoveIndexInvalid = T<string>('commandRemoveIndexInvalid');
 export const RemoveIndexOutOfBounds = FT<{ songs: string }, string>('commandRemoveIndexOutOfBounds');
 export const RemoveDenied = T<string>('commandRemoveDenied');
-export const RemoveSuccess = FT<{ song: Song }, string>('commandRemoveSuccess');
+export const RemoveSuccess = FT<{ title: string; requester: string }, string>('commandRemoveSuccess');
 export const SeekDescription = T<string>('commandSeekDescription');
 export const SeekSuccess = FT<{ time: number }, string>('commandSeekSuccess');
 export const ResumeDescription = T<string>('commandResumeDescription');
@@ -79,7 +78,7 @@ export const PlayingTimeDescription = T<string>('commandPlayingTimeDescription')
 export const PlayingTimeQueueEmpty = T<string>('commandPlayingTimeQueueEmpty');
 export const PromoteDescription = T<string>('commandPromoteDescription');
 export const PromoteExtended = T<LanguageHelpDisplayOptions>('commandPromoteExtended');
-export const PromoteSuccess = FT<{ song: Song }, string>('commandPromoteSuccess');
+export const PromoteSuccess = FT<{ title: string; url: string }, string>('commandPromoteSuccess');
 export const VolumeDescription = T<string>('commandVolumeDescription');
 export const VolumeSuccess = FT<{ volume: number }, string>('commandVolumeSuccess');
 export const VolumeChanged = FT<{ emoji: string; volume: number }, string>('commandVolumeChanged');

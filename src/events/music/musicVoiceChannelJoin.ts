@@ -1,18 +1,19 @@
-import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Queue } from '@lib/audio';
+import { AudioEvent } from '@lib/structures/AudioEvent';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
 import { VoiceChannel } from 'discord.js';
-import { Event } from 'klasa';
 
-export default class extends Event {
-	public async run(manager: MusicHandler, voiceChannel: VoiceChannel) {
-		if (manager.systemPaused) {
-			if (manager.listeners.length > 0) await manager.resume();
-		} else if (manager.listeners.length === 0) {
-			await manager.pause(true);
+export default class extends AudioEvent {
+	public async run(queue: Queue, voiceChannel: VoiceChannel) {
+		if (await queue.getSystemPaused()) {
+			if (voiceChannel.listeners.length > 0) await queue.resume();
+		} else if (voiceChannel.listeners.length === 0) {
+			await queue.pause({ system: true });
 		}
 
-		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicVoiceChannelJoin, data: { voiceChannel: voiceChannel.id } });
-		}
+		return this.broadcastMessageForGuild(queue.guildID, () => ({
+			action: OutgoingWebsocketAction.MusicVoiceChannelJoin,
+			data: { voiceChannel: voiceChannel.id }
+		}));
 	}
 }

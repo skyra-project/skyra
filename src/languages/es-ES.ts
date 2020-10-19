@@ -429,7 +429,7 @@ export default class extends Language {
 			'Lo veo un poco rudo el borrar la canción de alguien de la lista... Habla con ellos para quitarla o',
 			'grita al DJ si hay uno en este servidor, si la canción arruina la fiesta, ¡entonces ellos probablemente lo consideren!'
 		].join(' '),
-		commandRemoveSuccess: ({ song }) => `🗑 Borrada la canción **${song.safeTitle}**, pedida por <@${song.requester}>, de la cola.`,
+		commandRemoveSuccess: ({ title, requester }) => `🗑 Borrada la canción **${title}**, pedida por <@${requester}>, de la cola.`,
 		commandSeekDescription: 'Change the player time for the current song.',
 		commandSeekSuccess: ({ time }) => `${GREENTICK} Successfully changed the time! Now at ${this.duration(time)}!`,
 		commandResumeDescription: 'Reanuda la canción actual.',
@@ -488,7 +488,7 @@ export default class extends Language {
 			examples: ['5'],
 			reminder: 'Este comando requiere que seas DJ o moderador para usarlo'
 		},
-		commandPromoteSuccess: ({ song }) => `${GREENTICK} **${song.safeTitle}** (${song}) promovido con éxito a la parte superior de la cola`,
+		commandPromoteSuccess: ({ title, url }) => `${GREENTICK} **${title}** (<${url}>) promovido con éxito a la parte superior de la cola`,
 		commandVolumeDescription: 'Controla el volumen para la canción.',
 		commandVolumeSuccess: ({ volume }) => `📢 Volumen: ${volume}%`,
 		commandVolumeChanged: ({ emoji, volume }) => `${emoji} Volumen ajustado a: ${volume}%`,

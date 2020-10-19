@@ -5,22 +5,22 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(oldState: VoiceState, newState: VoiceState) {
-		const { music } = newState.guild;
+		const { audio } = newState.guild;
 
 		if (newState.id === CLIENT_ID) {
 			// If both channels were the same, skip
 			if (oldState.channelID === newState.channelID) return;
 
 			if (newState.channel === null) {
-				this.client.emit(Events.MusicVoiceChannelLeave, music, oldState.channel);
+				this.client.emit(Events.MusicVoiceChannelLeave, audio, oldState.channel);
 			} else {
-				this.client.emit(Events.MusicVoiceChannelJoin, music, newState.channel);
+				this.client.emit(Events.MusicVoiceChannelJoin, audio, newState.channel);
 			}
-		} else if (music.voiceChannel !== null) {
-			if (music.playing) {
-				if (music.listeners.length === 0) await music.pause(true);
-			} else if (music.paused && music.systemPaused) {
-				if (music.listeners.length !== 0) await music.resume();
+		} else if (audio.voiceChannelID) {
+			if (audio.playing) {
+				if (audio.voiceChannel?.listeners.length === 0) await audio.pause({ system: true });
+			} else if (await audio.getSystemPaused()) {
+				if (audio.voiceChannel?.listeners.length !== 0) await audio.resume();
 			}
 		}
 	}

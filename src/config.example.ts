@@ -4,6 +4,7 @@ import type { ClientOptions as InfluxDBClientOptions } from '@influxdata/influxd
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import type { APIWebhook } from 'discord-api-types/v6';
+import type { RedisOptions } from 'ioredis';
 import type { KlasaClientOptions, PostgresOptions } from 'klasa';
 
 export const DEV = Reflect.has(process.env, 'DEV') ? process.env.DEV === 'true' : !('PM2_HOME' in process.env);
@@ -39,6 +40,12 @@ export const PGSQL_DATABASE_OPTIONS: PostgresOptions = {
 	user: PGSQL_DATABASE_USER
 };
 
+export const REDIS_OPTIONS: RedisOptions = {
+	port: 8287,
+	db: 1,
+	password: 'redis'
+};
+
 export const INFLUX_URL = 'http://localhost:8285';
 // #region secrets
 export const INFLUX_TOKEN = '';
@@ -53,6 +60,21 @@ export const INFLUX_OPTIONS: InfluxDBClientOptions = {
 export const VERSION = '5.4.1 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
+	audio: {
+		userID: CLIENT_ID,
+		password: LAVALINK_PASSWORD,
+		redis: REDIS_OPTIONS,
+		hosts: {
+			rest: `http://${LAVALINK_HOST}:${LAVALINK_PORT}`,
+			ws: {
+				url: `ws://${LAVALINK_HOST}:${LAVALINK_PORT}`,
+				options: {
+					resumeKey: 'SKYRA-RESUME-KEY',
+					resumeTimeout: 60
+				}
+			}
+		}
+	},
 	shards: 'auto',
 	commandEditing: true,
 	commandLogging: false,
@@ -107,14 +129,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 			'DIRECT_MESSAGE_REACTIONS'
 		]
 	},
-	lavalink: [
-		{
-			id: CLIENT_ID,
-			host: LAVALINK_HOST,
-			port: LAVALINK_PORT,
-			password: LAVALINK_PASSWORD
-		}
-	],
 	messageCacheLifetime: 900,
 	messageCacheMaxSize: 300,
 	messageSweepInterval: 180,

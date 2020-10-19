@@ -1,9 +1,14 @@
+import { QueueEntry } from '@lib/audio';
+import { empty, filter, map, take } from '@lib/misc';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Track } from '@skyra/audio';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import type { KlasaMessage } from 'klasa';
-import type { TrackData } from 'lavacord';
+import { fetch, FetchResultTypes } from '@utils/util';
+import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';
 
 @ApplyOptions<MusicCommandOptions>({
@@ -24,23 +29,37 @@ import { maximumExportQueueSize } from './exportqueue';
 	]
 ])
 export default class extends MusicCommand {
-	public async run(message: KlasaMessage, [url]: [string]) {
-		const { music } = message.guild!;
+	public async run(message: GuildMessage, [url]: [string]) {
+		const raw = await this.fetchRawData(message, url);
 
-		const tracks = await music.parseQueue(url);
-		message.guild!.music.add(
-			message.author.id,
-			this.filter(message, music.getRemainingUserEntries(message.author.id), tracks),
-			this.getContext(message)
-		);
+		const { audio } = message.guild;
+		const decodedTracks = await audio.player.node.decode(raw);
+		const tracks = [...this.process(message, 100, decodedTracks)];
+
+		// Add the tracks
+		const added = await audio.add(...tracks);
+		if (added === 0) throw message.language.get(LanguageKeys.MusicManager.TooManySongs);
+
+		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 
-	private filter(message: KlasaMessage, remainingUserEntries: number, tracks: TrackData[]) {
-		const maximumDuration = message.guild!.settings.get(GuildSettings.Music.MaximumDuration);
-		const allowStreams = message.guild!.settings.get(GuildSettings.Music.AllowStreams);
+	private async fetchRawData(message: GuildMessage, url: string) {
+		try {
+			const raw = await fetch(url, FetchResultTypes.Buffer);
+			return deserialize<string[]>(raw);
+		} catch {
+			throw message.language.get(LanguageKeys.MusicManager.ImportQueueError);
+		}
+	}
 
-		return tracks
-			.filter((track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration)
-			.slice(0, message.member!.isDJ ? maximumExportQueueSize : remainingUserEntries);
+	private process(message: GuildMessage, remainingUserEntries: number, tracks: Track[]) {
+		if (remainingUserEntries === 0) return empty<QueueEntry>();
+
+		const maximumDuration = message.guild.settings.get(GuildSettings.Music.MaximumDuration);
+		const allowStreams = message.guild.settings.get(GuildSettings.Music.AllowStreams);
+
+		const filtered = filter(tracks.values(), (track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration);
+		const taken = take(filtered, message.member.isDJ ? maximumExportQueueSize : remainingUserEntries);
+		return map(taken, (track) => ({ author: message.author.id, track: track.track }));
 	}
 }

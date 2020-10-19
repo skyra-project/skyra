@@ -1,12 +1,12 @@
-import { MusicHandler } from '@lib/structures/music/MusicHandler';
-import { Song } from '@lib/structures/music/Song';
+import { NP, Queue } from '@lib/audio';
+import { AudioEvent } from '@lib/structures/AudioEvent';
 import { OutgoingWebsocketAction } from '@lib/websocket/types';
-import { Event } from 'klasa';
 
-export default class extends Event {
-	public run(manager: MusicHandler, song: Song) {
-		for (const subscription of manager.websocketUserIterator()) {
-			subscription.send({ action: OutgoingWebsocketAction.MusicSongReplay, data: { song: song.toJSON() } });
-		}
+export default class extends AudioEvent {
+	public run(queue: Queue, status: NP) {
+		return this.broadcastMessageForGuild(queue.guildID, async () => ({
+			action: OutgoingWebsocketAction.MusicSync,
+			data: { status, tracks: await queue.decodedTracks() }
+		}));
 	}
 }

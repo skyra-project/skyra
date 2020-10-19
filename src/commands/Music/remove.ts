@@ -1,8 +1,9 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.RemoveDescription),
@@ -10,21 +11,30 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
-	public run(message: KlasaMessage, [index]: [number]) {
-		if (index <= 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+	public async run(message: GuildMessage, [index]: [number]) {
+		// Minus one as user input is 1-based while the code is 0-based:
+		--index;
 
-		const { music } = message.guild!;
-		if (index > music.queue.length)
+		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+
+		const { audio } = message.guild;
+		const count = await audio.count();
+		if (index >= count) {
 			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
 				songs: message.language.get(
-					music.queue.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
+					count === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{
-						count: music.queue.length
+						count
 					}
 				)
 			});
+		}
 
-		// Remove the song from the queue
-		message.guild!.music.remove(message, index, this.getContext(message));
+		// Retrieve information about the song to be removed.
+		const entry = await audio.getAt(index);
+
+		// Remove the song from the queue.
+		await audio.removeAt(index);
+		this.client.emit(Events.MusicRemoveNotify, message, entry);
 	}
 }

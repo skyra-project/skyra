@@ -1,10 +1,11 @@
-import { MusicHandler } from '@lib/structures/music/MusicHandler';
+import { Queue } from '@lib/audio';
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
-import { PermissionLevels } from '@lib/types/Enums';
+import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireSongPresent } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
+import { VoiceChannel } from 'discord.js';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.SkipDescription),
@@ -12,35 +13,35 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends MusicCommand {
 	@requireSongPresent()
-	public async run(message: KlasaMessage, [force = false]: [boolean]) {
-		const { music } = message.guild!;
+	public async run(message: GuildMessage, [force = false]: [boolean]) {
+		const { audio } = message.guild;
+		const { voiceChannel } = audio;
 
-		if (music.listeners.length >= 4) {
-			if (force) {
-				if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) {
-					throw message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
-				}
-			} else {
-				const response = this.handleSkips(music, message.author.id);
-				if (response) return message.sendMessage(response);
-			}
+		const listeners = voiceChannel?.listeners.length ?? 0;
+		if (listeners >= 4) {
+			const response = force ? await this.canSkipWithForce(message, voiceChannel!) : await this.canSkipWithoutForce(message, audio, listeners);
+			if (response !== null) return message.sendMessage(response);
 		}
 
-		await music.skip(this.getContext(message));
+		const track = await audio.getCurrentTrack();
+		await audio.next({ skipped: true });
+		this.client.emit(Events.MusicSongSkipNotify, message, track!);
 	}
 
-	public handleSkips(musicManager: MusicHandler, user: string): string | false {
-		const song = musicManager.song || musicManager.queue[0];
-		if (song.skips.has(user)) return musicManager.guild.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
-		song.skips.add(user);
-		const members = musicManager.listeners.length;
-		return this.shouldInhibit(musicManager, members, song.skips.size);
+	private async canSkipWithForce(message: GuildMessage, voiceChannel: VoiceChannel): Promise<string | null> {
+		return (await message.member.canManage(voiceChannel)) ? null : message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
 	}
 
-	public shouldInhibit(musicManager: MusicHandler, total: number, size: number): false | string {
-		if (total <= 3) return false;
+	private async canSkipWithoutForce(message: GuildMessage, audio: Queue, listeners: number): Promise<string | null> {
+		const added = await audio.addSkipVote(message.author.id);
+		if (!added) return message.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
 
-		const needed = Math.ceil(total * 0.4);
-		return size >= needed ? false : musicManager.guild.language.get(LanguageKeys.Commands.Music.SkipVotesTotal, { amount: size, needed });
+		const amount = await audio.countSkipVotes();
+		if (amount <= 3) return null;
+
+		const needed = Math.ceil(listeners * 0.4);
+		if (needed <= amount) return null;
+
+		return message.language.get(LanguageKeys.Commands.Music.SkipVotesTotal, { amount, needed });
 	}
 }

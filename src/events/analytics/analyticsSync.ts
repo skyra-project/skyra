@@ -50,7 +50,10 @@ export default class extends AnalyticsEvent {
 			new Point(AnalyticsSchema.Points.VoiceConnections)
 				.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)
 				// TODO: Adjust for traditional sharding
-				.intField('value', this.client.lavalink.players.size)
+				.intField(
+					'value',
+					this.client.audio.queues.reduce((acc, queue) => (queue.player.playing ? acc + 1 : acc), 0)
+				)
 		);
 	}
 

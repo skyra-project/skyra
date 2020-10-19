@@ -1,8 +1,8 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireDj, requireSkyraInVoiceChannel } from '@utils/Music/Decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.LeaveDescription),
@@ -12,13 +12,18 @@ import { KlasaMessage } from 'klasa';
 export default class extends MusicCommand {
 	@requireSkyraInVoiceChannel()
 	@requireDj()
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
+		const { audio } = message.guild;
+		const channelID = audio.voiceChannelID!;
+
 		// Do a full leave and disconnect
-		await message.guild!.music.leave(this.getContext(message));
+		await audio.leave();
 
 		// If --removeall or --ra was provided then also clear the queue
 		if (Reflect.has(message.flagArgs, 'removeall') || Reflect.has(message.flagArgs, 'ra')) {
-			message.guild!.music.queue = [];
+			await audio.clear();
 		}
+
+		return message.sendLocale(LanguageKeys.Commands.Music.LeaveSuccess, [{ channel: `<#${channelID}>` }]);
 	}
 }

@@ -1,4 +1,5 @@
-import { FlattenedMusicHandler } from '@utils/Models/ApiTransform';
+import { NP } from '@lib/audio';
+import { Track } from '@skyra/audio';
 
 export const enum WebsocketEvents {
 	Message = 'message',
@@ -14,13 +15,13 @@ export const enum IncomingWebsocketAction {
 export const enum OutgoingWebsocketAction {
 	MusicAdd = 'MUSIC_ADD',
 	MusicConnect = 'MUSIC_CONNECT',
-	MusicSwitch = 'MUSIC_SWITCH',
+	MusicFinish = 'MUSIC_FINISH',
 	MusicLeave = 'MUSIC_LEAVE',
+	MusicPromoteQueue = 'MUSIC_PROMOTE_QUEUE',
 	MusicPrune = 'MUSIC_PRUNE',
 	MusicRemove = 'MUSIC_REMOVE',
 	MusicReplayUpdate = 'MUSIC_REPLAY_UPDATE',
 	MusicShuffleQueue = 'MUSIC_SHUFFLE_QUEUE',
-	MusicPromoteQueue = 'MUSIC_PROMOTE_QUEUE',
 	MusicSongFinish = 'MUSIC_SONG_FINISH',
 	MusicSongPause = 'MUSIC_SONG_PAUSE',
 	MusicSongPlay = 'MUSIC_SONG_PLAY',
@@ -29,9 +30,10 @@ export const enum OutgoingWebsocketAction {
 	MusicSongSeekUpdate = 'MUSIC_SONG_SEEK_UPDATE',
 	MusicSongSkip = 'MUSIC_SONG_SKIP',
 	MusicSongVolumeUpdate = 'MUSIC_SONG_VOLUME_UPDATE',
+	MusicSwitch = 'MUSIC_SWITCH',
+	MusicSync = 'MUSIC_SYNC',
 	MusicVoiceChannelJoin = 'MUSIC_VOICE_CHANNEL_JOIN',
 	MusicVoiceChannelLeave = 'MUSIC_VOICE_CHANNEL_LEAVE',
-	MusicSync = 'MUSIC_SYNC',
 	MusicWebsocketDisconnect = 'MUSIC_WEBSOCKET_DISCONNECT'
 }
 
@@ -77,7 +79,14 @@ export interface IncomingWebsocketMessage {
 
 export interface OutgoingWebsocketMessage {
 	action?: OutgoingWebsocketAction;
-	data?: Partial<FlattenedMusicHandler>;
+	data?: {
+		id?: string;
+		tracks?: Track[];
+		status?: NP | null;
+		volume?: number;
+		replay?: boolean;
+		voiceChannel?: string | null;
+	};
 	error?: string;
 	success?: boolean;
 }

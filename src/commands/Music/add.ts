@@ -1,8 +1,8 @@
 import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { GuildMessage } from '@lib/types/Discord';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import type { KlasaMessage } from 'klasa';
-import type { TrackData } from 'lavacord';
 
 @ApplyOptions<MusicCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.AddDescription),
@@ -11,8 +11,11 @@ import type { TrackData } from 'lavacord';
 	flagSupport: true
 })
 export default class extends MusicCommand {
-	public run(message: KlasaMessage, [songs]: [TrackData[]]) {
+	public async run(message: GuildMessage, [songs]: [string[]]) {
 		if (!songs || !songs.length) throw message.language.get(LanguageKeys.MusicManager.FetchNoMatches);
-		message.guild!.music.add(message.author.id, songs, this.getContext(message));
+
+		const tracks = songs.map((track) => ({ author: message.author.id, track }));
+		await message.guild.audio.add(...tracks);
+		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
 }

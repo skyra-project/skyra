@@ -5,6 +5,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 
 @ApplyOptions<MusicCommandOptions>({
+	aliases: ['p'],
 	description: (language) => language.get(LanguageKeys.Commands.Music.PlayDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.PlayExtended),
 	usage: '[song:song]',

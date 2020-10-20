@@ -29,7 +29,7 @@ const enum Filter {
 }
 
 @ApplyOptions<SkyraCommandOptions>({
-	aliases: ['p', 'purge', 'nuke', 'sweep'],
+	aliases: ['purge', 'nuke', 'sweep'],
 	cooldown: 5,
 	description: (language) => language.get(LanguageKeys.Commands.Moderation.PruneDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.PruneExtended),

@@ -1,47 +1,46 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { cdnFolder } from '@utils/constants';
 import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
 const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['lvl', 'rank'],
+	bucket: 2,
+	cooldown: 30,
+	description: (language) => language.get(LanguageKeys.Commands.Social.LevelDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.LevelExtended),
+	requiredPermissions: ['ATTACH_FILES'],
+	spam: true,
+	usage: '[local|global] [user:username]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
 	private darkThemeTemplate: Image = null!;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['lvl', 'rank'],
-			bucket: 2,
-			cooldown: 30,
-			description: (language) => language.get(LanguageKeys.Commands.Social.LevelDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.LevelExtended),
-			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
-			spam: true,
-			usage: '[user:username]'
-		});
-	}
-
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		const output = await this.showProfile(message, user);
+	public async run(message: KlasaMessage, [scope = 'local', user = message.author]: ['local' | 'global', User]) {
+		const output = await this.showProfile(message, scope, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Level.png' }] });
 	}
 
-	public async showProfile(message: KlasaMessage, user: User) {
-		const { users } = await DbSet.connect();
+	public async showProfile(message: KlasaMessage, scope: 'local' | 'global', user: User) {
+		const { members, users } = await DbSet.connect();
 		const settings = await users.ensureProfile(user.id);
+		const { level, points } = scope === 'local' && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 
 		/* Calculate information from the user */
-		const previousLevel = Math.floor((settings.level / 0.2) ** 2);
-		const nextLevel = Math.floor(((settings.level + 1) / 0.2) ** 2);
-		const progressBar = Math.max(Math.round(((settings.points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
+		const previousLevel = Math.floor((level / 0.2) ** 2);
+		const nextLevel = Math.floor(((level + 1) / 0.2) ** 2);
+		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 265), 6);
 
 		const [themeImageSRC, imgAvatarSRC] = await Promise.all([
 			loadImage(join(THEMES_FOLDER, `${settings.profile.bannerLevel}.png`)),
@@ -80,7 +79,7 @@ export default class extends SkyraCommand {
 				.setTextFont('35px RobotoLight')
 				.printText(title.level, 268, 73)
 				.setTextFont('45px RobotoRegular')
-				.printText(settings.level.toString(), 268, 128)
+				.printText(level.toString(), 268, 128)
 
 				// Draw the avatar
 				.save()

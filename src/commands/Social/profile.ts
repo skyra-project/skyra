@@ -21,7 +21,8 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ProfileExtended),
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
-	usage: '[user:username]'
+	usage: '[local|global] [user:username]',
+	usageDelim: ' '
 })
 export default class extends SkyraCommand {
 	private lightThemeTemplate: Image = null!;
@@ -29,19 +30,20 @@ export default class extends SkyraCommand {
 	private lightThemeDock: Image = null!;
 	private darkThemeDock: Image = null!;
 
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		const output = await this.showProfile(message, user);
+	public async run(message: KlasaMessage, [scope = 'global', user = message.author]: ['local' | 'global', User]) {
+		const output = await this.showProfile(message, scope, user);
 		return message.channel.send({ files: [{ attachment: output, name: 'Profile.png' }] });
 	}
 
-	public async showProfile(message: KlasaMessage, user: User) {
-		const { users } = await DbSet.connect();
+	public async showProfile(message: KlasaMessage, scope: 'local' | 'global', user: User) {
+		const { members, users } = await DbSet.connect();
 		const settings = await users.ensureProfile(user.id);
+		const { level, points } = scope === 'local' && message.guild ? await members.ensure(user.id, message.guild.id) : settings;
 
 		/* Calculate information from the user */
-		const previousLevel = Math.floor((settings.level / 0.2) ** 2);
-		const nextLevel = Math.floor(((settings.level + 1) / 0.2) ** 2);
-		const progressBar = Math.max(Math.round(((settings.points - previousLevel) / (nextLevel - previousLevel)) * 364), 6);
+		const previousLevel = Math.floor((level / 0.2) ** 2);
+		const nextLevel = Math.floor(((level + 1) / 0.2) ** 2);
+		const progressBar = Math.max(Math.round(((points - previousLevel) / (nextLevel - previousLevel)) * 364), 6);
 
 		/* Global leaderboard */
 		const rank = await user.fetchRank();
@@ -98,7 +100,7 @@ export default class extends SkyraCommand {
 				.printText(rank.toString(), 594, 276)
 				.printText(`${settings.money} | ${settings.profile.vault}`, 594, 229)
 				.printText(settings.reputations.toString(), 594, 181)
-				.printText(settings.points.toString(), 594, 346)
+				.printText(points.toString(), 594, 346)
 
 				// Level
 				.setTextAlign('center')

@@ -73,3 +73,5 @@ export const ThumbsupExtended = T<LanguageHelpDisplayOptions>('commandWthumbsupE
 export const Tickle = FT<{ user: string }, string>('commandWtickle');
 export const TickleDescription = T<string>('commandWtickleDescription');
 export const TickleExtended = T<LanguageHelpDisplayOptions>('commandWtickleExtended');
+export const UnavailableError = T<string>('commandWeebUnavailableError');
+export const UnexpectedError = T<string>('commandWeebUnexpectedError');

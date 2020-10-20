@@ -1,8 +1,11 @@
+import { FetchError } from '@lib/errors/FetchError';
+import { GuildMessage } from '@lib/types';
+import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CustomFunctionGet, CustomGet } from '@lib/types/Shared';
 import { TOKENS, VERSION } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
-import { MessageEmbed, TextChannel, User } from 'discord.js';
+import { MessageEmbed, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand } from './SkyraCommand';
@@ -35,12 +38,12 @@ export abstract class WeebCommand extends SkyraCommand {
 		this.responseName = options.responseName;
 	}
 
-	public async run(message: KlasaMessage, params?: User[]) {
+	public async run(message: GuildMessage, params?: User[]) {
 		const query = new URL('https://api.weeb.sh/images/random');
 		query.searchParams.append('type', this.queryType);
-		query.searchParams.append('nsfw', String((message.channel as TextChannel).nsfw));
+		query.searchParams.append('nsfw', String(message.channel.nsfw));
 
-		const { url } = await fetch<WeebCommandResult>(query, { headers: this.kHeaders }, FetchResultTypes.JSON);
+		const { url } = await this.fetch(message, query);
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)
@@ -55,6 +58,23 @@ export abstract class WeebCommand extends SkyraCommand {
 					.setFooter(message.language.get(LanguageKeys.System.PoweredByWeebsh))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
+	}
+
+	private async fetch(message: GuildMessage, url: URL): Promise<WeebCommandResult> {
+		try {
+			return await fetch<WeebCommandResult>(url, { headers: this.kHeaders }, FetchResultTypes.JSON);
+		} catch (unknownError: unknown) {
+			const error = unknownError as FetchError;
+
+			// If we received a 5XX code error, warn the user about the service's unavailability.
+			if (error.code >= 500) {
+				throw message.language.get(LanguageKeys.Commands.Weeb.UnavailableError);
+			}
+
+			// If otherwise we got an 4XX error code, warn the user about unexpected error.
+			this.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
+			throw message.language.get(LanguageKeys.Commands.Weeb.UnexpectedError);
+		}
 	}
 }
 

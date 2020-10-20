@@ -2900,6 +2900,8 @@ export default class extends Language {
 			explainedUsage: [['user', 'The user to tickle.']],
 			examples: ['@Skyra']
 		},
+		commandWeebUnavailableError: 'I am sorry, but the source of all my weeb images is not available at the moment. Please try again later!',
+		commandWeebUnexpectedError: 'Weird! I encountered an error I should have never received!',
 		commandWbangDescription: 'Bang 💥🔫!',
 		commandWbangExtended: {
 			extendedHelp: 'Shoot a user with a random weeb image!',

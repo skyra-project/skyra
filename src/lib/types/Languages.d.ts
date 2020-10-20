@@ -1218,6 +1218,8 @@ declare module 'klasa' {
 		commandWthumbsupExtended: LanguageHelpDisplayOptions;
 		commandWtickleDescription: string;
 		commandWtickleExtended: LanguageHelpDisplayOptions;
+		commandWeebUnavailableError: string;
+		commandWeebUnexpectedError: string;
 		commandAnimeTypes: {
 			tv: string;
 			movie: string;

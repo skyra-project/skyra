@@ -14,6 +14,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
 import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { Time } from '@utils/constants';
 
 @Entity('guilds', { schema: 'public' })
 @Check(/* sql */ `"prefix"::text <> ''::text`)
@@ -313,11 +314,11 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'selfmod.capitals.enabled', default: false })
 	public selfmodCapitalsEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredRoles, type: 'role', array: true })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.capitals.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels, type: 'role', array: true })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels, type: 'textchannel', array: true })
 	@Column('varchar', { name: 'selfmod.capitals.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredChannels: string[] = [];
 
@@ -329,275 +330,239 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.capitals.maximum', default: 50 })
 	public selfmodCapitalsMaximum = 50;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.capitals.softAction', default: 0 })
 	public selfmodCapitalsSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.capitals.hardAction', default: 0 })
 	public selfmodCapitalsHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.capitals.hardActionDuration', nullable: true })
 	public selfmodCapitalsHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
-	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 10 })
+	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 60000 })
 	public selfmodCapitalsThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.capitals.thresholdDuration', default: 60000 })
 	public selfmodCapitalsThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksWhiteList })
 	@Column('varchar', { name: 'selfmod.links.whitelist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodLinksWhitelist: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksEnabled })
 	@Column('boolean', { name: 'selfmod.links.enabled', default: false })
 	public selfmodLinksEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.links.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodLinksIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.links.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodLinksIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.links.softAction', default: 0 })
 	public selfmodLinksSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.links.hardAction', default: 0 })
 	public selfmodLinksHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.links.hardActionDuration', nullable: true })
 	public selfmodLinksHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.links.thresholdMaximum', default: 10 })
 	public selfmodLinksThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.links.thresholdDuration', default: 60000 })
 	public selfmodLinksThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesEnabled })
 	@Column('boolean', { name: 'selfmod.messages.enabled', default: false })
 	public selfmodMessagesEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.messages.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodMessagesIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.messages.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodMessagesIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesMaximum, minimum: 2, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.messages.maximum', default: 5 })
 	public selfmodMessagesMaximum = 5;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodMessagesQueueSize, minimum: 10, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.messages.queue-size', default: 50 })
 	public selfmodMessagesQueueSize = 50;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.messages.softAction', default: 0 })
 	public selfmodMessagesSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.messages.hardAction', default: 0 })
 	public selfmodMessagesHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.messages.hardActionDuration', nullable: true })
 	public selfmodMessagesHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.messages.thresholdMaximum', default: 10 })
 	public selfmodMessagesThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.messages.thresholdDuration', default: 60000 })
 	public selfmodMessagesThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesEnabled })
 	@Column('boolean', { name: 'selfmod.newlines.enabled', default: false })
 	public selfmodNewlinesEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.newlines.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodNewlinesIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.newlines.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodNewlinesIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
-	@Column('smallint', { name: 'selfmod.newlines.maximum', default: 10 })
-	public selfmodNewlinesMaximum = 10;
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodNewlinesMaximum, minimum: 10, maximum: 100 })
+	@Column('smallint', { name: 'selfmod.newlines.maximum', default: 20 })
+	public selfmodNewlinesMaximum = 20;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.newlines.softAction', default: 0 })
 	public selfmodNewlinesSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.newlines.hardAction', default: 0 })
 	public selfmodNewlinesHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.newlines.hardActionDuration', nullable: true })
 	public selfmodNewlinesHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.newlines.thresholdMaximum', default: 10 })
 	public selfmodNewlinesThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.newlines.thresholdDuration', default: 60000 })
 	public selfmodNewlinesThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesEnabled })
 	@Column('boolean', { name: 'selfmod.invites.enabled', default: false })
 	public selfmodInvitesEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredCodes })
 	@Column('varchar', { name: 'selfmod.invites.ignoredCodes', array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredCodes: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredGuilds })
 	@Column('varchar', { name: 'selfmod.invites.ignoredGuilds', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredGuilds: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.invites.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodInvitesIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.invites.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodInvitesIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.invites.softAction', default: 0 })
 	public selfmodInvitesSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.invites.hardAction', default: 0 })
 	public selfmodInvitesHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.invites.hardActionDuration', nullable: true })
 	public selfmodInvitesHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.invites.thresholdMaximum', default: 10 })
 	public selfmodInvitesThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.invites.thresholdDuration', default: 60000 })
 	public selfmodInvitesThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterEnabled })
 	@Column('boolean', { name: 'selfmod.filter.enabled', default: false })
 	public selfmodFilterEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.filter.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodFilterIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.filter.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodFilterIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.filter.softAction', default: 0 })
 	public selfmodFilterSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.filter.hardAction', default: 0 })
 	public selfmodFilterHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.filter.hardActionDuration', nullable: true })
 	public selfmodFilterHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.filter.thresholdMaximum', default: 10 })
 	public selfmodFilterThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.filter.thresholdDuration', default: 60000 })
 	public selfmodFilterThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('varchar', { name: 'selfmod.filter.raw', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodFilterRaw: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsEnabled })
 	@Column('boolean', { name: 'selfmod.reactions.enabled', default: false })
 	public selfmodReactionsEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.reactions.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodReactionsIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.reactions.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodReactionsIgnoredChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsMaximum, minimum: 1, maximum: 100 })
 	@Column('smallint', { name: 'selfmod.reactions.maximum', default: 10 })
 	public selfmodReactionsMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsWhiteList })
 	@Column('varchar', { name: 'selfmod.reactions.whitelist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodReactionsWhitelist: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsBlackList })
 	@Column('varchar', { name: 'selfmod.reactions.blacklist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodReactionsBlacklist: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.reactions.softAction', default: 0 })
 	public selfmodReactionsSoftAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.reactions.hardAction', default: 0 })
 	public selfmodReactionsHardAction = 0;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.reactions.hardActionDuration', nullable: true })
 	public selfmodReactionsHardActionDuration?: number | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('smallint', { name: 'selfmod.reactions.thresholdMaximum', default: 10 })
 	public selfmodReactionsThresholdMaximum = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'selfmod.reactions.thresholdDuration', default: 60000 })
 	public selfmodReactionsThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodRaid })
 	@Column('boolean', { name: 'selfmod.raid', default: false })
 	public selfmodRaid = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodRaidthreshold, minimum: 2, maximum: 50 })
 	@Column('smallint', { name: 'selfmod.raidthreshold', default: 10 })
 	public selfmodRaidthreshold = 10;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodIgnoreChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamEnabled })
 	@Column('boolean', { name: 'no-mention-spam.enabled', default: false })
 	public noMentionSpamEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamAlerts })
 	@Column('boolean', { name: 'no-mention-spam.alerts', default: false })
 	public noMentionSpamAlerts = false;
 
@@ -609,43 +574,42 @@ export class GuildEntity extends BaseEntity {
 	@Column('integer', { name: 'no-mention-spam.timePeriod', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialEnabled })
 	@Column('boolean', { name: 'social.enabled', default: true })
 	public socialEnabled = true;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieve })
 	@Column('boolean', { name: 'social.achieve', default: false })
 	public socialAchieve = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialAchieveMessage })
 	@Column('varchar', { name: 'social.achieveMessage', nullable: true, length: 2000 })
 	public socialAchieveMessage?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialMultiplier, maximum: 5 })
 	@Column('numeric', { name: 'social.multiplier', precision: 53, default: 1 })
 	public socialMultiplier = 1;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'social.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public socialIgnoreChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'starboard.channel', nullable: true, length: 19 })
 	public starboardChannel?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('varchar', { name: 'starboard.emoji', length: 75, default: '%E2%AD%90' })
 	public starboardEmoji = '%E2%AD%90';
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardIgnoreChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'starboard.ignoreChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public starboardIgnoreChannels: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardMinimum, minimum: 1 })
 	@Column('smallint', { name: 'starboard.minimum', default: 1 })
 	public starboardMinimum = 1;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.StarboardSelfStar })
 	@Column('boolean', { name: 'starboard.selfStar', default: false })
 	public starboardSelfStar = false;
 
@@ -655,50 +619,49 @@ export class GuildEntity extends BaseEntity {
 	@Column('simple-json', { name: 'trigger.includes', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public triggerIncludes: TriggerIncludes[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicDefaultVolume, minimum: 0, maximum: 200 })
 	@Column('smallint', { name: 'music.default-volume', default: 100 })
 	public musicDefaultVolume = 100;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
-	@Column('integer', { name: 'music.maximum-duration', default: 7200000 })
-	public musicMaximumDuration = 7200000;
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumDuration, minimum: 0, maximum: Time.Hour * 12 })
+	@Column('integer', { name: 'music.maximum-duration', default: Time.Hour * 2 })
+	public musicMaximumDuration = Time.Hour * 2;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicMaximumEntriesPerUser, minimum: 1, maximum: 250 })
 	@Column('smallint', { name: 'music.maximum-entries-per-user', default: 100 })
 	public musicMaximumEntriesPerUser = 100;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.MusicAllowStreams })
 	@Column('boolean', { name: 'music.allow-streams', default: true })
 	public musicAllowStreams = true;
 
 	@Column('simple-json', { name: 'notifications.streams.twitch.streamers', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpvote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: ':ArrowT:694594285487652954' })
 	public suggestionsEmojisUpvote = ':ArrowT:694594285487652954';
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
 	@Column('integer', { name: 'suggestions.id', default: 1 })
 	public suggestionsId = 1;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisDownvote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.downvote', length: 128, default: ':ArrowB:694594285269680179' })
 	public suggestionsEmojisDownvote = ':ArrowB:694594285269680179';
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsChannel, type: 'textchannel' })
 	@Column('varchar', { name: 'suggestions.channel', nullable: true, length: 19 })
 	public suggestionsChannel?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionDM })
 	@Column('boolean', { name: 'suggestions.on-action.dm', default: false })
 	public suggestionsOnActionDm = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionRepost })
 	@Column('boolean', { name: 'suggestions.on-action.repost', default: false })
 	public suggestionsOnActionRepost = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.Prefix, minimum: 1, maximum: 10, name: 'prefix', type: 'string', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionHideAuthor })
 	@Column('boolean', { name: 'suggestions.on-action.hide-author', default: false })
 	public suggestionsOnActionHideAuthor = false;
 }

@@ -16,7 +16,7 @@ export class SkyraGuild extends Structures.get('Guild') {
 	public readonly stickyRoles: StickyRoleManager = new StickyRoleManager(this);
 
 	public get audio(): Queue {
-		return this.client.audio.queues.get(this.id);
+		return this.client.audio.queues!.get(this.id);
 	}
 }
 

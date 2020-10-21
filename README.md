@@ -20,7 +20,7 @@
 -   [`InfluxDB`]: Metrics platform
 -   [`GraphQL-Pokemon`]: Pokemon API
 -   [`Saelem`]: Horoscope API
--   [`Redis`]: Caching for [`Saelem`]
+-   [`Redis`]: Caching for [`Saelem`] and queueing for [`Lavalink`]
 
 ### [Set-Up - Refer to CONTRIBUTING.md]
 

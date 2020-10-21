@@ -19,7 +19,7 @@ export default class extends Event {
 			]);
 		}
 
-		const queue = this.client.audio.queues.get(payload.guildId);
+		const queue = this.client.audio.queues!.get(payload.guildId);
 		await queue.next();
 	}
 }

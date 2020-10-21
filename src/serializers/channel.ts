@@ -31,13 +31,19 @@ export default class extends Serializer {
 	private checkChannel(data: Channel, entry: SchemaEntry, language: Language) {
 		if (
 			entry.type === 'channel' ||
-			(entry.type === 'textchannel' && data.type === 'text') ||
-			(entry.type === 'textchannel' && data.type === 'news') ||
-			(entry.type === 'textchannel' && data.type === 'store') ||
+			this.isTextBasedChannel(data, entry) ||
 			(entry.type === 'voicechannel' && data.type === 'voice') ||
 			(entry.type === 'categorychannel' && data.type === 'category')
 		)
 			return data;
 		throw language.get(LanguageKeys.Resolvers.InvalidChannel, { name: entry.key });
+	}
+
+	private isTextBasedChannel(data: Channel, entry: SchemaEntry): boolean {
+		if (entry.type === 'textchannel') {
+			return data.type === 'text' || data.type === 'news' || data.type === 'store';
+		}
+
+		return false;
 	}
 }

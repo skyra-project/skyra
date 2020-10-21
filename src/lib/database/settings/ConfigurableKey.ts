@@ -1,10 +1,9 @@
-import type { CustomGet } from '@lib/types/Shared';
-import type { O } from '@utils/constants';
 import { ColumnType, getMetadataArgsStorage } from 'typeorm';
+import { ConfigurableKeyValue, ConfigurableKeyValueOptions } from './ConfigurableKeyValue';
 
 export const keys = new Map<string, ConfigurableKeyValue>();
 
-export function ConfigurableKey(options: ConfigurableKeyValueOptions): PropertyDecorator {
+export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecorator {
 	return (target, property) => {
 		const storage = getMetadataArgsStorage();
 		const column = storage.columns.find((c) => c.target === target.constructor && c.propertyName === (property as string));
@@ -17,7 +16,10 @@ export function ConfigurableKey(options: ConfigurableKeyValueOptions): PropertyD
 		const minimum = options.minimum ?? null;
 		const maximum = options.maximum ?? hydrateLength(column.options.length);
 		const type = options.type ?? hydrateType(column.options.type!);
-		keys.set(name, { target: target.constructor, property: property as string, ...options, name, array, minimum, maximum, type });
+		keys.set(
+			name,
+			new ConfigurableKeyValue({ target: target.constructor, property: property as string, ...options, name, array, minimum, maximum, type })
+		);
 	};
 }
 
@@ -111,47 +113,5 @@ function hydrateType(type: ColumnType) {
 	}
 }
 
-interface ConfigurableKeyValue {
-	/**
-	 * The i18n key for the configuration key.
-	 */
-	description: CustomGet<string, string>;
-
-	/**
-	 * The maximum value for the configuration key.
-	 */
-	maximum: number | null;
-
-	/**
-	 * The minimum value for the configuration key.
-	 */
-	minimum: number | null;
-
-	/**
-	 * The visible name of the configuration key.
-	 */
-	name: string;
-
-	/**
-	 * The property from the TypeORM entity.
-	 */
-	property: string;
-
-	/**
-	 * The class this targets.
-	 */
-	target: O;
-
-	/**
-	 * The type of the value this property accepts.
-	 */
-	type: string;
-
-	/**
-	 * Whether or not this accepts multiple values.
-	 */
-	array: boolean;
-}
-
-type ConfigurableKeyValueOptions = Omit<ConfigurableKeyValue, 'name' | 'target' | 'property' | 'type' | 'maximum' | 'minimum' | 'array'> &
-	Partial<Pick<ConfigurableKeyValue, 'name' | 'type' | 'maximum' | 'minimum' | 'array'>>;
+type ConfigurableKeyOptions = Omit<ConfigurableKeyValueOptions, 'name' | 'target' | 'property' | 'type' | 'maximum' | 'minimum' | 'array'> &
+	Partial<Pick<ConfigurableKeyValueOptions, 'name' | 'type' | 'maximum' | 'minimum' | 'array'>>;

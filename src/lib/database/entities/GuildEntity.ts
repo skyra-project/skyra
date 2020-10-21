@@ -586,8 +586,8 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'social.achieveMessage', nullable: true, length: 2000 })
 	public socialAchieveMessage?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SocialMultiplier, maximum: 5 })
-	@Column('numeric', { name: 'social.multiplier', precision: 53, default: 1 })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SocialMultiplier, minimum: 0, maximum: 5 })
+	@Column('float', { name: 'social.multiplier', default: 1 })
 	public socialMultiplier = 1;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SocialIgnoreChannels, type: 'textchannel' })

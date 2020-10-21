@@ -1,6 +1,6 @@
 import type { CustomCommand } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ZeroWidhSpace } from '@utils/constants';
+import { ZeroWidthSpace } from '@utils/constants';
 import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
@@ -14,7 +14,7 @@ export default class extends Serializer {
 			data.args.every((arg) => typeof arg === 'string')
 		) {
 			if (data.id.length > 50) throw language.get(LanguageKeys.Commands.Tags.TagNameTooLong);
-			if (data.id.includes('`') || data.id.includes(ZeroWidhSpace)) throw language.get(LanguageKeys.Commands.Tags.TagNameNotAllowed);
+			if (data.id.includes('`') || data.id.includes(ZeroWidthSpace)) throw language.get(LanguageKeys.Commands.Tags.TagNameNotAllowed);
 			return data;
 		}
 

@@ -1,6 +1,7 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
+import { ZeroWidthSpace } from '@utils/constants';
 import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
 import { getContent } from '@utils/util';
@@ -31,7 +32,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [, target]: [TextChannel, KlasaMessage]) {
 		const attachments = target.attachments.size ? target.attachments.map((att) => `📁 <${att.url}>`).join('\n') : '';
-		const content = escapeCodeBlock(getContent(target) || '');
+		const content = escapeCodeBlock(getContent(target) || ZeroWidthSpace);
 
 		const sendAs =
 			(Reflect.get(message.flagArgs, 'output') || Reflect.get(message.flagArgs, 'output-to') || Reflect.get(message.flagArgs, 'log')) ?? null;

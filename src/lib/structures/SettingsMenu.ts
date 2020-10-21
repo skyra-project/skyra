@@ -1,7 +1,7 @@
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
-import { BrandingColors, Time, ZeroWidhSpace } from '@utils/constants';
+import { BrandingColors, Time, ZeroWidthSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
@@ -104,7 +104,7 @@ export class SettingsMenu {
 					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
 						value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
 							/``+/g,
-							`\`${ZeroWidhSpace}\``
+							`\`${ZeroWidthSpace}\``
 						)
 					})
 				);
@@ -118,7 +118,7 @@ export class SettingsMenu {
 
 		return this.embed
 			.setColor(await DbSet.fetchColor(this.message))
-			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidhSpace}`)
+			.setDescription(`${description.filter((v) => v !== null).join('\n')}\n${ZeroWidthSpace}`)
 			.setFooter(parent ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderBack) : '')
 			.setTimestamp();
 	}

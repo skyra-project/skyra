@@ -25,7 +25,7 @@ import {
 import { KlasaGuild, RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
-import { Time, ZeroWidhSpace } from './constants';
+import { Time, ZeroWidthSpace } from './constants';
 import { REGEX_UNICODE_BOXNM, REGEX_UNICODE_EMOJI } from './External/rUnicodeEmoji';
 import { LeaderboardUser } from './Leaderboard';
 import { api } from './Models/Api';
@@ -469,12 +469,12 @@ export function isImageURL(url: string) {
  * @copyright 2019 Antonio Román
  */
 export function cleanMentions(guild: Guild, input: string) {
-	return input.replace(/@(here|everyone)/g, `@${ZeroWidhSpace}$1`).replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
+	return input.replace(/@(here|everyone)/g, `@${ZeroWidthSpace}$1`).replace(/<(@[!&]?|#)(\d{17,19})>/g, (match, type, id) => {
 		switch (type) {
 			case '@':
 			case '@!': {
 				const tag = guild.client.users.cache.get(id);
-				return tag ? `@${tag.username}` : `<${type}${ZeroWidhSpace}${id}>`;
+				return tag ? `@${tag.username}` : `<${type}${ZeroWidthSpace}${id}>`;
 			}
 			case '@&': {
 				const role = guild.roles.cache.get(id);
@@ -482,10 +482,10 @@ export function cleanMentions(guild: Guild, input: string) {
 			}
 			case '#': {
 				const channel = guild.channels.cache.get(id);
-				return channel ? `#${channel.name}` : `<${type}${ZeroWidhSpace}${id}>`;
+				return channel ? `#${channel.name}` : `<${type}${ZeroWidthSpace}${id}>`;
 			}
 			default:
-				return `<${type}${ZeroWidhSpace}${id}>`;
+				return `<${type}${ZeroWidthSpace}${id}>`;
 		}
 	});
 }

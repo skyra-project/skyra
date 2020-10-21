@@ -2,7 +2,7 @@ import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ZeroWidhSpace } from '@utils/constants';
+import { ZeroWidthSpace } from '@utils/constants';
 import { MessageEmbed, Permissions, PermissionString, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 
@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 		});
 
 		const { permissions } = member;
-		const list = [ZeroWidhSpace];
+		const list = [ZeroWidthSpace];
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 			list.push(message.language.get(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {

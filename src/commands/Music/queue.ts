@@ -7,7 +7,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
 import { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors, ZeroWidhSpace } from '@utils/constants';
+import { BrandingColors, ZeroWidthSpace } from '@utils/constants';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
@@ -77,7 +77,7 @@ export default class extends MusicCommand {
 
 			queueDisplay.embedTemplate.addField(message.language.get(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
 			queueDisplay.embedTemplate.addField(
-				ZeroWidhSpace,
+				ZeroWidthSpace,
 				message.language.get(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild! })
 			);
 

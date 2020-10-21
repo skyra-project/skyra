@@ -1,4 +1,4 @@
-import { ZeroWidhSpace } from '@utils/constants';
+import { ZeroWidthSpace } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { Extendable, ExtendableStore } from 'klasa';
 
@@ -8,7 +8,7 @@ export default class extends Extendable {
 	}
 
 	public addBlankField(this: MessageEmbed, inline?: boolean) {
-		return this.addField(ZeroWidhSpace, ZeroWidhSpace, inline ?? false);
+		return this.addField(ZeroWidthSpace, ZeroWidthSpace, inline ?? false);
 	}
 
 	public splitFields(this: MessageEmbed, contentOrTitle: string | string[], rawContent?: string | string[]) {
@@ -17,7 +17,7 @@ export default class extends Extendable {
 		let title: string | undefined = undefined;
 		let content: string | string[] | undefined = undefined;
 		if (typeof rawContent === 'undefined') {
-			title = ZeroWidhSpace;
+			title = ZeroWidthSpace;
 			content = contentOrTitle;
 		} else {
 			title = contentOrTitle as string;
@@ -25,7 +25,7 @@ export default class extends Extendable {
 		}
 
 		if (Array.isArray(content)) content = content.join('\n');
-		if (title === ZeroWidhSpace && !this.description && content.length < 2048) {
+		if (title === ZeroWidthSpace && !this.description && content.length < 2048) {
 			this.description = content;
 			return this;
 		}
@@ -45,7 +45,7 @@ export default class extends Extendable {
 
 			this.fields.push({ name: title, value: content.trim().slice(0, x), inline: false });
 			content = content.slice(x + 1);
-			title = ZeroWidhSpace;
+			title = ZeroWidthSpace;
 		}
 		return this;
 	}

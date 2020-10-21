@@ -68,7 +68,7 @@ export default class extends Event {
 	private async connectLavalink() {
 		if (ENABLE_LAVALINK) {
 			await this.client.audio.connect();
-			await this.client.audio.queues.start();
+			await this.client.audio.queues!.start();
 		}
 	}
 }

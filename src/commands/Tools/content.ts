@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [, target]: [TextChannel, KlasaMessage]) {
 		const attachments = target.attachments.size ? target.attachments.map((att) => `📁 <${att.url}>`).join('\n') : '';
-		const content = escapeCodeBlock(getContent(target) || '');
+		const content = escapeCodeBlock(getContent(target) || '\u200B');
 
 		const sendAs =
 			(Reflect.get(message.flagArgs, 'output') || Reflect.get(message.flagArgs, 'output-to') || Reflect.get(message.flagArgs, 'log')) ?? null;

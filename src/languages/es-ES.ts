@@ -1974,7 +1974,7 @@ export default class extends Language {
 			examples: ['@John member', '@John member Make John a member'],
 			multiline: true
 		},
-		commandRemoveroleDescription: '',
+		commandRemoveroleDescription: 'Removes a role from a user',
 		commandRemoveroleExtended: {
 			extendedHelp: [
 				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,

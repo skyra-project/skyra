@@ -1954,7 +1954,7 @@ export default class extends Language {
 			examples: ['@John member', '@John member Make John a member'],
 			multiline: true
 		},
-		commandRemoveroleDescription: '',
+		commandRemoveroleDescription: 'Removes a role from a user',
 		commandRemoveroleExtended: {
 			extendedHelp: [
 				`This command requires **${this.PERMISSIONS.MANAGE_ROLES}**, and only members with lower role hierarchy position can be managed by me.`,
@@ -2606,18 +2606,21 @@ export default class extends Language {
 				['message', 'ID of the message to quote']
 			]
 		},
-		commandRolesDescription: 'List all public roles from a guild, or claim/unclaim them.',
+		commandRolesDescription: 'List, claim or unclaim public roles in this server.',
 		commandRolesExtended: {
-			extendedHelp: `Public roles? They are roles that are available for everyone, an administrator must configure them with a configuration command.`,
-			explainedUsage: [['Roles', 'The list of roles to claim and unclaim. Leave this empty to get a list of roles']],
-			reminder: [
-				'When using claim/unclaim, the roles can be individual, or multiple.',
-				'To claim multiple roles, you must separate them by a comma.',
-				'You can specify which roles by writting their ID, name, or a section of the name.',
-				'',
-				'Administrators can add public roles using `Skyra, conf set roles.public MyPublicRole`.'
+			extendedHelp: [
+				'Public roles are roles that are available for everyone.',
+				'An administrator must configure them with the configuration command.'
 			],
-			examples: ['', 'Designer, Programmer', 'Designer'],
+			explainedUsage: [['roles', 'The list of roles to claim or unclaim. Leave this empty to get a list of available roles.']],
+			reminder: [
+				'When claiming or unclaiming roles you can provide a single or multiple role(s).',
+				'To claim multiple roles, you must separate them by a comma, for example `red,green`.',
+				'You can specify which roles you want by providing the role ID, name, or a sub-section of the name.',
+				'',
+				'Administrators can add public roles using `Skyra, conf set roles.public ExamplePublicRole`.'
+			],
+			examples: ['', 'Designer,Programmer', 'Designer'],
 			multiline: true
 		},
 		commandDuckDuckGoDescription: 'Search the Internet with DuckDuckGo.',

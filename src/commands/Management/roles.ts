@@ -12,6 +12,7 @@ import { MessageEmbed, Role } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
+	aliases: ['pr', 'role', 'public-roles', 'public-role'],
 	cooldown: 5,
 	description: (language) => language.get(LanguageKeys.Commands.Management.RolesDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.RolesExtended),

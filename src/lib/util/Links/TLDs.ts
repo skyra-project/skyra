@@ -1131,6 +1131,7 @@ export const TLDs = [
 	'song',
 	'sony',
 	'soy',
+	'spa',
 	'space',
 	'sport',
 	'spot',

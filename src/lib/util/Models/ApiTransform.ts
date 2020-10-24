@@ -1,17 +1,14 @@
 import {
 	Channel,
 	DMChannel,
-	ExplicitContentFilterLevel,
 	Guild,
 	GuildChannel,
-	GuildFeatures,
 	GuildMember,
 	NewsChannel,
 	PermissionOverwrites,
 	Role,
 	TextChannel,
 	User,
-	VerificationLevel,
 	VoiceChannel
 } from 'discord.js';
 
@@ -19,61 +16,76 @@ import {
 
 export function flattenGuild(guild: Guild): FlattenedGuild {
 	return {
-		id: guild.id,
-		available: guild.available,
-		channels: guild.channels.cache.map(flattenChannel) as FlattenedGuildChannel[],
-		roles: guild.roles.cache.map(flattenRole),
-		name: guild.name,
-		icon: guild.icon,
-		splash: guild.splash,
-		region: guild.region,
-		features: guild.features,
-		applicationID: guild.applicationID,
-		afkTimeout: guild.afkTimeout,
 		afkChannelID: guild.afkChannelID,
-		systemChannelID: guild.systemChannelID,
-		embedEnabled: guild.embedEnabled,
-		premiumTier: guild.premiumTier,
-		premiumSubscriptionCount: guild.premiumSubscriptionCount,
-		verificationLevel: guild.verificationLevel,
-		explicitContentFilter: guild.explicitContentFilter,
-		mfaLevel: guild.mfaLevel,
-		joinedTimestamp: guild.joinedTimestamp,
-		defaultMessageNotifications: guild.defaultMessageNotifications,
-		vanityURLCode: guild.vanityURLCode,
-		description: guild.description,
+		afkTimeout: guild.afkTimeout,
+		applicationID: guild.applicationID,
+		approximateMemberCount: guild.approximateMemberCount,
+		approximatePresenceCount: guild.approximatePresenceCount,
+		available: guild.available,
 		banner: guild.banner,
-		ownerID: guild.ownerID
+		channels: guild.channels.cache.map(flattenChannel) as FlattenedGuildChannel[],
+		defaultMessageNotifications: guild.defaultMessageNotifications,
+		description: guild.description,
+		embedEnabled: guild.embedEnabled,
+		explicitContentFilter: guild.explicitContentFilter,
+		features: guild.features,
+		icon: guild.icon,
+		id: guild.id,
+		joinedTimestamp: guild.joinedTimestamp,
+		mfaLevel: guild.mfaLevel,
+		name: guild.name,
+		ownerID: guild.ownerID,
+		partnered: guild.partnered,
+		preferredLocale: guild.preferredLocale,
+		premiumSubscriptionCount: guild.premiumSubscriptionCount,
+		premiumTier: guild.premiumTier,
+		region: guild.region,
+		roles: guild.roles.cache.map(flattenRole),
+		splash: guild.splash,
+		systemChannelID: guild.systemChannelID,
+		vanityURLCode: guild.vanityURLCode,
+		verificationLevel: guild.verificationLevel,
+		verified: guild.verified
 	};
 }
 
-export interface FlattenedGuild {
-	id: string;
-	available: boolean;
+export interface FlattenedGuild
+	extends Pick<
+		Guild,
+		| 'afkChannelID'
+		| 'afkTimeout'
+		| 'applicationID'
+		| 'approximateMemberCount'
+		| 'approximatePresenceCount'
+		| 'available'
+		| 'banner'
+		| 'defaultMessageNotifications'
+		| 'description'
+		| 'embedEnabled'
+		| 'explicitContentFilter'
+		| 'features'
+		| 'icon'
+		| 'id'
+		| 'joinedTimestamp'
+		| 'mfaLevel'
+		| 'name'
+		| 'ownerID'
+		| 'partnered'
+		| 'preferredLocale'
+		| 'premiumSubscriptionCount'
+		| 'premiumTier'
+		| 'region'
+		| 'splash'
+		| 'systemChannelID'
+		| 'vanityURLCode'
+		| 'verificationLevel'
+		| 'verified'
+	> {
 	channels: FlattenedGuildChannel[];
 	roles: FlattenedRole[];
-	name: string;
-	icon: string | null;
-	splash: string | null;
-	region: string;
-	features: GuildFeatures[];
-	applicationID: string | null;
-	afkTimeout: number;
-	afkChannelID: string | null;
-	systemChannelID: string | null;
-	embedEnabled: boolean;
-	premiumTier: number;
-	premiumSubscriptionCount: number | null;
-	verificationLevel: VerificationLevel;
-	explicitContentFilter: ExplicitContentFilterLevel;
-	mfaLevel: number;
-	joinedTimestamp: number;
-	defaultMessageNotifications: number | 'ALL' | 'MENTIONS';
-	vanityURLCode: string | null;
-	description: string | null;
-	banner: string | null;
-	ownerID: string;
 }
+
+export type PublicFlattenedGuild = Pick<FlattenedGuild, 'id' | 'name' | 'icon' | 'vanityURLCode' | 'description'>;
 
 // #endregion Guild
 

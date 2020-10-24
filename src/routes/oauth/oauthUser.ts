@@ -88,6 +88,8 @@ export default class extends Route {
 							afkChannelID: null,
 							afkTimeout: 0,
 							applicationID: null,
+							approximateMemberCount: null,
+							approximatePresenceCount: null,
 							available: true,
 							banner: null,
 							channels: [],
@@ -102,6 +104,8 @@ export default class extends Route {
 							mfaLevel: 0,
 							name: oauthGuild.name,
 							ownerID: oauthGuild.owner ? user.id : null,
+							partnered: false,
+							preferredLocale: 'en-US',
 							premiumSubscriptionCount: null,
 							premiumTier: 0,
 							region: null,
@@ -109,7 +113,8 @@ export default class extends Route {
 							splash: null,
 							systemChannelID: null,
 							vanityURLCode: null,
-							verificationLevel: 'NONE'
+							verificationLevel: 'NONE',
+							verified: false
 					  }
 					: flattenGuild(guild);
 

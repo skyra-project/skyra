@@ -43,7 +43,7 @@ export class ApiResponse extends ServerResponse {
 		return this;
 	}
 
-	public json(data: any): void {
+	public json<T = any>(data: T): void {
 		this.setContentType(Mime.Types.ApplicationJson).end(JSON.stringify(data));
 	}
 

@@ -14,7 +14,7 @@ export default class extends Extendable {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
-		if (responses.size === 0) throw this.language.get(LanguageKeys.Misc.MessagePromptTimeout);
+		if (responses.size === 0) throw await this.fetchLocale(LanguageKeys.Misc.MessagePromptTimeout);
 		return responses.first();
 	}
 
@@ -50,9 +50,9 @@ export default class extends Extendable {
 	public async nuke(this: Message, time = 0) {
 		if (time === 0) return nuke(this);
 
-		const count = this.edits.length;
+		const lastEditedTimestamp = this.editedTimestamp;
 		await sleep(time);
-		return !this.deleted && this.edits.length === count ? nuke(this) : this;
+		return !this.deleted && this.editedTimestamp === lastEditedTimestamp ? nuke(this) : this;
 	}
 }
 

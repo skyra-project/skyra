@@ -2,7 +2,7 @@ import { Serializer } from '@lib/database';
 import { Guild } from 'discord.js';
 
 export default class UserSerializer extends Serializer {
-	public async validate(data, { entry, language }) {
+	public validate(data, { entry, language }) {
 		if (data instanceof Guild) return data;
 		const guild = Serializer.regex.channel.test(data) ? this.client.guilds.cache.get(data) : null;
 		if (guild) return guild;
@@ -14,6 +14,6 @@ export default class UserSerializer extends Serializer {
 	}
 
 	public stringify(value) {
-		return (this.client.guilds.get(value) || { name: value }).name;
+		return (this.client.guilds.cache.get(value) || { name: value }).name;
 	}
 }

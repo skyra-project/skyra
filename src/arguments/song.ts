@@ -1,16 +1,16 @@
 import { count, filter, map, take } from '@lib/misc';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { parseURL } from '@sapphire/utilities';
 import { LoadType, Track } from '@skyra/audio';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { deserialize } from 'binarytf';
-import { Argument, KlasaMessage, Possible } from 'klasa';
+import { Argument, Possible } from 'klasa';
 
 export default class extends Argument {
-	public async run(arg: string, _: Possible, message: KlasaMessage): Promise<string[]> {
+	public async run(arg: string, _: Possible, message: GuildMessage): Promise<string[]> {
 		const remaining = await this.getUserRemainingEntries(message);
-		if (remaining === 0) throw message.language.get(LanguageKeys.MusicManager.TooManySongs);
+		if (remaining === 0) throw await message.fetchLocale(LanguageKeys.MusicManager.TooManySongs);
 
 		const tracks = arg
 			? (await this.handleURL(message, remaining, arg)) ??
@@ -20,7 +20,7 @@ export default class extends Argument {
 			  await this.handleAttachments(message, remaining);
 
 		if (tracks === null || tracks.length === 0) {
-			throw message.language.get(LanguageKeys.MusicManager.FetchNoMatches);
+			throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
 		}
 
 		return tracks;
@@ -30,11 +30,11 @@ export default class extends Argument {
 	 * Retrieves how many new tracks the user can queue.
 	 * @param message The message that ran the argument.
 	 */
-	private async getUserRemainingEntries(message: KlasaMessage): Promise<number> {
-		const tracks = await message.guild!.audio.tracks();
+	private async getUserRemainingEntries(message: GuildMessage): Promise<number> {
+		const tracks = await message.guild.audio.tracks();
 		const { id } = message.author;
 		const entries = count(tracks.values(), (track) => track.author === id);
-		const maximum = message.guild!.settings.get(GuildSettings.Music.MaximumEntriesPerUser);
+		const maximum = await message.guild.readSettings((guild) => guild.musicMaximumEntriesPerUser);
 		return Math.max(0, maximum - entries);
 	}
 
@@ -43,9 +43,9 @@ export default class extends Argument {
 	 * @param message The message that ran the argument.
 	 * @param remaining The amount of entries the user can add.
 	 */
-	private async handleAttachments(message: KlasaMessage, remaining: number) {
+	private async handleAttachments(message: GuildMessage, remaining: number) {
 		if (message.attachments.size === 0) {
-			throw message.language.get(LanguageKeys.MusicManager.FetchNoArguments);
+			throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoArguments);
 		}
 
 		const { url } = message.attachments.first()!;
@@ -59,12 +59,12 @@ export default class extends Argument {
 	 * @param message The message that ran the argument.
 	 * @param binary The binary data to parse.
 	 */
-	private async parseAttachment(message: KlasaMessage, binary: Uint8Array): Promise<Track[]> {
+	private async parseAttachment(message: GuildMessage, binary: Uint8Array): Promise<Track[]> {
 		try {
 			const tracks = deserialize<string[]>(binary);
-			return await message.guild!.audio.player.node.decode(tracks);
+			return await message.guild.audio.player.node.decode(tracks);
 		} catch {
-			throw message.language.get(LanguageKeys.MusicManager.ImportQueueError);
+			throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 
@@ -73,11 +73,11 @@ export default class extends Argument {
 	 * @param message The message that ran the argument.
 	 * @param url The URL of the file to download.
 	 */
-	private async downloadAttachment(message: KlasaMessage, url: string): Promise<Uint8Array> {
+	private async downloadAttachment(message: GuildMessage, url: string): Promise<Uint8Array> {
 		try {
 			return await fetch(url, FetchResultTypes.Buffer);
 		} catch {
-			throw message.language.get(LanguageKeys.MusicManager.ImportQueueNotFound);
+			throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueNotFound);
 		}
 	}
 
@@ -90,7 +90,7 @@ export default class extends Argument {
 	 * - `null` when the argument is not a valid URL.
 	 * - `string[]` otherwise.
 	 */
-	private async handleURL(message: KlasaMessage, remaining: number, arg: string): Promise<string[] | null> {
+	private async handleURL(message: GuildMessage, remaining: number, arg: string): Promise<string[] | null> {
 		// Remove `<...>` escape characters.
 		const url = parseURL(arg.replace(/^<(.+)>$/g, '$1'));
 		if (url === null) return null;
@@ -118,7 +118,7 @@ export default class extends Argument {
 	 * - `null` if neither `--sc` nor `--soundcloud` flags were provided.
 	 * - `string[]` otherwise.
 	 */
-	private handleSoundCloud(message: KlasaMessage, remaining: number, arg: string): Promise<string[] | null> {
+	private handleSoundCloud(message: GuildMessage, remaining: number, arg: string): Promise<string[] | null> {
 		if (Reflect.has(message.flagArgs, 'sc') || Reflect.has(message.flagArgs, 'soundcloud')) {
 			return this.downloadResults(message, remaining, `scsearch: ${arg}`);
 		}
@@ -133,7 +133,7 @@ export default class extends Argument {
 	 * @param arg The argument to parse.
 	 * @returns Always `string[]`.
 	 */
-	private handleYouTube(message: KlasaMessage, remaining: number, arg: string): Promise<string[] | null> {
+	private handleYouTube(message: GuildMessage, remaining: number, arg: string): Promise<string[] | null> {
 		return this.downloadResults(message, remaining, `ytsearch: ${arg}`);
 	}
 
@@ -144,22 +144,22 @@ export default class extends Argument {
 	 * @param search The search argument.
 	 * @returns Always `string[]`.
 	 */
-	private async downloadResults(message: KlasaMessage, remainingUserEntries: number, search: string): Promise<string[]> {
+	private async downloadResults(message: GuildMessage, remainingUserEntries: number, search: string): Promise<string[]> {
 		try {
 			// Load the data from the node:
-			const response = await message.guild!.audio.player.node.load(search);
+			const response = await message.guild.audio.player.node.load(search);
 
 			// No matches: throw.
-			if (response.loadType === LoadType.NoMatches) throw message.language.get(LanguageKeys.MusicManager.FetchNoMatches);
+			if (response.loadType === LoadType.NoMatches) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
 
 			// Load failed: throw.
-			if (response.loadType === LoadType.LoadFailed) throw message.language.get(LanguageKeys.MusicManager.FetchLoadFailed);
+			if (response.loadType === LoadType.LoadFailed) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchLoadFailed);
 
 			// Loaded playlist: filter all tracks.
 			if (response.loadType === LoadType.PlaylistLoaded) return this.filter(message, remainingUserEntries, response.tracks);
 
 			// Loaded track, retrieve the first one that can be loaded.
-			const tracks = this.filter(message, remainingUserEntries, response.tracks);
+			const tracks = await this.filter(message, remainingUserEntries, response.tracks);
 
 			// If there was no available track, return empty array.
 			if (tracks.length === 0) return tracks;
@@ -177,12 +177,10 @@ export default class extends Argument {
 	 * @param remaining The amount of entries the user can add.
 	 * @param tracks The downloaded tracks to filter.
 	 */
-	private filter(message: KlasaMessage, remaining: number, tracks: Track[]): string[] {
-		if (message.member!.isDJ) return [...map(take(tracks.values(), remaining), (track) => track.track)];
+	private async filter(message: GuildMessage, remaining: number, tracks: Track[]): Promise<string[]> {
+		if (message.member.isDJ) return [...map(take(tracks.values(), remaining), (track) => track.track)];
 
-		const maximumDuration = message.guild!.settings.get(GuildSettings.Music.MaximumDuration);
-		const allowStreams = message.guild!.settings.get(GuildSettings.Music.AllowStreams);
-
+		const [maximumDuration, allowStreams] = await message.guild.readSettings((guild) => [guild.musicMaximumDuration, guild.musicAllowStreams]);
 		const filteredStreams = allowStreams ? filter(tracks.values(), (track) => !track.info.isStream) : tracks.values();
 		const filteredDuration = filter(filteredStreams, (track) => track.info.length <= maximumDuration);
 		const mappedTracks = map(filteredDuration, (track) => track.track);

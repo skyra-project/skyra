@@ -14,14 +14,14 @@ export default class extends Argument {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public run(arg: string, possible: Possible, message: KlasaMessage) {
-		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
+	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 
 		if (this.kRegExp.test(arg)) {
 			const snowflake = DiscordSnowflake.deconstruct(arg);
 			const timestamp = Number(snowflake.timestamp);
 			if (timestamp >= this.kMinimum && timestamp < Date.now()) return arg;
 		}
-		throw message.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
+		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidSnowflake, { name: possible.name });
 	}
 }

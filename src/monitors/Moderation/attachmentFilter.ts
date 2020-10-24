@@ -1,3 +1,4 @@
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
@@ -15,14 +16,16 @@ export default class extends Monitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationAttachments;
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
-		const action = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction);
-		const maximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);
-		const duration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration);
+		const [action, maximum, duration] = await message.guild.readSettings((entity) => [
+			entity.selfmodAttachmentAction,
+			entity.selfmodAttachmentMaximum,
+			entity.selfmodAttachmentDuration
+		]);
 
-		const { adders } = message.guild!.security;
+		const { adders } = message.guild.security;
 		if (!adders.attachments) adders.attachments = new Adder(maximum, duration, true);
 
 		try {
@@ -35,47 +38,47 @@ export default class extends Monitor {
 					await this.actionAndSend(message, Moderation.TypeCodes.Warning, () => null);
 					break;
 				case 0b001:
-					await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Kick, async () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.kick({
+							message.guild.security.actions.kick({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
 								reason:
 									maximum === 0
-										? message.language.get(this.reasonLanguageKey)
-										: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+										? await message.fetchLocale(this.reasonLanguageKey)
+										: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
 					break;
 				case 0b010:
-					await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Mute, async () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.mute({
+							message.guild.security.actions.mute({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
 								reason:
 									maximum === 0
-										? message.language.get(this.reasonLanguageKey)
-										: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+										? await message.fetchLocale(this.reasonLanguageKey)
+										: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
 					break;
 				case 0b011:
-					await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Softban, async () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.softBan(
+							message.guild.security.actions.softBan(
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
 									reason:
 										maximum === 0
-											? message.language.get(this.reasonLanguageKey)
-											: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+											? await message.fetchLocale(this.reasonLanguageKey)
+											: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								1
 							)
@@ -83,17 +86,17 @@ export default class extends Monitor {
 					);
 					break;
 				case 0b100:
-					await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Ban, async () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.ban(
+							message.guild.security.actions.ban(
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
 									reason:
 										maximum === 0
-											? message.language.get(this.reasonLanguageKey)
-											: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+											? await message.fetchLocale(this.reasonLanguageKey)
+											: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								0
 							)
@@ -103,7 +106,7 @@ export default class extends Monitor {
 			}
 			// noinspection JSBitwiseOperatorUsage
 			if (action & 0b1000) {
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () =>
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, async () =>
 					new MessageEmbed()
 						.setColor(Colors.Red)
 						.setAuthor(
@@ -111,7 +114,7 @@ export default class extends Monitor {
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
 						.setFooter(
-							`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.AttachmentfilterFooter)}`
+							`#${(message.channel as TextChannel).name} | ${await message.fetchLocale(LanguageKeys.Monitors.AttachmentfilterFooter)}`
 						)
 						.setTimestamp()
 				);
@@ -124,15 +127,15 @@ export default class extends Monitor {
 	 * @param type The type
 	 * @param performAction The action to perform
 	 */
-	public async actionAndSend(message: KlasaMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
-		const lock = message.guild!.moderation.createLock();
+	public async actionAndSend(message: GuildMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
+		const lock = message.guild.moderation.createLock();
 		await performAction();
 		await message
 			.guild!.moderation.create({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				type,
-				duration: message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
+				duration: message.guild.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
 				reason: 'AttachmentFilter: Threshold Reached.'
 			})
 			.create();
@@ -154,8 +157,8 @@ export default class extends Monitor {
 		);
 	}
 
-	private hasPermissions(message: KlasaMessage, action: number) {
-		const guildMe = message.guild!.me!;
+	private hasPermissions(message: GuildMessage, action: number) {
+		const guildMe = message.guild.me!;
 		const member = message.member!;
 		switch (action & 0b11) {
 			case 0b000:
@@ -164,7 +167,7 @@ export default class extends Monitor {
 				return member.kickable;
 			case 0b010:
 				return (
-					message.guild!.settings.get(GuildSettings.Roles.Muted) !== null &&
+					message.guild.settings.get(GuildSettings.Roles.Muted) !== null &&
 					guildMe.roles.highest.position > member.roles.highest.position &&
 					guildMe.permissions.has(FLAGS.MANAGE_ROLES)
 				);

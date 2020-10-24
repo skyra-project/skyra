@@ -11,8 +11,8 @@ export default class extends Argument {
 		return this.store.get('overwatchplayer')!;
 	}
 
-	public run(arg: string, possible: Possible, message: KlasaMessage): string {
-		if (!arg) throw message.language.get(LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlayerName, { playerTag: arg });
+	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<string> {
+		if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlayerName, { playerTag: arg });
 		// eslint-disable-next-line dot-notation
 		const {
 			args,

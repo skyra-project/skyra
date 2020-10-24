@@ -92,6 +92,8 @@ declare module 'discord.js' {
 		alert(content: string, timer?: number): Promise<Message>;
 		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
 		nuke(time?: number): Promise<Message>;
+		fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+		fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
 	}
 
 	interface TextChannel {

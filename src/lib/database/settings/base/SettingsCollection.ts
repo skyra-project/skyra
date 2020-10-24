@@ -4,7 +4,7 @@ import { Client } from 'discord.js';
 import { BaseEntity } from 'typeorm';
 
 export interface SettingsCollectionCallback<T extends BaseEntity, R> {
-	(value: T): R;
+	(entity: T): R;
 }
 
 export abstract class SettingsCollection<T extends BaseEntity> extends Collection<string, T> {

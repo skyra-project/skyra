@@ -1,6 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Inhibitor, KlasaMessage, RateLimitManager } from 'klasa';
 
@@ -12,20 +11,22 @@ export default class extends Inhibitor {
 	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
-		const channelID = message.guild.settings.get(GuildSettings.Channels.Spam);
+		const channelID = await message.guild.readSettings((entity) => entity.channelsSpam);
+		if (!channelID) return;
+
 		if (channelID === message.channel.id) return;
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const channel = message.guild.channels.cache.get(channelID);
 		if (!channel) {
-			await message.guild.settings.reset(GuildSettings.Channels.Spam);
+			await message.guild.writeSettings((entity) => (entity.channelsSpam = null));
 			return;
 		}
 
 		try {
 			this.ratelimit.acquire(message.channel.id).drip();
 		} catch {
-			throw message.language.get(LanguageKeys.Inhibitors.Spam, { channel: channel.toString() });
+			throw await message.fetchLocale(LanguageKeys.Inhibitors.Spam, { channel: channel.toString() });
 		}
 	}
 }

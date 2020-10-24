@@ -1,15 +1,3 @@
-import type {
-	CustomCommand,
-	DisabledCommandChannel,
-	NotificationsStreamTwitch,
-	PermissionsNode,
-	ReactionRole,
-	RolesAuto,
-	StickyRole,
-	TriggerAlias,
-	TriggerIncludes,
-	UniqueRoleSet
-} from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
 import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
@@ -665,3 +653,73 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'suggestions.on-action.hide-author', default: false })
 	public suggestionsOnActionHideAuthor = false;
 }
+
+export interface PermissionsNode {
+	id: string;
+	allow: string[];
+	deny: string[];
+}
+
+export interface CustomCommand {
+	id: string;
+	embed: boolean;
+	color: number;
+	content: string;
+	args: string[];
+}
+
+export interface DisabledCommandChannel {
+	channel: string;
+	commands: readonly string[];
+}
+
+export interface StickyRole {
+	user: string;
+	roles: readonly string[];
+}
+
+export interface ReactionRole {
+	role: string;
+	emoji: string;
+	message: string | null;
+	channel: string;
+}
+
+export interface RolesAuto {
+	id: string;
+	points: number;
+}
+
+export interface TriggerAlias {
+	input: string;
+	output: string;
+}
+
+export interface TriggerIncludes {
+	action: 'react';
+	input: string;
+	output: string;
+}
+
+export interface UniqueRoleSet {
+	name: string;
+	roles: readonly string[];
+}
+
+export const enum NotificationsStreamsTwitchEventStatus {
+	Online,
+	Offline
+}
+
+export interface NotificationsStreamsTwitchStreamer {
+	channel: string;
+	author: string;
+	message: string | null;
+	embed: boolean;
+	status: NotificationsStreamsTwitchEventStatus;
+	gamesBlacklist: readonly string[];
+	gamesWhitelist: readonly string[];
+	createdAt: number;
+}
+
+export type NotificationsStreamTwitch = [string, readonly NotificationsStreamsTwitchStreamer[]];

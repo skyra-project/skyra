@@ -13,12 +13,23 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 		if (typeof name === 'undefined') throw new TypeError('The option "name" must be specified.');
 
 		const array = options.array ?? column.options.array ?? false;
+		const inclusive = options.inclusive ?? true;
 		const minimum = options.minimum ?? null;
 		const maximum = options.maximum ?? hydrateLength(column.options.length);
 		const type = options.type ?? hydrateType(column.options.type!);
 		keys.set(
 			name,
-			new ConfigurableKeyValue({ target: target.constructor, property: property as string, ...options, name, array, minimum, maximum, type })
+			new ConfigurableKeyValue({
+				target: target.constructor,
+				property: property as string,
+				...options,
+				name,
+				array,
+				inclusive,
+				minimum,
+				maximum,
+				type
+			})
 		);
 	};
 }
@@ -113,5 +124,8 @@ function hydrateType(type: ColumnType) {
 	}
 }
 
-type ConfigurableKeyOptions = Omit<ConfigurableKeyValueOptions, 'name' | 'target' | 'property' | 'type' | 'maximum' | 'minimum' | 'array'> &
-	Partial<Pick<ConfigurableKeyValueOptions, 'name' | 'type' | 'maximum' | 'minimum' | 'array'>>;
+type ConfigurableKeyOptions = Omit<
+	ConfigurableKeyValueOptions,
+	'name' | 'target' | 'property' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array'
+> &
+	Partial<Pick<ConfigurableKeyValueOptions, 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array'>>;

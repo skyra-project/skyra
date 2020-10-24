@@ -103,7 +103,6 @@ export default class extends Route {
 							joinedTimestamp: null,
 							mfaLevel: 0,
 							name: oauthGuild.name,
-							nameAcronym: oauthGuild.name.slice(0, 2),
 							ownerID: oauthGuild.owner ? user.id : null,
 							partnered: false,
 							preferredLocale: 'en-US',

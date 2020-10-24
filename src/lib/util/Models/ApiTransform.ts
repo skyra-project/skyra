@@ -34,7 +34,6 @@ export function flattenGuild(guild: Guild): FlattenedGuild {
 		joinedTimestamp: guild.joinedTimestamp,
 		mfaLevel: guild.mfaLevel,
 		name: guild.name,
-		nameAcronym: guild.nameAcronym,
 		ownerID: guild.ownerID,
 		partnered: guild.partnered,
 		preferredLocale: guild.preferredLocale,
@@ -70,7 +69,6 @@ export interface FlattenedGuild
 		| 'joinedTimestamp'
 		| 'mfaLevel'
 		| 'name'
-		| 'nameAcronym'
 		| 'ownerID'
 		| 'partnered'
 		| 'preferredLocale'

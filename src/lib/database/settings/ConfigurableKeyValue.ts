@@ -1,8 +1,8 @@
 import { SkyraClient } from '@lib/SkyraClient';
 import { CustomGet } from '@lib/types/Shared';
 import { O } from '@utils/constants';
-import { Serializer } from 'klasa';
 import { container } from 'tsyringe';
+import { Serializer } from './structures/Serializer';
 
 export class ConfigurableKeyValue {
 	/**
@@ -19,6 +19,11 @@ export class ConfigurableKeyValue {
 	 * The minimum value for the configuration key.
 	 */
 	public minimum: number | null;
+
+	/**
+	 * Whether or not the range checks are inclusive.
+	 */
+	public inclusive: boolean;
 
 	/**
 	 * The visible name of the configuration key.
@@ -49,6 +54,7 @@ export class ConfigurableKeyValue {
 		this.description = options.description;
 		this.maximum = options.maximum;
 		this.minimum = options.minimum;
+		this.inclusive = options.inclusive ?? false;
 		this.name = options.name;
 		this.property = options.property;
 		this.target = options.target;
@@ -61,7 +67,7 @@ export class ConfigurableKeyValue {
 	}
 
 	public get serializer(): Serializer {
-		const value = this.client.serializers.get(this.type);
+		const value = this.client.settings.serializers.get(this.type);
 		if (typeof value === 'undefined') throw new Error(`The serializer for '${this.type}' does not exist.`);
 		return value;
 	}
@@ -69,5 +75,5 @@ export class ConfigurableKeyValue {
 
 export type ConfigurableKeyValueOptions = Pick<
 	ConfigurableKeyValue,
-	'description' | 'maximum' | 'minimum' | 'name' | 'property' | 'target' | 'type' | 'array'
+	'description' | 'maximum' | 'minimum' | 'inclusive' | 'name' | 'property' | 'target' | 'type' | 'array'
 >;

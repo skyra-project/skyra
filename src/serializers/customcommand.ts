@@ -1,7 +1,7 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import type { CustomCommand } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ZeroWidthSpace } from '@utils/constants';
-import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 	public validate(data: CustomCommand, { language }: SerializerUpdateContext) {

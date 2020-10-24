@@ -32,6 +32,7 @@ import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import { QueueClient } from '@lib/audio';
+import { SettingsManager } from '@lib/database';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -53,6 +54,11 @@ export class SkyraClient extends KlasaClient {
 	 * The Schedule manager
 	 */
 	public schedules: ScheduleManager = new ScheduleManager(this);
+
+	/**
+	 * The settings manager
+	 */
+	public settings: SettingsManager = new SettingsManager(this);
 
 	/**
 	 * The webhook to use for the error event

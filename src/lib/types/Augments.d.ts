@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { SettingsUpdateResults } from '@klasa/settings-gateway';
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '@lib/audio';
+import type { SettingsManager } from '@lib/database';
 import type { InviteStore } from '@lib/structures/InviteStore';
 import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
@@ -13,15 +13,15 @@ import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema'
 import type { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import type { PermissionString } from 'discord.js';
-import type { KlasaMessage, SettingsFolderUpdateOptions } from 'klasa';
 import type { PoolConfig } from 'pg';
-import { MessageAcknowledgeable } from './Discord';
+import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { CustomFunctionGet, CustomGet } from './Shared';
 
 declare module 'discord.js' {
 	interface Client {
 		audio: QueueClient;
+		settings: SettingsManager;
 		version: string;
 		leaderboard: Leaderboard;
 		giveaways: GiveawayManager;
@@ -40,15 +40,15 @@ declare module 'discord.js' {
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;
 		emit(
 			event: Events.GuildAnnouncementSend | Events.GuildAnnouncementEdit,
-			message: KlasaMessage,
-			resultMessage: KlasaMessage,
+			message: Message,
+			resultMessage: Message,
 			channel: TextChannel,
 			role: Role,
 			content: string
 		): boolean;
-		emit(event: Events.GuildAnnouncementError, message: KlasaMessage, channel: TextChannel, role: Role, content: string, error: any): boolean;
+		emit(event: Events.GuildAnnouncementError, message: Message, channel: TextChannel, role: Role, content: string, error: any): boolean;
 		emit(event: Events.MoneyTransaction, target: User, moneyChange: number, moneyBeforeChange: number): boolean;
-		emit(event: Events.MoneyPayment, message: KlasaMessage, user: User, target: User, money: number): boolean;
+		emit(event: Events.MoneyPayment, message: Message, user: User, target: User, money: number): boolean;
 		emit(event: Events.MusicAddNotify, channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): boolean;
 		emit(event: Events.MusicFinish, queue: Queue): boolean;
 		emit(event: Events.MusicFinishNotify, channel: MessageAcknowledgeable): boolean;
@@ -134,30 +134,30 @@ declare module 'discord.js' {
 	}
 
 	interface PartialSendAliases {
-		sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<KlasaMessage>;
+		sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
 		sendLocale<K extends string, TReturn>(
 			key: CustomGet<K, TReturn>,
 			options?: (MessageOptions & { split?: false }) | MessageAdditions
-		): Promise<KlasaMessage>;
+		): Promise<Message>;
 		sendLocale<K extends string, TReturn>(
 			key: CustomGet<K, TReturn>,
 			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-		): Promise<KlasaMessage[]>;
+		): Promise<Message[]>;
 		sendLocale<K extends string, TArgs, TReturn>(
 			key: CustomFunctionGet<K, TArgs, TReturn>,
 			localeArgs: [TArgs],
 			options?: MessageOptions | MessageAdditions
-		): Promise<KlasaMessage>;
+		): Promise<Message>;
 		sendLocale<K extends string, TArgs, TReturn>(
 			key: CustomFunctionGet<K, TArgs, TReturn>,
 			localeArgs: [TArgs],
 			options?: (MessageOptions & { split?: false }) | MessageAdditions
-		): Promise<KlasaMessage>;
+		): Promise<Message>;
 		sendLocale<K extends string, TArgs, TReturn>(
 			key: CustomFunctionGet<K, TArgs, TReturn>,
 			localeArgs: [TArgs],
 			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-		): Promise<KlasaMessage[]>;
+		): Promise<Message[]>;
 	}
 }
 
@@ -193,23 +193,12 @@ declare module 'klasa' {
 		retrieve<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
 	}
 
-	interface SettingsFolder {
-		get<K extends string, S>(key: CustomGet<K, S>): S;
-		increase(key: string, value: number, options?: SettingsFolderUpdateOptions): Promise<SettingsUpdateResults>;
-		decrease(key: string, value: number, options?: SettingsFolderUpdateOptions): Promise<SettingsUpdateResults>;
-	}
-
 	interface Argument {
 		// @ts-expect-error 1070
-		run<T>(arg: string | undefined, possible: Possible, message: KlasaMessage, filter?: (entry: T) => boolean): any;
+		run<T>(arg: string | undefined, possible: Possible, message: Message, filter?: (entry: T) => boolean): any;
 	}
 
 	type PostgresOptions = Omit<PoolConfig, 'stream' | 'ssl'> & Record<PropertyKey, unknown>;
-
-	export interface ProvidersOptions extends Record<string, any> {
-		default?: 'postgres' | string;
-		postgres: PostgresOptions;
-	}
 }
 
 declare module 'klasa-dashboard-hooks' {

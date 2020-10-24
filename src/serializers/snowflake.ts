@@ -1,6 +1,6 @@
-import { DiscordSnowflake } from '@sapphire/snowflake';
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Serializer, SerializerUpdateContext } from 'klasa';
+import { DiscordSnowflake } from '@sapphire/snowflake';
 
 export default class extends Serializer {
 	/**

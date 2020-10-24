@@ -1,8 +1,8 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { UniqueRoleSet } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
-import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 	public validate(data: UniqueRoleSet, { language, guild }: SerializerUpdateContext) {

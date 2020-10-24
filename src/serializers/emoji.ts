@@ -1,6 +1,6 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { resolveEmoji } from '@utils/util';
-import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {

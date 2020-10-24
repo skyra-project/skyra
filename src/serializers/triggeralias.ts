@@ -1,7 +1,7 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { TriggerAlias } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
-import { Serializer, SerializerUpdateContext } from 'klasa';
 
 export default class extends Serializer {
 	public validate(data: TriggerAlias, { language }: SerializerUpdateContext) {

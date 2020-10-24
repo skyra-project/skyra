@@ -46,14 +46,14 @@ export default class extends Monitor {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () =>
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, async () =>
 					new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setDescription(`[${message.language.get(LanguageKeys.Misc.JumpTo)}](${message.url})`)
+						.setDescription(`[${await message.fetchLocale(LanguageKeys.Misc.JumpTo)}](${message.url})`)
 						.setFooter(`#${(message.channel as TextChannel).name}`)
 						.attachFiles([new MessageAttachment(buffer, filename)])
 						.setImage(`attachment://${filename}`)

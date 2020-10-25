@@ -20,11 +20,11 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [countryName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const countries = await this.fetchAPI(message, countryName);
-		if (countries.length === 0) throw message.language.get(LanguageKeys.System.QueryFail);
+		if (countries.length === 0) throw message.fetchLocale(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, countries);
 		await display.start(response, message.author.id);
@@ -33,14 +33,15 @@ export default class extends SkyraCommand {
 
 	private async fetchAPI(message: KlasaMessage, countryName: string) {
 		const apiResult = await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`).catch(() => {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw message.fetchLocale(LanguageKeys.System.QueryFail);
 		});
 		return apiResult;
 	}
 
 	private async buildDisplay(message: KlasaMessage, countries: CountryResultOk) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.CountryTitles);
-		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.CountryFields);
+		const language = await message.fetchLanguage();
+		const titles = language.get(LanguageKeys.Commands.Tools.CountryTitles);
+		const fieldsData = language.get(LanguageKeys.Commands.Tools.CountryFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const country of countries) {
@@ -54,7 +55,7 @@ export default class extends SkyraCommand {
 						[
 							`${fieldsData.overview.officialName}: ${country.altSpellings[2] ?? country.name}`,
 							`${fieldsData.overview.capital}: ${country.capital}`,
-							`${fieldsData.overview.population}: ${country.population.toLocaleString(message.language.name)}`
+							`${fieldsData.overview.population}: ${country.population.toLocaleString(language.name)}`
 						].join('\n')
 					)
 					.addField(titles.LANGUAGES, country.languages.map(mapNativeName).join('\n'))
@@ -62,9 +63,7 @@ export default class extends SkyraCommand {
 						titles.OTHER,
 						[
 							`${fieldsData.other.demonym}: ${country.demonym}`,
-							country.area
-								? `${fieldsData.other.area}: ${country.area.toLocaleString(message.language.name)} km${SuperScriptTwo}`
-								: null,
+							country.area ? `${fieldsData.other.area}: ${country.area.toLocaleString(language.name)} km${SuperScriptTwo}` : null,
 							`${fieldsData.other.currencies}: ${country.currencies.map(mapCurrency).join(', ')}`
 						]
 							.filter(Boolean)

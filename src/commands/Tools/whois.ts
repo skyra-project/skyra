@@ -3,7 +3,7 @@ import { Colors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Emojis, Time } from '@utils/constants';
 import { GuildMember, MessageEmbed, Permissions, PermissionString, Role, User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, Language } from 'klasa';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 const { FLAGS } = Permissions;
@@ -41,13 +41,14 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user]: [User]) {
 		const member = await message.guild!.members.fetch(user.id).catch(() => null);
+		const language = await message.fetchLanguage();
 
-		return message.sendMessage(member ? this.member(message, member) : this.user(message, user));
+		return message.sendMessage(member ? this.member(language, member) : this.user(language, user));
 	}
 
-	private user(message: KlasaMessage, user: User) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.WhoisUserTitles);
-		const fields = message.language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
+	private user(language: Language, user: User) {
+		const titles = language.get(LanguageKeys.Commands.Tools.WhoisUserTitles);
+		const fields = language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
 
 		return new MessageEmbed()
 			.setColor(Colors.White)
@@ -58,9 +59,9 @@ export default class extends SkyraCommand {
 			.setTimestamp();
 	}
 
-	private member(message: KlasaMessage, member: GuildMember) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.WhoisMemberTitles);
-		const fields = message.language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
+	private member(language: Language, member: GuildMember) {
+		const titles = language.get(LanguageKeys.Commands.Tools.WhoisMemberTitles);
+		const fields = language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
 
 		const embed = new MessageEmbed()
 			.setColor(member.displayColor || Colors.White)
@@ -71,8 +72,8 @@ export default class extends SkyraCommand {
 			.setFooter(fields.footer, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp();
 
-		this.applyMemberRoles(message, member, embed);
-		this.applyMemberKeyPermissions(message, member, embed);
+		this.applyMemberRoles(language, member, embed);
+		this.applyMemberKeyPermissions(language, member, embed);
 		return embed;
 	}
 
@@ -82,36 +83,35 @@ export default class extends SkyraCommand {
 		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 
-	private applyMemberRoles(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
+	private applyMemberRoles(language: Language, member: GuildMember, embed: MessageEmbed) {
 		if (member.roles.cache.size <= 1) return;
 
 		const roles = member.roles.cache.sorted(sortRanks);
 		roles.delete(member.guild.id);
 		embed.splitFields(
-			message.language.get(
-				roles.size === 1 ? LanguageKeys.Commands.Tools.WhoisMemberRoles : LanguageKeys.Commands.Tools.WhoisMemberRolesPlural,
-				{ count: roles.size }
-			),
+			language.get(roles.size === 1 ? LanguageKeys.Commands.Tools.WhoisMemberRoles : LanguageKeys.Commands.Tools.WhoisMemberRolesPlural, {
+				count: roles.size
+			}),
 			[...roles.values()].join(' ')
 		);
 	}
 
-	private applyMemberKeyPermissions(message: KlasaMessage, member: GuildMember, embed: MessageEmbed) {
+	private applyMemberKeyPermissions(language: Language, member: GuildMember, embed: MessageEmbed) {
 		if (member.permissions.has(this.kAdministratorPermission)) {
 			embed.addField(
-				message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions),
-				message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissionsAll)
+				language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions),
+				language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissionsAll)
 			);
 			return;
 		}
 
 		const permissions: string[] = [];
 		for (const [name, bit] of this.kKeyPermissions) {
-			if (member.permissions.has(bit)) permissions.push(message.language.PERMISSIONS[name]);
+			if (member.permissions.has(bit)) permissions.push(language.PERMISSIONS[name]);
 		}
 
 		if (permissions.length > 0) {
-			embed.addField(message.language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions), permissions.join(', '));
+			embed.addField(language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions), permissions.join(', '));
 		}
 	}
 

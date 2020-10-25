@@ -21,12 +21,12 @@ export default class extends SkyraCommand {
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
-			throw message.language.get(LanguageKeys.Commands.Tools.WikipediaNotfound);
+			throw message.fetchLocale(LanguageKeys.Commands.Tools.WikipediaNotfound);
 		}
 
 		const pageURL = `https://en.wikipedia.org/wiki/${this.parseURL(input)}`;
 		const content = text.query.pages[text.query.pageids[0]];
-		const definition = this.content(content.extract, pageURL, message.language);
+		const definition = this.content(content.extract, pageURL, await message.fetchLanguage());
 
 		const embed = new MessageEmbed()
 			.setTitle(content.title)
@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 
 			return await fetch<WikipediaResultOk<'extracts'>>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 

@@ -57,11 +57,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [game]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = await this.fetchAPI(message, game);
-		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
+		if (!entries.length) throw message.fetchLocale(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, message);
 		await display.start(response, message.author.id);
@@ -83,13 +83,14 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 
 	private async buildDisplay(entries: Game[], message: KlasaMessage) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.IgdbTitles);
-		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.IgdbData);
+		const language = await message.fetchLanguage();
+		const titles = language.get(LanguageKeys.Commands.Tools.IgdbTitles);
+		const fieldsData = language.get(LanguageKeys.Commands.Tools.IgdbData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

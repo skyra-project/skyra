@@ -25,11 +25,11 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage, [gameName]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, gameName);
-		if (!entries.length) throw message.language.get(LanguageKeys.System.QueryFail);
+		if (!entries.length) throw message.fetchLocale(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(entries[0].hits, message);
 		await display.start(response, message.author.id);
@@ -65,24 +65,25 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 
 	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.EshopTitles);
+		const language = await message.fetchLanguage();
+		const titles = language.get(LanguageKeys.Commands.Tools.EshopTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
 			const price = game.msrp
 				? game.msrp > 0
-					? message.language.get(LanguageKeys.Commands.Tools.EshopPricePaid, { price: game.msrp })
-					: message.language.get(LanguageKeys.Commands.Tools.EshopPriceFree)
+					? language.get(LanguageKeys.Commands.Tools.EshopPricePaid, { price: game.msrp })
+					: language.get(LanguageKeys.Commands.Tools.EshopPriceFree)
 				: 'TBD';
 			const esrbText = game.esrb
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
-				: message.language.get(LanguageKeys.Commands.Tools.EshopNotInDatabase);
+				: language.get(LanguageKeys.Commands.Tools.EshopNotInDatabase);
 
 			display.addPage((embed: MessageEmbed) =>
 				embed

@@ -6,7 +6,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { Invite, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
@@ -21,7 +21,7 @@ export default class extends RichDisplayCommand {
 
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild!.fetchInvites();
@@ -30,7 +30,7 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw message.language.get(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
+		if (topTen.length === 0) throw message.fetchLocale(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
 		const display = await this.buildDisplay(message, topTen);
 
@@ -39,12 +39,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
+		const language = await message.fetchLanguage();
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(message.language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild! }))
+				.setTitle(language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild! }))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedData = message.language.get(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
+		const embedData = language.get(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) =>
@@ -60,7 +61,7 @@ export default class extends RichDisplayCommand {
 						].join('\n')
 					)
 					.addField(embedData.createdAt, this.resolveCreationDate(invite.createdTimestamp, embedData.createdAtUnknown), true)
-					.addField(embedData.expiresIn, this.resolveExpiryDate(message, invite.expiresTimestamp, embedData.neverExpress), true)
+					.addField(embedData.expiresIn, this.resolveExpiryDate(language, invite.expiresTimestamp, embedData.neverExpress), true)
 			);
 		}
 
@@ -72,8 +73,8 @@ export default class extends RichDisplayCommand {
 		return uses;
 	}
 
-	private resolveExpiryDate(message: KlasaMessage, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
-		if (expiresTimestamp !== null && expiresTimestamp > 0) return message.language.duration(expiresTimestamp - Date.now(), 2);
+	private resolveExpiryDate(language: Language, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
+		if (expiresTimestamp !== null && expiresTimestamp > 0) return language.duration(expiresTimestamp - Date.now(), 2);
 		return fallback;
 	}
 

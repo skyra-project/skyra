@@ -19,7 +19,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const animEmotes: string[] = [];
@@ -43,7 +43,7 @@ export default class extends RichDisplayCommand {
 				.setAuthor(
 					[
 						`${message.guild!.emojis.cache.size}`,
-						`${message.language.get(LanguageKeys.Commands.Tools.EmotesTitle)}`,
+						`${await message.fetchLocale(LanguageKeys.Commands.Tools.EmotesTitle)}`,
 						`${message.guild!.name}`
 					].join(' '),
 					message.guild!.iconURL({ format: 'png' })!

@@ -9,7 +9,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['movie', 'tmdb'],
@@ -23,14 +23,15 @@ export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: KlasaMessage, [movie, year]: [string, string?]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(message, movie, year);
-		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
+		if (!entries.length) throw message.fetchLocale(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message);
+		const display = await this.buildDisplay(entries, message, language);
 		await display.start(response, message.author.id);
 		return response;
 	}
@@ -45,7 +46,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbMovieList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -56,13 +57,13 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbMovie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(movies: Tmdb.TmdbMovieList['results'], message: KlasaMessage) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.MoviesTitles);
-		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.MoviesData);
+	private async buildDisplay(movies: Tmdb.TmdbMovieList['results'], message: KlasaMessage, language: Language) {
+		const titles = language.get(LanguageKeys.Commands.Tools.MoviesTitles);
+		const fieldsData = language.get(LanguageKeys.Commands.Tools.MoviesData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(message, movie.id)));
@@ -75,11 +76,7 @@ export default class extends RichDisplayCommand {
 					.setImage(`https://image.tmdb.org/t/p/original${movie.backdrop_path}`)
 					.setThumbnail(`https://image.tmdb.org/t/p/original${movie.poster_path}`)
 					.setDescription(cutText(movie.overview, 750))
-					.addField(
-						titles.runtime,
-						movie.runtime ? message.language.duration(movie.runtime * 60 * 1000) : fieldsData.movieInProduction,
-						true
-					)
+					.addField(titles.runtime, movie.runtime ? language.duration(movie.runtime * 60 * 1000) : fieldsData.movieInProduction, true)
 					.addField(titles.userScore, movie.vote_average ? movie.vote_average : fieldsData.movieInProduction, true)
 					.addField(titles.status, movie.status, true)
 					.addField(titles.releaseDate, this.releaseDateTimestamp.displayUTC(movie.release_date), true)

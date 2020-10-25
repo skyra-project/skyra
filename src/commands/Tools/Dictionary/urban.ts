@@ -21,7 +21,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
@@ -44,9 +44,11 @@ export default class extends RichDisplayCommand {
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 		).setFooterSuffix(' - © Urban Dictionary');
 
+		const language = await message.fetchLanguage();
+
 		for (const result of results) {
-			const definition = this.parseDefinition(result.definition, result.permalink, message.language);
-			const example = result.example ? this.parseDefinition(result.example, result.permalink, message.language) : 'None';
+			const definition = this.parseDefinition(result.definition, result.permalink, language);
+			const example = result.example ? this.parseDefinition(result.example, result.permalink, language) : 'None';
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setURL(result.permalink)

@@ -6,7 +6,8 @@ import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
 import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
 import { getContent } from '@utils/util';
 import { TextChannel } from 'discord.js';
-import { KlasaMessage, Serializer } from 'klasa';
+import { KlasaMessage } from 'klasa';
+import { Serializer } from '@lib/database';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 
@@ -23,10 +24,10 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as TextChannel]: TextChannel[]) => {
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const target = await channel.messages.fetch(arg).catch(() => null);
 			if (target) return target;
-			throw message.language.get(LanguageKeys.System.MessageNotFound);
+			throw message.fetchLocale(LanguageKeys.System.MessageNotFound);
 		});
 	}
 

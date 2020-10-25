@@ -41,7 +41,7 @@ const kRandomSunSign = createPick([...kSunSigns]);
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
+			throw message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
 		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(message, sign, day);
 
-		const titles = message.language.get(LanguageKeys.Commands.Tools.HoroscopeTitles, {
+		const titles = await message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeTitles, {
 			sign,
 			intensity,
 			keywords,
@@ -71,7 +71,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
+			throw message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

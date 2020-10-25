@@ -91,7 +91,7 @@
 		"@commitlint/cli": "^11.0.0",
 		"@commitlint/config-conventional": "^11.0.0",
 		"@discordjs/collection": "^0.1.6",
-		"@favware/graphql-pokemon": "^4.3.0",
+		"@favware/graphql-pokemon": "^4.4.0",
 		"@klasa/dapi-types": "^0.3.0",
 		"@playlyfe/gql": "^2.6.2",
 		"@skyra/eslint-config": "^5.3.3",

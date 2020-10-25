@@ -444,10 +444,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@favware/graphql-pokemon@^4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-4.3.0.tgz#c11236c397930a4d01324f3639571a01a4207f6e"
-  integrity sha512-rCuu5v3U2qjQ/MQhZIXw+oGOjintkKnxDJnoSWk8yPxIjtM62IU5zYPxS5Fbl53uYdoFgAddf9eN58c6+IkH0Q==
+"@favware/graphql-pokemon@^4.4.0":
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/@favware/graphql-pokemon/-/graphql-pokemon-4.4.0.tgz#64507e59857ba0033b35275197314e8be9220b66"
+  integrity sha512-ZqAUWXBSMscV7G2BrhhWLjg9oB/FlbPtOFITYWgrsSvgGM2dCpVk1r5aGkXhB/imhqT9TB2wTJqgdLImH3OQ6g==
   dependencies:
     graphql "^15.3.0"
 

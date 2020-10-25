@@ -69,7 +69,7 @@
 		"colorette": "^1.2.1",
 		"confusables": "^1.0.0",
 		"diff": "^4.0.2",
-		"discord.js": "12.3.x",
+		"discord.js": "^12.4.1",
 		"emoji-regex": "^9.2.0",
 		"fs-nextra": "^0.5.1",
 		"gifencoder": "^2.0.1",

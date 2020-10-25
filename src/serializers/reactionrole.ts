@@ -1,5 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import type { ReactionRole } from '@lib/types/namespaces/GuildSettings';
+import { ReactionRole, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';

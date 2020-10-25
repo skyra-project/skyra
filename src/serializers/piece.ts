@@ -1,8 +1,8 @@
-import { Serializer } from '@lib/database';
+import { Serializer, SerializerStore } from '@lib/database';
 
 export default class UserSerializer extends Serializer {
-	public constructor(...args) {
-		super(...args);
+	public constructor(store: SerializerStore, file: string[], directory: string) {
+		super(store, file, directory);
 
 		// Adds all pieces, custom or not, to this serialize piece for use in schemas
 		this.aliases = [...this.client.pieceStores.keys()].map((type) => type.slice(0, -1));

@@ -1,5 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/types/namespaces/GuildSettings';
+import { Serializer, SerializerUpdateContext, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
 export default class extends Serializer {

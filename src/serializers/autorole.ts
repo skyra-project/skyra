@@ -1,5 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { RolesAuto } from '@lib/types/namespaces/GuildSettings';
+import { RolesAuto, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 

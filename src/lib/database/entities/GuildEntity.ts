@@ -3,6 +3,8 @@ import { PREFIX } from '@root/config';
 import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 import { Time } from '@utils/constants';
+import { container } from 'tsyringe';
+import { SkyraClient } from '@lib/SkyraClient';
 
 @Entity('guilds', { schema: 'public' })
 @Check(/* sql */ `"prefix"::text <> ''::text`)
@@ -652,6 +654,14 @@ export class GuildEntity extends BaseEntity {
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsOnActionHideAuthor })
 	@Column('boolean', { name: 'suggestions.on-action.hide-author', default: false })
 	public suggestionsOnActionHideAuthor = false;
+
+	private get client() {
+		return container.resolve(SkyraClient);
+	}
+
+	public get guild() {
+		return this.client.guilds.cache.get(this.id)!;
+	}
 }
 
 export interface PermissionsNode {

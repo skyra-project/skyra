@@ -1,5 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import type { CustomCommand } from '@lib/types/namespaces/GuildSettings';
+import { CustomCommand, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ZeroWidthSpace } from '@utils/constants';
 

@@ -1,5 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { TriggerIncludes } from '@lib/types/namespaces/GuildSettings';
+import { Serializer, SerializerUpdateContext, TriggerIncludes } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 

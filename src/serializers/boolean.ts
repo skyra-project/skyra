@@ -1,8 +1,9 @@
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Serializer, SerializerOptions, SerializerUpdateContext } from 'klasa';
+import { Serializer, SerializerUpdateContext } from '@lib/database';
+import { AliasPieceOptions } from 'klasa';
 
-@ApplyOptions<SerializerOptions>({
+@ApplyOptions<AliasPieceOptions>({
 	aliases: ['bool']
 })
 export default class extends Serializer {
@@ -13,7 +14,7 @@ export default class extends Serializer {
 		const boolean = String(data).toLowerCase();
 		if (this.kTruths.has(boolean)) return true;
 		if (this.kFalses.has(boolean)) return false;
-		throw language.get(LanguageKeys.Resolvers.InvalidBool, { name: entry.key });
+		throw language.get(LanguageKeys.Resolvers.InvalidBool, { name: entry.name });
 	}
 
 	public stringify(data: string) {

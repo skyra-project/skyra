@@ -1,13 +1,11 @@
-import { PermissionsNode } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
-import { Command, Serializer, SerializerUpdateContext } from 'klasa';
+import { PermissionsNode, Serializer, SerializerUpdateContext } from '@lib/database';
+import { Command } from 'klasa';
 
 export default class extends Serializer {
-	public async validate(data: PermissionsNode, { entry, language, guild }: SerializerUpdateContext) {
-		if (guild === null) throw new TypeError('guild must not be null.');
-
+	public async validate(data: PermissionsNode, { entry, language, entity: { guild } }: SerializerUpdateContext) {
 		// Safe-guard checks against arbitrary data
 		if (!isObject(data)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
 		if (Object.keys(data).length !== 3) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
@@ -17,7 +15,7 @@ export default class extends Serializer {
 
 		// Check for target validity
 		let target: GuildMember | Role | undefined = undefined;
-		if (entry.key === 'roles') {
+		if (entry.name === 'roles') {
 			const role = guild.roles.cache.get(data.id);
 			if (!role) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalidTarget);
 			target = role;

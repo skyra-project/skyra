@@ -1,11 +1,10 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { StickyRole } from '@lib/types/namespaces/GuildSettings';
+import { Serializer, SerializerUpdateContext, StickyRole } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 
 export default class extends Serializer {
-	public validate(data: StickyRole, { language, guild }: SerializerUpdateContext) {
+	public validate(data: StickyRole, { language, entity: { guild } }: SerializerUpdateContext) {
 		if (
 			isObject(data) &&
 			Object.keys(data).length === 2 &&

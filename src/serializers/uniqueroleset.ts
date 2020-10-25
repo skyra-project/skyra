@@ -1,5 +1,4 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { UniqueRoleSet } from '@lib/types/namespaces/GuildSettings';
+import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';

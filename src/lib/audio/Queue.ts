@@ -361,6 +361,7 @@ export class Queue {
 	 */
 	public async clearTracks(): Promise<void> {
 		await this.store.redis.del(this.keys.next);
+		this.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**

@@ -1,5 +1,6 @@
 import type { Config } from '@jest/types';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export default async (): Promise<Config.InitialOptions> => ({
 	displayName: 'unit test',
 	preset: 'ts-jest',
@@ -16,7 +17,7 @@ export default async (): Promise<Config.InitialOptions> => ({
 	setupFilesAfterEnv: ['<rootDir>/tests/jest.setup.ts'],
 	globals: {
 		'ts-jest': {
-			tsConfig: '<rootDir>/tests/tsconfig.json'
+			tsconfig: '<rootDir>/tests/tsconfig.json'
 		}
 	},
 	coveragePathIgnorePatterns: [

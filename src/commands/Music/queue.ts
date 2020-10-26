@@ -1,6 +1,6 @@
 import { Queue } from '@lib/audio';
 import { DbSet } from '@lib/structures/DbSet';
-import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -12,7 +12,7 @@ import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<MusicCommand.Options>({
 	aliases: ['q', 'playing-time', 'pt'],
 	description: (language) => language.get(LanguageKeys.Commands.Music.QueueDescription),
 	requiredPermissions: ['ADD_REACTIONS', 'MANAGE_MESSAGES', 'EMBED_LINKS', 'READ_MESSAGE_HISTORY']

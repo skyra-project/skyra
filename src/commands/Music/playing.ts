@@ -1,4 +1,4 @@
-import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TrackInfo } from '@skyra/audio';
@@ -7,7 +7,7 @@ import { requireMusicPlaying } from '@utils/Music/Decorators';
 import { IMAGE_EXTENSION, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<MusicCommand.Options>({
 	aliases: ['np', 'nowplaying'],
 	description: (language) => language.get(LanguageKeys.Commands.Music.PlayingDescription),
 	requiredPermissions: ['EMBED_LINKS']

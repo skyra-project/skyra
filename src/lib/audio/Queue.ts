@@ -334,6 +334,7 @@ export class Queue {
 	 */
 	public async moveTracks(from: number, to: number): Promise<void> {
 		await this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
+		this.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**
@@ -341,6 +342,7 @@ export class Queue {
 	 */
 	public async shuffleTracks(): Promise<void> {
 		await this.store.redis.lshuffle(this.keys.next, Date.now());
+		this.client.emit(Events.MusicQueueSync, this);
 	}
 
 	/**

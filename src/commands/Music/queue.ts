@@ -37,7 +37,7 @@ export default class extends MusicCommand {
 		const tracks = await this.getTrackInformation(audio);
 
 		if (current) {
-			const track = await audio.player.node.decode(current.entry.track);
+			const track = current.entry.info;
 			const nowPlayingDescription = [
 				track.isStream ? message.language.get(LanguageKeys.Commands.Music.QueueNowplayingLiveStream) : showSeconds(track.length),
 				message.language.get(LanguageKeys.Commands.Music.QueueNowplaying, {

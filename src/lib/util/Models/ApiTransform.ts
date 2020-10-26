@@ -1,4 +1,5 @@
-import {
+import type { TrackInfo } from '@skyra/audio';
+import type {
 	Channel,
 	DMChannel,
 	Guild,
@@ -298,3 +299,13 @@ export interface FlattenedMember {
 }
 
 // #endregion Member
+
+// #region Music
+
+export interface PublicFlattenedMusic {
+	guildData: PublicFlattenedGuild;
+	currentlyPlaying?: TrackInfo;
+	queueLength: number;
+}
+
+// #endregion Music

@@ -2,7 +2,7 @@
 import { map, reverse } from '@lib/misc';
 import type { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
-import type { Player, Track } from '@skyra/audio';
+import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { container } from 'tsyringe';
 import type { QueueStore } from './QueueStore';
@@ -13,8 +13,12 @@ export interface QueueEntry {
 }
 
 export interface NP {
-	entry: QueueEntry;
+	entry: NowPlayingEntry;
 	position: number;
+}
+
+export interface NowPlayingEntry extends QueueEntry {
+	info: TrackInfo;
 }
 
 function serializeEntry(value: QueueEntry): string {
@@ -380,7 +384,11 @@ export class Queue {
 	 */
 	public async nowPlaying(): Promise<NP | null> {
 		const [entry, position] = await Promise.all([this.getCurrentTrack(), this.store.redis.get(this.keys.position)]);
-		return entry ? { entry, position: parseInt(position!, 10) || 0 } : null;
+		if (entry === null) return null;
+
+		const info = await this.player.node.decode(entry.track);
+
+		return { entry: { ...entry, info }, position: parseInt(position!, 10) || 0 };
 	}
 
 	public async tracks(start = 0, end = -1): Promise<QueueEntry[]> {

@@ -23,6 +23,7 @@ export const enum OutgoingWebsocketAction {
 	MusicSongSeekUpdate = 'MUSIC_SONG_SEEK_UPDATE',
 	MusicSongVolumeUpdate = 'MUSIC_SONG_VOLUME_UPDATE',
 	MusicSync = 'MUSIC_SYNC',
+	MusicVoiceChannelJoin = 'MUSIC_VOICE_CHANNEL_JOIN',
 	MusicVoiceChannelLeave = 'MUSIC_VOICE_CHANNEL_LEAVE',
 	MusicWebsocketDisconnect = 'MUSIC_WEBSOCKET_DISCONNECT'
 }

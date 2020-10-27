@@ -1,4 +1,4 @@
-import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -10,7 +10,7 @@ import {
 	requireUserInVoiceChannel
 } from '@utils/Music/Decorators';
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PromoteDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.PromoteExtended),
 	usage: '<number:integer>'

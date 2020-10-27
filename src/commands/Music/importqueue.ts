@@ -1,6 +1,6 @@
 import { QueueEntry } from '@lib/audio';
 import { empty, filter, map, take } from '@lib/misc';
-import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
@@ -11,7 +11,7 @@ import { fetch, FetchResultTypes } from '@utils/util';
 import { deserialize } from 'binarytf';
 import { maximumExportQueueSize } from './exportqueue';
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<MusicCommand.Options>({
 	aliases: ['iq'],
 	cooldown: 30,
 	description: (language) => language.get(LanguageKeys.Commands.Music.ImportQueueDescription),

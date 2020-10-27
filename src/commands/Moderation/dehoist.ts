@@ -1,6 +1,5 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { MusicCommandOptions } from '@lib/structures/MusicCommand';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
@@ -12,7 +11,7 @@ import { KlasaMessage } from 'klasa';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['dh'],
 	cooldown: 5,
 	description: (language) => language.get(LanguageKeys.Commands.Moderation.DehoistDescription),

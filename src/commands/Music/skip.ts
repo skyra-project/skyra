@@ -1,5 +1,5 @@
 import { Queue } from '@lib/audio';
-import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -7,7 +7,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { requireSongPresent } from '@utils/Music/Decorators';
 import { VoiceChannel } from 'discord.js';
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.SkipDescription),
 	usage: '[force]'
 })

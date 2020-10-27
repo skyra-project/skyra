@@ -1,10 +1,10 @@
-import { MusicCommand, MusicCommandOptions } from '@lib/structures/MusicCommand';
+import { MusicCommand } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireDj, requireQueueNotEmpty } from '@utils/Music/Decorators';
 
-@ApplyOptions<MusicCommandOptions>({
+@ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.ShuffleDescription)
 })
 export default class extends MusicCommand {

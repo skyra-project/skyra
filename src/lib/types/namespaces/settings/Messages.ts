@@ -1,12 +1,12 @@
 export const enum Messages {
-	Farewell = 'messages.farewell',
-	Greeting = 'messages.greeting',
-	JoinDM = 'messages.join-dm',
-	IgnoreChannels = 'messages.ignoreChannels',
-	AnnouncementEmbed = 'messages.announcement-embed',
-	ModerationDM = 'messages.moderation-dm',
-	ModerationReasonDisplay = 'messages.moderation-reason-display',
-	ModerationMessageDisplay = 'messages.moderation-message-display',
-	ModerationAutoDelete = 'messages.moderation-auto-delete',
-	ModeratorNameDisplay = 'messages.moderator-name-display'
+	Farewell = 'messagesFarewell',
+	Greeting = 'messagesGreeting',
+	JoinDM = 'messagesJoinDM',
+	IgnoreChannels = 'messagesIgnoreChannels',
+	AnnouncementEmbed = 'messagesAnnouncementEmbed',
+	ModerationDM = 'messagesModerationDm',
+	ModerationReasonDisplay = 'messagesModerationReasonDisplay',
+	ModerationMessageDisplay = 'messagesModerationMessageDisplay',
+	ModerationAutoDelete = 'messagesModerationAutoDelete',
+	ModeratorNameDisplay = 'messagesModeratorNameDisplay'
 }

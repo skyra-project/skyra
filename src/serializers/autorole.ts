@@ -1,12 +1,25 @@
 import { RolesAuto, Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 
-export default class extends Serializer {
-	public validate(data: RolesAuto, { language }: SerializerUpdateContext) {
-		if (isObject(data) && Object.keys(data).length === 2 && typeof data.id === 'string' && typeof data.points === 'number') return data;
+export default class extends Serializer<RolesAuto> {
+	public parse(value: string, context: SerializerUpdateContext): RolesAuto | Promise<RolesAuto> {
+		const [id, rawPoints] = value.split(' ');
+		if (!id || !context.entity.guild.roles.cache.has(id)) {
+			// TODO(kyranet): Localize this.
+			throw new Error('id must be a valid role.');
+		}
 
-		throw language.get(LanguageKeys.Serializers.AutoRoleInvalid);
+		const points = Number(rawPoints);
+		if (!Number.isSafeInteger(points)) {
+			// TODO(kyranet): Localize this.
+			throw new Error('points must be a valid integer.');
+		}
+
+		return { id, points };
+	}
+
+	public isValid(value: RolesAuto): boolean {
+		return isObject(value) && Object.keys(value).length === 2 && typeof value.id === 'string' && typeof value.points === 'number';
 	}
 
 	public stringify(value: RolesAuto) {

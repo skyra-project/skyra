@@ -1,4 +1,4 @@
 export const enum Trigger {
-	Alias = 'trigger.alias',
-	Includes = 'trigger.includes'
+	Alias = 'triggerAlias',
+	Includes = 'triggerIncludes'
 }

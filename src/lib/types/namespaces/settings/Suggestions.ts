@@ -1,6 +1,6 @@
 export enum Suggestions {
-	AscendingID = 'suggestions.id',
-	SuggestionsChannel = 'suggestions.channel'
+	ID = 'suggestionsId',
+	SuggestionsChannel = 'suggestionsChannel'
 }
 
 import { VotingEmojis as VotingEmojisInternal } from './Suggestions/VotingEmojis';

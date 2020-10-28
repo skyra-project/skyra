@@ -3,44 +3,19 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
 import { ConfigurableKeyValue } from '../ConfigurableKeyValue';
 
-export abstract class Serializer extends AliasPiece {
+export abstract class Serializer<T> extends AliasPiece {
 	/**
-	 * Resolve a value given directly from the {@link Settings#update} call.
-	 * @param data The data to resolve
-	 * @param context The context in which this serializer is called
+	 * Resolves a string into a value.
+	 * @param value The value to parsed.
+	 * @param context The context for the key.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public validate(data: unknown, context: SerializerUpdateContext): unknown {
-		return data;
-	}
+	public abstract parse(value: string, context: SerializerUpdateContext): T | Promise<T>;
 
 	/**
-	 * Resolve a value given directly from the {@link Settings#resolve} call.
-	 * @param data The data to resolve
-	 * @param context The context in which this serializer is called
+	 * Check whether or not the value is valid.
+	 * @param value The value to check.
 	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public resolve(data: unknown, context: SerializerUpdateContext): unknown {
-		return data;
-	}
-
-	/**
-	 * The deserialize method to be overwritten in actual Serializers.
-	 * @param data The data to deserialize
-	 * @param context The context in which this serializer is called
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public deserialize(data: unknown, context: SerializerUpdateContext): unknown {
-		return data;
-	}
-
-	/**
-	 * The serialize method to be overwritten in actual Serializers.
-	 * @param data The data to serialize
-	 */
-	public serialize(data: unknown): unknown {
-		return data;
-	}
+	public abstract isValid(value: T, context: SerializerUpdateContext): boolean;
 
 	/**
 	 * The stringify method to be overwritten in actual Serializers
@@ -48,7 +23,7 @@ export abstract class Serializer extends AliasPiece {
 	 * @param guild The guild given for context in this call
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public stringify(data: unknown, entry: GuildEntity): string {
+	public stringify(data: T, context: SerializerUpdateContext): string {
 		return String(data);
 	}
 

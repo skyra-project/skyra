@@ -1,8 +1,8 @@
 export const enum Reactions {
-	Enabled = 'selfmod.reactions.enabled',
-	IgnoredRoles = 'selfmod.reactions.ignoredRoles',
-	IgnoredChannels = 'selfmod.reactions.ignoredChannels',
-	Maximum = 'selfmod.reactions.maximum',
+	Enabled = 'selfmodReactionsEnabled',
+	IgnoredRoles = 'selfmodReactionsIgnoredRoles',
+	IgnoredChannels = 'selfmodReactionsIgnoredChannels',
+	Maximum = 'selfmodReactionsMaximum',
 	WhiteList = 'selfmod.reactions.whitelist',
 	BlackList = 'selfmod.reactions.blacklist',
 	SoftAction = 'selfmod.reactions.softAction',

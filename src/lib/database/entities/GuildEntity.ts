@@ -132,7 +132,7 @@ export class GuildEntity extends BaseEntity {
 	public channelsIgnoreReactionAdds: string[] = [];
 
 	@Column('simple-json', { name: 'command-autodelete', array: true, default: () => 'ARRAY[]::JSON[]' })
-	public commandAutodelete: [string, number][] = [];
+	public commandAutodelete: CommandAutoDelete[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'disabledChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
@@ -335,13 +335,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('integer', { name: 'selfmod.capitals.thresholdDuration', default: 60000 })
 	public selfmodCapitalsThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksWhiteList })
-	@Column('varchar', { name: 'selfmod.links.whitelist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodLinksWhitelist: string[] = [];
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksEnabled })
 	@Column('boolean', { name: 'selfmod.links.enabled', default: false })
 	public selfmodLinksEnabled = false;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksWhiteList })
+	@Column('varchar', { name: 'selfmod.links.whitelist', length: 128, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodLinksWhitelist: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodLinksIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.links.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
@@ -471,6 +471,9 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'selfmod.filter.enabled', default: false })
 	public selfmodFilterEnabled = false;
 
+	@Column('varchar', { name: 'selfmod.filter.raw', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodFilterRaw: string[] = [];
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodFilterIgnoredRoles, type: 'role' })
 	@Column('varchar', { name: 'selfmod.filter.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodFilterIgnoredRoles: string[] = [];
@@ -493,9 +496,6 @@ export class GuildEntity extends BaseEntity {
 
 	@Column('integer', { name: 'selfmod.filter.thresholdDuration', default: 60000 })
 	public selfmodFilterThresholdDuration = 60000;
-
-	@Column('varchar', { name: 'selfmod.filter.raw', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
-	public selfmodFilterRaw: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodReactionsEnabled })
 	@Column('boolean', { name: 'selfmod.reactions.enabled', default: false })
@@ -628,12 +628,12 @@ export class GuildEntity extends BaseEntity {
 	@Column('simple-json', { name: 'notifications.streams.twitch.streamers', array: true, default: () => 'ARRAY[]::JSON[]' })
 	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 
+	@Column('integer', { name: 'suggestions.id', default: 1 })
+	public suggestionsId = 1;
+
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpvote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: ':ArrowT:694594285487652954' })
 	public suggestionsEmojisUpvote = ':ArrowT:694594285487652954';
-
-	@Column('integer', { name: 'suggestions.id', default: 1 })
-	public suggestionsId = 1;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisDownvote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.downvote', length: 128, default: ':ArrowB:694594285269680179' })
@@ -677,6 +677,8 @@ export interface CustomCommand {
 	content: string;
 	args: string[];
 }
+
+export type CommandAutoDelete = readonly [string, number];
 
 export interface DisabledCommandChannel {
 	channel: string;

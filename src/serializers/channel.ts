@@ -1,47 +1,51 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
+import { isNullish } from '@lib/misc';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Channel, Guild } from 'discord.js';
-import { ConfigurableKeyValue, Serializer, SerializerUpdateContext } from '@lib/database';
-import { AliasPieceOptions, Language } from 'klasa';
+import { Channel } from 'discord.js';
+import { AliasPieceOptions } from 'klasa';
 
 @ApplyOptions<AliasPieceOptions>({
 	aliases: ['textchannel', 'voicechannel', 'categorychannel']
 })
-export default class extends Serializer {
-	public validate(data: string | Channel, { entry, language, entity }: SerializerUpdateContext) {
-		if (data instanceof Channel) return this.checkChannel(data, entry, language);
-		const channel = Serializer.regex.channel.test(data) ? entity.guild.channels.cache.get(Serializer.regex.channel.exec(data)![1]) : null;
-		if (channel) return this.checkChannel(channel, entry, language);
-		throw language.get('resolverInvalidChannel', { name: entry.name });
+export default class extends Serializer<string> {
+	public parse(value: string, context: SerializerUpdateContext): string | Promise<string> {
+		const channel = context.entity.guild.channels.cache.get(value);
+		if (!channel) {
+			// TODO(kyranet): Localize this.
+			throw new Error('The channel does not exist.');
+		}
+
+		if (this.isValidChannel(channel, context.entry.type)) {
+			return channel.id;
+		}
+
+		throw context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name });
 	}
 
-	public serialize(value: Channel) {
-		return value.id;
+	public isValid(value: string, context: SerializerUpdateContext): boolean {
+		const channel = context.entity.guild.channels.cache.get(value);
+		return !isNullish(channel) && this.isValidChannel(channel, context.entry.type);
 	}
 
-	// TODO(kyra): fix this
-	public stringify(value: any, guild: Guild) {
-		return (
-			(guild && guild.channels.cache.get(value)) || {
-				name: (value && value.name) || value
-			}
-		).name;
+	/**
+	 * The stringify method to be overwritten in actual Serializers
+	 * @param data The data to stringify
+	 * @param guild The guild given for context in this call
+	 */
+	public stringify(data: string, context: SerializerUpdateContext): string {
+		return context.entity.guild.channels.cache.get(data)?.name ?? 'Unknown';
 	}
 
-	private checkChannel(data: Channel, entry: ConfigurableKeyValue, language: Language) {
-		if (
-			entry.type === 'channel' ||
-			this.isTextBasedChannel(data, entry) ||
-			(entry.type === 'voicechannel' && data.type === 'voice') ||
-			(entry.type === 'categorychannel' && data.type === 'category')
-		)
-			return data;
-		throw language.get(LanguageKeys.Resolvers.InvalidChannel, { name: entry.name });
-	}
-
-	private isTextBasedChannel(data: Channel, entry: ConfigurableKeyValue): boolean {
-		if (entry.type === 'textchannel') {
-			return data.type === 'text' || data.type === 'news' || data.type === 'store';
+	private isValidChannel(channel: Channel, type: string): boolean {
+		if (isNullish(Reflect.get(channel, 'guild'))) return false;
+		switch (type) {
+			case 'textchannel':
+				return channel.type === 'text' || channel.type === 'news';
+			case 'voicechannel':
+				return channel.type === 'voice';
+			case 'categorychannel':
+				return channel.type === 'category';
 		}
 
 		return false;

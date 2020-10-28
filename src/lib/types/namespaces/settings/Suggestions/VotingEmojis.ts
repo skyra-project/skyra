@@ -1,4 +1,4 @@
 export const enum VotingEmojis {
-	UpvoteEmoji = 'suggestions.emojis.upvote',
-	DownvoteEmoji = 'suggestions.emojis.downvote'
+	UpvoteEmoji = 'suggestionsEmojisUpvote',
+	DownvoteEmoji = 'suggestionsEmojisDownvote'
 }

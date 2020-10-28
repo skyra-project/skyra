@@ -1,22 +1,31 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Guild } from 'discord.js';
+import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '@lib/database';
 
-export default class extends Serializer {
-	public validate(data: [string, number], { language }: SerializerUpdateContext) {
-		if (
-			Array.isArray(data) &&
-			data.length === 2 &&
-			typeof data[0] === 'string' &&
-			typeof data[1] === 'number' &&
-			this.client.commands.has(data[0])
-		)
-			return data;
+export default class extends Serializer<CommandAutoDelete> {
+	public parse(value: string): CommandAutoDelete | Promise<CommandAutoDelete> {
+		const [command, rawDuration] = value.split(' ');
+		if (!command) {
+			throw new Error('Invalid command');
+		}
 
-		throw language.get(LanguageKeys.Serializers.CommandAutoDeleteInvalid);
+		const duration = Number(rawDuration);
+		if (!Number.isSafeInteger(duration) || duration < 0) {
+			throw new Error('Invalid duration');
+		}
+
+		return [command, duration];
 	}
 
-	public stringify(value: [string, number], guild: Guild) {
-		return `[${value[0]} -> ${guild.language.duration(value[1], 2)}]`;
+	public isValid(value: CommandAutoDelete): boolean {
+		return (
+			Array.isArray(value) &&
+			value.length === 2 &&
+			typeof value[0] === 'string' &&
+			typeof value[1] === 'number' &&
+			this.client.commands.has(value[0])
+		);
+	}
+
+	public stringify(value: CommandAutoDelete, context: SerializerUpdateContext) {
+		return `[${value[0]} -> ${context.language.duration(value[1], 2)}]`;
 	}
 }

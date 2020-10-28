@@ -1,7 +1,7 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { StrictRequired } from '@lib/types';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { StrictRequired } from '@lib/types/util';
 import { Time } from '@utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';

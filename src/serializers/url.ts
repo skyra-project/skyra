@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer {
 	private readonly kProtocol = /^https?:\/\//;
 
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {

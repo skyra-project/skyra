@@ -1,33 +1,57 @@
 import { DisabledCommandChannel, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isObject } from '@sapphire/utilities';
-import { Guild } from 'discord.js';
+import { Awaited } from '@sapphire/utilities';
 
-export default class extends Serializer<DisabledCommandChannel> {
-	public parse(value: string, context: SerializerUpdateContext): DisabledCommandChannel | Promise<DisabledCommandChannel> {
-		throw new Error('Method not implemented.');
+export default class UserSerializer extends Serializer<DisabledCommandChannel> {
+	public parse(value: string, context: SerializerUpdateContext): Awaited<DisabledCommandChannel> {
+		const [channelID, ...commandIDs] = value.split(' ');
+
+		const channel = context.entity.guild.channels.cache.get(channelID);
+		if (!channel) {
+			throw new Error('The channel does not exist.');
+		}
+
+		if (channel.type !== 'text') {
+			throw context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name });
+		}
+
+		const commands: string[] = [];
+		for (const command of commandIDs) {
+			if (!this.client.commands.has(command)) {
+				throw new Error(`The command \`${command}\` does not exist.`);
+			}
+
+			commands.push(command);
+		}
+
+		return { channel: channel.id, commands };
 	}
 
-	public isValid(value: DisabledCommandChannel, context: SerializerUpdateContext): boolean {
-		throw new Error('Method not implemented.');
+	public isValid(value: DisabledCommandChannel, context: SerializerUpdateContext): Awaited<boolean> {
+		const channel = context.entity.guild.channels.cache.get(value.channel);
+		if (!channel) {
+			throw new Error('The channel does not exist.');
+		}
+
+		if (channel.type !== 'text') {
+			throw context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name });
+		}
+
+		for (const command of value.commands) {
+			if (!this.client.commands.has(command)) {
+				throw new Error(`The command \`${command}\` does not exist.`);
+			}
+		}
+
+		return true;
 	}
 
-	public validate(data: DisabledCommandChannel, { language }: SerializerUpdateContext) {
-		if (
-			isObject(data) &&
-			Object.keys(data).length === 2 &&
-			typeof data.channel === 'string' &&
-			Array.isArray(data.commands) &&
-			data.commands.every((cmd) => typeof cmd === 'string')
-		)
-			return data;
-
-		throw language.get(LanguageKeys.Serializers.DisabledCommandChannelInvalid);
+	public stringify(value: DisabledCommandChannel, context: SerializerUpdateContext): string {
+		const name = context.entity.guild.channels.cache.get(value.channel)?.name ?? context.language.get(LanguageKeys.Misc.UnknownChannel);
+		return `[${name} -> ${value.commands.join(' | ')}]`;
 	}
 
-	public stringify(value: DisabledCommandChannel, guild: Guild) {
-		return `[${guild.channels.cache.get(value.channel)?.name ?? guild.language.get(LanguageKeys.Misc.UnknownChannel)} -> ${value.commands.join(
-			' | '
-		)}]`;
+	public equals(left: DisabledCommandChannel, right: DisabledCommandChannel): boolean {
+		return left.channel === right.channel;
 	}
 }

@@ -2,7 +2,7 @@ import { Serializer, SerializerUpdateContext, TriggerIncludes } from '@lib/datab
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer {
 	public validate(data: TriggerIncludes, { language }: SerializerUpdateContext) {
 		if (
 			isObject(data) &&

@@ -1,6 +1,7 @@
-import { Serializer, SerializerStore } from '@lib/database';
+import { Serializer, SerializerStore, SerializerUpdateContext } from '@lib/database';
+import { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer {
+export default class UserSerializer extends Serializer<string> {
 	public constructor(store: SerializerStore, file: string[], directory: string) {
 		super(store, file, directory);
 
@@ -8,22 +9,23 @@ export default class UserSerializer extends Serializer {
 		this.aliases = [...this.client.pieceStores.keys()].map((type) => type.slice(0, -1));
 	}
 
-	public async validate(data, { entry, language }) {
-		if (entry.type === 'piece') {
-			for (const store of this.client.pieceStores.values()) {
-				const pce = store.get(data);
-				if (pce) return pce;
-			}
-			throw language.get('resolverInvalidPiece', { name: entry.key, piece: entry.type });
-		}
+	public parse(value: string, { entry, language }: SerializerUpdateContext): Awaited<string> {
 		const store = this.client.pieceStores.get(`${entry.type}s`);
 		if (!store) throw language.get('resolverInvalidStore', { store: entry.type });
-		const parsed = typeof data === 'string' ? store.get(data) : data;
+		const parsed = store.get(value);
 		if (parsed && parsed instanceof store.holds) return parsed;
-		throw language.get('resolverInvalidPiece', { name: entry.key, piece: entry.type });
+		throw language.get('resolverInvalidPiece', { name: entry.name, piece: entry.type });
 	}
 
-	public serialize(value) {
-		return value.name;
+	public isValid(value: string, { entry, language }: SerializerUpdateContext): Awaited<boolean> {
+		const store = this.client.pieceStores.get(`${entry.type}s`);
+		if (!store) throw language.get('resolverInvalidStore', { store: entry.type });
+		const parsed = store.get(value);
+		if (parsed && parsed instanceof store.holds) return true;
+		throw language.get('resolverInvalidPiece', { name: entry.name, piece: entry.type });
+	}
+
+	public serialize(value: string, { entry }: SerializerUpdateContext) {
+		return this.client.pieceStores.get(`${entry.type}s`)?.get(value)?.name ?? 'Unknown Piece';
 	}
 }

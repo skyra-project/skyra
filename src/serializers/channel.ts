@@ -1,6 +1,7 @@
 import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { isNullish } from '@lib/misc';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Awaited } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Channel } from 'discord.js';
 import { AliasPieceOptions } from 'klasa';
@@ -8,8 +9,8 @@ import { AliasPieceOptions } from 'klasa';
 @ApplyOptions<AliasPieceOptions>({
 	aliases: ['textchannel', 'voicechannel', 'categorychannel']
 })
-export default class extends Serializer<string> {
-	public parse(value: string, context: SerializerUpdateContext): string | Promise<string> {
+export default class UserSerializer extends Serializer<string> {
+	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
 		const channel = context.entity.guild.channels.cache.get(value);
 		if (!channel) {
 			// TODO(kyranet): Localize this.
@@ -23,7 +24,7 @@ export default class extends Serializer<string> {
 		throw context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name });
 	}
 
-	public isValid(value: string, context: SerializerUpdateContext): boolean {
+	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
 		const channel = context.entity.guild.channels.cache.get(value);
 		return !isNullish(channel) && this.isValidChannel(channel, context.entry.type);
 	}

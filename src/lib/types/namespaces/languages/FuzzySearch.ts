@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 
 export const Matches = FT<{ matches: number; codeblock: string }, string>('fuzzySearchMatches');
 export const Aborted = T<string>('fuzzySearchAborted');

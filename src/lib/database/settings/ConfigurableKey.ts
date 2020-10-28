@@ -1,4 +1,5 @@
 import { ColumnType, getMetadataArgsStorage } from 'typeorm';
+import type { GuildEntity } from '../entities/GuildEntity';
 import { ConfigurableKeyValue, ConfigurableKeyValueOptions } from './ConfigurableKeyValue';
 
 export const keys = new Map<string, ConfigurableKeyValue>();
@@ -9,7 +10,7 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 		const column = storage.columns.find((c) => c.target === target.constructor && c.propertyName === (property as string));
 		if (!column) throw new Error('Cannot find the metadata column.');
 
-		const name = options.name ?? column.options.name;
+		const name = (options.name ?? column.options.name) as keyof GuildEntity;
 		if (typeof name === 'undefined') throw new TypeError('The option "name" must be specified.');
 
 		const array = options.array ?? column.options.array ?? false;

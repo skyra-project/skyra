@@ -1,6 +1,7 @@
+import { GuildEntity } from '@lib/database';
+import { CustomFunctionGet, CustomGet, KeyOfType } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { CustomFunctionGet, CustomGet } from '@lib/types/Shared';
 import { CLIENT_ID } from '@root/config';
 import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
@@ -167,10 +168,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, value));
 	}
 
-	protected abstract keyEnabled: CustomGet<string, boolean>;
-	protected abstract ignoredRolesPath: CustomGet<string, readonly string[]>;
-	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
-	protected abstract softPunishmentPath: CustomGet<string, number>;
+	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
+	protected abstract ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
+	protected abstract ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
+	protected abstract softPunishmentPath: KeyOfType<GuildEntity, number>;
 	protected abstract hardPunishmentPath: HardPunishment | null;
 	protected abstract reasonLanguageKey: CustomGet<string, string>;
 
@@ -200,9 +201,9 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 }
 
 export interface HardPunishment {
-	action: CustomGet<string, SelfModeratorHardActionFlags>;
-	actionDuration: CustomGet<string, number | null>;
+	action: KeyOfType<GuildEntity, number>;
+	actionDuration: KeyOfType<GuildEntity, number | null | undefined>;
 	adder: keyof GuildSecurity['adders'];
-	adderMaximum: CustomGet<string, number | null>;
-	adderDuration: CustomGet<string, number | null>;
+	adderMaximum: KeyOfType<GuildEntity, number | null>;
+	adderDuration: KeyOfType<GuildEntity, number | null>;
 }

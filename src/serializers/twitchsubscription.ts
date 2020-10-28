@@ -1,7 +1,7 @@
 import { Serializer, SerializerUpdateContext, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer {
 	public validate(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {

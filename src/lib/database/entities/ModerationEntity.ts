@@ -3,7 +3,7 @@ import type { ModerationManager, ModerationManagerUpdateData } from '@lib/struct
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import type { AnyObject } from '@lib/types/util';
+import type { AnyObject } from '@lib/types';
 import { CLIENT_ID } from '@root/config';
 import { isNumber, parseURL } from '@sapphire/utilities';
 import { Moderation, Time } from '@utils/constants';

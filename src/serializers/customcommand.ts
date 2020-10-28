@@ -1,13 +1,14 @@
 import { CustomCommand, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Awaited } from '@sapphire/utilities';
 import { ZeroWidthSpace } from '@utils/constants';
 
-export default class extends Serializer<CustomCommand> {
-	public parse(): CustomCommand | Promise<CustomCommand> {
+export default class UserSerializer extends Serializer<CustomCommand> {
+	public parse(): Awaited<CustomCommand> {
 		throw new Error('Method not implemented.');
 	}
 
-	public isValid(value: CustomCommand, context: SerializerUpdateContext): boolean {
+	public isValid(value: CustomCommand, context: SerializerUpdateContext): Awaited<boolean> {
 		if (typeof value.id !== 'string') {
 			throw new Error('The property "id" must be a string.');
 		}
@@ -39,7 +40,11 @@ export default class extends Serializer<CustomCommand> {
 		return true;
 	}
 
-	public stringify(value: CustomCommand) {
+	public stringify(value: CustomCommand): string {
 		return value.id;
+	}
+
+	public equals(left: CustomCommand, right: CustomCommand): boolean {
+		return left.id === right.id;
 	}
 }

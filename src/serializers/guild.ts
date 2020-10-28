@@ -1,19 +1,23 @@
-import { Serializer } from '@lib/database';
-import { Guild } from 'discord.js';
+import { Serializer, SerializerUpdateContext } from '@lib/database';
+import { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer {
-	public validate(data, { entry, language }) {
-		if (data instanceof Guild) return data;
-		const guild = Serializer.regex.channel.test(data) ? this.client.guilds.cache.get(data) : null;
-		if (guild) return guild;
-		throw language.get('resolverInvalidGuild', { name: entry.key });
+export default class UserSerializer extends Serializer<string> {
+	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
+		const guild = this.client.guilds.cache.get(value);
+		if (guild) return guild.id;
+		throw context.language.get('resolverInvalidGuild', { name: context.entry.name });
 	}
 
-	public serialize(value) {
-		return value.id;
+	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+		const guild = this.client.guilds.cache.get(value);
+		if (!guild) {
+			throw context.language.get('resolverInvalidGuild', { name: context.entry.name });
+		}
+
+		return true;
 	}
 
-	public stringify(value) {
+	public stringify(value: string) {
 		return (this.client.guilds.cache.get(value) || { name: value }).name;
 	}
 }

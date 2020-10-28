@@ -327,7 +327,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodCapitalsHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.capitals.hardActionDuration', nullable: true })
-	public selfmodCapitalsHardActionDuration?: number | null;
+	public selfmodCapitalsHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 60000 })
 	public selfmodCapitalsThresholdMaximum = 10;
@@ -358,7 +358,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodLinksHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.links.hardActionDuration', nullable: true })
-	public selfmodLinksHardActionDuration?: number | null;
+	public selfmodLinksHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.links.thresholdMaximum', default: 10 })
 	public selfmodLinksThresholdMaximum = 10;
@@ -393,7 +393,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodMessagesHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.messages.hardActionDuration', nullable: true })
-	public selfmodMessagesHardActionDuration?: number | null;
+	public selfmodMessagesHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.messages.thresholdMaximum', default: 10 })
 	public selfmodMessagesThresholdMaximum = 10;
@@ -424,7 +424,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodNewlinesHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.newlines.hardActionDuration', nullable: true })
-	public selfmodNewlinesHardActionDuration?: number | null;
+	public selfmodNewlinesHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.newlines.thresholdMaximum', default: 10 })
 	public selfmodNewlinesThresholdMaximum = 10;
@@ -459,7 +459,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodInvitesHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.invites.hardActionDuration', nullable: true })
-	public selfmodInvitesHardActionDuration?: number | null;
+	public selfmodInvitesHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.invites.thresholdMaximum', default: 10 })
 	public selfmodInvitesThresholdMaximum = 10;
@@ -489,7 +489,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodFilterHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.filter.hardActionDuration', nullable: true })
-	public selfmodFilterHardActionDuration?: number | null;
+	public selfmodFilterHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.filter.thresholdMaximum', default: 10 })
 	public selfmodFilterThresholdMaximum = 10;
@@ -528,7 +528,7 @@ export class GuildEntity extends BaseEntity {
 	public selfmodReactionsHardAction = 0;
 
 	@Column('integer', { name: 'selfmod.reactions.hardActionDuration', nullable: true })
-	public selfmodReactionsHardActionDuration?: number | null;
+	public selfmodReactionsHardActionDuration: number | null = null;
 
 	@Column('smallint', { name: 'selfmod.reactions.thresholdMaximum', default: 10 })
 	public selfmodReactionsThresholdMaximum = 10;

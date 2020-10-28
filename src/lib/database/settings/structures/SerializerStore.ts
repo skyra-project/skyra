@@ -2,7 +2,7 @@ import { Client } from 'discord.js';
 import { AliasStore } from 'klasa';
 import { Serializer } from './Serializer';
 
-export class SerializerStore extends AliasStore<string, Serializer> {
+export class SerializerStore extends AliasStore<string, Serializer<unknown>> {
 	/**
 	 * Constructs our SerializerStore for use in Klasa.
 	 * @param client The client that instantiates this store

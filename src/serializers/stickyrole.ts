@@ -3,7 +3,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer {
 	public validate(data: StickyRole, { language, entity: { guild } }: SerializerUpdateContext) {
 		if (
 			isObject(data) &&

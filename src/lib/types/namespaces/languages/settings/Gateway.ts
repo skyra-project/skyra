@@ -1,4 +1,4 @@
-import { T } from '@lib/types/Shared';
+import { T } from '@lib/types';
 
 export const KeyNoext = T<(params: { key: string }) => string>('settingGatewayKeyNoext');
 export const ChooseKey = T<(params: { keys: string }) => string>('settingGatewayChooseKey');

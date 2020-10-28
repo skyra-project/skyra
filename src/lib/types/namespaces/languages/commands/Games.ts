@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { HungerGamesGame } from '@root/commands/Games/hungergames';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 

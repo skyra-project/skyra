@@ -1,6 +1,6 @@
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomGet } from '@lib/types/Shared';
+import { CustomGet } from '@lib/types';
 import { TOKENS } from '@root/config';
 import { Client, TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';

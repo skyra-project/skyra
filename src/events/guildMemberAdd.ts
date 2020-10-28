@@ -2,7 +2,7 @@ import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomGet } from '@lib/types/Shared';
+import { CustomGet } from '@lib/types';
 import { MessageLogsEnum } from '@utils/constants';
 import { floatPromise, resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

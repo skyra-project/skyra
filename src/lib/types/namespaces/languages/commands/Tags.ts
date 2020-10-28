@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const TagAdded = FT<{ name: string; content: string }, string>('commandTagAdded');

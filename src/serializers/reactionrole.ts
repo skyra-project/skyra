@@ -4,7 +4,7 @@ import { isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';
 import { Guild } from 'discord.js';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer {
 	public validate(data: ReactionRole, { language }: SerializerUpdateContext) {
 		if (
 			isObject(data) &&

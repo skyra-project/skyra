@@ -1,8 +1,8 @@
+import { CustomGet } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomGet } from '@lib/types/Shared';
 import { MessageLogsEnum } from '@utils/constants';
 import { MessageEmbed, User } from 'discord.js';
 import { Event, Language } from 'klasa';

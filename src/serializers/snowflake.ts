@@ -2,7 +2,7 @@ import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer {
 	/**
 	 * The validator, requiring all numbers and 17 to 19 digits (future-proof).
 	 */

@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 
 export const MultiTooFew = FT<{ name: string; min?: number; conjunctionWord: string }, string>('resolverMultiTooFew');
 export const InvalidBool = FT<{ name: string }, string>('resolverInvalidBool');

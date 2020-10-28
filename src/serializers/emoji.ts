@@ -1,12 +1,25 @@
 import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Awaited } from '@sapphire/utilities';
 import { resolveEmoji } from '@utils/util';
 
-export default class extends Serializer {
-	public validate(data: string, { entry, language }: SerializerUpdateContext) {
-		const resolved = resolveEmoji(data);
-		if (resolved === null) return Promise.reject(language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: entry.path }));
-		return Promise.resolve(resolved);
+export default class UserSerializer extends Serializer<string> {
+	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
+		const resolved = resolveEmoji(value);
+		if (resolved === null) {
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
+		}
+
+		return resolved;
+	}
+
+	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+		const resolved = resolveEmoji(value);
+		if (resolved === null) {
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
+		}
+
+		return true;
 	}
 
 	public stringify(data: string) {

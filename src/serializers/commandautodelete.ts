@@ -1,7 +1,8 @@
 import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '@lib/database';
+import { Awaited } from '@sapphire/utilities';
 
-export default class extends Serializer<CommandAutoDelete> {
-	public parse(value: string): CommandAutoDelete | Promise<CommandAutoDelete> {
+export default class UserSerializer extends Serializer<CommandAutoDelete> {
+	public parse(value: string): Awaited<CommandAutoDelete> {
 		const [command, rawDuration] = value.split(' ');
 		if (!command) {
 			throw new Error('Invalid command');
@@ -15,7 +16,7 @@ export default class extends Serializer<CommandAutoDelete> {
 		return [command, duration];
 	}
 
-	public isValid(value: CommandAutoDelete): boolean {
+	public isValid(value: CommandAutoDelete): Awaited<boolean> {
 		return (
 			Array.isArray(value) &&
 			value.length === 2 &&
@@ -25,7 +26,11 @@ export default class extends Serializer<CommandAutoDelete> {
 		);
 	}
 
-	public stringify(value: CommandAutoDelete, context: SerializerUpdateContext) {
+	public stringify(value: CommandAutoDelete, context: SerializerUpdateContext): string {
 		return `[${value[0]} -> ${context.language.duration(value[1], 2)}]`;
+	}
+
+	public equals(left: CommandAutoDelete, right: CommandAutoDelete): boolean {
+		return left[0] === right[0];
 	}
 }

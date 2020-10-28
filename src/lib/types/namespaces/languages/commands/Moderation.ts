@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { Moderation } from '@utils/constants';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { User } from 'discord.js';

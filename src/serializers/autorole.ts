@@ -1,8 +1,8 @@
 import { RolesAuto, Serializer, SerializerUpdateContext } from '@lib/database';
-import { isObject } from '@sapphire/utilities';
+import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class extends Serializer<RolesAuto> {
-	public parse(value: string, context: SerializerUpdateContext): RolesAuto | Promise<RolesAuto> {
+export default class UserSerializer extends Serializer<RolesAuto> {
+	public parse(value: string, context: SerializerUpdateContext): Awaited<RolesAuto> {
 		const [id, rawPoints] = value.split(' ');
 		if (!id || !context.entity.guild.roles.cache.has(id)) {
 			// TODO(kyranet): Localize this.
@@ -18,11 +18,15 @@ export default class extends Serializer<RolesAuto> {
 		return { id, points };
 	}
 
-	public isValid(value: RolesAuto): boolean {
+	public isValid(value: RolesAuto): Awaited<boolean> {
 		return isObject(value) && Object.keys(value).length === 2 && typeof value.id === 'string' && typeof value.points === 'number';
 	}
 
-	public stringify(value: RolesAuto) {
+	public stringify(value: RolesAuto): string {
 		return `[${value.id} -> ${value.points.toLocaleString()}]`;
+	}
+
+	public equals(left: RolesAuto, right: RolesAuto): boolean {
+		return left.id === right.id && left.points === right.points;
 	}
 }

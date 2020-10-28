@@ -16,7 +16,7 @@ import type { PermissionString } from 'discord.js';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
-import type { CustomFunctionGet, CustomGet } from './Shared';
+import type { CustomFunctionGet, CustomGet } from './Utils';
 
 declare module 'discord.js' {
 	interface Client {

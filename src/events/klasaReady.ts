@@ -1,8 +1,9 @@
 import { Events, Schedules } from '@lib/types/Enums';
-import { ENABLE_INFLUX, ENABLE_LAVALINK } from '@root/config';
+import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Slotmachine } from '@utils/Games/Slotmachine';
 import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
+import { blue, green, magenta, magentaBright, red, white } from 'colorette';
 import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ once: true })
@@ -30,6 +31,45 @@ export default class extends Event {
 		} catch (error) {
 			this.client.console.wtf(error);
 		}
+
+		const success = green('+');
+		const failed = red('-');
+		const llc = DEV ? magentaBright : white;
+		const blc = DEV ? magenta : blue;
+
+		const line01 = llc(String.raw`          /          `);
+		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
+		const line03 = llc(String.raw`     ${blc('/▓▓')}╢            `);
+		const line04 = llc(String.raw`   [${blc('▓▓')}▓╣/            `);
+		const line05 = llc(String.raw`   [╢╢╣▓             `);
+		const line06 = llc(String.raw`    %,╚╣╣@\          `);
+		const line07 = llc(String.raw`      #,╙▓▓▓\╙N      `);
+		const line08 = llc(String.raw`       '╙ \▓▓▓╖╙╦    `);
+		const line09 = llc(String.raw`            \@╣▓╗╢%  `);
+		const line10 = llc(String.raw`               ▓╣╢╢] `);
+		const line11 = llc(String.raw`              /╣▓${blc('▓▓')}] `);
+		const line12 = llc(String.raw`              ╢${blc('▓▓/')}   `);
+		const line13 = llc(String.raw`             ▓${blc('╬/')}     `);
+		const line14 = llc(String.raw`            /        `);
+
+		console.log(
+			String.raw`
+${line01}   ________  __   ___  ___  ___  _______        __
+${line02}  /"       )|/"| /  ")|"  \/"  |/"      \      /""\
+${line03} (:   \___/ (: |/   /  \   \  /|:        |    /    \
+${line04}  \___  \   |    __/    \\  \/ |_____/   )   /' /\  \
+${line05}   __/  \\  (// _  \    /   /   //      /   //  __'  \
+${line06}  /" \   :) |: | \  \  /   /   |:  __   \  /   /  \\  \
+${line07} (_______/  (__|  \__)|___/    |__|  \___)(___/    \___)
+${line08} ${blc(VERSION.padStart(55, ' '))}
+${line09} [${success}] Gateway
+${line10} [${this.client.analytics ? success : failed}] Analytics
+${line11} [${this.client.audio.queues?.client.connected ? success : failed}] Audio
+${line12}
+${line13} ${DEV ? ' DEVELOPMENT MODE' : ''}
+${line14}
+		`.trim()
+		);
 	}
 
 	private async initPostStatsTask() {

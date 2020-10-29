@@ -65,9 +65,9 @@ ${line08} ${blc(VERSION.padStart(55, ' '))}
 ${line09} [${success}] Gateway
 ${line10} [${this.client.analytics ? success : failed}] Analytics
 ${line11} [${this.client.audio.queues?.client.connected ? success : failed}] Audio
-${line12}
-${line13} ${DEV ? ' DEVELOPMENT MODE' : ''}
-${line14}
+${line12} [${success}] Moderation
+${line13} [${success}] Social & Leaderboards
+${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);
 	}

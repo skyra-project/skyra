@@ -34,8 +34,8 @@ export default class extends Event {
 
 		const success = green('+');
 		const failed = red('-');
-		const llc = !DEV ? magentaBright : white;
-		const blc = !DEV ? magenta : blue;
+		const llc = DEV ? magentaBright : white;
+		const blc = DEV ? magenta : blue;
 
 		const line01 = llc(String.raw`          /          `);
 		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
@@ -67,7 +67,7 @@ ${line10} [${this.client.analytics ? success : failed}] Analytics
 ${line11} [${this.client.audio.queues?.client.connected ? success : failed}] Audio
 ${line12} [${success}] Moderation
 ${line13} [${success}] Social & Leaderboards
-${line14}${!DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
+${line14}${DEV ? ` ${blc('<')}${llc('/')}${blc('>')} ${llc('DEVELOPMENT MODE')}` : ''}
 		`.trim()
 		);
 	}

@@ -34,8 +34,13 @@ export default class extends Event {
 
 		const success = green('+');
 		const failed = red('-');
+<<<<<<< HEAD
 		const llc = DEV ? magentaBright : white;
 		const blc = DEV ? magenta : blue;
+=======
+		const llc = !DEV ? magentaBright : white;
+		const blc = !DEV ? magenta : blue;
+>>>>>>> 6beefde4 (feat: added login banner)
 
 		const line01 = llc(String.raw`          /          `);
 		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);

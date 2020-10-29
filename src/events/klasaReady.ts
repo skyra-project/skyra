@@ -34,8 +34,8 @@ export default class extends Event {
 
 		const success = green('+');
 		const failed = red('-');
-		const llc = !DEV ? magentaBright : white;
-		const blc = !DEV ? magenta : blue;
+		const llc = DEV ? magentaBright : white;
+		const blc = DEV ? magenta : blue;
 
 		const line01 = llc(String.raw`          /          `);
 		const line02 = llc(String.raw`       ${blc('/╬')}▓           `);
@@ -66,7 +66,7 @@ ${line09} [${success}] Gateway
 ${line10} [${this.client.analytics ? success : failed}] Analytics
 ${line11} [${this.client.audio.queues?.client.connected ? success : failed}] Audio
 ${line12}
-${line13} ${!DEV ? ' DEVELOPMENT MODE' : ''}
+${line13} ${DEV ? ' DEVELOPMENT MODE' : ''}
 ${line14}
 		`.trim()
 		);

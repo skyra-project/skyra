@@ -1,4 +1,3 @@
-import type { TrackInfo } from '@skyra/audio';
 import type {
 	Channel,
 	DMChannel,
@@ -85,8 +84,6 @@ export interface FlattenedGuild
 	channels: FlattenedGuildChannel[];
 	roles: FlattenedRole[];
 }
-
-export type PublicFlattenedGuild = Pick<FlattenedGuild, 'id' | 'name' | 'icon' | 'vanityURLCode' | 'description'>;
 
 // #endregion Guild
 
@@ -299,13 +296,3 @@ export interface FlattenedMember {
 }
 
 // #endregion Member
-
-// #region Music
-
-export interface PublicFlattenedMusic {
-	guildData: PublicFlattenedGuild;
-	currentlyPlaying?: TrackInfo;
-	queueLength: number;
-}
-
-// #endregion Music

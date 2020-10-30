@@ -44,7 +44,7 @@ export default class extends SkyraCommand {
 	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
-	private readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus)\/|discord(?:app)?\.com\/invite\/)[\w-]{2,}/i;
+	private readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;
 	private readonly kLinkRegExp = urlRegex({ requireProtocol: true, tlds: true });
 	private readonly kCommandPrunePositions: Record<string, Position> = {
 		before: Position.Before,

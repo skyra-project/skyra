@@ -1,9 +1,21 @@
 import { FT, T } from '@lib/types/Shared';
 import { ScheduleEntity } from '@orm/entities/ScheduleEntity';
-import { LevelTitles } from '@root/commands/Social/level';
-import { ProfileTitles } from '@root/commands/Social/profile';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { Role, User } from 'discord.js';
+
+export interface LevelTitles {
+	experience: string;
+	nextIn: string;
+	level: string;
+}
+
+export interface ProfileTitles {
+	globalRank: string;
+	credits: string;
+	reputation: string;
+	experience: string;
+	level: string;
+}
 
 export const AutoRoleAdd = FT<{ role: Role; points: number }, string>('commandAutoRoleAdd');
 export const AutoRoleDescription = T<string>('commandAutoRoleDescription');

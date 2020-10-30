@@ -12,7 +12,7 @@ export default class extends SkyraCommand {
 			permissionLevel: PermissionLevels.Moderator,
 			requiredPermissions: ['EMBED_LINKS'],
 			runIn: ['text'],
-			usage: '<Case:integer|latest>'
+			usage: '<latest|case:integer{0,2147483647}>'
 		});
 	}
 

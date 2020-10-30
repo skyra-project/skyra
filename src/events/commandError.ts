@@ -72,13 +72,7 @@ export default class extends Event {
 		}
 
 		try {
-			await this.client.webhookError.send(
-				new MessageEmbed()
-					.setDescription(lines.join('\n'))
-					.setColor(Colors.Red)
-					.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
-					.setTimestamp()
-			);
+			await this.client.webhookError.send(new MessageEmbed().setDescription(lines.join('\n')).setColor(Colors.Red).setTimestamp());
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);
 		}
@@ -122,7 +116,7 @@ export default class extends Event {
 	 */
 	private getArgumentsLine(args: readonly string[]): string {
 		if (args.length === 0) return '**Arguments**: Not Supplied';
-		return `[\`${args.map((arg) => arg.trim() || '\u200B').join('`, `')}\`]`;
+		return `**Arguments**: [\`${args.map((arg) => arg.trim() || '\u200B').join('`, `')}\`]`;
 	}
 
 	/**

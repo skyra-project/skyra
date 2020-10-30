@@ -41,7 +41,6 @@ export default class extends ModerationMonitor {
 
 			// Get from cache, else fetch it from API.
 			const identifier = this.getCodeIdentifier(source);
-			if (identifier === null) continue;
 
 			// If it has already been scanned, skip
 			const key = `${source}${code}`;
@@ -103,7 +102,7 @@ export default class extends ModerationMonitor {
 		return false;
 	}
 
-	private getCodeIdentifier(source: string): CodeType | null {
+	private getCodeIdentifier(source: string): CodeType {
 		switch (source.toLowerCase()) {
 			case 'discordapp.com/invite':
 			case 'discord.com/invite':

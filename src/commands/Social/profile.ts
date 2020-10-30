@@ -107,7 +107,7 @@ export default class extends SkyraCommand {
 				.setTextFont('30px RobotoLight')
 				.printText(title.level, 576, 58)
 				.setTextFont('40px RobotoRegular')
-				.printText(settings.level.toString(), 576, 100)
+				.printText(level.toString(), 576, 100)
 
 				// Avatar
 				.printCircularImage(imgAvatarSRC, 103, 103, 71)
@@ -167,12 +167,4 @@ export default class extends SkyraCommand {
 				.then(loadImage)
 		]);
 	}
-}
-
-export interface ProfileTitles {
-	globalRank: string;
-	credits: string;
-	reputation: string;
-	experience: string;
-	level: string;
 }

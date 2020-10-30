@@ -31,8 +31,10 @@ We are not supportive of the idea of people self hosting Skyra as we put a very 
 Furthermore, Skyra has not been build with the idea of self hosting in mind and she makes use of many services that you will need to maintain in a production environment for full functionality. For example
 
 -   Skyra uses many external API's for which you would have to create API keys
--   Skyra uses Lavalink as music module, this means you need to host your own instance of Lavalink (a Java application)
--   While Skyra can work with a JSON based database, it is extremely ill-advised to do so in production. Instead in production you should be using PostgreSQL, another thing to host yourself.
+-   Skyra uses [`Lavalink`] as music module, this means you need to host your own instance of Lavalink (a Java application)
+-   Skyra uses [`Redis`] for the music queue, and as a cache for [`Saelem`]
+-   Skyra uses [`InfluxDB`] for keeping anonymous metrics of how she is being used
+-   Skyra uses [`PostgreSQL`] as database.
 
 All this said, if you really are going to self-host Skyra please take heed, she **_will absolutely not_** run on services such as [Glitch] or [Heroku]. You **_will need_** a VPS (Virtual Private Server), for example from a provider such as [Netcup] (our provider) or [DigitalOcean].
 

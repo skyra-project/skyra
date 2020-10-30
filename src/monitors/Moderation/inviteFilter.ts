@@ -1,6 +1,5 @@
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { floatPromise } from '@utils/util';
@@ -9,9 +8,7 @@ import { KlasaMessage } from 'klasa';
 
 const enum CodeType {
 	DiscordGG,
-	DiscordIO,
-	DiscordME,
-	DiscordPlus
+	ThirdPart
 }
 
 export default class extends ModerationMonitor {
@@ -29,7 +26,7 @@ export default class extends ModerationMonitor {
 		adderDuration: GuildSettings.Selfmod.Invites.ThresholdDuration
 	};
 
-	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus)\/|discord(?:app)?\.com\/invite\/)(?<code>[\w-]{2,})/gi;
+	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;
 
 	public shouldRun(message: KlasaMessage) {
 		return super.shouldRun(message) && message.content.length > 0;
@@ -43,8 +40,7 @@ export default class extends ModerationMonitor {
 			const { code, source } = value.groups!;
 
 			// Get from cache, else fetch it from API.
-			const identifier = this.getCodeIdentifier(source, code);
-			if (identifier === null) continue;
+			const identifier = this.getCodeIdentifier(source);
 
 			// If it has already been scanned, skip
 			const key = `${source}${code}`;
@@ -106,21 +102,14 @@ export default class extends ModerationMonitor {
 		return false;
 	}
 
-	private getCodeIdentifier(source: string, code: string): CodeType | null {
+	private getCodeIdentifier(source: string): CodeType {
 		switch (source.toLowerCase()) {
-			case 'discordapp.com/invite/':
-			case 'discord.com/invite/':
-			case 'discord.gg/':
+			case 'discordapp.com/invite':
+			case 'discord.com/invite':
+			case 'discord.gg':
 				return CodeType.DiscordGG;
-			case 'discord.io/':
-				return CodeType.DiscordIO;
-			case 'discord.me/':
-				return CodeType.DiscordME;
-			case 'discord.plus/':
-				return CodeType.DiscordPlus;
 			default:
-				this.client.emit(Events.Wtf, `Unrecognized source ${source} with code ${code}.`);
-				return null;
+				return CodeType.ThirdPart;
 		}
 	}
 }

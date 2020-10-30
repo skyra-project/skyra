@@ -11,5 +11,10 @@ if INDEX < 0 then INDEX = #list + INDEX end
 table.remove(list, INDEX + 1)
 
 redis.call('del', KEY)
-redis.call('rpush', KEY, unpack(list))
+
+-- If there is at least one element, call rpush
+if (next(list) ~= nil) then
+  redis.call('rpush', KEY, unpack(list))
+end
+
 return 'OK'

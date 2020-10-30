@@ -71,8 +71,8 @@ export default class extends SkyraCommand {
 
 				// Draw the information
 				.setTextAlign('right')
-				.printText(settings.points.toString(), 606, 73)
-				.printText((nextLevel - settings.points).toString(), 606, 131)
+				.printText(points.toString(), 606, 73)
+				.printText((nextLevel - points).toString(), 606, 131)
 
 				// Draw the level
 				.setTextAlign('center')
@@ -123,10 +123,4 @@ export default class extends SkyraCommand {
 				.then(loadImage)
 		]);
 	}
-}
-
-export interface LevelTitles {
-	experience: string;
-	nextIn: string;
-	level: string;
 }

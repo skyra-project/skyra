@@ -10,7 +10,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
@@ -20,30 +20,31 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [move]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const moveData = await this.fetchAPI(message, move.toLowerCase());
+		const moveData = await this.fetchAPI(move.toLowerCase(), language);
 
-		const display = await this.buildDisplay(message, moveData);
+		const display = await this.buildDisplay(message, moveData, language);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, move: string) {
+	private async fetchAPI(move: string, language: Language) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getMoveDetailsByFuzzy'>(getMoveDetailsByFuzzy, { move });
 			return data.getMoveDetailsByFuzzy;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
+			throw language.get(LanguageKeys.Commands.Pokemon.MoveQueryFail, { move });
 		}
 	}
 
-	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry) {
-		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
-			availableInGen8: message.language.get(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
+	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry, language: Language) {
+		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
+			availableInGen8: language.get(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
-		const externalResources = message.language.get(LanguageKeys.System.PokedexExternalResource);
+		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(moveData.bulbapediaPage)} )`,
 			`[Serebii](${moveData.serebiiPage})`,

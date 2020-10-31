@@ -20,8 +20,9 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
 		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
 
-		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
-			availableInGen8: message.language.get(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
+		const language = await message.fetchLanguage();
+		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
+			availableInGen8: language.get(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
 		return message.sendEmbed(
 			new MessageEmbed()
@@ -32,7 +33,7 @@ export default class extends SkyraCommand {
 				.addField(embedTranslations.generationIntroduced, itemDetails.generationIntroduced, true)
 				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
 				.addField(
-					message.language.get(LanguageKeys.System.PokedexExternalResource),
+					language.get(LanguageKeys.System.PokedexExternalResource),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(itemDetails.bulbapediaPage)} )`,
 						`[Serebii](${itemDetails.serebiiPage})`,
@@ -47,7 +48,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
+			throw message.fetchLocale(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
 		}
 	}
 }

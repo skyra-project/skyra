@@ -1,7 +1,7 @@
+import { NotificationsStreamsTwitchEventStatus } from '@lib/database';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { DbSet } from '@lib/structures/DbSet';
 import { TwitchHelixGameSearchResult } from '@lib/types/definitions/Twitch';
-import { GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
@@ -32,8 +32,12 @@ export default class extends Event {
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
-			await guild.settings.sync();
-			const subscriptions = guild.settings.get(GuildSettings.Notifications.Streams.Twitch.Streamers).find(([id]) => id === streamer.id);
+			const { allSubscriptions, language } = await guild.readSettings((settings) => ({
+				allSubscriptions: settings.notificationsStreamsTwitchStreamers,
+				language: settings.getLanguage()
+			}));
+
+			const subscriptions = allSubscriptions.find(([id]) => id === streamer.id);
 			if (typeof subscriptions === 'undefined') continue;
 
 			// Iterate over each subscription
@@ -59,9 +63,9 @@ export default class extends Event {
 						const embedData = this.transformTextToObject(data, game);
 
 						// Construct a message embed and send it.
-						floatPromise(this, channel.sendEmbed(this.buildEmbed(embedData, guild.language)));
+						floatPromise(this, channel.sendEmbed(this.buildEmbed(embedData, language)));
 					} else {
-						const message = this.transformTextToString(subscription.message, data, guild.language, game);
+						const message = this.transformTextToString(subscription.message, data, language, game);
 						floatPromise(this, channel.send(message));
 					}
 				}

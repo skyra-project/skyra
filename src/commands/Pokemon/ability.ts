@@ -19,17 +19,15 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
 		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
+		const language = await message.fetchLanguage();
 
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(
-					`${message.language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitle)} - ${toTitleCase(abilityDetails.name)}`,
-					CdnUrls.Pokedex
-				)
+				.setAuthor(`${language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitle)} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
 				.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
 				.addField(
-					message.language.get(LanguageKeys.System.PokedexExternalResource),
+					language.get(LanguageKeys.System.PokedexExternalResource),
 					[
 						`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
 						`[Serebii](${abilityDetails.serebiiPage})`,
@@ -44,7 +42,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
+			throw message.fetchLocale(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
 		}
 	}
 }

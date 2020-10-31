@@ -8,6 +8,7 @@ export * from './Roles';
 export * from './Selfmod';
 export * from './Social';
 export * from './Starboard';
+export * from './Suggestions';
 export * from './Trigger';
 
 export const CommandUses = 'commandUses';

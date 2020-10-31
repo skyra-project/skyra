@@ -23,7 +23,7 @@ import { maximumExportQueueSize } from './exportqueue';
 	[
 		'squeue',
 		(arg, possible, message) => {
-			if (!arg && message.attachments.size === 0) throw message.language.get(LanguageKeys.MusicManager.ImportQueueNotFound);
+			if (!arg && message.attachments.size === 0) throw message.fetchLocale(LanguageKeys.MusicManager.ImportQueueNotFound);
 			return message.attachments.first()?.url ?? message.client.arguments.get('url')!.run(arg, possible, message);
 		}
 	]
@@ -34,11 +34,11 @@ export default class extends MusicCommand {
 
 		const { audio } = message.guild;
 		const decodedTracks = await audio.player.node.decode(raw);
-		const tracks = [...this.process(message, 100, decodedTracks)];
+		const tracks = [...(await this.process(message, 100, decodedTracks))];
 
 		// Add the tracks
 		const added = await audio.add(...tracks);
-		if (added === 0) throw message.language.get(LanguageKeys.MusicManager.TooManySongs);
+		if (added === 0) throw message.fetchLocale(LanguageKeys.MusicManager.TooManySongs);
 
 		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
@@ -48,15 +48,17 @@ export default class extends MusicCommand {
 			const raw = await fetch(url, FetchResultTypes.Buffer);
 			return deserialize<string[]>(raw);
 		} catch {
-			throw message.language.get(LanguageKeys.MusicManager.ImportQueueError);
+			throw message.fetchLocale(LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 
-	private process(message: GuildMessage, remainingUserEntries: number, tracks: Track[]) {
+	private async process(message: GuildMessage, remainingUserEntries: number, tracks: Track[]) {
 		if (remainingUserEntries === 0) return empty<QueueEntry>();
 
-		const maximumDuration = message.guild.settings.get(GuildSettings.Music.MaximumDuration);
-		const allowStreams = message.guild.settings.get(GuildSettings.Music.AllowStreams);
+		const [maximumDuration, allowStreams] = await message.guild.readSettings([
+			GuildSettings.Music.MaximumDuration,
+			GuildSettings.Music.AllowStreams
+		]);
 
 		const filtered = filter(tracks.values(), (track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration);
 		const taken = take(filtered, message.member.isDJ ? maximumExportQueueSize : remainingUserEntries);

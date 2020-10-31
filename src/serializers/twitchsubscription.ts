@@ -1,8 +1,8 @@
-import { Serializer, SerializerUpdateContext, NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch } from '@lib/database';
+import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
-export default class UserSerializer extends Serializer {
-	public validate(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
+export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
+	public isValid(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {
 			return Promise.reject(language.get(LanguageKeys.Serializers.TwitchSubscriptionInvalid));

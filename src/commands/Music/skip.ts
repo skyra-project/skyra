@@ -29,12 +29,12 @@ export default class extends MusicCommand {
 	}
 
 	private async canSkipWithForce(message: GuildMessage, voiceChannel: VoiceChannel): Promise<string | null> {
-		return (await message.member.canManage(voiceChannel)) ? null : message.language.get(LanguageKeys.Commands.Music.SkipPermissions);
+		return (await message.member.canManage(voiceChannel)) ? null : message.fetchLocale(LanguageKeys.Commands.Music.SkipPermissions);
 	}
 
 	private async canSkipWithoutForce(message: GuildMessage, audio: Queue, listeners: number): Promise<string | null> {
 		const added = await audio.addSkipVote(message.author.id);
-		if (!added) return message.language.get(LanguageKeys.Commands.Music.SkipVotesVoted);
+		if (!added) return message.fetchLocale(LanguageKeys.Commands.Music.SkipVotesVoted);
 
 		const amount = await audio.countSkipVotes();
 		if (amount <= 3) return null;
@@ -42,6 +42,6 @@ export default class extends MusicCommand {
 		const needed = Math.ceil(listeners * 0.4);
 		if (needed <= amount) return null;
 
-		return message.language.get(LanguageKeys.Commands.Music.SkipVotesTotal, { amount, needed });
+		return message.fetchLocale(LanguageKeys.Commands.Music.SkipVotesTotal, { amount, needed });
 	}
 }

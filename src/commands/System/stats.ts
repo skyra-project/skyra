@@ -23,8 +23,9 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildEmbed(message: KlasaMessage) {
-		const titles = message.language.get(LanguageKeys.Commands.System.StatsTitles);
-		const fields = message.language.get(LanguageKeys.Commands.System.StatsFields, {
+		const language = await message.fetchLanguage();
+		const titles = language.get(LanguageKeys.Commands.System.StatsTitles);
+		const fields = language.get(LanguageKeys.Commands.System.StatsFields, {
 			stats: this.generalStatistics,
 			uptime: this.uptimeStatistics,
 			usage: this.usageStatistics

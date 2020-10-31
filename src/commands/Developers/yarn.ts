@@ -34,42 +34,45 @@ export default class extends SkyraCommand {
 	#dateTimestamp = new Timestamp('YYYY-MM-DD');
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(message, pkg);
 
 		if (result.time && Reflect.has(result.time, 'unpublished'))
-			throw message.language.get(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
+			throw language.get(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
 
-		const dataEmbed = await this.buildEmbed(result, message);
+		const dataEmbed = await this.buildEmbed(result, message, language);
 		return response.edit(undefined, dataEmbed);
 	}
 
 	private async fetchApi(message: KlasaMessage, pkg: string) {
+		const language = await message.fetchLanguage();
 		try {
 			return await fetch<YarnPkg.PackageJson>(`https://registry.yarnpkg.com/${pkg}`, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Developers.YarnPackageNotFound, { pkg });
+			throw language.get(LanguageKeys.Commands.Developers.YarnPackageNotFound, { pkg });
 		}
 	}
 
 	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage) {
+		const language = await message.fetchLanguage();
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies
-			? this.trimArray(Object.keys(latestVersion.dependencies), message.language.get(LanguageKeys.Commands.Developers.YarnEmbedMoreText))
+			? this.trimArray(Object.keys(latestVersion.dependencies), language.get(LanguageKeys.Commands.Developers.YarnEmbedMoreText))
 			: null;
 
 		const author = this.parseAuthor(result.author);
-		const dateCreated = result.time ? this.#dateTimestamp.displayUTC(result.time.created) : message.language.get(LanguageKeys.Globals.Unknown);
-		const dateModified = result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : message.language.get(LanguageKeys.Globals.Unknown);
+		const dateCreated = result.time ? this.#dateTimestamp.displayUTC(result.time.created) : language.get(LanguageKeys.Globals.Unknown);
+		const dateModified = result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : language.get(LanguageKeys.Globals.Unknown);
 
 		const { deprecated } = latestVersion;
 		const description = cutText(result.description ?? '', 1000);
 		const latestVersionNumber = result['dist-tags'].latest;
-		const license = result.license || message.language.get(LanguageKeys.Globals.None);
+		const license = result.license || language.get(LanguageKeys.Globals.None);
 		const mainFile = latestVersion.main || 'index.js';
 
 		return new MessageEmbed()
@@ -86,24 +89,22 @@ export default class extends SkyraCommand {
 					[
 						description,
 						'',
-						author ? message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionAuthor, { author }) : undefined,
-						`${message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers)}: **${cutText(
-							message.language.list(maintainers, message.language.get(LanguageKeys.Globals.And)),
+						author ? language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionAuthor, { author }) : undefined,
+						`${language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers)}: **${cutText(
+							language.list(maintainers, language.get(LanguageKeys.Globals.And)),
 							500
 						)}**`,
-						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLatestVersion, { latestVersionNumber }),
-						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLicense, { license }),
-						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMainFile, { mainFile }),
-						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDateCreated, { dateCreated }),
-						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDateModified, { dateModified }),
-						deprecated
-							? message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDeprecated, { deprecated })
-							: undefined,
+						language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLatestVersion, { latestVersionNumber }),
+						language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLicense, { license }),
+						language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMainFile, { mainFile }),
+						language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDateCreated, { dateCreated }),
+						language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDateModified, { dateModified }),
+						deprecated ? language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDeprecated, { deprecated }) : undefined,
 						'',
-						message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesLabel),
+						language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesLabel),
 						dependencies && dependencies.length
-							? message.language.list(dependencies, message.language.get(LanguageKeys.Globals.And))
-							: message.language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesNoDeps)
+							? language.list(dependencies, language.get(LanguageKeys.Globals.And))
+							: language.get(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesNoDeps)
 					]
 						.filter((part) => part !== undefined)
 						.join('\n'),

@@ -16,12 +16,13 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		if (message.deletable) await message.nuke().catch(() => null);
+		const language = await message.fetchLanguage();
 
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(CdnUrls.EscapeRopeGif)
-				.setDescription(message.language.get(LanguageKeys.Commands.Fun.EscaperopeOutput, { user: message.author }))
+				.setDescription(language.get(LanguageKeys.Commands.Fun.EscaperopeOutput, { user: message.author }))
 				.setAuthor(
 					message.member?.displayName ?? message.author.username,
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

@@ -1,10 +1,12 @@
+import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
+import { isNullish } from '@lib/misc';
+import { SkyraClient } from '@lib/SkyraClient';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
-import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 import { Time } from '@utils/constants';
+import { Language } from 'klasa';
 import { container } from 'tsyringe';
-import { SkyraClient } from '@lib/SkyraClient';
+import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('guilds', { schema: 'public' })
 @Check(/* sql */ `"prefix"::text <> ''::text`)
@@ -556,11 +558,11 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'no-mention-spam.alerts', default: false })
 	public noMentionSpamAlerts = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamMentionsAllowed, name: 'no-mention-spam.mentionsAllowed', type: 'integer' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamMentionsAllowed, type: 'integer' })
 	@Column('smallint', { name: 'no-mention-spam.mentionsAllowed', default: 20 })
 	public noMentionSpamMentionsAllowed = 20;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod, name: 'no-mention-spam.timePeriod', type: 'string' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod, type: 'string' })
 	@Column('integer', { name: 'no-mention-spam.timePeriod', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 
@@ -661,6 +663,15 @@ export class GuildEntity extends BaseEntity {
 
 	public get guild() {
 		return this.client.guilds.cache.get(this.id)!;
+	}
+
+	/**
+	 * Gets the [[Language]] for this entity.
+	 */
+	public getLanguage(): Language {
+		const language = this.client.languages.get(this.language);
+		if (isNullish(language)) throw new Error(`${this.language} does not exist.`);
+		return language;
 	}
 }
 

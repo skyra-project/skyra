@@ -1,8 +1,8 @@
-import { DiscordSnowflake } from '@sapphire/snowflake';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { resolveOnErrorCodes } from '@utils/util';

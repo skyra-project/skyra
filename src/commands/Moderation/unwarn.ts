@@ -1,5 +1,6 @@
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { GuildMessage } from '@lib/types';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -18,20 +19,20 @@ export default class extends ModerationCommand {
 		/* Do nothing */
 	}
 
-	public async run(message: KlasaMessage, [caseID, reason]: [number, string]) {
+	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild!.moderation.fetch(caseID);
-		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.language.get(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
+		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 
 		const user = await modlog.fetchUser();
 		const unwarnLog = await this.handle(message, { target: user, reason, modlog, duration: null, preHandled: null });
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
-		if (message.guild!.settings.get(GuildSettings.Messages.ModerationAutoDelete)) {
+		if (await message.guild.readSettings(GuildSettings.Messages.ModerationAutoDelete)) {
 			if (message.deletable) floatPromise(this, message.nuke());
 		}
 
-		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
-			const originalReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? unwarnLog.reason : null;
+		if (await message.guild.readSettings(GuildSettings.Messages.ModerationMessageDisplay)) {
+			const originalReason = (await message.guild.readSettings(GuildSettings.Messages.ModerationReasonDisplay)) ? unwarnLog.reason : null;
 			return message.sendLocale(
 				originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
 				[
@@ -42,7 +43,7 @@ export default class extends ModerationCommand {
 						reason: originalReason
 					}
 				]
-			);
+			) as Promise<KlasaMessage>;
 		}
 
 		return null;

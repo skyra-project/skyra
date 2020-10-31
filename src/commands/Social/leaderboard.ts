@@ -55,8 +55,9 @@ export default class extends SkyraCommand {
 			}
 		}
 
+		const language = await message.fetchLanguage();
 		if (promises.length) {
-			await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
+			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)), []);
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {
@@ -64,8 +65,8 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(message.language.get(LanguageKeys.FuzzySearch.Page, { page: index + 1, pageCount, results: listSize.toLocaleString() }));
-		page.push(message.language.get(LanguageKeys.Misc.CommandScoreboardPosition, { position }));
+		page.push(language.get(LanguageKeys.FuzzySearch.Page, { page: index + 1, pageCount, results: listSize.toLocaleString() }));
+		page.push(language.get(LanguageKeys.Misc.CommandScoreboardPosition, { position }));
 
 		return page;
 	}

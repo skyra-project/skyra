@@ -1,8 +1,9 @@
 import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { DiscordSnowflake } from '@sapphire/snowflake';
+import { Awaited } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer {
+export default class UserSerializer extends Serializer<string> {
 	/**
 	 * The validator, requiring all numbers and 17 to 19 digits (future-proof).
 	 */
@@ -14,12 +15,21 @@ export default class UserSerializer extends Serializer {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public validate(data: string, { entry, language }: SerializerUpdateContext) {
-		if (this.kRegExp.test(data)) {
-			const snowflake = DiscordSnowflake.deconstruct(data);
+	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
+		if (this.kRegExp.test(value)) {
+			const snowflake = DiscordSnowflake.deconstruct(value);
 			const timestamp = Number(snowflake.timestamp);
-			if (timestamp >= this.kMinimum && timestamp < Date.now()) return data;
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return value;
 		}
-		throw language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: entry.name });
+		throw context.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: context.entry.name });
+	}
+
+	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+		if (this.kRegExp.test(value)) {
+			const snowflake = DiscordSnowflake.deconstruct(value);
+			const timestamp = Number(snowflake.timestamp);
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return true;
+		}
+		throw context.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: context.entry.name });
 	}
 }

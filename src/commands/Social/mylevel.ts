@@ -1,9 +1,11 @@
+import { RolesAuto } from '@lib/database';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings, RolesAuto } from '@lib/types/namespaces/GuildSettings';
+import { GuildMessage } from '@lib/types';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -19,13 +21,13 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
+	public async run(message: GuildMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
 		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
 		const memberPoints = memberSettings?.points ?? 0;
-		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
+		const nextRole = this.getLatestRole(memberPoints, await message.guild.readSettings(GuildSettings.Roles.Auto));
 		const title = nextRole
-			? `\n${message.language.get(LanguageKeys.Commands.Social.MylevelNext, {
+			? `\n${await message.fetchLocale(LanguageKeys.Commands.Social.MylevelNext, {
 					remaining: nextRole.points - memberPoints,
 					next: nextRole.points
 			  })}`

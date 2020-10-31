@@ -9,7 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 const kPokemonTypes = new Set([
 	'bug',
@@ -45,10 +45,10 @@ const kPokemonTypes = new Set([
 		(arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
-			if (arg.length > 2) throw message.language.get(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
+			if (arg.length > 2) throw message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
 
 			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw message.language.get(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
+				if (!kPokemonTypes.has(type)) throw message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
 			}
 
 			return arg;
@@ -57,23 +57,24 @@ const kPokemonTypes = new Set([
 ])
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [types]: [Types[]]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const typeMatchups = await this.fetchAPI(message, types);
+		const typeMatchups = await this.fetchAPI(types, language);
 
-		const display = await this.buildDisplay(message, types, typeMatchups);
+		const display = await this.buildDisplay(message, types, typeMatchups, language);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, types: Types[]) {
+	private async fetchAPI(types: Types[], language: Language) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getTypeMatchup'>(getTypeMatchup, { types });
 			return data.getTypeMatchup;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
-				types: types.map((val) => `\`${val}\``).join(` ${message.language.get(LanguageKeys.Globals.And)} `)
+			throw language.get(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
+				types: types.map((val) => `\`${val}\``).join(` ${language.get(LanguageKeys.Globals.And)} `)
 			});
 		}
 	}
@@ -98,9 +99,9 @@ export default class extends RichDisplayCommand {
 		return regularMatchup.map((type) => `\`${type}\``).join(', ');
 	}
 
-	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups) {
-		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
-		const externalResources = message.language.get(LanguageKeys.System.PokedexExternalResource);
+	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups, language: Language) {
+		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
+		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,
 			`[Serebii](https://www.serebii.net/pokedex-sm/${types[0].toLowerCase()}.shtml)`,

@@ -31,30 +31,31 @@ export default class extends SkyraCommand {
 	 */
 	private readonly kDice20TrailRegExp = /([+-])\s*(\d+)/g;
 
-	public run(message: KlasaMessage, [amountOrDice = 1]: [number | string | undefined]) {
+	public async run(message: KlasaMessage, [amountOrDice = 1]: [number | string | undefined]) {
 		return message.sendLocale(LanguageKeys.Commands.Fun.DiceOutput, [
 			{
-				result: this.roll(message, amountOrDice)
+				result: await this.roll(message, amountOrDice)
 			}
 		]);
 	}
 
-	private roll(message: KlasaMessage, pattern: string | number) {
+	private async roll(message: KlasaMessage, pattern: string | number) {
 		let amount: number | undefined = undefined;
 		let dice: number | undefined = undefined;
 		let modifier = 0;
+		const language = await message.fetchLanguage();
 		if (typeof pattern === 'number') {
-			if (!isNumber(pattern) || pattern <= 0) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name: 'dice' });
+			if (!isNumber(pattern) || pattern <= 0) throw language.get(LanguageKeys.Resolvers.InvalidInt, { name: 'dice' });
 			amount = pattern;
 			dice = 6;
 		} else {
 			const results = this.kDice20RegExp.exec(pattern);
-			if (results === null) throw message.language.get(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (results === null) throw language.get(LanguageKeys.Commands.Fun.DiceRollsError);
 			amount = typeof results[1] === 'undefined' ? 1 : Number(results[1]);
 			dice = Number(results[2]);
 
-			if (amount <= 0 || amount > 1024) throw message.language.get(LanguageKeys.Commands.Fun.DiceRollsError);
-			if (dice < 3 || dice > 1024) throw message.language.get(LanguageKeys.Commands.Fun.DiceSidesError);
+			if (amount <= 0 || amount > 1024) throw language.get(LanguageKeys.Commands.Fun.DiceRollsError);
+			if (dice < 3 || dice > 1024) throw language.get(LanguageKeys.Commands.Fun.DiceSidesError);
 
 			if (results[3].length > 0) {
 				let modifierResults: RegExpExecArray | null = null;

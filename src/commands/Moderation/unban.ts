@@ -1,11 +1,11 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { GuildMessage } from '@lib/types';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { getImage } from '@utils/util';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ub'],
@@ -15,16 +15,20 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['BAN_MEMBERS']
 })
 export default class extends ModerationCommand {
-	public async prehandle(message: KlasaMessage) {
+	public async prehandle(message: GuildMessage) {
 		const bans = await message
 			.guild!.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => {
-				throw message.language.get(LanguageKeys.System.FetchbansFail);
+				throw message.fetchLocale(LanguageKeys.System.FetchbansFail);
 			});
-		if (bans.length)
-			return { bans, unlock: message.guild!.settings.get(GuildSettings.Events.BanRemove) ? message.guild!.moderation.createLock() : null };
-		throw message.language.get(LanguageKeys.Commands.Moderation.GuildBansEmpty);
+		if (bans.length) {
+			return {
+				bans,
+				unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild!.moderation.createLock() : null
+			};
+		}
+		throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
@@ -47,7 +51,7 @@ export default class extends ModerationCommand {
 	public checkModeratable(
 		...[message, { preHandled, target, ...context }]: ArgumentTypes<ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']>
 	) {
-		if (!preHandled.bans.includes(target.id)) throw message.language.get(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+		if (!preHandled.bans.includes(target.id)) throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansNotFound);
 		return super.checkModeratable(message, { preHandled, target, ...context });
 	}
 }

@@ -20,20 +20,20 @@ export default class extends MusicCommand {
 		const { audio } = message.guild;
 
 		const entry = await audio.getCurrentTrack();
-		if (!entry) throw message.language.get(LanguageKeys.Commands.Music.PlayingQueueEmpty);
+		if (!entry) throw message.fetchLocale(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);
-		const embed = this.getMessageEmbed(message, track);
+		const embed = await this.getMessageEmbed(message, track);
 		return message.sendEmbed(embed);
 	}
 
-	private getMessageEmbed(message: GuildMessage, track: TrackInfo): MessageEmbed {
+	private async getMessageEmbed(message: GuildMessage, track: TrackInfo): Promise<MessageEmbed> {
 		const embed = new MessageEmbed()
 			.setColor(12916736)
 			.setTitle(track.title)
 			.setURL(track.uri)
 			.setAuthor(track.author)
-			.setDescription(message.language.get(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
+			.setDescription(await message.fetchLocale(LanguageKeys.Commands.Music.PlayingDuration, { duration: showSeconds(track.length) }))
 			.setTimestamp();
 
 		const imageUrl = this.getSongImage(track.uri, track.identifier);

@@ -75,28 +75,26 @@ export default class extends SkyraCommand {
 	}
 
 	// This subcommand will always remove roles from a provided role set.
-	public async remove(message: KlasaMessage, [name, roles]: [string, Role[]]) {
+	public async remove(message: GuildMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		// The set does exist so we want to only REMOVE provided roles from it
-		// Create a new array that we can use to overwrite the existing one in settings
-		const newsets = allRolesets.map((set) =>
-			set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find((role) => role.id === id)) } : set
-		);
-
-		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, {
-			arrayAction: 'overwrite',
-			extraContext: { author: message.author.id }
+		await message.guild.writeSettings((settings) => {
+			// The set does exist so we want to only REMOVE provided roles from it
+			// Create a new array that we can use to overwrite the existing one in settings
+			settings.rolesUniqueRoleSets = settings.rolesUniqueRoleSets.map((set) =>
+				set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find((role) => role.id === id)) } : set
+			);
 		});
-		return message.sendLocale(LanguageKeys.Commands.Admin.RolesetRemoved, [
-			{
+
+		const language = await message.fetchLanguage();
+		return message.send(
+			language.get(LanguageKeys.Commands.Admin.RolesetRemoved, {
 				name,
-				roles: message.language.list(
+				roles: language.list(
 					roles.map((role) => role.name),
-					message.language.get(LanguageKeys.Globals.And)
+					language.get(LanguageKeys.Globals.And)
 				)
-			}
-		]);
+			})
+		);
 	}
 
 	public async reset(message: KlasaMessage, [name]: [string?]) {

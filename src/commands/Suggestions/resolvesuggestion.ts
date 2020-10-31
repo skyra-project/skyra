@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import type { SuggestionData } from '@lib/types/definitions/Suggestion';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
@@ -9,7 +10,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import type { KlasaMessage } from 'klasa';
+import type { Language } from 'klasa';
 
 const enum SuggestionsColors {
 	Accepted = 0x4cb02c,
@@ -33,24 +34,26 @@ const enum SuggestionsColors {
 	[
 		'suggestion',
 		async (arg, _, message): Promise<SuggestionData> => {
+			const language = await message.fetchLanguage();
+
 			// Validate the suggestions channel ID
-			const channelID = message.guild!.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
-			if (!channelID) throw message.language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username });
+			const channelID = await message.guild!.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
+			if (!channelID) throw language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username });
 
 			// Validate the suggestion number
 			const id = Number(arg);
-			if (!Number.isInteger(id) || id < 1) throw message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidId);
+			if (!Number.isInteger(id) || id < 1) throw language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidId);
 
 			// Retrieve the suggestion data
 			const { suggestions } = await DbSet.connect();
 			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
-			if (!suggestionData) throw message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionIdNotFound);
+			if (!suggestionData) throw language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionIdNotFound);
 
 			const channel = message.client.channels.cache.get(channelID) as TextChannel;
 			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), RESTJSONErrorCodes.UnknownMessage);
 			if (suggestionMessage === null) {
 				await suggestionData.remove();
-				throw message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionMessageNotFound);
+				throw language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionMessageNotFound);
 			}
 
 			const suggestionAuthor = await message.client.users.fetch(suggestionData.authorID).catch(() => null);
@@ -64,29 +67,31 @@ const enum SuggestionsColors {
 	[
 		'comment',
 		(arg, possible, message) => {
-			if (typeof arg === 'undefined') return message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment);
+			if (typeof arg === 'undefined') return message.fetchLocale(LanguageKeys.Commands.Suggestions.ResolveSuggestionDefaultComment);
 			return message.client.arguments.get('...string')!.run(arg, possible, message);
 		}
 	]
 ])
 export default class extends SkyraCommand {
 	public async run(
-		message: KlasaMessage,
+		message: GuildMessage,
 		[suggestionData, action, comment]: [SuggestionData, 'accept' | 'a' | 'deny' | 'd' | 'consider' | 'c', string | undefined]
 	) {
-		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = [
-			message.guild!.settings.get(GuildSettings.Suggestions.OnAction.DM),
-			message.guild!.settings.get(GuildSettings.Suggestions.OnAction.HideAuthor),
-			message.guild!.settings.get(GuildSettings.Suggestions.OnAction.RepostMessage)
-		];
+		const [shouldDM, shouldHideAuthor, shouldRepostSuggestion] = await message.guild.readSettings([
+			GuildSettings.Suggestions.OnAction.DM,
+			GuildSettings.Suggestions.OnAction.HideAuthor,
+			GuildSettings.Suggestions.OnAction.RepostMessage
+		]);
 		const [suggestion] = suggestionData.message.embeds;
 
 		let newEmbed = new MessageEmbed();
 		let messageContent = '';
 
-		const author = await this.getAuthor(message, shouldHideAuthor);
-		const actions = message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author });
-		const DMActions = message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, { author, guild: message.guild!.name });
+		const language = await message.fetchLanguage();
+		const author = await this.getAuthor(message, shouldHideAuthor, language);
+
+		const actions = language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author });
+		const DMActions = language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, { author, guild: message.guild!.name });
 
 		switch (action) {
 			case 'a':
@@ -120,30 +125,30 @@ export default class extends SkyraCommand {
 
 		const actionText =
 			action === 'a' || action === 'accept'
-				? message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessAcceptedText)
+				? language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessAcceptedText)
 				: action === 'd' || action === 'deny'
-				? message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessDeniedText)
-				: message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessConsideredText);
+				? language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessDeniedText)
+				: language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccessConsideredText);
 
 		return message.sendLocale(LanguageKeys.Commands.Suggestions.ResolveSuggestionSuccess, [{ id: suggestionData.id, actionText }]);
 	}
 
-	public async inhibit(message: KlasaMessage) {
+	public async inhibit(message: GuildMessage) {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
-		if (message.command !== this || message.guild === null) return true;
+		if (!Object.is(message.command, this) || message.guild === null) return true;
 
-		const channelID = message.guild.settings.get(GuildSettings.Suggestions.SuggestionsChannel);
+		const channelID = await message.guild.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
 		if (channelID !== null) return false;
 		await message.sendLocale(LanguageKeys.Commands.Suggestions.SuggestNoSetup, [{ username: message.author.username }]);
 		return true;
 	}
 
-	private async getAuthor(message: KlasaMessage, hideAuthor: boolean) {
+	private async getAuthor(message: GuildMessage, hideAuthor: boolean, language: Language) {
 		if (Reflect.has(message.flagArgs, 'show-author') || Reflect.has(message.flagArgs, 'showAuthor')) return message.author.tag;
 		if (Reflect.has(message.flagArgs, 'hide-author') || Reflect.has(message.flagArgs, 'hideAuthor') || hideAuthor) {
 			return (await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))
-				? message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorAdmin)
-				: message.language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorModerator);
+				? language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorAdmin)
+				: language.get(LanguageKeys.Commands.Suggestions.ResolveSuggestionAuthorModerator);
 		}
 		return message.author.tag;
 	}

@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -7,7 +8,6 @@ import { BrandingColors, BrawlStarsEmojis, Emojis } from '@utils/constants';
 import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 
@@ -51,6 +51,7 @@ export interface BrawlStarsGIData {
 	aliases: ['bs'],
 	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsExtended),
+	// TODO: Check why this is Guild only (Target => Soumil07)
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,
@@ -62,19 +63,19 @@ export interface BrawlStarsGIData {
 		'tag',
 		(arg, _possible, message) => {
 			if (kTagRegex.test(arg)) return arg;
-			throw message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag, { playertag: arg });
+			throw message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlStarsInvalidPlayerTag, { playertag: arg });
 		}
 	]
 ])
 export default class extends SkyraCommand {
-	public async player(message: KlasaMessage, [tag]: [string]) {
+	public async player(message: GuildMessage, [tag]: [string]) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 
 		if (!tag && bsData.extraData?.playerTag) {
 			tag = bsData!.extraData.playerTag!;
 		} else if (!tag) {
-			throw message.language.get(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
+			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
 		const playerData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
@@ -88,14 +89,14 @@ export default class extends SkyraCommand {
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 
-	public async club(message: KlasaMessage, [tag]: [string]) {
+	public async club(message: GuildMessage, [tag]: [string]) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
 
 		if (!tag && bsData.extraData?.clubTag) {
 			tag = bsData!.extraData.clubTag!;
 		} else if (!tag) {
-			throw message.language.get(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
+			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
 		const clubData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.CLUB)) as BrawlStars.Club;
@@ -109,9 +110,10 @@ export default class extends SkyraCommand {
 		return message.send(await this.buildClubEmbed(message, clubData));
 	}
 
-	private async buildPlayerEmbed(message: KlasaMessage, player: BrawlStars.Player) {
-		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
-		const fields = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
+	private async buildPlayerEmbed(message: GuildMessage, player: BrawlStars.Player) {
+		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
+		const fields = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
+		const languageString = (await message.fetchLanguage()).name;
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) || BrandingColors.Primary)
@@ -120,20 +122,16 @@ export default class extends SkyraCommand {
 			.addField(
 				titles.trophies,
 				[
-					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${player.trophies.toLocaleString(message.language.name)}`,
-					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${player.highestTrophies.toLocaleString(message.language.name)}`
+					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${player.trophies.toLocaleString(languageString)}`,
+					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${player.highestTrophies.toLocaleString(languageString)}`
 				].join('\n')
 			)
 			.addField(
 				titles.exp,
 				[
-					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${player.expPoints.toLocaleString(
-						message.language.name
-					)})`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${player.powerPlayPoints?.toLocaleString(message.language.name) || 0}`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${
-						player.highestPowerPlayPoints?.toLocaleString(message.language.name) || 0
-					}`
+					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${player.expPoints.toLocaleString(languageString)})`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${player.powerPlayPoints?.toLocaleString(languageString) || 0}`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${player.highestPowerPlayPoints?.toLocaleString(languageString) || 0}`
 				].join('\n')
 			)
 			.addField(
@@ -148,9 +146,9 @@ export default class extends SkyraCommand {
 			.addField(
 				titles.gamesModes,
 				[
-					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${player['3vs3Victories'].toLocaleString(message.language.name)}`,
-					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${player.soloVictories.toLocaleString(message.language.name)}`,
-					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${player.duoVictories.toLocaleString(message.language.name)}`
+					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${player['3vs3Victories'].toLocaleString(languageString)}`,
+					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${player.soloVictories.toLocaleString(languageString)}`,
+					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${player.duoVictories.toLocaleString(languageString)}`
 				].join('\n')
 			)
 			.addField(
@@ -166,13 +164,14 @@ export default class extends SkyraCommand {
 			);
 	}
 
-	private async buildClubEmbed(message: KlasaMessage, club: BrawlStars.Club) {
-		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
-		const fields = message.language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
+	private async buildClubEmbed(message: GuildMessage, club: BrawlStars.Club) {
+		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
+		const fields = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
+		const languageString = (await message.fetchLanguage()).name;
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
-			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${member.trophies.toLocaleString(message.language.name)})`;
+			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${member.trophies.toLocaleString(languageString)})`;
 		const president = club.members.find((member) => member.role === 'president');
 
 		const embed = new MessageEmbed()
@@ -192,7 +191,7 @@ export default class extends SkyraCommand {
 		return embed;
 	}
 
-	private async fetchAPI<C extends BrawlStarsFetchCategories>(message: KlasaMessage, query: string, category: BrawlStarsFetchCategories) {
+	private async fetchAPI<C extends BrawlStarsFetchCategories>(message: GuildMessage, query: string, category: BrawlStarsFetchCategories) {
 		try {
 			const url = new URL(`https://api.brawlstars.com/v1/${category}/`);
 			url.href += encodeURIComponent(query);
@@ -208,8 +207,8 @@ export default class extends SkyraCommand {
 			);
 		} catch {
 			throw category === BrawlStarsFetchCategories.CLUB
-				? message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query })
-				: message.language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
+				? message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query })
+				: message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
 }

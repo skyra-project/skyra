@@ -1,6 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { ImageSize, MessageEmbed, User } from 'discord.js';
 import { KlasaMessage } from 'klasa';

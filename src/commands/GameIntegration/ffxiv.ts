@@ -22,11 +22,13 @@ import { KlasaMessage, Language } from 'klasa';
 })
 export default class extends RichDisplayCommand {
 	public async character(message: KlasaMessage, [name]: [string]) {
+		const language = await message.fetchLanguage();
+
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
+		const characterDetails = await this.fetchCharacter(language, name, Reflect.get(message.flagArgs, 'server'));
 		const display = await this.buildCharacterDisplay(message, characterDetails.Character);
 
 		await display.start(response, message.author.id);
@@ -34,11 +36,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	public async item(message: KlasaMessage, [item]: [string]) {
+		const language = await message.fetchLanguage();
+
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const itemDetails = await this.fetchItems(message.language, item);
+		const itemDetails = await this.fetchItems(language, item);
 		const display = await this.buildItemDisplay(message, itemDetails);
 
 		await display.start(response, message.author.id);
@@ -73,7 +77,7 @@ export default class extends RichDisplayCommand {
 			tankClassValues
 		} = this.parseCharacterClasses(character.ClassJobs);
 
-		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
+		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -135,7 +139,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
-		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
+		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

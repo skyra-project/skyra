@@ -14,7 +14,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 				return message.channel.sendFile(
 					Buffer.from(options.content ? options.content : options.result!),
 					options.targetId ? `${options.targetId}.txt` : 'output.txt',
-					message.language.get(
+					await message.fetchLocale(
 						options.time !== undefined && options.footer !== undefined
 							? LanguageKeys.System.ExceededLengthOutputFileWithTypeAndTime
 							: LanguageKeys.System.ExceededLengthOutputFile,
@@ -36,7 +36,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 						? LanguageKeys.System.ExceededLengthOutputHastebinWithTypeAndTime
 						: LanguageKeys.System.ExceededLengthOutputHastebin,
 					[{ url: options.url, time: options.time, type: options.footer }]
-				);
+				) as Promise<KlasaMessage>;
 			options.hastebinUnavailable = true;
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -50,7 +50,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 						? LanguageKeys.System.ExceededLengthOutputConsoleWithTypeAndTime
 						: LanguageKeys.System.ExceededLengthOutputConsole,
 					[{ time: options.time, type: options.footer }]
-				);
+				) as Promise<KlasaMessage>;
 			}
 			await getTypeOutput(message, options);
 			return handleMessage(message, options);
@@ -85,7 +85,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 						type: options.footer
 					}
 				]
-			);
+			) as Promise<KlasaMessage>;
 		}
 	}
 }
@@ -99,7 +99,7 @@ async function getTypeOutput<ED extends ExtraDataPartial>(message: KlasaMessage,
 	let _choice: { content: string } | undefined = undefined;
 	do {
 		_choice = await message
-			.prompt(message.language.get(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }))
+			.prompt(await message.fetchLocale(LanguageKeys.System.ExceededLengthChooseOutput, { output: _options }))
 			.catch(() => ({ content: 'none' }));
 	} while (!_options.concat('none', 'abort').includes(_choice.content));
 	options.sendAs = _choice.content.toLowerCase();

@@ -1,6 +1,7 @@
 import { GuildEntity } from '@lib/database/entities/GuildEntity';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
+import { Guild } from 'discord.js';
 import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
 import { ConfigurableKeyValue } from '../ConfigurableKeyValue';
 
@@ -105,6 +106,7 @@ export abstract class Serializer<T> extends AliasPiece {
 export interface SerializerUpdateContext {
 	entry: ConfigurableKeyValue;
 	entity: GuildEntity;
+	guild: Guild;
 	language: Language;
 	extraContext: unknown;
 }

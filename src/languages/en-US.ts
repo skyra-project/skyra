@@ -242,7 +242,7 @@ export default class extends Language {
 		commandHelpDescription: 'Display help for a command.',
 		commandHelpNoExtended: 'No extended help available.',
 		commandHelpDm: '📥 | The list of commands you have access to has been sent to your DMs.',
-		commandHelpNodm: `${REDCROSS} | You have DMs disabled, I couldn't send you the commands in DMs.`,
+		commandHelpNodm: `${REDCROSS} | You have DMs disabled so I couldn't send you the list of commands.`,
 		commandHelpAllFlag: ({ prefix }) =>
 			`Displaying one category per page. Have issues with the embed? Run \`${prefix}help --all\` for a full list in DMs.`,
 		commandHelpCommandCount: ({ count }) => `${count} command`,
@@ -269,7 +269,7 @@ export default class extends Language {
 		commandConfSettingNotSet: 'Not Set',
 		messagePromptTimeout: 'The prompt has timed out.',
 		textPromptAbortOptions: ['abort', 'stop', 'cancel'],
-		commandLoad: ({ time, type, name }) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
+		commandLoad: ({ time, type, name }) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,
 		commandLoadFail: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
 		commandLoadError: ({ type, name, error }) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 		commandLoadDescription: 'Load a piece from your bot.',
@@ -288,12 +288,11 @@ export default class extends Language {
 		commandAddExtended: {
 			extendedHelp: [
 				`Add songs to the playing queue and prepare for musical enjoyment!
-					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
-				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
+					I can play music from YouTube, Bandcamp, SoundCloud, Twitch, or Vimeo.`,
+				'- To play from YouTube either give me something to search for, a video link, or a playlist link.',
 				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
-				"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VODs.",
 				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.',
-				'- To play a previously-exported queue, include `--import` and attach the queue file to your message or give me a URL to it.'
+				'- To play a previously exported queue, include `--import` and attach the queue file to your message or give me a URL to it.'
 			],
 			explainedUsage: [['song', 'The song to queue. Can be either a URL or a video/song title.']],
 			examples: [
@@ -302,7 +301,6 @@ export default class extends Language {
 				'--sc Imagine Dragons Believer',
 				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
 				'https://vimeo.com/channels/music/239029778',
-				'https://mixer.com/Ninja',
 				'https://thedisappointed.bandcamp.com/album/escapism-2',
 				'https://cdn.discordapp.com/attachments/642137151626018818/746716958627725402/Skyra_Development_Suite-1598101595077.squeue',
 				'--import https://cdn.skyra.pw/favsongs.squeue'
@@ -331,14 +329,14 @@ export default class extends Language {
 		commandImportQueueDescription: 'Imports a queue saved as a `.squeue` file.',
 		commandImportQueueExtended: {
 			extendedHelp: [
-				'Did a friend send you a queue? Or you maybe want to play back a queue you have saved?',
+				'Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?',
 				'With `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!'
 			],
-			reminder: 'You can either give me a link to the `.squeue` file, or attach it along your commands!',
+			reminder: 'You can either give me a link to the `.squeue` file, or attach it to your message!',
 			multiline: true
 		},
 		commandJoinDescription: "Joins the message author's voice channel.",
-		commandJoinNoMember: `${REDCROSS} I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
+		commandJoinNoMember: `${REDCROSS} I'm sorry, but Discord did not give me the information I need, so I don't know which voice channel you're connected to...`,
 		commandJoinNoVoicechannel: `${REDCROSS} You are not connected in a voice channel.`,
 		commandJoinSuccess: ({ channel }) => `${GREENTICK} Successfully joined the voice channel ${channel}`,
 		commandJoinVoiceDifferent: `${REDCROSS} I think you confused the channels! Earth to Moon, we are in another voice channel!`,
@@ -350,9 +348,9 @@ export default class extends Language {
 		commandLeaveDescription: 'Leaves the voice channel.',
 		commandLeaveExtended: {
 			extendedHelp: [
-				`Use this command to have Skyra leave the current voice channel.`,
+				`Use this command to make me leave the current voice channel.`,
 				`By default I will leave the channel, forget about the currently playing song, but leave the queue intact.`,
-				'This means that once you do `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.',
+				'This means that if you use `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.',
 				'',
 				`This default behavior can be modified with flags:`,
 				'`--removeall` or `--ra` to follow the default behavior as well clear the queue, next time you want me to start playing you will have build a new queue'

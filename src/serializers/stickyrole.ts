@@ -1,25 +1,28 @@
 import { Serializer, SerializerUpdateContext, StickyRole } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isObject } from '@sapphire/utilities';
-import { Guild } from 'discord.js';
+import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer {
-	public validate(data: StickyRole, { language, entity: { guild } }: SerializerUpdateContext) {
-		if (
-			isObject(data) &&
-			Object.keys(data).length === 2 &&
-			typeof data.user === 'string' &&
-			Array.isArray(data.roles) &&
-			data.roles.every((role) => typeof role === 'string' && guild!.roles.cache.has(role))
-		)
-			return data;
-
-		throw language.get(LanguageKeys.Serializers.StickyRoleInvalid);
+export default class UserSerializer extends Serializer<StickyRole> {
+	public parse(): Awaited<StickyRole> {
+		throw new Error('Method not implemented.');
 	}
 
-	public stringify(value: StickyRole, guild: Guild) {
-		const username = this.client.users.cache.get(value.user)?.username ?? guild.language.get(LanguageKeys.Misc.UnknownUser);
-		const roles = value.roles.map((role) => guild.roles.cache.get(role)?.name ?? guild.language.get(LanguageKeys.Misc.UnknownRole));
+	public isValid(value: StickyRole, context: SerializerUpdateContext): Awaited<boolean> {
+		if (
+			isObject(value) &&
+			Object.keys(value).length === 2 &&
+			typeof value.user === 'string' &&
+			Array.isArray(value.roles) &&
+			value.roles.every((role) => typeof role === 'string' && context.guild.roles.cache.has(role))
+		)
+			return true;
+
+		throw context.language.get(LanguageKeys.Serializers.StickyRoleInvalid);
+	}
+
+	public stringify(value: StickyRole, context: SerializerUpdateContext) {
+		const username = this.client.users.cache.get(value.user)?.username ?? context.language.get(LanguageKeys.Misc.UnknownUser);
+		const roles = value.roles.map((role) => context.guild.roles.cache.get(role)?.name ?? context.language.get(LanguageKeys.Misc.UnknownRole));
 		return `[${username} -> ${roles}]`;
 	}
 }

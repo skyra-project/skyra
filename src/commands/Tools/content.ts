@@ -1,3 +1,4 @@
+import { Serializer } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -7,7 +8,6 @@ import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
 import { getContent } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { Serializer } from '@lib/database';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 

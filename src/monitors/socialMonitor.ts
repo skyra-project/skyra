@@ -15,6 +15,17 @@ export default class extends Monitor {
 	private readonly ratelimits = new RateLimitManager(1, 60000);
 
 	public async run(message: KlasaMessage) {
+		// &&
+		// 	message.guild.settings.get(GuildSettings.Social.Enabled) &&
+		// 	!message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id)
+		const { socialEnabled, ignoredChannels, multiplier } = await message.guild!.readSettings((settings) => ({
+			socialEnabled: settings[GuildSettings.Social.Enabled],
+			ignoredChannels: settings[GuildSettings.Social.IgnoreChannels],
+			multiplier: settings[GuildSettings.Social.Multiplier]
+		}));
+
+		if (!socialEnabled || ignoredChannels.includes(message.channel.id)) return;
+
 		try {
 			this.ratelimits.acquire(message.author.id).drip();
 		} catch {
@@ -26,7 +37,6 @@ export default class extends Monitor {
 			const set = await DbSet.connect();
 			const { guildBoost } = await set.clients.ensure();
 			const add = Math.round((Math.random() * 4 + 4) * (guildBoost.includes(message.guild!.id) ? 1.5 : 1));
-			const multiplier = message.guild!.settings.get(GuildSettings.Social.Multiplier);
 
 			const [, points] = await Promise.all([
 				this.addUserPoints(set, message.author.id, add),
@@ -39,7 +49,7 @@ export default class extends Monitor {
 	}
 
 	public async handleRoles(message: KlasaMessage, points: number) {
-		const autoRoles = message.guild!.settings.get(GuildSettings.Roles.Auto);
+		const autoRoles = await message.guild!.readSettings(GuildSettings.Roles.Auto);
 		if (!autoRoles.length || !message.guild!.me!.permissions.has(MANAGE_ROLES)) return;
 
 		const autoRole = this.getLatestRole(autoRoles, points);
@@ -48,7 +58,10 @@ export default class extends Monitor {
 		const role = message.guild!.roles.cache.get(autoRole.id);
 		if (!role || role.position > message.guild!.me!.roles.highest.position) {
 			message
-				.guild!.settings.update(GuildSettings.Roles.Auto, autoRole, { arrayAction: 'remove' })
+				.guild!.writeSettings((settings) => {
+					const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((element) => element === autoRole);
+					settings[GuildSettings.Roles.Auto].splice(roleIndex, 1);
+				})
 				.then(() => this.handleRoles(message, points))
 				.catch((error) => this.client.emit(Events.Error, error));
 			return;
@@ -57,14 +70,15 @@ export default class extends Monitor {
 		if (message.member!.roles.cache.has(role.id)) return null;
 
 		await message.member!.roles.add(role);
-		if (message.guild!.settings.get(GuildSettings.Social.Achieve) && message.channel.postable) {
+
+		const { shouldAchieve, achievementMessage, language } = await message.guild!.readSettings((settings) => ({
+			shouldAchieve: settings[GuildSettings.Social.Achieve],
+			achievementMessage: settings[GuildSettings.Social.AchieveMessage],
+			language: settings.getLanguage()
+		}));
+		if (shouldAchieve && message.channel.postable) {
 			await message.channel.send(
-				this.getMessage(
-					message.member!,
-					role,
-					message.guild!.settings.get(GuildSettings.Social.AchieveMessage) || message.language.get(LanguageKeys.Monitors.SocialAchievement),
-					points
-				)
+				this.getMessage(message.member!, role, achievementMessage || language.get(LanguageKeys.Monitors.SocialAchievement), points)
 			);
 		}
 	}
@@ -107,9 +121,7 @@ export default class extends Monitor {
 			message.webhookID === null &&
 			message.content.length > 0 &&
 			!message.system &&
-			message.author.id !== CLIENT_ID &&
-			message.guild.settings.get(GuildSettings.Social.Enabled) &&
-			!message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id)
+			message.author.id !== CLIENT_ID
 		);
 	}
 

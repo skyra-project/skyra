@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 				{
 					author: message.author.toString(),
 					question: input,
-					response: codeBlock('', this.generator(input.toLowerCase(), message.language))
+					response: codeBlock('', this.generator(input.toLowerCase(), await message.fetchLanguage()))
 				}
 			],
 			{ allowedMentions: { users: [], roles: [] } }

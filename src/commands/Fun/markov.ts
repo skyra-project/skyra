@@ -39,9 +39,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
+		const language = await message.fetchLanguage();
+
 		// Send loading message
 		await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Process the chain
@@ -53,6 +55,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async processDevelopment(message: KlasaMessage, markov: Markov) {
+		const language = await message.fetchLanguage();
 		const time = new Stopwatch();
 		const chain = markov.process();
 		time.stop();
@@ -60,15 +63,16 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(await DbSet.fetchColor(message))
-			.setFooter(message.language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
+			.setFooter(language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
 	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
+		const language = await message.fetchLanguage();
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
-		if (messageBank.size === 0) throw message.language.get(LanguageKeys.Commands.Fun.MarkovNoMessages);
+		if (messageBank.size === 0) throw language.get(LanguageKeys.Commands.Fun.MarkovNoMessages);
 		const contents = messageBank.map(getAllContent).join(' ');
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);

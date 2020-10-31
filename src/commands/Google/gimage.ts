@@ -30,12 +30,14 @@ export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
 			message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+				new MessageEmbed()
+					.setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading)))
+					.setColor(BrandingColors.Secondary)
 			),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
-		if (!items || !items.length) throw message.language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw message.fetchLocale(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

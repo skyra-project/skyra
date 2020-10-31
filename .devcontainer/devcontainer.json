@@ -95,7 +95,8 @@
 		"esbenp.prettier-vscode",
 		"tabnine.tabnine-vscode",
 		"redhat.vscode-yaml",
-		"akamud.vscode-theme-onedark"
+		"akamud.vscode-theme-onedark",
+		"ms-vsliveshare.vsliveshare-pack"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

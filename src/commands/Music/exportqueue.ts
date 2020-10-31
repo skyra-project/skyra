@@ -25,8 +25,9 @@ export default class extends SkyraCommand {
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.send(
-			message.language.get(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: message.guild!.name }),
+		return message.sendLocale(
+			LanguageKeys.Commands.Music.ExportQueueSuccess,
+			[{ guildName: message.guild!.name }],
 			new MessageAttachment(Buffer.from(data), `${message.guild!.name}-${Date.now()}.squeue`)
 		);
 	}

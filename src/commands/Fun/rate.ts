@@ -17,13 +17,14 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user]: [string]) {
 		// Escape all markdown
 		user = escapeMarkdown(user);
+		const language = await message.fetchLanguage();
 
 		let ratewaifu: string | undefined = undefined;
 		let rate: number | undefined = undefined;
 
 		if (/^(you|yourself|skyra)$/i.test(user)) {
 			rate = 100;
-			[ratewaifu, user] = message.language.get(LanguageKeys.Commands.Fun.RateMyself);
+			[ratewaifu, user] = language.get(LanguageKeys.Commands.Fun.RateMyself);
 		} else {
 			user = /^(myself|me)$/i.test(user) ? message.author.username : user.replace(/\bmy\b/g, 'your');
 

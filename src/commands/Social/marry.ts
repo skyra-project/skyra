@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { chunk } from '@sapphire/utilities';
@@ -9,7 +10,6 @@ import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import assert from 'assert';
 import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const AELIA_ID = '338249781594030090';
@@ -46,13 +46,14 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 	]
 ])
 export default class extends RichDisplayCommand {
-	public run(message: KlasaMessage, [user]: [User | undefined]) {
+	public run(message: GuildMessage, [user]: [User | undefined]) {
 		return user ? this.marry(message, user) : this.display(message);
 	}
 
-	private async display(message: KlasaMessage) {
+	private async display(message: GuildMessage) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { users } = await DbSet.connect();
@@ -68,7 +69,7 @@ export default class extends RichDisplayCommand {
 
 		for (const usernameChunk of usernames) {
 			display.addPage((embed: MessageEmbed) =>
-				embed.setDescription(message.language.get(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk }))
+				embed.setDescription(language.get(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk }))
 			);
 		}
 
@@ -76,8 +77,9 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async marry(message: KlasaMessage, user: User) {
-		const { author, channel, language } = message;
+	private async marry(message: GuildMessage, user: User) {
+		const { author, channel } = message;
+		const language = await message.fetchLanguage();
 
 		switch (user.id) {
 			case CLIENT_ID:
@@ -96,13 +98,13 @@ export default class extends RichDisplayCommand {
 			// Retrieve the author's spouses
 			const spouses = await users.fetchSpouses(authorID);
 			if (spouses.includes(targetID)) {
-				throw message.language.get(LanguageKeys.Commands.Social.MarryAlreadyMarried, { user });
+				throw language.get(LanguageKeys.Commands.Social.MarryAlreadyMarried, { user });
 			}
 
 			// Check if the author can marry another user
 			const authorLimit = premiumUsers.includes(authorID) ? 20 : 10;
 			if (spouses.length >= authorLimit) {
-				throw message.language.get(LanguageKeys.Commands.Social.MarryAuthorTooMany, { limit: authorLimit });
+				throw language.get(LanguageKeys.Commands.Social.MarryAuthorTooMany, { limit: authorLimit });
 			}
 
 			// Retrieve the target's spouses
@@ -111,7 +113,7 @@ export default class extends RichDisplayCommand {
 			// Check if the target can marry another user
 			const targetLimit = premiumUsers.includes(targetID) ? 20 : 10;
 			if (targetSpouses.length >= targetLimit) {
-				throw message.language.get(LanguageKeys.Commands.Social.MarryTargetTooMany, { limit: targetLimit });
+				throw language.get(LanguageKeys.Commands.Social.MarryTargetTooMany, { limit: targetLimit });
 			}
 
 			// Warn if starting polygamy:

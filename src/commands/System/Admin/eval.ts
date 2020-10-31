@@ -51,11 +51,12 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private timedEval(message: KlasaMessage, code: string, flagTime: number) {
+	private async timedEval(message: KlasaMessage, code: string, flagTime: number) {
 		if (flagTime === Infinity || flagTime === 0) return this.eval(message, code);
+		const language = await message.fetchLanguage();
 		return Promise.race([
 			sleep(flagTime).then(() => ({
-				result: message.language.get(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
+				result: language.get(LanguageKeys.Commands.System.EvalTimeout, { seconds: flagTime / 1000 }),
 				success: false,
 				time: '⏱ ...',
 				type: 'EvalTimeoutError'

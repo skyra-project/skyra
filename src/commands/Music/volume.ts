@@ -26,7 +26,7 @@ export default class extends MusicCommand {
 
 		const channel = audio.voiceChannel!;
 		if (channel.listeners.length >= 4 && !(await message.member.canManage(channel))) {
-			throw message.language.get(LanguageKeys.Inhibitors.MusicDjMember);
+			throw message.fetchLocale(LanguageKeys.Inhibitors.MusicDjMember);
 		}
 
 		// Set the volume

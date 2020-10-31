@@ -1,7 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -27,16 +26,19 @@ export default class extends SkyraCommand {
 	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
 
 	public async run(message: GuildMessage, [announcement]: [string]) {
-		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);
-		if (!announcementID) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		const { announcementID, language } = await message.guild!.readSettings((settings) => ({
+			announcementID: settings.channelsAnnouncements,
+			language: settings.getLanguage()
+		}));
+		if (!announcementID) throw language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
 		const channel = message.guild!.channels.cache.get(announcementID) as TextChannel;
-		if (!channel) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
+		if (!channel) throw language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
-		if (!channel.postable) throw message.language.get(LanguageKeys.System.ChannelNotPostable);
+		if (!channel.postable) throw language.get(LanguageKeys.System.ChannelNotPostable);
 
 		const role = announcementCheck(message);
-		const header = message.language.get(LanguageKeys.Commands.Announcement.Announcement, { role: role.toString() });
+		const header = language.get(LanguageKeys.Commands.Announcement.Announcement, { role: role.toString() });
 
 		if (await this.ask(message, header, announcement)) {
 			await this.send(message, channel, role, header, announcement);
@@ -46,9 +48,10 @@ export default class extends SkyraCommand {
 		return message.sendLocale(LanguageKeys.Commands.Announcement.AnnouncementCancelled);
 	}
 
-	private ask(message: KlasaMessage, header: string, announcement: string) {
+	private async ask(message: KlasaMessage, header: string, announcement: string) {
+		const language = await message.fetchLanguage();
 		try {
-			return message.ask(message.language.get(LanguageKeys.Commands.Announcement.AnnouncementPrompt), {
+			return message.ask(language.get(LanguageKeys.Commands.Announcement.AnnouncementPrompt), {
 				embed: this.buildEmbed(announcement, header)
 			});
 		} catch {
@@ -62,7 +65,11 @@ export default class extends SkyraCommand {
 		if (!mentionable) await role.edit({ mentionable: true });
 
 		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? [] : [...new Set(extractMentions(announcement))];
-		const shouldSendAsEmbed = message.guildSettings.get(GuildSettings.Messages.AnnouncementEmbed);
+		// const shouldSendAsEmbed = message.guildSettings.get(GuildSettings.Messages.AnnouncementEmbed);
+		const { shouldSendAsEmbed, language } = await message.guild!.readSettings((settings) => ({
+			shouldSendAsEmbed: settings.messagesAnnouncementEmbed,
+			language: settings.getLanguage()
+		}));
 
 		// Retrieve last announcement if there was one
 		const previous = this.messages.get(message);
@@ -71,11 +78,11 @@ export default class extends SkyraCommand {
 				const resultMessage = shouldSendAsEmbed
 					? await previous.edit(
 							mentions.length
-								? message.language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
+								? language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 										header,
-										mentions: message.language.list(mentions, message.language.get(LanguageKeys.Globals.And))
+										mentions: language.list(mentions, message.language.get(LanguageKeys.Globals.And))
 								  })
-								: message.language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
+								: language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 										header
 								  }),
 							this.buildEmbed(announcement)
@@ -88,11 +95,11 @@ export default class extends SkyraCommand {
 						? await channel.sendEmbed(
 								this.buildEmbed(announcement),
 								mentions.length
-									? message.language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
+									? language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 											header,
-											mentions: message.language.list(mentions, message.language.get(LanguageKeys.Globals.And))
+											mentions: language.list(mentions, language.get(LanguageKeys.Globals.And))
 									  })
-									: message.language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
+									: language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 											header
 									  })
 						  )
@@ -109,11 +116,11 @@ export default class extends SkyraCommand {
 				? await channel.sendEmbed(
 						this.buildEmbed(announcement),
 						mentions.length
-							? message.language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
+							? language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 									header,
-									mentions: message.language.list(mentions, message.language.get(LanguageKeys.Globals.And))
+									mentions: language.list(mentions, language.get(LanguageKeys.Globals.And))
 							  })
-							: message.language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
+							: language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 									header
 							  })
 				  )

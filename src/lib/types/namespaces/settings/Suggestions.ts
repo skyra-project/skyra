@@ -3,11 +3,11 @@ export enum Suggestions {
 	SuggestionsChannel = 'suggestionsChannel'
 }
 
-import { VotingEmojis as VotingEmojisInternal } from './Suggestions/VotingEmojis';
 import { OnAction as OnActionInternal } from './Suggestions/OnAction';
+import { VotingEmojis as VotingEmojisInternal } from './Suggestions/VotingEmojis';
 
 // eslint-disable-next-line @typescript-eslint/no-namespace
-export namespace Selfmod {
-	export declare const VotingEmojis: VotingEmojisInternal;
-	export declare const OnAction: OnActionInternal;
+export namespace Suggestions {
+	export declare const VotingEmojis: typeof VotingEmojisInternal;
+	export declare const OnAction: typeof OnActionInternal;
 }

@@ -139,10 +139,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	},
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
-	providers: {
-		default: 'postgres',
-		postgres: PGSQL_DATABASE_OPTIONS
-	},
 	readyMessage: (client) =>
 		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.cache.size} [G]] [ ${client.guilds.cache
 			.reduce((a, b) => a + b.memberCount, 0)

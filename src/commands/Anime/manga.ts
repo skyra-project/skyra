@@ -9,7 +9,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Language, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
@@ -24,20 +24,21 @@ export default class extends RichDisplayCommand {
 	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: KlasaMessage, [mangaName]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { hits: entries } = await this.fetchAPI(message, mangaName);
-		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
+		const { hits: entries } = await this.fetchAPI(language, mangaName);
+		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message);
+		const display = await this.buildDisplay(entries, language, message);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, mangaName: string) {
+	private async fetchAPI(language: Language, mangaName: string) {
 		try {
 			return fetch<Kitsu.KitsuResult>(
 				API_URL,
@@ -59,12 +60,12 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(entries: Kitsu.KitsuHit[], message: KlasaMessage) {
-		const embedData = message.language.get(LanguageKeys.Commands.Anime.MangaEmbedData);
+	private async buildDisplay(entries: Kitsu.KitsuHit[], language: Language, message: KlasaMessage) {
+		const embedData = language.get(LanguageKeys.Commands.Anime.MangaEmbedData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -91,22 +92,22 @@ export default class extends RichDisplayCommand {
 				entry.titles.en || entry.titles.en_us,
 				entry.titles.ja_jp,
 				entry.canonicalTitle
-			].map((title) => title || message.language.get(LanguageKeys.Globals.None));
+			].map((title) => title || language.get(LanguageKeys.Globals.None));
 
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(mangaURL)
 					.setDescription(
-						message.language.get(LanguageKeys.Commands.Anime.MangaOutputDescription, {
+						language.get(LanguageKeys.Commands.Anime.MangaOutputDescription, {
 							englishTitle,
 							japaneseTitle,
 							canonicalTitle,
-							synopsis: synopsis ?? message.language.get(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
+							synopsis: synopsis ?? language.get(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
 						})
 					)
 					.setThumbnail(entry.posterImage?.original || '')
-					.addField(embedData.type, message.language.get(LanguageKeys.Commands.Anime.MangaTypes)[type.toUpperCase()] || type, true)
+					.addField(embedData.type, language.get(LanguageKeys.Commands.Anime.MangaTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
 					.addField(embedData.firstPublishDate, this.kTimestamp.display(entry.startDate * 1000), true)

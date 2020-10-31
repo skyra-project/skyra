@@ -1,24 +1,27 @@
-import { Serializer } from '@lib/database';
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 
-export default class UserSerializer extends Serializer {
-	public async validate(data, { entry, language }) {
-		let user = this.client.users.resolve(data);
-		if (user) return user;
-		if (Serializer.regex.userOrMember.test(data))
-			user = await this.client.users.fetch(Serializer.regex.userOrMember.exec(data)![1]).catch(() => null);
-		if (user) return user;
-		throw language.get('resolverInvalidUser', { name: entry.key });
+export default class UserSerializer extends Serializer<string> {
+	public async parse(value: string, context: SerializerUpdateContext): Promise<string> {
+		const id = Serializer.regex.userOrMember.exec(value);
+		const user = id ? await this.client.users.fetch(id[1]).catch(() => null) : null;
+		if (user) return user.id;
+		throw context.language.get('resolverInvalidUser', { name: context.entry.name });
 	}
 
-	public serialize(value) {
-		return value.id;
+	public async isValid(value: string, context: SerializerUpdateContext): Promise<boolean> {
+		try {
+			// If it's not a valid snowflake, throw
+			if (!Serializer.regex.snowflake.test(value)) throw undefined;
+
+			// Fetch the value, if it exists, it'll resolve and return true
+			await this.client.users.fetch(value);
+			return true;
+		} catch {
+			throw context.language.get('resolverInvalidUser', { name: context.entry.name });
+		}
 	}
 
-	public stringify(value) {
-		return (
-			this.client.users.cache.get(value) || {
-				username: (value && value.username) || value
-			}
-		).username;
+	public stringify(value: string) {
+		return this.client.users.cache.get(value)?.username ?? value;
 	}
 }

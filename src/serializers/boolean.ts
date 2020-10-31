@@ -8,13 +8,13 @@ import { AliasPieceOptions } from 'klasa';
 	aliases: ['bool']
 })
 export default class UserSerializer extends Serializer<boolean> {
-	private readonly kTruths = new Set(['true', 't', 'yes', 'y', 'on', 'enable', 'enabled', '1', '+']);
-	private readonly kFalses = new Set(['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-']);
+	private readonly kTruthyTerms = new Set(['true', 't', 'yes', 'y', 'on', 'enable', 'enabled', '1', '+']);
+	private readonly kFalsyTerms = new Set(['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-']);
 
 	public parse(value: string, context: SerializerUpdateContext): Awaited<boolean> {
 		const boolean = value.toLowerCase();
-		if (this.kTruths.has(boolean)) return true;
-		if (this.kFalses.has(boolean)) return false;
+		if (this.kTruthyTerms.has(boolean)) return true;
+		if (this.kFalsyTerms.has(boolean)) return false;
 		throw context.language.get(LanguageKeys.Resolvers.InvalidBool, { name: context.entry.name });
 	}
 

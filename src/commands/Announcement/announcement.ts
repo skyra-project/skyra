@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -25,7 +26,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
 
-	public async run(message: KlasaMessage, [announcement]: [string]) {
+	public async run(message: GuildMessage, [announcement]: [string]) {
 		const announcementID = message.guild!.settings.get(GuildSettings.Channels.Announcements);
 		if (!announcementID) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 

@@ -1,9 +1,14 @@
 import { Serializer, SerializerUpdateContext, TriggerIncludes } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isObject } from '@sapphire/utilities';
+import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class UserSerializer extends Serializer {
-	public validate(data: TriggerIncludes, { language }: SerializerUpdateContext) {
+export default class UserSerializer extends Serializer<TriggerIncludes> {
+	public parse(): Awaited<TriggerIncludes> {
+		// TODO (kyranet): implement this
+		throw new Error('Method not implemented.');
+	}
+
+	public isValid(data: TriggerIncludes, { language }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(data) &&
 			Object.keys(data).length === 3 &&
@@ -11,7 +16,7 @@ export default class UserSerializer extends Serializer {
 			typeof data.input === 'string' &&
 			typeof data.output === 'string'
 		)
-			return data;
+			return true;
 
 		throw language.get(LanguageKeys.Serializers.TriggerIncludeInvalid);
 	}

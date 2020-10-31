@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.get(LanguageKeys.Commands.Animal.CatfactTitle))
+				.setTitle(message.fetchLocale(LanguageKeys.Commands.Animal.CatfactTitle))
 				.setDescription(fact)
 		);
 	}

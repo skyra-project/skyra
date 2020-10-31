@@ -104,11 +104,11 @@ export default class extends SkyraCommand {
 				result instanceof Error
 					? result.stack
 					: message.flagArgs.json
-						? JSON.stringify(result, null, 4)
-						: inspect(result, {
+					? JSON.stringify(result, null, 4)
+					: inspect(result, {
 							depth: message.flagArgs.depth ? parseInt(message.flagArgs.depth, 10) || 0 : 0,
 							showHidden: Boolean(message.flagArgs.showHidden)
-						});
+					  });
 		}
 		return { success, type: type!, time: this.formatTime(syncTime, asyncTime ?? ''), result: clean(result as string) };
 	}

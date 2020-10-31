@@ -24,7 +24,7 @@ import { KlasaMessage } from 'klasa';
 	[
 		'package',
 		(arg, _, message) => {
-			if (!arg) throw message.language.get(LanguageKeys.Commands.Developers.YarnNoPackage);
+			if (!arg) throw message.fetchLocale(LanguageKeys.Commands.Developers.YarnNoPackage);
 			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
 		}
 	]

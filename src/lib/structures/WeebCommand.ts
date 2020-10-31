@@ -42,19 +42,19 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String(message.channel.nsfw));
 
-		const { url } = await this.fetch(message, query);
+		const [{ url }, language] = await Promise.all([this.fetch(message, query), message.guild.fetchLanguage()]);
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)
-				? message.language.get(this.responseName as ComplexKey, { user: params![0].username })
-				: message.language.get(this.responseName as SimpleKey),
+				? language.get(this.responseName as ComplexKey, { user: params![0].username })
+				: language.get(this.responseName as SimpleKey),
 			{
 				embed: new MessageEmbed()
 					.setTitle('→')
 					.setURL(url)
 					.setColor(await DbSet.fetchColor(message))
 					.setImage(url)
-					.setFooter(message.language.get(LanguageKeys.System.PoweredByWeebsh))
+					.setFooter(language.get(LanguageKeys.System.PoweredByWeebsh))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
@@ -64,15 +64,16 @@ export abstract class WeebCommand extends SkyraCommand {
 			return await fetch<WeebCommandResult>(url, { headers: this.kHeaders }, FetchResultTypes.JSON);
 		} catch (unknownError: unknown) {
 			const error = unknownError as FetchError;
+			const language = await message.guild.fetchLanguage();
 
 			// If we received a 5XX code error, warn the user about the service's unavailability.
 			if (error.code >= 500) {
-				throw message.language.get(LanguageKeys.Commands.Weeb.UnavailableError);
+				throw language.get(LanguageKeys.Commands.Weeb.UnavailableError);
 			}
 
 			// If otherwise we got an 4XX error code, warn the user about unexpected error.
 			this.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
-			throw message.language.get(LanguageKeys.Commands.Weeb.UnexpectedError);
+			throw language.get(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
 }

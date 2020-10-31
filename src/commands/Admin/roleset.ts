@@ -1,4 +1,5 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -36,56 +37,41 @@ import { KlasaMessage } from 'klasa';
 ])
 export default class extends SkyraCommand {
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
-	public async add(message: KlasaMessage, [name, roles]: [string, Role[]]) {
+	public async add(message: GuildMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		const roleset = allRolesets.find((set) => set.name === name);
+		const { created, roleSets } = await message.guild.writeSettings((settings) => {
+			const allRoleSets = settings.rolesUniqueRoleSets;
+			const roleSet = allRoleSets.find((set) => set.name === name);
 
-		// If it does not exist we need to create a brand new set
-		if (!roleset) {
-			await message.guild!.settings.update(
-				GuildSettings.Roles.UniqueRoleSets,
-				{ name, roles: roles.map((role) => role.id) },
-				{
-					arrayAction: 'add',
-					extraContext: { author: message.author.id }
-				}
-			);
-			return message.sendLocale(LanguageKeys.Commands.Admin.RolesetCreated, [
-				{
-					name,
-					roles: message.language.list(
-						roles.map((role) => role.name),
-						message.language.get(LanguageKeys.Globals.And)
-					)
-				}
-			]);
-		}
-
-		// The set does exist so we want to only ADD new roles in
-
-		// Create a new array that we can use to overwrite the existing one in settings
-		const newsets = allRolesets.map((set) => {
-			if (set.name !== name) return set;
-			const finalRoleIDs = [...set.roles];
-			for (const role of roles) if (!finalRoleIDs.includes(role.id)) finalRoleIDs.push(role.id);
-
-			return { name, roles: finalRoleIDs };
-		});
-
-		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, {
-			arrayAction: 'overwrite',
-			extraContext: { author: message.author.id }
-		});
-		return message.sendLocale(LanguageKeys.Commands.Admin.RolesetAdded, [
-			{
-				name,
-				roles: message.language.list(
-					roles.map((role) => role.name),
-					message.language.get(LanguageKeys.Globals.And)
-				)
+			// If it does not exist we need to create a brand new set
+			if (!roleSet) {
+				allRoleSets.push({ name, roles: roles.map((role) => role.id) });
+				return { created: true, roleSets: allRoleSets };
 			}
-		]);
+
+			// The set does exist so we want to only ADD new roles in
+			// Create a new array that we can use to overwrite the existing one in settings
+			settings.rolesUniqueRoleSets = allRoleSets.map((set) => {
+				if (set.name !== name) return set;
+				const finalRoleIDs = [...set.roles];
+				for (const role of roles) if (!finalRoleIDs.includes(role.id)) finalRoleIDs.push(role.id);
+
+				return { name, roles: finalRoleIDs };
+			});
+
+			return { created: false, roleSets: settings.rolesUniqueRoleSets };
+		});
+
+		const language = await message.fetchLanguage();
+		return message.send(
+			language.get(created ? LanguageKeys.Commands.Admin.RolesetCreated : LanguageKeys.Commands.Admin.RolesetAdded, {
+				name,
+				roles: language.list(
+					roleSets.map((role) => role.name),
+					language.get(LanguageKeys.Globals.And)
+				)
+			})
+		);
 	}
 
 	// This subcommand will always remove roles from a provided role set.

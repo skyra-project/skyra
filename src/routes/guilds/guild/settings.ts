@@ -10,7 +10,7 @@ import { inspect } from 'util';
 
 @ApplyOptions<RouteOptions>({ name: 'guildSettings', route: 'guilds/:guild/settings' })
 export default class extends Route {
-	private readonly kBlacklist: string[] = ['commandUses'];
+	private readonly kBlockList: string[] = ['commandUses'];
 
 	@authenticated()
 	@ratelimit(2, 5000, true)
@@ -25,7 +25,7 @@ export default class extends Route {
 
 		if (!canManage(guild, member)) return response.error(403);
 
-		return response.json(guild.settings.toJSON());
+		return guild.readSettings((settings) => response.json(settings));
 	}
 
 	@authenticated()
@@ -46,12 +46,13 @@ export default class extends Route {
 		if (!canManage(botGuild, member)) return response.error(403);
 
 		const entries = Array.isArray(requestBody.data) ? requestBody.data : (objectToTuples(requestBody.data) as [string, unknown][]);
-		if (entries.some(([key]) => this.kBlacklist.includes(key))) return response.error(400);
+		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(400);
 
-		await botGuild.settings.sync();
+		// TODO(kyranet): Fill this in once NanoGateway is up
+		// await botGuild.settings.sync();
 		try {
-			await botGuild.settings.update(entries, { arrayAction: 'overwrite', extraContext: { author: member.id } });
-			return response.json({ newSettings: botGuild.settings.toJSON() });
+			// await botGuild.settings.update(entries, { arrayAction: 'overwrite', extraContext: { author: member.id } });
+			return botGuild.readSettings((settings) => response.json(settings));
 		} catch (errors) {
 			this.client.emit(Events.Error, `${botGuild.name}[${botGuild.id}] failed guild settings update:\n${inspect(errors)}`);
 

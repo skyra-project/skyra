@@ -1,27 +1,31 @@
 import { ReactionRole, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isObject } from '@sapphire/utilities';
+import { Awaited, isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';
-import { Guild } from 'discord.js';
 
-export default class UserSerializer extends Serializer {
-	public validate(data: ReactionRole, { language }: SerializerUpdateContext) {
-		if (
-			isObject(data) &&
-			Object.keys(data).length === 4 &&
-			typeof data.emoji === 'string' &&
-			(typeof data.message === 'string' || data.message === null) &&
-			typeof data.channel === 'string' &&
-			typeof data.role === 'string'
-		)
-			return data;
-
-		throw language.get(LanguageKeys.Serializers.ReactionRoleInvalid);
+export default class UserSerializer extends Serializer<ReactionRole> {
+	public parse(): Awaited<ReactionRole> {
+		// TODO (kyranet): implement this
+		throw new Error('Method not implemented.');
 	}
 
-	public stringify(value: ReactionRole, guild: Guild) {
+	public isValid(value: ReactionRole, context: SerializerUpdateContext): Awaited<boolean> {
+		if (
+			isObject(value) &&
+			Object.keys(value).length === 4 &&
+			typeof value.emoji === 'string' &&
+			(typeof value.message === 'string' || value.message === null) &&
+			typeof value.channel === 'string' &&
+			typeof value.role === 'string'
+		)
+			return true;
+
+		throw context.language.get(LanguageKeys.Serializers.ReactionRoleInvalid);
+	}
+
+	public stringify(value: ReactionRole, { language, entity: { guild } }: SerializerUpdateContext) {
 		const emoji = displayEmoji(value.emoji);
-		const role = guild.roles.cache.get(value.role)?.name ?? guild.language.get(LanguageKeys.Misc.UnknownRole);
+		const role = guild.roles.cache.get(value.role)?.name ?? language.get(LanguageKeys.Misc.UnknownRole);
 		const url = `https://discord.com/channels/${guild.id}/${value.channel}/${value.message}`;
 		return `${emoji} | ${url} -> ${role}`;
 	}

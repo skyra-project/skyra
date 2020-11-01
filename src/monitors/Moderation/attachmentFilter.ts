@@ -21,12 +21,12 @@ export default class extends Monitor {
 		// !message.guild.settings.get().includes(message.channel.id) &&
 		// this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction))
 
-		const [shouldRun, ignoredChannels, action, maximum, duration] = await message.guild.readSettings((entity) => [
-			entity[GuildSettings.Selfmod.Attachments.Attachment],
-			entity[GuildSettings.Channels.Ignore.All],
-			entity.selfmodAttachmentAction,
-			entity.selfmodAttachmentMaximum,
-			entity.selfmodAttachmentDuration
+		const [ignoredChannels, shouldRun, action, maximum, duration] = await message.guild.readSettings([
+			GuildSettings.Channels.Ignore.All,
+			GuildSettings.Selfmod.Attachments.Attachment,
+			GuildSettings.Selfmod.Attachments.AttachmentAction,
+			GuildSettings.Selfmod.Attachments.AttachmentMaximum,
+			GuildSettings.Selfmod.Attachments.AttachmentDuration
 		]);
 
 		if (

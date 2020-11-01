@@ -16,7 +16,8 @@ export type AnyObject = Record<PropertyKey, unknown> | {};
 
 export type KeyOfType<T, V> = {
 	[P in keyof T]: T[P] extends V ? P : never;
-}[keyof T];
+}[keyof T] &
+	keyof T;
 
 export type Mutable<T> = {
 	-readonly [P in keyof T]: T[P] extends Array<unknown> | AnyObject | {} ? Mutable<T[P]> : T[P];

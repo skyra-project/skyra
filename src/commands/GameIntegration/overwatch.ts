@@ -23,6 +23,7 @@ import { KlasaMessage, Language, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
 
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const language = await message.fetchLanguage();
 
@@ -43,6 +44,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	private async fetchAPI(message: KlasaMessage, player: string, platform: PlatformUnion) {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
@@ -52,6 +54,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const language = await message.fetchLanguage();
 

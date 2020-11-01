@@ -51,7 +51,7 @@ export interface BrawlStarsGIData {
 	aliases: ['bs'],
 	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsExtended),
-	// TODO: Check why this is Guild only (Target => Soumil07)
+	// TODO(Soumil07): Check why this is Guild only
 	runIn: ['text'],
 	subcommands: true,
 	flagSupport: true,

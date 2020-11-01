@@ -23,7 +23,7 @@ export default class extends Route {
 		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		if (!canManage(guild, member)) return response.error(403);
+		if (!(await canManage(guild, member))) return response.error(403);
 
 		return guild.readSettings((settings) => response.json(settings));
 	}
@@ -43,7 +43,7 @@ export default class extends Route {
 		const member = await botGuild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		if (!canManage(botGuild, member)) return response.error(403);
+		if (!(await canManage(botGuild, member))) return response.error(403);
 
 		const entries = Array.isArray(requestBody.data) ? requestBody.data : (objectToTuples(requestBody.data) as [string, unknown][]);
 		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(400);

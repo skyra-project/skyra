@@ -17,6 +17,12 @@ const MAXIMUM_LENGTH = 1024 * 1024;
 
 export default class extends Monitor {
 	public async run(message: KlasaMessage) {
+		const [logChannel, ignoredChannels] = await message.guild!.readSettings([
+			GuildSettings.Channels.ImageLogs,
+			GuildSettings.Channels.Ignore.All
+		]);
+		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
+
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
 
@@ -73,9 +79,7 @@ export default class extends Monitor {
 			message.author !== null &&
 			message.webhookID === null &&
 			!message.system &&
-			message.author.id !== CLIENT_ID &&
-			message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null &&
-			!message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+			message.author.id !== CLIENT_ID
 		);
 	}
 

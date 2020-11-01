@@ -16,7 +16,7 @@ type ArgumentType = [LLRCData, string];
 export default class extends ModerationEvent<ArgumentType> {
 	protected keyEnabled: string = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: string = GuildSettings.Selfmod.Reactions.SoftAction;
-	protected hardPunishmentPath: HardPunishment<typeof GuildSettings.Selfmod.Reactions.HardAction> = {
+	protected hardPunishmentPath: HardPunishment<GuildSettings.Selfmod.Reactions.HardAction> = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
 		adder: 'reactions',
@@ -25,12 +25,25 @@ export default class extends ModerationEvent<ArgumentType> {
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		if (
-			!data.guild.settings.get(this.keyEnabled) ||
-			data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).length === 0 ||
-			data.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(data.channel.id)
-		)
-			return;
+		const [
+			enabled,
+			blockedReactions,
+			ignoredChannels,
+			softPunishment,
+			maximumThreshold,
+			durationThreshold,
+			hardAction
+		] = await data.guild.readSettings([
+			GuildSettings.Selfmod.Reactions.Enabled,
+			GuildSettings.Selfmod.Reactions.BlackList,
+			GuildSettings.Channels.Ignore.ReactionAdd,
+			GuildSettings.Selfmod.Reactions.SoftAction,
+			GuildSettings.Selfmod.Reactions.ThresholdMaximum,
+			GuildSettings.Selfmod.Reactions.ThresholdDuration,
+			GuildSettings.Selfmod.Reactions.HardAction
+		]);
+
+		if (!enabled || blockedReactions.length === 0 || ignoredChannels.includes(data.channel.id)) return;
 
 		const member = await data.guild.members.fetch(data.userID);
 		if (member.user.bot || this.hasPermissions(member)) return;
@@ -39,33 +52,27 @@ export default class extends ModerationEvent<ArgumentType> {
 		const preProcessed = this.preProcess(args);
 		if (preProcessed === null) return;
 
-		const filter = data.guild.settings.get(this.softPunishmentPath) as number;
-		const bitfield = new SelfModeratorBitField(filter);
-		this.processSoftPunishment(args, preProcessed, bitfield);
+		this.processSoftPunishment(args, preProcessed, new SelfModeratorBitField(softPunishment));
 
 		if (this.hardPunishmentPath === null) return;
 
-		const maximum = data.guild.settings.get(this.hardPunishmentPath.adderMaximum) as number;
-		if (!maximum) return this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action));
-
-		const duration = data.guild.settings.get(this.hardPunishmentPath.adderDuration) as number;
-		if (!duration) return this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action));
+		if (!maximumThreshold || !durationThreshold) return this.processHardPunishment(data.guild, data.userID, hardAction);
 
 		const $adder = this.hardPunishmentPath.adder;
 		if (data.guild.security.adders[$adder] === null) {
-			data.guild.security.adders[$adder] = new Adder(maximum, duration);
+			data.guild.security.adders[$adder] = new Adder(maximumThreshold, durationThreshold);
 		}
 
 		try {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
 			data.guild.security.adders[$adder]!.add(data.userID, points);
 		} catch {
-			await this.processHardPunishment(data.guild, data.userID, data.guild.settings.get(this.hardPunishmentPath.action));
+			await this.processHardPunishment(data.guild, data.userID, await data.guild.readSettings(this.hardPunishmentPath.action));
 		}
 	}
 
-	protected preProcess([data, emoji]: Readonly<ArgumentType>) {
-		return data.guild.settings.get(GuildSettings.Selfmod.Reactions.BlackList).includes(emoji) ? 1 : null;
+	protected async preProcess([data, emoji]: Readonly<ArgumentType>) {
+		return (await data.guild.readSettings(GuildSettings.Selfmod.Reactions.BlackList)).includes(emoji) ? 1 : null;
 	}
 
 	protected onDelete([data, emoji]: Readonly<ArgumentType>) {
@@ -88,6 +95,7 @@ export default class extends ModerationEvent<ArgumentType> {
 
 	protected async onLogMessage([data]: Readonly<ArgumentType>) {
 		const user = await this.client.users.fetch(data.userID);
+		const language = await data.guild.fetchLanguage();
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -97,11 +105,11 @@ export default class extends ModerationEvent<ArgumentType> {
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(
-				`[${data.guild.language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
+				`[${await language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
 					data.messageID
 				})`
 			)
-			.setFooter(`${data.channel.name} | ${data.guild.language.get(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
+			.setFooter(`${data.channel.name} | ${language.get(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
 			.setTimestamp();
 	}
 
@@ -109,9 +117,8 @@ export default class extends ModerationEvent<ArgumentType> {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, args[0].guild, this.onLogMessage.bind(this, args));
 	}
 
-	private hasPermissions(member: GuildMember) {
-		return member.guild.settings.get(GuildSettings.Roles.Moderator)
-			? member.roles.cache.has(member.guild.settings.get(GuildSettings.Roles.Moderator))
-			: member.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
+	private async hasPermissions(member: GuildMember) {
+		const modRole = await member.guild.readSettings(GuildSettings.Roles.Moderator);
+		return modRole ? member.roles.cache.has(modRole) : member.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
 	}
 }

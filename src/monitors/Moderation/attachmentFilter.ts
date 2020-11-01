@@ -8,7 +8,7 @@ import { Adder, AdderError } from '@utils/Adder';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 
 const { FLAGS } = Permissions;
 
@@ -17,13 +17,25 @@ export default class extends Monitor {
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
 	public async run(message: GuildMessage) {
-		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
+		// message.guild.settings.get() &&
+		// !message.guild.settings.get().includes(message.channel.id) &&
+		// this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction))
 
-		const [action, maximum, duration] = await message.guild.readSettings((entity) => [
+		const [shouldRun, ignoredChannels, action, maximum, duration] = await message.guild.readSettings((entity) => [
+			entity[GuildSettings.Selfmod.Attachments.Attachment],
+			entity[GuildSettings.Channels.Ignore.All],
 			entity.selfmodAttachmentAction,
 			entity.selfmodAttachmentMaximum,
 			entity.selfmodAttachmentDuration
 		]);
+
+		if (
+			!shouldRun ||
+			ignoredChannels.includes(message.channel.id) ||
+			this.hasPermissions(message, action) ||
+			(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))
+		)
+			return;
 
 		const { adders } = message.guild.security;
 		if (!adders.attachments) adders.attachments = new Adder(maximum, duration, true);
@@ -135,14 +147,14 @@ export default class extends Monitor {
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				type,
-				duration: message.guild.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
+				duration: await message.guild.readSettings(GuildSettings.Selfmod.Attachments.AttachmentDuration),
 				reason: 'AttachmentFilter: Threshold Reached.'
 			})
 			.create();
 		lock();
 	}
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: GuildMessage) {
 		return (
 			this.enabled &&
 			message.guild !== null &&
@@ -150,14 +162,11 @@ export default class extends Monitor {
 			message.webhookID === null &&
 			message.attachments.size > 0 &&
 			!message.system &&
-			message.author.id !== CLIENT_ID &&
-			message.guild.settings.get(GuildSettings.Selfmod.Attachment) &&
-			!message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id) &&
-			this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction))
+			message.author.id !== CLIENT_ID
 		);
 	}
 
-	private hasPermissions(message: GuildMessage, action: number) {
+	private async hasPermissions(message: GuildMessage, action: number) {
 		const guildMe = message.guild.me!;
 		const member = message.member!;
 		switch (action & 0b11) {
@@ -167,7 +176,7 @@ export default class extends Monitor {
 				return member.kickable;
 			case 0b010:
 				return (
-					message.guild.settings.get(GuildSettings.Roles.Muted) !== null &&
+					(await message.guild.readSettings(GuildSettings.Roles.Muted)) !== null &&
 					guildMe.roles.highest.position > member.roles.highest.position &&
 					guildMe.permissions.has(FLAGS.MANAGE_ROLES)
 				);

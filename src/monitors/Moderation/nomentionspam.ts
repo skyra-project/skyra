@@ -1,10 +1,11 @@
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 
 export default class extends Monitor {
-	public run(message: KlasaMessage) {
-		if (!message.guild || !message.guild.settings.get(GuildSettings.NoMentionSpam.Enabled)) return;
+	public async run(message: GuildMessage) {
+		if (!message.guild || !(await message.guild!.readSettings(GuildSettings.Selfmod.NoMentionSpam.Enabled))) return;
 
 		const mentions =
 			message.mentions.users.filter((user) => !user.bot && user !== message.author).size +

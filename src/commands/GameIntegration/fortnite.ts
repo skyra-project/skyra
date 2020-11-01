@@ -20,6 +20,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends RichDisplayCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -32,6 +33,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	private async fetchAPI(message: KlasaMessage, user: string, platform: platform) {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
@@ -49,6 +51,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	private async buildDisplay(
 		message: KlasaMessage,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser

@@ -24,7 +24,7 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 	cooldown: 10,
 	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.ClashofclansDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.ClashofclansExtended),
-	// TODO: Check why this is Guild only (Target => Soumil07)
+	// TODO(Soumil07): Check why this is Guild only
 	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',

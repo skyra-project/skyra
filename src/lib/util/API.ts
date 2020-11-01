@@ -1,26 +1,26 @@
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Guild, GuildMember, Permissions } from 'discord.js';
 
-export function canManage(guild: Guild, member: GuildMember) {
+export async function canManage(guild: Guild, member: GuildMember) {
 	if (guild.ownerID === member.id) return true;
 	if (member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)) return true;
 
-	const roleID = guild.settings.get(GuildSettings.Roles.Admin);
+	const roleID = await guild.readSettings(GuildSettings.Roles.Admin);
 
 	// Member must always exist:
 	return (
 		typeof member !== 'undefined' &&
 		// If Roles.Admin is not configured, check MANAGE_GUILD, else check if the member has the role.
-		(roleID === null ? member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : member.roles.cache.has(roleID)) &&
+		(roleID === null || roleID === undefined ? member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : member.roles.cache.has(roleID)) &&
 		// Check if despite of having permissions, user permission nodes do not deny them.
-		allowedPermissionsNodeUser(guild, member.id) &&
+		(await allowedPermissionsNodeUser(guild, member.id)) &&
 		// Check if despite of having permissions, role permission nodes do not deny them.
 		allowedPermissionsNodeRole(guild, member)
 	);
 }
 
-export function allowedPermissionsNodeUser(guild: Guild, userID: string) {
-	const permissionNodeRoles = guild.settings.get(GuildSettings.Permissions.Users);
+export async function allowedPermissionsNodeUser(guild: Guild, userID: string) {
+	const permissionNodeRoles = await guild.readSettings(GuildSettings.Permissions.Users);
 	for (const node of permissionNodeRoles) {
 		if (node.id !== userID) continue;
 		if (node.allow.includes('conf')) return true;

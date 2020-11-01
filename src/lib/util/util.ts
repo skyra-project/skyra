@@ -4,7 +4,7 @@ import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isNumber, isThenable, parseURL } from '@sapphire/utilities';
+import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -523,8 +523,8 @@ export function pickRandom<T>(array: readonly T[]): T {
 	return array[Math.floor(Math.random() * length)];
 }
 
-export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
-	if (isThenable(promise)) promise.catch((error) => ctx.client.emit(Events.Wtf, error));
+export function floatPromise(ctx: { client: Client }, promise: Awaited<unknown>) {
+	if (isThenable(promise)) promise.catch((error: Error) => ctx.client.emit(Events.Wtf, error));
 }
 
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {

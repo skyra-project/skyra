@@ -13,6 +13,7 @@ import { KlasaMessage, Language } from 'klasa';
 	usage: '<name:string>'
 })
 export default class extends SkyraCommand {
+	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	public async run(message: KlasaMessage, [name]: [string]) {
 		const language = await message.fetchLanguage();
 		const { data: channelData } = await this.fetchUsers(language, [name]);

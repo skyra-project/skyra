@@ -3,8 +3,9 @@ import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { floatPromise, getContent } from '@utils/util';
+import { getContent } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
+import { Language } from 'klasa';
 
 const NEW_LINE = '\n';
 
@@ -23,8 +24,8 @@ export default class extends ModerationMonitor {
 		adderDuration: GuildSettings.Selfmod.Newlines.ThresholdDuration
 	};
 
-	protected preProcess(message: GuildMessage) {
-		const threshold = message.guild.settings.get(GuildSettings.Selfmod.Newlines.Maximum);
+	protected async preProcess(message: GuildMessage) {
+		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.Newlines.Maximum);
 		if (threshold === 0) return null;
 
 		const content = getContent(message);
@@ -37,19 +38,19 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onDelete(message: GuildMessage) {
-		floatPromise(this, message.nuke());
+		return message.nuke();
 	}
 
-	protected onAlert(message: GuildMessage) {
-		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.NewLineFilter, { user: message.author.toString() })));
+	protected onAlert(message: GuildMessage, language: Language) {
+		return message.alert(language.get(LanguageKeys.Monitors.NewLineFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: GuildMessage) {
+	protected onLogMessage(message: GuildMessage, language: Language) {
 		return new MessageEmbed()
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.NewLineFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.NewLineFooter)}`)
 			.setTimestamp();
 	}
 }

@@ -745,10 +745,20 @@
     parse-glob "3.0.4"
     promise-retry "1.1.1"
 
+"@sapphire/eslint-config@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-1.0.3.tgz#8d45e0a8c202b97576a2d96389d20af893c23d02"
+  integrity sha512-mXLCQw/ZXwJp+2b93qs3WimqH2zI4sIl3+glBnh4hjZP2QzX9m8akmWnmCf9p8LKJZcMqktEzAMgX+pilAodaQ==
+
 "@sapphire/snowflake@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-1.0.1.tgz#51519a821c64e24afa0b783bf06e906eda79c617"
   integrity sha512-AldLLmRX/0jjObbp6qH73K95KXvGTseBco/3Kubktx6YTu7xtA0es+PDSJyMqbhLKqBhnNLw163NKyy6ZQeWMA==
+
+"@sapphire/ts-config@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/ts-config/-/ts-config-1.0.2.tgz#348bb518385d55edd34dc618623f8ba8c895b94d"
+  integrity sha512-8BDo5Iy7VzTYH5tF5Jt4JKxpo3TsostAdNMTMvnHrbnLPcdiBlVE5C76GBz1r0CSO3ZwB8utrzSOIVEjwsAeiA==
 
 "@sapphire/utilities@^1.0.2":
   version "1.0.2"
@@ -872,11 +882,6 @@
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-1.2.1.tgz#156963ccb98f57412be12ed11788b7963406c4b3"
   integrity sha512-l8pgJpeLTPyNrprkzIvKwD1b33q3FwoEyesyJ0PnrsloZ05yVTqOQ6m+5jCUKFSxLMc+yGhRoT/4ZcrNo14vYg==
-
-"@skyra/eslint-config@^5.3.3":
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/@skyra/eslint-config/-/eslint-config-5.3.3.tgz#44ac5caf105f49b5ab70db56aa1e826e90026348"
-  integrity sha512-oma1DggKpaytTEMBVGCPS5fQO8aUm/a3vA/f3ycV1qCeDmkp67PX7Bic0pjgO2AN+6iiP9Shn6se8jVwElkJTg==
 
 "@skyra/saelem@^2.0.3":
   version "2.0.3"

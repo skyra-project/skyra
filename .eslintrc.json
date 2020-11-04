@@ -1,29 +1,13 @@
 {
-	"extends": ["@skyra", "plugin:prettier/recommended"],
+	"extends": "@sapphire",
 	"rules": {
 		"@typescript-eslint/no-throw-literal": 0,
 		"@typescript-eslint/restrict-plus-operands": 0,
-		"@typescript-eslint/naming-convention": 0,
-		"@typescript-eslint/indent": 0
-	},
-	"parserOptions": {
-		"extraFileExtensions": [".mjs"]
+		"@typescript-eslint/naming-convention": 0
 	},
 	"overrides": [
 		{
-			"files": ["src/commands/**/*.ts"],
-			"rules": {
-				"@typescript-eslint/require-await": 0
-			}
-		},
-		{
-			"files": ["src/lib/orm/entities/**/*.ts"],
-			"rules": {
-				"@typescript-eslint/no-inferrable-types": 0
-			}
-		},
-		{
-			"files": ["jest.config.ts"],
+			"files": ["src/commands/**/*.ts", "jest.config.ts"],
 			"rules": {
 				"@typescript-eslint/require-await": 0
 			}

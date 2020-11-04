@@ -58,7 +58,7 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const language = await message.fetchLanguage();
 
-		let ratings = Array.from(
+		const ratings = Array.from(
 			this.ratingsToCollection(
 				overwatchData.ratings ?? [],
 				(r) => r.role,

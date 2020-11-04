@@ -38,7 +38,7 @@ export default class extends ModerationMonitor {
 
 		// Retrieve the contents, then update them to add the new content to the FILO queue.
 		const contents = this.getContents(message);
-		const count = this.updateContents(message, contents, content.toLowerCase(), queueSize);
+		const count = this.updateContents(contents, content.toLowerCase(), queueSize);
 
 		// If count is bigger than threshold
 		// - return `count` (runs the rest of the monitor),
@@ -74,7 +74,7 @@ export default class extends ModerationMonitor {
 		return previousValue;
 	}
 
-	private updateContents(message: GuildMessage, contents: string[], content: string, queueSize: number) {
+	private updateContents(contents: string[], content: string, queueSize: number) {
 		// Queue FILO behavior, first-in, last-out.
 		if (contents.length >= queueSize) contents.length = queueSize - 1;
 		contents.unshift(content);

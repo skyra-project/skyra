@@ -1,5 +1,4 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { resolveEmoji } from '@utils/util';
 import { Event } from 'klasa';
@@ -10,23 +9,22 @@ export default class extends Event {
 		const emoji = resolveEmoji(parsed.emoji);
 		if (!emoji) return;
 
-		const roleEntry = parsed.guild.settings
-			.get(GuildSettings.ReactionRoles)
-			.find(
+		const [roleEntry, allRoleSets] = await parsed.guild.readSettings((settings) => [
+			settings.reactionRoles.find(
 				(entry) => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageID : true)
-			);
+			),
+			settings.rolesUniqueRoleSets
+		]);
 		if (!roleEntry) return;
 
 		try {
 			const member = await parsed.guild.members.fetch(parsed.userID);
 			if (member.roles.cache.has(roleEntry.role)) return;
 
-			// Conver the array into a set
+			// Convert the array into a set
 			const memberRoles = new Set(member.roles.cache.keys());
-			// Remove the eveeryone role from the set
+			// Remove the everyone role from the set
 			memberRoles.delete(parsed.guild.id);
-
-			const allRoleSets = member.guild.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 			for (const set of allRoleSets) {
 				// If the set doesnt have the role being added to the user skip

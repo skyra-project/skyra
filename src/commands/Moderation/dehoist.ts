@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
@@ -7,7 +8,6 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { GuildMember, MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
@@ -23,18 +23,20 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 export default class extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
-	public async run(message: KlasaMessage) {
-		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
+	public async run(message: GuildMessage) {
+		if (message.guild.members.cache.size !== message.guild.memberCount) {
 			await message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+				new MessageEmbed()
+					.setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading)))
+					.setColor(BrandingColors.Secondary)
 			);
-			await message.guild!.members.fetch();
+			await message.guild.members.fetch();
 		}
 
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const hoistedMembers: GuildMember[] = [];
-		for (const member of message.guild!.members.cache.values()) {
+		for (const member of message.guild.members.cache.values()) {
 			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
 		}
 
@@ -83,12 +85,12 @@ export default class extends SkyraCommand {
 		return char < this.kLowestCode && (char < kLowestNumberCode || char > kHighestNumberCode);
 	}
 
-	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.get(LanguageKeys.Commands.Moderation.DehoistEmbed, {
+	private async prepareFinalEmbed(message: GuildMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+		const embedLanguage = await message.fetchLocale(LanguageKeys.Commands.Moderation.DehoistEmbed, {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,
-			users: message.guild!.members.cache.size
+			users: message.guild.members.cache.size
 		});
 		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.title);
 

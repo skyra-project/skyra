@@ -25,14 +25,14 @@ export default class extends ModerationCommand {
 		if (bans.length) {
 			return {
 				bans,
-				unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild!.moderation.createLock() : null
+				unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
 			};
 		}
 		throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.unBan(
+		return message.guild.security.actions.unBan(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

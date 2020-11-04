@@ -17,10 +17,6 @@ export default class extends Monitor {
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
 	public async run(message: GuildMessage) {
-		// message.guild.settings.get() &&
-		// !message.guild.settings.get().includes(message.channel.id) &&
-		// this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction))
-
 		const [ignoredChannels, shouldRun, action, maximum, duration] = await message.guild.readSettings([
 			GuildSettings.Channels.Ignore.All,
 			GuildSettings.Selfmod.Attachments.Attachment,

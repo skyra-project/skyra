@@ -6,7 +6,6 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { floatPromise, getImage } from '@utils/util';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uw', 'unwarning'],
@@ -20,7 +19,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {
-		const modlog = await message.guild!.moderation.fetch(caseID);
+		const modlog = await message.guild.moderation.fetch(caseID);
 		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 
 		const user = await modlog.fetchUser();
@@ -43,14 +42,14 @@ export default class extends ModerationCommand {
 						reason: originalReason
 					}
 				]
-			) as Promise<KlasaMessage>;
+			) as Promise<GuildMessage>;
 		}
 
 		return null;
 	}
 
-	public async handle(message: KlasaMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
-		return message.guild!.security.actions.unWarning(
+	public async handle(message: GuildMessage, context: HandledCommandContext<null> & { modlog: ModerationEntity }) {
+		return message.guild.security.actions.unWarning(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

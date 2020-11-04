@@ -35,7 +35,7 @@ export default class extends Event {
 			const [result] = results.raw;
 
 			// Get channel
-			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
+			const channel = await guild.readSettings(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			if (result && result.star_message_id) {

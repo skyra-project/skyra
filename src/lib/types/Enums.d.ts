@@ -70,6 +70,7 @@ export const enum Events {
 	MusicVoiceChannelJoin = 'musicVoiceChannelJoin',
 	MusicVoiceChannelLeave = 'musicVoiceChannelLeave',
 	Raw = 'raw',
+	RawReactionAdd = 'rawReactionAdd',
 	ReactionBlacklist = 'reactionBlacklist',
 	Reconnecting = 'reconnecting',
 	ResourceAnalyticsSync = 'resourceAnalyticsSync',

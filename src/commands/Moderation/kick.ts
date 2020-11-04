@@ -14,12 +14,12 @@ import { getImage } from '@utils/util';
 	requiredMember: true
 })
 export default class extends ModerationCommand {
-	public prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
-		return message.guild!.settings.get(GuildSettings.Events.MemberRemove) ? { unlock: message.guild!.moderation.createLock() } : null;
+	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
+		return (await message.guild.readSettings(GuildSettings.Events.MemberRemove)) ? { unlock: message.guild.moderation.createLock() } : null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.kick(
+		return message.guild.security.actions.kick(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,
@@ -36,7 +36,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		const member = await super.checkModeratable(message, context);
-		if (member && !member.kickable) throw message.language.get(LanguageKeys.Commands.Moderation.KickNotKickable);
+		if (member && !member.kickable) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;
 	}
 }

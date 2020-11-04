@@ -19,7 +19,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.warning(
+		return message.guild.security.actions.warning(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

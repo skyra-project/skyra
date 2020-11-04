@@ -1,10 +1,10 @@
 import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 import { User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sn'],
@@ -34,8 +34,8 @@ export default class extends ModerationCommand {
 		};
 	}
 
-	protected async handle(message: KlasaMessage, context: HandledCommandContext & { nickname: string }) {
-		return message.guild!.security.actions.setNickname(
+	protected async handle(message: GuildMessage, context: HandledCommandContext & { nickname: string }) {
+		return message.guild.security.actions.setNickname(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

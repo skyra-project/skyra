@@ -1,4 +1,6 @@
+import { isNullish } from '@lib/misc';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -8,8 +10,8 @@ import { Moderation } from '@utils/constants';
 import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Collection, EmbedField, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
-import { constants, KlasaGuild, KlasaMessage, Timestamp } from 'klasa';
+import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
+import { constants, Language, Timestamp } from 'klasa';
 
 const enum Position {
 	Before,
@@ -73,30 +75,30 @@ export default class extends SkyraCommand {
 	};
 
 	public async init() {
-		this.createCustomResolver('filter', (argument, _possible, message) => {
+		this.createCustomResolver('filter', async (argument, _possible, message) => {
 			if (!argument) return undefined;
 			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
-			if (typeof filter === 'undefined') throw message.language.get(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
+			if (typeof filter === 'undefined') throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
 			return filter;
 		})
-			.createCustomResolver('position', (argument, _possible, message) => {
+			.createCustomResolver('position', async (argument, _possible, message) => {
 				if (!argument) return null;
 				const position = this.kCommandPrunePositions[argument.toLowerCase()];
-				if (typeof position === 'undefined') throw message.language.get(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
+				if (typeof position === 'undefined') throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
 				return position;
 			})
 			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
 				if (position === null) return message;
 
 				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw message.language.get(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
+				if (fetched === null) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
 				return fetched;
 			});
 	}
 
 	public async run(
-		message: KlasaMessage,
-		[limit, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, KlasaMessage]
+		message: GuildMessage,
+		[limit, rawFilter, rawPosition, targetMessage]: [number, Filter | User | undefined, Position | null, GuildMessage]
 	) {
 		// This can happen for a large variety of situations:
 		// - Invalid limit (less than 1 or more than 100).
@@ -104,7 +106,7 @@ export default class extends SkyraCommand {
 		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
 		// are invalid command usages and therefore, for the sake of protection, Skyra should
 		// not execute an erroneous command.
-		if (message.args.length > 4) throw message.language.get(LanguageKeys.Commands.Moderation.PruneInvalid);
+		if (message.args.length > 4) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneInvalid);
 
 		const position = this.resolvePosition(rawPosition);
 		const filter = this.resolveFilter(rawFilter);
@@ -119,7 +121,7 @@ export default class extends SkyraCommand {
 		// Filter the messages by their age
 		const now = Date.now();
 		const filtered = messages.filter((m) => now - m.createdTimestamp < 1209600000);
-		if (filtered.size === 0) throw message.language.get(LanguageKeys.Commands.Moderation.PruneNoDeletes);
+		if (filtered.size === 0) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneNoDeletes);
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
@@ -132,7 +134,7 @@ export default class extends SkyraCommand {
 		return Reflect.has(message.flagArgs, 'silent')
 			? null
 			: message.alert(
-					message.language.get(
+					await message.fetchLocale(
 						filteredKeys.length === 1 ? LanguageKeys.Commands.Moderation.PruneAlert : LanguageKeys.Commands.Moderation.PruneAlertPlural,
 						{
 							count: filteredKeys.length,
@@ -177,19 +179,21 @@ export default class extends SkyraCommand {
 		return position === Position.After ? 'after' : 'before';
 	}
 
-	private async sendPruneLogs(message: KlasaMessage, messages: Collection<string, Message>, rawMessages: readonly string[]) {
-		const channelID = message.guild!.settings.get(GuildSettings.Channels.PruneLogs);
-		if (channelID === null) return;
+	private async sendPruneLogs(message: GuildMessage, messages: Collection<string, Message>, rawMessages: readonly string[]) {
+		const channelID = await message.guild.readSettings(GuildSettings.Channels.PruneLogs);
+		if (isNullish(channelID)) return;
 
-		const channel = message.guild!.channels.cache.get(channelID) as TextChannel | undefined;
+		const channel = message.guild.channels.cache.get(channelID) as TextChannel | undefined;
 		if (typeof channel === 'undefined') {
-			await message.guild!.settings.reset(GuildSettings.Channels.PruneLogs);
+			await message.guild.writeSettings([[GuildSettings.Channels.PruneLogs, null]]);
 			return;
 		}
 
 		if (channel.attachable) {
 			// Filter the messages collection by the deleted messages, so no extras are added.
 			messages = messages.filter((_, key) => rawMessages.includes(key));
+
+			const language = await message.fetchLanguage();
 
 			// Send the message to the prune logs channel.
 			await channel.sendMessage('', {
@@ -199,7 +203,7 @@ export default class extends SkyraCommand {
 						message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 					)
 					.setDescription(
-						message.language.get(
+						language.get(
 							messages.size === 1
 								? LanguageKeys.Commands.Moderation.PruneLogMessage
 								: LanguageKeys.Commands.Moderation.PruneLogMessagePlural,
@@ -212,13 +216,13 @@ export default class extends SkyraCommand {
 					)
 					.setColor(this.kColor)
 					.setTimestamp(),
-				files: [this.generateAttachment(message, messages)]
+				files: [this.generateAttachment(language, messages)]
 			});
 		}
 	}
 
-	private generateAttachment(message: KlasaMessage, messages: Collection<string, Message>) {
-		const header = message.language.get(LanguageKeys.Commands.Moderation.PruneLogHeader);
+	private generateAttachment(language: Language, messages: Collection<string, Message>) {
+		const header = language.get(LanguageKeys.Commands.Moderation.PruneLogHeader);
 		const processed = messages
 			.map((message) => this.formatMessage(message))
 			.reverse()
@@ -253,7 +257,7 @@ export default class extends SkyraCommand {
 		return output.join('\n');
 	}
 
-	private formatContent(guild: KlasaGuild, content: string) {
+	private formatContent(guild: Guild, content: string) {
 		return cleanMentions(guild, content)
 			.split('\n')
 			.map((line) => `> ${line}`)
@@ -264,7 +268,7 @@ export default class extends SkyraCommand {
 		return `📂 [${attachment.name}: ${attachment.url}]`;
 	}
 
-	private formatEmbed(guild: KlasaGuild, embed: MessageEmbed) {
+	private formatEmbed(guild: Guild, embed: MessageEmbed) {
 		switch (embed.type) {
 			case 'video':
 				return this.formatEmbedVideo(embed);
@@ -283,7 +287,7 @@ export default class extends SkyraCommand {
 		return `🖼️ [${embed.url}]${embed.provider ? ` From ${embed.provider.name}.` : ''}`;
 	}
 
-	private formatEmbedRich(guild: KlasaGuild, embed: MessageEmbed) {
+	private formatEmbedRich(guild: Guild, embed: MessageEmbed) {
 		if (typeof embed.provider === 'undefined') {
 			const output: string[] = [];
 			if (embed.title) output.push(this.formatEmbedRichTitle(embed.title));
@@ -309,14 +313,14 @@ export default class extends SkyraCommand {
 		return `> 👤 ${author.name || '-'}${author.iconURL ? ` [${author.iconURL}]` : ''}${author.url ? ` <${author.url}>` : ''}`;
 	}
 
-	private formatEmbedRichDescription(guild: KlasaGuild, description: string) {
+	private formatEmbedRichDescription(guild: Guild, description: string) {
 		return cleanMentions(guild, description)
 			.split('\n')
 			.map((line) => `> > ${line}`)
 			.join('\n');
 	}
 
-	private formatEmbedRichField(guild: KlasaGuild, field: EmbedField) {
+	private formatEmbedRichField(guild: Guild, field: EmbedField) {
 		return `> #> ${field.name}\n${cleanMentions(guild, field.value)
 			.split('\n')
 			.map((line) => `>  > ${line}`)

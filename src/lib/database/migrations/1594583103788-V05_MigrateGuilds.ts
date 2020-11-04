@@ -58,20 +58,20 @@ export class V05MigrateGuilds1594583103788 implements MigrationInterface {
 		await Promise.all(
 			guildChangeTypeColumns.map(([colName, , oldType]) =>
 				queryRunner.query(/* sql */ `
-			ALTER TABLE public.guilds
-			ALTER COLUMN "${colName}"
-			TYPE ${oldType};
-		`)
+					ALTER TABLE public.guilds
+					ALTER COLUMN "${colName}"
+					TYPE ${oldType};
+				`)
 			)
 		);
 
 		await Promise.all(
 			guildChangeDefaultColumns.map(([colName, , oldDefault]) =>
 				queryRunner.query(/* sql */ `
-			ALTER TABLE public.guilds
-			ALTER COLUMN "${colName}"
-			SET DEFAULT ${oldDefault};
-		`)
+					ALTER TABLE public.guilds
+					ALTER COLUMN "${colName}"
+					SET DEFAULT ${oldDefault};
+				`)
 			)
 		);
 
@@ -86,10 +86,10 @@ export class V05MigrateGuilds1594583103788 implements MigrationInterface {
 		await Promise.all(
 			guildChangeTypeColumns.map(([colName, newType]) =>
 				queryRunner.query(/* sql */ `
-			ALTER TABLE public.guilds
-			ALTER COLUMN "${colName}"
-			TYPE ${newType};
-		`)
+					ALTER TABLE public.guilds
+					ALTER COLUMN "${colName}"
+					TYPE ${newType};
+				`)
 			)
 		);
 
@@ -97,10 +97,10 @@ export class V05MigrateGuilds1594583103788 implements MigrationInterface {
 		await Promise.all(
 			guildChangeDefaultColumns.map(([colName, newDefault]) =>
 				queryRunner.query(/* sql */ `
-			ALTER TABLE public.guilds
-			ALTER COLUMN "${colName}"
-			SET DEFAULT ${newDefault};
-		`)
+					ALTER TABLE public.guilds
+					ALTER COLUMN "${colName}"
+					SET DEFAULT ${newDefault};
+				`)
 			)
 		);
 

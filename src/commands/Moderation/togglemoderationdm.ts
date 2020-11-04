@@ -1,8 +1,8 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['togglemdm', 'togglemoddm', 'tmdm'],
@@ -11,7 +11,7 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ToggleModerationDmExtended)
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		const { users } = await DbSet.connect();
 		const updated = await users.lock([message.author.id], async (id) => {
 			const user = await users.ensure(id);

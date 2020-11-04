@@ -1,7 +1,6 @@
 import { GuildEntity } from '@lib/database';
 import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { Awaited } from '@sapphire/utilities';
 import { Adder, AdderError } from '@utils/Adder';
@@ -14,6 +13,7 @@ import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModer
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	public async run(message: GuildMessage) {
+		if (!(await this.checkPreRun(message))) return;
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const preProcessed = await this.preProcess(message);
@@ -54,10 +54,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.webhookID === null &&
 			message.type === 'DEFAULT' &&
 			message.author.id !== CLIENT_ID &&
-			!message.author.bot &&
-			message.guild.settings.get(this.keyEnabled) &&
-			this.checkMessageChannel(message.channel as TextChannel) &&
-			this.checkMemberRoles(message.member)
+			!message.author.bot
 		);
 	}
 
@@ -194,17 +191,23 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	protected abstract onAlert(message: GuildMessage, language: Language, value: T): Awaited<unknown>;
 	protected abstract onLogMessage(message: GuildMessage, language: Language, value: T): Awaited<MessageEmbed>;
 
-	private checkMessageChannel(channel: TextChannel) {
-		return !(
-			channel.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(channel.id) ||
-			channel.guild.settings.get(this.ignoredChannelsPath).includes(channel.id)
+	private checkPreRun(message: GuildMessage) {
+		return message.guild.readSettings(
+			(settings) =>
+				settings[this.keyEnabled] &&
+				this.checkMessageChannel(settings, message.channel as TextChannel) &&
+				this.checkMemberRoles(settings, message.member)
 		);
 	}
 
-	private checkMemberRoles(member: GuildMember | null) {
+	private checkMessageChannel(settings: GuildEntity, channel: TextChannel) {
+		return !(settings.selfmodIgnoreChannels.includes(channel.id) || settings[this.ignoredChannelsPath].includes(channel.id));
+	}
+
+	private checkMemberRoles(settings: GuildEntity, member: GuildMember | null) {
 		if (member === null) return false;
 
-		const ignoredRoles = member.guild.settings.get(this.ignoredRolesPath);
+		const ignoredRoles = settings[this.ignoredRolesPath];
 		if (ignoredRoles.length === 0) return true;
 
 		const { roles } = member;

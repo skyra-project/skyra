@@ -17,7 +17,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.voiceKick(
+		return message.guild.security.actions.voiceKick(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

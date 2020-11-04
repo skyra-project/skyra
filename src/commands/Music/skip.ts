@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 
 		const track = await audio.getCurrentTrack();
 		await audio.next({ skipped: true });
-		this.client.emit(Events.MusicSongSkipNotify, message, track!);
+		return this.client.emit(Events.MusicSongSkipNotify, message, track!);
 	}
 
 	private async canSkipWithForce(message: GuildMessage, voiceChannel: VoiceChannel): Promise<string | null> {

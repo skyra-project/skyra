@@ -1,7 +1,6 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { compareEmoji } from '@utils/util';
 import { GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
@@ -18,7 +17,9 @@ export default class extends Event {
 
 		const guild = this.client.guilds.cache.get(data.guild_id);
 		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
-		if (!compareEmoji(guild.settings.get(GuildSettings.Starboard.Emoji), data.emoji)) return;
+
+		const [emoji, channel] = await guild.readSettings((settings) => [settings.starboardEmoji, settings.starboardChannel]);
+		if (!compareEmoji(emoji, data.emoji)) return;
 
 		guild.starboard.delete(`${data.channel_id}-${data.message_id}`);
 
@@ -38,7 +39,6 @@ export default class extends Event {
 
 			if (result && result.star_message_id) {
 				// Get channel
-				const channel = guild.settings.get(GuildSettings.Starboard.Channel);
 				if (!channel) return;
 
 				await api(this.client)

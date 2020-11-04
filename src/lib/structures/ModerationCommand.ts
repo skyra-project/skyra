@@ -1,4 +1,5 @@
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -124,16 +125,16 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected prehandle(message: KlasaMessage, context: CommandContext): Promise<T> | T {
+	protected prehandle(_message: GuildMessage, _context: CommandContext): Promise<T> | T {
 		return cast<T>(null);
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	protected posthandle(message: KlasaMessage, context: PostHandledCommandContext<T>): unknown {
+	protected posthandle(_message: GuildMessage, _context: PostHandledCommandContext<T>): unknown {
 		return null;
 	}
 
-	protected async checkModeratable(message: KlasaMessage, context: HandledCommandContext<T>) {
+	protected async checkModeratable(message: GuildMessage, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
 			throw message.language.get(LanguageKeys.Misc.CommandUserself);
 		}
@@ -185,7 +186,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		};
 	}
 
-	protected abstract handle(message: KlasaMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
+	protected abstract handle(message: GuildMessage, context: HandledCommandContext<T>): Promise<ModerationEntity> | ModerationEntity;
 
 	private resolveReason(value: string | null): string | null {
 		return !isNullOrUndefined(value) && value.length > 0 ? value : null;

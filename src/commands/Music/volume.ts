@@ -31,6 +31,6 @@ export default class extends MusicCommand {
 
 		// Set the volume
 		await audio.setVolume(volume);
-		this.client.emit(Events.MusicSongVolumeUpdateNotify, message, previous, volume);
+		return this.client.emit(Events.MusicSongVolumeUpdateNotify, message, previous, volume);
 	}
 }

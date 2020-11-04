@@ -17,7 +17,7 @@ import { KlasaMessage, Language } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const language = await message.fetchLanguage();
-		const text = await this.fetchText(message, input, language);
+		const text = await this.fetchText(input, language);
 		// Only fetch images if the channel is NSFW permitted
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(embed);
 	}
 
-	private async fetchText(message: KlasaMessage, input: string, language: Language) {
+	private async fetchText(input: string, language: Language) {
 		try {
 			const url = this.getBaseUrl(input);
 			url.searchParams.append('prop', 'extracts');

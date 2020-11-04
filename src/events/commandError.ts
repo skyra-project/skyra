@@ -1,8 +1,9 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { codeBlock } from '@sapphire/utilities';
+import { Awaited, codeBlock, isThenable } from '@sapphire/utilities';
 import { rootFolder } from '@utils/constants';
+import { cast } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage } from 'klasa';
 
@@ -14,12 +15,18 @@ const BLACKLISTED_CODES = [
 ];
 
 export default class extends Event {
-	public async run(message: KlasaMessage, command: Command, _: string[], error: string | Error) {
+	public async run(message: KlasaMessage, command: Command, _: string[], error: Awaited<string> | Error) {
+		// Verify if the error is promise or not, if it is then await that promise
+		if (isThenable(error)) error = await error;
+
+		// Re-assign it to the Error or string for TS as the promise has now been awaited
+		error = cast<Error | string>(error);
+
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
 			try {
 				return await message.alert(
-					message.language.get(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }),
+					await message.fetchLocale(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }),
 					{
 						allowedMentions: { users: [message.author.id], roles: [] }
 					}
@@ -33,7 +40,7 @@ export default class extends Event {
 		if (error.name === 'AbortError') {
 			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
 			try {
-				return await message.alert(message.language.get(LanguageKeys.System.DiscordAborterror));
+				return await message.alert(await message.fetchLocale(LanguageKeys.System.DiscordAborterror));
 			} catch (err) {
 				return this.client.emit(Events.ApiError, err);
 			}
@@ -56,11 +63,13 @@ export default class extends Event {
 			await message.alert(
 				this.client.options.owners.includes(message.author.id)
 					? codeBlock('js', error.stack!)
-					: message.language.get(LanguageKeys.Events.ErrorWtf)
+					: await message.fetchLocale(LanguageKeys.Events.ErrorWtf)
 			);
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);
 		}
+
+		return undefined;
 	}
 
 	private async sendErrorChannel(message: KlasaMessage, command: Command, error: Error) {

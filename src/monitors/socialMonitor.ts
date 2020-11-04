@@ -1,6 +1,7 @@
+import { RolesAuto } from '@lib/database';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings, RolesAuto } from '@lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { GuildMember, Permissions, Role } from 'discord.js';
@@ -53,7 +54,7 @@ export default class extends Monitor {
 		if (!autoRoles.length || !message.guild!.me!.permissions.has(MANAGE_ROLES)) return;
 
 		const autoRole = this.getLatestRole(autoRoles, points);
-		if (!autoRole) return null;
+		if (!autoRole) return;
 
 		const role = message.guild!.roles.cache.get(autoRole.id);
 		if (!role || role.position > message.guild!.me!.roles.highest.position) {
@@ -67,7 +68,7 @@ export default class extends Monitor {
 			return;
 		}
 
-		if (message.member!.roles.cache.has(role.id)) return null;
+		if (message.member!.roles.cache.has(role.id)) return;
 
 		await message.member!.roles.add(role);
 

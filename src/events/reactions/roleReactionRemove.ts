@@ -1,5 +1,4 @@
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { isTextBasedChannel, resolveEmoji } from '@utils/util';
 import { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import { TextChannel } from 'discord.js';
@@ -13,11 +12,11 @@ export default class extends Event {
 		const parsed = resolveEmoji(data.emoji);
 		if (!parsed) return;
 
-		const roleEntry = channel.guild.settings
-			.get(GuildSettings.ReactionRoles)
-			.find(
+		const roleEntry = await channel.guild.readSettings((settings) =>
+			settings.reactionRoles.find(
 				(entry) => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true)
-			);
+			)
+		);
 		if (!roleEntry) return;
 
 		try {

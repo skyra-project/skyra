@@ -1,37 +1,39 @@
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { Permissions, User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
 
-export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			cooldown: 5,
-			description: 'Sets a timer.',
-			permissionLevel: PermissionLevels.Moderator,
-			runIn: ['text'],
-			usage: '[cancel] <case:integer> (timer:timer)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('timer', async (arg, possible, message, [cancel]) => {
+@ApplyOptions<SkyraCommandOptions>({
+	cooldown: 5,
+	description: 'Sets a timer.',
+	permissionLevel: PermissionLevels.Moderator,
+	runIn: ['text'],
+	usage: '[cancel] <case:integer> (timer:timer)',
+	usageDelim: ' '
+})
+@CreateResolvers([
+	[
+		'timer',
+		async (arg, possible, message, [cancel]) => {
 			if (cancel === 'cancel') return null;
-			if (!arg) throw message.language.get(LanguageKeys.Commands.Moderation.TimeUndefinedTime);
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeUndefinedTime);
 
-			const restString = (await this.client.arguments.get('...string')!.run(arg, possible, message)) as string;
-			return this.client.arguments.get('timespan')!.run(restString, possible, message);
-		});
-	}
+			const restString = (await message.client.arguments.get('...string')!.run(arg, possible, message)) as string;
+			return message.client.arguments.get('timespan')!.run(restString, possible, message);
+		}
+	]
+])
+export default class extends SkyraCommand {
+	public async run(message: GuildMessage, [cancel, caseID, duration]: ['cancel', number | 'latest', number | null]) {
+		if (caseID === 'latest') caseID = await message.guild.moderation.count();
 
-	public async run(message: KlasaMessage, [cancel, caseID, duration]: ['cancel', number | 'latest', number | null]) {
-		if (caseID === 'latest') caseID = await message.guild!.moderation.count();
-
-		const entry = await message.guild!.moderation.fetch(caseID);
-		if (!entry) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
-		if (!cancel && entry.temporaryType) throw message.language.get(LanguageKeys.Commands.Moderation.TimeTimed);
+		const entry = await message.guild.moderation.fetch(caseID);
+		if (!entry) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
+		if (!cancel && entry.temporaryType) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeTimed);
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
@@ -40,9 +42,9 @@ export default class extends SkyraCommand {
 		)!;
 
 		if (cancel) {
-			if (!task) throw message.language.get(LanguageKeys.Commands.Moderation.TimeNotScheduled);
+			if (!task) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeNotScheduled);
 
-			await message.guild!.moderation.fetchChannelMessages();
+			await message.guild.moderation.fetchChannelMessages();
 			await entry.edit({
 				duration: null,
 				moderatorID: message.author.id
@@ -51,11 +53,13 @@ export default class extends SkyraCommand {
 			return message.sendLocale(LanguageKeys.Commands.Moderation.TimeAborted, [{ title: entry.title }]);
 		}
 
-		if (entry.appealType || entry.invalidated) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationLogAppealed);
+		if (entry.appealType || entry.invalidated) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationLogAppealed);
 		if (task)
-			throw message.language.get(LanguageKeys.Commands.Moderation.ModerationTimed, { remaining: (task.data.timestamp as number) - Date.now() });
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationTimed, {
+				remaining: (task.data.timestamp as number) - Date.now()
+			});
 
-		await message.guild!.moderation.fetchChannelMessages();
+		await message.guild.moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
 			moderatorID: message.author.id
@@ -63,7 +67,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale(LanguageKeys.Commands.Moderation.TimeScheduled, [{ title: entry.title, user, time: duration! }]);
 	}
 
-	private validateAction(message: KlasaMessage, modlog: ModerationEntity, user: User) {
+	private async validateAction(message: GuildMessage, modlog: ModerationEntity, user: User) {
 		switch (modlog.type) {
 			case Moderation.TypeCodes.FastTemporaryBan:
 			case Moderation.TypeCodes.TemporaryBan:
@@ -98,27 +102,27 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.TemporaryRestrictionVoice:
 				return;
 			default:
-				throw message.language.get(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
+				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
 		}
 	}
 
-	private async checkBan(message: KlasaMessage, user: User) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
-			throw message.language.get(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
-		if (!(await message.guild!.security.actions.userIsBanned(user)))
-			throw message.language.get(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+	private async checkBan(message: GuildMessage, user: User) {
+		if (!message.guild.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
+		if (!(await message.guild.security.actions.userIsBanned(user)))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansNotFound);
 	}
 
-	private checkMute(message: KlasaMessage, user: User) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
-			throw message.language.get(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
-		if (!message.guild!.security.actions.userIsMuted(user)) throw message.language.get(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
+	private async checkMute(message: GuildMessage, user: User) {
+		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
+		if (!message.guild.security.actions.userIsMuted(user)) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
 	}
 
-	private async checkVMute(message: KlasaMessage, user: User) {
-		if (!message.guild!.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS))
-			throw message.language.get(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
-		if (!(await message.guild!.security.actions.userIsVoiceMuted(user)))
-			throw message.language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
+	private async checkVMute(message: GuildMessage, user: User) {
+		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
+		if (!(await message.guild.security.actions.userIsVoiceMuted(user)))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 	}
 }

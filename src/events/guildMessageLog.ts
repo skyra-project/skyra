@@ -4,14 +4,14 @@ import { MessageLogsEnum } from '@utils/constants';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
 
-const TYPES: Record<MessageLogsEnum, string> = {
+const TYPES = {
 	[MessageLogsEnum.Member]: GuildSettings.Channels.MemberLogs,
 	[MessageLogsEnum.Message]: GuildSettings.Channels.MessageLogs,
 	[MessageLogsEnum.Image]: GuildSettings.Channels.ImageLogs,
 	[MessageLogsEnum.Moderation]: GuildSettings.Channels.ModerationLogs,
 	[MessageLogsEnum.NSFWMessage]: GuildSettings.Channels.NSFWMessageLogs,
 	[MessageLogsEnum.Reaction]: GuildSettings.Channels.ReactionLogs
-};
+} as const;
 
 export default class extends Event {
 	public async run(type: MessageLogsEnum, guild: Guild, makeMessage: () => Promise<MessageEmbed> | MessageEmbed) {
@@ -21,12 +21,12 @@ export default class extends Event {
 			return;
 		}
 
-		const id = guild.settings.get(key) as string;
+		const id = await guild.readSettings(key);
 		if (!id) return;
 
 		const channel = guild.channels.cache.get(id) as TextChannel;
 		if (!channel) {
-			await guild.settings.reset(key);
+			await guild.writeSettings([[key, null]]);
 			return;
 		}
 

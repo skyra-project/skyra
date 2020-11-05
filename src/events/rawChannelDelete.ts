@@ -35,7 +35,7 @@ export default class extends Event {
 				.execute();
 
 			// Get channel
-			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
+			const channel = await guild.readSettings(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			const filteredResults: string[] = [];

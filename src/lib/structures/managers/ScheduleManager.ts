@@ -104,10 +104,12 @@ export class ScheduleManager {
 						response.entry.time = new Date(response.entry.time.getTime() + response.value);
 						updated.push(response.entry);
 						await queryRunner.manager.save(response.entry);
+						continue;
 					}
 					case ResponseType.Finished: {
 						removed.push(response.entry);
 						await queryRunner.manager.remove(response.entry);
+						continue;
 					}
 					case ResponseType.Ignore: {
 						continue;

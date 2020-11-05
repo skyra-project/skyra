@@ -1,6 +1,6 @@
 import { ENABLE_LAVALINK } from '@root/config';
 import { Node, NodeOptions, NodeSend } from '@skyra/audio';
-import * as Redis from 'ioredis';
+import Redis from 'ioredis';
 import { QueueStore } from './QueueStore';
 
 export interface QueueClientOptions extends NodeOptions {

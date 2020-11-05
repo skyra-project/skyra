@@ -7,6 +7,7 @@ import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
+import type { Language } from 'klasa';
 
 const enum Icons {
 	Cherry,
@@ -102,15 +103,16 @@ export class Slotmachine {
 		const winnings = this.winnings * (await this.fetchBoost()) - this.bet;
 		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
-		if (amount < 0) throw this.message.language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+		const lang = await this.message.fetchLanguage();
+		if (amount < 0) throw lang.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 
 		this.settings.money += lost ? -this.bet : winnings;
 		await this.settings.save();
 
-		return [await this.render(rolls, this.settings.profile!.darkTheme), amount] as [Buffer, number];
+		return [await this.render(rolls, this.settings.profile!.darkTheme, lang), amount] as [Buffer, number];
 	}
 
-	private async render(rolls: readonly Icons[], darkTheme: boolean) {
+	private async render(rolls: readonly Icons[], darkTheme: boolean, lang: Language) {
 		const playerHasWon = this.winnings > 0;
 
 		const canvas = new Canvas(300, 150)
@@ -128,9 +130,7 @@ export class Slotmachine {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				this.message.language.get(
-					playerHasWon ? LanguageKeys.Commands.Games.SlotmachineCanvasTextWon : LanguageKeys.Commands.Games.SlotmachineCanvasTextLost
-				),
+				lang.get(playerHasWon ? LanguageKeys.Commands.Games.SlotmachineCanvasTextWon : LanguageKeys.Commands.Games.SlotmachineCanvasTextLost),
 				280,
 				60
 			)

@@ -6,21 +6,23 @@ import { KlasaClient } from 'klasa';
 export default KlasaClient.defaultPermissionLevels
 	.add(
 		PermissionLevels.Moderator,
-		(message) =>
+		async (message) =>
 			message.member
-				? message.guild!.settings.get(GuildSettings.Roles.Moderator)
-					? message.member.roles.cache.has(message.guild!.settings.get(GuildSettings.Roles.Moderator))
-					: message.member.permissions.has(Permissions.FLAGS.BAN_MEMBERS)
+				? message.guild!.readSettings((settings) => {
+						const id = settings[GuildSettings.Roles.Moderator];
+						return id ? message.member!.roles.cache.has(id) : message.member!.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
+				  })
 				: false,
 		{ fetch: true }
 	)
 	.add(
 		PermissionLevels.Administrator,
-		(message) =>
+		async (message) =>
 			message.member
-				? message.guild!.settings.get(GuildSettings.Roles.Admin)
-					? message.member.roles.cache.has(message.guild!.settings.get(GuildSettings.Roles.Admin))
-					: message.member.permissions.has(Permissions.FLAGS.MANAGE_GUILD)
+				? message.guild!.readSettings((settings) => {
+						const id = settings[GuildSettings.Roles.Admin];
+						return id ? message.member!.roles.cache.has(id) : message.member!.permissions.has(Permissions.FLAGS.MANAGE_GUILD);
+				  })
 				: false,
 		{ fetch: true }
 	);

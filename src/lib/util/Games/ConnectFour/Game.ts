@@ -5,13 +5,14 @@ import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector'
 import { floatPromise, pickRandom } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 import { Board } from './Board';
 import { Player, PlayerColor } from './Player';
 
 export class Game {
 	public readonly board: Board;
 	public message: KlasaMessage;
+	public language: Language;
 	public players: readonly [Player | null, Player | null];
 	public winner: Player | null;
 	public llrc: LongLivingReactionCollector | null;
@@ -23,6 +24,7 @@ export class Game {
 	public constructor(message: KlasaMessage) {
 		this.board = new Board();
 		this.message = message;
+		this.language = message.client.languages.default;
 		this.players = [null, null];
 		this.winner = null;
 		this.llrc = null;
@@ -30,10 +32,6 @@ export class Game {
 
 	public setPlayers(players: [Player, Player]) {
 		this.players = players;
-	}
-
-	public get language() {
-		return this.message.language;
 	}
 
 	public set content(value: string) {
@@ -68,6 +66,7 @@ export class Game {
 	}
 
 	public async run() {
+		this.language = await this.message.fetchLanguage();
 		this.message = await this.message.send(pickRandom(this.language.get(LanguageKeys.System.Loading)));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
 		this.content = this.language.get(
@@ -101,7 +100,7 @@ export class Game {
 				(error.code === RESTJSONErrorCodes.UnknownChannel || error.code === RESTJSONErrorCodes.UnknownMessage)
 			) {
 				if (error.code !== RESTJSONErrorCodes.UnknownChannel)
-					await this.message.alert(this.message.language.get(LanguageKeys.Commands.Games.C4GameDraw));
+					await this.message.alert(this.language.get(LanguageKeys.Commands.Games.C4GameDraw));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

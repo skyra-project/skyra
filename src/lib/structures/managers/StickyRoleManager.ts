@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings, StickyRole } from '@lib/types/namespaces/GuildSettings';
+import { StickyRole } from '@lib/database';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Guild } from 'discord.js';
-import { ArrayActions } from 'klasa';
 
 export interface StickyRoleManagerExtraContext {
 	author: string;
@@ -14,17 +14,14 @@ export class StickyRoleManager {
 		this.#guild = guild;
 	}
 
-	private get entries() {
-		return this.#guild.settings.get(GuildSettings.StickyRoles);
-	}
-
-	public get(userID: string): readonly string[] {
-		return this.entries.find((entry) => entry.user === userID)?.roles ?? [];
+	public async get(userID: string): Promise<readonly string[]> {
+		const entries = await this.getEntries();
+		return entries.find((entry) => entry.user === userID)?.roles ?? [];
 	}
 
 	public async fetch(userID: string, extraContext?: StickyRoleManagerExtraContext): Promise<readonly string[]> {
 		// 1.0. If the entry does not exist, return empty array
-		const arrayIndex = this.getKey(userID);
+		const arrayIndex = await this.getRaw(userID);
 		if (arrayIndex === -1) return [];
 
 		// 2.0. Read the entry and clean the roles:
@@ -59,7 +56,7 @@ export class StickyRoleManager {
 
 	public async add(userID: string, roleID: string, extraContext?: StickyRoleManagerExtraContext): Promise<readonly string[]> {
 		// 1.0. Get the index of the entry:
-		const arrayIndex = this.getKey(userID);
+		const arrayIndex = await this.getRaw(userID);
 
 		// 2.0. If the entry does not exist:
 		if (arrayIndex === -1) {
@@ -86,7 +83,7 @@ export class StickyRoleManager {
 
 	public async remove(userID: string, roleID: string, extraContext?: StickyRoleManagerExtraContext): Promise<readonly string[]> {
 		// 1.0. Get the index for the entry:
-		const arrayIndex = this.getKey(userID);
+		const arrayIndex = await this.getRaw(userID);
 
 		// 1.1. If the index is negative, return empty array, as the entry does not exist:
 		if (arrayIndex === -1) return [];
@@ -118,29 +115,34 @@ export class StickyRoleManager {
 	}
 
 	public async clear(userID: string, extraContext?: StickyRoleManagerExtraContext): Promise<readonly string[]> {
+		// 0.0 Get all the entries
+		const entries = await this.getEntries();
 		// 1.0. Get the index for the entry:
-		const arrayIndex = this.getKey(userID);
+		const arrayIndex = await this.getRaw(userID);
 
 		// 1.1. If the index is negative, return empty array, as the entry does not exist:
 		if (arrayIndex === -1) return [];
 
 		// 2.0. Read the previous entry:
-		const entry = this.entries[arrayIndex];
+		const entry = entries[arrayIndex];
 
 		// 3.0. Remove the entry from the settings:
 		const clean: StickyRole = { user: userID, roles: [] };
-		await this.#guild.settings.update(GuildSettings.StickyRoles, clean, {
-			arrayAction: ArrayActions.Remove,
-			arrayIndex,
-			extraContext
+		await this.#guild.writeSettings((settings) => {
+			settings[GuildSettings.StickyRoles][arrayIndex] = clean;
 		});
 
 		// 4.0. Return the previous roles:
 		return entry.roles;
 	}
 
-	private getKey(userID: string) {
-		return this.entries.findIndex((entry) => entry.user === userID);
+	private getEntries() {
+		return this.#guild.readSettings(GuildSettings.StickyRoles);
+	}
+
+	private async getRaw(userID: string) {
+		const entries = await this.getEntries();
+		return entries.findIndex((entry) => entry.user === userID);
 	}
 
 	private *addRole(roleID: string, roleIDs: readonly string[]) {

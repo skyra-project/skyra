@@ -1,4 +1,5 @@
-import { GuildSettings, PermissionsNode } from '@lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { PermissionsNode } from '@lib/database/entities/GuildEntity';
 import { Guild, Role } from 'discord.js';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -11,11 +12,13 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 		this.guild = guild;
 	}
 
-	public get rawNodes() {
-		return this.guild.settings.get(GuildSettings.Permissions.Roles);
+	public async fetchRawNodes() {
+		return this.guild.readSettings(GuildSettings.Permissions.Roles);
 	}
 
-	public async update(rawNodes = this.rawNodes) {
+	public async update(rawNodes?: PermissionsNode[]) {
+		rawNodes ??= await this.fetchRawNodes();
+
 		if (rawNodes.length === 0) {
 			this.clear();
 			return this;
@@ -35,7 +38,13 @@ export class PermissionsManager extends Map<string, PermissionsManagerNode> {
 
 		// Delete redundant entries
 		if (pendingToRemove.length) {
-			await this.guild.settings.update(GuildSettings.Permissions.Roles, pendingToRemove, { arrayAction: 'remove' });
+			await this.guild.writeSettings((settings) => {
+				const roles = settings[GuildSettings.Permissions.Roles];
+				for (const removedItem of pendingToRemove) {
+					const removedIndex = roles.findIndex((element) => element.id === removedItem.id);
+					if (removedIndex !== -1) roles.splice(removedIndex, 1);
+				}
+			});
 		}
 
 		return this;

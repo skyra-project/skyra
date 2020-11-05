@@ -35,9 +35,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 */
 	public set(key: string, value: StarboardEntity) {
 		if (this.size >= 25) {
-			const entry =
-				this.find((sMes) => sMes.stars < this.minimum) ||
-				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
+			const entry = this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
 			this.delete(entry.messageID);
 		}
 		return super.set(key, value);
@@ -46,16 +44,16 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	/**
 	 * Get the Starboard channel
 	 */
-	public get starboardChannel() {
-		const channelID = this.guild.settings.get(GuildSettings.Starboard.Channel);
-		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) || null;
+	public async getStarboardChannel() {
+		const channelID = await this.guild.readSettings(GuildSettings.Starboard.Channel);
+		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) ?? null;
 	}
 
 	/**
 	 * Get the minimum amount of stars
 	 */
-	public get minimum() {
-		return this.guild.settings.get(GuildSettings.Starboard.Minimum);
+	public async getMinimumStars() {
+		return this.guild.readSettings(GuildSettings.Starboard.Minimum);
 	}
 
 	/**

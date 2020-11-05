@@ -8,6 +8,7 @@ import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
 import { join } from 'path';
+import type { Language } from 'klasa';
 
 const enum Arrows {
 	UpDiagonalLeft = 0.2,
@@ -81,14 +82,16 @@ export class WheelOfFortune {
 
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
+
+		const lang = await this.message.fetchLanguage();
 		if (lost && final < 0) {
-			throw this.message.language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+			throw lang.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 		}
 
 		this.settings.money += this.winnings;
 		await this.settings.save();
 
-		return [await this.render(this.settings.profile!.darkTheme), final] as const;
+		return [await this.render(this.settings.profile!.darkTheme, lang), final] as const;
 	}
 
 	/** The boost */
@@ -114,7 +117,7 @@ export class WheelOfFortune {
 		);
 	}
 
-	private async render(darkTheme: boolean): Promise<Buffer> {
+	private async render(darkTheme: boolean, lang: Language): Promise<Buffer> {
 		const playerHasWon = this.winnings > 0;
 
 		const { x: arrowX, y: arrowY } = kArrows.get(WheelOfFortune.kMultipliers[this.spin])!;
@@ -127,7 +130,7 @@ export class WheelOfFortune {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				this.message.language.get(
+				lang.get(
 					playerHasWon ? LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextWon : LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextLost
 				),
 				280,

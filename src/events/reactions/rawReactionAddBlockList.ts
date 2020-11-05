@@ -1,22 +1,27 @@
+import { GuildEntity } from '@lib/database';
 import { HardPunishment, ModerationEvent } from '@lib/structures/ModerationEvent';
 import { SelfModeratorBitField } from '@lib/structures/SelfModeratorBitField';
+import { KeyOfType } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { Adder } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
 import { floatPromise, twemoji } from '@utils/util';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
+import { EventOptions } from 'klasa';
 
 type ArgumentType = [LLRCData, string];
 
-export default class extends ModerationEvent<ArgumentType> {
-	protected keyEnabled: string = GuildSettings.Selfmod.Reactions.Enabled;
-	protected softPunishmentPath: string = GuildSettings.Selfmod.Reactions.SoftAction;
-	protected hardPunishmentPath: HardPunishment<GuildSettings.Selfmod.Reactions.HardAction> = {
+@ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
+export default class extends ModerationEvent<ArgumentType, unknown, number> {
+	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
+	protected softPunishmentPath: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
+	protected hardPunishmentPath: HardPunishment<number> = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
 		adder: 'reactions',
@@ -49,7 +54,7 @@ export default class extends ModerationEvent<ArgumentType> {
 		if (member.user.bot || this.hasPermissions(member)) return;
 
 		const args = [data, emoji] as const;
-		const preProcessed = this.preProcess(args);
+		const preProcessed = await this.preProcess(args);
 		if (preProcessed === null) return;
 
 		this.processSoftPunishment(args, preProcessed, new SelfModeratorBitField(softPunishment));

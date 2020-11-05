@@ -8,7 +8,7 @@ import { isNullOrUndefined } from '@sapphire/utilities';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { cast, floatPromise } from '@utils/util';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, Language } from 'klasa';
 import { DbSet } from './DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -47,18 +47,25 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		this.optionalDuration = options.optionalDuration!;
 	}
 
-	public async run(message: KlasaMessage, args: readonly unknown[]) {
+	public async run(message: GuildMessage, args: readonly unknown[]) {
 		const resolved = this.resolveOverloads(args);
 
 		const preHandled = await this.prehandle(message, resolved);
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
+		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Messages.ModerationAutoDelete],
+			settings[GuildSettings.Messages.ModerationMessageDisplay],
+			settings[GuildSettings.Messages.ModerationReasonDisplay],
+			settings.getLanguage()
+		]);
+
 		const { targets, ...handledRaw } = resolved;
 		for (const target of new Set(targets)) {
 			try {
 				const handled = { ...handledRaw, target, preHandled };
-				await this.checkModeratable(message, handled);
+				await this.checkModeratable(message, language, handled);
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
@@ -73,14 +80,14 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		}
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
-		if (message.guild!.settings.get(GuildSettings.Messages.ModerationAutoDelete)) {
+		if (shouldAutoDelete) {
 			if (message.deletable) floatPromise(this, message.nuke());
 		}
 
-		if (message.guild!.settings.get(GuildSettings.Messages.ModerationMessageDisplay)) {
+		if (shouldDisplayMessage) {
 			const output: string[] = [];
 			if (processed.length) {
-				const logReason = message.guild!.settings.get(GuildSettings.Messages.ModerationReasonDisplay) ? processed[0].log.reason! : null;
+				const logReason = shouldDisplayReason ? processed[0].log.reason! : null;
 				const sorted = processed.sort((a, b) => a.log.caseID - b.log.caseID);
 				const cases = sorted.map(({ log }) => log.caseID);
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
@@ -93,10 +100,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 					? LanguageKeys.Commands.Moderation.ModerationOutput
 					: LanguageKeys.Commands.Moderation.ModerationOutputPlural;
 				output.push(
-					message.language.get(langKey, {
+					language.get(langKey, {
 						count: cases.length,
 						range,
-						users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
+						users: language.list(users, language.get(LanguageKeys.Globals.And)),
 						reason: logReason
 					})
 				);
@@ -105,12 +112,12 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
-					message.language.get(
+					language.get(
 						users.length === 1
 							? LanguageKeys.Commands.Moderation.ModerationFailed
 							: LanguageKeys.Commands.Moderation.ModerationFailedPlural,
 						{
-							users: message.language.list(users, message.language.get(LanguageKeys.Globals.And)),
+							users: language.list(users, language.get(LanguageKeys.Globals.And)),
 							count: users.length
 						}
 					)
@@ -134,39 +141,38 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return null;
 	}
 
-	protected async checkModeratable(message: GuildMessage, context: HandledCommandContext<T>) {
+	protected async checkModeratable(message: GuildMessage, language: Language, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw message.language.get(LanguageKeys.Misc.CommandUserself);
+			throw language.get(LanguageKeys.Misc.CommandUserself);
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw message.language.get(LanguageKeys.Misc.CommandToskyra);
+			throw language.get(LanguageKeys.Misc.CommandToskyra);
 		}
 
-		const member = await message.guild!.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw message.language.get(LanguageKeys.Misc.UserNotInGuild);
+		const member = await message.guild.members.fetch(context.target.id).catch(() => {
+			if (this.requiredMember) throw language.get(LanguageKeys.Misc.UserNotInGuild);
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild!.me!.roles.highest.position)
-				throw message.language.get(LanguageKeys.Misc.CommandRoleHigherSkyra);
-			if (targetHighestRolePosition >= message.member!.roles.highest.position) throw message.language.get(LanguageKeys.Misc.CommandRoleHigher);
+			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) throw language.get(LanguageKeys.Misc.CommandRoleHigherSkyra);
+			if (targetHighestRolePosition >= message.member.roles.highest.position) throw language.get(LanguageKeys.Misc.CommandRoleHigher);
 		}
 
 		return member;
 	}
 
-	protected async getTargetDM(message: KlasaMessage, target: User): Promise<ModerationActionsSendOptions> {
+	protected async getTargetDM(message: GuildMessage, target: User): Promise<ModerationActionsSendOptions> {
+		const [nameDisplay, enabledDM] = await message.guild.readSettings([
+			GuildSettings.Messages.ModeratorNameDisplay,
+			GuildSettings.Messages.ModerationDM
+		]);
+
 		return {
-			moderator:
-				'no-author' in message.flagArgs
-					? null
-					: Reflect.has(message.flagArgs, 'authored') || message.guild!.settings.get(GuildSettings.Messages.ModeratorNameDisplay)
-					? message.author
-					: null,
-			send: message.guild!.settings.get(GuildSettings.Messages.ModerationDM) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
+			moderator: 'no-author' in message.flagArgs ? null : Reflect.has(message.flagArgs, 'authored') || nameDisplay ? message.author : null,
+			send: enabledDM && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 

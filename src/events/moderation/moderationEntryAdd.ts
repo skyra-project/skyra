@@ -2,8 +2,8 @@ import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Moderation } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { DiscordAPIError } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
@@ -17,14 +17,9 @@ export default class extends Event {
 
 		const messageEmbed = await entry.prepareEmbed();
 		try {
-			await channel.send(messageEmbed);
+			await resolveOnErrorCodes(channel.send(messageEmbed), RESTJSONErrorCodes.MissingAccess, RESTJSONErrorCodes.MissingPermissions);
 		} catch (error) {
-			if (
-				error instanceof DiscordAPIError &&
-				(error.code === RESTJSONErrorCodes.MissingAccess || error.code === RESTJSONErrorCodes.MissingPermissions)
-			) {
-				await entry.guild.settings.reset(GuildSettings.Channels.ModerationLogs);
-			}
+			await entry.guild.writeSettings([[GuildSettings.Channels.ModerationLogs, null]]);
 		}
 	}
 

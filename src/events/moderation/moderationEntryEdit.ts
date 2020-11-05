@@ -3,8 +3,9 @@ import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { Moderation } from '@utils/constants';
+import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { DiscordAPIError, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Message, MessageEmbed, TextChannel } from 'discord.js';
 import { Event } from 'klasa';
 
 export default class extends Event {
@@ -30,14 +31,13 @@ export default class extends Event {
 		const messageEmbed = await entry.prepareEmbed();
 		const previous = this.fetchModerationLogMessage(entry, channel);
 		try {
-			await (previous === null ? channel.send(messageEmbed) : previous.edit(messageEmbed));
+			await resolveOnErrorCodes(
+				previous === null ? channel.send(messageEmbed) : previous.edit(messageEmbed),
+				RESTJSONErrorCodes.MissingAccess,
+				RESTJSONErrorCodes.MissingPermissions
+			);
 		} catch (error) {
-			if (
-				error instanceof DiscordAPIError &&
-				(error.code === RESTJSONErrorCodes.MissingAccess || error.code === RESTJSONErrorCodes.MissingPermissions)
-			) {
-				await entry.guild.settings.reset(GuildSettings.Channels.ModerationLogs);
-			}
+			await entry.guild.writeSettings([[GuildSettings.Channels.ModerationLogs, null]]);
 		}
 	}
 

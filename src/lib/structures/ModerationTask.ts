@@ -29,7 +29,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 	protected async getTargetDM(guild: Guild, target: User): Promise<ModerationActionsSendOptions> {
 		return {
 			moderator: null,
-			send: guild.settings.get(GuildSettings.Messages.ModerationDM) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
+			send: (await guild.readSettings(GuildSettings.Messages.ModerationDM)) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 

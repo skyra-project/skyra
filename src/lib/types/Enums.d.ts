@@ -23,6 +23,8 @@ export const enum Events {
 	GuildCreate = 'guildCreate',
 	GuildDelete = 'guildDelete',
 	GuildMessageLog = 'guildMessageLog',
+	GuildMessageUpdate = 'guildMessageUpdate',
+	GuildMemberUpdate = 'guildMemberUpdate',
 	KlasaReady = 'klasaReady',
 	LavalinkClose = 'lavalinkClose',
 	LavalinkEnd = 'lavalinkEnd',

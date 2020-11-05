@@ -1,14 +1,11 @@
 import { Events } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
-import { resolveEmoji } from '@utils/util';
-import { Event } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
 export default class extends Event {
-	public async run(parsed: LLRCData) {
-		// Resolve the emoji (since there can be many formats)
-		const emoji = resolveEmoji(parsed.emoji);
-		if (!emoji) return;
-
+	public async run(parsed: LLRCData, emoji: string) {
 		const [roleEntry, allRoleSets] = await parsed.guild.readSettings((settings) => [
 			settings.reactionRoles.find(
 				(entry) => entry.emoji === emoji && entry.channel === parsed.channel.id && (entry.message ? entry.message === parsed.messageID : true)

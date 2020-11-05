@@ -13,6 +13,6 @@ export default class extends Event {
 	public run(data: GatewayMessageReactionRemoveDispatch['d']) {
 		const channel = this.client.channels.cache.get(data.channel_id) as TextChannel;
 		if (!channel || !channel.readable || !isTextBasedChannel(channel)) return;
-		this.client.emit(Events.RoleReactionRemove, channel, data);
+		this.client.emit(Events.RawReactionRemove, channel, data);
 	}
 }

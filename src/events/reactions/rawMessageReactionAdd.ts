@@ -35,8 +35,6 @@ export default class extends Event {
 			llrc.send(data);
 		}
 
-		this.client.emit(Events.RoleReactionAdd, data);
-
 		const emoji = resolveEmoji(data.emoji);
 		if (emoji === null) return;
 

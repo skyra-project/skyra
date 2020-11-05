@@ -1,5 +1,4 @@
 import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
 import { codeBlock, inlineCodeBlock } from '@sapphire/utilities';
 import { rootFolder } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
@@ -14,16 +13,12 @@ export default class extends Event {
 			`${inlineCodeBlock('Error     ::')} ${codeBlock('js', error.stack || error)}`
 		].join('\n');
 
-		try {
-			await this.client.webhookDatabase!.send(
-				new MessageEmbed()
-					.setDescription(output)
-					.setColor(Colors.Red)
-					.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
-					.setTimestamp()
-			);
-		} catch (err) {
-			this.client.emit(Events.Wtf, err);
-		}
+		await this.client.webhookDatabase!.send(
+			new MessageEmbed()
+				.setDescription(output)
+				.setColor(Colors.Red)
+				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }), message.url)
+				.setTimestamp()
+		);
 	}
 }

@@ -13,16 +13,7 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.MessageDelete, emitter: store.client.ws });
 	}
 
-	public async run(data: GatewayMessageDeleteDispatch['d']): Promise<void> {
-		if (!data.guild_id) return;
-
-		const guild = this.client.guilds.cache.get(data.guild_id);
-		if (!guild || !guild.channels.cache.has(data.channel_id)) return;
-
-		await this.handleStarboard(guild, data);
-	}
-
-	private async handleStarboard(guild: SkyraGuild, data: GatewayMessageDeleteDispatch['d']) {
+	public async run(guild: SkyraGuild, data: GatewayMessageDeleteDispatch['d']) {
 		guild.starboard.delete(data.id);
 
 		// Delete entry from starboard if it exists
@@ -40,7 +31,7 @@ export default class extends Event {
 			const [result] = results.raw;
 
 			// Get channel
-			const channel = guild.settings.get(GuildSettings.Starboard.Channel);
+			const channel = await guild.readSettings(GuildSettings.Starboard.Channel);
 			if (!channel) return;
 
 			if (result && result.star_message_id) {

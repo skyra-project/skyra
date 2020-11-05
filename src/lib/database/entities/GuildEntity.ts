@@ -538,11 +538,9 @@ export class GuildEntity extends BaseEntity {
 	@Column('integer', { name: 'selfmod.reactions.thresholdDuration', default: 60000 })
 	public selfmodReactionsThresholdDuration = 60000;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodRaid })
 	@Column('boolean', { name: 'selfmod.raid', default: false })
 	public selfmodRaid = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodRaidthreshold, minimum: 2, maximum: 50 })
 	@Column('smallint', { name: 'selfmod.raidthreshold', default: 10 })
 	public selfmodRaidthreshold = 10;
 

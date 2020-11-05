@@ -7,7 +7,7 @@ import { cast } from '@utils/util';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage } from 'klasa';
 
-const BLACKLISTED_CODES = [
+const ignoredCodes = [
 	// Unknown Channel
 	10003,
 	// Unknown Message
@@ -24,31 +24,20 @@ export default class extends Event {
 
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
-			try {
-				return await message.alert(
-					await message.fetchLocale(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }),
-					{
-						allowedMentions: { users: [message.author.id], roles: [] }
-					}
-				);
-			} catch (err) {
-				return this.client.emit(Events.ApiError, err);
-			}
+			return message.alert(await message.fetchLocale(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }), {
+				allowedMentions: { users: [message.author.id], roles: [] }
+			});
 		}
 
 		// If the error was an AbortError, tell the user to re-try:
 		if (error.name === 'AbortError') {
 			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
-			try {
-				return await message.alert(await message.fetchLocale(LanguageKeys.System.DiscordAborterror));
-			} catch (err) {
-				return this.client.emit(Events.ApiError, err);
-			}
+			return message.alert(await message.fetchLocale(LanguageKeys.System.DiscordAborterror));
 		}
 
 		// Extract useful information about the DiscordAPIError
 		if (error instanceof DiscordAPIError || error instanceof HTTPError) {
-			if (BLACKLISTED_CODES.includes(error.code)) return;
+			if (ignoredCodes.includes(error.code)) return;
 			this.client.emit(Events.ApiError, error);
 		} else {
 			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);

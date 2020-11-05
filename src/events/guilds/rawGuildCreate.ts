@@ -7,7 +7,7 @@ export default class extends Event {
 		super(store, file, directory, { name: DiscordEvents.GuildCreate, emitter: store.client.ws });
 	}
 
-	public async run(data: GatewayGuildCreateDispatch['d']) {
-		await Promise.all(data.voice_states!.map((state) => this.client.audio.voiceStateUpdate({ ...state, guild_id: data.id })));
+	public run(data: GatewayGuildCreateDispatch['d']) {
+		return Promise.all(data.voice_states!.map((state) => this.client.audio.voiceStateUpdate({ ...state, guild_id: data.id })));
 	}
 }

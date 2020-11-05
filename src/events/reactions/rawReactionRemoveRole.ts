@@ -1,9 +1,11 @@
 import { Events } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { isTextBasedChannel, resolveEmoji } from '@utils/util';
 import { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import { TextChannel } from 'discord.js';
-import { Event } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ name: Events.RawReactionRemove })
 export default class extends Event {
 	public async run(channel: TextChannel, data: GatewayMessageReactionRemoveDispatch['d']) {
 		// If the channel is not a text channel then stop processing

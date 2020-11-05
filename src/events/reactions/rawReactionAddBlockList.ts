@@ -105,9 +105,7 @@ export default class extends ModerationEvent<ArgumentType> {
 					: `https://cdn.discordapp.com/emojis/${data.emoji.id}.${data.emoji.animated ? 'gif' : 'png'}?size=64`
 			)
 			.setDescription(
-				`[${await language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
-					data.messageID
-				})`
+				`[${language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${data.messageID})`
 			)
 			.setFooter(`${data.channel.name} | ${language.get(LanguageKeys.Monitors.ReactionsFilterFooter)}`)
 			.setTimestamp();

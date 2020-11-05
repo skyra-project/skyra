@@ -3,7 +3,6 @@ import { Adder } from '@utils/Adder';
 import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Guild } from 'discord.js';
 import { RateLimitManager } from 'klasa';
-import { AntiRaid } from './AntiRaid';
 import { ModerationActions } from './ModerationActions';
 import { create } from './RegexCreator';
 
@@ -48,11 +47,6 @@ export class GuildSecurity {
 	public actions: ModerationActions;
 
 	/**
-	 * The AntiRaid instance managed by this guild, if exists
-	 */
-	public raid: AntiRaid;
-
-	/**
 	 * The ratelimit management for the no-mention-spam behavior
 	 */
 	public nms: RateLimitManager;
@@ -70,7 +64,6 @@ export class GuildSecurity {
 	public constructor(guild: Guild) {
 		this.guild = guild;
 		this.actions = new ModerationActions(this.guild);
-		this.raid = new AntiRaid(this.guild);
 		this.nms = new RateLimitManager(
 			this.guild.settings.get(GuildSettings.NoMentionSpam.MentionsAllowed),
 			this.guild.settings.get(GuildSettings.NoMentionSpam.TimePeriod) * 1000

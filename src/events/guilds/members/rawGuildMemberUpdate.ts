@@ -4,7 +4,8 @@ import { CLIENT_ID } from '@root/config';
 import { api } from '@utils/Models/Api';
 import { floatPromise } from '@utils/util';
 import { AuditLogEvent, GatewayGuildMemberUpdateDispatch, RESTGetAPIAuditLogQuery, RESTGetAPIAuditLogResult } from 'discord-api-types/v6';
-import { Event, EventStore, KlasaGuild } from 'klasa';
+import { Guild } from 'discord.js';
+import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
@@ -18,10 +19,10 @@ export default class extends Event {
 		floatPromise(this, this.handleRoleSets(guild, data));
 	}
 
-	private async handleRoleSets(guild: KlasaGuild, data: Readonly<GatewayGuildMemberUpdateDispatch['d']>) {
+	private async handleRoleSets(guild: Guild, data: Readonly<GatewayGuildMemberUpdateDispatch['d']>) {
 		// Handle unique role sets
 		let hasMultipleRolesInOneSet = false;
-		const allRoleSets = guild.settings.get(GuildSettings.Roles.UniqueRoleSets);
+		const allRoleSets = await guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
 
 		// First check if the user has multiple roles from a set
 		for (const set of allRoleSets) {

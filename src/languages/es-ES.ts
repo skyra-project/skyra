@@ -646,9 +646,6 @@ export default class extends Language {
 		settingsSelfmodNewlinesIgnoredchannels: 'The channels that will be ignored by the new lines sub-system',
 		settingsSelfmodNewlinesIgnoredroles: 'The roles that will be ignored by the new lines sub-system',
 		settingsSelfmodNewlinesMaximum: 'The maximum amount of new lines before Skyra will start applying penalties',
-		settingsSelfmodRaid: 'Whether or not I should kick users when they try to raid the server.',
-		settingsSelfmodRaidthreshold:
-			'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
 		settingsSelfmodReactionsMaximum: 'The maximum amount of reactions before I will start applying penalties',
 		settingsSelfmodReactionsBlacklist: 'The reactions that are blacklisted',
 		settingsSelfmodReactionsEnabled: 'Whether the reactions filter selfmod sub-system is enabled or not.',
@@ -2013,11 +2010,6 @@ export default class extends Language {
 			extendedHelp: 'You can also get the latest moderation case by specifying the case ID as "latest"',
 			explainedUsage: [['Case', 'Number of the case ID to get or "latest"']],
 			examples: ['5', 'latest']
-		},
-		commandRaidDescription: 'Manage the Anti-RAID system.',
-		commandRaidExtended: {
-			extendedHelp: 'Please note that the Anti-RAID system is flawed and needs redesigning. In its current state it should not be relied on.',
-			reminder: 'Want to know when you can use this feature? We recommend joining [Skyra Lounge](https://join.skyra.pw)'
 		},
 		commandPermissionsDescription: 'Check the permission for a member, or yours.',
 		commandPermissionsExtended: {
@@ -3592,11 +3584,6 @@ export default class extends Language {
 
 		commandPermissions: ({ username, id }) => `Permissions for ${username} (${id})`,
 		commandPermissionsAll: 'All Permissions',
-		commandRaidDisabled: 'The Anti-RAID system is not enabled in this server.',
-		commandRaidMissingKick: `As I do not have the **${this.PERMISSIONS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
-		commandRaidList: 'List of users in the RAID queue',
-		commandRaidClear: 'Successfully cleared the RAID list.',
-		commandRaidCool: 'Successfully deactivated the RAID.',
 		commandFlow: ({ amount }) => `${amount} messages have been sent within the last minute.`,
 		commandTimeTimed: 'The selected moderation case has already been timed.',
 		commandTimeUndefinedTime: 'You must specify a time.',
@@ -4965,7 +4952,6 @@ export default class extends Language {
 
 		eventsGuildMemberAdd: 'Nuevo Usuario',
 		eventsGuildMemberAddMute: 'Nuevo Usuario Muteado',
-		eventsGuildMemberAddRaid: 'RAID Detectado',
 		eventsGuildMemberAddDescription: ({ mention, time }) => `${mention} | **Se Unió a Discord**: Hace ${this.duration(time, 2)}.`,
 		eventsGuildMemberRemove: 'Usuario Salió',
 		eventsGuildMemberKicked: 'Usuario Pateado',

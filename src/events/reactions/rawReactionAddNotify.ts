@@ -3,14 +3,14 @@ import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
+import { api } from '@utils/Models/Api';
 import { twemoji } from '@utils/util';
 import { APIUser } from 'discord-api-types/v6';
-import { ApplyOptions } from '@skyra/decorators';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
-import { api } from '@utils/Models/Api';
 
 @ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
 export default class extends Event {
@@ -19,23 +19,32 @@ export default class extends Event {
 	private kTimerSweeper: NodeJS.Timer | null = null;
 
 	public async run(data: LLRCData, emoji: string) {
-		if (data.guild.settings.get(GuildSettings.Selfmod.Reactions.WhiteList).includes(emoji)) return;
+		const [
+			allowList,
+			channel,
+			twemojiEnabled,
+			ignoreChannels,
+			ignoreReactionAdd,
+			ignoreAllEvents,
+			language
+		] = await data.guild.readSettings((settings) => [
+			settings[GuildSettings.Selfmod.Reactions.WhiteList],
+			settings[GuildSettings.Channels.ReactionLogs],
+			settings[GuildSettings.Events.Twemoji],
+			settings[GuildSettings.Messages.IgnoreChannels],
+			settings[GuildSettings.Channels.Ignore.ReactionAdd],
+			settings[GuildSettings.Channels.Ignore.All],
+			settings.getLanguage()
+		]);
+
+		if (allowList.includes(emoji)) return;
 
 		this.client.emit(Events.ReactionBlacklist, data, emoji);
-		if (
-			!data.guild.settings.get(GuildSettings.Channels.ReactionLogs) ||
-			(!data.guild.settings.get(GuildSettings.Events.Twemoji) && data.emoji.id === null)
-		)
-			return;
+		if (!channel || (!twemojiEnabled && data.emoji.id === null)) return;
 
-		const ignoreChannels = data.guild.settings.get(GuildSettings.Messages.IgnoreChannels);
-		const ignoreReactionAdd = data
-			.guild!.settings.get(GuildSettings.Channels.Ignore.ReactionAdd)
-			.some((id) => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
-		const ignoreAllEvents = data
-			.guild!.settings.get(GuildSettings.Channels.Ignore.All)
-			.some((id) => data.channel.id === id || (data.channel as TextChannel).parent?.id === id);
-		if (ignoreChannels.includes(data.channel.id) || ignoreReactionAdd || ignoreAllEvents) return;
+		if (ignoreChannels.includes(data.channel.id)) return;
+		if (ignoreReactionAdd.some((id) => id === data.channel.id || data.channel.parentID === id)) return;
+		if (ignoreAllEvents.some((id) => id === data.channel.id || data.channel.parentID === id)) return;
 
 		if ((await this.retrieveCount(data, emoji)) > 1) return;
 
@@ -55,12 +64,12 @@ export default class extends Event {
 					[
 						`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
 						`**Channel**: ${data.channel}`,
-						`**Message**: [${data.guild.language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${
-							data.channel.id
-						}/${data.messageID})`
+						`**Message**: [${language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
+							data.messageID
+						})`
 					].join('\n')
 				)
-				.setFooter(`${data.guild.language.get(LanguageKeys.Events.Reaction)} • ${data.channel.name}`)
+				.setFooter(`${language.get(LanguageKeys.Events.Reaction)} • ${data.channel.name}`)
 				.setTimestamp()
 		);
 	}

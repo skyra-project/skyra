@@ -6,7 +6,7 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(guild: Guild, user: User) {
-		if (!guild.available || !guild.settings.get(GuildSettings.Events.BanRemove)) return;
+		if (!guild.available || !(await guild.readSettings(GuildSettings.Events.BanRemove))) return;
 		await guild.moderation.waitLock();
 		await guild.moderation
 			.create({

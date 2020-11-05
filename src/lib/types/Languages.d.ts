@@ -479,8 +479,6 @@ declare module 'klasa' {
 		settingsSelfmodNewlinesIgnoredchannels: string;
 		settingsSelfmodNewlinesIgnoredroles: string;
 		settingsSelfmodNewlinesMaximum: string;
-		settingsSelfmodRaid: string;
-		settingsSelfmodRaidthreshold: string;
 		settingsSelfmodReactionsMaximum: string;
 		settingsSelfmodReactionsBlacklist: string;
 		settingsSelfmodReactionsEnabled: string;
@@ -905,8 +903,6 @@ declare module 'klasa' {
 		commandPruneExtended: LanguageHelpDisplayOptions;
 		commandCaseDescription: string;
 		commandCaseExtended: LanguageHelpDisplayOptions;
-		commandRaidDescription: string;
-		commandRaidExtended: LanguageHelpDisplayOptions;
 		commandPermissionsDescription: string;
 		commandPermissionsExtended: LanguageHelpDisplayOptions;
 		commandFlowDescription: string;
@@ -1661,11 +1657,6 @@ declare module 'klasa' {
 
 		commandPermissions: (params: { username: string; id: string }) => string;
 		commandPermissionsAll: string;
-		commandRaidDisabled: string;
-		commandRaidMissingKick: string;
-		commandRaidList: string;
-		commandRaidClear: string;
-		commandRaidCool: string;
 		commandFlow: (params: { amount: number }) => string;
 		commandTimeTimed: string;
 		commandTimeUndefinedTime: string;
@@ -2239,7 +2230,6 @@ declare module 'klasa' {
 		userNotExistent: string;
 		eventsGuildMemberAdd: string;
 		eventsGuildMemberAddMute: string;
-		eventsGuildMemberAddRaid: string;
 		eventsGuildMemberAddDescription: (params: { mention: string; time: number }) => string;
 		eventsGuildMemberRemove: string;
 		eventsGuildMemberKicked: string;

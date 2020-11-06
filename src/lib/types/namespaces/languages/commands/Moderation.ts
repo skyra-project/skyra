@@ -196,17 +196,18 @@ export const ModerationOutputWithReasonPlural = FT<{ count: number; range: strin
 export const ModerationFailed = FT<{ users: string; count: number }, string>('commandModerationFailed');
 export const ModerationFailedPlural = FT<{ users: string; count: number }, string>('commandModerationFailedPlural');
 export const ModerationDmFooter = T<string>('commandModerationDmFooter');
-export const ModerationDmDescription = T<(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]>(
+export const ModerationDmDescription = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
 	'commandModerationDmDescription'
 );
-export const ModerationDmDescriptionWithReason = T<
-	(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]
->('commandModerationDmDescriptionWithReason');
-export const ModerationDmDescriptionWithDuration = T<
-	(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]
->('commandModerationDmDescriptionWithDuration');
-export const ModerationDmDescriptionWithReasonWithDuratio = T<
-	(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]
+export const ModerationDmDescriptionWithReason = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+	'commandModerationDmDescriptionWithReason'
+);
+export const ModerationDmDescriptionWithDuration = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+	'commandModerationDmDescriptionWithDuration'
+);
+export const ModerationDmDescriptionWithReasonWithDuration = FT<
+	{ guild: string; title: string; reason: string | null; duration: number | null },
+	string[]
 >('commandModerationDmDescriptionWithReasonWithDuration');
 export const ModerationDays = T<string>('commandModerationDays');
 export const Permissions = FT<{ username: string; id: string }, string>('commandPermissions');
@@ -303,7 +304,7 @@ export const ActionSharedRoleSetupAskMultipleChannels = FT<{ role: string; chann
 export const ActionSharedRoleSetupAskMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
 	'actionSharedRoleSetupAskMultiplePermissions'
 );
-export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = T<
-	(params: { role: string; channels: number; permissions: string }) => string
->('actionSharedRoleSetupAskMultipleChannelsMultiplePermissions');
+export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
+	'actionSharedRoleSetupAskMultipleChannelsMultiplePermissions'
+);
 export const ActionRequiredMember = T<string>('actionRequiredMember');

@@ -116,7 +116,8 @@ export default class extends SkyraCommand {
 	private async checkMute(message: GuildMessage, user: User) {
 		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
 			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
-		if (!message.guild.security.actions.userIsMuted(user)) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
+		if (!(await message.guild.security.actions.userIsMuted(user)))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
 	}
 
 	private async checkVMute(message: GuildMessage, user: User) {

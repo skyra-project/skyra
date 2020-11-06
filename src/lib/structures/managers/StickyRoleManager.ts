@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { StickyRole } from '@lib/database';
+import { isNullish } from '@lib/misc';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Guild } from 'discord.js';
 
@@ -15,17 +16,22 @@ export class StickyRoleManager {
 	}
 
 	public async get(userID: string): Promise<readonly string[]> {
-		const entries = await this.getEntries();
+		const entries = await this.#guild.readSettings(GuildSettings.StickyRoles);
 		return entries.find((entry) => entry.user === userID)?.roles ?? [];
+	}
+
+	public async has(userID: string, roleID: string): Promise<boolean> {
+		const roles = await this.get(userID);
+		return roles.includes(roleID);
 	}
 
 	public async fetch(userID: string): Promise<readonly string[]> {
 		// 1.0. If the entry does not exist, return empty array
-		const arrayIndex = await this.getRaw(userID);
-		if (arrayIndex === -1) return [];
+		const entries = await this.#guild.readSettings(GuildSettings.StickyRoles);
+		const entry = entries.find((entry) => entry.user === userID);
+		if (isNullish(entry)) return [];
 
 		// 2.0. Read the entry and clean the roles:
-		const entry = this.entries[arrayIndex];
 		const roles = [...this.cleanRoles(entry.roles)];
 
 		// 2.1. If the roles are unchanged (have the same size), return them:
@@ -34,24 +40,21 @@ export class StickyRoleManager {
 		// 2.2. If the roles are changed and leds to an empty array:
 		if (roles.length === 0) {
 			// 3.0.a. Then delete the entry from the settings:
-			const clean: StickyRole = { user: userID, roles };
-			await this.#guild.settings.update(GuildSettings.StickyRoles, clean, {
-				arrayAction: ArrayActions.Remove,
-				arrayIndex,
-				extraContext
-			});
+			await this.clear(userID);
 			return roles;
 		}
 
 		// 3.0.b. Make a clone with the userID and the fixed roles array:
-		const clone: StickyRole = { user: userID, roles };
-		await this.#guild.settings.update(GuildSettings.StickyRoles, clone, {
-			arrayIndex,
-			extraContext
-		});
+		return this.#guild.writeSettings((settings) => {
+			const index = settings.stickyRoles.findIndex((entry) => entry.user === userID);
+			if (index === -1) return [];
 
-		// 4.0. Return the updated roles:
-		return roles;
+			const clone: StickyRole = { user: userID, roles };
+			settings.stickyRoles[index] = clone;
+
+			// 4.0. Return the updated roles:
+			return clone.roles;
+		});
 	}
 
 	public async add(userID: string, roleID: string): Promise<readonly string[]> {
@@ -130,15 +133,6 @@ export class StickyRoleManager {
 			// 4.0. Return the previous roles:
 			return entry.roles;
 		});
-	}
-
-	private getEntries() {
-		return this.#guild.readSettings(GuildSettings.StickyRoles);
-	}
-
-	private async getRaw(userID: string) {
-		const entries = await this.getEntries();
-		return entries.find((entry) => entry.user === userID);
 	}
 
 	private *addRole(roleID: string, roleIDs: readonly string[]) {

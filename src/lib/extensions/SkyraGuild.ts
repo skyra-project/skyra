@@ -5,6 +5,7 @@ import { ModerationManager } from '@lib/structures/managers/ModerationManager';
 import { PermissionsManager } from '@lib/structures/managers/PermissionsManager';
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '@lib/structures/managers/StickyRoleManager';
+import { CustomFunctionGet, CustomGet } from '@lib/types';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Guild, Structures } from 'discord.js';
@@ -23,6 +24,13 @@ export class SkyraGuild extends Structures.get('Guild') {
 
 	public fetchLanguage(this: Guild): Promise<Language> {
 		return this.readSettings((entity) => this.client.languages.get(entity.language)!);
+	}
+
+	public fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+	public fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
+	public async fetchLocale(value: any, args?: any) {
+		const language = await this.fetchLanguage();
+		return language.get(value, args);
 	}
 
 	public readSettings(...args: readonly [any]): Promise<any> {
@@ -150,6 +158,9 @@ declare module 'discord.js' {
 		): Promise<void>;
 		writeSettings<K extends keyof T>(pairs: readonly [K, T[K]][]): Promise<void>;
 		writeSettings<R>(cb: SettingsCollectionCallback<T, R>): Promise<R>;
+
+		fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+		fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
 
 		_patch(data: GatewayGuildCreateDispatch['d'] & { shardID: number }): void;
 	}

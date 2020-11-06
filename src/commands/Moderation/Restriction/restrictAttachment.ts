@@ -24,21 +24,24 @@ export default class extends ModerationCommand {
 	public async inhibit(message: KlasaMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedAttachment);
+		const { id, language } = await message.guild.readSettings((settings) => ({
+			id: settings[GuildSettings.Roles.RestrictedAttachment],
+			language: settings.getLanguage()
+		}));
+
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {
 			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) {
-				throw message.language.get(LanguageKeys.Commands.Moderation.RestrictLowlevel);
+				throw language.get(LanguageKeys.Commands.Moderation.RestrictLowlevel);
 			}
 
-			if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
+			if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
-				await message.guild.settings.update(GuildSettings.Roles.RestrictedAttachment, role, {
-					extraContext: { author: message.author.id }
-				});
-			} else if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
+					.run(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
+
+				await message.guild.writeSettings([[GuildSettings.Roles.RestrictedAttachment, role.id]]);
+			} else if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Attachment);
 				await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
 			} else {

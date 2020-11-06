@@ -12,20 +12,20 @@ const NEW_LINE = '\n';
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationNewLine;
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationNewLineWithMaximum;
-	protected readonly keyEnabled = GuildSettings.Selfmod.Newlines.Enabled;
-	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.Newlines.IgnoredChannels;
-	protected readonly ignoredRolesPath = GuildSettings.Selfmod.Newlines.IgnoredRoles;
-	protected readonly softPunishmentPath = GuildSettings.Selfmod.Newlines.SoftAction;
+	protected readonly keyEnabled = GuildSettings.Selfmod.NewLines.Enabled;
+	protected readonly ignoredChannelsPath = GuildSettings.Selfmod.NewLines.IgnoredChannels;
+	protected readonly ignoredRolesPath = GuildSettings.Selfmod.NewLines.IgnoredRoles;
+	protected readonly softPunishmentPath = GuildSettings.Selfmod.NewLines.SoftAction;
 	protected readonly hardPunishmentPath: HardPunishment = {
-		action: GuildSettings.Selfmod.Newlines.HardAction,
-		actionDuration: GuildSettings.Selfmod.Newlines.HardActionDuration,
+		action: GuildSettings.Selfmod.NewLines.HardAction,
+		actionDuration: GuildSettings.Selfmod.NewLines.HardActionDuration,
 		adder: 'newlines',
-		adderMaximum: GuildSettings.Selfmod.Newlines.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Newlines.ThresholdDuration
+		adderMaximum: GuildSettings.Selfmod.NewLines.ThresholdMaximum,
+		adderDuration: GuildSettings.Selfmod.NewLines.ThresholdDuration
 	};
 
 	protected async preProcess(message: GuildMessage) {
-		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.Newlines.Maximum);
+		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;
 
 		const content = getContent(message);

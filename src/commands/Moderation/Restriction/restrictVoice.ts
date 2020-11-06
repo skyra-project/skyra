@@ -1,4 +1,5 @@
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -7,7 +8,6 @@ import { ApplyOptions } from '@skyra/decorators';
 import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
 import { getImage } from '@utils/util';
 import { Role } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restricted-voice', 'rv'],
@@ -21,22 +21,25 @@ export default class extends ModerationCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private rolePrompt = this.definePrompt('<role:rolename>');
 
-	public async inhibit(message: KlasaMessage) {
+	public async inhibit(message: GuildMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const id = message.guild.settings.get(GuildSettings.Roles.RestrictedVoice);
+		const { id, language } = await message.guild.readSettings((settings) => ({
+			id: settings[GuildSettings.Roles.RestrictedVoice],
+			language: settings.getLanguage()
+		}));
+
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {
 			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator)))
-				throw message.language.get(LanguageKeys.Commands.Moderation.RestrictLowlevel);
-			if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
+				throw language.get(LanguageKeys.Commands.Moderation.RestrictLowlevel);
+			if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
-					.run(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
-				await message.guild.settings.update(GuildSettings.Roles.RestrictedVoice, role, {
-					extraContext: { author: message.author.id }
-				});
-			} else if (await message.ask(message.language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
+					.run(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
+
+				await message.guild.writeSettings([[GuildSettings.Roles.RestrictedVoice, role.id]]);
+			} else if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 				await message.guild.security.actions.restrictionSetup(message, ModerationSetupRestriction.Voice);
 				await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
 			} else {

@@ -9,7 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage, Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['redditor'],
@@ -23,24 +23,24 @@ export default class extends RichDisplayCommand {
 	private usernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
 	public async init() {
-		this.createCustomResolver('user', (arg, _possible, message) => {
-			if (!this.usernameRegex.test(arg)) throw message.language.get(LanguageKeys.Commands.Misc.RedditUserInvalidUser, { user: arg });
+		this.createCustomResolver('user', async (arg, _possible, message) => {
+			if (!this.usernameRegex.test(arg)) throw await message.fetchLocale(LanguageKeys.Commands.Misc.RedditUserInvalidUser, { user: arg });
 			arg = arg.replace(/^\/?u\//, '');
 			return arg;
 		});
 	}
 
 	public async run(message: KlasaMessage, [user]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const [about, comments, posts] = await this.fetchData(user, message);
-		if (!about || !comments || !posts || !comments.length || !posts.length)
-			throw message.language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
+		const [about, comments, posts] = await this.fetchData(user, language);
+		if (!about || !comments || !posts || !comments.length || !posts.length) throw language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
 		comments.sort((a, b) => b.score - a.score);
 
-		const display = await this.buildDisplay(message, about, comments, posts);
+		const display = await this.buildDisplay(message, about, comments, posts, language);
 		await display.start(response, message.author.id);
 		return response;
 	}
@@ -49,17 +49,18 @@ export default class extends RichDisplayCommand {
 		message: KlasaMessage,
 		about: Reddit.AboutDataElement,
 		comments: Reddit.CommentDataElement[],
-		posts: Reddit.PostDataElement[]
+		posts: Reddit.PostDataElement[],
+		language: Language
 	) {
-		const titles = message.language.get(LanguageKeys.Commands.Misc.RedditUserTitles);
-		const fieldsData = message.language.get(LanguageKeys.Commands.Misc.RedditUserData, {
+		const titles = language.get(LanguageKeys.Commands.Misc.RedditUserTitles);
+		const fieldsData = language.get(LanguageKeys.Commands.Misc.RedditUserData, {
 			user: about.name,
 			timestamp: this.joinedRedditTimestamp.displayUTC(about.created * 1000)
 		});
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];
 		const complexity = roundNumber(this.calculateTextComplexity(comments), 2);
-		const complexityLevels = message.language.get(LanguageKeys.Commands.Misc.RedditUserComplexityLevels);
+		const complexityLevels = language.get(LanguageKeys.Commands.Misc.RedditUserComplexityLevels);
 
 		return new UserRichDisplay(
 			new MessageEmbed()
@@ -90,7 +91,7 @@ export default class extends RichDisplayCommand {
 						cutText(
 							[
 								`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
-								`${message.language.duration(Date.now() - bestComment.created * 1000, 3)} ago`,
+								`${language.duration(Date.now() - bestComment.created * 1000, 3)} ago`,
 								`[${fieldsData.permalink}](https://reddit.com${bestComment.permalink})`,
 								decode(bestComment.body)
 							].join('\n'),
@@ -102,7 +103,7 @@ export default class extends RichDisplayCommand {
 						cutText(
 							[
 								`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
-								`${message.language.duration(Date.now() - worstComment.created * 1000, 3)} ago`,
+								`${language.duration(Date.now() - worstComment.created * 1000, 3)} ago`,
 								`[${fieldsData.permalink}](https://reddit.com${worstComment.permalink})`,
 								decode(worstComment.body)
 							].join('\n'),
@@ -113,13 +114,13 @@ export default class extends RichDisplayCommand {
 			.setFooterSuffix(` • ${fieldsData.dataAvailableFor}`);
 	}
 
-	private async fetchData(user: string, message: KlasaMessage) {
-		return Promise.all([this.fetchAbout(user, message), this.fetchComments(user, message), this.fetchPosts(user, message)]);
+	private async fetchData(user: string, language: Language) {
+		return Promise.all([this.fetchAbout(user, language), this.fetchComments(user, language), this.fetchPosts(user, language)]);
 	}
 
-	private async fetchAbout(user: string, message: KlasaMessage) {
+	private async fetchAbout(user: string, language: Language) {
 		const { data } = await fetch<Reddit.Response<'about'>>(`https://www.reddit.com/user/${user}/about/.json`, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
+			throw language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
 		});
 		return data;
 	}
@@ -132,20 +133,20 @@ export default class extends RichDisplayCommand {
 	 * @param after Recursive parameter, determines after which comment to start fetching
 	 * @param dataElements Recursive parameter, the previously fetched comments to retain a total
 	 */
-	private async fetchComments(user: string, message: KlasaMessage, after = '', dataElements: Reddit.CommentDataElement[] = []) {
+	private async fetchComments(user: string, language: Language, after = '', dataElements: Reddit.CommentDataElement[] = []) {
 		const url = new URL(`https://www.reddit.com/user/${user}/comments.json`);
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
 		const { data } = await fetch<Reddit.Response<'comments'>>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
+			throw language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
 		});
 
 		for (const child of data.children) {
 			dataElements.push(child.data);
 		}
 
-		if (data.children.length === 100) await this.fetchComments(user, message, data.children[99].data.name, dataElements);
+		if (data.children.length === 100) await this.fetchComments(user, language, data.children[99].data.name, dataElements);
 
 		return dataElements;
 	}
@@ -158,20 +159,20 @@ export default class extends RichDisplayCommand {
 	 * @param after Recursive parameter, determines after which post to start fetching
 	 * @param dataElements Recursive parameter, the previously fetched posts to retain a total
 	 */
-	private async fetchPosts(user: string, message: KlasaMessage, after = '', dataElements: Reddit.PostDataElement[] = []) {
+	private async fetchPosts(user: string, language: Language, after = '', dataElements: Reddit.PostDataElement[] = []) {
 		const url = new URL(`https://www.reddit.com/user/${user}/submitted.json`);
 		url.searchParams.append('after', after);
 		url.searchParams.append('limit', '100');
 
 		const { data } = await fetch<Reddit.Response<'posts'>>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
+			throw language.get(LanguageKeys.Commands.Misc.RedditUserQueryFailed);
 		});
 
 		for (const child of data.children) {
 			dataElements.push(child.data);
 		}
 
-		if (data.children.length === 100) await this.fetchPosts(user, message, data.children[99].data.name, dataElements);
+		if (data.children.length === 100) await this.fetchPosts(user, language, data.children[99].data.name, dataElements);
 
 		return dataElements;
 	}

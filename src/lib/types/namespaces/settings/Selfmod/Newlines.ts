@@ -1,4 +1,4 @@
-export const enum Newlines {
+export const enum NewLines {
 	Enabled = 'selfmodNewlinesEnabled',
 	IgnoredRoles = 'selfmodNewlinesIgnoredRoles',
 	IgnoredChannels = 'selfmodNewlinesIgnoredChannels',

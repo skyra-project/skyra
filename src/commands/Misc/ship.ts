@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const data = message.language.get(LanguageKeys.Commands.Misc.ShipData, {
+		const data = await message.fetchLocale(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])

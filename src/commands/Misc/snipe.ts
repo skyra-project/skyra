@@ -18,10 +18,10 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const { sniped } = message.channel as TextChannel;
-		if (sniped === null) throw message.language.get(LanguageKeys.Commands.Misc.SnipeEmpty);
+		if (sniped === null) throw await message.fetchLocale(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()
-			.setTitle(message.language.get(LanguageKeys.Commands.Misc.SnipeTitle))
+			.setTitle(await message.fetchLocale(LanguageKeys.Commands.Misc.SnipeTitle))
 			.setColor(await DbSet.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);

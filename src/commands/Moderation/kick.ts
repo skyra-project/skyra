@@ -34,9 +34,9 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		const member = await super.checkModeratable(message, context);
-		if (member && !member.kickable) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.KickNotKickable);
+	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, language, context);
+		if (member && !member.kickable) throw language.get(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;
 	}
 }

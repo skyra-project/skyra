@@ -25,7 +25,7 @@ export function requireSongPresent(): MethodDecorator {
 
 export function requireDj(): MethodDecorator {
 	return createFunctionInhibitor(
-		(message: GuildMessage) => message.member.isDJ,
+		(message: GuildMessage) => message.member.isDJ(),
 		(message: GuildMessage) => message.sendLocale(LanguageKeys.Inhibitors.MusicDjMember)
 	);
 }

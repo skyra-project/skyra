@@ -9,7 +9,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package'],
@@ -57,8 +57,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage) {
-		const language = await message.fetchLanguage();
+	private async buildEmbed(result: YarnPkg.PackageJson, message: KlasaMessage, language: Language) {
 		const maintainers = result.maintainers.map((user) => `[${user.name}](${user.url ?? `https://www.npmjs.com/~${user.name}`})`);
 		const latestVersion = result.versions[result['dist-tags'].latest];
 		const dependencies = latestVersion.dependencies

@@ -61,7 +61,7 @@ export default class extends MusicCommand {
 		]);
 
 		const filtered = filter(tracks.values(), (track) => (allowStreams ? true : track.info.isStream) && track.info.length <= maximumDuration);
-		const taken = take(filtered, message.member.isDJ ? maximumExportQueueSize : remainingUserEntries);
+		const taken = take(filtered, (await message.member.isDJ()) ? maximumExportQueueSize : remainingUserEntries);
 		return map(taken, (track) => ({ author: message.author.id, track: track.track }));
 	}
 }

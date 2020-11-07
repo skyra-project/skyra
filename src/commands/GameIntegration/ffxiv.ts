@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -8,7 +9,7 @@ import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
 import { pickRandom } from '@utils/util';
 import { EmbedField, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['finalfantasy'],
@@ -21,8 +22,7 @@ import { KlasaMessage, Language } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends RichDisplayCommand {
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	public async character(message: KlasaMessage, [name]: [string]) {
+	public async character(message: GuildMessage, [name]: [string]) {
 		const language = await message.fetchLanguage();
 
 		const response = await message.sendEmbed(
@@ -36,8 +36,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	public async item(message: KlasaMessage, [item]: [string]) {
+	public async item(message: GuildMessage, [item]: [string]) {
 		const language = await message.fetchLanguage();
 
 		const response = await message.sendEmbed(
@@ -52,7 +51,6 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	private async fetchCharacter(i18n: Language, name: string, server?: string) {
 		const searchResult = await searchCharacter(i18n, name, server);
 
@@ -69,8 +67,7 @@ export default class extends RichDisplayCommand {
 		return searchResult.Results;
 	}
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	private async buildCharacterDisplay(message: KlasaMessage, character: FFXIV.Character) {
+	private async buildCharacterDisplay(message: GuildMessage, character: FFXIV.Character) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,
@@ -142,8 +139,7 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
+	private async buildItemDisplay(message: GuildMessage, items: FFXIV.ItemSearchResult[]) {
 		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 

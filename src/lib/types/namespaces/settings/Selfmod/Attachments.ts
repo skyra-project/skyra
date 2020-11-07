@@ -1,7 +1,7 @@
 export const enum Attachments {
-	Attachment = 'selfmodAttachment',
-	AttachmentAction = 'selfmodAttachmentAction',
-	AttachmentDuration = 'selfmodAttachmentDuration',
-	AttachmentMaximum = 'selfmodAttachmentMaximum',
-	AttachmentPunishmentDuration = 'selfmodAttachmentPunishmentDuration'
+	Enabled = 'selfmodAttachment',
+	Action = 'selfmodAttachmentAction',
+	Duration = 'selfmodAttachmentDuration',
+	Maximum = 'selfmodAttachmentMaximum',
+	PunishmentDuration = 'selfmodAttachmentPunishmentDuration'
 }

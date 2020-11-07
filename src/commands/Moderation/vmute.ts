@@ -36,7 +36,7 @@ export default class extends ModerationCommand {
 
 	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
 		const member = await super.checkModeratable(message, language, context);
-		if (member && member.voice.serverMute) throw message.fetchLocale(LanguageKeys.Commands.Moderation.MuteMuted);
+		if (member && member.voice.serverMute) throw language.get(LanguageKeys.Commands.Moderation.MuteMuted);
 		return member;
 	}
 }

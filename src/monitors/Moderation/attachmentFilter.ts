@@ -19,10 +19,10 @@ export default class extends Monitor {
 	public async run(message: GuildMessage) {
 		const [ignoredChannels, shouldRun, action, maximum, duration] = await message.guild.readSettings([
 			GuildSettings.Channels.Ignore.All,
-			GuildSettings.Selfmod.Attachments.Attachment,
-			GuildSettings.Selfmod.Attachments.AttachmentAction,
-			GuildSettings.Selfmod.Attachments.AttachmentMaximum,
-			GuildSettings.Selfmod.Attachments.AttachmentDuration
+			GuildSettings.Selfmod.Attachments.Enabled,
+			GuildSettings.Selfmod.Attachments.Action,
+			GuildSettings.Selfmod.Attachments.Maximum,
+			GuildSettings.Selfmod.Attachments.Duration
 		]);
 
 		if (
@@ -143,7 +143,7 @@ export default class extends Monitor {
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				type,
-				duration: await message.guild.readSettings(GuildSettings.Selfmod.Attachments.AttachmentDuration),
+				duration: await message.guild.readSettings(GuildSettings.Selfmod.Attachments.Duration),
 				reason: 'AttachmentFilter: Threshold Reached.'
 			})
 			.create();

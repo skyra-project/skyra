@@ -1,9 +1,9 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -16,12 +16,22 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['prefix']
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [prefix]: [string]) {
-		if (message.guild!.settings.get(GuildSettings.Prefix) === prefix) throw message.language.get(LanguageKeys.Misc.ConfigurationEquals);
-		await message.guild!.settings.update(GuildSettings.Prefix, prefix, {
-			extraContext: { author: message.author.id }
+	public async run(message: GuildMessage, [prefix]: [string]) {
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+
+			// If it's the same value, throw:
+			if (settings[GuildSettings.Prefix] === prefix) {
+				throw language.get(LanguageKeys.Misc.ConfigurationEquals);
+			}
+
+			// Else set the new value:
+			settings[GuildSettings.Prefix] = prefix;
+
+			return language;
 		});
-		return message.sendLocale(LanguageKeys.Commands.Management.SetPrefixSet, [{ prefix }], {
+
+		return message.send(language.get(LanguageKeys.Commands.Management.SetPrefixSet, { prefix }), {
 			allowedMentions: { users: [message.author.id], roles: [] }
 		});
 	}

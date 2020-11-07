@@ -178,7 +178,7 @@ export default class extends Argument {
 	 * @param tracks The downloaded tracks to filter.
 	 */
 	private async filter(message: GuildMessage, remaining: number, tracks: Track[]): Promise<string[]> {
-		if (message.member.isDJ) return [...map(take(tracks.values(), remaining), (track) => track.track)];
+		if (await message.member.isDJ()) return [...map(take(tracks.values(), remaining), (track) => track.track)];
 
 		const [maximumDuration, allowStreams] = await message.guild.readSettings((guild) => [guild.musicMaximumDuration, guild.musicAllowStreams]);
 		const filteredStreams = allowStreams ? filter(tracks.values(), (track) => !track.info.isStream) : tracks.values();

@@ -27,8 +27,8 @@ export default class extends SkyraCommand {
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
 
-		if (durationOffset < 9500 || scheduleOffset < 9500) throw message.language.get(LanguageKeys.Giveaway.Time);
-		if (durationOffset > YEAR || scheduleOffset > YEAR) throw message.language.get(LanguageKeys.Giveaway.TimeTooLong);
+		if (durationOffset < 9500 || scheduleOffset < 9500) throw await message.fetchLocale(LanguageKeys.Giveaway.Time);
+		if (durationOffset > YEAR || scheduleOffset > YEAR) throw await message.fetchLocale(LanguageKeys.Giveaway.TimeTooLong);
 
 		// Resolve the amount of winners the giveaway will have
 		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;

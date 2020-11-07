@@ -31,8 +31,8 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, time, winners, title]: [TextChannel, Date, number, string]) {
 		const offset = time.getTime() - Date.now();
 
-		if (offset < 9500) throw message.language.get(LanguageKeys.Giveaway.Time);
-		if (offset > Time.Year) throw message.language.get(LanguageKeys.Giveaway.TimeTooLong);
+		if (offset < 9500) throw await message.fetchLocale(LanguageKeys.Giveaway.Time);
+		if (offset > Time.Year) throw await message.fetchLocale(LanguageKeys.Giveaway.TimeTooLong);
 		if (winners > 25) winners = 25;
 
 		await this.client.giveaways.create({

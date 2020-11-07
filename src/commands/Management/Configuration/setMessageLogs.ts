@@ -1,33 +1,40 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isTextBasedChannel } from '@utils/util';
+import { ApplyOptions } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandOptions } from 'klasa';
 
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Management.SetMessageLogsDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetMessageLogsExtended),
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	usage: '<here|channel:textchannelname>'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Management.SetMessageLogsDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetMessageLogsExtended),
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			usage: '<here|channel:channelname>'
-		});
-	}
-
-	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
+	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (!isTextBasedChannel(channel)) throw message.language.get(LanguageKeys.Misc.ConfigurationTextChannelRequired);
+		const channelID = channel.id;
 
-		const current = message.guild!.settings.get(GuildSettings.Channels.MessageLogs);
-		if (current === channel.id) throw message.language.get(LanguageKeys.Misc.ConfigurationEquals);
-		await message.guild!.settings.update(GuildSettings.Channels.MessageLogs, channel, {
-			extraContext: { author: message.author.id }
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+
+			// If it's the same value, throw:
+			if (settings[GuildSettings.Channels.MessageLogs] === channelID) {
+				throw language.get(LanguageKeys.Misc.ConfigurationEquals);
+			}
+
+			// Else set the new value:
+			settings[GuildSettings.Channels.MessageLogs] = channelID;
+
+			return language;
 		});
-		return message.sendLocale(LanguageKeys.Commands.Management.SetMessageLogsSet, [{ channel: channel.toString() }]);
+
+		return message.send(language.get(LanguageKeys.Commands.Management.SetMessageLogsSet, { channel: channel.toString() }));
 	}
 }

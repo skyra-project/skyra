@@ -1,15 +1,15 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { FuzzySearch } from '@utils/FuzzySearch';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['pr', 'role', 'public-roles', 'public-role'],
@@ -21,10 +21,11 @@ import { KlasaMessage } from 'klasa';
 	runIn: ['text'],
 	usage: '(roles:rolenames)'
 })
-export default class extends RichDisplayCommand {
-	public async init() {
-		this.createCustomResolver('rolenames', async (arg, _, message) => {
-			const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
+@CreateResolvers([
+	[
+		'rolenames',
+		async (arg, _, message) => {
+			const rolesPublic = await message.guild!.readSettings(GuildSettings.Roles.Public);
 			if (!rolesPublic.length) return null;
 			if (!arg) return [];
 
@@ -43,16 +44,23 @@ export default class extends RichDisplayCommand {
 				if (result) output.push(result[1]);
 			}
 			return output.length ? [...new Set(output)] : output;
-		});
-	}
+		}
+	]
+])
+export default class extends RichDisplayCommand {
+	public async run(message: GuildMessage, [roles]: [Role[]]) {
+		const { rolesPublic, language, prefix, allRoleSets, rolesRemoveInitial, rolesInitial } = await message.guild.readSettings((settings) => ({
+			rolesPublic: settings[GuildSettings.Roles.Public],
+			prefix: settings[GuildSettings.Prefix],
+			allRoleSets: settings[GuildSettings.Roles.UniqueRoleSets],
+			rolesRemoveInitial: settings[GuildSettings.Roles.RemoveInitial],
+			rolesInitial: settings[GuildSettings.Roles.Initial],
+			language: settings.getLanguage()
+		}));
 
-	public async run(message: KlasaMessage, [roles]: [Role[]]) {
-		const rolesPublic = message.guild!.settings.get(GuildSettings.Roles.Public);
-
-		if (!roles) throw message.language.get(LanguageKeys.Commands.Management.RolesListEmpty);
+		if (!roles) throw language.get(LanguageKeys.Commands.Management.RolesListEmpty);
 		if (!roles.length) {
-			const prefix = message.guild!.settings.get(GuildSettings.Prefix);
-			if (message.args.some((v) => v.length !== 0)) throw message.language.get(LanguageKeys.Commands.Management.RolesAbort, { prefix });
+			if (message.args.some((v) => v.length !== 0)) throw language.get(LanguageKeys.Commands.Management.RolesAbort, { prefix });
 			return this.list(message, rolesPublic);
 		}
 		const memberRoles = new Set(message.member!.roles.cache.keys());
@@ -65,8 +73,6 @@ export default class extends RichDisplayCommand {
 		const addedRoles: string[] = [];
 		const removedRoles: string[] = [];
 		const { position } = message.guild!.me!.roles.highest;
-
-		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
 
 		for (const role of filterRoles) {
 			if (!role) continue;
@@ -101,37 +107,33 @@ export default class extends RichDisplayCommand {
 			}
 		}
 
-		const rolesRemoveInitial = message.guild!.settings.get(GuildSettings.Roles.RemoveInitial);
-		const rolesInitial = message.guild!.settings.get(GuildSettings.Roles.Initial);
-
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild!.roles.cache.has(rolesInitial))
-				message.guild!.settings.reset(GuildSettings.Roles.Initial).catch((error) => this.client.emit(Events.Wtf, error));
-			else if (message.member!.roles.cache.has(rolesInitial)) memberRoles.delete(rolesInitial);
+			if (!message.guild!.roles.cache.has(rolesInitial)) {
+				await message.guild.writeSettings([[GuildSettings.Roles.Initial, null]]).catch((error) => this.client.emit(Events.Wtf, error));
+			} else if (message.member!.roles.cache.has(rolesInitial)) {
+				memberRoles.delete(rolesInitial);
+			}
 		}
 
 		// Apply the roles
 		if (removedRoles.length || addedRoles.length)
-			await message.member!.roles.set([...memberRoles], message.language.get(LanguageKeys.Commands.Management.RolesAuditlog));
+			await message.member!.roles.set([...memberRoles], language.get(LanguageKeys.Commands.Management.RolesAuditlog));
 
 		const output: string[] = [];
-		if (unlistedRoles.length)
-			output.push(message.language.get(LanguageKeys.Commands.Management.RolesNotPublic, { roles: unlistedRoles.join('`, `') }));
-		if (unmanageable.length)
-			output.push(message.language.get(LanguageKeys.Commands.Management.RolesNotManageable, { roles: unmanageable.join('`, `') }));
-		if (removedRoles.length)
-			output.push(message.language.get(LanguageKeys.Commands.Management.RolesRemoved, { roles: removedRoles.join('`, `') }));
-		if (addedRoles.length) output.push(message.language.get(LanguageKeys.Commands.Management.RolesAdded, { roles: addedRoles.join('`, `') }));
+		if (unlistedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesNotPublic, { roles: unlistedRoles.join('`, `') }));
+		if (unmanageable.length) output.push(language.get(LanguageKeys.Commands.Management.RolesNotManageable, { roles: unmanageable.join('`, `') }));
+		if (removedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesRemoved, { roles: removedRoles.join('`, `') }));
+		if (addedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesAdded, { roles: addedRoles.join('`, `') }));
 		return message.sendMessage(output.join('\n'));
 	}
 
-	private async list(message: KlasaMessage, publicRoles: readonly string[]) {
+	private async list(message: GuildMessage, publicRoles: readonly string[]) {
 		const remove: string[] = [];
 		const roles: string[] = [];
 		for (const roleID of publicRoles) {
-			const role = message.guild!.roles.cache.get(roleID);
+			const role = message.guild.roles.cache.get(roleID);
 			if (role) roles.push(role.name);
 			else remove.push(roleID);
 		}
@@ -140,25 +142,26 @@ export default class extends RichDisplayCommand {
 		if (remove.length) {
 			const allRoles = new Set(publicRoles);
 			for (const role of remove) allRoles.delete(role);
-			await message.guild!.settings.update(GuildSettings.Roles.Public, [...allRoles], { arrayAction: 'overwrite' });
+			await message.guild.writeSettings([[GuildSettings.Roles.Public, [...allRoles]]]);
 		}
 
 		// There's the possibility all roles could be inexistent, therefore the system
 		// would filter and remove them all, causing this to be empty.
-		if (!roles.length) throw message.language.get(LanguageKeys.Commands.Management.RolesListEmpty);
+		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.RolesListEmpty);
 
+		const language = await message.fetchLanguage();
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(message.language.get(LanguageKeys.Commands.Management.RolesListTitle))
+				.setTitle(language.get(LanguageKeys.Commands.Management.RolesListTitle))
 		);
 
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await message.sendEmbed(
-			new MessageEmbed({ description: pickRandom(message.language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;

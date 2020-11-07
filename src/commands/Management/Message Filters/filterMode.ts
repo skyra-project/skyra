@@ -1,23 +1,23 @@
+import { GuildEntity } from '@lib/database';
 import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
+import { KeyOfType } from '@lib/types';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';
-import { CommandStore } from 'klasa';
+import { CommandOptions } from 'klasa';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['word-filter-mode'],
+	description: (language) => language.get(LanguageKeys.Commands.Management.FilterModeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.FilterModeDescription)
+})
 export default class extends SelfModerationCommand {
 	protected $adder: keyof GuildSecurity['adders'] = 'words';
-	protected keyEnabled = GuildSettings.Selfmod.Filter.Enabled;
-	protected keySoftAction = GuildSettings.Selfmod.Filter.SoftAction;
-	protected keyHardAction = GuildSettings.Selfmod.Filter.HardAction;
-	protected keyHardActionDuration = GuildSettings.Selfmod.Filter.HardActionDuration;
-	protected keyThresholdMaximum = GuildSettings.Selfmod.Filter.ThresholdMaximum;
-	protected keyThresholdDuration = GuildSettings.Selfmod.Filter.ThresholdDuration;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['word-filter-mode'],
-			description: (language) => language.get(LanguageKeys.Commands.Management.FilterModeDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.FilterModeDescription)
-		});
-	}
+	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Filter.Enabled;
+	protected keySoftAction: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Filter.SoftAction;
+	protected keyHardAction: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Filter.HardAction;
+	protected keyHardActionDuration: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Filter.HardActionDuration;
+	protected keyThresholdMaximum: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Filter.ThresholdMaximum;
+	protected keyThresholdDuration: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Filter.ThresholdDuration;
 }

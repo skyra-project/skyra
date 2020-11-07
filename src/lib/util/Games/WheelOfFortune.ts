@@ -83,15 +83,15 @@ export class WheelOfFortune {
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
 
-		const lang = await this.message.fetchLanguage();
+		const language = await this.message.fetchLanguage();
 		if (lost && final < 0) {
-			throw lang.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+			throw language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 		}
 
 		this.settings.money += this.winnings;
 		await this.settings.save();
 
-		return [await this.render(this.settings.profile!.darkTheme, lang), final] as const;
+		return [await this.render(this.settings.profile!.darkTheme, language), final] as const;
 	}
 
 	/** The boost */

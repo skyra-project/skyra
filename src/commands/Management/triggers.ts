@@ -1,14 +1,14 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
-import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 import { displayEmoji, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const REG_TYPE = /^(alias|reaction)$/i;
 
@@ -22,72 +22,79 @@ const REG_TYPE = /^(alias|reaction)$/i;
 	usage: '<add|remove|show:default> (type:type) (input:input) (output:output)',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
-	public async init() {
-		this.createCustomResolver('type', (arg, _, msg, [action]) => {
+@CreateResolvers([
+	[
+		'type',
+		async (arg, _, message, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
-			throw msg.language.get(LanguageKeys.Commands.Management.TriggersNotype);
-		})
-			.createCustomResolver('input', (arg, _, msg, [action]) => {
-				if (action === 'show') return undefined;
-				if (!arg) throw msg.language.get(LanguageKeys.Commands.Management.TriggersNooutput);
-				return arg.toLowerCase();
-			})
-			.createCustomResolver('output', async (arg, _, message, [action, type]) => {
-				if (action === 'show' || action === 'remove') return undefined;
-				if (!arg) throw message.language.get(LanguageKeys.Commands.Management.TriggersNooutput);
-				if (type === 'reaction') {
-					const emoji = resolveEmoji(arg);
-					if (!emoji) throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidreaction);
+			throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNotype);
+		}
+	],
+	[
+		'input',
+		async (arg, _, message, [action]) => {
+			if (action === 'show') return undefined;
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNooutput);
+			return arg.toLowerCase();
+		}
+	],
+	[
+		'output',
+		async (arg, _, message, [action, type]) => {
+			if (action === 'show' || action === 'remove') return undefined;
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNooutput);
+			if (type === 'reaction') {
+				const emoji = resolveEmoji(arg);
+				if (!emoji) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidreaction);
 
-					try {
-						await message.react(emoji);
-						return emoji;
-					} catch {
-						throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidreaction);
-					}
-				} else if (type === 'alias') {
-					const command = this.client.commands.get(arg);
-					if (command && command.permissionLevel < 10) return command.name;
-					throw message.language.get(LanguageKeys.Commands.Management.TriggersInvalidalias);
-				} else {
-					return null;
+				try {
+					await message.react(emoji);
+					return emoji;
+				} catch {
+					throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidreaction);
 				}
-			});
-	}
+			} else if (type === 'alias') {
+				const command = message.client.commands.get(arg);
+				if (command && command.permissionLevel < 10) return command.name;
+				throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidalias);
+			} else {
+				return null;
+			}
+		}
+	]
+])
+export default class extends SkyraCommand {
+	public async remove(message: GuildMessage, [type, input]: [string, string]) {
+		const list = await this.getList(message, type);
 
-	public async remove(message: KlasaMessage, [type, input]: [string, string]) {
-		const list = this._getList(message, type);
 		const index = list.findIndex((entry) => entry.input === input);
-		if (index === -1) throw message.language.get(LanguageKeys.Commands.Management.TriggersRemoveNottaken);
+		if (index === -1) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersRemoveNottaken);
 
 		// Create a shallow clone and remove the item
 		const clone = [...list];
 		clone.splice(index, 1);
 
-		await message.guild!.settings.update(this._getListName(type), clone, {
-			arrayAction: 'overwrite',
-			extraContext: { author: message.author.id }
-		});
+		await message.guild.writeSettings([[this.getListName(type), clone]]);
 		return message.sendLocale(LanguageKeys.Commands.Management.TriggersRemove);
 	}
 
-	public async add(message: KlasaMessage, [type, input, output]: [string, string, string]) {
-		const list = this._getList(message, type);
-		if (list.some((entry) => entry.input === input)) throw message.language.get(LanguageKeys.Commands.Management.TriggersAddTaken);
+	public async add(message: GuildMessage, [type, input, output]: [string, string, string]) {
+		const list = await this.getList(message, type);
+		if (list.some((entry) => entry.input === input)) throw message.fetchLocale(LanguageKeys.Commands.Management.TriggersAddTaken);
 
-		await message.guild!.settings.update(this._getListName(type), [...list, this._format(type, input, output)], {
-			arrayAction: 'overwrite',
-			extraContext: { author: message.author.id }
-		});
+		await message.guild.writeSettings([[this.getListName(type), [...list, this.format(type, input, output)]]]);
 		return message.sendLocale(LanguageKeys.Commands.Management.TriggersAdd);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async show(message: KlasaMessage) {
-		const aliases = message.guild!.settings.get(GuildSettings.Trigger.Alias);
-		const includes = message.guild!.settings.get(GuildSettings.Trigger.Includes);
+	public async show(message: GuildMessage) {
+		const { aliases, includes, language } = await message.guild.readSettings((settings) => ({
+			aliases: settings[GuildSettings.Trigger.Alias],
+			includes: settings[GuildSettings.Trigger.Includes],
+			language: settings.getLanguage()
+		}));
+
 		const output: string[] = [];
 		for (const alias of aliases) {
 			output.push(`Alias \`${alias.input}\` -> \`${alias.output}\``);
@@ -95,7 +102,7 @@ export default class extends SkyraCommand {
 		for (const react of includes) {
 			output.push(`Reaction :: \`${react.input}\` -> ${displayEmoji(react.output)}`);
 		}
-		if (!output.length) throw message.language.get(LanguageKeys.Commands.Management.TriggersListEmpty);
+		if (!output.length) throw language.get(LanguageKeys.Commands.Management.TriggersListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -110,7 +117,7 @@ export default class extends SkyraCommand {
 		return display.start(message, undefined, { time: 120000 });
 	}
 
-	private _format(type: string, input: string, output: string) {
+	private format(type: string, input: string, output: string) {
 		switch (type) {
 			case 'alias':
 				return { input, output };
@@ -121,7 +128,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private _getListName(type: string) {
+	private getListName(type: string) {
 		switch (type) {
 			case 'alias':
 				return GuildSettings.Trigger.Alias;
@@ -131,13 +138,13 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private _getList(message: KlasaMessage, type: string) {
+	private async getList(message: GuildMessage, type: string) {
 		switch (type) {
 			case 'alias':
-				return message.guild!.settings.get(GuildSettings.Trigger.Alias);
+				return message.guild.readSettings(GuildSettings.Trigger.Alias);
 			case 'reaction':
 			default:
-				return message.guild!.settings.get(GuildSettings.Trigger.Includes);
+				return message.guild.readSettings(GuildSettings.Trigger.Includes);
 		}
 	}
 }

@@ -53,7 +53,7 @@ export default class extends ModerationCommand {
 			ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']
 		>
 	) {
-		if (!preHandled.bans.includes(target.id)) throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+		if (!preHandled.bans.includes(target.id)) throw language.get(LanguageKeys.Commands.Moderation.GuildBansNotFound);
 		return super.checkModeratable(message, language, { preHandled, target, ...context });
 	}
 }

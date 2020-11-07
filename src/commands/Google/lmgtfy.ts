@@ -1,22 +1,20 @@
 import { DbSet } from '@lib/structures/DbSet';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['letmegooglethatforyou'],
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyExtended),
+	usage: '<query:string>',
+	requiredPermissions: ['EMBED_LINKS'],
+	flagSupport: true
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['letmegooglethatforyou'],
-			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.LmgtfyExtended),
-			usage: '<query:string>',
-			requiredPermissions: ['EMBED_LINKS'],
-			flagSupport: true
-		});
-	}
-
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const searchEngine = this.parseSearchEngine(message.flagArgs);
 		return message.sendEmbed(

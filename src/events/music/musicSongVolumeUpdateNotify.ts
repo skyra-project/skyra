@@ -5,19 +5,20 @@ import { pickRandom } from '@utils/util';
 
 export default class extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, previous: number, next: number) {
-		await channel.sendMessage(next > 200 ? this.getExtremeVolume(channel, next) : this.getRegularVolume(channel, previous, next));
+		await channel.sendMessage(next > 200 ? await this.getExtremeVolume(channel, next) : await this.getRegularVolume(channel, previous, next));
 	}
 
-	private getExtremeVolume(channel: MessageAcknowledgeable, volume: number): string {
-		return channel.guild.language.get(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
+	private async getExtremeVolume(channel: MessageAcknowledgeable, volume: number): Promise<string> {
+		const language = await channel.guild.fetchLanguage();
+		return language.get(LanguageKeys.Commands.Music.VolumeChangedExtreme, {
 			emoji: '📢',
-			text: pickRandom(channel.guild.language.get(LanguageKeys.Commands.Music.VolumeChangedTexts)),
+			text: pickRandom(language.get(LanguageKeys.Commands.Music.VolumeChangedTexts)),
 			volume
 		});
 	}
 
-	private getRegularVolume(channel: MessageAcknowledgeable, previous: number, next: number): string {
-		return channel.guild.language.get(LanguageKeys.Commands.Music.VolumeChanged, {
+	private getRegularVolume(channel: MessageAcknowledgeable, previous: number, next: number): Promise<string> {
+		return channel.guild.fetchLocale(LanguageKeys.Commands.Music.VolumeChanged, {
 			emoji: this.getEmoji(previous, next),
 			volume: next
 		});

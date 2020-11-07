@@ -1,6 +1,8 @@
+import { Timestamp } from '@klasa/timestamp';
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -10,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ow'],
@@ -23,8 +25,7 @@ import { KlasaMessage, Language, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	public async run(message: KlasaMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
+	public async run(message: GuildMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const language = await message.fetchLanguage();
 
 		const response = await message.sendEmbed(
@@ -44,8 +45,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	private async fetchAPI(message: KlasaMessage, player: string, platform: PlatformUnion) {
+	private async fetchAPI(message: GuildMessage, player: string, platform: PlatformUnion) {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
@@ -54,8 +54,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	private async buildDisplay(message: KlasaMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
+	private async buildDisplay(message: GuildMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const language = await message.fetchLanguage();
 
 		const ratings = Array.from(
@@ -139,7 +138,7 @@ export default class extends RichDisplayCommand {
 
 	/** Extracts statistics from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
 	private async extractStats(
-		message: KlasaMessage,
+		message: GuildMessage,
 		overwatchData: OverwatchDataSet,
 		type: OverwatchStatsTypeUnion,
 		embedData: OverwatchEmbedDataReturn

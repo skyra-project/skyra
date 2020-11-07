@@ -5,7 +5,6 @@ import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Role } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['rs'],
@@ -97,33 +96,30 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async reset(message: KlasaMessage, [name]: [string?]) {
+	public async reset(message: GuildMessage, [name]: [string?]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
-		if (allRolesets.length === 0) throw message.language.get(LanguageKeys.Commands.Admin.RolesetResetEmpty);
+		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
+		if (allRolesets.length === 0) throw await message.fetchLocale(LanguageKeys.Commands.Admin.RolesetResetEmpty);
 
 		if (!name) {
-			await message.guild!.settings.reset(GuildSettings.Roles.UniqueRoleSets, {
-				extraContext: { author: message.author.id }
-			});
+			await message.guild.writeSettings([[GuildSettings.Roles.UniqueRoleSets, []]]);
 			return message.sendLocale(LanguageKeys.Commands.Admin.RolesetResetAll);
 		}
 
 		const arrayIndex = allRolesets.findIndex((roleset) => roleset.name === name);
-		if (arrayIndex === -1) throw message.language.get(LanguageKeys.Commands.Admin.RolesetResetNotExists, { name });
+		if (arrayIndex === -1) throw await message.fetchLocale(LanguageKeys.Commands.Admin.RolesetResetNotExists, { name });
 
-		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, allRolesets[arrayIndex], {
-			arrayAction: 'remove',
-			arrayIndex,
-			extraContext: { author: message.author.id }
+		await message.guild.writeSettings((settings) => {
+			settings[GuildSettings.Roles.UniqueRoleSets].splice(arrayIndex, 1);
 		});
+
 		return message.sendLocale(LanguageKeys.Commands.Admin.RolesetResetGroup, [{ name }]);
 	}
 
 	// This subcommand will run if a user doesnt type add or remove. The bot will then add AND remove based on whether that role is in the set already.
-	public async auto(message: KlasaMessage, [name, roles]: [string, Role[]]) {
+	public async auto(message: GuildMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
+		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
 		const roleset = allRolesets.find((set) => set.name === name);
 		// If this roleset does not exist we have to create it
 		if (!roleset) return this.add(message, [name, roles]);
@@ -134,24 +130,23 @@ export default class extends SkyraCommand {
 			if (set.name !== name) return set;
 			// Add any role that wasnt in the set that the user provided
 			// This will also remove any of the roles that user provided and were already in the set
-			const newroles = set.roles.map((id) => (roles.find((role) => role.id === id) ? null : id)).filter((id) => id);
+			const newroles = set.roles
+				.map((id) => (roles.find((role) => role.id === id) ? null : id)) //
+				.filter((id) => id) as string[]; //
 
 			for (const role of roles) if (!set.roles.includes(role.id)) newroles.push(role.id);
 
 			return { name, roles: newroles };
 		});
 
-		await message.guild!.settings.update(GuildSettings.Roles.UniqueRoleSets, newsets, {
-			arrayAction: 'overwrite',
-			extraContext: { author: message.author.id }
-		});
+		await message.guild.writeSettings([[GuildSettings.Roles.UniqueRoleSets, newsets]]);
 		return message.sendLocale(LanguageKeys.Commands.Admin.RolesetUpdated, [{ name }]);
 	}
 
 	// This subcommand will show the user a list of role sets and each role in that set.
-	public async list(message: KlasaMessage) {
+	public async list(message: GuildMessage) {
 		// Get all rolesets from settings
-		const allRolesets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
+		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
 		if (!allRolesets.length) return message.sendLocale(LanguageKeys.Commands.Admin.RolesetNoRolesets);
 		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild!.roles.cache.get(id)!.name).join(', ')}`);
 		return message.send(list);

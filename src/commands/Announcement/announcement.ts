@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 							mentions.length
 								? language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 										header,
-										mentions: language.list(mentions, message.language.get(LanguageKeys.Globals.And))
+										mentions: language.list(mentions, await message.fetchLocale(LanguageKeys.Globals.And))
 								  })
 								: language.get(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 										header

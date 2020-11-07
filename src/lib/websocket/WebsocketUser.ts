@@ -67,7 +67,7 @@ export default class DashboardWebsocketUser {
 		}
 
 		// Check for the member's permissions:
-		if (!member.isDJ) return;
+		if (!(await member.isDJ())) return;
 
 		switch (message.data.music_action) {
 			case MusicAction.SkipSong: {

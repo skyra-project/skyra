@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/structures/DbSet';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
@@ -8,7 +9,6 @@ import { BrandingColors } from '@utils/constants';
 import { Fortnite } from '@utils/GameIntegration/Fortnite';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
@@ -20,8 +20,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends RichDisplayCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	public async run(message: KlasaMessage, [platform, user]: [platform, string]) {
+	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
@@ -33,8 +32,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
-	private async fetchAPI(message: KlasaMessage, user: string, platform: platform) {
+	private async fetchAPI(message: GuildMessage, user: string, platform: platform) {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
@@ -51,9 +49,8 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	private async buildDisplay(
-		message: KlasaMessage,
+		message: GuildMessage,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
 		const language = await message.fetchLanguage();

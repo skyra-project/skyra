@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [nickname = '']: [string?]) {
 		await message.guild!.me!.setNickname(nickname);
 		return nickname
-			? message.alert(message.language.get(LanguageKeys.Commands.Management.NickSet, { nickname }))
-			: message.alert(message.language.get(LanguageKeys.Commands.Management.NickCleared));
+			? message.alert(await message.fetchLocale(LanguageKeys.Commands.Management.NickSet, { nickname }))
+			: message.alert(await message.fetchLocale(LanguageKeys.Commands.Management.NickCleared));
 	}
 }

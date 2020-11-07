@@ -105,17 +105,6 @@ declare module 'discord.js' {
 		readonly listeners: string[];
 	}
 
-	interface GuildMember {
-		fetchRank(): Promise<number>;
-		isDJ: boolean;
-		isStaff: boolean;
-		isMod: boolean;
-		isAdmin: boolean;
-		canManage(channel: VoiceChannel): Promise<boolean>;
-
-		_patch(data: GatewayGuildMemberUpdateDispatch['d']): void;
-	}
-
 	interface User {
 		fetchRank(): Promise<number>;
 		_patch(data: APIUser): void;

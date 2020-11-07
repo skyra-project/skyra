@@ -1,7 +1,12 @@
 import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
+	public parse(): Awaited<NotificationsStreamTwitch> {
+		throw new Error('Method not implemented.');
+	}
+
 	public isValid(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {
@@ -14,7 +19,11 @@ export default class UserSerializer extends Serializer<NotificationsStreamTwitch
 		}
 
 		// Return without further modifications
-		return Promise.resolve(data);
+		return true;
+	}
+
+	public equals(left: NotificationsStreamTwitch, right: NotificationsStreamTwitch) {
+		return left[0] === right[0];
 	}
 
 	public stringify(value: NotificationsStreamTwitch) {

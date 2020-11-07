@@ -3,7 +3,7 @@ import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/R
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { parseURL } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
 import { IMAGE_EXTENSION, pickRandom } from '@utils/util';
@@ -18,15 +18,16 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.GimageExtended),
 	usage: '<query:query>'
 })
-export default class extends RichDisplayCommand {
-	public async init() {
-		this.createCustomResolver('query', (arg, possible, message) =>
-			this.client.arguments
+@CreateResolvers([
+	[
+		'query',
+		(arg, possible, message) =>
+			message.client.arguments
 				.get('string')!
 				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
-		);
-	}
-
+	]
+])
+export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const [response, { items }] = await Promise.all([
 			message.sendEmbed(
@@ -49,7 +50,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addPage((embed) => {
 				embed.setTitle(item.title).setURL(item.image.contextLink);
 
 				const imageUrl = IMAGE_EXTENSION.test(item.link) && parseURL(item.link);

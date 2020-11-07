@@ -14,7 +14,7 @@ import { announcementCheck } from '@utils/util';
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage) {
-		const role = announcementCheck(message);
+		const role = await announcementCheck(message);
 		const allRoleSets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
 
 		// Get all the role ids that the member has and remove the guild id so we don't assign the everyone role

@@ -13,7 +13,7 @@ import { announcementCheck } from '@utils/util';
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage) {
-		const role = announcementCheck(message);
+		const role = await announcementCheck(message);
 		await message.member.roles.remove(role);
 		return message.sendLocale(LanguageKeys.Commands.Announcement.UnsubscribeSuccess, [{ role: role.name }]);
 	}

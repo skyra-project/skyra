@@ -22,7 +22,7 @@ import {
 	User,
 	UserResolvable
 } from 'discord.js';
-import { KlasaGuild, RateLimitManager } from 'klasa';
+import { RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
 import { Time, ZeroWidthSpace } from './constants';
@@ -88,14 +88,14 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * Check if the announcement is correctly set up
  * @param message The message instance to check with
  */
-export function announcementCheck(message: Message) {
-	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+export async function announcementCheck(message: Message) {
+	const announcementID = await message.guild!.readSettings(GuildSettings.Roles.Subscriber);
+	if (!announcementID) throw message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
 	const role = message.guild!.roles.cache.get(announcementID);
-	if (!role) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+	if (!role) throw message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get(LanguageKeys.System.HighestRole);
+	if (role.position >= message.guild!.me!.roles.highest.position) throw message.fetchLocale(LanguageKeys.System.HighestRole);
 	return role;
 }
 
@@ -643,7 +643,7 @@ export function validateChannelAccess(channel: GuildChannel, user: UserResolvabl
 	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
 }
 
-export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
+export function getHighestRole(guild: Guild, roles: readonly string[]) {
 	let highest: Role | null = null;
 	let position = 0;
 	for (const roleID of roles) {

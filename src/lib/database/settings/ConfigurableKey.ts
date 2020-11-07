@@ -1,8 +1,11 @@
-import { ColumnType, getMetadataArgsStorage } from 'typeorm';
+import { isNumber, isPrimitive } from '@sapphire/utilities';
+import { ColumnOptions, ColumnType, getMetadataArgsStorage } from 'typeorm';
 import type { GuildEntity } from '../entities/GuildEntity';
-import { ConfigurableKeyValue, ConfigurableKeyValueOptions } from './ConfigurableKeyValue';
+import { ReadOnlyNonEmptyArray, SchemaGroup } from './schema/SchemaGroup';
+import { ConfigurableKeyValueOptions, SchemaKey } from './schema/SchemaKey';
 
-export const keys = new Map<string, ConfigurableKeyValue>();
+export const configurableKeys = new Map<string, SchemaKey>();
+export const configurableGroups = new SchemaGroup();
 
 export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecorator {
 	return (target, property) => {
@@ -17,22 +20,32 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 		const inclusive = options.inclusive ?? true;
 		const minimum = options.minimum ?? null;
 		const maximum = options.maximum ?? hydrateLength(column.options.length);
-		const type = options.type ?? hydrateType(column.options.type!);
-		keys.set(
+		const type = options.type?.toLowerCase() ?? hydrateType(column.options.type!);
+		const df = options.default ?? getDefault(column.options, array, minimum);
+		const value = new SchemaKey({
+			target: target.constructor,
+			property: property as string,
+			...options,
+			array,
+			default: df,
+			inclusive,
+			maximum,
+			minimum,
 			name,
-			new ConfigurableKeyValue({
-				target: target.constructor,
-				property: property as string,
-				...options,
-				name,
-				array,
-				inclusive,
-				minimum,
-				maximum,
-				type
-			})
-		);
+			type
+		});
+
+		configurableKeys.set(name, value);
+		value.parent = configurableGroups.add(name.split('.') as ReadOnlyNonEmptyArray<string>, value);
 	};
+}
+
+function getDefault(options: ColumnOptions, array: boolean, minimum: number | null) {
+	if (isPrimitive(options.default)) return options.default;
+	if (array) return [];
+	if (isNumber(minimum)) return minimum;
+	if (options.nullable) return null;
+	throw new TypeError(`The default value for the column '${options.name}' cannot be obtained automatically.`);
 }
 
 function hydrateLength(length: string | number | undefined) {
@@ -125,8 +138,6 @@ function hydrateType(type: ColumnType) {
 	}
 }
 
-type ConfigurableKeyOptions = Omit<
-	ConfigurableKeyValueOptions,
-	'name' | 'target' | 'property' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array'
-> &
-	Partial<Pick<ConfigurableKeyValueOptions, 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array'>>;
+type OptionalKeys = 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array' | 'default';
+type ConfigurableKeyOptions = Omit<ConfigurableKeyValueOptions, 'target' | 'property' | OptionalKeys> &
+	Partial<Pick<ConfigurableKeyValueOptions, OptionalKeys>>;

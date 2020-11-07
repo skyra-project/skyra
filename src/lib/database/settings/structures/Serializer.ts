@@ -3,7 +3,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 import { Guild } from 'discord.js';
 import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
-import { ConfigurableKeyValue } from '../ConfigurableKeyValue';
+import { SchemaKey } from '../schema/SchemaKey';
 
 export abstract class Serializer<T> extends AliasPiece {
 	/**
@@ -25,7 +25,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * @param guild The guild given for context in this call
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public stringify(data: T, context: SerializerUpdateContext): string {
+	public stringify(data: T, _context: SerializerUpdateContext): string {
 		return String(data);
 	}
 
@@ -104,9 +104,8 @@ export abstract class Serializer<T> extends AliasPiece {
 }
 
 export interface SerializerUpdateContext {
-	entry: ConfigurableKeyValue;
+	entry: SchemaKey;
 	entity: GuildEntity;
 	guild: Guild;
 	language: Language;
-	extraContext: unknown;
 }

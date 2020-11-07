@@ -1,7 +1,5 @@
 import { ScheduleEntity } from '@lib/database/entities/ScheduleEntity';
 import { FT, T } from '@lib/types';
-import { LevelTitles } from '@root/commands/Social/level';
-import { ProfileTitles } from '@root/commands/Social/profile';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { Role, User } from 'discord.js';
 

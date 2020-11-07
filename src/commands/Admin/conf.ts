@@ -1,11 +1,12 @@
+import { configurableGroups, isSchemaEntry, isSchemaFolder, SchemaKey } from '@lib/database';
+import { map } from '@lib/misc';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { codeBlock, toTitleCase } from '@sapphire/utilities';
+import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
-import { configurableSchemaKeys, displayEntry, displayFolder, initConfigurableSchema, isSchemaEntry } from '@utils/SettingsUtils';
-import { KlasaMessage, SettingsFolder } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
@@ -19,86 +20,127 @@ import { KlasaMessage, SettingsFolder } from 'klasa';
 })
 export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public menu(message: KlasaMessage) {
-		return new SettingsMenu(message).init();
+	public async menu(message: GuildMessage) {
+		return new SettingsMenu(message, await message.fetchLanguage()).init();
 	}
 
-	public show(message: KlasaMessage, [key]: [string]) {
-		const schemaOrEntry = configurableSchemaKeys.get(key);
-		if (typeof schemaOrEntry === 'undefined') throw message.language.get(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+	public async show(message: GuildMessage, [key]: [string]) {
+		const schemaValue = configurableGroups.getPathString(key);
+		if (schemaValue === null) throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
 
-		const value = key ? message.guild!.settings.get(key) : message.guild!.settings;
-		if (isSchemaEntry(schemaOrEntry)) {
-			return message.sendLocale(LanguageKeys.Commands.Admin.ConfGet, [
-				{
-					key,
-					value: displayEntry(schemaOrEntry, message.guild!.settings.get(key), message.guild!)
+		const [output, language] = await message.guild.readSettings((settings) => {
+			const language = settings.getLanguage();
+			return [schemaValue.display(settings, language), language];
+		});
+
+		if (isSchemaEntry(schemaValue)) {
+			return message.send(language.get(LanguageKeys.Commands.Admin.ConfGet, { key, value: output }), {
+				allowedMentions: { users: [], roles: [] }
+			});
+		}
+
+		const title = key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '';
+		return message.send(language.get(LanguageKeys.Commands.Admin.Conf, { key: title, list: output }), {
+			allowedMentions: { users: [], roles: [] }
+		});
+	}
+
+	public async set(message: GuildMessage, [key, valueToSet]: string[]) {
+		const schemaKey = await this.fetchKey(message, key);
+		const [response, language] = await message.guild.writeSettings(async (settings) => {
+			const language = settings.getLanguage();
+
+			const parsed = await schemaKey.parse(settings, language, valueToSet);
+			if (schemaKey.array) {
+				const values = Reflect.get(settings, schemaKey.name) as any[];
+				const { serializer } = schemaKey;
+				const index = values.findIndex((value) => serializer.equals(value, parsed));
+				if (index === -1) values.push(parsed);
+				else values[index] = parsed;
+			} else {
+				const value = Reflect.get(settings, schemaKey.name);
+				const { serializer } = schemaKey;
+				if (serializer.equals(value, parsed)) {
+					throw language.get(LanguageKeys.Settings.Gateway.DuplicateValue, {
+						path: schemaKey.name,
+						value: schemaKey.stringify(settings, language, parsed)
+					});
 				}
-			]);
-		}
 
-		return message.sendLocale(LanguageKeys.Commands.Admin.Conf, [
-			{
-				key: key ? `: ${key.split('.').map(toTitleCase).join('/')}` : '',
-				list: codeBlock('asciidoc', displayFolder(value as SettingsFolder))
+				Reflect.set(settings, schemaKey.name, parsed);
 			}
-		]);
+
+			return [schemaKey.display(settings, language), language];
+		});
+
+		return message.send(language.get(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
-	public async set(message: KlasaMessage, [key, valueToSet]: string[]) {
-		try {
-			const [update] = await message.guild!.settings.update(key, valueToSet, {
-				arrayAction: 'add',
-				onlyConfigurable: true,
-				extraContext: { author: message.author.id }
-			});
-			return message.sendLocale(LanguageKeys.Commands.Admin.ConfUpdated, [
-				{ key, response: displayEntry(update.entry, update.next, message.guild!) }
-			]);
-		} catch (error) {
-			throw String(error);
-		}
+	public async remove(message: GuildMessage, [key, valueToRemove]: string[]) {
+		const schemaKey = await this.fetchKey(message, key);
+		const [response, language] = await message.guild.writeSettings(async (settings) => {
+			const language = settings.getLanguage();
+
+			const parsed = await schemaKey.parse(settings, language, valueToRemove);
+			if (schemaKey.array) {
+				const values = Reflect.get(settings, schemaKey.name) as any[];
+				const { serializer } = schemaKey;
+				const index = values.findIndex((value) => serializer.equals(value, parsed));
+				if (index === -1) {
+					throw language.get(LanguageKeys.Settings.Gateway.MissingValue, {
+						path: schemaKey.name,
+						value: schemaKey.stringify(settings, language, parsed)
+					});
+				}
+
+				values.splice(index, 1);
+			} else {
+				Reflect.set(settings, schemaKey.name, schemaKey.default);
+			}
+
+			return [schemaKey.display(settings, language), language];
+		});
+
+		return message.send(language.get(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), { allowedMentions: { users: [], roles: [] } });
 	}
 
-	public async remove(message: KlasaMessage, [key, valueToRemove]: string[]) {
-		try {
-			const [update] = await message.guild!.settings.update(key, valueToRemove, {
-				arrayAction: 'remove',
-				onlyConfigurable: true,
-				extraContext: { author: message.author.id }
-			});
+	public async reset(message: GuildMessage, [key]: string[]) {
+		const schemaKey = await this.fetchKey(message, key);
+		const [response, language] = await message.guild.writeSettings(async (settings) => {
+			const language = settings.getLanguage();
+			Reflect.set(settings, schemaKey.name, schemaKey.default);
+			return [schemaKey.display(settings, language), language];
+		});
 
-			return message.sendLocale(LanguageKeys.Commands.Admin.ConfUpdated, [
-				{ key, response: displayEntry(update.entry, update.next, message.guild!) }
-			]);
-		} catch (error) {
-			throw String(error);
-		}
-	}
-
-	public async reset(message: KlasaMessage, [key]: string[]) {
-		try {
-			const [update] = await message.guild!.settings.reset(key, { extraContext: message.author.id });
-			return message.sendLocale(LanguageKeys.Commands.Admin.ConfReset, [
-				{ key, value: displayEntry(update.entry, update.next, message.guild!) }
-			]);
-		} catch (error) {
-			throw String(error);
-		}
+		return message.send(language.get(LanguageKeys.Commands.Admin.ConfReset, { key, value: response }), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
 	public async init() {
-		initConfigurableSchema(this.client.gateways.get('guilds')!.schema);
-
-		this.createCustomResolver('key', (arg, _possible, message, [action]: string[]) => {
+		this.createCustomResolver('key', async (arg, _possible, message, [action]: string[]) => {
 			if (['show', 'menu'].includes(action) || arg) return arg || '';
-			throw message.language.get(LanguageKeys.Commands.Admin.ConfNoKey);
+			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoKey);
 		});
 
-		this.createCustomResolver('value', (arg, possible, message, [action]: string[]) => {
+		this.createCustomResolver('value', async (arg, possible, message, [action]: string[]) => {
 			if (!['set', 'remove'].includes(action)) return null;
 			if (arg) return this.client.arguments.get('...string')!.run(arg, possible, message);
-			throw message.language.get(LanguageKeys.Commands.Admin.ConfNoValue);
+			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoValue);
 		});
+	}
+
+	private async fetchKey(message: GuildMessage, key: string): Promise<SchemaKey> {
+		const value = configurableGroups.getPathString(key);
+		if (value === null) throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+		if (isSchemaFolder(value)) {
+			throw await message.fetchLocale(LanguageKeys.Settings.Gateway.ChooseKey, {
+				keys: [...map(value.childKeys(), (value) => `\`${value}\``)].join(', ')
+			});
+		}
+
+		return value as SchemaKey;
 	}
 }

@@ -1,32 +1,36 @@
+import { configurableGroups, GuildEntity, ISchemaValue } from '@lib/database';
+import { isSchemaFolder } from '@lib/database/settings/Utils';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
 import { BrandingColors, Time, ZeroWidthSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
-import { configurableSchemaKeys, displayEntry, isSchemaFolder } from '@utils/SettingsUtils';
 import { floatPromise, pickRandom } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Schema, SchemaEntry, SchemaFolder, Settings, SettingsFolderUpdateOptions } from 'klasa';
+import { Language } from 'klasa';
 import { DbSet } from './DbSet';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
 
 export class SettingsMenu {
-	private readonly message: KlasaMessage;
-	private schema: Schema | SchemaEntry;
-	private readonly oldSettings: Settings;
+	private readonly message: GuildMessage;
+	private readonly language: Language;
+	private schema: ISchemaValue;
+	private readonly oldSettings: GuildEntity;
 	private messageCollector: MessageCollector | null = null;
 	private errorMessage: string | null = null;
 	private llrc: LongLivingReactionCollector | null = null;
 	private readonly embed: MessageEmbed;
-	private response: KlasaMessage | null = null;
+	private response: GuildMessage | null = null;
 
-	public constructor(message: KlasaMessage) {
+	public constructor(message: GuildMessage, language: Language) {
 		this.message = message;
-		this.schema = this.message.client.gateways.get('guilds')!.schema;
+		this.language = language;
+		this.schema = configurableGroups;
 		this.oldSettings = this.message.guild!.settings.clone();
 		this.embed = new MessageEmbed().setAuthor(
 			this.message.author.username,
@@ -52,9 +56,9 @@ export class SettingsMenu {
 	}
 
 	public async init(): Promise<void> {
-		this.response = await this.message.sendEmbed(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.message.language.get(LanguageKeys.System.Loading)))
-		);
+		this.response = (await this.message.sendEmbed(
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.language.get(LanguageKeys.System.Loading)))
+		)) as GuildMessage;
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));
 		this.llrc.setTime(TIMEOUT);
@@ -64,7 +68,7 @@ export class SettingsMenu {
 	}
 
 	private async render() {
-		const i18n = this.message.language;
+		const i18n = this.language;
 		const description: string[] = [];
 		if (isSchemaFolder(this.schema)) {
 			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.path || 'Root' }));
@@ -89,30 +93,28 @@ export class SettingsMenu {
 		} else {
 			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtPiece, { path: this.schema.path }));
 			if (this.errorMessage) description.push('\n', this.errorMessage, '\n');
-			if (this.schema.configurable) {
-				description.push(
-					i18n.get(`settings${this.schema.path.split(/[.-]/g).map(toTitleCase).join('')}` as any),
-					'',
-					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderTctitle),
-					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate),
-					this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length
-						? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderRemove)
-						: '',
-					this.changedPieceValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderReset) : '',
-					this.changedCurrentPieceValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUndo) : '',
-					'',
-					i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
-						value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
-							/``+/g,
-							`\`${ZeroWidthSpace}\``
-						)
-					})
-				);
-			}
+
+			description.push(
+				i18n.get(`settings${this.schema.path.split(/[.-]/g).map(toTitleCase).join('')}` as any),
+				'',
+				i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderTctitle),
+				i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUpdate),
+				this.schema.array && (this.message.guild!.settings.get(this.schema.path) as unknown[]).length
+					? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderRemove)
+					: '',
+				this.changedPieceValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderReset) : '',
+				this.changedCurrentPieceValue ? i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderUndo) : '',
+				'',
+				i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderCvalue, {
+					value: displayEntry(this.schema, this.message.guild!.settings.get(this.schema.path), this.message.guild!).replace(
+						/``+/g,
+						`\`${ZeroWidthSpace}\``
+					)
+				})
+			);
 		}
 
-		const { parent } = this.schema as SchemaEntry | SchemaFolder;
-
+		const { parent } = this.schema;
 		if (parent) floatPromise(this.message, this._reactResponse(EMOJIS.BACK));
 		else floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, this.message.client.user!.id));
 
@@ -123,7 +125,7 @@ export class SettingsMenu {
 			.setTimestamp();
 	}
 
-	private async onMessage(message: KlasaMessage) {
+	private async onMessage(message: GuildMessage) {
 		// In case of messages that do not have a content, like attachments, ignore
 		if (!message.content) return;
 
@@ -131,8 +133,8 @@ export class SettingsMenu {
 		this.errorMessage = null;
 		if (isSchemaFolder(this.schema)) {
 			const schema = this.schema.get(message.content);
-			if (schema && configurableSchemaKeys.has(schema.path)) this.schema = schema;
-			else this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
+			if (schema) this.schema = schema;
+			else this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidKey);
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
@@ -140,7 +142,7 @@ export class SettingsMenu {
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), { arrayAction: 'remove' });
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
-			else this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
+			else this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfMenuInvalidAction);
 		}
 
 		if (!this.errorMessage) floatPromise(this.message, message.nuke());
@@ -154,7 +156,7 @@ export class SettingsMenu {
 			this.llrc?.end();
 		} else if (reaction.emoji.name === EMOJIS.BACK) {
 			floatPromise(this.message, this._removeReactionFromUser(EMOJIS.BACK, reaction.userID));
-			if ((this.schema as SchemaFolder | SchemaEntry).parent) this.schema = (this.schema as SchemaFolder | SchemaEntry).parent;
+			if (this.schema.parent) this.schema = this.schema.parent;
 			await this._renderResponse();
 		}
 	}
@@ -216,10 +218,10 @@ export class SettingsMenu {
 	private async tryUpdate(value: unknown, options: SettingsFolderUpdateOptions = {}) {
 		try {
 			const updated = await (value === null
-				? this.message.guild!.settings.reset(this.schema.path, { ...options, extraContext: { author: this.message.author.id } })
-				: this.message.guild!.settings.update(this.schema.path, value, { ...options, extraContext: { author: this.message.author.id } }));
+				? this.message.guild!.settings.reset(this.schema.path, options)
+				: this.message.guild!.settings.update(this.schema.path, value, options));
 			if (updated.length === 0)
-				this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: (this.schema as SchemaEntry).key });
+				this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: (this.schema as SchemaEntry).key });
 		} catch (error) {
 			this.errorMessage = String(error);
 		}
@@ -230,16 +232,15 @@ export class SettingsMenu {
 			const previousValue = this.oldSettings.get(this.schema.path);
 			try {
 				await (previousValue === null
-					? this.message.guild!.settings.reset(this.schema.path, { extraContext: { author: this.message.author.id } })
+					? this.message.guild!.settings.reset(this.schema.path)
 					: this.message.guild!.settings.update(this.schema.path, previousValue, {
-							arrayAction: 'overwrite',
-							extraContext: { author: this.message.author.id }
+							arrayAction: 'overwrite'
 					  }));
 			} catch (error) {
 				this.errorMessage = String(error);
 			}
 		} else {
-			this.errorMessage = this.message.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: (this.schema as SchemaEntry).key });
+			this.errorMessage = this.language.get(LanguageKeys.Commands.Admin.ConfNochange, { key: (this.schema as SchemaEntry).key });
 		}
 	}
 
@@ -249,9 +250,10 @@ export class SettingsMenu {
 				this.response.reactions.removeAll().catch((error) => this.response!.client.emit(Events.ApiError, error));
 			}
 			this.response
-				.edit(this.message.language.get(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
+				.edit(this.language.get(LanguageKeys.Commands.Admin.ConfMenuSaved), { embed: null })
 				.catch((error) => this.message.client.emit(Events.ApiError, error));
 		}
+
 		if (!this.messageCollector!.ended) this.messageCollector!.stop();
 	}
 }

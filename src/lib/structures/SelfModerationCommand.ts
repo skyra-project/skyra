@@ -1,4 +1,4 @@
-import { ConfigurableKeyValue, keys } from '@lib/database';
+import { SchemaKey, configurableKeys } from '@lib/database';
 import type { GuildEntity } from '@lib/database/entities';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -131,17 +131,17 @@ export abstract class SelfModerationCommand extends Command {
 
 			if (type === AKeys.HardActionDuration) {
 				if (/^(?:reset|0\w?)$/i.test(arg)) return null;
-				const key = keys.get(this.keyHardActionDuration)!;
+				const key = configurableKeys.get(this.keyHardActionDuration)!;
 				return SelfModerationCommand.parseDuration(message as GuildMessage, key, arg, 'Hard Action Duration');
 			}
 
 			if (type === AKeys.ThresholdMaximum) {
-				const key = keys.get(this.keyThresholdMaximum)!;
+				const key = configurableKeys.get(this.keyThresholdMaximum)!;
 				return SelfModerationCommand.parseMaximum(message as GuildMessage, key, arg, 'Threshold Maximum');
 			}
 
 			if (type === AKeys.ThresholdDuration) {
-				const key = keys.get(this.keyThresholdDuration)!;
+				const key = configurableKeys.get(this.keyThresholdDuration)!;
 				return SelfModerationCommand.parseDuration(message as GuildMessage, key, arg, 'Threshold Duration');
 			}
 
@@ -331,7 +331,7 @@ export abstract class SelfModerationCommand extends Command {
 		return SelfModerationCommand.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
 	}
 
-	private static parseMaximum(message: GuildMessage, key: ConfigurableKeyValue, input: string, name: string) {
+	private static parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = Number(input);
 		if (parsed < 0) {
 			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name });
@@ -347,7 +347,7 @@ export abstract class SelfModerationCommand extends Command {
 		return parsed;
 	}
 
-	private static parseDuration(message: GuildMessage, key: ConfigurableKeyValue, input: string, name: string) {
+	private static parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) {
 			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidDuration, { name });

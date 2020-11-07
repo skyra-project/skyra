@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 
 		if (!channel.postable) throw language.get(LanguageKeys.System.ChannelNotPostable);
 
-		const role = announcementCheck(message);
+		const role = await announcementCheck(message);
 		const header = language.get(LanguageKeys.Commands.Announcement.Announcement, { role: role.toString() });
 
 		if (await this.ask(message, header, announcement)) {

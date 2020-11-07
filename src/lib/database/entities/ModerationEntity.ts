@@ -307,11 +307,11 @@ export class ModerationEntity extends BaseEntity {
 
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
-		const prefix = manager.guild.settings.get(GuildSettings.Prefix);
+		const [prefix, language] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 		const formattedDuration = this.duration
-			? manager.guild.language.get(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration })
+			? language.get(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration })
 			: '';
-		const description = manager.guild.language.get(LanguageKeys.Commands.Moderation.ModerationLogDescription, {
+		const description = language.get(LanguageKeys.Commands.Moderation.ModerationLogDescription, {
 			data: {
 				type: this.title,
 				userName: user.username,
@@ -329,7 +329,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
 			.setFooter(
-				manager.guild.language.get(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
+				language.get(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

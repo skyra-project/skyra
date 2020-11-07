@@ -2,10 +2,9 @@
 // Source: https://github.com/dirigeants/klasa
 
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Cron } from '@klasa/cron';
-import { TimerManager } from '@klasa/timer-manager';
 import { ResponseType, ResponseValue, ScheduleEntity } from '@lib/database/entities/ScheduleEntity';
 import { Events } from '@lib/types/Enums';
+import { Cron, TimerManager } from '@sapphire/time-utilities';
 import { KlasaClient } from 'klasa';
 import { DbSet } from '../DbSet';
 

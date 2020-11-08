@@ -1,13 +1,14 @@
+import 'module-alias/register';
+import 'reflect-metadata';
+import '@utils/initClean';
+
 import { DbSet } from '@lib/database';
 import { SkyraClient } from '@lib/SkyraClient';
 import { TOKENS } from '@root/config';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';
 import { rootFolder } from '@utils/constants';
-import '@utils/initClean';
 import * as colorette from 'colorette';
-import 'module-alias/register';
-import 'reflect-metadata';
 import { inspect } from 'util';
 
 inspect.defaultOptions.depth = 1;

@@ -1,12 +1,26 @@
 import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
-import { isNullish } from '@lib/misc';
+import { isNullish, Nullish } from '@lib/misc';
 import { SkyraClient } from '@lib/SkyraClient';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
+import { arrayStrictEquals } from '@sapphire/utilities';
+import { Adder } from '@utils/Adder';
 import { Time } from '@utils/constants';
-import { Language } from 'klasa';
+import { create } from '@utils/Security/RegexCreator';
+import { Language, RateLimitManager } from 'klasa';
 import { container } from 'tsyringe';
-import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
+
+export interface Adders {
+	attachments: Adder<string> | null;
+	capitals: Adder<string> | null;
+	links: Adder<string> | null;
+	messages: Adder<string> | null;
+	newlines: Adder<string> | null;
+	invites: Adder<string> | null;
+	words: Adder<string> | null;
+	reactions: Adder<string> | null;
+}
 
 @Entity('guilds', { schema: 'public' })
 @Check(/* sql */ `"prefix"::text <> ''::text`)
@@ -655,6 +669,30 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'suggestions.on-action.hide-author', default: false })
 	public suggestionsOnActionHideAuthor = false;
 
+	/**
+	 * The anti-spam adders used to control spam
+	 */
+	public adders: Adders = {
+		attachments: null,
+		capitals: null,
+		links: null,
+		messages: null,
+		newlines: null,
+		invites: null,
+		words: null,
+		reactions: null
+	};
+
+	public wordFilterRegExp: RegExp | null = null;
+
+	/**
+	 * The ratelimit management for the no-mention-spam behavior
+	 */
+	public nms: RateLimitManager = null!;
+
+	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+	#words: readonly string[] = [];
+
 	private get client() {
 		return container.resolve(SkyraClient);
 	}
@@ -670,6 +708,68 @@ export class GuildEntity extends BaseEntity {
 		const language = this.client.languages.get(this.language);
 		if (isNullish(language)) throw new Error(`${this.language} does not exist.`);
 		return language;
+	}
+
+	@AfterLoad()
+	protected entityLoad() {
+		this.nms = new RateLimitManager(this.noMentionSpamMentionsAllowed, this.noMentionSpamTimePeriod * 1000);
+		this.adders.attachments = this.makeAdder(this.selfmodAttachmentMaximum, this.selfmodAttachmentDuration);
+		this.adders.capitals = this.makeAdder(this.selfmodCapitalsThresholdMaximum, this.selfmodCapitalsThresholdDuration);
+		this.adders.links = this.makeAdder(this.selfmodLinksThresholdMaximum, this.selfmodLinksThresholdDuration);
+		this.adders.messages = this.makeAdder(this.selfmodMessagesThresholdMaximum, this.selfmodMessagesThresholdDuration);
+		this.adders.newlines = this.makeAdder(this.selfmodNewlinesThresholdMaximum, this.selfmodNewlinesThresholdDuration);
+		this.adders.invites = this.makeAdder(this.selfmodInvitesThresholdMaximum, this.selfmodInvitesThresholdDuration);
+		this.adders.words = this.makeAdder(this.selfmodFilterThresholdMaximum, this.selfmodFilterThresholdDuration);
+		this.adders.reactions = this.makeAdder(this.selfmodReactionsThresholdMaximum, this.selfmodReactionsThresholdDuration);
+		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
+		this.#words = this.selfmodFilterRaw.slice();
+	}
+
+	@AfterInsert()
+	@AfterUpdate()
+	protected entityUpdate() {
+		this.adders.attachments = this.updateAdder(this.adders.attachments, this.selfmodAttachmentMaximum, this.selfmodAttachmentDuration);
+		this.adders.capitals = this.updateAdder(this.adders.capitals, this.selfmodCapitalsThresholdMaximum, this.selfmodCapitalsThresholdDuration);
+		this.adders.links = this.updateAdder(this.adders.links, this.selfmodLinksThresholdMaximum, this.selfmodLinksThresholdDuration);
+		this.adders.messages = this.updateAdder(this.adders.messages, this.selfmodMessagesThresholdMaximum, this.selfmodMessagesThresholdDuration);
+		this.adders.newlines = this.updateAdder(this.adders.newlines, this.selfmodNewlinesThresholdMaximum, this.selfmodNewlinesThresholdDuration);
+		this.adders.invites = this.updateAdder(this.adders.invites, this.selfmodInvitesThresholdMaximum, this.selfmodInvitesThresholdDuration);
+		this.adders.words = this.updateAdder(this.adders.words, this.selfmodFilterThresholdMaximum, this.selfmodFilterThresholdDuration);
+		this.adders.reactions = this.updateAdder(
+			this.adders.reactions,
+			this.selfmodReactionsThresholdMaximum,
+			this.selfmodReactionsThresholdDuration
+		);
+
+		if (!arrayStrictEquals(this.#words, this.selfmodFilterRaw)) {
+			this.#words = this.selfmodFilterRaw.slice();
+			this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
+		}
+	}
+
+	@AfterRemove()
+	protected entityRemove() {
+		this.adders.attachments = null;
+		this.adders.capitals = null;
+		this.adders.links = null;
+		this.adders.messages = null;
+		this.adders.newlines = null;
+		this.adders.invites = null;
+		this.adders.words = null;
+		this.adders.reactions = null;
+		this.wordFilterRegExp = null;
+		this.#words = [];
+	}
+
+	private makeAdder(maximum: number | Nullish, duration: number | Nullish) {
+		if (isNullish(maximum) || isNullish(duration)) return null;
+		return new Adder<string>(maximum, duration);
+	}
+
+	private updateAdder(adder: Adder<string> | null, maximum: number | Nullish, duration: number | Nullish) {
+		if (isNullish(maximum) || isNullish(duration)) return null;
+		if (!adder || adder.maximum !== maximum || adder.duration !== duration) return new Adder<string>(maximum, duration);
+		return adder;
 	}
 }
 

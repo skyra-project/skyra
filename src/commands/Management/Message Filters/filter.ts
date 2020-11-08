@@ -34,8 +34,8 @@ export default class extends SkyraCommand {
 
 			// Check if the word is not filtered:
 			const words = settings[GuildSettings.Selfmod.Filter.Raw];
-			const { regexp } = message.guild.security;
-			if (words.includes(word) || (regexp && regexp.test(word))) {
+			const regex = settings.wordFilterRegExp;
+			if (words.includes(word) || (regex && regex.test(word))) {
 				throw language.get(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
 			}
 

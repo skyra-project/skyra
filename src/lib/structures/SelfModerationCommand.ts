@@ -1,11 +1,9 @@
 import { configurableKeys, SchemaKey } from '@lib/database';
-import type { GuildEntity } from '@lib/database/entities';
+import type { Adders, GuildEntity } from '@lib/database/entities';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import type { KeyOfType } from '@lib/types/Utils';
-import { Adder } from '@utils/Adder';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { Command, CommandOptions, CommandStore, Duration, Language } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
@@ -159,10 +157,6 @@ export abstract class SelfModerationCommand extends Command {
 		});
 
 		switch (action) {
-			case AKeys.Disable: {
-				message.guild!.security.adders[this.$adder] = null;
-				break;
-			}
 			case AKeys.SoftAction: {
 				value = SelfModerationCommand.displaySoftAction(language, value as number).join('`, `');
 				break;
@@ -172,11 +166,9 @@ export abstract class SelfModerationCommand extends Command {
 				break;
 			}
 			case AKeys.Enable:
+			case AKeys.Disable:
 			case AKeys.ThresholdMaximum:
-			case AKeys.ThresholdDuration: {
-				await this.manageAdder(message);
-				break;
-			}
+			case AKeys.ThresholdDuration:
 			case AKeys.HardActionDuration:
 				break;
 		}
@@ -185,21 +177,12 @@ export abstract class SelfModerationCommand extends Command {
 	}
 
 	protected async show(message: GuildMessage) {
-		const [
-			enabled,
-			softAction,
-			hardAction,
-			hardActionDuration,
-			thresholdMaximum,
-			thresholdDuration,
-			language
-		] = await message.guild.readSettings((settings) => [
+		const [enabled, softAction, hardAction, hardActionDuration, adder, language] = await message.guild.readSettings((settings) => [
 			settings[this.keyEnabled],
 			settings[this.keySoftAction],
 			settings[this.keyHardAction],
 			settings[this.keyHardActionDuration],
-			settings[this.keyThresholdMaximum],
-			settings[this.keyThresholdDuration],
+			settings.adders[this.$adder],
 			settings.getLanguage()
 		]);
 
@@ -221,10 +204,8 @@ export abstract class SelfModerationCommand extends Command {
 					hardActionDuration === null
 						? i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
 						: duration(hardActionDuration),
-				thresholdMaximumText: thresholdMaximum ? thresholdMaximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-				thresholdDurationText: thresholdDuration
-					? duration(thresholdDuration)
-					: i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
+				thresholdMaximumText: adder?.maximum ? adder.maximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+				thresholdDurationText: adder?.duration ? duration(adder.duration) : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
 			})
 		);
 	}
@@ -246,19 +227,6 @@ export abstract class SelfModerationCommand extends Command {
 				return this.keyThresholdDuration;
 			default:
 				throw new Error('Unexpected.');
-		}
-	}
-
-	private async manageAdder(message: GuildMessage) {
-		const [maximum, duration] = await message.guild.readSettings([this.keyThresholdMaximum, this.keyThresholdDuration]);
-		const adder = message.guild.security.adders[this.$adder];
-		if (!maximum || !duration) {
-			if (adder !== null) message.guild!.security.adders[this.$adder] = null;
-		} else if (adder === null) {
-			message.guild!.security.adders[this.$adder] = new Adder(maximum, duration);
-		} else {
-			adder.maximum = maximum;
-			adder.duration = duration;
 		}
 	}
 
@@ -370,7 +338,7 @@ export abstract class SelfModerationCommand extends Command {
 		return parsed.offset;
 	}
 
-	protected abstract $adder: keyof GuildSecurity['adders'];
+	protected abstract $adder: keyof Adders;
 	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
 	protected abstract keySoftAction: KeyOfType<GuildEntity, number>;
 	protected abstract keyHardAction: KeyOfType<GuildEntity, number | null>;

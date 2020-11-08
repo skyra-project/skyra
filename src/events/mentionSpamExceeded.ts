@@ -8,8 +8,9 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(message: GuildMessage) {
-		const [threshold, language] = await message.guild.readSettings((settings) => [
+		const [threshold, nms, language] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.NoMentionSpam.MentionsAllowed],
+			settings.nms,
 			settings.getLanguage()
 		]);
 
@@ -21,7 +22,7 @@ export default class extends Event {
 			await message
 				.sendLocale(LanguageKeys.Monitors.NmsMessage, [{ user: message.author }])
 				.catch((error) => this.client.emit(Events.ApiError, error));
-			message.guild.security.nms.delete(message.author.id);
+			nms.delete(message.author.id);
 
 			const reason = language.get(LanguageKeys.Monitors.NmsModlog, { threshold });
 			await message.guild.moderation

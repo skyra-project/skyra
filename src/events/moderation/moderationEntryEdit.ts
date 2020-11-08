@@ -25,7 +25,7 @@ export default class extends Event {
 		// If both logs are equals, skip
 		if (entry.equals(old)) return;
 
-		const { channel } = entry;
+		const channel = await entry.fetchChannel();
 		if (channel === null || !channel.postable || !channel.embedable) return;
 
 		const messageEmbed = await entry.prepareEmbed();

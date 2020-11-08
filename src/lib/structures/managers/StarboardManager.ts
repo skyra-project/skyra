@@ -1,6 +1,7 @@
 import Collection from '@discordjs/collection';
 import { GuildSettings } from '@lib/database';
 import { StarboardEntity } from '@lib/database/entities/StarboardEntity';
+import { GuildMessage } from '@lib/types';
 import { Client, Guild, TextChannel } from 'discord.js';
 import { DbSet } from '../../database/structures/DbSet';
 
@@ -66,7 +67,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 		const entry = super.get(messageID);
 		if (entry) return entry;
 
-		const message = await channel.messages.fetch(messageID).catch(() => null);
+		const message = (await channel.messages.fetch(messageID).catch(() => null)) as GuildMessage | null;
 		if (message) {
 			const { starboards } = await DbSet.connect();
 			const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });

@@ -4,7 +4,6 @@ import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { Adder } from '@utils/Adder';
 import { Time } from '@utils/constants';
 import { CommandOptions, Language } from 'klasa';
 
@@ -98,36 +97,10 @@ export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [type, value]: ['action' | 'enable' | 'disable' | 'maximum' | 'duration' | 'logs' | 'expire', number]) {
 		const { key, languageKey } = TYPES[type];
 
-		const [attachmentMaximum, attachmentDuration, language] = await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
 			Reflect.set(settings, key, value);
-			return [
-				settings[GuildSettings.Selfmod.Attachments.Maximum],
-				settings[GuildSettings.Selfmod.Attachments.Duration],
-				settings.getLanguage()
-			];
+			return settings.getLanguage();
 		});
-
-		// Update the adder
-		switch (type) {
-			case 'disable':
-				message.guild.security.adders.attachments = null;
-				break;
-			case 'enable':
-			case 'maximum':
-			case 'duration': {
-				if (message.guild.security.adders.attachments) {
-					message.guild.security.adders.attachments.maximum = attachmentMaximum;
-					message.guild.security.adders.attachments.duration = attachmentDuration;
-				} else {
-					message.guild.security.adders.attachments = new Adder(attachmentMaximum, attachmentDuration);
-				}
-				break;
-			}
-			case 'action':
-			case 'logs':
-			case 'expire':
-				break;
-		}
 
 		return message.send(this.getReply(language, languageKey, value));
 	}

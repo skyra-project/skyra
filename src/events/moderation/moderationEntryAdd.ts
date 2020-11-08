@@ -12,7 +12,7 @@ export default class extends Event {
 	}
 
 	private async sendMessage(entry: ModerationEntity) {
-		const { channel } = entry;
+		const channel = await entry.fetchChannel();
 		if (channel === null || !channel.postable || !channel.embedable) return;
 
 		const messageEmbed = await entry.prepareEmbed();

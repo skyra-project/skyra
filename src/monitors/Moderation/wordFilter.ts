@@ -19,20 +19,19 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Filter.HardAction,
 		actionDuration: GuildSettings.Selfmod.Filter.HardActionDuration,
-		adder: 'words',
-		adderMaximum: GuildSettings.Selfmod.Filter.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Filter.ThresholdDuration
+		adder: 'words'
 	};
 
 	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message) && message.guild!.security.regexp !== null;
+		return super.shouldRun(message);
 	}
 
-	protected preProcess(message: GuildMessage) {
+	protected async preProcess(message: GuildMessage) {
 		const content = getContent(message);
 		if (content === null) return null;
 
-		return this.filter(removeConfusables(content), message.guild!.security.regexp!);
+		const regex = await message.guild.readSettings((settings) => settings.wordFilterRegExp);
+		return regex ? this.filter(removeConfusables(content), regex) : null;
 	}
 
 	protected async onDelete(message: GuildMessage, language: Language, value: FilterResults) {

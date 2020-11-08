@@ -1,7 +1,6 @@
-import type { GuildEntity } from '@lib/database/entities';
+import type { Adders, GuildEntity } from '@lib/database/entities';
 import type { KeyOfType } from '@lib/types/Utils';
 import { CLIENT_ID } from '@root/config';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { Guild, MessageEmbed } from 'discord.js';
 import { Event } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
@@ -119,7 +118,5 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown, A = stri
 export interface HardPunishment<A = string> {
 	action: KeyOfType<GuildEntity, A>;
 	actionDuration: KeyOfType<GuildEntity, number | null>;
-	adder: keyof GuildSecurity['adders'];
-	adderMaximum: KeyOfType<GuildEntity, number | null>;
-	adderDuration: KeyOfType<GuildEntity, number | null>;
+	adder: keyof Adders;
 }

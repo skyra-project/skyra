@@ -83,10 +83,6 @@ export class GiveawayEntity extends BaseEntity {
 		return this.#client.guilds.cache.get(this.guildID) ?? null;
 	}
 
-	public get language() {
-		return this.guild?.language ?? this.#client.languages.default;
-	}
-
 	public get remaining() {
 		return Math.max(this.endsAt.getTime() - Date.now(), 0);
 	}
@@ -182,7 +178,10 @@ export class GiveawayEntity extends BaseEntity {
 	}
 
 	private async getData() {
-		const { state, language } = this;
+		const { state, guild } = this;
+		if (!guild) return;
+
+		const language = await guild.fetchLanguage();
 		if (state === States.Finished) {
 			this.#winners = await this.pickWinners();
 			await this.announceWinners(language!);

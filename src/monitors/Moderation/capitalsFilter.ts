@@ -19,9 +19,7 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Capitals.HardAction,
 		actionDuration: GuildSettings.Selfmod.Capitals.HardActionDuration,
-		adder: 'capitals',
-		adderMaximum: GuildSettings.Selfmod.Capitals.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Capitals.ThresholdDuration
+		adder: 'capitals'
 	};
 
 	public shouldRun(message: GuildMessage) {
@@ -29,7 +27,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected async preProcess(message: GuildMessage) {
-		const [minimumCapitals, maximumCapitals] = await message.guild!.readSettings([
+		const [minimumCapitals, maximumCapitals] = await message.guild.readSettings([
 			GuildSettings.Selfmod.Capitals.Minimum,
 			GuildSettings.Selfmod.Capitals.Maximum
 		]);

@@ -1,9 +1,8 @@
-import { GuildEntity, GuildSettings } from '@lib/database';
+import { Adders, GuildEntity, GuildSettings } from '@lib/database';
 import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
 import { KeyOfType } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { CommandOptions } from 'klasa';
 
 @ApplyOptions<CommandOptions>({
@@ -12,7 +11,7 @@ import { CommandOptions } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.LinkModeExtended)
 })
 export default class extends SelfModerationCommand {
-	protected $adder: keyof GuildSecurity['adders'] = 'links';
+	protected $adder: keyof Adders = 'links';
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Links.Enabled;
 	protected keySoftAction: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Links.SoftAction;
 	protected keyHardAction: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Links.HardAction;

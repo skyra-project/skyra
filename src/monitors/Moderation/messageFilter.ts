@@ -17,9 +17,7 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Messages.HardAction,
 		actionDuration: GuildSettings.Selfmod.Messages.HardActionDuration,
-		adder: 'messages',
-		adderMaximum: GuildSettings.Selfmod.Messages.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Messages.ThresholdDuration
+		adder: 'messages'
 	};
 
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();

@@ -21,9 +21,7 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Invites.HardAction,
 		actionDuration: GuildSettings.Selfmod.Invites.HardActionDuration,
-		adder: 'invites',
-		adderMaximum: GuildSettings.Selfmod.Invites.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Invites.ThresholdDuration
+		adder: 'invites'
 	};
 
 	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;

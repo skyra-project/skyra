@@ -17,9 +17,7 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Links.HardAction,
 		actionDuration: GuildSettings.Selfmod.Links.HardActionDuration,
-		adder: 'links',
-		adderMaximum: GuildSettings.Selfmod.Links.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Links.ThresholdDuration
+		adder: 'links'
 	};
 
 	private readonly kRegExp = urlRegex({ requireProtocol: true, tlds: true });

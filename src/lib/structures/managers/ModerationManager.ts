@@ -47,16 +47,16 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	/**
 	 * The channel where messages have to be sent.
 	 */
-	public get channel() {
-		const channelID = this.guild.settings.get(GuildSettings.Channels.ModerationLogs);
-		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) || null;
+	public async fetchChannel() {
+		const channelID = await this.guild.readSettings(GuildSettings.Channels.ModerationLogs);
+		return channelID ? ((this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null) : null;
 	}
 
 	/**
 	 * Fetch 100 messages from the modlogs channel
 	 */
 	public async fetchChannelMessages(remainingRetries = 5): Promise<void> {
-		const { channel } = this;
+		const channel = await this.fetchChannel();
 		if (channel === null) return;
 		try {
 			await channel.messages.fetch({ limit: 100 });

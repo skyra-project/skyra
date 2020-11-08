@@ -6,7 +6,6 @@ import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { Adder } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
@@ -23,28 +22,17 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	protected hardPunishmentPath: HardPunishment<number> = {
 		action: GuildSettings.Selfmod.Reactions.HardAction,
 		actionDuration: GuildSettings.Selfmod.Reactions.HardActionDuration,
-		adder: 'reactions',
-		adderMaximum: GuildSettings.Selfmod.Reactions.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Reactions.ThresholdDuration
+		adder: 'reactions'
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		const [
-			enabled,
-			blockedReactions,
-			ignoredChannels,
-			softPunishment,
-			maximumThreshold,
-			durationThreshold,
-			hardAction
-		] = await data.guild.readSettings([
-			GuildSettings.Selfmod.Reactions.Enabled,
-			GuildSettings.Selfmod.Reactions.BlackList,
-			GuildSettings.Channels.Ignore.ReactionAdd,
-			GuildSettings.Selfmod.Reactions.SoftAction,
-			GuildSettings.Selfmod.Reactions.ThresholdMaximum,
-			GuildSettings.Selfmod.Reactions.ThresholdDuration,
-			GuildSettings.Selfmod.Reactions.HardAction
+		const [enabled, blockedReactions, ignoredChannels, softPunishment, hardAction, adder] = await data.guild.readSettings((settings) => [
+			settings[GuildSettings.Selfmod.Reactions.Enabled],
+			settings[GuildSettings.Selfmod.Reactions.BlackList],
+			settings[GuildSettings.Channels.Ignore.ReactionAdd],
+			settings[GuildSettings.Selfmod.Reactions.SoftAction],
+			settings[GuildSettings.Selfmod.Reactions.HardAction],
+			settings.adders[this.hardPunishmentPath.adder]
 		]);
 
 		if (!enabled || blockedReactions.length === 0 || ignoredChannels.includes(data.channel.id)) return;
@@ -60,16 +48,11 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 
 		if (this.hardPunishmentPath === null) return;
 
-		if (!maximumThreshold || !durationThreshold) return this.processHardPunishment(data.guild, data.userID, hardAction);
-
-		const $adder = this.hardPunishmentPath.adder;
-		if (data.guild.security.adders[$adder] === null) {
-			data.guild.security.adders[$adder] = new Adder(maximumThreshold, durationThreshold);
-		}
+		if (!adder) return this.processHardPunishment(data.guild, data.userID, hardAction);
 
 		try {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
-			data.guild.security.adders[$adder]!.add(data.userID, points);
+			adder.add(data.userID, points);
 		} catch {
 			await this.processHardPunishment(data.guild, data.userID, await data.guild.readSettings(this.hardPunishmentPath.action));
 		}

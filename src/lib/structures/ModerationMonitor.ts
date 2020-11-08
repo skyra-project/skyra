@@ -1,11 +1,10 @@
-import { GuildEntity } from '@lib/database';
+import { Adders, GuildEntity } from '@lib/database';
 import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
 import { Awaited } from '@sapphire/utilities';
-import { Adder, AdderError } from '@utils/Adder';
+import { AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
 import { floatPromise } from '@utils/util';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Language, Monitor } from 'klasa';
@@ -19,10 +18,9 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const [filter, maximum, duration, language] = await message.guild.readSettings((entity) => [
+		const [filter, adder, language] = await message.guild.readSettings((entity) => [
 			entity[this.softPunishmentPath],
-			entity[this.hardPunishmentPath.adderMaximum],
-			entity[this.hardPunishmentPath.adderDuration],
+			entity.adders[this.hardPunishmentPath.adder],
 			entity.getLanguage()
 		]);
 		const bitField = new SelfModeratorBitField(filter);
@@ -30,19 +28,13 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 		if (this.hardPunishmentPath === null) return;
 
-		if (!maximum) return this.processHardPunishment(message, language, 0, 0);
-		if (!duration) return this.processHardPunishment(message, language, 0, 0);
-
-		const $adder = this.hardPunishmentPath.adder;
-		if (message.guild!.security.adders[$adder] === null) {
-			message.guild!.security.adders[$adder] = new Adder(maximum, duration, true);
-		}
+		if (!adder) return this.processHardPunishment(message, language, 0, 0);
 
 		const points = typeof preProcessed === 'number' ? preProcessed : 1;
 		try {
-			message.guild!.security.adders[$adder]!.add(message.author.id, points);
+			adder.add(message.author.id, points);
 		} catch (error) {
-			await this.processHardPunishment(message, language, (error as AdderError).amount, maximum);
+			await this.processHardPunishment(message, language, (error as AdderError).amount, adder.maximum);
 		}
 	}
 
@@ -218,7 +210,5 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 export interface HardPunishment {
 	action: KeyOfType<GuildEntity, number>;
 	actionDuration: KeyOfType<GuildEntity, number | null>;
-	adder: keyof GuildSecurity['adders'];
-	adderMaximum: KeyOfType<GuildEntity, number | null>;
-	adderDuration: KeyOfType<GuildEntity, number | null>;
+	adder: keyof Adders;
 }

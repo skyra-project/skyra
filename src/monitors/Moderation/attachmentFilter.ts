@@ -4,7 +4,7 @@ import { Colors } from '@lib/types/constants/Constants';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
-import { Adder, AdderError } from '@utils/Adder';
+import { AdderError } from '@utils/Adder';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
@@ -17,36 +17,35 @@ export default class extends Monitor {
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
 	public async run(message: GuildMessage) {
-		const [ignoredChannels, shouldRun, action, maximum, duration] = await message.guild.readSettings([
-			GuildSettings.Channels.Ignore.All,
-			GuildSettings.Selfmod.Attachments.Enabled,
-			GuildSettings.Selfmod.Attachments.Action,
-			GuildSettings.Selfmod.Attachments.Maximum,
-			GuildSettings.Selfmod.Attachments.Duration
+		const [ignoredChannels, shouldRun, action, adder, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Channels.Ignore.All],
+			settings[GuildSettings.Selfmod.Attachments.Enabled],
+			settings[GuildSettings.Selfmod.Attachments.Action],
+			settings.adders.attachments,
+			settings.getLanguage()
 		]);
 
 		if (
+			!adder ||
 			!shouldRun ||
 			ignoredChannels.includes(message.channel.id) ||
-			this.hasPermissions(message, action) ||
+			(await this.hasPermissions(message, action)) ||
 			(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))
 		)
 			return;
 
-		const { adders } = message.guild.security;
-		if (!adders.attachments) adders.attachments = new Adder(maximum, duration, true);
-
 		try {
-			adders.attachments.add(message.author.id, message.attachments.size);
+			adder.add(message.author.id, message.attachments.size);
 			return;
 		} catch (error) {
 			const points = (error as AdderError).amount;
+			const { maximum } = adder;
 			switch (action & 0b111) {
 				case 0b000:
 					await this.actionAndSend(message, Moderation.TypeCodes.Warning, () => null);
 					break;
 				case 0b001:
-					await this.actionAndSend(message, Moderation.TypeCodes.Kick, async () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 						floatPromise(
 							this,
 							message.guild.security.actions.kick({
@@ -54,14 +53,14 @@ export default class extends Monitor {
 								moderatorID: CLIENT_ID,
 								reason:
 									maximum === 0
-										? await message.fetchLocale(this.reasonLanguageKey)
-										: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+										? language.get(this.reasonLanguageKey)
+										: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
 					break;
 				case 0b010:
-					await this.actionAndSend(message, Moderation.TypeCodes.Mute, async () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 						floatPromise(
 							this,
 							message.guild.security.actions.mute({
@@ -69,14 +68,14 @@ export default class extends Monitor {
 								moderatorID: CLIENT_ID,
 								reason:
 									maximum === 0
-										? await message.fetchLocale(this.reasonLanguageKey)
-										: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+										? language.get(this.reasonLanguageKey)
+										: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
 					break;
 				case 0b011:
-					await this.actionAndSend(message, Moderation.TypeCodes.Softban, async () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 						floatPromise(
 							this,
 							message.guild.security.actions.softBan(
@@ -85,8 +84,8 @@ export default class extends Monitor {
 									moderatorID: CLIENT_ID,
 									reason:
 										maximum === 0
-											? await message.fetchLocale(this.reasonLanguageKey)
-											: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+											? language.get(this.reasonLanguageKey)
+											: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								1
 							)
@@ -94,7 +93,7 @@ export default class extends Monitor {
 					);
 					break;
 				case 0b100:
-					await this.actionAndSend(message, Moderation.TypeCodes.Ban, async () =>
+					await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 						floatPromise(
 							this,
 							message.guild.security.actions.ban(
@@ -103,8 +102,8 @@ export default class extends Monitor {
 									moderatorID: CLIENT_ID,
 									reason:
 										maximum === 0
-											? await message.fetchLocale(this.reasonLanguageKey)
-											: await message.fetchLocale(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+											? language.get(this.reasonLanguageKey)
+											: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								0
 							)
@@ -114,16 +113,14 @@ export default class extends Monitor {
 			}
 			// noinspection JSBitwiseOperatorUsage
 			if (action & 0b1000) {
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, async () =>
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, () =>
 					new MessageEmbed()
 						.setColor(Colors.Red)
 						.setAuthor(
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setFooter(
-							`#${(message.channel as TextChannel).name} | ${await message.fetchLocale(LanguageKeys.Monitors.AttachmentfilterFooter)}`
-						)
+						.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.AttachmentfilterFooter)}`)
 						.setTimestamp()
 				);
 			}

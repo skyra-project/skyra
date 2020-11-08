@@ -88,8 +88,8 @@ export class ModerationEntity extends BaseEntity {
 		return this.#manager.guild;
 	}
 
-	public get channel() {
-		return this.#manager.channel;
+	public fetchChannel() {
+		return this.#manager.fetchChannel();
 	}
 
 	/**

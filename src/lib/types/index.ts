@@ -1,2 +1,2 @@
-export * from './Discord';
+export type { DMMessage, GuildMessage, MessageAcknowledgeable } from './Discord';
 export * from './Utils';

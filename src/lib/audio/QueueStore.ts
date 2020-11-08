@@ -63,7 +63,7 @@ export class QueueStore extends Collection<string, Queue> {
 	}
 
 	public async start(filter?: (guildID: string) => boolean) {
-		const keys = await this.scan('playlists.*');
+		const keys = await this.scan('skyra.a.*.p');
 		const guilds = keys.map((key) => {
 			const match = key.match(/^playlists\.(\d+)/);
 			if (match) return match[1];
@@ -78,15 +78,16 @@ export class QueueStore extends Collection<string, Queue> {
 		);
 	}
 
-	protected async scan(pattern: string, cursor = 0): Promise<string[]> {
+	protected async scan(pattern: string, cursor = '0'): Promise<string[]> {
 		const keys: string[] = [];
 
 		// eslint-disable-next-line @typescript-eslint/init-declarations
 		let response: [string, string[]];
 		do {
 			response = await this.redis.scan(cursor, 'MATCH', pattern);
+			[cursor] = response;
 			keys.push(...response[1]);
-		} while (response[0] !== '0');
+		} while (cursor !== '0');
 
 		return keys;
 	}

@@ -6,6 +6,11 @@ import { Event, EventOptions } from 'klasa';
 export default class extends Event {
 	public async run(payload: IncomingPlayerUpdatePayload) {
 		const queue = this.client.audio.queues!.get(payload.guildId);
-		await queue.store.redis.set(queue.keys.position, payload.state.position);
+		if (payload.state.position === 0) {
+			await queue.store.redis.del(queue.keys.position);
+		} else {
+			await queue.store.redis.set(queue.keys.position, payload.state.position);
+			await queue.refresh();
+		}
 	}
 }

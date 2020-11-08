@@ -1,5 +1,5 @@
+import { GuildSettings } from '@lib/database';
 import { PartialResponseValue, ResponseType } from '@lib/database/entities/ScheduleEntity';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Moderation } from '@utils/constants';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';

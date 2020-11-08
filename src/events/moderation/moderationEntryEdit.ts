@@ -1,6 +1,6 @@
+import { GuildSettings } from '@lib/database';
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { CLIENT_ID } from '@root/config';
 import { Moderation } from '@utils/constants';
 import { resolveOnErrorCodes } from '@utils/util';

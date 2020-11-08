@@ -1,9 +1,9 @@
 import { QueueEntry } from '@lib/audio';
+import { GuildSettings } from '@lib/database';
 import { empty, filter, map, take } from '@lib/misc';
 import { MusicCommand } from '@lib/structures/MusicCommand';
 import { GuildMessage } from '@lib/types/Discord';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Track } from '@skyra/audio';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

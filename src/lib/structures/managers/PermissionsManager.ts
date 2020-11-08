@@ -1,4 +1,4 @@
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '@lib/database';
 import { PermissionsNode } from '@lib/database/entities/GuildEntity';
 import { Guild, Role } from 'discord.js';
 

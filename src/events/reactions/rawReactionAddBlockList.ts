@@ -1,10 +1,9 @@
-import { GuildEntity } from '@lib/database';
+import { GuildEntity, GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationEvent } from '@lib/structures/ModerationEvent';
 import { SelfModeratorBitField } from '@lib/structures/SelfModeratorBitField';
 import { KeyOfType } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Adder } from '@utils/Adder';

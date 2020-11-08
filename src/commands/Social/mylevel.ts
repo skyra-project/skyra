@@ -1,8 +1,7 @@
-import { RolesAuto } from '@lib/database';
+import { GuildSettings, RolesAuto } from '@lib/database';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { User } from 'discord.js';
 import { CommandStore } from 'klasa';

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
+import { GuildSettings } from '@lib/database';
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { debounce } from '@utils/debounce';

@@ -1,4 +1,4 @@
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildSettings } from '@lib/database';
 import { Guild, GuildMember, Permissions } from 'discord.js';
 
 export async function canManage(guild: Guild, member: GuildMember) {

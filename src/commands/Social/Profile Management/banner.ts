@@ -1,10 +1,10 @@
+import { GuildSettings } from '@lib/database';
 import { UserEntity } from '@lib/database/entities/UserEntity';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';

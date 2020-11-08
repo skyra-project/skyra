@@ -1,8 +1,8 @@
+import { GuildSettings } from '@lib/database';
 import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { WEBHOOK_FEEDBACK } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';

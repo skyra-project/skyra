@@ -1,5 +1,5 @@
+import { GuildSettings } from '@lib/database';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

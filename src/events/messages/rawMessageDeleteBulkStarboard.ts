@@ -1,7 +1,7 @@
+import { GuildSettings } from '@lib/database';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { api } from '@utils/Models/Api';
 import { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError, Guild } from 'discord.js';

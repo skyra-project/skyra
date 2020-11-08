@@ -1,9 +1,10 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -34,7 +35,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async show(message: KlasaMessage, [channel]: [TextChannel]) {
+	public async show(message: GuildMessage, [channel]: [TextChannel]) {
 		const disabledCommandsChannels = await message.guild!.readSettings(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
 		if (entry && entry.commands.length) {
@@ -45,7 +46,7 @@ export default class extends SkyraCommand {
 		throw message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelShowEmpty);
 	}
 
-	public async add(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
+	public async add(message: GuildMessage, [channel, command]: [TextChannel, SkyraCommand]) {
 		const disabledCommandsChannels = await message.guild!.readSettings(GuildSettings.DisabledCommandChannels);
 		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
@@ -69,7 +70,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelAdd, [{ channel: channel.toString(), command: command.name }]);
 	}
 
-	public async remove(message: KlasaMessage, [channel, command]: [TextChannel, SkyraCommand]) {
+	public async remove(message: GuildMessage, [channel, command]: [TextChannel, SkyraCommand]) {
 		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
 		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
@@ -95,7 +96,7 @@ export default class extends SkyraCommand {
 		throw message.language.get(LanguageKeys.Commands.Management.ManageCommandChannelRemoveNotset, { channel: channel.toString() });
 	}
 
-	public async reset(message: KlasaMessage, [channel]: [TextChannel]) {
+	public async reset(message: GuildMessage, [channel]: [TextChannel]) {
 		const disabledCommandsChannels = await message.guild!.readSettings(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
 

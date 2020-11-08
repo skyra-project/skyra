@@ -1,6 +1,6 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isTextBasedChannel } from '@utils/util';
 import { TextChannel } from 'discord.js';

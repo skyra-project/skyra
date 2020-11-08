@@ -1,7 +1,6 @@
-import { GuildEntity } from '@lib/database';
+import { GuildEntity, GuildSettings } from '@lib/database';
 import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
 import { KeyOfType } from '@lib/types';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildSecurity } from '@utils/Security/GuildSecurity';

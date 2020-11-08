@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-invalid-this */
-import { GuildEntity } from '@lib/database';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildEntity, GuildSettings } from '@lib/database';
 import { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
-import { Structures, Permissions, VoiceChannel } from 'discord.js';
+import { Permissions, Structures, VoiceChannel } from 'discord.js';
 
 export class SkyraGuildMember extends Structures.get('GuildMember') {
 	public async fetchRank() {

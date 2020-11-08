@@ -1,7 +1,7 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageLogsEnum, Moderation } from '@utils/constants';

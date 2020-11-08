@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
 import { VERSION } from '@root/config';
+import { DurationFormatter, TimeTypes } from '@sapphire/time-utilities';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
-import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
@@ -14,7 +14,7 @@ const REDCROSS = Emojis.RedCross;
 
 const timestamp = new Timestamp('DD/MM/YYYY [a las] HH:mm:ss');
 
-const TIMES: DurationFormatAssetsTime = {
+const duration = new DurationFormatter({
 	[TimeTypes.Year]: {
 		1: 'año',
 		DEFAULT: 'años'
@@ -43,7 +43,7 @@ const TIMES: DurationFormatAssetsTime = {
 		1: 'segundo',
 		DEFAULT: 'segundos'
 	}
-};
+});
 
 export default class extends Language {
 	public PERMISSIONS = {
@@ -89,7 +89,7 @@ export default class extends Language {
 	};
 
 	public duration(time: number, precision?: number) {
-		return friendlyDuration(time, TIMES, precision);
+		return duration.format(time, precision);
 	}
 
 	/** Parses cardinal numbers to the ordinal counterparts */

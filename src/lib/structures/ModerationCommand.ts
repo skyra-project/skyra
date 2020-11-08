@@ -1,7 +1,7 @@
+import { GuildSettings } from '@lib/database';
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { isNullOrUndefined } from '@sapphire/utilities';

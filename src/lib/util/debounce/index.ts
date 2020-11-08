@@ -123,7 +123,8 @@ export function debounce<FnArgumentsType extends any[], FnReturnType>(
 	function timerExpired() {
 		const time = Date.now();
 		if (shouldInvoke(time)) {
-			return trailingEdge(time);
+			trailingEdge(time);
+			return;
 		}
 		// Restart the timer.
 		timerId = setTimeout(timerExpired, remainingWait(time));

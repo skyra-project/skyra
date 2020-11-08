@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
+import { GuildSettings } from '@lib/database';
 import { StarboardEntity } from '@lib/database/entities/StarboardEntity';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { Client, Guild, TextChannel } from 'discord.js';
 import { DbSet } from '../DbSet';
 

@@ -1,6 +1,6 @@
+import { GuildSettings } from '@lib/database';
 import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { Moderation } from '@utils/constants';

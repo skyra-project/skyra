@@ -165,10 +165,6 @@ declare module 'klasa' {
 		};
 	}
 
-	interface PieceDefaults {
-		rawEvents?: PieceOptions;
-	}
-
 	interface Language {
 		PERMISSIONS: Record<PermissionString, string>;
 		HUMAN_LEVELS: Record<'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH', string>;

@@ -1,7 +1,6 @@
-import { RolesAuto } from '@lib/database';
+import { GuildSettings, RolesAuto } from '@lib/database';
 import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { GuildMember, Permissions, Role } from 'discord.js';

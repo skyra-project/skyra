@@ -3873,13 +3873,13 @@ kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0, kind-of@^4.0.0, kind-of@^5.0.0, 
 
 klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   version "0.0.1-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/bfed6df8ad4c21e30944c05b62aaf039081df0ea"
+  resolved "https://codeload.github.com/skyra-project/klasa-dashboard-hooks/tar.gz/ae9c323f56c300b65e50cf91e8bec7915d0755bf"
   dependencies:
     node-fetch "^2.6.0"
 
 klasa@skyra-project/klasa#refactor/sg-removal:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/67f5aff0fd5ecb1eca27280ae1202f53065301d4"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/aba5b47620487b39acf94917bc48e20ef52e89ee"
   dependencies:
     fs-nextra "^0.5.1"
 

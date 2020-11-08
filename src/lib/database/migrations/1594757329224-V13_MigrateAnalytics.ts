@@ -2,7 +2,7 @@ import { InfluxDB, Point, WritePrecision } from '@influxdata/influxdb-client';
 import { BucketsAPI } from '@influxdata/influxdb-client-apis';
 import { INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '@root/config';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
-import { readJson } from 'fs-nextra';
+import { readFile } from 'fs/promises';
 import { join } from 'path';
 import { MigrationInterface, QueryRunner, Table, TableCheck, TableColumn } from 'typeorm';
 
@@ -17,7 +17,7 @@ export class V13MigrateAnalytics1594757329224 implements MigrationInterface {
 	private migStart: Date = new Date();
 
 	public async up(queryRunner: QueryRunner): Promise<void> {
-		const categories = new Map<string, CategoryData>(await readJson(join(__dirname, CATEGORIES_FILE)));
+		const categories = new Map<string, CategoryData>(JSON.parse(await readFile(join(__dirname, CATEGORIES_FILE), 'utf-8')));
 
 		const influx = new InfluxDB(INFLUX_OPTIONS);
 		const writer = influx.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);

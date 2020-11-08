@@ -5,7 +5,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { Emojis, rootFolder } from '@utils/constants';
 import { exec } from '@utils/exec';
 import { sleep } from '@utils/sleep';
-import { remove } from 'fs-nextra';
+import { rm } from 'fs/promises';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';
 
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async cleanDist(message: KlasaMessage) {
-		await remove(resolve(rootFolder, 'dist'));
+		await rm(resolve(rootFolder, 'dist'), { recursive: true, force: true });
 		return message.channel.send(`${Emojis.GreenTick} Successfully cleaned old dist directory.`);
 	}
 

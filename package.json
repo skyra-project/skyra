@@ -67,7 +67,6 @@
 		"diff": "^4.0.2",
 		"discord.js": "^12.4.1",
 		"emoji-regex": "^9.2.0",
-		"fs-nextra": "^0.5.1",
 		"gifencoder": "^2.0.1",
 		"he": "^1.2.0",
 		"ioredis": "^4.19.2",

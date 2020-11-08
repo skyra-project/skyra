@@ -6,7 +6,7 @@ import { Time } from '@utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
-import { DbSet } from '../DbSet';
+import { DbSet } from '../../database/structures/DbSet';
 
 enum CacheActions {
 	None,

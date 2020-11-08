@@ -1,6 +1,5 @@
-import { NotificationsStreamsTwitchEventStatus } from '@lib/database';
+import { DbSet, NotificationsStreamsTwitchEventStatus } from '@lib/database';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { DbSet } from '@lib/structures/DbSet';
 import { TwitchHelixGameSearchResult } from '@lib/types/definitions/Twitch';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';

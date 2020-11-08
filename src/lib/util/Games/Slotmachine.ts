@@ -1,13 +1,13 @@
+import { DbSet } from '@lib/database';
 import { UserEntity } from '@lib/database/entities/UserEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
-import { join } from 'path';
 import type { Language } from 'klasa';
+import { join } from 'path';
 
 const enum Icons {
 	Cherry,

@@ -6,7 +6,7 @@ import { ResponseType, ResponseValue, ScheduleEntity } from '@lib/database/entit
 import { Events } from '@lib/types/Enums';
 import { Cron, TimerManager } from '@sapphire/time-utilities';
 import { KlasaClient } from 'klasa';
-import { DbSet } from '../DbSet';
+import { DbSet } from '../../database/structures/DbSet';
 
 export class ScheduleManager {
 	public readonly client: KlasaClient;

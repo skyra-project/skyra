@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '../../../structures/DbSet';
 import { GuildEntity } from '../../../entities/GuildEntity';
 import { SettingsCollection, SettingsCollectionCallback } from '../../base/SettingsCollection';
 

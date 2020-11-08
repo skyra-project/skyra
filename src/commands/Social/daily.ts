@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/database';
 import { ClientEntity } from '@lib/database/entities/ClientEntity';
 import { UserEntity } from '@lib/database/entities/UserEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { Schedules } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';

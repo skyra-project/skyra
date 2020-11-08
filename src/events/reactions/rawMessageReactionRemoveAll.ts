@@ -1,5 +1,4 @@
-import { GuildSettings } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings } from '@lib/database';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { api } from '@utils/Models/Api';

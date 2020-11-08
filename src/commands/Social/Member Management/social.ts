@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/database';
 import { MemberEntity } from '@lib/database/entities/MemberEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';

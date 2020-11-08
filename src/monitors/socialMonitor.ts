@@ -1,5 +1,4 @@
-import { GuildSettings, RolesAuto } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings, RolesAuto } from '@lib/database';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';

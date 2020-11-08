@@ -1,5 +1,4 @@
-import { Serializer } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, Serializer } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';

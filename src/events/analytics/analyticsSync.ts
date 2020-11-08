@@ -1,5 +1,5 @@
 import { Point } from '@influxdata/influxdb-client';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';

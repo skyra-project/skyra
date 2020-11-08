@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { api } from '@utils/Models/Api';

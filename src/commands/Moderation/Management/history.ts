@@ -1,6 +1,6 @@
 import Collection from '@discordjs/collection';
+import { DbSet } from '@lib/database';
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';

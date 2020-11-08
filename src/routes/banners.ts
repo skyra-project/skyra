@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/database';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { DbSet } from '@lib/structures/DbSet';
 import { ApplyOptions } from '@skyra/decorators';
 import { ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';

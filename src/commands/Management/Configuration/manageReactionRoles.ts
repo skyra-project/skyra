@@ -1,5 +1,4 @@
-import { GuildSettings, ReactionRole } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings, ReactionRole } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { PermissionLevels } from '@lib/types/Enums';

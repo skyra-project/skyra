@@ -1,5 +1,4 @@
-import { GuildSettings } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';

@@ -1,6 +1,6 @@
+import { DbSet } from '@lib/database';
 import { PartialResponseValue, ResponseType } from '@lib/database/entities/ScheduleEntity';
 import { TwitchStreamSubscriptionEntity } from '@lib/database/entities/TwitchStreamSubscriptionEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
 import { blueBright } from 'colorette';

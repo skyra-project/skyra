@@ -1,5 +1,4 @@
-import { GuildSettings } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import type { SuggestionData } from '@lib/types/definitions/Suggestion';

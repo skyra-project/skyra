@@ -11,7 +11,7 @@ import { floatPromise, pickRandom } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageCollector, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
-import { DbSet } from './DbSet';
+import { DbSet } from '../database/structures/DbSet';
 
 const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;

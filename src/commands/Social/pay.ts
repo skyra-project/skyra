@@ -1,5 +1,5 @@
+import { DbSet } from '@lib/database';
 import { UserEntity } from '@lib/database/entities/UserEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';

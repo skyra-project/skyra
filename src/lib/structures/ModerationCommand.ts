@@ -9,7 +9,7 @@ import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions'
 import { cast, floatPromise } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, Language } from 'klasa';
-import { DbSet } from './DbSet';
+import { DbSet } from '../database/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export interface ModerationCommandOptions extends SkyraCommandOptions {

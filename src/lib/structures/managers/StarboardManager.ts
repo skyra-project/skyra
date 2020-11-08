@@ -2,7 +2,7 @@ import Collection from '@discordjs/collection';
 import { GuildSettings } from '@lib/database';
 import { StarboardEntity } from '@lib/database/entities/StarboardEntity';
 import { Client, Guild, TextChannel } from 'discord.js';
-import { DbSet } from '../DbSet';
+import { DbSet } from '../../database/structures/DbSet';
 
 /**
  * The StarboardManager class that manages the starboard channel

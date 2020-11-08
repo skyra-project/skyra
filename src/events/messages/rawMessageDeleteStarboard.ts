@@ -1,6 +1,5 @@
-import { GuildSettings } from '@lib/database';
+import { DbSet, GuildSettings } from '@lib/database';
 import { SkyraGuild } from '@lib/extensions/SkyraGuild';
-import { DbSet } from '@lib/structures/DbSet';
 import { Events } from '@lib/types/Enums';
 import { DiscordEvents } from '@lib/types/Events';
 import { api } from '@utils/Models/Api';

@@ -1,5 +1,4 @@
-import { GuildSettings, RolesAuto } from '@lib/database';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings, RolesAuto } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';

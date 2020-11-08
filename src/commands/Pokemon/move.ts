@@ -1,5 +1,5 @@
 import { MoveEntry } from '@favware/graphql-pokemon';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { CdnUrls } from '@lib/types/Constants';

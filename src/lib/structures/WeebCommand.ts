@@ -6,7 +6,7 @@ import { TOKENS, VERSION } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
-import { DbSet } from './DbSet';
+import { DbSet } from '../database/structures/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
 export abstract class WeebCommand extends SkyraCommand {

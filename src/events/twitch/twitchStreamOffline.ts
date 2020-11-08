@@ -1,6 +1,5 @@
-import { NotificationsStreamsTwitchEventStatus } from '@lib/database';
+import { DbSet, NotificationsStreamsTwitchEventStatus } from '@lib/database';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { DbSet } from '@lib/structures/DbSet';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '@utils/Notifications/Twitch';

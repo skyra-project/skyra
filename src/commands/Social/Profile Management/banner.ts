@@ -1,6 +1,5 @@
-import { GuildSettings } from '@lib/database';
+import { DbSet, GuildSettings } from '@lib/database';
 import { UserEntity } from '@lib/database/entities/UserEntity';
-import { DbSet } from '@lib/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';

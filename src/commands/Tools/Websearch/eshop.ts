@@ -29,7 +29,7 @@ export default class extends RichDisplayCommand {
 		);
 
 		const { results: entries } = await this.fetchAPI(message, gameName);
-		if (!entries.length) throw message.fetchLocale(LanguageKeys.System.QueryFail);
+		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(entries[0].hits, message);
 		await display.start(response, message.author.id);
@@ -65,7 +65,7 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 

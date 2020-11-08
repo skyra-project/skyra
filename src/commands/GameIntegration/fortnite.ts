@@ -45,7 +45,7 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw message.fetchLocale(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
+			throw await message.fetchLocale(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
 	}
 

@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw message.fetchLocale(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
+			throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
 		}
 	}
 }

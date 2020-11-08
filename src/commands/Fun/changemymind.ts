@@ -16,7 +16,7 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
+	spam: true,
 	usage: '<text:string{1,50}>'
 })
 export default class extends SkyraCommand {

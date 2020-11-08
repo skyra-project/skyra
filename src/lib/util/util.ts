@@ -90,12 +90,12 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  */
 export async function announcementCheck(message: Message) {
 	const announcementID = await message.guild!.readSettings(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+	if (!announcementID) throw await message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
 	const role = message.guild!.roles.cache.get(announcementID);
-	if (!role) throw message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+	if (!role) throw await message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.fetchLocale(LanguageKeys.System.HighestRole);
+	if (role.position >= message.guild!.me!.roles.highest.position) throw await message.fetchLocale(LanguageKeys.System.HighestRole);
 	return role;
 }
 

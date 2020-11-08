@@ -30,7 +30,7 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw message.fetchLocale(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
+		if (topTen.length === 0) throw await message.fetchLocale(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
 		const display = await this.buildDisplay(message, topTen);
 

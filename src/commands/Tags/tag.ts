@@ -30,7 +30,7 @@ import { MessageEmbed } from 'discord.js';
 		'tagname',
 		async (arg, possible, message, [action]) => {
 			if (action === 'list' || action === 'reset') return undefined;
-			if (!arg) throw message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: possible.name });
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: possible.name });
 			return arg.toLowerCase();
 		}
 	]
@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 	#kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async add(message: GuildMessage, [id, content]: [string, string]) {
 		const language = await message.fetchLanguage();
@@ -60,7 +60,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async remove(message: GuildMessage, [id]: [string]) {
 		const language = await message.fetchLanguage();
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async reset(message: GuildMessage) {
 		await message.guild.writeSettings([[GuildSettings.CustomCommands, []]]);
@@ -83,7 +83,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
 	})
 	public async edit(message: GuildMessage, [id, content]: [string, string]) {
 		const language = await message.fetchLanguage();

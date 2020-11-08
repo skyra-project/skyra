@@ -22,7 +22,7 @@ import { KlasaMessage } from 'klasa';
 			}
 			const url = ((res) => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, FetchResultTypes.Buffer);
-			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidUrl, { name: possible.name });
+			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUrl, { name: possible.name });
 		}
 	]
 ])

@@ -48,14 +48,14 @@ import { MessageEmbed, Role } from 'discord.js';
 ])
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [roles]: [Role[]]) {
-		const { rolesPublic, language, prefix, allRoleSets, rolesRemoveInitial, rolesInitial } = await message.guild.readSettings((settings) => ({
-			rolesPublic: settings[GuildSettings.Roles.Public],
-			prefix: settings[GuildSettings.Prefix],
-			allRoleSets: settings[GuildSettings.Roles.UniqueRoleSets],
-			rolesRemoveInitial: settings[GuildSettings.Roles.RemoveInitial],
-			rolesInitial: settings[GuildSettings.Roles.Initial],
-			language: settings.getLanguage()
-		}));
+		const [rolesPublic, prefix, allRoleSets, rolesRemoveInitial, rolesInitial, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Roles.Public],
+			settings[GuildSettings.Prefix],
+			settings[GuildSettings.Roles.UniqueRoleSets],
+			settings[GuildSettings.Roles.RemoveInitial],
+			settings[GuildSettings.Roles.Initial],
+			settings.getLanguage()
+		]);
 
 		if (!roles) throw language.get(LanguageKeys.Commands.Management.RolesListEmpty);
 		if (!roles.length) {

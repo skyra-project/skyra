@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 		const body = await fetch<DuckDuckGoResultOk>(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`, FetchResultTypes.JSON);
 
 		if (body.Heading.length === 0) {
-			throw message.fetchLocale(LanguageKeys.Commands.Tools.DuckDuckGoNotfound);
+			throw await message.fetchLocale(LanguageKeys.Commands.Tools.DuckDuckGoNotfound);
 		}
 
 		const embed = new MessageEmbed().setTitle(body.Heading).setURL(body.AbstractURL).setThumbnail(body.Image).setDescription(body.AbstractText);

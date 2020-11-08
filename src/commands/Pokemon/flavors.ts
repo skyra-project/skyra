@@ -36,7 +36,7 @@ export default class extends RichDisplayCommand {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.fetchLocale(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
+			throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 

@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 		if (message.command !== this || message.guild === null) return false;
 		const id = await message.guild.readSettings(this.kPath);
 		if (id && message.guild.roles.cache.has(id)) return false;
-		throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
+		throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
 			prefix: await message.guild.readSettings(GuildSettings.Prefix),
 			path: this.kPath
 		});

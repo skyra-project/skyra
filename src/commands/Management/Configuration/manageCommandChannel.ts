@@ -36,76 +36,72 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: GuildMessage, [channel]: [TextChannel]) {
-		const disabledCommandsChannels = await message.guild!.readSettings(GuildSettings.DisabledCommandChannels);
+		const disabledCommandsChannels = await message.guild.readSettings(GuildSettings.DisabledCommandChannels);
 		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
 		if (entry && entry.commands.length) {
 			return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelShow, [
 				{ channel: channel.toString(), commands: `\`${entry.commands.join('` | `')}\`` }
 			]);
 		}
-		throw message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelShowEmpty);
+		throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelShowEmpty);
 	}
 
 	public async add(message: GuildMessage, [channel, command]: [TextChannel, SkyraCommand]) {
-		const disabledCommandsChannels = await message.guild!.readSettings(GuildSettings.DisabledCommandChannels);
-		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+		await message.guild.writeSettings((settings) => {
+			const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
+			const indexOfChannel = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+			const language = settings.getLanguage();
 
-		if (index === -1) {
-			await message.guild!.writeSettings((settings) => {
+			if (indexOfChannel === -1) {
 				settings[GuildSettings.DisabledCommandChannels].push({ channel: channel.id, commands: [command.name] });
-				return settings.getLanguage();
-			});
-		} else {
-			const entry = disabledCommandsChannels[index];
-			if (entry.commands.includes(command.name)) throw message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelAddAlreadyset);
+			} else {
+				const disabledCommandChannel = disabledCommandsChannels[indexOfChannel];
+				if (disabledCommandChannel.commands.includes(command.name))
+					throw language.get(LanguageKeys.Commands.Management.ManageCommandChannelAddAlreadyset);
 
-			await message.guild!.settings.update(
-				GuildSettings.DisabledCommandChannels,
-				{ channel: entry.channel, commands: entry.commands.concat(command.name) },
-				{
-					arrayIndex: index
-				}
-			);
-		}
+				settings[GuildSettings.DisabledCommandChannels][indexOfChannel].commands.concat(command.name);
+			}
+		});
+
 		return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelAdd, [{ channel: channel.toString(), command: command.name }]);
 	}
 
 	public async remove(message: GuildMessage, [channel, command]: [TextChannel, SkyraCommand]) {
-		const disabledCommandsChannels = message.guild!.settings.get(GuildSettings.DisabledCommandChannels);
-		const index = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
+		await message.guild.writeSettings((settings) => {
+			const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
+			const indexOfChannel = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
-		if (index !== -1) {
-			const entry = disabledCommandsChannels[index];
-			const commandIndex = entry.commands.indexOf(command.name);
-			if (commandIndex !== -1) {
-				if (entry.commands.length > 1) {
-					const clone = entry.commands.slice();
-					clone.splice(commandIndex, 1);
-					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, { channel: entry.channel, commands: clone });
-				} else {
-					await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, {
-						arrayAction: 'remove'
-					});
+			if (indexOfChannel !== -1) {
+				const disabledCommandChannel = disabledCommandsChannels[indexOfChannel];
+				const indexOfDisabledCommand = disabledCommandChannel.commands.indexOf(command.name);
+
+				if (indexOfDisabledCommand !== -1) {
+					if (disabledCommandChannel.commands.length > 1) {
+						settings[GuildSettings.DisabledCommandChannels][indexOfChannel].commands.splice(indexOfDisabledCommand, 1);
+					} else {
+						settings[GuildSettings.DisabledCommandChannels].splice(indexOfChannel, 1);
+					}
 				}
-
-				return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelRemove, [
-					{ channel: channel.toString(), command: command.name }
-				]);
 			}
-		}
-		throw message.language.get(LanguageKeys.Commands.Management.ManageCommandChannelRemoveNotset, { channel: channel.toString() });
+
+			throw settings.getLanguage().get(LanguageKeys.Commands.Management.ManageCommandChannelRemoveNotset, { channel: channel.toString() });
+		});
 	}
 
 	public async reset(message: GuildMessage, [channel]: [TextChannel]) {
-		const disabledCommandsChannels = await message.guild!.readSettings(GuildSettings.DisabledCommandChannels);
-		const entry = disabledCommandsChannels.find((e) => e.channel === channel.id);
+		try {
+			await message.guild.writeSettings((settings) => {
+				const disabledCommandsChannels = settings[GuildSettings.DisabledCommandChannels];
+				const entryIndex = disabledCommandsChannels.findIndex((e) => e.channel === channel.id);
 
-		if (entry) {
-			await message.guild!.settings.update(GuildSettings.DisabledCommandChannels, entry, {
-				arrayAction: 'remove'
+				if (entryIndex !== -1) {
+					settings[GuildSettings.DisabledCommandChannels].splice(entryIndex, 1);
+				}
 			});
+
 			return message.sendLocale(LanguageKeys.Commands.Management.ManageCommandChannelReset, [{ channel: channel.toString() }]);
+		} catch {
+			throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelResetEmpty);
 		}
-		throw message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelResetEmpty);
 	}
 }

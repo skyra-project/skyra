@@ -25,11 +25,11 @@ export default class extends SkyraCommand {
 			const messageUrl = await this.getFromUrl(message, arg);
 			if (messageUrl) return messageUrl;
 
-			if (!isTextBasedChannel(channel)) throw message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
+			if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
-			throw message.fetchLocale(LanguageKeys.System.MessageNotFound);
+			throw await message.fetchLocale(LanguageKeys.System.MessageNotFound);
 		});
 	}
 
@@ -67,10 +67,10 @@ export default class extends SkyraCommand {
 
 		const channel = guild.channels.cache.get(_channel);
 		if (!channel) return null;
-		if (!(channel instanceof TextChannel)) throw message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
-		if (!channel.readable) throw message.fetchLocale(LanguageKeys.System.MessageNotFound);
+		if (!(channel instanceof TextChannel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+		if (!channel.readable) throw await message.fetchLocale(LanguageKeys.System.MessageNotFound);
 		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL))
-			throw message.fetchLocale(LanguageKeys.System.CannotAccessChannel);
+			throw await message.fetchLocale(LanguageKeys.System.CannotAccessChannel);
 
 		return channel.messages.fetch(_message);
 	}

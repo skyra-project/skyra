@@ -18,12 +18,12 @@ export default class extends MusicCommand {
 		const { channel } = message.member.voice;
 
 		// If the member is not in a voice channel then throw
-		if (!channel) throw message.fetchLocale(LanguageKeys.Commands.Music.JoinNoVoicechannel);
+		if (!channel) throw await message.fetchLocale(LanguageKeys.Commands.Music.JoinNoVoicechannel);
 
 		const { audio } = message.guild;
 
 		// Check if the bot is already playing in this guild
-		this.checkSkyraPlaying(message, audio, channel);
+		await this.checkSkyraPlaying(message, audio, channel);
 
 		// Ensure Skyra has the correct permissions to play music
 		await this.resolvePermissions(message, channel);
@@ -51,11 +51,11 @@ export default class extends MusicCommand {
 		if (!permissions.has(FLAGS.SPEAK)) throw language.get(LanguageKeys.Commands.Music.JoinVoiceNoSpeak);
 	}
 
-	private checkSkyraPlaying(message: GuildMessage, audio: Queue, voiceChannel: VoiceChannel): void {
+	private async checkSkyraPlaying(message: GuildMessage, audio: Queue, voiceChannel: VoiceChannel): Promise<void> {
 		const selfVoiceChannel = audio.player.playing ? audio.voiceChannelID : null;
 		if (selfVoiceChannel === null) return;
 
-		throw message.fetchLocale(
+		throw await message.fetchLocale(
 			voiceChannel.id === selfVoiceChannel ? LanguageKeys.Commands.Music.JoinVoiceSame : LanguageKeys.Commands.Music.JoinVoiceDifferent
 		);
 	}

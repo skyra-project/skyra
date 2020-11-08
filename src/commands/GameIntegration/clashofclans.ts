@@ -1,7 +1,6 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { toTitleCase } from '@sapphire/utilities';
@@ -10,6 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { ClashOfClans } from '@utils/GameIntegration/ClashOfClans';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { KlasaMessage } from 'klasa';
 
 const enum ClashOfClansFetchCategories {
 	PLAYERS = 'players',
@@ -24,8 +24,6 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 	cooldown: 10,
 	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.ClashofclansDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.ClashofclansExtended),
-	// TODO(Soumil07): Check why this is Guild only
-	runIn: ['text'],
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
 	usageDelim: ' '
@@ -33,22 +31,22 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 @CreateResolvers([
 	[
 		'tagOrName',
-		(arg, possible, message, [action]) => {
+		async (arg, possible, message, [action]) => {
 			if (action === 'clan') {
 				return message.client.arguments.get('...string')!.run(arg, possible, message);
 			}
 
 			if (action === 'player') {
 				if (kPlayerTagRegex.test(arg)) return arg;
-				throw message.fetchLocale(LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag, { playertag: arg });
+				throw await message.fetchLocale(LanguageKeys.Commands.GameIntegration.ClashOfClansInvalidPlayerTag, { playertag: arg });
 			}
 
-			throw message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	]
 ])
 export default class extends RichDisplayCommand {
-	public async clan(message: GuildMessage, [clan]: [string]) {
+	public async clan(message: KlasaMessage, [clan]: [string]) {
 		const language = await message.fetchLanguage();
 
 		const response = await message.sendEmbed(
@@ -65,12 +63,12 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	public async player(message: GuildMessage, [player]: [string]) {
+	public async player(message: KlasaMessage, [player]: [string]) {
 		const playerData = await this.fetchAPI<ClashOfClansFetchCategories.PLAYERS>(message, player, ClashOfClansFetchCategories.PLAYERS);
 		return message.send(await this.buildPlayerEmbed(message, playerData));
 	}
 
-	private async fetchAPI<C extends ClashOfClansFetchCategories>(message: GuildMessage, query: string, category: ClashOfClansFetchCategories) {
+	private async fetchAPI<C extends ClashOfClansFetchCategories>(message: KlasaMessage, query: string, category: ClashOfClansFetchCategories) {
 		try {
 			const url = new URL(`https://api.clashofclans.com/v1/${category}/`);
 
@@ -97,7 +95,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private async buildPlayerEmbed(message: GuildMessage, player: ClashOfClans.Player) {
+	private async buildPlayerEmbed(message: KlasaMessage, player: ClashOfClans.Player) {
 		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.ClashofclansPlayerEmbedTitles);
 
 		return new MessageEmbed()
@@ -132,7 +130,7 @@ export default class extends RichDisplayCommand {
 			);
 	}
 
-	private async buildClanDisplay(message: GuildMessage, clans: ClashOfClans.Clan[]) {
+	private async buildClanDisplay(message: KlasaMessage, clans: ClashOfClans.Clan[]) {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 		const language = await message.fetchLanguage();
 

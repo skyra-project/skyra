@@ -114,10 +114,10 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('banner', async (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
-			if (!arg) throw message.fetchLocale(LanguageKeys.Commands.Social.BannerMissing, type);
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Social.BannerMissing, type);
 			const banner = this.banners.get(arg);
 			if (banner) return banner;
-			throw message.fetchLocale(LanguageKeys.Commands.Social.BannerNotexists, {
+			throw await message.fetchLocale(LanguageKeys.Commands.Social.BannerNotexists, {
 				prefix: await message.guild!.readSettings(GuildSettings.Prefix)
 			});
 		});

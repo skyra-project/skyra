@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw message.fetchLocale(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
+			throw await message.fetchLocale(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
 		}
 	}
 

@@ -1,4 +1,4 @@
-import { SchemaKey, configurableKeys } from '@lib/database';
+import { configurableKeys, SchemaKey } from '@lib/database';
 import type { GuildEntity } from '@lib/database/entities';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -331,37 +331,37 @@ export abstract class SelfModerationCommand extends Command {
 		return SelfModerationCommand.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
 	}
 
-	private static parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
+	private static async parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = Number(input);
 		if (parsed < 0) {
-			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name });
+			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name });
 		}
 
 		if (key.minimum !== null && parsed < key.minimum) {
-			throw message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
 		}
 
 		if (key.maximum !== null && parsed > key.maximum) {
-			throw message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
 		}
 		return parsed;
 	}
 
-	private static parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
+	private static async parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = new Duration(input);
 		if (parsed.offset < 0) {
-			throw message.fetchLocale(LanguageKeys.Resolvers.InvalidDuration, { name });
+			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidDuration, { name });
 		}
 
 		if (key.minimum !== null && parsed.offset < key.minimum) {
-			throw message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
 				minimum: key.minimum,
 				value: parsed.offset
 			});
 		}
 
 		if (key.maximum !== null && parsed.offset > key.maximum) {
-			throw message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
 				maximum: key.maximum,
 				value: parsed.offset
 			});

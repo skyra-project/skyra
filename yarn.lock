@@ -530,13 +530,6 @@
     slash "^3.0.0"
     strip-ansi "^6.0.0"
 
-"@jest/create-cache-key-function@^26.5.0":
-  version "26.6.2"
-  resolved "https://registry.yarnpkg.com/@jest/create-cache-key-function/-/create-cache-key-function-26.6.2.tgz#04cf439207a4fd12418d8aee551cddc86f9ac5f5"
-  integrity sha512-LgEuqU1f/7WEIPYqwLPIvvHuc1sB6gMVbT6zWhin3txYUNYK/kGQrC1F2WR4gR34YlI9bBtViTm5z98RqVZAaw==
-  dependencies:
-    "@jest/types" "^26.6.2"
-
 "@jest/environment@^26.6.2":
   version "26.6.2"
   resolved "https://registry.yarnpkg.com/@jest/environment/-/environment-26.6.2.tgz#ba364cc72e221e79cc8f0a99555bf5d7577cf92c"
@@ -863,11 +856,11 @@
   integrity sha512-l8pgJpeLTPyNrprkzIvKwD1b33q3FwoEyesyJ0PnrsloZ05yVTqOQ6m+5jCUKFSxLMc+yGhRoT/4ZcrNo14vYg==
 
 "@skyra/saelem@^2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-2.0.3.tgz#b2ab7fabe7f64ed565c8415b94c95492799cdaf0"
-  integrity sha512-s2dONhaC+U0qrNrH8xnMULzQdppLK7YydhHkNKO5BukCk7dP8vYt1Vhi4tLcffve5tZA2Yfan+b80gp6zVns8Q==
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-2.0.4.tgz#6652154fd90866a2d2faa73d7864423a721851e8"
+  integrity sha512-C6xRnu/iVJAhmVtO1whP8+N11qLjshwx9zvwHhTfZ2CVCTkPE9SxV3p7kdw+BB7bVmFztpT+26JcusKr8Rtj6Q==
   dependencies:
-    graphql "^15.3.0"
+    graphql "^15.4.0"
 
 "@sqltools/formatter@1.2.2":
   version "1.2.2"
@@ -2897,7 +2890,7 @@ graphql@0.9.6, graphql@^0.9.6:
   dependencies:
     iterall "^1.0.0"
 
-graphql@^15.3.0:
+graphql@^15.3.0, graphql@^15.4.0:
   version "15.4.0"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-15.4.0.tgz#e459dea1150da5a106486ba7276518b5295a4347"
   integrity sha512-EB3zgGchcabbsU9cFe1j+yxdzKQKAbGUWRb13DsrsMN1yyfmmIq+2+L5MqVWcDCE4V89R5AyUOi7sMOGxdsYtA==
@@ -5796,11 +5789,10 @@ trim-off-newlines@^1.0.0:
   integrity sha1-n5up2e+odkw4dpi8v+sshI8RrbM=
 
 ts-jest@^26.4.3:
-  version "26.4.3"
-  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.4.3.tgz#d153a616033e7ec8544b97ddbe2638cbe38d53db"
-  integrity sha512-pFDkOKFGY+nL9v5pkhm+BIFpoAuno96ff7GMnIYr/3L6slFOS365SI0fGEVYx2RKGji5M2elxhWjDMPVcOCdSw==
+  version "26.4.4"
+  resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-26.4.4.tgz#61f13fb21ab400853c532270e52cc0ed7e502c49"
+  integrity sha512-3lFWKbLxJm34QxyVNNCgXX1u4o/RV0myvA2y2Bxm46iGIjKlaY0own9gIckbjZJPn+WaJEnfPPJ20HHGpoq4yg==
   dependencies:
-    "@jest/create-cache-key-function" "^26.5.0"
     "@types/jest" "26.x"
     bs-logger "0.x"
     buffer-from "1.x"
@@ -6097,9 +6089,9 @@ write@1.0.3:
     mkdirp "^0.5.1"
 
 ws@^7.3.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-7.3.1.tgz#d0547bf67f7ce4f12a72dfe31262c68d7dc551c8"
-  integrity sha512-D3RuNkynyHmEJIpD2qrgVkc9DQ23OrN/moAwZX4L8DfvszsJxpjQuUq3LMx6HoYji9fbIOBY18XWBsAux1ZZUA==
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.0.tgz#a5dd76a24197940d4a8bb9e0e152bb4503764da7"
+  integrity sha512-kyFwXuV/5ymf+IXhS6f0+eAFvydbaBW3zjpT6hUdAh/hbVjTIB5EHBGi0bPoCLSK2wcuz3BrEkB9LrYv1Nm4NQ==
 
 xml2js@^0.4.23:
   version "0.4.23"

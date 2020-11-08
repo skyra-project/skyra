@@ -37,11 +37,11 @@ const kRandomSunSign = createPick([...kSunSigns]);
 @CreateResolvers([
 	[
 		'sunsign',
-		(arg, _, message) => {
+		async (arg, _, message) => {
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
+			throw await message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
@@ -71,7 +71,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
+			throw await message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

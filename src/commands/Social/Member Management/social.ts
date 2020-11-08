@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 	public async remove(message: GuildMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
 		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
-		if (!settings) throw message.fetchLocale(LanguageKeys.Commands.Social.SocialMemberNotexists);
+		if (!settings) throw await message.fetchLocale(LanguageKeys.Commands.Social.SocialMemberNotexists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
 		settings.points = newAmount;

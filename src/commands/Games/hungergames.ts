@@ -39,10 +39,7 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			const { prefix, language } = await message.guild.readSettings((settings) => ({
-				prefix: settings[GuildSettings.Prefix],
-				language: settings.getLanguage()
-			}));
+			const [prefix, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 
 			throw language.get(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
 		}

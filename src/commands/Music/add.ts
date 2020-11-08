@@ -12,7 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 })
 export default class extends MusicCommand {
 	public async run(message: GuildMessage, [songs]: [string[]]) {
-		if (!songs || !songs.length) throw message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
+		if (!songs || !songs.length) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
 
 		const tracks = songs.map((track) => ({ author: message.author.id, track }));
 		await message.guild.audio.add(...tracks);

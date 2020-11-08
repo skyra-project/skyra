@@ -38,7 +38,7 @@ export default class extends RichDisplayCommand {
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 
-		if (!items || !items.length) throw message.fetchLocale(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw await message.fetchLocale(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

@@ -57,7 +57,7 @@ export const INFLUX_OPTIONS: InfluxDBClientOptions = {
 	token: INFLUX_TOKEN
 };
 
-export const VERSION = '5.4.1 Nirom';
+export const VERSION = '5.5.0 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	audio: {

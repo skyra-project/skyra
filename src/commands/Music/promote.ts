@@ -25,7 +25,7 @@ export default class extends MusicCommand {
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		if (index < 0) throw message.fetchLocale(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		if (index < 0) throw await message.fetchLocale(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
 		const length = await audio.count();

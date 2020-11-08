@@ -26,9 +26,9 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 @CreateResolvers([
 	[
 		'generation',
-		(arg, possible, message) => {
+		async (arg, possible, message) => {
 			if (kPokemonGenerations.has(arg)) return message.client.arguments.get('integer')!.run(arg, possible, message);
-			throw message.fetchLocale(LanguageKeys.Commands.Pokemon.LearnInvalidGeneration, { generation: arg });
+			throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.LearnInvalidGeneration, { generation: arg });
 		}
 	]
 ])

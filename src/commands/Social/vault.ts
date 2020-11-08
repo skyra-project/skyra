@@ -28,7 +28,7 @@ import { KlasaMessage, Language } from 'klasa';
 			}
 			const coins = Number(arg);
 			if (coins && coins >= 0) return message.client.arguments.get('integer')!.run(arg, possible, message);
-			throw message.fetchLocale(LanguageKeys.Commands.Social.VaultInvalidCoins);
+			throw await message.fetchLocale(LanguageKeys.Commands.Social.VaultInvalidCoins);
 		}
 	]
 ])

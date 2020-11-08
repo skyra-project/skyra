@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 		const data = await fetch<YouTubeResultOk>(url, FetchResultTypes.JSON);
 		const results = data.items.slice(0, 5);
 
-		if (!results.length) throw message.fetchLocale(LanguageKeys.Commands.Tools.YoutubeNotfound);
+		if (!results.length) throw await message.fetchLocale(LanguageKeys.Commands.Tools.YoutubeNotfound);
 
 		const sent = await message.send(this.getLink(results[0]));
 

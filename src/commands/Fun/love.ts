@@ -12,7 +12,6 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Fun.LoveDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.LoveExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

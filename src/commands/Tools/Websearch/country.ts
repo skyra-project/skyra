@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		);
 
 		const countries = await this.fetchAPI(message, countryName);
-		if (countries.length === 0) throw message.fetchLocale(LanguageKeys.System.QueryFail);
+		if (countries.length === 0) throw await message.fetchLocale(LanguageKeys.System.QueryFail);
 
 		const display = await this.buildDisplay(message, countries);
 		await display.start(response, message.author.id);
@@ -32,10 +32,11 @@ export default class extends SkyraCommand {
 	}
 
 	private async fetchAPI(message: KlasaMessage, countryName: string) {
-		const apiResult = await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`).catch(() => {
-			throw message.fetchLocale(LanguageKeys.System.QueryFail);
-		});
-		return apiResult;
+		try {
+			return await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`);
+		} catch {
+			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+		}
 	}
 
 	private async buildDisplay(message: KlasaMessage, countries: CountryResultOk) {

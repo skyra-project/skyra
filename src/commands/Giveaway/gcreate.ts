@@ -1,9 +1,9 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { Schedules } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 
@@ -20,7 +20,7 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 })
 export default class extends SkyraCommand {
 	public async run(
-		message: KlasaMessage,
+		message: GuildMessage,
 		[channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]
 	) {
 		// First do the checks for the giveaway itself

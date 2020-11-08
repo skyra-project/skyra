@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (!isTextBasedChannel(channel)) throw message.fetchLocale(LanguageKeys.Misc.ConfigurationTextChannelRequired);
+		else if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Misc.ConfigurationTextChannelRequired);
 		const oldLength = await message.guild!.readSettings(GuildSettings.DisabledChannels).then((channels) => channels.length);
 		await message.guild!.writeSettings((settings) => {
 			const ignoredChannels = settings[GuildSettings.DisabledChannels];

@@ -24,7 +24,7 @@ export default class extends RichDisplayCommand {
 		);
 
 		const { results: entries } = await this.fetchAPI(language, song);
-		if (!entries.length) throw message.fetchLocale(LanguageKeys.System.NoResults);
+		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, message, language);
 		await display.start(response, message.author.id);

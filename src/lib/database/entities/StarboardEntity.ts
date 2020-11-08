@@ -1,13 +1,16 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
 import { GuildSettings } from '@lib/database';
+import { isNullish } from '@lib/misc';
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { debounce } from '@utils/debounce';
 import { fetchReactionUsers, getImage } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Client, DiscordAPIError, HTTPError, Message, MessageEmbed, TextChannel } from 'discord.js';
+import { Client, DiscordAPIError, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
+import { Language } from 'klasa';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [
@@ -36,8 +39,8 @@ export class StarboardEntity extends BaseEntity {
 	#users = new Set<string>();
 	#manager: StarboardManager = null!;
 	#client: Client = null!;
-	#message: Message = null!;
-	#starMessage: Message | null = null;
+	#message: GuildMessage = null!;
+	#starMessage: GuildMessage | null = null;
 	#updateStarMessage = debounce(this.updateStarMessage.bind(this), { wait: 2500, maxWait: 10000 });
 
 	@Column('boolean')
@@ -86,39 +89,7 @@ export class StarboardEntity extends BaseEntity {
 		return kColors[Math.min(this.stars, kMaxColors)];
 	}
 
-	/**
-	 * The formatted masked url
-	 */
-	private get maskedUrl() {
-		return `[${this.#message.language.get(LanguageKeys.Misc.JumpTo)}](${this.#message.url})`;
-	}
-
-	/**
-	 * The text
-	 */
-	private get content() {
-		return `${this.maskedUrl}\n${cutText(this.#message.content, 1800)}`;
-	}
-
-	/**
-	 * The embed for the message
-	 */
-	private get embed() {
-		if (this.#starMessage?.embeds.length) {
-			return this.#starMessage.embeds[0].setColor(this.color);
-		}
-
-		const message = this.#message;
-		if (!message) return null;
-		return new MessageEmbed()
-			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setColor(this.color)
-			.setDescription(this.content)
-			.setTimestamp(message.createdAt)
-			.setImage(getImage(message)!);
-	}
-
-	public setup(manager: StarboardManager, message: Message) {
+	public setup(manager: StarboardManager, message: GuildMessage) {
 		this.#client = manager.client;
 		this.#manager = manager;
 		this.#message = message;
@@ -206,11 +177,19 @@ export class StarboardEntity extends BaseEntity {
 	 * Checks for the existence of the star message
 	 */
 	public async downloadStarMessage(): Promise<void> {
-		const channel = this.#manager.starboardChannel;
-		if (channel === null || !this.starMessageID) return;
+		if (!this.starMessageID) return;
+
+		const channelID = await this.#message.guild.readSettings(GuildSettings.Starboard.Channel);
+		if (isNullish(channelID)) return;
+
+		const channel = this.#message.guild.channels.cache.get(channelID) as TextChannel | undefined;
+		if (isNullish(channel)) {
+			await this.#message.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
+			return;
+		}
 
 		try {
-			this.#starMessage = await channel.messages.fetch(this.starMessageID);
+			this.#starMessage = (await channel.messages.fetch(this.starMessageID)) as GuildMessage;
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {
 				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.destroy();
@@ -227,7 +206,7 @@ export class StarboardEntity extends BaseEntity {
 				this.#client,
 				this.#message.channel.id,
 				this.#message.id,
-				this.#message.guild!.settings.get(GuildSettings.Starboard.Emoji)
+				await this.#message.guild.readSettings(GuildSettings.Starboard.Emoji)
 			);
 
 			// TODO: https://github.com/skyra-project/skyra/issues/569
@@ -249,40 +228,75 @@ export class StarboardEntity extends BaseEntity {
 	}
 
 	/**
+	 * The embed for the message
+	 */
+	private getEmbed(language: Language) {
+		if (this.#starMessage?.embeds.length) {
+			return this.#starMessage.embeds[0].setColor(this.color);
+		}
+
+		const message = this.#message;
+		return new MessageEmbed()
+			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
+			.setColor(this.color)
+			.setDescription(this.getContent(language))
+			.setTimestamp(message.createdAt)
+			.setImage(getImage(message)!);
+	}
+
+	/**
+	 * The text
+	 */
+	private getContent(language: Language) {
+		const url = `[${language.get(LanguageKeys.Misc.JumpTo)}](${this.#message.url})`;
+		return `${url}\n${cutText(this.#message.content, 1800)}`;
+	}
+
+	/**
 	 * Edits the message or sends a new one if it does not exist, includes full error handling
 	 */
 	private async updateStarMessage(): Promise<void> {
-		if (this.stars < this.#manager.minimum) return;
+		const [minimum, channelID, language] = await this.#message.guild.readSettings((settings) => [
+			settings.starboardMinimum,
+			settings.starboardChannel,
+			settings.getLanguage()
+		]);
+
+		if (this.stars < minimum || isNullish(channelID)) return;
+
 		const content = `${this.emoji} **${this.stars}** ${this.#message.channel as TextChannel}`;
 		if (this.#starMessage) {
 			try {
-				await this.#starMessage.edit(content, this.embed!);
+				await this.#starMessage.edit(content, this.getEmbed(language));
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
 				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
 				if (error.code === RESTJSONErrorCodes.UnknownMessage) await this.edit({ starMessageID: null, enabled: false });
 			}
-		} else {
-			const promise = this.#manager.starboardChannel
-				?.send(content, this.embed!)
-				.then((message) => {
-					this.#starMessage = message;
-					this.starMessageID = message.id;
-				})
-				.catch((error) => {
-					if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
-					if (error.code === RESTJSONErrorCodes.MissingAccess) return;
-					// Emit to console
-					this.#client.emit(Events.Wtf, error);
-				})
-				.finally(() => this.#manager.syncMessageMap.delete(this));
-
-			if (promise) {
-				this.#manager.syncMessageMap.set(this, promise);
-				await promise;
-			}
+			return;
 		}
+
+		const channel = this.#message.guild.channels.cache.get(channelID) as TextChannel | undefined;
+		if (!channel) return;
+
+		const promise = channel
+			.send(content, this.getEmbed(language))
+			.then((message) => {
+				this.#starMessage = message as GuildMessage;
+				this.starMessageID = message.id;
+			})
+			.catch((error) => {
+				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
+
+				if (error.code === RESTJSONErrorCodes.MissingAccess) return;
+				// Emit to console
+				this.#client.emit(Events.Wtf, error);
+			})
+			.finally(() => this.#manager.syncMessageMap.delete(this));
+
+		this.#manager.syncMessageMap.set(this, promise);
+		await promise;
 	}
 }

@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 			const suggestionsChannelID = await guild.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
 			suggestionsChannel = this.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
 			if (!suggestionsChannel?.postable)
-				throw message.fetchLocale(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
+				throw await message.fetchLocale(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
 					username: message.author.username,
 					channel: (message.channel as TextChannel).toString()
 				});

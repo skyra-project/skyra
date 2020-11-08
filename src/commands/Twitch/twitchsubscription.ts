@@ -68,9 +68,9 @@ type Entry = NotificationsStreamsTwitchStreamer;
 	],
 	[
 		'channel',
-		(argument, possible, message, [type]) => {
+		async (argument, possible, message, [type]) => {
 			if (type === Type.Show || type === Type.Reset) return undefined;
-			if (!argument) throw message.fetchLocale(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredChannel);
+			if (!argument) throw await message.fetchLocale(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredChannel);
 
 			return message.client.arguments.get('textchannelname')!.run(argument, possible, message);
 		}
@@ -90,7 +90,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 	],
 	[
 		'content',
-		(argument, possible, message, [type, , , status]) => {
+		async (argument, possible, message, [type, , , status]) => {
 			// If the subcommand is Show, Reset, or Remove
 			if (
 				type === Type.Show ||
@@ -100,7 +100,7 @@ type Entry = NotificationsStreamsTwitchStreamer;
 				(type === Type.Add && Boolean(message.flagArgs.embed) && status === 0)
 			)
 				return undefined;
-			if (!argument) throw message.fetchLocale(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredContent);
+			if (!argument) throw await message.fetchLocale(LanguageKeys.Commands.Twitch.TwitchSubscriptionRequiredContent);
 			return message.client.arguments.get('...string')!.run(argument, possible, message);
 		}
 	]

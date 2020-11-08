@@ -42,13 +42,13 @@ const kPokemonTypes = new Set([
 @CreateResolvers([
 	[
 		'type',
-		(arg: string | string[], _, message) => {
+		async (arg: string | string[], _, message) => {
 			arg = (arg as string).toLowerCase().split(' ');
 
-			if (arg.length > 2) throw message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
+			if (arg.length > 2) throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeTooManyTypes);
 
 			for (const type of arg) {
-				if (!kPokemonTypes.has(type)) throw message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
+				if (!kPokemonTypes.has(type)) throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.TypeNotAType, { type });
 			}
 
 			return arg;

@@ -15,7 +15,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Fun.ShindeiruDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ShindeiruExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

@@ -20,7 +20,7 @@ export default class extends MusicCommand {
 		const { audio } = message.guild;
 
 		const entry = await audio.getCurrentTrack();
-		if (!entry) throw message.fetchLocale(LanguageKeys.Commands.Music.PlayingQueueEmpty);
+		if (!entry) throw await message.fetchLocale(LanguageKeys.Commands.Music.PlayingQueueEmpty);
 
 		const track = await audio.player.node.decode(entry.track);
 		const embed = await this.getMessageEmbed(message, track);

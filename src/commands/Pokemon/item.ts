@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw message.fetchLocale(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
+			throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
 		}
 	}
 }

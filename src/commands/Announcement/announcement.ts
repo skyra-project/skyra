@@ -1,3 +1,4 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
@@ -7,7 +8,6 @@ import { BrandingColors } from '@utils/constants';
 import { announcementCheck, extractMentions } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, MessageEmbed, Role, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['announce'],
@@ -23,16 +23,16 @@ import { KlasaMessage } from 'klasa';
 	flagSupport: true
 })
 export default class extends SkyraCommand {
-	private readonly messages: WeakMap<KlasaMessage, KlasaMessage> = new WeakMap();
+	private readonly messages: WeakMap<GuildMessage, GuildMessage> = new WeakMap();
 
 	public async run(message: GuildMessage, [announcement]: [string]) {
-		const { announcementID, language } = await message.guild!.readSettings((settings) => ({
-			announcementID: settings.channelsAnnouncements,
-			language: settings.getLanguage()
-		}));
+		const [announcementID, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Channels.Announcements],
+			settings.getLanguage()
+		]);
 		if (!announcementID) throw language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
-		const channel = message.guild!.channels.cache.get(announcementID) as TextChannel;
+		const channel = message.guild.channels.cache.get(announcementID) as TextChannel;
 		if (!channel) throw language.get(LanguageKeys.Commands.Announcement.SubscribeNoChannel);
 
 		if (!channel.postable) throw language.get(LanguageKeys.System.ChannelNotPostable);
@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale(LanguageKeys.Commands.Announcement.AnnouncementCancelled);
 	}
 
-	private async ask(message: KlasaMessage, header: string, announcement: string) {
+	private async ask(message: GuildMessage, header: string, announcement: string) {
 		const language = await message.fetchLanguage();
 		try {
 			return message.ask(language.get(LanguageKeys.Commands.Announcement.AnnouncementPrompt), {
@@ -59,17 +59,17 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async send(message: KlasaMessage, channel: TextChannel, role: Role, header: string, announcement: string) {
+	private async send(message: GuildMessage, channel: TextChannel, role: Role, header: string, announcement: string) {
 		// If it's not mentionable, set, send/edit, and unset mentionable
 		const { mentionable } = role;
 		if (!mentionable) await role.edit({ mentionable: true });
 
 		const mentions = Reflect.has(message.flagArgs, 'excludeMentions') ? [] : [...new Set(extractMentions(announcement))];
-		// const shouldSendAsEmbed = message.guildSettings.get(GuildSettings.Messages.AnnouncementEmbed);
-		const { shouldSendAsEmbed, language } = await message.guild!.readSettings((settings) => ({
-			shouldSendAsEmbed: settings.messagesAnnouncementEmbed,
-			language: settings.getLanguage()
-		}));
+
+		const [shouldSendAsEmbed, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Messages.AnnouncementEmbed],
+			settings.getLanguage()
+		]);
 
 		// Retrieve last announcement if there was one
 		const previous = this.messages.get(message);
@@ -103,9 +103,9 @@ export default class extends SkyraCommand {
 											header
 									  })
 						  )
-						: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
+						: ((await channel.send(`${header}:\n${announcement}`)) as GuildMessage);
 					this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
-					this.messages.set(message, resultMessage);
+					this.messages.set(message, resultMessage as GuildMessage);
 				} else {
 					this.client.emit(Events.GuildAnnouncementError, message, channel, role, header, announcement, error);
 					throw error;
@@ -124,9 +124,9 @@ export default class extends SkyraCommand {
 									header
 							  })
 				  )
-				: ((await channel.send(`${header}:\n${announcement}`)) as KlasaMessage);
+				: ((await channel.send(`${header}:\n${announcement}`)) as GuildMessage);
 			this.client.emit(Events.GuildAnnouncementSend, message, resultMessage, channel, role, header, announcement);
-			this.messages.set(message, resultMessage);
+			this.messages.set(message, resultMessage as GuildMessage);
 		}
 
 		if (!mentionable) await role.edit({ mentionable: false });

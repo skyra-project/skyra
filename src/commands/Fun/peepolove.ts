@@ -15,7 +15,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Fun.PeepoloveDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.PeepoloveExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text', 'dm'],
 	spam: true,
 	usage: '<image:image>'
 })

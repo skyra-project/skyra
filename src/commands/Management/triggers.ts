@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: GuildMessage, [type, input, output]: [string, string, string]) {
 		const list = await this.getList(message, type);
-		if (list.some((entry) => entry.input === input)) throw message.fetchLocale(LanguageKeys.Commands.Management.TriggersAddTaken);
+		if (list.some((entry) => entry.input === input)) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersAddTaken);
 
 		await message.guild.writeSettings([[this.getListName(type), [...list, this.format(type, input, output)]]]);
 		return message.sendLocale(LanguageKeys.Commands.Management.TriggersAdd);
@@ -88,11 +88,11 @@ export default class extends SkyraCommand {
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage) {
-		const { aliases, includes, language } = await message.guild.readSettings((settings) => ({
-			aliases: settings[GuildSettings.Trigger.Alias],
-			includes: settings[GuildSettings.Trigger.Includes],
-			language: settings.getLanguage()
-		}));
+		const [aliases, includes, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Trigger.Alias],
+			settings[GuildSettings.Trigger.Includes],
+			settings.getLanguage()
+		]);
 
 		const output: string[] = [];
 		for (const alias of aliases) {

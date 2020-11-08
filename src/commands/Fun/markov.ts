@@ -1,6 +1,7 @@
 import Collection from '@discordjs/collection';
 import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import type { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { DEV } from '@root/config';
 import { cutText } from '@sapphire/utilities';
@@ -8,7 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
 import { getAllContent, iteratorAt, pickRandom } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
+import { CommandStore, Stopwatch } from 'klasa';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
@@ -21,7 +22,7 @@ export default class extends SkyraCommand {
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase: (wordBank: WordBank) => string;
-	private readonly kProcess: (message: KlasaMessage, markov: Markov) => Promise<MessageEmbed>;
+	private readonly kProcess: (message: GuildMessage, markov: Markov) => Promise<MessageEmbed>;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -38,7 +39,7 @@ export default class extends SkyraCommand {
 		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 
-	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
+	public async run(message: GuildMessage, [channnel, username]: [TextChannel?, User?]) {
 		const language = await message.fetchLanguage();
 
 		// Send loading message
@@ -50,11 +51,11 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(await this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
 	}
 
-	private async processRelease(message: KlasaMessage, markov: Markov) {
+	private async processRelease(message: GuildMessage, markov: Markov) {
 		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await DbSet.fetchColor(message));
 	}
 
-	private async processDevelopment(message: KlasaMessage, markov: Markov) {
+	private async processDevelopment(message: GuildMessage, markov: Markov) {
 		const language = await message.fetchLanguage();
 		const time = new Stopwatch();
 		const chain = markov.process();
@@ -66,7 +67,7 @@ export default class extends SkyraCommand {
 			.setFooter(language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
-	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
+	private async retrieveMarkov(message: GuildMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
 		const language = await message.fetchLanguage();
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;

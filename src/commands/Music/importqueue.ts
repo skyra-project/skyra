@@ -22,8 +22,8 @@ import { maximumExportQueueSize } from './exportqueue';
 @CreateResolvers([
 	[
 		'squeue',
-		(arg, possible, message) => {
-			if (!arg && message.attachments.size === 0) throw message.fetchLocale(LanguageKeys.MusicManager.ImportQueueNotFound);
+		async (arg, possible, message) => {
+			if (!arg && message.attachments.size === 0) throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueNotFound);
 			return message.attachments.first()?.url ?? message.client.arguments.get('url')!.run(arg, possible, message);
 		}
 	]
@@ -38,7 +38,7 @@ export default class extends MusicCommand {
 
 		// Add the tracks
 		const added = await audio.add(...tracks);
-		if (added === 0) throw message.fetchLocale(LanguageKeys.MusicManager.TooManySongs);
+		if (added === 0) throw await message.fetchLocale(LanguageKeys.MusicManager.TooManySongs);
 
 		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
@@ -48,7 +48,7 @@ export default class extends MusicCommand {
 			const raw = await fetch(url, FetchResultTypes.Buffer);
 			return deserialize<string[]>(raw);
 		} catch {
-			throw message.fetchLocale(LanguageKeys.MusicManager.ImportQueueError);
+			throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 

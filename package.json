@@ -1,6 +1,6 @@
 {
 	"name": "skyra",
-	"version": "5.4.1",
+	"version": "5.5.0",
 	"description": "Multipurpose Discord Bot built on Klasa",
 	"main": "dist/Skyra.js",
 	"scripts": {

@@ -27,13 +27,13 @@ export default class extends SkyraCommand {
 			});
 		}
 
-		if (!REG_TWEMOJI.test(emoji)) throw message.fetchLocale(LanguageKeys.Commands.Tools.EmojiInvalid);
+		if (!REG_TWEMOJI.test(emoji)) throw await message.fetchLocale(LanguageKeys.Commands.Tools.EmojiInvalid);
 		const r = twemoji(emoji);
 		const buffer = await fetch(`https://twemoji.maxcdn.com/72x72/${r}.png`, FetchResultTypes.Buffer).catch(() => {
 			throw message.fetchLocale(LanguageKeys.Commands.Tools.EmojiInvalid);
 		});
 
-		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw message.fetchLocale(LanguageKeys.Commands.Tools.EmojiTooLarge, { emoji });
+		if (buffer.byteLength >= MAX_EMOJI_SIZE) throw await message.fetchLocale(LanguageKeys.Commands.Tools.EmojiTooLarge, { emoji });
 
 		return message.sendLocale(LanguageKeys.Commands.Tools.EmojiTwemoji, [{ emoji, id: r }], {
 			files: [{ attachment: buffer, name: `${r}.png` }]

@@ -9,7 +9,7 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language, KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['npm', 'npm-package', 'yarn-package'],
@@ -17,14 +17,13 @@ import { KlasaMessage, Language } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Developers.YarnDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Developers.YarnExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	usage: '<package:package>'
 })
 @CreateResolvers([
 	[
 		'package',
-		(arg, _, message) => {
-			if (!arg) throw message.fetchLocale(LanguageKeys.Commands.Developers.YarnNoPackage);
+		async (arg, _, message) => {
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Developers.YarnNoPackage);
 			return cleanMentions(message.guild!, arg.replace(/ /g, '-')).toLowerCase();
 		}
 	]

@@ -20,7 +20,8 @@ export default class extends ModerationCommand {
 
 	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {
 		const modlog = await message.guild.moderation.fetch(caseID);
-		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
+		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning))
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 
 		const user = await modlog.fetchUser();
 		const unwarnLog = await this.handle(message, { target: user, reason, modlog, duration: null, preHandled: null });

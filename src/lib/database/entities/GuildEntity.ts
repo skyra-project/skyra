@@ -691,12 +691,12 @@ export type CommandAutoDelete = readonly [string, number];
 
 export interface DisabledCommandChannel {
 	channel: string;
-	commands: readonly string[];
+	commands: string[];
 }
 
 export interface StickyRole {
 	user: string;
-	roles: readonly string[];
+	roles: string[];
 }
 
 export interface ReactionRole {

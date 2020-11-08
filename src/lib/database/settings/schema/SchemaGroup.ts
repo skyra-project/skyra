@@ -10,10 +10,12 @@ export type ReadOnlyNonEmptyArray<T> = [T, ...T[]];
 
 export class SchemaGroup extends Map<string, ISchemaValue> implements ISchemaValue {
 	public readonly parent: SchemaGroup | null;
-	public readonly type = 'Folder';
+	public readonly name: string;
+	public readonly type = 'Group';
 
-	public constructor(parent: SchemaGroup | null = null) {
+	public constructor(name = 'Root', parent: SchemaGroup | null = null) {
 		super();
+		this.name = name;
 		this.parent = parent;
 	}
 
@@ -32,7 +34,7 @@ export class SchemaGroup extends Map<string, ISchemaValue> implements ISchemaVal
 			throw new Error(`You cannot add '${key}' to a non-group entry.`);
 		}
 
-		const group = new SchemaGroup(this).add(tail as ReadOnlyNonEmptyArray<string>, value);
+		const group = new SchemaGroup(`${this.name} / ${toTitleCase(key)}`, this).add(tail as ReadOnlyNonEmptyArray<string>, value);
 		this.set(key, group);
 		return group;
 	}

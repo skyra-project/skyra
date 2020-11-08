@@ -28,7 +28,7 @@ export default class extends ModerationCommand {
 				unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
 			};
 		}
-		throw message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
+		throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {

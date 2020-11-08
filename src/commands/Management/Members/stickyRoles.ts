@@ -37,7 +37,7 @@ import { Role, User } from 'discord.js';
 export default class extends SkyraCommand {
 	public async reset(message: GuildMessage, [user]: [User]) {
 		const roles = await message.guild.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
+		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
 		await message.guild.stickyRoles.clear(user.id);
 		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesReset, [{ user: user.username }]);
@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: GuildMessage, [user, role]: [User, Role]) {
 		const roles = await message.guild.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
+		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
 		await message.guild.stickyRoles.remove(user.id, role.id);
 		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesRemove, [{ user: user.username }]);
@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 
 	public async show(message: GuildMessage, [user]: [User]) {
 		const sticky = await message.guild.stickyRoles.fetch(user.id);
-		if (!sticky.length) throw message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
+		if (!sticky.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
 
 		const language = await message.fetchLanguage();
 		const roles = message.guild.roles.cache;

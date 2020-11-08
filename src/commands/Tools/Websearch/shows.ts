@@ -29,7 +29,7 @@ export default class extends RichDisplayCommand {
 		);
 
 		const { results: entries } = await this.fetchAPI(message, show, year);
-		if (!entries.length) throw message.fetchLocale(LanguageKeys.System.NoResults);
+		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(entries, message, language);
 		await display.start(response, message.author.id);
@@ -46,7 +46,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -57,7 +57,7 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
 		}
 	}
 

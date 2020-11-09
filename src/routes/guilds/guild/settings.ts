@@ -48,11 +48,10 @@ export default class extends Route {
 		const entries = Array.isArray(requestBody.data) ? requestBody.data : (objectToTuples(requestBody.data) as [string, unknown][]);
 		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(400);
 
-		// TODO(kyranet): Fill this in once NanoGateway is up
-		// await botGuild.settings.sync();
+		// TODO(kyranet): Fill this in once the new settings system is up
 		try {
 			// await botGuild.settings.update(entries, { arrayAction: 'overwrite', extraContext: { author: member.id } });
-			return botGuild.readSettings((settings) => response.json(settings));
+			return botGuild.readSettings((settings) => response.json(settings.toJSON()));
 		} catch (errors) {
 			this.client.emit(Events.Error, `${botGuild.name}[${botGuild.id}] failed guild settings update:\n${inspect(errors)}`);
 

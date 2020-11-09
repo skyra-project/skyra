@@ -1,3 +1,4 @@
+import { GuildSettings } from '@lib/database';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID, PREFIX } from '@root/config';
@@ -25,7 +26,7 @@ export default class extends Monitor {
 
 	public async sendPrefixReminder(message: KlasaMessage) {
 		if (message.guild !== null) {
-			const disabledChannels = await message.guild.readSettings((entity) => entity.disabledChannels);
+			const disabledChannels = await message.guild.readSettings(GuildSettings.DisabledChannels);
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) return;
 		}
 

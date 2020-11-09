@@ -10,18 +10,18 @@ import { Event, EventOptions, Language } from 'klasa';
 @ApplyOptions<EventOptions>({ name: Events.GuildMemberUpdate })
 export default class extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
-		// Retrieve whether or not role logs should be sent from Guild Settings and
-		// whether or not the roles are the same.
-		const prevRoles = previous.roles.cache;
-		const nextRoles = next.roles.cache;
-		if (prevRoles.equals(nextRoles)) return;
-
 		const [enabled, language] = await next.guild.readSettings((settings) => [
 			settings[GuildSettings.Events.MemberRoleUpdate],
 			settings.getLanguage()
 		]);
 
 		if (!enabled) return;
+
+		// Retrieve whether or not role logs should be sent from Guild Settings and
+		// whether or not the roles are the same.
+		const prevRoles = previous.roles.cache;
+		const nextRoles = next.roles.cache;
+		if (prevRoles.equals(nextRoles)) return;
 
 		const addedRoles: string[] = [];
 		const removedRoles: string[] = [];

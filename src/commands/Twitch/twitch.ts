@@ -9,11 +9,9 @@ import { KlasaMessage, Language } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Twitch.TwitchDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Twitch.TwitchExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	usage: '<name:string>'
 })
 export default class extends SkyraCommand {
-	// TODO(QuantumlyTangled): Change KlasaMessage to GuildMessage
 	public async run(message: KlasaMessage, [name]: [string]) {
 		const language = await message.fetchLanguage();
 		const { data: channelData } = await this.fetchUsers(language, [name]);

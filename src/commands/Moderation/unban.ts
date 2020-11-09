@@ -20,7 +20,7 @@ export default class extends ModerationCommand {
 			.guild!.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => {
-				throw message.fetchLocale(LanguageKeys.System.FetchbansFail);
+				throw message.fetchLocale(LanguageKeys.System.FetchBansFail);
 			});
 		if (bans.length) {
 			return {

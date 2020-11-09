@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText, toTitleCase } from '@sapphire/utilities';
@@ -9,7 +10,7 @@ import { BrandingColors, Mime } from '@utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
@@ -23,20 +24,21 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
-	public async run(message: KlasaMessage, [gameName]: [string]) {
+	public async run(message: GuildMessage, [gameName]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { results: entries } = await this.fetchAPI(message, gameName);
-		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+		const { results: entries } = await this.fetchAPI(language, gameName);
+		if (!entries.length) throw language.get(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(entries[0].hits, message);
+		const display = await this.buildDisplay(message, language, entries[0].hits);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, gameName: string) {
+	private async fetchAPI(language: Language, gameName: string) {
 		try {
 			return fetch<EshopResult>(
 				API_URL,
@@ -65,12 +67,11 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(entries: EShopHit[], message: KlasaMessage) {
-		const language = await message.fetchLanguage();
+	private async buildDisplay(message: GuildMessage, language: Language, entries: EShopHit[]) {
 		const titles = language.get(LanguageKeys.Commands.Tools.EshopTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
@@ -105,6 +106,7 @@ export default class extends RichDisplayCommand {
 					.addField(titles.categories, game.categories.join(', ') || titles.noCategories)
 			);
 		}
+
 		return display;
 	}
 }

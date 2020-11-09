@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaEntry, isSchemaFolder, SchemaKey } from '@lib/database';
+import { configurableGroups, isSchemaKey, isSchemaGroup, SchemaKey } from '@lib/database';
 import { map } from '@lib/misc';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
@@ -33,7 +33,7 @@ export default class extends SkyraCommand {
 			return [schemaValue.display(settings, language), language];
 		});
 
-		if (isSchemaEntry(schemaValue)) {
+		if (isSchemaKey(schemaValue)) {
 			return message.send(language.get(LanguageKeys.Commands.Admin.ConfGet, { key, value: output }), {
 				allowedMentions: { users: [], roles: [] }
 			});
@@ -135,7 +135,7 @@ export default class extends SkyraCommand {
 	private async fetchKey(message: GuildMessage, key: string): Promise<SchemaKey> {
 		const value = configurableGroups.getPathString(key);
 		if (value === null) throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
-		if (isSchemaFolder(value)) {
+		if (isSchemaGroup(value)) {
 			throw await message.fetchLocale(LanguageKeys.Settings.Gateway.ChooseKey, {
 				keys: [...map(value.childKeys(), (value) => `\`${value}\``)].join(', ')
 			});

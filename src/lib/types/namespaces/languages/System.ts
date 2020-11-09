@@ -1,18 +1,18 @@
 import { FT, T } from '@lib/types';
 
-export const PoweredByWeebsh = T<string>('systemPoweredByWeebsh');
+export const PoweredByWeebSh = T<string>('systemPoweredByWeebsh');
 export const ParseError = T<string>('systemParseError');
 export const HighestRole = T<string>('systemHighestRole');
 export const ChannelNotPostable = T<string>('systemChannelNotPostable');
-export const FetchbansFail = T<string>('systemFetchbansFail');
+export const FetchBansFail = T<string>('systemFetchbansFail');
 export const Loading = T<readonly string[]>('systemLoading');
 export const Error = T<string>('systemError');
 export const DatabaseError = T<string>('systemDatabaseError');
-export const DiscordAborterror = T<string>('systemDiscordAborterror');
+export const DiscordAbortError = T<string>('systemDiscordAborterror');
 export const QueryFail = T<string>('systemQueryFail');
 export const NoResults = T<string>('systemNoResults');
 export const MessageNotFound = T<string>('systemMessageNotFound');
-export const NotenoughParameters = T<string>('systemNotenoughParameters');
+export const NotEnoughParameters = T<string>('systemNotenoughParameters');
 export const CannotAccessChannel = T<string>('systemCannotAccessChannel');
 export const ExceededLengthOutput = FT<{ output: string; time?: string; type?: string }, string>('systemExceededLengthOutput');
 export const ExceededLengthOutputWithTypeAndTime = FT<{ output: string; time?: string; type?: string }, string>(

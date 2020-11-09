@@ -1,6 +1,7 @@
 import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
 import { isNullish, Nullish } from '@lib/misc';
 import { SkyraClient } from '@lib/SkyraClient';
+import { AnyObject } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
 import { arrayStrictEquals } from '@sapphire/utilities';
@@ -708,6 +709,14 @@ export class GuildEntity extends BaseEntity {
 		const language = this.client.languages.get(this.language);
 		if (isNullish(language)) throw new Error(`${this.language} does not exist.`);
 		return language;
+	}
+
+	/**
+	 * Gets the bare representation of the entity.
+	 */
+	// TODO(kyranet): Fill this in
+	public toJSON(): AnyObject {
+		return {};
 	}
 
 	@AfterLoad()

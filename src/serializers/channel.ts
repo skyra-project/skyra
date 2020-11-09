@@ -13,8 +13,7 @@ export default class UserSerializer extends Serializer<string> {
 	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
 		const channel = context.entity.guild.channels.cache.get(value);
 		if (!channel) {
-			// TODO(kyranet): Localize this.
-			throw new Error('The channel does not exist.');
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 		}
 
 		if (this.isValidChannel(channel, context.entry.type)) {
@@ -31,11 +30,11 @@ export default class UserSerializer extends Serializer<string> {
 
 	/**
 	 * The stringify method to be overwritten in actual Serializers
-	 * @param data The data to stringify
+	 * @param value The data to stringify
 	 * @param guild The guild given for context in this call
 	 */
-	public stringify(data: string, context: SerializerUpdateContext): string {
-		return context.entity.guild.channels.cache.get(data)?.name ?? 'Unknown';
+	public stringify(value: string, context: SerializerUpdateContext): string {
+		return context.entity.guild.channels.cache.get(value)?.name ?? value;
 	}
 
 	private isValidChannel(channel: Channel, type: string): boolean {

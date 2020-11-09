@@ -32,7 +32,7 @@ export default class extends Event {
 		// If the error was an AbortError, tell the user to re-try:
 		if (error.name === 'AbortError') {
 			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
-			return message.alert(await message.fetchLocale(LanguageKeys.System.DiscordAborterror));
+			return message.alert(await message.fetchLocale(LanguageKeys.System.DiscordAbortError));
 		}
 
 		// Extract useful information about the DiscordAPIError

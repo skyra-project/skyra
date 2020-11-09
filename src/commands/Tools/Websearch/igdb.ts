@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
@@ -9,7 +10,7 @@ import { BrandingColors, Mime } from '@utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '@utils/External/IgdbTypes';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 const API_URL = 'https://api.igdb.com/v4/games';
 
@@ -55,20 +56,21 @@ export default class extends RichDisplayCommand {
 		'offset 0'
 	].join('; ');
 
-	public async run(message: KlasaMessage, [game]: [string]) {
+	public async run(message: GuildMessage, [game]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const entries = await this.fetchAPI(message, game);
-		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
+		const entries = await this.fetchAPI(language, game);
+		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message);
+		const display = await this.buildDisplay(message, language, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, game: string) {
+	private async fetchAPI(language: Language, game: string) {
 		try {
 			return await fetch<Game[]>(
 				API_URL,
@@ -83,12 +85,11 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(entries: Game[], message: KlasaMessage) {
-		const language = await message.fetchLanguage();
+	private async buildDisplay(message: GuildMessage, language: Language, entries: Game[]) {
 		const titles = language.get(LanguageKeys.Commands.Tools.IgdbTitles);
 		const fieldsData = language.get(LanguageKeys.Commands.Tools.IgdbData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));

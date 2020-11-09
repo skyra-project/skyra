@@ -1,15 +1,20 @@
 import { GuildSettings } from '@lib/database';
-import { DiscordEvents } from '@lib/types/Events';
 import { CLIENT_ID } from '@root/config';
 import { api } from '@utils/Models/Api';
 import { floatPromise } from '@utils/util';
-import { AuditLogEvent, GatewayGuildMemberUpdateDispatch, RESTGetAPIAuditLogQuery, RESTGetAPIAuditLogResult } from 'discord-api-types/v6';
+import {
+	AuditLogEvent,
+	GatewayDispatchEvents,
+	GatewayGuildMemberUpdateDispatch,
+	RESTGetAPIAuditLogQuery,
+	RESTGetAPIAuditLogResult
+} from 'discord-api-types/v6';
 import { Guild } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.GuildMemberUpdate, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.GuildMemberUpdate, emitter: store.client.ws });
 	}
 
 	public run(data: GatewayGuildMemberUpdateDispatch['d']) {

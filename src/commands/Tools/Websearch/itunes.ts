@@ -1,12 +1,13 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
@@ -17,16 +18,16 @@ import { KlasaMessage, Language, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
-	public async run(message: KlasaMessage, [song]: [string]) {
+	public async run(message: GuildMessage, [song]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(language, song);
-		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
+		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message, language);
+		const display = await this.buildDisplay(message, language, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
@@ -48,7 +49,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private async buildDisplay(entries: ItunesData[], message: KlasaMessage, language: Language) {
+	private async buildDisplay(message: GuildMessage, language: Language, entries: ItunesData[]) {
 		const titles = language.get(LanguageKeys.Commands.Tools.ItunesTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 

@@ -31,10 +31,10 @@ export default class extends Event {
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
-			const { allSubscriptions, language } = await guild.readSettings((settings) => ({
-				allSubscriptions: settings.notificationsStreamsTwitchStreamers,
-				language: settings.getLanguage()
-			}));
+			const [allSubscriptions, language] = await guild.readSettings((settings) => [
+				settings.notificationsStreamsTwitchStreamers,
+				settings.getLanguage()
+			]);
 
 			const subscriptions = allSubscriptions.find(([id]) => id === streamer.id);
 			if (typeof subscriptions === 'undefined') continue;

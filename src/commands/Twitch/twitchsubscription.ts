@@ -132,7 +132,7 @@ export default class extends SkyraCommand {
 
 				// Insert the entry to the database performing an upsert, if it created the entry, we tell the Twitch manager
 				// to send Twitch a message saying "hey, I want to be notified, can you pass me some data please?"
-				if (await this.upsertSubscription(message.guild!, streamer)) {
+				if (await this.upsertSubscription(message.guild, streamer)) {
 					await this.client.twitch.subscriptionsStreamHandle(streamer.id, TwitchHooksAction.Subscribe);
 				}
 			} else {
@@ -180,7 +180,7 @@ export default class extends SkyraCommand {
 			if (subscription[1].length === 1) {
 				settings[this.#kSettingsKey].splice(subscriptionIndex, 1);
 
-				await this.removeSubscription(message.guild!, streamer);
+				await this.removeSubscription(message.guild, streamer);
 			} else {
 				// Create a clone of the array, remove the one we want to get rid of, create a clone of the subscription, and update.
 				const entries = subscription[1].slice();
@@ -201,12 +201,9 @@ export default class extends SkyraCommand {
 	public async reset(message: GuildMessage, [streamer]: [Streamer?]) {
 		const language = await message.fetchLanguage();
 
-		// Retrieve all subscriptions for the guild
-		// const subscriptions = await message.guild.readSettings(this.#kSettingsKey);
-
 		// If the streamer was not defined, reset all entries and purge all entries.
 		if (typeof streamer === 'undefined') {
-			const subscriptionEntries = await message.guild.writeSettings(async (settings) => {
+			const subscriptionEntries = await message.guild.writeSettings((settings) => {
 				const entries = settings[this.#kSettingsKey].reduce((accumulator, subscription) => accumulator + subscription[1].length, 0);
 				if (entries === 0) throw language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetEmpty);
 
@@ -217,14 +214,14 @@ export default class extends SkyraCommand {
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
 			const { twitchStreamSubscriptions } = await DbSet.connect();
 			await twitchStreamSubscriptions.manager.transaction(async (em) => {
-				const entries = await em.find(TwitchStreamSubscriptionEntity, { where: { guildIds: Any([message.guild!.id]) } });
+				const entries = await em.find(TwitchStreamSubscriptionEntity, { where: { guildIds: Any([message.guild.id]) } });
 				const toUpdate: TwitchStreamSubscriptionEntity[] = [];
 				const toDelete: TwitchStreamSubscriptionEntity[] = [];
 				for (const entry of entries) {
 					if (entry.guildIds.length === 1) {
 						toDelete.push(entry);
 					} else {
-						const index = entry.guildIds.indexOf(message.guild!.id);
+						const index = entry.guildIds.indexOf(message.guild.id);
 						if (index === -1) continue;
 
 						entry.guildIds.splice(index, 1);
@@ -257,7 +254,7 @@ export default class extends SkyraCommand {
 			return subscription[1].length;
 		});
 
-		await this.removeSubscription(message.guild!, streamer);
+		await this.removeSubscription(message.guild, streamer);
 		return message.sendLocale(
 			entries === 1
 				? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccess

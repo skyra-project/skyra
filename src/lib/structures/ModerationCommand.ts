@@ -171,7 +171,11 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		]);
 
 		return {
-			moderator: 'no-author' in message.flagArgs ? null : Reflect.has(message.flagArgs, 'authored') || nameDisplay ? message.author : null,
+			moderator: Reflect.has(message.flagArgs, 'no-author')
+				? null
+				: Reflect.has(message.flagArgs, 'authored') || nameDisplay
+				? message.author
+				: null,
 			send: enabledDM && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}

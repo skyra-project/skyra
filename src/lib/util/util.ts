@@ -2,6 +2,7 @@ import { GuildSettings } from '@lib/database';
 import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
@@ -88,7 +89,7 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * Check if the announcement is correctly set up
  * @param message The message instance to check with
  */
-export async function announcementCheck(message: Message) {
+export async function announcementCheck(message: GuildMessage) {
 	const announcementID = await message.guild!.readSettings(GuildSettings.Roles.Subscriber);
 	if (!announcementID) throw await message.fetchLocale(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 

@@ -1,10 +1,9 @@
-import { DiscordEvents } from '@lib/types/Events';
-import { GatewayGuildDeleteDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayGuildDeleteDispatch } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.GuildDelete, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.GuildDelete, emitter: store.client.ws });
 	}
 
 	public run(data: GatewayGuildDeleteDispatch['d']) {

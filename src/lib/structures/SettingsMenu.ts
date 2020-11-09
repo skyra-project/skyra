@@ -1,5 +1,5 @@
 import { configurableGroups, SchemaGroup, SchemaKey } from '@lib/database';
-import { isSchemaFolder } from '@lib/database/settings/Utils';
+import { isSchemaGroup } from '@lib/database/settings/Utils';
 import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -62,13 +62,13 @@ export class SettingsMenu {
 	private async render() {
 		const i18n = this.language;
 		const description: string[] = [];
-		if (isSchemaFolder(this.schema)) {
+		if (isSchemaGroup(this.schema)) {
 			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.name || 'Root' }));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
 			for (const [key, value] of this.schema.entries()) {
-				if (isSchemaFolder(value)) folders.push(key);
+				if (isSchemaGroup(value)) folders.push(key);
 				else keys.push(key);
 			}
 
@@ -122,7 +122,7 @@ export class SettingsMenu {
 
 		this.llrc?.setTime(TIMEOUT);
 		this.errorMessage = null;
-		if (isSchemaFolder(this.schema)) {
+		if (isSchemaGroup(this.schema)) {
 			const schema = this.schema.get(message.content);
 			if (schema) {
 				this.schema = schema as SchemaKey | SchemaGroup;

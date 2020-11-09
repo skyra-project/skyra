@@ -1,4 +1,5 @@
 import { GuildSettings } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -16,11 +17,8 @@ const MAXIMUM_SIZE = 300;
 const MAXIMUM_LENGTH = 1024 * 1024;
 
 export default class extends Monitor {
-	public async run(message: KlasaMessage) {
-		const [logChannel, ignoredChannels] = await message.guild!.readSettings([
-			GuildSettings.Channels.ImageLogs,
-			GuildSettings.Channels.Ignore.All
-		]);
+	public async run(message: GuildMessage) {
+		const [logChannel, ignoredChannels] = await message.guild.readSettings([GuildSettings.Channels.ImageLogs, GuildSettings.Channels.Ignore.All]);
 		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
 
 		for (const image of this.getAttachments(message)) {

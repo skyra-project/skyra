@@ -1,13 +1,12 @@
 import { Events } from '@lib/types/Enums';
-import { DiscordEvents } from '@lib/types/Events';
 import { isTextBasedChannel } from '@utils/util';
-import { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import { TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.MessageReactionRemove, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.MessageReactionRemove, emitter: store.client.ws });
 	}
 
 	public run(data: GatewayMessageReactionRemoveDispatch['d']) {

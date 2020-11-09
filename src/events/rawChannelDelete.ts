@@ -1,16 +1,15 @@
 import { DbSet, GuildSettings } from '@lib/database';
 import { Events } from '@lib/types/Enums';
-import { DiscordEvents } from '@lib/types/Events';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Time } from '@utils/constants';
 import { api } from '@utils/Models/Api';
 import { resolveOnErrorCodes } from '@utils/util';
-import { GatewayChannelDeleteDispatch, RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { GatewayChannelDeleteDispatch, GatewayDispatchEvents, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.ChannelDelete, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.ChannelDelete, emitter: store.client.ws });
 	}
 
 	public async run(data: GatewayChannelDeleteDispatch['d']) {

@@ -1,14 +1,13 @@
 import { Events } from '@lib/types/Enums';
-import { DiscordEvents } from '@lib/types/Events';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { isTextBasedChannel, resolveEmoji } from '@utils/util';
-import { GatewayMessageReactionAddDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayMessageReactionAddDispatch } from 'discord-api-types/v6';
 import { TextChannel } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.MessageReactionAdd, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.MessageReactionAdd, emitter: store.client.ws });
 	}
 
 	public run(raw: GatewayMessageReactionAddDispatch['d']) {
@@ -20,11 +19,11 @@ export default class extends Event {
 			emoji: {
 				animated: raw.emoji.animated ?? false,
 				id: raw.emoji.id,
-				managed: Reflect.get(raw.emoji, 'managed') ?? null,
+				managed: raw.emoji.managed ?? null,
 				name: raw.emoji.name,
-				requireColons: 'require_colons' in raw.emoji ? raw.emoji.require_colons! : null,
+				requireColons: raw.emoji.require_colons ?? null,
 				roles: raw.emoji.roles || null,
-				user: (raw.emoji.user && this.client.users.add(raw.emoji.user)) || { id: raw.user_id }
+				user: (raw.emoji.user && this.client.users.add(raw.emoji.user)) ?? { id: raw.user_id }
 			},
 			guild: channel.guild,
 			messageID: raw.message_id,

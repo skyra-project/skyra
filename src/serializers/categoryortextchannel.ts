@@ -4,10 +4,9 @@ import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<string> {
 	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
-		const channel = context.entity.guild.channels.cache.get(value);
+		const channel = context.guild.channels.cache.get(value);
 		if (!channel) {
-			// TODO(kyranet): Localize this.
-			throw new Error('The channel does not exist.');
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 		}
 
 		if (channel.type === 'text' || channel.type === 'category') {
@@ -21,7 +20,7 @@ export default class UserSerializer extends Serializer<string> {
 		return context.entity.guild.channels.cache.has(value);
 	}
 
-	public stringify(data: string, context: SerializerUpdateContext): string {
-		return context.entity.guild.channels.cache.get(data)?.name ?? 'Unknown';
+	public stringify(value: string, context: SerializerUpdateContext): string {
+		return context.entity.guild.channels.cache.get(value)?.name ?? value;
 	}
 }

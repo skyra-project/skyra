@@ -1,15 +1,14 @@
 import { DbSet } from '@lib/database';
 import { Events } from '@lib/types/Enums';
-import { DiscordEvents } from '@lib/types/Events';
 import { api } from '@utils/Models/Api';
 import { compareEmoji } from '@utils/util';
-import { GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.MessageReactionRemoveEmoji, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.MessageReactionRemoveEmoji, emitter: store.client.ws });
 	}
 
 	public async run(data: GatewayMessageReactionRemoveEmojiDispatch['d']) {

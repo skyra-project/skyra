@@ -28,15 +28,15 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { results: entries } = await this.fetchAPI(message, show, year);
-		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
+		const { results: entries } = await this.fetchAPI(language, show, year);
+		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message, language);
+		const display = await this.buildDisplay(message, language, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, show: string, year?: string) {
+	private async fetchAPI(language: Language, show: string, year?: string) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/tv');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
@@ -46,27 +46,27 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async fetchShowData(message: KlasaMessage, serieId: number) {
+	private async fetchShowData(language: Language, serieId: number) {
 		try {
 			const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage, language: Language) {
+	private async buildDisplay(message: KlasaMessage, language: Language, shows: Tmdb.TmdbSeriesList['results']) {
 		const titles = language.get(LanguageKeys.Commands.Tools.ShowsTitles);
 		const fieldsData = language.get(LanguageKeys.Commands.Tools.ShowsData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
-		const showData = await Promise.all(shows.map((show) => this.fetchShowData(message, show.id)));
+		const showData = await Promise.all(shows.map((show) => this.fetchShowData(language, show.id)));
 
 		for (const show of showData) {
 			display.addPage((embed: MessageEmbed) =>

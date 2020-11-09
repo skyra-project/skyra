@@ -618,8 +618,10 @@ export class ModerationActions {
 	}
 
 	public async restrictionSetup(message: KlasaMessage, path: ModerationSetupRestriction) {
-		const [roleID, language] = await this.guild.readSettings((settings) => [settings[path] as string | null, settings.getLanguage()]);
-		if (roleID !== null && this.guild.roles.cache.has(roleID)) throw language.get(LanguageKeys.Commands.Moderation.ActionSetupRestrictionExists);
+		const [roleID, language] = await this.guild.readSettings((settings) => [settings[path], settings.getLanguage()]);
+		if (!isNullish(roleID) && this.guild.roles.cache.has(roleID)) {
+			throw language.get(LanguageKeys.Commands.Moderation.ActionSetupRestrictionExists);
+		}
 		if (this.guild.roles.cache.size >= 250) throw language.get(LanguageKeys.Commands.Moderation.ActionSetupTooManyRoles);
 
 		// Set up the shared role setup
@@ -631,7 +633,7 @@ export class ModerationActions {
 			await api(this.guild.client).guilds(this.guild.id).bans(user.id).get();
 			return true;
 		} catch (error) {
-			if (!(error instanceof DiscordAPIError)) throw await this.guild.fetchLocale(LanguageKeys.System.FetchbansFail);
+			if (!(error instanceof DiscordAPIError)) throw await this.guild.fetchLocale(LanguageKeys.System.FetchBansFail);
 			if (error.code === RESTJSONErrorCodes.UnknownBan) return false;
 			throw error;
 		}
@@ -687,7 +689,7 @@ export class ModerationActions {
 	}
 
 	private async fetchMe() {
-		return this.guild.me ?? this.guild.members.fetch(CLIENT_ID);
+		return this.guild.members.fetch(CLIENT_ID);
 	}
 
 	private async sendDM(entry: ModerationEntity, sendOptions: ModerationActionsSendOptions = {}) {

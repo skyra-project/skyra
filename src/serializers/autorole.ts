@@ -1,18 +1,17 @@
 import { RolesAuto, Serializer, SerializerUpdateContext } from '@lib/database';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<RolesAuto> {
 	public parse(value: string, context: SerializerUpdateContext): Awaited<RolesAuto> {
 		const [id, rawPoints] = value.split(' ');
-		if (!id || !context.entity.guild.roles.cache.has(id)) {
-			// TODO(kyranet): Localize this.
-			throw new Error('id must be a valid role.');
+		if (!id || !context.guild.roles.cache.has(id)) {
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidRole, { name: 'role' }));
 		}
 
 		const points = Number(rawPoints);
 		if (!Number.isSafeInteger(points)) {
-			// TODO(kyranet): Localize this.
-			throw new Error('points must be a valid integer.');
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: 'points' }));
 		}
 
 		return { id, points };

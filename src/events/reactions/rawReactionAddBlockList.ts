@@ -26,7 +26,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	};
 
 	public async run(data: LLRCData, emoji: string) {
-		const [enabled, blockedReactions, ignoredChannels, softPunishment, hardAction, adder] = await data.guild.readSettings((settings) => [
+		const [enabled, blockedReactions, ignoredChannels, softAction, hardAction, adder] = await data.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.Reactions.Enabled],
 			settings[GuildSettings.Selfmod.Reactions.BlackList],
 			settings[GuildSettings.Channels.Ignore.ReactionAdd],
@@ -38,15 +38,13 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 		if (!enabled || blockedReactions.length === 0 || ignoredChannels.includes(data.channel.id)) return;
 
 		const member = await data.guild.members.fetch(data.userID);
-		if (member.user.bot || this.hasPermissions(member)) return;
+		if (member.user.bot || (await this.hasPermissions(member))) return;
 
 		const args = [data, emoji] as const;
 		const preProcessed = await this.preProcess(args);
 		if (preProcessed === null) return;
 
-		this.processSoftPunishment(args, preProcessed, new SelfModeratorBitField(softPunishment));
-
-		if (this.hardPunishmentPath === null) return;
+		this.processSoftPunishment(args, preProcessed, new SelfModeratorBitField(softAction));
 
 		if (!adder) return this.processHardPunishment(data.guild, data.userID, hardAction);
 
@@ -54,7 +52,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 			const points = typeof preProcessed === 'number' ? preProcessed : 1;
 			adder.add(data.userID, points);
 		} catch {
-			await this.processHardPunishment(data.guild, data.userID, await data.guild.readSettings(this.hardPunishmentPath.action));
+			await this.processHardPunishment(data.guild, data.userID, hardAction);
 		}
 	}
 

@@ -1,6 +1,7 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
 import { GuildSettings } from '@lib/database';
 import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { isNullish } from '@lib/misc';
 import { StrictRequired } from '@lib/types';
 import { Time } from '@utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
@@ -49,7 +50,8 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	 */
 	public async fetchChannel() {
 		const channelID = await this.guild.readSettings(GuildSettings.Channels.ModerationLogs);
-		return channelID ? ((this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null) : null;
+		if (isNullish(channelID)) return null;
+		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}
 
 	/**

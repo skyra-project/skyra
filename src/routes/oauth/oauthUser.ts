@@ -7,7 +7,7 @@ import { canManage } from '@utils/API';
 import { Mime, Time } from '@utils/constants';
 import { FlattenedGuild, FlattenedUser, flattenGuild, flattenUser } from '@utils/Models/ApiTransform';
 import { authenticated, fetch, FetchResultTypes, ratelimit } from '@utils/util';
-import { APIUser } from 'discord-api-types/v6';
+import { APIUser, RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Guild, GuildFeatures, Permissions } from 'discord.js';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';
@@ -135,7 +135,7 @@ export default class extends Route {
 	private async refreshToken(id: string, refreshToken: string) {
 		try {
 			this.client.emit(Events.Debug, `Refreshing Token for ${id}`);
-			return await fetch<OauthData>(
+			return await fetch<RESTPostOAuth2AccessTokenResult>(
 				'https://discord.com/api/v6/oauth2/token',
 				{
 					method: 'POST',
@@ -168,14 +168,6 @@ export default class extends Route {
 
 		return canManage(guild, member);
 	}
-}
-
-interface OauthData {
-	access_token: string;
-	expires_in: number;
-	refresh_token: string;
-	scope: string;
-	token_type: string;
 }
 
 interface RawOauthGuild {

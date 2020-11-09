@@ -1,16 +1,17 @@
 import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '@lib/database';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<CommandAutoDelete> {
-	public parse(value: string): Awaited<CommandAutoDelete> {
+	public parse(value: string, context: SerializerUpdateContext): Awaited<CommandAutoDelete> {
 		const [command, rawDuration] = value.split(' ');
 		if (!command) {
-			throw new Error('Invalid command');
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidPiece, { name: context.entry.name, piece: 'command' }));
 		}
 
 		const duration = Number(rawDuration);
 		if (!Number.isSafeInteger(duration) || duration < 0) {
-			throw new Error('Invalid duration');
+			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidDuration, { name: context.entry.name }));
 		}
 
 		return [command, duration];

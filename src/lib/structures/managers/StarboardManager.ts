@@ -1,6 +1,7 @@
 import Collection from '@discordjs/collection';
 import { GuildSettings } from '@lib/database';
 import { StarboardEntity } from '@lib/database/entities/StarboardEntity';
+import { isNullish } from '@lib/misc';
 import { GuildMessage } from '@lib/types';
 import { Client, Guild, TextChannel } from 'discord.js';
 import { DbSet } from '../../database/structures/DbSet';
@@ -47,13 +48,14 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 */
 	public async getStarboardChannel() {
 		const channelID = await this.guild.readSettings(GuildSettings.Starboard.Channel);
-		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) ?? null;
+		if (isNullish(channelID)) return null;
+		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}
 
 	/**
 	 * Get the minimum amount of stars
 	 */
-	public async getMinimumStars() {
+	public getMinimumStars() {
 		return this.guild.readSettings(GuildSettings.Starboard.Minimum);
 	}
 

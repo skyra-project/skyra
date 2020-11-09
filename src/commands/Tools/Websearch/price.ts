@@ -1,5 +1,6 @@
 import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { NAME, TOKENS, VERSION } from '@root/config';
 import { roundNumber } from '@sapphire/utilities';
@@ -7,7 +8,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['currency', 'money', 'exchange'],
@@ -19,18 +20,18 @@ import { KlasaMessage, Language } from 'klasa';
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
+	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
 		const language = await message.fetchLanguage();
 		await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const result = await this.fetchAPI(message, fromCurrency, toCurrencies);
+		const result = await this.fetchAPI(language, fromCurrency, toCurrencies);
 
 		return message.sendEmbed(await this.buildEmbed(message, language, result, fromCurrency, amount));
 	}
 
-	private async fetchAPI(message: KlasaMessage, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
+	private async fetchAPI(language: Language, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
 		try {
 			const url = new URL('https://min-api.cryptocompare.com/data/price');
 			url.searchParams.append('fsym', fromCurrency.toUpperCase());
@@ -48,11 +49,11 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
+			throw language.get(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
 		}
 	}
 
-	private async buildEmbed(message: KlasaMessage, language: Language, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
+	private async buildEmbed(message: GuildMessage, language: Language, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
 		const worths: string[] = [];
 		for (const [currency, toAmount] of Object.entries(result)) {
 			worths.push(`**${roundNumber(fromAmount * toAmount, 2)}** ${currency}`);

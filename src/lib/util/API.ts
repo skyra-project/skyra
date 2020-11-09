@@ -1,4 +1,5 @@
 import { GuildSettings } from '@lib/database';
+import { isNullish } from '@lib/misc';
 import { Guild, GuildMember, Permissions } from 'discord.js';
 
 export async function canManage(guild: Guild, member: GuildMember) {
@@ -11,7 +12,7 @@ export async function canManage(guild: Guild, member: GuildMember) {
 	return (
 		typeof member !== 'undefined' &&
 		// If Roles.Admin is not configured, check MANAGE_GUILD, else check if the member has the role.
-		(roleID === null || roleID === undefined ? member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : member.roles.cache.has(roleID)) &&
+		(isNullish(roleID) ? member.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : member.roles.cache.has(roleID)) &&
 		// Check if despite of having permissions, user permission nodes do not deny them.
 		(await allowedPermissionsNodeUser(guild, member.id)) &&
 		// Check if despite of having permissions, role permission nodes do not deny them.

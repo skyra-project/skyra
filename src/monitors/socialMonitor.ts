@@ -14,14 +14,11 @@ export default class extends Monitor {
 	private readonly ratelimits = new RateLimitManager(1, 60000);
 
 	public async run(message: KlasaMessage) {
-		// &&
-		// 	message.guild.settings.get(GuildSettings.Social.Enabled) &&
-		// 	!message.guild.settings.get(GuildSettings.Social.IgnoreChannels).includes(message.channel.id)
-		const { socialEnabled, ignoredChannels, multiplier } = await message.guild!.readSettings((settings) => ({
-			socialEnabled: settings[GuildSettings.Social.Enabled],
-			ignoredChannels: settings[GuildSettings.Social.IgnoreChannels],
-			multiplier: settings[GuildSettings.Social.Multiplier]
-		}));
+		const [socialEnabled, ignoredChannels, multiplier] = await message.guild!.readSettings((settings) => [
+			settings[GuildSettings.Social.Enabled],
+			settings[GuildSettings.Social.IgnoreChannels],
+			settings[GuildSettings.Social.Multiplier]
+		]);
 
 		if (!socialEnabled || ignoredChannels.includes(message.channel.id)) return;
 
@@ -70,11 +67,11 @@ export default class extends Monitor {
 
 		await message.member!.roles.add(role);
 
-		const { shouldAchieve, achievementMessage, language } = await message.guild!.readSettings((settings) => ({
-			shouldAchieve: settings[GuildSettings.Social.Achieve],
-			achievementMessage: settings[GuildSettings.Social.AchieveMessage],
-			language: settings.getLanguage()
-		}));
+		const [shouldAchieve, achievementMessage, language] = await message.guild!.readSettings((settings) => [
+			settings[GuildSettings.Social.Achieve],
+			settings[GuildSettings.Social.AchieveMessage],
+			settings.getLanguage()
+		]);
 		if (shouldAchieve && message.channel.postable) {
 			await message.channel.send(
 				this.getMessage(message.member!, role, achievementMessage || language.get(LanguageKeys.Monitors.SocialAchievement), points)

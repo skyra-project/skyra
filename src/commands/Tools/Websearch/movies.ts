@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
@@ -9,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['movie', 'tmdb'],
@@ -22,21 +23,21 @@ import { KlasaMessage, Language, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
-	public async run(message: KlasaMessage, [movie, year]: [string, string?]) {
+	public async run(message: GuildMessage, [movie, year]: [string, string?]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { results: entries } = await this.fetchAPI(message, movie, year);
+		const { results: entries } = await this.fetchAPI(language, movie, year);
 		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message, language);
+		const display = await this.buildDisplay(message, language, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, movie: string, year?: string) {
+	private async fetchAPI(language: Language, movie: string, year?: string) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/movie');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
@@ -46,27 +47,27 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbMovieList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async fetchMovieData(message: KlasaMessage, movieId: number) {
+	private async fetchMovieData(language: Language, movieId: number) {
 		try {
 			const url = new URL(`https://api.themoviedb.org/3/movie/${movieId}`);
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
 			return await fetch<Tmdb.TmdbMovie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(movies: Tmdb.TmdbMovieList['results'], message: KlasaMessage, language: Language) {
+	private async buildDisplay(message: GuildMessage, language: Language, movies: Tmdb.TmdbMovieList['results']) {
 		const titles = language.get(LanguageKeys.Commands.Tools.MoviesTitles);
 		const fieldsData = language.get(LanguageKeys.Commands.Tools.MoviesData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
-		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(message, movie.id)));
+		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(language, movie.id)));
 
 		for (const movie of movieData) {
 			display.addPage((embed: MessageEmbed) =>

@@ -1,4 +1,3 @@
-// What are you doing step-bro?
 import {
 	TwitchHelixBearerToken,
 	TwitchHelixGameSearchResult,

@@ -1,14 +1,13 @@
 import { DbSet, GuildSettings } from '@lib/database';
 import { Events } from '@lib/types/Enums';
-import { DiscordEvents } from '@lib/types/Events';
 import { api } from '@utils/Models/Api';
-import { GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: DiscordEvents.MessageReactionRemoveAll, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.MessageReactionRemoveAll, emitter: store.client.ws });
 	}
 
 	public async run(data: GatewayMessageReactionRemoveAllDispatch['d']): Promise<void> {

@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));
 
-			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock! : this.lightThemeDock!, 600, 0, 100, 391);
+			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock : this.lightThemeDock, 600, 0, 100, 391);
 			let position = 20;
 			for (const badge of badges) {
 				canvas.printImage(badge, 635, position, 50, 50);

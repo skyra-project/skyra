@@ -19,7 +19,7 @@ export default class extends Argument {
 		if (resUser) return resUser;
 
 		const result = await this.fetchMember(arg, message);
-		if (result) return message.guild!.members.add(result).user;
+		if (result) return message.guild.members.add(result).user;
 		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 	}
 

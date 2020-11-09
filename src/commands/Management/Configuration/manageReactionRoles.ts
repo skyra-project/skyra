@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 	public async add(message: GuildMessage, [role, channel, emoji]: [Role, TextChannel?, string?]) {
 		if (emoji) {
 			const reactionRole: ReactionRole = {
-				emoji: emoji!,
+				emoji,
 				message: null,
 				channel: channel!.id,
 				role: role.id

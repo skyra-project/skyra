@@ -316,7 +316,7 @@ export class ModerationEntity extends BaseEntity {
 				type: this.title,
 				userName: user.username,
 				userDiscriminator: user.discriminator,
-				userID: this.userID!,
+				userID: this.userID,
 				reason: this.reason!,
 				prefix,
 				caseID: this.caseID,

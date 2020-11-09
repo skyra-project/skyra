@@ -45,7 +45,7 @@ export default class extends Route {
 
 		if (!(await canManage(botGuild, member))) return response.error(403);
 
-		const entries = Array.isArray(requestBody.data) ? requestBody.data : (objectToTuples(requestBody.data) as [string, unknown][]);
+		const entries = Array.isArray(requestBody.data) ? requestBody.data : objectToTuples(requestBody.data);
 		if (entries.some(([key]) => this.kBlockList.includes(key))) return response.error(400);
 
 		// TODO(kyranet): Fill this in once the new settings system is up

@@ -184,13 +184,13 @@ export class GiveawayEntity extends BaseEntity {
 		const language = await guild.fetchLanguage();
 		if (state === States.Finished) {
 			this.#winners = await this.pickWinners();
-			await this.announceWinners(language!);
+			await this.announceWinners(language);
 			await this.finish();
 		} else {
 			this.#refreshAt = this.calculateNextRefresh();
 		}
-		const content = GiveawayEntity.getContent(state, language!);
-		const embed = this.getEmbed(state, language!);
+		const content = GiveawayEntity.getContent(state, language);
+		const embed = this.getEmbed(state, language);
 		return { content, embed };
 	}
 

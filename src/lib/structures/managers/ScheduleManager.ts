@@ -169,7 +169,7 @@ export class ScheduleManager {
 	 */
 	private _checkInterval(): void {
 		if (!this.queue.length) this._clearInterval();
-		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule.interval!);
+		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule.interval);
 	}
 
 	/**

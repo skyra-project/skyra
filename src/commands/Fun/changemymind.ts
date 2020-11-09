@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 
 		return (
 			new Canvas(591, 607)
-				.printImage(this.kTemplate!, 0, 0, 591, 607)
+				.printImage(this.kTemplate, 0, 0, 591, 607)
 
 				// Add user's avatar
 				.printCircularImage(guy, 155, 73, 41)

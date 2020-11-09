@@ -43,7 +43,7 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 
 export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: KlasaMessage, type: T, query: string) {
 	try {
-		const nsfwAllowed = message.channel.type === 'text' ? (message.channel as TextChannel).nsfw : true;
+		const nsfwAllowed = message.channel.type === 'text' ? message.channel.nsfw : true;
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);
 		url.searchParams.append('cx', type === CustomSearchType.Search ? TOKENS.GOOGLE_CUSTOM_SEARCH_WEB_KEY : TOKENS.GOOGLE_CUSTOM_SEARCH_IMAGE_KEY);
 		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);

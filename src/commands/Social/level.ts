@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 				.createRoundedClip(10, 10, 620, 154, 8)
 				.printImage(themeImageSRC, 9, 9, 189, 157)
 				.restore()
-				.printImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
+				.printImage(settings.profile.darkTheme ? this.darkThemeTemplate : this.lightThemeTemplate, 0, 0, 640, 174)
 
 				// Draw the progress bar
 				.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)

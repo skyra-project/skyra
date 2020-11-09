@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 			// Add avatar image with side-offsets of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarFirstUser, 12, 12, 64, 64, 10)
 			// Add heart icon with width offset of 84px and height offset of 20px
-			.printImage(this.heartIcon!, 84, 20)
+			.printImage(this.heartIcon, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarSecondUser, 148, 12, 64, 64, 10)
 			.toBufferAsync();

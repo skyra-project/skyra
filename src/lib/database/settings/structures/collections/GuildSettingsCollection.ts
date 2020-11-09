@@ -8,7 +8,10 @@ export class GuildSettingsCollection extends SettingsCollection<GuildEntity> {
 	public async fetch(key: string): Promise<GuildEntity> {
 		const { guilds } = await DbSet.connect();
 		const existing = await guilds.findOne(key);
-		if (existing) return existing;
+		if (existing) {
+			this.set(key, existing);
+			return existing;
+		}
 
 		const created = new GuildEntity();
 		this.set(key, created);

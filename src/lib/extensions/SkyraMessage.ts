@@ -1,26 +1,32 @@
+/* eslint-disable @typescript-eslint/no-invalid-this */
+import type { CustomFunctionGet, CustomGet } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { sleep } from '@utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, TextChannel } from 'discord.js';
-import { Extendable, ExtendableStore } from 'klasa';
+import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
 
-export default class extends Extendable {
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [Message] });
-	}
+const OPTIONS = { time: 30000, max: 1 };
+const REACTIONS = { YES: '🇾', NO: '🇳' };
+const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
-	public async prompt(this: Message, content: string, time = 30000) {
+export class SkyraMessage extends Structures.get('Message') {
+	public async prompt(content: string, time = 30000) {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
 		if (responses.size === 0) throw await this.fetchLocale(LanguageKeys.Misc.MessagePromptTimeout);
-		return responses.first();
+		return responses.first()!;
 	}
 
-	public async ask(this: Message, options: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+	public ask(options: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+	public ask(
+		content: string | MessageOptions | null,
+		options?: MessageOptions | MessageExtendablesAskOptions,
+		promptOptions?: MessageExtendablesAskOptions
+	): Promise<boolean>;
+
 	public async ask(
-		this: Message,
 		content: string | MessageOptions | null,
 		options?: MessageOptions | MessageExtendablesAskOptions,
 		promptOptions?: MessageExtendablesAskOptions
@@ -33,10 +39,9 @@ export default class extends Extendable {
 		return this.reactable ? awaitReaction(this, message, promptOptions) : awaitMessage(this, promptOptions);
 	}
 
-	public async alert(this: Message, content: string, timer?: number): Promise<Message | null>;
-	public async alert(this: Message, content: string, options?: MessageOptions, timer?: number): Promise<Message | null>;
-	public async alert(this: Message, content: string, options?: number | MessageOptions, timer?: number): Promise<Message | null> {
-		if (!this.channel.postable) return Promise.resolve(null);
+	public async alert(content: string, timer?: number): Promise<Message>;
+	public async alert(content: string, options?: MessageOptions, timer?: number): Promise<Message>;
+	public async alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message> {
 		if (typeof options === 'number' && typeof timer === 'undefined') {
 			timer = options;
 			options = undefined;
@@ -47,18 +52,23 @@ export default class extends Extendable {
 		return msg;
 	}
 
-	public async nuke(this: Message, time = 0) {
-		if (time === 0) return nuke(this);
+	public async nuke(time = 0): Promise<Message> {
+		if (time === 0) return this.nukeNow();
 
 		const lastEditedTimestamp = this.editedTimestamp;
 		await sleep(time);
-		return !this.deleted && this.editedTimestamp === lastEditedTimestamp ? nuke(this) : this;
+		return !this.deleted && this.editedTimestamp === lastEditedTimestamp ? this.nukeNow() : (this as Message);
+	}
+
+	private async nukeNow() {
+		try {
+			return await this.delete();
+		} catch (error) {
+			if (error.code === RESTJSONErrorCodes.UnknownMessage) return this as Message;
+			throw error;
+		}
 	}
 }
-
-const OPTIONS = { time: 30000, max: 1 };
-const REACTIONS = { YES: '🇾', NO: '🇳' };
-const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
 async function awaitReaction(message: Message, messageSent: Message, promptOptions: MessageExtendablesAskOptions = OPTIONS) {
 	await messageSent.react(REACTIONS.YES);
@@ -78,11 +88,22 @@ async function awaitMessage(message: Message, promptOptions: MessageExtendablesA
 	return Boolean(messages.size) && REG_ACCEPT.test(messages.first()!.content);
 }
 
-async function nuke(message: Message) {
-	try {
-		return await message.delete();
-	} catch (error) {
-		if (error.code === RESTJSONErrorCodes.UnknownMessage) return message;
-		throw error;
+declare module 'discord.js' {
+	interface MessageExtendablesAskOptions {
+		time?: number;
+		max?: number;
+	}
+
+	interface Message {
+		prompt(content: string, time?: number): Promise<Message>;
+		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
+		alert(content: string, timer?: number): Promise<Message>;
+		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
+		nuke(time?: number): Promise<Message>;
+		fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+		fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
 	}
 }
+
+Structures.extend('Message', () => SkyraMessage);

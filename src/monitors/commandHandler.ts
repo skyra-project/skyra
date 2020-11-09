@@ -14,6 +14,7 @@ export default class extends Monitor {
 	}
 
 	public async run(message: KlasaMessage) {
+		await message.parseCommand();
 		if (message.guild && message.guild.me === null) await message.guild.members.fetch(CLIENT_ID);
 		if (!message.channel.postable) return undefined;
 		if (!message.commandText && message.prefix === this.client.mentionPrefix) return this.sendPrefixReminder(message);

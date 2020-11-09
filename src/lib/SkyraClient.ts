@@ -2,7 +2,7 @@
 // Import all dependencies
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { KlasaClient, KlasaClientOptions } from 'klasa';
+import { KlasaClient, KlasaClientOptions, KlasaMessage } from 'klasa';
 import { mergeDefault } from '@sapphire/utilities';
 import { Webhook } from 'discord.js';
 
@@ -31,7 +31,7 @@ import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import { QueueClient } from '@lib/audio';
-import { SettingsManager } from '@lib/database';
+import { GuildSettings, SettingsManager } from '@lib/database';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -112,6 +112,24 @@ export class SkyraClient extends KlasaClient {
 	public async login(token?: string) {
 		await this.schedules.init();
 		return super.login(token);
+	}
+
+	/**
+	 * Retrieves the prefix for the guild.
+	 * @param message The message that gives context.
+	 */
+	public fetchPrefix(message: KlasaMessage) {
+		if (!message.guild) return this.options.prefix;
+		return message.guild.readSettings(GuildSettings.Prefix);
+	}
+
+	/**
+	 * Retrieves the language key for the message.
+	 * @param message The message that gives context.
+	 */
+	public fetchLanguage(message: KlasaMessage) {
+		if (!message.guild) return Promise.resolve(this.options.language ?? 'en-US');
+		return message.guild.readSettings(GuildSettings.Language);
 	}
 }
 

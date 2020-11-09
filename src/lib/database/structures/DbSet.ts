@@ -1,3 +1,6 @@
+import { BrandingColors } from '@utils/constants';
+import type { Message } from 'discord.js';
+import type { Connection, FindConditions, FindManyOptions } from 'typeorm';
 import { connect } from '../database.config';
 import { BannerEntity } from '../entities/BannerEntity';
 import { GiveawayEntity } from '../entities/GiveawayEntity';
@@ -20,9 +23,6 @@ import { UserProfileEntity } from '../entities/UserProfileEntity';
 import { ClientRepository } from '../repositories/ClientRepository';
 import { MemberRepository } from '../repositories/MemberRepository';
 import { UserRepository } from '../repositories/UserRepository';
-import { BrandingColors } from '@utils/constants';
-import type { Message } from 'discord.js';
-import type { Connection, FindConditions, FindManyOptions } from 'typeorm';
 
 export class DbSet {
 	public connection: Connection;

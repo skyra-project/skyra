@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaKey, isSchemaGroup, SchemaKey } from '@lib/database';
+import { configurableGroups, isSchemaGroup, isSchemaKey, SchemaKey } from '@lib/database';
 import { map } from '@lib/misc';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';

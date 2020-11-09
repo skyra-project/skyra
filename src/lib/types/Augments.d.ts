@@ -11,7 +11,7 @@ import type { LongLivingReactionCollector } from '@utils/LongLivingReactionColle
 import type { Twitch } from '@utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
-import type { APIUser, GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
+import type { APIUser } from 'discord-api-types/v6';
 import type { PermissionString } from 'discord.js';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';

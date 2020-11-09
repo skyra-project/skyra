@@ -181,7 +181,10 @@ export default class extends Argument {
 	private async filter(message: GuildMessage, remaining: number, tracks: Track[]): Promise<string[]> {
 		if (await message.member.isDJ()) return [...map(take(tracks.values(), remaining), (track) => track.track)];
 
-		const [maximumDuration, allowStreams] = await message.guild.readSettings((guild) => [guild.musicMaximumDuration, guild.musicAllowStreams]);
+		const [maximumDuration, allowStreams] = await message.guild.readSettings([
+			GuildSettings.Music.MaximumDuration,
+			GuildSettings.Music.AllowStreams
+		]);
 		const filteredStreams = allowStreams ? filter(tracks.values(), (track) => !track.info.isStream) : tracks.values();
 		const filteredDuration = filter(filteredStreams, (track) => track.info.length <= maximumDuration);
 		const mappedTracks = map(filteredDuration, (track) => track.track);

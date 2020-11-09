@@ -1,3 +1,4 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -11,7 +12,7 @@ export default class extends Inhibitor {
 	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
-		const channelID = await message.guild.readSettings((entity) => entity.channelsSpam);
+		const channelID = await message.guild.readSettings((settings) => settings[GuildSettings.Channels.Spam]);
 		if (!channelID) return;
 
 		if (channelID === message.channel.id) return;
@@ -19,7 +20,7 @@ export default class extends Inhibitor {
 
 		const channel = message.guild.channels.cache.get(channelID);
 		if (!channel) {
-			await message.guild.writeSettings((entity) => (entity.channelsSpam = null));
+			await message.guild.writeSettings((settings) => (settings[GuildSettings.Channels.Spam] = null));
 			return;
 		}
 

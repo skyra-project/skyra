@@ -18,10 +18,10 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const [filter, adder, language] = await message.guild.readSettings((entity) => [
-			entity[this.softPunishmentPath],
-			entity.adders[this.hardPunishmentPath.adder],
-			entity.getLanguage()
+		const [filter, adder, language] = await message.guild.readSettings((settings) => [
+			settings[this.softPunishmentPath],
+			settings.adders[this.hardPunishmentPath.adder],
+			settings.getLanguage()
 		]);
 		const bitField = new SelfModeratorBitField(filter);
 		this.processSoftPunishment(message, language, bitField, preProcessed);

@@ -1,3 +1,4 @@
+import { GuildSettings } from '@lib/database';
 import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { isTextBasedChannel, resolveEmoji } from '@utils/util';
@@ -15,7 +16,7 @@ export default class extends Event {
 		if (!parsed) return;
 
 		const roleEntry = await channel.guild.readSettings((settings) =>
-			settings.reactionRoles.find(
+			settings[GuildSettings.ReactionRoles].find(
 				(entry) => entry.emoji === parsed && entry.channel === data.channel_id && (entry.message ? entry.message === data.message_id : true)
 			)
 		);

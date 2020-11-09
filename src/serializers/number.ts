@@ -1,4 +1,5 @@
 import { Serializer, SerializerUpdateContext } from '@lib/database';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { AliasPieceOptions } from 'klasa';
@@ -12,13 +13,13 @@ export default class UserSerializer extends Serializer<number> {
 			case 'integer': {
 				const number = parseInt(value, 10);
 				if (Number.isInteger(number) && Serializer.minOrMax(number, context)) return number;
-				throw context.language.get('resolverInvalidInt', { name: context.entry.name });
+				throw context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: context.entry.name });
 			}
 			case 'number':
 			case 'float': {
 				const number = parseFloat(value);
 				if (!Number.isNaN(number) && Serializer.minOrMax(number, context)) return number;
-				throw context.language.get('resolverInvalidFloat', { name: context.entry.name });
+				throw context.language.get(LanguageKeys.Resolvers.InvalidFloat, { name: context.entry.name });
 			}
 		}
 
@@ -29,12 +30,12 @@ export default class UserSerializer extends Serializer<number> {
 		switch (context.entry.type) {
 			case 'integer': {
 				if (typeof value === 'number' && Number.isInteger(value) && Serializer.minOrMax(value, context)) return true;
-				throw context.language.get('resolverInvalidInt', { name: context.entry.name });
+				throw context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: context.entry.name });
 			}
 			case 'number':
 			case 'float': {
 				if (typeof value === 'number' && !Number.isNaN(value) && Serializer.minOrMax(value, context)) return true;
-				throw context.language.get('resolverInvalidFloat', { name: context.entry.name });
+				throw context.language.get(LanguageKeys.Resolvers.InvalidFloat, { name: context.entry.name });
 			}
 		}
 

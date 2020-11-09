@@ -1,4 +1,5 @@
 import { Serializer, SerializerStore, SerializerUpdateContext } from '@lib/database';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<string> {
@@ -11,18 +12,18 @@ export default class UserSerializer extends Serializer<string> {
 
 	public parse(value: string, { entry, language }: SerializerUpdateContext): Awaited<string> {
 		const store = this.client.pieceStores.get(`${entry.type}s`);
-		if (!store) throw language.get('resolverInvalidStore', { store: entry.type });
+		if (!store) throw language.get(LanguageKeys.Resolvers.InvalidStore, { store: entry.type });
 		const parsed = store.get(value);
 		if (parsed && parsed instanceof store.holds) return parsed;
-		throw language.get('resolverInvalidPiece', { name: entry.name, piece: entry.type });
+		throw language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type });
 	}
 
 	public isValid(value: string, { entry, language }: SerializerUpdateContext): Awaited<boolean> {
 		const store = this.client.pieceStores.get(`${entry.type}s`);
-		if (!store) throw language.get('resolverInvalidStore', { store: entry.type });
+		if (!store) throw language.get(LanguageKeys.Resolvers.InvalidStore, { store: entry.type });
 		const parsed = store.get(value);
 		if (parsed && parsed instanceof store.holds) return true;
-		throw language.get('resolverInvalidPiece', { name: entry.name, piece: entry.type });
+		throw language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type });
 	}
 
 	public serialize(value: string, { entry }: SerializerUpdateContext) {

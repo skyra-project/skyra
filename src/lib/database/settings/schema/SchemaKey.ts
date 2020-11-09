@@ -33,12 +33,12 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 	/**
 	 * The visible name of the configuration key.
 	 */
-	public name: K;
+	public name: string;
 
 	/**
 	 * The property from the TypeORM entity.
 	 */
-	public property: string;
+	public property: K;
 
 	/**
 	 * The class this targets.
@@ -70,8 +70,8 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		this.maximum = options.maximum;
 		this.minimum = options.minimum;
 		this.inclusive = options.inclusive ?? false;
-		this.name = options.name as K;
-		this.property = options.property;
+		this.name = options.name;
+		this.property = options.property as K;
 		this.target = options.target;
 		this.type = options.type;
 		this.array = options.array;
@@ -104,11 +104,11 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		const context = this.getContext(settings, language);
 
 		if (this.array) {
-			const values = settings[this.name] as readonly any[];
+			const values = settings[this.property] as readonly any[];
 			return values.length === 0 ? 'None' : `[ ${values.map((value) => serializer.stringify(value, context)).join(' | ')} ]`;
 		}
 
-		const value = settings[this.name];
+		const value = settings[this.property];
 		return value === null ? language.get(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
 	}
 

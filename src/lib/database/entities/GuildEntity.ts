@@ -1,27 +1,17 @@
-import { ConfigurableKey } from '@lib/database/settings/ConfigurableKey';
-import { isNullish, Nullish } from '@lib/misc';
+import { ConfigurableKey, configurableKeys } from '@lib/database';
+import { isNullish } from '@lib/misc';
 import { SkyraClient } from '@lib/SkyraClient';
 import { AnyObject } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '@root/config';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { Adder } from '@utils/Adder';
 import { Time } from '@utils/constants';
 import { create } from '@utils/Security/RegexCreator';
 import { Language, RateLimitManager } from 'klasa';
 import { container } from 'tsyringe';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
-
-export interface Adders {
-	attachments: Adder<string> | null;
-	capitals: Adder<string> | null;
-	links: Adder<string> | null;
-	messages: Adder<string> | null;
-	newlines: Adder<string> | null;
-	invites: Adder<string> | null;
-	words: Adder<string> | null;
-	reactions: Adder<string> | null;
-}
+import { AdderManager } from '../settings/structures/AdderManager';
+import { PermissionNodeManager } from '../settings/structures/PermissionNodeManager';
 
 @Entity('guilds', { schema: 'public' })
 @Check(/* sql */ `"prefix"::text <> ''::text`)
@@ -673,16 +663,8 @@ export class GuildEntity extends BaseEntity {
 	/**
 	 * The anti-spam adders used to control spam
 	 */
-	public adders: Adders = {
-		attachments: null,
-		capitals: null,
-		links: null,
-		messages: null,
-		newlines: null,
-		invites: null,
-		words: null,
-		reactions: null
-	};
+	public readonly adders = new AdderManager(this);
+	public readonly permissionNodes = new PermissionNodeManager(this);
 
 	public wordFilterRegExp: RegExp | null = null;
 
@@ -694,7 +676,7 @@ export class GuildEntity extends BaseEntity {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#words: readonly string[] = [];
 
-	private get client() {
+	public get client() {
 		return container.resolve(SkyraClient);
 	}
 
@@ -714,22 +696,15 @@ export class GuildEntity extends BaseEntity {
 	/**
 	 * Gets the bare representation of the entity.
 	 */
-	// TODO(kyranet): Fill this in
 	public toJSON(): AnyObject {
-		return {};
+		return Object.fromEntries(configurableKeys.map((v) => [v.name, this[v.property] ?? v.default]));
 	}
 
 	@AfterLoad()
 	protected entityLoad() {
+		this.adders.refresh();
+		this.permissionNodes.refresh();
 		this.nms = new RateLimitManager(this.noMentionSpamMentionsAllowed, this.noMentionSpamTimePeriod * 1000);
-		this.adders.attachments = this.makeAdder(this.selfmodAttachmentMaximum, this.selfmodAttachmentDuration);
-		this.adders.capitals = this.makeAdder(this.selfmodCapitalsThresholdMaximum, this.selfmodCapitalsThresholdDuration);
-		this.adders.links = this.makeAdder(this.selfmodLinksThresholdMaximum, this.selfmodLinksThresholdDuration);
-		this.adders.messages = this.makeAdder(this.selfmodMessagesThresholdMaximum, this.selfmodMessagesThresholdDuration);
-		this.adders.newlines = this.makeAdder(this.selfmodNewlinesThresholdMaximum, this.selfmodNewlinesThresholdDuration);
-		this.adders.invites = this.makeAdder(this.selfmodInvitesThresholdMaximum, this.selfmodInvitesThresholdDuration);
-		this.adders.words = this.makeAdder(this.selfmodFilterThresholdMaximum, this.selfmodFilterThresholdDuration);
-		this.adders.reactions = this.makeAdder(this.selfmodReactionsThresholdMaximum, this.selfmodReactionsThresholdDuration);
 		this.wordFilterRegExp = this.selfmodFilterRaw.length ? new RegExp(create(this.selfmodFilterRaw), 'gi') : null;
 		this.#words = this.selfmodFilterRaw.slice();
 	}
@@ -737,18 +712,8 @@ export class GuildEntity extends BaseEntity {
 	@AfterInsert()
 	@AfterUpdate()
 	protected entityUpdate() {
-		this.adders.attachments = this.updateAdder(this.adders.attachments, this.selfmodAttachmentMaximum, this.selfmodAttachmentDuration);
-		this.adders.capitals = this.updateAdder(this.adders.capitals, this.selfmodCapitalsThresholdMaximum, this.selfmodCapitalsThresholdDuration);
-		this.adders.links = this.updateAdder(this.adders.links, this.selfmodLinksThresholdMaximum, this.selfmodLinksThresholdDuration);
-		this.adders.messages = this.updateAdder(this.adders.messages, this.selfmodMessagesThresholdMaximum, this.selfmodMessagesThresholdDuration);
-		this.adders.newlines = this.updateAdder(this.adders.newlines, this.selfmodNewlinesThresholdMaximum, this.selfmodNewlinesThresholdDuration);
-		this.adders.invites = this.updateAdder(this.adders.invites, this.selfmodInvitesThresholdMaximum, this.selfmodInvitesThresholdDuration);
-		this.adders.words = this.updateAdder(this.adders.words, this.selfmodFilterThresholdMaximum, this.selfmodFilterThresholdDuration);
-		this.adders.reactions = this.updateAdder(
-			this.adders.reactions,
-			this.selfmodReactionsThresholdMaximum,
-			this.selfmodReactionsThresholdDuration
-		);
+		this.adders.refresh();
+		this.permissionNodes.onPatch();
 
 		if (!arrayStrictEquals(this.#words, this.selfmodFilterRaw)) {
 			this.#words = this.selfmodFilterRaw.slice();
@@ -758,27 +723,10 @@ export class GuildEntity extends BaseEntity {
 
 	@AfterRemove()
 	protected entityRemove() {
-		this.adders.attachments = null;
-		this.adders.capitals = null;
-		this.adders.links = null;
-		this.adders.messages = null;
-		this.adders.newlines = null;
-		this.adders.invites = null;
-		this.adders.words = null;
-		this.adders.reactions = null;
+		this.adders.onRemove();
+		this.permissionNodes.onRemove();
 		this.wordFilterRegExp = null;
 		this.#words = [];
-	}
-
-	private makeAdder(maximum: number | Nullish, duration: number | Nullish) {
-		if (isNullish(maximum) || isNullish(duration)) return null;
-		return new Adder<string>(maximum, duration);
-	}
-
-	private updateAdder(adder: Adder<string> | null, maximum: number | Nullish, duration: number | Nullish) {
-		if (isNullish(maximum) || isNullish(duration)) return null;
-		if (!adder || adder.maximum !== maximum || adder.duration !== duration) return new Adder<string>(maximum, duration);
-		return adder;
 	}
 }
 

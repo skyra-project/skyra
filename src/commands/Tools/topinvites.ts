@@ -1,12 +1,13 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { Invite, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
@@ -19,12 +20,12 @@ import { KlasaMessage, Language, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
 
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const invites = await message.guild!.fetchInvites();
+		const invites = await message.guild.fetchInvites();
 		const topTen = invites
 			.filter((invite) => invite.uses! > 0 && invite.inviter !== null)
 			.sort((a, b) => b.uses! - a.uses!)
@@ -38,11 +39,11 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(message: KlasaMessage, invites: NonNullableInvite[]) {
+	private async buildDisplay(message: GuildMessage, invites: NonNullableInvite[]) {
 		const language = await message.fetchLanguage();
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild! }))
+				.setTitle(language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
 				.setColor(await DbSet.fetchColor(message))
 		);
 		const embedData = language.get(LanguageKeys.Commands.Tools.TopInvitesEmbedData);

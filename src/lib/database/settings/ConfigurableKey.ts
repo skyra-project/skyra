@@ -1,10 +1,11 @@
+import Collection from '@discordjs/collection';
 import { isNumber, isPrimitive } from '@sapphire/utilities';
 import { ColumnOptions, ColumnType, getMetadataArgsStorage } from 'typeorm';
 import type { GuildEntity } from '../entities/GuildEntity';
 import { ReadOnlyNonEmptyArray, SchemaGroup } from './schema/SchemaGroup';
 import { ConfigurableKeyValueOptions, SchemaKey } from './schema/SchemaKey';
 
-export const configurableKeys = new Map<string, SchemaKey>();
+export const configurableKeys = new Collection<string, SchemaKey>();
 export const configurableGroups = new SchemaGroup();
 
 export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecorator {
@@ -24,7 +25,7 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 		const df = options.default ?? getDefault(column.options, array, minimum);
 		const value = new SchemaKey({
 			target: target.constructor,
-			property: property as string,
+			property: property as keyof GuildEntity,
 			...options,
 			array,
 			default: df,
@@ -84,6 +85,7 @@ function hydrateType(type: ColumnType) {
 		case 'smallmoney':
 		case 'money':
 		case 'real':
+		case 'numeric':
 		case 'double precision':
 		case 'double': {
 			return 'number';

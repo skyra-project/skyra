@@ -1,5 +1,4 @@
-import { configurableKeys, SchemaKey } from '@lib/database';
-import type { Adders, GuildEntity } from '@lib/database/entities';
+import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '@lib/database';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -338,7 +337,7 @@ export abstract class SelfModerationCommand extends Command {
 		return parsed.offset;
 	}
 
-	protected abstract $adder: keyof Adders;
+	protected abstract $adder: AdderKey;
 	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
 	protected abstract keySoftAction: KeyOfType<GuildEntity, number>;
 	protected abstract keyHardAction: KeyOfType<GuildEntity, number | null>;

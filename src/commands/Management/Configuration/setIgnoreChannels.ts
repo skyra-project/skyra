@@ -1,10 +1,11 @@
 import { GuildSettings } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isTextBasedChannel } from '@utils/util';
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -19,11 +20,11 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
+	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Misc.ConfigurationTextChannelRequired);
 
-		const [language, oldLength, newLength] = await message.guild!.writeSettings((settings) => {
+		const [language, oldLength, newLength] = await message.guild.writeSettings((settings) => {
 			const ignoredChannels = settings[GuildSettings.DisabledChannels];
 			const oldLength = ignoredChannels.length;
 

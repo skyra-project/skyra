@@ -1,5 +1,4 @@
-import { GuildSettings } from '@lib/database';
-import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { GuildSettings, ModerationEntity } from '@lib/database';
 import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
 import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';

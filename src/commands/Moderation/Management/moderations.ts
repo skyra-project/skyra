@@ -1,6 +1,5 @@
 import Collection from '@discordjs/collection';
-import { DbSet } from '@lib/database';
-import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { DbSet, ModerationEntity } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
@@ -29,7 +28,7 @@ export default class extends RichDisplayCommand {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild!.moderation.fetch())).filter(
+		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
 			this.getFilter(action, target)
 		);
 

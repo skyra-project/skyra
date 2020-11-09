@@ -52,13 +52,13 @@ export default class extends SkyraCommand {
 
 			const parsed = await schemaKey.parse(settings, language, valueToSet);
 			if (schemaKey.array) {
-				const values = Reflect.get(settings, schemaKey.name) as any[];
+				const values = Reflect.get(settings, schemaKey.property) as any[];
 				const { serializer } = schemaKey;
 				const index = values.findIndex((value) => serializer.equals(value, parsed));
 				if (index === -1) values.push(parsed);
 				else values[index] = parsed;
 			} else {
-				const value = Reflect.get(settings, schemaKey.name);
+				const value = Reflect.get(settings, schemaKey.property);
 				const { serializer } = schemaKey;
 				if (serializer.equals(value, parsed)) {
 					throw language.get(LanguageKeys.Settings.Gateway.DuplicateValue, {
@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 					});
 				}
 
-				Reflect.set(settings, schemaKey.name, parsed);
+				Reflect.set(settings, schemaKey.property, parsed);
 			}
 
 			return [schemaKey.display(settings, language), language];
@@ -85,7 +85,7 @@ export default class extends SkyraCommand {
 
 			const parsed = await schemaKey.parse(settings, language, valueToRemove);
 			if (schemaKey.array) {
-				const values = Reflect.get(settings, schemaKey.name) as any[];
+				const values = Reflect.get(settings, schemaKey.property) as any[];
 				const { serializer } = schemaKey;
 				const index = values.findIndex((value) => serializer.equals(value, parsed));
 				if (index === -1) {
@@ -97,7 +97,7 @@ export default class extends SkyraCommand {
 
 				values.splice(index, 1);
 			} else {
-				Reflect.set(settings, schemaKey.name, schemaKey.default);
+				Reflect.set(settings, schemaKey.property, schemaKey.default);
 			}
 
 			return [schemaKey.display(settings, language), language];
@@ -110,7 +110,7 @@ export default class extends SkyraCommand {
 		const schemaKey = await this.fetchKey(message, key);
 		const [response, language] = await message.guild.writeSettings(async (settings) => {
 			const language = settings.getLanguage();
-			Reflect.set(settings, schemaKey.name, schemaKey.default);
+			Reflect.set(settings, schemaKey.property, schemaKey.default);
 			return [schemaKey.display(settings, language), language];
 		});
 

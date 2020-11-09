@@ -45,11 +45,11 @@ export class StickyRoleManager {
 
 		// 3.0.b. Make a clone with the userID and the fixed roles array:
 		return this.#guild.writeSettings((settings) => {
-			const index = settings.stickyRoles.findIndex((entry) => entry.user === userID);
+			const index = settings[GuildSettings.StickyRoles].findIndex((entry) => entry.user === userID);
 			if (index === -1) return [];
 
 			const clone: StickyRole = { user: userID, roles };
-			settings.stickyRoles[index] = clone;
+			settings[GuildSettings.StickyRoles][index] = clone;
 
 			// 4.0. Return the updated roles:
 			return clone.roles;

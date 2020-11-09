@@ -77,7 +77,7 @@ export default class extends MusicCommand {
 			queueDisplay.embedTemplate.addField(language.get(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
 			queueDisplay.embedTemplate.addField(
 				ZeroWidthSpace,
-				language.get(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild! })
+				language.get(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild })
 			);
 
 			for (const page of chunk(songFields, 5)) {

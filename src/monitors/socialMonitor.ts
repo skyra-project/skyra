@@ -1,4 +1,5 @@
 import { DbSet, GuildSettings, RolesAuto } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
@@ -13,8 +14,8 @@ const {
 export default class extends Monitor {
 	private readonly ratelimits = new RateLimitManager(1, 60000);
 
-	public async run(message: KlasaMessage) {
-		const [socialEnabled, ignoredChannels, multiplier] = await message.guild!.readSettings((settings) => [
+	public async run(message: GuildMessage) {
+		const [socialEnabled, ignoredChannels, multiplier] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Social.Enabled],
 			settings[GuildSettings.Social.IgnoreChannels],
 			settings[GuildSettings.Social.Multiplier]
@@ -32,11 +33,11 @@ export default class extends Monitor {
 			// If boosted guild, increase rewards
 			const set = await DbSet.connect();
 			const { guildBoost } = await set.clients.ensure();
-			const add = Math.round((Math.random() * 4 + 4) * (guildBoost.includes(message.guild!.id) ? 1.5 : 1));
+			const add = Math.round((Math.random() * 4 + 4) * (guildBoost.includes(message.guild.id) ? 1.5 : 1));
 
 			const [, points] = await Promise.all([
 				this.addUserPoints(set, message.author.id, add),
-				this.addMemberPoints(set, message.author.id, message.guild!.id, add * multiplier)
+				this.addMemberPoints(set, message.author.id, message.guild.id, add * multiplier)
 			]);
 			await this.handleRoles(message, points);
 		} catch (err) {
@@ -44,15 +45,15 @@ export default class extends Monitor {
 		}
 	}
 
-	public async handleRoles(message: KlasaMessage, points: number) {
-		const autoRoles = await message.guild!.readSettings(GuildSettings.Roles.Auto);
-		if (!autoRoles.length || !message.guild!.me!.permissions.has(MANAGE_ROLES)) return;
+	public async handleRoles(message: GuildMessage, points: number) {
+		const autoRoles = await message.guild.readSettings(GuildSettings.Roles.Auto);
+		if (!autoRoles.length || !message.guild.me!.permissions.has(MANAGE_ROLES)) return;
 
 		const autoRole = this.getLatestRole(autoRoles, points);
 		if (!autoRole) return;
 
-		const role = message.guild!.roles.cache.get(autoRole.id);
-		if (!role || role.position > message.guild!.me!.roles.highest.position) {
+		const role = message.guild.roles.cache.get(autoRole.id);
+		if (!role || role.position > message.guild.me!.roles.highest.position) {
 			message
 				.guild!.writeSettings((settings) => {
 					const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((element) => element === autoRole);
@@ -67,7 +68,7 @@ export default class extends Monitor {
 
 		await message.member!.roles.add(role);
 
-		const [shouldAchieve, achievementMessage, language] = await message.guild!.readSettings((settings) => [
+		const [shouldAchieve, achievementMessage, language] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Social.Achieve],
 			settings[GuildSettings.Social.AchieveMessage],
 			settings.getLanguage()

@@ -1,12 +1,10 @@
-import { DbSet } from '@lib/database';
-import { MemberEntity } from '@lib/database/entities/MemberEntity';
+import { DbSet, MemberEntity } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -31,7 +29,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async add(message: GuildMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		if (settings) {
 			const newAmount = settings.points + amount;
 			settings.points = newAmount;
@@ -44,7 +42,7 @@ export default class extends SkyraCommand {
 
 		const created = new MemberEntity();
 		created.userID = user.id;
-		created.guildID = message.guild!.id;
+		created.guildID = message.guild.id;
 		created.points = amount;
 		await members.insert(created);
 
@@ -55,7 +53,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: GuildMessage, [user, amount]: [User, number]) {
 		const { members } = await DbSet.connect();
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		if (!settings) throw await message.fetchLocale(LanguageKeys.Commands.Social.SocialMemberNotexists);
 
 		const newAmount = Math.max(settings.points - amount, 0);
@@ -72,7 +70,7 @@ export default class extends SkyraCommand {
 		if (amount === 0) return this.reset(message, [user]);
 
 		const { members } = await DbSet.connect();
-		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
+		const settings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		let oldValue = 0;
 		if (settings) {
 			oldValue = settings.points;
@@ -81,7 +79,7 @@ export default class extends SkyraCommand {
 		} else {
 			const created = new MemberEntity();
 			created.userID = user.id;
-			created.guildID = message.guild!.id;
+			created.guildID = message.guild.id;
 			created.points = amount;
 			await members.insert(created);
 		}
@@ -105,9 +103,9 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	public async reset(message: KlasaMessage, [user]: [User]) {
+	public async reset(message: GuildMessage, [user]: [User]) {
 		const { members } = await DbSet.connect();
-		await members.delete({ userID: user.id, guildID: message.guild!.id });
+		await members.delete({ userID: user.id, guildID: message.guild.id });
 		return message.sendLocale(LanguageKeys.Commands.Social.SocialReset, [{ user: user.username }]);
 	}
 }

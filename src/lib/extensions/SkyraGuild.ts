@@ -2,7 +2,6 @@
 import { Queue } from '@lib/audio';
 import { GuildEntity, SettingsCollectionCallback } from '@lib/database';
 import { ModerationManager } from '@lib/structures/managers/ModerationManager';
-import { PermissionsManager } from '@lib/structures/managers/PermissionsManager';
 import { StarboardManager } from '@lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '@lib/structures/managers/StickyRoleManager';
 import { CustomFunctionGet, CustomGet } from '@lib/types';
@@ -15,7 +14,6 @@ export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);
 	public readonly starboard: StarboardManager = new StarboardManager(this);
 	public readonly moderation: ModerationManager = new ModerationManager(this);
-	public readonly permissionsManager: PermissionsManager = new PermissionsManager(this);
 	public readonly stickyRoles: StickyRoleManager = new StickyRoleManager(this);
 
 	public get audio(): Queue {
@@ -50,7 +48,6 @@ declare module 'discord.js' {
 		readonly security: GuildSecurity;
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
-		readonly permissionsManager: PermissionsManager;
 		readonly stickyRoles: StickyRoleManager;
 		fetchLanguage(): Promise<Language>;
 

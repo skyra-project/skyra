@@ -3,7 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { GuildMessage } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -16,14 +16,16 @@ import { getImage } from '@utils/util';
 	usage: '<range:range{,50}> <reason:...string>',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
-	public async init() {
-		this.createCustomResolver('range', async (arg, possible, message) => {
+@CreateResolvers([
+	[
+		'range',
+		async (arg, possible, message) => {
 			if (arg === 'latest') return [await message.guild!.moderation.count()];
-			return this.client.arguments.get('range')!.run(arg, possible, message);
-		});
-	}
-
+			return message.client.arguments.get('range')!.run(arg, possible, message);
+		}
+	]
+])
+export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [cases, reason]: [number[], string]) {
 		const entries = await message.guild.moderation.fetch(cases);
 		if (!entries.size)

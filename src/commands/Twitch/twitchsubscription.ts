@@ -3,9 +3,9 @@ import {
 	GuildSettings,
 	NotificationsStreamsTwitchEventStatus,
 	NotificationsStreamsTwitchStreamer,
-	NotificationsStreamTwitch
+	NotificationsStreamTwitch,
+	TwitchStreamSubscriptionEntity
 } from '@lib/database';
-import { TwitchStreamSubscriptionEntity } from '@lib/database/entities/TwitchStreamSubscriptionEntity';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';

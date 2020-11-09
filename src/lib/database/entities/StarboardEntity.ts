@@ -257,8 +257,8 @@ export class StarboardEntity extends BaseEntity {
 	 */
 	private async updateStarMessage(): Promise<void> {
 		const [minimum, channelID, language] = await this.#message.guild.readSettings((settings) => [
-			settings.starboardMinimum,
-			settings.starboardChannel,
+			settings[GuildSettings.Starboard.Minimum],
+			settings[GuildSettings.Starboard.Channel],
 			settings.getLanguage()
 		]);
 

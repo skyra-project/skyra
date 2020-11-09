@@ -64,14 +64,14 @@ export default class extends RichDisplayCommand {
 		}
 		const memberRoles = new Set(message.member!.roles.cache.keys());
 		// Remove the everyone role
-		memberRoles.delete(message.guild!.id);
+		memberRoles.delete(message.guild.id);
 
 		const filterRoles = new Set(roles);
 		const unlistedRoles: string[] = [];
 		const unmanageable: string[] = [];
 		const addedRoles: string[] = [];
 		const removedRoles: string[] = [];
-		const { position } = message.guild!.me!.roles.highest;
+		const { position } = message.guild.me!.roles.highest;
 
 		for (const role of filterRoles) {
 			if (!role) continue;
@@ -98,7 +98,7 @@ export default class extends RichDisplayCommand {
 							// If the member has this role we need to delete it
 							memberRoles.delete(id);
 							// get to the role object so we can get the name of the role to show the user it was removed
-							const roleToRemove = message.guild!.roles.cache.get(id)!;
+							const roleToRemove = message.guild.roles.cache.get(id)!;
 							removedRoles.push(roleToRemove.name);
 						}
 					}
@@ -109,7 +109,7 @@ export default class extends RichDisplayCommand {
 		// If the guild requests to remove the initial role upon claiming, remove the initial role
 		if (rolesInitial && rolesRemoveInitial && addedRoles.length) {
 			// If the role was deleted, remove it from the settings
-			if (!message.guild!.roles.cache.has(rolesInitial)) {
+			if (!message.guild.roles.cache.has(rolesInitial)) {
 				await message.guild.writeSettings([[GuildSettings.Roles.Initial, null]]).catch((error) => this.client.emit(Events.Wtf, error));
 			} else if (message.member!.roles.cache.has(rolesInitial)) {
 				memberRoles.delete(rolesInitial);

@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 			const filtered = new Set(autoRoles);
 			const output: string[] = [];
 			for (const obj of autoRoles) {
-				const role = message.guild!.roles.cache.get(obj.id);
+				const role = message.guild.roles.cache.get(obj.id);
 				if (role) output.push(`${obj.points.toString().padStart(6, ' ')} : ${role.name}`);
 				else filtered.delete(obj);
 			}

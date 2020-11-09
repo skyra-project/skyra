@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 			data: {
 				title,
 				endsAt: duration.getTime() + scheduleOffset + 500,
-				guildID: message.guild!.id,
+				guildID: message.guild.id,
 				channelID: channel.id,
 				minimum: 1,
 				minimumWinners: winners

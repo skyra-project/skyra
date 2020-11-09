@@ -1,5 +1,4 @@
-import { DbSet } from '@lib/database';
-import { UserEntity } from '@lib/database/entities/UserEntity';
+import { DbSet, UserEntity } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

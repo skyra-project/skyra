@@ -1,12 +1,12 @@
-import { GuildSettings } from '@lib/database';
-import { TriggerIncludes } from '@lib/database/entities/GuildEntity';
+import { GuildSettings, TriggerIncludes } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { KlasaMessage, Monitor } from 'klasa';
 
 export default class extends Monitor {
-	public async run(message: KlasaMessage): Promise<void> {
-		const triggers = await message.guild!.readSettings(GuildSettings.Trigger.Includes);
+	public async run(message: GuildMessage): Promise<void> {
+		const triggers = await message.guild.readSettings(GuildSettings.Trigger.Includes);
 		if (triggers.length <= 0) return;
 
 		const content = message.content.toLowerCase();
@@ -30,7 +30,7 @@ export default class extends Monitor {
 		);
 	}
 
-	private async tryReact(message: KlasaMessage, trigger: TriggerIncludes) {
+	private async tryReact(message: GuildMessage, trigger: TriggerIncludes) {
 		try {
 			await message.react(trigger.output);
 		} catch (error) {
@@ -40,7 +40,7 @@ export default class extends Monitor {
 			if (error.code === RESTJSONErrorCodes.ReactionWasBlocked) return;
 			// The emoji has been deleted or the bot is not in the whitelist
 			if (error.code === RESTJSONErrorCodes.UnknownEmoji) {
-				await message.guild!.writeSettings((settings) => {
+				await message.guild.writeSettings((settings) => {
 					const triggerIndex = settings[GuildSettings.Trigger.Includes].findIndex((element) => element === trigger);
 					settings[GuildSettings.Trigger.Includes].splice(triggerIndex, 1);
 				});

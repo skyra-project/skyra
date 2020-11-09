@@ -1,4 +1,4 @@
-import { Adders, GuildEntity } from '@lib/database';
+import { AdderKey, GuildEntity, GuildSettings } from '@lib/database';
 import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { CLIENT_ID } from '@root/config';
@@ -87,7 +87,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onWarning(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.warning({
+			message.guild.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				reason:
@@ -101,7 +101,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onKick(message: GuildMessage, language: Language, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.kick({
+			message.guild.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				reason:
@@ -114,7 +114,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onMute(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.mute({
+			message.guild.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				reason:
@@ -128,7 +128,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onSoftBan(message: GuildMessage, language: Language, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.softBan(
+			message.guild.security.actions.softBan(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
@@ -144,7 +144,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 
 	protected async onBan(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.ban(
+			message.guild.security.actions.ban(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
@@ -160,7 +160,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	protected async createActionAndSend(message: GuildMessage, performAction: () => unknown): Promise<void> {
-		const unlock = message.guild!.moderation.createLock();
+		const unlock = message.guild.moderation.createLock();
 		await performAction();
 		unlock();
 	}
@@ -193,7 +193,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	private checkMessageChannel(settings: GuildEntity, channel: TextChannel) {
-		return !(settings.selfmodIgnoreChannels.includes(channel.id) || settings[this.ignoredChannelsPath].includes(channel.id));
+		return !(settings[GuildSettings.Selfmod.IgnoreChannels].includes(channel.id) || settings[this.ignoredChannelsPath].includes(channel.id));
 	}
 
 	private checkMemberRoles(settings: GuildEntity, member: GuildMember | null) {
@@ -210,5 +210,5 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 export interface HardPunishment {
 	action: KeyOfType<GuildEntity, number>;
 	actionDuration: KeyOfType<GuildEntity, number | null>;
-	adder: keyof Adders;
+	adder: AdderKey;
 }

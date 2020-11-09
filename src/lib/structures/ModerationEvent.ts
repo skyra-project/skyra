@@ -1,4 +1,4 @@
-import type { Adders, GuildEntity } from '@lib/database/entities';
+import type { AdderKey, GuildEntity } from '@lib/database';
 import type { KeyOfType } from '@lib/types/Utils';
 import { CLIENT_ID } from '@root/config';
 import { Guild, MessageEmbed } from 'discord.js';
@@ -118,5 +118,5 @@ export abstract class ModerationEvent<V extends unknown[], T = unknown, A = stri
 export interface HardPunishment<A = string> {
 	action: KeyOfType<GuildEntity, A>;
 	actionDuration: KeyOfType<GuildEntity, number | null>;
-	adder: keyof Adders;
+	adder: AdderKey;
 }

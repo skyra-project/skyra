@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
-		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
+		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild.id : undefined);
 
 		const { position } = list.get(message.author.id) || { position: list.size + 1 };
 		const page = await this.generatePage(message, list, index - 1, position);

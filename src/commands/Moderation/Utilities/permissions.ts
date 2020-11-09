@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		const language = await message.fetchLanguage();
 
 		if (!user) throw language.get(LanguageKeys.Misc.UserNotExistent);
-		const member = await message.guild!.members.fetch(user.id).catch(() => {
+		const member = await message.guild.members.fetch(user.id).catch(() => {
 			throw language.get(LanguageKeys.Misc.UserNotInGuild);
 		});
 

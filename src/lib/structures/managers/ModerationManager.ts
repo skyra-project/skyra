@@ -1,13 +1,11 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { GuildSettings } from '@lib/database';
-import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { DbSet, GuildSettings, ModerationEntity } from '@lib/database';
 import { isNullish } from '@lib/misc';
 import { StrictRequired } from '@lib/types';
 import { Time } from '@utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
-import { DbSet } from '../../database/structures/DbSet';
 
 enum CacheActions {
 	None,

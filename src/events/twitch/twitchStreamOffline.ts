@@ -1,4 +1,4 @@
-import { DbSet, NotificationsStreamsTwitchEventStatus } from '@lib/database';
+import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '@lib/database';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '@root/routes/twitch/twitchStreamChange';
@@ -22,7 +22,7 @@ export default class extends Event {
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
 			const [allSubscriptions, language] = await guild.readSettings((settings) => [
-				settings.notificationsStreamsTwitchStreamers,
+				settings[GuildSettings.Notifications.Stream.Twitch.Streamers],
 				settings.getLanguage()
 			]);
 

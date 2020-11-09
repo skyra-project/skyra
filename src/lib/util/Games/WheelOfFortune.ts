@@ -1,5 +1,4 @@
-import { DbSet } from '@lib/database';
-import { UserEntity } from '@lib/database/entities/UserEntity';
+import { DbSet, UserEntity } from '@lib/database';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';

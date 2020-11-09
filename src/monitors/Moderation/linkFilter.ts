@@ -31,7 +31,7 @@ export default class extends ModerationMonitor {
 		let match: RegExpExecArray | null = null;
 
 		const urls = new Set<string>();
-		const whitelist = await message.guild!.readSettings(GuildSettings.Selfmod.Links.Whitelist);
+		const whitelist = await message.guild.readSettings(GuildSettings.Selfmod.Links.Whitelist);
 		while ((match = this.kRegExp.exec(message.content)) !== null) {
 			const { hostname } = match.groups!;
 			if (this.kWhitelist.test(hostname)) continue;

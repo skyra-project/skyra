@@ -1,5 +1,4 @@
-import { GuildEntity, GuildSettings } from '@lib/database';
-import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { GuildEntity, GuildSettings, ModerationEntity } from '@lib/database';
 import { isNullish, Nullish } from '@lib/misc';
 import { ModerationManagerCreateData } from '@lib/structures/managers/ModerationManager';
 import { KeyOfType } from '@lib/types';

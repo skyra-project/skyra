@@ -17,8 +17,6 @@ export default class extends Event {
 				WheelOfFortune.init().catch((error) => this.client.emit(Events.Wtf, error)),
 				// Initialize giveaways
 				this.client.giveaways.init().catch((error) => this.client.emit(Events.Wtf, error)),
-				// Update guild permission managers
-				this.client.guilds.cache.map((guild) => guild.permissionsManager.update()),
 				// Connect Lavalink if configured to do so
 				this.connectLavalink(),
 				this.initAnalytics()

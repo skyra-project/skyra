@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 				}
 			]);
 		} else if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
-			await message.guild!.security.actions.muteSetup(message);
+			await message.guild.security.actions.muteSetup(message);
 			await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
 		} else {
 			await message.sendLocale(LanguageKeys.Monitors.CommandHandlerAborted);

@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: GuildMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
-		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
+		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		const memberPoints = memberSettings?.points ?? 0;
 		const nextRole = this.getLatestRole(memberPoints, await message.guild.readSettings(GuildSettings.Roles.Auto));
 		const title = nextRole

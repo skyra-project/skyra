@@ -1,5 +1,4 @@
-import { configurableGroups, SchemaGroup, SchemaKey } from '@lib/database';
-import { isSchemaGroup } from '@lib/database/settings/Utils';
+import { configurableGroups, isSchemaGroup, SchemaGroup, SchemaKey } from '@lib/database';
 import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -63,7 +62,7 @@ export class SettingsMenu {
 		const i18n = this.language;
 		const description: string[] = [];
 		if (isSchemaGroup(this.schema)) {
-			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.name || 'Root' }));
+			description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderAtFolder, { path: this.schema.name }));
 			if (this.errorMessage) description.push(this.errorMessage);
 			const keys: string[] = [];
 			const folders: string[] = [];
@@ -87,7 +86,7 @@ export class SettingsMenu {
 			const [value, serialized, language] = await this.message.guild.readSettings((settings) => {
 				const language = settings.getLanguage();
 				const key = this.schema as SchemaKey;
-				return [settings[key.name], key.display(settings, language), language];
+				return [settings[key.property], key.display(settings, language), language];
 			});
 			this.language = language;
 			description.push(
@@ -218,27 +217,27 @@ export class SettingsMenu {
 			const key = this.schema as SchemaKey;
 			// TODO: Port some of the logic from `conf` command to here (for validation and stuff)
 			const [oldValue, skipped] = await this.message.guild.writeSettings((settings) => {
-				const oldValue = settings[key.name];
+				const oldValue = settings[key.property];
 
 				switch (action) {
 					case UpdateType.Add: {
 						const clone = (oldValue as unknown[]).slice();
 						clone.push(value);
-						Reflect.set(settings, key.name, clone);
+						Reflect.set(settings, key.property, clone);
 						break;
 					}
 					case UpdateType.Remove: {
 						const clone = (oldValue as unknown[]).slice();
 						clone.splice(clone.indexOf(value), 1);
-						Reflect.set(settings, key.name, clone);
+						Reflect.set(settings, key.property, clone);
 						break;
 					}
 					case UpdateType.Reset: {
-						Reflect.set(settings, key.name, key.default);
+						Reflect.set(settings, key.property, key.default);
 						break;
 					}
 					case UpdateType.Replace: {
-						Reflect.set(settings, key.name, value);
+						Reflect.set(settings, key.property, value);
 						break;
 					}
 				}

@@ -96,7 +96,7 @@ export default class extends ModerationMonitor {
 		if (data.guildID === null) return false;
 
 		// Invites that point to the own server should be allowed.
-		if (data.guildID === message.guild!.id) return true;
+		if (data.guildID === message.guild.id) return true;
 
 		// Invites from white-listed guilds should be allowed.
 		if (ignoredGuilds.includes(data.guildID)) return true;

@@ -1,4 +1,4 @@
-import { kRawEmoji } from '@lib/database/entities/GiveawayEntity';
+import { kRawEmoji } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';

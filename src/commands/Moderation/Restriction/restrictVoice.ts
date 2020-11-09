@@ -55,7 +55,7 @@ export default class extends ModerationCommand {
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.restrictVoice(
+		return message.guild.security.actions.restrictVoice(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

@@ -1,6 +1,5 @@
 import Collection from '@discordjs/collection';
-import { DbSet } from '@lib/database';
-import { ModerationEntity } from '@lib/database/entities/ModerationEntity';
+import { DbSet, ModerationEntity } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
@@ -11,7 +10,6 @@ import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
 type DurationDisplay = (time: number) => string;
@@ -88,13 +86,13 @@ export default class extends SkyraCommand {
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async details(message: KlasaMessage, [target = message.author]: [User]) {
+	public async details(message: GuildMessage, [target = message.author]: [User]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const entries = (await message.guild!.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
+		const entries = (await message.guild.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
 		if (!entries.size) throw language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(

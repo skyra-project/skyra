@@ -1,4 +1,4 @@
-import { Adders, GuildEntity, GuildSettings } from '@lib/database';
+import { AdderKey, GuildEntity, GuildSettings } from '@lib/database';
 import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
 import { KeyOfType } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -11,7 +11,7 @@ import { CommandOptions } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeExtended)
 })
 export default class extends SelfModerationCommand {
-	protected $adder: keyof Adders = 'reactions';
+	protected $adder: AdderKey = 'reactions';
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
 	protected keySoftAction: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
 	protected keyHardAction: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Reactions.HardAction;

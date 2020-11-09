@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		const qb = starboards
 			.createQueryBuilder()
 			.select()
-			.where('guild_id = :id', { id: message.guild!.id })
+			.where('guild_id = :id', { id: message.guild.id })
 			.andWhere('star_message_id IS NOT NULL')
 			.andWhere('enabled = TRUE')
 			.andWhere('stars >= :minimum', { minimum });
@@ -54,14 +54,14 @@ export default class extends SkyraCommand {
 
 		// If there is no configured starboard channel, return no stars
 		// TODO(kyranet): Change this to a more descriptive message
-		const starboardChannel = message.guild!.channels.cache.get(starboardChannelID) as TextChannel;
+		const starboardChannel = message.guild.channels.cache.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {
 			await message.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
 			return message.sendLocale(LanguageKeys.Commands.Starboard.StarNostars);
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
-		const starredMessageChannel = message.guild!.channels.cache.get(starboardData.channelID) as TextChannel;
+		const starredMessageChannel = message.guild.channels.cache.get(starboardData.channelID) as TextChannel;
 		if (!starredMessageChannel) {
 			await starboardData.remove();
 			return this.random(message, [member]);
@@ -84,7 +84,7 @@ export default class extends SkyraCommand {
 		const qb = starboards
 			.createQueryBuilder()
 			.select()
-			.where('guild_id = :id', { id: message.guild!.id })
+			.where('guild_id = :id', { id: message.guild.id })
 			.andWhere('star_message_id IS NOT NULL')
 			.andWhere('enabled = TRUE')
 			.andWhere('stars >= :minimum', { minimum });

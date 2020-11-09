@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const bulk of chunk(reactionRoles, 20)) {
-			const serialized = bulk.map((value) => this.format(value, message.guild!)).join('\n');
+			const serialized = bulk.map((value) => this.format(value, message.guild)).join('\n');
 			display.addPage((template: MessageEmbed) => template.setDescription(serialized));
 		}
 

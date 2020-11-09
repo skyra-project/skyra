@@ -1,6 +1,6 @@
 // This task will be created by the gschedule command when a user schedules a giveaway to be created.
-import { PartialResponseValue, ResponseType } from '@lib/database/entities/ScheduleEntity';
-import type { GiveawayCreateData } from '@lib/structures/managers/GiveawayManager';
+import { PartialResponseValue, ResponseType } from '@lib/database';
+import { GiveawayCreateData } from '@lib/structures/managers/GiveawayManager';
 import { Task } from 'klasa';
 
 export default class extends Task {

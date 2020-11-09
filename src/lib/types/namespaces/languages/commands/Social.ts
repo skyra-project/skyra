@@ -1,7 +1,7 @@
-import { ScheduleEntity } from '@lib/database/entities/ScheduleEntity';
+import type { ScheduleEntity } from '@lib/database';
 import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import { Role, User } from 'discord.js';
+import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import type { Role, User } from 'discord.js';
 
 export interface LevelTitles {
 	experience: string;

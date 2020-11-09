@@ -1,13 +1,13 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['emojis'],
@@ -17,7 +17,7 @@ import { KlasaMessage } from 'klasa';
 	runIn: ['text']
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
@@ -25,7 +25,7 @@ export default class extends RichDisplayCommand {
 		const animEmotes: string[] = [];
 		const staticEmotes: string[] = [];
 
-		for (const [id, emote] of [...message.guild!.emojis.cache.entries()]) {
+		for (const [id, emote] of [...message.guild.emojis.cache.entries()]) {
 			if (emote.animated) animEmotes.push(`<a:${emote.name}:${id}>`);
 			else staticEmotes.push(`<:${emote.name}:${id}>`);
 		}
@@ -36,17 +36,17 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(message: KlasaMessage, animatedEmojis: string[][], staticEmojis: string[][]) {
+	private async buildDisplay(message: GuildMessage, animatedEmojis: string[][], staticEmojis: string[][]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(
 					[
-						`${message.guild!.emojis.cache.size}`,
+						`${message.guild.emojis.cache.size}`,
 						`${await message.fetchLocale(LanguageKeys.Commands.Tools.EmotesTitle)}`,
-						`${message.guild!.name}`
+						`${message.guild.name}`
 					].join(' '),
-					message.guild!.iconURL({ format: 'png' })!
+					message.guild.iconURL({ format: 'png' })!
 				)
 		);
 

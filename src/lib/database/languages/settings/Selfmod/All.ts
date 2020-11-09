@@ -7,3 +7,5 @@ export * from './Messages';
 export * from './Newlines';
 export * from './NoMentionSpam';
 export * from './Reactions';
+
+export const IgnoreChannels = 'selfmodIgnoreChannels';

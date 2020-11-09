@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		return message.sendLocale(
 			LanguageKeys.Commands.Music.ExportQueueSuccess,
 			[{ guildName: name }],
-			new MessageAttachment(Buffer.from(data), `${message.guild!.name}-${Date.now()}.squeue`)
+			new MessageAttachment(Buffer.from(data), `${message.guild.name}-${Date.now()}.squeue`)
 		);
 	}
 

@@ -183,7 +183,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Extracts top heroes from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private async extractTopHeroes(
+	private extractTopHeroes(
 		language: Language,
 		overwatchData: OverwatchDataSet,
 		type: OverwatchStatsTypeUnion,

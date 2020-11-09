@@ -10,8 +10,8 @@ import { TextChannel } from 'discord.js';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Management.ManagecommandautodeleteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManagecommandautodeleteExtended),
+	description: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteExtended),
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -33,12 +33,12 @@ import { TextChannel } from 'discord.js';
 ])
 export default class extends SkyraCommand {
 	public async show(message: GuildMessage) {
-		const commandAutodelete = await message.guild.readSettings(GuildSettings.CommandAutodelete);
+		const commandAutoDelete = await message.guild.readSettings(GuildSettings.CommandAutodelete);
 		const language = await message.fetchLanguage();
-		if (!commandAutodelete.length) throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
+		if (!commandAutoDelete.length) throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];
-		for (const entry of commandAutodelete) {
+		for (const entry of commandAutoDelete) {
 			const channel = this.client.channels.cache.get(entry[0]) as TextChannel;
 			if (channel) list.push(`${channel.name.padEnd(26)} :: ${language.duration(entry[1] / 60000)}`);
 		}
@@ -84,8 +84,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: GuildMessage) {
 		const language = await message.guild.writeSettings((settings) => {
-			const values = settings[GuildSettings.CommandAutodelete];
-			values.length = 0;
+			settings[GuildSettings.CommandAutodelete].length = 0;
 			return settings.getLanguage();
 		});
 

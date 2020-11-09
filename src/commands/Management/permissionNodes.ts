@@ -1,4 +1,4 @@
-import { GuildSettings, PermissionsNode } from '@lib/database';
+import { GuildSettings, PermissionNodeAction } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -6,8 +6,6 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Role } from 'discord.js';
 import { Command } from 'klasa';
-
-type Nodes = readonly PermissionsNode[];
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pnodes', 'pnode'],
@@ -39,62 +37,22 @@ type Nodes = readonly PermissionsNode[];
 	]
 ])
 export default class extends SkyraCommand {
-	public async add(message: GuildMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
+	public async add(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
 		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
-		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const language = await message.guild.writeSettings((settings) => {
-			const nodes = settings[key];
-			const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-
-			if (nodeIndex === -1) {
-				const node: Nodes[number] = {
-					id: target.id,
-					allow: action === 'allow' ? [command.name] : [],
-					deny: action === 'deny' ? [command.name] : []
-				};
-
-				settings[key] = [node];
-			} else {
-				const previous = nodes[nodeIndex];
-				const node: Nodes[number] = {
-					id: target.id,
-					allow: previous.allow.concat(action === 'allow' ? [command.name] : []),
-					deny: previous.deny.concat(action === 'deny' ? [command.name] : [])
-				};
-
-				settings[key].splice(nodeIndex, 1, node);
-			}
-
+			settings.permissionNodes.add(target, command.name, action);
 			return settings.getLanguage();
 		});
 
 		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesAdd));
 	}
 
-	public async remove(message: GuildMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
+	public async remove(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
 		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
-		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const language = await message.guild.writeSettings((settings) => {
-			const nodes = settings[key];
-			const language = settings.getLanguage();
-			const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-			if (nodeIndex === -1) throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
-
-			const previous = nodes[nodeIndex];
-			const commandIndex = previous[action].indexOf(command.name);
-			if (commandIndex === -1) throw language.get(LanguageKeys.Commands.Management.PermissionNodesCommandNotExists);
-
-			const node: Nodes[number] = {
-				id: target.id,
-				allow: action === 'allow' ? previous.allow.slice() : previous.allow,
-				deny: action === 'deny' ? previous.deny.slice() : previous.deny
-			};
-			node[action].splice(commandIndex, 1);
-
-			settings[key].splice(nodeIndex, 1, node);
-
+			settings.permissionNodes.remove(target, command.name, action);
 			return settings.getLanguage();
 		});
 
@@ -103,17 +61,9 @@ export default class extends SkyraCommand {
 
 	public async reset(message: GuildMessage, [target]: [Role | GuildMember]) {
 		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
-		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const language = await message.guild.writeSettings((settings) => {
-			const nodes = settings[key];
-			const nodeIndex = nodes.findIndex((n) => n.id === target.id);
-			const language = settings.getLanguage();
-
-			if (nodeIndex === -1) throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
-
-			settings[key].splice(nodeIndex, 1);
-
+			settings.permissionNodes.reset(target);
 			return settings.getLanguage();
 		});
 

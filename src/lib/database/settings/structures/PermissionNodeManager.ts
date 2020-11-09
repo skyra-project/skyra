@@ -3,15 +3,12 @@ import { GuildEntity, GuildSettings, PermissionsNode } from '@lib/database';
 import { SkyraClient } from '@lib/SkyraClient';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { GuildMember, Role, User } from 'discord.js';
+import { GuildMember, Role } from 'discord.js';
 import { IBaseManager } from '../base/IBaseManager';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 
-export const enum PermissionNodeAction {
-	Allow = 'allow',
-	Deny = 'deny'
-}
+export type PermissionNodeAction = 'allow' | 'deny';
 
 type Nodes = readonly PermissionsNode[];
 type Node = Nodes[number];
@@ -40,7 +37,7 @@ export class PermissionNodeManager implements IBaseManager {
 		return this.#sorted.has(roleID);
 	}
 
-	public add(target: Role | User, command: string, action: PermissionNodeAction) {
+	public add(target: Role | GuildMember, command: string, action: PermissionNodeAction) {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = this.#settings[key];
@@ -49,8 +46,8 @@ export class PermissionNodeManager implements IBaseManager {
 		if (nodeIndex === -1) {
 			const node: Node = {
 				id: target.id,
-				allow: action === PermissionNodeAction.Allow ? [command] : [],
-				deny: action === PermissionNodeAction.Deny ? [command] : []
+				allow: action === 'allow' ? [command] : [],
+				deny: action === 'deny' ? [command] : []
 			};
 
 			this.#settings[key] = [node];
@@ -58,15 +55,15 @@ export class PermissionNodeManager implements IBaseManager {
 			const previous = nodes[nodeIndex];
 			const node: Node = {
 				id: target.id,
-				allow: action === PermissionNodeAction.Allow ? previous.allow.concat(command) : previous.allow,
-				deny: action === PermissionNodeAction.Deny ? previous.deny.concat(command) : previous.deny
+				allow: action === 'allow' ? previous.allow.concat(command) : previous.allow,
+				deny: action === 'deny' ? previous.deny.concat(command) : previous.deny
 			};
 
 			this.#settings[key].splice(nodeIndex, 1, node);
 		}
 	}
 
-	public remove(target: Role | User, command: string, action: PermissionNodeAction) {
+	public remove(target: Role | GuildMember, command: string, action: PermissionNodeAction) {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = this.#settings[key];
@@ -80,15 +77,15 @@ export class PermissionNodeManager implements IBaseManager {
 
 		const node: Nodes[number] = {
 			id: target.id,
-			allow: PermissionNodeAction.Allow ? previous.allow.slice() : previous.allow,
-			deny: PermissionNodeAction.Deny ? previous.deny.slice() : previous.deny
+			allow: 'allow' ? previous.allow.slice() : previous.allow,
+			deny: 'deny' ? previous.deny.slice() : previous.deny
 		};
 		node[action].splice(commandIndex, 1);
 
 		this.#settings[key].splice(nodeIndex, 1, node);
 	}
 
-	public reset(target: Role | User) {
+	public reset(target: Role | GuildMember) {
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
 		const nodes = this.#settings[key];

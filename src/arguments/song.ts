@@ -1,3 +1,4 @@
+import { GuildSettings } from '@lib/database';
 import { count, filter, map, take } from '@lib/misc';
 import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -34,7 +35,7 @@ export default class extends Argument {
 		const tracks = await message.guild.audio.tracks();
 		const { id } = message.author;
 		const entries = count(tracks.values(), (track) => track.author === id);
-		const maximum = await message.guild.readSettings((guild) => guild.musicMaximumEntriesPerUser);
+		const maximum = await message.guild.readSettings(GuildSettings.Music.MaximumEntriesPerUser);
 		return Math.max(0, maximum - entries);
 	}
 

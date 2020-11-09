@@ -23,9 +23,9 @@ export default class extends SkyraCommand {
 		let vChannels = 0;
 		let cChannels = 0;
 		for (const channel of message.guild.channels.cache.values()) {
-			if (channel.type === 'text') tChannels++;
+			if (channel.type === 'text' || channel.type === 'news') tChannels++;
 			else if (channel.type === 'voice') vChannels++;
-			else cChannels++;
+			else if (channel.type === 'category') cChannels++;
 		}
 
 		const language = await message.fetchLanguage();

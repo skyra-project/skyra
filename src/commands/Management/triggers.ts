@@ -27,14 +27,14 @@ const REG_TYPE = /^(alias|reaction)$/i;
 		async (arg, _, message, [action]) => {
 			if (action === 'show') return undefined;
 			if (REG_TYPE.test(arg)) return arg.toLowerCase();
-			throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNotype);
+			throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNoType);
 		}
 	],
 	[
 		'input',
 		async (arg, _, message, [action]) => {
 			if (action === 'show') return undefined;
-			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNooutput);
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNoOutput);
 			return arg.toLowerCase();
 		}
 	],
@@ -42,21 +42,21 @@ const REG_TYPE = /^(alias|reaction)$/i;
 		'output',
 		async (arg, _, message, [action, type]) => {
 			if (action === 'show' || action === 'remove') return undefined;
-			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNooutput);
+			if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersNoOutput);
 			if (type === 'reaction') {
 				const emoji = resolveEmoji(arg);
-				if (!emoji) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidreaction);
+				if (!emoji) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidReaction);
 
 				try {
 					await message.react(emoji);
 					return emoji;
 				} catch {
-					throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidreaction);
+					throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidReaction);
 				}
 			} else if (type === 'alias') {
 				const command = message.client.commands.get(arg);
 				if (command && command.permissionLevel < 10) return command.name;
-				throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidalias);
+				throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidAlias);
 			} else {
 				return null;
 			}
@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 		const list = await this.getList(message, type);
 
 		const index = list.findIndex((entry) => entry.input === input);
-		if (index === -1) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersRemoveNottaken);
+		if (index === -1) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
 
 		// Create a shallow clone and remove the item
 		const clone = [...list];

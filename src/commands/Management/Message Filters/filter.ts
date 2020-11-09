@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 		const language = await message.guild.writeSettings((settings) => {
 			const language = settings.getLanguage();
 
-			// Check if the word is already filtered:
+			// Check if the word is not filtered:
 			const words = settings[GuildSettings.Selfmod.Filter.Raw];
 			const index = words.indexOf(word);
 			if (index === -1) {
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 			const language = settings.getLanguage();
 
 			// Set an empty array:
-			settings[GuildSettings.Selfmod.Filter.Raw] = [];
+			settings[GuildSettings.Selfmod.Filter.Raw].length = 0;
 
 			// Return language for re-use:
 			return language;

@@ -34,14 +34,16 @@ export default class extends SkyraCommand {
 
 	@requiredPermissions(['EMBED_LINKS'])
 	public async buy(message: GuildMessage, [banner]: [BannerCache]) {
-		const [{ users }, language] = await Promise.all([DbSet.connect(), message.fetchLanguage()]);
+		const [{ users }, [prefix, language]] = await Promise.all([
+			DbSet.connect(),
+			message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()] as const)
+		]);
+
 		const author = await users.ensureProfile(message.author.id);
 		const banners = new Set(author.profile.banners);
-		if (banners.has(banner.id))
-			throw language.get(LanguageKeys.Commands.Social.BannerBought, {
-				prefix: await message.guild.readSettings(GuildSettings.Prefix),
-				banner: banner.id
-			});
+		if (banners.has(banner.id)) {
+			throw language.get(LanguageKeys.Commands.Social.BannerBought, { prefix, banner: banner.id });
+		}
 
 		if (author.money < banner.price) throw language.get(LanguageKeys.Commands.Social.BannerMoney, { money: author.money, cost: banner.price });
 
@@ -68,41 +70,43 @@ export default class extends SkyraCommand {
 			await em.save(author);
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Social.BannerBuy, [{ banner: banner.title }]);
+		return message.send(language.get(LanguageKeys.Commands.Social.BannerBuy, { banner: banner.title }));
 	}
 
 	public async reset(message: GuildMessage) {
-		const [{ users }, language] = await Promise.all([DbSet.connect(), message.fetchLanguage()]);
+		const [{ users }, [prefix, language]] = await Promise.all([
+			DbSet.connect(),
+			message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()] as const)
+		]);
+
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length)
-				throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, {
-					prefix: await message.guild.readSettings(GuildSettings.Prefix)
-				});
+			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, { prefix });
 			if (user.profile.bannerProfile === '0001') throw language.get(LanguageKeys.Commands.Social.BannerResetDefault);
 
 			user.profile.bannerProfile = '0001';
 			return user.save();
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Social.BannerReset);
+		return message.send(language.get(LanguageKeys.Commands.Social.BannerReset));
 	}
 
 	public async set(message: GuildMessage, [banner]: [BannerCache]) {
-		const [{ users }, language] = await Promise.all([DbSet.connect(), message.fetchLanguage()]);
+		const [{ users }, [prefix, language]] = await Promise.all([
+			DbSet.connect(),
+			message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()] as const)
+		]);
+
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length)
-				throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, {
-					prefix: await message.guild.readSettings(GuildSettings.Prefix)
-				});
+			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, { prefix });
 			if (!user.profile.banners.includes(banner.id)) throw language.get(LanguageKeys.Commands.Social.BannerSetNotBought);
 
 			user.profile.bannerProfile = banner.id;
 			return user.save();
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Social.BannerSet, [{ banner: banner.title }]);
+		return message.send(language.get(LanguageKeys.Commands.Social.BannerSet, { banner: banner.title }));
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -151,10 +155,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async userList(message: GuildMessage) {
-		const { prefix, language } = await message.guild.readSettings((settings) => ({
-			prefix: settings[GuildSettings.Prefix],
-			language: settings.getLanguage()
-		}));
+		const [prefix, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
 
 		const { users } = await DbSet.connect();
 		const user = await users.ensureProfile(message.author.id);

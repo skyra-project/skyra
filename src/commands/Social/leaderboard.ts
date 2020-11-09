@@ -1,9 +1,10 @@
 import Collection from '@discordjs/collection';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { LeaderboardUser } from '@utils/Leaderboard';
 import { pickRandom } from '@utils/util';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 const titles = {
 	global: '🌐 Global Score Scoreboard',
@@ -25,7 +26,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
+	public async run(message: GuildMessage, [type = 'local', index = 1]: ['global' | 'local', number]) {
 		const list = await this.client.leaderboard.fetch(type === 'local' ? message.guild!.id : undefined);
 
 		const { position } = list.get(message.author.id) || { position: list.size + 1 };
@@ -33,7 +34,7 @@ export default class extends SkyraCommand {
 		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
-	public async generatePage(message: KlasaMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
+	public async generatePage(message: GuildMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {
 		if (index > list.size / 10 || index < 0) index = 0;
 		const retrievedPage: LeaderboardUser[] = [];
 		const promises: Promise<void>[] = [];
@@ -57,7 +58,7 @@ export default class extends SkyraCommand {
 
 		const language = await message.fetchLanguage();
 		if (promises.length) {
-			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)), []);
+			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)));
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {

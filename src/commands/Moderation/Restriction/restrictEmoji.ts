@@ -24,7 +24,7 @@ export default class extends ModerationCommand {
 	public async inhibit(message: KlasaMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const { id, language } = await message.guild.readSettings((settings) => ({
+		const [id, language] = await message.guild.readSettings((settings) => ({
 			id: settings[GuildSettings.Roles.RestrictedEmoji],
 			language: settings.getLanguage()
 		}));

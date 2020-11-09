@@ -24,10 +24,10 @@ export default class extends ModerationCommand {
 	public async inhibit(message: GuildMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const { id, language } = await message.guild.readSettings((settings) => ({
-			id: settings[GuildSettings.Roles.RestrictedVoice],
-			language: settings.getLanguage()
-		}));
+		const [id, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Roles.RestrictedVoice],
+			settings.getLanguage()
+		]);
 
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 		if (!role) {

@@ -118,7 +118,7 @@ export default class extends RichDisplayCommand {
 
 		// Apply the roles
 		if (removedRoles.length || addedRoles.length)
-			await message.member!.roles.set([...memberRoles], language.get(LanguageKeys.Commands.Management.RolesAuditlog));
+			await message.member!.roles.set([...memberRoles], language.get(LanguageKeys.Commands.Management.RolesAuditLog));
 
 		const output: string[] = [];
 		if (unlistedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesNotPublic, { roles: unlistedRoles.join('`, `') }));

@@ -50,13 +50,13 @@ export default class extends SkyraCommand {
 			number?
 		]
 	) {
-		if (this.#channels.has(message.channel.id)) throw await message.fetchLocale(LanguageKeys.Commands.Games.TriviaActiveGame);
+		const language = await message.fetchLanguage();
+		if (this.#channels.has(message.channel.id)) throw language.get(LanguageKeys.Commands.Games.TriviaActiveGame);
 
 		this.#channels.add(message.channel.id);
 
-		const language = await message.fetchLanguage();
 		try {
-			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)), []);
+			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
@@ -84,12 +84,12 @@ export default class extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaIncorrect, [{ attempt }]);
+					return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaNoAnswer, [{ correctAnswer }]);
-					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaWinner, [{ winner: winner.toString(), correctAnswer }]);
+					if (!winner) return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
+					return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
 				});
 		} catch {
 			this.#channels.delete(message.channel.id);

@@ -22,24 +22,32 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		else if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Misc.ConfigurationTextChannelRequired);
-		const oldLength = await message.guild!.readSettings(GuildSettings.DisabledChannels).then((channels) => channels.length);
-		await message.guild!.writeSettings((settings) => {
-			const ignoredChannels = settings[GuildSettings.DisabledChannels];
-			if (ignoredChannels.includes((channel as TextChannel).id))
-				ignoredChannels.splice(ignoredChannels.indexOf((channel as TextChannel).id), 1);
-			else ignoredChannels.push((channel as TextChannel).id);
 
-			return settings.getLanguage();
+		const [language, oldLength, newLength] = await message.guild!.writeSettings((settings) => {
+			const ignoredChannels = settings[GuildSettings.DisabledChannels];
+			const oldLength = ignoredChannels.length;
+
+			const channelID = (channel as TextChannel).id;
+			const index = ignoredChannels.indexOf(channelID);
+			if (index === -1) {
+				ignoredChannels.push(channelID);
+			} else {
+				ignoredChannels.splice(index, 1);
+			}
+
+			return [settings.getLanguage(), oldLength, ignoredChannels.length];
 		});
 
-		const newLength = await message.guild!.readSettings(GuildSettings.DisabledChannels).then((channels) => channels.length);
-		return message.sendLocale(
-			oldLength < newLength ? LanguageKeys.Commands.Management.SetIgnoreChannelsSet : LanguageKeys.Commands.Management.SetIgnoreChannelsRemoved,
-			[
+		return message.send(
+			language.get(
+				oldLength < newLength
+					? LanguageKeys.Commands.Management.SetIgnoreChannelsSet
+					: LanguageKeys.Commands.Management.SetIgnoreChannelsRemoved,
+
 				{
 					channel: channel.toString()
 				}
-			]
+			)
 		);
 	}
 }

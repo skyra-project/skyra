@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(CdnUrls.EscapeRopeGif)
-				.setDescription(language.get(LanguageKeys.Commands.Fun.EscaperopeOutput, { user: message.author }))
+				.setDescription(language.get(LanguageKeys.Commands.Fun.EscaperopeOutput, { user: message.author.toString() }))
 				.setAuthor(
 					message.member?.displayName ?? message.author.username,
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

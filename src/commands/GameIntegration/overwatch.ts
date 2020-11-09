@@ -32,24 +32,24 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const overwatchData = await this.fetchAPI(message, player, platform);
+		const overwatchData = await this.fetchAPI(language, player, platform);
 
 		if (overwatchData.error) throw language.get(LanguageKeys.System.QueryFail);
 		if (!overwatchData.competitiveStats.topHeroes || !overwatchData.quickPlayStats.topHeroes) {
 			throw language.get(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
 		}
 
-		const display = await this.buildDisplay(message, overwatchData, player, platform);
+		const display = await this.buildDisplay(message, language, overwatchData, player, platform);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
-	private async fetchAPI(message: GuildMessage, player: string, platform: PlatformUnion) {
+	private async fetchAPI(language: Language, player: string, platform: PlatformUnion) {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.Commands.GameIntegration.OverwatchQueryFail, {
+			throw language.get(LanguageKeys.Commands.GameIntegration.OverwatchQueryFail, {
 				player: this.decodePlayerName(player),
 				platform
 			});
@@ -57,9 +57,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
-	private async buildDisplay(message: GuildMessage, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
-		const language = await message.fetchLanguage();
-
+	private async buildDisplay(message: GuildMessage, language: Language, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const ratings = Array.from(
 			this.ratingsToCollection(
 				overwatchData.ratings ?? [],
@@ -99,8 +97,8 @@ export default class extends RichDisplayCommand {
 					)
 					.addField(embedData.ratingsTitle, ratings || language.get(LanguageKeys.Globals.None))
 			)
-			.addPage((embed) => embed.setDescription(this.extractStats(message, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractStats(message, overwatchData, 'competitiveStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractStats(language, overwatchData, 'quickPlayStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractStats(language, overwatchData, 'competitiveStats', embedData)))
 			.addPage((embed) => embed.setDescription(this.extractTopHeroes(language, overwatchData, 'quickPlayStats', embedData)))
 			.addPage((embed) => embed.setDescription(this.extractTopHeroes(language, overwatchData, 'competitiveStats', embedData)));
 	}
@@ -140,12 +138,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Extracts statistics from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private async extractStats(
-		message: GuildMessage,
-		overwatchData: OverwatchDataSet,
-		type: OverwatchStatsTypeUnion,
-		embedData: OverwatchEmbedDataReturn
-	) {
+	private extractStats(language: Language, overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, embedData: OverwatchEmbedDataReturn) {
 		const {
 			careerStats: {
 				allHeroes: {
@@ -159,7 +152,7 @@ export default class extends RichDisplayCommand {
 		} = overwatchData[type];
 
 		const timePlayedMilliseconds = Number(timePlayed.split(':')[0]) * Time.Hour + Number(timePlayed.split(':')[1]) * Time.Minute;
-		const statsData = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
+		const statsData = language.get(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
 			finalBlows,
 			deaths,
 			damageDone,

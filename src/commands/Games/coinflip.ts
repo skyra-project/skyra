@@ -3,7 +3,7 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 const enum CoinType {
 	Heads,
@@ -45,13 +45,14 @@ export default class extends SkyraCommand {
 	private readonly cdnTypes = ['heads', 'tails'] as const;
 
 	public async run(message: KlasaMessage, [guess, wager]: [CoinType | null, number | 'cashless']) {
-		if (guess === null) return this.noGuess(message);
-		if (wager === 'cashless') return this.cashless(message, guess);
+		const language = await message.fetchLanguage();
+
+		if (guess === null) return this.noGuess(message, language);
+		if (wager === 'cashless') return this.cashless(message, language, guess);
 
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
-		const language = await message.fetchLanguage();
 
 		if (balance < wager) {
 			throw language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
@@ -79,10 +80,9 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async cashless(message: KlasaMessage, guess: CoinType) {
+	private async cashless(message: KlasaMessage, language: Language, guess: CoinType) {
 		const result = this.flipCoin();
 		const won = result === guess;
-		const language = await message.fetchLanguage();
 
 		return message.send(
 			(await this.buildEmbed(message, result))
@@ -95,16 +95,17 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async noGuess(message: KlasaMessage) {
+	private async noGuess(message: KlasaMessage, language: Language) {
 		const result = this.flipCoin();
-		const language = await message.fetchLanguage();
 
 		return message.send(
-			(await this.buildEmbed(message, result)).setTitle(language.get(LanguageKeys.Commands.Games.CoinFlipNoguessTitle)).setDescription(
-				language.get(LanguageKeys.Commands.Games.CoinFlipNoguessDescription, {
-					result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result]
-				})
-			)
+			(await this.buildEmbed(message, result)) //
+				.setTitle(language.get(LanguageKeys.Commands.Games.CoinFlipNoguessTitle))
+				.setDescription(
+					language.get(LanguageKeys.Commands.Games.CoinFlipNoguessDescription, {
+						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result]
+					})
+				)
 		);
 	}
 

@@ -21,14 +21,15 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [user = message.author]: [User]) {
-		if (!user) throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
-		const member = await message.guild!.members.fetch(user.id).catch(async () => {
-			throw await message.fetchLocale(LanguageKeys.Misc.UserNotInGuild);
+		const language = await message.fetchLanguage();
+
+		if (!user) throw language.get(LanguageKeys.Misc.UserNotExistent);
+		const member = await message.guild!.members.fetch(user.id).catch(() => {
+			throw language.get(LanguageKeys.Misc.UserNotInGuild);
 		});
 
 		const { permissions } = member;
 		const list = [ZeroWidthSpace];
-		const language = await message.fetchLanguage();
 
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
 			list.push(language.get(LanguageKeys.Commands.Moderation.PermissionsAll));

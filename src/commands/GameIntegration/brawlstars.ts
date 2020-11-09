@@ -3,11 +3,11 @@ import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand'
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors, BrawlStarsEmojis, Emojis } from '@utils/constants';
+import { BrawlStarsEmojis, Emojis } from '@utils/constants';
 import { BrawlStars } from '@utils/GameIntegration/BrawlStars';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 
@@ -76,7 +76,8 @@ export default class extends SkyraCommand {
 			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
-		const playerData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
+		const language = await message.fetchLanguage();
+		const playerData = (await this.fetchAPI(language, tag, BrawlStarsFetchCategories.PLAYERS)) as BrawlStars.Player;
 		const saveFlag = Reflect.get(message.flagArgs, 'save');
 
 		if (saveFlag) {
@@ -84,7 +85,7 @@ export default class extends SkyraCommand {
 			await bsData.save();
 		}
 
-		return message.send(await this.buildPlayerEmbed(message, playerData));
+		return message.send(await this.buildPlayerEmbed(message, language, playerData));
 	}
 
 	public async club(message: KlasaMessage, [tag]: [string]) {
@@ -97,7 +98,8 @@ export default class extends SkyraCommand {
 			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
-		const clubData = (await this.fetchAPI(message, tag, BrawlStarsFetchCategories.CLUB)) as BrawlStars.Club;
+		const language = await message.fetchLanguage();
+		const clubData = (await this.fetchAPI(language, tag, BrawlStarsFetchCategories.CLUB)) as BrawlStars.Club;
 		const saveFlag = Reflect.get(message.flagArgs, 'save');
 
 		if (saveFlag) {
@@ -105,16 +107,16 @@ export default class extends SkyraCommand {
 			await bsData.save();
 		}
 
-		return message.send(await this.buildClubEmbed(message, clubData));
+		return message.send(await this.buildClubEmbed(message, language, clubData));
 	}
 
-	private async buildPlayerEmbed(message: KlasaMessage, player: BrawlStars.Player) {
-		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
-		const fields = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
-		const languageString = (await message.fetchLanguage()).name;
+	private async buildPlayerEmbed(message: KlasaMessage, language: Language, player: BrawlStars.Player) {
+		const titles = language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
+		const fields = language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
+		const languageString = language.name;
 
 		return new MessageEmbed()
-			.setColor(player.nameColor?.substr(4) || BrandingColors.Primary)
+			.setColor(player.nameColor?.substr(4) ?? (await DbSet.fetchColor(message)))
 			.setTitle(`${player.name} - ${player.tag}`)
 			.setURL(`https://brawlstats.com/profile/${player.tag.substr(1)}`)
 			.addField(
@@ -162,10 +164,10 @@ export default class extends SkyraCommand {
 			);
 	}
 
-	private async buildClubEmbed(message: KlasaMessage, club: BrawlStars.Club) {
-		const titles = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
-		const fields = await message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
-		const languageString = (await message.fetchLanguage()).name;
+	private async buildClubEmbed(message: KlasaMessage, language: Language, club: BrawlStars.Club) {
+		const titles = language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
+		const fields = language.get(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
+		const languageString = language.name;
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
@@ -189,7 +191,7 @@ export default class extends SkyraCommand {
 		return embed;
 	}
 
-	private async fetchAPI<C extends BrawlStarsFetchCategories>(message: KlasaMessage, query: string, category: BrawlStarsFetchCategories) {
+	private async fetchAPI<C extends BrawlStarsFetchCategories>(language: Language, query: string, category: BrawlStarsFetchCategories) {
 		try {
 			const url = new URL(`https://api.brawlstars.com/v1/${category}/`);
 			url.href += encodeURIComponent(query);
@@ -205,8 +207,8 @@ export default class extends SkyraCommand {
 			);
 		} catch {
 			throw category === BrawlStarsFetchCategories.CLUB
-				? message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query })
-				: message.fetchLocale(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
+				? language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsClansQueryFail, { clan: query })
+				: language.get(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayersQueryFail, { playertag: query });
 		}
 	}
 }

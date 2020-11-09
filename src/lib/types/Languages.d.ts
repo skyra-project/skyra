@@ -1316,7 +1316,7 @@ declare module 'klasa' {
 		commandDiceOutput: (params: { result: number }) => string;
 		commandDiceRollsError: string;
 		commandDiceSidesError: string;
-		commandEscaperopeOutput: (params: { user: User }) => string;
+		commandEscaperopeOutput: (params: { user: string }) => string;
 		commandLoveLess45: string;
 		commandLoveLess75: string;
 		commandLoveLess100: string;

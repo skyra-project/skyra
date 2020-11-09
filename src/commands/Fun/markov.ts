@@ -9,7 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
 import { getAllContent, iteratorAt, pickRandom } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandStore, Stopwatch } from 'klasa';
+import { CommandStore, Language, Stopwatch } from 'klasa';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase: (wordBank: WordBank) => string;
-	private readonly kProcess: (message: GuildMessage, markov: Markov) => Promise<MessageEmbed>;
+	private readonly kProcess: (message: GuildMessage, language: Language, markov: Markov) => Promise<MessageEmbed>;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -48,15 +48,16 @@ export default class extends SkyraCommand {
 		);
 
 		// Process the chain
-		return message.sendEmbed(await this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
+		return message.sendEmbed(
+			await this.kProcess(message, language, await this.retrieveMarkov(language, username, channnel ?? (message.channel as TextChannel)))
+		);
 	}
 
-	private async processRelease(message: GuildMessage, markov: Markov) {
+	private async processRelease(message: GuildMessage, _: Language, markov: Markov) {
 		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await DbSet.fetchColor(message));
 	}
 
-	private async processDevelopment(message: GuildMessage, markov: Markov) {
-		const language = await message.fetchLanguage();
+	private async processDevelopment(message: GuildMessage, language: Language, markov: Markov) {
 		const time = new Stopwatch();
 		const chain = markov.process();
 		time.stop();
@@ -67,8 +68,7 @@ export default class extends SkyraCommand {
 			.setFooter(language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
-	private async retrieveMarkov(message: GuildMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
-		const language = await message.fetchLanguage();
+	private async retrieveMarkov(language: Language, user: User | undefined, channel: TextChannel) {
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 

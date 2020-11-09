@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
 			const nodes = settings[key];
 			const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 
@@ -65,16 +65,18 @@ export default class extends SkyraCommand {
 
 				settings[key].splice(nodeIndex, 1, node);
 			}
+
+			return settings.getLanguage();
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Management.PermissionNodesAdd);
+		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesAdd));
 	}
 
 	public async remove(message: GuildMessage, [target, action, command]: [Role | GuildMember, 'allow' | 'deny', Command]) {
 		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
 			const nodes = settings[key];
 			const language = settings.getLanguage();
 			const nodeIndex = nodes.findIndex((n) => n.id === target.id);
@@ -92,16 +94,18 @@ export default class extends SkyraCommand {
 			node[action].splice(commandIndex, 1);
 
 			settings[key].splice(nodeIndex, 1, node);
+
+			return settings.getLanguage();
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Management.PermissionNodesRemove);
+		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesRemove));
 	}
 
 	public async reset(message: GuildMessage, [target]: [Role | GuildMember]) {
 		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const key = target instanceof Role ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
 			const nodes = settings[key];
 			const nodeIndex = nodes.findIndex((n) => n.id === target.id);
 			const language = settings.getLanguage();
@@ -109,9 +113,11 @@ export default class extends SkyraCommand {
 			if (nodeIndex === -1) throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 			settings[key].splice(nodeIndex, 1);
+
+			return settings.getLanguage();
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Management.PermissionNodesReset);
+		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesReset));
 	}
 
 	public async show(message: GuildMessage, [target]: [Role | GuildMember]) {
@@ -119,10 +125,7 @@ export default class extends SkyraCommand {
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const { nodes, language } = await message.guild.readSettings((settings) => ({
-			nodes: settings[key],
-			language: settings.getLanguage()
-		}));
+		const [nodes, language] = await message.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		const node = nodes.find((n) => n.id === target.id);
 		if (typeof node === 'undefined') throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 

@@ -21,6 +21,7 @@ export default class extends SkyraCommand {
 		if (channel === 'here') channel = message.channel as TextChannel;
 		const channelID = channel.id;
 
+		// TODO(kyranet): This code is duplicated in many files.
 		const language = await message.guild.writeSettings((settings) => {
 			const language = settings.getLanguage();
 

@@ -17,11 +17,11 @@ export default class extends ModerationCommand {
 	public async inhibit(message: GuildMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const { id, prefix, language } = await message.guild.readSettings((settings) => ({
-			id: settings[this.kPath],
-			prefix: settings[GuildSettings.Prefix],
-			language: settings.getLanguage()
-		}));
+		const [id, prefix, language] = await message.guild.readSettings((settings) => [
+			settings[this.kPath],
+			settings[GuildSettings.Prefix],
+			settings.getLanguage()
+		]);
 
 		if (id && message.guild.roles.cache.has(id)) return false;
 		throw language.get(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {

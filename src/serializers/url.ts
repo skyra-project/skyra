@@ -9,7 +9,7 @@ export default class UserSerializer extends Serializer<string> {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
 			if (hostname.length <= 128) return hostname;
-			throw new Error('💥');
+			throw new Error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
 		} catch {
 			throw new Error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
 		}
@@ -19,7 +19,7 @@ export default class UserSerializer extends Serializer<string> {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
 			return hostname.length <= 128;
-		} catch (error) {
+		} catch {
 			throw new Error(language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.name }));
 		}
 	}
@@ -27,11 +27,10 @@ export default class UserSerializer extends Serializer<string> {
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(data) ? data : `https://${data}`);
-			return hostname.length > 128
-				? Promise.reject(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }))
-				: Promise.resolve(hostname);
+			if (hostname.length > 128) throw language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 });
+			return hostname;
 		} catch {
-			return Promise.reject(language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.name }));
+			throw language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.name });
 		}
 	}
 

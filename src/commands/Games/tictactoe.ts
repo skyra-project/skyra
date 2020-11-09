@@ -46,10 +46,11 @@ export default class extends SkyraCommand {
 
 	private async getTargetController(message: KlasaMessage, user: User) {
 		if (user.id === CLIENT_ID) return new TicTacToeBotController();
-		if (user.bot) throw await message.fetchLocale(LanguageKeys.Commands.Games.GamesBot);
-		if (user.id === message.author.id) throw await message.fetchLocale(LanguageKeys.Commands.Games.GamesSelf);
 
 		const language = await message.fetchLanguage();
+		if (user.bot) throw language.get(LanguageKeys.Commands.Games.GamesBot);
+		if (user.id === message.author.id) throw language.get(LanguageKeys.Commands.Games.GamesSelf);
+
 		const [response] = await this.prompt.createPrompt(message, { target: user }).run(
 			language.get(LanguageKeys.Commands.Games.TicTacToePrompt, {
 				challenger: message.author.toString(),

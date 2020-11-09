@@ -20,8 +20,9 @@ import { KlasaMessage, Language } from 'klasa';
 })
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
@@ -30,21 +31,19 @@ export default class extends RichDisplayCommand {
 		);
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const display = await this.buildDisplay(list, message, query);
+		const display = await this.buildDisplay(list, message, language, query);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
+	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, language: Language, query: string) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail('https://i.imgur.com/CcIZZsa.png')
 		).setFooterSuffix(' - © Urban Dictionary');
-
-		const language = await message.fetchLanguage();
 
 		for (const result of results) {
 			const definition = this.parseDefinition(result.definition, result.permalink, language);

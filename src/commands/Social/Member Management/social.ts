@@ -87,9 +87,9 @@ export default class extends SkyraCommand {
 		}
 
 		const variation = amount - oldValue;
-		if (variation === 0) return message.sendLocale(LanguageKeys.Commands.Social.SocialUnchanged, [{ user: user.username }]);
-
 		const language = await message.fetchLanguage();
+		if (variation === 0) return language.get(LanguageKeys.Commands.Social.SocialUnchanged, { user: user.username });
+
 		return message.sendMessage(
 			variation > 0
 				? language.get(variation === 1 ? LanguageKeys.Commands.Social.SocialAdd : LanguageKeys.Commands.Social.SocialAddPlural, {

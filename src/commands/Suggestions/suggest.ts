@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		const globalSuggestion = Reflect.has(message.flagArgs, 'global') && this.client.webhookFeedback;
 
 		// ! NOTE: Once we start sharding we need to have a better solution for this
-		const guild = globalSuggestion ? this.client.guilds.cache.get(WEBHOOK_FEEDBACK!.guild_id!)! : message.guild!;
+		const guild = globalSuggestion ? this.client.guilds.cache.get(WEBHOOK_FEEDBACK!.guild_id!)! : message.guild;
 		let suggestionsChannel: Webhook | TextChannel | undefined = undefined;
 
 		if (globalSuggestion) {
@@ -95,20 +95,19 @@ export default class extends SkyraCommand {
 
 	private async setChannel(message: GuildMessage) {
 		// If the user doesn't have the rights to change guild configuration, do not proceed
+		const language = await message.fetchLanguage();
 		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
 		if (!manageable) {
-			await message.sendLocale(LanguageKeys.Commands.Suggestions.SuggestNoSetup, [{ username: message.author.username }]);
+			await message.send(language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username }));
 			return true;
 		}
-
-		const language = await message.fetchLanguage();
 
 		// Ask the user if they want to setup a channel
 		const setup = await message.ask({
 			content: language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetupAsk, { username: message.author.username })
 		});
 		if (!setup) {
-			await message.sendLocale(LanguageKeys.Commands.Suggestions.SuggestNoSetupAbort);
+			await message.send(language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetupAbort));
 			return true;
 		}
 
@@ -123,8 +122,8 @@ export default class extends SkyraCommand {
 
 		channel = (typeof channel === 'string' ? message.channel : channel) as TextChannel;
 
-		if (!channel || channel.guild.id !== message.guild!.id) {
-			await message.sendLocale(LanguageKeys.Resolvers.InvalidChannelName, [{ name: channel.name }]);
+		if (!channel || channel.guild.id !== message.guild.id) {
+			await message.send(language.get(LanguageKeys.Resolvers.InvalidChannelName, { name: channel.name }));
 			return true;
 		}
 
@@ -142,14 +141,14 @@ export default class extends SkyraCommand {
 
 		// Update settings
 		await message.guild.writeSettings([[GuildSettings.Suggestions.SuggestionsChannel, channel.id]]);
-		await message.sendLocale(LanguageKeys.Commands.Admin.ConfMenuSaved);
+		await message.send(language.get(LanguageKeys.Commands.Admin.ConfMenuSaved));
 
 		return true;
 	}
 
 	private async missingBotPermissions(message: GuildMessage) {
 		const textChannel = message.channel as TextChannel;
-		const permissions = textChannel.permissionsFor(message.guild!.me!);
+		const permissions = textChannel.permissionsFor(message.guild.me!);
 		if (!permissions) throw 'Failed to fetch permissions.';
 		const missing = permissions.missing(requiredChannelPermissions, false);
 

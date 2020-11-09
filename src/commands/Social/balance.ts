@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		const money = (await users.findOne(user.id))?.money ?? 0;
 
 		return message.author === user
-			? message.sendLocale(LanguageKeys.Commands.Social.BalanceSelf, [{ amount: language.groupDigits(money) }])
-			: message.sendLocale(LanguageKeys.Commands.Social.Balance, [{ user: user.username, amount: language.groupDigits(money) }]);
+			? message.send(language.get(LanguageKeys.Commands.Social.BalanceSelf, { amount: language.groupDigits(money) }))
+			: message.send(language.get(LanguageKeys.Commands.Social.Balance, { user: user.username, amount: language.groupDigits(money) }));
 	}
 }

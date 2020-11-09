@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 	#kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async add(message: GuildMessage, [id, content]: [string, string]) {
 		const language = await message.fetchLanguage();
@@ -60,13 +60,13 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async remove(message: GuildMessage, [id]: [string]) {
 		const language = await message.fetchLanguage();
 		await message.guild.writeSettings((settings) => {
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
-			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotexists, { tag: id });
+			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
 		});
@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async reset(message: GuildMessage) {
 		await message.guild.writeSettings([[GuildSettings.CustomCommands, []]]);
@@ -83,7 +83,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
-		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionlevel);
+		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async edit(message: GuildMessage, [id, content]: [string, string]) {
 		const language = await message.fetchLanguage();
@@ -92,7 +92,7 @@ export default class extends SkyraCommand {
 
 		await message.guild.writeSettings((settings) => {
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
-			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotexists, { tag: id });
+			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1, this.createTag(message, id, content));
 		});

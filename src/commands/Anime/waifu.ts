@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 				.setURL(url)
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(url)
-				.setFooter(message.fetchLocale(LanguageKeys.Commands.Anime.WaifuFooter))
+				.setFooter(await message.fetchLocale(LanguageKeys.Commands.Anime.WaifuFooter))
 				.setTimestamp()
 		);
 	}

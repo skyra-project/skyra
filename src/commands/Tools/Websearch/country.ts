@@ -6,7 +6,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 const SuperScriptTwo = '\u00B2';
 const mapNativeName = (data: { name: string; nativeName: string }) => `${data.name} ${data.nativeName === data.name ? '' : `(${data.nativeName})`}`;
@@ -19,28 +19,28 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [countryName]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const countries = await this.fetchAPI(message, countryName);
-		if (countries.length === 0) throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+		const countries = await this.fetchAPI(language, countryName);
+		if (countries.length === 0) throw language.get(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(message, countries);
+		const display = await this.buildDisplay(message, language, countries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, countryName: string) {
+	private async fetchAPI(language: Language, countryName: string) {
 		try {
 			return await fetch<CountryResultOk>(`https://restcountries.eu/rest/v2/name/${encodeURIComponent(countryName)}`);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(message: KlasaMessage, countries: CountryResultOk) {
-		const language = await message.fetchLanguage();
+	private async buildDisplay(message: KlasaMessage, language: Language, countries: CountryResultOk) {
 		const titles = language.get(LanguageKeys.Commands.Tools.CountryTitles);
 		const fieldsData = language.get(LanguageKeys.Commands.Tools.CountryFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));

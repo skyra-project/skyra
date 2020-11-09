@@ -57,10 +57,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: GuildMessage, [user]: [User]) {
-		const sticky = await message.guild.stickyRoles.fetch(user.id);
-		if (!sticky.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
-
 		const language = await message.fetchLanguage();
+
+		const sticky = await message.guild.stickyRoles.fetch(user.id);
+		if (!sticky.length) throw language.get(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
+
 		const roles = message.guild.roles.cache;
 		const names = sticky.map((role) => roles.get(role)!.name);
 		return message.send(

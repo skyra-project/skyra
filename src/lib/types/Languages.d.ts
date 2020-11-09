@@ -414,6 +414,7 @@ declare module 'klasa' {
 		settingsEventsBanremove: string;
 		settingsEventsMemberadd: string;
 		settingsEventsMembernameupdate: string;
+		settingsEventsMemberroleupdate: string;
 		settingsEventsMemberremove: string;
 		settingsEventsMessagedelete: string;
 		settingsEventsMessageedit: string;

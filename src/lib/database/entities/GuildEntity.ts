@@ -296,7 +296,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'selfmod.attachmentMaximum', default: 20 })
 	public selfmodAttachmentMaximum = 20;
 
-	// TODO: add missing language key for attachmentDuration
+	// TODO(kyranet): add missing language key for attachmentDuration
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachment, minimum: 5000, maximum: 120000 })
 	@Column('smallint', { name: 'selfmod.attachmentDuration', default: 20000 })
 	public selfmodAttachmentDuration = 20000;

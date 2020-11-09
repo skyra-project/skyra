@@ -557,6 +557,7 @@ export default class extends Language {
 		settingsEventsBanremove: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
 		settingsEventsMemberadd: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',
 		settingsEventsMembernameupdate: 'Whether member nickname updates should be logged or not.',
+		settingsEventsMemberroleupdate: 'Whether memner role changes should be logged or not.',
 		settingsEventsMemberremove: 'This event posts member logs when a user leaves. They will be posted in `channels.member-logs`.',
 		settingsEventsMessagedelete:
 			'This event posts message logs when a message is deleted. They will be posted in `channels.message-logs` (or `channel.nsfw-message-logs` in case of NSFW channels).',

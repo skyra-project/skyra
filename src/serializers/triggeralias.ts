@@ -4,6 +4,7 @@ import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<TriggerAlias> {
 	public parse(): Awaited<TriggerAlias> {
+		// TODO (kyranet): implement this
 		throw new Error('Method not implemented.');
 	}
 

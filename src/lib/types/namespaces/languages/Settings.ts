@@ -25,7 +25,6 @@ export const EventsBanAdd = T<string>('settingsEventsBanadd');
 export const EventsBanRemove = T<string>('settingsEventsBanremove');
 export const EventsMemberAdd = T<string>('settingsEventsMemberadd');
 export const EventsMemberNameUpdate = T<string>('settingsEventsMembernameupdate');
-// TODO(kyranet): this key is missing in i18n.
 export const EventsMemberRoleUpdate = T<string>('settingsEventsMemberroleupdate');
 export const EventsMemberRemove = T<string>('settingsEventsMemberremove');
 export const EventsMessageDelete = T<string>('settingsEventsMessagedelete');

@@ -69,7 +69,6 @@ export default class extends SkyraCommand {
 				const line = String(++i).padStart(2, '0');
 				commandCategories.push(
 					`\`${line}.\` **${category}** → ${language.get(
-						// TODO: i18next should do this automatically
 						commands.length === 1 ? LanguageKeys.Commands.General.HelpCommandCount : LanguageKeys.Commands.General.HelpCommandCountPlural,
 						{ count: commands.length }
 					)}`

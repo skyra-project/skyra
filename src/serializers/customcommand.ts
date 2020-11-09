@@ -5,6 +5,7 @@ import { ZeroWidthSpace } from '@utils/constants';
 
 export default class UserSerializer extends Serializer<CustomCommand> {
 	public parse(): Awaited<CustomCommand> {
+		// TODO (kyranet): implement this
 		throw new Error('Method not implemented.');
 	}
 

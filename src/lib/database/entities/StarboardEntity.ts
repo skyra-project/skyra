@@ -209,7 +209,6 @@ export class StarboardEntity extends BaseEntity {
 				await this.#message.guild.readSettings(GuildSettings.Starboard.Emoji)
 			);
 
-			// TODO: https://github.com/skyra-project/skyra/issues/569
 			this.#users.delete(this.#message.author.id);
 		} catch (error) {
 			if (error instanceof DiscordAPIError) {

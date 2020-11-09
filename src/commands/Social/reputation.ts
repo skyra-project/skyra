@@ -38,7 +38,6 @@ export default class extends SkyraCommand {
 
 		if (check) {
 			if (user.bot) throw language.get(LanguageKeys.Commands.Social.ReputationsBots);
-			// TODO: i18next should do this automatically
 			const reputationPoints =
 				extSettings!.reputations === 1
 					? language.get(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations })

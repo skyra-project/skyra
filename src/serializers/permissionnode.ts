@@ -6,6 +6,7 @@ import { Command } from 'klasa';
 
 export default class UserSerializer extends Serializer<PermissionsNode> {
 	public parse(): Awaited<PermissionsNode> {
+		// TODO (kyranet): implement this
 		throw new Error('Method not implemented.');
 	}
 

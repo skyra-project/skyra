@@ -4,7 +4,8 @@
 		"target": "ESNext",
 		"noEmitHelpers": true,
 		"importHelpers": true,
-		// TODO: Remove this and fix all type-only imports
-		"importsNotUsedAsValues": "remove"
+		// TODO (kyranet&favna): Remove this and fix all type-only imports
+		"importsNotUsedAsValues": "remove",
+		"removeComments": true
 	}
 }

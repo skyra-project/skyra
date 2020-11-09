@@ -215,7 +215,7 @@ export class SettingsMenu {
 	private async tryUpdate(value: unknown, action: UpdateType) {
 		try {
 			const key = this.schema as SchemaKey;
-			// TODO: Port some of the logic from `conf` command to here (for validation and stuff)
+			// TODO(kyranet): Port some of the logic from `conf` command to here (for validation and stuff)
 			const [oldValue, skipped] = await this.message.guild.writeSettings((settings) => {
 				const oldValue = settings[key.property];
 

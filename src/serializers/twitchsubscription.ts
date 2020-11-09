@@ -4,6 +4,7 @@ import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
 	public parse(): Awaited<NotificationsStreamTwitch> {
+		// TODO (kyranet): implement this
 		throw new Error('Method not implemented.');
 	}
 

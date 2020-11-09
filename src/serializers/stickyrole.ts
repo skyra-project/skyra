@@ -4,6 +4,7 @@ import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<StickyRole> {
 	public parse(): Awaited<StickyRole> {
+		// TODO (kyranet): implement this
 		throw new Error('Method not implemented.');
 	}
 

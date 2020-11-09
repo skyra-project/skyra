@@ -47,7 +47,6 @@ export default class extends SkyraCommand {
 		const suggestionID = await guild.readSettings(GuildSettings.Suggestions.ID);
 
 		// Post the suggestion
-		// TODO: This seems to be a bug in discord.js's types
 		const suggestionsMessage = await (suggestionsChannel as TextChannel).send(
 			new MessageEmbed()
 				.setColor(BrandingColors.Primary)

@@ -126,7 +126,7 @@ export default class DashboardWebsocketUser {
 	private async handleMessage(message: IncomingWebsocketMessage) {
 		switch (message.action) {
 			case IncomingWebsocketAction.MusicQueueUpdate: {
-				// TODO: Make this notify the user instead of silently failing
+				// TODO(kyranet): Make this notify the user instead of silently failing
 				try {
 					return this.handleMusicMessage(message);
 				} catch (err) {

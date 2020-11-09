@@ -1,5 +1,4 @@
 import { GuildSettings } from '@lib/database';
-import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -46,7 +45,7 @@ export default class extends Event {
 		);
 	}
 
-	private async isModerationAction(guild: SkyraGuild, data: GatewayGuildMemberRemoveDispatch['d']): Promise<IsModerationAction> {
+	private async isModerationAction(guild: Guild, data: GatewayGuildMemberRemoveDispatch['d']): Promise<IsModerationAction> {
 		await guild.moderation.waitLock();
 
 		const latestLogForUser = guild.moderation.getLatestLogForUser(data.user.id);

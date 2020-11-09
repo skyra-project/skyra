@@ -1,17 +1,16 @@
 import { DbSet, GuildSettings } from '@lib/database';
-import { SkyraGuild } from '@lib/extensions/SkyraGuild';
 import { Events } from '@lib/types/Enums';
 import { api } from '@utils/Models/Api';
-import { GatewayDispatchEvents, GatewayMessageDeleteDispatch } from 'discord-api-types/v6';
-import { DiscordAPIError } from 'discord.js';
+import { GatewayMessageDeleteDispatch } from 'discord-api-types/v6';
+import { DiscordAPIError, Guild } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: GatewayDispatchEvents.MessageDelete, emitter: store.client.ws });
+		super(store, file, directory, { name: Events.RawMessageDelete, emitter: store.client.ws });
 	}
 
-	public async run(guild: SkyraGuild, data: GatewayMessageDeleteDispatch['d']) {
+	public async run(guild: Guild, data: GatewayMessageDeleteDispatch['d']) {
 		guild.starboard.delete(data.id);
 
 		// Delete entry from starboard if it exists

@@ -1,13 +1,13 @@
 import { DbSet, GuildSettings } from '@lib/database';
 import { Events } from '@lib/types/Enums';
 import { api } from '@utils/Models/Api';
-import { GatewayDispatchEvents, GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
+import { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError, Guild } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: GatewayDispatchEvents.MessageDeleteBulk, emitter: store.client.ws });
+		super(store, file, directory, { name: Events.RawMessageDelete, emitter: store.client.ws });
 	}
 
 	public async run(guild: Guild, data: GatewayMessageDeleteBulkDispatch['d']): Promise<void> {

@@ -23,6 +23,7 @@ import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
+import './extensions/SkyraGuildMember';
 
 // Import setup files
 import './setup/PermissionsLevels';

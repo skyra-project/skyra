@@ -1,7 +1,6 @@
 import { CustomGet, FT, T } from '@lib/types';
 import { EightBallLanguage } from '@root/commands/Fun/8ball';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import { User } from 'discord.js';
 
 export const ChangemymindDescription = T<string>('commandChangemymindDescription');
 export const ChangemymindExtended = T<LanguageHelpDisplayOptions>('commandChangemymindExtended');

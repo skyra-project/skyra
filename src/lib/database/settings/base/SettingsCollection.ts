@@ -1,4 +1,4 @@
-import { Collection } from '@discordjs/collection';
+import Collection from '@discordjs/collection';
 import { RWLock } from 'async-rwlock';
 import type { Client } from 'discord.js';
 import type { BaseEntity } from 'typeorm';

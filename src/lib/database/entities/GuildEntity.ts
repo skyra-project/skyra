@@ -336,7 +336,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('integer', { name: 'selfmod.capitals.hardActionDuration', nullable: true })
 	public selfmodCapitalsHardActionDuration: number | null = null;
 
-	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 60000 })
+	@Column('smallint', { name: 'selfmod.capitals.thresholdMaximum', default: 10 })
 	public selfmodCapitalsThresholdMaximum = 10;
 
 	@Column('integer', { name: 'selfmod.capitals.thresholdDuration', default: 60000 })

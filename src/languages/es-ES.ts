@@ -4720,8 +4720,6 @@ export default class extends Language {
 
 		serializerAutoRoleInvalid: 'Invalid autorole data.',
 		serializerCommandAutoDeleteInvalid: 'Invalid command auto-delete data.',
-		serializerCustomCommandInvalid: 'Invalid custom command data.',
-		serializerDisabledCommandChannelInvalid: 'Invalid disabled command channel data.',
 		serializerPermissionNodeDuplicatedCommand: ({ command }) => `You have set \`${command}\` twice, either allow it, or deny it.`,
 		serializerPermissionNodeInvalidCommand: ({ command }) => `The command \`${command}\` does not exist or is invalid.`,
 		serializerPermissionNodeInvalidTarget: 'No data could be found from the ID.',
@@ -4737,6 +4735,13 @@ export default class extends Language {
 		serializerTwitchSubscriptionInvalidStreamer: 'Invalid data streamer.',
 		serializerTwitchSubscriptionInvalid: 'Invalid data.',
 		serializerUniqueRoleSetInvalid: 'Invalid unique role set data.',
+		serializerCustomCommandInvalidId: 'The property "id" must be a string.',
+		serializerCustomCommandInvalidEmbed: 'The property "embed" must be a boolean.',
+		serializerCustomCommandInvalidColor: 'The property "color" must be a number.',
+		serializerCustomCommandInvalidContent: 'The property "content" must be a string.',
+		serializerCustomCommandInvalidArgs: 'The property "args" must be an array of strings.',
+		serializerDisabledCommandChannelsChannelsDoesNotExist: 'The channel does not exist.',
+		serializerDisabledCommandChannelsChannelsCommandDoesNotExist: ({ name }) => `The command \`${name}\` does not exist.`,
 
 		/**
 		 * #################################

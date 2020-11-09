@@ -2082,8 +2082,6 @@ declare module 'klasa' {
 		hgNight: readonly string[];
 		serializerAutoRoleInvalid: string;
 		serializerCommandAutoDeleteInvalid: string;
-		serializerCustomCommandInvalid: string;
-		serializerDisabledCommandChannelInvalid: string;
 		serializerPermissionNodeDuplicatedCommand: (params: { command: string }) => string;
 		serializerPermissionNodeInvalidCommand: (params: { command: string }) => string;
 		serializerPermissionNodeInvalidTarget: string;
@@ -2098,6 +2096,13 @@ declare module 'klasa' {
 		serializerTwitchSubscriptionInvalidStreamer: string;
 		serializerTwitchSubscriptionInvalid: string;
 		serializerUniqueRoleSetInvalid: string;
+		serializerCustomCommandInvalidId: string;
+		serializerCustomCommandInvalidEmbed: string;
+		serializerCustomCommandInvalidColor: string;
+		serializerCustomCommandInvalidContent: string;
+		serializerCustomCommandInvalidArgs: string;
+		serializerDisabledCommandChannelsChannelsDoesNotExist: string;
+		serializerDisabledCommandChannelsChannelsCommandDoesNotExist: (params: { name: string }) => string;
 		selfModerationCommandInvalidMissingAction: (params: { name: string }) => string;
 		selfModerationCommandInvalidMissingArguments: (params: { name: string }) => string;
 		selfModerationCommandInvalidSoftaction: (params: { name: string }) => string;

@@ -10,7 +10,7 @@ export default class UserSerializer extends Serializer<CustomCommand> {
 
 	public isValid(value: CustomCommand, context: SerializerUpdateContext): Awaited<boolean> {
 		if (typeof value.id !== 'string') {
-			throw new Error('The property "id" must be a string.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidId));
 		}
 
 		if (value.id.length > 50) {
@@ -22,19 +22,19 @@ export default class UserSerializer extends Serializer<CustomCommand> {
 		}
 
 		if (typeof value.embed !== 'boolean') {
-			throw new Error('The property "embed" must be a boolean.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidEmbed));
 		}
 
 		if (typeof value.color !== 'number') {
-			throw new Error('The property "color" must be a number.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidColor));
 		}
 
 		if (typeof value.content !== 'string') {
-			throw new Error('The property "content" must be a string.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidContent));
 		}
 
 		if (!Array.isArray(value.args) || value.args.some((arg) => typeof arg !== 'string')) {
-			throw new Error('The property "args" must be an array of strings.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.CustomCommands.InvalidArgs));
 		}
 
 		return true;

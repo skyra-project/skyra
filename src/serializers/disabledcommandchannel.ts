@@ -8,7 +8,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 
 		const channel = context.entity.guild.channels.cache.get(channelID);
 		if (!channel) {
-			throw new Error('The channel does not exist.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
 
 		if (channel.type !== 'text') {
@@ -18,7 +18,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 		const commands: string[] = [];
 		for (const command of commandIDs) {
 			if (!this.client.commands.has(command)) {
-				throw new Error(`The command \`${command}\` does not exist.`);
+				throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 
 			commands.push(command);
@@ -30,7 +30,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 	public isValid(value: DisabledCommandChannel, context: SerializerUpdateContext): Awaited<boolean> {
 		const channel = context.entity.guild.channels.cache.get(value.channel);
 		if (!channel) {
-			throw new Error('The channel does not exist.');
+			throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
 
 		if (channel.type !== 'text') {
@@ -39,7 +39,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 
 		for (const command of value.commands) {
 			if (!this.client.commands.has(command)) {
-				throw new Error(`The command \`${command}\` does not exist.`);
+				throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 		}
 

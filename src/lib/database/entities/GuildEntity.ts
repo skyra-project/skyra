@@ -1,4 +1,4 @@
-import { ConfigurableKey, configurableKeys } from '@lib/database';
+import { ConfigurableKey, configurableKeys } from '@lib/database/settings';
 import { isNullish } from '@lib/misc';
 import { SkyraClient } from '@lib/SkyraClient';
 import { AnyObject } from '@lib/types';

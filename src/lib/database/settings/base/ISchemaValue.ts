@@ -1,4 +1,5 @@
-import type { GuildEntity, SchemaGroup } from '@lib/database';
+import type { GuildEntity } from '@lib/database/entities/GuildEntity';
+import type { SchemaGroup } from '@lib/database/settings/schema/SchemaGroup';
 import type { Language } from 'klasa';
 
 export interface ISchemaValue {

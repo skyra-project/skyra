@@ -1,10 +1,11 @@
 import Collection from '@discordjs/collection';
-import { GuildEntity, GuildSettings, PermissionsNode } from '@lib/database';
-import { SkyraClient } from '@lib/SkyraClient';
+import type { GuildEntity, PermissionsNode } from '@lib/database/entities/GuildEntity';
+import { GuildSettings } from '@lib/database/languages';
+import type { SkyraClient } from '@lib/SkyraClient';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { arrayStrictEquals } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
-import { IBaseManager } from '../base/IBaseManager';
+import type { IBaseManager } from '../base/IBaseManager';
 
 const sort = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
 

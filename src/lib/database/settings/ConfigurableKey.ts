@@ -1,9 +1,9 @@
 import Collection from '@discordjs/collection';
+import type { GuildEntity } from '@lib/database/entities/GuildEntity';
+import { ReadOnlyNonEmptyArray, SchemaGroup } from '@lib/database/settings/schema/SchemaGroup';
+import { ConfigurableKeyValueOptions, SchemaKey } from '@lib/database/settings/schema/SchemaKey';
 import { isNumber, isPrimitive } from '@sapphire/utilities';
 import { ColumnOptions, ColumnType, getMetadataArgsStorage } from 'typeorm';
-import type { GuildEntity } from '../entities/GuildEntity';
-import { ReadOnlyNonEmptyArray, SchemaGroup } from './schema/SchemaGroup';
-import { ConfigurableKeyValueOptions, SchemaKey } from './schema/SchemaKey';
 
 export const configurableKeys = new Collection<string, SchemaKey>();
 export const configurableGroups = new SchemaGroup();

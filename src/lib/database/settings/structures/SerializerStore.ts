@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import { AliasStore } from 'klasa';
 import { Serializer } from './Serializer';
 

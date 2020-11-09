@@ -1,9 +1,9 @@
-import { GuildEntity } from '@lib/database/entities/GuildEntity';
+import type { GuildEntity } from '@lib/database/entities/GuildEntity';
+import type { SchemaKey } from '@lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Awaited } from '@sapphire/utilities';
-import { Guild } from 'discord.js';
+import type { Awaited } from '@sapphire/utilities';
+import type { Guild } from 'discord.js';
 import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
-import { SchemaKey } from '../schema/SchemaKey';
 
 export abstract class Serializer<T> extends AliasPiece {
 	/**

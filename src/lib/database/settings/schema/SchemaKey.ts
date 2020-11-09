@@ -1,13 +1,13 @@
+import type { GuildEntity } from '@lib/database/entities/GuildEntity';
+import type { ISchemaValue } from '@lib/database/settings/base/ISchemaValue';
+import type { Serializer, SerializerUpdateContext } from '@lib/database/settings/structures/Serializer';
 import { SkyraClient } from '@lib/SkyraClient';
 import type { AnyObject, CustomGet } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Awaited } from '@sapphire/utilities';
-import { Language } from 'klasa';
+import type { Awaited } from '@sapphire/utilities';
+import type { Language } from 'klasa';
 import { container } from 'tsyringe';
-import type { GuildEntity } from '../../entities/GuildEntity';
-import { ISchemaValue } from '../base/ISchemaValue';
-import type { Serializer, SerializerUpdateContext } from '../structures/Serializer';
-import { SchemaGroup } from './SchemaGroup';
+import type { SchemaGroup } from './SchemaGroup';
 
 export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implements ISchemaValue {
 	/**

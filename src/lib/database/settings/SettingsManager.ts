@@ -1,4 +1,4 @@
-import { Client } from 'discord.js';
+import type { Client } from 'discord.js';
 import { GuildSettingsCollection } from './structures/collections/GuildSettingsCollection';
 import { SerializerStore } from './structures/SerializerStore';
 

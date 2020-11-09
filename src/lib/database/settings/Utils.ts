@@ -1,6 +1,6 @@
-import { ISchemaValue } from './base/ISchemaValue';
-import { SchemaGroup } from './schema/SchemaGroup';
-import { SchemaKey } from './schema/SchemaKey';
+import type { ISchemaValue } from './base/ISchemaValue';
+import type { SchemaGroup } from './schema/SchemaGroup';
+import type { SchemaKey } from './schema/SchemaKey';
 
 export function isSchemaGroup(groupOrKey: ISchemaValue): groupOrKey is SchemaGroup {
 	return groupOrKey.type === 'Group';

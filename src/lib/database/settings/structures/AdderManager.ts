@@ -1,7 +1,8 @@
-import { GuildEntity, GuildSettings } from '@lib/database';
+import type { GuildEntity } from '@lib/database/entities/GuildEntity';
+import { GuildSettings } from '@lib/database/languages';
+import type { IBaseManager } from '@lib/database/settings/base/IBaseManager';
 import { isNullish, Nullish } from '@lib/misc';
 import { Adder } from '@utils/Adder';
-import { IBaseManager } from '../base/IBaseManager';
 
 export type AdderKey = 'attachments' | 'capitals' | 'links' | 'messages' | 'newlines' | 'invites' | 'words' | 'reactions';
 

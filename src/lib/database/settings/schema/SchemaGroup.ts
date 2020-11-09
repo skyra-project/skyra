@@ -1,9 +1,9 @@
-import type { GuildEntity } from '@lib/database/entities';
+import type { GuildEntity } from '@lib/database/entities/GuildEntity';
+import type { ISchemaValue } from '@lib/database/settings/base/ISchemaValue';
 import { isNullish } from '@lib/misc';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import { Language } from 'klasa';
-import { ISchemaValue } from '../base/ISchemaValue';
-import { SchemaKey } from './SchemaKey';
+import type { Language } from 'klasa';
+import type { SchemaKey } from './SchemaKey';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 export type ReadOnlyNonEmptyArray<T> = [T, ...T[]];

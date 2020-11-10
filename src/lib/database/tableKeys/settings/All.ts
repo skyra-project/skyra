@@ -11,7 +11,6 @@ export * from './Starboard';
 export * from './Suggestions';
 export * from './Trigger';
 
-export const CommandUses = 'commandUses';
 export const Prefix = 'prefix';
 export const Language = 'language';
 export const CustomCommands = 'customCommands';

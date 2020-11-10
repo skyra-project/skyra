@@ -1,5 +1,5 @@
 export * from './entities';
-export * from './languages';
+export * from './tableKeys';
 export * from './repositories/ClientRepository';
 export * from './repositories/MemberRepository';
 export * from './repositories/UserRepository';

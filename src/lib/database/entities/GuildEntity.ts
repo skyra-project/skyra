@@ -66,13 +66,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'disabledCommands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledCommands: string[] = [];
 
-	@Column('simple-json', { name: 'custom-commands', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'custom-commands', default: () => "'[]'::JSONB" })
 	public customCommands: CustomCommand[] = [];
 
-	@Column('simple-json', { name: 'permissions.users', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'permissions.users', default: () => "'[]'::JSONB" })
 	public permissionsUsers: PermissionsNode[] = [];
 
-	@Column('simple-json', { name: 'permissions.roles', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'permissions.roles', default: () => "'[]'::JSONB" })
 	public permissionsRoles: PermissionsNode[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.ChannelsAnnouncements, type: 'textchannel' })
@@ -135,14 +135,14 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'channels.ignore.reaction-add', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public channelsIgnoreReactionAdds: string[] = [];
 
-	@Column('simple-json', { name: 'command-autodelete', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'command-autodelete', default: () => "'[]'::JSONB" })
 	public commandAutodelete: CommandAutoDelete[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'disabledChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledChannels: string[] = [];
 
-	@Column('simple-json', { name: 'disabledCommandsChannels', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'disabledCommandsChannels', default: () => "'[]'::JSONB" })
 	public disabledCommandsChannels: DisabledCommandChannel[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsBanAdd })
@@ -221,17 +221,17 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'messages.moderator-name-display', default: true })
 	public messagesModeratorNameDisplay = true;
 
-	@Column('simple-json', { name: 'stickyRoles', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'stickyRoles', default: () => "'[]'::JSONB" })
 	public stickyRoles: StickyRole[] = [];
 
-	@Column('simple-json', { name: 'reaction-roles', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'reaction-roles', default: () => "'[]'::JSONB" })
 	public reactionRoles: ReactionRole[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesAdmin, type: 'role', array: false })
 	@Column('varchar', { name: 'roles.admin', nullable: true, length: 19 })
 	public rolesAdmin?: string | null;
 
-	@Column('simple-json', { name: 'roles.auto', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'roles.auto', default: () => "'[]'::JSONB" })
 	public rolesAuto: RolesAuto[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitial, type: 'role', array: false })
@@ -282,7 +282,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'roles.subscriber', nullable: true, length: 19 })
 	public rolesSubscriber?: string | null;
 
-	@Column('simple-json', { name: 'roles.uniqueRoleSets', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'roles.uniqueRoleSets', default: () => "'[]'::JSONB" })
 	public rolesUniqueRoleSets: UniqueRoleSet[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachment })
@@ -605,10 +605,10 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'starboard.selfStar', default: false })
 	public starboardSelfStar = false;
 
-	@Column('simple-json', { name: 'trigger.alias', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'trigger.alias', default: () => "'[]'::JSONB" })
 	public triggerAlias: TriggerAlias[] = [];
 
-	@Column('simple-json', { name: 'trigger.includes', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'trigger.includes', default: () => "'[]'::JSONB" })
 	public triggerIncludes: TriggerIncludes[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.MusicDefaultVolume, minimum: 0, maximum: 200 })
@@ -627,7 +627,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'music.allow-streams', default: true })
 	public musicAllowStreams = true;
 
-	@Column('simple-json', { name: 'notifications.streams.twitch.streamers', array: true, default: () => 'ARRAY[]::JSON[]' })
+	@Column('jsonb', { name: 'notifications.streams.twitch.streamers', default: () => "'[]'::JSONB" })
 	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 
 	@Column('integer', { name: 'suggestions.id', default: 1 })

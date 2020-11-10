@@ -14,6 +14,7 @@ export class GuildSettingsCollection extends SettingsCollection<GuildEntity> {
 		}
 
 		const created = new GuildEntity();
+		created.id = key;
 		this.set(key, created);
 		return created;
 	}

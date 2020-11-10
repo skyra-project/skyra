@@ -41,7 +41,7 @@ export class SchemaGroup extends Map<string, ISchemaValue> implements ISchemaVal
 
 	public *childKeys() {
 		for (const [key, entry] of this) {
-			if (entry.type !== 'Folder') yield key;
+			if (entry.type !== 'Group') yield key;
 		}
 	}
 
@@ -65,7 +65,7 @@ export class SchemaGroup extends Map<string, ISchemaValue> implements ISchemaVal
 		const sections = new Map<string, string[]>();
 		let longest = 0;
 		for (const [key, value] of this.entries()) {
-			if (value.type === 'Folder') {
+			if (value.type === 'Group') {
 				folders.push(`// ${key}`);
 			} else {
 				const values = sections.get(value.type) ?? [];

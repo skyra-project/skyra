@@ -1,6 +1,7 @@
 import type { GuildEntity } from '@lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '@lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '@lib/database/settings/structures/Serializer';
+import { isNullish } from '@lib/misc';
 import { SkyraClient } from '@lib/SkyraClient';
 import type { AnyObject, CustomGet } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -105,11 +106,13 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 
 		if (this.array) {
 			const values = settings[this.property] as readonly any[];
-			return values.length === 0 ? 'None' : `[ ${values.map((value) => serializer.stringify(value, context)).join(' | ')} ]`;
+			return isNullish(values) || values.length === 0
+				? 'None'
+				: `[ ${values.map((value) => serializer.stringify(value, context)).join(' | ')} ]`;
 		}
 
 		const value = settings[this.property];
-		return value === null ? language.get(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
+		return isNullish(value) ? language.get(LanguageKeys.Commands.Admin.ConfSettingNotSet) : serializer.stringify(value, context);
 	}
 
 	public getContext(settings: GuildEntity, language: Language): SerializerUpdateContext {

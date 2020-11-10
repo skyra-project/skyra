@@ -134,7 +134,8 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	messageSweepInterval: 180,
 	pieceDefaults: {
 		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
-		monitors: { ignoreOthers: false }
+		monitors: { ignoreOthers: false },
+		serializers: { enabled: true, aliases: [] }
 	},
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },

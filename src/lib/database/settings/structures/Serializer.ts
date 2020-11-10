@@ -3,13 +3,9 @@ import type { SchemaKey } from '@lib/database/settings/schema/SchemaKey';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
-import { AliasPiece, AliasPieceOptions, constants, Language, MentionRegex, Piece, Store } from 'klasa';
+import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
 
 export abstract class Serializer<T> extends AliasPiece {
-	public constructor(store: Store<string, Piece, typeof Piece>, file: string[], directory: string, options?: AliasPieceOptions) {
-		super(store, file, directory, { aliases: [], ...options });
-	}
-
 	/**
 	 * Resolves a string into a value.
 	 * @param value The value to parsed.

@@ -1,4 +1,5 @@
 import { DbSet, GuildSettings } from '@lib/database';
+import { isNullish } from '@lib/misc';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
@@ -87,8 +88,8 @@ export default class extends SkyraCommand {
 	public async inhibit(message: GuildMessage): Promise<boolean> {
 		// If the message that triggered this is not this command (potentially help command) or the guild is null, return with no error.
 		if (!Object.is(message.command, this) || message.guild === null || Reflect.has(message.flagArgs, 'global')) return false;
-		const suggestionID = await message.guild.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
-		if (suggestionID === null) return this.setChannel(message);
+		const channelID = await message.guild.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
+		if (isNullish(channelID)) return this.setChannel(message);
 		return false;
 	}
 

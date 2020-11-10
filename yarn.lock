@@ -3877,7 +3877,7 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
 
 klasa@skyra-project/klasa#refactor/sg-removal:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/2171e5935cc29718c0f208a147c50585bfb70af2"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/b885a146d9b2eb30b932ee0920223cb529080cdf"
   dependencies:
     fs-nextra "^0.5.1"
 

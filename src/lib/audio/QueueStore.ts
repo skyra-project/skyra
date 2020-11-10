@@ -62,33 +62,29 @@ export class QueueStore extends Collection<string, Queue> {
 		return queue;
 	}
 
-	public async start(filter?: (guildID: string) => boolean) {
-		const keys = await this.scan('skyra.a.*.p');
-		const guilds = keys.map((key) => {
-			const match = key.match(/^playlists\.(\d+)/);
-			if (match) return match[1];
-			throw new Error('error extracting guild ID from playlist');
-		});
-
-		await Promise.all(
-			guilds.map((guild) => {
-				if (!filter || filter(guild)) return this.get(guild).start();
-				return false;
-			})
-		);
+	public async start() {
+		const guilds = await this.getPlayingEntries();
+		await Promise.all(guilds.map((guild) => this.get(guild).start()));
 	}
 
-	protected async scan(pattern: string, cursor = '0'): Promise<string[]> {
-		const keys: string[] = [];
+	private async getPlayingEntries(): Promise<string[]> {
+		const guilds = new Set<string>();
 
-		// eslint-disable-next-line @typescript-eslint/init-declarations
-		let response: [string, string[]];
+		let cursor = '0';
 		do {
-			response = await this.redis.scan(cursor, 'MATCH', pattern);
+			// `scan` returns a tuple with the next cursor (which must be used for the
+			// next iteration) and an array of the matching keys. The iterations end when
+			// cursor becomes '0' again.
+			const response = await this.redis.scan(cursor, 'MATCH', 'skyra.a.*.p');
 			[cursor] = response;
-			keys.push(...response[1]);
+
+			for (const key of response[1]) {
+				// Slice 'skyra.a.' from the start, and '.p' from the end:
+				const id = key.slice(8, -2);
+				guilds.add(id);
+			}
 		} while (cursor !== '0');
 
-		return keys;
+		return [...guilds];
 	}
 }

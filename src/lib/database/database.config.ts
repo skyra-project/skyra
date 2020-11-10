@@ -16,9 +16,9 @@ export const config: ConnectionOptions = {
 	entities: [join(__dirname, 'entities/*Entity.js')],
 	migrations: [join(__dirname, 'migrations/*.js')],
 	cli: {
-		entitiesDir: 'src/lib/orm/entities',
-		migrationsDir: 'src/lib/orm/migrations',
-		subscribersDir: 'src/lib/orm/subscribers'
+		entitiesDir: 'src/lib/database/entities',
+		migrationsDir: 'src/lib/database/migrations',
+		subscribersDir: 'src/lib/database/subscribers'
 	},
 	namingStrategy: new SnakeNamingStrategy(),
 	logging: DEV

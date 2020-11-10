@@ -57,15 +57,19 @@ export default class extends RichDisplayCommand {
 				.setAuthor(`${embedTranslations.move} - ${toTitleCase(moveData.name)}`, CdnUrls.Pokedex)
 				.setDescription(moveData.desc || moveData.shortDesc)
 		)
-			.addPage((embed: MessageEmbed) =>
-				embed
+			.addPage((embed) => {
+				if (moveData.isFieldMove) {
+					embed.addField(embedTranslations.fieldMoveEffectTitle, moveData.isFieldMove, false);
+				}
+
+				return embed
 					.addField(embedTranslations.types, moveData.type, true)
 					.addField(embedTranslations.basePower, moveData.basePower, true)
 					.addField(embedTranslations.pp, moveData.pp, true)
 					.addField(embedTranslations.accuracy, `${moveData.accuracy}%`, true)
-					.addField(externalResources, externalSources)
-			)
-			.addPage((embed: MessageEmbed) =>
+					.addField(externalResources, externalSources);
+			})
+			.addPage((embed) =>
 				embed
 					.addField(embedTranslations.category, moveData.category, true)
 					.addField(embedTranslations.priority, moveData.priority, true)
@@ -88,8 +92,8 @@ export default class extends RichDisplayCommand {
 		return display.addPage((embed: MessageEmbed) =>
 			embed
 				.addField(embedTranslations.zCrystal, moveData.isZ ?? embedTranslations.none, true)
-				.addField(embedTranslations.gmaxPokemon, moveData.isGMax ?? embedTranslations.none)
-				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data)
+				.addField(embedTranslations.gmaxPokemon, moveData.isGMax ?? embedTranslations.none, true)
+				.addField(embedTranslations.availableInGeneration8Title, embedTranslations.availableInGeneration8Data, true)
 				.addField(externalResources, externalSources)
 		);
 	}

@@ -2173,7 +2173,10 @@ export default class extends Language {
 			explainedUsage: [['ability', 'The ability for which you want to find data']],
 			examples: ['multiscale', 'pressure']
 		},
-		commandAbilityEmbedTitle: 'Ability',
+		commandAbilityEmbedTitles: {
+			authorTitle: 'Ability',
+			fieldEffectTitle: 'Effect outside of battle'
+		},
 		commandAbilityQueryFail: ({ ability }) => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
 		commandFlavorsDescription: 'Gets the dex entries across various games for a Pokémon.',
 		commandFlavorsExtended: {
@@ -2255,7 +2258,8 @@ export default class extends Language {
 			availableInGeneration8Data: availableInGen8,
 			none: 'None',
 			maxMovePower: 'Base power as MAX move (Dynamax)',
-			zMovePower: 'Base power as Z-Move (Z-Crystal)'
+			zMovePower: 'Base power as Z-Move (Z-Crystal)',
+			fieldMoveEffectTitle: 'Effect outside of battle'
 		}),
 		commandMoveQueryFail: ({ move }) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		commandPokedexDescription: 'Gets data for any given Pokémon using my Pokémon dataset.',

@@ -3,7 +3,7 @@ import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const AbilityDescription = T<string>('commandAbilityDescription');
 export const AbilityExtended = T<LanguageHelpDisplayOptions>('commandAbilityExtended');
-export const AbilityEmbedTitle = T<string>('commandAbilityEmbedTitle');
+export const AbilityEmbedTitles = T<{ authorTitle: string; fieldEffectTitle: string }>('commandAbilityEmbedTitles');
 export const AbilityQueryFail = FT<{ ability: string }, string>('commandAbilityQueryFail');
 export const FlavorsDescription = T<string>('commandFlavorsDescription');
 export const FlavorsExtended = T<LanguageHelpDisplayOptions>('commandFlavorsExtended');
@@ -53,6 +53,7 @@ export const MoveEmbedData = FT<
 		none: string;
 		maxMovePower: string;
 		zMovePower: string;
+		fieldMoveEffectTitle: string;
 	}
 >('commandMoveEmbedData');
 export const MoveQueryFail = FT<{ move: string }, string>('commandMoveQueryFail');

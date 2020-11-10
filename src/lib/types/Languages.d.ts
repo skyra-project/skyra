@@ -254,7 +254,10 @@ declare module 'klasa' {
 		commandVolumeChangedTexts: readonly string[];
 		commandAbilityDescription: string;
 		commandAbilityExtended: LanguageHelpDisplayOptions;
-		commandAbilityEmbedTitle: string;
+		commandAbilityEmbedTitles: {
+			authorTitle: string;
+			fieldEffectTitle: string;
+		};
 		commandAbilityQueryFail: (params: { ability: string }) => string;
 		commandFlavorsDescription: string;
 		commandFlavorsExtended: LanguageHelpDisplayOptions;
@@ -309,6 +312,7 @@ declare module 'klasa' {
 			none: string;
 			maxMovePower: string;
 			zMovePower: string;
+			fieldMoveEffectTitle: string;
 		};
 		commandMoveQueryFail: (params: { move: string }) => string;
 		commandPokedexDescription: string;

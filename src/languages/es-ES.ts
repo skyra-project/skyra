@@ -2195,7 +2195,10 @@ export default class extends Language {
 			explainedUsage: [['habilidad', 'La capacidad para la que desea encontrar datos']],
 			examples: ['multiscale', 'pressure']
 		},
-		commandAbilityEmbedTitle: 'Habilidad',
+		commandAbilityEmbedTitles: {
+			authorTitle: 'Habilidad',
+			fieldEffectTitle: 'Efecto fuera de la batalla'
+		},
 		commandAbilityQueryFail: ({ ability }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
 		commandFlavorsDescription: 'Obtiene las entradas de dex en varios juegos para un Pokémon.',
@@ -2285,7 +2288,8 @@ export default class extends Language {
 			availableInGeneration8Data: availableInGen8,
 			none: 'Ninguno',
 			maxMovePower: 'Potencia base como Movimiento Dinamax (Dinamax)',
-			zMovePower: 'Potencia base como Movimiento Z (Cristal Z)'
+			zMovePower: 'Potencia base como Movimiento Z (Cristal Z)',
+			fieldMoveEffectTitle: 'Efecto fuera de la batalla'
 		}),
 		commandMoveQueryFail: ({ move }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,

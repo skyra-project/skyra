@@ -128,6 +128,7 @@ export const getAbilityDetailsByFuzzy = gql`
 		desc
 		shortDesc
 		name
+		isFieldAbility
 		bulbapediaPage
 		serebiiPage
 		smogonPage
@@ -227,6 +228,7 @@ export const getMoveDetailsByFuzzy = gql`
 		desc
 		maxMovePower
 		zMovePower
+		isFieldMove
 	}
 
 	query getMoveDetails($move: String!) {

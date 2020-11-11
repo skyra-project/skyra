@@ -1,7 +1,8 @@
-import { configurableGroups, isSchemaGroup, SchemaGroup, SchemaKey } from '@lib/database';
+import { configurableGroups, isSchemaGroup, remove, SchemaGroup, SchemaKey, set } from '@lib/database';
 import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { deepClone } from '@sapphire/utilities';
 import { BrandingColors, Time, ZeroWidthSpace } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { api } from '@utils/Models/Api';
@@ -15,7 +16,7 @@ const EMOJIS = { BACK: '◀', STOP: '⏹' };
 const TIMEOUT = Time.Minute * 15;
 
 const enum UpdateType {
-	Add,
+	Set,
 	Remove,
 	Reset,
 	Replace
@@ -132,7 +133,7 @@ export class SettingsMenu {
 		} else {
 			const [command, ...params] = message.content.split(' ');
 			const commandLowerCase = command.toLowerCase();
-			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), UpdateType.Add);
+			if (commandLowerCase === 'set') await this.tryUpdate(params.join(' '), UpdateType.Set);
 			else if (commandLowerCase === 'remove') await this.tryUpdate(params.join(' '), UpdateType.Remove);
 			else if (commandLowerCase === 'reset') await this.tryUpdate(null, UpdateType.Reset);
 			else if (commandLowerCase === 'undo') await this.tryUndo();
@@ -215,29 +216,26 @@ export class SettingsMenu {
 	private async tryUpdate(value: unknown, action: UpdateType) {
 		try {
 			const key = this.schema as SchemaKey;
-			// TODO(kyranet): Port some of the logic from `conf` command to here (for validation and stuff)
-			const [oldValue, skipped] = await this.message.guild.writeSettings((settings) => {
-				const oldValue = settings[key.property];
+			const [oldValue, skipped] = await this.message.guild.writeSettings(async (settings) => {
+				const oldValue = deepClone(settings[key.property]);
 
 				switch (action) {
-					case UpdateType.Add: {
-						const clone = (oldValue as unknown[]).slice();
-						clone.push(value);
-						Reflect.set(settings, key.property, clone);
+					case UpdateType.Set: {
+						this.language = await set(settings, key, value as string);
 						break;
 					}
 					case UpdateType.Remove: {
-						const clone = (oldValue as unknown[]).slice();
-						clone.splice(clone.indexOf(value), 1);
-						Reflect.set(settings, key.property, clone);
+						this.language = await remove(settings, key, value as string);
 						break;
 					}
 					case UpdateType.Reset: {
 						Reflect.set(settings, key.property, key.default);
+						this.language = settings.getLanguage();
 						break;
 					}
 					case UpdateType.Replace: {
 						Reflect.set(settings, key.property, value);
+						this.language = settings.getLanguage();
 						break;
 					}
 				}

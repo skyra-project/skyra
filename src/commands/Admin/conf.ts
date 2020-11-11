@@ -1,4 +1,4 @@
-import { configurableGroups, isSchemaGroup, isSchemaKey, SchemaKey } from '@lib/database';
+import { configurableGroups, isSchemaGroup, isSchemaKey, remove, reset, SchemaKey, set } from '@lib/database';
 import { map } from '@lib/misc';
 import { SettingsMenu } from '@lib/structures/SettingsMenu';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
@@ -48,28 +48,7 @@ export default class extends SkyraCommand {
 	public async set(message: GuildMessage, [key, valueToSet]: string[]) {
 		const schemaKey = await this.fetchKey(message, key);
 		const [response, language] = await message.guild.writeSettings(async (settings) => {
-			const language = settings.getLanguage();
-
-			const parsed = await schemaKey.parse(settings, language, valueToSet);
-			if (schemaKey.array) {
-				const values = Reflect.get(settings, schemaKey.property) as any[];
-				const { serializer } = schemaKey;
-				const index = values.findIndex((value) => serializer.equals(value, parsed));
-				if (index === -1) values.push(parsed);
-				else values[index] = parsed;
-			} else {
-				const value = Reflect.get(settings, schemaKey.property);
-				const { serializer } = schemaKey;
-				if (serializer.equals(value, parsed)) {
-					throw language.get(LanguageKeys.Settings.Gateway.DuplicateValue, {
-						path: schemaKey.name,
-						value: schemaKey.stringify(settings, language, parsed)
-					});
-				}
-
-				Reflect.set(settings, schemaKey.property, parsed);
-			}
-
+			const language = await set(settings, schemaKey, valueToSet);
 			return [schemaKey.display(settings, language), language];
 		});
 
@@ -81,25 +60,7 @@ export default class extends SkyraCommand {
 	public async remove(message: GuildMessage, [key, valueToRemove]: string[]) {
 		const schemaKey = await this.fetchKey(message, key);
 		const [response, language] = await message.guild.writeSettings(async (settings) => {
-			const language = settings.getLanguage();
-
-			const parsed = await schemaKey.parse(settings, language, valueToRemove);
-			if (schemaKey.array) {
-				const values = Reflect.get(settings, schemaKey.property) as any[];
-				const { serializer } = schemaKey;
-				const index = values.findIndex((value) => serializer.equals(value, parsed));
-				if (index === -1) {
-					throw language.get(LanguageKeys.Settings.Gateway.MissingValue, {
-						path: schemaKey.name,
-						value: schemaKey.stringify(settings, language, parsed)
-					});
-				}
-
-				values.splice(index, 1);
-			} else {
-				Reflect.set(settings, schemaKey.property, schemaKey.default);
-			}
-
+			const language = await remove(settings, schemaKey, valueToRemove);
 			return [schemaKey.display(settings, language), language];
 		});
 
@@ -109,8 +70,7 @@ export default class extends SkyraCommand {
 	public async reset(message: GuildMessage, [key]: string[]) {
 		const schemaKey = await this.fetchKey(message, key);
 		const [response, language] = await message.guild.writeSettings(async (settings) => {
-			const language = settings.getLanguage();
-			Reflect.set(settings, schemaKey.property, schemaKey.default);
+			const language = reset(settings, schemaKey);
 			return [schemaKey.display(settings, language), language];
 		});
 

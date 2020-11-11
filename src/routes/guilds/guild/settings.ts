@@ -3,7 +3,7 @@ import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
 import { ApplyOptions } from '@skyra/decorators';
 import { canManage } from '@utils/API';
-import { authenticated, ratelimit } from '@utils/util';
+import { authenticated, cast, ratelimit } from '@utils/util';
 import { Guild } from 'discord.js';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
@@ -49,9 +49,9 @@ export default class extends Route {
 
 		try {
 			const settings = await guild.writeSettings(async (settings) => {
-				await this.validateAll(settings, guild, entries);
+				const pairs = await this.validateAll(settings, guild, entries);
 
-				for (const [key, value] of entries) {
+				for (const [key, value] of pairs) {
 					Reflect.set(settings, key, value);
 				}
 
@@ -70,6 +70,8 @@ export default class extends Route {
 		try {
 			const result = await entry.serializer.isValid(value as any, { ...context, entry });
 			if (!result) throw `${key}: The value is not valid.`;
+
+			return [entry.property, value] as const;
 		} catch (error) {
 			if (error instanceof Error) throw error.message;
 			throw error;
@@ -93,8 +95,8 @@ export default class extends Route {
 			return this.validate(pair[0], pair[1], context).catch((error) => errors.push(error));
 		});
 
-		await Promise.all(promises);
-		if (errors.length === 0) return;
+		const results = await Promise.all(promises);
+		if (errors.length === 0) return cast<readonly [keyof GuildEntity, unknown][]>(results);
 
 		throw errors;
 	}

@@ -1,5 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { oneToTen } from '@utils/util';
@@ -14,6 +15,9 @@ import { KlasaMessage } from 'klasa';
 	usage: '<user:string>'
 })
 export default class extends SkyraCommand {
+	private devRegex = new RegExp(`^(kyra|favna|${[...this.client.owners].map((owner) => `<@!${owner.id}>`).join('|')})$`, 'i');
+	private botRegex = new RegExp(`^(you|yourself|skyra|<@!${CLIENT_ID}>)$`, 'i');
+
 	public async run(message: KlasaMessage, [user]: [string]) {
 		// Escape all markdown
 		user = escapeMarkdown(user);
@@ -22,9 +26,12 @@ export default class extends SkyraCommand {
 		let ratewaifu: string | undefined = undefined;
 		let rate: number | undefined = undefined;
 
-		if (/^(you|yourself|skyra)$/i.test(user)) {
+		if (this.botRegex.test(user)) {
 			rate = 100;
 			[ratewaifu, user] = language.get(LanguageKeys.Commands.Fun.RateMyself);
+		} else if (this.devRegex.test(user)) {
+			rate = 101;
+			[ratewaifu, user] = language.get(LanguageKeys.Commands.Fun.RateMyOwners);
 		} else {
 			user = /^(myself|me)$/i.test(user) ? message.author.username : user.replace(/\bmy\b/g, 'your');
 

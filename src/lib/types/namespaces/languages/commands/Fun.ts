@@ -53,6 +53,7 @@ export const PunExtended = T<LanguageHelpDisplayOptions>('commandPunExtended');
 export const RateDescription = T<string>('commandRateDescription');
 export const RateExtended = T<LanguageHelpDisplayOptions>('commandRateExtended');
 export const RateMyself = T<[string, string]>('commandRateMyself');
+export const RateMyOwners = T<[string, string]>('commandRateOwners');
 export const RateOutput = FT<{ author: string; userToRate: string; rate: number; emoji: string }, string>('commandRateOutput');
 export const ShindeiruDescription = T<string>('commandShindeiruDescription');
 export const ShindeiruExtended = T<LanguageHelpDisplayOptions>('commandShindeiruExtended');

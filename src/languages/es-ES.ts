@@ -3178,7 +3178,8 @@ export default class extends Language {
 		commandMarkovNoMessages: 'The channel or user has no messages.',
 		commandNorrisOutput: 'Chuck Norris',
 		commandRateOutput: ({ author, userToRate, rate, emoji }) => `**${author}**, Uhm... le daría a **${userToRate}** un **${rate}**/100 ${emoji}`,
-		commandRateMyself: ['me quiero a mí misma mucho 😊', 'yo'],
+		commandRateMyself: ['Me quiero a mí misma mucho 😊', 'yo'],
+		commandRateOwners: ['Amo mucho a mis desarrolladores', 'mis desarrolladores'],
 		commandPunError: 'Something went wrong. Try again later.',
 		commandXkcdComics: ({ amount }) => `Hay ${amount} comics.`,
 		commandXkcdNotfound:

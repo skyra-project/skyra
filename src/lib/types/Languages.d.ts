@@ -1332,6 +1332,7 @@ declare module 'klasa' {
 		commandPunError: string;
 		commandRateOutput: (params: { author: string; userToRate: string; rate: number; emoji: string }) => string;
 		commandRateMyself: [string, string];
+		commandRateOwners: [string, string];
 		commandXkcdComics: (params: { amount: number }) => string;
 		commandXkcdNotfound: string;
 		commandGamesSkyra: string;

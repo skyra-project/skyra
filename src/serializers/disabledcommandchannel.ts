@@ -3,28 +3,28 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<DisabledCommandChannel> {
-	public parse(value: string, context: SerializerUpdateContext): Awaited<DisabledCommandChannel> {
+	public parse(value: string, context: SerializerUpdateContext) {
 		const [channelID, ...commandIDs] = value.split(' ');
 
 		const channel = context.entity.guild.channels.cache.get(channelID);
 		if (!channel) {
-			throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
+			return this.error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
 
 		if (channel.type !== 'text') {
-			throw context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name });
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 		}
 
 		const commands: string[] = [];
 		for (const command of commandIDs) {
 			if (!this.client.commands.has(command)) {
-				throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
+				return this.error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.CommandDoesNotExist, { name: command }));
 			}
 
 			commands.push(command);
 		}
 
-		return { channel: channel.id, commands };
+		return this.ok({ channel: channel.id, commands });
 	}
 
 	public isValid(value: DisabledCommandChannel, context: SerializerUpdateContext): Awaited<boolean> {

@@ -2,11 +2,11 @@ import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
 export default class UserSerializer extends Serializer<string> {
-	public async parse(value: string, context: SerializerUpdateContext): Promise<string> {
+	public async parse(value: string, context: SerializerUpdateContext) {
 		const id = Serializer.regex.userOrMember.exec(value);
 		const user = id ? await this.client.users.fetch(id[1]).catch(() => null) : null;
-		if (user) return user.id;
-		throw context.language.get(LanguageKeys.Resolvers.InvalidUser, { name: context.entry.name });
+		if (user) return this.ok(user.id);
+		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidUser, { name: context.entry.name }));
 	}
 
 	public async isValid(value: string, context: SerializerUpdateContext): Promise<boolean> {

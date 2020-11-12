@@ -4,9 +4,9 @@ import { Awaited } from '@sapphire/utilities';
 import { ZeroWidthSpace } from '@utils/constants';
 
 export default class UserSerializer extends Serializer<CustomCommand> {
-	public parse(): Awaited<CustomCommand> {
+	public parse() {
 		// TODO (kyranet): implement this
-		throw new Error('Method not implemented.');
+		return this.error('Method not implemented.');
 	}
 
 	public isValid(value: CustomCommand, context: SerializerUpdateContext): Awaited<boolean> {

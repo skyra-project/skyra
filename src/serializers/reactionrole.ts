@@ -4,9 +4,9 @@ import { Awaited, isObject } from '@sapphire/utilities';
 import { displayEmoji } from '@utils/util';
 
 export default class UserSerializer extends Serializer<ReactionRole> {
-	public parse(): Awaited<ReactionRole> {
+	public parse() {
 		// TODO (kyranet): implement this
-		throw new Error('Method not implemented.');
+		return this.error('Method not implemented.');
 	}
 
 	public isValid(value: ReactionRole, context: SerializerUpdateContext): Awaited<boolean> {

@@ -15,13 +15,14 @@ export default class UserSerializer extends Serializer<string> {
 	 */
 	private readonly kMinimum = new Date(2015, 1, 28).getTime();
 
-	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
+	public parse(value: string, context: SerializerUpdateContext) {
 		if (this.kRegExp.test(value)) {
 			const snowflake = DiscordSnowflake.deconstruct(value);
 			const timestamp = Number(snowflake.timestamp);
-			if (timestamp >= this.kMinimum && timestamp < Date.now()) return value;
+			if (timestamp >= this.kMinimum && timestamp < Date.now()) return this.ok(value);
 		}
-		throw context.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: context.entry.name });
+
+		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidSnowflake, { name: context.entry.name }));
 	}
 
 	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {

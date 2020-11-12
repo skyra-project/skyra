@@ -5,13 +5,13 @@ import { Awaited } from '@sapphire/utilities';
 export default class UserSerializer extends Serializer<string> {
 	private readonly kProtocol = /^https?:\/\//;
 
-	public parse(value: string, { language, entry }: SerializerUpdateContext): Awaited<string> {
+	public parse(value: string, { language, entry }: SerializerUpdateContext) {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
-			if (hostname.length <= 128) return hostname;
-			throw new Error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
+			if (hostname.length <= 128) return this.ok(hostname);
+			return this.error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
 		} catch {
-			throw new Error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
+			return this.error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
 		}
 	}
 

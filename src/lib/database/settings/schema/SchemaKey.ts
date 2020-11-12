@@ -2,10 +2,9 @@ import type { GuildEntity } from '@lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '@lib/database/settings/base/ISchemaValue';
 import type { Serializer, SerializerUpdateContext } from '@lib/database/settings/structures/Serializer';
 import { isNullish } from '@lib/misc';
-import { SkyraClient } from '@lib/SkyraClient';
+import type { SkyraClient } from '@lib/SkyraClient';
 import type { AnyObject, CustomGet } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import type { Awaited } from '@sapphire/utilities';
 import type { Language } from 'klasa';
 import { container } from 'tsyringe';
 import type { SchemaGroup } from './SchemaGroup';
@@ -88,10 +87,13 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		return value as Serializer<GuildEntity[K]>;
 	}
 
-	public parse(settings: GuildEntity, language: Language, value: string): Awaited<GuildEntity[K]> {
+	public async parse(settings: GuildEntity, language: Language, value: string): Promise<GuildEntity[K]> {
 		const { serializer } = this;
 		const context = this.getContext(settings, language);
-		return serializer.parse(value, context);
+
+		const result = await serializer.parse(value, context);
+		if (result.success) return result.value;
+		throw result.error.message;
 	}
 
 	public stringify(settings: GuildEntity, language: Language, value: GuildEntity[K]): string {

@@ -1,13 +1,13 @@
 import { PermissionsNode, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Awaited, isObject } from '@sapphire/utilities';
+import { isObject } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
 import { Command } from 'klasa';
 
 export default class UserSerializer extends Serializer<PermissionsNode> {
-	public parse(): Awaited<PermissionsNode> {
+	public parse() {
 		// TODO (kyranet): implement this
-		throw new Error('Method not implemented.');
+		return this.error('Method not implemented.');
 	}
 
 	public async isValid(value: PermissionsNode, { language, entry, entity: { guild } }: SerializerUpdateContext): Promise<boolean> {

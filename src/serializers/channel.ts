@@ -10,17 +10,18 @@ import { AliasPieceOptions } from 'klasa';
 	aliases: ['textchannel', 'voicechannel', 'categorychannel']
 })
 export default class UserSerializer extends Serializer<string> {
-	public parse(value: string, context: SerializerUpdateContext): Awaited<string> {
-		const channel = context.entity.guild.channels.cache.get(value);
+	public parse(value: string, context: SerializerUpdateContext) {
+		const id = UserSerializer.regex.channel.exec(value);
+		const channel = id ? context.entity.guild.channels.cache.get(id[1]) : context.entity.guild.channels.cache.find((r) => r.name === value);
 		if (!channel) {
-			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 		}
 
 		if (this.isValidChannel(channel, context.entry.type)) {
-			return channel.id;
+			return this.ok(channel.id);
 		}
 
-		throw context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name });
+		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 	}
 
 	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {

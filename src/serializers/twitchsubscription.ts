@@ -1,11 +1,10 @@
 import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
-	public parse(): Awaited<NotificationsStreamTwitch> {
+	public parse() {
 		// TODO (kyranet): implement this
-		throw new Error('Method not implemented.');
+		return this.error('Method not implemented.');
 	}
 
 	public isValid(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {

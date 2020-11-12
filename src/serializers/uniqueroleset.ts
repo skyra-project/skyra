@@ -3,9 +3,9 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<UniqueRoleSet> {
-	public parse(): Awaited<UniqueRoleSet> {
+	public parse() {
 		// TODO (kyranet): implement this
-		throw new Error('Method not implemented.');
+		return this.error('Method not implemented.');
 	}
 
 	public isValid(value: UniqueRoleSet, context: SerializerUpdateContext): Awaited<boolean> {

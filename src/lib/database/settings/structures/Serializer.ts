@@ -5,13 +5,28 @@ import type { Awaited } from '@sapphire/utilities';
 import type { Guild } from 'discord.js';
 import { AliasPiece, constants, Language, MentionRegex } from 'klasa';
 
+export interface Ok<T> {
+	success: true;
+	value: T;
+}
+
+export interface Err<E> {
+	success: false;
+	error: E;
+}
+
+export type Result<T, E> = Ok<T> | Err<E>;
+
+export type SerializerResult<T> = Result<T, Error>;
+export type AsyncSerializerResult<T> = Promise<Result<T, Error>>;
+
 export abstract class Serializer<T> extends AliasPiece {
 	/**
 	 * Resolves a string into a value.
 	 * @param value The value to parsed.
 	 * @param context The context for the key.
 	 */
-	public abstract parse(value: string, context: SerializerUpdateContext): Awaited<T>;
+	public abstract parse(value: string, context: SerializerUpdateContext): SerializerResult<T> | AsyncSerializerResult<T>;
 
 	/**
 	 * Check whether or not the value is valid.
@@ -39,24 +54,39 @@ export abstract class Serializer<T> extends AliasPiece {
 	}
 
 	/**
-	 * Standard regular expressions for matching mentions and snowflake ids
+	 * Returns a successful result.
+	 * @param value The value to return.
 	 */
-	public static regex: MentionRegex = constants.MENTION_REGEX;
+	protected ok<T>(value: T): SerializerResult<T> {
+		return { success: true, value };
+	}
+
+	/**
+	 * Returns an erroneous result.
+	 * @param error The message of the error.
+	 */
+	protected error(error: string): SerializerResult<T> {
+		return { success: false, error: new Error(error) };
+	}
 
 	/**
 	 * Check the boundaries of a key's minimum or maximum.
-	 * @param value The value to check
+	 * @param length The value to check
 	 * @param entry The schema entry that manages the key
 	 * @param language The language that is used for this context
 	 */
-	protected static minOrMax(value: number, { entry: { minimum, maximum, inclusive, name }, language }: SerializerUpdateContext): boolean {
+	protected minOrMax(
+		value: T,
+		length: number,
+		{ entry: { minimum, maximum, inclusive, name }, language }: SerializerUpdateContext
+	): SerializerResult<T> {
 		if (minimum !== null && maximum !== null) {
-			if ((value >= minimum && value <= maximum && inclusive) || (value > minimum && value < maximum && !inclusive)) {
-				return true;
+			if ((length >= minimum && length <= maximum && inclusive) || (length > minimum && length < maximum && !inclusive)) {
+				return this.ok(value);
 			}
 
 			if (minimum === maximum) {
-				throw new RangeError(
+				return this.error(
 					language.get(inclusive ? LanguageKeys.Resolvers.MinmaxExactlyInclusive : LanguageKeys.Resolvers.MinmaxExactlyExclusive, {
 						name,
 						min: minimum
@@ -64,7 +94,7 @@ export abstract class Serializer<T> extends AliasPiece {
 				);
 			}
 
-			throw new RangeError(
+			return this.error(
 				language.get(inclusive ? LanguageKeys.Resolvers.MinmaxBothInclusive : LanguageKeys.Resolvers.MinmaxBothExclusive, {
 					name,
 					min: minimum,
@@ -74,11 +104,11 @@ export abstract class Serializer<T> extends AliasPiece {
 		}
 
 		if (minimum !== null) {
-			if ((value >= minimum && inclusive) || (value > minimum && !inclusive)) {
-				return true;
+			if ((length >= minimum && inclusive) || (length > minimum && !inclusive)) {
+				return this.ok(value);
 			}
 
-			throw new RangeError(
+			return this.error(
 				language.get(inclusive ? LanguageKeys.Resolvers.MinmaxMinInclusive : LanguageKeys.Resolvers.MinmaxMinExclusive, {
 					name,
 					min: minimum
@@ -87,11 +117,11 @@ export abstract class Serializer<T> extends AliasPiece {
 		}
 
 		if (maximum !== null) {
-			if ((value <= maximum && inclusive) || (value < maximum && !inclusive)) {
-				return true;
+			if ((length <= maximum && inclusive) || (length < maximum && !inclusive)) {
+				return this.ok(value);
 			}
 
-			throw new RangeError(
+			return this.error(
 				language.get(inclusive ? LanguageKeys.Resolvers.MinmaxMaxInclusive : LanguageKeys.Resolvers.MinmaxMaxExclusive, {
 					name,
 					max: maximum
@@ -99,8 +129,13 @@ export abstract class Serializer<T> extends AliasPiece {
 			);
 		}
 
-		return true;
+		return this.ok(value);
 	}
+
+	/**
+	 * Standard regular expressions for matching mentions and snowflake ids
+	 */
+	public static regex: MentionRegex = constants.MENTION_REGEX;
 }
 
 export interface SerializerUpdateContext {

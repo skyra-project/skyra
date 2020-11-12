@@ -8,18 +8,18 @@ import { AliasPieceOptions } from 'klasa';
 	aliases: ['integer', 'float']
 })
 export default class UserSerializer extends Serializer<number> {
-	public parse(value: string, context: SerializerUpdateContext): Awaited<number> {
+	public parse(value: string, context: SerializerUpdateContext) {
 		switch (context.entry.type) {
 			case 'integer': {
 				const number = parseInt(value, 10);
-				if (Number.isInteger(number) && Serializer.minOrMax(number, context)) return number;
-				throw context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: context.entry.name });
+				if (Number.isInteger(number)) return this.minOrMax(number, number, context);
+				return this.error(context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: context.entry.name }));
 			}
 			case 'number':
 			case 'float': {
 				const number = parseFloat(value);
-				if (!Number.isNaN(number) && Serializer.minOrMax(number, context)) return number;
-				throw context.language.get(LanguageKeys.Resolvers.InvalidFloat, { name: context.entry.name });
+				if (!Number.isNaN(number)) return this.minOrMax(number, number, context);
+				return this.error(context.language.get(LanguageKeys.Resolvers.InvalidFloat, { name: context.entry.name }));
 			}
 		}
 
@@ -29,12 +29,12 @@ export default class UserSerializer extends Serializer<number> {
 	public isValid(value: number, context: SerializerUpdateContext): Awaited<boolean> {
 		switch (context.entry.type) {
 			case 'integer': {
-				if (typeof value === 'number' && Number.isInteger(value) && Serializer.minOrMax(value, context)) return true;
+				if (typeof value === 'number' && Number.isInteger(value) && this.minOrMax(value, value, context)) return true;
 				throw context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: context.entry.name });
 			}
 			case 'number':
 			case 'float': {
-				if (typeof value === 'number' && !Number.isNaN(value) && Serializer.minOrMax(value, context)) return true;
+				if (typeof value === 'number' && !Number.isNaN(value) && this.minOrMax(value, value, context)) return true;
 				throw context.language.get(LanguageKeys.Resolvers.InvalidFloat, { name: context.entry.name });
 			}
 		}

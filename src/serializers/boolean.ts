@@ -13,11 +13,11 @@ export default class UserSerializer extends Serializer<boolean> {
 	// TODO(kyranet): Localize this.
 	private readonly kFalsyTerms = new Set(['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-']);
 
-	public parse(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+	public parse(value: string, context: SerializerUpdateContext) {
 		const boolean = value.toLowerCase();
-		if (this.kTruthyTerms.has(boolean)) return true;
-		if (this.kFalsyTerms.has(boolean)) return false;
-		throw context.language.get(LanguageKeys.Resolvers.InvalidBool, { name: context.entry.name });
+		if (this.kTruthyTerms.has(boolean)) return this.ok(true);
+		if (this.kFalsyTerms.has(boolean)) return this.ok(false);
+		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidBool, { name: context.entry.name }));
 	}
 
 	public isValid(value: boolean): Awaited<boolean> {

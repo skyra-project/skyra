@@ -10,12 +10,12 @@ export default class UserSerializer extends Serializer<string> {
 		this.aliases = [...this.client.pieceStores.keys()].map((type) => type.slice(0, -1));
 	}
 
-	public parse(value: string, { entry, language }: SerializerUpdateContext): Awaited<string> {
+	public parse(value: string, { entry, language }: SerializerUpdateContext) {
 		const store = this.client.pieceStores.get(`${entry.type}s`);
-		if (!store) throw language.get(LanguageKeys.Resolvers.InvalidStore, { store: entry.type });
+		if (!store) return this.error(language.get(LanguageKeys.Resolvers.InvalidStore, { store: entry.type }));
 		const parsed = store.get(value);
-		if (parsed && parsed instanceof store.holds) return parsed;
-		throw language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type });
+		if (parsed && parsed instanceof store.holds) return this.ok(parsed);
+		return this.error(language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type }));
 	}
 
 	public isValid(value: string, { entry, language }: SerializerUpdateContext): Awaited<boolean> {

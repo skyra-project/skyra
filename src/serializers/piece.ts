@@ -1,6 +1,7 @@
 import { Serializer, SerializerStore, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Awaited } from '@sapphire/utilities';
+import type { Awaited } from '@sapphire/utilities';
+import type { Piece } from 'klasa';
 
 export default class UserSerializer extends Serializer<string> {
 	public constructor(store: SerializerStore, file: string[], directory: string) {
@@ -13,8 +14,8 @@ export default class UserSerializer extends Serializer<string> {
 	public parse(value: string, { entry, language }: SerializerUpdateContext) {
 		const store = this.client.pieceStores.get(`${entry.type}s`);
 		if (!store) return this.error(language.get(LanguageKeys.Resolvers.InvalidStore, { store: entry.type }));
-		const parsed = store.get(value);
-		if (parsed && parsed instanceof store.holds) return this.ok(parsed);
+		const parsed = store.get(value) as Piece | undefined;
+		if (parsed && parsed instanceof store.holds) return this.ok(parsed.name);
 		return this.error(language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type }));
 	}
 

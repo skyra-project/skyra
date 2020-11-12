@@ -43,6 +43,10 @@ declare module 'klasa' {
 		settingGatewayMissingValue: (params: { path: string; value: string }) => string;
 		settingGatewayDuplicateValue: (params: { path: string; value: string }) => string;
 		settingGatewayInvalidFilteredValue: (params: { path: string; value: unknown }) => string;
+		resolverBoolFalseOptions: readonly string[];
+		resolverBoolTrueOptions: readonly string[];
+		resolverBoolEnabled: string;
+		resolverBoolDisabled: string;
 		resolverMultiTooFew: (params: { name: string; min?: number; conjunctionWord: string }) => string;
 		resolverInvalidBool: (params: { name: string }) => string;
 		resolverInvalidChannel: (params: { name: string }) => string;

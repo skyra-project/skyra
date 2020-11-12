@@ -159,6 +159,10 @@ export default class extends Language {
 		settingGatewayMissingValue: ({ path, value }) => `The value "${value}" cannot be removed from the key "${path}" because it does not exist.`,
 		settingGatewayDuplicateValue: ({ path, value }) => `The value "${value}" cannot be added to the key "${path}" because it was already set.`,
 		settingGatewayInvalidFilteredValue: ({ path, value }) => `The settings key "${path}" does not accept the value "${value}".`,
+		resolverBoolFalseOptions: ['falso', 'f', 'no', 'n', 'off', 'desactiva', 'desactivar', 'desactivado', '0', '-'],
+		resolverBoolTrueOptions: ['verdadero', 'v', 'si', 'sí', 's', 'on', 'activa', 'activar', 'activado', '1', '+'],
+		resolverBoolEnabled: 'Activado',
+		resolverBoolDisabled: 'Desactivado',
 		resolverMultiTooFew: ({ name, min, conjunctionWord }) =>
 			`No pude resolver suficientes ${name}s. Al menos ${min} ${conjunctionWord} requeridos.`,
 		resolverInvalidBool: ({ name }) => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,

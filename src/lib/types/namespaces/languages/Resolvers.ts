@@ -1,5 +1,9 @@
 import { FT, T } from '@lib/types';
 
+export const BoolFalseOptions = T<readonly string[]>('resolverBoolFalseOptions');
+export const BoolTrueOptions = T<readonly string[]>('resolverBoolTrueOptions');
+export const BoolEnabled = T<string>('resolverBoolEnabled');
+export const BoolDisabled = T<string>('resolverBoolDisabled');
 export const MultiTooFew = FT<{ name: string; min?: number; conjunctionWord: string }, string>('resolverMultiTooFew');
 export const InvalidBool = FT<{ name: string }, string>('resolverInvalidBool');
 export const InvalidChannel = FT<{ name: string }, string>('resolverInvalidChannel');

@@ -38,14 +38,14 @@ export default class extends SkyraCommand {
 	// This subcommand will always ADD roles in to a existing set OR it will create a new set if that set does not exist
 	public async add(message: GuildMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const { created, roleSets } = await message.guild.writeSettings((settings) => {
+		const [created, roleSets, language] = await message.guild.writeSettings((settings) => {
 			const allRoleSets = settings[GuildSettings.Roles.UniqueRoleSets];
 			const roleSet = allRoleSets.find((set) => set.name === name);
 
 			// If it does not exist we need to create a brand new set
 			if (!roleSet) {
 				allRoleSets.push({ name, roles: roles.map((role) => role.id) });
-				return { created: true, roleSets: allRoleSets };
+				return [true, allRoleSets, settings.getLanguage()];
 			}
 
 			// The set does exist so we want to only ADD new roles in
@@ -58,10 +58,9 @@ export default class extends SkyraCommand {
 				return { name, roles: finalRoleIDs };
 			});
 
-			return { created: false, roleSets: settings[GuildSettings.Roles.UniqueRoleSets] };
+			return [false, settings[GuildSettings.Roles.UniqueRoleSets], settings.getLanguage()];
 		});
 
-		const language = await message.fetchLanguage();
 		return message.send(
 			language.get(created ? LanguageKeys.Commands.Admin.RolesetCreated : LanguageKeys.Commands.Admin.RolesetAdded, {
 				name,
@@ -76,15 +75,16 @@ export default class extends SkyraCommand {
 	// This subcommand will always remove roles from a provided role set.
 	public async remove(message: GuildMessage, [name, roles]: [string, Role[]]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
 			// The set does exist so we want to only REMOVE provided roles from it
 			// Create a new array that we can use to overwrite the existing one in settings
 			settings[GuildSettings.Roles.UniqueRoleSets] = settings[GuildSettings.Roles.UniqueRoleSets].map((set) =>
 				set.name === name ? { name, roles: set.roles.filter((id: string) => !roles.find((role) => role.id === id)) } : set
 			);
+
+			return settings.getLanguage();
 		});
 
-		const language = await message.fetchLanguage();
 		return message.send(
 			language.get(LanguageKeys.Commands.Admin.RolesetRemoved, {
 				name,

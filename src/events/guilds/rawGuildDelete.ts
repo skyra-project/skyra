@@ -7,6 +7,8 @@ export default class extends Event {
 	}
 
 	public run(data: GatewayGuildDeleteDispatch['d']) {
+		if (data.unavailable) return;
+
 		this.client.settings.guilds.delete(data.id);
 		this.client.audio.queues?.delete(data.id);
 	}

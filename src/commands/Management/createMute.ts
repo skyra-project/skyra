@@ -6,14 +6,14 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Emojis } from '@utils/constants';
 import { resolveEmoji } from '@utils/util';
-import { Role } from 'discord.js';
+import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 150,
 	description: (language) => language.get(LanguageKeys.Commands.Management.CreateMuteDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.CreateMuteExtended),
 	permissionLevel: PermissionLevels.Administrator,
-	requiredGuildPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES'],
+	requiredGuildPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
 	runIn: ['text']
 })
 export default class extends SkyraCommand {

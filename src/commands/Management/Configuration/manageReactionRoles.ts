@@ -87,7 +87,7 @@ export default class extends SkyraCommand {
 			return message.send(
 				language.get(LanguageKeys.Commands.Management.ManageReactionRolesAddChannel, {
 					emoji: displayEmoji(reactionRole.emoji),
-					channel: `<#${channel}>`
+					channel: channel!.toString()
 				})
 			);
 		}

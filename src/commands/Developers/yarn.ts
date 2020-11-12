@@ -34,11 +34,13 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const language = await message.fetchLanguage();
+		// TODO(VladFrangu): Apparently make a `message.loading(language)` kind of thing,
+		// since we repeat this over and over, but was out of #1301's scope.
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const result = await this.fetchApi(message, pkg);
+		const result = await this.fetchApi(language, pkg);
 
 		if (result.time && Reflect.has(result.time, 'unpublished'))
 			throw language.get(LanguageKeys.Commands.Developers.YarnUnpublishedPackage, { pkg });
@@ -47,8 +49,7 @@ export default class extends SkyraCommand {
 		return response.edit(undefined, dataEmbed);
 	}
 
-	private async fetchApi(message: KlasaMessage, pkg: string) {
-		const language = await message.fetchLanguage();
+	private async fetchApi(language: Language, pkg: string) {
 		try {
 			return await fetch<YarnPkg.PackageJson>(`https://registry.yarnpkg.com/${pkg}`, FetchResultTypes.JSON);
 		} catch {

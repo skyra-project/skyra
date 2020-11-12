@@ -185,7 +185,7 @@ export default class extends Argument {
 			GuildSettings.Music.MaximumDuration,
 			GuildSettings.Music.AllowStreams
 		]);
-		const filteredStreams = allowStreams ? filter(tracks.values(), (track) => !track.info.isStream) : tracks.values();
+		const filteredStreams = allowStreams ? tracks.values() : filter(tracks.values(), (track) => !track.info.isStream);
 		const filteredDuration = filter(filteredStreams, (track) => track.info.length <= maximumDuration);
 		const mappedTracks = map(filteredDuration, (track) => track.track);
 		return [...take(mappedTracks, remaining)];

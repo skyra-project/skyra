@@ -41,8 +41,8 @@ export default class extends MusicCommand {
 		if (current) {
 			const track = current.entry.info;
 			const nowPlayingDescription = [
-				track.isStream ? language.get(LanguageKeys.Commands.Music.QueueNowplayingLiveStream) : showSeconds(track.length),
-				language.get(LanguageKeys.Commands.Music.QueueNowplaying, {
+				track.isStream ? language.get(LanguageKeys.Commands.Music.QueueNowPlayingLiveStream) : showSeconds(track.length),
+				language.get(LanguageKeys.Commands.Music.QueueNowPlaying, {
 					title: track.title,
 					url: track.uri,
 					requester: await this.fetchRequesterName(message, current.entry.author)
@@ -51,13 +51,13 @@ export default class extends MusicCommand {
 
 			if (!track.isStream) {
 				nowPlayingDescription.push(
-					language.get(LanguageKeys.Commands.Music.QueueNowplayingTimeRemaining, {
+					language.get(LanguageKeys.Commands.Music.QueueNowPlayingTimeRemaining, {
 						timeRemaining: showSeconds(track.length - current.position)
 					})
 				);
 			}
 
-			queueDisplay.embedTemplate.addField(language.get(LanguageKeys.Commands.Music.QueueNowplayingTitle), nowPlayingDescription.join(' | '));
+			queueDisplay.embedTemplate.addField(language.get(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
 		}
 
 		if (tracks.length) {

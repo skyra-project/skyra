@@ -123,7 +123,11 @@ export function resolveEmoji(emoji: string | EmojiObject): string | null {
 	}
 
 	// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
-	return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name!.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name!);
+	return emoji.name
+		? emoji.id
+			? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}`
+			: encodeURIComponent(emoji.name)
+		: emoji.id;
 }
 
 export function displayEmoji(emoji: string): string {

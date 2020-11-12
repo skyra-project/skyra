@@ -44,60 +44,71 @@ export default class extends SkyraCommand {
 		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async add(message: GuildMessage, [id, content]: [string, string]) {
-		const language = await message.fetchLanguage();
-
 		// Check for permissions and content length
-		if (!content) throw language.get(LanguageKeys.Commands.Tags.TagContentRequired);
+		if (!content) throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagContentRequired);
 
-		await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+
 			if (settings[GuildSettings.CustomCommands].some((command) => command.id === id))
 				throw language.get(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].push(this.createTag(message, id, content));
+
+			return language;
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Tags.TagAdded, [{ name: id, content: cutText(content, 1850) }]);
+		return message.send(language.get(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }));
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
 		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async remove(message: GuildMessage, [id]: [string]) {
-		const language = await message.fetchLanguage();
-		await message.guild.writeSettings((settings) => {
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
 			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
+
+			return language;
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Tags.TagRemoved, [{ name: id }]);
+		return message.send(language.get(LanguageKeys.Commands.Tags.TagRemoved, { name: id }));
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
 		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async reset(message: GuildMessage) {
-		await message.guild.writeSettings([[GuildSettings.CustomCommands, []]]);
-		return message.sendLocale(LanguageKeys.Commands.Tags.TagReset);
+		const language = await message.guild.writeSettings((settings) => {
+			settings[GuildSettings.CustomCommands].length = 0;
+			return settings.getLanguage();
+		});
+
+		return message.send(language.get(LanguageKeys.Commands.Tags.TagReset));
 	}
 
 	@requiresPermission(PermissionLevels.Moderator, async (message: GuildMessage) => {
 		throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagPermissionLevel);
 	})
 	public async edit(message: GuildMessage, [id, content]: [string, string]) {
-		const language = await message.fetchLanguage();
+		if (!content) throw await message.fetchLocale(LanguageKeys.Commands.Tags.TagContentRequired);
 
-		if (!content) throw language.get(LanguageKeys.Commands.Tags.TagContentRequired);
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
 
-		await message.guild.writeSettings((settings) => {
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
 			if (tagIndex === -1) throw language.get(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1, this.createTag(message, id, content));
+
+			return language;
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Tags.TagEdited, [{ name: id, content: cutText(content, 1000) }]);
+		return message.send(language.get(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }));
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])

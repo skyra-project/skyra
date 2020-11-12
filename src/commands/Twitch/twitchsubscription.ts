@@ -121,7 +121,9 @@ export default class extends SkyraCommand {
 			status
 		};
 
-		await message.guild.writeSettings(async (settings) => {
+		const language = await message.guild.writeSettings(async (settings) => {
+			const language = settings.getLanguage();
+
 			// then retrieve the index of the entry if the guild already subscribed to them.
 			const subscriptionIndex = settings[this.#kSettingsKey].findIndex((sub) => sub[0] === streamer.id);
 
@@ -138,7 +140,6 @@ export default class extends SkyraCommand {
 			} else {
 				// Retrieve the subscription.
 				const raw = settings[this.#kSettingsKey][subscriptionIndex];
-				const language = await message.fetchLanguage();
 
 				// Check if the streamer was already subscribed for the same channel and status.
 				if (raw[1].some((e) => e.channel === entry.channel && e.status === entry.status)) {
@@ -149,20 +150,24 @@ export default class extends SkyraCommand {
 				const subscription: NotificationsStreamTwitch = [raw[0], [...raw[1], entry]];
 				settings[this.#kSettingsKey].splice(subscriptionIndex, 1, subscription);
 			}
+
+			return language;
 		});
 
-		return message.sendLocale(
-			status === NotificationsStreamsTwitchEventStatus.Offline
-				? LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessOffline
-				: LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessLive,
-			[{ name: streamer.display_name, channel: channel.name }]
+		return message.send(
+			language.get(
+				status === NotificationsStreamsTwitchEventStatus.Offline
+					? LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessOffline
+					: LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessLive,
+				{ name: streamer.display_name, channel: channel.name }
+			)
 		);
 	}
 
 	public async remove(message: GuildMessage, [streamer, channel, status]: [Streamer, Channel, Status]) {
-		const language = await message.fetchLanguage();
+		const language = await message.guild.writeSettings(async (settings) => {
+			const language = settings.getLanguage();
 
-		await message.guild.writeSettings(async (settings) => {
 			// then retrieve the index of the entry if the guild already subscribed to them.
 			const subscriptionIndex = settings[this.#kSettingsKey].findIndex((sub) => sub[0] === streamer.id);
 
@@ -188,27 +193,31 @@ export default class extends SkyraCommand {
 				const updated: NotificationsStreamTwitch = [subscription[0], entries];
 				settings[this.#kSettingsKey].splice(subscriptionIndex, 1, updated);
 			}
+
+			return language;
 		});
 
-		return message.sendLocale(
-			status === NotificationsStreamsTwitchEventStatus.Offline
-				? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
-				: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
-			[{ name: streamer.display_name, channel: channel.name }]
+		return message.send(
+			language.get(
+				status === NotificationsStreamsTwitchEventStatus.Offline
+					? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
+					: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
+				{ name: streamer.display_name, channel: channel.name }
+			)
 		);
 	}
 
 	public async reset(message: GuildMessage, [streamer]: [Streamer?]) {
-		const language = await message.fetchLanguage();
-
 		// If the streamer was not defined, reset all entries and purge all entries.
 		if (typeof streamer === 'undefined') {
-			const subscriptionEntries = await message.guild.writeSettings((settings) => {
+			const [entries, language] = await message.guild.writeSettings((settings) => {
+				const language = settings.getLanguage();
+
 				const entries = settings[this.#kSettingsKey].reduce((accumulator, subscription) => accumulator + subscription[1].length, 0);
 				if (entries === 0) throw language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetEmpty);
 
 				settings[this.#kSettingsKey] = [];
-				return entries;
+				return [entries, language];
 			});
 
 			// Update all entries that include this guild, then iterate over the empty values and remove the empty ones.
@@ -233,16 +242,20 @@ export default class extends SkyraCommand {
 				await em.save(toUpdate);
 			});
 
-			return message.sendLocale(
-				subscriptionEntries === 1
-					? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccess
-					: LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccessPlural,
-				[{ count: subscriptionEntries }]
+			return message.send(
+				language.get(
+					entries === 1
+						? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccess
+						: LanguageKeys.Commands.Twitch.TwitchSubscriptionResetSuccessPlural,
+					{ count: entries }
+				)
 			);
 		}
 
 		/** Remove the subscription for the specified streaming, returning the length of {@link NotificationsStreamsTwitchStreamer} for this entry */
-		const entries = await message.guild.writeSettings((settings) => {
+		const [entries, language] = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+
 			const subscriptionIndex = settings[this.#kSettingsKey].findIndex((sub) => sub[0] === streamer.id);
 
 			if (subscriptionIndex === -1) throw language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionResetStreamerNotSubscribed);
@@ -251,28 +264,33 @@ export default class extends SkyraCommand {
 
 			settings[this.#kSettingsKey].splice(subscriptionIndex, 1);
 
-			return subscription[1].length;
+			return [subscription[1].length, language];
 		});
 
 		await this.removeSubscription(message.guild, streamer);
-		return message.sendLocale(
-			entries === 1
-				? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccess
-				: LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccessPlural,
-			[{ name: streamer.display_name, count: entries }]
+		return message.send(
+			language.get(
+				entries === 1
+					? LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccess
+					: LanguageKeys.Commands.Twitch.TwitchSubscriptionResetChannelSuccessPlural,
+				{ name: streamer.display_name, count: entries }
+			)
 		);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async show(message: GuildMessage, [streamer]: [Streamer?]) {
-		const language = await message.fetchLanguage();
+		const [guildSubscriptions, language] = await message.guild.readSettings((settings) => [settings[this.#kSettingsKey], settings.getLanguage()]);
 		// Create the response message.
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Fetch the content.
-		const content = typeof streamer === 'undefined' ? await this.showAll(message, language) : await this.showSingle(message, streamer, language);
+		const content =
+			typeof streamer === 'undefined'
+				? await this.showAll(guildSubscriptions, language)
+				: await this.showSingle(guildSubscriptions, streamer, language);
 
 		// Create the pages and the URD to display them.
 		const pages = chunk(content, 10);
@@ -288,9 +306,8 @@ export default class extends SkyraCommand {
 		return response;
 	}
 
-	private async showSingle(message: GuildMessage, streamer: Streamer, language: Language) {
+	private async showSingle(guildSubscriptions: NotificationsStreamTwitch[], streamer: Streamer, language: Language) {
 		// Retrieve all subscriptions for the guild
-		const guildSubscriptions = await message.guild.readSettings(this.#kSettingsKey);
 		const subscriptions = guildSubscriptions.find((entry) => entry[0] === streamer.id);
 		if (typeof subscriptions === 'undefined') throw language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowStreamerNotSubscribed);
 
@@ -304,9 +321,8 @@ export default class extends SkyraCommand {
 		return lines;
 	}
 
-	private async showAll(message: GuildMessage, language: Language) {
+	private async showAll(guildSubscriptions: NotificationsStreamTwitch[], language: Language) {
 		// Retrieve all subscriptions for the guild
-		const guildSubscriptions = await message.guild.readSettings(this.#kSettingsKey);
 		if (guildSubscriptions.length === 0) throw language.get(LanguageKeys.Commands.Twitch.TwitchSubscriptionShowEmpty);
 
 		// Fetch all usernames and map them by their id.

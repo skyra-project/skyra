@@ -11,12 +11,12 @@ import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ name: Events.RawMemberRemove })
 export default class extends Event {
-	public async run(guild: Guild, data: GatewayGuildMemberRemoveDispatch['d']) {
+	public async run(guild: Guild, { user }: GatewayGuildMemberRemoveDispatch['d']) {
 		const [enabled, language] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);
 		if (!enabled) return;
 
-		const member = guild.members.cache.get(data.user.id);
-		const isModerationAction = await this.isModerationAction(guild, data);
+		const member = guild.members.cache.get(user.id);
+		const isModerationAction = await this.isModerationAction(guild, user);
 
 		const footer = isModerationAction.kicked
 			? language.get(LanguageKeys.Events.GuildMemberKicked)
@@ -30,12 +30,12 @@ export default class extends Event {
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
 			new MessageEmbed()
 				.setColor(Colors.Red)
-				.setAuthor(`${data.user.username}#${data.user.discriminator} (${data.user.id})`, getDisplayAvatar(data.user.id, data.user))
+				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))
 				.setDescription(
 					language.get(
 						time === -1 ? LanguageKeys.Events.GuildMemberRemoveDescription : LanguageKeys.Events.GuildMemberRemoveDescriptionWithJoinedAt,
 						{
-							mention: `<@${data.user.id}>`,
+							mention: `<@${user.id}>`,
 							time
 						}
 					)
@@ -45,10 +45,10 @@ export default class extends Event {
 		);
 	}
 
-	private async isModerationAction(guild: Guild, data: GatewayGuildMemberRemoveDispatch['d']): Promise<IsModerationAction> {
+	private async isModerationAction(guild: Guild, user: GatewayGuildMemberRemoveDispatch['d']['user']): Promise<IsModerationAction> {
 		await guild.moderation.waitLock();
 
-		const latestLogForUser = guild.moderation.getLatestLogForUser(data.user.id);
+		const latestLogForUser = guild.moderation.getLatestLogForUser(user.id);
 
 		if (latestLogForUser === null) {
 			return {

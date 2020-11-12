@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			if (!data || data.length < 2) throw language.get(LanguageKeys.Commands.Twitch.FollowageMissingEntries);
 
 			return data;
-		} catch (err) {
+		} catch {
 			throw language.get(LanguageKeys.Commands.Twitch.FollowageMissingEntries);
 		}
 	}

@@ -33,8 +33,10 @@ import { TextChannel } from 'discord.js';
 ])
 export default class extends SkyraCommand {
 	public async show(message: GuildMessage) {
-		const commandAutoDelete = await message.guild.readSettings(GuildSettings.CommandAutodelete);
-		const language = await message.fetchLanguage();
+		const [commandAutoDelete, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.CommandAutoDelete],
+			settings.getLanguage()
+		]);
 		if (!commandAutoDelete.length) throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteShowEmpty);
 
 		const list: string[] = [];
@@ -50,7 +52,7 @@ export default class extends SkyraCommand {
 
 	public async add(message: GuildMessage, [channel, duration]: [TextChannel, number]) {
 		const language = await message.guild.writeSettings((settings) => {
-			const commandAutodelete = settings[GuildSettings.CommandAutodelete];
+			const commandAutodelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutodelete.findIndex(([id]) => id === channel.id);
 			const value: readonly [string, number] = [channel.id, duration];
 
@@ -67,7 +69,7 @@ export default class extends SkyraCommand {
 
 	public async remove(message: GuildMessage, [channel]: [TextChannel]) {
 		const language = await message.guild.writeSettings((settings) => {
-			const commandAutodelete = settings[GuildSettings.CommandAutodelete];
+			const commandAutodelete = settings[GuildSettings.CommandAutoDelete];
 			const index = commandAutodelete.findIndex(([id]) => id === channel.id);
 			const language = settings.getLanguage();
 
@@ -84,7 +86,7 @@ export default class extends SkyraCommand {
 
 	public async reset(message: GuildMessage) {
 		const language = await message.guild.writeSettings((settings) => {
-			settings[GuildSettings.CommandAutodelete].length = 0;
+			settings[GuildSettings.CommandAutoDelete].length = 0;
 			return settings.getLanguage();
 		});
 

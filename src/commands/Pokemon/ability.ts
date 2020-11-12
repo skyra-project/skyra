@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 			);
 
 		if (abilityDetails.isFieldAbility) {
-			embed.fields.unshift({ name: embedTitles.fieldEffectTitle, value: abilityDetails.isFieldAbility, inline: false });
+			embed.spliceFields(0, 0, { name: embedTitles.fieldEffectTitle, value: abilityDetails.isFieldAbility, inline: false });
 		}
 
 		return message.sendEmbed(embed);

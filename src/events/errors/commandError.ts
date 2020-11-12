@@ -1,24 +1,17 @@
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Awaited, codeBlock, isThenable } from '@sapphire/utilities';
+import { codeBlock } from '@sapphire/utilities';
 import { rootFolder } from '@utils/constants';
 import { cast } from '@utils/util';
+import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage } from 'klasa';
 
-const ignoredCodes = [
-	// Unknown Channel
-	10003,
-	// Unknown Message
-	10008
-];
+const ignoredCodes = [RESTJSONErrorCodes.UnknownChannel, RESTJSONErrorCodes.UnknownMessage];
 
 export default class extends Event {
-	public async run(message: KlasaMessage, command: Command, _: string[], error: Awaited<string> | Error) {
-		// Verify if the error is promise or not, if it is then await that promise
-		if (isThenable(error)) error = await error;
-
+	public async run(message: KlasaMessage, command: Command, _: string[], error: string | Error) {
 		// Re-assign it to the Error or string for TS as the promise has now been awaited
 		error = cast<Error | string>(error);
 

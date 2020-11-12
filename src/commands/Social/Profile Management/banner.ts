@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, { prefix });
+			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 			if (user.profile.bannerProfile === '0001') throw language.get(LanguageKeys.Commands.Social.BannerResetDefault);
 
 			user.profile.bannerProfile = '0001';
@@ -98,7 +98,7 @@ export default class extends SkyraCommand {
 
 		await users.lock([message.author.id], async (id) => {
 			const user = await users.ensureProfile(id);
-			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, { prefix });
+			if (!user.profile.banners.length) throw language.get(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 			if (!user.profile.banners.includes(banner.id)) throw language.get(LanguageKeys.Commands.Social.BannerSetNotBought);
 
 			user.profile.bannerProfile = banner.id;
@@ -159,7 +159,7 @@ export default class extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const user = await users.ensureProfile(message.author.id);
 		const banners = new Set(user.profile.banners);
-		if (!banners.size) throw language.get(LanguageKeys.Commands.Social.BannerUserlistEmpty, { prefix });
+		if (!banners.size) throw language.get(LanguageKeys.Commands.Social.BannerUserListEmpty, { prefix });
 
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 		for (const id of banners) {

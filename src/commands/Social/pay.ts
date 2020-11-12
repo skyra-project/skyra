@@ -29,7 +29,7 @@ export default class extends SkyraCommand {
 		if (money <= 0) throw language.get(LanguageKeys.Resolvers.PositiveAmount);
 
 		const { users } = await DbSet.connect();
-		return users.lock([message.author.id, user.id], async (authorID, targetID) => {
+		const response = await users.lock([message.author.id, user.id], async (authorID, targetID) => {
 			const settings = await users.ensure(authorID);
 
 			const currencyBeforePrompt = settings.money;
@@ -43,7 +43,7 @@ export default class extends SkyraCommand {
 			if (currencyAfterPrompt < money)
 				throw language.get(LanguageKeys.Commands.Social.PayMissingMoney, { needed: money, has: currencyBeforePrompt });
 
-			if (!accepted) return this.denyPayment(message, language);
+			if (!accepted) return this.denyPayment(language);
 
 			await getManager().transaction(async (em) => {
 				settings.money -= money;
@@ -64,14 +64,16 @@ export default class extends SkyraCommand {
 
 			return this.acceptPayment(message, language, user, money);
 		});
+
+		return message.sendMessage(response);
 	}
 
-	private async acceptPayment(message: GuildMessage, language: Language, user: User, money: number) {
+	private acceptPayment(message: GuildMessage, language: Language, user: User, money: number) {
 		this.client.emit(Events.MoneyPayment, message, message.author, user, money);
-		return message.sendMessage(language.get(LanguageKeys.Commands.Social.PayPromptAccept, { user: user.username, amount: money }));
+		return language.get(LanguageKeys.Commands.Social.PayPromptAccept, { user: user.username, amount: money });
 	}
 
-	private async denyPayment(message: GuildMessage, language: Language) {
-		return message.sendMessage(language.get(LanguageKeys.Commands.Social.PayPromptDeny));
+	private denyPayment(language: Language) {
+		return language.get(LanguageKeys.Commands.Social.PayPromptDeny);
 	}
 }

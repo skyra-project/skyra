@@ -136,7 +136,7 @@ export class GuildEntity extends BaseEntity {
 	public channelsIgnoreReactionAdds: string[] = [];
 
 	@Column('jsonb', { name: 'command-autodelete', default: () => "'[]'::JSONB" })
-	public commandAutodelete: CommandAutoDelete[] = [];
+	public commandAutoDelete: CommandAutoDelete[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisabledChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'disabledChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })

@@ -3574,6 +3574,16 @@ export default class extends Language {
 		commandSlowmodeSet: ({ cooldown }) => `The cooldown for this channel has been set to ${this.duration(cooldown)}.`,
 		commandSlowmodeReset: 'The cooldown for this channel has been reset.',
 		commandSlowmodeTooLong: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
+		commandTimeDescription: 'Set the timer.',
+		commandTimeExtended: {
+			extendedHelp: 'Updates the timer for a moderation case..',
+			explainedUsage: [
+				['cancel', 'Whether or not you want to cancel the timer.'],
+				['case', 'The case you want to update'],
+				['timer', 'The timer, ignored if `cancel` was defined.']
+			],
+			examples: ['cancel 1234', '1234 6h']
+		},
 		commandBanNotBannable: 'The target is not bannable for me.',
 		commandDehoistStarting: ({ count }) => `I will start dehoisting ${count} members...`,
 		commandDehoistProgress: ({ count, percentage }) => `Dehoisted ${count} members so far! (${percentage}%)`,

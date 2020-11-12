@@ -9,7 +9,8 @@ import { Permissions, User } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: 'Sets a timer.',
+	description: (language) => language.get(LanguageKeys.Commands.Moderation.TimeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.TimeExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
 	usage: '[cancel] <case:integer> (timer:timer)',
@@ -31,9 +32,10 @@ export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [cancel, caseID, duration]: ['cancel', number | 'latest', number | null]) {
 		if (caseID === 'latest') caseID = await message.guild.moderation.count();
 
+		const language = await message.fetchLanguage();
 		const entry = await message.guild.moderation.fetch(caseID);
-		if (!entry) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
-		if (!cancel && entry.temporaryType) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeTimed);
+		if (!entry) throw language.get(LanguageKeys.Commands.Moderation.ModerationCaseNotExists, { count: 1 });
+		if (!cancel && entry.temporaryType) throw language.get(LanguageKeys.Commands.Moderation.TimeTimed);
 
 		const user = await entry.fetchUser();
 		await this.validateAction(message, entry, user);
@@ -42,7 +44,7 @@ export default class extends SkyraCommand {
 		)!;
 
 		if (cancel) {
-			if (!task) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeNotScheduled);
+			if (!task) throw language.get(LanguageKeys.Commands.Moderation.TimeNotScheduled);
 
 			await message.guild.moderation.fetchChannelMessages();
 			await entry.edit({
@@ -50,21 +52,25 @@ export default class extends SkyraCommand {
 				moderatorID: message.author.id
 			});
 
-			return message.sendLocale(LanguageKeys.Commands.Moderation.TimeAborted, [{ title: entry.title }]);
+			return message.send(language.get(LanguageKeys.Commands.Moderation.TimeAborted, { title: entry.title }));
 		}
 
-		if (entry.appealType || entry.invalidated) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationLogAppealed);
-		if (task)
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationTimed, {
+		if (entry.appealType || entry.invalidated) {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationLogAppealed);
+		}
+
+		if (task) {
+			throw language.get(LanguageKeys.Commands.Moderation.ModerationTimed, {
 				remaining: (task.data.timestamp as number) - Date.now()
 			});
+		}
 
 		await message.guild.moderation.fetchChannelMessages();
 		await entry.edit({
 			duration,
 			moderatorID: message.author.id
 		});
-		return message.sendLocale(LanguageKeys.Commands.Moderation.TimeScheduled, [{ title: entry.title, user, time: duration! }]);
+		return message.send(language.get(LanguageKeys.Commands.Moderation.TimeScheduled, { title: entry.title, user, time: duration! }));
 	}
 
 	private async validateAction(message: GuildMessage, modlog: ModerationEntity, user: User) {

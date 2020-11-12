@@ -53,13 +53,15 @@ const REG_TYPE = /^(alias|reaction)$/i;
 				} catch {
 					throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidReaction);
 				}
-			} else if (type === 'alias') {
-				const command = message.client.commands.get(arg);
-				if (command && command.permissionLevel < 10) return command.name;
-				throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidAlias);
-			} else {
-				return null;
 			}
+
+			if (type === 'alias') {
+				const command = message.client.commands.get(arg);
+				if (command && command.permissionLevel < PermissionLevels.BotOwner) return command.name;
+				throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersInvalidAlias);
+			}
+
+			return null;
 		}
 	]
 ])

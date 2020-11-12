@@ -30,7 +30,7 @@ export default class extends RichDisplayCommand {
 		);
 
 		const { results: entries } = await this.fetchAPI(language, movie, year);
-		if (!entries.length) throw await message.fetchLocale(LanguageKeys.System.NoResults);
+		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
 
 		const display = await this.buildDisplay(message, language, entries);
 		await display.start(response, message.author.id);

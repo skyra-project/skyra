@@ -35,15 +35,19 @@ export default class extends SkyraCommand {
 	private readonly kTimer = Time.Minute * 3;
 
 	public async run(message: GuildMessage, [wager]: [number]) {
+		const language = await message.fetchLanguage();
+
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
-		if (balance < wager) throw await message.fetchLocale(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+		if (balance < wager) {
+			throw language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+		}
 
 		settings.money -= wager;
 		await settings.save();
 
-		const response = (await message.sendLocale(LanguageKeys.Commands.Games.HigherLowerLoading)) as GuildMessage;
+		const response = (await message.send(language.get(LanguageKeys.Commands.Games.HigherLowerLoading))) as GuildMessage;
 		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
 			llrc: new LongLivingReactionCollector(
@@ -70,7 +74,7 @@ export default class extends SkyraCommand {
 				}
 			),
 			response,
-			language: await message.fetchLanguage(),
+			language,
 			running: true,
 			turn: 1,
 			number: this.random(50),

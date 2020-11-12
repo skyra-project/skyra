@@ -1675,6 +1675,8 @@ declare module 'klasa' {
 		commandTimeNotScheduled: string;
 		commandTimeAborted: (params: { title: string }) => string;
 		commandTimeScheduled: (params: { title: string; user: User; time: number }) => string;
+		commandTimeDescription: string;
+		commandTimeExtended: LanguageHelpDisplayOptions;
 		commandSlowmodeSet: (params: { cooldown: number }) => string;
 		commandSlowmodeReset: string;
 		commandSlowmodeTooLong: string;

@@ -21,8 +21,9 @@ export default class extends RichDisplayCommand {
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
 
 	public async run(message: GuildMessage) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild.fetchInvites();
@@ -31,16 +32,15 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw await message.fetchLocale(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
+		if (topTen.length === 0) throw language.get(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
-		const display = await this.buildDisplay(message, topTen);
+		const display = await this.buildDisplay(message, language, topTen);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async buildDisplay(message: GuildMessage, invites: NonNullableInvite[]) {
-		const language = await message.fetchLanguage();
+	private async buildDisplay(message: GuildMessage, language: Language, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))

@@ -39,8 +39,8 @@ const SORT = (x: RolesAuto, y: RolesAuto) => Number(x.points > y.points) || Numb
 ])
 export default class extends SkyraCommand {
 	public async init() {
-		this.customizeResponse('role', async (message) => message.fetchLocale(LanguageKeys.Misc.CommandRequireRole)) //
-			.customizeResponse('points', async (message) => message.fetchLocale(LanguageKeys.Commands.Social.AutoRolePointsRequired)); //
+		this.customizeResponse('role', (message) => message.fetchLocale(LanguageKeys.Misc.CommandRequireRole)) //
+			.customizeResponse('points', (message) => message.fetchLocale(LanguageKeys.Commands.Social.AutoRolePointsRequired));
 	}
 
 	public async show(message: GuildMessage) {

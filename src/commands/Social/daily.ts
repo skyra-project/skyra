@@ -4,7 +4,7 @@ import { Schedules } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 const GRACE_PERIOD = Time.Hour;
 const DAILY_PERIOD = Time.Hour * 12;
@@ -23,6 +23,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const now = Date.now();
 
+		const language = await message.fetchLanguage();
 		const connection = await DbSet.connect();
 		return connection.users.lock([message.author.id], async (id) => {
 			const settings = await connection.users.ensureCooldowns(id);
@@ -31,16 +32,15 @@ export default class extends SkyraCommand {
 
 			// It's been 12 hours, grant dailies
 			if (!settings.cooldowns.daily || settings.cooldowns.daily.getTime() <= now) {
-				return message.sendLocale(LanguageKeys.Commands.Social.DailyTimeSuccess, [
-					{
-						amount: await this.claimDaily(message, connection, settings, now + DAILY_PERIOD, toRemind)
-					}
-				]);
+				return message.send(
+					language.get(LanguageKeys.Commands.Social.DailyTimeSuccess, {
+						amount: await this.claimDaily(message, language, connection, settings, now + DAILY_PERIOD, toRemind)
+					})
+				);
 			}
 
 			const remaining = settings.cooldowns.daily.getTime() - now;
 
-			const language = await message.fetchLanguage();
 			// If it's not under the grace period (1 hour), tell them the time
 			if (remaining > GRACE_PERIOD) return message.send(language.get(LanguageKeys.Commands.Social.DailyTime, { time: remaining }));
 
@@ -51,14 +51,14 @@ export default class extends SkyraCommand {
 			// The user accepted the grace period
 			return message.send(
 				language.get(LanguageKeys.Commands.Social.DailyGraceAccepted, {
-					amount: await this.claimDaily(message, connection, settings, now + remaining + DAILY_PERIOD, toRemind),
+					amount: await this.claimDaily(message, language, connection, settings, now + remaining + DAILY_PERIOD, toRemind),
 					remaining: remaining + DAILY_PERIOD
 				})
 			);
 		});
 	}
 
-	private async claimDaily(message: KlasaMessage, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
+	private async claimDaily(message: KlasaMessage, language: Language, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
 		const money = this.calculateDailies(message, await connection.clients.ensure(), settings);
 
 		settings.money += money;
@@ -68,7 +68,7 @@ export default class extends SkyraCommand {
 		if (remind) {
 			await this.client.schedules.add(Schedules.Reminder, nextTime, {
 				data: {
-					content: await message.fetchLocale(LanguageKeys.Commands.Social.DailyCollect),
+					content: language.get(LanguageKeys.Commands.Social.DailyCollect),
 					user: message.author.id
 				}
 			});

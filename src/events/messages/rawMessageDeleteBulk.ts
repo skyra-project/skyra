@@ -1,11 +1,11 @@
 import { Events } from '@lib/types/Enums';
-import { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
+import { GatewayDispatchEvents, GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
 import { Guild } from 'discord.js';
 import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: Events.RawMessageDelete, emitter: store.client.ws });
+		super(store, file, directory, { name: GatewayDispatchEvents.MessageDeleteBulk, emitter: store.client.ws });
 	}
 
 	public run(guild: Guild, data: GatewayMessageDeleteBulkDispatch['d']): void {

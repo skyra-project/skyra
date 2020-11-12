@@ -30,7 +30,15 @@ const MEDALS = ['🥇', '🥈', '🥉'];
 ])
 export default class extends SkyraCommand {
 	public async random(message: GuildMessage, [member]: [GuildMember?]): Promise<Message | Message[]> {
-		const minimum = await message.guild.readSettings(GuildSettings.Starboard.Minimum);
+		const [minimum, starboardChannelID, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Starboard.Minimum],
+			settings[GuildSettings.Starboard.Channel],
+			settings.getLanguage()
+		]);
+
+		// If there is no configured starboard channel, return no stars
+		if (!starboardChannelID) return message.send(language.get(LanguageKeys.Commands.Starboard.StarNoChannel));
+
 		const { starboards } = await DbSet.connect();
 		const qb = starboards
 			.createQueryBuilder()
@@ -45,17 +53,13 @@ export default class extends SkyraCommand {
 		const starboardData = await qb.orderBy('RANDOM()').limit(1).getOne();
 
 		// If there is no starboard message, return no stars
-		if (!starboardData) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoStars);
-
-		// If there is no configured starboard channel, return no stars
-		const starboardChannelID = await message.guild.readSettings(GuildSettings.Starboard.Channel);
-		if (!starboardChannelID) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoChannel);
+		if (!starboardData) return message.send(language.get(LanguageKeys.Commands.Starboard.StarNoStars));
 
 		// If there is no configured starboard channel, return no stars
 		const starboardChannel = message.guild.channels.cache.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {
 			await message.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
-			return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoChannel);
+			return message.send(language.get(LanguageKeys.Commands.Starboard.StarNoChannel));
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
@@ -77,7 +81,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async top(message: GuildMessage, [member, timespan]: [GuildMember?, number?]) {
-		const minimum = await message.guild.readSettings(GuildSettings.Starboard.Minimum);
+		const [minimum, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Starboard.Minimum],
+			settings.getLanguage()
+		]);
+
 		const { starboards } = await DbSet.connect();
 		const qb = starboards
 			.createQueryBuilder()
@@ -90,7 +98,7 @@ export default class extends SkyraCommand {
 		if (member) qb.andWhere('user_id = :user', { user: member.id });
 
 		const starboardMessages = await qb.getMany();
-		if (starboardMessages.length === 0) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoStars);
+		if (starboardMessages.length === 0) return message.send(language.get(LanguageKeys.Commands.Starboard.StarNoStars));
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
@@ -109,32 +117,31 @@ export default class extends SkyraCommand {
 			totalStars += starboardMessage.stars;
 		}
 
-		if (totalStars === 0) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoStars);
+		if (totalStars === 0) return message.send(language.get(LanguageKeys.Commands.Starboard.StarNoStars));
 
 		const totalMessages = topMessages.length;
 		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 		const topThreeReceivers = [...topReceivers].sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 
-		const i18n = await message.fetchLanguage();
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(Colors.Amber)
 				.addField(
-					i18n.get(LanguageKeys.Commands.Starboard.StarStats),
-					i18n.get(LanguageKeys.Commands.Starboard.StarStatsDescription, {
-						messages: i18n.get(
+					language.get(LanguageKeys.Commands.Starboard.StarStats),
+					language.get(LanguageKeys.Commands.Starboard.StarStatsDescription, {
+						messages: language.get(
 							totalMessages === 1 ? LanguageKeys.Commands.Starboard.StarMessages : LanguageKeys.Commands.Starboard.StarMessagesPlural,
 							{ count: totalMessages }
 						),
-						stars: i18n.get(totalStars === 1 ? LanguageKeys.Commands.Starboard.Stars : LanguageKeys.Commands.Starboard.StarsPlural, {
+						stars: language.get(totalStars === 1 ? LanguageKeys.Commands.Starboard.Stars : LanguageKeys.Commands.Starboard.StarsPlural, {
 							count: totalStars
 						})
 					})
 				)
 				.addField(
-					i18n.get(LanguageKeys.Commands.Starboard.StarTopstarred),
+					language.get(LanguageKeys.Commands.Starboard.StarTopstarred),
 					topThreeMessages.map(([mID, stars], index) =>
-						i18n.get(
+						language.get(
 							stars === 1
 								? LanguageKeys.Commands.Starboard.StarTopstarredDescription
 								: LanguageKeys.Commands.Starboard.StarTopstarredDescriptionPlural,
@@ -147,9 +154,9 @@ export default class extends SkyraCommand {
 					)
 				)
 				.addField(
-					i18n.get(LanguageKeys.Commands.Starboard.StarTopreceivers),
+					language.get(LanguageKeys.Commands.Starboard.StarTopreceivers),
 					topThreeReceivers.map(([uID, stars], index) =>
-						i18n.get(
+						language.get(
 							stars === 1
 								? LanguageKeys.Commands.Starboard.StarTopreceiversDescription
 								: LanguageKeys.Commands.Starboard.StarTopreceiversDescriptionPlural,

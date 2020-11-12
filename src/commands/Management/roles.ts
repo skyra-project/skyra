@@ -144,11 +144,12 @@ export default class extends RichDisplayCommand {
 			await message.guild.writeSettings([[GuildSettings.Roles.Public, [...allRoles]]]);
 		}
 
+		const language = await message.fetchLanguage();
+
 		// There's the possibility all roles could be inexistent, therefore the system
 		// would filter and remove them all, causing this to be empty.
-		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.RolesListEmpty);
+		if (!roles.length) throw language.get(LanguageKeys.Commands.Management.RolesListEmpty);
 
-		const language = await message.fetchLanguage();
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))

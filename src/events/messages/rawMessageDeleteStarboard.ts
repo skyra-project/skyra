@@ -1,15 +1,13 @@
 import { DbSet, GuildSettings } from '@lib/database';
 import { Events } from '@lib/types/Enums';
+import { ApplyOptions } from '@skyra/decorators';
 import { api } from '@utils/Models/Api';
 import { GatewayMessageDeleteDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError, Guild } from 'discord.js';
-import { Event, EventStore } from 'klasa';
+import { Event, EventOptions } from 'klasa';
 
+@ApplyOptions<EventOptions>({ name: Events.RawMessageDelete })
 export default class extends Event {
-	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: Events.RawMessageDelete, emitter: store.client.ws });
-	}
-
 	public async run(guild: Guild, data: GatewayMessageDeleteDispatch['d']) {
 		guild.starboard.delete(data.id);
 

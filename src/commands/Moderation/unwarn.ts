@@ -18,6 +18,13 @@ export default class extends ModerationCommand {
 	}
 
 	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {
+		const [autoDelete, messageDisplay, reasonDisplay, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Messages.ModerationAutoDelete],
+			settings[GuildSettings.Messages.ModerationMessageDisplay],
+			settings[GuildSettings.Messages.ModerationReasonDisplay],
+			settings.getLanguage()
+		]);
+
 		const modlog = await message.guild.moderation.fetch(caseID);
 		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning))
 			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
@@ -26,22 +33,23 @@ export default class extends ModerationCommand {
 		const unwarnLog = await this.handle(message, { target: user, reason, modlog, duration: null, preHandled: null });
 
 		// If the server was configured to automatically delete messages, delete the command and return null.
-		if (await message.guild.readSettings(GuildSettings.Messages.ModerationAutoDelete)) {
+		if (autoDelete) {
 			if (message.deletable) floatPromise(this, message.nuke());
 		}
 
-		if (await message.guild.readSettings(GuildSettings.Messages.ModerationMessageDisplay)) {
-			const originalReason = (await message.guild.readSettings(GuildSettings.Messages.ModerationReasonDisplay)) ? unwarnLog.reason : null;
-			return message.sendLocale(
-				originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
-				[
+		if (messageDisplay) {
+			const originalReason = reasonDisplay ? unwarnLog.reason : null;
+			return message.send(
+				language.get(
+					originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
+
 					{
 						count: 1,
 						range: unwarnLog.caseID,
 						users: `\`${user.tag}\``,
 						reason: originalReason
 					}
-				]
+				)
 			) as Promise<GuildMessage>;
 		}
 

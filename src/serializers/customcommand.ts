@@ -5,8 +5,7 @@ import { ZeroWidthSpace } from '@utils/constants';
 
 export default class UserSerializer extends Serializer<CustomCommand> {
 	public parse() {
-		// TODO (kyranet): implement this
-		return this.error('Method not implemented.');
+		return this.error('Adding or.');
 	}
 
 	public isValid(value: CustomCommand, context: SerializerUpdateContext): Awaited<boolean> {

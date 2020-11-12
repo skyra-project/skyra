@@ -1,40 +1,12 @@
 import { GuildSettings } from '@lib/database';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
+import { ChannelConfigurationCommand, ChannelConfigurationCommandOptions } from '@lib/structures/ChannelConfigurationCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { TextChannel } from 'discord.js';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
-	bucket: 2,
-	cooldown: 10,
+@ApplyOptions<ChannelConfigurationCommandOptions>({
 	description: (language) => language.get(LanguageKeys.Commands.Management.SetMemberLogsDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetMemberLogsExtended),
-	permissionLevel: PermissionLevels.Administrator,
-	runIn: ['text'],
-	usage: '<here|channel:textchannelname>'
+	responseKey: LanguageKeys.Commands.Management.SetMemberLogsSet,
+	settingsKey: GuildSettings.Channels.MemberLogs
 })
-export default class extends SkyraCommand {
-	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
-		if (channel === 'here') channel = message.channel as TextChannel;
-		const channelID = channel.id;
-
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
-
-			// If it's the same value, throw:
-			if (settings[GuildSettings.Channels.MemberLogs] === channelID) {
-				throw language.get(LanguageKeys.Misc.ConfigurationEquals);
-			}
-
-			// Else set the new value:
-			settings[GuildSettings.Channels.MemberLogs] = channelID;
-
-			return language;
-		});
-
-		return message.send(language.get(LanguageKeys.Commands.Management.SetMemberLogsSet, { channel: channel.toString() }));
-	}
-}
+export default class extends ChannelConfigurationCommand {}

@@ -64,6 +64,7 @@ export const RolesRestrictedVoice = T<string>('settingsRolesRestrictedVoice');
 export const RolesSubscriber = T<string>('settingsRolesSubscriber');
 export const SelfmodAttachment = T<string>('settingsSelfmodAttachment');
 export const SelfmodAttachmentMaximum = T<string>('settingsSelfmodAttachmentmaximum');
+export const SelfmodAttachmentDuration = T<string>('settingsSelfmodAttachmentDuration');
 export const SelfmodCapitalsEnabled = T<string>('settingsSelfmodCapitalsEnabled');
 export const SelfmodCapitalsIgnoredChannels = T<string>('settingsSelfmodCapitalsIgnoredchannels');
 export const SelfmodCapitalsIgnoredRoles = T<string>('settingsSelfmodCapitalsIgnoredroles');

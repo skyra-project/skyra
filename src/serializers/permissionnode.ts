@@ -5,9 +5,8 @@ import { GuildMember, Role } from 'discord.js';
 import { Command } from 'klasa';
 
 export default class UserSerializer extends Serializer<PermissionsNode> {
-	public parse() {
-		// TODO (kyranet): implement this
-		return this.error('Method not implemented.');
+	public parse(_: string, context: SerializerUpdateContext) {
+		return this.error(context.language.get(LanguageKeys.Serializers.Unsupported));
 	}
 
 	public async isValid(value: PermissionsNode, { language, entry, entity: { guild } }: SerializerUpdateContext): Promise<boolean> {

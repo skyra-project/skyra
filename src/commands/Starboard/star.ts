@@ -45,19 +45,17 @@ export default class extends SkyraCommand {
 		const starboardData = await qb.orderBy('RANDOM()').limit(1).getOne();
 
 		// If there is no starboard message, return no stars
-		if (!starboardData) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNostars);
+		if (!starboardData) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoStars);
 
 		// If there is no configured starboard channel, return no stars
-		// TODO(kyranet): Change this to a more descriptive message
 		const starboardChannelID = await message.guild.readSettings(GuildSettings.Starboard.Channel);
-		if (!starboardChannelID) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNostars);
+		if (!starboardChannelID) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoChannel);
 
 		// If there is no configured starboard channel, return no stars
-		// TODO(kyranet): Change this to a more descriptive message
 		const starboardChannel = message.guild.channels.cache.get(starboardChannelID) as TextChannel;
 		if (!starboardChannel) {
 			await message.guild.writeSettings([[GuildSettings.Starboard.Channel, null]]);
-			return message.sendLocale(LanguageKeys.Commands.Starboard.StarNostars);
+			return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoChannel);
 		}
 
 		// If the channel the message was starred from does not longer exist, delete
@@ -92,7 +90,7 @@ export default class extends SkyraCommand {
 		if (member) qb.andWhere('user_id = :user', { user: member.id });
 
 		const starboardMessages = await qb.getMany();
-		if (starboardMessages.length === 0) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNostars);
+		if (starboardMessages.length === 0) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoStars);
 
 		let totalStars = 0;
 		const topMessages: [string, number][] = [];
@@ -111,7 +109,7 @@ export default class extends SkyraCommand {
 			totalStars += starboardMessage.stars;
 		}
 
-		if (totalStars === 0) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNostars);
+		if (totalStars === 0) return message.sendLocale(LanguageKeys.Commands.Starboard.StarNoStars);
 
 		const totalMessages = topMessages.length;
 		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);

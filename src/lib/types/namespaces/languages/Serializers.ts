@@ -13,9 +13,11 @@ export const ReactionRoleInvalid = T<string>('serializerReactionRoleInvalid');
 export const StickyRoleInvalid = T<string>('serializerStickyRoleInvalid');
 export const TriggerAliasInvalid = T<string>('serializerTriggerAliasInvalid');
 export const TriggerIncludeInvalid = T<string>('serializerTriggerIncludeInvalid');
+export const TriggerIncludeInvalidAction = T<string>('serializerTriggerIncludeInvalidAction');
 export const TwitchSubscriptionInvalidStreamer = T<string>('serializerTwitchSubscriptionInvalidStreamer');
 export const TwitchSubscriptionInvalid = T<string>('serializerTwitchSubscriptionInvalid');
 export const UniqueRoleSetInvalid = T<string>('serializerUniqueRoleSetInvalid');
+export const Unsupported = T<string>('serializerUnsupported');
 
 export * as CustomCommands from './CustomCommandSerializer/All';
 export * as DisabledCommandChannels from './DisabledCommandChannels/All';

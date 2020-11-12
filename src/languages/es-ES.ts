@@ -616,6 +616,7 @@ export default class extends Language {
 		settingsSelfmodAttachment: 'Whether or not the attachment filter is enabled.',
 		settingsSelfmodAttachmentmaximum:
 			'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
+		settingsSelfmodAttachmentDuration: 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.',
 		settingsSelfmodCapitalsEnabled: 'Whether the capitals filter selfmod sub-system is enabled or not.',
 		settingsSelfmodCapitalsIgnoredchannels: 'The channels that will be ignored by the capitals filter sub-system',
 		settingsSelfmodCapitalsIgnoredroles: 'The roles that will be ignored by the capitals afilters sub-system',
@@ -3830,6 +3831,7 @@ export default class extends Language {
 		 */
 
 		commandStarNostars: 'There is no starred message.',
+		commandStarNoChannel: `I'm sorry, but a starboard channel hasn't been set up.`,
 		commandStarStats: 'Starboard Stats',
 		commandStarMessages: ({ count }) => `${count} message`,
 		commandStarMessagesPlural: ({ count }) => `${count} messages`,
@@ -4738,9 +4740,11 @@ export default class extends Language {
 		serializerStickyRoleInvalid: 'Invalid sticky role data.',
 		serializerTriggerAliasInvalid: 'Invalid trigger alias data.',
 		serializerTriggerIncludeInvalid: 'Invalid trigger includes data.',
+		serializerTriggerIncludeInvalidAction: 'Invalid trigger action.',
 		serializerTwitchSubscriptionInvalidStreamer: 'Invalid data streamer.',
 		serializerTwitchSubscriptionInvalid: 'Invalid data.',
 		serializerUniqueRoleSetInvalid: 'Invalid unique role set data.',
+		serializerUnsupported: 'This configuration key cannot be updated via Discord at the moment, please use the dashboard at <https://skyra.pw>!',
 		serializerCustomCommandInvalidId: 'The property "id" must be a string.',
 		serializerCustomCommandInvalidEmbed: 'The property "embed" must be a boolean.',
 		serializerCustomCommandInvalidColor: 'The property "color" must be a number.',

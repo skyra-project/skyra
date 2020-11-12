@@ -2,9 +2,8 @@ import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializ
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
 export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
-	public parse() {
-		// TODO (kyranet): implement this
-		return this.error('Method not implemented.');
+	public parse(_: string, context: SerializerUpdateContext) {
+		return this.error(context.language.get(LanguageKeys.Serializers.Unsupported));
 	}
 
 	public isValid(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {

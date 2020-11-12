@@ -457,6 +457,7 @@ declare module 'klasa' {
 		settingsRolesSubscriber: string;
 		settingsSelfmodAttachment: string;
 		settingsSelfmodAttachmentmaximum: string;
+		settingsSelfmodAttachmentDuration: string;
 		settingsSelfmodCapitalsEnabled: string;
 		settingsSelfmodCapitalsIgnoredchannels: string;
 		settingsSelfmodCapitalsIgnoredroles: string;
@@ -1883,6 +1884,7 @@ declare module 'klasa' {
 		commandResolveSuggestionSuccessDeniedText: string;
 		commandResolveSuggestionSuccessConsideredText: string;
 		commandStarNostars: string;
+		commandStarNoChannel: string;
 		commandStarStats: string;
 		commandStarStatsDescription: (params: { messages: string; stars: string }) => string;
 		commandStarMessages: (params: { count: number }) => string;
@@ -2099,9 +2101,11 @@ declare module 'klasa' {
 		serializerStickyRoleInvalid: string;
 		serializerTriggerAliasInvalid: string;
 		serializerTriggerIncludeInvalid: string;
+		serializerTriggerIncludeInvalidAction: string;
 		serializerTwitchSubscriptionInvalidStreamer: string;
 		serializerTwitchSubscriptionInvalid: string;
 		serializerUniqueRoleSetInvalid: string;
+		serializerUnsupported: string;
 		serializerCustomCommandInvalidId: string;
 		serializerCustomCommandInvalidEmbed: string;
 		serializerCustomCommandInvalidColor: string;

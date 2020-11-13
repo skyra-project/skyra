@@ -92,12 +92,13 @@ export default class extends SkyraCommand {
 			);
 		}
 
-		await message.sendLocale(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt);
+		const language = await message.fetchLanguage();
+		await message.send(language.get(LanguageKeys.Commands.Management.ManageReactionRolesAddPrompt));
 
 		const reaction = await LongLivingReactionCollector.collectOne(this.client, {
 			filter: (reaction) => reaction.userID === message.author.id && reaction.guild.id === message.guild.id
 		});
-		if (!reaction) throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageReactionRolesAddMissing);
+		if (!reaction) throw language.get(LanguageKeys.Commands.Management.ManageReactionRolesAddMissing);
 
 		const reactionRole: ReactionRole = {
 			emoji: resolveEmoji(reaction.emoji)!,
@@ -105,9 +106,8 @@ export default class extends SkyraCommand {
 			channel: reaction.channel.id,
 			role: role.id
 		};
-		const language = await message.guild.writeSettings((settings) => {
+		await message.guild.writeSettings((settings) => {
 			settings[GuildSettings.ReactionRoles].push(reactionRole);
-			return settings.getLanguage();
 		});
 
 		const url = `<https://discord.com/channels/${message.guild.id}/${reactionRole.channel}/${reactionRole.message}>`;

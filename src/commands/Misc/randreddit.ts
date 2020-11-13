@@ -5,7 +5,7 @@ import { Reddit } from '@lib/types/definitions/Reddit';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage, Language } from 'klasa';
+import { CommandStore, Language } from 'klasa';
 
 export default class extends SkyraCommand {
 	private readonly kBlacklist = /nsfl|morbidreality|watchpeopledie|fiftyfifty|stikk/i;
@@ -30,10 +30,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: GuildMessage, [reddit]: [string]) {
-		const { kind, data } = await this.fetchData(message, reddit);
+		const language = await message.fetchLanguage();
+		const { kind, data } = await this.fetchData(language, reddit);
 
 		if (!kind || !data || data.children.length === 0) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Misc.RandRedditFail);
+			throw language.get(LanguageKeys.Commands.Misc.RandRedditFail);
 		}
 
 		const nsfwEnabled = message.guild !== null && (message.channel as TextChannel).nsfw;
@@ -42,26 +43,24 @@ export default class extends SkyraCommand {
 			: data.children.filter((child) => !child.data.over_18 && !this.kTitleBlacklist.test(child.data.title));
 
 		if (posts.length === 0) {
-			throw await message.fetchLocale(
-				nsfwEnabled ? LanguageKeys.Commands.Misc.RandRedditAllNsfl : LanguageKeys.Commands.Misc.RandRedditAllNsfw
-			);
+			throw language.get(nsfwEnabled ? LanguageKeys.Commands.Misc.RandRedditAllNsfl : LanguageKeys.Commands.Misc.RandRedditAllNsfw);
 		}
 
 		const post = posts[Math.floor(Math.random() * posts.length)].data;
-		return message.sendLocale(LanguageKeys.Commands.Misc.RandRedditMessage, [
-			{
+		return message.send(
+			language.get(LanguageKeys.Commands.Misc.RandRedditMessage, {
 				title: post.title,
 				author: post.author,
 				url: post.spoiler ? `||${post.url}||` : post.url
-			}
-		]);
+			})
+		);
 	}
 
-	private async fetchData(message: KlasaMessage, reddit: string) {
+	private async fetchData(language: Language, reddit: string) {
 		try {
 			return await fetch<Reddit.Response<'posts'>>(`https://www.reddit.com/r/${reddit}/.json?limit=30`, FetchResultTypes.JSON);
 		} catch (error) {
-			this.handleError(error, await message.fetchLanguage());
+			this.handleError(error, language);
 		}
 	}
 

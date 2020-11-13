@@ -28,16 +28,15 @@ import { KlasaMessage } from 'klasa';
 ])
 export default class extends RichDisplayCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
+		const language = await message.fetchLanguage();
 		const [response, { items }] = await Promise.all([
 			message.sendEmbed(
-				new MessageEmbed()
-					.setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading)))
-					.setColor(BrandingColors.Secondary)
+				new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
-		if (!items || !items.length) throw await message.fetchLocale(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 

@@ -9,6 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { Fortnite } from '@utils/GameIntegration/Fortnite';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
@@ -21,18 +22,19 @@ export default class extends RichDisplayCommand {
 	private apiBaseUrl = 'https://api.fortnitetracker.com/v1/profile/';
 
 	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const fortniteUser = await this.fetchAPI(message, user, platform);
-		const display = await this.buildDisplay(message, fortniteUser);
+		const fortniteUser = await this.fetchAPI(language, user, platform);
+		const display = await this.buildDisplay(message, language, fortniteUser);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: GuildMessage, user: string, platform: platform) {
+	private async fetchAPI(language: Language, user: string, platform: platform) {
 		try {
 			const fortniteUser = await fetch<Fortnite.FortniteUser>(
 				`${this.apiBaseUrl}/${platform}/${user}`,
@@ -45,16 +47,15 @@ export default class extends RichDisplayCommand {
 		} catch {
 			// Either when no user is found (response will have an error message)
 			// Or there was a server fault (no json will be returned)
-			throw await message.fetchLocale(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
+			throw language.get(LanguageKeys.Commands.GameIntegration.FortniteNoUser);
 		}
 	}
 
 	private async buildDisplay(
 		message: GuildMessage,
+		language: Language,
 		{ lifeTimeStats, epicUserHandle, platformName, stats: { p2, p10, p9 } }: Fortnite.FortniteUser
 	) {
-		const language = await message.fetchLanguage();
-
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(language.get(LanguageKeys.Commands.GameIntegration.FortniteEmbedTitle, { epicUserHandle }))

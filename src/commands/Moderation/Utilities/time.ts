@@ -6,6 +6,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { Permissions, User } from 'discord.js';
+import { Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -38,7 +39,7 @@ export default class extends SkyraCommand {
 		if (!cancel && entry.temporaryType) throw language.get(LanguageKeys.Commands.Moderation.TimeTimed);
 
 		const user = await entry.fetchUser();
-		await this.validateAction(message, entry, user);
+		await this.validateAction(message, language, entry, user);
 		const task = this.client.schedules.queue.find(
 			(tk) => tk.data && tk.data[Moderation.SchemaKeys.Case] === entry.caseID && tk.data[Moderation.SchemaKeys.Guild] === entry.guild.id
 		)!;
@@ -56,7 +57,7 @@ export default class extends SkyraCommand {
 		}
 
 		if (entry.appealType || entry.invalidated) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationLogAppealed);
+			throw language.get(LanguageKeys.Commands.Moderation.ModerationLogAppealed);
 		}
 
 		if (task) {
@@ -73,20 +74,20 @@ export default class extends SkyraCommand {
 		return message.send(language.get(LanguageKeys.Commands.Moderation.TimeScheduled, { title: entry.title, user, time: duration! }));
 	}
 
-	private async validateAction(message: GuildMessage, modlog: ModerationEntity, user: User) {
+	private async validateAction(message: GuildMessage, language: Language, modlog: ModerationEntity, user: User) {
 		switch (modlog.type) {
 			case Moderation.TypeCodes.FastTemporaryBan:
 			case Moderation.TypeCodes.TemporaryBan:
 			case Moderation.TypeCodes.Ban:
-				return this.checkBan(message, user);
+				return this.checkBan(message, language, user);
 			case Moderation.TypeCodes.FastTemporaryMute:
 			case Moderation.TypeCodes.TemporaryMute:
 			case Moderation.TypeCodes.Mute:
-				return this.checkMute(message, user);
+				return this.checkMute(message, language, user);
 			case Moderation.TypeCodes.FastTemporaryVoiceMute:
 			case Moderation.TypeCodes.TemporaryVoiceMute:
 			case Moderation.TypeCodes.VoiceMute:
-				return this.checkVMute(message, user);
+				return this.checkVMute(message, language, user);
 			case Moderation.TypeCodes.Warning:
 			case Moderation.TypeCodes.FastTemporaryWarning:
 			case Moderation.TypeCodes.TemporaryWarning:
@@ -108,28 +109,37 @@ export default class extends SkyraCommand {
 			case Moderation.TypeCodes.TemporaryRestrictionVoice:
 				return;
 			default:
-				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
+				throw language.get(LanguageKeys.Commands.Moderation.TimeUnsupportedType);
 		}
 	}
 
-	private async checkBan(message: GuildMessage, user: User) {
-		if (!message.guild.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS))
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
-		if (!(await message.guild.security.actions.userIsBanned(user)))
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+	private async checkBan(message: GuildMessage, language: Language, user: User) {
+		if (!message.guild.me!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)) {
+			throw language.get(LanguageKeys.Commands.Moderation.UnbanMissingPermission);
+		}
+
+		if (!(await message.guild.security.actions.userIsBanned(user))) {
+			throw language.get(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+		}
 	}
 
-	private async checkMute(message: GuildMessage, user: User) {
-		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES))
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
-		if (!(await message.guild.security.actions.userIsMuted(user)))
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
+	private async checkMute(message: GuildMessage, language: Language, user: User) {
+		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MANAGE_ROLES)) {
+			throw language.get(LanguageKeys.Commands.Moderation.UnmuteMissingPermission);
+		}
+
+		if (!(await message.guild.security.actions.userIsMuted(user))) {
+			throw language.get(LanguageKeys.Commands.Moderation.MuteUserNotMuted);
+		}
 	}
 
-	private async checkVMute(message: GuildMessage, user: User) {
-		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS))
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
-		if (!(await message.guild.security.actions.userIsVoiceMuted(user)))
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
+	private async checkVMute(message: GuildMessage, language: Language, user: User) {
+		if (!message.guild.me!.permissions.has(Permissions.FLAGS.MUTE_MEMBERS)) {
+			throw language.get(LanguageKeys.Commands.Moderation.VmuteMissingPermission);
+		}
+
+		if (!(await message.guild.security.actions.userIsVoiceMuted(user))) {
+			throw language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
+		}
 	}
 }

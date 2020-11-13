@@ -5,7 +5,7 @@ import { TOKENS } from '@root/config';
 import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore, KlasaMessage, Language } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -21,8 +21,8 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [location]: [string]) {
 		const { formattedAddress, lat, lng } = await queryGoogleMapsAPI(message, location);
-		const { status, ...timeData } = await this.fetchAPI(message, lat, lng);
 		const language = await message.fetchLanguage();
+		const { status, ...timeData } = await this.fetchAPI(language, lat, lng);
 
 		if (status !== GoogleResponseCodes.Ok) throw language.get(handleNotOK(status, this.client));
 
@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(message: KlasaMessage, lat: number, lng: number) {
+	private async fetchAPI(language: Language, lat: number, lng: number) {
 		const url = new URL('http://api.timezonedb.com/v2.1/get-time-zone');
 		url.searchParams.append('by', 'position');
 		url.searchParams.append('format', 'json');
@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 		url.searchParams.append('lng', lng.toString());
 		url.searchParams.append('fields', 'countryName,countryCode,formatted,dst,gmtOffset');
 		return fetch<TimeResult>(url, FetchResultTypes.JSON).catch(() => {
-			throw message.fetchLocale(LanguageKeys.Commands.Google.CurrentTimeLocationNotFound);
+			throw language.get(LanguageKeys.Commands.Google.CurrentTimeLocationNotFound);
 		});
 	}
 }

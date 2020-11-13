@@ -98,22 +98,25 @@ export default class extends SkyraCommand {
 
 	public async reset(message: GuildMessage, [name]: [string?]) {
 		// Get all rolesets from settings and check if there is an existing set with the name provided by the user
-		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
-		if (allRolesets.length === 0) throw await message.fetchLocale(LanguageKeys.Commands.Admin.RolesetResetEmpty);
+		const [allRolesets, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Roles.UniqueRoleSets],
+			settings.getLanguage()
+		]);
+		if (allRolesets.length === 0) throw language.get(LanguageKeys.Commands.Admin.RolesetResetEmpty);
 
 		if (!name) {
 			await message.guild.writeSettings([[GuildSettings.Roles.UniqueRoleSets, []]]);
-			return message.sendLocale(LanguageKeys.Commands.Admin.RolesetResetAll);
+			return message.send(language.get(LanguageKeys.Commands.Admin.RolesetResetAll));
 		}
 
 		const arrayIndex = allRolesets.findIndex((roleset) => roleset.name === name);
-		if (arrayIndex === -1) throw await message.fetchLocale(LanguageKeys.Commands.Admin.RolesetResetNotExists, { name });
+		if (arrayIndex === -1) throw language.get(LanguageKeys.Commands.Admin.RolesetResetNotExists, { name });
 
 		await message.guild.writeSettings((settings) => {
 			settings[GuildSettings.Roles.UniqueRoleSets].splice(arrayIndex, 1);
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Admin.RolesetResetGroup, [{ name }]);
+		return message.send(language.get(LanguageKeys.Commands.Admin.RolesetResetGroup, { name }));
 	}
 
 	// This subcommand will run if a user doesnt type add or remove. The bot will then add AND remove based on whether that role is in the set already.

@@ -69,14 +69,14 @@ export default class extends SkyraCommand {
 	public async player(message: KlasaMessage, [tag]: [string]) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
+		const language = await message.fetchLanguage();
 
 		if (!tag && bsData.extraData?.playerTag) {
 			tag = bsData.extraData.playerTag!;
 		} else if (!tag) {
-			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
+			throw language.get(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
-		const language = await message.fetchLanguage();
 		const playerData = await this.fetchAPI<BrawlStarsFetchCategories.PLAYERS>(language, tag, BrawlStarsFetchCategories.PLAYERS);
 		const saveFlag = Reflect.get(message.flagArgs, 'save');
 
@@ -91,14 +91,14 @@ export default class extends SkyraCommand {
 	public async club(message: KlasaMessage, [tag]: [string]) {
 		const { users } = await DbSet.connect();
 		const bsData = await users.fetchIntegration<BrawlStarsGIData>(this.name, message.author);
+		const language = await message.fetchLanguage();
 
 		if (!tag && bsData.extraData?.clubTag) {
 			tag = bsData.extraData.clubTag!;
 		} else if (!tag) {
-			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
+			throw language.get(LanguageKeys.Resolvers.InvalidString, { name: 'tag' });
 		}
 
-		const language = await message.fetchLanguage();
 		const clubData = await this.fetchAPI<BrawlStarsFetchCategories.CLUB>(language, tag, BrawlStarsFetchCategories.CLUB);
 		const saveFlag = Reflect.get(message.flagArgs, 'save');
 

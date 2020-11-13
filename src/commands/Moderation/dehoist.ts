@@ -8,6 +8,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { GuildMember, MessageEmbed } from 'discord.js';
+import { Language } from 'klasa';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
@@ -24,11 +25,11 @@ export default class extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
 	public async run(message: GuildMessage) {
+		const language = await message.fetchLanguage();
+
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
 			await message.sendEmbed(
-				new MessageEmbed()
-					.setDescription(pickRandom(await message.fetchLocale(LanguageKeys.System.Loading)))
-					.setColor(BrandingColors.Secondary)
+				new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
 			await message.guild.members.fetch();
 		}
@@ -40,7 +41,7 @@ export default class extends SkyraCommand {
 			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
 		}
 
-		const response = await message.sendLocale(LanguageKeys.Commands.Moderation.DehoistStarting, [{ count: hoistedMembers.length }]);
+		const response = await message.send(language.get(LanguageKeys.Commands.Moderation.DehoistStarting, { count: hoistedMembers.length }));
 
 		for (let i = 0; i < hoistedMembers.length; i++) {
 			const member = hoistedMembers[i];
@@ -62,15 +63,15 @@ export default class extends SkyraCommand {
 			// update the counter every 10 dehoists
 			if ((i + 1) % 10 === 0) {
 				const dehoistPercentage = (i / hoistedMembers.length) * 100;
-				await message.sendLocale(LanguageKeys.Commands.Moderation.DehoistProgress, [
-					{ count: i + 1, percentage: Math.round(dehoistPercentage) }
-				]);
+				await message.send(
+					language.get(LanguageKeys.Commands.Moderation.DehoistProgress, { count: i + 1, percentage: Math.round(dehoistPercentage) })
+				);
 			}
 		}
 
 		// We're done!
 		return response.edit({
-			embed: await this.prepareFinalEmbed(message, counter, errored),
+			embed: await this.prepareFinalEmbed(message, language, counter, errored),
 			content: null
 		});
 	}
@@ -85,8 +86,8 @@ export default class extends SkyraCommand {
 		return char < this.kLowestCode && (char < kLowestNumberCode || char > kHighestNumberCode);
 	}
 
-	private async prepareFinalEmbed(message: GuildMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = await message.fetchLocale(LanguageKeys.Commands.Moderation.DehoistEmbed, {
+	private async prepareFinalEmbed(message: GuildMessage, language: Language, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+		const embedLanguage = language.get(LanguageKeys.Commands.Moderation.DehoistEmbed, {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,

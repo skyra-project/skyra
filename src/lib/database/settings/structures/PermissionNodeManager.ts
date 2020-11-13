@@ -51,16 +51,20 @@ export class PermissionNodeManager implements IBaseManager {
 				deny: action === 'deny' ? [command] : []
 			};
 
-			this.#settings[key] = [node];
+			this.#settings[key].push(node);
 		} else {
 			const previous = nodes[nodeIndex];
+			if ((action === 'allow' && previous.allow.includes(command)) || (action === 'deny' && previous.deny.includes(command))) {
+				throw this.#settings.getLanguage().get(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command });
+			}
+
 			const node: Node = {
 				id: target.id,
 				allow: action === 'allow' ? previous.allow.concat(command) : previous.allow,
 				deny: action === 'deny' ? previous.deny.concat(command) : previous.deny
 			};
 
-			this.#settings[key].splice(nodeIndex, 1, node);
+			this.#settings[key][nodeIndex] = node;
 		}
 	}
 

@@ -5,7 +5,7 @@ export class V22AddSelfStarCapabilities1598010877863 implements MigrationInterfa
 		await queryRunner.addColumn(
 			'guilds',
 			new TableColumn({
-				name: 'suggestions.selfStar',
+				name: 'starboard.selfStar',
 				type: 'boolean',
 				default: false
 			})
@@ -13,6 +13,6 @@ export class V22AddSelfStarCapabilities1598010877863 implements MigrationInterfa
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
-		await queryRunner.dropColumn('guilds', 'suggestions.selfStar');
+		await queryRunner.dropColumn('guilds', 'starboard.selfStar');
 	}
 }

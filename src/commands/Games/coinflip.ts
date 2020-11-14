@@ -17,7 +17,6 @@ const enum CoinType {
 	description: (language) => language.get(LanguageKeys.Commands.Games.CoinFlipDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.CoinFlipExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	usage: '(coin:cointype) (wager:coinwager)',
 	usageDelim: ' '
 })

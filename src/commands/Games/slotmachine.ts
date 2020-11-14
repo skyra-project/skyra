@@ -13,7 +13,6 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Games.SlotmachineDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.SlotmachineExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	usage: '<wager:wager>'
 })
 export default class extends SkyraCommand {

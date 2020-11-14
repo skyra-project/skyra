@@ -12,7 +12,6 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Games.WheelOfFortuneDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.WheelOfFortuneExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	usage: '<wager:wager>'
 })
 export default class extends SkyraCommand {

@@ -1,6 +1,7 @@
 import { DexDetails } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
@@ -9,7 +10,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
@@ -20,7 +21,7 @@ import { KlasaMessage, Language } from 'klasa';
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [pokemon]: [string]) {
+	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -41,7 +42,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private buildDisplay(message: KlasaMessage, pokemonData: DexDetails) {
+	private buildDisplay(message: GuildMessage, pokemonData: DexDetails) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))

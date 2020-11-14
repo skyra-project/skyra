@@ -135,8 +135,8 @@ export default class extends Monitor {
 	public async actionAndSend(message: GuildMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
 		const lock = message.guild.moderation.createLock();
 		await performAction();
-		await message
-			.guild!.moderation.create({
+		await message.guild.moderation
+			.create({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				type,

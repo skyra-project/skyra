@@ -1,6 +1,7 @@
 import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PokedexEmbedDataReturn } from '@lib/types/namespaces/languages/commands/Pokemon';
@@ -10,7 +11,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 enum BaseStats {
 	hp = 'HP',
@@ -31,7 +32,7 @@ enum BaseStats {
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [pokemon]: [string]) {
+	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -150,7 +151,7 @@ export default class extends RichDisplayCommand {
 		return evoChain;
 	}
 
-	private buildDisplay(message: KlasaMessage, pokeDetails: DexDetails, language: Language) {
+	private buildDisplay(message: GuildMessage, pokeDetails: DexDetails, language: Language) {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
@@ -262,7 +263,7 @@ export default class extends RichDisplayCommand {
 }
 
 interface PokemonToDisplayArgs {
-	message: KlasaMessage;
+	message: GuildMessage;
 	pokeDetails: DexDetails;
 	abilities: string[];
 	baseStats: string[];

@@ -54,8 +54,8 @@ export default class extends Monitor {
 
 		const role = message.guild.roles.cache.get(autoRole.id);
 		if (!role || role.position > message.guild.me!.roles.highest.position) {
-			message
-				.guild!.writeSettings((settings) => {
+			message.guild
+				.writeSettings((settings) => {
 					const roleIndex = settings[GuildSettings.Roles.Auto].findIndex((element) => element === autoRole);
 					settings[GuildSettings.Roles.Auto].splice(roleIndex, 1);
 				})

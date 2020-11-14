@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { Kitsu } from '@lib/types/definitions/Kitsu';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
@@ -9,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
@@ -23,7 +24,7 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 export default class extends RichDisplayCommand {
 	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
 
-	public async run(message: KlasaMessage, [mangaName]: [string]) {
+	public async run(message: GuildMessage, [mangaName]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -64,7 +65,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private async buildDisplay(entries: Kitsu.KitsuHit[], language: Language, message: KlasaMessage) {
+	private async buildDisplay(entries: Kitsu.KitsuHit[], language: Language, message: GuildMessage) {
 		const embedData = language.get(LanguageKeys.Commands.Anime.MangaEmbedData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 

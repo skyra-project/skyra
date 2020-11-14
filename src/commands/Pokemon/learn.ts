@@ -1,6 +1,7 @@
 import { LearnsetEntry, LearnsetLevelUpMove } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { LearnMethodTypesReturn } from '@lib/types/namespaces/languages/commands/Pokemon';
@@ -10,7 +11,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonLearnsetByFuzzy, resolveColour } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 
@@ -33,7 +34,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 	]
 ])
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
+	public async run(message: GuildMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -63,7 +64,7 @@ export default class extends RichDisplayCommand {
 		return language.get(LanguageKeys.Commands.Pokemon.LearnMethod, { generation, pokemon, move, method });
 	}
 
-	private buildDisplay(message: KlasaMessage, learnsetData: LearnsetEntry, generation: number, moves: string[], language: Language) {
+	private buildDisplay(message: GuildMessage, learnsetData: LearnsetEntry, generation: number, moves: string[], language: Language) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(resolveColour(learnsetData.color))

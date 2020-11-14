@@ -2,6 +2,7 @@ import { MoveEntry } from '@favware/graphql-pokemon';
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
@@ -10,7 +11,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getMoveDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
@@ -19,7 +20,7 @@ import { KlasaMessage, Language } from 'klasa';
 	usage: '<move:str>'
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [move]: [string]) {
+	public async run(message: GuildMessage, [move]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -40,7 +41,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private async buildDisplay(message: KlasaMessage, moveData: MoveEntry, language: Language) {
+	private async buildDisplay(message: GuildMessage, moveData: MoveEntry, language: Language) {
 		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
 			availableInGen8: language.get(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});

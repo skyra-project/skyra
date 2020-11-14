@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value?: boolean) => void) | null = null;
-		let gameMessage: KlasaMessage | null = null;
+		let gameMessage: GuildMessage | null = null;
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(
@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 				}
 			),
 			sun: true,
-			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message.guild!))),
+			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message.guild))),
 			turn: 0
 		});
 
@@ -99,7 +99,7 @@ export default class extends SkyraCommand {
 
 					// Refresh the LLRC's timer, send new message with new reactions:
 					game.llrc.setTime(Time.Minute * 2);
-					gameMessage = (await message.channel.send(text)) as KlasaMessage;
+					gameMessage = (await message.channel.send(text)) as GuildMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);
 					}
@@ -130,7 +130,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async collectorInhibitor(message: KlasaMessage, gameMessage: KlasaMessage, reaction: LLRCData) {
+	private async collectorInhibitor(message: GuildMessage, gameMessage: GuildMessage, reaction: LLRCData) {
 		// If there's no gameMessage, inhibit
 		if (!gameMessage) return true;
 
@@ -148,7 +148,7 @@ export default class extends SkyraCommand {
 
 		try {
 			// Fetch the member for level measuring purposes
-			const member = await message.guild!.members.fetch(reaction.userID);
+			const member = await message.guild.members.fetch(reaction.userID);
 			// Check if the user is a moderator
 			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call(
 				{

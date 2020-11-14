@@ -17,10 +17,10 @@ export default class UserSerializer extends Serializer<string> {
 	}
 
 	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
-		return context.entity.guild.channels.cache.has(value);
+		return context.guild.channels.cache.has(value);
 	}
 
 	public stringify(value: string, context: SerializerUpdateContext): string {
-		return context.entity.guild.channels.cache.get(value)?.name ?? value;
+		return context.guild.channels.cache.get(value)?.name ?? value;
 	}
 }

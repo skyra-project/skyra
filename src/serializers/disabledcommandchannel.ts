@@ -6,7 +6,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 	public parse(value: string, context: SerializerUpdateContext) {
 		const [channelID, ...commandIDs] = value.split(' ');
 
-		const channel = context.entity.guild.channels.cache.get(channelID);
+		const channel = context.guild.channels.cache.get(channelID);
 		if (!channel) {
 			return this.error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
@@ -28,7 +28,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 	}
 
 	public isValid(value: DisabledCommandChannel, context: SerializerUpdateContext): Awaited<boolean> {
-		const channel = context.entity.guild.channels.cache.get(value.channel);
+		const channel = context.guild.channels.cache.get(value.channel);
 		if (!channel) {
 			throw new Error(context.language.get(LanguageKeys.Serializers.DisabledCommandChannels.ChannelDoesNotExist));
 		}
@@ -47,7 +47,7 @@ export default class UserSerializer extends Serializer<DisabledCommandChannel> {
 	}
 
 	public stringify(value: DisabledCommandChannel, context: SerializerUpdateContext): string {
-		const name = context.entity.guild.channels.cache.get(value.channel)?.name ?? context.language.get(LanguageKeys.Misc.UnknownChannel);
+		const name = context.guild.channels.cache.get(value.channel)?.name ?? context.language.get(LanguageKeys.Misc.UnknownChannel);
 		return `[${name} -> ${value.commands.join(' | ')}]`;
 	}
 

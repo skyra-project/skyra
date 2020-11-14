@@ -16,8 +16,8 @@ import { getImage } from '@utils/util';
 })
 export default class extends ModerationCommand {
 	public async prehandle(message: GuildMessage) {
-		const bans = await message
-			.guild!.fetchBans()
+		const bans = await message.guild
+			.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
 			.catch(() => {
 				throw message.fetchLocale(LanguageKeys.System.FetchBansFail);

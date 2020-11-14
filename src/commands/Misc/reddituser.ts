@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { Reddit } from '@lib/types/definitions/Reddit';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText, roundNumber } from '@sapphire/utilities';
@@ -9,7 +10,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['redditor'],
@@ -30,7 +31,7 @@ export default class extends RichDisplayCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [user]: [string]) {
+	public async run(message: GuildMessage, [user]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -46,7 +47,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(
-		message: KlasaMessage,
+		message: GuildMessage,
 		about: Reddit.AboutDataElement,
 		comments: Reddit.CommentDataElement[],
 		posts: Reddit.PostDataElement[],

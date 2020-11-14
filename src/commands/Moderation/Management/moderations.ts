@@ -19,7 +19,6 @@ import { MessageEmbed, User } from 'discord.js';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ModerationsExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
-	runIn: ['text'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {

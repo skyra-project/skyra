@@ -14,8 +14,7 @@ import { Language, Timestamp } from 'klasa';
 	cooldown: 10,
 	description: (language) => language.get(LanguageKeys.Commands.Tools.TopInvitesDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.TopInvitesExtended),
-	requiredGuildPermissions: ['MANAGE_GUILD'],
-	runIn: ['text']
+	requiredGuildPermissions: ['MANAGE_GUILD']
 })
 export default class extends RichDisplayCommand {
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');

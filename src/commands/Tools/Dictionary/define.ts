@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
 import { cutText, parseURL, toTitleCase } from '@sapphire/utilities';
@@ -8,7 +9,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Mime } from '@utils/constants';
 import { fetch, FetchResultTypes, IMAGE_EXTENSION, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['definition', 'defination', 'dictionary'],
@@ -19,7 +20,7 @@ import { KlasaMessage, Language } from 'klasa';
 	usage: '<input:string>'
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [input]: [string]) {
+	public async run(message: GuildMessage, [input]: [string]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -32,7 +33,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(results: OwlbotResultOk, message: KlasaMessage, language: Language) {
+	private async buildDisplay(results: OwlbotResultOk, message: GuildMessage, language: Language) {
 		const template = new MessageEmbed().setTitle(toTitleCase(results.word)).setColor(await DbSet.fetchColor(message));
 
 		if (results.pronunciation) template.addField(language.get(LanguageKeys.Commands.Tools.DefinePronounciation), results.pronunciation, true);

@@ -112,10 +112,10 @@ export default class extends SkyraCommand {
 		const filter = this.resolveFilter(rawFilter);
 
 		// Fetch the messages
-		let messages = await message.channel.messages.fetch({ limit: 100, [position]: targetMessage.id });
+		let messages = (await message.channel.messages.fetch({ limit: 100, [position]: targetMessage.id })) as Collection<string, GuildMessage>;
 		if (filter !== Filter.None) {
 			const user = filter === Filter.User ? (rawFilter as User) : null;
-			messages = messages.filter(this.getFilter(message, filter, user));
+			messages = messages.filter(this.getFilter(message, filter, user) as (message: Message) => boolean) as Collection<string, GuildMessage>;
 		}
 
 		// Filter the messages by their age
@@ -148,24 +148,24 @@ export default class extends SkyraCommand {
 		return position === 'before' ? messages.slice(0, limit) : messages.slice(messages.length - limit, messages.length);
 	}
 
-	private getFilter(message: Message, filter: Filter, user: User | null) {
+	private getFilter(message: GuildMessage, filter: Filter, user: User | null) {
 		switch (filter) {
 			case Filter.Attachments:
-				return (mes: Message) => mes.attachments.size > 0;
+				return (mes: GuildMessage) => mes.attachments.size > 0;
 			case Filter.Author:
-				return (mes: Message) => mes.author.id === message.author.id;
+				return (mes: GuildMessage) => mes.author.id === message.author.id;
 			case Filter.Bots:
-				return (mes: Message) => mes.author.bot;
+				return (mes: GuildMessage) => mes.author.bot;
 			case Filter.Humans:
-				return (mes: Message) => mes.author.id === message.author.id;
+				return (mes: GuildMessage) => mes.author.id === message.author.id;
 			case Filter.Invites:
-				return (mes: Message) => this.kInviteRegExp.test(mes.content);
+				return (mes: GuildMessage) => this.kInviteRegExp.test(mes.content);
 			case Filter.Links:
-				return (mes: Message) => this.kLinkRegExp.test(mes.content);
+				return (mes: GuildMessage) => this.kLinkRegExp.test(mes.content);
 			case Filter.Skyra:
-				return (mes: Message) => mes.author.id === CLIENT_ID;
+				return (mes: GuildMessage) => mes.author.id === CLIENT_ID;
 			case Filter.User:
-				return (mes: Message) => mes.author.id === user!.id;
+				return (mes: GuildMessage) => mes.author.id === user!.id;
 			default:
 				return () => true;
 		}
@@ -179,7 +179,7 @@ export default class extends SkyraCommand {
 		return position === Position.After ? 'after' : 'before';
 	}
 
-	private async sendPruneLogs(message: GuildMessage, messages: Collection<string, Message>, rawMessages: readonly string[]) {
+	private async sendPruneLogs(message: GuildMessage, messages: Collection<string, GuildMessage>, rawMessages: readonly string[]) {
 		const channelID = await message.guild.readSettings(GuildSettings.Channels.PruneLogs);
 		if (isNullish(channelID)) return;
 
@@ -221,7 +221,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private generateAttachment(language: Language, messages: Collection<string, Message>) {
+	private generateAttachment(language: Language, messages: Collection<string, GuildMessage>) {
 		const header = language.get(LanguageKeys.Commands.Moderation.PruneLogHeader);
 		const processed = messages
 			.map((message) => this.formatMessage(message))
@@ -231,13 +231,13 @@ export default class extends SkyraCommand {
 		return new MessageAttachment(buffer, 'prune.txt');
 	}
 
-	private formatMessage(message: Message) {
+	private formatMessage(message: GuildMessage) {
 		const header = this.formatHeader(message);
 		const content = this.formatContents(message);
 		return `${header}\n${content}`;
 	}
 
-	private formatHeader(message: Message) {
+	private formatHeader(message: GuildMessage) {
 		return `${this.formatTimestamp(message.createdTimestamp)} ${message.system ? 'SYSTEM' : this.formatAuthor(message.author)}`;
 	}
 
@@ -249,10 +249,10 @@ export default class extends SkyraCommand {
 		return `${author.tag}${author.bot ? ' [BOT]' : ''}`;
 	}
 
-	private formatContents(message: Message) {
+	private formatContents(message: GuildMessage) {
 		const output: string[] = [];
-		if (message.content.length > 0) output.push(this.formatContent(message.guild!, message.content));
-		if (message.embeds.length > 0) output.push(message.embeds.map((embed) => this.formatEmbed(message.guild!, embed)).join('\n'));
+		if (message.content.length > 0) output.push(this.formatContent(message.guild, message.content));
+		if (message.embeds.length > 0) output.push(message.embeds.map((embed) => this.formatEmbed(message.guild, embed)).join('\n'));
 		if (message.attachments.size > 0) output.push(message.attachments.map((attachment) => this.formatAttachment(attachment)).join('\n'));
 		return output.join('\n');
 	}

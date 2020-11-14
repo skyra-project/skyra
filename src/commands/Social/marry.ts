@@ -8,7 +8,6 @@ import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
-import assert from 'assert';
 import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord.js';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
@@ -33,7 +32,6 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 	cooldown: 30,
 	description: (language) => language.get(LanguageKeys.Commands.Social.MarryDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.MarryExtended),
-	runIn: ['text'],
 	usage: '(user:username)'
 })
 @CreateResolvers([
@@ -146,7 +144,7 @@ export default class extends RichDisplayCommand {
 				case YesNoAnswer.Yes:
 					break;
 				default:
-					assert.fail('unreachable');
+					throw new Error('unreachable');
 			}
 
 			const settings = await users.ensure(authorID, { relations: ['spouses'] });

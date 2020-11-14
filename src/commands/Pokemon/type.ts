@@ -2,6 +2,7 @@ import { TypeEntry, TypeMatchups, Types } from '@favware/graphql-pokemon';
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -9,7 +10,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getTypeMatchup, parseBulbapediaURL } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 const kPokemonTypes = new Set([
 	'bug',
@@ -56,7 +57,7 @@ const kPokemonTypes = new Set([
 	]
 ])
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [types]: [Types[]]) {
+	public async run(message: GuildMessage, [types]: [Types[]]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -99,7 +100,7 @@ export default class extends RichDisplayCommand {
 		return regularMatchup.map((type) => `\`${type}\``).join(', ');
 	}
 
-	private async buildDisplay(message: KlasaMessage, types: Types[], typeMatchups: TypeMatchups, language: Language) {
+	private async buildDisplay(message: GuildMessage, types: Types[], typeMatchups: TypeMatchups, language: Language) {
 		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
 		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [

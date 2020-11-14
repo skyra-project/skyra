@@ -13,7 +13,7 @@ export default class UserSerializer extends Serializer<UniqueRoleSet> {
 			Object.keys(value).length === 2 &&
 			typeof value.name === 'string' &&
 			Array.isArray(value.roles) &&
-			value.roles.every((role) => typeof role === 'string' && context.entity.guild!.roles.cache.has(role))
+			value.roles.every((role) => typeof role === 'string' && context.guild.roles.cache.has(role))
 		)
 			return true;
 

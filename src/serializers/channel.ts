@@ -12,7 +12,7 @@ import { AliasPieceOptions } from 'klasa';
 export default class UserSerializer extends Serializer<string> {
 	public parse(value: string, context: SerializerUpdateContext) {
 		const id = UserSerializer.regex.channel.exec(value);
-		const channel = id ? context.entity.guild.channels.cache.get(id[1]) : context.entity.guild.channels.cache.find((r) => r.name === value);
+		const channel = id ? context.guild.channels.cache.get(id[1]) : context.guild.channels.cache.find((r) => r.name === value);
 		if (!channel) {
 			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 		}
@@ -25,7 +25,7 @@ export default class UserSerializer extends Serializer<string> {
 	}
 
 	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
-		const channel = context.entity.guild.channels.cache.get(value);
+		const channel = context.guild.channels.cache.get(value);
 		return !isNullish(channel) && this.isValidChannel(channel, context.entry.type);
 	}
 
@@ -35,7 +35,7 @@ export default class UserSerializer extends Serializer<string> {
 	 * @param guild The guild given for context in this call
 	 */
 	public stringify(value: string, context: SerializerUpdateContext): string {
-		return context.entity.guild.channels.cache.get(value)?.name ?? value;
+		return context.guild.channels.cache.get(value)?.name ?? value;
 	}
 
 	private isValidChannel(channel: Channel, type: string): boolean {

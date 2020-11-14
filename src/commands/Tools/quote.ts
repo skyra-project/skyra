@@ -1,5 +1,6 @@
 import { DbSet, Serializer } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -15,6 +16,7 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	description: (language) => language.get(LanguageKeys.Commands.Tools.QuoteDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.QuoteExtended),
 	requiredPermissions: ['EMBED_LINKS'],
+	runIn: ['text'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' '
 })
@@ -22,7 +24,7 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
-			const messageUrl = await this.getFromUrl(message, arg);
+			const messageUrl = await this.getFromUrl(message as GuildMessage, arg);
 			if (messageUrl) return messageUrl;
 
 			if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
@@ -33,7 +35,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage]) {
+	public async run(message: GuildMessage, [, remoteMessage]: [never, KlasaMessage]) {
 		const embed = new MessageEmbed()
 			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(await DbSet.fetchColor(message))
@@ -47,7 +49,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(embed);
 	}
 
-	private async getFromUrl(message: KlasaMessage, url: string) {
+	private async getFromUrl(message: GuildMessage, url: string) {
 		let parsed: URL | undefined = undefined;
 		try {
 			parsed = new URL(url);
@@ -63,7 +65,7 @@ export default class extends SkyraCommand {
 
 		const [, _guild, _channel, _message] = extract;
 		const guild = this.client.guilds.cache.get(_guild);
-		if (guild !== message.guild!) return null;
+		if (guild !== message.guild) return null;
 
 		const channel = guild.channels.cache.get(_channel);
 		if (!channel) return null;

@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { parseURL } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -8,7 +9,6 @@ import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GoogleResponseCodes, GooleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
 import { IMAGE_EXTENSION, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
@@ -27,7 +27,7 @@ import { KlasaMessage } from 'klasa';
 	]
 ])
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [query]: [string]) {
+	public async run(message: GuildMessage, [query]: [string]) {
 		const language = await message.fetchLanguage();
 		const [response, { items }] = await Promise.all([
 			message.sendEmbed(
@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(message: KlasaMessage, items: GooleCSEItem[]) {
+	private async buildDisplay(message: GuildMessage, items: GooleCSEItem[]) {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

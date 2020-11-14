@@ -1,6 +1,7 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
@@ -9,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['show', 'tvdb', 'tv'],
@@ -22,7 +23,7 @@ import { KlasaMessage, Language, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
-	public async run(message: KlasaMessage, [show, year]: [string, string?]) {
+	public async run(message: GuildMessage, [show, year]: [string, string?]) {
 		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
@@ -61,7 +62,7 @@ export default class extends RichDisplayCommand {
 		}
 	}
 
-	private async buildDisplay(message: KlasaMessage, language: Language, shows: Tmdb.TmdbSeriesList['results']) {
+	private async buildDisplay(message: GuildMessage, language: Language, shows: Tmdb.TmdbSeriesList['results']) {
 		const titles = language.get(LanguageKeys.Commands.Tools.ShowsTitles);
 		const fieldsData = language.get(LanguageKeys.Commands.Tools.ShowsData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));

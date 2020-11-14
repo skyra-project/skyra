@@ -1,9 +1,11 @@
-import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Command, Inhibitor } from 'klasa';
+import { Command, Inhibitor, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {
-	public async run(message: GuildMessage, command: Command) {
+	public async run(message: KlasaMessage, command: Command) {
+		// If this command is being used outside of a guild context then always allow it
+		if (!message.guild || !message.member) return;
+
 		const [pnodes, language] = await message.guild.readSettings((settings) => [settings.permissionNodes, settings.getLanguage()]);
 
 		// If the message was sent in a guild, the command isn't guarded (they are all 0, and

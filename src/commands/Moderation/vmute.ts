@@ -13,10 +13,6 @@ import { getImage } from '@utils/util';
 	requiredGuildPermissions: ['MUTE_MEMBERS']
 })
 export default class extends ModerationCommand {
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.voiceMute(
 			{
@@ -28,10 +24,6 @@ export default class extends ModerationCommand {
 			},
 			await this.getTargetDM(message, context.target)
 		);
-	}
-
-	public async posthandle() {
-		/* Do nothing */
 	}
 
 	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {

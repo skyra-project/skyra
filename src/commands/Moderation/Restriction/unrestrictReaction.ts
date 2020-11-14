@@ -30,10 +30,6 @@ export default class extends ModerationCommand {
 		});
 	}
 
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.unRestrictReaction(
 			{
@@ -43,9 +39,5 @@ export default class extends ModerationCommand {
 			},
 			await this.getTargetDM(message, context.target)
 		);
-	}
-
-	public async posthandle() {
-		/* Do nothing */
 	}
 }

@@ -2,7 +2,7 @@ import { GuildSettings, TriggerIncludes } from '@lib/database';
 import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 
 export default class extends Monitor {
 	public async run(message: GuildMessage): Promise<void> {
@@ -18,7 +18,7 @@ export default class extends Monitor {
 		}
 	}
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: GuildMessage) {
 		return (
 			this.enabled &&
 			message.guild !== null &&

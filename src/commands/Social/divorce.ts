@@ -11,7 +11,6 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Social.DivorceDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.DivorceExtended),
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
-	runIn: ['text'],
 	usage: '<user:user>'
 })
 export default class extends SkyraCommand {

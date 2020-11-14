@@ -4,7 +4,7 @@ import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { GuildMember, Permissions, Role } from 'discord.js';
-import { KlasaMessage, Monitor, RateLimitManager } from 'klasa';
+import { Monitor, RateLimitManager } from 'klasa';
 
 const MESSAGE_REGEXP = /%ROLE%|%MEMBER%|%MEMBERNAME%|%GUILD%|%POINTS%/g;
 const {
@@ -108,7 +108,7 @@ export default class extends Monitor {
 		return latest;
 	}
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: GuildMessage) {
 		return (
 			this.enabled &&
 			message.guild !== null &&

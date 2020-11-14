@@ -82,7 +82,7 @@ export default class extends Monitor {
 		);
 	}
 
-	private *getAttachments(message: KlasaMessage) {
+	private *getAttachments(message: GuildMessage) {
 		for (const attachment of message.attachments.values()) {
 			if (!IMAGE_EXTENSION.test(attachment.url)) continue;
 

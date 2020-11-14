@@ -1,5 +1,6 @@
 import { GuildSettings } from '@lib/database';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
@@ -7,7 +8,6 @@ import { ApplyOptions } from '@skyra/decorators';
 import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
 import { getImage } from '@utils/util';
 import { Role } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['restricted-embed', 're'],
@@ -21,7 +21,7 @@ export default class extends ModerationCommand {
 	// eslint-disable-next-line @typescript-eslint/no-invalid-this
 	private rolePrompt = this.definePrompt('<role:rolename>');
 
-	public async inhibit(message: KlasaMessage) {
+	public async inhibit(message: GuildMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 		const [id, language] = await message.guild.readSettings((settings) => [
@@ -50,10 +50,6 @@ export default class extends ModerationCommand {
 		return false;
 	}
 
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.restrictEmbed(
 			{
@@ -65,9 +61,5 @@ export default class extends ModerationCommand {
 			},
 			await this.getTargetDM(message, context.target)
 		);
-	}
-
-	public async posthandle() {
-		/* Do nothing */
 	}
 }

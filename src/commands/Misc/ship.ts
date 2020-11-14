@@ -16,7 +16,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Misc.ShipDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ShipExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	usage: '(firstUser:user) (secondUser:user)',
 	usageDelim: ' '
 })

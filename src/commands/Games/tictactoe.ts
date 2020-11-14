@@ -2,10 +2,11 @@ import { TicTacToeBotController } from '@lib/games/tic-tac-toe/TicTacToeBotContr
 import { TicTacToeGame } from '@lib/games/tic-tac-toe/TicTacToeGame';
 import { TicTacToeHumanController } from '@lib/games/tic-tac-toe/TicTacToeHumanController';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage, Usage } from 'klasa';
+import { CommandStore, Usage } from 'klasa';
 
 export default class extends SkyraCommand {
 	private readonly channels: Set<string> = new Set();
@@ -25,7 +26,7 @@ export default class extends SkyraCommand {
 		this.prompt = this.definePrompt('<response:boolean>');
 	}
 
-	public async run(message: KlasaMessage, [user]: [User]) {
+	public async run(message: GuildMessage, [user]: [User]) {
 		if (this.channels.has(message.channel.id)) throw await message.fetchLocale(LanguageKeys.Commands.Games.GamesProgress);
 		const player1 = this.getAuthorController(message);
 		const player2 = await this.getTargetController(message, user);
@@ -40,11 +41,11 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private getAuthorController(message: KlasaMessage) {
+	private getAuthorController(message: GuildMessage) {
 		return new TicTacToeHumanController(message.author.username, message.author.id);
 	}
 
-	private async getTargetController(message: KlasaMessage, user: User) {
+	private async getTargetController(message: GuildMessage, user: User) {
 		if (user.id === CLIENT_ID) return new TicTacToeBotController();
 
 		const language = await message.fetchLanguage();

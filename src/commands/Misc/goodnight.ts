@@ -16,7 +16,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Misc.GoodnightDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.GoodnightExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

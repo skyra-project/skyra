@@ -26,7 +26,6 @@ export default class extends SkyraCommand {
 			description: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredDescription),
 			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredExtended),
 			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
 			spam: true,
 			usage: '[user:username]'
 		});

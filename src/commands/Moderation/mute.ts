@@ -49,10 +49,6 @@ export default class extends ModerationCommand {
 		return false;
 	}
 
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
 		return message.guild.security.actions.mute(
 			{
@@ -64,9 +60,5 @@ export default class extends ModerationCommand {
 			},
 			await this.getTargetDM(message, context.target)
 		);
-	}
-
-	public async posthandle() {
-		/* Do nothing */
 	}
 }

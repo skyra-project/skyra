@@ -1,5 +1,6 @@
+import { GuildMessage } from '@lib/types';
 import { PermissionResolvable } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class RichDisplayCommand extends SkyraCommand {
@@ -20,12 +21,12 @@ export abstract class RichDisplayCommand extends SkyraCommand {
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public run(message: KlasaMessage, _params: any[]): any {
+	public run(message: GuildMessage, _params: any[]): any {
 		return message;
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	public inhibit(_message: KlasaMessage): Promise<boolean> | boolean {
+	public inhibit(_message: GuildMessage): Promise<boolean> | boolean {
 		return false;
 	}
 }

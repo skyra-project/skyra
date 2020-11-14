@@ -16,7 +16,6 @@ const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 	cooldown: 15,
 	description: (language) => language.get(LanguageKeys.Commands.Tools.ContentDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.ContentExtended),
-	runIn: ['text'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' ',
 	flagSupport: true

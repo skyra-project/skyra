@@ -13,7 +13,6 @@ const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 	description: (language) => language.get(LanguageKeys.Commands.Tools.AvatarDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.AvatarExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	usage: '[user:username]',
 	flagSupport: true
 })

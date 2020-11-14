@@ -16,7 +16,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Misc.IneedhealingDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.IneedhealingExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

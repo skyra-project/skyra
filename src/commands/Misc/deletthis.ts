@@ -17,7 +17,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Misc.DeletthisDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.DeletthisExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

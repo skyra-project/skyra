@@ -16,7 +16,6 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	description: (language) => language.get(LanguageKeys.Commands.Tools.QuoteDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.QuoteExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	usage: '[channel:channelname] (message:message)',
 	usageDelim: ' '
 })

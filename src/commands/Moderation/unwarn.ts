@@ -13,10 +13,6 @@ import { floatPromise, getImage } from '@utils/util';
 	usage: '<case:number> [reason:...string]'
 })
 export default class extends ModerationCommand {
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {
 		const [autoDelete, messageDisplay, reasonDisplay, language] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Messages.ModerationAutoDelete],
@@ -68,9 +64,5 @@ export default class extends ModerationCommand {
 			context.modlog.caseID,
 			await this.getTargetDM(message, context.target)
 		);
-	}
-
-	public async posthandle() {
-		/* Do nothing */
 	}
 }

@@ -1,6 +1,6 @@
 import type { GuildEntity } from '@lib/database/entities/GuildEntity';
-import { GuildSettings } from '@lib/database/tableKeys';
 import type { IBaseManager } from '@lib/database/settings/base/IBaseManager';
+import { GuildSettings } from '@lib/database/tableKeys';
 import { isNullish, Nullish } from '@lib/misc';
 import { Adder } from '@utils/Adder';
 

@@ -13,7 +13,6 @@ import type { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema'
 import type { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import type { APIUser } from 'discord-api-types/v6';
 import type { PermissionString } from 'discord.js';
-import { AliasPieceOptions } from 'klasa';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';

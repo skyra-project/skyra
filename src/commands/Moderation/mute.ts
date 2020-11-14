@@ -24,15 +24,14 @@ export default class extends ModerationCommand {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
 
-		const id = await message.guild.readSettings(GuildSettings.Roles.Muted);
+		const [id, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Muted], settings.getLanguage()]);
 		const role = (id && message.guild.roles.cache.get(id)) || null;
 
 		if (!role) {
 			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator))) {
-				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.MuteLowlevel);
+				throw language.get(LanguageKeys.Commands.Moderation.MuteLowlevel);
 			}
 
-			const language = await message.fetchLanguage();
 			if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 				const [role] = (await this.rolePrompt
 					.createPrompt(message, { time: 30000, limit: 1 })
@@ -41,9 +40,9 @@ export default class extends ModerationCommand {
 				await message.guild.writeSettings([[GuildSettings.Roles.Muted, role.id]]);
 			} else if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 				await message.guild.security.actions.muteSetup(message);
-				await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
+				await message.send(language.get(LanguageKeys.Misc.CommandSuccess));
 			} else {
-				await message.sendLocale(LanguageKeys.Monitors.CommandHandlerAborted);
+				await message.send(language.get(LanguageKeys.Monitors.CommandHandlerAborted));
 			}
 		}
 

@@ -6,7 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getItemDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pokeitem', 'bag'],
@@ -18,9 +18,9 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [item]: [string]) {
-		const itemDetails = await this.fetchAPI(message, item.toLowerCase());
-
 		const language = await message.fetchLanguage();
+		const itemDetails = await this.fetchAPI(language, item.toLowerCase());
+
 		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
 			availableInGen8: language.get(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
@@ -43,12 +43,12 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(message: KlasaMessage, item: string) {
+	private async fetchAPI(language: Language, item: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getItemDetailsByFuzzy'>(getItemDetailsByFuzzy, { item });
 			return data.getItemDetailsByFuzzy;
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
+			throw language.get(LanguageKeys.Commands.Pokemon.ItemQueryFail, { item });
 		}
 	}
 }

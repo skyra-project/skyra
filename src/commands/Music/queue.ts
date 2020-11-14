@@ -11,6 +11,7 @@ import { BrandingColors, ZeroWidthSpace } from '@utils/constants';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { Language } from 'klasa';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['q', 'playing-time', 'pt'],
@@ -45,7 +46,7 @@ export default class extends MusicCommand {
 				language.get(LanguageKeys.Commands.Music.QueueNowPlaying, {
 					title: track.title,
 					url: track.uri,
-					requester: await this.fetchRequesterName(message, current.entry.author)
+					requester: await this.fetchRequesterName(message, language, current.entry.author)
 				})
 			];
 
@@ -62,7 +63,7 @@ export default class extends MusicCommand {
 
 		if (tracks.length) {
 			// Format the song entries
-			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, position, track)));
+			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, language, position, track)));
 			const totalDuration = this.calculateTotalDuration(tracks);
 			const totalDescription = language.get(LanguageKeys.Commands.Music.QueueTotal, {
 				songs: language.get(
@@ -95,9 +96,9 @@ export default class extends MusicCommand {
 		return response.edit(undefined, queueDisplay.template);
 	}
 
-	private async generateTrackField(message: GuildMessage, position: number, entry: DecodedQueueEntry) {
-		const username = await this.fetchRequesterName(message, entry.author);
-		return message.fetchLocale(LanguageKeys.Commands.Music.QueueLine, {
+	private async generateTrackField(message: GuildMessage, language: Language, position: number, entry: DecodedQueueEntry) {
+		const username = await this.fetchRequesterName(message, language, entry.author);
+		return language.get(LanguageKeys.Commands.Music.QueueLine, {
 			position: position + 1,
 			duration: showSeconds(entry.data.length),
 			title: entry.data.title,
@@ -116,7 +117,7 @@ export default class extends MusicCommand {
 		return accumulator;
 	}
 
-	private async fetchRequesterName(message: GuildMessage, userID: string): Promise<string> {
+	private async fetchRequesterName(message: GuildMessage, language: Language, userID: string): Promise<string> {
 		try {
 			return (await message.guild.members.fetch(userID)).displayName;
 		} catch {}
@@ -125,7 +126,7 @@ export default class extends MusicCommand {
 			return (await this.client.users.fetch(userID)).username;
 		} catch {}
 
-		return message.fetchLocale(LanguageKeys.Misc.UnknownUser);
+		return language.get(LanguageKeys.Misc.UnknownUser);
 	}
 
 	private async getTrackInformation(audio: Queue): Promise<readonly DecodedQueueEntry[]> {

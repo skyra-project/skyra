@@ -21,6 +21,7 @@ export default class extends Monitor {
 		const [logChannel, ignoredChannels] = await message.guild.readSettings([GuildSettings.Channels.ImageLogs, GuildSettings.Channels.Ignore.All]);
 		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
 
+		const language = await message.fetchLanguage();
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
 
@@ -50,14 +51,14 @@ export default class extends Monitor {
 				const buffer = await result.buffer();
 				const filename = `image${extname(url.pathname)}`;
 
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, async () =>
+				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Image, message.guild, () =>
 					new MessageEmbed()
 						.setColor(Colors.Yellow)
 						.setAuthor(
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setDescription(`[${await message.fetchLocale(LanguageKeys.Misc.JumpTo)}](${message.url})`)
+						.setDescription(`[${language.get(LanguageKeys.Misc.JumpTo)}](${message.url})`)
 						.setFooter(`#${(message.channel as TextChannel).name}`)
 						.attachFiles([new MessageAttachment(buffer, filename)])
 						.setImage(`attachment://${filename}`)

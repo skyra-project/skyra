@@ -9,6 +9,7 @@ import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { Language } from 'klasa';
 import { getManager } from 'typeorm';
 
 const CDN_URL = CdnUrls.BannersBasePath;
@@ -149,8 +150,8 @@ export default class extends SkyraCommand {
 		this.display = display;
 	}
 
-	private buyList(message: GuildMessage) {
-		return this.runDisplay(message, this.display);
+	private async buyList(message: GuildMessage) {
+		return this.runDisplay(message, await message.fetchLanguage(), this.display);
 	}
 
 	private async userList(message: GuildMessage) {
@@ -174,13 +175,13 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		return this.runDisplay(message, display);
+		return this.runDisplay(message, language, display);
 	}
 
-	private async runDisplay(message: GuildMessage, display: UserRichDisplay | null) {
+	private async runDisplay(message: GuildMessage, language: Language, display: UserRichDisplay | null) {
 		if (display !== null) {
 			const response = await message.sendEmbed(
-				new MessageEmbed({ description: pickRandom(await message.fetchLocale(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
+				new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 			);
 			await display.start(response, message.author.id);
 			return response;

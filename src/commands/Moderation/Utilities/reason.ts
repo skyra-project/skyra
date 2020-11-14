@@ -28,13 +28,14 @@ import { getImage } from '@utils/util';
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [cases, reason]: [number[], string]) {
 		const entries = await message.guild.moderation.fetch(cases);
-		if (!entries.size)
+		if (!entries.size) {
 			throw await message.fetchLocale(
 				cases.length === 1
 					? LanguageKeys.Commands.Moderation.ModerationCaseNotExists
 					: LanguageKeys.Commands.Moderation.ModerationCaseNotExistsPlural,
 				{ count: cases.length }
 			);
+		}
 
 		const imageURL = getImage(message);
 		const { moderations } = await DbSet.connect();

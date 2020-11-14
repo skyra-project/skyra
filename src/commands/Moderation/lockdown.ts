@@ -5,6 +5,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Permissions, TextChannel } from 'discord.js';
+import { Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['lock', 'unlock'],
@@ -24,33 +25,34 @@ export default class extends SkyraCommand {
 	}
 
 	public async unlock(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
+		const language = await message.fetchLanguage();
 		const entry = message.guild.security.lockdowns.get(channel.id);
 
 		if (typeof entry === 'undefined') {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
+			throw language.get(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
 		}
 
-		return entry.timeout ? entry.timeout.stop() : this._unlock(message, channel);
+		return entry.timeout ? entry.timeout.stop() : this._unlock(message, language, channel);
 	}
 
 	public async lock(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
+		const language = await message.fetchLanguage();
+
 		// If there was a lockdown, abort lock
 		if (message.guild.security.lockdowns.has(channel.id)) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+			throw language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 		}
 
 		// Get the role, then check if the user could send messages
 		const role = message.guild.roles.cache.get(message.guild.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
-		if (!couldSend) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		if (!couldSend) throw language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 
 		// If they can send, begin locking
 		const response = await message.sendLocale(LanguageKeys.Commands.Moderation.LockdownLocking, [{ channel: channel.toString() }]);
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
 		if (message.channel.postable) {
-			await response
-				.edit(await message.fetchLocale(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() }))
-				.catch(() => null);
+			await response.edit(language.get(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
 		}
 
 		// Create the timeout
@@ -60,13 +62,13 @@ export default class extends SkyraCommand {
 		// Perform cleanup later
 		if (timeout) {
 			await timeout.run();
-			await this._unlock(message, channel);
+			await this._unlock(message, language, channel);
 		}
 	}
 
-	private async _unlock(message: GuildMessage, channel: TextChannel) {
+	private async _unlock(message: GuildMessage, language: Language, channel: TextChannel) {
 		channel.guild.security.lockdowns.delete(channel.id);
 		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
-		return message.sendLocale(LanguageKeys.Commands.Moderation.LockdownOpen, [{ channel: channel.toString() }]);
+		return message.send(language.get(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
 	}
 }

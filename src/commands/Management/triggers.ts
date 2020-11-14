@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings } from '@lib/database';
+import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
@@ -67,25 +67,39 @@ const REG_TYPE = /^(alias|reaction)$/i;
 ])
 export default class extends SkyraCommand {
 	public async remove(message: GuildMessage, [type, input]: [string, string]) {
-		const list = await this.getList(message, type);
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+			const key = this.getListName(type);
 
-		const index = list.findIndex((entry) => entry.input === input);
-		if (index === -1) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
+			const list = settings[key];
 
-		// Create a shallow clone and remove the item
-		const clone = [...list];
-		clone.splice(index, 1);
+			const index = list.findIndex((entry) => entry.input === input);
+			if (index === -1) throw language.get(LanguageKeys.Commands.Management.TriggersRemoveNotTaken);
 
-		await message.guild.writeSettings([[this.getListName(type), clone]]);
-		return message.sendLocale(LanguageKeys.Commands.Management.TriggersRemove);
+			list.splice(index, 1);
+
+			return language;
+		});
+
+		return message.send(language.get(LanguageKeys.Commands.Management.TriggersRemove));
 	}
 
 	public async add(message: GuildMessage, [type, input, output]: [string, string, string]) {
-		const list = await this.getList(message, type);
-		if (list.some((entry) => entry.input === input)) throw await message.fetchLocale(LanguageKeys.Commands.Management.TriggersAddTaken);
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+			const key = this.getListName(type);
 
-		await message.guild.writeSettings([[this.getListName(type), [...list, this.format(type, input, output)]]]);
-		return message.sendLocale(LanguageKeys.Commands.Management.TriggersAdd);
+			const list = settings[key];
+
+			const alreadySet = list.some((entry) => entry.input === input);
+			if (alreadySet) throw language.get(LanguageKeys.Commands.Management.TriggersAddTaken);
+
+			list.push(this.format(type, input, output) as any);
+
+			return language;
+		});
+
+		return message.send(language.get(LanguageKeys.Commands.Management.TriggersAdd));
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
@@ -118,7 +132,7 @@ export default class extends SkyraCommand {
 		return display.start(message, undefined, { time: 120000 });
 	}
 
-	private format(type: string, input: string, output: string) {
+	private format(type: string, input: string, output: string): TriggerIncludes | TriggerAlias {
 		switch (type) {
 			case 'alias':
 				return { input, output };
@@ -136,16 +150,6 @@ export default class extends SkyraCommand {
 			case 'reaction':
 			default:
 				return GuildSettings.Trigger.Includes;
-		}
-	}
-
-	private async getList(message: GuildMessage, type: string) {
-		switch (type) {
-			case 'alias':
-				return message.guild.readSettings(GuildSettings.Trigger.Alias);
-			case 'reaction':
-			default:
-				return message.guild.readSettings(GuildSettings.Trigger.Includes);
 		}
 	}
 }

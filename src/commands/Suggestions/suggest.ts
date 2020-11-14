@@ -35,17 +35,22 @@ export default class extends SkyraCommand {
 		if (globalSuggestion) {
 			suggestionsChannel = this.client.webhookFeedback!;
 		} else {
-			const suggestionsChannelID = await guild.readSettings(GuildSettings.Suggestions.SuggestionsChannel);
+			const [suggestionsChannelID, language] = await guild.readSettings((settings) => [
+				settings[GuildSettings.Suggestions.SuggestionsChannel],
+				settings.getLanguage()
+			]);
+
 			suggestionsChannel = this.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
-			if (!suggestionsChannel?.postable)
-				throw await message.fetchLocale(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
+			if (!suggestionsChannel?.postable) {
+				throw language.get(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
 					username: message.author.username,
 					channel: (message.channel as TextChannel).toString()
 				});
+			}
 		}
 
 		// Get the next suggestion ID
-		const suggestionID = await guild.readSettings(GuildSettings.Suggestions.ID);
+		const [suggestionID, language] = await guild.readSettings((settings) => [settings[GuildSettings.Suggestions.ID], settings.getLanguage()]);
 
 		// Post the suggestion
 		const suggestionsMessage = await (suggestionsChannel as TextChannel).send(
@@ -55,7 +60,7 @@ export default class extends SkyraCommand {
 					`${message.author.tag} (${message.author.id})`,
 					message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })
 				)
-				.setTitle(await message.fetchLocale(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: suggestionID }))
+				.setTitle(language.get(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: suggestionID }))
 				.setDescription(suggestion)
 		);
 

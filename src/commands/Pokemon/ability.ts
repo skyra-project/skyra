@@ -6,7 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],
@@ -18,8 +18,8 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
-		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
 		const language = await message.fetchLanguage();
+		const abilityDetails = await this.fetchAPI(language, ability.toLowerCase());
 		const embedTitles = language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
 
 		const embed = new MessageEmbed()
@@ -42,12 +42,12 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(embed);
 	}
 
-	private async fetchAPI(message: KlasaMessage, ability: string) {
+	private async fetchAPI(language: Language, ability: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
+			throw language.get(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
 		}
 	}
 }

@@ -80,10 +80,10 @@ export default class extends Route {
 	}
 
 	private async validateArray(value: any, ctx: SerializerUpdateContext) {
-		if (!Array.isArray(value)) throw new Error(`Expected an array.`);
+		if (!Array.isArray(value)) throw new Error('Expected an array.');
 
 		const { serializer } = ctx.entry;
-		return Promise.all((value as any[]).map((value) => serializer.isValid(value, ctx)));
+		return Promise.all(value.map((value) => serializer.isValid(value, ctx)));
 	}
 
 	private async validateAll(entity: GuildEntity, guild: Guild, pairs: readonly [string, unknown][]) {

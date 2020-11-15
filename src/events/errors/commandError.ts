@@ -107,7 +107,7 @@ export default class extends Event {
 	 */
 	private getArgumentsLine(args: readonly string[]): string {
 		if (args.length === 0) return '**Arguments**: Not Supplied';
-		return `**Arguments**: [\`${args.map((arg) => arg.trim() || '\u200B').join('`, `')}\`]`;
+		return `**Arguments**: [\`${args.map((arg) => arg?.trim() || '\u200B').join('`, `')}\`]`;
 	}
 
 	/**

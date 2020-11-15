@@ -1,8 +1,8 @@
 import Collection from '@discordjs/collection';
 import type { GuildEntity } from '@lib/database/entities/GuildEntity';
-import { ReadOnlyNonEmptyArray, SchemaGroup } from '@lib/database/settings/schema/SchemaGroup';
+import { NonEmptyArray, SchemaGroup } from '@lib/database/settings/schema/SchemaGroup';
 import { ConfigurableKeyValueOptions, SchemaKey } from '@lib/database/settings/schema/SchemaKey';
-import { isNumber, isPrimitive } from '@sapphire/utilities';
+import { isFunction, isNumber, isPrimitive } from '@sapphire/utilities';
 import { ColumnOptions, ColumnType, getMetadataArgsStorage } from 'typeorm';
 
 export const configurableKeys = new Collection<string, SchemaKey>();
@@ -23,6 +23,7 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 		const maximum = options.maximum ?? hydrateLength(column.options.length);
 		const type = options.type?.toLowerCase() ?? hydrateType(column.options.type!);
 		const df = options.default ?? getDefault(column.options, array, minimum);
+		const dashboardOnly = options.dashboardOnly ?? false;
 		const value = new SchemaKey({
 			target: target.constructor,
 			property: property as keyof GuildEntity,
@@ -33,11 +34,12 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 			maximum,
 			minimum,
 			name,
-			type
+			type,
+			dashboardOnly
 		});
 
 		configurableKeys.set(name, value);
-		value.parent = configurableGroups.add(name.split('.') as ReadOnlyNonEmptyArray<string>, value);
+		value.parent = configurableGroups.add(name.split('.') as NonEmptyArray<string>, value);
 	};
 }
 
@@ -46,6 +48,7 @@ function getDefault(options: ColumnOptions, array: boolean, minimum: number | nu
 	if (array) return [];
 	if (isNumber(minimum)) return minimum;
 	if (options.nullable) return null;
+	if (isFunction(options.default) && options.default() === "'[]'::JSONB") return [];
 	throw new TypeError(`The default value for the column '${options.name}' cannot be obtained automatically.`);
 }
 
@@ -62,6 +65,7 @@ function hydrateType(type: ColumnType) {
 		case 'bigint':
 		case 'boolean':
 		case 'float':
+		case 'jsonb':
 		case 'string': {
 			return type;
 		}
@@ -140,6 +144,6 @@ function hydrateType(type: ColumnType) {
 	}
 }
 
-type OptionalKeys = 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array' | 'default';
+type OptionalKeys = 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array' | 'default' | 'dashboardOnly';
 type ConfigurableKeyOptions = Omit<ConfigurableKeyValueOptions, 'target' | 'property' | OptionalKeys> &
 	Partial<Pick<ConfigurableKeyValueOptions, OptionalKeys>>;

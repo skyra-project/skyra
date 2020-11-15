@@ -115,5 +115,6 @@ export const SuggestionsEmojisDownvote = T<string>('settingsSuggestionsEmojisDow
 export const SuggestionsOnActionDM = T<string>('settingsSuggestionsOnActionDm');
 export const SuggestionsOnActionRepost = T<string>('settingsSuggestionsOnActionRepost');
 export const SuggestionsOnActionHideAuthor = T<string>('settingsSuggestionsOnActionHideAuthor');
+export const DashboardOnlyKey = T<string>('settingsDashboardOnlyKey');
 
 export * as Gateway from './settings/Gateway';

@@ -6,7 +6,7 @@ import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
-import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['settings', 'config', 'configs', 'configuration'],
@@ -18,6 +18,23 @@ import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 	usage: '<set|show|remove|reset|menu:default> (key:key) (value:value) [...]',
 	usageDelim: ' '
 })
+@CreateResolvers([
+	[
+		'key',
+		async (arg, _possible, message, [action]: string[]) => {
+			if (['show', 'menu'].includes(action) || arg) return arg || '';
+			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoKey);
+		}
+	],
+	[
+		'value',
+		async (arg, possible, message, [action]: string[]) => {
+			if (!['set', 'remove'].includes(action)) return null;
+			if (arg) return message.client.arguments.get('...string')!.run(arg, possible, message);
+			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoValue);
+		}
+	]
+])
 export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async menu(message: GuildMessage) {
@@ -79,22 +96,10 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async init() {
-		this.createCustomResolver('key', async (arg, _possible, message, [action]: string[]) => {
-			if (['show', 'menu'].includes(action) || arg) return arg || '';
-			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoKey);
-		});
-
-		this.createCustomResolver('value', async (arg, possible, message, [action]: string[]) => {
-			if (!['set', 'remove'].includes(action)) return null;
-			if (arg) return this.client.arguments.get('...string')!.run(arg, possible, message);
-			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoValue);
-		});
-	}
-
 	private async fetchKey(message: GuildMessage, key: string): Promise<SchemaKey> {
 		const value = configurableGroups.getPathString(key);
 		if (value === null) throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfGetNoExt, { key });
+		if (value.dashboardOnly) throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfDashboardOnlyKey, { key });
 		if (isSchemaGroup(value)) {
 			throw await message.fetchLocale(LanguageKeys.Settings.Gateway.ChooseKey, {
 				keys: [...map(value.childKeys(), (value) => `\`${value}\``)].join(', ')

@@ -149,6 +149,7 @@ declare module 'klasa' {
 		commandConfServerDescription: string;
 		commandConfServer: (params: { key: string; list: string }) => string;
 		commandConfUserDescription: string;
+		commandConfDashboardOnlyKey: (params: { key: string }) => string;
 		commandConfUser: (params: { key: string; list: string }) => string;
 		commandConfSettingNotSet: string;
 		messagePromptTimeout: string;
@@ -510,6 +511,7 @@ declare module 'klasa' {
 		settingsSuggestionsOnActionDm: string;
 		settingsSuggestionsOnActionRepost: string;
 		settingsSuggestionsOnActionHideAuthor: string;
+		settingsDashboardOnlyKey: string;
 		commandCatfactDescription: string;
 		commandCatfactExtended: LanguageHelpDisplayOptions;
 		commandDogDescription: string;

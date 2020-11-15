@@ -269,6 +269,7 @@ export default class extends Language {
 		commandConfServerDescription: 'Define per-server settings.',
 		commandConfServer: ({ key, list }) => `**Server Setting ${key}**\n${list}`,
 		commandConfUserDescription: 'Define per-user settings.',
+		commandConfDashboardOnlyKey: ({ key }) => `\`${key}\` can only be configured through the web dashboard (<https://skyra.pw>)`,
 		commandConfUser: ({ key, list }) => `**User Setting ${key}**\n${list}`,
 		commandConfSettingNotSet: 'Not Set',
 		messagePromptTimeout: 'The prompt has timed out.',
@@ -665,6 +666,7 @@ export default class extends Language {
 			"If this setting is enabled, Skyra will repost the suggestion's message every time it is updated. If it is disabled, it will edit the original message.",
 		settingsSuggestionsOnActionHideAuthor:
 			"This setting allows you to update suggestions anonymously. It will substitute the updater's name with either `An administrator` or `A moderator`, according to their permission level.",
+		settingsDashboardOnlyKey: 'This key can only be configured through [the web dashboard](https://skyra.pw)',
 
 		/**
 		 * ################

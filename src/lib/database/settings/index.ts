@@ -1,5 +1,4 @@
 export * from './base/IBaseManager';
-export * from './base/ISchemaValue';
 export * from './base/SettingsCollection';
 export * from './ConfigurableKey';
 export * from './schema/SchemaGroup';

@@ -33,6 +33,7 @@ export const ConfSettingNotSet = T<string>('commandConfSettingNotSet');
 export const ConfUpdated = FT<{ key: string; response: string }, string>('commandConfUpdated');
 export const ConfUser = FT<{ key: string; list: string }, string>('commandConfUser');
 export const ConfUserDescription = T<string>('commandConfUserDescription');
+export const ConfDashboardOnlyKey = FT<{ key: string }, string>('commandConfDashboardOnlyKey');
 export const RolesetAdded = FT<{ name: string; roles: string }, string>('commandRolesetAdded');
 export const RolesetCreated = FT<{ name: string; roles: string }, string>('commandRolesetCreated');
 export const RolesetDescription = T<string>('commandRolesetDescription');

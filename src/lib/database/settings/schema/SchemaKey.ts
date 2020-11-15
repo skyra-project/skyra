@@ -61,6 +61,11 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 	public default: unknown;
 
 	/**
+	 * Whether this key should only be configurable on the dashboard
+	 */
+	public dashboardOnly: boolean;
+
+	/**
 	 * The parent group that holds this key.
 	 */
 	public parent: SchemaGroup | null = null;
@@ -75,6 +80,7 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		this.target = options.target;
 		this.type = options.type;
 		this.array = options.array;
+		this.dashboardOnly = options.dashboardOnly ?? false;
 	}
 
 	public get client(): SkyraClient {
@@ -131,5 +137,5 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 
 export type ConfigurableKeyValueOptions = Pick<
 	SchemaKey,
-	'description' | 'maximum' | 'minimum' | 'inclusive' | 'name' | 'property' | 'target' | 'type' | 'array' | 'default'
+	'description' | 'maximum' | 'minimum' | 'inclusive' | 'name' | 'property' | 'target' | 'type' | 'array' | 'default' | 'dashboardOnly'
 >;

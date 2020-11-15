@@ -273,6 +273,7 @@ export default class extends Language {
 		commandConfServerDescription: 'Define per-server settings.',
 		commandConfServer: ({ key, list }) => `**Server Setting ${key}**\n${list}`,
 		commandConfUserDescription: 'Define per-user settings.',
+		commandConfDashboardOnlyKey: ({ key }) => `\`${key}\` can only be configured through the web dashboard (<https://skyra.pw>)`,
 		commandConfUser: ({ key, list }) => `**User Setting ${key}**\n${list}`,
 		commandConfSettingNotSet: 'No Establecido',
 		messagePromptTimeout: 'La solicitud no recibió ninguna respuesta a tiempo.',
@@ -678,6 +679,7 @@ export default class extends Language {
 			'Si esta opción está habilitada, volveré a publicar el mensaje de la sugerencia cada vez que se ésta se modifique. En caso opuesto editaré el mensaje original.',
 		settingsSuggestionsOnActionHideAuthor:
 			'Esta configuración le permite actualizar recomendaciónes anónimamente. Sustituirá el nombre del editor con `Un administrador` o` Un moderador`, de acuerdo con su nivel de permisos.',
+		settingsDashboardOnlyKey: 'This key can only be configured through [the web dashboard](https://skyra.pw)',
 
 		/**
 		 * ################

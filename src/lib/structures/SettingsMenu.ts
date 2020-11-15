@@ -68,8 +68,10 @@ export class SettingsMenu {
 			const keys: string[] = [];
 			const folders: string[] = [];
 			for (const [key, value] of this.schema.entries()) {
-				if (isSchemaGroup(value)) folders.push(key);
-				else keys.push(key);
+				if (!value.dashboardOnly) {
+					if (isSchemaGroup(value)) folders.push(key);
+					else keys.push(key);
+				}
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderNokeys));

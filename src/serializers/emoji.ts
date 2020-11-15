@@ -15,7 +15,7 @@ export default class UserSerializer extends Serializer<string> {
 
 	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
 		const resolved = resolveEmoji(value);
-		if (resolved === null) {
+		if (resolved === null || value !== resolved) {
 			throw new Error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
 		}
 

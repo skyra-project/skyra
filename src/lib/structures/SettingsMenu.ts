@@ -68,10 +68,9 @@ export class SettingsMenu {
 			const keys: string[] = [];
 			const folders: string[] = [];
 			for (const [key, value] of this.schema.entries()) {
-				if (!value.dashboardOnly) {
-					if (isSchemaGroup(value)) folders.push(key);
-					else keys.push(key);
-				}
+				if (value.dashboardOnly) continue;
+				if (isSchemaGroup(value)) folders.push(key);
+				else keys.push(key);
 			}
 
 			if (!folders.length && !keys.length) description.push(i18n.get(LanguageKeys.Commands.Admin.ConfMenuRenderNokeys));
@@ -126,7 +125,7 @@ export class SettingsMenu {
 		this.errorMessage = null;
 		if (isSchemaGroup(this.schema)) {
 			const schema = this.schema.get(message.content);
-			if (schema) {
+			if (schema && !schema.dashboardOnly) {
 				this.schema = schema as SchemaKey | SchemaGroup;
 				this.oldValue = undefined;
 			} else {

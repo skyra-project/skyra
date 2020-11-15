@@ -1,3 +1,4 @@
+import Collection from '@discordjs/collection';
 import type { GuildEntity } from '@lib/database/entities/GuildEntity';
 import type { ISchemaValue } from '@lib/database/settings/base/ISchemaValue';
 import { isNullish } from '@lib/misc';
@@ -7,7 +8,7 @@ import type { SchemaKey } from './SchemaKey';
 
 export type NonEmptyArray<T> = [T, ...T[]];
 
-export class SchemaGroup extends Map<string, ISchemaValue> implements ISchemaValue {
+export class SchemaGroup extends Collection<string, ISchemaValue> implements ISchemaValue {
 	public readonly parent: SchemaGroup | null;
 	public readonly name: string;
 	public readonly dashboardOnly = false;
@@ -65,16 +66,15 @@ export class SchemaGroup extends Map<string, ISchemaValue> implements ISchemaVal
 		const sections = new Map<string, string[]>();
 		let longest = 0;
 		for (const [key, value] of this.entries()) {
-			if (!value.dashboardOnly) {
-				if (value.type === 'Group') {
-					folders.push(`// ${key}`);
-				} else {
-					const values = sections.get(value.type) ?? [];
-					values.push(key);
+			if (value.dashboardOnly) continue;
+			if (value.type === 'Group') {
+				folders.push(`// ${key}`);
+			} else {
+				const values = sections.get(value.type) ?? [];
+				values.push(key);
 
-					if (key.length > longest) longest = key.length;
-					if (values.length === 1) sections.set(value.type, values);
-				}
+				if (key.length > longest) longest = key.length;
+				if (values.length === 1) sections.set(value.type, values);
 			}
 		}
 

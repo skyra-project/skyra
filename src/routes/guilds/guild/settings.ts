@@ -68,7 +68,8 @@ export default class extends Route {
 		const entry = configurableKeys.get(key);
 		if (!entry || !isSchemaKey(entry)) throw `${key}: The key ${key} does not exist in the current schema.`;
 		try {
-			const result = await entry.serializer.isValid(value as any, { ...context, entry });
+			const ctx = { ...context, entry };
+			const result = await (entry.array ? this.validateArray(value, ctx) : entry.serializer.isValid(value as any, ctx));
 			if (!result) throw `${key}: The value is not valid.`;
 
 			return [entry.property, value] as const;
@@ -76,6 +77,13 @@ export default class extends Route {
 			if (error instanceof Error) throw error.message;
 			throw error;
 		}
+	}
+
+	private async validateArray(value: any, ctx: SerializerUpdateContext) {
+		if (!Array.isArray(value)) throw new Error(`Expected an array.`);
+
+		const { serializer } = ctx.entry;
+		return Promise.all((value as any[]).map((value) => serializer.isValid(value, ctx)));
 	}
 
 	private async validateAll(entity: GuildEntity, guild: Guild, pairs: readonly [string, unknown][]) {

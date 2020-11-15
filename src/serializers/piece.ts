@@ -19,31 +19,10 @@ export default class UserSerializer extends Serializer<string> {
 		return this.error(language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type }));
 	}
 
-	public isValid(valueOrValues: string | string[], { entry, language }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: string, { entry, language }: SerializerUpdateContext): Awaited<boolean> {
 		const store = this.client.pieceStores.get(`${entry.type}s`);
 		if (!store) throw language.get(LanguageKeys.Resolvers.InvalidStore, { store: entry.type });
-
-		// If the value is an array
-		if (Array.isArray(valueOrValues)) {
-			let result = true;
-
-			// Iterate over every value, checking if it's valid
-			for (const value of valueOrValues) {
-				const parsed = store.get(value);
-				// If it's not valid
-				if (!parsed || !(parsed instanceof store.holds)) {
-					// Set the result to false
-					result = false;
-					// And break the loop
-					break;
-				}
-			}
-
-			// Return the final result
-			return result;
-		}
-
-		const parsed = store.get(valueOrValues);
+		const parsed = store.get(value);
 		if (parsed && parsed instanceof store.holds) return true;
 		throw language.get(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: entry.type });
 	}

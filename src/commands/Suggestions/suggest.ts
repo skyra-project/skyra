@@ -49,7 +49,7 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const [[upvoteEmoji, downvoteEmoji, language], { suggestions }] = await Promise.all([
+		const [[upvoteEmoji, downvoteEmoji, language], [suggestions, currentSuggestionId]] = await Promise.all([
 			guild.readSettings(
 				(settings) =>
 					[
@@ -58,19 +58,8 @@ export default class extends SkyraCommand {
 						settings.getLanguage()
 					] as const
 			),
-			DbSet.connect()
+			this.getCurrentSuggestionID(guild.id)
 		]);
-
-		// Retrieve the ID for the latest suggestion
-		const [{ max }] = (await suggestions.query(
-			/* sql */ `
-			SELECT max(id)
-			FROM suggestion
-			WHERE guild_id = $1
-		`,
-			[guild.id]
-		)) as [MaxQuery];
-		const currentSuggestionId = max ?? 0;
 
 		// Post the suggestion
 		const suggestionsMessage = await (suggestionsChannel as TextChannel).send(
@@ -84,11 +73,6 @@ export default class extends SkyraCommand {
 				.setDescription(suggestion)
 		);
 
-		// Add the upvote/downvote reactions
-		for (const emoji of [upvoteEmoji, downvoteEmoji]) {
-			await suggestionsMessage.react(emoji);
-		}
-
 		// Commit the suggestion to the DB
 		await suggestions.insert({
 			id: currentSuggestionId + 1,
@@ -97,9 +81,16 @@ export default class extends SkyraCommand {
 			messageID: suggestionsMessage.id
 		});
 
-		return message.sendLocale(LanguageKeys.Commands.Suggestions.SuggestSuccess, [
-			{ channel: global ? 'the feedback channel' : suggestionsChannel.toString() }
-		]);
+		// Add the upvote/downvote reactions
+		for (const emoji of [upvoteEmoji, downvoteEmoji]) {
+			await suggestionsMessage.react(emoji);
+		}
+
+		return message.send(
+			language.get(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
+				channel: global ? 'the feedback channel' : suggestionsChannel.toString()
+			})
+		);
 	}
 
 	public async inhibit(message: GuildMessage): Promise<boolean> {
@@ -170,6 +161,22 @@ export default class extends SkyraCommand {
 		const missing = permissions.missing(requiredChannelPermissions, false);
 
 		return missing;
+	}
+
+	private async getCurrentSuggestionID(guildID: string) {
+		const { suggestions } = await DbSet.connect();
+
+		// Retrieve the ID for the latest suggestion
+		const [{ max }] = (await suggestions.query(
+			/* sql */ `
+			SELECT max(id)
+			FROM suggestion
+			WHERE guild_id = $1
+		`,
+			[guildID]
+		)) as [MaxQuery];
+
+		return [suggestions, max ?? 0] as const;
 	}
 }
 

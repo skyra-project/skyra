@@ -79,7 +79,7 @@ export default class extends SkyraCommand {
 		// Commit the suggestion to the DB
 		const { suggestions } = await DbSet.connect();
 		await suggestions.insert({
-			id: suggestionID,
+			id: suggestionID + 1,
 			authorID: message.author.id,
 			guildID: guild.id,
 			messageID: suggestionsMessage.id

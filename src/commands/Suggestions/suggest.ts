@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 			WHERE guild_id = $1
 		`,
 			[guild.id]
-		)) as MaxQuery[];
+		)) as [MaxQuery];
 		const currentSuggestionId = max ?? 0;
 
 		// Post the suggestion

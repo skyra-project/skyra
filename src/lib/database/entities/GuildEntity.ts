@@ -228,46 +228,46 @@ export class GuildEntity extends BaseEntity {
 	@Column('jsonb', { name: 'reaction-roles', default: () => "'[]'::JSONB" })
 	public reactionRoles: ReactionRole[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesAdmin, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesAdmin, type: 'role' })
 	@Column('varchar', { name: 'roles.admin', nullable: true, length: 19 })
 	public rolesAdmin?: string | null;
 
 	@Column('jsonb', { name: 'roles.auto', default: () => "'[]'::JSONB" })
 	public rolesAuto: RolesAuto[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitial, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesInitial, type: 'role' })
 	@Column('varchar', { name: 'roles.initial', nullable: true, length: 19 })
 	public rolesInitial?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesModerator, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesModerator, type: 'role' })
 	@Column('varchar', { name: 'roles.moderator', nullable: true, length: 19 })
 	public rolesModerator?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesMuted, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesMuted, type: 'role' })
 	@Column('varchar', { name: 'roles.muted', nullable: true, length: 19 })
 	public rolesMuted?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedReaction, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedReaction, type: 'role' })
 	@Column('varchar', { name: 'roles.restricted-reaction', nullable: true, length: 19 })
 	public rolesRestrictedReaction?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedEmbed, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedEmbed, type: 'role' })
 	@Column('varchar', { name: 'roles.restricted-embed', nullable: true, length: 19 })
 	public rolesRestrictedEmbed?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedEmoji, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedEmoji, type: 'role' })
 	@Column('varchar', { name: 'roles.restricted-emoji', nullable: true, length: 19 })
 	public rolesRestrictedEmoji?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedAttachment, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedAttachment, type: 'role' })
 	@Column('varchar', { name: 'roles.restricted-attachment', nullable: true, length: 19 })
 	public rolesRestrictedAttachment?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedVoice, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesRestrictedVoice, type: 'role' })
 	@Column('varchar', { name: 'roles.restricted-voice', nullable: true, length: 19 })
 	public rolesRestrictedVoice?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesPublic, type: 'role', array: true })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesPublic, type: 'role' })
 	@Column('varchar', { name: 'roles.public', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public rolesPublic: string[] = [];
 
@@ -275,11 +275,11 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'roles.removeInitial', default: false })
 	public rolesRemoveInitial = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role', array: true })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role' })
 	@Column('varchar', { name: 'roles.dj', nullable: true, length: 19 })
 	public rolesDj?: string | null;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.RolesSubscriber, type: 'role', array: false })
+	@ConfigurableKey({ description: LanguageKeys.Settings.RolesSubscriber, type: 'role' })
 	@Column('varchar', { name: 'roles.subscriber', nullable: true, length: 19 })
 	public rolesSubscriber?: string | null;
 
@@ -312,7 +312,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'selfmod.capitals.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels, type: 'textchannel', array: true })
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsIgnoredChannels, type: 'textchannel' })
 	@Column('varchar', { name: 'selfmod.capitals.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public selfmodCapitalsIgnoredChannels: string[] = [];
 

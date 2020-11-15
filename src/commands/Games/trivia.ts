@@ -6,7 +6,7 @@ import { CATEGORIES, getQuestion, QuestionData, QuestionDifficulty, QuestionType
 import { pickRandom, shuffle } from '@utils/util';
 import { DMChannel, MessageCollector, MessageEmbed, TextChannel, User } from 'discord.js';
 import { decode } from 'he';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -19,11 +19,11 @@ import { KlasaMessage } from 'klasa';
 @CreateResolvers([
 	[
 		'category',
-		(arg, _, message) => {
+		async (arg, _, message) => {
 			if (!arg) return CATEGORIES.general;
 			arg = arg.toLowerCase();
 			const category = Reflect.get(CATEGORIES, arg);
-			if (!category) throw message.language.get(LanguageKeys.Commands.Games.TriviaInvalidCategory);
+			if (!category) throw await message.fetchLocale(LanguageKeys.Commands.Games.TriviaInvalidCategory);
 			return category;
 		}
 	],
@@ -50,12 +50,13 @@ export default class extends SkyraCommand {
 			number?
 		]
 	) {
-		if (this.#channels.has(message.channel.id)) throw message.language.get(LanguageKeys.Commands.Games.TriviaActiveGame);
+		const language = await message.fetchLanguage();
+		if (this.#channels.has(message.channel.id)) throw language.get(LanguageKeys.Commands.Games.TriviaActiveGame);
 
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
+			await message.send(pickRandom(language.get(LanguageKeys.System.Loading)));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
@@ -63,7 +64,7 @@ export default class extends SkyraCommand {
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
-			await message.sendEmbed(this.buildQuestionEmbed(message, data, possibleAnswers));
+			await message.sendEmbed(this.buildQuestionEmbed(language, data, possibleAnswers));
 			const filter = (msg: KlasaMessage) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;
@@ -83,21 +84,21 @@ export default class extends SkyraCommand {
 						return collector.stop();
 					}
 					participants.add(collected.author.id);
-					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaIncorrect, [{ attempt }]);
+					return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaIncorrect, { attempt }));
 				})
 				.on('end', () => {
 					this.#channels.delete(message.channel.id);
-					if (!winner) return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaNoAnswer, [{ correctAnswer }]);
-					return message.channel.sendLocale(LanguageKeys.Commands.Games.TriviaWinner, [{ winner: winner.toString(), correctAnswer }]);
+					if (!winner) return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaNoAnswer, { correctAnswer }));
+					return message.channel.send(language.get(LanguageKeys.Commands.Games.TriviaWinner, { winner: winner.toString(), correctAnswer }));
 				});
 		} catch {
 			this.#channels.delete(message.channel.id);
-			throw message.language.get(LanguageKeys.Misc.UnexpectedIssue);
+			throw language.get(LanguageKeys.Misc.UnexpectedIssue);
 		}
 	}
 
-	public buildQuestionEmbed(message: KlasaMessage, data: QuestionData, possibleAnswers: string[]) {
-		const titles = message.language.get(LanguageKeys.Commands.Games.TriviaEmbedTitles);
+	public buildQuestionEmbed(language: Language, data: QuestionData, possibleAnswers: string[]) {
+		const titles = language.get(LanguageKeys.Commands.Games.TriviaEmbedTitles);
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
 			.setAuthor(titles.trivia)

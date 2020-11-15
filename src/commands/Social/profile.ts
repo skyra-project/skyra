@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -52,12 +52,12 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = message.language.retrieve(LanguageKeys.Commands.Social.Profile);
+		const title = await message.fetchLocale(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));
 
-			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock! : this.lightThemeDock!, 600, 0, 100, 391);
+			canvas.printImage(settings.profile.darkTheme ? this.darkThemeDock : this.lightThemeDock, 600, 0, 100, 391);
 			let position = 20;
 			for (const badge of badges) {
 				canvas.printImage(badge, 635, position, 50, 50);

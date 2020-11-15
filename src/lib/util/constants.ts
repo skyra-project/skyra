@@ -295,3 +295,6 @@ export const enum BrandingColors {
 	Primary = 0x1e88e5,
 	Secondary = 0xff9d01
 }
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export type O = object;

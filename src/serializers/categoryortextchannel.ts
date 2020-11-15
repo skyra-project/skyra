@@ -1,28 +1,26 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Channel, Guild } from 'discord.js';
-import { Language, SchemaEntry, Serializer, SerializerUpdateContext } from 'klasa';
+import { Awaited } from '@sapphire/utilities';
 
-export default class extends Serializer {
-	// eslint-disable-next-line @typescript-eslint/require-await
-	public async validate(data: string | Channel, { entry, language, guild }: SerializerUpdateContext) {
-		if (data instanceof Channel) return this.checkChannel(data, entry, language);
-		const channel = Serializer.regex.channel.test(data)
-			? (guild || this.client).channels.cache.get(Serializer.regex.channel.exec(data)![1])
-			: null;
-		if (channel) return this.checkChannel(channel, entry, language);
-		throw language.get(LanguageKeys.Resolvers.InvalidChannel, { name: entry.key });
+export default class UserSerializer extends Serializer<string> {
+	public parse(value: string, context: SerializerUpdateContext) {
+		const channel = context.guild.channels.cache.get(value);
+		if (!channel) {
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
+		}
+
+		if (channel.type === 'text' || channel.type === 'category') {
+			return this.ok(channel.id);
+		}
+
+		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: context.entry.name }));
 	}
 
-	public serialize(value: Channel) {
-		return value.id;
+	public isValid(value: string, context: SerializerUpdateContext): Awaited<boolean> {
+		return context.guild.channels.cache.has(value);
 	}
 
-	public stringify(value: string, guild: Guild) {
-		return guild.channels.cache.get(value)!.name;
-	}
-
-	private checkChannel(data: Channel, entry: SchemaEntry, language: Language) {
-		if (data.type === 'text' || data.type === 'category') return data;
-		throw language.get(LanguageKeys.Resolvers.InvalidChannel, { name: entry.key });
+	public stringify(value: string, context: SerializerUpdateContext): string {
+		return context.guild.channels.cache.get(value)?.name ?? value;
 	}
 }

@@ -20,7 +20,7 @@ export default class extends Route {
 		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		if (!canManage(guild, member)) return response.error(403);
+		if (!(await canManage(guild, member))) return response.error(403);
 
 		const emojis = await api(this.client).guilds(guildID).emojis.get();
 		return response.json({ ...flattenGuild(guild), emojis });

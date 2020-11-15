@@ -1,23 +1,21 @@
+import { AdderKey, GuildEntity, GuildSettings } from '@lib/database';
 import { SelfModerationCommand } from '@lib/structures/SelfModerationCommand';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { KeyOfType } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
-import { CommandStore } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
+import { CommandOptions } from 'klasa';
 
+@ApplyOptions<CommandOptions>({
+	aliases: ['reaction-mode', 'r-mode'],
+	description: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeExtended)
+})
 export default class extends SelfModerationCommand {
-	protected $adder: keyof GuildSecurity['adders'] = 'reactions';
-	protected keyEnabled = GuildSettings.Selfmod.Reactions.Enabled;
-	protected keySoftAction = GuildSettings.Selfmod.Reactions.SoftAction;
-	protected keyHardAction = GuildSettings.Selfmod.Reactions.HardAction;
-	protected keyHardActionDuration = GuildSettings.Selfmod.Reactions.HardActionDuration;
-	protected keyThresholdMaximum = GuildSettings.Selfmod.Reactions.ThresholdMaximum;
-	protected keyThresholdDuration = GuildSettings.Selfmod.Reactions.ThresholdDuration;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['reaction-mode', 'r-mode'],
-			description: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ReactionModeExtended)
-		});
-	}
+	protected $adder: AdderKey = 'reactions';
+	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
+	protected keySoftAction: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;
+	protected keyHardAction: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Reactions.HardAction;
+	protected keyHardActionDuration: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Reactions.HardActionDuration;
+	protected keyThresholdMaximum: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Reactions.ThresholdMaximum;
+	protected keyThresholdDuration: KeyOfType<GuildEntity, number | null> = GuildSettings.Selfmod.Reactions.ThresholdDuration;
 }

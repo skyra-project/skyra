@@ -1,5 +1,5 @@
-import { Event } from 'klasa';
 import { bold, magenta } from 'colorette';
+import { Event } from 'klasa';
 
 export abstract class ShardEvent extends Event {
 	protected abstract readonly title: string;

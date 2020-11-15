@@ -18,7 +18,7 @@ export default class extends Route {
 
 		const memberAuthor = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!memberAuthor) return response.error(400);
-		if (!canManage(guild, memberAuthor)) return response.error(403);
+		if (!(await canManage(guild, memberAuthor))) return response.error(403);
 
 		const memberID = request.params.member;
 		const member = await guild.members.fetch(memberID).catch(() => null);

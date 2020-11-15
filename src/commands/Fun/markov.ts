@@ -1,6 +1,7 @@
 import Collection from '@discordjs/collection';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import type { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { DEV } from '@root/config';
 import { cutText } from '@sapphire/utilities';
@@ -8,7 +9,7 @@ import { BrandingColors } from '@utils/constants';
 import { Markov, WordBank } from '@utils/External/markov';
 import { getAllContent, iteratorAt, pickRandom } from '@utils/util';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
-import { CommandStore, KlasaMessage, Stopwatch } from 'klasa';
+import { CommandStore, Language, Stopwatch } from 'klasa';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
@@ -21,7 +22,7 @@ export default class extends SkyraCommand {
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
 	private readonly kBoundUseUpperCase: (wordBank: WordBank) => string;
-	private readonly kProcess: (message: KlasaMessage, markov: Markov) => Promise<MessageEmbed>;
+	private readonly kProcess: (message: GuildMessage, language: Language, markov: Markov) => Promise<MessageEmbed>;
 
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
@@ -38,21 +39,25 @@ export default class extends SkyraCommand {
 		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 
-	public async run(message: KlasaMessage, [channnel, username]: [TextChannel?, User?]) {
+	public async run(message: GuildMessage, [channnel, username]: [TextChannel?, User?]) {
+		const language = await message.fetchLanguage();
+
 		// Send loading message
 		await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Process the chain
-		return message.sendEmbed(await this.kProcess(message, await this.retrieveMarkov(message, username, channnel)));
+		return message.sendEmbed(
+			await this.kProcess(message, language, await this.retrieveMarkov(language, username, channnel ?? (message.channel as TextChannel)))
+		);
 	}
 
-	private async processRelease(message: KlasaMessage, markov: Markov) {
+	private async processRelease(message: GuildMessage, _: Language, markov: Markov) {
 		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await DbSet.fetchColor(message));
 	}
 
-	private async processDevelopment(message: KlasaMessage, markov: Markov) {
+	private async processDevelopment(message: GuildMessage, language: Language, markov: Markov) {
 		const time = new Stopwatch();
 		const chain = markov.process();
 		time.stop();
@@ -60,15 +65,15 @@ export default class extends SkyraCommand {
 		return new MessageEmbed()
 			.setDescription(cutText(chain, 2000))
 			.setColor(await DbSet.fetchColor(message))
-			.setFooter(message.language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
+			.setFooter(language.get(LanguageKeys.Commands.Fun.MarkovTimer, { timer: time.toString() }));
 	}
 
-	private async retrieveMarkov(message: KlasaMessage, user: User | undefined, channel: TextChannel = message.channel as TextChannel) {
+	private async retrieveMarkov(language: Language, user: User | undefined, channel: TextChannel) {
 		const entry = user ? this.kInternalUserCache.get(`${channel.id}.${user.id}`) : this.kInternalCache.get(channel);
 		if (typeof entry !== 'undefined') return entry;
 
 		const messageBank = await this.fetchMessages(channel, user);
-		if (messageBank.size === 0) throw message.language.get(LanguageKeys.Commands.Fun.MarkovNoMessages);
+		if (messageBank.size === 0) throw language.get(LanguageKeys.Commands.Fun.MarkovNoMessages);
 		const contents = messageBank.map(getAllContent).join(' ');
 		const markov = new Markov().parse(contents).start(this.kBoundUseUpperCase).end(60);
 		if (user) this.kInternalUserCache.set(`${channel.id}.${user.id}`, markov);

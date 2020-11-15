@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { map, reverse } from '@lib/misc';
+import { isNullish, map, reverse } from '@lib/misc';
 import type { SkyraClient } from '@lib/SkyraClient';
 import { Events } from '@lib/types/Enums';
+import { Time } from '@sapphire/time-utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, TextChannel, VoiceChannel } from 'discord.js';
 import { container } from 'tsyringe';
 import type { QueueStore } from './QueueStore';
+
+const kExpireTime = Time.Day * 2;
 
 export interface QueueEntry {
 	author: string;
@@ -116,6 +119,7 @@ export class Queue {
 	public async add(...tracks: readonly QueueEntry[]): Promise<number> {
 		if (!tracks.length) return 0;
 		await this.store.redis.lpush(this.keys.next, ...map(tracks.values(), serializeEntry));
+		await this.refresh();
 		this.client.emit(Events.MusicQueueSync, this);
 		return tracks.length;
 	}
@@ -154,7 +158,9 @@ export class Queue {
 	 * @returns Whether or not the vote was added.
 	 */
 	public async addSkipVote(value: string): Promise<boolean> {
-		return this.store.redis.sadd(this.keys.skips, value).then((d) => d === 1);
+		const result = await this.store.redis.sadd(this.keys.skips, value).then((d) => d === 1);
+		if (result) await this.refresh();
+		return result;
 	}
 
 	/**
@@ -170,6 +176,7 @@ export class Queue {
 	 */
 	public async setSystemPaused(value: boolean): Promise<boolean> {
 		await this.store.redis.set(this.keys.systemPause, value ? '1' : '0');
+		await this.refresh();
 		this.client.emit(Events.MusicSongPause, this, value);
 		return value;
 	}
@@ -187,6 +194,7 @@ export class Queue {
 	 */
 	public async setReplay(value: boolean): Promise<boolean> {
 		await this.store.redis.set(this.keys.replay, value ? '1' : '0');
+		await this.refresh();
 		this.client.emit(Events.MusicReplayUpdate, this, value);
 		return value;
 	}
@@ -206,6 +214,7 @@ export class Queue {
 	public async setVolume(value: number): Promise<{ previous: number; next: number }> {
 		await this.player.setVolume(value);
 		const previous = await this.store.redis.getset(this.keys.volume, value);
+		await this.refresh();
 
 		this.client.emit(Events.MusicSongVolumeUpdate, this, value);
 		return { previous: previous === null ? 100 : Number(previous), next: value };
@@ -269,7 +278,13 @@ export class Queue {
 	 */
 	public async setTextChannelID(channelID: string): Promise<string>;
 	public async setTextChannelID(channelID: string | null): Promise<string | null> {
-		await (channelID === null ? this.store.redis.del(this.keys.text) : this.store.redis.set(this.keys.text, channelID));
+		if (channelID === null) {
+			await this.store.redis.del(this.keys.text);
+		} else {
+			await this.store.redis.set(this.keys.text, channelID);
+			await this.refresh();
+		}
+
 		return channelID;
 	}
 
@@ -296,6 +311,7 @@ export class Queue {
 	 */
 	public async removeAt(position: number): Promise<void> {
 		await this.store.redis.lremat(this.keys.next, -position - 1);
+		await this.refresh();
 		this.client.emit(Events.MusicQueueSync, this);
 	}
 
@@ -305,7 +321,7 @@ export class Queue {
 	 */
 	public async next({ skipped = false } = {}): Promise<boolean> {
 		// Sets the current position to 0.
-		await this.store.redis.set(this.keys.position, 0);
+		await this.store.redis.del(this.keys.position);
 
 		if (!skipped && (await this.getReplay())) {
 			await this.setReplay(false);
@@ -313,6 +329,7 @@ export class Queue {
 		}
 
 		const entry = await this.store.redis.rpopset(this.keys.next, this.keys.current);
+		await this.refresh();
 		if (entry) {
 			if (skipped) this.client.emit(Events.MusicSongSkip, this, deserializeEntry(entry));
 			await this.resetSkipVotes();
@@ -338,6 +355,7 @@ export class Queue {
 	 */
 	public async moveTracks(from: number, to: number): Promise<void> {
 		await this.store.redis.lmove(this.keys.next, -from - 1, -to - 1); // work from the end of the list, since it's reversed
+		await this.refresh();
 		this.client.emit(Events.MusicQueueSync, this);
 	}
 
@@ -346,6 +364,7 @@ export class Queue {
 	 */
 	public async shuffleTracks(): Promise<void> {
 		await this.store.redis.lshuffle(this.keys.next, Date.now());
+		await this.refresh();
 		this.client.emit(Events.MusicQueueSync, this);
 	}
 
@@ -362,6 +381,20 @@ export class Queue {
 	public async clearTracks(): Promise<void> {
 		await this.store.redis.del(this.keys.next);
 		this.client.emit(Events.MusicQueueSync, this);
+	}
+
+	public refresh() {
+		return this.store.redis
+			.pipeline()
+			.pexpire(this.keys.next, kExpireTime)
+			.pexpire(this.keys.position, kExpireTime)
+			.pexpire(this.keys.current, kExpireTime)
+			.pexpire(this.keys.skips, kExpireTime)
+			.pexpire(this.keys.systemPause, kExpireTime)
+			.pexpire(this.keys.replay, kExpireTime)
+			.pexpire(this.keys.volume, kExpireTime)
+			.pexpire(this.keys.text, kExpireTime)
+			.exec();
 	}
 
 	/**
@@ -389,7 +422,7 @@ export class Queue {
 
 		const info = await this.player.node.decode(entry.track);
 
-		return { entry: { ...entry, info }, position: parseInt(position!, 10) || 0 };
+		return { entry: { ...entry, info }, position: isNullish(position) ? 0 : parseInt(position, 10) };
 	}
 
 	public async tracks(start = 0, end = -1): Promise<QueueEntry[]> {

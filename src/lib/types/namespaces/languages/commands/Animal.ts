@@ -1,4 +1,4 @@
-import { T } from '@lib/types/Shared';
+import { T } from '@lib/types';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const CatfactDescription = T<string>('commandCatfactDescription');

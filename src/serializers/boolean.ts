@@ -1,22 +1,25 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Awaited } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Serializer, SerializerOptions, SerializerUpdateContext } from 'klasa';
+import { AliasPieceOptions } from 'klasa';
 
-@ApplyOptions<SerializerOptions>({
+@ApplyOptions<AliasPieceOptions>({
 	aliases: ['bool']
 })
-export default class extends Serializer {
-	private kTruths = new Set(['true', 't', 'yes', 'y', 'on', 'enable', 'enabled', '1', '+']);
-	private kFalses = new Set(['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-']);
-
-	public validate(data: string, { entry, language }: SerializerUpdateContext) {
-		const boolean = String(data).toLowerCase();
-		if (this.kTruths.has(boolean)) return true;
-		if (this.kFalses.has(boolean)) return false;
-		throw language.get(LanguageKeys.Resolvers.InvalidBool, { name: entry.key });
+export default class UserSerializer extends Serializer<boolean> {
+	public parse(value: string, context: SerializerUpdateContext) {
+		const boolean = value.toLowerCase();
+		if (context.language.get(LanguageKeys.Resolvers.BoolTrueOptions).includes(boolean)) return this.ok(true);
+		if (context.language.get(LanguageKeys.Resolvers.BoolFalseOptions).includes(boolean)) return this.ok(false);
+		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidBool, { name: context.entry.name }));
 	}
 
-	public stringify(data: string) {
-		return data ? 'Enabled' : 'Disabled';
+	public isValid(value: boolean): Awaited<boolean> {
+		return typeof value === 'boolean';
+	}
+
+	public stringify(value: boolean, context: SerializerUpdateContext): string {
+		return context.language.get(value ? LanguageKeys.Resolvers.BoolEnabled : LanguageKeys.Resolvers.BoolDisabled);
 	}
 }

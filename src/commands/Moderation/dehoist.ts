@@ -1,5 +1,6 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
@@ -7,7 +8,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { GuildMember, MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCodeAt(0)];
 
@@ -23,22 +24,24 @@ const [kLowestNumberCode, kHighestNumberCode] = ['0'.charCodeAt(0), '9'.charCode
 export default class extends SkyraCommand {
 	private kLowestCode = 'A'.charCodeAt(0);
 
-	public async run(message: KlasaMessage) {
-		if (message.guild!.members.cache.size !== message.guild!.memberCount) {
+	public async run(message: GuildMessage) {
+		const language = await message.fetchLanguage();
+
+		if (message.guild.members.cache.size !== message.guild.memberCount) {
 			await message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+				new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
-			await message.guild!.members.fetch();
+			await message.guild.members.fetch();
 		}
 
 		let counter = 0;
 		const errored: ErroredChange[] = [];
 		const hoistedMembers: GuildMember[] = [];
-		for (const member of message.guild!.members.cache.values()) {
+		for (const member of message.guild.members.cache.values()) {
 			if (member.manageable && this.shouldDehoist(member)) hoistedMembers.push(member);
 		}
 
-		const response = await message.sendLocale(LanguageKeys.Commands.Moderation.DehoistStarting, [{ count: hoistedMembers.length }]);
+		const response = await message.send(language.get(LanguageKeys.Commands.Moderation.DehoistStarting, { count: hoistedMembers.length }));
 
 		for (let i = 0; i < hoistedMembers.length; i++) {
 			const member = hoistedMembers[i];
@@ -60,15 +63,15 @@ export default class extends SkyraCommand {
 			// update the counter every 10 dehoists
 			if ((i + 1) % 10 === 0) {
 				const dehoistPercentage = (i / hoistedMembers.length) * 100;
-				await message.sendLocale(LanguageKeys.Commands.Moderation.DehoistProgress, [
-					{ count: i + 1, percentage: Math.round(dehoistPercentage) }
-				]);
+				await message.send(
+					language.get(LanguageKeys.Commands.Moderation.DehoistProgress, { count: i + 1, percentage: Math.round(dehoistPercentage) })
+				);
 			}
 		}
 
 		// We're done!
 		return response.edit({
-			embed: await this.prepareFinalEmbed(message, counter, errored),
+			embed: await this.prepareFinalEmbed(message, language, counter, errored),
 			content: null
 		});
 	}
@@ -83,12 +86,12 @@ export default class extends SkyraCommand {
 		return char < this.kLowestCode && (char < kLowestNumberCode || char > kHighestNumberCode);
 	}
 
-	private async prepareFinalEmbed(message: KlasaMessage, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
-		const embedLanguage = message.language.get(LanguageKeys.Commands.Moderation.DehoistEmbed, {
+	private async prepareFinalEmbed(message: GuildMessage, language: Language, dehoistedMembers: number, erroredChanges: ErroredChange[]) {
+		const embedLanguage = language.get(LanguageKeys.Commands.Moderation.DehoistEmbed, {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,
-			users: message.guild!.members.cache.size
+			users: message.guild.members.cache.size
 		});
 		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.title);
 

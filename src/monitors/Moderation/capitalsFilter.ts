@@ -1,13 +1,13 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationCapitals;
@@ -19,21 +19,21 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Capitals.HardAction,
 		actionDuration: GuildSettings.Selfmod.Capitals.HardActionDuration,
-		adder: 'capitals',
-		adderMaximum: GuildSettings.Selfmod.Capitals.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Capitals.ThresholdDuration
+		adder: 'capitals'
 	};
 
-	public shouldRun(message: KlasaMessage) {
-		return (
-			super.shouldRun(message) &&
-			message.content.length > 0 &&
-			message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Minimum) < message.content.length
-		);
+	public shouldRun(message: GuildMessage) {
+		return super.shouldRun(message) && message.content.length > 0;
 	}
 
-	protected preProcess(message: KlasaMessage) {
-		const capsthreshold = message.guild!.settings.get(GuildSettings.Selfmod.Capitals.Maximum);
+	protected async preProcess(message: GuildMessage) {
+		const [minimumCapitals, maximumCapitals] = await message.guild.readSettings([
+			GuildSettings.Selfmod.Capitals.Minimum,
+			GuildSettings.Selfmod.Capitals.Maximum
+		]);
+
+		if (minimumCapitals > message.content.length) return;
+
 		let length = 0;
 		let count = 0;
 
@@ -43,29 +43,26 @@ export default class extends ModerationMonitor {
 			length++;
 		}
 
-		return (count / length) * 100 >= capsthreshold ? count : null;
+		return (count / length) * 100 >= maximumCapitals ? count : null;
 	}
 
-	protected async onDelete(message: KlasaMessage, value: number) {
+	protected async onDelete(message: GuildMessage, language: Language, value: number) {
 		floatPromise(this, message.nuke());
 		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			floatPromise(
-				this,
-				message.author.sendLocale(LanguageKeys.Monitors.CapsFilterDm, [{ message: codeBlock('md', cutText(message.content, 1900)) }])
-			);
+			await message.author.send(language.get(LanguageKeys.Monitors.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) }));
 		}
 	}
 
-	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.CapsFilter, { user: message.author.toString() })));
+	protected onAlert(message: GuildMessage, language: Language) {
+		return message.alert(language.get(LanguageKeys.Monitors.CapsFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: KlasaMessage) {
+	protected onLogMessage(message: GuildMessage, language: Language) {
 		return new MessageEmbed()
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.CapsfilterFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.CapsfilterFooter)}`)
 			.setTimestamp();
 	}
 }

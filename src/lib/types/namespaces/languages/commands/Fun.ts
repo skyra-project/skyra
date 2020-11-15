@@ -1,7 +1,6 @@
-import { CustomGet, FT, T } from '@lib/types/Shared';
+import { CustomGet, FT, T } from '@lib/types';
 import { EightBallLanguage } from '@root/commands/Fun/8ball';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import { User } from 'discord.js';
 
 export const ChangemymindDescription = T<string>('commandChangemymindDescription');
 export const ChangemymindExtended = T<LanguageHelpDisplayOptions>('commandChangemymindExtended');
@@ -28,7 +27,7 @@ export const EightballWho = T<readonly string[]>('command8ballWho');
 export const EightballWhy = T<readonly string[]>('command8ballWhy');
 export const EscaperopeDescription = T<string>('commandEscaperopeDescription');
 export const EscaperopeExtended = T<LanguageHelpDisplayOptions>('commandEscaperopeExtended');
-export const EscaperopeOutput = FT<{ user: User }, string>('commandEscaperopeOutput');
+export const EscaperopeOutput = FT<{ user: string }, string>('commandEscaperopeOutput');
 export const HowToFlirtDescription = T<string>('commandHowToFlirtDescription');
 export const HowToFlirtExtended = T<LanguageHelpDisplayOptions>('commandHowToFlirtExtended');
 export const Love100 = T<string>('commandLove100');
@@ -54,6 +53,7 @@ export const PunExtended = T<LanguageHelpDisplayOptions>('commandPunExtended');
 export const RateDescription = T<string>('commandRateDescription');
 export const RateExtended = T<LanguageHelpDisplayOptions>('commandRateExtended');
 export const RateMyself = T<[string, string]>('commandRateMyself');
+export const RateMyOwners = T<[string, string]>('commandRateOwners');
 export const RateOutput = FT<{ author: string; userToRate: string; rate: number; emoji: string }, string>('commandRateOutput');
 export const ShindeiruDescription = T<string>('commandShindeiruDescription');
 export const ShindeiruExtended = T<LanguageHelpDisplayOptions>('commandShindeiruExtended');

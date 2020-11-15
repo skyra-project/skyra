@@ -1,14 +1,14 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, UserEntity } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { ApplyOptions } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
 import { resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 const enum HigherLowerReactions {
 	Higher = 'a:sarrow_up:658450971655012363',
@@ -34,16 +34,20 @@ export default class extends SkyraCommand {
 	private readonly kWinReactionArray = [HigherLowerReactions.Ok, HigherLowerReactions.Cancel] as const;
 	private readonly kTimer = Time.Minute * 3;
 
-	public async run(message: KlasaMessage, [wager]: [number]) {
+	public async run(message: GuildMessage, [wager]: [number]) {
+		const language = await message.fetchLanguage();
+
 		const { users } = await DbSet.connect();
 		const settings = await users.ensure(message.author.id);
 		const balance = settings.money;
-		if (balance < wager) throw message.language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+		if (balance < wager) {
+			throw language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+		}
 
 		settings.money -= wager;
 		await settings.save();
 
-		const response = await message.sendLocale(LanguageKeys.Commands.Games.HigherLowerLoading);
+		const response = (await message.send(language.get(LanguageKeys.Commands.Games.HigherLowerLoading))) as GuildMessage;
 		const game: HigherLowerGameData = {
 			/** The game's reaction collector */
 			llrc: new LongLivingReactionCollector(
@@ -70,6 +74,7 @@ export default class extends SkyraCommand {
 				}
 			),
 			response,
+			language,
 			running: true,
 			turn: 1,
 			number: this.random(50),
@@ -82,7 +87,7 @@ export default class extends SkyraCommand {
 
 		while (game.running) {
 			// Send the embed
-			const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = message.language.get(LanguageKeys.Commands.Games.HigherLowerEmbed, {
+			const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.language.get(LanguageKeys.Commands.Games.HigherLowerEmbed, {
 				turn: game.turn,
 				number: game.number
 			});
@@ -106,11 +111,11 @@ export default class extends SkyraCommand {
 
 			switch (emoji) {
 				case HigherLowerReactions.Higher: {
-					game.running = await (game.number > oldNum ? this.win(game, message, settings) : this.loss(game, message, settings));
+					game.running = await (game.number > oldNum ? this.win(game, message, settings) : this.loss(game, settings));
 					break;
 				}
 				case HigherLowerReactions.Lower: {
-					game.running = await (game.number < oldNum ? this.win(game, message, settings) : this.loss(game, message, settings));
+					game.running = await (game.number < oldNum ? this.win(game, message, settings) : this.loss(game, settings));
 					break;
 				}
 				case HigherLowerReactions.Cancel:
@@ -145,10 +150,8 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async win(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity) {
-		const { language } = message;
-
-		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = message.language.get(LanguageKeys.Commands.Games.HigherLowerWin, {
+	private async win(game: HigherLowerGameData, message: GuildMessage, settings: UserEntity) {
+		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.language.get(LanguageKeys.Commands.Games.HigherLowerWin, {
 			potentials: this.calculateWinnings(game.wager, game.turn),
 			number: game.number
 		});
@@ -171,7 +174,7 @@ export default class extends SkyraCommand {
 				await this.cashout(message, game, settings);
 				break;
 			case HigherLowerReactions.Ok:
-				await game.response.edit(language.get(LanguageKeys.Commands.Games.HigherLowerNewround), { embed: null });
+				await game.response.edit(game.language.get(LanguageKeys.Commands.Games.HigherLowerNewround), { embed: null });
 				break;
 			case HigherLowerReactions.Cancel:
 				await this.end(game, message, settings, true);
@@ -183,7 +186,7 @@ export default class extends SkyraCommand {
 		return emoji === HigherLowerReactions.Ok;
 	}
 
-	private async loss(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity) {
+	private async loss(game: HigherLowerGameData, settings: UserEntity) {
 		let losses = game.wager;
 
 		// There's a 0.001% chance that a user would lose not only the wager, but also what they would've won in one round less.
@@ -193,7 +196,7 @@ export default class extends SkyraCommand {
 			await settings.save();
 		}
 
-		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = message.language.get(LanguageKeys.Commands.Games.HigherLowerLose, {
+		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.language.get(LanguageKeys.Commands.Games.HigherLowerLose, {
 			number: game.number,
 			losses
 		});
@@ -210,7 +213,7 @@ export default class extends SkyraCommand {
 		return false;
 	}
 
-	private async end(game: HigherLowerGameData, message: KlasaMessage, settings: UserEntity, cashout = false) {
+	private async end(game: HigherLowerGameData, message: GuildMessage, settings: UserEntity, cashout = false) {
 		// End the LLRC
 		game.llrc.end();
 
@@ -219,7 +222,7 @@ export default class extends SkyraCommand {
 
 		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
-			const { title: TITLE, description: DESCRIPTION } = message.language.get(LanguageKeys.Commands.Games.HigherLowerCancel, {
+			const { title: TITLE, description: DESCRIPTION } = game.language.get(LanguageKeys.Commands.Games.HigherLowerCancel, {
 				username: message.author.username
 			});
 
@@ -233,7 +236,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async cashout(message: KlasaMessage, game: HigherLowerGameData, settings: UserEntity) {
+	private async cashout(message: GuildMessage, game: HigherLowerGameData, settings: UserEntity) {
 		const { turn, wager } = game;
 
 		// Calculate and deposit winnings for that game
@@ -241,8 +244,8 @@ export default class extends SkyraCommand {
 		settings.money += winnings;
 		await settings.save();
 
-		const { title: TITLE } = message.language.get(LanguageKeys.Commands.Games.HigherLowerWin, { potentials: 0, number: 0 });
-		const { description: FOOTER } = message.language.get(LanguageKeys.Commands.Games.HigherLowerCancel, { username: message.author.username });
+		const { title: TITLE } = game.language.get(LanguageKeys.Commands.Games.HigherLowerWin, { potentials: 0, number: 0 });
+		const { description: FOOTER } = game.language.get(LanguageKeys.Commands.Games.HigherLowerCancel, { username: message.author.username });
 
 		// Let the user know we're done!
 		await game.response.edit(
@@ -250,12 +253,12 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(game.color)
 				.setTitle(TITLE)
-				.setDescription(message.language.get(LanguageKeys.Commands.Games.HigherLowerCashout, { amount: winnings }))
+				.setDescription(game.language.get(LanguageKeys.Commands.Games.HigherLowerCashout, { amount: winnings }))
 				.setFooter(FOOTER)
 		);
 	}
 
-	private resolveCollectedEmoji(message: KlasaMessage, game: HigherLowerGameData, reaction: LLRCData) {
+	private resolveCollectedEmoji(message: GuildMessage, game: HigherLowerGameData, reaction: LLRCData) {
 		// If the message reacted is not the game's, inhibit
 		if (reaction.messageID !== game.response.id) return null;
 
@@ -318,7 +321,8 @@ export default class extends SkyraCommand {
 
 interface HigherLowerGameData {
 	llrc: LongLivingReactionCollector;
-	response: KlasaMessage;
+	response: GuildMessage;
+	language: Language;
 	running: boolean;
 	number: number;
 	turn: number;

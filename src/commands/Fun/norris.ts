@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -16,11 +16,12 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
+		const language = await message.fetchLanguage();
 		const data = await fetch<NorrisResultOk>('https://api.chucknorris.io/jokes/random', FetchResultTypes.JSON);
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.get(LanguageKeys.Commands.Fun.NorrisOutput))
+				.setTitle(language.get(LanguageKeys.Commands.Fun.NorrisOutput))
 				.setURL(data.url)
 				.setThumbnail(data.icon_url)
 				.setDescription(data.value)

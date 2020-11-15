@@ -1,8 +1,9 @@
 import 'module-alias/register';
-import '@utils/initClean';
 import 'reflect-metadata';
+import '@utils/initClean';
+
+import { DbSet } from '@lib/database';
 import { SkyraClient } from '@lib/SkyraClient';
-import { DbSet } from '@lib/structures/DbSet';
 import { TOKENS } from '@root/config';
 import { RewriteFrames } from '@sentry/integrations';
 import * as Sentry from '@sentry/node';

@@ -19,7 +19,7 @@ export class FuzzySearch<K extends string, V> {
 	}
 
 	public run(message: Message, query: string, threshold = 5) {
-		const lowcquery = query.toLowerCase();
+		const lowerCaseQuery = query.toLowerCase();
 		const results: [K, V, number][] = [];
 
 		let lowerCaseName: string | undefined = undefined;
@@ -33,12 +33,12 @@ export class FuzzySearch<K extends string, V> {
 			lowerCaseName = current.toLowerCase();
 
 			// If lowercase result, go next
-			if (lowerCaseName === lowcquery) {
+			if (lowerCaseName === lowerCaseQuery) {
 				distance = 0;
-			} else if (lowerCaseName.includes(lowcquery)) {
-				distance = lowerCaseName.length - lowcquery.length;
+			} else if (lowerCaseName.includes(lowerCaseQuery)) {
+				distance = lowerCaseName.length - lowerCaseQuery.length;
 			} else {
-				distance = levenshtein(lowcquery, lowerCaseName);
+				distance = levenshtein(lowerCaseQuery, lowerCaseName);
 			}
 
 			// If the distance is bigger than the threshold, skip
@@ -70,16 +70,17 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 
+		const language = await message.fetchLanguage();
 		const { content: n } = await message.prompt(
-			message.language.get(LanguageKeys.FuzzySearch.Matches, {
+			language.get(LanguageKeys.FuzzySearch.Matches, {
 				matches: results.length - 1,
 				codeblock: codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
 			})
 		);
-		if (n.toLowerCase() === 'abort') throw message.language.get(LanguageKeys.FuzzySearch.Aborted);
+		if (n.toLowerCase() === 'abort') throw language.get(LanguageKeys.FuzzySearch.Aborted);
 		const parsed = Number(n);
-		if (!Number.isSafeInteger(parsed)) throw message.language.get(LanguageKeys.FuzzySearch.InvalidNumber);
-		if (parsed < 0 || parsed >= results.length) throw message.language.get(LanguageKeys.FuzzySearch.InvalidIndex);
+		if (!Number.isSafeInteger(parsed)) throw language.get(LanguageKeys.FuzzySearch.InvalidNumber);
+		if (parsed < 0 || parsed >= results.length) throw language.get(LanguageKeys.FuzzySearch.InvalidIndex);
 		return results[parsed];
 	}
 }

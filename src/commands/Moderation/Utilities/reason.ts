@@ -1,10 +1,10 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { getImage } from '@utils/util';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
@@ -16,34 +16,37 @@ import { KlasaMessage } from 'klasa';
 	usage: '<range:range{,50}> <reason:...string>',
 	usageDelim: ' '
 })
-export default class extends SkyraCommand {
-	public async init() {
-		this.createCustomResolver('range', async (arg, possible, message) => {
+@CreateResolvers([
+	[
+		'range',
+		async (arg, possible, message) => {
 			if (arg === 'latest') return [await message.guild!.moderation.count()];
-			return this.client.arguments.get('range')!.run(arg, possible, message);
-		});
-	}
-
-	public async run(message: KlasaMessage, [cases, reason]: [number[], string]) {
-		const entries = await message.guild!.moderation.fetch(cases);
-		if (!entries.size)
-			throw message.language.get(
+			return message.client.arguments.get('range')!.run(arg, possible, message);
+		}
+	]
+])
+export default class extends SkyraCommand {
+	public async run(message: GuildMessage, [cases, reason]: [number[], string]) {
+		const entries = await message.guild.moderation.fetch(cases);
+		if (!entries.size) {
+			throw await message.fetchLocale(
 				cases.length === 1
 					? LanguageKeys.Commands.Moderation.ModerationCaseNotExists
 					: LanguageKeys.Commands.Moderation.ModerationCaseNotExistsPlural,
 				{ count: cases.length }
 			);
+		}
 
 		const imageURL = getImage(message);
 		const { moderations } = await DbSet.connect();
 		await moderations
 			.createQueryBuilder()
 			.update()
-			.where('guild_id = :guild', { guild: message.guild!.id })
+			.where('guild_id = :guild', { guild: message.guild.id })
 			.andWhere('case_id IN (:...ids)', { ids: [...entries.keys()] })
 			.set({ reason, imageURL })
 			.execute();
-		await message.guild!.moderation.fetchChannelMessages();
+		await message.guild.moderation.fetchChannelMessages();
 		for (const entry of entries.values()) {
 			const clone = entry.clone();
 			entry.setReason(reason).setImageURL(imageURL);
@@ -51,13 +54,16 @@ export default class extends SkyraCommand {
 		}
 
 		return message.alert(
-			message.language
-				.get(cases.length === 1 ? LanguageKeys.Commands.Moderation.ReasonUpdated : LanguageKeys.Commands.Moderation.ReasonUpdatedPlural, {
-					entries: cases,
-					newReason: reason,
-					count: cases.length
-				})
-				.join('\n')
+			(
+				await message.fetchLocale(
+					cases.length === 1 ? LanguageKeys.Commands.Moderation.ReasonUpdated : LanguageKeys.Commands.Moderation.ReasonUpdatedPlural,
+					{
+						entries: cases,
+						newReason: reason,
+						count: cases.length
+					}
+				)
+			).join('\n')
 		);
 	}
 }

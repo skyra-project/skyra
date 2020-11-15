@@ -16,7 +16,7 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.ChangemymindExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
+	spam: true,
 	usage: '<text:string{1,50}>'
 })
 export default class extends SkyraCommand {
@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 
 		return (
 			new Canvas(591, 607)
-				.printImage(this.kTemplate!, 0, 0, 591, 607)
+				.printImage(this.kTemplate, 0, 0, 591, 607)
 
 				// Add user's avatar
 				.printCircularImage(guy, 155, 73, 41)

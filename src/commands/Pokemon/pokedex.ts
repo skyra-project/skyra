@@ -1,6 +1,7 @@
 import { AbilitiesEntry, DexDetails, GenderEntry, StatsEntry } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { PokedexEmbedDataReturn } from '@lib/types/namespaces/languages/commands/Pokemon';
@@ -10,7 +11,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonDetailsByFuzzy, parseBulbapediaURL, resolveColour } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 enum BaseStats {
 	hp = 'HP',
@@ -31,22 +32,24 @@ enum BaseStats {
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [pokemon]: [string]) {
+	public async run(message: GuildMessage, [pokemon]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-		const pokeDetails = await this.fetchAPI(message, pokemon.toLowerCase());
+		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), language);
 
-		await this.buildDisplay(message, pokeDetails).start(response, message.author.id);
+		await this.buildDisplay(message, pokeDetails, language) //
+			.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, pokemon: string) {
+	private async fetchAPI(pokemon: string, language: Language) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonDetailsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
+			throw language.get(LanguageKeys.Commands.Pokemon.PokedexQueryFail, { pokemon });
 		}
 	}
 
@@ -148,17 +151,17 @@ export default class extends RichDisplayCommand {
 		return evoChain;
 	}
 
-	private buildDisplay(message: KlasaMessage, pokeDetails: DexDetails) {
+	private buildDisplay(message: GuildMessage, pokeDetails: DexDetails, language: Language) {
 		const abilities = this.getAbilities(pokeDetails.abilities);
 		const baseStats = this.getBaseStats(pokeDetails.baseStats);
 		const evoChain = this.getEvoChain(pokeDetails);
-		const embedTranslations = message.language.get(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
+		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
 			otherFormes: pokeDetails.otherFormes ?? [],
 			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
-		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });
+		return this.parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }, language);
 	}
 
 	private parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
@@ -188,8 +191,11 @@ export default class extends RichDisplayCommand {
 			);
 	}
 
-	private parseRegularPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs) {
-		const externalResources = message.language.get(LanguageKeys.System.PokedexExternalResource);
+	private parseRegularPokemon(
+		{ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations }: PokemonToDisplayArgs,
+		language: Language
+	) {
+		const externalResources = language.get(LanguageKeys.System.PokedexExternalResource);
 		const externalResourceData = [
 			`[Bulbapedia](${parseBulbapediaURL(pokeDetails.bulbapediaPage)} )`,
 			`[Serebii](${pokeDetails.serebiiPage})`,
@@ -257,7 +263,7 @@ export default class extends RichDisplayCommand {
 }
 
 interface PokemonToDisplayArgs {
-	message: KlasaMessage;
+	message: GuildMessage;
 	pokeDetails: DexDetails;
 	abilities: string[];
 	baseStats: string[];

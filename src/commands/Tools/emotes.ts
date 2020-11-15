@@ -1,13 +1,14 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['emojis'],
@@ -17,36 +18,35 @@ import { KlasaMessage } from 'klasa';
 	runIn: ['text']
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const animEmotes: string[] = [];
 		const staticEmotes: string[] = [];
 
-		for (const [id, emote] of [...message.guild!.emojis.cache.entries()]) {
+		for (const [id, emote] of [...message.guild.emojis.cache.entries()]) {
 			if (emote.animated) animEmotes.push(`<a:${emote.name}:${id}>`);
 			else staticEmotes.push(`<:${emote.name}:${id}>`);
 		}
 
-		const display = await this.buildDisplay(message, chunk(animEmotes, 50), chunk(staticEmotes, 50));
+		const display = await this.buildDisplay(message, language, chunk(animEmotes, 50), chunk(staticEmotes, 50));
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async buildDisplay(message: KlasaMessage, animatedEmojis: string[][], staticEmojis: string[][]) {
+	private async buildDisplay(message: GuildMessage, language: Language, animatedEmojis: string[][], staticEmojis: string[][]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(
-					[
-						`${message.guild!.emojis.cache.size}`,
-						`${message.language.get(LanguageKeys.Commands.Tools.EmotesTitle)}`,
-						`${message.guild!.name}`
-					].join(' '),
-					message.guild!.iconURL({ format: 'png' })!
+					[`${message.guild.emojis.cache.size}`, `${language.get(LanguageKeys.Commands.Tools.EmotesTitle)}`, `${message.guild.name}`].join(
+						' '
+					),
+					message.guild.iconURL({ format: 'png' })!
 				)
 		);
 

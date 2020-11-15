@@ -80,7 +80,7 @@ export function debounce<FnArgumentsType extends any[], FnReturnType>(
 	const maxWait = typeof options.maxWait === 'number' ? Math.max(options.maxWait, wait) : null;
 
 	function invokeFunc(time: number) {
-		let args = lastArgs;
+		const args = lastArgs;
 
 		lastArgs = undefined;
 		lastInvokeTime = time;
@@ -98,16 +98,16 @@ export function debounce<FnArgumentsType extends any[], FnReturnType>(
 	}
 
 	function remainingWait(time: number) {
-		let timeSinceLastCall = time - lastCallTime!;
-		let timeSinceLastInvoke = time - lastInvokeTime;
-		let result = wait - timeSinceLastCall;
+		const timeSinceLastCall = time - lastCallTime!;
+		const timeSinceLastInvoke = time - lastInvokeTime;
+		const result = wait - timeSinceLastCall;
 
 		return maxWait === null ? result : Math.min(result, maxWait - timeSinceLastInvoke);
 	}
 
 	function shouldInvoke(time: number) {
-		let timeSinceLastCall = time - lastCallTime!;
-		let timeSinceLastInvoke = time - lastInvokeTime;
+		const timeSinceLastCall = time - lastCallTime!;
+		const timeSinceLastInvoke = time - lastInvokeTime;
 
 		// Either this is the first call, activity has stopped and we're at the
 		// trailing edge, the system time has gone backwards and we're treating
@@ -121,9 +121,10 @@ export function debounce<FnArgumentsType extends any[], FnReturnType>(
 	}
 
 	function timerExpired() {
-		let time = Date.now();
+		const time = Date.now();
 		if (shouldInvoke(time)) {
-			return trailingEdge(time);
+			trailingEdge(time);
+			return;
 		}
 		// Restart the timer.
 		timerId = setTimeout(timerExpired, remainingWait(time));
@@ -150,8 +151,8 @@ export function debounce<FnArgumentsType extends any[], FnReturnType>(
 	}
 
 	function debounced(...args: FnArgumentsType) {
-		let time = Date.now();
-		let isInvoking = shouldInvoke(time);
+		const time = Date.now();
+		const isInvoking = shouldInvoke(time);
 
 		lastArgs = args;
 		lastCallTime = time;

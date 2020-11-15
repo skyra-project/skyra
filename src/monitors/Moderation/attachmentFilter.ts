@@ -1,13 +1,14 @@
+import { GuildSettings } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
-import { Adder, AdderError } from '@utils/Adder';
+import { AdderError } from '@utils/Adder';
 import { MessageLogsEnum, Moderation } from '@utils/constants';
 import { floatPromise } from '@utils/util';
 import { MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 
 const { FLAGS } = Permissions;
 
@@ -15,21 +16,30 @@ export default class extends Monitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationAttachments;
 	protected readonly reasonLanguageKeyWithMaximum = LanguageKeys.Monitors.ModerationAttachmentsWithMaximum;
 
-	public async run(message: KlasaMessage) {
-		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
+	public async run(message: GuildMessage) {
+		const [ignoredChannels, shouldRun, action, adder, language] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Channels.Ignore.All],
+			settings[GuildSettings.Selfmod.Attachments.Enabled],
+			settings[GuildSettings.Selfmod.Attachments.Action],
+			settings.adders.attachments,
+			settings.getLanguage()
+		]);
 
-		const action = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentAction);
-		const maximum = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentMaximum);
-		const duration = message.guild!.settings.get(GuildSettings.Selfmod.AttachmentDuration);
-
-		const { adders } = message.guild!.security;
-		if (!adders.attachments) adders.attachments = new Adder(maximum, duration, true);
+		if (
+			!adder ||
+			!shouldRun ||
+			ignoredChannels.includes(message.channel.id) ||
+			(await this.hasPermissions(message, action)) ||
+			(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))
+		)
+			return;
 
 		try {
-			adders.attachments.add(message.author.id, message.attachments.size);
+			adder.add(message.author.id, message.attachments.size);
 			return;
 		} catch (error) {
 			const points = (error as AdderError).amount;
+			const { maximum } = adder;
 			switch (action & 0b111) {
 				case 0b000:
 					await this.actionAndSend(message, Moderation.TypeCodes.Warning, () => null);
@@ -38,13 +48,13 @@ export default class extends Monitor {
 					await this.actionAndSend(message, Moderation.TypeCodes.Kick, () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.kick({
+							message.guild.security.actions.kick({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
 								reason:
 									maximum === 0
-										? message.language.get(this.reasonLanguageKey)
-										: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+										? language.get(this.reasonLanguageKey)
+										: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
@@ -53,13 +63,13 @@ export default class extends Monitor {
 					await this.actionAndSend(message, Moderation.TypeCodes.Mute, () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.mute({
+							message.guild.security.actions.mute({
 								userID: message.author.id,
 								moderatorID: CLIENT_ID,
 								reason:
 									maximum === 0
-										? message.language.get(this.reasonLanguageKey)
-										: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+										? language.get(this.reasonLanguageKey)
+										: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 							})
 						)
 					);
@@ -68,14 +78,14 @@ export default class extends Monitor {
 					await this.actionAndSend(message, Moderation.TypeCodes.Softban, () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.softBan(
+							message.guild.security.actions.softBan(
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
 									reason:
 										maximum === 0
-											? message.language.get(this.reasonLanguageKey)
-											: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+											? language.get(this.reasonLanguageKey)
+											: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								1
 							)
@@ -86,14 +96,14 @@ export default class extends Monitor {
 					await this.actionAndSend(message, Moderation.TypeCodes.Ban, () =>
 						floatPromise(
 							this,
-							message.guild!.security.actions.ban(
+							message.guild.security.actions.ban(
 								{
 									userID: message.author.id,
 									moderatorID: CLIENT_ID,
 									reason:
 										maximum === 0
-											? message.language.get(this.reasonLanguageKey)
-											: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+											? language.get(this.reasonLanguageKey)
+											: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 								},
 								0
 							)
@@ -110,9 +120,7 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setFooter(
-							`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.AttachmentfilterFooter)}`
-						)
+						.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.AttachmentfilterFooter)}`)
 						.setTimestamp()
 				);
 			}
@@ -124,22 +132,22 @@ export default class extends Monitor {
 	 * @param type The type
 	 * @param performAction The action to perform
 	 */
-	public async actionAndSend(message: KlasaMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
-		const lock = message.guild!.moderation.createLock();
+	public async actionAndSend(message: GuildMessage, type: Moderation.TypeCodes, performAction: () => unknown): Promise<void> {
+		const lock = message.guild.moderation.createLock();
 		await performAction();
-		await message
-			.guild!.moderation.create({
+		await message.guild.moderation
+			.create({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				type,
-				duration: message.guild!.settings.get(GuildSettings.Selfmod.AttachmentPunishmentDuration),
+				duration: await message.guild.readSettings(GuildSettings.Selfmod.Attachments.Duration),
 				reason: 'AttachmentFilter: Threshold Reached.'
 			})
 			.create();
 		lock();
 	}
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: GuildMessage) {
 		return (
 			this.enabled &&
 			message.guild !== null &&
@@ -147,15 +155,12 @@ export default class extends Monitor {
 			message.webhookID === null &&
 			message.attachments.size > 0 &&
 			!message.system &&
-			message.author.id !== CLIENT_ID &&
-			message.guild.settings.get(GuildSettings.Selfmod.Attachment) &&
-			!message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id) &&
-			this.hasPermissions(message, message.guild.settings.get(GuildSettings.Selfmod.AttachmentAction))
+			message.author.id !== CLIENT_ID
 		);
 	}
 
-	private hasPermissions(message: KlasaMessage, action: number) {
-		const guildMe = message.guild!.me!;
+	private async hasPermissions(message: GuildMessage, action: number) {
+		const guildMe = message.guild.me!;
 		const member = message.member!;
 		switch (action & 0b11) {
 			case 0b000:
@@ -164,7 +169,7 @@ export default class extends Monitor {
 				return member.kickable;
 			case 0b010:
 				return (
-					message.guild!.settings.get(GuildSettings.Roles.Muted) !== null &&
+					(await message.guild.readSettings(GuildSettings.Roles.Muted)) !== null &&
 					guildMe.roles.highest.position > member.roles.highest.position &&
 					guildMe.permissions.has(FLAGS.MANAGE_ROLES)
 				);

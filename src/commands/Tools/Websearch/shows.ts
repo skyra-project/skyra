@@ -1,6 +1,7 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { Tmdb } from '@lib/types/definitions/Tmdb';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '@root/config';
@@ -9,7 +10,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { Language, Timestamp } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['show', 'tvdb', 'tv'],
@@ -22,20 +23,21 @@ import { KlasaMessage, Timestamp } from 'klasa';
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
-	public async run(message: KlasaMessage, [show, year]: [string, string?]) {
+	public async run(message: GuildMessage, [show, year]: [string, string?]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { results: entries } = await this.fetchAPI(message, show, year);
-		if (!entries.length) throw message.language.get(LanguageKeys.System.NoResults);
+		const { results: entries } = await this.fetchAPI(language, show, year);
+		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, message);
+		const display = await this.buildDisplay(message, language, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, show: string, year?: string) {
+	private async fetchAPI(language: Language, show: string, year?: string) {
 		try {
 			const url = new URL('https://api.themoviedb.org/3/search/tv');
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
@@ -45,27 +47,27 @@ export default class extends RichDisplayCommand {
 
 			return await fetch<Tmdb.TmdbSeriesList>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async fetchShowData(message: KlasaMessage, serieId: number) {
+	private async fetchShowData(language: Language, serieId: number) {
 		try {
 			const url = new URL(`https://api.themoviedb.org/3/tv/${serieId}`);
 			url.searchParams.append('api_key', TOKENS.THEMOVIEDATABASE_KEY);
 
 			return await fetch<Tmdb.TmdbSerie>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(shows: Tmdb.TmdbSeriesList['results'], message: KlasaMessage) {
-		const titles = message.language.get(LanguageKeys.Commands.Tools.ShowsTitles);
-		const fieldsData = message.language.get(LanguageKeys.Commands.Tools.ShowsData);
+	private async buildDisplay(message: GuildMessage, language: Language, shows: Tmdb.TmdbSeriesList['results']) {
+		const titles = language.get(LanguageKeys.Commands.Tools.ShowsTitles);
+		const fieldsData = language.get(LanguageKeys.Commands.Tools.ShowsData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
-		const showData = await Promise.all(shows.map((show) => this.fetchShowData(message, show.id)));
+		const showData = await Promise.all(shows.map((show) => this.fetchShowData(language, show.id)));
 
 		for (const show of showData) {
 			display.addPage((embed: MessageEmbed) =>
@@ -77,9 +79,7 @@ export default class extends RichDisplayCommand {
 					.setDescription(cutText(show.overview, 750))
 					.addField(
 						titles.episodeRuntime,
-						show.episode_run_time.length
-							? `${message.language.duration(show.episode_run_time[0] * 60 * 1000)}`
-							: fieldsData.variableRuntime,
+						show.episode_run_time.length ? `${language.duration(show.episode_run_time[0] * 60 * 1000)}` : fieldsData.variableRuntime,
 						true
 					)
 					.addField(titles.userScore, show.vote_average ? show.vote_average : fieldsData.unknownUserScore, true)

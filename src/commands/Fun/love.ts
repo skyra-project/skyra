@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -12,7 +12,6 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Fun.LoveDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.LoveExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })
@@ -23,14 +22,16 @@ export default class extends SkyraCommand {
 		const estimatedPercentage = Math.ceil(percentage * 100);
 
 		let result: string | undefined = undefined;
+		const language = await message.fetchLanguage();
+
 		if (estimatedPercentage < 45) {
-			result = message.language.get(LanguageKeys.Commands.Fun.LoveLess45);
+			result = language.get(LanguageKeys.Commands.Fun.LoveLess45);
 		} else if (estimatedPercentage < 75) {
-			result = message.language.get(LanguageKeys.Commands.Fun.LoveLess75);
+			result = language.get(LanguageKeys.Commands.Fun.LoveLess75);
 		} else if (estimatedPercentage < 100) {
-			result = message.language.get(LanguageKeys.Commands.Fun.LoveLess100);
+			result = language.get(LanguageKeys.Commands.Fun.LoveLess100);
 		} else {
-			result = message.language.get(isSelf ? LanguageKeys.Commands.Fun.LoveItself : LanguageKeys.Commands.Fun.Love100);
+			result = language.get(isSelf ? LanguageKeys.Commands.Fun.LoveItself : LanguageKeys.Commands.Fun.Love100);
 		}
 
 		return message.sendEmbed(
@@ -43,7 +44,7 @@ export default class extends SkyraCommand {
 						`💗 **${user.tag}**`,
 						`💗 **${message.author.tag}**\n`,
 						`${estimatedPercentage}% \`[${'█'.repeat(Math.round(percentage * 40)).padEnd(40, '\u00A0')}]\`\n`,
-						`**${message.language.get(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
+						`**${language.get(LanguageKeys.Commands.Fun.LoveResult)}**: ${result}`
 					].join('\n')
 				)
 		);

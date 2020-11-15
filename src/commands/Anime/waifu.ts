@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 				.setURL(url)
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(url)
-				.setFooter(message.language.get(LanguageKeys.Commands.Anime.WaifuFooter))
+				.setFooter(await message.fetchLocale(LanguageKeys.Commands.Anime.WaifuFooter))
 				.setTimestamp()
 		);
 	}

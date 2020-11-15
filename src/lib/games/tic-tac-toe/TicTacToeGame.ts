@@ -24,18 +24,18 @@ export class TicTacToeGame extends BaseReactionGame<number> {
 		return status === GameStatus.End ? this.renderOnEnd() : this.renderOnUpdateOrStart();
 	}
 
-	protected renderOnEnd(): string {
+	protected renderOnEnd() {
 		const winner = this.check();
 		return winner === null
-			? this.message.language.get(LanguageKeys.Commands.Games.TicTacToeDraw, { board: this.renderBoard() })
-			: this.message.language.get(LanguageKeys.Commands.Games.TicTacToeWinner, {
+			? this.language.get(LanguageKeys.Commands.Games.TicTacToeDraw, { board: this.renderBoard() })
+			: this.language.get(LanguageKeys.Commands.Games.TicTacToeWinner, {
 					winner: this.player.name,
 					board: this.renderBoard()
 			  });
 	}
 
 	protected renderOnUpdateOrStart(): string {
-		return this.message.language.get(LanguageKeys.Commands.Games.TicTacToeTurn, {
+		return this.language.get(LanguageKeys.Commands.Games.TicTacToeTurn, {
 			icon: TicTacToeGame.kPlayer[this.turn],
 			player: this.player.name,
 			board: this.renderBoard()

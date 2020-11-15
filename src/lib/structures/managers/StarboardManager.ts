@@ -1,8 +1,9 @@
 import Collection from '@discordjs/collection';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { StarboardEntity } from '@orm/entities/StarboardEntity';
+import { GuildSettings, StarboardEntity } from '@lib/database';
+import { isNullish } from '@lib/misc';
+import { GuildMessage } from '@lib/types';
 import { Client, Guild, TextChannel } from 'discord.js';
-import { DbSet } from '../DbSet';
+import { DbSet } from '../../database/structures/DbSet';
 
 /**
  * The StarboardManager class that manages the starboard channel
@@ -35,9 +36,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	 */
 	public set(key: string, value: StarboardEntity) {
 		if (this.size >= 25) {
-			const entry =
-				this.find((sMes) => sMes.stars < this.minimum) ||
-				this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
+			const entry = this.reduce((acc, sMes) => (acc.lastUpdated > sMes.lastUpdated ? sMes : acc), this.first()!);
 			this.delete(entry.messageID);
 		}
 		return super.set(key, value);
@@ -46,16 +45,17 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 	/**
 	 * Get the Starboard channel
 	 */
-	public get starboardChannel() {
-		const channelID = this.guild.settings.get(GuildSettings.Starboard.Channel);
-		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) || null;
+	public async getStarboardChannel() {
+		const channelID = await this.guild.readSettings(GuildSettings.Starboard.Channel);
+		if (isNullish(channelID)) return null;
+		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}
 
 	/**
 	 * Get the minimum amount of stars
 	 */
-	public get minimum() {
-		return this.guild.settings.get(GuildSettings.Starboard.Minimum);
+	public getMinimumStars() {
+		return this.guild.readSettings(GuildSettings.Starboard.Minimum);
 	}
 
 	/**
@@ -68,7 +68,7 @@ export class StarboardManager extends Collection<string, StarboardEntity> {
 		const entry = super.get(messageID);
 		if (entry) return entry;
 
-		const message = await channel.messages.fetch(messageID).catch(() => null);
+		const message = (await channel.messages.fetch(messageID).catch(() => null)) as GuildMessage | null;
 		if (message) {
 			const { starboards } = await DbSet.connect();
 			const previous = await starboards.findOne({ where: { guildID: this.guild.id, messageID } });

@@ -1,10 +1,23 @@
-import { TriggerIncludes } from '@lib/types/namespaces/GuildSettings';
+import { Serializer, SerializerUpdateContext, TriggerIncludes } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isObject } from '@sapphire/utilities';
-import { Serializer, SerializerUpdateContext } from 'klasa';
+import { Awaited, isObject } from '@sapphire/utilities';
+import { resolveEmoji } from '@utils/util';
 
-export default class extends Serializer {
-	public validate(data: TriggerIncludes, { language }: SerializerUpdateContext) {
+export default class UserSerializer extends Serializer<TriggerIncludes> {
+	public parse(value: string, context: SerializerUpdateContext) {
+		const values = value.split(' ');
+		if (values.length !== 3) return this.error(context.language.get(LanguageKeys.Serializers.TriggerIncludeInvalid));
+
+		const [action, input, output] = values;
+		if (action !== 'react') return this.error(context.language.get(LanguageKeys.Serializers.TriggerIncludeInvalidAction));
+
+		const resolved = resolveEmoji(output);
+		if (resolved === null) return this.error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
+
+		return this.ok({ action: action as 'react', input, output: resolved });
+	}
+
+	public isValid(data: TriggerIncludes, { language }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(data) &&
 			Object.keys(data).length === 3 &&
@@ -12,9 +25,13 @@ export default class extends Serializer {
 			typeof data.input === 'string' &&
 			typeof data.output === 'string'
 		)
-			return data;
+			return true;
 
 		throw language.get(LanguageKeys.Serializers.TriggerIncludeInvalid);
+	}
+
+	public equals(left: TriggerIncludes, right: TriggerIncludes): boolean {
+		return left.input === right.input;
 	}
 
 	public stringify(value: TriggerIncludes) {

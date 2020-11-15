@@ -19,7 +19,7 @@ export default class extends Route {
 		const member = await guild.members.fetch(request.auth!.user_id).catch(() => null);
 		if (!member) return response.error(400);
 
-		if (!canManage(guild, member)) return response.error(403);
+		if (!(await canManage(guild, member))) return response.error(403);
 
 		const channelID = request.params.channel;
 		const channel = guild.channels.cache.get(channelID);

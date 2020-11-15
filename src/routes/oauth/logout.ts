@@ -5,6 +5,7 @@ import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes, ratelimit } from '@utils/util';
+import { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import { stringify } from 'querystring';
 
@@ -28,7 +29,7 @@ export default class extends Route {
 					}
 				},
 				FetchResultTypes.JSON
-			)) as OauthData;
+			)) as RESTPostOAuth2AccessTokenResult;
 		} catch (error) {
 			this.client.emit(Events.Error, `[KDH] Failed to revoke token: ${error}`);
 			return response.error('There was an error revoking the token.');
@@ -37,13 +38,4 @@ export default class extends Route {
 		response.cookies.add('SKYRA_AUTH', '', { expires: new Date(0) });
 		response.json({ success: true });
 	}
-}
-
-// TODO(kyranet): remove cast once @vladfrangu adds OAuth data
-interface OauthData {
-	access_token: string;
-	expires_in: number;
-	refresh_token: string;
-	scope: string;
-	token_type: string;
 }

@@ -15,7 +15,7 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, options: string[]) {
-		const words = this.filterWords(message, options);
+		const words = await this.filterWords(message, options);
 		return message.sendLocale(LanguageKeys.Commands.Fun.ChoiceOutput, [
 			{
 				user: message.author.toString(),
@@ -24,8 +24,8 @@ export default class extends SkyraCommand {
 		]);
 	}
 
-	private filterWords(message: KlasaMessage, words: string[]) {
-		const i18n = message.language;
+	private async filterWords(message: KlasaMessage, words: string[]) {
+		const i18n = await message.fetchLanguage();
 		if (words.length < 2) throw i18n.get(LanguageKeys.Commands.Fun.ChoiceMissing);
 
 		const output = new Set<string>();

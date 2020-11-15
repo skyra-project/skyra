@@ -1,10 +1,11 @@
+import { GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { floatPromise, getContent } from '@utils/util';
+import { getContent } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 const NEW_LINE = '\n';
 
@@ -18,13 +19,11 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.NewLines.HardAction,
 		actionDuration: GuildSettings.Selfmod.NewLines.HardActionDuration,
-		adder: 'newlines',
-		adderMaximum: GuildSettings.Selfmod.NewLines.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.NewLines.ThresholdDuration
+		adder: 'newlines'
 	};
 
-	protected preProcess(message: KlasaMessage) {
-		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.NewLines.Maximum);
+	protected async preProcess(message: GuildMessage) {
+		const threshold = await message.guild.readSettings(GuildSettings.Selfmod.NewLines.Maximum);
 		if (threshold === 0) return null;
 
 		const content = getContent(message);
@@ -36,20 +35,20 @@ export default class extends ModerationMonitor {
 		return count > threshold ? count : null;
 	}
 
-	protected onDelete(message: KlasaMessage) {
-		floatPromise(this, message.nuke());
+	protected onDelete(message: GuildMessage) {
+		return message.nuke();
 	}
 
-	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.NewLineFilter, { user: message.author.toString() })));
+	protected onAlert(message: GuildMessage, language: Language) {
+		return message.alert(language.get(LanguageKeys.Monitors.NewLineFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: KlasaMessage) {
+	protected onLogMessage(message: GuildMessage, language: Language) {
 		return new MessageEmbed()
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.NewLineFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.NewLineFooter)}`)
 			.setTimestamp();
 	}
 }

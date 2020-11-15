@@ -1,15 +1,12 @@
-import { Colors } from '@klasa/console';
+import { PartialResponseValue, ResponseType } from '@lib/database';
 import { Events } from '@lib/types/Enums';
-import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
 import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '@root/config';
 import { Mime } from '@utils/constants';
 import { fetch, FetchResultTypes } from '@utils/util';
+import { blueBright, green, red } from 'colorette';
 import { Task } from 'klasa';
 
-const r = new Colors({ text: 'red' });
-const g = new Colors({ text: 'green' });
-const b = new Colors({ text: 'lightblue' });
-const header = b.format('[POST STATS   ]');
+const header = blueBright('[POST STATS   ]');
 
 enum Lists {
 	BotListSpace = 'botlist.space',
@@ -84,9 +81,9 @@ export default class extends Task {
 				},
 				FetchResultTypes.Result
 			);
-			return g.format(list);
+			return green(list);
 		} catch (error) {
-			return `${r.format(list)} [${r.format(error.code)}]`;
+			return `${red(list)} [${red(error.code)}]`;
 		}
 	}
 

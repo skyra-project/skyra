@@ -1,9 +1,9 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Role, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -20,56 +20,58 @@ import { KlasaMessage } from 'klasa';
 @CreateResolvers([
 	[
 		'username',
-		(arg, possible, msg) => {
-			if (!arg) throw msg.language.get(LanguageKeys.Commands.Management.StickyRolesRequiredUser);
+		async (arg, possible, msg) => {
+			if (!arg) throw await msg.fetchLocale(LanguageKeys.Commands.Management.StickyRolesRequiredUser);
 			return msg.client.arguments.get('username')!.run(arg, possible, msg);
 		}
 	],
 	[
 		'rolename',
-		(arg, possible, msg, [action]) => {
+		async (arg, possible, msg, [action]) => {
 			if (action === 'reset' || action === 'show') return undefined;
-			if (!arg) throw msg.language.get(LanguageKeys.Commands.Management.StickyRolesRequiredRole);
+			if (!arg) throw await msg.fetchLocale(LanguageKeys.Commands.Management.StickyRolesRequiredRole);
 			return msg.client.arguments.get('rolename')!.run(arg, possible, msg);
 		}
 	]
 ])
 export default class extends SkyraCommand {
-	public async reset(message: KlasaMessage, [user]: [User]) {
-		const roles = message.guild!.stickyRoles.get(user.id);
-		if (!roles.length) throw message.language.get(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
+	public async reset(message: GuildMessage, [user]: [User]) {
+		const roles = await message.guild.stickyRoles.fetch(user.id);
+		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
-		await message.guild!.stickyRoles.clear(user.id, { author: message.author.id });
+		await message.guild.stickyRoles.clear(user.id);
 		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesReset, [{ user: user.username }]);
 	}
 
-	public async remove(message: KlasaMessage, [user, role]: [User, Role]) {
-		const roles = await message.guild!.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.language.get(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
+	public async remove(message: GuildMessage, [user, role]: [User, Role]) {
+		const roles = await message.guild.stickyRoles.fetch(user.id);
+		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
-		await message.guild!.stickyRoles.remove(user.id, role.id, { author: message.author.id });
+		await message.guild.stickyRoles.remove(user.id, role.id);
 		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesRemove, [{ user: user.username }]);
 	}
 
-	public async add(message: KlasaMessage, [user, role]: [User, Role]) {
-		await message.guild!.stickyRoles.add(user.id, role.id, { author: message.author.id });
+	public async add(message: GuildMessage, [user, role]: [User, Role]) {
+		await message.guild.stickyRoles.add(user.id, role.id);
 		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesAdd, [{ user: user.username }]);
 	}
 
-	public async show(message: KlasaMessage, [user]: [User]) {
-		const roles = await message.guild!.stickyRoles.fetch(user.id);
-		if (!roles.length) throw message.language.get(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
+	public async show(message: GuildMessage, [user]: [User]) {
+		const language = await message.fetchLanguage();
 
-		const guildRoles = message.guild!.roles;
-		const names = roles.map((role) => guildRoles.cache.get(role)!.name);
-		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesShowSingle, [
-			{
+		const sticky = await message.guild.stickyRoles.fetch(user.id);
+		if (!sticky.length) throw language.get(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
+
+		const roles = message.guild.roles.cache;
+		const names = sticky.map((role) => roles.get(role)!.name);
+		return message.send(
+			language.get(LanguageKeys.Commands.Management.StickyRolesShowSingle, {
 				user: user.username,
-				roles: message.language.list(
+				roles: language.list(
 					names.map((name) => `\`${name}\``),
-					message.language.get(LanguageKeys.Globals.And)
+					language.get(LanguageKeys.Globals.And)
 				)
-			}
-		]);
+			})
+		);
 	}
 }

@@ -6,21 +6,21 @@ import { Argument, KlasaMessage, Possible } from 'klasa';
 const CHANNEL_REGEXP = Argument.regex.channel;
 
 export default class extends Argument {
-	public run(arg: string, possible: Possible, message: KlasaMessage) {
-		if (!message.guild) throw message.language.get(LanguageKeys.Resolvers.ChannelNotInGuild);
+	public async run(arg: string, possible: Possible, message: KlasaMessage) {
+		if (!message.guild) throw await message.fetchLocale(LanguageKeys.Resolvers.ChannelNotInGuild);
 
 		const channelID = CHANNEL_REGEXP.exec(arg);
 		const channel = channelID === null ? null : message.guild.channels.cache.get(channelID[1]);
 		if (channel) return this.validateAccess(channel, message);
 
-		throw message.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: possible.name });
+		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: possible.name });
 	}
 
-	private validateAccess(channel: GuildChannel, message: KlasaMessage) {
+	private async validateAccess(channel: GuildChannel, message: KlasaMessage) {
 		if (validateChannelAccess(channel, message.author) && validateChannelAccess(channel, this.client.user!)) {
 			return channel;
 		}
 
-		throw message.language.get(LanguageKeys.System.CannotAccessChannel);
+		throw await message.fetchLocale(LanguageKeys.System.CannotAccessChannel);
 	}
 }

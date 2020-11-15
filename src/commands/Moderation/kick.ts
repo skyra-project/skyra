@@ -1,5 +1,5 @@
+import { GuildSettings } from '@lib/database';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
@@ -14,12 +14,12 @@ import { getImage } from '@utils/util';
 	requiredMember: true
 })
 export default class extends ModerationCommand {
-	public prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
-		return message.guild!.settings.get(GuildSettings.Events.MemberRemove) ? { unlock: message.guild!.moderation.createLock() } : null;
+	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
+		return (await message.guild.readSettings(GuildSettings.Events.MemberRemove)) ? { unlock: message.guild.moderation.createLock() } : null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.kick(
+		return message.guild.security.actions.kick(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,
@@ -34,9 +34,9 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		const member = await super.checkModeratable(message, context);
-		if (member && !member.kickable) throw message.language.get(LanguageKeys.Commands.Moderation.KickNotKickable);
+	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, language, context);
+		if (member && !member.kickable) throw language.get(LanguageKeys.Commands.Moderation.KickNotKickable);
 		return member;
 	}
 }

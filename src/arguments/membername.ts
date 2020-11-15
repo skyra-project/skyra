@@ -9,13 +9,13 @@ const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<GuildMember> {
-		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 		const resMember = await this.resolveMember(message, arg);
 		if (resMember) return resMember;
 
 		const result = await this.fetchMember(arg, message);
 		if (result) return message.guild!.members.add(result);
-		throw message.language.get(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 	}
 
 	private async resolveMember(message: KlasaMessage, query: string): Promise<GuildMember | null> {
@@ -24,7 +24,7 @@ export default class extends Argument {
 		if (id) {
 			const member = await message.guild!.members.fetch(id);
 			if (member) return member;
-			throw message.language.get(LanguageKeys.Misc.UserNotExistent);
+			throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
 		}
 		return null;
 	}

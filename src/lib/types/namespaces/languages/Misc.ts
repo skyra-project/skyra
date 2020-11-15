@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 
 export const ChannelNotReadable = T<string>('channelNotReadable');
 export const CommandmessageMissing = T<string>('commandmessageMissing');

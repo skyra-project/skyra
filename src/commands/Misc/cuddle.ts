@@ -15,7 +15,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Misc.CuddleDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.CuddleExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

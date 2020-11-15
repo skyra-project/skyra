@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 
 export const TwitchNoGameName = T<string>('notificationsTwitchNoGameName');
 export const TwitchEmbedDescription = FT<{ userName: string }, string>('notificationsTwitchEmbedDescription');

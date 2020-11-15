@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
 import { VERSION } from '@root/config';
+import { DurationFormatter, TimeTypes } from '@sapphire/time-utilities';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
-import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
@@ -14,7 +14,7 @@ const REDCROSS = Emojis.RedCross;
 
 const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
 
-const TIMES: DurationFormatAssetsTime = {
+const duration = new DurationFormatter({
 	[TimeTypes.Year]: {
 		1: 'year',
 		DEFAULT: 'years'
@@ -43,7 +43,7 @@ const TIMES: DurationFormatAssetsTime = {
 		1: 'second',
 		DEFAULT: 'seconds'
 	}
-};
+});
 
 export default class extends Language {
 	public PERMISSIONS = {
@@ -89,7 +89,7 @@ export default class extends Language {
 	};
 
 	public duration(time: number, precision?: number) {
-		return friendlyDuration(time, TIMES, precision);
+		return duration.format(time, precision);
 	}
 
 	/** Parses cardinal numbers to the ordinal counterparts */
@@ -157,6 +157,10 @@ export default class extends Language {
 		settingGatewayMissingValue: ({ path, value }) => `The value "${value}" cannot be removed from the key "${path}" because it does not exist.`,
 		settingGatewayDuplicateValue: ({ path, value }) => `The value "${value}" cannot be added to the key "${path}" because it was already set.`,
 		settingGatewayInvalidFilteredValue: ({ path, value }) => `The settings key "${path}" does not accept the value "${value}".`,
+		resolverBoolFalseOptions: ['false', 'f', 'no', 'n', 'off', 'disable', 'disabled', '0', '-'],
+		resolverBoolTrueOptions: ['true', 't', 'yes', 'y', 'on', 'enable', 'enabled', '1', '+'],
+		resolverBoolEnabled: 'Enabled',
+		resolverBoolDisabled: 'Disabled',
 		resolverMultiTooFew: ({ name, min, conjunctionWord }) => `Provided too few ${name}s. At least ${min} ${conjunctionWord} required.`,
 		resolverInvalidBool: ({ name }) => `${name} must be true or false.`,
 		resolverInvalidChannel: ({ name }) => `${name} must be a channel tag or valid channel id.`,
@@ -242,7 +246,7 @@ export default class extends Language {
 		commandHelpDescription: 'Display help for a command.',
 		commandHelpNoExtended: 'No extended help available.',
 		commandHelpDm: '📥 | The list of commands you have access to has been sent to your DMs.',
-		commandHelpNodm: `${REDCROSS} | You have DMs disabled, I couldn't send you the commands in DMs.`,
+		commandHelpNodm: `${REDCROSS} | You have DMs disabled so I couldn't send you the list of commands.`,
 		commandHelpAllFlag: ({ prefix }) =>
 			`Displaying one category per page. Have issues with the embed? Run \`${prefix}help --all\` for a full list in DMs.`,
 		commandHelpCommandCount: ({ count }) => `${count} command`,
@@ -265,11 +269,12 @@ export default class extends Language {
 		commandConfServerDescription: 'Define per-server settings.',
 		commandConfServer: ({ key, list }) => `**Server Setting ${key}**\n${list}`,
 		commandConfUserDescription: 'Define per-user settings.',
+		commandConfDashboardOnlyKey: ({ key }) => `\`${key}\` can only be configured through the web dashboard (<https://skyra.pw>)`,
 		commandConfUser: ({ key, list }) => `**User Setting ${key}**\n${list}`,
 		commandConfSettingNotSet: 'Not Set',
 		messagePromptTimeout: 'The prompt has timed out.',
 		textPromptAbortOptions: ['abort', 'stop', 'cancel'],
-		commandLoad: ({ time, type, name }) => `✅ Successfully loaded ${type}: ${name}. (Took: ${time})`,
+		commandLoad: ({ time, type, name }) => `${GREENTICK} Successfully loaded ${type}: ${name}. (Took: ${time})`,
 		commandLoadFail: 'The file does not exist, or an error occurred while loading your file. Please check your console.',
 		commandLoadError: ({ type, name, error }) => `${REDCROSS} Failed to load ${type}: ${name}. Reason:${codeBlock('js', error)}`,
 		commandLoadDescription: 'Load a piece from your bot.',
@@ -288,12 +293,11 @@ export default class extends Language {
 		commandAddExtended: {
 			extendedHelp: [
 				`Add songs to the playing queue and prepare for musical enjoyment!
-					I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, or Mixer.`,
-				'- To play from YouTube either give me something to search, a video link, or a playlist link.',
+					I can play music from YouTube, Bandcamp, SoundCloud, Twitch, or Vimeo.`,
+				'- To play from YouTube either give me something to search for, a video link, or a playlist link.',
 				'- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.',
-				"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VODs.",
 				'- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.',
-				'- To play a previously-exported queue, include `--import` and attach the queue file to your message or give me a URL to it.'
+				'- To play a previously exported queue, include `--import` and attach the queue file to your message or give me a URL to it.'
 			],
 			explainedUsage: [['song', 'The song to queue. Can be either a URL or a video/song title.']],
 			examples: [
@@ -302,7 +306,6 @@ export default class extends Language {
 				'--sc Imagine Dragons Believer',
 				'https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix',
 				'https://vimeo.com/channels/music/239029778',
-				'https://mixer.com/Ninja',
 				'https://thedisappointed.bandcamp.com/album/escapism-2',
 				'https://cdn.discordapp.com/attachments/642137151626018818/746716958627725402/Skyra_Development_Suite-1598101595077.squeue',
 				'--import https://cdn.skyra.pw/favsongs.squeue'
@@ -331,14 +334,14 @@ export default class extends Language {
 		commandImportQueueDescription: 'Imports a queue saved as a `.squeue` file.',
 		commandImportQueueExtended: {
 			extendedHelp: [
-				'Did a friend send you a queue? Or you maybe want to play back a queue you have saved?',
+				'Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?',
 				'With `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!'
 			],
-			reminder: 'You can either give me a link to the `.squeue` file, or attach it along your commands!',
+			reminder: 'You can either give me a link to the `.squeue` file, or attach it to your message!',
 			multiline: true
 		},
 		commandJoinDescription: "Joins the message author's voice channel.",
-		commandJoinNoMember: `${REDCROSS} I am sorry, but Discord did not tell me the information I need, so I do not know what voice channel are you connected to...`,
+		commandJoinNoMember: `${REDCROSS} I'm sorry, but Discord did not give me the information I need, so I don't know which voice channel you're connected to...`,
 		commandJoinNoVoicechannel: `${REDCROSS} You are not connected in a voice channel.`,
 		commandJoinSuccess: ({ channel }) => `${GREENTICK} Successfully joined the voice channel ${channel}`,
 		commandJoinVoiceDifferent: `${REDCROSS} I think you confused the channels! Earth to Moon, we are in another voice channel!`,
@@ -350,9 +353,9 @@ export default class extends Language {
 		commandLeaveDescription: 'Leaves the voice channel.',
 		commandLeaveExtended: {
 			extendedHelp: [
-				`Use this command to have Skyra leave the current voice channel.`,
+				`Use this command to make me leave the current voice channel.`,
 				`By default I will leave the channel, forget about the currently playing song, but leave the queue intact.`,
-				'This means that once you do `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.',
+				'This means that if you use `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.',
 				'',
 				`This default behavior can be modified with flags:`,
 				'`--removeall` or `--ra` to follow the default behavior as well clear the queue, next time you want me to start playing you will have build a new queue'
@@ -559,6 +562,7 @@ export default class extends Language {
 		settingsEventsBanremove: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
 		settingsEventsMemberadd: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',
 		settingsEventsMembernameupdate: 'Whether member nickname updates should be logged or not.',
+		settingsEventsMemberroleupdate: 'Whether memner role changes should be logged or not.',
 		settingsEventsMemberremove: 'This event posts member logs when a user leaves. They will be posted in `channels.member-logs`.',
 		settingsEventsMessagedelete:
 			'This event posts message logs when a message is deleted. They will be posted in `channels.message-logs` (or `channel.nsfw-message-logs` in case of NSFW channels).',
@@ -605,6 +609,7 @@ export default class extends Language {
 		settingsSelfmodAttachment: 'Whether or not the attachment filter is enabled.',
 		settingsSelfmodAttachmentmaximum:
 			'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
+		settingsSelfmodAttachmentDuration: 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.',
 		settingsSelfmodCapitalsEnabled: 'Whether the capitals filter selfmod sub-system is enabled or not.',
 		settingsSelfmodCapitalsIgnoredchannels: 'The channels that will be ignored by the capitals filter sub-system',
 		settingsSelfmodCapitalsIgnoredroles: 'The roles that will be ignored by the capitals afilters sub-system',
@@ -636,9 +641,6 @@ export default class extends Language {
 		settingsSelfmodNewlinesIgnoredchannels: 'The channels that will be ignored by the new lines sub-system',
 		settingsSelfmodNewlinesIgnoredroles: 'The roles that will be ignored by the new lines sub-system',
 		settingsSelfmodNewlinesMaximum: 'The maximum amount of new lines before Skyra will start applying penalties',
-		settingsSelfmodRaid: 'Whether or not I should kick users when they try to raid the server.',
-		settingsSelfmodRaidthreshold:
-			'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
 		settingsSelfmodReactionsMaximum: 'The maximum amount of reactions before I will start applying penalties',
 		settingsSelfmodReactionsBlacklist: 'The reactions that are blacklisted',
 		settingsSelfmodReactionsEnabled: 'Whether the reactions filter selfmod sub-system is enabled or not.',
@@ -664,6 +666,7 @@ export default class extends Language {
 			"If this setting is enabled, Skyra will repost the suggestion's message every time it is updated. If it is disabled, it will edit the original message.",
 		settingsSuggestionsOnActionHideAuthor:
 			"This setting allows you to update suggestions anonymously. It will substitute the updater's name with either `An administrator` or `A moderator`, according to their permission level.",
+		settingsDashboardOnlyKey: 'This key can only be configured through [the web dashboard](https://skyra.pw)',
 
 		/**
 		 * ################
@@ -1994,11 +1997,6 @@ export default class extends Language {
 			explainedUsage: [['Case', 'Number of the case ID to get or "latest"']],
 			examples: ['5', 'latest']
 		},
-		commandRaidDescription: 'Manage the Anti-RAID system.',
-		commandRaidExtended: {
-			extendedHelp: 'Please note that the Anti-RAID system is flawed and needs redesigning. In its current state it should not be relied on.',
-			reminder: 'Want to know when you can use this feature? We recommend joining [Skyra Lounge](https://join.skyra.pw)'
-		},
 		commandPermissionsDescription: 'Check the permission for a member, or yours.',
 		commandPermissionsExtended: {
 			extendedHelp: 'Ideal if you want to know the what permissions are granted to a member when they have a certain set of roles.'
@@ -2182,7 +2180,10 @@ export default class extends Language {
 			explainedUsage: [['ability', 'The ability for which you want to find data']],
 			examples: ['multiscale', 'pressure']
 		},
-		commandAbilityEmbedTitle: 'Ability',
+		commandAbilityEmbedTitles: {
+			authorTitle: 'Ability',
+			fieldEffectTitle: 'Effect outside of battle'
+		},
 		commandAbilityQueryFail: ({ ability }) => `I am sorry, but that query failed. Are you sure \`${ability}\` is actually an ability in Pokémon?`,
 		commandFlavorsDescription: 'Gets the dex entries across various games for a Pokémon.',
 		commandFlavorsExtended: {
@@ -2264,7 +2265,8 @@ export default class extends Language {
 			availableInGeneration8Data: availableInGen8,
 			none: 'None',
 			maxMovePower: 'Base power as MAX move (Dynamax)',
-			zMovePower: 'Base power as Z-Move (Z-Crystal)'
+			zMovePower: 'Base power as Z-Move (Z-Crystal)',
+			fieldMoveEffectTitle: 'Effect outside of battle'
 		}),
 		commandMoveQueryFail: ({ move }) => `I am sorry, but that query failed. Are you sure \`${move}\` is actually a move in Pokémon?`,
 		commandPokedexDescription: 'Gets data for any given Pokémon using my Pokémon dataset.',
@@ -3146,7 +3148,8 @@ export default class extends Language {
 		commandMarkovNoMessages: 'The channel or user has no messages.',
 		commandNorrisOutput: 'Chuck Norris',
 		commandRateOutput: ({ author, userToRate, rate, emoji }) => `**${author}**, I would give **${userToRate}** a **${rate}**/100 ${emoji}`,
-		commandRateMyself: ['I love myself a lot 😊', 'myself'],
+		commandRateMyself: ['. I love myself a lot 😊', 'myself'],
+		commandRateOwners: ['. I love my developers a lot 🥰', 'my developers'],
 		commandPunError: 'Something went wrong. Try again later.',
 		commandXkcdComics: ({ amount }) => `There are only ${amount} comics.`,
 		commandXkcdNotfound: 'I have searched far and wide, but I got no luck finding this comic, try again later or try another!',
@@ -3554,11 +3557,6 @@ export default class extends Language {
 
 		commandPermissions: ({ username, id }) => `Permissions for ${username} (${id})`,
 		commandPermissionsAll: 'All Permissions',
-		commandRaidDisabled: 'The Anti-RAID system is not enabled in this server.',
-		commandRaidMissingKick: `As I do not have the **${this.PERMISSIONS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
-		commandRaidList: 'List of users in the RAID queue',
-		commandRaidClear: 'Successfully cleared the RAID list.',
-		commandRaidCool: 'Successfully deactivated the RAID.',
 		commandFlow: ({ amount }) => `${amount} messages have been sent within the last minute.`,
 		commandTimeTimed: 'The selected moderation case has already been timed.',
 		commandTimeUndefinedTime: 'You must specify a time.',
@@ -3578,6 +3576,16 @@ export default class extends Language {
 		commandSlowmodeSet: ({ cooldown }) => `The cooldown for this channel has been set to ${this.duration(cooldown)}.`,
 		commandSlowmodeReset: 'The cooldown for this channel has been reset.',
 		commandSlowmodeTooLong: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
+		commandTimeDescription: 'Set the timer.',
+		commandTimeExtended: {
+			extendedHelp: 'Updates the timer for a moderation case..',
+			explainedUsage: [
+				['cancel', 'Whether or not you want to cancel the timer.'],
+				['case', 'The case you want to update'],
+				['timer', 'The timer, ignored if `cancel` was defined.']
+			],
+			examples: ['cancel 1234', '1234 6h']
+		},
 		commandBanNotBannable: 'The target is not bannable for me.',
 		commandDehoistStarting: ({ count }) => `I will start dehoisting ${count} members...`,
 		commandDehoistProgress: ({ count, percentage }) => `Dehoisted ${count} members so far! (${percentage}%)`,
@@ -3798,6 +3806,7 @@ export default class extends Language {
 		 */
 
 		commandStarNostars: 'There is no starred message.',
+		commandStarNoChannel: `I'm sorry, but a starboard channel hasn't been set up.`,
 		commandStarStats: 'Starboard Stats',
 		commandStarMessages: ({ count }) => `${count} message`,
 		commandStarMessagesPlural: ({ count }) => `${count} messages`,
@@ -4685,8 +4694,6 @@ export default class extends Language {
 
 		serializerAutoRoleInvalid: 'Invalid autorole data.',
 		serializerCommandAutoDeleteInvalid: 'Invalid command auto-delete data.',
-		serializerCustomCommandInvalid: 'Invalid custom command data.',
-		serializerDisabledCommandChannelInvalid: 'Invalid disabled command channel data.',
 		serializerPermissionNodeDuplicatedCommand: ({ command }) => `You have set \`${command}\` twice, either allow it, or deny it.`,
 		serializerPermissionNodeInvalidCommand: ({ command }) => `The command \`${command}\` does not exist or is invalid.`,
 		serializerPermissionNodeInvalidTarget: 'No data could be found from the ID.',
@@ -4699,9 +4706,18 @@ export default class extends Language {
 		serializerStickyRoleInvalid: 'Invalid sticky role data.',
 		serializerTriggerAliasInvalid: 'Invalid trigger alias data.',
 		serializerTriggerIncludeInvalid: 'Invalid trigger includes data.',
+		serializerTriggerIncludeInvalidAction: 'Invalid trigger action.',
 		serializerTwitchSubscriptionInvalidStreamer: 'Invalid data streamer.',
 		serializerTwitchSubscriptionInvalid: 'Invalid data.',
 		serializerUniqueRoleSetInvalid: 'Invalid unique role set data.',
+		serializerUnsupported: 'This configuration key cannot be updated via Discord at the moment, please use the dashboard at <https://skyra.pw>!',
+		serializerCustomCommandInvalidId: 'The property "id" must be a string.',
+		serializerCustomCommandInvalidEmbed: 'The property "embed" must be a boolean.',
+		serializerCustomCommandInvalidColor: 'The property "color" must be a number.',
+		serializerCustomCommandInvalidContent: 'The property "content" must be a string.',
+		serializerCustomCommandInvalidArgs: 'The property "args" must be an array of strings.',
+		serializerDisabledCommandChannelsChannelsDoesNotExist: 'The channel does not exist.',
+		serializerDisabledCommandChannelsChannelsCommandDoesNotExist: ({ name }) => `The command \`${name}\` does not exist.`,
 
 		/**
 		 * #################################
@@ -4916,7 +4932,6 @@ export default class extends Language {
 
 		eventsGuildMemberAdd: 'User Joined',
 		eventsGuildMemberAddMute: 'Muted User joined',
-		eventsGuildMemberAddRaid: 'Raid Detected',
 		eventsGuildMemberAddDescription: ({ mention, time }) => `${mention} | **Joined Discord**: ${this.duration(time, 2)} ago.`,
 		eventsGuildMemberRemove: 'User Left',
 		eventsGuildMemberKicked: 'User Kicked',

@@ -1,14 +1,14 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { parseURL } from '@sapphire/utilities';
-import { ApplyOptions } from '@skyra/decorators';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { CustomSearchType, GoogleResponseCodes, GooleCSEItem, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
 import { IMAGE_EXTENSION, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['google', 'googlesearch', 'g', 'search'],
@@ -17,24 +17,26 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Google.GsearchExtended),
 	usage: '<query:query>'
 })
-export default class extends RichDisplayCommand {
-	public async init() {
-		this.createCustomResolver('query', (arg, possible, message) =>
-			this.client.arguments
+@CreateResolvers([
+	[
+		'query',
+		(arg, possible, message) =>
+			message.client.arguments
 				.get('string')!
 				.run(arg.replace(/(who|what|when|where) ?(was|is|were|are) ?/gi, '').replace(/ /g, '+'), possible, message)
-		);
-	}
-
-	public async run(message: KlasaMessage, [query]: [string]) {
+	]
+])
+export default class extends RichDisplayCommand {
+	public async run(message: GuildMessage, [query]: [string]) {
+		const language = await message.fetchLanguage();
 		const [response, { items }] = await Promise.all([
 			message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+				new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			),
 			queryGoogleCustomSearchAPI<CustomSearchType.Search>(message, CustomSearchType.Search, query)
 		]);
 
-		if (!items || !items.length) throw message.language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
+		if (!items || !items.length) throw language.get(handleNotOK(GoogleResponseCodes.ZeroResults, message.client));
 
 		const display = await this.buildDisplay(message, items);
 
@@ -42,7 +44,7 @@ export default class extends RichDisplayCommand {
 		return response;
 	}
 
-	private async buildDisplay(message: KlasaMessage, items: GooleCSEItem[]) {
+	private async buildDisplay(message: GuildMessage, items: GooleCSEItem[]) {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

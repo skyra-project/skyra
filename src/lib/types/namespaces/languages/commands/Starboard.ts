@@ -1,9 +1,10 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 
 export const StarDescription = T<string>('commandStarDescription');
 export const StarExtended = T<LanguageHelpDisplayOptions>('commandStarExtended');
-export const StarNostars = T<string>('commandStarNostars');
+export const StarNoStars = T<string>('commandStarNostars');
+export const StarNoChannel = T<string>('commandStarNoChannel');
 export const StarStats = T<string>('commandStarStats');
 export const StarStatsDescription = FT<{ messages: string; stars: string }, string>('commandStarStatsDescription');
 export const StarMessages = FT<{ count: number }, string>('commandStarMessages');

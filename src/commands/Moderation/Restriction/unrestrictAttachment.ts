@@ -1,9 +1,9 @@
+import { GuildSettings } from '@lib/database';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restricted-attachment', 'ura'],
@@ -14,23 +14,24 @@ import { KlasaMessage } from 'klasa';
 export default class extends ModerationCommand {
 	private readonly kPath = GuildSettings.Roles.RestrictedAttachment;
 
-	public inhibit(message: KlasaMessage) {
+	public async inhibit(message: GuildMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const id = message.guild.settings.get(this.kPath);
+		const [id, prefix, language] = await message.guild.readSettings((settings) => [
+			settings[this.kPath],
+			settings[GuildSettings.Prefix],
+			settings.getLanguage()
+		]);
+
 		if (id && message.guild.roles.cache.has(id)) return false;
-		throw message.language.get(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
-			prefix: message.guild.settings.get(GuildSettings.Prefix),
+		throw language.get(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
+			prefix,
 			path: this.kPath
 		});
 	}
 
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.unRestrictAttachment(
+		return message.guild.security.actions.unRestrictAttachment(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,
@@ -38,9 +39,5 @@ export default class extends ModerationCommand {
 			},
 			await this.getTargetDM(message, context.target)
 		);
-	}
-
-	public async posthandle() {
-		/* Do nothing */
 	}
 }

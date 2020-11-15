@@ -1,13 +1,13 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationWords;
@@ -19,42 +19,38 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Filter.HardAction,
 		actionDuration: GuildSettings.Selfmod.Filter.HardActionDuration,
-		adder: 'words',
-		adderMaximum: GuildSettings.Selfmod.Filter.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Filter.ThresholdDuration
+		adder: 'words'
 	};
 
-	public shouldRun(message: KlasaMessage) {
-		return super.shouldRun(message) && message.guild!.security.regexp !== null;
+	public shouldRun(message: GuildMessage) {
+		return super.shouldRun(message);
 	}
 
-	protected preProcess(message: KlasaMessage) {
+	protected async preProcess(message: GuildMessage) {
 		const content = getContent(message);
 		if (content === null) return null;
 
-		return this.filter(removeConfusables(content), message.guild!.security.regexp!);
+		const regex = await message.guild.readSettings((settings) => settings.wordFilterRegExp);
+		return regex ? this.filter(removeConfusables(content), regex) : null;
 	}
 
-	protected async onDelete(message: KlasaMessage, value: FilterResults) {
+	protected async onDelete(message: GuildMessage, language: Language, value: FilterResults) {
 		floatPromise(this, message.nuke());
 		if (message.content.length > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			floatPromise(
-				this,
-				message.author.sendLocale(LanguageKeys.Monitors.WordFilterDm, [{ filtered: codeBlock('md', cutText(value.filtered, 1900)) }])
-			);
+			await message.author.send(language.get(LanguageKeys.Monitors.WordFilterDm, { filtered: codeBlock('md', cutText(value.filtered, 1900)) }));
 		}
 	}
 
-	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.WordFilter, { user: message.author.toString() })));
+	protected onAlert(message: GuildMessage, language: Language) {
+		return message.alert(language.get(LanguageKeys.Monitors.WordFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: KlasaMessage, results: FilterResults) {
+	protected onLogMessage(message: GuildMessage, language: Language, results: FilterResults) {
 		return new MessageEmbed()
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.WordFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.WordFooter)}`)
 			.setTimestamp();
 	}
 

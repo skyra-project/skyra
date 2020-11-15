@@ -19,15 +19,17 @@ const ALPHABET_OPTS = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, options: string[]) {
+		const language = await message.fetchLanguage();
+
 		// since klasa usage is trash
 		if (options.length < 2 || options.length > 20)
-			throw message.language.get(LanguageKeys.Resolvers.MinmaxBothInclusive, { name: 'options', min: 2, max: 20 });
+			throw language.get(LanguageKeys.Resolvers.MinmaxBothInclusive, { name: 'options', min: 2, max: 20 });
 
 		const emojis = (options.length > 10 ? ALPHABET_OPTS : NUMBER_OPTS).slice(0, options.length);
-		const loadingMsg = await message.send(pickRandom(message.language.get(LanguageKeys.System.Loading)), []);
+		const loadingMsg = await message.send(pickRandom(language.get(LanguageKeys.System.Loading)));
 
 		for (const emoji of emojis) {
-			if (loadingMsg.reactions.cache.size === 20) throw message.language.get(LanguageKeys.Commands.Tools.PollReactionLimit);
+			if (loadingMsg.reactions.cache.size === 20) throw language.get(LanguageKeys.Commands.Tools.PollReactionLimit);
 			await loadingMsg.react(emoji);
 		}
 

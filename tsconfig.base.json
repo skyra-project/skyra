@@ -1,10 +1,11 @@
 {
-	"extends": "@skyra/eslint-config",
+	"extends": "@sapphire/ts-config",
 	"compilerOptions": {
 		"target": "ESNext",
-		"useDefineForClassFields": true,
-		"resolveJsonModule": true,
 		"noEmitHelpers": true,
-		"importHelpers": true
+		"importHelpers": true,
+		// TODO (kyranet&favna): Remove this and fix all type-only imports
+		"importsNotUsedAsValues": "remove",
+		"removeComments": true
 	}
 }

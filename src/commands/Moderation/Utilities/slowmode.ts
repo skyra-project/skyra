@@ -1,10 +1,10 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types/Discord';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 
@@ -24,9 +24,9 @@ const MAXIMUM_TIME = (Time.Hour * 6) / 1000;
 	['cooldown', async (arg, possible, message) => (await message.client.arguments.get('timespan')!.run(arg, possible, message)) / 1000]
 ])
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [cooldown]: ['reset' | 'off' | number]) {
+	public async run(message: GuildMessage, [cooldown]: ['reset' | 'off' | number]) {
 		if (cooldown === 'reset' || cooldown === 'off' || cooldown < 0) cooldown = 0;
-		else if (cooldown > MAXIMUM_TIME) throw message.language.get(LanguageKeys.Commands.Moderation.SlowmodeTooLong);
+		else if (cooldown > MAXIMUM_TIME) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.SlowmodeTooLong);
 		const channel = message.channel as TextChannel;
 		await channel.setRateLimitPerUser(cooldown);
 		return cooldown === 0

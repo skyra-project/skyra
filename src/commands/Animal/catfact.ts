@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '@utils/util';
@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.get(LanguageKeys.Commands.Animal.CatfactTitle))
+				.setTitle(await message.fetchLocale(LanguageKeys.Commands.Animal.CatfactTitle))
 				.setDescription(fact)
 		);
 	}

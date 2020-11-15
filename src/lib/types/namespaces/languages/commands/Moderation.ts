@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { Moderation } from '@utils/constants';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { User } from 'discord.js';
@@ -59,8 +59,6 @@ export const CaseDescription = T<string>('commandCaseDescription');
 export const CaseExtended = T<string>('commandCaseExtended');
 export const PermissionsDescription = T<string>('commandPermissionsDescription');
 export const PermissionsExtended = T<string>('commandPermissionsExtended');
-export const RaidDescription = T<string>('commandRaidDescription');
-export const RaidExtended = T<string>('commandRaidExtended');
 export const FlowDescription = T<string>('commandFlowDescription');
 export const FlowExtended = T<string>('commandFlowExtended');
 export const ReasonDescription = T<string>('commandReasonDescription');
@@ -103,11 +101,6 @@ export const VunmuteDescription = T<string>('commandVunmuteDescription');
 export const VunmuteExtended = T<LanguageHelpDisplayOptions>('commandVunmuteExtended');
 export const WarnDescription = T<string>('commandWarnDescription');
 export const WarnExtended = T<LanguageHelpDisplayOptions>('commandWarnExtended');
-export const RaidDisabled = T<string>('commandRaidDisabled');
-export const RaidMissingKick = T<string>('commandRaidMissingKick');
-export const RaidList = T<string>('commandRaidList');
-export const RaidClear = T<string>('commandRaidClear');
-export const RaidCool = T<string>('commandRaidCool');
 export const Flow = FT<{ amount: number }, string>('commandFlow');
 export const TimeTimed = T<string>('commandTimeTimed');
 export const TimeUndefinedTime = T<string>('commandTimeUndefinedTime');
@@ -118,6 +111,8 @@ export const TimeScheduled = FT<{ title: string; user: User; time: number }, str
 export const SlowmodeSet = FT<{ cooldown: number }, string>('commandSlowmodeSet');
 export const SlowmodeReset = T<string>('commandSlowmodeReset');
 export const SlowmodeTooLong = T<string>('commandSlowmodeTooLong');
+export const TimeDescription = T<string>('commandTimeDescription');
+export const TimeExtended = T<LanguageHelpDisplayOptions>('commandTimeExtended');
 export const BanNotBannable = T<string>('commandBanNotBannable');
 export const DehoistStarting = FT<{ count: number }, string>('commandDehoistStarting');
 export const DehoistProgress = FT<{ count: number; percentage: number }, string>('commandDehoistProgress');
@@ -203,17 +198,18 @@ export const ModerationOutputWithReasonPlural = FT<{ count: number; range: strin
 export const ModerationFailed = FT<{ users: string; count: number }, string>('commandModerationFailed');
 export const ModerationFailedPlural = FT<{ users: string; count: number }, string>('commandModerationFailedPlural');
 export const ModerationDmFooter = T<string>('commandModerationDmFooter');
-export const ModerationDmDescription = T<(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]>(
+export const ModerationDmDescription = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
 	'commandModerationDmDescription'
 );
-export const ModerationDmDescriptionWithReason = T<
-	(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]
->('commandModerationDmDescriptionWithReason');
-export const ModerationDmDescriptionWithDuration = T<
-	(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]
->('commandModerationDmDescriptionWithDuration');
-export const ModerationDmDescriptionWithReasonWithDuratio = T<
-	(params: { guild: string; title: string; reason: string | null; duration: number | null }) => string[]
+export const ModerationDmDescriptionWithReason = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+	'commandModerationDmDescriptionWithReason'
+);
+export const ModerationDmDescriptionWithDuration = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+	'commandModerationDmDescriptionWithDuration'
+);
+export const ModerationDmDescriptionWithReasonWithDuration = FT<
+	{ guild: string; title: string; reason: string | null; duration: number | null },
+	string[]
 >('commandModerationDmDescriptionWithReasonWithDuration');
 export const ModerationDays = T<string>('commandModerationDays');
 export const Permissions = FT<{ username: string; id: string }, string>('commandPermissions');
@@ -310,7 +306,7 @@ export const ActionSharedRoleSetupAskMultipleChannels = FT<{ role: string; chann
 export const ActionSharedRoleSetupAskMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
 	'actionSharedRoleSetupAskMultiplePermissions'
 );
-export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = T<
-	(params: { role: string; channels: number; permissions: string }) => string
->('actionSharedRoleSetupAskMultipleChannelsMultiplePermissions');
+export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
+	'actionSharedRoleSetupAskMultipleChannelsMultiplePermissions'
+);
 export const ActionRequiredMember = T<string>('actionRequiredMember');

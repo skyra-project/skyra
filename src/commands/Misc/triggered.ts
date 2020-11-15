@@ -1,4 +1,5 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { assetsFolder } from '@utils/constants';
 import { fetchAvatar, streamToBuffer } from '@utils/util';
 import { Image, loadImage } from 'canvas';
@@ -7,7 +8,6 @@ import { User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 import { join } from 'path';
 import GIFEncoder = require('gifencoder');
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 
 const COORDINATES: readonly [number, number][] = [
 	[-25, -25],
@@ -26,7 +26,6 @@ export default class extends SkyraCommand {
 			description: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredDescription),
 			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredExtended),
 			requiredPermissions: ['ATTACH_FILES'],
-			runIn: ['text'],
 			spam: true,
 			usage: '[user:username]'
 		});

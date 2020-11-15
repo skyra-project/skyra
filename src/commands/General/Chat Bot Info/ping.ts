@@ -11,12 +11,13 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
-		const msg = await message.sendLocale(LanguageKeys.Commands.General.Ping);
-		return message.sendLocale(LanguageKeys.Commands.General.PingPong, [
-			{
+		const language = await message.fetchLanguage();
+		const msg = await message.send(language.get(LanguageKeys.Commands.General.Ping));
+		return message.send(
+			language.get(LanguageKeys.Commands.General.PingPong, {
 				diff: (msg.editedTimestamp || msg.createdTimestamp) - (message.editedTimestamp || message.createdTimestamp),
 				ping: Math.round(this.client.ws.ping)
-			}
-		]);
+			})
+		);
 	}
 }

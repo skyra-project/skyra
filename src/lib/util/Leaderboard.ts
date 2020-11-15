@@ -1,5 +1,5 @@
 import Collection from '@discordjs/collection';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { Client } from 'discord.js';
 import { Time } from './constants';
 import { PreciseTimeout } from './PreciseTimeout';

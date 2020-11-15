@@ -13,25 +13,25 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<User> {
-		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
 		const result = await this.fetchMember(arg, message);
-		if (result) return message.guild!.members.add(result).user;
-		throw message.language.get(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		if (result) return message.guild.members.add(result).user;
+		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 	}
 
-	private resolveUser(message: KlasaMessage, query: string) {
+	private async resolveUser(message: KlasaMessage, query: string) {
 		const id = USER_REGEXP.test(query) ? USER_REGEXP.exec(query)![1] : USER_TAG.test(query) ? this.client.users.getFromTag(query)?.id : null;
+		if (!id) return null;
 
-		if (id) {
-			return this.client.users.fetch(id).catch(() => {
-				throw message.language.get(LanguageKeys.Misc.UserNotExistent);
-			});
+		try {
+			return await this.client.users.fetch(id);
+		} catch {
+			throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
 		}
-		return null;
 	}
 
 	private async fetchMember(query: string, message: KlasaMessage) {

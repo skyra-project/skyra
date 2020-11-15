@@ -1,9 +1,10 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -16,12 +17,12 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
 		const { sniped } = message.channel as TextChannel;
-		if (sniped === null) throw message.language.get(LanguageKeys.Commands.Misc.SnipeEmpty);
+		if (sniped === null) throw await message.fetchLocale(LanguageKeys.Commands.Misc.SnipeEmpty);
 
 		const embed = new MessageEmbed()
-			.setTitle(message.language.get(LanguageKeys.Commands.Misc.SnipeTitle))
+			.setTitle(await message.fetchLocale(LanguageKeys.Commands.Misc.SnipeTitle))
 			.setColor(await DbSet.fetchColor(sniped))
 			.setAuthor(sniped.author.username, sniped.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setTimestamp(sniped.createdTimestamp);

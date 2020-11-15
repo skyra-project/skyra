@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -13,7 +13,6 @@ import { KlasaMessage } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Games.SlotmachineDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.SlotmachineExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	usage: '<wager:wager>'
 })
 export default class extends SkyraCommand {
@@ -22,11 +21,11 @@ export default class extends SkyraCommand {
 		const settings = await users.ensureProfile(message.author.id);
 		const balance = settings.money;
 		if (balance < wager) {
-			throw message.language.get(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
+			throw await message.fetchLocale(LanguageKeys.Commands.Games.GamesNotEnoughMoney, { money: balance });
 		}
 
 		const [attachment, amount] = await new Slotmachine(message, wager, settings).run();
-		const titles = message.language.get(LanguageKeys.Commands.Games.SlotmachineTitles);
+		const titles = await message.fetchLocale(LanguageKeys.Commands.Games.SlotmachineTitles);
 
 		return message.sendMessage(
 			[`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'),

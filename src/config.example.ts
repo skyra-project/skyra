@@ -57,7 +57,7 @@ export const INFLUX_OPTIONS: InfluxDBClientOptions = {
 	token: INFLUX_TOKEN
 };
 
-export const VERSION = '5.4.1 Nirom';
+export const VERSION = '5.5.0 Nirom';
 
 export const CLIENT_OPTIONS: KlasaClientOptions = {
 	audio: {
@@ -135,14 +135,10 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	pieceDefaults: {
 		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
 		monitors: { ignoreOthers: false },
-		rawEvents: { enabled: true }
+		serializers: { enabled: true, aliases: [] }
 	},
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },
-	providers: {
-		default: 'postgres',
-		postgres: PGSQL_DATABASE_OPTIONS
-	},
 	readyMessage: (client) =>
 		`${NAME} ${VERSION} ready! [${client.user!.tag}] [ ${client.guilds.cache.size} [G]] [ ${client.guilds.cache
 			.reduce((a, b) => a + b.memberCount, 0)

@@ -1,10 +1,11 @@
+import { GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { floatPromise, getContent } from '@utils/util';
+import { getContent } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationMessages;
@@ -16,16 +17,17 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Messages.HardAction,
 		actionDuration: GuildSettings.Selfmod.Messages.HardActionDuration,
-		adder: 'messages',
-		adderMaximum: GuildSettings.Selfmod.Messages.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Messages.ThresholdDuration
+		adder: 'messages'
 	};
 
 	private readonly kChannels = new WeakMap<TextChannel, string[]>();
 
-	protected preProcess(message: KlasaMessage) {
+	protected async preProcess(message: GuildMessage) {
 		// Retrieve the threshold
-		const threshold = message.guild!.settings.get(GuildSettings.Selfmod.Messages.Maximum);
+		const [threshold, queueSize] = await message.guild.readSettings([
+			GuildSettings.Selfmod.Messages.Maximum,
+			GuildSettings.Selfmod.Messages.QueueSize
+		]);
 		if (threshold === 0) return null;
 
 		// Retrieve the content
@@ -34,7 +36,7 @@ export default class extends ModerationMonitor {
 
 		// Retrieve the contents, then update them to add the new content to the FILO queue.
 		const contents = this.getContents(message);
-		const count = this.updateContents(message, contents, content.toLowerCase());
+		const count = this.updateContents(contents, content.toLowerCase(), queueSize);
 
 		// If count is bigger than threshold
 		// - return `count` (runs the rest of the monitor),
@@ -42,24 +44,24 @@ export default class extends ModerationMonitor {
 		return count > threshold ? count : null;
 	}
 
-	protected onDelete(message: KlasaMessage) {
-		floatPromise(this, message.nuke());
+	protected onDelete(message: GuildMessage) {
+		return message.nuke();
 	}
 
-	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.MessageFilter, { user: message.author.toString() })));
+	protected onAlert(message: GuildMessage, language: Language) {
+		return message.alert(language.get(LanguageKeys.Monitors.MessageFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: KlasaMessage) {
+	protected onLogMessage(message: GuildMessage, language: Language) {
 		return new MessageEmbed()
 			.splitFields(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.MessageFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.MessageFooter)}`)
 			.setTimestamp();
 	}
 
-	private getContents(message: KlasaMessage) {
+	private getContents(message: GuildMessage) {
 		const previousValue = this.kChannels.get(message.channel as TextChannel);
 		if (typeof previousValue === 'undefined') {
 			const nextValue: string[] = [];
@@ -70,10 +72,8 @@ export default class extends ModerationMonitor {
 		return previousValue;
 	}
 
-	private updateContents(message: KlasaMessage, contents: string[], content: string) {
-		const queueSize = message.guild!.settings.get(GuildSettings.Selfmod.Messages.QueueSize);
-
-		// Queue FILO behaviour, first-in, last-out.
+	private updateContents(contents: string[], content: string, queueSize: number) {
+		// Queue FILO behavior, first-in, last-out.
 		if (contents.length >= queueSize) contents.length = queueSize - 1;
 		contents.unshift(content);
 

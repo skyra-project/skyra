@@ -1,13 +1,12 @@
 import { FetchError } from '@lib/errors/FetchError';
-import { GuildMessage } from '@lib/types';
+import { CustomFunctionGet, CustomGet, GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomFunctionGet, CustomGet } from '@lib/types/Shared';
 import { TOKENS, VERSION } from '@root/config';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { CommandOptions, CommandStore, KlasaMessage } from 'klasa';
-import { DbSet } from './DbSet';
+import { CommandOptions, CommandStore, KlasaMessage, Language } from 'klasa';
+import { DbSet } from '../database/structures/DbSet';
 import { SkyraCommand } from './SkyraCommand';
 
 export abstract class WeebCommand extends SkyraCommand {
@@ -43,24 +42,25 @@ export abstract class WeebCommand extends SkyraCommand {
 		query.searchParams.append('type', this.queryType);
 		query.searchParams.append('nsfw', String(message.channel.nsfw));
 
-		const { url } = await this.fetch(message, query);
+		const language = await message.guild.fetchLanguage();
+		const { url } = await this.fetch(language, query);
 
 		return message.sendMessage(
 			Boolean(this.usage.parsedUsage.length)
-				? message.language.get(this.responseName as ComplexKey, { user: params![0].username })
-				: message.language.get(this.responseName as SimpleKey),
+				? language.get(this.responseName as ComplexKey, { user: params![0].username })
+				: language.get(this.responseName as SimpleKey),
 			{
 				embed: new MessageEmbed()
 					.setTitle('→')
 					.setURL(url)
 					.setColor(await DbSet.fetchColor(message))
 					.setImage(url)
-					.setFooter(message.language.get(LanguageKeys.System.PoweredByWeebsh))
+					.setFooter(language.get(LanguageKeys.System.PoweredByWeebSh))
 			}
 		) as Promise<KlasaMessage | KlasaMessage[]>;
 	}
 
-	private async fetch(message: GuildMessage, url: URL): Promise<WeebCommandResult> {
+	private async fetch(language: Language, url: URL): Promise<WeebCommandResult> {
 		try {
 			return await fetch<WeebCommandResult>(url, { headers: this.kHeaders }, FetchResultTypes.JSON);
 		} catch (unknownError: unknown) {
@@ -68,12 +68,12 @@ export abstract class WeebCommand extends SkyraCommand {
 
 			// If we received a 5XX code error, warn the user about the service's unavailability.
 			if (error.code >= 500) {
-				throw message.language.get(LanguageKeys.Commands.Weeb.UnavailableError);
+				throw language.get(LanguageKeys.Commands.Weeb.UnavailableError);
 			}
 
 			// If otherwise we got an 4XX error code, warn the user about unexpected error.
 			this.client.emit(Events.Error, `Unexpected error in ${this.name}: [${error.code}] ${error.message}`);
-			throw message.language.get(LanguageKeys.Commands.Weeb.UnexpectedError);
+			throw language.get(LanguageKeys.Commands.Weeb.UnexpectedError);
 		}
 	}
 }

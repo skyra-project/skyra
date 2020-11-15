@@ -25,11 +25,14 @@ export async function prompt(message: Message, entries: PromptListResolvable) {
 async function ask(message: Message, list: readonly string[]) {
 	const possibles = list.length;
 	const codeblock = codeBlock('asciidoc', list.join('\n'));
-	const responseMessage = await message.channel.sendLocale(
-		possibles === 1 ? LanguageKeys.PromptList.MultipleChoice : LanguageKeys.PromptList.MultipleChoicePlural,
-		[{ list: codeblock, count: possibles }]
+	const language = await message.fetchLanguage();
+	const responseMessage = await message.channel.send(
+		language.get(possibles === 1 ? LanguageKeys.PromptList.MultipleChoice : LanguageKeys.PromptList.MultipleChoicePlural, {
+			list: codeblock,
+			count: possibles
+		})
 	);
-	const abortOptions = message.language.get(LanguageKeys.Misc.TextPromptAbortOptions);
+	const abortOptions = language.get(LanguageKeys.Misc.TextPromptAbortOptions);
 	const promptFilter = (m: Message) =>
 		m.author === message.author && (abortOptions.includes(m.content.toLowerCase()) || !Number.isNaN(Number(m.content)));
 	let response: Message | null = null;
@@ -45,7 +48,7 @@ async function ask(message: Message, list: readonly string[]) {
 
 		if (response) {
 			if (response.deletable) response.nuke().catch(() => null);
-			if (abortOptions.includes(response.content.toLowerCase())) throw message.language.get(LanguageKeys.PromptList.Aborted);
+			if (abortOptions.includes(response.content.toLowerCase())) throw language.get(LanguageKeys.PromptList.Aborted);
 			n = Number(response.content);
 			if (!Number.isNaN(n) && n >= 1 && n <= possibles) {
 				await responseMessage.delete();

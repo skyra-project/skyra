@@ -8,7 +8,7 @@ export default class extends Inhibitor {
 	// READ_MESSAGE_HISTORY, MENTION_EVERYONE, USE_EXTERNAL_EMOJIS, ADD_REACTIONS
 	private impliedPermissions = new Permissions(515136).freeze();
 
-	public run(message: KlasaMessage, command: Command) {
+	public async run(message: KlasaMessage, command: Command) {
 		let missing: PermissionString[] | undefined = undefined;
 
 		// If the message was sent in a guild channel, check for channel permissions.
@@ -31,11 +31,12 @@ export default class extends Inhibitor {
 		}
 
 		if (missing.length) {
-			const permissions = message.language.PERMISSIONS;
-			throw message.language.get(LanguageKeys.Inhibitors.MissingBotPerms, {
-				missing: message.language.list(
+			const language = await message.fetchLanguage();
+			const permissions = language.PERMISSIONS;
+			throw language.get(LanguageKeys.Inhibitors.MissingBotPerms, {
+				missing: language.list(
 					missing.map((permission) => permissions[permission]),
-					message.language.get(LanguageKeys.Globals.And)
+					language.get(LanguageKeys.Globals.And)
 				)
 			});
 		}

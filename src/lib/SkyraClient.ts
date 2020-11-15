@@ -2,7 +2,7 @@
 // Import all dependencies
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { KlasaClient, KlasaClientOptions } from 'klasa';
+import { KlasaClient, KlasaClientOptions, KlasaMessage } from 'klasa';
 import { mergeDefault } from '@sapphire/utilities';
 import { Webhook } from 'discord.js';
 
@@ -23,7 +23,8 @@ import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR
 
 // Import all extensions and schemas
 import './extensions/SkyraGuild';
-import './schemas/Guilds';
+import './extensions/SkyraGuildMember';
+import './extensions/SkyraMessage';
 
 // Import setup files
 import './setup/PermissionsLevels';
@@ -32,6 +33,7 @@ import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import { QueueClient } from '@lib/audio';
+import { GuildSettings, SettingsManager } from '@lib/database';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -53,6 +55,11 @@ export class SkyraClient extends KlasaClient {
 	 * The Schedule manager
 	 */
 	public schedules: ScheduleManager = new ScheduleManager(this);
+
+	/**
+	 * The settings manager
+	 */
+	public settings: SettingsManager = new SettingsManager(this);
 
 	/**
 	 * The webhook to use for the error event
@@ -107,6 +114,24 @@ export class SkyraClient extends KlasaClient {
 	public async login(token?: string) {
 		await this.schedules.init();
 		return super.login(token);
+	}
+
+	/**
+	 * Retrieves the prefix for the guild.
+	 * @param message The message that gives context.
+	 */
+	public fetchPrefix(message: KlasaMessage) {
+		if (!message.guild) return this.options.prefix;
+		return message.guild.readSettings(GuildSettings.Prefix);
+	}
+
+	/**
+	 * Retrieves the language key for the message.
+	 * @param message The message that gives context.
+	 */
+	public fetchLanguage(message: KlasaMessage) {
+		if (!message.guild) return Promise.resolve(this.options.language ?? 'en-US');
+		return message.guild.readSettings(GuildSettings.Language);
 	}
 }
 

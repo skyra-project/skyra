@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -19,12 +19,12 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const query = typeof input === 'undefined' ? null : /^\d+$/.test(input) ? Number(input) : input;
+		const language = await message.fetchLanguage();
 
-		const comicNumber = await this.getNumber(query, message.language);
+		const comicNumber = await this.getNumber(query, language);
 		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
-			throw message.language.get(LanguageKeys.Commands.Fun.XkcdNotfound);
+			throw language.get(LanguageKeys.Commands.Fun.XkcdNotfound);
 		});
-
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))

@@ -33,7 +33,7 @@ export class InviteStore extends Collection<string, InviteCodeEntry> {
 
 		const resolved: InviteCodeEntry = {
 			valid: true,
-			guildID: Reflect.has(data, 'guild') ? data.guild!.id : null,
+			guildID: Reflect.get(data, 'guild')?.id ?? null,
 			fetchedAt: Date.now()
 		};
 		this.set(code, resolved);

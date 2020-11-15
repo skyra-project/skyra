@@ -46,5 +46,7 @@ export default class extends MusicCommand {
 			await audio.setTextChannelID(message.channel.id);
 			await audio.start();
 		}
+
+		return null;
 	}
 }

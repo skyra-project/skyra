@@ -1,8 +1,9 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageOptions, TextChannel } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -12,12 +13,13 @@ export default class extends SkyraCommand {
 			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.EchoExtended),
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
+			runIn: ['text'],
 			usage: '[channel:channel] [message:...string]',
 			usageDelim: ' '
 		});
 	}
 
-	public async run(message: KlasaMessage, [channel = message.channel as TextChannel, content]: [TextChannel, string]) {
+	public async run(message: GuildMessage, [channel = message.channel as TextChannel, content]: [TextChannel, string]) {
 		if (message.deletable) message.nuke().catch(() => null);
 
 		const attachment = message.attachments.size ? message.attachments.first()!.url : null;

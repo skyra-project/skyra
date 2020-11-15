@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { User } from 'discord.js';
@@ -18,13 +18,14 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		if (user.bot) throw message.language.get(LanguageKeys.Commands.Social.BalanceBots);
+		const language = await message.fetchLanguage();
+		if (user.bot) throw language.get(LanguageKeys.Commands.Social.BalanceBots);
 
 		const { users } = await DbSet.connect();
 		const money = (await users.findOne(user.id))?.money ?? 0;
 
 		return message.author === user
-			? message.sendLocale(LanguageKeys.Commands.Social.BalanceSelf, [{ amount: message.language.groupDigits(money) }])
-			: message.sendLocale(LanguageKeys.Commands.Social.Balance, [{ user: user.username, amount: message.language.groupDigits(money) }]);
+			? message.send(language.get(LanguageKeys.Commands.Social.BalanceSelf, { amount: language.groupDigits(money) }))
+			: message.send(language.get(LanguageKeys.Commands.Social.Balance, { user: user.username, amount: language.groupDigits(money) }));
 	}
 }

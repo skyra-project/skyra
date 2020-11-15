@@ -25,13 +25,14 @@ export default class extends MusicCommand {
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		const language = await message.fetchLanguage();
+		if (index < 0) throw language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
 		const length = await audio.count();
 		if (index >= length) {
-			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
-				songs: message.language.get(
+			throw language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
+				songs: language.get(
 					length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{
 						count: length
@@ -44,6 +45,6 @@ export default class extends MusicCommand {
 		const track = await audio.player.node.decode(entry!.track);
 
 		await audio.moveTracks(index, 0);
-		await message.channel.sendLocale(LanguageKeys.Commands.Music.PromoteSuccess, [{ title: track.title, url: track.uri }]);
+		await message.channel.send(language.get(LanguageKeys.Commands.Music.PromoteSuccess, { title: track.title, url: track.uri }));
 	}
 }

@@ -1,0 +1,21 @@
+export * from './Channels';
+export * from './Events';
+export * from './Messages';
+export * from './Music';
+export * from './Notifications/All';
+export * from './Permissions';
+export * from './Roles';
+export * from './Selfmod';
+export * from './Social';
+export * from './Starboard';
+export * from './Suggestions';
+export * from './Trigger';
+
+export const Prefix = 'prefix';
+export const Language = 'language';
+export const CustomCommands = 'customCommands';
+export const CommandAutoDelete = 'commandAutoDelete';
+export const DisabledChannels = 'disabledChannels';
+export const DisabledCommandChannels = 'disabledCommandsChannels';
+export const StickyRoles = 'stickyRoles';
+export const ReactionRoles = 'reactionRoles';

@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = message.language.retrieve(LanguageKeys.Commands.Social.Level);
+		const title = await message.fetchLocale(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)
 				// Draw the background
@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 				.createRoundedClip(10, 10, 620, 154, 8)
 				.printImage(themeImageSRC, 9, 9, 189, 157)
 				.restore()
-				.printImage(settings.profile.darkTheme ? this.darkThemeTemplate! : this.lightThemeTemplate!, 0, 0, 640, 174)
+				.printImage(settings.profile.darkTheme ? this.darkThemeTemplate : this.lightThemeTemplate, 0, 0, 640, 174)
 
 				// Draw the progress bar
 				.setColor(`#${settings.profile.color.toString(16).padStart(6, '0') || 'FF239D'}`)

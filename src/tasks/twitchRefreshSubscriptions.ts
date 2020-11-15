@@ -1,14 +1,11 @@
-import { Colors } from '@klasa/console';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, PartialResponseValue, ResponseType, TwitchStreamSubscriptionEntity } from '@lib/database';
 import { Events } from '@lib/types/Enums';
-import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
-import { TwitchStreamSubscriptionEntity } from '@orm/entities/TwitchStreamSubscriptionEntity';
 import { TwitchHooksAction } from '@utils/Notifications/Twitch';
+import { blueBright } from 'colorette';
 import { Task } from 'klasa';
 import { Repository } from 'typeorm';
 
-const b = new Colors({ text: 'lightblue' });
-const header = b.format('[TWITCH SUB-UPDATE]');
+const header = blueBright('[TWITCH SUB-UPDATE]');
 
 export default class extends Task {
 	public async run(): Promise<PartialResponseValue | null> {

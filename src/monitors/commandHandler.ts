@@ -1,5 +1,5 @@
+import { GuildSettings } from '@lib/database';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID, PREFIX } from '@root/config';
 import { floatPromise } from '@utils/util';
@@ -14,6 +14,7 @@ export default class extends Monitor {
 	}
 
 	public async run(message: KlasaMessage) {
+		await message.parseCommand();
 		if (message.guild && message.guild.me === null) await message.guild.members.fetch(CLIENT_ID);
 		if (!message.channel.postable) return undefined;
 		if (!message.commandText && message.prefix === this.client.mentionPrefix) return this.sendPrefixReminder(message);
@@ -26,10 +27,13 @@ export default class extends Monitor {
 
 	public async sendPrefixReminder(message: KlasaMessage) {
 		if (message.guild !== null) {
-			const disabledChannels = message.guild.settings.get(GuildSettings.DisabledChannels);
+			const disabledChannels = await message.guild.readSettings(GuildSettings.DisabledChannels);
 			if (disabledChannels.includes(message.channel.id) && !(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) return;
 		}
-		const prefix = message.guildSettings.get(GuildSettings.Prefix);
+
+		const prefix = await this.client.fetchPrefix(message);
+		if (!prefix) return;
+
 		return message.sendLocale(LanguageKeys.Misc.PrefixReminder, [{ prefix: prefix.length ? prefix : PREFIX }], {
 			allowedMentions: { users: [message.author.id], roles: [] }
 		});

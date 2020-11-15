@@ -1,10 +1,10 @@
+import { GuildSettings } from '@lib/database';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { floatPromise } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 const enum CodeType {
 	DiscordGG,
@@ -21,18 +21,16 @@ export default class extends ModerationMonitor {
 	protected readonly hardPunishmentPath: HardPunishment = {
 		action: GuildSettings.Selfmod.Invites.HardAction,
 		actionDuration: GuildSettings.Selfmod.Invites.HardActionDuration,
-		adder: 'invites',
-		adderMaximum: GuildSettings.Selfmod.Invites.ThresholdMaximum,
-		adderDuration: GuildSettings.Selfmod.Invites.ThresholdDuration
+		adder: 'invites'
 	};
 
 	private readonly kInviteRegExp = /(?<source>discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?<code>[\w-]{2,})/gi;
 
-	public shouldRun(message: KlasaMessage) {
+	public shouldRun(message: GuildMessage) {
 		return super.shouldRun(message) && message.content.length > 0;
 	}
 
-	protected async preProcess(message: KlasaMessage) {
+	protected async preProcess(message: GuildMessage) {
 		let value: RegExpExecArray | null = null;
 		const promises: Promise<string | null>[] = [];
 		const scanned = new Set<string>();
@@ -54,35 +52,40 @@ export default class extends ModerationMonitor {
 		return resolved.length === 0 ? null : resolved;
 	}
 
-	protected onDelete(message: KlasaMessage) {
-		floatPromise(this, message.nuke());
+	protected onDelete(message: GuildMessage) {
+		return message.nuke();
 	}
 
-	protected onAlert(message: KlasaMessage) {
-		floatPromise(this, message.alert(message.language.get(LanguageKeys.Monitors.InviteFilterAlert, { user: message.author.toString() })));
+	protected onAlert(message: GuildMessage, language: Language) {
+		return message.alert(language.get(LanguageKeys.Monitors.InviteFilterAlert, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: KlasaMessage, links: readonly string[]) {
+	protected onLogMessage(message: GuildMessage, language: Language, links: readonly string[]) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(
-				message.language.get(links.length === 1 ? LanguageKeys.Monitors.InviteFilterLog : LanguageKeys.Monitors.InviteFilterLogPlural, {
+				language.get(links.length === 1 ? LanguageKeys.Monitors.InviteFilterLog : LanguageKeys.Monitors.InviteFilterLogPlural, {
 					links,
 					count: links.length
 				})
 			)
-			.setFooter(`#${(message.channel as TextChannel).name} | ${message.language.get(LanguageKeys.Monitors.InviteFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.InviteFooter)}`)
 			.setTimestamp();
 	}
 
-	private async scanLink(message: KlasaMessage, url: string, code: string) {
+	private async scanLink(message: GuildMessage, url: string, code: string) {
 		return (await this.fetchIfAllowedInvite(message, code)) ? null : url;
 	}
 
-	private async fetchIfAllowedInvite(message: KlasaMessage, code: string) {
+	private async fetchIfAllowedInvite(message: GuildMessage, code: string) {
+		const [ignoredCodes, ignoredGuilds] = await message.guild.readSettings([
+			GuildSettings.Selfmod.Invites.IgnoredCodes,
+			GuildSettings.Selfmod.Invites.IgnoredGuilds
+		]);
+
 		// Ignored codes take short-circuit.
-		if (message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredCodes).includes(code)) return true;
+		if (ignoredCodes.includes(code)) return true;
 
 		const data = await this.client.invites.fetch(code);
 
@@ -93,10 +96,10 @@ export default class extends ModerationMonitor {
 		if (data.guildID === null) return false;
 
 		// Invites that point to the own server should be allowed.
-		if (data.guildID === message.guild!.id) return true;
+		if (data.guildID === message.guild.id) return true;
 
 		// Invites from white-listed guilds should be allowed.
-		if (message.guild!.settings.get(GuildSettings.Selfmod.Invites.IgnoredGuilds).includes(data.guildID)) return true;
+		if (ignoredGuilds.includes(data.guildID)) return true;
 
 		// Any other invite should not be allowed.
 		return false;

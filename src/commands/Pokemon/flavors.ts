@@ -1,6 +1,7 @@
 import { DexDetails } from '@favware/graphql-pokemon';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { toTitleCase } from '@sapphire/utilities';
@@ -9,7 +10,7 @@ import { BrandingColors } from '@utils/constants';
 import { fetchGraphQLPokemon, getPokemonFlavorTextsByFuzzy, resolveColour } from '@utils/Pokemon';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
@@ -20,27 +21,28 @@ import { KlasaMessage } from 'klasa';
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [pokemon]: [string]) {
+	public async run(message: GuildMessage, [pokemon]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const pokemonData = await this.fetchAPI(message, pokemon.toLowerCase());
+		const pokemonData = await this.fetchAPI(language, pokemon.toLowerCase());
 
 		await this.buildDisplay(message, pokemonData).start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(message: KlasaMessage, pokemon: string) {
+	private async fetchAPI(language: Language, pokemon: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
+			throw language.get(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 
-	private buildDisplay(message: KlasaMessage, pokemonData: DexDetails) {
+	private buildDisplay(message: GuildMessage, pokemonData: DexDetails) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(resolveColour(pokemonData.color))

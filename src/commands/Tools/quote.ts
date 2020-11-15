@@ -1,11 +1,12 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, Serializer } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { getContent, getImage, isTextBasedChannel } from '@utils/util';
 import { GuildChannel, MessageEmbed, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, Serializer } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const SNOWFLAKE_REGEXP = Serializer.regex.snowflake;
 const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$/;
@@ -22,18 +23,18 @@ export default class extends SkyraCommand {
 	public async init() {
 		this.createCustomResolver('message', async (arg, _, message, [channel = message.channel as GuildChannel]: GuildChannel[]) => {
 			// Try to find from URL, then use channel
-			const messageUrl = await this.getFromUrl(message, arg);
+			const messageUrl = await this.getFromUrl(message as GuildMessage, arg);
 			if (messageUrl) return messageUrl;
 
-			if (!isTextBasedChannel(channel)) throw message.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw message.language.get(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
+			if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
-			throw message.language.get(LanguageKeys.System.MessageNotFound);
+			throw await message.fetchLocale(LanguageKeys.System.MessageNotFound);
 		});
 	}
 
-	public async run(message: KlasaMessage, [, remoteMessage]: [never, KlasaMessage]) {
+	public async run(message: GuildMessage, [, remoteMessage]: [never, KlasaMessage]) {
 		const embed = new MessageEmbed()
 			.setAuthor(remoteMessage.author.tag, remoteMessage.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(await DbSet.fetchColor(message))
@@ -41,12 +42,13 @@ export default class extends SkyraCommand {
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);
-		if (content) embed.setDescription(`[${message.language.get(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
+		if (content)
+			embed.setDescription(`[${await message.fetchLocale(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
 		return message.sendEmbed(embed);
 	}
 
-	private async getFromUrl(message: KlasaMessage, url: string) {
+	private async getFromUrl(message: GuildMessage, url: string) {
 		let parsed: URL | undefined = undefined;
 		try {
 			parsed = new URL(url);
@@ -62,14 +64,14 @@ export default class extends SkyraCommand {
 
 		const [, _guild, _channel, _message] = extract;
 		const guild = this.client.guilds.cache.get(_guild);
-		if (guild !== message.guild!) return null;
+		if (guild !== message.guild) return null;
 
 		const channel = guild.channels.cache.get(_channel);
 		if (!channel) return null;
-		if (!(channel instanceof TextChannel)) throw message.language.get(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
-		if (!channel.readable) throw message.language.get(LanguageKeys.System.MessageNotFound);
+		if (!(channel instanceof TextChannel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+		if (!channel.readable) throw await message.fetchLocale(LanguageKeys.System.MessageNotFound);
 		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL))
-			throw message.language.get(LanguageKeys.System.CannotAccessChannel);
+			throw await message.fetchLocale(LanguageKeys.System.CannotAccessChannel);
 
 		return channel.messages.fetch(_message);
 	}

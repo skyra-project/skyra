@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { User } from 'discord.js';
 
 export const CommandHandlerReprompt = FT<{ tag: string; name: string; time: string; cancelOptions: string }, string>('monitorCommandHandlerReprompt');

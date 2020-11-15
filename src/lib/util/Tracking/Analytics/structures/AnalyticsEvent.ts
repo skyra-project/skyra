@@ -10,7 +10,11 @@ export abstract class AnalyticsEvent extends Event {
 
 	// eslint-disable-next-line @typescript-eslint/require-await
 	public async init() {
-		if (!ENABLE_INFLUX) return this.disable();
+		if (!ENABLE_INFLUX) {
+			this.disable();
+			return;
+		}
+
 		this.initTags();
 	}
 

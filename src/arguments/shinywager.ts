@@ -4,19 +4,21 @@ import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 
 @ApplyOptions<ArgumentOptions>({ aliases: ['wager'] })
 export default class ShinyWager extends Argument {
-	public run(arg: string, possible: Possible, message: KlasaMessage): number {
-		if (!arg) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
+	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<number> {
+		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
 
 		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;
-		if (!Number.isInteger(number)) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
-		if (!ShinyWager.kValidBetAmounts.includes(number))
-			throw message.language.get(LanguageKeys.Resolvers.InvalidWager, {
+		if (!Number.isInteger(number)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
+		if (!ShinyWager.kValidBetAmounts.includes(number)) {
+			const language = await message.fetchLanguage();
+			throw language.get(LanguageKeys.Resolvers.InvalidWager, {
 				bet: number,
-				validAmounts: message.language.list(
+				validAmounts: language.list(
 					ShinyWager.kValidBetAmounts.map((a) => a.toString()),
-					message.language.get(LanguageKeys.Globals.Or)
+					language.get(LanguageKeys.Globals.Or)
 				)
 			});
+		}
 
 		return this.integerArg.run(arg, possible, message);
 	}

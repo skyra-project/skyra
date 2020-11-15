@@ -1,10 +1,9 @@
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { PartialResponseValue, ResponseType } from '@orm/entities/ScheduleEntity';
+import { GuildSettings, PartialResponseValue, ResponseType } from '@lib/database';
 import { Moderation } from '@utils/constants';
 import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';
 import { Task } from 'klasa';
-import { DbSet } from './DbSet';
+import { DbSet } from '../database/structures/DbSet';
 
 export abstract class ModerationTask<T = unknown> extends Task {
 	public async run(data: ModerationData<T>): Promise<PartialResponseValue> {
@@ -29,7 +28,7 @@ export abstract class ModerationTask<T = unknown> extends Task {
 	protected async getTargetDM(guild: Guild, target: User): Promise<ModerationActionsSendOptions> {
 		return {
 			moderator: null,
-			send: guild.settings.get(GuildSettings.Messages.ModerationDM) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
+			send: (await guild.readSettings(GuildSettings.Messages.ModerationDM)) && (await DbSet.fetchModerationDirectMessageEnabled(target.id))
 		};
 	}
 

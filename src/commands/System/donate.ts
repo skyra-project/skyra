@@ -12,12 +12,13 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
+		const language = await message.fetchLanguage();
 		try {
-			const extended = (message.language.get(LanguageKeys.Commands.System.DonateExtended).extendedHelp as string[]).join('\n');
+			const extended = (language.get(LanguageKeys.Commands.System.DonateExtended).extendedHelp as string[]).join('\n');
 			const response = await message.author.send(extended);
-			return message.channel.type === 'text' ? await message.alert(message.language.get(LanguageKeys.Commands.System.DmSent)) : response;
+			return message.channel.type === 'text' ? await message.alert(language.get(LanguageKeys.Commands.System.DmSent)) : response;
 		} catch {
-			return message.channel.type === 'text' ? null : message.alert(message.language.get(LanguageKeys.Commands.System.DmNotSent));
+			return message.channel.type === 'text' ? null : message.alert(language.get(LanguageKeys.Commands.System.DmNotSent));
 		}
 	}
 }

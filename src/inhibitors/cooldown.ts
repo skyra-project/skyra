@@ -9,7 +9,7 @@ export default class extends Inhibitor {
 		});
 	}
 
-	public run(message: KlasaMessage, command: SkyraCommand) {
+	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (this.client.owners.has(message.author) || command.cooldown <= 0) return;
 
 		let existing: Cooldown | undefined = undefined;
@@ -21,8 +21,10 @@ export default class extends Inhibitor {
 			return;
 		}
 
-		if (existing && existing.limited)
-			throw message.language.get(LanguageKeys.Inhibitors.Cooldown, { remaining: message.language.duration(existing.remainingTime) });
+		if (existing && existing.limited) {
+			const language = await message.fetchLanguage();
+			throw language.get(LanguageKeys.Inhibitors.Cooldown, { remaining: language.duration(existing.remainingTime) });
+		}
 	}
 }
 

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
 import { VERSION } from '@root/config';
+import { DurationFormatter, TimeTypes } from '@sapphire/time-utilities';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
 import { Emojis } from '@utils/constants';
-import friendlyDuration, { DurationFormatAssetsTime, TimeTypes } from '@utils/FriendlyDuration';
 import { CATEGORIES } from '@utils/Games/TriviaManager';
 import { random } from '@utils/util';
 import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
@@ -14,7 +14,7 @@ const REDCROSS = Emojis.RedCross;
 
 const timestamp = new Timestamp('DD/MM/YYYY [a las] HH:mm:ss');
 
-const TIMES: DurationFormatAssetsTime = {
+const duration = new DurationFormatter({
 	[TimeTypes.Year]: {
 		1: 'año',
 		DEFAULT: 'años'
@@ -43,7 +43,7 @@ const TIMES: DurationFormatAssetsTime = {
 		1: 'segundo',
 		DEFAULT: 'segundos'
 	}
-};
+});
 
 export default class extends Language {
 	public PERMISSIONS = {
@@ -89,7 +89,7 @@ export default class extends Language {
 	};
 
 	public duration(time: number, precision?: number) {
-		return friendlyDuration(time, TIMES, precision);
+		return duration.format(time, precision);
 	}
 
 	/** Parses cardinal numbers to the ordinal counterparts */
@@ -159,6 +159,10 @@ export default class extends Language {
 		settingGatewayMissingValue: ({ path, value }) => `The value "${value}" cannot be removed from the key "${path}" because it does not exist.`,
 		settingGatewayDuplicateValue: ({ path, value }) => `The value "${value}" cannot be added to the key "${path}" because it was already set.`,
 		settingGatewayInvalidFilteredValue: ({ path, value }) => `The settings key "${path}" does not accept the value "${value}".`,
+		resolverBoolFalseOptions: ['falso', 'f', 'no', 'n', 'off', 'desactiva', 'desactivar', 'desactivado', '0', '-'],
+		resolverBoolTrueOptions: ['verdadero', 'v', 'si', 'sí', 's', 'on', 'activa', 'activar', 'activado', '1', '+'],
+		resolverBoolEnabled: 'Activado',
+		resolverBoolDisabled: 'Desactivado',
 		resolverMultiTooFew: ({ name, min, conjunctionWord }) =>
 			`No pude resolver suficientes ${name}s. Al menos ${min} ${conjunctionWord} requeridos.`,
 		resolverInvalidBool: ({ name }) => `${name} debe ser o 'true' para afirmativo, o 'false' para negativo.`,
@@ -269,6 +273,7 @@ export default class extends Language {
 		commandConfServerDescription: 'Define per-server settings.',
 		commandConfServer: ({ key, list }) => `**Server Setting ${key}**\n${list}`,
 		commandConfUserDescription: 'Define per-user settings.',
+		commandConfDashboardOnlyKey: ({ key }) => `\`${key}\` can only be configured through the web dashboard (<https://skyra.pw>)`,
 		commandConfUser: ({ key, list }) => `**User Setting ${key}**\n${list}`,
 		commandConfSettingNotSet: 'No Establecido',
 		messagePromptTimeout: 'La solicitud no recibió ninguna respuesta a tiempo.',
@@ -569,6 +574,7 @@ export default class extends Language {
 		settingsEventsBanremove: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
 		settingsEventsMemberadd: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',
 		settingsEventsMembernameupdate: 'Whether member nickname updates should be logged or not.',
+		settingsEventsMemberroleupdate: 'Whether memner role changes should be logged or not.',
 		settingsEventsMemberremove: 'This event posts member logs when a user leaves. They will be posted in `channels.member-logs`.',
 		settingsEventsMessagedelete:
 			'This event posts message logs when a message is deleted. They will be posted in `channels.message-logs` (or `channel.nsfw-message-logs` in case of NSFW channels).',
@@ -615,6 +621,7 @@ export default class extends Language {
 		settingsSelfmodAttachment: 'Whether or not the attachment filter is enabled.',
 		settingsSelfmodAttachmentmaximum:
 			'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
+		settingsSelfmodAttachmentDuration: 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.',
 		settingsSelfmodCapitalsEnabled: 'Whether the capitals filter selfmod sub-system is enabled or not.',
 		settingsSelfmodCapitalsIgnoredchannels: 'The channels that will be ignored by the capitals filter sub-system',
 		settingsSelfmodCapitalsIgnoredroles: 'The roles that will be ignored by the capitals afilters sub-system',
@@ -646,9 +653,6 @@ export default class extends Language {
 		settingsSelfmodNewlinesIgnoredchannels: 'The channels that will be ignored by the new lines sub-system',
 		settingsSelfmodNewlinesIgnoredroles: 'The roles that will be ignored by the new lines sub-system',
 		settingsSelfmodNewlinesMaximum: 'The maximum amount of new lines before Skyra will start applying penalties',
-		settingsSelfmodRaid: 'Whether or not I should kick users when they try to raid the server.',
-		settingsSelfmodRaidthreshold:
-			'The minimum amount of users joined on the last 20 seconds required before starting to kick them and anybody else who joins until a minute cooldown or forced cooldown (using the `raid` command to manage this).',
 		settingsSelfmodReactionsMaximum: 'The maximum amount of reactions before I will start applying penalties',
 		settingsSelfmodReactionsBlacklist: 'The reactions that are blacklisted',
 		settingsSelfmodReactionsEnabled: 'Whether the reactions filter selfmod sub-system is enabled or not.',
@@ -675,6 +679,7 @@ export default class extends Language {
 			'Si esta opción está habilitada, volveré a publicar el mensaje de la sugerencia cada vez que se ésta se modifique. En caso opuesto editaré el mensaje original.',
 		settingsSuggestionsOnActionHideAuthor:
 			'Esta configuración le permite actualizar recomendaciónes anónimamente. Sustituirá el nombre del editor con `Un administrador` o` Un moderador`, de acuerdo con su nivel de permisos.',
+		settingsDashboardOnlyKey: 'This key can only be configured through [the web dashboard](https://skyra.pw)',
 
 		/**
 		 * ################
@@ -2014,11 +2019,6 @@ export default class extends Language {
 			explainedUsage: [['Case', 'Number of the case ID to get or "latest"']],
 			examples: ['5', 'latest']
 		},
-		commandRaidDescription: 'Manage the Anti-RAID system.',
-		commandRaidExtended: {
-			extendedHelp: 'Please note that the Anti-RAID system is flawed and needs redesigning. In its current state it should not be relied on.',
-			reminder: 'Want to know when you can use this feature? We recommend joining [Skyra Lounge](https://join.skyra.pw)'
-		},
 		commandPermissionsDescription: 'Check the permission for a member, or yours.',
 		commandPermissionsExtended: {
 			extendedHelp: 'Ideal if you want to know the what permissions are granted to a member when they have a certain set of roles.'
@@ -2202,7 +2202,10 @@ export default class extends Language {
 			explainedUsage: [['habilidad', 'La capacidad para la que desea encontrar datos']],
 			examples: ['multiscale', 'pressure']
 		},
-		commandAbilityEmbedTitle: 'Habilidad',
+		commandAbilityEmbedTitles: {
+			authorTitle: 'Habilidad',
+			fieldEffectTitle: 'Efecto fuera de la batalla'
+		},
 		commandAbilityQueryFail: ({ ability }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${ability}\` es realmente una habilidad en Pokémon?`,
 		commandFlavorsDescription: 'Obtiene las entradas de dex en varios juegos para un Pokémon.',
@@ -2292,7 +2295,8 @@ export default class extends Language {
 			availableInGeneration8Data: availableInGen8,
 			none: 'Ninguno',
 			maxMovePower: 'Potencia base como Movimiento Dinamax (Dinamax)',
-			zMovePower: 'Potencia base como Movimiento Z (Cristal Z)'
+			zMovePower: 'Potencia base como Movimiento Z (Cristal Z)',
+			fieldMoveEffectTitle: 'Efecto fuera de la batalla'
 		}),
 		commandMoveQueryFail: ({ move }) =>
 			`Lo siento, pero esa consulta falló. ¿Estás seguro de que \`${move}\` es realmente un movimiento en Pokémon?`,
@@ -3181,7 +3185,8 @@ export default class extends Language {
 		commandMarkovNoMessages: 'The channel or user has no messages.',
 		commandNorrisOutput: 'Chuck Norris',
 		commandRateOutput: ({ author, userToRate, rate, emoji }) => `**${author}**, Uhm... le daría a **${userToRate}** un **${rate}**/100 ${emoji}`,
-		commandRateMyself: ['me quiero a mí misma mucho 😊', 'yo'],
+		commandRateMyself: ['Me quiero a mí misma mucho 😊', 'yo'],
+		commandRateOwners: ['Amo mucho a mis desarrolladores', 'mis desarrolladores'],
 		commandPunError: 'Something went wrong. Try again later.',
 		commandXkcdComics: ({ amount }) => `Hay ${amount} comics.`,
 		commandXkcdNotfound:
@@ -3592,11 +3597,6 @@ export default class extends Language {
 
 		commandPermissions: ({ username, id }) => `Permissions for ${username} (${id})`,
 		commandPermissionsAll: 'All Permissions',
-		commandRaidDisabled: 'The Anti-RAID system is not enabled in this server.',
-		commandRaidMissingKick: `As I do not have the **${this.PERMISSIONS.KICK_MEMBERS}** permission, I will keep the Anti-RAID unactivated.`,
-		commandRaidList: 'List of users in the RAID queue',
-		commandRaidClear: 'Successfully cleared the RAID list.',
-		commandRaidCool: 'Successfully deactivated the RAID.',
 		commandFlow: ({ amount }) => `${amount} messages have been sent within the last minute.`,
 		commandTimeTimed: 'The selected moderation case has already been timed.',
 		commandTimeUndefinedTime: 'You must specify a time.',
@@ -3616,6 +3616,16 @@ export default class extends Language {
 		commandSlowmodeSet: ({ cooldown }) => `The cooldown for this channel has been set to ${this.duration(cooldown)}.`,
 		commandSlowmodeReset: 'The cooldown for this channel has been reset.',
 		commandSlowmodeTooLong: `${REDCROSS} The maximum amount of time you can set is 6 hours.`,
+		commandTimeDescription: 'Set the timer.',
+		commandTimeExtended: {
+			extendedHelp: 'Updates the timer for a moderation case..',
+			explainedUsage: [
+				['cancel', 'Whether or not you want to cancel the timer.'],
+				['case', 'The case you want to update'],
+				['timer', 'The timer, ignored if `cancel` was defined.']
+			],
+			examples: ['cancel 1234', '1234 6h']
+		},
 		commandBanNotBannable: 'The target is not bannable for me.',
 		commandDehoistStarting: ({ count }) => `I will start dehoisting ${count} members...`,
 		commandDehoistProgress: ({ count, percentage }) => `Dehoisted ${count} members so far! (${percentage}%)`,
@@ -3837,6 +3847,7 @@ export default class extends Language {
 		 */
 
 		commandStarNostars: 'There is no starred message.',
+		commandStarNoChannel: `I'm sorry, but a starboard channel hasn't been set up.`,
 		commandStarStats: 'Starboard Stats',
 		commandStarMessages: ({ count }) => `${count} message`,
 		commandStarMessagesPlural: ({ count }) => `${count} messages`,
@@ -4733,8 +4744,6 @@ export default class extends Language {
 
 		serializerAutoRoleInvalid: 'Invalid autorole data.',
 		serializerCommandAutoDeleteInvalid: 'Invalid command auto-delete data.',
-		serializerCustomCommandInvalid: 'Invalid custom command data.',
-		serializerDisabledCommandChannelInvalid: 'Invalid disabled command channel data.',
 		serializerPermissionNodeDuplicatedCommand: ({ command }) => `You have set \`${command}\` twice, either allow it, or deny it.`,
 		serializerPermissionNodeInvalidCommand: ({ command }) => `The command \`${command}\` does not exist or is invalid.`,
 		serializerPermissionNodeInvalidTarget: 'No data could be found from the ID.',
@@ -4747,9 +4756,18 @@ export default class extends Language {
 		serializerStickyRoleInvalid: 'Invalid sticky role data.',
 		serializerTriggerAliasInvalid: 'Invalid trigger alias data.',
 		serializerTriggerIncludeInvalid: 'Invalid trigger includes data.',
+		serializerTriggerIncludeInvalidAction: 'Invalid trigger action.',
 		serializerTwitchSubscriptionInvalidStreamer: 'Invalid data streamer.',
 		serializerTwitchSubscriptionInvalid: 'Invalid data.',
 		serializerUniqueRoleSetInvalid: 'Invalid unique role set data.',
+		serializerUnsupported: 'This configuration key cannot be updated via Discord at the moment, please use the dashboard at <https://skyra.pw>!',
+		serializerCustomCommandInvalidId: 'The property "id" must be a string.',
+		serializerCustomCommandInvalidEmbed: 'The property "embed" must be a boolean.',
+		serializerCustomCommandInvalidColor: 'The property "color" must be a number.',
+		serializerCustomCommandInvalidContent: 'The property "content" must be a string.',
+		serializerCustomCommandInvalidArgs: 'The property "args" must be an array of strings.',
+		serializerDisabledCommandChannelsChannelsDoesNotExist: 'The channel does not exist.',
+		serializerDisabledCommandChannelsChannelsCommandDoesNotExist: ({ name }) => `The command \`${name}\` does not exist.`,
 
 		/**
 		 * #################################
@@ -4965,7 +4983,6 @@ export default class extends Language {
 
 		eventsGuildMemberAdd: 'Nuevo Usuario',
 		eventsGuildMemberAddMute: 'Nuevo Usuario Muteado',
-		eventsGuildMemberAddRaid: 'RAID Detectado',
 		eventsGuildMemberAddDescription: ({ mention, time }) => `${mention} | **Se Unió a Discord**: Hace ${this.duration(time, 2)}.`,
 		eventsGuildMemberRemove: 'Usuario Salió',
 		eventsGuildMemberKicked: 'Usuario Pateado',

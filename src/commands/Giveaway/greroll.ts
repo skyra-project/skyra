@@ -1,45 +1,45 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { kRawEmoji } from '@lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { kRawEmoji } from '@orm/entities/GiveawayEntity';
 import { CLIENT_ID } from '@root/config';
+import { ApplyOptions } from '@skyra/decorators';
 import { fetchReactionUsers, resolveEmoji } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, HTTPError, Message } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 import { FetchError } from 'node-fetch';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['gr', 'groll'],
+	description: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollExtended),
+	requiredPermissions: ['READ_MESSAGE_HISTORY'],
+	runIn: ['text'],
+	usage: '[winners:number{1,100}] [message:message]',
+	usageDelim: ' '
+})
 export default class extends SkyraCommand {
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kResolvedEmoji = resolveEmoji(kRawEmoji)!;
 
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['gr', 'groll'],
-			description: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollExtended),
-			requiredPermissions: ['READ_MESSAGE_HISTORY'],
-			runIn: ['text'],
-			usage: '[winners:number{1,100}] [message:message]',
-			usageDelim: ' '
-		});
-	}
-
-	public async run(message: KlasaMessage, [winnerAmount = 1, rawTarget]: [number, KlasaMessage | undefined]) {
-		const target = await this.resolveMessage(message, rawTarget);
+	public async run(message: GuildMessage, [winnerAmount = 1, rawTarget]: [number, GuildMessage | undefined]) {
+		const language = await message.fetchLanguage();
+		const target = await this.resolveMessage(message, rawTarget, language);
 		const { title } = target.embeds[0];
 		const winners = await this.pickWinners(target, winnerAmount);
 		const content = winners
-			? message.language.get(LanguageKeys.Giveaway.EndedMessage, {
+			? language.get(LanguageKeys.Giveaway.EndedMessage, {
 					winners: winners.map((winner) => `<@${winner}>`),
 					title: title!
 			  })
-			: message.language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
+			: language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
 		return message.sendMessage(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
-	private async resolveMessage(message: KlasaMessage, rawTarget: KlasaMessage | undefined) {
+	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined, language: Language) {
 		const target = rawTarget
 			? // If rawMessage is defined then we check everything sans the colour
 			  this.validateMessage(rawTarget)
@@ -47,11 +47,11 @@ export default class extends SkyraCommand {
 				: null
 			: // If rawTarget was undefined then we fetch it from the API and we check embed colour
 			  (await message.channel.messages.fetch({ limit: 100 })).find((msg) => this.validatePossibleMessage(msg)) || null;
-		if (target) return target as KlasaMessage;
-		throw message.language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
+		if (target) return target as GuildMessage;
+		throw language.get(LanguageKeys.Commands.Giveaway.GiveawayRerollInvalid);
 	}
 
-	private async pickWinners(message: KlasaMessage, winnerAmount: number) {
+	private async pickWinners(message: GuildMessage, winnerAmount: number) {
 		const participants = await this.fetchParticipants(message);
 		if (participants.length < winnerAmount) return null;
 
@@ -63,7 +63,7 @@ export default class extends SkyraCommand {
 		return participants.slice(0, winnerAmount);
 	}
 
-	private async fetchParticipants(message: KlasaMessage): Promise<string[]> {
+	private async fetchParticipants(message: GuildMessage): Promise<string[]> {
 		try {
 			const users = await fetchReactionUsers(message.client, message.channel.id, message.id, this.#kResolvedEmoji);
 			users.delete(CLIENT_ID);

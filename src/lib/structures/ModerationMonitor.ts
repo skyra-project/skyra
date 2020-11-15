@@ -1,43 +1,40 @@
+import { AdderKey, GuildEntity, GuildSettings } from '@lib/database';
+import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { CustomFunctionGet, CustomGet } from '@lib/types/Shared';
 import { CLIENT_ID } from '@root/config';
-import { Adder, AdderError } from '@utils/Adder';
+import { Awaited } from '@sapphire/utilities';
+import { AdderError } from '@utils/Adder';
 import { MessageLogsEnum } from '@utils/constants';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { floatPromise } from '@utils/util';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
-import { KlasaMessage, Monitor } from 'klasa';
+import { KlasaMessage, Language, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
+		if (!(await this.checkPreRun(message))) return;
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const preProcessed = await this.preProcess(message);
 		if (preProcessed === null) return;
 
-		const filter = message.guild!.settings.get(this.softPunishmentPath);
+		const [filter, adder, language] = await message.guild.readSettings((settings) => [
+			settings[this.softPunishmentPath],
+			settings.adders[this.hardPunishmentPath.adder],
+			settings.getLanguage()
+		]);
 		const bitField = new SelfModeratorBitField(filter);
-		this.processSoftPunishment(message, bitField, preProcessed);
+		this.processSoftPunishment(message, language, bitField, preProcessed);
 
 		if (this.hardPunishmentPath === null) return;
 
-		const maximum = message.guild!.settings.get(this.hardPunishmentPath.adderMaximum);
-		if (!maximum) return this.processHardPunishment(message, 0, 0);
-
-		const duration = message.guild!.settings.get(this.hardPunishmentPath.adderDuration);
-		if (!duration) return this.processHardPunishment(message, 0, 0);
-
-		const $adder = this.hardPunishmentPath.adder;
-		if (message.guild!.security.adders[$adder] === null) {
-			message.guild!.security.adders[$adder] = new Adder(maximum, duration, true);
-		}
+		if (!adder) return this.processHardPunishment(message, language, 0, 0);
 
 		const points = typeof preProcessed === 'number' ? preProcessed : 1;
 		try {
-			message.guild!.security.adders[$adder]!.add(message.author.id, points);
+			adder.add(message.author.id, points);
 		} catch (error) {
-			await this.processHardPunishment(message, (error as AdderError).amount, maximum);
+			await this.processHardPunishment(message, language, (error as AdderError).amount, adder.maximum);
 		}
 	}
 
@@ -49,149 +46,160 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.webhookID === null &&
 			message.type === 'DEFAULT' &&
 			message.author.id !== CLIENT_ID &&
-			!message.author.bot &&
-			message.guild.settings.get(this.keyEnabled) &&
-			this.checkMessageChannel(message.channel as TextChannel) &&
-			this.checkMemberRoles(message.member)
+			!message.author.bot
 		);
 	}
 
-	protected processSoftPunishment(message: KlasaMessage, bitField: SelfModeratorBitField, preProcessed: T) {
-		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) this.onDelete(message, preProcessed);
-		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && message.channel.postable) this.onAlert(message, preProcessed);
-		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) this.onLog(message, preProcessed);
+	protected processSoftPunishment(message: GuildMessage, language: Language, bitField: SelfModeratorBitField, preProcessed: T) {
+		if (bitField.has(SelfModeratorBitField.FLAGS.DELETE) && message.deletable) {
+			floatPromise(this, this.onDelete(message, language, preProcessed) as any);
+		}
+
+		if (bitField.has(SelfModeratorBitField.FLAGS.ALERT) && message.channel.postable) {
+			floatPromise(this, this.onAlert(message, language, preProcessed) as any);
+		}
+
+		if (bitField.has(SelfModeratorBitField.FLAGS.LOG)) {
+			floatPromise(this, this.onLog(message, language, preProcessed) as any);
+		}
 	}
 
-	protected async processHardPunishment(message: KlasaMessage, points: number, maximum: number) {
-		const action = message.guild!.settings.get(this.hardPunishmentPath!.action);
+	protected async processHardPunishment(message: GuildMessage, language: Language, points: number, maximum: number) {
+		const [action, duration] = await message.guild.readSettings([this.hardPunishmentPath.action, this.hardPunishmentPath.actionDuration]);
 		switch (action) {
 			case SelfModeratorHardActionFlags.Warning:
-				await this.onWarning(message, points, maximum);
+				await this.onWarning(message, language, points, maximum, duration);
 				break;
 			case SelfModeratorHardActionFlags.Kick:
-				await this.onKick(message, points, maximum);
+				await this.onKick(message, language, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.Mute:
-				await this.onMute(message, points, maximum);
+				await this.onMute(message, language, points, maximum, duration);
 				break;
 			case SelfModeratorHardActionFlags.SoftBan:
-				await this.onSoftBan(message, points, maximum);
+				await this.onSoftBan(message, language, points, maximum);
 				break;
 			case SelfModeratorHardActionFlags.Ban:
-				await this.onBan(message, points, maximum);
+				await this.onBan(message, language, points, maximum, duration);
 				break;
 		}
 	}
 
-	protected async onWarning(message: KlasaMessage, points: number, maximum: number) {
+	protected async onWarning(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.warning({
+			message.guild.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				reason:
 					maximum === 0
-						? message.language.get(this.reasonLanguageKey)
-						: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
+						? language.get(this.reasonLanguageKey)
+						: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				duration
 			})
 		);
 	}
 
-	protected async onKick(message: KlasaMessage, points: number, maximum: number) {
+	protected async onKick(message: GuildMessage, language: Language, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.kick({
+			message.guild.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				reason:
 					maximum === 0
-						? message.language.get(this.reasonLanguageKey)
-						: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+						? language.get(this.reasonLanguageKey)
+						: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 			})
 		);
 	}
 
-	protected async onMute(message: KlasaMessage, points: number, maximum: number) {
+	protected async onMute(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.mute({
+			message.guild.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
 				reason:
 					maximum === 0
-						? message.language.get(this.reasonLanguageKey)
-						: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-				duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
+						? language.get(this.reasonLanguageKey)
+						: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				duration
 			})
 		);
 	}
 
-	protected async onSoftBan(message: KlasaMessage, points: number, maximum: number) {
+	protected async onSoftBan(message: GuildMessage, language: Language, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.softBan(
+			message.guild.security.actions.softBan(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
 					reason:
 						maximum === 0
-							? message.language.get(this.reasonLanguageKey)
-							: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+							? language.get(this.reasonLanguageKey)
+							: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 				},
 				1
 			)
 		);
 	}
 
-	protected async onBan(message: KlasaMessage, points: number, maximum: number) {
+	protected async onBan(message: GuildMessage, language: Language, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
-			message.guild!.security.actions.ban(
+			message.guild.security.actions.ban(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
 					reason:
 						maximum === 0
-							? message.language.get(this.reasonLanguageKey)
-							: message.language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
-					duration: message.guild!.settings.get(this.hardPunishmentPath!.actionDuration)
+							? language.get(this.reasonLanguageKey)
+							: language.get(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+					duration
 				},
 				0
 			)
 		);
 	}
 
-	protected async createActionAndSend(message: KlasaMessage, performAction: () => unknown): Promise<void> {
-		const unlock = message.guild!.moderation.createLock();
+	protected async createActionAndSend(message: GuildMessage, performAction: () => unknown): Promise<void> {
+		const unlock = message.guild.moderation.createLock();
 		await performAction();
 		unlock();
 	}
 
-	protected onLog(message: KlasaMessage, value: T) {
-		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, value));
+	protected onLog(message: GuildMessage, language: Language, value: T): Awaited<void> {
+		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Moderation, message.guild, this.onLogMessage.bind(this, message, language, value));
 	}
 
-	protected abstract keyEnabled: CustomGet<string, boolean>;
-	protected abstract ignoredRolesPath: CustomGet<string, readonly string[]>;
-	protected abstract ignoredChannelsPath: CustomGet<string, readonly string[]>;
-	protected abstract softPunishmentPath: CustomGet<string, number>;
-	protected abstract hardPunishmentPath: HardPunishment | null;
+	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
+	protected abstract ignoredRolesPath: KeyOfType<GuildEntity, readonly string[]>;
+	protected abstract ignoredChannelsPath: KeyOfType<GuildEntity, readonly string[]>;
+	protected abstract softPunishmentPath: KeyOfType<GuildEntity, number>;
+	protected abstract hardPunishmentPath: HardPunishment;
 	protected abstract reasonLanguageKey: CustomGet<string, string>;
 
 	protected abstract reasonLanguageKeyWithMaximum: CustomFunctionGet<string, { amount: number; maximum: number }, string>;
 
-	protected abstract preProcess(message: KlasaMessage): Promise<T | null> | T | null;
-	protected abstract onDelete(message: KlasaMessage, value: T): unknown;
-	protected abstract onAlert(message: KlasaMessage, value: T): unknown;
-	protected abstract onLogMessage(message: KlasaMessage, value: T): MessageEmbed;
+	protected abstract preProcess(message: GuildMessage): Promise<T | null> | T | null;
+	protected abstract onDelete(message: GuildMessage, language: Language, value: T): Awaited<unknown>;
+	protected abstract onAlert(message: GuildMessage, language: Language, value: T): Awaited<unknown>;
+	protected abstract onLogMessage(message: GuildMessage, language: Language, value: T): Awaited<MessageEmbed>;
 
-	private checkMessageChannel(channel: TextChannel) {
-		return !(
-			channel.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(channel.id) ||
-			channel.guild.settings.get(this.ignoredChannelsPath).includes(channel.id)
+	private checkPreRun(message: GuildMessage) {
+		return message.guild.readSettings(
+			(settings) =>
+				settings[this.keyEnabled] &&
+				this.checkMessageChannel(settings, message.channel as TextChannel) &&
+				this.checkMemberRoles(settings, message.member)
 		);
 	}
 
-	private checkMemberRoles(member: GuildMember | null) {
+	private checkMessageChannel(settings: GuildEntity, channel: TextChannel) {
+		return !(settings[GuildSettings.Selfmod.IgnoreChannels].includes(channel.id) || settings[this.ignoredChannelsPath].includes(channel.id));
+	}
+
+	private checkMemberRoles(settings: GuildEntity, member: GuildMember | null) {
 		if (member === null) return false;
 
-		const ignoredRoles = member.guild.settings.get(this.ignoredRolesPath);
+		const ignoredRoles = settings[this.ignoredRolesPath];
 		if (ignoredRoles.length === 0) return true;
 
 		const { roles } = member;
@@ -200,9 +208,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 }
 
 export interface HardPunishment {
-	action: CustomGet<string, SelfModeratorHardActionFlags>;
-	actionDuration: CustomGet<string, number | null>;
-	adder: keyof GuildSecurity['adders'];
-	adderMaximum: CustomGet<string, number | null>;
-	adderDuration: CustomGet<string, number | null>;
+	action: KeyOfType<GuildEntity, number>;
+	actionDuration: KeyOfType<GuildEntity, number | null>;
+	adder: AdderKey;
 }

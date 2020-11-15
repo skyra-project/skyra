@@ -1,6 +1,7 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { chunk, isFunction } from '@sapphire/utilities';
@@ -27,7 +28,7 @@ export default class extends SkyraCommand {
 	public readonly playing: Set<string> = new Set();
 	public readonly kEmojis = ['🇳', '🇾'];
 
-	public async run(message: KlasaMessage, tributes: string[] = []) {
+	public async run(message: GuildMessage, tributes: string[] = []) {
 		const autoFilled = message.flagArgs.autofill;
 		const autoSkip = message.flagArgs.autoskip;
 
@@ -38,17 +39,20 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			throw message.language.get(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix: message.guild!.settings.get(GuildSettings.Prefix) });
+			const [prefix, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+
+			throw language.get(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
 		}
 
 		const filtered = new Set(tributes);
-		if (filtered.size !== tributes.length) throw message.language.get(LanguageKeys.Commands.Games.GamesRepeat);
-		if (this.playing.has(message.channel.id)) throw message.language.get(LanguageKeys.Commands.Games.GamesProgress);
-		if (filtered.size < 4 || filtered.size > 48) throw message.language.get(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
+		const language = await message.fetchLanguage();
+		if (filtered.size !== tributes.length) throw language.get(LanguageKeys.Commands.Games.GamesRepeat);
+		if (this.playing.has(message.channel.id)) throw language.get(LanguageKeys.Commands.Games.GamesProgress);
+		if (filtered.size < 4 || filtered.size > 48) throw language.get(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value?: boolean) => void) | null = null;
-		let gameMessage: KlasaMessage | null = null;
+		let gameMessage: GuildMessage | null = null;
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,
 			llrc: new LongLivingReactionCollector(
@@ -70,7 +74,7 @@ export default class extends SkyraCommand {
 				}
 			),
 			sun: true,
-			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message.guild!))),
+			tributes: this.shuffle([...filtered].map(cleanMentions.bind(null, message.guild))),
 			turn: 0
 		});
 
@@ -85,8 +89,8 @@ export default class extends SkyraCommand {
 					: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, message.language.get(events).map(HungerGamesUsage.create));
-				const texts = this.buildTexts(message.language, game, results, deaths);
+				const { results, deaths } = this.makeResultEvents(game, language.get(events).map(HungerGamesUsage.create));
+				const texts = this.buildTexts(language, game, results, deaths);
 
 				// Ask for the user to proceed:
 				for (const text of texts) {
@@ -95,7 +99,7 @@ export default class extends SkyraCommand {
 
 					// Refresh the LLRC's timer, send new message with new reactions:
 					game.llrc.setTime(Time.Minute * 2);
-					gameMessage = (await message.channel.send(text)) as KlasaMessage;
+					gameMessage = (await message.channel.send(text)) as GuildMessage;
 					for (const emoji of ['🇾', '🇳']) {
 						await gameMessage.react(emoji);
 					}
@@ -126,7 +130,7 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private async collectorInhibitor(message: KlasaMessage, gameMessage: KlasaMessage, reaction: LLRCData) {
+	private async collectorInhibitor(message: GuildMessage, gameMessage: GuildMessage, reaction: LLRCData) {
 		// If there's no gameMessage, inhibit
 		if (!gameMessage) return true;
 
@@ -144,7 +148,7 @@ export default class extends SkyraCommand {
 
 		try {
 			// Fetch the member for level measuring purposes
-			const member = await message.guild!.members.fetch(reaction.userID);
+			const member = await message.guild.members.fetch(reaction.userID);
 			// Check if the user is a moderator
 			const hasLevel = await KlasaMessage.prototype.hasAtLeastPermissionLevel.call(
 				{
@@ -174,9 +178,7 @@ export default class extends SkyraCommand {
 					deaths.length === 1
 						? LanguageKeys.Commands.Games.HungerGamesResultDeaths
 						: LanguageKeys.Commands.Games.HungerGamesResultDeathsPlural,
-					{
-						deaths: deaths.length
-					}
+					{ deaths: deaths.length }
 			  )}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
 			: '';
 		const proceed = language.get(LanguageKeys.Commands.Games.HungerGamesResultProceed);

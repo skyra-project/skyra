@@ -1,6 +1,7 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
@@ -8,7 +9,7 @@ import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
 import { pickRandom } from '@utils/util';
 import { EmbedField, MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['finalfantasy'],
@@ -17,41 +18,45 @@ import { KlasaMessage, Language } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.FFXIVExtended),
 	flagSupport: true,
 	subcommands: true,
-	usage: '(item|character:default) <search:...string> ',
+	usage: '<item|character:default> <search:...string>',
 	usageDelim: ' '
 })
 export default class extends RichDisplayCommand {
-	public async character(message: KlasaMessage, [name]: [string]) {
+	public async character(message: GuildMessage, [name]: [string]) {
+		const language = await message.fetchLanguage();
+
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const characterDetails = await this.fetchCharacter(message.language, name, Reflect.get(message.flagArgs, 'server'));
-		const display = await this.buildCharacterDisplay(message, characterDetails.Character);
+		const characterDetails = await this.fetchCharacter(language, name, Reflect.get(message.flagArgs, 'server'));
+		const display = await this.buildCharacterDisplay(message, language, characterDetails.Character);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	public async item(message: KlasaMessage, [item]: [string]) {
+	public async item(message: GuildMessage, [item]: [string]) {
+		const language = await message.fetchLanguage();
+
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const itemDetails = await this.fetchItems(message.language, item);
-		const display = await this.buildItemDisplay(message, itemDetails);
+		const itemDetails = await this.fetchItems(language, item);
+		const display = await this.buildItemDisplay(message, language, itemDetails);
 
 		await display.start(response, message.author.id);
 
 		return response;
 	}
 
-	private async fetchCharacter(i18n: Language, name: string, server?: string) {
-		const searchResult = await searchCharacter(i18n, name, server);
+	private async fetchCharacter(language: Language, name: string, server?: string) {
+		const searchResult = await searchCharacter(language, name, server);
 
-		if (!searchResult.Results.length) throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
+		if (!searchResult.Results.length) throw language.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 
-		return getCharacterDetails(i18n, searchResult.Results[0].ID);
+		return getCharacterDetails(language, searchResult.Results[0].ID);
 	}
 
 	private async fetchItems(i18n: Language, item: string) {
@@ -62,7 +67,7 @@ export default class extends RichDisplayCommand {
 		return searchResult.Results;
 	}
 
-	private async buildCharacterDisplay(message: KlasaMessage, character: FFXIV.Character) {
+	private async buildCharacterDisplay(message: GuildMessage, language: Language, character: FFXIV.Character) {
 		const {
 			discipleOfTheHandJobs,
 			discipleOfTheLandJobs,
@@ -73,7 +78,7 @@ export default class extends RichDisplayCommand {
 			tankClassValues
 		} = this.parseCharacterClasses(character.ClassJobs);
 
-		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
+		const titles = language.get(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -134,8 +139,8 @@ export default class extends RichDisplayCommand {
 		return display;
 	}
 
-	private async buildItemDisplay(message: KlasaMessage, items: FFXIV.ItemSearchResult[]) {
-		const titles = message.language.get(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
+	private async buildItemDisplay(message: GuildMessage, language: Language, items: FFXIV.ItemSearchResult[]) {
+		const titles = language.get(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

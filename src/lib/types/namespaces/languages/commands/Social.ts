@@ -1,7 +1,7 @@
-import { FT, T } from '@lib/types/Shared';
-import { ScheduleEntity } from '@orm/entities/ScheduleEntity';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import { Role, User } from 'discord.js';
+import type { ScheduleEntity } from '@lib/database';
+import { FT, T } from '@lib/types';
+import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import type { Role, User } from 'discord.js';
 
 export interface LevelTitles {
 	experience: string;
@@ -45,7 +45,7 @@ export const BannerReset = T<string>('commandBannerReset');
 export const BannerResetDefault = T<string>('commandBannerResetDefault');
 export const BannerSet = FT<{ banner: string }, string>('commandBannerSet');
 export const BannerSetNotBought = T<string>('commandBannerSetNotBought');
-export const BannerUserlistEmpty = FT<{ prefix: string }, string>('commandBannerUserlistEmpty');
+export const BannerUserListEmpty = FT<{ prefix: string }, string>('commandBannerUserlistEmpty');
 export const DailyCollect = T<string>('commandDailyCollect');
 export const DailyDescription = T<string>('commandDailyDescription');
 export const DailyExtended = T<LanguageHelpDisplayOptions>('commandDailyExtended');

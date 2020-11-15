@@ -11,7 +11,7 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
-		const content = message.language.get(LanguageKeys.Commands.General.InfoBody).join('\n');
+		const content = (await message.fetchLocale(LanguageKeys.Commands.General.InfoBody)).join('\n');
 		return message.send(content);
 	}
 }

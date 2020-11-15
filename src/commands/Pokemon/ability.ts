@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CdnUrls } from '@lib/types/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -6,7 +6,7 @@ import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetchGraphQLPokemon, getAbilityDetailsByFuzzy, parseBulbapediaURL } from '@utils/Pokemon';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['abilities', 'pokeability'],
@@ -18,33 +18,36 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
-		const abilityDetails = await this.fetchAPI(message, ability.toLowerCase());
+		const language = await message.fetchLanguage();
+		const abilityDetails = await this.fetchAPI(language, ability.toLowerCase());
+		const embedTitles = language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
 
-		return message.sendEmbed(
-			new MessageEmbed()
-				.setColor(await DbSet.fetchColor(message))
-				.setAuthor(
-					`${message.language.get(LanguageKeys.Commands.Pokemon.AbilityEmbedTitle)} - ${toTitleCase(abilityDetails.name)}`,
-					CdnUrls.Pokedex
-				)
-				.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
-				.addField(
-					message.language.get(LanguageKeys.System.PokedexExternalResource),
-					[
-						`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
-						`[Serebii](${abilityDetails.serebiiPage})`,
-						`[Smogon](${abilityDetails.smogonPage})`
-					].join(' | ')
-				)
-		);
+		const embed = new MessageEmbed()
+			.setColor(await DbSet.fetchColor(message))
+			.setAuthor(`${embedTitles.authorTitle} - ${toTitleCase(abilityDetails.name)}`, CdnUrls.Pokedex)
+			.setDescription(abilityDetails.desc || abilityDetails.shortDesc)
+			.addField(
+				language.get(LanguageKeys.System.PokedexExternalResource),
+				[
+					`[Bulbapedia](${parseBulbapediaURL(abilityDetails.bulbapediaPage)} )`,
+					`[Serebii](${abilityDetails.serebiiPage})`,
+					`[Smogon](${abilityDetails.smogonPage})`
+				].join(' | ')
+			);
+
+		if (abilityDetails.isFieldAbility) {
+			embed.spliceFields(0, 0, { name: embedTitles.fieldEffectTitle, value: abilityDetails.isFieldAbility, inline: false });
+		}
+
+		return message.sendEmbed(embed);
 	}
 
-	private async fetchAPI(message: KlasaMessage, ability: string) {
+	private async fetchAPI(language: Language, ability: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getAbilityDetailsByFuzzy'>(getAbilityDetailsByFuzzy, { ability });
 			return data.getAbilityDetailsByFuzzy;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
+			throw language.get(LanguageKeys.Commands.Pokemon.AbilityQueryFail, { ability });
 		}
 	}
 }

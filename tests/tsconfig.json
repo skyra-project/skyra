@@ -7,7 +7,6 @@
 		"incremental": false,
 		"baseUrl": ".",
 		"paths": {
-			"@orm/*": ["../src/lib/orm/*"],
 			"@utils/*": ["../src/lib/util/*"],
 			"@lib/*": ["../src/lib/*"],
 			"@mocks/*": ["./mocks/*"],

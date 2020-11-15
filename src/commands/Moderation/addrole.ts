@@ -1,10 +1,10 @@
 import { CommandContext, HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { getImage } from '@utils/util';
 import { Role, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ar'],
@@ -28,8 +28,8 @@ export default class extends ModerationCommand {
 		};
 	}
 
-	protected async handle(message: KlasaMessage, context: HandledCommandContext & { role: Role }) {
-		return message.guild!.security.actions.addRole(
+	protected async handle(message: GuildMessage, context: HandledCommandContext & { role: Role }) {
+		return message.guild.security.actions.addRole(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,

@@ -1,7 +1,8 @@
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -17,10 +18,10 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	public async run(message: KlasaMessage, [nickname = '']: [string?]) {
-		await message.guild!.me!.setNickname(nickname);
+	public async run(message: GuildMessage, [nickname = '']: [string?]) {
+		await message.guild.me!.setNickname(nickname);
 		return nickname
-			? message.alert(message.language.get(LanguageKeys.Commands.Management.NickSet, { nickname }))
-			: message.alert(message.language.get(LanguageKeys.Commands.Management.NickCleared));
+			? message.alert(await message.fetchLocale(LanguageKeys.Commands.Management.NickSet, { nickname }))
+			: message.alert(await message.fetchLocale(LanguageKeys.Commands.Management.NickCleared));
 	}
 }

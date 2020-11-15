@@ -1,16 +1,31 @@
-import { RolesAuto } from '@lib/types/namespaces/GuildSettings';
+import { RolesAuto, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isObject } from '@sapphire/utilities';
-import { Serializer, SerializerUpdateContext } from 'klasa';
+import { Awaited, isObject } from '@sapphire/utilities';
 
-export default class extends Serializer {
-	public validate(data: RolesAuto, { language }: SerializerUpdateContext) {
-		if (isObject(data) && Object.keys(data).length === 2 && typeof data.id === 'string' && typeof data.points === 'number') return data;
+export default class UserSerializer extends Serializer<RolesAuto> {
+	public parse(value: string, context: SerializerUpdateContext) {
+		const [id, rawPoints] = value.split(' ');
+		if (!id || !context.guild.roles.cache.has(id)) {
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidRole, { name: 'role' }));
+		}
 
-		throw language.get(LanguageKeys.Serializers.AutoRoleInvalid);
+		const points = Number(rawPoints);
+		if (!Number.isSafeInteger(points)) {
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: 'points' }));
+		}
+
+		return this.ok({ id, points });
 	}
 
-	public stringify(value: RolesAuto) {
+	public isValid(value: RolesAuto): Awaited<boolean> {
+		return isObject(value) && Object.keys(value).length === 2 && typeof value.id === 'string' && typeof value.points === 'number';
+	}
+
+	public stringify(value: RolesAuto): string {
 		return `[${value.id} -> ${value.points.toLocaleString()}]`;
+	}
+
+	public equals(left: RolesAuto, right: RolesAuto): boolean {
+		return left.id === right.id && left.points === right.points;
 	}
 }

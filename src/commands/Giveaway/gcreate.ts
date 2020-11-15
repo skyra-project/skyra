@@ -1,9 +1,9 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { Schedules } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const YEAR = 1000 * 60 * 60 * 24 * 365;
 
@@ -20,15 +20,15 @@ const YEAR = 1000 * 60 * 60 * 24 * 365;
 })
 export default class extends SkyraCommand {
 	public async run(
-		message: KlasaMessage,
+		message: GuildMessage,
 		[channel = message.channel as TextChannel, schedule, duration, title]: [TextChannel, Date, Date, string]
 	) {
 		// First do the checks for the giveaway itself
 		const scheduleOffset = schedule.getTime() - Date.now();
 		const durationOffset = duration.getTime() - Date.now();
 
-		if (durationOffset < 9500 || scheduleOffset < 9500) throw message.language.get(LanguageKeys.Giveaway.Time);
-		if (durationOffset > YEAR || scheduleOffset > YEAR) throw message.language.get(LanguageKeys.Giveaway.TimeTooLong);
+		if (durationOffset < 9500 || scheduleOffset < 9500) throw await message.fetchLocale(LanguageKeys.Giveaway.Time);
+		if (durationOffset > YEAR || scheduleOffset > YEAR) throw await message.fetchLocale(LanguageKeys.Giveaway.TimeTooLong);
 
 		// Resolve the amount of winners the giveaway will have
 		let winners = Number(message.flagArgs.winners) ? parseInt(message.flagArgs.winners, 10) : 1;
@@ -38,7 +38,7 @@ export default class extends SkyraCommand {
 			data: {
 				title,
 				endsAt: duration.getTime() + scheduleOffset + 500,
-				guildID: message.guild!.id,
+				guildID: message.guild.id,
 				channelID: channel.id,
 				minimum: 1,
 				minimumWinners: winners

@@ -12,21 +12,20 @@ import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	public async run(message: GuildMessage, [index]: [number]) {
+		const language = await message.fetchLanguage();
+
 		// Minus one as user input is 1-based while the code is 0-based:
 		--index;
 
-		if (index < 0) throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
+		if (index < 0) throw language.get(LanguageKeys.Commands.Music.RemoveIndexInvalid);
 
 		const { audio } = message.guild;
 		const count = await audio.count();
 		if (index >= count) {
-			throw message.language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
-				songs: message.language.get(
-					count === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
-					{
-						count
-					}
-				)
+			throw language.get(LanguageKeys.Commands.Music.RemoveIndexOutOfBounds, {
+				songs: language.get(count === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural, {
+					count
+				})
 			});
 		}
 

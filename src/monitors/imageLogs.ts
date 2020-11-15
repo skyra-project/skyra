@@ -1,6 +1,7 @@
+import { GuildSettings } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { isNumber } from '@sapphire/utilities';
@@ -16,7 +17,11 @@ const MAXIMUM_SIZE = 300;
 const MAXIMUM_LENGTH = 1024 * 1024;
 
 export default class extends Monitor {
-	public async run(message: KlasaMessage) {
+	public async run(message: GuildMessage) {
+		const [logChannel, ignoredChannels] = await message.guild.readSettings([GuildSettings.Channels.ImageLogs, GuildSettings.Channels.Ignore.All]);
+		if (logChannel === null || ignoredChannels.includes(message.channel.id)) return;
+
+		const language = await message.fetchLanguage();
 		for (const image of this.getAttachments(message)) {
 			const dimensions = this.getDimensions(image.width, image.height);
 
@@ -53,7 +58,7 @@ export default class extends Monitor {
 							`${message.author.tag} (${message.author.id})`,
 							message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 						)
-						.setDescription(`[${message.language.get(LanguageKeys.Misc.JumpTo)}](${message.url})`)
+						.setDescription(`[${language.get(LanguageKeys.Misc.JumpTo)}](${message.url})`)
 						.setFooter(`#${(message.channel as TextChannel).name}`)
 						.attachFiles([new MessageAttachment(buffer, filename)])
 						.setImage(`attachment://${filename}`)
@@ -73,13 +78,11 @@ export default class extends Monitor {
 			message.author !== null &&
 			message.webhookID === null &&
 			!message.system &&
-			message.author.id !== CLIENT_ID &&
-			message.guild.settings.get(GuildSettings.Channels.ImageLogs) !== null &&
-			!message.guild.settings.get(GuildSettings.Selfmod.IgnoreChannels).includes(message.channel.id)
+			message.author.id !== CLIENT_ID
 		);
 	}
 
-	private *getAttachments(message: KlasaMessage) {
+	private *getAttachments(message: GuildMessage) {
 		for (const attachment of message.attachments.values()) {
 			if (!IMAGE_EXTENSION.test(attachment.url)) continue;
 

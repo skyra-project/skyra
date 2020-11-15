@@ -1,10 +1,10 @@
 apps:
-  script: './dist/Skyra.js'
-  name: 'Skyra'
-  vizion: false
-  env:
-    ENABLE_LAVALINK: true
-  env_development:
-    DEV: true
-    ENABLE_LAVALINK: false
-    ENABLE_LOCAL_POKEDEX: true
+  - script: './dist/Skyra.js'
+    name: 'Skyra'
+    vizion: false
+    env:
+      ENABLE_LAVALINK: 'true'
+    env_development:
+      DEV: 'true'
+      ENABLE_LAVALINK: 'false'
+      ENABLE_LOCAL_POKEDEX: 'true'

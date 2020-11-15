@@ -1,22 +1,37 @@
+import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Guild } from 'discord.js';
-import { Serializer, SerializerUpdateContext } from 'klasa';
+import { Awaited } from '@sapphire/utilities';
 
-export default class extends Serializer {
-	public validate(data: [string, number], { language }: SerializerUpdateContext) {
-		if (
-			Array.isArray(data) &&
-			data.length === 2 &&
-			typeof data[0] === 'string' &&
-			typeof data[1] === 'number' &&
-			this.client.commands.has(data[0])
-		)
-			return data;
+export default class UserSerializer extends Serializer<CommandAutoDelete> {
+	public parse(value: string, context: SerializerUpdateContext) {
+		const [command, rawDuration] = value.split(' ');
+		if (!command) {
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidPiece, { name: context.entry.name, piece: 'command' }));
+		}
 
-		throw language.get(LanguageKeys.Serializers.CommandAutoDeleteInvalid);
+		const duration = Number(rawDuration);
+		if (!Number.isSafeInteger(duration) || duration < 0) {
+			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidDuration, { name: context.entry.name }));
+		}
+
+		return this.ok([command, duration] as const);
 	}
 
-	public stringify(value: [string, number], guild: Guild) {
-		return `[${value[0]} -> ${guild.language.duration(value[1], 2)}]`;
+	public isValid(value: CommandAutoDelete): Awaited<boolean> {
+		return (
+			Array.isArray(value) &&
+			value.length === 2 &&
+			typeof value[0] === 'string' &&
+			typeof value[1] === 'number' &&
+			this.client.commands.has(value[0])
+		);
+	}
+
+	public stringify(value: CommandAutoDelete, context: SerializerUpdateContext): string {
+		return `[${value[0]} -> ${context.language.duration(value[1], 2)}]`;
+	}
+
+	public equals(left: CommandAutoDelete, right: CommandAutoDelete): boolean {
+		return left[0] === right[0];
 	}
 }

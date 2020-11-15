@@ -1,10 +1,11 @@
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['lock', 'unlock'],
@@ -19,49 +20,55 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['MANAGE_CHANNELS', 'MANAGE_ROLES']
 })
 export default class extends SkyraCommand {
-	public auto(message: KlasaMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
-		return message.guild!.security.lockdowns.has(channel.id) ? this.unlock(message, [channel]) : this.lock(message, [channel, duration]);
+	public auto(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
+		return message.guild.security.lockdowns.has(channel.id) ? this.unlock(message, [channel]) : this.lock(message, [channel, duration]);
 	}
 
-	public unlock(message: KlasaMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
-		const entry = message.guild!.security.lockdowns.get(channel.id);
-		if (typeof entry === 'undefined')
-			throw message.language.get(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
-		return entry.timeout ? entry.timeout.stop() : this._unlock(message, channel);
+	public async unlock(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel]) {
+		const language = await message.fetchLanguage();
+		const entry = message.guild.security.lockdowns.get(channel.id);
+
+		if (typeof entry === 'undefined') {
+			throw language.get(LanguageKeys.Commands.Moderation.LockdownUnlocked, { channel: channel.toString() });
+		}
+
+		return entry.timeout ? entry.timeout.stop() : this._unlock(message, language, channel);
 	}
 
-	public async lock(message: KlasaMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
+	public async lock(message: GuildMessage, [channel = message.channel as TextChannel, duration]: [TextChannel, number?]) {
+		const language = await message.fetchLanguage();
+
 		// If there was a lockdown, abort lock
-		if (message.guild!.security.lockdowns.has(channel.id))
-			throw message.language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		if (message.guild.security.lockdowns.has(channel.id)) {
+			throw language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		}
 
 		// Get the role, then check if the user could send messages
-		const role = message.guild!.roles.cache.get(message.guild!.id)!;
+		const role = message.guild.roles.cache.get(message.guild.id)!;
 		const couldSend = channel.permissionsFor(role)?.has(Permissions.FLAGS.SEND_MESSAGES, false) ?? true;
-		if (!couldSend) throw message.language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
+		if (!couldSend) throw language.get(LanguageKeys.Commands.Moderation.LockdownLocked, { channel: channel.toString() });
 
 		// If they can send, begin locking
 		const response = await message.sendLocale(LanguageKeys.Commands.Moderation.LockdownLocking, [{ channel: channel.toString() }]);
 		await channel.updateOverwrite(role, { SEND_MESSAGES: false });
-		if (message.channel.postable)
-			await response
-				.edit(message.language.get(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() }))
-				.catch(() => null);
+		if (message.channel.postable) {
+			await response.edit(language.get(LanguageKeys.Commands.Moderation.LockdownLock, { channel: channel.toString() })).catch(() => null);
+		}
 
 		// Create the timeout
 		const timeout = duration ? new PreciseTimeout(duration) : null;
-		message.guild!.security.lockdowns.set(channel.id, { timeout });
+		message.guild.security.lockdowns.set(channel.id, { timeout });
 
 		// Perform cleanup later
 		if (timeout) {
 			await timeout.run();
-			await this._unlock(message, channel);
+			await this._unlock(message, language, channel);
 		}
 	}
 
-	private async _unlock(message: KlasaMessage, channel: TextChannel) {
+	private async _unlock(message: GuildMessage, language: Language, channel: TextChannel) {
 		channel.guild.security.lockdowns.delete(channel.id);
 		await channel.updateOverwrite(channel.guild.id, { SEND_MESSAGES: true });
-		return message.sendLocale(LanguageKeys.Commands.Moderation.LockdownOpen, [{ channel: channel.toString() }]);
+		return message.send(language.get(LanguageKeys.Commands.Moderation.LockdownOpen, { channel: channel.toString() }));
 	}
 }

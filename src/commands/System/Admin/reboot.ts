@@ -16,8 +16,8 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		await message.sendLocale(LanguageKeys.Commands.System.Reboot).catch((err) => this.client.emit(Events.ApiError, err));
 
-		try {
-			if (ENABLE_INFLUX) {
+		if (ENABLE_INFLUX) {
+			try {
 				this.client.emit(
 					Events.AnalyticsSync,
 					this.client.guilds.cache.size,
@@ -26,10 +26,10 @@ export default class extends SkyraCommand {
 
 				await this.client.analytics!.writeApi.flush();
 				await this.client.analytics!.writeApi.close();
+			} catch {
+				// noop
 			}
-
-			await Promise.all(this.client.providers.map((provider) => provider.shutdown()));
-		} catch {}
+		}
 
 		process.exit(0);
 	}

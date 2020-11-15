@@ -2,12 +2,10 @@
 // Source: https://github.com/dirigeants/klasa
 
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { Cron } from '@klasa/cron';
-import { TimerManager } from '@klasa/timer-manager';
+import { DbSet, ResponseType, ResponseValue, ScheduleEntity } from '@lib/database';
 import { Events } from '@lib/types/Enums';
-import { ResponseType, ResponseValue, ScheduleEntity } from '@orm/entities/ScheduleEntity';
+import { Cron, TimerManager } from '@sapphire/time-utilities';
 import { KlasaClient } from 'klasa';
-import { DbSet } from '../DbSet';
 
 export class ScheduleManager {
 	public readonly client: KlasaClient;
@@ -104,10 +102,12 @@ export class ScheduleManager {
 						response.entry.time = new Date(response.entry.time.getTime() + response.value);
 						updated.push(response.entry);
 						await queryRunner.manager.save(response.entry);
+						continue;
 					}
 					case ResponseType.Finished: {
 						removed.push(response.entry);
 						await queryRunner.manager.remove(response.entry);
+						continue;
 					}
 					case ResponseType.Ignore: {
 						continue;
@@ -169,7 +169,7 @@ export class ScheduleManager {
 	 */
 	private _checkInterval(): void {
 		if (!this.queue.length) this._clearInterval();
-		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule.interval!);
+		else if (!this.#interval) this.#interval = TimerManager.setInterval(this.execute.bind(this), this.client.options.schedule.interval);
 	}
 
 	/**

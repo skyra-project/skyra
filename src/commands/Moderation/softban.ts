@@ -1,11 +1,11 @@
+import { GuildSettings } from '@lib/database';
 import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ArgumentTypes, isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Moderation } from '@utils/constants';
 import { getImage } from '@utils/util';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sb'],
@@ -15,14 +15,13 @@ import { KlasaMessage } from 'klasa';
 	requiredPermissions: ['BAN_MEMBERS']
 })
 export default class extends ModerationCommand {
-	public prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
-		return message.guild!.settings.get(GuildSettings.Events.BanAdd) || message.guild!.settings.get(GuildSettings.Events.BanRemove)
-			? { unlock: message.guild!.moderation.createLock() }
-			: null;
+	public async prehandle(...[message]: ArgumentTypes<ModerationCommand['prehandle']>) {
+		const [banAdd, banRemove] = await message.guild.readSettings([GuildSettings.Events.BanAdd, GuildSettings.Events.BanRemove]);
+		return banAdd || banRemove ? { unlock: message.guild.moderation.createLock() } : null;
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.softBan(
+		return message.guild.security.actions.softBan(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,
@@ -30,7 +29,7 @@ export default class extends ModerationCommand {
 				reason: context.reason,
 				imageURL: getImage(message)
 			},
-			this.getDays(message),
+			await this.getDays(message),
 			await this.getTargetDM(message, context.target)
 		);
 	}
@@ -39,14 +38,14 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, context);
-		if (member && !member.bannable) throw message.language.get(LanguageKeys.Commands.Moderation.BanNotBannable);
+	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, language, context);
+		if (member && !member.bannable) throw language.get(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}
 
-	private getDays(message: KlasaMessage) {
-		const regex = new RegExp(message.language.get(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
+	private async getDays(message: GuildMessage) {
+		const regex = new RegExp(await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
 		for (const [key, value] of Object.entries(message.flagArgs)) {
 			if (regex.test(key)) {
 				const parsed = Number(value);

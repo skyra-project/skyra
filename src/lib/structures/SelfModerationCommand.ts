@@ -1,8 +1,9 @@
+import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Adder } from '@utils/Adder';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
-import { Command, CommandOptions, CommandStore, Duration, KlasaMessage, SchemaEntry } from 'klasa';
+import type { KeyOfType } from '@lib/types/Utils';
+import { Command, CommandOptions, CommandStore, Duration, Language } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
 
 export enum AKeys {
@@ -90,99 +91,102 @@ export abstract class SelfModerationCommand extends Command {
 			...options
 		});
 
-		this.createCustomResolver('action', (arg, _possible, message) => {
+		this.createCustomResolver('action', async (arg, _possible, message) => {
 			if (typeof arg === 'undefined') return AKeys.Show;
 			const action = kActions.get(arg.toLowerCase());
-			if (typeof action === 'undefined')
-				throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
+			if (typeof action === 'undefined') {
+				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingAction, { name: this.name });
+			}
+
 			return action;
-		}).createCustomResolver('value', (arg, _possible, message, [type]: AKeys[]) => {
+		}).createCustomResolver('value', async (arg, _possible, message, [type]: AKeys[]) => {
 			if (type === AKeys.Enable) return true;
 			if (type === AKeys.Disable) return false;
 			if (type === AKeys.Show) return null;
-			if (!arg) throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
+			if (!arg) {
+				throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidMissingArguments, { name: this.name });
+			}
 
 			if (type === AKeys.SoftAction) {
 				const softAction = kSoftActions.get(arg.toLowerCase());
-				if (typeof softAction === 'undefined')
-					throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftaction, { name: this.name });
-				const previousSoftAction = message.guild!.settings.get(this.keySoftAction) as number;
+				if (typeof softAction === 'undefined') {
+					throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftaction, { name: this.name });
+				}
+
+				const previousSoftAction = await message.guild!.readSettings(this.keySoftAction);
 				return SelfModerationCommand.toggle(previousSoftAction, softAction);
 			}
 
 			if (type === AKeys.HardAction) {
 				const hardAction = kHardActions.get(arg.toLowerCase());
-				if (typeof hardAction === 'undefined')
-					throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardaction, { name: this.name });
+				if (typeof hardAction === 'undefined') {
+					throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardaction, { name: this.name });
+				}
+
 				return hardAction;
 			}
 
 			if (type === AKeys.HardActionDuration) {
 				if (/^(?:reset|0\w?)$/i.test(arg)) return null;
-				const key = message.guild!.settings.schema.get(this.keyHardActionDuration) as SchemaEntry;
-				return SelfModerationCommand.parseDuration(message, key, arg, 'Hard Action Duration');
+				const key = configurableKeys.get(this.keyHardActionDuration)!;
+				return SelfModerationCommand.parseDuration(message as GuildMessage, key, arg, 'Hard Action Duration');
 			}
 
 			if (type === AKeys.ThresholdMaximum) {
-				const key = message.guild!.settings.schema.get(this.keyThresholdMaximum) as SchemaEntry;
-				return SelfModerationCommand.parseMaximum(message, key, arg, 'Threshold Maximum');
+				const key = configurableKeys.get(this.keyThresholdMaximum)!;
+				return SelfModerationCommand.parseMaximum(message as GuildMessage, key, arg, 'Threshold Maximum');
 			}
 
 			if (type === AKeys.ThresholdDuration) {
-				const key = message.guild!.settings.schema.get(this.keyThresholdDuration) as SchemaEntry;
-				return SelfModerationCommand.parseDuration(message, key, arg, 'Threshold Duration');
+				const key = configurableKeys.get(this.keyThresholdDuration)!;
+				return SelfModerationCommand.parseDuration(message as GuildMessage, key, arg, 'Threshold Duration');
 			}
 
 			throw new Error('Unreachable.');
 		});
 	}
 
-	public async run(message: KlasaMessage, [action, value]: [AKeys, unknown]) {
+	public async run(message: GuildMessage, [action, value]: [AKeys, unknown]) {
 		if (action === AKeys.Show) return this.show(message);
 
 		const key = this.getProperty(action)!;
-		await message.guild!.settings.update(key, value, {
-			extraContext: { author: message.author.id }
+		const language = await message.guild.writeSettings((settings) => {
+			Reflect.set(settings, key, value);
+			return settings.getLanguage();
 		});
 
 		switch (action) {
-			case AKeys.Disable: {
-				message.guild!.security.adders[this.$adder] = null;
-				break;
-			}
 			case AKeys.SoftAction: {
-				value = SelfModerationCommand.displaySoftAction(message, value as number).join('`, `');
+				value = SelfModerationCommand.displaySoftAction(language, value as number).join('`, `');
 				break;
 			}
 			case AKeys.HardAction: {
-				value = message.language.get(SelfModerationCommand.displayHardAction(value as SelfModeratorHardActionFlags));
+				value = language.get(SelfModerationCommand.displayHardAction(value as SelfModeratorHardActionFlags));
 				break;
 			}
 			case AKeys.Enable:
+			case AKeys.Disable:
 			case AKeys.ThresholdMaximum:
-			case AKeys.ThresholdDuration: {
-				this.manageAdder(message);
-			}
+			case AKeys.ThresholdDuration:
 			case AKeys.HardActionDuration:
 				break;
 		}
 
-		return message.send(SelfModerationCommand.getLanguageKey(message, action, value));
+		return message.send(SelfModerationCommand.getLanguageKey(language, action, value));
 	}
 
-	protected show(message: KlasaMessage) {
-		const { settings } = message.guild!;
-		const [enabled, softAction, hardAction, hardActionDuration, thresholdMaximum, thresholdDuration] = settings.pluck(
-			this.keyEnabled,
-			this.keySoftAction,
-			this.keyHardAction,
-			this.keyHardActionDuration,
-			this.keyThresholdMaximum,
-			this.keyThresholdDuration
-		) as [boolean, number, number, number, number, number];
+	protected async show(message: GuildMessage) {
+		const [enabled, softAction, hardAction, hardActionDuration, adder, language] = await message.guild.readSettings((settings) => [
+			settings[this.keyEnabled],
+			settings[this.keySoftAction],
+			settings[this.keyHardAction],
+			settings[this.keyHardActionDuration],
+			settings.adders[this.$adder],
+			settings.getLanguage()
+		]);
 
-		const i18n = message.language.get.bind(message.language);
-		const duration = message.language.duration.bind(message.language);
+		const i18n = language.get.bind(language);
+		const duration = language.duration.bind(language);
 		const [yes, no] = [
 			i18n(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled),
 			i18n(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled)
@@ -199,10 +203,8 @@ export abstract class SelfModerationCommand extends Command {
 					hardActionDuration === null
 						? i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
 						: duration(hardActionDuration),
-				thresholdMaximumText: thresholdMaximum ? thresholdMaximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-				thresholdDurationText: thresholdDuration
-					? duration(thresholdDuration)
-					: i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
+				thresholdMaximumText: adder?.maximum ? adder.maximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+				thresholdDurationText: adder?.duration ? duration(adder.duration) : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
 			})
 		);
 	}
@@ -227,57 +229,44 @@ export abstract class SelfModerationCommand extends Command {
 		}
 	}
 
-	private manageAdder(message: KlasaMessage) {
-		const [maximum, duration] = message.guild!.settings.pluck(this.keyThresholdMaximum, this.keyThresholdDuration) as (number | null)[];
-		const adder = message.guild!.security.adders[this.$adder];
-		if (!maximum || !duration) {
-			if (adder !== null) message.guild!.security.adders[this.$adder] = null;
-		} else if (adder === null) {
-			message.guild!.security.adders[this.$adder] = new Adder(maximum, duration);
-		} else {
-			adder.maximum = maximum;
-			adder.duration = duration;
-		}
-	}
-
-	private static displaySoftAction(message: KlasaMessage, softAction: number) {
+	private static displaySoftAction(language: Language, softAction: number) {
 		const actions: string[] = [];
 		if (SelfModerationCommand.has(softAction, ASKeys.Alert))
-			actions.push(message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionAlert));
+			actions.push(language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionAlert));
 		if (SelfModerationCommand.has(softAction, ASKeys.Log))
-			actions.push(message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionLog));
+			actions.push(language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionLog));
 		if (SelfModerationCommand.has(softAction, ASKeys.Delete))
-			actions.push(message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionDelete));
+			actions.push(language.get(LanguageKeys.Commands.Moderation.AutomaticValueSoftActionDelete));
 		return actions;
 	}
 
-	private static getLanguageKey(message: KlasaMessage, action: AKeys, value: unknown) {
+	private static getLanguageKey(language: Language, action: AKeys, value: unknown) {
 		switch (action) {
 			case AKeys.Enable:
-				return message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled);
+				return language.get(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled);
 			case AKeys.Disable:
-				return message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled);
+				return language.get(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled);
 			case AKeys.SoftAction: {
 				return value
-					? message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterSoftActionWithValue, { value: value as string })
-					: message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterSoftAction);
+					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterSoftActionWithValue, { value: value as string })
+					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterSoftAction);
 			}
 			case AKeys.HardAction:
-				return message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardAction, { value: value as string });
+				return language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardAction, { value: value as string });
 			case AKeys.HardActionDuration: {
 				return value
-					? message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDurationWithValue, { value: value as number })
-					: message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDuration);
+					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDurationWithValue, { value: value as number })
+					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterHardActionDuration);
 			}
 			case AKeys.ThresholdMaximum: {
 				return value
-					? message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximumWithValue, { value: value as number })
-					: message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximum);
+					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximumWithValue, { value: value as number })
+					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdMaximum);
 			}
 			case AKeys.ThresholdDuration: {
 				return value
-					? message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDurationWithValue, { value: value as number })
-					: message.language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDuration);
+					? language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDurationWithValue, { value: value as number })
+					: language.get(LanguageKeys.Commands.Moderation.AutomaticParameterThresholdDuration);
 			}
 			default:
 				throw new Error('Unexpected.');
@@ -309,37 +298,50 @@ export abstract class SelfModerationCommand extends Command {
 		return SelfModerationCommand.has(bitfields, bitfield) ? bitfields & ~bitfield : bitfields | bitfield;
 	}
 
-	private static parseMaximum(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
+	private static async parseMaximum(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = Number(input);
-		if (parsed < 0) throw message.language.get(LanguageKeys.Resolvers.InvalidInt, { name });
-		if (key.minimum !== null && parsed < key.minimum)
-			throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
-		if (key.maximum !== null && parsed > key.maximum)
-			throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
+		if (parsed < 0) {
+			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidInt, { name });
+		}
+
+		if (key.minimum !== null && parsed < key.minimum) {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooShort, { minimum: key.minimum, value: parsed });
+		}
+
+		if (key.maximum !== null && parsed > key.maximum) {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueMaximumTooLong, { maximum: key.maximum, value: parsed });
+		}
 		return parsed;
 	}
 
-	private static parseDuration(message: KlasaMessage, key: SchemaEntry, input: string, name: string) {
+	private static async parseDuration(message: GuildMessage, key: SchemaKey, input: string, name: string) {
 		const parsed = new Duration(input);
-		if (parsed.offset < 0) throw message.language.get(LanguageKeys.Resolvers.InvalidDuration, { name });
-		if (key.minimum !== null && parsed.offset < key.minimum)
-			throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
+		if (parsed.offset < 0) {
+			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidDuration, { name });
+		}
+
+		if (key.minimum !== null && parsed.offset < key.minimum) {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooShort, {
 				minimum: key.minimum,
 				value: parsed.offset
 			});
-		if (key.maximum !== null && parsed.offset > key.maximum)
-			throw message.language.get(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
+		}
+
+		if (key.maximum !== null && parsed.offset > key.maximum) {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.AutomaticValueDurationTooLong, {
 				maximum: key.maximum,
 				value: parsed.offset
 			});
+		}
+
 		return parsed.offset;
 	}
 
-	protected abstract $adder: keyof GuildSecurity['adders'];
-	protected abstract keyEnabled: string;
-	protected abstract keySoftAction: string;
-	protected abstract keyHardAction: string;
-	protected abstract keyHardActionDuration: string;
-	protected abstract keyThresholdMaximum: string;
-	protected abstract keyThresholdDuration: string;
+	protected abstract $adder: AdderKey;
+	protected abstract keyEnabled: KeyOfType<GuildEntity, boolean>;
+	protected abstract keySoftAction: KeyOfType<GuildEntity, number>;
+	protected abstract keyHardAction: KeyOfType<GuildEntity, number | null>;
+	protected abstract keyHardActionDuration: KeyOfType<GuildEntity, number | null>;
+	protected abstract keyThresholdMaximum: KeyOfType<GuildEntity, number | null>;
+	protected abstract keyThresholdDuration: KeyOfType<GuildEntity, number | null>;
 }

@@ -1,16 +1,15 @@
 import Collection from '@discordjs/collection';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, ModerationEntity } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['moderation'],
@@ -20,26 +19,26 @@ import { KlasaMessage } from 'klasa';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.ModerationsExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['MANAGE_MESSAGES'],
-	runIn: ['text'],
 	usage: '<mutes|warnings|warns|all:default> [user:username]'
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
+	public async run(message: GuildMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
-
-		const entries = (await (target ? message.guild!.moderation.fetch(target.id) : message.guild!.moderation.fetch())).filter(
+		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
 			this.getFilter(action, target)
 		);
-		if (!entries.size) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+
+		if (!entries.size) throw language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(
-					message.language.get(
+					language.get(
 						entries.size === 1
 							? LanguageKeys.Commands.Moderation.ModerationsAmount
 							: LanguageKeys.Commands.Moderation.ModerationsAmountPlural,
@@ -52,7 +51,7 @@ export default class extends RichDisplayCommand {
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
 
 		// Set up the formatter
-		const durationDisplay = message.language.duration.bind(message.language);
+		const durationDisplay = language.duration.bind(language);
 		const displayName = action === 'all';
 		const format = target
 			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)

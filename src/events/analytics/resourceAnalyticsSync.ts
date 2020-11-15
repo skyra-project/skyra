@@ -26,6 +26,7 @@ export default class extends AnalyticsEvent {
 	}
 
 	private syncMem() {
+		// TODO: Adjust for traditional sharding
 		const usage = process.memoryUsage();
 		return new Point(AnalyticsSchema.Points.Memory)
 			.tag(AnalyticsSchema.Tags.Action, AnalyticsSchema.Actions.Sync)

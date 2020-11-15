@@ -1,32 +1,39 @@
+import { GuildSettings } from '@lib/database';
+import { filter, map } from '@lib/misc';
+import { CustomGet } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomGet } from '@lib/types/Shared';
 import { MessageLogsEnum } from '@utils/constants';
-import { MessageEmbed, User } from 'discord.js';
+import { Guild, MessageEmbed, User } from 'discord.js';
 import { Event, Language } from 'klasa';
 
 export default class extends Event {
-	public run(previous: User, next: User) {
+	public async run(previous: User, user: User) {
 		const prevUsername = previous.username;
-		const nextUserName = next.username;
+		const nextUserName = user.username;
 		if (prevUsername === nextUserName) return;
 
-		for (const guild of this.client.guilds.cache.values()) {
-			if (!guild.members.cache.has(next.id)) continue;
+		const promises = [
+			...map(
+				filter(this.client.guilds.cache.values(), (guild) => guild.members.cache.has(user.id)),
+				(guild) => this.processGuild(guild, user, prevUsername, nextUserName)
+			)
+		];
+		if (promises.length) await Promise.all(promises);
+	}
 
-			if (guild.settings.get(GuildSettings.Events.MemberNicknameUpdate)) {
-				// Send the Username log
-				this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
-					this.buildEmbed(
-						next,
-						guild.language,
-						this.getNameDescription(guild.language, prevUsername, nextUserName),
-						LanguageKeys.Events.UsernameUpdate
-					)
-				);
-			}
+	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
+		const [enabled, language] = await guild.readSettings((settings) => [
+			settings[GuildSettings.Events.MemberNicknameUpdate],
+			settings.getLanguage()
+		]);
+
+		if (enabled) {
+			// Send the Username log
+			this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
+				this.buildEmbed(user, language, this.getNameDescription(language, previous, next), LanguageKeys.Events.UsernameUpdate)
+			);
 		}
 	}
 

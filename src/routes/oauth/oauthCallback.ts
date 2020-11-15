@@ -5,6 +5,7 @@ import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
 import { ApplyOptions } from '@skyra/decorators';
 import { Mime } from '@utils/constants';
 import { ratelimit } from '@utils/util';
+import { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';
 import { stringify } from 'querystring';
@@ -51,7 +52,7 @@ export default class extends Route {
 			return;
 		}
 
-		const body = (await res.json()) as OauthData;
+		const body = (await res.json()) as RESTPostOAuth2AccessTokenResult;
 		const user = await oauthUser.api(body.access_token);
 		if (user === null) return response.error(500);
 
@@ -68,13 +69,4 @@ export default class extends Route {
 		response.cookies.add('SKYRA_AUTH', authentication, { maxAge: body.expires_in });
 		response.json({ user });
 	}
-}
-
-// TODO(kyranet): remove cast once @vladfrangu adds OAuth data
-interface OauthData {
-	access_token: string;
-	expires_in: number;
-	refresh_token: string;
-	scope: string;
-	token_type: string;
 }

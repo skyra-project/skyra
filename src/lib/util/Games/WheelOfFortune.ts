@@ -1,12 +1,12 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, UserEntity } from '@lib/database';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { UserEntity } from '@orm/entities/UserEntity';
 import { roundNumber } from '@sapphire/utilities';
 import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
+import type { Language } from 'klasa';
 import { join } from 'path';
 
 const enum Arrows {
@@ -81,14 +81,16 @@ export class WheelOfFortune {
 
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
+
+		const language = await this.message.fetchLanguage();
 		if (lost && final < 0) {
-			throw this.message.language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+			throw language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 		}
 
 		this.settings.money += this.winnings;
 		await this.settings.save();
 
-		return [await this.render(this.settings.profile!.darkTheme), final] as const;
+		return [await this.render(this.settings.profile!.darkTheme, language), final] as const;
 	}
 
 	/** The boost */
@@ -114,7 +116,7 @@ export class WheelOfFortune {
 		);
 	}
 
-	private async render(darkTheme: boolean): Promise<Buffer> {
+	private async render(darkTheme: boolean, lang: Language): Promise<Buffer> {
 		const playerHasWon = this.winnings > 0;
 
 		const { x: arrowX, y: arrowY } = kArrows.get(WheelOfFortune.kMultipliers[this.spin])!;
@@ -127,7 +129,7 @@ export class WheelOfFortune {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				this.message.language.get(
+				lang.get(
 					playerHasWon ? LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextWon : LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextLost
 				),
 				280,

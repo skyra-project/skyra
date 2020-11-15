@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
@@ -7,7 +7,7 @@ import { Emojis } from '@utils/constants';
 import { fetchSaelem, getHoroscope } from '@utils/Saelem';
 import { createPick } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
 
 const kSunSigns = new Set([
 	'capricorn',
@@ -37,19 +37,20 @@ const kRandomSunSign = createPick([...kSunSigns]);
 @CreateResolvers([
 	[
 		'sunsign',
-		(arg, _, message) => {
+		async (arg, _, message) => {
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw message.language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
+			throw await message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
-		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(message, sign, day);
+		const language = await message.fetchLanguage();
+		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(language, sign, day);
 
-		const titles = message.language.get(LanguageKeys.Commands.Tools.HoroscopeTitles, {
+		const titles = language.get(LanguageKeys.Commands.Tools.HoroscopeTitles, {
 			sign,
 			intensity,
 			keywords,
@@ -66,12 +67,12 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(message: KlasaMessage, sunsign: Sunsigns, day: Days) {
+	private async fetchAPI(language: Language, sunsign: Sunsigns, day: Days) {
 		try {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw message.language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
+			throw language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

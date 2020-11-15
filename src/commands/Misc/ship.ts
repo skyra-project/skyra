@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { CanvasColors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -16,7 +16,6 @@ import { join } from 'path';
 	description: (language) => language.get(LanguageKeys.Commands.Misc.ShipDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ShipExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	usage: '(firstUser:user) (secondUser:user)',
 	usageDelim: ' '
 })
@@ -62,13 +61,13 @@ export default class extends SkyraCommand {
 			// Add avatar image with side-offsets of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarFirstUser, 12, 12, 64, 64, 10)
 			// Add heart icon with width offset of 84px and height offset of 20px
-			.printImage(this.heartIcon!, 84, 20)
+			.printImage(this.heartIcon, 84, 20)
 			// Add avatar image with width offset of 148px, height offset of 12px, a Height x Width of 64x64px and bevel radius of 10
 			.printRoundedImage(avatarSecondUser, 148, 12, 64, 64, 10)
 			.toBufferAsync();
 
 		// Return the lovely message
-		const data = message.language.get(LanguageKeys.Commands.Misc.ShipData, {
+		const data = await message.fetchLocale(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])

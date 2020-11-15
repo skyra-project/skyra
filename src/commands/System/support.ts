@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { MessageEmbed } from 'discord.js';
@@ -16,10 +16,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
+		const language = await message.fetchLanguage();
 		return message.sendEmbed(
 			new MessageEmbed()
-				.setTitle(message.language.get(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
-				.setDescription(message.language.get(LanguageKeys.Commands.System.SupportEmbedDescription))
+				.setTitle(language.get(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
+				.setDescription(language.get(LanguageKeys.Commands.System.SupportEmbedDescription))
 				.setColor(await DbSet.fetchColor(message))
 		);
 	}

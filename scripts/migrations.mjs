@@ -3,7 +3,7 @@ import { promises as fsp } from 'fs';
 import { dirname, resolve } from 'path';
 import typeorm from 'typeorm';
 import { fileURLToPath } from 'url';
-import dbConfig from '../dist/lib/orm/dbConfig.js';
+import dbConfig from '../dist/lib/database/database.config.js';
 
 const { config } = dbConfig;
 const __filename = fileURLToPath(import.meta.url);

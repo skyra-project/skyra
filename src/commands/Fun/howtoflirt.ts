@@ -31,7 +31,6 @@ const imageCoordinates = [
 	description: (language) => language.get(LanguageKeys.Commands.Fun.HowToFlirtDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.HowToFlirtExtended),
 	requiredPermissions: ['ATTACH_FILES'],
-	runIn: ['text'],
 	spam: true,
 	usage: '<user:username>'
 })

@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 import { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 

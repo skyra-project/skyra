@@ -1,9 +1,9 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, GuildSettings, RolesAuto } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildSettings, RolesAuto } from '@lib/types/namespaces/GuildSettings';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { User } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { CommandStore } from 'klasa';
 
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
@@ -19,21 +19,22 @@ export default class extends SkyraCommand {
 		this.spam = true;
 	}
 
-	public async run(message: KlasaMessage, [user = message.author]: [User]) {
+	public async run(message: GuildMessage, [user = message.author]: [User]) {
 		const { members } = await DbSet.connect();
-		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild!.id } });
+		const memberSettings = await members.findOne({ where: { userID: user.id, guildID: message.guild.id } });
 		const memberPoints = memberSettings?.points ?? 0;
-		const nextRole = this.getLatestRole(memberPoints, message.guild!.settings.get(GuildSettings.Roles.Auto));
+		const [roles, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Auto], settings.getLanguage()]);
+		const nextRole = this.getLatestRole(memberPoints, roles);
 		const title = nextRole
-			? `\n${message.language.get(LanguageKeys.Commands.Social.MylevelNext, {
+			? `\n${language.get(LanguageKeys.Commands.Social.MylevelNext, {
 					remaining: nextRole.points - memberPoints,
 					next: nextRole.points
 			  })}`
 			: '';
 
 		return user.id === message.author.id
-			? message.sendLocale(LanguageKeys.Commands.Social.MylevelSelf, [{ points: memberPoints, next: title }])
-			: message.sendLocale(LanguageKeys.Commands.Social.Mylevel, [{ points: memberPoints, next: title, user: user.username }]);
+			? message.send(language.get(LanguageKeys.Commands.Social.MylevelSelf, { points: memberPoints, next: title }))
+			: message.send(language.get(LanguageKeys.Commands.Social.Mylevel, { points: memberPoints, next: title, user: user.username }));
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

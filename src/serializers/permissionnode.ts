@@ -1,34 +1,36 @@
-import { PermissionsNode } from '@lib/types/namespaces/GuildSettings';
+import { PermissionsNode, Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';
-import { Command, Serializer, SerializerUpdateContext } from 'klasa';
+import { Command } from 'klasa';
 
-export default class extends Serializer {
-	public async validate(data: PermissionsNode, { entry, language, guild }: SerializerUpdateContext) {
-		if (guild === null) throw new TypeError('guild must not be null.');
+export default class UserSerializer extends Serializer<PermissionsNode> {
+	public parse(_: string, context: SerializerUpdateContext) {
+		return this.error(context.language.get(LanguageKeys.Serializers.Unsupported));
+	}
 
+	public async isValid(value: PermissionsNode, { language, entry, entity: { guild } }: SerializerUpdateContext): Promise<boolean> {
 		// Safe-guard checks against arbitrary data
-		if (!isObject(data)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (Object.keys(data).length !== 3) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (typeof data.id !== 'string') throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (!Array.isArray(data.allow)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
-		if (!Array.isArray(data.deny)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
+		if (!isObject(value)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
+		if (Object.keys(value).length !== 3) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
+		if (typeof value.id !== 'string') throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
+		if (!Array.isArray(value.allow)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
+		if (!Array.isArray(value.deny)) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalid);
 
 		// Check for target validity
 		let target: GuildMember | Role | undefined = undefined;
-		if (entry.key === 'roles') {
-			const role = guild.roles.cache.get(data.id);
+		if (entry.name === 'permissionsRoles') {
+			const role = guild.roles.cache.get(value.id);
 			if (!role) throw language.get(LanguageKeys.Serializers.PermissionNodeInvalidTarget);
 			target = role;
 		} else {
-			target = await guild.members.fetch(data.id).catch(() => {
+			target = await guild.members.fetch(value.id).catch(() => {
 				throw language.get(LanguageKeys.Serializers.PermissionNodeInvalidTarget);
 			});
 		}
 
 		// The @everyone role should not have allows
-		if (target.id === guild.id && data.allow.length !== 0) {
+		if (target.id === guild.id && value.allow.length !== 0) {
 			throw language.get(LanguageKeys.Serializers.PermissionNodeSecurityEveryoneAllows);
 		}
 
@@ -39,7 +41,7 @@ export default class extends Serializer {
 
 		// Check all commands
 		const commands = new Map<string, Command>();
-		for (const allowed of data.allow) {
+		for (const allowed of value.allow) {
 			if (commands.has(allowed)) throw language.get(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: allowed });
 
 			const command = this.client.commands.get(allowed);
@@ -48,7 +50,7 @@ export default class extends Serializer {
 			commands.set(allowed, command);
 		}
 
-		for (const denied of data.deny) {
+		for (const denied of value.deny) {
 			if (commands.has(denied)) throw language.get(LanguageKeys.Serializers.PermissionNodeDuplicatedCommand, { command: denied });
 
 			const command = this.client.commands.get(denied);
@@ -58,7 +60,7 @@ export default class extends Serializer {
 			commands.set(denied, command);
 		}
 
-		return data;
+		return true;
 	}
 
 	public stringify(value: PermissionsNode) {

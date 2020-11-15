@@ -1,66 +1,91 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
+import { CommandOptions } from 'klasa';
 
-export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 5,
-			description: (language) => language.get(LanguageKeys.Commands.Management.FilterDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.FilterExtended),
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<add|remove|reset|show:default> (word:word)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('word', (arg, _, msg, [type]) => {
+@ApplyOptions<CommandOptions>({
+	bucket: 2,
+	cooldown: 5,
+	description: (language) => language.get(LanguageKeys.Commands.Management.FilterDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.FilterExtended),
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<add|remove|reset|show:default> (word:word)',
+	usageDelim: ' '
+})
+@CreateResolvers([
+	[
+		'word',
+		async (arg, _, message, [type]) => {
 			if (type === 'reset' || type === 'show') return undefined;
 			if (arg) return arg.toLowerCase();
-			throw msg.language.get(LanguageKeys.Commands.Management.FilterUndefinedWord);
+			throw await message.fetchLocale(LanguageKeys.Commands.Management.FilterUndefinedWord);
+		}
+	]
+])
+export default class extends SkyraCommand {
+	public async add(message: GuildMessage, [word]: [string]) {
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
+
+			// Check if the word is not filtered:
+			const words = settings[GuildSettings.Selfmod.Filter.Raw];
+			const regex = settings.wordFilterRegExp;
+			if (words.includes(word) || (regex && regex.test(word))) {
+				throw language.get(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
+			}
+
+			// Add the word to the list:
+			words.push(word);
+
+			// Return language for re-use:
+			return language;
 		});
+
+		return message.send(language.get(LanguageKeys.Commands.Management.FilterAdded, { word }));
 	}
 
-	public async add(message: KlasaMessage, [word]: [string]) {
-		// Check if the word is not filtered
-		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
-		const { regexp } = message.guild!.security;
-		if (raw.includes(word) || (regexp && regexp.test(word))) throw message.language.get(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
+	public async remove(message: GuildMessage, [word]: [string]) {
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
 
-		// Perform update
-		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
-			arrayAction: 'add',
-			extraContext: { author: message.author.id }
+			// Check if the word is not filtered:
+			const words = settings[GuildSettings.Selfmod.Filter.Raw];
+			const index = words.indexOf(word);
+			if (index === -1) {
+				throw language.get(LanguageKeys.Commands.Management.FilterNotFiltered);
+			}
+
+			// Remove the word from the list:
+			words.splice(index, 1);
+
+			// Return language for re-use:
+			return language;
 		});
-		return message.sendLocale(LanguageKeys.Commands.Management.FilterAdded, [{ word }]);
+
+		return message.send(language.get(LanguageKeys.Commands.Management.FilterRemoved, { word }));
 	}
 
-	public async remove(message: KlasaMessage, [word]: [string]) {
-		// Check if the word is already filtered
-		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
-		if (!raw.includes(word)) throw message.language.get(LanguageKeys.Commands.Management.FilterNotFiltered);
+	public async reset(message: GuildMessage) {
+		const language = await message.guild.writeSettings((settings) => {
+			const language = settings.getLanguage();
 
-		// Perform update
-		if (raw.length === 1) return this.reset(message);
-		await message.guild!.settings.update(GuildSettings.Selfmod.Filter.Raw, word, {
-			arrayAction: 'remove',
-			extraContext: { author: message.author.id }
+			// Set an empty array:
+			settings[GuildSettings.Selfmod.Filter.Raw].length = 0;
+
+			// Return language for re-use:
+			return language;
 		});
-		return message.sendLocale(LanguageKeys.Commands.Management.FilterRemoved, [{ word }]);
+
+		return message.send(language.get(LanguageKeys.Commands.Management.FilterReset));
 	}
 
-	public async reset(message: KlasaMessage) {
-		await message.guild!.settings.reset(GuildSettings.Selfmod.Filter.Raw);
-		message.guild!.security.regexp = null;
-		return message.sendLocale(LanguageKeys.Commands.Management.FilterReset);
-	}
-
-	public show(message: KlasaMessage) {
-		const raw = message.guild!.settings.get(GuildSettings.Selfmod.Filter.Raw);
+	public async show(message: GuildMessage) {
+		const raw = await message.guild.readSettings(GuildSettings.Selfmod.Filter.Raw);
 		return raw.length
 			? message.sendLocale(LanguageKeys.Commands.Management.FilterShow, [{ words: `\`${raw.join('`, `')}\`` }])
 			: message.sendLocale(LanguageKeys.Commands.Management.FilterShowEmpty);

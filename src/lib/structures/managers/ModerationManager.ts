@@ -1,12 +1,11 @@
 import Collection, { CollectionConstructor } from '@discordjs/collection';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { StrictRequired } from '@lib/types/util';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
+import { DbSet, GuildSettings, ModerationEntity } from '@lib/database';
+import { isNullish } from '@lib/misc';
+import { StrictRequired } from '@lib/types';
 import { Time } from '@utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '@utils/util';
 import { DiscordAPIError, Guild, TextChannel } from 'discord.js';
 import { In } from 'typeorm';
-import { DbSet } from '../DbSet';
 
 enum CacheActions {
 	None,
@@ -47,16 +46,17 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	/**
 	 * The channel where messages have to be sent.
 	 */
-	public get channel() {
-		const channelID = this.guild.settings.get(GuildSettings.Channels.ModerationLogs);
-		return (channelID && (this.guild.channels.cache.get(channelID) as TextChannel)) || null;
+	public async fetchChannel() {
+		const channelID = await this.guild.readSettings(GuildSettings.Channels.ModerationLogs);
+		if (isNullish(channelID)) return null;
+		return (this.guild.channels.cache.get(channelID) ?? null) as TextChannel | null;
 	}
 
 	/**
 	 * Fetch 100 messages from the modlogs channel
 	 */
 	public async fetchChannelMessages(remainingRetries = 5): Promise<void> {
-		const { channel } = this;
+		const channel = await this.fetchChannel();
 		if (channel === null) return;
 		try {
 			await channel.messages.fetch({ limit: 100 });

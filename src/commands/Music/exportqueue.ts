@@ -21,13 +21,14 @@ export const maximumExportQueueSize = 100;
 export default class extends SkyraCommand {
 	@requireQueueNotEmpty()
 	public async run(message: GuildMessage) {
-		const { audio } = message.guild;
+		const { audio, name } = message.guild;
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.send(
-			message.language.get(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: message.guild!.name }),
-			new MessageAttachment(Buffer.from(data), `${message.guild!.name}-${Date.now()}.squeue`)
+		return message.sendLocale(
+			LanguageKeys.Commands.Music.ExportQueueSuccess,
+			[{ guildName: name }],
+			new MessageAttachment(Buffer.from(data), `${message.guild.name}-${Date.now()}.squeue`)
 		);
 	}
 

@@ -1,4 +1,4 @@
-import type { ScheduleEntity } from '@orm/entities/ScheduleEntity';
+import type { ScheduleEntity } from '@lib/database';
 import type { EightBallLanguage } from '@root/commands/Fun/8ball';
 import type { HungerGamesGame } from '@root/commands/Games/hungergames';
 import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
@@ -43,6 +43,10 @@ declare module 'klasa' {
 		settingGatewayMissingValue: (params: { path: string; value: string }) => string;
 		settingGatewayDuplicateValue: (params: { path: string; value: string }) => string;
 		settingGatewayInvalidFilteredValue: (params: { path: string; value: unknown }) => string;
+		resolverBoolFalseOptions: readonly string[];
+		resolverBoolTrueOptions: readonly string[];
+		resolverBoolEnabled: string;
+		resolverBoolDisabled: string;
 		resolverMultiTooFew: (params: { name: string; min?: number; conjunctionWord: string }) => string;
 		resolverInvalidBool: (params: { name: string }) => string;
 		resolverInvalidChannel: (params: { name: string }) => string;
@@ -145,6 +149,7 @@ declare module 'klasa' {
 		commandConfServerDescription: string;
 		commandConfServer: (params: { key: string; list: string }) => string;
 		commandConfUserDescription: string;
+		commandConfDashboardOnlyKey: (params: { key: string }) => string;
 		commandConfUser: (params: { key: string; list: string }) => string;
 		commandConfSettingNotSet: string;
 		messagePromptTimeout: string;
@@ -254,7 +259,10 @@ declare module 'klasa' {
 		commandVolumeChangedTexts: readonly string[];
 		commandAbilityDescription: string;
 		commandAbilityExtended: LanguageHelpDisplayOptions;
-		commandAbilityEmbedTitle: string;
+		commandAbilityEmbedTitles: {
+			authorTitle: string;
+			fieldEffectTitle: string;
+		};
 		commandAbilityQueryFail: (params: { ability: string }) => string;
 		commandFlavorsDescription: string;
 		commandFlavorsExtended: LanguageHelpDisplayOptions;
@@ -309,6 +317,7 @@ declare module 'klasa' {
 			none: string;
 			maxMovePower: string;
 			zMovePower: string;
+			fieldMoveEffectTitle: string;
 		};
 		commandMoveQueryFail: (params: { move: string }) => string;
 		commandPokedexDescription: string;
@@ -414,6 +423,7 @@ declare module 'klasa' {
 		settingsEventsBanremove: string;
 		settingsEventsMemberadd: string;
 		settingsEventsMembernameupdate: string;
+		settingsEventsMemberroleupdate: string;
 		settingsEventsMemberremove: string;
 		settingsEventsMessagedelete: string;
 		settingsEventsMessageedit: string;
@@ -452,6 +462,7 @@ declare module 'klasa' {
 		settingsRolesSubscriber: string;
 		settingsSelfmodAttachment: string;
 		settingsSelfmodAttachmentmaximum: string;
+		settingsSelfmodAttachmentDuration: string;
 		settingsSelfmodCapitalsEnabled: string;
 		settingsSelfmodCapitalsIgnoredchannels: string;
 		settingsSelfmodCapitalsIgnoredroles: string;
@@ -479,8 +490,6 @@ declare module 'klasa' {
 		settingsSelfmodNewlinesIgnoredchannels: string;
 		settingsSelfmodNewlinesIgnoredroles: string;
 		settingsSelfmodNewlinesMaximum: string;
-		settingsSelfmodRaid: string;
-		settingsSelfmodRaidthreshold: string;
 		settingsSelfmodReactionsMaximum: string;
 		settingsSelfmodReactionsBlacklist: string;
 		settingsSelfmodReactionsEnabled: string;
@@ -502,6 +511,7 @@ declare module 'klasa' {
 		settingsSuggestionsOnActionDm: string;
 		settingsSuggestionsOnActionRepost: string;
 		settingsSuggestionsOnActionHideAuthor: string;
+		settingsDashboardOnlyKey: string;
 		commandCatfactDescription: string;
 		commandCatfactExtended: LanguageHelpDisplayOptions;
 		commandDogDescription: string;
@@ -905,8 +915,6 @@ declare module 'klasa' {
 		commandPruneExtended: LanguageHelpDisplayOptions;
 		commandCaseDescription: string;
 		commandCaseExtended: LanguageHelpDisplayOptions;
-		commandRaidDescription: string;
-		commandRaidExtended: LanguageHelpDisplayOptions;
 		commandPermissionsDescription: string;
 		commandPermissionsExtended: LanguageHelpDisplayOptions;
 		commandFlowDescription: string;
@@ -1320,7 +1328,7 @@ declare module 'klasa' {
 		commandDiceOutput: (params: { result: number }) => string;
 		commandDiceRollsError: string;
 		commandDiceSidesError: string;
-		commandEscaperopeOutput: (params: { user: User }) => string;
+		commandEscaperopeOutput: (params: { user: string }) => string;
 		commandLoveLess45: string;
 		commandLoveLess75: string;
 		commandLoveLess100: string;
@@ -1331,6 +1339,7 @@ declare module 'klasa' {
 		commandPunError: string;
 		commandRateOutput: (params: { author: string; userToRate: string; rate: number; emoji: string }) => string;
 		commandRateMyself: [string, string];
+		commandRateOwners: [string, string];
 		commandXkcdComics: (params: { amount: number }) => string;
 		commandXkcdNotfound: string;
 		commandGamesSkyra: string;
@@ -1661,11 +1670,6 @@ declare module 'klasa' {
 
 		commandPermissions: (params: { username: string; id: string }) => string;
 		commandPermissionsAll: string;
-		commandRaidDisabled: string;
-		commandRaidMissingKick: string;
-		commandRaidList: string;
-		commandRaidClear: string;
-		commandRaidCool: string;
 		commandFlow: (params: { amount: number }) => string;
 		commandTimeTimed: string;
 		commandTimeUndefinedTime: string;
@@ -1673,6 +1677,8 @@ declare module 'klasa' {
 		commandTimeNotScheduled: string;
 		commandTimeAborted: (params: { title: string }) => string;
 		commandTimeScheduled: (params: { title: string; user: User; time: number }) => string;
+		commandTimeDescription: string;
+		commandTimeExtended: LanguageHelpDisplayOptions;
 		commandSlowmodeSet: (params: { cooldown: number }) => string;
 		commandSlowmodeReset: string;
 		commandSlowmodeTooLong: string;
@@ -1886,6 +1892,7 @@ declare module 'klasa' {
 		commandResolveSuggestionSuccessDeniedText: string;
 		commandResolveSuggestionSuccessConsideredText: string;
 		commandStarNostars: string;
+		commandStarNoChannel: string;
 		commandStarStats: string;
 		commandStarStatsDescription: (params: { messages: string; stars: string }) => string;
 		commandStarMessages: (params: { count: number }) => string;
@@ -2091,8 +2098,6 @@ declare module 'klasa' {
 		hgNight: readonly string[];
 		serializerAutoRoleInvalid: string;
 		serializerCommandAutoDeleteInvalid: string;
-		serializerCustomCommandInvalid: string;
-		serializerDisabledCommandChannelInvalid: string;
 		serializerPermissionNodeDuplicatedCommand: (params: { command: string }) => string;
 		serializerPermissionNodeInvalidCommand: (params: { command: string }) => string;
 		serializerPermissionNodeInvalidTarget: string;
@@ -2104,9 +2109,18 @@ declare module 'klasa' {
 		serializerStickyRoleInvalid: string;
 		serializerTriggerAliasInvalid: string;
 		serializerTriggerIncludeInvalid: string;
+		serializerTriggerIncludeInvalidAction: string;
 		serializerTwitchSubscriptionInvalidStreamer: string;
 		serializerTwitchSubscriptionInvalid: string;
 		serializerUniqueRoleSetInvalid: string;
+		serializerUnsupported: string;
+		serializerCustomCommandInvalidId: string;
+		serializerCustomCommandInvalidEmbed: string;
+		serializerCustomCommandInvalidColor: string;
+		serializerCustomCommandInvalidContent: string;
+		serializerCustomCommandInvalidArgs: string;
+		serializerDisabledCommandChannelsChannelsDoesNotExist: string;
+		serializerDisabledCommandChannelsChannelsCommandDoesNotExist: (params: { name: string }) => string;
 		selfModerationCommandInvalidMissingAction: (params: { name: string }) => string;
 		selfModerationCommandInvalidMissingArguments: (params: { name: string }) => string;
 		selfModerationCommandInvalidSoftaction: (params: { name: string }) => string;
@@ -2239,7 +2253,6 @@ declare module 'klasa' {
 		userNotExistent: string;
 		eventsGuildMemberAdd: string;
 		eventsGuildMemberAddMute: string;
-		eventsGuildMemberAddRaid: string;
 		eventsGuildMemberAddDescription: (params: { mention: string; time: number }) => string;
 		eventsGuildMemberRemove: string;
 		eventsGuildMemberKicked: string;

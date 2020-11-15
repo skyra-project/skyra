@@ -1,5 +1,5 @@
 import { Queue } from '@lib/audio';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { MusicCommand } from '@lib/structures/MusicCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types/Discord';
@@ -11,6 +11,7 @@ import { BrandingColors, ZeroWidthSpace } from '@utils/constants';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
+import { Language } from 'klasa';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['q', 'playing-time', 'pt'],
@@ -20,16 +21,18 @@ import { MessageEmbed } from 'discord.js';
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
 	public async run(message: GuildMessage) {
+		const language = await message.fetchLanguage();
+
 		// Send the loading message
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading)))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(language.get(LanguageKeys.System.Loading)))
 		);
 
 		// Generate the pages with 5 songs each
 		const queueDisplay = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(message.language.get(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }))
+				.setTitle(language.get(LanguageKeys.Commands.Music.QueueTitle, { guildname: message.guild.name }))
 		);
 
 		const { audio } = message.guild;
@@ -39,34 +42,31 @@ export default class extends MusicCommand {
 		if (current) {
 			const track = current.entry.info;
 			const nowPlayingDescription = [
-				track.isStream ? message.language.get(LanguageKeys.Commands.Music.QueueNowplayingLiveStream) : showSeconds(track.length),
-				message.language.get(LanguageKeys.Commands.Music.QueueNowplaying, {
+				track.isStream ? language.get(LanguageKeys.Commands.Music.QueueNowPlayingLiveStream) : showSeconds(track.length),
+				language.get(LanguageKeys.Commands.Music.QueueNowPlaying, {
 					title: track.title,
 					url: track.uri,
-					requester: await this.fetchRequesterName(message, current.entry.author)
+					requester: await this.fetchRequesterName(message, language, current.entry.author)
 				})
 			];
 
 			if (!track.isStream) {
 				nowPlayingDescription.push(
-					message.language.get(LanguageKeys.Commands.Music.QueueNowplayingTimeRemaining, {
+					language.get(LanguageKeys.Commands.Music.QueueNowPlayingTimeRemaining, {
 						timeRemaining: showSeconds(track.length - current.position)
 					})
 				);
 			}
 
-			queueDisplay.embedTemplate.addField(
-				message.language.get(LanguageKeys.Commands.Music.QueueNowplayingTitle),
-				nowPlayingDescription.join(' | ')
-			);
+			queueDisplay.embedTemplate.addField(language.get(LanguageKeys.Commands.Music.QueueNowPlayingTitle), nowPlayingDescription.join(' | '));
 		}
 
 		if (tracks.length) {
 			// Format the song entries
-			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, position, track)));
+			const songFields = await Promise.all(tracks.map((track, position) => this.generateTrackField(message, language, position, track)));
 			const totalDuration = this.calculateTotalDuration(tracks);
-			const totalDescription = message.language.get(LanguageKeys.Commands.Music.QueueTotal, {
-				songs: message.language.get(
+			const totalDescription = language.get(LanguageKeys.Commands.Music.QueueTotal, {
+				songs: language.get(
 					tracks.length === 1 ? LanguageKeys.Commands.Music.AddPlaylistSongs : LanguageKeys.Commands.Music.AddPlaylistSongsPlural,
 					{
 						count: tracks.length
@@ -75,10 +75,10 @@ export default class extends MusicCommand {
 				remainingTime: showSeconds(totalDuration)
 			});
 
-			queueDisplay.embedTemplate.addField(message.language.get(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
+			queueDisplay.embedTemplate.addField(language.get(LanguageKeys.Commands.Music.QueueTotalTitle), totalDescription);
 			queueDisplay.embedTemplate.addField(
 				ZeroWidthSpace,
-				message.language.get(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild! })
+				language.get(LanguageKeys.Commands.Music.QueueDashboardInfo, { guild: message.guild })
 			);
 
 			for (const page of chunk(songFields, 5)) {
@@ -96,9 +96,9 @@ export default class extends MusicCommand {
 		return response.edit(undefined, queueDisplay.template);
 	}
 
-	private async generateTrackField(message: GuildMessage, position: number, entry: DecodedQueueEntry) {
-		const username = await this.fetchRequesterName(message, entry.author);
-		return message.language.get(LanguageKeys.Commands.Music.QueueLine, {
+	private async generateTrackField(message: GuildMessage, language: Language, position: number, entry: DecodedQueueEntry) {
+		const username = await this.fetchRequesterName(message, language, entry.author);
+		return language.get(LanguageKeys.Commands.Music.QueueLine, {
 			position: position + 1,
 			duration: showSeconds(entry.data.length),
 			title: entry.data.title,
@@ -117,7 +117,7 @@ export default class extends MusicCommand {
 		return accumulator;
 	}
 
-	private async fetchRequesterName(message: GuildMessage, userID: string): Promise<string> {
+	private async fetchRequesterName(message: GuildMessage, language: Language, userID: string): Promise<string> {
 		try {
 			return (await message.guild.members.fetch(userID)).displayName;
 		} catch {}
@@ -126,7 +126,7 @@ export default class extends MusicCommand {
 			return (await this.client.users.fetch(userID)).username;
 		} catch {}
 
-		return message.language.get(LanguageKeys.Misc.UnknownUser);
+		return language.get(LanguageKeys.Misc.UnknownUser);
 	}
 
 	private async getTrackInformation(audio: Queue): Promise<readonly DecodedQueueEntry[]> {

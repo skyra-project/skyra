@@ -1,4 +1,4 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
@@ -16,17 +16,18 @@ import { KlasaMessage, Language } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
-		const text = await this.fetchText(message, input);
+		const language = await message.fetchLanguage();
+		const text = await this.fetchText(input, language);
 		// Only fetch images if the channel is NSFW permitted
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
-			throw message.language.get(LanguageKeys.Commands.Tools.WikipediaNotfound);
+			throw language.get(LanguageKeys.Commands.Tools.WikipediaNotfound);
 		}
 
 		const pageURL = `https://en.wikipedia.org/wiki/${this.parseURL(input)}`;
 		const content = text.query.pages[text.query.pageids[0]];
-		const definition = this.content(content.extract, pageURL, message.language);
+		const definition = this.content(content.extract, pageURL, language);
 
 		const embed = new MessageEmbed()
 			.setTitle(content.title)
@@ -48,7 +49,7 @@ export default class extends SkyraCommand {
 		return message.sendEmbed(embed);
 	}
 
-	private async fetchText(message: KlasaMessage, input: string) {
+	private async fetchText(input: string, language: Language) {
 		try {
 			const url = this.getBaseUrl(input);
 			url.searchParams.append('prop', 'extracts');
@@ -58,7 +59,7 @@ export default class extends SkyraCommand {
 
 			return await fetch<WikipediaResultOk<'extracts'>>(url, FetchResultTypes.JSON);
 		} catch {
-			throw message.language.get(LanguageKeys.System.QueryFail);
+			throw language.get(LanguageKeys.System.QueryFail);
 		}
 	}
 
@@ -91,9 +92,9 @@ export default class extends SkyraCommand {
 		return encodeURIComponent(url.toLowerCase().replace(/[ ]/g, '_').replace(/\(/g, '%28').replace(/\)/g, '%29'));
 	}
 
-	private content(definition: string, url: string, i18n: Language) {
+	private content(definition: string, url: string, language: Language) {
 		if (definition.length < 300) return definition;
-		return i18n.get(LanguageKeys.Misc.SystemTextTruncated, { definition, url });
+		return language.get(LanguageKeys.Misc.SystemTextTruncated, { definition, url });
 	}
 }
 

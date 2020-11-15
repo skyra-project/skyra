@@ -1,9 +1,9 @@
+import { GuildSettings } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { announcementCheck } from '@utils/util';
-import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,
@@ -13,14 +13,14 @@ import { KlasaMessage } from 'klasa';
 	runIn: ['text']
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage) {
-		const role = announcementCheck(message);
-		const allRoleSets = message.guild!.settings.get(GuildSettings.Roles.UniqueRoleSets);
+	public async run(message: GuildMessage) {
+		const role = await announcementCheck(message);
+		const allRoleSets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
 
-		// Get all the role ids that the member has and remove the guild id so we dont assign the everyone role
-		const memberRolesSet = new Set(message.member!.roles.cache.keys());
+		// Get all the role ids that the member has and remove the guild id so we don't assign the everyone role
+		const memberRolesSet = new Set(message.member.roles.cache.keys());
 		// Remove the everyone role from the set
-		memberRolesSet.delete(message.guild!.id);
+		memberRolesSet.delete(message.guild.id);
 
 		// For each set that has the subscriber role remove all the roles from the set
 		for (const set of allRoleSets) {
@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		// Add the subscriber role to the set
 		memberRolesSet.add(role.id);
 
-		await message.member!.roles.set([...memberRolesSet]);
+		await message.member.roles.set([...memberRolesSet]);
 
 		return message.sendLocale(LanguageKeys.Commands.Announcement.SubscribeSuccess, [{ role: role.name }]);
 	}

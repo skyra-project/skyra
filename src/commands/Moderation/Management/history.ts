@@ -1,18 +1,18 @@
 import Collection from '@discordjs/collection';
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet, ModerationEntity } from '@lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ModerationEntity } from '@orm/entities/ModerationEntity';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
 import { BrandingColors, Moderation } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
-import { KlasaMessage } from 'klasa';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];
+type DurationDisplay = (time: number) => string;
 
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
@@ -26,12 +26,13 @@ const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb
 	subcommands: true
 })
 export default class extends SkyraCommand {
-	public async overview(message: KlasaMessage, [target = message.author]: [User]) {
-		const logs = await message.guild!.moderation.fetch(target.id);
+	public async overview(message: GuildMessage, [target = message.author]: [User]) {
+		const logs = await message.guild.moderation.fetch(target.id);
 		let warnings = 0;
 		let mutes = 0;
 		let kicks = 0;
 		let bans = 0;
+
 		for (const log of logs.values()) {
 			if (log.invalidated || log.appealType) continue;
 			switch (log.typeVariation) {
@@ -51,53 +52,55 @@ export default class extends SkyraCommand {
 		}
 
 		const index = Math.min(COLORS.length - 1, warnings + mutes + kicks + bans);
+		const language = await message.fetchLanguage();
 
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setFooter(
-					message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
+					language.get(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
 						warnings,
 						mutes,
 						kicks,
 						bans,
 						warningsText:
 							warnings === 1
-								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings })
-								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarningPlural, { count: warnings }),
+								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings })
+								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarningPlural, { count: warnings }),
 						mutesText:
 							mutes === 1
-								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes })
-								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutesPlural, { count: mutes }),
+								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes })
+								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutesPlural, { count: mutes }),
 						kicksText:
 							kicks === 1
-								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks })
-								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicksPlural, { count: kicks }),
+								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks })
+								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicksPlural, { count: kicks }),
 						bansText:
 							bans === 1
-								? message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
-								: message.language.get(LanguageKeys.Commands.Moderation.HistoryFooterBansPlural, { count: bans })
+								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
+								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterBansPlural, { count: bans })
 					})
 				)
 		);
 	}
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
-	public async details(message: KlasaMessage, [target = message.author]: [User]) {
+	public async details(message: GuildMessage, [target = message.author]: [User]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const entries = (await message.guild!.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
-		if (!entries.size) throw message.language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+		const entries = (await message.guild.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
+		if (!entries.size) throw language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setTitle(
-					message.language.get(
+					language.get(
 						entries.size === 1
 							? LanguageKeys.Commands.Moderation.ModerationsAmount
 							: LanguageKeys.Commands.Moderation.ModerationsAmountPlural,
@@ -110,7 +113,7 @@ export default class extends SkyraCommand {
 		const usernames = await this.fetchAllModerators(entries);
 
 		// Set up the formatter
-		const durationDisplay = message.language.duration.bind(message.language);
+		const durationDisplay = language.duration.bind(language);
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPage((template: MessageEmbed) => {
@@ -152,5 +155,3 @@ export default class extends SkyraCommand {
 		return moderators;
 	}
 }
-
-type DurationDisplay = (time: number) => string;

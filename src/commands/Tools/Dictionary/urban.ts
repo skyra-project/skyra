@@ -1,13 +1,14 @@
-import { DbSet } from '@lib/structures/DbSet';
+import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
+import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ud', 'urbandictionary'],
@@ -15,13 +16,13 @@ import { KlasaMessage, Language } from 'klasa';
 	description: (language) => language.get(LanguageKeys.Commands.Tools.UrbanDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.UrbanExtended),
 	nsfw: true,
-	runIn: ['text'],
 	usage: '<query:string>'
 })
 export default class extends RichDisplayCommand {
-	public async run(message: KlasaMessage, [query]: [string]) {
+	public async run(message: GuildMessage, [query]: [string]) {
+		const language = await message.fetchLanguage();
 		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(message.language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await fetch<UrbanDictionaryResultOk>(
@@ -30,13 +31,13 @@ export default class extends RichDisplayCommand {
 		);
 		const list = result.list.sort((a, b) => b.thumbs_up - b.thumbs_down - (a.thumbs_up - a.thumbs_down));
 
-		const display = await this.buildDisplay(list, message, query);
+		const display = await this.buildDisplay(list, message, language, query);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: KlasaMessage, query: string) {
+	private async buildDisplay(results: UrbanDictionaryResultOkEntry[], message: GuildMessage, language: Language, query: string) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setTitle(`Urban Dictionary: ${toTitleCase(query)}`)
@@ -45,8 +46,8 @@ export default class extends RichDisplayCommand {
 		).setFooterSuffix(' - © Urban Dictionary');
 
 		for (const result of results) {
-			const definition = this.parseDefinition(result.definition, result.permalink, message.language);
-			const example = result.example ? this.parseDefinition(result.example, result.permalink, message.language) : 'None';
+			const definition = this.parseDefinition(result.definition, result.permalink, language);
+			const example = result.example ? this.parseDefinition(result.example, result.permalink, language) : 'None';
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setURL(result.permalink)

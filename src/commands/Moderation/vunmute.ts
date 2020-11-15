@@ -12,12 +12,8 @@ import { getImage } from '@utils/util';
 	requiredPermissions: ['MUTE_MEMBERS']
 })
 export default class extends ModerationCommand {
-	public async prehandle() {
-		/* Do nothing */
-	}
-
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {
-		return message.guild!.security.actions.unVoiceMute(
+		return message.guild.security.actions.unVoiceMute(
 			{
 				userID: context.target.id,
 				moderatorID: message.author.id,
@@ -28,13 +24,9 @@ export default class extends ModerationCommand {
 		);
 	}
 
-	public async posthandle() {
-		/* Do nothing */
-	}
-
-	public async checkModeratable(...[message, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, context);
-		if (member && !member.voice.serverMute) throw message.language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
+	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, language, context);
+		if (member && !member.voice.serverMute) throw language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 		return member;
 	}
 }

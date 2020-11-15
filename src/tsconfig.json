@@ -5,13 +5,11 @@
 		"rootDir": ".",
 		"baseUrl": ".",
 		"paths": {
-			"@orm/*": ["lib/orm/*"],
 			"@utils/*": ["lib/util/*"],
 			"@lib/*": ["lib/*"],
 			"@root/*": ["*"]
 		},
-		"composite": true,
-		"declaration": true
+		"composite": true
 	},
 	"include": [".", "./**/*.json"],
 	"exclude": ["./tsconfig.json"]

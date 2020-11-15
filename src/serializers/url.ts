@@ -1,17 +1,36 @@
+import { Serializer, SerializerUpdateContext } from '@lib/database';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Serializer, SerializerUpdateContext } from 'klasa';
+import { Awaited } from '@sapphire/utilities';
 
-export default class extends Serializer {
+export default class UserSerializer extends Serializer<string> {
 	private readonly kProtocol = /^https?:\/\//;
+
+	public parse(value: string, { language, entry }: SerializerUpdateContext) {
+		try {
+			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
+			if (hostname.length <= 128) return this.ok(hostname);
+			return this.error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
+		} catch {
+			return this.error(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 }));
+		}
+	}
+
+	public isValid(value: string, { language, entry }: SerializerUpdateContext): Awaited<boolean> {
+		try {
+			const { hostname } = new URL(this.kProtocol.test(value) ? value : `https://${value}`);
+			return hostname.length <= 128;
+		} catch {
+			throw new Error(language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.name }));
+		}
+	}
 
 	public validate(data: string, { entry, language }: SerializerUpdateContext) {
 		try {
 			const { hostname } = new URL(this.kProtocol.test(data) ? data : `https://${data}`);
-			return hostname.length > 128
-				? Promise.reject(language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.path, max: 128 }))
-				: Promise.resolve(hostname);
+			if (hostname.length > 128) throw language.get(LanguageKeys.Resolvers.MinmaxMaxInclusive, { name: entry.name, max: 128 });
+			return hostname;
 		} catch {
-			return Promise.reject(language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.path }));
+			throw language.get(LanguageKeys.Resolvers.InvalidUrl, { name: entry.name });
 		}
 	}
 

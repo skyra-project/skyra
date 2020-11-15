@@ -1,10 +1,11 @@
+import { GuildSettings } from '@lib/database';
 import { FetchError } from '@lib/errors/FetchError';
 import { ApiRequest } from '@lib/structures/api/ApiRequest';
 import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { isNumber, isThenable, parseURL } from '@sapphire/utilities';
+import { Awaited, isNumber, isThenable, parseURL } from '@sapphire/utilities';
 import { createFunctionInhibitor } from '@skyra/decorators';
 import { Image, loadImage } from 'canvas';
 import { APIUser, RESTJSONErrorCodes } from 'discord-api-types/v6';
@@ -22,7 +23,7 @@ import {
 	User,
 	UserResolvable
 } from 'discord.js';
-import { KlasaGuild, RateLimitManager } from 'klasa';
+import { RateLimitManager } from 'klasa';
 import nodeFetch, { RequestInit, Response } from 'node-fetch';
 import { ValueTransformer } from 'typeorm';
 import { Time, ZeroWidthSpace } from './constants';
@@ -88,14 +89,17 @@ export async function streamToBuffer(stream: NodeJS.ReadableStream): Promise<Buf
  * Check if the announcement is correctly set up
  * @param message The message instance to check with
  */
-export function announcementCheck(message: Message) {
-	const announcementID = message.guild!.settings.get(GuildSettings.Roles.Subscriber);
-	if (!announcementID) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+export async function announcementCheck(message: GuildMessage) {
+	const [announcementID, language] = await message.guild.readSettings((settings) => [
+		settings[GuildSettings.Roles.Subscriber],
+		settings.getLanguage()
+	]);
+	if (!announcementID) throw language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
-	const role = message.guild!.roles.cache.get(announcementID);
-	if (!role) throw message.language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
+	const role = message.guild.roles.cache.get(announcementID);
+	if (!role) throw language.get(LanguageKeys.Commands.Announcement.SubscribeNoRole);
 
-	if (role.position >= message.guild!.me!.roles.highest.position) throw message.language.get(LanguageKeys.System.HighestRole);
+	if (role.position >= message.guild.me!.roles.highest.position) throw language.get(LanguageKeys.System.HighestRole);
 	return role;
 }
 
@@ -122,7 +126,11 @@ export function resolveEmoji(emoji: string | EmojiObject): string | null {
 	}
 
 	// Safe-guard against https://github.com/discordapp/discord-api-docs/issues/974
-	return emoji.id ? `${emoji.animated ? 'a' : ''}:${emoji.name!.replace(/~\d+/, '')}:${emoji.id}` : encodeURIComponent(emoji.name!);
+	return emoji.name
+		? emoji.id
+			? `${emoji.animated ? 'a' : ''}:${emoji.name.replace(/~\d+/, '')}:${emoji.id}`
+			: encodeURIComponent(emoji.name)
+		: emoji.id;
 }
 
 export function displayEmoji(emoji: string): string {
@@ -523,8 +531,8 @@ export function pickRandom<T>(array: readonly T[]): T {
 	return array[Math.floor(Math.random() * length)];
 }
 
-export function floatPromise(ctx: { client: Client }, promise: Promise<unknown>) {
-	if (isThenable(promise)) promise.catch((error) => ctx.client.emit(Events.Wtf, error));
+export function floatPromise(ctx: { client: Client }, promise: Awaited<unknown>) {
+	if (isThenable(promise)) promise.catch((error: Error) => ctx.client.emit(Events.Wtf, error));
 }
 
 export function getFromPath(object: Record<string, unknown>, path: string | readonly string[]): unknown {
@@ -643,7 +651,7 @@ export function validateChannelAccess(channel: GuildChannel, user: UserResolvabl
 	return (channel.guild !== null && channel.permissionsFor(user)?.has(Permissions.FLAGS.VIEW_CHANNEL)) || false;
 }
 
-export function getHighestRole(guild: KlasaGuild, roles: readonly string[]) {
+export function getHighestRole(guild: Guild, roles: readonly string[]) {
 	let highest: Role | null = null;
 	let position = 0;
 	for (const roleID of roles) {

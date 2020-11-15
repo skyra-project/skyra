@@ -1,8 +1,7 @@
-import { FT, T } from '@lib/types/Shared';
+import { FT, T } from '@lib/types';
 
 export const GuildMemberAdd = T<string>('eventsGuildMemberAdd');
 export const GuildMemberAddMute = T<string>('eventsGuildMemberAddMute');
-export const GuildMemberAddRaid = T<string>('eventsGuildMemberAddRaid');
 export const GuildMemberAddDescription = FT<{ mention: string; time: number }, string>('eventsGuildMemberAddDescription');
 export const GuildMemberRemove = T<string>('eventsGuildMemberRemove');
 export const GuildMemberKicked = T<string>('eventsGuildMemberKicked');

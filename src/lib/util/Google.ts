@@ -1,8 +1,8 @@
+import { CustomGet } from '@lib/types';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CustomGet } from '@lib/types/Shared';
 import { TOKENS } from '@root/config';
-import { Client, TextChannel } from 'discord.js';
+import { Client } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { fetch, FetchResultTypes } from './util';
 
@@ -30,8 +30,8 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 	url.searchParams.append('key', TOKENS.GOOGLE_MAPS_API_KEY);
 	const { results, status } = await fetch<GoogleMapsResultOk>(url, FetchResultTypes.JSON);
 
-	if (status !== GoogleResponseCodes.Ok) throw message.language.get(handleNotOK(status, message.client));
-	if (results.length === 0) throw message.language.get(LanguageKeys.Commands.Google.MessagesErrorZeroResults);
+	if (status !== GoogleResponseCodes.Ok) throw await message.fetchLocale(handleNotOK(status, message.client));
+	if (results.length === 0) throw await message.fetchLocale(LanguageKeys.Commands.Google.MessagesErrorZeroResults);
 
 	return {
 		formattedAddress: results[0].formatted_address,
@@ -43,7 +43,7 @@ export async function queryGoogleMapsAPI(message: KlasaMessage, location: string
 
 export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(message: KlasaMessage, type: T, query: string) {
 	try {
-		const nsfwAllowed = message.channel.type === 'text' ? (message.channel as TextChannel).nsfw : true;
+		const nsfwAllowed = message.channel.type === 'text' ? message.channel.nsfw : true;
 		const url = new URL(GOOGLE_CUSTOM_SEARCH_API_URL);
 		url.searchParams.append('cx', type === CustomSearchType.Search ? TOKENS.GOOGLE_CUSTOM_SEARCH_WEB_KEY : TOKENS.GOOGLE_CUSTOM_SEARCH_IMAGE_KEY);
 		url.searchParams.append('key', TOKENS.GOOGLE_API_KEY);
@@ -53,7 +53,7 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch {
-		throw message.language.get(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
+		throw await message.fetchLocale(handleNotOK(GoogleResponseCodes.UnknownError, message.client));
 	}
 }
 

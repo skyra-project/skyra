@@ -1,10 +1,17 @@
+import { GuildSettings } from '@lib/database';
+import { GuildMessage } from '@lib/types';
 import { Events } from '@lib/types/Enums';
-import { GuildSettings } from '@lib/types/namespaces/GuildSettings';
-import { KlasaMessage, Monitor } from 'klasa';
+import { Monitor } from 'klasa';
 
 export default class extends Monitor {
-	public run(message: KlasaMessage) {
-		if (!message.guild || !message.guild.settings.get(GuildSettings.NoMentionSpam.Enabled)) return;
+	public async run(message: GuildMessage) {
+		if (!message.guild) return;
+
+		const [enabled, ratelimits] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.Selfmod.NoMentionSpam.Enabled],
+			settings.nms
+		]);
+		if (!enabled) return;
 
 		const mentions =
 			message.mentions.users.filter((user) => !user.bot && user !== message.author).size +
@@ -13,7 +20,7 @@ export default class extends Monitor {
 
 		if (!mentions) return;
 
-		const rateLimit = message.guild.security.nms.acquire(message.author.id);
+		const rateLimit = ratelimits.acquire(message.author.id);
 
 		try {
 			for (let i = 0; i < mentions; i++) rateLimit.drip();

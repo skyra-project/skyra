@@ -80,6 +80,7 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		this.target = options.target;
 		this.type = options.type;
 		this.array = options.array;
+		this.default = options.default;
 		this.dashboardOnly = options.dashboardOnly ?? false;
 	}
 

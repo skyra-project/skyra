@@ -1,5 +1,4 @@
 export enum Suggestions {
-	ID = 'suggestionsId',
 	SuggestionsChannel = 'suggestionsChannel'
 }
 

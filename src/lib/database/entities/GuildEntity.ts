@@ -667,9 +667,6 @@ export class GuildEntity extends BaseEntity {
 	@Column('jsonb', { name: 'notifications.streams.twitch.streamers', default: () => "'[]'::JSONB" })
 	public notificationsStreamsTwitchStreamers: NotificationsStreamTwitch[] = [];
 
-	@Column('integer', { name: 'suggestions.id', default: 1 })
-	public suggestionsId = 1;
-
 	@ConfigurableKey({ description: LanguageKeys.Settings.SuggestionsEmojisUpvote, type: 'emoji' })
 	@Column('varchar', { name: 'suggestions.emojis.upvote', length: 128, default: ':ArrowT:694594285487652954' })
 	public suggestionsEmojisUpvote = ':ArrowT:694594285487652954';

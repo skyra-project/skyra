@@ -49,8 +49,28 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		// Get the next suggestion ID
-		const [suggestionID, language] = await guild.readSettings((settings) => [settings[GuildSettings.Suggestions.ID], settings.getLanguage()]);
+		const [[upvoteEmoji, downvoteEmoji, language], { suggestions }] = await Promise.all([
+			guild.readSettings(
+				(settings) =>
+					[
+						settings[GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji],
+						settings[GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji],
+						settings.getLanguage()
+					] as const
+			),
+			DbSet.connect()
+		]);
+
+		// Retrieve the ID for the latest suggestion
+		const [{ max }] = (await suggestions.query(
+			/* sql */ `
+			SELECT max(id)
+			FROM suggestion
+			WHERE guild_id = $1
+		`,
+			[guild.id]
+		)) as MaxQuery[];
+		const currentSuggestionId = max ?? 0;
 
 		// Post the suggestion
 		const suggestionsMessage = await (suggestionsChannel as TextChannel).send(
@@ -60,26 +80,18 @@ export default class extends SkyraCommand {
 					`${message.author.tag} (${message.author.id})`,
 					message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })
 				)
-				.setTitle(language.get(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: suggestionID }))
+				.setTitle(language.get(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
 				.setDescription(suggestion)
 		);
 
-		// Increase the next id
-		await guild.writeSettings((settings) => settings[GuildSettings.Suggestions.ID] + 1);
-
 		// Add the upvote/downvote reactions
-		const reactArray = await guild.readSettings([
-			GuildSettings.Suggestions.VotingEmojis.UpvoteEmoji,
-			GuildSettings.Suggestions.VotingEmojis.DownvoteEmoji
-		]);
-		for (const emoji of reactArray) {
+		for (const emoji of [upvoteEmoji, downvoteEmoji]) {
 			await suggestionsMessage.react(emoji);
 		}
 
 		// Commit the suggestion to the DB
-		const { suggestions } = await DbSet.connect();
 		await suggestions.insert({
-			id: suggestionID + 1,
+			id: currentSuggestionId + 1,
 			authorID: message.author.id,
 			guildID: guild.id,
 			messageID: suggestionsMessage.id
@@ -159,4 +171,8 @@ export default class extends SkyraCommand {
 
 		return missing;
 	}
+}
+
+interface MaxQuery {
+	max: number | null;
 }

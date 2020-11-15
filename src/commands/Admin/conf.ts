@@ -81,7 +81,9 @@ export default class extends SkyraCommand {
 			return [schemaKey.display(settings, language), language];
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), { allowedMentions: { users: [], roles: [] } });
+		return message.send(language.get(LanguageKeys.Commands.Admin.ConfUpdated, { key, response }), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
 	public async reset(message: GuildMessage, [key]: string[]) {

@@ -1,40 +1,45 @@
 import { GuildSettings } from '@lib/database';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';
-import { CommandStore } from 'klasa';
 
-export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandChannelDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandChannelExtended),
-			permissionLevel: PermissionLevels.Administrator,
-			runIn: ['text'],
-			subcommands: true,
-			usage: '<show|add|remove|reset> (channel:channel) (command:command)',
-			usageDelim: ' '
-		});
-
-		this.createCustomResolver('channel', async (arg, possible, msg) => {
-			if (!arg) return msg.channel;
-			const channel = await this.client.arguments.get('channelname')!.run(arg, possible, msg);
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandChannelDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.ManageCommandChannelExtended),
+	permissionLevel: PermissionLevels.Administrator,
+	runIn: ['text'],
+	subcommands: true,
+	usage: '<show|add|remove|reset> (channel:channel) (command:command)',
+	usageDelim: ' '
+})
+@CreateResolvers([
+	[
+		'channel',
+		async (arg, possible, message) => {
+			if (!arg) return message.channel;
+			const channel = await message.client.arguments.get('channelname')!.run(arg, possible, message);
 			if (channel.type === 'text') return channel;
-			throw msg.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelTextChannel);
-		}).createCustomResolver('command', async (arg, possible, msg, [type]) => {
+			throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelTextChannel);
+		}
+	],
+	[
+		'command',
+		async (arg, possible, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (arg) {
-				const command = await this.client.arguments.get('command')!.run(arg, possible, msg);
+				const command = await message.client.arguments.get('command')!.run(arg, possible, message);
 				if (!command.disabled && command.permissionLevel < 9) return command;
 			}
-			throw msg.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelRequiredCommand);
-		});
-	}
-
+			throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelRequiredCommand);
+		}
+	]
+])
+export default class extends SkyraCommand {
 	public async show(message: GuildMessage, [channel]: [TextChannel]) {
 		const [disabledCommandsChannels, language] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.DisabledCommandChannels],
@@ -65,9 +70,9 @@ export default class extends SkyraCommand {
 			} else {
 				const disabledCommandChannel = disabledCommandsChannels[indexOfChannel];
 				if (disabledCommandChannel.commands.includes(command.name))
-					throw language.get(LanguageKeys.Commands.Management.ManageCommandChannelAddAlreadyset);
+					throw language.get(LanguageKeys.Commands.Management.ManageCommandChannelAddAlreadySet);
 
-				settings[GuildSettings.DisabledCommandChannels][indexOfChannel].commands.concat(command.name);
+				settings[GuildSettings.DisabledCommandChannels][indexOfChannel].commands.push(command.name);
 			}
 
 			return language;
@@ -85,7 +90,7 @@ export default class extends SkyraCommand {
 			const language = settings.getLanguage();
 
 			if (indexOfChannel === -1) {
-				throw language.get(LanguageKeys.Commands.Management.ManageCommandChannelRemoveNotset, { channel: channel.toString() });
+				throw language.get(LanguageKeys.Commands.Management.ManageCommandChannelRemoveNotSet, { channel: channel.toString() });
 			}
 
 			const disabledCommandChannel = disabledCommandsChannels[indexOfChannel];

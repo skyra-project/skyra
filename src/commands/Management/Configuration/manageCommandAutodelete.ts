@@ -74,7 +74,7 @@ export default class extends SkyraCommand {
 			const language = settings.getLanguage();
 
 			if (index === -1) {
-				throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotset, { channel: channel.toString() });
+				throw language.get(LanguageKeys.Commands.Management.ManageCommandAutoDeleteRemoveNotSet, { channel: channel.toString() });
 			}
 
 			commandAutodelete.splice(index, 1);

@@ -27,7 +27,7 @@ const enum CoinType {
 			if (!arg) return null;
 			const language = await message.fetchLanguage();
 			const lArg = arg.toLowerCase();
-			const face = language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames).findIndex((coin) => coin.toLowerCase() === lArg);
+			const face = language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lArg);
 			if (face === -1) throw language.get(LanguageKeys.Commands.Games.CoinFlipInvalidCoinname, { arg });
 			return face;
 		}
@@ -71,7 +71,7 @@ export default class extends SkyraCommand {
 							? LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager
 							: LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager,
 						{
-							result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result],
+							result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result],
 							wager
 						}
 					)
@@ -88,7 +88,7 @@ export default class extends SkyraCommand {
 				.setTitle(language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
 					language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
-						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result]
+						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
 					})
 				)
 		);
@@ -99,10 +99,10 @@ export default class extends SkyraCommand {
 
 		return message.send(
 			(await this.buildEmbed(message, result)) //
-				.setTitle(language.get(LanguageKeys.Commands.Games.CoinFlipNoguessTitle))
+				.setTitle(language.get(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
 				.setDescription(
-					language.get(LanguageKeys.Commands.Games.CoinFlipNoguessDescription, {
-						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinnames)[result]
+					language.get(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
+						result: language.get(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
 					})
 				)
 		);

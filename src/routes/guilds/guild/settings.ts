@@ -68,6 +68,9 @@ export default class extends Route {
 		const entry = configurableKeys.get(key);
 		if (!entry || !isSchemaKey(entry)) throw `${key}: The key ${key} does not exist in the current schema.`;
 		try {
+			// If null is passed, reset to default:
+			if (value === null) return [entry.property, entry.default];
+
 			const ctx = { ...context, entry };
 			const result = await (entry.array ? this.validateArray(value, ctx) : entry.serializer.isValid(value as any, ctx));
 			if (!result) throw `${key}: The value is not valid.`;

@@ -35,7 +35,8 @@ export class SchemaGroup extends Collection<string, ISchemaValue> implements ISc
 			throw new Error(`You cannot add '${key}' to a non-group entry.`);
 		}
 
-		const group = new SchemaGroup(`${this.name} / ${toTitleCase(key)}`, this).add(tail as NonEmptyArray<string>, value);
+		const group = new SchemaGroup(`${this.name} / ${toTitleCase(key)}`, this);
+		group.add(tail as NonEmptyArray<string>, value);
 		this.set(key, group);
 		return group;
 	}

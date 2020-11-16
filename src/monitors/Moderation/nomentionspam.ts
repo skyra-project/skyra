@@ -5,7 +5,7 @@ import { Monitor } from 'klasa';
 
 export default class extends Monitor {
 	public async run(message: GuildMessage) {
-		if (!message.guild) return;
+		if (!message.guild || message.editedTimestamp !== null) return;
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const [enabled, globalIgnore, alerts, ratelimits] = await message.guild.readSettings((settings) => [

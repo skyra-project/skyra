@@ -150,6 +150,7 @@ export default class extends Monitor {
 	public shouldRun(message: GuildMessage) {
 		return (
 			this.enabled &&
+			message.editedTimestamp === null &&
 			message.guild !== null &&
 			message.author !== null &&
 			message.webhookID === null &&

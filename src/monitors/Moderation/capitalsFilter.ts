@@ -32,7 +32,7 @@ export default class extends ModerationMonitor {
 			GuildSettings.Selfmod.Capitals.Maximum
 		]);
 
-		if (minimumCapitals > message.content.length) return;
+		if (message.content.length < minimumCapitals) return null;
 
 		let length = 0;
 		let count = 0;

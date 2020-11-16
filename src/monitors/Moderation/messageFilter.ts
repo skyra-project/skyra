@@ -41,7 +41,7 @@ export default class extends ModerationMonitor {
 		// If count is bigger than threshold
 		// - return `count` (runs the rest of the monitor),
 		// - else return `null` (stops)
-		return count > threshold ? count : null;
+		return count > threshold ? 1 : null;
 	}
 
 	protected onDelete(message: GuildMessage) {

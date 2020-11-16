@@ -153,9 +153,10 @@ export default class extends Monitor {
 			message.guild !== null &&
 			message.author !== null &&
 			message.webhookID === null &&
-			message.attachments.size > 0 &&
+			message.type === 'DEFAULT' &&
 			!message.system &&
-			message.author.id !== CLIENT_ID
+			!message.author.bot &&
+			message.attachments.size > 0
 		);
 	}
 

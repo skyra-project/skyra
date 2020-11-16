@@ -43,7 +43,8 @@ export default class extends ModerationMonitor {
 			length++;
 		}
 
-		return (count / length) * 100 >= maximumCapitals ? count : null;
+		const percentage = (count / length) * 100;
+		return percentage >= maximumCapitals ? 1 : null;
 	}
 
 	protected async onDelete(message: GuildMessage, language: Language, value: number) {

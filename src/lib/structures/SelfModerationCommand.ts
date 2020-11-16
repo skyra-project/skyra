@@ -187,10 +187,7 @@ export abstract class SelfModerationCommand extends Command {
 
 		const i18n = language.get.bind(language);
 		const duration = language.duration.bind(language);
-		const [yes, no] = [
-			i18n(LanguageKeys.Commands.Moderation.AutomaticParameterEnabled),
-			i18n(LanguageKeys.Commands.Moderation.AutomaticParameterDisabled)
-		];
+		const [yes, no] = [i18n(LanguageKeys.Resolvers.BoolEnabled), i18n(LanguageKeys.Resolvers.BoolDisabled)];
 		return message.sendCode(
 			'prolog',
 			i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {

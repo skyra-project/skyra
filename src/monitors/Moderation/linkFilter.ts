@@ -30,16 +30,15 @@ export default class extends ModerationMonitor {
 	protected async preProcess(message: GuildMessage) {
 		let match: RegExpExecArray | null = null;
 
-		const urls = new Set<string>();
 		const whitelist = await message.guild.readSettings(GuildSettings.Selfmod.Links.Whitelist);
 		while ((match = this.kRegExp.exec(message.content)) !== null) {
 			const { hostname } = match.groups!;
 			if (this.kWhitelist.test(hostname)) continue;
 			if (whitelist.includes(hostname)) continue;
-			urls.add(hostname);
+			return 1;
 		}
 
-		return urls.size === 0 ? null : urls.size;
+		return null;
 	}
 
 	protected onDelete(message: GuildMessage) {

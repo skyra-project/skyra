@@ -594,11 +594,11 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'no-mention-spam.alerts', default: false })
 	public noMentionSpamAlerts = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamMentionsAllowed, type: 'integer' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamMentionsAllowed })
 	@Column('smallint', { name: 'no-mention-spam.mentionsAllowed', default: 20 })
 	public noMentionSpamMentionsAllowed = 20;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod, type: 'string' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod })
 	@Column('integer', { name: 'no-mention-spam.timePeriod', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 
@@ -626,7 +626,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'starboard.channel', nullable: true, length: 19 })
 	public starboardChannel?: string | null;
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'emoji' })
 	@Column('varchar', { name: 'starboard.emoji', length: 75, default: '%E2%AD%90' })
 	public starboardEmoji = '%E2%AD%90';
 

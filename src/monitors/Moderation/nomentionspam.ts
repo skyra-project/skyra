@@ -1,11 +1,12 @@
 import { GuildSettings } from '@lib/database';
+import { isNullishOrZero } from '@lib/misc';
 import { GuildMessage } from '@lib/types';
 import { Events, PermissionLevels } from '@lib/types/Enums';
 import { Monitor } from 'klasa';
 
 export default class extends Monitor {
 	public async run(message: GuildMessage) {
-		if (!message.guild || message.editedTimestamp !== null) return;
+		if (!message.guild || !isNullishOrZero(message.editedTimestamp)) return;
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const [enabled, globalIgnore, alerts, ratelimits] = await message.guild.readSettings((settings) => [

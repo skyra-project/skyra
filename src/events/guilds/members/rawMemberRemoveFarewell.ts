@@ -12,7 +12,7 @@ const enum Matches {
 	MemberTag = '%MEMBERTAG%'
 }
 
-@ApplyOptions<EventOptions>({ name: Events.RawMemberRemove })
+@ApplyOptions<EventOptions>({ event: Events.RawMemberRemove })
 export default class extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%/g;
 

@@ -6,7 +6,7 @@ import { GatewayMessageReactionRemoveDispatch } from 'discord-api-types/v6';
 import { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.RawReactionRemove })
+@ApplyOptions<EventOptions>({ event: Events.RawReactionRemove })
 export default class extends Event {
 	public async run(channel: TextChannel, data: GatewayMessageReactionRemoveDispatch['d']) {
 		// If the channel is not a text channel then stop processing

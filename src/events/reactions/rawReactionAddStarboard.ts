@@ -5,7 +5,7 @@ import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
+@ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export default class extends Event {
 	public async run(data: LLRCData, emojiID: string) {
 		if (data.channel.nsfw) return;

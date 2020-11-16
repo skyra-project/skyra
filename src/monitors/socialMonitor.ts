@@ -33,11 +33,11 @@ export default class extends Monitor {
 			// If boosted guild, increase rewards
 			const set = await DbSet.connect();
 			const { guildBoost } = await set.clients.ensure();
-			const add = Math.round((Math.random() * 4 + 4) * (guildBoost.includes(message.guild.id) ? 1.5 : 1));
+			const add = (Math.random() * 4 + 4) * (guildBoost.includes(message.guild.id) ? 1.5 : 1);
 
 			const [, points] = await Promise.all([
-				this.addUserPoints(set, message.author.id, add),
-				this.addMemberPoints(set, message.author.id, message.guild.id, add * multiplier)
+				this.addUserPoints(set, message.author.id, Math.round(add)),
+				this.addMemberPoints(set, message.author.id, message.guild.id, Math.round(add * multiplier))
 			]);
 			await this.handleRoles(message, points);
 		} catch (err) {

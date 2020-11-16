@@ -116,12 +116,12 @@ export class AdderManager implements IBaseManager {
 
 	private makeAdder(maximum: number | Nullish, duration: number | Nullish) {
 		if (isNullish(maximum) || isNullish(duration)) return null;
-		return new Adder<string>(maximum, duration);
+		return new Adder<string>(maximum, duration, true);
 	}
 
 	private updateAdder(adder: Adder<string> | null, maximum: number | Nullish, duration: number | Nullish) {
 		if (isNullish(maximum) || isNullish(duration)) return null;
-		if (!adder || adder.maximum !== maximum || adder.duration !== duration) return new Adder<string>(maximum, duration);
+		if (!adder || adder.maximum !== maximum || adder.duration !== duration) return new Adder<string>(maximum, duration, true);
 		return adder;
 	}
 }

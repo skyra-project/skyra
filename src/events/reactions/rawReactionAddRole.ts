@@ -4,7 +4,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
+@ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export default class extends Event {
 	public async run(parsed: LLRCData, emoji: string) {
 		const [roleEntry, allRoleSets] = await parsed.guild.readSettings((settings) => [

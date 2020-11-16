@@ -12,7 +12,9 @@ import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModer
 
 export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	public async run(message: GuildMessage) {
-		if (!(await this.checkPreRun(message))) return;
+		const shouldRun = await this.checkPreRun(message);
+		if (!shouldRun) return;
+
 		if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
 
 		const preProcessed = await this.preProcess(message);
@@ -45,7 +47,7 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 			message.author !== null &&
 			message.webhookID === null &&
 			message.type === 'DEFAULT' &&
-			message.author.id !== CLIENT_ID &&
+			!message.system &&
 			!message.author.bot
 		);
 	}
@@ -193,7 +195,13 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 	}
 
 	private checkMessageChannel(settings: GuildEntity, channel: TextChannel) {
-		return !(settings[GuildSettings.Selfmod.IgnoreChannels].includes(channel.id) || settings[this.ignoredChannelsPath].includes(channel.id));
+		const globalIgnore = settings[GuildSettings.Selfmod.IgnoreChannels];
+		if (globalIgnore.includes(channel.id)) return false;
+
+		const localIgnore = settings[this.ignoredChannelsPath];
+		if (localIgnore.includes(channel.id)) return false;
+
+		return true;
 	}
 
 	private checkMemberRoles(settings: GuildEntity, member: GuildMember | null) {

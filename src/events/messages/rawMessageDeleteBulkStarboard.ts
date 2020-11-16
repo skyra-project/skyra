@@ -6,7 +6,7 @@ import { GatewayMessageDeleteBulkDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError, Guild } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.RawMessageDeleteBulk })
+@ApplyOptions<EventOptions>({ event: Events.RawMessageDeleteBulk })
 export default class extends Event {
 	public async run(guild: Guild, data: GatewayMessageDeleteBulkDispatch['d']): Promise<void> {
 		for (const id of data.ids) guild.starboard.delete(id);

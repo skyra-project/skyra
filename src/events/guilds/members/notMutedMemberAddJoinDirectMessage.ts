@@ -15,7 +15,7 @@ const enum Matches {
 	Position = '%POSITION%'
 }
 
-@ApplyOptions<EventOptions>({ name: Events.NotMutedMemberAdd })
+@ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
 export default class extends Event {
 	private readonly kTransformMessageRegExp = /%MEMBER%|%MEMBERNAME%|%MEMBERTAG%|%GUILD%|%POSITION%|%MEMBERCOUNT%/g;
 

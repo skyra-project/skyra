@@ -15,7 +15,7 @@ import { EventOptions } from 'klasa';
 
 type ArgumentType = [LLRCData, string];
 
-@ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
+@ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	protected keyEnabled: KeyOfType<GuildEntity, boolean> = GuildSettings.Selfmod.Reactions.Enabled;
 	protected softPunishmentPath: KeyOfType<GuildEntity, number> = GuildSettings.Selfmod.Reactions.SoftAction;

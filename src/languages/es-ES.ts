@@ -1268,7 +1268,9 @@ export default class extends Language {
 		commandManageReactionRolesExtended: {
 			extendedHelp: [
 				'Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind the first reaction from you alongside the channel and the message, with the specified role.',
-				"Otherwise, if a channel is specified, a prompt will not be created, and the reaction role will be bound to all of the channel's messages."
+				"Otherwise, if a channel is specified, a prompt will not be created, and the reaction role will be bound to all of the channel's messages.",
+				'',
+				'The best way to add new reaction roles is by using `add @role`. If you prefer not binding the reaction to a specific message then use `add @role #channel emoji`'
 			],
 			explainedUsage: [
 				['show', 'Retrieve the list of all reaction roles.'],
@@ -1276,7 +1278,8 @@ export default class extends Language {
 				['remove <role> <message>', 'Removes a reaction role, use `show` to get a list of them.'],
 				['reset', 'Removes all reaction roles.']
 			],
-			multiline: true
+			multiline: true,
+			examples: ['show', 'add @role', 'add @role #channel emoji', 'remove @role 123456789012345678', 'reset']
 		},
 		commandSetIgnoreChannelsDescription: 'Set a channel to the ignore channel list.',
 		commandSetIgnoreChannelsExtended: {

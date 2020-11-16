@@ -32,7 +32,7 @@ export default class extends ModerationMonitor {
 		let count = 0;
 		for (let index = -2; index !== -1; index = content.indexOf(NEW_LINE, index + 1)) count++;
 
-		return count > threshold ? count : null;
+		return count > threshold ? 1 : null;
 	}
 
 	protected onDelete(message: GuildMessage) {

@@ -1,4 +1,5 @@
 import { GuildSettings } from '@lib/database';
+import { isNullishOrZero } from '@lib/misc';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events, PermissionLevels } from '@lib/types/Enums';
@@ -153,9 +154,11 @@ export default class extends Monitor {
 			message.guild !== null &&
 			message.author !== null &&
 			message.webhookID === null &&
-			message.attachments.size > 0 &&
+			message.type === 'DEFAULT' &&
+			isNullishOrZero(message.editedTimestamp) &&
 			!message.system &&
-			message.author.id !== CLIENT_ID
+			!message.author.bot &&
+			message.attachments.size > 0
 		);
 	}
 

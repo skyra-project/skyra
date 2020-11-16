@@ -598,7 +598,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('smallint', { name: 'no-mention-spam.mentionsAllowed', default: 20 })
 	public noMentionSpamMentionsAllowed = 20;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod, type: 'string' })
+	@ConfigurableKey({ description: LanguageKeys.Settings.NoMentionSpamTimePeriod })
 	@Column('integer', { name: 'no-mention-spam.timePeriod', default: 8 })
 	public noMentionSpamTimePeriod = 8;
 

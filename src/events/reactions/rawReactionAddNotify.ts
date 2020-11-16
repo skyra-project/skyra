@@ -12,7 +12,7 @@ import { APIUser } from 'discord-api-types/v6';
 import { MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.RawReactionAdd })
+@ApplyOptions<EventOptions>({ event: Events.RawReactionAdd })
 export default class extends Event {
 	private readonly kCountCache = new Collection<string, InternalCacheEntry>();
 	private readonly kSyncCache = new Collection<string, Promise<InternalCacheEntry>>();

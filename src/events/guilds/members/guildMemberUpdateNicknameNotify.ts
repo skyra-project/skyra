@@ -7,7 +7,7 @@ import { MessageLogsEnum } from '@utils/constants';
 import { GuildMember, MessageEmbed } from 'discord.js';
 import { Event, EventOptions, Language } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.GuildMemberUpdate })
+@ApplyOptions<EventOptions>({ event: Events.GuildMemberUpdate })
 export default class extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const [enabled, language] = await next.guild.readSettings((settings) => [

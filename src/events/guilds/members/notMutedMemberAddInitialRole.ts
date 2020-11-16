@@ -4,7 +4,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.NotMutedMemberAdd })
+@ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
 export default class extends Event {
 	public async run(member: GuildMember) {
 		const roleID = await member.guild.readSettings(GuildSettings.Roles.Initial);

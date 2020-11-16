@@ -9,7 +9,7 @@ import { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 
-@ApplyOptions<EventOptions>({ name: Events.RawMemberRemove })
+@ApplyOptions<EventOptions>({ event: Events.RawMemberRemove })
 export default class extends Event {
 	public async run(guild: Guild, { user }: GatewayGuildMemberRemoveDispatch['d']) {
 		const [enabled, language] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);

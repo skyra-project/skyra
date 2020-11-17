@@ -4,7 +4,7 @@ import { GuildMessage } from '@lib/types/Discord';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { requireSongPresent } from '@utils/Music/Decorators';
+import { requireSameVoiceChannel, requireSongPresent } from '@utils/Music/Decorators';
 import { VoiceChannel } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({
@@ -13,6 +13,7 @@ import { VoiceChannel } from 'discord.js';
 })
 export default class extends MusicCommand {
 	@requireSongPresent()
+	@requireSameVoiceChannel()
 	public async run(message: GuildMessage, [force = false]: [boolean]) {
 		const { audio } = message.guild;
 		const { voiceChannel } = audio;

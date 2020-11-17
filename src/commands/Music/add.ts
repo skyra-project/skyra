@@ -3,6 +3,7 @@ import { GuildMessage } from '@lib/types/Discord';
 import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
+import { requireUserInVoiceChannel } from '@utils/Music/Decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.AddDescription),
@@ -11,6 +12,7 @@ import { ApplyOptions } from '@skyra/decorators';
 	flagSupport: true
 })
 export default class extends MusicCommand {
+	@requireUserInVoiceChannel()
 	public async run(message: GuildMessage, [songs]: [string[]]) {
 		if (!songs || !songs.length) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
 

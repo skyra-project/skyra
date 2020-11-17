@@ -323,20 +323,29 @@ export class Queue {
 		// Sets the current position to 0.
 		await this.store.redis.del(this.keys.position);
 
-		if (!skipped && (await this.getReplay())) {
-			await this.setReplay(false);
+		// Get whether or not the queue is on replay mode.
+		const replaying = await this.getReplay();
+
+		// If not skipped (song ended) and is replaying, replay.
+		if (!skipped && replaying) {
 			return this.start(true);
 		}
 
+		// If it was skipped, set replay back to false.
+		if (replaying) await this.setReplay(false);
+
+		// Removes the next entry from the list and sets it as the current track.
 		const entry = await this.store.redis.rpopset(this.keys.next, this.keys.current);
-		await this.refresh();
+
+		// If there was an entry to play, refresh the state and start playing.
 		if (entry) {
 			if (skipped) this.client.emit(Events.MusicSongSkip, this, deserializeEntry(entry));
 			await this.resetSkipVotes();
+			await this.refresh();
 			return this.start(false);
 		}
 
-		// We're at the end of the queue, so clear everything out
+		// We're at the end of the queue, so clear everything out.
 		this.client.emit(Events.MusicFinish, this);
 		return false;
 	}

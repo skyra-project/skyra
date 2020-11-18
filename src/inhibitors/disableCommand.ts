@@ -1,26 +1,39 @@
-import { GuildSettings } from '@lib/database';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
+import { GuildEntity, GuildSettings } from '@lib/database';
+import type { SkyraCommand } from '@lib/structures/SkyraCommand';
+import type { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
+import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { isNullish } from '@sapphire/utilities';
 import { Inhibitor, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {
-	public async run(message: KlasaMessage, command: SkyraCommand) {
-		if (!command.enabled || !message.guild) return;
+	public run(message: KlasaMessage, command: SkyraCommand) {
+		return message.guild ? this.runGuild(message as GuildMessage, command) : this.runDM(message, command);
+	}
 
-		const [disabledChannels, disabledCommandChannels] = await message.guild.readSettings((settings) => [
-			settings[GuildSettings.DisabledChannels],
-			settings[GuildSettings.DisabledCommandChannels]
+	private async runDM(message: KlasaMessage, command: SkyraCommand) {
+		if (!command.enabled) throw await message.fetchLocale(LanguageKeys.Inhibitors.DisabledGlobal);
+	}
+
+	private async runGuild(message: GuildMessage, command: SkyraCommand) {
+		const [disabled, language] = await message.guild.readSettings((settings) => [
+			this.checkGuildDisabled(settings, message, command),
+			settings.getLanguage()
 		]);
 
-		if (disabledChannels.includes(message.channel.id)) {
-			if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
-			throw true;
+		if (disabled) {
+			if (!(await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator))) throw true;
 		}
 
-		const disabledCommandChannel = disabledCommandChannels.find((d) => d.channel === message.channel.id);
-		if (disabledCommandChannel && disabledCommandChannel.commands.includes(command.name)) {
-			if (await message.hasAtLeastPermissionLevel(PermissionLevels.Moderator)) return;
-			throw true;
-		}
+		if (!command.enabled) throw language.get(LanguageKeys.Inhibitors.DisabledGlobal);
+	}
+
+	private checkGuildDisabled(settings: GuildEntity, message: GuildMessage, command: SkyraCommand) {
+		if (settings[GuildSettings.DisabledChannels].includes(message.channel.id)) return true;
+
+		const entry = settings[GuildSettings.DisabledCommandChannels].find((d) => d.channel === message.channel.id);
+		if (isNullish(entry)) return false;
+
+		return entry.commands.includes(command.name);
 	}
 }

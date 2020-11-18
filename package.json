@@ -60,6 +60,7 @@
 		"@skyra/decorators": "discordjs",
 		"async-rwlock": "^1.1.1",
 		"binarytf": "^2.0.0",
+		"bufferutil": "^4.0.2",
 		"canvas": "^2.6.1",
 		"canvas-constructor": "^4.1.0",
 		"colorette": "^1.2.1",
@@ -79,6 +80,7 @@
 		"tsyringe": "^4.3.0",
 		"typeorm": "0.2.28",
 		"typeorm-naming-strategies": "^2.0.0",
+		"utf-8-validate": "^5.0.3",
 		"ws": "^7.4.0",
 		"zlib-sync": "^0.1.7"
 	},

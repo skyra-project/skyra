@@ -1,6 +1,6 @@
 import { BrandingColors } from '@utils/constants';
 import type { Message } from 'discord.js';
-import type { Connection, FindConditions, FindManyOptions } from 'typeorm';
+import type { Connection, FindConditions, FindManyOptions, Repository } from 'typeorm';
 import { connect } from '../database.config';
 import { BannerEntity } from '../entities/BannerEntity';
 import { GiveawayEntity } from '../entities/GiveawayEntity';
@@ -25,97 +25,62 @@ import { MemberRepository } from '../repositories/MemberRepository';
 import { UserRepository } from '../repositories/UserRepository';
 
 export class DbSet {
-	public connection: Connection;
+	public readonly connection: Connection;
+	public readonly banners: Repository<BannerEntity>;
+	public readonly clients: ClientRepository;
+	public readonly giveaways: Repository<GiveawayEntity>;
+	public readonly guilds: Repository<GuildEntity>;
+	public readonly members: MemberRepository;
+	public readonly moderations: Repository<ModerationEntity>;
+	public readonly rpgBattles: Repository<RpgBattleEntity>;
+	public readonly rpgClasses: Repository<RpgClassEntity>;
+	public readonly rpgGuildRanks: Repository<RpgGuildRankEntity>;
+	public readonly rpgGuilds: Repository<RpgGuildEntity>;
+	public readonly rpgItems: Repository<RpgItemEntity>;
+	public readonly rpgUserItems: Repository<RpgUserItemEntity>;
+	public readonly rpgUsers: Repository<RpgUserEntity>;
+	public readonly schedules: Repository<ScheduleEntity>;
+	public readonly starboards: Repository<StarboardEntity>;
+	public readonly suggestions: Repository<SuggestionEntity>;
+	public readonly twitchStreamSubscriptions: Repository<TwitchStreamSubscriptionEntity>;
+	public readonly users: UserRepository;
+	public readonly userProfiles: Repository<UserProfileEntity>;
+	public readonly userGameIntegrations: Repository<UserGameIntegrationEntity>;
+	public readonly userCooldowns: Repository<UserCooldownEntity>;
+
 	private constructor(connection: Connection) {
 		this.connection = connection;
+		this.banners = this.connection.getRepository(BannerEntity);
+		this.clients = this.connection.getCustomRepository(ClientRepository);
+		this.giveaways = this.connection.getRepository(GiveawayEntity);
+		this.guilds = this.connection.getRepository(GuildEntity);
+		this.members = this.connection.getCustomRepository(MemberRepository);
+		this.moderations = this.connection.getRepository(ModerationEntity);
+		this.rpgBattles = this.connection.getRepository(RpgBattleEntity);
+		this.rpgClasses = this.connection.getRepository(RpgClassEntity);
+		this.rpgGuildRanks = this.connection.getRepository(RpgGuildRankEntity);
+		this.rpgGuilds = this.connection.getRepository(RpgGuildEntity);
+		this.rpgItems = this.connection.getRepository(RpgItemEntity);
+		this.rpgUserItems = this.connection.getRepository(RpgUserItemEntity);
+		this.rpgUsers = this.connection.getRepository(RpgUserEntity);
+		this.schedules = this.connection.getRepository(ScheduleEntity);
+		this.starboards = this.connection.getRepository(StarboardEntity);
+		this.suggestions = this.connection.getRepository(SuggestionEntity);
+		this.twitchStreamSubscriptions = this.connection.getRepository(TwitchStreamSubscriptionEntity);
+		this.users = this.connection.getCustomRepository(UserRepository);
+		this.userProfiles = this.connection.getRepository(UserProfileEntity);
+		this.userGameIntegrations = this.connection.getRepository(UserGameIntegrationEntity);
+		this.userCooldowns = this.connection.getRepository(UserCooldownEntity);
 	}
 
-	public get banners() {
-		return this.connection.getRepository(BannerEntity);
-	}
-
-	public get clients() {
-		return this.connection.getCustomRepository(ClientRepository);
-	}
-
-	public get giveaways() {
-		return this.connection.getRepository(GiveawayEntity);
-	}
-
-	public get guilds() {
-		return this.connection.getRepository(GuildEntity);
-	}
-
-	public get members() {
-		return this.connection.getCustomRepository(MemberRepository);
-	}
-
-	public get moderations() {
-		return this.connection.getRepository(ModerationEntity);
-	}
-
-	public get rpgBattles() {
-		return this.connection.getRepository(RpgBattleEntity);
-	}
-
-	public get rpgClasses() {
-		return this.connection.getRepository(RpgClassEntity);
-	}
-
-	public get rpgGuildRanks() {
-		return this.connection.getRepository(RpgGuildRankEntity);
-	}
-
-	public get rpgGuilds() {
-		return this.connection.getRepository(RpgGuildEntity);
-	}
-
-	public get rpgItems() {
-		return this.connection.getRepository(RpgItemEntity);
-	}
-
-	public get rpgUserItems() {
-		return this.connection.getRepository(RpgUserItemEntity);
-	}
-
-	public get rpgUsers() {
-		return this.connection.getRepository(RpgUserEntity);
-	}
-
-	public get schedules() {
-		return this.connection.getRepository(ScheduleEntity);
-	}
-
-	public get starboards() {
-		return this.connection.getRepository(StarboardEntity);
-	}
-
-	public get suggestions() {
-		return this.connection.getRepository(SuggestionEntity);
-	}
-
-	public get twitchStreamSubscriptions() {
-		return this.connection.getRepository(TwitchStreamSubscriptionEntity);
-	}
-
-	public get users() {
-		return this.connection.getCustomRepository(UserRepository);
-	}
-
-	public get userProfiles() {
-		return this.connection.getRepository(UserProfileEntity);
-	}
-
-	public get userGameIntegrations() {
-		return this.connection.getRepository(UserGameIntegrationEntity);
-	}
-
-	public get userCooldowns() {
-		return this.connection.getRepository(UserCooldownEntity);
-	}
+	private static instance: DbSet | null = null;
+	private static connectPromise: Promise<DbSet> | null;
 
 	public static async connect() {
-		return new DbSet(await connect());
+		return (DbSet.instance ??= await (DbSet.connectPromise ??= connect().then((connection) => {
+			DbSet.connectPromise = null;
+			return new DbSet(connection);
+		})));
 	}
 
 	public static async fetchModerationDirectMessageEnabled(id: string) {

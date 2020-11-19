@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColu
 import { UserEntity } from './UserEntity';
 
 @Entity('user_game_integration', { schema: 'public' })
-export class UserGameIntegrationEntity<T> extends BaseEntity {
+export class UserGameIntegrationEntity<T = unknown> extends BaseEntity {
 	@PrimaryGeneratedColumn()
 	public id!: number;
 

@@ -88,7 +88,7 @@ export default class extends SkyraCommand {
 
 		return message.send(
 			language.get(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
-				channel: global ? 'Skyra Lounge' : suggestionsChannel.toString()
+				channel: globalSuggestion ? 'Skyra Lounge' : suggestionsChannel.toString()
 			})
 		);
 	}

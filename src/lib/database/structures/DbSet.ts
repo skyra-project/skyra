@@ -85,7 +85,7 @@ export class DbSet {
 
 	public static async fetchModerationDirectMessageEnabled(id: string) {
 		const { users } = await DbSet.connect();
-		const entry = await users.findOne(id);
+		const entry = await users.findOne(id, { select: ['moderationDM'] });
 		return entry?.moderationDM ?? true;
 	}
 
@@ -121,7 +121,7 @@ export class DbSet {
 
 	public static async fetchColor(message: Message) {
 		const { userProfiles } = await DbSet.connect();
-		const user = await userProfiles.findOne(message.author.id);
+		const user = await userProfiles.findOne(message.author.id, { select: ['color'] });
 
 		return user?.color || message.member?.displayColor || BrandingColors.Primary;
 	}

@@ -1,11 +1,14 @@
 import { DbSet } from '@lib/database';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { assetsFolder } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
+import { readFile } from 'fs/promises';
 import { CommandStore, KlasaMessage } from 'klasa';
+import { join } from 'path';
 
 export default class extends SkyraCommand {
+	private facts: readonly string[] = [];
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['kittenfact'],
@@ -18,7 +21,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		const { fact } = await fetch<CatfactResultOk>('https://catfact.ninja/fact', FetchResultTypes.JSON);
+		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
 		return message.sendEmbed(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -26,9 +29,9 @@ export default class extends SkyraCommand {
 				.setDescription(fact)
 		);
 	}
-}
 
-export interface CatfactResultOk {
-	fact: string;
-	length: number;
+	public async init() {
+		const text = await readFile(join(assetsFolder, 'data', 'catfacts.json'), 'utf-8');
+		this.facts = JSON.parse(text);
+	}
 }

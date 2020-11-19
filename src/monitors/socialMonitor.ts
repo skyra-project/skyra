@@ -122,9 +122,9 @@ export default class extends Monitor {
 		);
 	}
 
-	private addUserPoints(set: DbSet, userID: string, points: number) {
-		return set.users.lock([userID], async (id) => {
-			const user = await set.users.ensure(id);
+	private addUserPoints({ users }: DbSet, userID: string, points: number) {
+		return users.lock([userID], async (id) => {
+			const user = await users.ensure(id);
 
 			user.points += points;
 			await user.save();
@@ -133,8 +133,8 @@ export default class extends Monitor {
 		});
 	}
 
-	private async addMemberPoints(set: DbSet, userID: string, guildID: string, points: number) {
-		const member = await set.members.ensure(userID, guildID);
+	private async addMemberPoints({ members }: DbSet, userID: string, guildID: string, points: number) {
+		const member = await members.ensure(userID, guildID);
 		member.points += points;
 		await member.save();
 		return member.points;

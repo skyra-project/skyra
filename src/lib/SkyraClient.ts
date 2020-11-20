@@ -35,6 +35,7 @@ import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
 import { QueueClient } from '@lib/audio';
 import { GuildSettings, SettingsManager } from '@lib/database';
+import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -82,9 +83,14 @@ export class SkyraClient extends KlasaClient {
 	 */
 	public invites: InviteStore = new InviteStore(this);
 
+	@enumerable(false)
 	public readonly audio: QueueClient;
 
+	@enumerable(false)
 	public readonly analytics: AnalyticsData | null;
+
+	@enumerable(false)
+	public readonly guildMemberFetchQueue: GuildMemberFetchQueue = new GuildMemberFetchQueue(this);
 
 	/**
 	 * The ConnectFour manager

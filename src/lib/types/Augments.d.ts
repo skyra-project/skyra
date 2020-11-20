@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '@lib/audio';
 import type { SettingsManager } from '@lib/database';
+import { GuildMemberFetchQueue } from '@lib/discord/GuildMemberFetchQueue';
 import type { InviteStore } from '@lib/structures/InviteStore';
 import type { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '@lib/structures/managers/ScheduleManager';
@@ -19,21 +20,22 @@ import type { CustomFunctionGet, CustomGet } from './Utils';
 
 declare module 'discord.js' {
 	interface Client {
-		audio: QueueClient;
-		settings: SettingsManager;
-		version: string;
-		leaderboard: Leaderboard;
-		giveaways: GiveawayManager;
-		schedules: ScheduleManager;
-		invites: InviteStore;
-		analytics: AnalyticsData | null;
-		connectFour: ConnectFourManager;
-		websocket: WebsocketHandler;
-		llrCollectors: Set<LongLivingReactionCollector>;
-		webhookError: Webhook;
-		webhookFeedback: Webhook | null;
-		webhookDatabase: Webhook | null;
-		twitch: Twitch;
+		readonly analytics: AnalyticsData | null;
+		readonly audio: QueueClient;
+		readonly connectFour: ConnectFourManager;
+		readonly giveaways: GiveawayManager;
+		readonly guildMemberFetchQueue: GuildMemberFetchQueue;
+		readonly invites: InviteStore;
+		readonly leaderboard: Leaderboard;
+		readonly llrCollectors: Set<LongLivingReactionCollector>;
+		readonly schedules: ScheduleManager;
+		readonly settings: SettingsManager;
+		readonly twitch: Twitch;
+		readonly version: string;
+		readonly webhookDatabase: Webhook | null;
+		readonly webhookError: Webhook;
+		readonly webhookFeedback: Webhook | null;
+		readonly websocket: WebsocketHandler;
 
 		emit(event: Events.AnalyticsSync, guilds: number, users: number): boolean;
 		emit(event: Events.CommandUsageAnalytics, command: string, category: string, subCategory: string): boolean;

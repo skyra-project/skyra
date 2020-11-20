@@ -6,7 +6,6 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { serialize } from 'binarytf';
-import { MessageAttachment } from 'discord.js';
 
 export const maximumExportQueueSize = 100;
 
@@ -25,10 +24,10 @@ export default class extends SkyraCommand {
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.sendLocale(
-			LanguageKeys.Commands.Music.ExportQueueSuccess,
-			[{ guildName: name }],
-			new MessageAttachment(Buffer.from(data), `${message.guild.name}-${Date.now()}.squeue`)
+		return message.channel.sendFile(
+			Buffer.from(data),
+			`${name}-${Date.now()}.squeue`,
+			await message.fetchLocale(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name })
 		);
 	}
 

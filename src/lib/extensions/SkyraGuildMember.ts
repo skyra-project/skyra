@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-invalid-this */
+/* eslint-disable @typescript-eslint/class-literal-property-style, @typescript-eslint/no-invalid-this */
 import { GuildEntity, GuildSettings } from '@lib/database';
 import { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import { Permissions, Structures, VoiceChannel } from 'discord.js';
@@ -10,6 +10,23 @@ export class SkyraGuildMember extends Structures.get('GuildMember') {
 		if (!rank) return list.size;
 		if (!rank.name) rank.name = this.user.username;
 		return rank.position;
+	}
+
+	public set lastMessageID(_: string | null) {
+		// noop
+	}
+
+	public get lastMessageID() {
+		return null;
+	}
+
+	// @ts-expect-error: Setter-Getter combo to make the property never be set.
+	public set lastMessageChannelID(_: string | null) {
+		// noop
+	}
+
+	public get lastMessageChannelID() {
+		return null;
 	}
 
 	public isDJ() {

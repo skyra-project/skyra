@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 
 		return message.channel.sendFile(
 			Buffer.from(data),
-			`${message.guild.name}-${Date.now()}.squeue`,
+			`${name}-${Date.now()}.squeue`,
 			await message.fetchLocale(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name })
 		);
 	}

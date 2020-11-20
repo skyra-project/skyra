@@ -29,6 +29,7 @@ export default class extends Inhibitor {
 	}
 
 	private checkGuildDisabled(settings: GuildEntity, message: GuildMessage, command: SkyraCommand) {
+		if (settings[GuildSettings.DisabledCommands].includes(command.name)) return true;
 		if (settings[GuildSettings.DisabledChannels].includes(message.channel.id)) return true;
 
 		const entry = settings[GuildSettings.DisabledCommandChannels].find((d) => d.channel === message.channel.id);

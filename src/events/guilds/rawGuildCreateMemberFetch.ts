@@ -6,7 +6,7 @@ export default class extends Event {
 		super(store, file, directory, { name: GatewayDispatchEvents.GuildCreate, emitter: store.client.ws });
 	}
 
-	public run(data: GatewayGuildCreateDispatch['d'], id: number) {
-		this.client.guildMemberFetchQueue.add(id, data.id);
+	public run(data: GatewayGuildCreateDispatch['d'], shardID: number) {
+		this.client.guildMemberFetchQueue.add(shardID, data.id);
 	}
 }

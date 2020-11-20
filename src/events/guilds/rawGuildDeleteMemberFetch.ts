@@ -6,7 +6,7 @@ export default class extends Event {
 		super(store, file, directory, { name: GatewayDispatchEvents.GuildDelete, emitter: store.client.ws });
 	}
 
-	public run(data: GatewayGuildDeleteDispatch['d'], id: number) {
-		this.client.guildMemberFetchQueue.remove(id, data.id);
+	public run(data: GatewayGuildDeleteDispatch['d'], shardID: number) {
+		this.client.guildMemberFetchQueue.remove(shardID, data.id);
 	}
 }

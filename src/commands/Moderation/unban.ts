@@ -19,16 +19,22 @@ export default class extends ModerationCommand {
 		const bans = await message.guild
 			.fetchBans()
 			.then((result) => result.map((ban) => ban.user.id))
-			.catch(() => {
-				throw message.fetchLocale(LanguageKeys.System.FetchBansFail);
-			});
-		if (bans.length) {
-			return {
-				bans,
-				unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
-			};
+			.catch(() => null);
+
+		// If the fetch failed, throw an error saying that the fetch failed:
+		if (bans === null) {
+			throw await message.fetchLocale(LanguageKeys.System.FetchBansFail);
 		}
-		throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
+
+		// If there were no bans, throw an error saying that the ban list is empty:
+		if (bans.length === 0) {
+			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
+		}
+
+		return {
+			bans,
+			unlock: (await message.guild.readSettings(GuildSettings.Events.BanRemove)) ? message.guild.moderation.createLock() : null
+		};
 	}
 
 	public async handle(...[message, context]: ArgumentTypes<ModerationCommand['handle']>) {

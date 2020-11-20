@@ -17,6 +17,8 @@ interface GuildMemberFetchQueueShardEntry {
 	fetching: number;
 }
 
+const kMaximumQueriesPerMinute = 90;
+
 export class GuildMemberFetchQueue {
 	/**
 	 * The client that instantiated this class.
@@ -35,7 +37,7 @@ export class GuildMemberFetchQueue {
 	 */
 	public constructor(client: Client) {
 		this.client = client;
-		this.client.setInterval(() => this.fetch(), Time.Second);
+		this.client.setInterval(() => this.fetch(), Time.Minute);
 	}
 
 	/**
@@ -85,7 +87,7 @@ export class GuildMemberFetchQueue {
 	 */
 	private fetchShard(entry: GuildMemberFetchQueueShardEntry) {
 		// There must be less than 100 entries being fetched from the same shard, and at least one entry pending:
-		while (entry.fetching < 100 && entry.pending.length > 0) {
+		while (entry.fetching < kMaximumQueriesPerMinute && entry.pending.length > 0) {
 			const guildID = entry.pending.shift()!;
 			const guild = this.client.guilds.cache.get(guildID);
 

@@ -5,7 +5,7 @@ import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: GatewayDispatchEvents.VoiceStateUpdate, emitter: store.client.ws });
+		super(store, file, directory, { event: GatewayDispatchEvents.VoiceStateUpdate, emitter: store.client.ws });
 	}
 
 	public async run(data: GatewayVoiceState): Promise<void> {

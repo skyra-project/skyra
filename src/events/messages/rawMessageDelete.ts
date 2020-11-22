@@ -4,7 +4,7 @@ import { Event, EventStore } from 'klasa';
 
 export default class extends Event {
 	public constructor(store: EventStore, file: string[], directory: string) {
-		super(store, file, directory, { name: GatewayDispatchEvents.MessageDelete, emitter: store.client.ws });
+		super(store, file, directory, { event: GatewayDispatchEvents.MessageDelete, emitter: store.client.ws });
 	}
 
 	public run(data: GatewayMessageDeleteDispatch['d']): void {

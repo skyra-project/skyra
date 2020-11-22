@@ -51,7 +51,7 @@ export default class extends SkyraCommand {
 		if (filtered.size < 4 || filtered.size > 48) throw language.get(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
-		let resolve: ((value?: boolean) => void) | null = null;
+		let resolve: ((value: boolean) => void) | null = null;
 		let gameMessage: GuildMessage | null = null;
 		const game: HungerGamesGame = Object.seal({
 			bloodbath: true,

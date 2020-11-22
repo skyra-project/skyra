@@ -140,7 +140,7 @@ export class Slotmachine {
 		await Promise.all(
 			rolls.map(
 				(value, index) =>
-					new Promise((resolve) => {
+					new Promise<void>((resolve) => {
 						const { x, y } = kAssets.get(value)!;
 						const coordinate = kCoordinates[index];
 						canvas.printImage(Slotmachine.images.ICON!, x, y, kIconSize, kIconSize, coordinate.x, coordinate.y, kIconSize, kIconSize);

@@ -32,7 +32,7 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	/**
 	 * The promise to wait for tasks to complete
 	 */
-	private readonly _locks: ReferredPromise<undefined>[] = [];
+	private readonly _locks: ReferredPromise<void>[] = [];
 
 	public get client() {
 		return this.guild.client;
@@ -133,7 +133,8 @@ export class ModerationManager extends Collection<number, ModerationEntity> {
 	}
 
 	public createLock() {
-		const lock = createReferPromise<undefined>();
+		// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
+		const lock = createReferPromise<void>();
 		this._locks.push(lock);
 		floatPromise(
 			this.guild,

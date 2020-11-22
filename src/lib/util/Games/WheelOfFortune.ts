@@ -144,7 +144,7 @@ export class WheelOfFortune {
 		await Promise.all(
 			kAssets.map(
 				({ x, y }) =>
-					new Promise((resolve) => {
+					new Promise<void>((resolve) => {
 						canvas.printImage(image, x, y, kIconSize, kIconSize, x + 12, y + 12, kIconSize, kIconSize);
 						resolve();
 					})

@@ -26,8 +26,8 @@ export class AdderManager implements IBaseManager {
 	public refresh(): void {
 		const settings = this.#settings;
 		this.attachments = this.makeAdder(
-			settings[GuildSettings.Selfmod.Attachments.Maximum], //
-			settings[GuildSettings.Selfmod.Attachments.Duration]
+			settings[GuildSettings.Selfmod.Attachments.ThresholdMaximum], //
+			settings[GuildSettings.Selfmod.Attachments.ThresholdDuration]
 		);
 		this.capitals = this.makeAdder(
 			settings[GuildSettings.Selfmod.Capitals.ThresholdMaximum],
@@ -63,8 +63,8 @@ export class AdderManager implements IBaseManager {
 		const settings = this.#settings;
 		this.attachments = this.updateAdder(
 			this.attachments,
-			settings[GuildSettings.Selfmod.Attachments.Maximum],
-			settings[GuildSettings.Selfmod.Attachments.Duration]
+			settings[GuildSettings.Selfmod.Attachments.ThresholdMaximum],
+			settings[GuildSettings.Selfmod.Attachments.ThresholdDuration]
 		);
 		this.capitals = this.updateAdder(
 			this.capitals,

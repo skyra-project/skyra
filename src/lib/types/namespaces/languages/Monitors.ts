@@ -5,7 +5,8 @@ export const CommandHandlerReprompt = FT<{ tag: string; name: string; time: stri
 export const CommandHandlerRepeatingReprompt = FT<{ tag: string; name: string; time: string; cancelOptions: string }, string>(
 	'monitorCommandHandlerRepeatingReprompt'
 );
-export const AttachmentfilterFooter = T<string>('constMonitorAttachmentfilter');
+export const AttachmentFilterFooter = T<string>('constMonitorAttachmentfilter');
+export const AttachmentFilter = FT<{ user: string }, string>('monitorAttachmentFilter');
 export const CapsFilter = FT<{ user: string }, string>('monitorCapsFilter');
 export const CapsFilterDm = FT<{ message: string }, string>('monitorCapsFilterDm');
 export const CapsfilterFooter = T<string>('constMonitorCapsfilter');

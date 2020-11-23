@@ -286,23 +286,37 @@ export class GuildEntity extends BaseEntity {
 	@Column('jsonb', { name: 'roles.uniqueRoleSets', default: () => "'[]'::JSONB" })
 	public rolesUniqueRoleSets: UniqueRoleSet[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachment })
-	@Column('boolean', { name: 'selfmod.attachment', default: false })
-	public selfmodAttachment = false;
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentsEnabled })
+	@Column('boolean', { name: 'selfmod.attachments.enabled', default: false })
+	public selfmodAttachmentsEnabled = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentMaximum, minimum: 0, maximum: 60 })
-	@Column('smallint', { name: 'selfmod.attachmentMaximum', default: 20 })
-	public selfmodAttachmentMaximum = 20;
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentsIgnoredRoles, type: 'role' })
+	@Column('varchar', { name: 'selfmod.attachments.ignoredRoles', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodAttachmentsIgnoredRoles: string[] = [];
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentDuration, minimum: 5000, maximum: 120000 })
-	@Column('smallint', { name: 'selfmod.attachmentDuration', default: 20000 })
-	public selfmodAttachmentDuration = 20000;
+	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodAttachmentsIgnoredChannels, type: 'textchannel' })
+	@Column('varchar', { name: 'selfmod.attachments.ignoredChannels', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public selfmodAttachmentsIgnoredChannels: string[] = [];
 
-	@Column('smallint', { name: 'selfmod.attachmentAction', default: 0 })
-	public selfmodAttachmentAction = 0;
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@Column('smallint', { name: 'selfmod.attachments.softAction', default: 0 })
+	public selfmodAttachmentsSoftAction = 0;
 
-	@Column('integer', { name: 'selfmod.attachmentPunishmentDuration', nullable: true })
-	public selfmodAttachmentPunishmentDuration?: number | null;
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@Column('smallint', { name: 'selfmod.attachments.hardAction', default: 0 })
+	public selfmodAttachmentsHardAction = 0;
+
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@Column('integer', { name: 'selfmod.attachments.hardActionDuration', nullable: true })
+	public selfmodAttachmentsHardActionDuration: number | null = null;
+
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@Column('smallint', { name: 'selfmod.attachments.thresholdMaximum', default: 10 })
+	public selfmodAttachmentsThresholdMaximum = 10;
+
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
+	@Column('integer', { name: 'selfmod.attachments.thresholdDuration', default: 60000 })
+	public selfmodAttachmentsThresholdDuration = 60000;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.SelfmodCapitalsEnabled })
 	@Column('boolean', { name: 'selfmod.capitals.enabled', default: false })

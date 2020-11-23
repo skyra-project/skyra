@@ -24,7 +24,7 @@ import { TextChannel } from 'discord.js';
 		async (arg, _, message, [type]) => {
 			if (type === 'show' || type === 'reset') return undefined;
 			if (!arg) return message.channel;
-			const channel = await message.client.arguments.get('channelname')!.run(arg, _, message);
+			const channel = await message.client.arguments.get('textchannelname')!.run(arg, _, message);
 			if (channel.type === 'text') return channel;
 			throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandAutoDeleteTextChannel);
 		}

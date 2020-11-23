@@ -22,7 +22,7 @@ import { TextChannel } from 'discord.js';
 		'channel',
 		async (arg, possible, message) => {
 			if (!arg) return message.channel;
-			const channel = await message.client.arguments.get('channelname')!.run(arg, possible, message);
+			const channel = await message.client.arguments.get('textchannelname')!.run(arg, possible, message);
 			if (channel.type === 'text') return channel;
 			throw await message.fetchLocale(LanguageKeys.Commands.Management.ManageCommandChannelTextChannel);
 		}

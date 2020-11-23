@@ -16,7 +16,7 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 	description: (language) => language.get(LanguageKeys.Commands.Tools.QuoteDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.QuoteExtended),
 	requiredPermissions: ['EMBED_LINKS'],
-	usage: '[channel:channelname] (message:message)',
+	usage: '[channel:textchannelname] (message:message)',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {

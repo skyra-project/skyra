@@ -22,10 +22,7 @@ import { Twitch } from './util/Notifications/Twitch';
 import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
 
 // Import all extensions and schemas
-import './extensions/SkyraGuild';
-import './extensions/SkyraGuildMember';
-import './extensions/SkyraMessage';
-import './extensions/SkyraUser';
+import './extensions';
 
 // Import setup files
 import './setup/PermissionsLevels';

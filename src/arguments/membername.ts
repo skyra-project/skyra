@@ -5,7 +5,6 @@ import { GuildMember } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 const USER_REGEXP = Argument.regex.userOrMember;
-const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<GuildMember> {
@@ -19,14 +18,12 @@ export default class extends Argument {
 	}
 
 	private async resolveMember(message: KlasaMessage, query: string): Promise<GuildMember | null> {
-		const id = USER_REGEXP.test(query) ? USER_REGEXP.exec(query)![1] : USER_TAG.test(query) ? this.client.users.getFromTag(query)?.id : null;
+		const result = USER_REGEXP.exec(query);
+		if (result === null) return null;
 
-		if (id) {
-			const member = await message.guild!.members.fetch(id);
-			if (member) return member;
-			throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
-		}
-		return null;
+		const member = await message.guild!.members.fetch(result[1]);
+		if (member) return member;
+		throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
 	}
 
 	private async fetchMember(query: string, message: KlasaMessage) {

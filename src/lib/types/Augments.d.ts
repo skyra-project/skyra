@@ -81,19 +81,6 @@ declare module 'discord.js' {
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 
-	interface TextChannel {
-		sniped: Message | null;
-		toString(): string;
-	}
-
-	interface VoiceChannel {
-		readonly listeners: string[];
-	}
-
-	interface UserManager {
-		getFromTag(tag: string): User | null;
-	}
-
 	interface MessageEmbed {
 		splitFields(title: string, content: string | string[]): this;
 		splitFields(content: string | string[]): this;

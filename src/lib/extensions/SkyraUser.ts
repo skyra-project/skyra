@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/class-literal-property-style, @typescript-eslint/no-invalid-this */
+/* eslint-disable @typescript-eslint/class-literal-property-style */
 import { Structures } from 'discord.js';
 
 export class SkyraUser extends Structures.get('User') {

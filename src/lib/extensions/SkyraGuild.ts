@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-invalid-this */
 import { Queue } from '@lib/audio';
 import { GuildEntity, SettingsCollectionCallback } from '@lib/database';
 import { ModerationManager } from '@lib/structures/managers/ModerationManager';

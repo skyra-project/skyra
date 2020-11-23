@@ -5,7 +5,6 @@ import { User } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 const USER_REGEXP = Argument.regex.userOrMember;
-const USER_TAG = /^\w{1,32}#\d{4}$/;
 
 export default class extends Argument {
 	public get user() {
@@ -24,11 +23,11 @@ export default class extends Argument {
 	}
 
 	private async resolveUser(message: KlasaMessage, query: string) {
-		const id = USER_REGEXP.test(query) ? USER_REGEXP.exec(query)![1] : USER_TAG.test(query) ? this.client.users.getFromTag(query)?.id : null;
-		if (!id) return null;
+		const result = USER_REGEXP.exec(query);
+		if (result === null) return null;
 
 		try {
-			return await this.client.users.fetch(id);
+			return await this.client.users.fetch(result[1]);
 		} catch {
 			throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
 		}

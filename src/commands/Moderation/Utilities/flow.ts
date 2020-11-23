@@ -12,7 +12,7 @@ import { TextChannel } from 'discord.js';
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.FlowExtended),
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
-	usage: '[channel:channelname]'
+	usage: '[channel:textchannelname]'
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [channel = message.channel as TextChannel]: [TextChannel?]) {

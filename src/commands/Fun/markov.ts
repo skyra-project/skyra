@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.MarkovExtended),
 			runIn: ['text'],
 			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
-			usage: '[channel:channelname{2}] [user:username]'
+			usage: '[channel:textchannelname{2}] [user:username]'
 		});
 
 		this.kBoundUseUpperCase = this.useUpperCase.bind(this);

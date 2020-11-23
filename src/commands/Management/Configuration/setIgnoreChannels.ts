@@ -16,7 +16,7 @@ export default class extends SkyraCommand {
 			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetIgnoreChannelsExtended),
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
-			usage: '<here|channel:channelname>'
+			usage: '<here|channel:textchannelname>'
 		});
 	}
 

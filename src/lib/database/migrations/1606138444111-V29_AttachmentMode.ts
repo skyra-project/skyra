@@ -31,9 +31,28 @@ export class V29AttachmentMode1606138444111 implements MigrationInterface {
 				default: () => 'ARRAY[]::VARCHAR[]'
 			})
 		);
+		await queryRunner.query(/* sql */ `
+			UPDATE "public"."guilds"
+			SET
+				-- 1010 (Log + 010 [2]) should be converted to 010 (Log) and 011 [3], therefore we read the smallint
+				-- as a 4-bit bitfield, read the first bit ('1') and shift it by one, this way we get 010 [2] in action.
+				-- Then we convert the action into a 3-bit bitfield ('1010'::bit(3) becomes '010'::bit(3)) and add one,
+				-- thus we get 011 [3].
+				"selfmod.attachments.softAction" = get_bit("selfmod.attachments.hardAction"::bit(4), 0) << 1
+				"selfmod.attachments.hardAction" = "selfmod.attachments.hardAction"::bit(3) + 1
+		`);
 	}
 
 	public async down(queryRunner: QueryRunner): Promise<void> {
+		await queryRunner.query(/* sql */ `
+			UPDATE "public"."guilds"
+			SET
+				-- We do the opposite, if we have to reduce hardAction by one (011 [3] becomes 010 [2]), then we add the
+				-- bit from softAction shifted by 3, that way, if softAction was x1x, get_bit would return 1, and after
+				-- << 3, it'd turn into 1000. We add this and get 1010 back.
+				"selfmod.attachments.hardAction" = ("selfmod.attachments.hardAction" - 1) + (get_bit("selfmod.attachments.softAction"::bit(3), 1) << 3);
+		`);
+
 		await queryRunner.renameColumn('guilds', 'selfmod.attachments.enabled', 'selfmod.attachment');
 		await queryRunner.renameColumn('guilds', 'selfmod.attachments.hardAction', 'selfmod.attachmentAction');
 		await queryRunner.renameColumn('guilds', 'selfmod.attachments.hardActionDuration', 'selfmod.attachmentPunishmentDuration');

@@ -44,7 +44,7 @@ export class V29AttachmentMode1606138444111 implements MigrationInterface {
 				-- Then we convert the action into a 3-bit bitfield ('1010'::bit(3) becomes '010'::bit(3)) and add one,
 				-- thus we get 011 [3].
 				"selfmod.attachments.softAction" = get_bit("selfmod.attachments.hardAction"::bit(4), 0) << 1
-				"selfmod.attachments.hardAction" = "selfmod.attachments.hardAction"::bit(3) + 1
+				"selfmod.attachments.hardAction" = "selfmod.attachments.hardAction"::bit(3)::int + 1
 		`);
 	}
 

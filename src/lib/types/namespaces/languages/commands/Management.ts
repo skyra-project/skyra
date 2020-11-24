@@ -2,8 +2,8 @@ import { FT, T } from '@lib/types';
 import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
 import { Role, User } from 'discord.js';
 
-export const AttachmentsModeDescription = T<string>('commandManageAttachmentsDescription');
-export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commandManageAttachmentsExtended');
+export const AttachmentsModeDescription = T<string>('commandAttachmentsModeDescription');
+export const AttachmentsModeExtended = T<LanguageHelpDisplayOptions>('commandAttachmentsModeExtended');
 export const ManageCommandAutoDeleteTextChannel = T<string>('commandManageCommandAutoDeleteTextChannel');
 export const ManageCommandAutoDeleteRequiredDuration = T<string>('commandManageCommandAutoDeleteRequiredDuration');
 export const ManageCommandAutoDeleteShowEmpty = T<string>('commandManageCommandAutoDeleteShowEmpty');

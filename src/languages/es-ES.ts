@@ -618,10 +618,9 @@ export default class extends Language {
 		settingsRolesRestrictedVoice: 'The role that is used for the restrictVoice moderation command.',
 		settingsRolesSubscriber:
 			'The subscriber role, this role will be mentioned every time you use the `announce` command. I will always keep it non-mentionable so people do not abuse mentions.',
-		settingsSelfmodAttachment: 'Whether or not the attachment filter is enabled.',
-		settingsSelfmodAttachmentmaximum:
-			'The amount of attachments a user can send within the specified duration defined at `selfmod.attachmentDuration`.',
-		settingsSelfmodAttachmentDuration: 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.',
+		settingsSelfmodAttachmentsEnabled: 'Whether or not the attachment filter is enabled.',
+		settingsSelfmodAttachmentsIgnoredChannels: 'The channels that will be ignored by the attachments filter sub-system',
+		settingsSelfmodAttachmentsIgnoredRoles: 'The roles that will be ignored by the attachments afilters sub-system',
 		settingsSelfmodCapitalsEnabled: 'Whether the capitals filter selfmod sub-system is enabled or not.',
 		settingsSelfmodCapitalsIgnoredchannels: 'The channels that will be ignored by the capitals filter sub-system',
 		settingsSelfmodCapitalsIgnoredroles: 'The roles that will be ignored by the capitals afilters sub-system',
@@ -1464,29 +1463,40 @@ export default class extends Language {
 		},
 
 		/**
-		 * #####################################
-		 * MANAGEMENT/ATTACHMENT FILTER COMMANDS
-		 */
-
-		commandManageAttachmentsDescription: 'Manage attachment management in this guild!.',
-		commandManageAttachmentsExtended: {
-			extendedHelp: 'This command manages the attachment management for me in this guild!.',
-			examples: ['maximum 25', 'duration 1m', 'action mute', 'logs y', 'enable', 'disable'],
-			explainedUsage: [
-				['maximum <maximum>', 'The maximum amount of attachments allowed.'],
-				['duration <duration>', 'The lifetime for the attachments in the system.'],
-				['action <ban|kick|mute|softban>', 'Defines the action I will take once a user breaks the threshold.'],
-				['logs <y|yes|n|no>', 'Defines whether or not should I log when somebody breaks the threshold.'],
-				['enable', 'Enables the attachment filter.'],
-				['disable', 'Disables the attachment filter.']
-			]
-		},
-
-		/**
 		 * ##################################
 		 * MANAGEMENT/MESSAGE FILTER COMMANDS
 		 */
 
+		commandAttachmentsModeDescription: "Manage this guild's flags for the attachments filter.",
+		commandAttachmentsModeExtended: {
+			extendedHelp: ['The attachmentsMode command manages the behavior of the attachments system.'],
+			explainedUsage: [
+				['Enable', 'Enable the sub-system.'],
+				['Disable', 'Disable the sub-system'],
+				['Action Alert', 'Toggle message alerts in the channel.'],
+				['Action Log', 'Toggle message logs in the moderation logs channel.'],
+				['Action Delete', 'Toggle message deletions.'],
+				['Punishment', 'The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`.'],
+				['Punishment-Duration', 'The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration.'],
+				[
+					'Threshold-Maximum',
+					'The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number.'
+				],
+				['Threshold-Duration', 'The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration.']
+			],
+			reminder: '`Action Log` requires `channel.moderation-logs` to be set up.',
+			examples: [
+				'enable',
+				'disable',
+				'action alert',
+				'punishment ban',
+				'punishment mute',
+				'punishment-duration 1m',
+				'threshold-maximum 5',
+				'threshold-duration 30s'
+			],
+			multiline: true
+		},
 		commandCapitalsModeDescription: "Manage this guild's flags for the caps filter.",
 		commandCapitalsModeExtended: {
 			extendedHelp: [
@@ -3472,17 +3482,6 @@ export default class extends Language {
 		commandFilterReset: `${GREENTICK} Success! The filter has been reset.`,
 		commandFilterShowEmpty: 'The list of filtered words is empty!',
 		commandFilterShow: ({ words }) => `There is the list of all filtered words: ${words}`,
-		commandManageAttachmentsRequiredValue: 'You must input a value for this type.',
-		commandManageAttachmentsInvalidAction: 'The type must be `ban`, `kick`, `mute`, or `softban`.',
-		commandManageAttachmentsMaximum: ({ value: maximum }) => `${GREENTICK} Successfully set the maximum amount of attachments to ${maximum}.`,
-		commandManageAttachmentsExpire: ({ value: time }) =>
-			`${GREENTICK} Successfully set the lifetime for the manager's entries to ${this.duration(time)}.`,
-		commandManageAttachmentsDuration: ({ value: time }) =>
-			`${GREENTICK} Successfully set the duration for moderation logs to ${this.duration(time)}.`,
-		commandManageAttachmentsAction: `${GREENTICK} Successfully changed the moderative action for the manager.`,
-		commandManageAttachmentsLogs: `${GREENTICK} Successfully changed the preferences for message logging.`,
-		commandManageAttachmentsEnabled: `${GREENTICK} Successfully enabled the attachment management.`,
-		commandManageAttachmentsDisabled: `${GREENTICK} Successfully disabled the attachment management.`,
 
 		/**
 		 * #################################
@@ -4352,6 +4351,7 @@ export default class extends Language {
 		moderationMonitorWords: '[Auto-Moderation] Triggered word filter, no threshold.',
 		moderationMonitorWordsWithMaximum: ({ amount, maximum }) =>
 			`[Auto-Moderation] Triggered word filter, reached ${amount} out of ${maximum} infractions.`,
+		monitorAttachmentFilter: ({ user }) => `${REDCROSS} Dear ${user}, file attachments aren't allowed here.`,
 		monitorInviteFilterAlert: ({ user }) => `${REDCROSS} Querido ${user}, los enlaces de invitación no están permitidos aquí.`,
 		monitorInviteFilterLog: ({ links }) => `**Enlace**: ${this.list(links, 'y')}`,
 		monitorInviteFilterLogPlural: ({ links }) => `**Enlaces**: ${this.list(links, 'y')}`,

@@ -6,7 +6,7 @@ import { ApplyOptions } from '@skyra/decorators';
 import { CommandOptions } from 'klasa';
 
 @ApplyOptions<CommandOptions>({
-	aliases: ['attachments-mode', 'att-mode'],
+	aliases: ['attachment-mode', 'attachments-mode', 'att-mode', 'manageAttachment', 'manageattachment'],
 	description: (language) => language.get(LanguageKeys.Commands.Management.AttachmentsModeDescription),
 	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.AttachmentsModeExtended)
 })

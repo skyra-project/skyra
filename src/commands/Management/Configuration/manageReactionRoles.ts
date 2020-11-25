@@ -119,7 +119,7 @@ export default class extends SkyraCommand {
 			const reactionRoles = settings[GuildSettings.ReactionRoles];
 			const language = settings.getLanguage();
 
-			const reactionRoleIndex = reactionRoles.findIndex((entry) => entry.message === messageID && entry.role === role.id);
+			const reactionRoleIndex = reactionRoles.findIndex((entry) => (entry.message ?? entry.channel) === messageID && entry.role === role.id);
 
 			if (reactionRoleIndex === -1) throw language.get(LanguageKeys.Commands.Management.ManageReactionRolesRemoveNotExists);
 

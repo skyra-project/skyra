@@ -18,6 +18,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const language = await message.fetchLanguage();
 		const text = await this.fetchText(input, language);
+
 		// Only fetch images if the channel is NSFW permitted
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
@@ -25,13 +26,13 @@ export default class extends SkyraCommand {
 			throw language.get(LanguageKeys.Commands.Tools.WikipediaNotfound);
 		}
 
-		const pageURL = `https://en.wikipedia.org/wiki/${this.parseURL(input)}`;
-		const content = text.query.pages[text.query.pageids[0]];
-		const definition = this.content(content.extract, pageURL, language);
+		const pageInformation = text.query.pages[text.query.pageids[0]];
+		const pageUrl = `https://en.wikipedia.org/wiki/${this.parseURL(pageInformation.title)}`;
+		const definition = this.content(pageInformation.extract, pageUrl, language);
 
 		const embed = new MessageEmbed()
-			.setTitle(content.title)
-			.setURL(pageURL)
+			.setTitle(pageInformation.title)
+			.setURL(pageUrl)
 			.setColor(await DbSet.fetchColor(message))
 			.setThumbnail('https://en.wikipedia.org/static/images/project-logos/enwiki.png')
 			.setDescription(definition.replace(/\n{2,}/g, '\n').replace(/\s{2,}/g, ' '))
@@ -43,8 +44,9 @@ export default class extends SkyraCommand {
 			image.query.pageids[0] !== '-1' &&
 			image.query.pages[image.query.pageids[0]].thumbnail &&
 			isImageURL(image.query.pages[image.query.pageids[0]].thumbnail.source)
-		)
+		) {
 			embed.setImage(image.query.pages[image.query.pageids[0]].thumbnail.source);
+		}
 
 		return message.sendEmbed(embed);
 	}
@@ -89,7 +91,7 @@ export default class extends SkyraCommand {
 	}
 
 	private parseURL(url: string) {
-		return encodeURIComponent(url.toLowerCase().replace(/[ ]/g, '_').replace(/\(/g, '%28').replace(/\)/g, '%29'));
+		return encodeURIComponent(url.replace(/[ ]/g, '_').replace(/\(/g, '%28').replace(/\)/g, '%29'));
 	}
 
 	private content(definition: string, url: string, language: Language) {

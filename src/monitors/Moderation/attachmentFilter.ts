@@ -20,7 +20,7 @@ export default class extends ModerationMonitor {
 	};
 
 	public shouldRun(message: GuildMessage) {
-		return super.shouldRun(message) && message.content.length > 0;
+		return super.shouldRun(message) && message.attachments.size > 0;
 	}
 
 	protected preProcess(message: GuildMessage) {
@@ -33,7 +33,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onAlert(message: GuildMessage, language: Language) {
-		return message.alert(language.get(LanguageKeys.Monitors.CapsFilter, { user: message.author.toString() }));
+		return message.alert(language.get(LanguageKeys.Monitors.AttachmentFilter, { user: message.author.toString() }));
 	}
 
 	protected onLogMessage(message: GuildMessage, language: Language) {

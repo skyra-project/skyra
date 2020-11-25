@@ -38,7 +38,7 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 			dashboardOnly
 		});
 
-		configurableKeys.set(name, value);
+		configurableKeys.set(property as keyof GuildEntity, value);
 		value.parent = configurableGroups.add(name.split('.') as NonEmptyArray<string>, value);
 	};
 }

@@ -460,9 +460,9 @@ declare module 'klasa' {
 		settingsRolesRestrictedReaction: string;
 		settingsRolesRestrictedVoice: string;
 		settingsRolesSubscriber: string;
-		settingsSelfmodAttachment: string;
-		settingsSelfmodAttachmentmaximum: string;
-		settingsSelfmodAttachmentDuration: string;
+		settingsSelfmodAttachmentsEnabled: string;
+		settingsSelfmodAttachmentsIgnoredChannels: string;
+		settingsSelfmodAttachmentsIgnoredRoles: string;
 		settingsSelfmodCapitalsEnabled: string;
 		settingsSelfmodCapitalsIgnoredchannels: string;
 		settingsSelfmodCapitalsIgnoredroles: string;
@@ -842,8 +842,8 @@ declare module 'klasa' {
 		commandGuildInfoExtended: LanguageHelpDisplayOptions;
 		commandStickyRolesDescription: string;
 		commandStickyRolesExtended: LanguageHelpDisplayOptions;
-		commandManageAttachmentsDescription: string;
-		commandManageAttachmentsExtended: LanguageHelpDisplayOptions;
+		commandAttachmentsModeDescription: string;
+		commandAttachmentsModeExtended: LanguageHelpDisplayOptions;
 		commandCapitalsModeDescription: string;
 		commandCapitalsModeExtended: LanguageHelpDisplayOptions;
 		commandFilterDescription: string;
@@ -1528,15 +1528,6 @@ declare module 'klasa' {
 		commandFilterReset: string;
 		commandFilterShowEmpty: string;
 		commandFilterShow: (params: { words: string }) => string;
-		commandManageAttachmentsRequiredValue: string;
-		commandManageAttachmentsInvalidAction: string;
-		commandManageAttachmentsMaximum: (params: { value: number }) => string;
-		commandManageAttachmentsExpire: (params: { value: number }) => string;
-		commandManageAttachmentsDuration: (params: { value: number }) => string;
-		commandManageAttachmentsAction: string;
-		commandManageAttachmentsLogs: string;
-		commandManageAttachmentsEnabled: string;
-		commandManageAttachmentsDisabled: string;
 		commandManageCommandAutoDeleteTextChannel: string;
 		commandManageCommandAutoDeleteRequiredDuration: string;
 		commandManageCommandAutoDeleteShowEmpty: string;
@@ -2062,6 +2053,7 @@ declare module 'klasa' {
 		constMonitorWordfilter: string;
 		constMonitorCapsfilter: string;
 		constMonitorAttachmentfilter: string;
+		monitorAttachmentFilter: (params: { user: string }) => string;
 		constMonitorReactionfilter: string;
 		moderationMonitorAttachments: string;
 		moderationMonitorAttachmentsWithMaximum: (params: { amount: number; maximum: number }) => string;

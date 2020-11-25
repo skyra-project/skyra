@@ -44,16 +44,6 @@ export class V29AttachmentMode1606138444111 implements MigrationInterface {
 				-- Then we convert the action into a 3-bit bitfield ('1010'::bit(3) becomes '010'::bit(3)) and add one,
 				-- thus we get 011 [3].
 				"selfmod.attachments.softAction" = get_bit("selfmod.attachments.hardAction"::integer::bit(4), 0) << 1
-		`);
-
-		// Transform the old data into the new one:
-		await queryRunner.query(/* sql */ `
-			UPDATE public.guilds
-			SET
-				-- 1010 (Log + 010 [2]) should be converted to 010 (Log) and 011 [3], therefore we read the smallint
-				-- as a 4-bit bitfield, read the first bit ('1') and shift it by one, this way we get 010 [2] in action.
-				-- Then we convert the action into a 3-bit bitfield ('1010'::bit(3) becomes '010'::bit(3)) and add one,
-				-- thus we get 011 [3].
 				"selfmod.attachments.hardAction" = "selfmod.attachments.hardAction"::integer::bit(3)::int + 1
 		`);
 	}

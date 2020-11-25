@@ -123,9 +123,10 @@ export default class extends SkyraCommand {
 
 			if (reactionRoleIndex === -1) throw language.get(LanguageKeys.Commands.Management.ManageReactionRolesRemoveNotExists);
 
+			const removedReactionRole = reactionRoles[reactionRoleIndex];
 			reactionRoles.splice(reactionRoleIndex, 1);
 
-			return [reactionRoles[reactionRoleIndex], language];
+			return [removedReactionRole, language];
 		});
 
 		const url = reactionRole.message

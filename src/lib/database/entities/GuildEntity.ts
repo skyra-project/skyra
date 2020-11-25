@@ -742,7 +742,7 @@ export class GuildEntity extends BaseEntity {
 	 * Gets the bare representation of the entity.
 	 */
 	public toJSON(): AnyObject {
-		return Object.fromEntries(configurableKeys.map((v) => [v.name, this[v.property] ?? v.default]));
+		return Object.fromEntries(configurableKeys.map((v) => [v.property, this[v.property] ?? v.default]));
 	}
 
 	@AfterLoad()

@@ -67,7 +67,7 @@ export class V29AttachmentMode1606138444111 implements MigrationInterface {
 				-- We do the opposite, if we have to reduce hardAction by one (011 [3] becomes 010 [2]), then we add the
 				-- bit from softAction shifted by 3, that way, if softAction was x1x, get_bit would return 1, and after
 				-- << 3, it'd turn into 1000. We add this and get 1010 back.
-				"selfmod.attachments.hardAction" = ("selfmod.attachments.hardAction" - 1) + (get_bit('selfmod.attachments.softAction'::bit(3), 1) << 3);
+				"selfmod.attachments.hardAction" = ("selfmod.attachments.hardAction" - 1) + (get_bit("selfmod.attachments.softAction"::integer::bit(3), 1) << 3);
 		`);
 
 		// Rename the new columns into the old ones:

@@ -13,7 +13,7 @@ export default class extends Task {
 
 		if (user) {
 			await resolveOnErrorCodes(
-				user.send(`⏲ Hey! You asked me on ${this.kTimestamp.displayUTC()} to remind you:\n*${data.content}*`),
+				user.send(`⏲ Hey! You asked me on ${this.kTimestamp.displayUTC(Date.now())} to remind you:\n*${data.content}*`),
 				RESTJSONErrorCodes.CannotSendMessagesToThisUser
 			);
 		}

@@ -17,20 +17,20 @@ in your text editor or IDE of your choice to ensure builds from GitHub Actions d
 
 To run Skyra locally a few steps should be taken.
 
-1. Install [Node.JS], [Yarn] and [Docker]
-1. Follow [the wiki page on setting up a PostgreSQL schema for Skyra][]
+1. Install [Node.JS], [Yarn] and [Docker].
+1. Follow [the wiki page on setting up a PostgreSQL schema for Skyra][].
 1. In the Discord Developer portal go to your application and then to the "Bot" menu.
-1. At "Privileged Gateway Intents" enable "SERVER MEMBERS INTENT"
+1. At "Privileged Gateway Intents" enable "SERVER MEMBERS INTENT".
 1. Copy and paste the [`config.example.ts`] file in the `src` directory and rename it to `config.ts`.
-1. Scroll down to `export const TOKENS = {`
+1. Scroll down to `export const TOKENS = {`.
 1. At this section enter your own bot's API token at `BOT_TOKEN`.
 1. Fill in any other API keys you have / want to fill in.
-1. Follow the [installation instructions for node-canvas][] for your platfor
-    - Note: In case of using WSL then follow the Windows instructions
-1. Install project dependencies with `yarn install`
-1. Start Skyra in development mode with `yarn dev`
+1. Follow the [installation instructions for node-canvas](https://github.com/Automattic/node-canvas/blob/master/Readme.md#installation).
+    - Note: In case of using WSL then follow the Windows instructions.
+1. Install project dependencies with `yarn install`.
+1. Start Skyra in development mode with `yarn dev`.
 
--   For additional services such as InfluxDB, GraphQL-Pokemon, Saelem and Redis check [the repository wiki][]
+-   For additional services such as InfluxDB, GraphQL-Pokemon, Saelem and Redis check [the repository wiki](https://github.com/skyra-project/skyra/wiki).
 
 A few other important commands:
 

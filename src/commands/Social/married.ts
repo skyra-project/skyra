@@ -10,8 +10,9 @@ import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommandOptions>({
-	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Social.MarriedDescription)
+	cooldown: 10,
+	description: (language) => language.get(LanguageKeys.Commands.Social.MarriedDescription),
+	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.MarriedExtended)
 })
 export default class extends RichDisplayCommand {
 	public run(message: GuildMessage) {

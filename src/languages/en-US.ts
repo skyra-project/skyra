@@ -2424,6 +2424,10 @@ export default class extends Language {
 			explainedUsage: [['user', '(Optional) The user to marry with. If not given, the command will tell you who are you married with.']],
 			examples: ['', '@love']
 		},
+		commandMarriedDescription: 'Check who you are married with.',
+		commandMarriedExtended: {
+			extendedHelp: 'This command will tell you who are you married with.'
+		},
 		commandMylevelDescription: 'Check your local level.',
 		commandMylevelExtended: {
 			extendedHelp: 'How much until next auto role? How many points do I have in this guild?',

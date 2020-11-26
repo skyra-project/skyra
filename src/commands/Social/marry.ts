@@ -1,14 +1,10 @@
 import { DbSet } from '@lib/database';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
-import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { pickRandom } from '@utils/util';
-import { DMChannel, MessageEmbed, NewsChannel, TextChannel, User } from 'discord.js';
+import { DMChannel, NewsChannel, TextChannel, User } from 'discord.js';
 
 const REGEXP_ACCEPT = /^(y|ye|yea|yeah|yes|y-yes)$/i;
 const AELIA_ID = '338249781594030090';
@@ -45,34 +41,7 @@ async function askYesNo(channel: TextChannel | DMChannel | NewsChannel, user: Us
 ])
 export default class extends RichDisplayCommand {
 	public run(message: GuildMessage, [user]: [User | undefined]) {
-		return user ? this.marry(message, user) : this.display(message);
-	}
-
-	private async display(message: GuildMessage) {
-		const language = await message.fetchLanguage();
-		const response = await message.sendEmbed(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
-
-		const { users } = await DbSet.connect();
-		const spouses = await users.fetchSpouses(message.author.id);
-		if (spouses.length === 0) return message.sendLocale(LanguageKeys.Commands.Social.MarryNotTaken);
-
-		const usernames = chunk(
-			await Promise.all(spouses.map(async (user) => `${await this.client.users.fetch(user).then((user) => user.username)} (\`${user}\`)`)),
-			20
-		);
-
-		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
-
-		for (const usernameChunk of usernames) {
-			display.addPage((embed: MessageEmbed) =>
-				embed.setDescription(language.get(LanguageKeys.Commands.Social.MarryWith, { users: usernameChunk }))
-			);
-		}
-
-		await display.start(response, message.author.id);
-		return response;
+		return user ? this.marry(message, user) : this.client.commands.get('married')!.run(message, []);
 	}
 
 	private async marry(message: GuildMessage, user: User) {

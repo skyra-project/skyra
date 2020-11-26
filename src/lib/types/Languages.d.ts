@@ -979,6 +979,8 @@ declare module 'klasa' {
 		commandDivorceExtended: LanguageHelpDisplayOptions;
 		commandMarryDescription: string;
 		commandMarryExtended: LanguageHelpDisplayOptions;
+		commandMarriedDescription: string;
+		commandMarriedExtended: LanguageHelpDisplayOptions;
 		commandMylevelDescription: string;
 		commandMylevelExtended: LanguageHelpDisplayOptions;
 		commandPayDescription: string;

@@ -15,9 +15,9 @@ import { PermissionNodeManager } from '../settings/structures/PermissionNodeMana
 
 @Entity('guilds', { schema: 'public' })
 @Check(/* sql */ `"prefix"::text <> ''::text`)
-@Check(/* sql */ `("selfmod.attachmentMaximum" >= 0) AND ("selfmod.attachmentMaximum" <= 60)`)
-@Check(/* sql */ `("selfmod.attachmentDuration" >= 5000) AND ("selfmod.attachmentDuration" <= 120000)`)
-@Check(/* sql */ `"selfmod.attachmentPunishmentDuration" >= 1000`)
+@Check(/* sql */ `"selfmod.attachments.hardActionDuration" >= 1000`)
+@Check(/* sql */ `("selfmod.attachments.thresholdMaximum" >= 0) AND ("selfmod.attachments.thresholdMaximum" <= 60)`)
+@Check(/* sql */ `("selfmod.attachments.thresholdDuration" >= 0) AND ("selfmod.attachments.thresholdDuration" <= 120000)`)
 @Check(/* sql */ `("selfmod.capitals.minimum" >= 5) AND ("selfmod.capitals.minimum" <= 2000)`)
 @Check(/* sql */ `("selfmod.capitals.maximum" >= 10) AND ("selfmod.capitals.maximum" <= 100)`)
 @Check(/* sql */ `"selfmod.capitals.hardActionDuration" >= 1000`)
@@ -66,7 +66,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'disabledCommands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledCommands: string[] = [];
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'customcommand' })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey })
 	@Column('jsonb', { name: 'custom-commands', default: () => "'[]'::JSONB" })
 	public customCommands: CustomCommand[] = [];
 

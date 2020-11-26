@@ -6,8 +6,9 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors, Emojis } from '@utils/constants';
 import { pickRandom } from '@utils/util';
+import { Timestamp } from '@sapphire/time-utilities';
 import { Invite, MessageEmbed } from 'discord.js';
-import { Language, Timestamp } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],

@@ -11,7 +11,8 @@ import { urlRegex } from '@utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
-import { constants, Language, Timestamp } from 'klasa';
+import { constants, Language } from 'klasa';
+import { Timestamp } from '@sapphire/time-utilities';
 
 const enum Position {
 	Before,

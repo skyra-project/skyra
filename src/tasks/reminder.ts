@@ -1,7 +1,8 @@
 import { PartialResponseValue, ResponseType } from '@lib/database';
+import { Timestamp } from '@sapphire/time-utilities';
 import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Task, Timestamp } from 'klasa';
+import { Task } from 'klasa';
 
 export default class extends Task {
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');

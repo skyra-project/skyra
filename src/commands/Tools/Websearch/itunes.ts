@@ -6,8 +6,9 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
+import { Timestamp } from '@sapphire/time-utilities';
 import { MessageEmbed } from 'discord.js';
-import { Language, Timestamp } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,

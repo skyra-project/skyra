@@ -87,6 +87,7 @@ export const MarryTaken = FT<{ count: number }, string>('commandMarryTaken');
 export const MarryTakenPlural = FT<{ count: number }, string>('commandMarryTakenPlural');
 export const MarryTargetTooMany = FT<{ limit: number }, string>('commandMarryTargetTooMany');
 export const MarryWith = FT<{ users: readonly string[] }, string>('commandMarryWith');
+export const MarriedDescription = T<string>('commandMarriedDescription');
 export const Mylevel = FT<{ points: number; next: string; user: string }, string>('commandMylevel');
 export const MylevelDescription = T<string>('commandMylevelDescription');
 export const MylevelExtended = T<LanguageHelpDisplayOptions>('commandMylevelExtended');

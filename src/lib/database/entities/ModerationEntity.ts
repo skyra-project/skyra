@@ -6,9 +6,9 @@ import { Events } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '@root/config';
 import { isNumber, parseURL } from '@sapphire/utilities';
+import { Duration } from '@sapphire/time-utilities';
 import { Moderation, Time } from '@utils/constants';
 import { Client, MessageEmbed, User } from 'discord.js';
-import { Duration } from 'klasa';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('moderation', { schema: 'public' })

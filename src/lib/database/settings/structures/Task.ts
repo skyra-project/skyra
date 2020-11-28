@@ -1,5 +1,5 @@
 import { Piece } from 'klasa';
-import type { PartialResponseValue } from '@lib/database';
+import type { PartialResponseValue } from '#lib/database';
 import type { Awaited } from '@sapphire/utilities';
 
 export abstract class Task extends Piece {

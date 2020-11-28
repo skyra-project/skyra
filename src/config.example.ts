@@ -135,7 +135,8 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 	pieceDefaults: {
 		commands: { deletable: true, quotedStringSupport: true, flagSupport: false },
 		monitors: { ignoreOthers: false },
-		serializers: { enabled: true, aliases: [] }
+		serializers: { enabled: true, aliases: [] },
+		tasks: { enabled: true }
 	},
 	prefix: PREFIX,
 	presence: { activity: { name: `${PREFIX}help`, type: 'LISTENING' } },

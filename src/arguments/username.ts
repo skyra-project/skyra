@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { api } from '@utils/Models/Api';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { api } from '#utils/Models/Api';
 import { RESTGetAPIGuildMembersSearchResult } from 'discord-api-types/v6';
 import { User } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';

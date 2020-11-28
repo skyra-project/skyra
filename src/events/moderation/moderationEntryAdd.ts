@@ -1,7 +1,7 @@
-import { GuildSettings, ModerationEntity } from '@lib/database';
-import { Events } from '@lib/types/Enums';
-import { Moderation } from '@utils/constants';
-import { resolveOnErrorCodes } from '@utils/util';
+import { GuildSettings, ModerationEntity } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { Moderation } from '#utils/constants';
+import { resolveOnErrorCodes } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Event } from 'klasa';
 

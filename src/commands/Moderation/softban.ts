@@ -1,11 +1,11 @@
-import { GuildSettings } from '@lib/database';
-import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Moderation } from '#utils/constants';
+import { getImage } from '#utils/util';
 import { ArgumentTypes, isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Moderation } from '@utils/constants';
-import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sb'],

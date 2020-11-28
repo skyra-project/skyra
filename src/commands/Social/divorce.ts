@@ -1,8 +1,8 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { floatPromise, resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { floatPromise, resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { User } from 'discord.js';
 import { KlasaMessage } from 'klasa';

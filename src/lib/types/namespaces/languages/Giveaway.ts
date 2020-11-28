@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types';
+import { FT, T } from '#lib/types';
 
 export const Time = T<string>('giveawayTime');
 export const TimeTooLong = T<string>('giveawayTimeTooLong');

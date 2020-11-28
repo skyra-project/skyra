@@ -1,7 +1,7 @@
-import { DbSet } from '@lib/database';
-import { Events } from '@lib/types/Enums';
-import { api } from '@utils/Models/Api';
-import { compareEmoji } from '@utils/util';
+import { DbSet } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { api } from '#utils/Models/Api';
+import { compareEmoji } from '#utils/util';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveEmojiDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';

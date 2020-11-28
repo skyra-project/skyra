@@ -1,12 +1,12 @@
-import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { displayEmoji, resolveEmoji } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
-import { displayEmoji, resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
 const REG_TYPE = /^(alias|reaction)$/i;

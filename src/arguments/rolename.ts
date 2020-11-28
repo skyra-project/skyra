@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { FuzzySearch } from '@utils/FuzzySearch';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { FuzzySearch } from '#utils/FuzzySearch';
 import { Guild, Role } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 

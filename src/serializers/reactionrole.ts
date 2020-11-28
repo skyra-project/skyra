@@ -1,7 +1,7 @@
-import { ReactionRole, Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ReactionRole, Serializer, SerializerUpdateContext } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { displayEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
-import { displayEmoji } from '@utils/util';
 
 export default class UserSerializer extends Serializer<ReactionRole> {
 	public parse(_: string, context: SerializerUpdateContext) {

@@ -1,4 +1,4 @@
-import { ENABLE_LAVALINK } from '@root/config';
+import { ENABLE_LAVALINK } from '#root/config';
 import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 

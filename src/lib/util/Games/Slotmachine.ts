@@ -1,7 +1,7 @@
-import { DbSet, UserEntity } from '@lib/database';
-import { CanvasColors } from '@lib/types/constants/Constants';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { socialFolder } from '@utils/constants';
+import { DbSet, UserEntity } from '#lib/database';
+import { CanvasColors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { socialFolder } from '#utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';

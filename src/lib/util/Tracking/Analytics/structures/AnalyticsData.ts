@@ -1,6 +1,6 @@
+import { ENABLE_INFLUX, INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '#root/config';
+import { enumerable } from '#utils/util';
 import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
-import { ENABLE_INFLUX, INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '@root/config';
-import { enumerable } from '@utils/util';
 
 export class AnalyticsData {
 	@enumerable(false)

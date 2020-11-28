@@ -1,4 +1,4 @@
-import { CLIENT_ID } from '@root/config';
+import { CLIENT_ID } from '#root/config';
 import { MigrationInterface, QueryRunner, Table, TableColumn } from 'typeorm';
 
 export class V01MigrateClientStorage1594413973851 implements MigrationInterface {

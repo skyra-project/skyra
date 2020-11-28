@@ -1,6 +1,6 @@
-import { Queue } from '@lib/audio';
-import { AudioEvent } from '@lib/structures/AudioEvent';
-import { OutgoingWebsocketAction } from '@lib/websocket/types';
+import { Queue } from '#lib/audio';
+import { AudioEvent } from '#lib/structures/AudioEvent';
+import { OutgoingWebsocketAction } from '#lib/websocket/types';
 import { VoiceChannel } from 'discord.js';
 
 export default class extends AudioEvent {

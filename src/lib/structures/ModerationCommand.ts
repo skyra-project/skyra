@@ -1,11 +1,11 @@
-import { GuildSettings, ModerationEntity } from '@lib/database';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID } from '@root/config';
+import { GuildSettings, ModerationEntity } from '#lib/database';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '#root/config';
+import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
+import { cast, floatPromise } from '#utils/util';
 import { isNullOrUndefined } from '@sapphire/utilities';
-import { ModerationActionsSendOptions } from '@utils/Security/ModerationActions';
-import { cast, floatPromise } from '@utils/util';
 import { User } from 'discord.js';
 import { CommandStore, Language } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';

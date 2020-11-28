@@ -1,10 +1,10 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TOKENS } from '@root/config';
-import { Time } from '@utils/constants';
-import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { TOKENS } from '#root/config';
+import { Time } from '#utils/constants';
+import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { fetch, FetchResultTypes } from '#utils/util';
 import { Permissions } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

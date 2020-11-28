@@ -1,9 +1,9 @@
-import { GuildSettings } from '@lib/database';
-import { GuildMessage } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID } from '@root/config';
-import { Moderation } from '@utils/constants';
+import { GuildSettings } from '#lib/database';
+import { GuildMessage } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '#root/config';
+import { Moderation } from '#utils/constants';
 import { Event } from 'klasa';
 
 export default class extends Event {

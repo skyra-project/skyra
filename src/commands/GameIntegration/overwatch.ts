@@ -1,16 +1,16 @@
-import { DbSet } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { CdnUrls } from '@lib/types/Constants';
-import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '@lib/types/definitions/Overwatch';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { OverwatchEmbedDataReturn } from '@lib/types/namespaces/languages/commands/GameIntegration';
+import { DbSet } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { CdnUrls } from '#lib/types/Constants';
+import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { OverwatchEmbedDataReturn } from '#lib/types/namespaces/languages/commands/GameIntegration';
+import { BrandingColors, Time } from '#utils/constants';
+import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors, Time } from '@utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 

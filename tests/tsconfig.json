@@ -7,10 +7,10 @@
 		"incremental": false,
 		"baseUrl": ".",
 		"paths": {
-			"@utils/*": ["../src/lib/util/*"],
-			"@lib/*": ["../src/lib/*"],
-			"@mocks/*": ["./mocks/*"],
-			"@root/*": ["../src/*"]
+			"#utils/*": ["../src/lib/util/*"],
+			"#lib/*": ["../src/lib/*"],
+			"#mocks/*": ["./mocks/*"],
+			"#root/*": ["../src/*"]
 		}
 	},
 	"include": [".", "../src/**/*"],

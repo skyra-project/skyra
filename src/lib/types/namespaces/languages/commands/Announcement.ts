@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const Announcement = FT<{ role: string }, string>('commandAnnouncement');
 export const AnnouncementCancelled = T<string>('commandAnnouncementCancelled');

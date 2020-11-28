@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const Bang = FT<{ user: string }, string>('commandWbang');
 export const BangDescription = T<string>('commandWbangDescription');

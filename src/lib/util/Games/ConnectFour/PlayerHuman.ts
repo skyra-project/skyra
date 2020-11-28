@@ -1,9 +1,9 @@
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ConnectFourConstants, Time } from '@utils/constants';
-import { LLRCDataEmoji } from '@utils/LongLivingReactionCollector';
-import { api } from '@utils/Models/Api';
-import { resolveEmoji } from '@utils/util';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ConnectFourConstants, Time } from '#utils/constants';
+import { LLRCDataEmoji } from '#utils/LongLivingReactionCollector';
+import { api } from '#utils/Models/Api';
+import { resolveEmoji } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, User } from 'discord.js';
 import { Cell } from './Board';

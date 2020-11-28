@@ -1,6 +1,6 @@
-import { FT, T } from '@lib/types';
-import { HungerGamesGame } from '@root/commands/Games/hungergames';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { HungerGamesGame } from '#root/commands/Games/hungergames';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const GamesSkyra = T<string>('commandGamesSkyra');
 export const GamesBot = T<string>('commandGamesBot');

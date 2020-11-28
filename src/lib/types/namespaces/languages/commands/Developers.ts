@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const YarnDescription = T<string>('commandYarnDescription');
 export const YarnEmbedDescriptionAuthor = FT<{ author: string }, string>('commandYarnEmbedDescriptionAuthor');

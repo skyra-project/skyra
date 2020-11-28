@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings } from '@lib/database';
-import type { ModerationManager, ModerationManagerUpdateData } from '@lib/structures/managers/ModerationManager';
-import type { AnyObject } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID } from '@root/config';
-import { isNumber, parseURL } from '@sapphire/utilities';
+import { GuildSettings } from '#lib/database';
+import type { ModerationManager, ModerationManagerUpdateData } from '#lib/structures/managers/ModerationManager';
+import type { AnyObject } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '#root/config';
+import { Moderation, Time } from '#utils/constants';
 import { Duration } from '@sapphire/time-utilities';
-import { Moderation, Time } from '@utils/constants';
+import { isNumber, parseURL } from '@sapphire/utilities';
 import { Client, MessageEmbed, User } from 'discord.js';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 

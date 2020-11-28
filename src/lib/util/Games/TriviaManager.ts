@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import { fetch, FetchResultTypes } from '@utils/util';
+import { fetch, FetchResultTypes } from '#utils/util';
 
 export async function getQuestion(category: number, difficulty = QuestionDifficulty.Easy, questionType = QuestionType.Multiple) {
 	const url = new URL('https://opentdb.com/api.php');

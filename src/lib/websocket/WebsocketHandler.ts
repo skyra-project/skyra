@@ -1,10 +1,10 @@
+import { SkyraClient } from '#lib/SkyraClient';
+import { ApiRequest, UserAuthObject } from '#lib/structures/api/ApiRequest';
+import { CookieStore } from '#lib/structures/api/CookieStore';
+import { DEV, WSS_PORT } from '#root/config';
+import { enumerable } from '#utils/util';
 import Collection from '@discordjs/collection';
-import { SkyraClient } from '@lib/SkyraClient';
-import { ApiRequest, UserAuthObject } from '@lib/structures/api/ApiRequest';
-import { CookieStore } from '@lib/structures/api/CookieStore';
-import { DEV, WSS_PORT } from '@root/config';
 import { isObject } from '@sapphire/utilities';
-import { enumerable } from '@utils/util';
 import { Util } from 'klasa-dashboard-hooks';
 import WebSocket, { Server } from 'ws';
 import { CloseCodes, WebsocketEvents } from './types';

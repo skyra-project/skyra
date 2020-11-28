@@ -5,18 +5,18 @@ import {
 	NotificationsStreamsTwitchStreamer,
 	NotificationsStreamTwitch,
 	TwitchStreamSubscriptionEntity
-} from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { TwitchHelixUsersSearchResult } from '@lib/types/definitions/Twitch';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+} from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { TwitchHelixUsersSearchResult } from '#lib/types/definitions/Twitch';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors, Time } from '#utils/constants';
+import { TwitchHooksAction } from '#utils/Notifications/Twitch';
+import { pickRandom } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decorators';
-import { BrandingColors, Time } from '@utils/constants';
-import { TwitchHooksAction } from '@utils/Notifications/Twitch';
-import { pickRandom } from '@utils/util';
 import { Guild, MessageEmbed, TextChannel } from 'discord.js';
 import { Language } from 'klasa';
 import { Any } from 'typeorm';

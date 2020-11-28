@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 

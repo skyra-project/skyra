@@ -1,6 +1,6 @@
-import { DbSet, PartialResponseValue, ResponseType, TwitchStreamSubscriptionEntity } from '@lib/database';
-import { Events } from '@lib/types/Enums';
-import { TwitchHooksAction } from '@utils/Notifications/Twitch';
+import { DbSet, PartialResponseValue, ResponseType, TwitchStreamSubscriptionEntity } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { TwitchHooksAction } from '#utils/Notifications/Twitch';
 import { blueBright } from 'colorette';
 import { Task } from 'klasa';
 import { Repository } from 'typeorm';

@@ -1,5 +1,5 @@
-import type { LLRCData } from '@utils/LongLivingReactionCollector';
-import { cast } from '@utils/util';
+import type { LLRCData } from '#utils/LongLivingReactionCollector';
+import { cast } from '#utils/util';
 import { BaseReactionController } from '../base/BaseReactionController';
 import type { TicTacToeGame } from './TicTacToeGame';
 

@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const BlocklistDescription = T<string>('commandBlocklistDescription');
 export const BlocklistResetSuccess = T<string>('commandBlocklistResetSuccess');

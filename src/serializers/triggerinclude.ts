@@ -1,7 +1,7 @@
-import { Serializer, SerializerUpdateContext, TriggerIncludes } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer, SerializerUpdateContext, TriggerIncludes } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { resolveEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
-import { resolveEmoji } from '@utils/util';
 
 export default class UserSerializer extends Serializer<TriggerIncludes> {
 	public parse(value: string, context: SerializerUpdateContext) {

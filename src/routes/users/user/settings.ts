@@ -1,9 +1,9 @@
-import { DbSet } from '@lib/database';
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { Events } from '@lib/types/Enums';
+import { DbSet } from '#lib/database';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { Events } from '#lib/types/Enums';
+import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { authenticated, ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 import { inspect } from 'util';
 

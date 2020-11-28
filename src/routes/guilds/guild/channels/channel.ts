@@ -1,9 +1,9 @@
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { canManage } from '#utils/API';
+import { flattenChannel } from '#utils/Models/ApiTransform';
+import { authenticated, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { canManage } from '@utils/API';
-import { flattenChannel } from '@utils/Models/ApiTransform';
-import { authenticated, ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'guilds/:guild/channels/:channel' })

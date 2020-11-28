@@ -1,4 +1,4 @@
-import { Events } from '@lib/types/Enums';
+import { Events } from '#lib/types/Enums';
 import { GatewayDispatchEvents, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
 

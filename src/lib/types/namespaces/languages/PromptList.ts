@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types';
+import { FT, T } from '#lib/types';
 
 export const MultipleChoice = FT<{ list: string; count: number }, string>('promptlistMultipleChoice');
 export const MultipleChoicePlural = FT<{ list: string; count: number }, string>('promptlistMultipleChoicePlural');

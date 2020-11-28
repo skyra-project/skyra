@@ -1,5 +1,5 @@
-import { T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const CatfactDescription = T<string>('commandCatfactDescription');
 export const CatfactExtended = T<LanguageHelpDisplayOptions>('commandCatfactExtended');

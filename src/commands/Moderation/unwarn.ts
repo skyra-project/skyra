@@ -1,10 +1,10 @@
-import { GuildSettings, ModerationEntity } from '@lib/database';
-import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings, ModerationEntity } from '#lib/database';
+import { HandledCommandContext, ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Moderation } from '#utils/constants';
+import { floatPromise, getImage } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Moderation } from '@utils/constants';
-import { floatPromise, getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uw', 'unwarning'],

@@ -1,11 +1,11 @@
-import { Serializer } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ZeroWidthSpace } from '#utils/constants';
+import { ContentExtraData, handleMessage } from '#utils/ExceededLengthParser';
+import { escapeCodeBlock } from '#utils/External/escapeMarkdown';
+import { getContent } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { ZeroWidthSpace } from '@utils/constants';
-import { ContentExtraData, handleMessage } from '@utils/ExceededLengthParser';
-import { escapeCodeBlock } from '@utils/External/escapeMarkdown';
-import { getContent } from '@utils/util';
 import { TextChannel } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 

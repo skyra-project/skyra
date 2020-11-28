@@ -1,10 +1,10 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TOKENS } from '@root/config';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { TOKENS } from '#root/config';
+import { assetsFolder } from '#utils/constants';
+import { queryGoogleMapsAPI } from '#utils/Google';
+import { fetch, FetchResultTypes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { assetsFolder } from '@utils/constants';
-import { queryGoogleMapsAPI } from '@utils/Google';
-import { fetch, FetchResultTypes } from '@utils/util';
 import { loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { KlasaMessage } from 'klasa';

@@ -1,4 +1,4 @@
-import { NP } from '@lib/audio';
+import { NP } from '#lib/audio';
 import { Track } from '@skyra/audio';
 
 export const enum WebsocketEvents {

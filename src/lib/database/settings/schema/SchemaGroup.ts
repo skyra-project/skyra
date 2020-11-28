@@ -1,7 +1,7 @@
+import type { GuildEntity } from '#lib/database/entities/GuildEntity';
+import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
+import { isNullish } from '#lib/misc';
 import Collection from '@discordjs/collection';
-import type { GuildEntity } from '@lib/database/entities/GuildEntity';
-import type { ISchemaValue } from '@lib/database/settings/base/ISchemaValue';
-import { isNullish } from '@lib/misc';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import type { Language } from 'klasa';
 import type { SchemaKey } from './SchemaKey';

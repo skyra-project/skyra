@@ -1,4 +1,4 @@
-import { T } from '@lib/types';
+import { T } from '#lib/types';
 
 export const InvalidId = T<string>('serializerCustomCommandInvalidId');
 export const InvalidEmbed = T<string>('serializerCustomCommandInvalidEmbed');

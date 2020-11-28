@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const CurrentTimeDescription = T<string>('commandCurrentTimeDescription');
 export const CurrentTimeExtended = T<LanguageHelpDisplayOptions>('commandCurrentTimeExtended');

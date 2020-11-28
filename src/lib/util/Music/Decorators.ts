@@ -1,5 +1,5 @@
-import type { GuildMessage } from '@lib/types/Discord';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import type { GuildMessage } from '#lib/types/Discord';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { createFunctionInhibitor } from '@skyra/decorators';
 
 export function requireMusicPlaying(): MethodDecorator {

@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const TagAdded = FT<{ name: string; content: string }, string>('commandTagAdded');
 export const TagContentRequired = T<string>('commandTagContentRequired');

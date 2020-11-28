@@ -1,6 +1,6 @@
-import { DbSet, GuildSettings } from '@lib/database';
-import { Events } from '@lib/types/Enums';
-import { api } from '@utils/Models/Api';
+import { DbSet, GuildSettings } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { api } from '#utils/Models/Api';
 import { GatewayDispatchEvents, GatewayMessageReactionRemoveAllDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError } from 'discord.js';
 import { Event, EventStore } from 'klasa';

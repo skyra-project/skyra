@@ -1,5 +1,5 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { isNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';

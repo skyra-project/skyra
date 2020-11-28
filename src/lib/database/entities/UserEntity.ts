@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { SkyraClient } from '@lib/SkyraClient';
-import { Events } from '@lib/types/Enums';
-import { kBigIntTransformer } from '@utils/util';
+import { SkyraClient } from '#lib/SkyraClient';
+import { Events } from '#lib/types/Enums';
+import { kBigIntTransformer } from '#utils/util';
 import { container } from 'tsyringe';
 import {
 	AfterInsert,

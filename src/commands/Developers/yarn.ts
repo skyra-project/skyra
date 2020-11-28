@@ -1,13 +1,13 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { CdnUrls } from '@lib/types/Constants';
-import { YarnPkg } from '@lib/types/definitions/Yarnpkg';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { CdnUrls } from '#lib/types/Constants';
+import { YarnPkg } from '#lib/types/definitions/Yarnpkg';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors } from '#utils/constants';
+import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
 

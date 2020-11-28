@@ -1,4 +1,4 @@
-import { PreciseTimeout } from '@utils/PreciseTimeout';
+import { PreciseTimeout } from '#utils/PreciseTimeout';
 import { Guild } from 'discord.js';
 import { ModerationActions } from './ModerationActions';
 

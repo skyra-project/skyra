@@ -1,13 +1,13 @@
-import { DbSet } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
+import { FFXIV } from '#utils/GameIntegration/FFXIVTypings';
+import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '#utils/GameIntegration/FFXIVUtils';
+import { pickRandom } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors, ZeroWidthSpace } from '@utils/constants';
-import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
-import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
-import { pickRandom } from '@utils/util';
 import { EmbedField, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 

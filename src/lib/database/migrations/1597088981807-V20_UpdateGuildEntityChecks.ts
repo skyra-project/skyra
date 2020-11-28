@@ -1,4 +1,4 @@
-import { DEV } from '@root/config';
+import { DEV } from '#root/config';
 import { MigrationInterface, QueryRunner, TableCheck } from 'typeorm';
 import { RandomGenerator } from 'typeorm/util/RandomGenerator';
 

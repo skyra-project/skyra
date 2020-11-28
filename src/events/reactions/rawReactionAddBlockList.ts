@@ -1,15 +1,15 @@
-import { GuildEntity, GuildSettings } from '@lib/database';
-import { HardPunishment, ModerationEvent } from '@lib/structures/ModerationEvent';
-import { SelfModeratorBitField } from '@lib/structures/SelfModeratorBitField';
-import { KeyOfType } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildEntity, GuildSettings } from '#lib/database';
+import { HardPunishment, ModerationEvent } from '#lib/structures/ModerationEvent';
+import { SelfModeratorBitField } from '#lib/structures/SelfModeratorBitField';
+import { KeyOfType } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { MessageLogsEnum } from '#utils/constants';
+import { LLRCData } from '#utils/LongLivingReactionCollector';
+import { api } from '#utils/Models/Api';
+import { floatPromise, twemoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageLogsEnum } from '@utils/constants';
-import { LLRCData } from '@utils/LongLivingReactionCollector';
-import { api } from '@utils/Models/Api';
-import { floatPromise, twemoji } from '@utils/util';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 import { EventOptions } from 'klasa';
 

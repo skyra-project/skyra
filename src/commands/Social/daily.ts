@@ -1,9 +1,9 @@
-import { ClientEntity, DbSet, UserEntity } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { Schedules } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { ClientEntity, DbSet, UserEntity } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { Schedules } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Time } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
-import { Time } from '@utils/constants';
 import { KlasaMessage, Language } from 'klasa';
 
 const GRACE_PERIOD = Time.Hour;

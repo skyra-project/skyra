@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const AbilityDescription = T<string>('commandAbilityDescription');
 export const AbilityExtended = T<LanguageHelpDisplayOptions>('commandAbilityExtended');

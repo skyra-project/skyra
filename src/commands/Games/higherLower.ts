@@ -1,12 +1,12 @@
-import { DbSet, UserEntity } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet, UserEntity } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Time } from '#utils/constants';
+import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Time } from '@utils/constants';
-import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { resolveEmoji } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 

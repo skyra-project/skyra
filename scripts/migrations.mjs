@@ -1,4 +1,3 @@
-import 'module-alias/register.js';
 import { promises as fsp } from 'fs';
 import { dirname, resolve } from 'path';
 import typeorm from 'typeorm';

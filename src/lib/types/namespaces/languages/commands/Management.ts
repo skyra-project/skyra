@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import { Role, User } from 'discord.js';
 
 export const AttachmentsModeDescription = T<string>('commandAttachmentsModeDescription');

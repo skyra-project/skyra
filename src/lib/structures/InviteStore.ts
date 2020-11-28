@@ -1,7 +1,7 @@
+import { Time } from '#utils/constants';
+import { api } from '#utils/Models/Api';
+import { resolveOnErrorCodes } from '#utils/util';
 import Collection from '@discordjs/collection';
-import { Time } from '@utils/constants';
-import { api } from '@utils/Models/Api';
-import { resolveOnErrorCodes } from '@utils/util';
 import { RESTGetAPIInviteResult, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client } from 'discord.js';
 

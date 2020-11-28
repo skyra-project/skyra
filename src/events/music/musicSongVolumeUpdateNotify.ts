@@ -1,7 +1,7 @@
-import { AudioEvent } from '@lib/structures/AudioEvent';
-import { MessageAcknowledgeable } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { pickRandom } from '@utils/util';
+import { AudioEvent } from '#lib/structures/AudioEvent';
+import { MessageAcknowledgeable } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { pickRandom } from '#utils/util';
 
 export default class extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, previous: number, next: number) {

@@ -1,5 +1,5 @@
+import { enumerable } from '#utils/util';
 import { Time } from '@sapphire/time-utilities';
-import { enumerable } from '@utils/util';
 import type { Client } from 'discord.js';
 
 /**

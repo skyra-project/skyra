@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
-import { VERSION } from '@root/config';
-import { DurationFormatter, TimeTypes, Timestamp } from '@sapphire/time-utilities';
+import { VERSION } from '#root/config';
+import { Emojis } from '#utils/constants';
+import { CATEGORIES } from '#utils/Games/TriviaManager';
+import { random } from '#utils/util';
+import { DurationFormatter, TimeTypes } from '@sapphire/time-utilities';
 import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
-import { Emojis } from '@utils/constants';
-import { CATEGORIES } from '@utils/Games/TriviaManager';
-import { random } from '@utils/util';
-import { Language, LanguageKeys, version as klasaVersion } from 'klasa';
+import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
 
 const LOADING = Emojis.Loading;
 const SHINY = Emojis.Shiny;

@@ -1,4 +1,4 @@
-import { ENABLE_INFLUX } from '@root/config';
+import { ENABLE_INFLUX } from '#root/config';
 import { Monitor } from 'klasa';
 
 export default class MessageReceived extends Monitor {

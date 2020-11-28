@@ -1,12 +1,12 @@
-import { DbSet } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors, Emojis } from '@utils/constants';
-import { pickRandom } from '@utils/util';
+import { DbSet } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors, Emojis } from '#utils/constants';
+import { pickRandom } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 

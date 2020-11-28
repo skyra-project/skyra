@@ -1,5 +1,5 @@
+import { cast } from '#utils/util';
 import { ticTacToe } from '@skyra/ai';
-import { cast } from '@utils/util';
 import { BaseBotController } from '../base/BaseBotController';
 import type { TicTacToeGame } from './TicTacToeGame';
 

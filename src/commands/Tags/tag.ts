@@ -1,17 +1,17 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
-import { CustomCommand, DbSet, GuildSettings } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { parse as parseColour } from '#utils/Color';
+import { BrandingColors } from '#utils/constants';
+import { pickRandom } from '#utils/util';
 import { chunk, codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresPermission } from '@skyra/decorators';
-import { parse as parseColour } from '@utils/Color';
-import { BrandingColors } from '@utils/constants';
-import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
@@ -36,7 +36,7 @@ import { MessageEmbed } from 'discord.js';
 	]
 ])
 export default class extends SkyraCommand {
-	// Based on HEX regex from @utils/Color
+	// Based on HEX regex from #utils/Color
 	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
 	#kHexlessRegex = /^([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/i;
 

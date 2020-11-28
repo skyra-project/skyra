@@ -1,8 +1,8 @@
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ConnectFourConstants } from '@utils/constants';
-import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { floatPromise, pickRandom } from '@utils/util';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ConnectFourConstants } from '#utils/constants';
+import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { floatPromise, pickRandom } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';

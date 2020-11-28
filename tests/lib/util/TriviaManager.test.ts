@@ -1,5 +1,5 @@
 import nock = require('nock');
-import { getQuestion, QuestionDifficulty, QuestionType } from '@utils/Games/TriviaManager';
+import { getQuestion, QuestionDifficulty, QuestionType } from '#utils/Games/TriviaManager';
 
 describe('TriviaManager', () => {
 	// eslint-disable-next-line @typescript-eslint/init-declarations

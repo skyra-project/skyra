@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<UniqueRoleSet> {

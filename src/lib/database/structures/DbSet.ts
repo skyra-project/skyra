@@ -1,4 +1,4 @@
-import { BrandingColors } from '@utils/constants';
+import { BrandingColors } from '#utils/constants';
 import type { Message } from 'discord.js';
 import type { Connection, FindConditions, FindManyOptions, Repository } from 'typeorm';
 import { connect } from '../database.config';

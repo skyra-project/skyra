@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { DiscordSnowflake } from '@sapphire/snowflake';
 import { Awaited } from '@sapphire/utilities';
 

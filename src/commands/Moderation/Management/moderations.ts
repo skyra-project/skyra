@@ -1,14 +1,14 @@
+import { DbSet, ModerationEntity } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors, Moderation } from '#utils/constants';
+import { pickRandom } from '#utils/util';
 import Collection from '@discordjs/collection';
-import { DbSet, ModerationEntity } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors, Moderation } from '@utils/constants';
-import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommandOptions>({

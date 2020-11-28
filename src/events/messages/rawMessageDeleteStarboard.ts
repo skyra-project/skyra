@@ -1,7 +1,7 @@
-import { DbSet, GuildSettings } from '@lib/database';
-import { Events } from '@lib/types/Enums';
+import { DbSet, GuildSettings } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { api } from '#utils/Models/Api';
 import { ApplyOptions } from '@skyra/decorators';
-import { api } from '@utils/Models/Api';
 import { GatewayMessageDeleteDispatch } from 'discord-api-types/v6';
 import { DiscordAPIError, Guild } from 'discord.js';
 import { Event, EventOptions } from 'klasa';

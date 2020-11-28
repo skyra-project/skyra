@@ -1,4 +1,4 @@
-import { assetsFolder } from '@utils/constants';
+import { assetsFolder } from '#utils/constants';
 import { registerFont } from 'canvas';
 import { join } from 'path';
 

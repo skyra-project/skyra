@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class UserSerializer extends Serializer<string> {
 	public async parse(value: string, context: SerializerUpdateContext) {

@@ -1,11 +1,11 @@
-import { AdderKey, GuildEntity, GuildSettings } from '@lib/database';
-import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '@lib/types';
-import { Events, PermissionLevels } from '@lib/types/Enums';
-import { CLIENT_ID } from '@root/config';
+import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
+import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
+import { Events, PermissionLevels } from '#lib/types/Enums';
+import { CLIENT_ID } from '#root/config';
+import { AdderError } from '#utils/Adder';
+import { MessageLogsEnum } from '#utils/constants';
+import { floatPromise } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
-import { AdderError } from '@utils/Adder';
-import { MessageLogsEnum } from '@utils/constants';
-import { floatPromise } from '@utils/util';
 import { GuildMember, MessageEmbed, TextChannel } from 'discord.js';
 import { KlasaMessage, Language, Monitor } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';

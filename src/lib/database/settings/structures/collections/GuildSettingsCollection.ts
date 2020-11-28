@@ -1,6 +1,6 @@
-import { GuildEntity } from '@lib/database/entities/GuildEntity';
-import { SettingsCollection, SettingsCollectionCallback } from '@lib/database/settings/base/SettingsCollection';
-import { DbSet } from '@lib/database/structures/DbSet';
+import { GuildEntity } from '#lib/database/entities/GuildEntity';
+import { SettingsCollection, SettingsCollectionCallback } from '#lib/database/settings/base/SettingsCollection';
+import { DbSet } from '#lib/database/structures/DbSet';
 
 export interface GuildSettingsCollectionCallback<R> extends SettingsCollectionCallback<GuildEntity, R> {}
 

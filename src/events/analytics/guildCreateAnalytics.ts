@@ -1,8 +1,8 @@
+import { Events } from '#lib/types/Enums';
+import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
+import { AnalyticsEvent } from '#utils/Tracking/Analytics/structures/AnalyticsEvent';
 import { Point } from '@influxdata/influxdb-client';
-import { Events } from '@lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
-import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
-import { AnalyticsEvent } from '@utils/Tracking/Analytics/structures/AnalyticsEvent';
 import { Guild } from 'discord.js';
 import { EventOptions } from 'klasa';
 

@@ -1,8 +1,8 @@
-import type { GuildEntity } from '@lib/database';
-import { Nullish } from '@lib/misc';
-import type { CustomFunctionGet, GuildMessage, KeyOfType } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import type { GuildEntity } from '#lib/database';
+import { Nullish } from '#lib/misc';
+import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { TextChannel } from 'discord.js';
 import type { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';

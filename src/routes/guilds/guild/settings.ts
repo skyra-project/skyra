@@ -1,9 +1,9 @@
-import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '@lib/database';
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { canManage } from '#utils/API';
+import { authenticated, cast, ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { canManage } from '@utils/API';
-import { authenticated, cast, ratelimit } from '@utils/util';
 import { Guild } from 'discord.js';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 

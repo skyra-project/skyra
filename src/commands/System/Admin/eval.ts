@@ -1,13 +1,13 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { Events, PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { Events, PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { clean } from '#utils/clean';
+import { EvalExtraData, handleMessage } from '#utils/ExceededLengthParser';
+import { sleep } from '#utils/sleep';
+import { cast } from '#utils/util';
 import { Type } from '@sapphire/type';
 import { codeBlock, isThenable } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { clean } from '@utils/clean';
-import { EvalExtraData, handleMessage } from '@utils/ExceededLengthParser';
-import { sleep } from '@utils/sleep';
-import { cast } from '@utils/util';
 import { KlasaMessage, Stopwatch } from 'klasa';
 import { inspect } from 'util';
 

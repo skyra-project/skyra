@@ -4,7 +4,7 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
+import { BrandingColors, ZeroWidthSpace } from '@utils/constants';
 import { FFXIV } from '@utils/GameIntegration/FFXIVTypings';
 import { FFXIVClasses, FFXIV_BASE_URL, getCharacterDetails, searchCharacter, searchItem, SubCategoryEmotes } from '@utils/GameIntegration/FFXIVUtils';
 import { pickRandom } from '@utils/util';
@@ -84,7 +84,7 @@ export default class extends RichDisplayCommand {
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
-		).addPage((embed: MessageEmbed) =>
+		).addPage((embed) =>
 			embed
 				.setThumbnail(character.Avatar)
 				.setImage(character.Portrait)
@@ -96,7 +96,7 @@ export default class extends RichDisplayCommand {
 				.addField(titles.cityState, character.Town.Name, true)
 				.addField(titles.grandCompany, character.GrandCompany.Company?.Name || titles.none, true)
 				.addField(titles.rank, character.GrandCompany.Rank?.Name || titles.none, true)
-				.addBlankField(true)
+				.addField(ZeroWidthSpace, ZeroWidthSpace, true)
 		);
 
 		if (
@@ -106,7 +106,7 @@ export default class extends RichDisplayCommand {
 			phRangedDPSClassValues.length ||
 			magRangedDPSClassValues.length
 		) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addPage((embed) => {
 				embed.setTitle(titles.dowDomClasses);
 
 				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${titles.tank}`, tankClassValues.join('\n'), true);
@@ -121,15 +121,15 @@ export default class extends RichDisplayCommand {
 		}
 
 		if (discipleOfTheHandJobs.length) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addPage((embed) => {
 				embed.fields = discipleOfTheHandJobs;
-				embed.setTitle(titles.dohClasses).addBlankField(true);
+				embed.setTitle(titles.dohClasses).addField(ZeroWidthSpace, ZeroWidthSpace, true);
 				return embed;
 			});
 		}
 
 		if (discipleOfTheLandJobs.length) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addPage((embed) => {
 				embed.fields = discipleOfTheLandJobs;
 				embed.setTitle(titles.dolClasses);
 				return embed;
@@ -144,7 +144,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {
-			display.addPage((embed: MessageEmbed) =>
+			display.addPage((embed) =>
 				embed
 					.setDescription(item.Description.split('\n')[0])
 					.setAuthor(item.Name, `${FFXIV_BASE_URL}${item.Icon}`)

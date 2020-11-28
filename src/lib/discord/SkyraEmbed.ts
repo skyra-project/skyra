@@ -1,17 +1,8 @@
 import { ZeroWidthSpace } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
-import { Extendable, ExtendableStore } from 'klasa';
 
-export default class extends Extendable {
-	public constructor(store: ExtendableStore, file: string[], directory: string) {
-		super(store, file, directory, { appliesTo: [MessageEmbed] });
-	}
-
-	public addBlankField(this: MessageEmbed, inline?: boolean) {
-		return this.addField(ZeroWidthSpace, ZeroWidthSpace, inline ?? false);
-	}
-
-	public splitFields(this: MessageEmbed, contentOrTitle: string | string[], rawContent?: string | string[]) {
+export class SkyraEmbed extends MessageEmbed {
+	public splitFields(contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 
 		let title: string | undefined = undefined;
@@ -47,6 +38,7 @@ export default class extends Extendable {
 			content = content.slice(x + 1);
 			title = ZeroWidthSpace;
 		}
+
 		return this;
 	}
 }

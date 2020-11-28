@@ -54,7 +54,7 @@ export default class extends ModerationMonitor {
 
 	protected onLogMessage(message: GuildMessage, language: Language) {
 		return new MessageEmbed()
-			.splitFields(message.content)
+			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.MessageFooter)}`)

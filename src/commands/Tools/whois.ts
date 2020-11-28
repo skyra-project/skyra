@@ -1,10 +1,11 @@
+import { SkyraEmbed } from '@lib/discord';
 import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Emojis, Time } from '@utils/constants';
-import { GuildMember, MessageEmbed, Permissions, PermissionString, Role, User } from 'discord.js';
+import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import { Language } from 'klasa';
 
 const sortRanks = (x: Role, y: Role) => Number(y.position > x.position) || Number(x.position === y.position) - 1;
@@ -48,7 +49,7 @@ export default class extends SkyraCommand {
 		const titles = language.get(LanguageKeys.Commands.Tools.WhoisUserTitles);
 		const fields = language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
 
-		return new MessageEmbed()
+		return new SkyraEmbed()
 			.setColor(Colors.White)
 			.setThumbnail(user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 			.setDescription(this.getUserInformation(user))
@@ -61,7 +62,7 @@ export default class extends SkyraCommand {
 		const titles = language.get(LanguageKeys.Commands.Tools.WhoisMemberTitles);
 		const fields = language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
 
-		const embed = new MessageEmbed()
+		const embed = new SkyraEmbed()
 			.setColor(member.displayColor || Colors.White)
 			.setThumbnail(member.user.displayAvatarURL({ size: 256, format: 'png', dynamic: true }))
 			.setDescription(this.getUserInformation(member.user, this.getBoostIcon(member.premiumSinceTimestamp)))
@@ -81,7 +82,7 @@ export default class extends SkyraCommand {
 		return `**${user.tag}**${bot} - ${user.toString()}${extras} - ${avatar}`;
 	}
 
-	private applyMemberRoles(language: Language, member: GuildMember, embed: MessageEmbed) {
+	private applyMemberRoles(language: Language, member: GuildMember, embed: SkyraEmbed) {
 		if (member.roles.cache.size <= 1) return;
 
 		const roles = member.roles.cache.sorted(sortRanks);
@@ -94,7 +95,7 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private applyMemberKeyPermissions(language: Language, member: GuildMember, embed: MessageEmbed) {
+	private applyMemberKeyPermissions(language: Language, member: GuildMember, embed: SkyraEmbed) {
 		if (member.permissions.has(this.kAdministratorPermission)) {
 			embed.addField(
 				language.get(LanguageKeys.Commands.Tools.WhoisMemberPermissions),

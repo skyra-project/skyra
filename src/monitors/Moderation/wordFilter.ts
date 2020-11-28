@@ -1,4 +1,5 @@
 import { DbSet, GuildSettings } from '@lib/database';
+import { SkyraEmbed } from '@lib/discord';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
@@ -6,7 +7,7 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { TextChannel } from 'discord.js';
 import { Language } from 'klasa';
 
 export default class extends ModerationMonitor {
@@ -46,7 +47,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onLogMessage(message: GuildMessage, language: Language, results: FilterResults) {
-		return new MessageEmbed()
+		return new SkyraEmbed()
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

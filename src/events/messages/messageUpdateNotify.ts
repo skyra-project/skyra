@@ -1,4 +1,5 @@
 import { GuildSettings } from '@lib/database';
+import { Embed } from '@lib/discord';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
@@ -7,7 +8,6 @@ import { ApplyOptions } from '@skyra/decorators';
 import { MessageLogsEnum } from '@utils/constants';
 import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { diffWordsWithSpace } from 'diff';
-import { MessageEmbed } from 'discord.js';
 import { Event, EventOptions, KlasaMessage } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.MessageUpdate })
@@ -29,7 +29,7 @@ export default class extends Event {
 		if (ignoredAll.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 
 		this.client.emit(Events.GuildMessageLog, message.channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () =>
-			new MessageEmbed()
+			new Embed()
 				.setColor(Colors.Amber)
 				.setAuthor(
 					`${message.author.tag} (${message.author.id})`,

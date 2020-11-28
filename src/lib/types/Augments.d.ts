@@ -81,16 +81,6 @@ declare module 'discord.js' {
 		emit(event: string | symbol, ...args: any[]): boolean;
 	}
 
-	interface MessageEmbed {
-		splitFields(title: string, content: string | string[]): this;
-		splitFields(content: string | string[]): this;
-		/**
-		 * Adds a field with both title and content set to a Zero Width Space
-		 * @param inline whether the field should be inline, defaults to `false`
-		 */
-		addBlankField(inline?: boolean): this;
-	}
-
 	interface PartialSendAliases {
 		sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
 		sendLocale<K extends string, TReturn>(
@@ -142,9 +132,6 @@ declare module 'klasa' {
 
 		get<K extends string, TReturn>(value: CustomGet<K, TReturn>): TReturn;
 		get<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
-
-		retrieve<K extends string, TReturn>(value: CustomGet<K, TReturn>): TReturn;
-		retrieve<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
 	}
 
 	interface PieceDefaults {

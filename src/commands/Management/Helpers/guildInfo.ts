@@ -1,5 +1,5 @@
 import { DbSet } from '@lib/database';
-import { Embed } from '@lib/discord';
+import { SkyraEmbed } from '@lib/discord';
 import { SkyraCommand } from '@lib/structures/SkyraCommand';
 import { GuildMessage } from '@lib/types';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild.ownerID);
 		return message.sendEmbed(
-			new Embed()
+			new SkyraEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(message.guild.iconURL()!)
 				.setTitle(`${message.guild.name} [${message.guild.id}]`)

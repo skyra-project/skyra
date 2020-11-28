@@ -1,5 +1,5 @@
 import { DbSet, GuildSettings } from '@lib/database';
-import { Embed } from '@lib/discord';
+import { SkyraEmbed } from '@lib/discord';
 import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
@@ -47,7 +47,7 @@ export default class extends ModerationMonitor {
 	}
 
 	protected onLogMessage(message: GuildMessage, language: Language, results: FilterResults) {
-		return new Embed()
+		return new SkyraEmbed()
 			.splitFields(cutText(results.highlighted, 4000))
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

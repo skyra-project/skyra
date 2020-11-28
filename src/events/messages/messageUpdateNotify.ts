@@ -1,5 +1,5 @@
 import { GuildSettings } from '@lib/database';
-import { Embed } from '@lib/discord';
+import { SkyraEmbed } from '@lib/discord';
 import { GuildMessage } from '@lib/types';
 import { Colors } from '@lib/types/constants/Constants';
 import { Events } from '@lib/types/Enums';
@@ -29,7 +29,7 @@ export default class extends Event {
 		if (ignoredAll.some((id) => id === message.channel.id || message.channel.parentID === id)) return;
 
 		this.client.emit(Events.GuildMessageLog, message.channel.nsfw ? MessageLogsEnum.NSFWMessage : MessageLogsEnum.Message, message.guild, () =>
-			new Embed()
+			new SkyraEmbed()
 				.setColor(Colors.Amber)
 				.setAuthor(
 					`${message.author.tag} (${message.author.id})`,

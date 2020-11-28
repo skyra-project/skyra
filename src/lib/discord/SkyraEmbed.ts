@@ -1,7 +1,7 @@
 import { ZeroWidthSpace } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 
-export class Embed extends MessageEmbed {
+export class SkyraEmbed extends MessageEmbed {
 	public splitFields(contentOrTitle: string | string[], rawContent?: string | string[]) {
 		if (typeof contentOrTitle === 'undefined') return this;
 

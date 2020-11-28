@@ -1,5 +1,5 @@
-import { Queue } from '#lib/audio/index';
-import { DbSet } from '#lib/database/index';
+import { Queue } from '#lib/audio';
+import { DbSet } from '#lib/database';
 import { MusicCommand } from '#lib/structures/MusicCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { GuildMessage } from '#lib/types/Discord';

@@ -1,4 +1,4 @@
-import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database/index';
+import { CustomCommand, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ZeroWidthSpace } from '#utils/constants';
 import { Awaited } from '@sapphire/utilities';

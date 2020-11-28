@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database/index';
+import { GuildSettings } from '#lib/database';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { Guild, User } from 'discord.js';

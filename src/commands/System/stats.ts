@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database/index';
+import { DbSet } from '#lib/database';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';

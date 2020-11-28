@@ -1,7 +1,7 @@
-import { DbSet, MemberEntity } from '#lib/database/index';
+import { DbSet, MemberEntity } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { User } from 'discord.js';

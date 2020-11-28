@@ -1,8 +1,8 @@
-import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database/index';
+import { DbSet, GuildSettings, TriggerAlias, TriggerIncludes } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { displayEmoji, resolveEmoji } from '#utils/util';
 import { chunk } from '@sapphire/utilities';

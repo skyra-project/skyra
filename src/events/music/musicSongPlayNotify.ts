@@ -1,6 +1,6 @@
-import { NowPlayingEntry } from '#lib/audio/index';
+import { NowPlayingEntry } from '#lib/audio';
 import { AudioEvent } from '#lib/structures/AudioEvent';
-import { MessageAcknowledgeable } from '#lib/types/index';
+import { MessageAcknowledgeable } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class extends AudioEvent {

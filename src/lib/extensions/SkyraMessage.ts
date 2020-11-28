@@ -1,5 +1,5 @@
+import type { CustomFunctionGet, CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import type { CustomFunctionGet, CustomGet } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { sleep } from '#utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext } from '#lib/database/index';
-import { isNullish } from '#lib/misc/index';
+import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { isNullish } from '#lib/misc';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';

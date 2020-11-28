@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types/index';
+import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import { Role, User } from 'discord.js';
 

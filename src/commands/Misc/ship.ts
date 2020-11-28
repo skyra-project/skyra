@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database/index';
+import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { CanvasColors } from '#lib/types/constants/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

@@ -1,5 +1,5 @@
-import { GuildSettings } from '#lib/database/index';
-import { isNullish } from '#lib/misc/index';
+import { GuildSettings } from '#lib/database';
+import { isNullish } from '#lib/misc';
 import { Guild, GuildMember, Permissions } from 'discord.js';
 
 export async function canManage(guild: Guild, member: GuildMember) {

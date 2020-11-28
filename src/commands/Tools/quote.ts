@@ -1,6 +1,6 @@
-import { DbSet, Serializer } from '#lib/database/index';
+import { DbSet, Serializer } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types/index';
+import { GuildMessage } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { getContent, getImage, isTextBasedChannel } from '#utils/util';
 import { cutText } from '@sapphire/utilities';

@@ -1,6 +1,6 @@
-import { AdderKey, GuildEntity, GuildSettings } from '#lib/database/index';
+import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
+import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
-import { CustomFunctionGet, CustomGet, GuildMessage, KeyOfType } from '#lib/types/index';
 import { CLIENT_ID } from '#root/config';
 import { AdderError } from '#utils/Adder';
 import { MessageLogsEnum } from '#utils/constants';

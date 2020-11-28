@@ -1,5 +1,5 @@
-import { QueueEntry } from '#lib/audio/index';
-import { map, prependIfNotNull, take } from '#lib/misc/index';
+import { QueueEntry } from '#lib/audio';
+import { map, prependIfNotNull, take } from '#lib/misc';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { GuildMessage } from '#lib/types/Discord';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

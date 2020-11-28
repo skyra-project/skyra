@@ -1,8 +1,8 @@
-import { GuildSettings } from '#lib/database/index';
-import { isNullish } from '#lib/misc/index';
+import { GuildSettings } from '#lib/database';
+import { isNullish } from '#lib/misc';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';

@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database/index';
+import { GuildSettings } from '#lib/database';
 import { Colors } from '#lib/types/constants/Constants';
 import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

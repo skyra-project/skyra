@@ -1,6 +1,6 @@
-import { DbSet, GuildSettings, ModerationEntity } from '#lib/database/index';
-import { isNullish } from '#lib/misc/index';
-import { StrictRequired } from '#lib/types/index';
+import { DbSet, GuildSettings, ModerationEntity } from '#lib/database';
+import { isNullish } from '#lib/misc';
+import { StrictRequired } from '#lib/types';
 import { Time } from '#utils/constants';
 import { cast, createReferPromise, floatPromise, ReferredPromise } from '#utils/util';
 import Collection, { CollectionConstructor } from '@discordjs/collection';

@@ -1,4 +1,4 @@
-import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database/index';
+import { configurableKeys, GuildEntity, isSchemaKey, SerializerUpdateContext } from '#lib/database';
 import { ApiRequest } from '#lib/structures/api/ApiRequest';
 import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import { canManage } from '#utils/API';

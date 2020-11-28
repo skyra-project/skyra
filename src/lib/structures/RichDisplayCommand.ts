@@ -1,4 +1,4 @@
-import { GuildMessage } from '#lib/types/index';
+import { GuildMessage } from '#lib/types';
 import { PermissionResolvable } from 'discord.js';
 import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';

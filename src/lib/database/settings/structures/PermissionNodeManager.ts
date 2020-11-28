@@ -1,5 +1,5 @@
 import type { GuildEntity, PermissionsNode } from '#lib/database/entities/GuildEntity';
-import { GuildSettings } from '#lib/database/tableKeys/index';
+import { GuildSettings } from '#lib/database/tableKeys';
 import type { SkyraClient } from '#lib/SkyraClient';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import Collection from '@discordjs/collection';

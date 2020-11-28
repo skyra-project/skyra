@@ -1,4 +1,4 @@
-import { GuildSettings, ModerationEntity } from '#lib/database/index';
+import { GuildSettings, ModerationEntity } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';

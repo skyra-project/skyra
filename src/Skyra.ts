@@ -1,7 +1,7 @@
 import '#utils/initClean';
 import 'reflect-metadata';
 
-import { DbSet } from '#lib/database/index';
+import { DbSet } from '#lib/database';
 import { SkyraClient } from '#lib/SkyraClient';
 import { TOKENS } from '#root/config';
 import { rootFolder } from '#utils/constants';

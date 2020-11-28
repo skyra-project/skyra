@@ -1,4 +1,4 @@
-import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database/index';
+import { DbSet, GiveawayEntity, GiveawayEntityData } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { KlasaClient } from 'klasa';
 

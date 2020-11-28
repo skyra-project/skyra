@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings } from '#lib/database/index';
-import { isNullish } from '#lib/misc/index';
+import { GuildSettings } from '#lib/database';
+import { isNullish } from '#lib/misc';
 import { StarboardManager } from '#lib/structures/managers/StarboardManager';
+import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { debounce } from '#utils/debounce/index';
+import { debounce } from '#utils/debounce';
 import { fetchReactionUsers, getImage } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

@@ -1,6 +1,6 @@
-import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '#lib/database/index';
+import { AdderKey, configurableKeys, GuildEntity, SchemaKey } from '#lib/database';
+import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { KeyOfType } from '#lib/types/Utils';
 import { Command, CommandOptions, CommandStore, Duration, Language } from 'klasa';

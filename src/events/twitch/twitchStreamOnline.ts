@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database/index';
+import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
 import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import { TwitchHelixGameSearchResult } from '#lib/types/definitions/Twitch';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

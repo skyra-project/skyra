@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database/index';
+import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { MessageLogsEnum } from '#utils/constants';
 import { DiscordAPIError, Guild, HTTPError, MessageEmbed, TextChannel } from 'discord.js';

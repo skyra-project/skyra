@@ -1,4 +1,4 @@
-import { T } from '#lib/types/index';
+import { T } from '#lib/types';
 
 export const Prefix = T<string>('settingsPrefix');
 export const Language = T<string>('settingsLanguage');

@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types/index';
+import { FT, T } from '#lib/types';
 
 export const GuildMemberAdd = T<string>('eventsGuildMemberAdd');
 export const GuildMemberAddMute = T<string>('eventsGuildMemberAddMute');

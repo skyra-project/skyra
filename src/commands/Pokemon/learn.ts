@@ -1,7 +1,7 @@
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { LearnMethodTypesReturn } from '#lib/types/namespaces/languages/commands/Pokemon';
 import { BrandingColors } from '#utils/constants';

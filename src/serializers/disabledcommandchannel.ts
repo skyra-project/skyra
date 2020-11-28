@@ -1,4 +1,4 @@
-import { DisabledCommandChannel, Serializer, SerializerUpdateContext } from '#lib/database/index';
+import { DisabledCommandChannel, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 

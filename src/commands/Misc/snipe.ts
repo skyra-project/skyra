@@ -1,6 +1,6 @@
-import { DbSet } from '#lib/database/index';
+import { DbSet } from '#lib/database';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types/index';
+import { GuildMessage } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { getContent, getImage } from '#utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';

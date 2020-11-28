@@ -1,4 +1,4 @@
-import { Queue } from '#lib/audio/index';
+import { Queue } from '#lib/audio';
 import { MusicCommand } from '#lib/structures/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

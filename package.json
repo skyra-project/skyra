@@ -5,7 +5,14 @@
 	"main": "dist/Skyra.js",
 	"imports": {
 		"#utils/*": "./dist/lib/util/*.js",
+		"#utils/debounce": "./dist/lib/util/debounce/index.js",
 		"#lib/*": "./dist/lib/*.js",
+		"#lib/database": "./dist/lib/database/index.js",
+		"#lib/database/tableKeys": "./dist/lib/database/tableKeys/index.js",
+		"#lib/audio": "./dist/lib/audio/index.js",
+		"#lib/misc": "./dist/lib/misc/index.js",
+		"#lib/types": "./dist/lib/types/index.js",
+		"#lib/structures/color": "./dist/lib/structures/color/index.js",
 		"#root/*": "./dist/*.js"
 	},
 	"scripts": {

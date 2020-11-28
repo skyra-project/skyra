@@ -1,4 +1,4 @@
-import { CustomGet, FT, T } from '#lib/types/index';
+import { CustomGet, FT, T } from '#lib/types';
 import { EightBallLanguage } from '#root/commands/Fun/8ball';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 

@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types/index';
+import { FT, T } from '#lib/types';
 
 export const Cooldown = FT<{ remaining: string }, string>('inhibitorCooldown');
 export const MissingBotPerms = FT<{ missing: string }, string>('inhibitorMissingBotPerms');

@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database/index';
+import { DbSet } from '#lib/database';
 import { ApiRequest } from '#lib/structures/api/ApiRequest';
 import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import { TOKENS } from '#root/config';

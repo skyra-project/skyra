@@ -1,4 +1,4 @@
-import { PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database/index';
+import { PermissionsNode, Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { isObject } from '@sapphire/utilities';
 import { GuildMember, Role } from 'discord.js';

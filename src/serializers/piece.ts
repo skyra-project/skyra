@@ -1,4 +1,4 @@
-import { Serializer, SerializerStore, SerializerUpdateContext } from '#lib/database/index';
+import { Serializer, SerializerStore, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { Awaited } from '@sapphire/utilities';
 import type { Piece } from 'klasa';

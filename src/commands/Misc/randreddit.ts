@@ -1,7 +1,7 @@
 import { FetchError } from '#lib/errors/FetchError';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
 import { Reddit } from '#lib/types/definitions/Reddit';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
 import { TextChannel } from 'discord.js';

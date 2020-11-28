@@ -1,6 +1,6 @@
-import { QueueEntry } from '#lib/audio/index';
-import { GuildSettings } from '#lib/database/index';
-import { empty, filter, map, take } from '#lib/misc/index';
+import { QueueEntry } from '#lib/audio';
+import { GuildSettings } from '#lib/database';
+import { empty, filter, map, take } from '#lib/misc';
 import { MusicCommand } from '#lib/structures/MusicCommand';
 import { GuildMessage } from '#lib/types/Discord';
 import { Events } from '#lib/types/Enums';

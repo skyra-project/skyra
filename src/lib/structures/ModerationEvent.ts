@@ -1,4 +1,4 @@
-import type { AdderKey, GuildEntity } from '#lib/database/index';
+import type { AdderKey, GuildEntity } from '#lib/database';
 import type { KeyOfType } from '#lib/types/Utils';
 import { CLIENT_ID } from '#root/config';
 import { Guild, MessageEmbed } from 'discord.js';

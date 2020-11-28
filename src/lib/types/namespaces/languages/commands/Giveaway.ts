@@ -1,4 +1,4 @@
-import { T } from '#lib/types/index';
+import { T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const GiveawayDescription = T<string>('commandGiveawayDescription');

@@ -1,7 +1,7 @@
-import { GuildSettings } from '#lib/database/index';
+import { GuildSettings } from '#lib/database';
 import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
-import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
 import { getImage } from '#utils/util';

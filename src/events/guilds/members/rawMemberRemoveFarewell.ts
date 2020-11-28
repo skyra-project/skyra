@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database/index';
+import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { APIUser, GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';

@@ -1,4 +1,4 @@
-import * as Resolver from '#lib/structures/color/index';
+import * as Resolver from '#lib/structures/color';
 
 const REGEXP = {
 	B10: /^\d{1,8}$/,

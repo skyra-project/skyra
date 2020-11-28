@@ -89,7 +89,7 @@ export class ScheduleEntity extends BaseEntity {
 	}
 
 	public get task() {
-		return this.#client.tasks.get(this.taskID) ?? null;
+		return this.#client.settings.tasks.get(this.taskID) ?? null;
 	}
 
 	public get running() {

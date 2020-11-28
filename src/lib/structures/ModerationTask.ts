@@ -1,8 +1,7 @@
-import { GuildSettings, PartialResponseValue, ResponseType } from '#lib/database';
+import { GuildSettings, PartialResponseValue, ResponseType, Task } from '#lib/database';
 import { Moderation } from '#utils/constants';
 import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';
-import { Task } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';
 
 export abstract class ModerationTask<T = unknown> extends Task {

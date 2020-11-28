@@ -1,5 +1,4 @@
 import { DbSet } from '@lib/database';
-import { Embed } from '@lib/discord';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { GuildMessage } from '@lib/types';
@@ -82,7 +81,7 @@ export default class extends RichDisplayCommand {
 		const titles = language.get(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new UserRichDisplay(
-			new Embed()
+			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(character.Name, character.Avatar, `https://eu.finalfantasyxiv.com/lodestone/character/${character.ID}/`)
 		).addPage((embed) =>
@@ -107,7 +106,7 @@ export default class extends RichDisplayCommand {
 			phRangedDPSClassValues.length ||
 			magRangedDPSClassValues.length
 		) {
-			display.addPage((embed: MessageEmbed) => {
+			display.addPage((embed) => {
 				embed.setTitle(titles.dowDomClasses);
 
 				if (tankClassValues.length) embed.addField(`${SubCategoryEmotes.Tank} ${titles.tank}`, tankClassValues.join('\n'), true);

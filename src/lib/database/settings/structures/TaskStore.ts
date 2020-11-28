@@ -2,7 +2,7 @@ import type { Client } from 'discord.js';
 import { AliasStore } from 'klasa';
 import { Task } from './Task';
 
-export class TaskStore extends AliasStore<string, Task<unknown>> {
+export class TaskStore extends AliasStore<string, Task> {
 	/**
 	 * Constructs our TaskStore for use in Klasa
 	 * @param client The client that instantiates this store

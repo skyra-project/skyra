@@ -1,21 +1,11 @@
 import { Piece } from 'klasa';
+import type { PartialResponseValue } from '@lib/database';
+import type { Awaited } from '@sapphire/utilities';
 
-/**
- * Base class for all Klasa Task pieces. See {@tutorial CreatingTasks} for more information how to use this class
- * to build custom tasks.
- * @tutorial CreatingTasks
- * @extends {Piece}
- */
 export abstract class Task extends Piece {
 	/**
 	 * The run method to be overwritten in actual Task pieces
-	 * @since 0.5.0
-	 * @param {*} data The data
-	 * @returns {void}
-	 * @abstract
+	 * @param data The data
 	 */
-	public run() {
-		// Defined in extension Classes
-		throw new Error(`The run method has not been implemented by ${this.type}:${this.name}.`);
-	}
+	public abstract run(data: unknown): Awaited<PartialResponseValue | null>;
 }

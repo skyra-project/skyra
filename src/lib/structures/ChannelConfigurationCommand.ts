@@ -1,7 +1,7 @@
-import type { GuildEntity } from '#lib/database';
-import { Nullish } from '#lib/misc';
-import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types';
+import type { GuildEntity } from '#lib/database/index';
+import { Nullish } from '#lib/misc/index';
 import { PermissionLevels } from '#lib/types/Enums';
+import type { CustomFunctionGet, GuildMessage, KeyOfType } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { TextChannel } from 'discord.js';
 import type { CommandStore } from 'klasa';

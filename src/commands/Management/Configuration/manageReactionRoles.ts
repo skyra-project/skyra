@@ -1,8 +1,8 @@
-import { DbSet, GuildSettings, ReactionRole } from '#lib/database';
+import { DbSet, GuildSettings, ReactionRole } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';

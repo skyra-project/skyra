@@ -1,4 +1,4 @@
-import type { AnyObject } from '#lib/types';
+import type { AnyObject } from '#lib/types/index';
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
 export class V07MigrateModeration1594583300041 implements MigrationInterface {

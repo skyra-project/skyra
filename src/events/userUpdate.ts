@@ -1,8 +1,8 @@
-import { GuildSettings } from '#lib/database';
-import { filter, map } from '#lib/misc';
-import { CustomGet } from '#lib/types';
+import { GuildSettings } from '#lib/database/index';
+import { filter, map } from '#lib/misc/index';
 import { Colors } from '#lib/types/constants/Constants';
 import { Events } from '#lib/types/Enums';
+import { CustomGet } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '#utils/constants';
 import { Guild, MessageEmbed, User } from 'discord.js';

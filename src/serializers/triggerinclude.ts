@@ -1,4 +1,4 @@
-import { Serializer, SerializerUpdateContext, TriggerIncludes } from '#lib/database';
+import { Serializer, SerializerUpdateContext, TriggerIncludes } from '#lib/database/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { resolveEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';

@@ -1,9 +1,9 @@
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings } from '#lib/database/index';
 import { HardPunishment, ModerationEvent } from '#lib/structures/ModerationEvent';
 import { SelfModeratorBitField } from '#lib/structures/SelfModeratorBitField';
-import { KeyOfType } from '#lib/types';
 import { Colors } from '#lib/types/constants/Constants';
 import { Events } from '#lib/types/Enums';
+import { KeyOfType } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '#utils/constants';
 import { LLRCData } from '#utils/LongLivingReactionCollector';

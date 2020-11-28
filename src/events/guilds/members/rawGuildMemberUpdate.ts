@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import { CLIENT_ID } from '#root/config';
 import { api } from '#utils/Models/Api';
 import { floatPromise } from '#utils/util';

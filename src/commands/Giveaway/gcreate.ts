@@ -1,6 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types';
 import { Schedules } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { TextChannel } from 'discord.js';

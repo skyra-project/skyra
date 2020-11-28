@@ -1,4 +1,4 @@
-import { RGB } from '#lib/structures/color';
+import { RGB } from '#lib/structures/color/index';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { hexConcat, luminance, parse } from '#utils/Color';

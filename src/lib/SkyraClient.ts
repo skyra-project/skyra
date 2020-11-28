@@ -30,8 +30,8 @@ import './setup/Canvas';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
-import { QueueClient } from '#lib/audio';
-import { GuildSettings, SettingsManager } from '#lib/database';
+import { QueueClient } from '#lib/audio/index';
+import { GuildSettings, SettingsManager } from '#lib/database/index';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 
 export class SkyraClient extends KlasaClient {

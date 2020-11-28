@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import { Events, PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID, PREFIX } from '#root/config';

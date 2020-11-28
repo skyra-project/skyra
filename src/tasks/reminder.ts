@@ -1,4 +1,4 @@
-import { PartialResponseValue, ResponseType } from '#lib/database';
+import { PartialResponseValue, ResponseType } from '#lib/database/index';
 import { resolveOnErrorCodes } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';

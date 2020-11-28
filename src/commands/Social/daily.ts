@@ -1,4 +1,4 @@
-import { ClientEntity, DbSet, UserEntity } from '#lib/database';
+import { ClientEntity, DbSet, UserEntity } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { Schedules } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { CdnUrls } from '#lib/types/Constants';
 import { YarnPkg } from '#lib/types/definitions/Yarnpkg';

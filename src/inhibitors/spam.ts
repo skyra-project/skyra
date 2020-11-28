@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';

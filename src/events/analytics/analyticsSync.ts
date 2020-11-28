@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { Events } from '#lib/types/Enums';
 import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import { AnalyticsEvent } from '#utils/Tracking/Analytics/structures/AnalyticsEvent';

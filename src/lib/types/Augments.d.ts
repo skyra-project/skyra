@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
-import type { SettingsManager } from '#lib/database';
+import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio/index';
+import type { SettingsManager } from '#lib/database/index';
 import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { InviteStore } from '#lib/structures/InviteStore';
 import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';

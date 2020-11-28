@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import { Events } from '#lib/types/Enums';
 import { isTextBasedChannel, resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';

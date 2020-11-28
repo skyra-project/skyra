@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 
 export const KeyNoext = FT<{ key: string }, string>('settingGatewayKeyNoext');
 export const ChooseKey = FT<{ keys: string }, string>('settingGatewayChooseKey');

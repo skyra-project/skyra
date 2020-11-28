@@ -1,4 +1,4 @@
-import { NP, Queue } from '#lib/audio';
+import { NP, Queue } from '#lib/audio/index';
 import { AudioEvent } from '#lib/structures/AudioEvent';
 import { OutgoingWebsocketAction } from '#lib/websocket/types';
 

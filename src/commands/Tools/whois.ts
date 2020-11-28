@@ -1,7 +1,7 @@
 import { SkyraEmbed } from '#lib/discord';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/constants/Constants';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Emojis, Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

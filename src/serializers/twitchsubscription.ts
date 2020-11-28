@@ -1,4 +1,4 @@
-import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializer, SerializerUpdateContext } from '#lib/database';
+import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializer, SerializerUpdateContext } from '#lib/database/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {

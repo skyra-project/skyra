@@ -1,7 +1,7 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types';
 import { Events, PermissionLevels } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { getImage } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';

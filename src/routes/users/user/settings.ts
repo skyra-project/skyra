@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { ApiRequest } from '#lib/structures/api/ApiRequest';
 import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import { Events } from '#lib/types/Enums';

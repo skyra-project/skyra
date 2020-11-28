@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Permissions } from 'discord.js';
 import { KlasaClient } from 'klasa';

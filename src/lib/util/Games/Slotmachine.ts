@@ -1,4 +1,4 @@
-import { DbSet, UserEntity } from '#lib/database';
+import { DbSet, UserEntity } from '#lib/database/index';
 import { CanvasColors } from '#lib/types/constants/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { socialFolder } from '#utils/constants';

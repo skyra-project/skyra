@@ -1,11 +1,11 @@
 // Copyright (c) 2018 BDISTIN. All rights reserved. MIT license.
 // Source: https://github.com/KlasaCommunityPlugins/tags
 
-import { CustomCommand, DbSet, GuildSettings } from '#lib/database';
+import { CustomCommand, DbSet, GuildSettings } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { parse as parseColour } from '#utils/Color';
 import { BrandingColors } from '#utils/constants';

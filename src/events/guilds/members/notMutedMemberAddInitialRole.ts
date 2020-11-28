@@ -1,4 +1,4 @@
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember } from 'discord.js';

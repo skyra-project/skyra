@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GuildSettings } from '#lib/database';
+import { GuildSettings } from '#lib/database/index';
 import type { ModerationManager, ModerationManagerUpdateData } from '#lib/structures/managers/ModerationManager';
-import type { AnyObject } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import type { AnyObject } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';
 import { Moderation, Time } from '#utils/constants';

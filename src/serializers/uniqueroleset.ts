@@ -1,4 +1,4 @@
-import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '#lib/database';
+import { Serializer, SerializerUpdateContext, UniqueRoleSet } from '#lib/database/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 

@@ -1,7 +1,7 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';

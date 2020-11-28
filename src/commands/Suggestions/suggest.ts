@@ -1,8 +1,8 @@
-import { DbSet, GuildSettings } from '#lib/database';
-import { isNullish } from '#lib/misc';
+import { DbSet, GuildSettings } from '#lib/database/index';
+import { isNullish } from '#lib/misc/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { WEBHOOK_FEEDBACK } from '#root/config';
 import { BrandingColors } from '#utils/constants';

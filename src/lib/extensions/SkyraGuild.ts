@@ -1,9 +1,9 @@
-import { Queue } from '#lib/audio';
-import { GuildEntity, SettingsCollectionCallback } from '#lib/database';
+import { Queue } from '#lib/audio/index';
+import { GuildEntity, SettingsCollectionCallback } from '#lib/database/index';
 import { ModerationManager } from '#lib/structures/managers/ModerationManager';
 import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
-import { CustomFunctionGet, CustomGet } from '#lib/types';
+import { CustomFunctionGet, CustomGet } from '#lib/types/index';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Guild, Structures } from 'discord.js';

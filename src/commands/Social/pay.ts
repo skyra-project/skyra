@@ -1,7 +1,7 @@
-import { DbSet, UserEntity } from '#lib/database';
+import { DbSet, UserEntity } from '#lib/database/index';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
-import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { User } from 'discord.js';
 import { CommandStore, Language } from 'klasa';

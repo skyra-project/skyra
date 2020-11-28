@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
-import { GuildEntity, GuildSettings } from '#lib/database';
+import { GuildEntity, GuildSettings } from '#lib/database/index';
 import { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import { Permissions, Structures, VoiceChannel } from 'discord.js';
 

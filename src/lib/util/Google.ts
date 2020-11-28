@@ -1,5 +1,5 @@
-import { CustomGet } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { CustomGet } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { Client } from 'discord.js';

@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const YarnDescription = T<string>('commandYarnDescription');

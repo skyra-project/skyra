@@ -1,8 +1,8 @@
-import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database';
-import { isNullish, Nullish } from '#lib/misc';
+import { GuildEntity, GuildSettings, ModerationEntity } from '#lib/database/index';
+import { isNullish, Nullish } from '#lib/misc/index';
 import { ModerationManagerCreateData } from '#lib/structures/managers/ModerationManager';
-import { KeyOfType } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { KeyOfType } from '#lib/types/index';
 import { ModerationAction } from '#lib/types/Languages';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';

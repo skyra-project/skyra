@@ -1,8 +1,8 @@
 import { DbSet, GuildSettings } from '#lib/database';
 import { SkyraEmbed } from '#lib/discord';
 import { HardPunishment, ModerationMonitor } from '#lib/structures/ModerationMonitor';
-import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/constants/Constants';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { floatPromise, getContent } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';

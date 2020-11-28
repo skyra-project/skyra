@@ -1,4 +1,4 @@
-import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database';
+import { DbSet, GuildSettings, NotificationsStreamsTwitchEventStatus } from '#lib/database/index';
 import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';

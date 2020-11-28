@@ -1,7 +1,7 @@
-import { ConfigurableKey, configurableKeys } from '#lib/database/settings';
-import { isNullish } from '#lib/misc';
+import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
+import { isNullish } from '#lib/misc/index';
 import { SkyraClient } from '#lib/SkyraClient';
-import { AnyObject } from '#lib/types';
+import { AnyObject } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';

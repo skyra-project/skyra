@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { isNullish, map, reverse } from '#lib/misc';
+import { isNullish, map, reverse } from '#lib/misc/index';
 import type { SkyraClient } from '#lib/SkyraClient';
 import { Events } from '#lib/types/Enums';
 import { Time } from '@sapphire/time-utilities';

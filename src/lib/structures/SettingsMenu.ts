@@ -1,6 +1,6 @@
-import { configurableGroups, isSchemaGroup, remove, SchemaGroup, SchemaKey, set } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import { configurableGroups, isSchemaGroup, remove, SchemaGroup, SchemaKey, set } from '#lib/database/index';
 import { Events } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors, Time, ZeroWidthSpace } from '#utils/constants';
 import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';

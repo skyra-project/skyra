@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const Announcement = FT<{ role: string }, string>('commandAnnouncement');

@@ -1,6 +1,6 @@
 import { MusicCommand } from '#lib/structures/MusicCommand';
-import { GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { requireMusicPlaying, requireSameVoiceChannel, requireSkyraInVoiceChannel, requireUserInVoiceChannel } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';

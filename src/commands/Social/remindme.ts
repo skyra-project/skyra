@@ -1,4 +1,4 @@
-import { DbSet, ScheduleEntity } from '#lib/database';
+import { DbSet, ScheduleEntity } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { Schedules } from '#lib/types/Enums';

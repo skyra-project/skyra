@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 
 export const FetchNoArguments = T<string>('musicManagerFetchNoArguments');
 export const FetchNoMatches = T<string>('musicManagerFetchNoMatches');

@@ -1,4 +1,4 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { Events } from '#lib/types/Enums';
 import { api } from '#utils/Models/Api';
 import { compareEmoji } from '#utils/util';

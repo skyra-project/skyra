@@ -1,4 +1,4 @@
-import { PartialResponseValue, ResponseType } from '#lib/database';
+import { PartialResponseValue, ResponseType } from '#lib/database/index';
 import { Events } from '#lib/types/Enums';
 import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';

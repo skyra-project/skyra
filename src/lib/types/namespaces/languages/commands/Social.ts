@@ -1,5 +1,5 @@
-import type { ScheduleEntity } from '#lib/database';
-import { FT, T } from '#lib/types';
+import type { ScheduleEntity } from '#lib/database/index';
+import { FT, T } from '#lib/types/index';
 import type { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import type { Role, User } from 'discord.js';
 

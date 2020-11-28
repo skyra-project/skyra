@@ -1,7 +1,7 @@
-import { DbSet, GuildSettings } from '#lib/database';
+import { DbSet, GuildSettings } from '#lib/database/index';
 import { HardPunishment, ModerationMonitor } from '#lib/structures/ModerationMonitor';
-import { GuildMessage } from '#lib/types';
 import { Colors } from '#lib/types/constants/Constants';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { floatPromise } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';

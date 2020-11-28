@@ -1,6 +1,6 @@
 import { FetchError } from '#lib/errors/FetchError';
-import { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
 import { Events } from '#lib/types/Enums';
+import { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS, VERSION } from '#root/config';
 import { fetch, FetchResultTypes } from '#utils/util';

@@ -1,4 +1,4 @@
-import { GuildSettings, PartialResponseValue, ResponseType } from '#lib/database';
+import { GuildSettings, PartialResponseValue, ResponseType } from '#lib/database/index';
 import { Moderation } from '#utils/constants';
 import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';
 import { Guild, User } from 'discord.js';

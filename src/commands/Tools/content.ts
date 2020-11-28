@@ -1,4 +1,4 @@
-import { Serializer } from '#lib/database';
+import { Serializer } from '#lib/database/index';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ZeroWidthSpace } from '#utils/constants';

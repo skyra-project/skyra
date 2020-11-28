@@ -1,9 +1,9 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
-import { GuildMessage } from '#lib/types';
 import { CdnUrls } from '#lib/types/Constants';
 import { OverwatchDataSet, OverwatchStatsTypeUnion, PlatformUnion, TopHero } from '#lib/types/definitions/Overwatch';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { OverwatchEmbedDataReturn } from '#lib/types/namespaces/languages/commands/GameIntegration';
 import { BrandingColors, Time } from '#utils/constants';

@@ -1,7 +1,7 @@
-import { GuildSettings } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import { GuildSettings } from '#lib/database/index';
 import { Colors } from '#lib/types/constants/Constants';
 import { Events } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';
 import { MessageLogsEnum } from '#utils/constants';

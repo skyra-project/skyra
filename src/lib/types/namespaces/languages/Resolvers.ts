@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 
 export const BoolFalseOptions = T<readonly string[]>('resolverBoolFalseOptions');
 export const BoolTrueOptions = T<readonly string[]>('resolverBoolTrueOptions');

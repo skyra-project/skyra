@@ -1,5 +1,5 @@
 import { AudioEvent } from '#lib/structures/AudioEvent';
-import { MessageAcknowledgeable } from '#lib/types';
+import { MessageAcknowledgeable } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { pickRandom } from '#utils/util';
 

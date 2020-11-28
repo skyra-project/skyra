@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 
 export const ChannelNotReadable = T<string>('channelNotReadable');
 export const CommandmessageMissing = T<string>('commandmessageMissing');

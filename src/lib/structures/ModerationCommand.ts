@@ -1,6 +1,6 @@
-import { GuildSettings, ModerationEntity } from '#lib/database';
-import { GuildMessage } from '#lib/types';
+import { GuildSettings, ModerationEntity } from '#lib/database/index';
 import { PermissionLevels } from '#lib/types/Enums';
+import { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';
 import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions';

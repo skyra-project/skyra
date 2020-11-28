@@ -1,4 +1,4 @@
-import { FT, T } from '#lib/types';
+import { FT, T } from '#lib/types/index';
 
 export const AutoRoleInvalid = T<string>('serializerAutoRoleInvalid');
 export const CommandAutoDeleteInvalid = T<string>('serializerCommandAutoDeleteInvalid');

@@ -1,6 +1,6 @@
-import { DbSet } from '#lib/database';
+import { DbSet } from '#lib/database/index';
 import { SkyraCommand } from '#lib/structures/SkyraCommand';
-import type { GuildMessage } from '#lib/types';
+import type { GuildMessage } from '#lib/types/index';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { DEV } from '#root/config';
 import { BrandingColors } from '#utils/constants';

@@ -9,4 +9,6 @@ export * from './structures/collections/GuildSettingsCollection';
 export * from './structures/PermissionNodeManager';
 export * from './structures/Serializer';
 export * from './structures/SerializerStore';
+export * from './structures/Task';
+export * from './structures/TaskStore';
 export * from './Utils';

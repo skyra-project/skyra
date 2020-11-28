@@ -136,6 +136,7 @@ declare module 'klasa' {
 
 	interface PieceDefaults {
 		serializers?: AliasPieceOptions;
+		tasks?: PieceOptions;
 	}
 
 	interface Argument {

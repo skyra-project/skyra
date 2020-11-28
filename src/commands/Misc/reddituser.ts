@@ -5,12 +5,13 @@ import { GuildMessage } from '@lib/types';
 import { Reddit } from '@lib/types/definitions/Reddit';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { cutText, roundNumber } from '@sapphire/utilities';
+import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { BrandingColors } from '@utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { Collection, MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { Language, Timestamp } from 'klasa';
+import { Language } from 'klasa';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['redditor'],

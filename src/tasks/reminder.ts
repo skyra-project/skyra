@@ -1,7 +1,8 @@
 import { PartialResponseValue, ResponseType } from '@lib/database';
+import { Timestamp } from '@sapphire/time-utilities';
 import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Task, Timestamp } from 'klasa';
+import { Task } from 'klasa';
 
 export default class extends Task {
 	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
@@ -12,7 +13,7 @@ export default class extends Task {
 
 		if (user) {
 			await resolveOnErrorCodes(
-				user.send(`⏲ Hey! You asked me on ${this.kTimestamp.displayUTC()} to remind you:\n*${data.content}*`),
+				user.send(`⏲ Hey! You asked me on ${this.kTimestamp.displayUTC(Date.now())} to remind you:\n*${data.content}*`),
 				RESTJSONErrorCodes.CannotSendMessagesToThisUser
 			);
 		}

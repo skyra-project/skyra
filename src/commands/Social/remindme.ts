@@ -4,11 +4,12 @@ import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
 import { Schedules } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk, cutText } from '@sapphire/utilities';
+import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { BrandingColors, Time } from '@utils/constants';
 import { pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Timestamp } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
 const enum Actions {
 	List = 'list',

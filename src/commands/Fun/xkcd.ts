@@ -4,7 +4,8 @@ import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { fetch, FetchResultTypes } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language, Timestamp } from 'klasa';
+import { KlasaMessage, Language } from 'klasa';
+import { Timestamp } from '@sapphire/time-utilities';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,

@@ -3,8 +3,9 @@ import { GuildMessage } from '@lib/types';
 import { PermissionLevels } from '@lib/types/Enums';
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import type { KeyOfType } from '@lib/types/Utils';
-import { Command, CommandOptions, CommandStore, Duration, Language } from 'klasa';
+import { Command, CommandOptions, CommandStore, Language } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { Duration } from '@sapphire/time-utilities';
 
 export enum AKeys {
 	Enable,

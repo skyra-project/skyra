@@ -1,6 +1,7 @@
 import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { isNumber } from '@sapphire/utilities';
-import { Argument, Duration, KlasaMessage, Possible } from 'klasa';
+import { Duration } from '@sapphire/time-utilities';
+import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {
 	public async run(arg: string, possible: Possible, message: KlasaMessage) {

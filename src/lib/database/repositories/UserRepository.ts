@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility, @typescript-eslint/unified-signatures */
+import { UserCooldownEntity } from '#lib/database/entities/UserCooldownEntity';
+import { UserGameIntegrationEntity } from '#lib/database/entities/UserGameIntegrationEntity';
+import { UserProfileEntity } from '#lib/database/entities/UserProfileEntity';
 import Ccollection from '@discordjs/collection';
 import { AsyncQueue } from '@klasa/async-queue';
-import { UserCooldownEntity } from '@lib/database/entities/UserCooldownEntity';
-import { UserGameIntegrationEntity } from '@lib/database/entities/UserGameIntegrationEntity';
-import { UserProfileEntity } from '@lib/database/entities/UserProfileEntity';
 import { TimerManager } from '@sapphire/time-utilities';
 import { User } from 'discord.js';
 import { EntityRepository, FindOneOptions, Repository } from 'typeorm';

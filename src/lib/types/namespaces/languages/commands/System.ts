@@ -1,6 +1,6 @@
-import { FT, T } from '@lib/types';
-import { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { StatsGeneral, StatsUptime, StatsUsage } from '#root/commands/System/stats';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const Disable = FT<{ type: string; name: string }, string>('commandDisable');
 export const DisableDescription = T<string>('commandDisableDescription');

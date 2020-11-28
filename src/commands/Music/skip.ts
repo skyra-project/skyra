@@ -1,10 +1,10 @@
-import { Queue } from '@lib/audio';
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { GuildMessage } from '@lib/types/Discord';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Queue } from '#lib/audio';
+import { MusicCommand } from '#lib/structures/MusicCommand';
+import { GuildMessage } from '#lib/types/Discord';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { requireSameVoiceChannel, requireSongPresent } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
-import { requireSameVoiceChannel, requireSongPresent } from '@utils/Music/Decorators';
 import { VoiceChannel } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({

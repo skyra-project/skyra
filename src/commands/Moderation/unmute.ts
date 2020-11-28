@@ -1,10 +1,10 @@
-import { GuildSettings } from '@lib/database';
-import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { getImage } from '#utils/util';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { getImage } from '@utils/util';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['um'],

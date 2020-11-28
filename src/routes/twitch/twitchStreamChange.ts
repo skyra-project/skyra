@@ -1,10 +1,10 @@
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { Events } from '@lib/types/Enums';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { Events } from '#lib/types/Enums';
+import { Mime } from '#utils/constants';
+import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import { isObject } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Mime } from '@utils/constants';
-import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'twitch/stream_change/:id' })

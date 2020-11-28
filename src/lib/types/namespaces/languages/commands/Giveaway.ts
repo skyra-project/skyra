@@ -1,5 +1,5 @@
-import { T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const GiveawayDescription = T<string>('commandGiveawayDescription');
 export const GiveawayExtended = T<LanguageHelpDisplayOptions>('commandGiveawayExtended');

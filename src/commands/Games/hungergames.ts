@@ -1,16 +1,16 @@
-import { GuildSettings } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID } from '@root/config';
+import { GuildSettings } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '#root/config';
+import { Time } from '#utils/constants';
+import { HungerGamesUsage } from '#utils/Games/HungerGamesUsage';
+import { LLRCData, LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { sleep } from '#utils/sleep';
+import { cleanMentions, floatPromise } from '#utils/util';
 import { chunk, isFunction } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Time } from '@utils/constants';
-import { HungerGamesUsage } from '@utils/Games/HungerGamesUsage';
-import { LLRCData, LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { sleep } from '@utils/sleep';
-import { cleanMentions, floatPromise } from '@utils/util';
 import { KlasaMessage, Language } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({

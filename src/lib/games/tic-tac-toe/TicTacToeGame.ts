@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { Time } from '@utils/constants';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Time } from '#utils/constants';
 import type { Message } from 'discord.js';
 import { BaseController } from '../base/BaseController';
 import { GameStatus } from '../base/BaseGame';

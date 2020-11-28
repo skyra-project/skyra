@@ -1,14 +1,14 @@
+import { DbSet, ModerationEntity } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors, Moderation } from '#utils/constants';
+import { pickRandom } from '#utils/util';
 import Collection from '@discordjs/collection';
-import { DbSet, ModerationEntity } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, requiredPermissions } from '@skyra/decorators';
-import { BrandingColors, Moderation } from '@utils/constants';
-import { pickRandom } from '@utils/util';
 import { MessageEmbed, User } from 'discord.js';
 
 const COLORS = [0x80f31f, 0xa5de0b, 0xc7c101, 0xe39e03, 0xf6780f, 0xfe5326, 0xfb3244];

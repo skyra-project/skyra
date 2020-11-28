@@ -1,9 +1,9 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TOKENS } from '@root/config';
-import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '@utils/Google';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { DbSet } from '#lib/database';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { TOKENS } from '#root/config';
+import { GoogleResponseCodes, handleNotOK, queryGoogleMapsAPI } from '#utils/Google';
+import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed } from 'discord.js';
 import { CommandStore, KlasaMessage, Language } from 'klasa';
 

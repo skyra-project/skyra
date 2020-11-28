@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Cell } from './Board';
 import { Game } from './Game';
 

@@ -1,8 +1,8 @@
-import { GuildSettings, PermissionNodeAction } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings, PermissionNodeAction } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { GuildMember, Role } from 'discord.js';
 import { Command } from 'klasa';

@@ -1,9 +1,9 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Emojis } from '#utils/constants';
+import { Slotmachine } from '#utils/Games/Slotmachine';
 import { ApplyOptions } from '@skyra/decorators';
-import { Emojis } from '@utils/constants';
-import { Slotmachine } from '@utils/Games/Slotmachine';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({

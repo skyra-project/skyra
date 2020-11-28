@@ -1,9 +1,9 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { GuildMessage } from '@lib/types/Discord';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { MusicCommand } from '#lib/structures/MusicCommand';
+import { GuildMessage } from '#lib/types/Discord';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
-import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.RemoveDescription),

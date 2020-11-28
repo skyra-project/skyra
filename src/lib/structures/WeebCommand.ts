@@ -1,9 +1,9 @@
-import { FetchError } from '@lib/errors/FetchError';
-import { CustomFunctionGet, CustomGet, GuildMessage } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TOKENS, VERSION } from '@root/config';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { FetchError } from '#lib/errors/FetchError';
+import { CustomFunctionGet, CustomGet, GuildMessage } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { TOKENS, VERSION } from '#root/config';
+import { fetch, FetchResultTypes } from '#utils/util';
 import { MessageEmbed, User } from 'discord.js';
 import { CommandOptions, CommandStore, KlasaMessage, Language } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';

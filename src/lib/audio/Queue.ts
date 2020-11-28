@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
-import { isNullish, map, reverse } from '@lib/misc';
-import type { SkyraClient } from '@lib/SkyraClient';
-import { Events } from '@lib/types/Enums';
+import { isNullish, map, reverse } from '#lib/misc';
+import type { SkyraClient } from '#lib/SkyraClient';
+import { Events } from '#lib/types/Enums';
 import { Time } from '@sapphire/time-utilities';
 import type { Player, Track, TrackInfo } from '@skyra/audio';
 import type { Guild, TextChannel, VoiceChannel } from 'discord.js';

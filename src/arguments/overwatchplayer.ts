@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {

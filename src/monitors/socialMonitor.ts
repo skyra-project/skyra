@@ -1,8 +1,8 @@
-import { DbSet, GuildSettings, RolesAuto } from '@lib/database';
-import { GuildMessage } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID } from '@root/config';
+import { DbSet, GuildSettings, RolesAuto } from '#lib/database';
+import { GuildMessage } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '#root/config';
 import { GuildMember, Permissions, Role } from 'discord.js';
 import { Monitor, RateLimitManager } from 'klasa';
 

@@ -1,7 +1,7 @@
+import { CLIENT_ID, ENABLE_INFLUX } from '#root/config';
+import { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
+import { enumerable } from '#utils/util';
 import { Point } from '@influxdata/influxdb-client';
-import { CLIENT_ID, ENABLE_INFLUX } from '@root/config';
-import { AnalyticsSchema } from '@utils/Tracking/Analytics/AnalyticsSchema';
-import { enumerable } from '@utils/util';
 import { Event } from 'klasa';
 
 export abstract class AnalyticsEvent extends Event {

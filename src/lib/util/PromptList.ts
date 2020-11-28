@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 

@@ -1,3 +1,4 @@
+import { ENABLE_LOCAL_POKEDEX } from '#root/config';
 import {
 	Query,
 	QueryGetAbilityDetailsByFuzzyArgs,
@@ -7,7 +8,6 @@ import {
 	QueryGetPokemonLearnsetByFuzzyArgs,
 	QueryGetTypeMatchupArgs
 } from '@favware/graphql-pokemon';
-import { ENABLE_LOCAL_POKEDEX } from '@root/config';
 import { Mime } from './constants';
 import { fetch, FetchMethods, FetchResultTypes, gql } from './util';
 

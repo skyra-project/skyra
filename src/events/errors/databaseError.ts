@@ -1,6 +1,6 @@
-import { Colors } from '@lib/types/constants/Constants';
+import { Colors } from '#lib/types/constants/Constants';
+import { rootFolder } from '#utils/constants';
 import { codeBlock, inlineCodeBlock } from '@sapphire/utilities';
-import { rootFolder } from '@utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { Command, Event, KlasaMessage } from 'klasa';
 import { QueryFailedError } from 'typeorm';

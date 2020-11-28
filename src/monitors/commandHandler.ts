@@ -1,8 +1,8 @@
-import { GuildSettings } from '@lib/database';
-import { Events, PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID, PREFIX } from '@root/config';
-import { floatPromise } from '@utils/util';
+import { GuildSettings } from '#lib/database';
+import { Events, PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID, PREFIX } from '#root/config';
+import { floatPromise } from '#utils/util';
 import { KlasaMessage, Monitor, MonitorStore, Stopwatch } from 'klasa';
 
 export default class extends Monitor {

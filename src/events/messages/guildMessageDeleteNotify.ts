@@ -1,12 +1,12 @@
-import { GuildSettings } from '@lib/database';
-import { GuildMessage } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { GuildMessage } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { MessageLogsEnum } from '#utils/constants';
+import { getContent, getImage } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageLogsEnum } from '@utils/constants';
-import { getContent, getImage } from '@utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 

@@ -1,8 +1,8 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Mime } from '#utils/constants';
+import { fetch } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Mime } from '@utils/constants';
-import { fetch } from '@utils/util';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({

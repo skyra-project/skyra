@@ -1,4 +1,4 @@
-import { ZeroWidthSpace } from '@utils/constants';
+import { ZeroWidthSpace } from '#utils/constants';
 import { MessageEmbed } from 'discord.js';
 
 export class SkyraEmbed extends MessageEmbed {

@@ -1,10 +1,10 @@
-import { SkyraEmbed } from '@lib/discord';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraEmbed } from '#lib/discord';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Emojis, Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { Emojis, Time } from '@utils/constants';
 import { GuildMember, Permissions, PermissionString, Role, User } from 'discord.js';
 import { Language } from 'klasa';
 

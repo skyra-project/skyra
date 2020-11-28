@@ -1,7 +1,7 @@
-import { GuildSettings } from '@lib/database';
-import { CLIENT_ID } from '@root/config';
-import { api } from '@utils/Models/Api';
-import { floatPromise } from '@utils/util';
+import { GuildSettings } from '#lib/database';
+import { CLIENT_ID } from '#root/config';
+import { api } from '#utils/Models/Api';
+import { floatPromise } from '#utils/util';
 import {
 	AuditLogEvent,
 	GatewayDispatchEvents,

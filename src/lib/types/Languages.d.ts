@@ -1,9 +1,9 @@
-import type { ScheduleEntity } from '@lib/database';
-import type { EightBallLanguage } from '@root/commands/Fun/8ball';
-import type { HungerGamesGame } from '@root/commands/Games/hungergames';
-import type { StatsGeneral, StatsUptime, StatsUsage } from '@root/commands/System/stats';
-import type { Moderation } from '@utils/constants';
-import type { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import type { ScheduleEntity } from '#lib/database';
+import type { EightBallLanguage } from '#root/commands/Fun/8ball';
+import type { HungerGamesGame } from '#root/commands/Games/hungergames';
+import type { StatsGeneral, StatsUptime, StatsUsage } from '#root/commands/System/stats';
+import type { Moderation } from '#utils/constants';
+import type { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import type { Guild, GuildMember, Role, User } from 'discord.js';
 import type { LevelTitles, ProfileTitles } from './namespaces/languages/commands/Social';
 

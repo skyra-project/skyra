@@ -1,15 +1,15 @@
-import { DbSet } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { Tmdb } from '@lib/types/definitions/Tmdb';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TOKENS } from '@root/config';
+import { DbSet } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { Tmdb } from '#lib/types/definitions/Tmdb';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { TOKENS } from '#root/config';
+import { BrandingColors } from '#utils/constants';
+import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { cutText } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { fetch, FetchResultTypes, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 

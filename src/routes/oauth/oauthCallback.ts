@@ -1,10 +1,10 @@
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { Events } from '@lib/types/Enums';
-import { CLIENT_ID, CLIENT_SECRET } from '@root/config';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { Events } from '#lib/types/Enums';
+import { CLIENT_ID, CLIENT_SECRET } from '#root/config';
+import { Mime } from '#utils/constants';
+import { ratelimit } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Mime } from '@utils/constants';
-import { ratelimit } from '@utils/util';
 import { RESTPostOAuth2AccessTokenResult } from 'discord-api-types/v6';
 import { Route, RouteOptions, Util } from 'klasa-dashboard-hooks';
 import fetch from 'node-fetch';

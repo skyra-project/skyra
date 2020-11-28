@@ -1,10 +1,10 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { PermissionLevels } from '@lib/types/Enums';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { PermissionLevels } from '#lib/types/Enums';
+import { Emojis, rootFolder } from '#utils/constants';
+import { exec } from '#utils/exec';
+import { sleep } from '#utils/sleep';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { Emojis, rootFolder } from '@utils/constants';
-import { exec } from '@utils/exec';
-import { sleep } from '@utils/sleep';
 import { rm } from 'fs/promises';
 import { KlasaMessage } from 'klasa';
 import { resolve } from 'path';

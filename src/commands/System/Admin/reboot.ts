@@ -1,7 +1,7 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { Events, PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ENABLE_INFLUX } from '@root/config';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { Events, PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ENABLE_INFLUX } from '#root/config';
 import { CommandStore, KlasaMessage } from 'klasa';
 
 export default class extends SkyraCommand {

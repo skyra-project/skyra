@@ -1,4 +1,4 @@
-import { Time } from '@utils/constants';
+import { Time } from '#utils/constants';
 import { Client, DMChannel, MessageEmbed, MessageReaction, NewsChannel, Permissions, TextChannel, User } from 'discord.js';
 import { KlasaMessage, ReactionHandler, RichDisplay, RichDisplayRunOptions } from 'klasa';
 

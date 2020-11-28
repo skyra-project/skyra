@@ -1,4 +1,4 @@
-import { Mime } from '@utils/constants';
+import { Mime } from '#utils/constants';
 import { ServerResponse, STATUS_CODES } from 'http';
 import { CookieStore } from './CookieStore';
 

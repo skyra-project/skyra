@@ -1,5 +1,5 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Finalizer, Inhibitor, InhibitorStore, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {

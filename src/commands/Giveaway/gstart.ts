@@ -1,8 +1,8 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Time } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { Time } from '@utils/constants';
 import { TextChannel } from 'discord.js';
 
 const kWinnersArgRegex = /^([1-9]|\d\d+)w$/i;

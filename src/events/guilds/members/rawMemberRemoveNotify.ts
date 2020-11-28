@@ -1,10 +1,10 @@
-import { GuildSettings } from '@lib/database';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { MessageLogsEnum, Moderation } from '#utils/constants';
+import { getDisplayAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageLogsEnum, Moderation } from '@utils/constants';
-import { getDisplayAvatar } from '@utils/util';
 import { GatewayGuildMemberRemoveDispatch } from 'discord-api-types/v6';
 import { Guild, GuildMember, MessageEmbed } from 'discord.js';
 import { Event, EventOptions } from 'klasa';

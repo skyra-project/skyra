@@ -1,10 +1,10 @@
-import { Queue } from '@lib/audio';
-import { GuildEntity, SettingsCollectionCallback } from '@lib/database';
-import { ModerationManager } from '@lib/structures/managers/ModerationManager';
-import { StarboardManager } from '@lib/structures/managers/StarboardManager';
-import { StickyRoleManager } from '@lib/structures/managers/StickyRoleManager';
-import { CustomFunctionGet, CustomGet } from '@lib/types';
-import { GuildSecurity } from '@utils/Security/GuildSecurity';
+import { Queue } from '#lib/audio';
+import { GuildEntity, SettingsCollectionCallback } from '#lib/database';
+import { ModerationManager } from '#lib/structures/managers/ModerationManager';
+import { StarboardManager } from '#lib/structures/managers/StarboardManager';
+import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
+import { CustomFunctionGet, CustomGet } from '#lib/types';
+import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Guild, Structures } from 'discord.js';
 import type { Language } from 'klasa';

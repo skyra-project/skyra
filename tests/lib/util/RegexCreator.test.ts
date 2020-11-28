@@ -6,7 +6,7 @@ import {
 	processWordPattern,
 	processWordPatternsWithGroups,
 	WordBoundary
-} from '@utils/Security/RegexCreator';
+} from '#utils/Security/RegexCreator';
 
 describe('RegexCreator', () => {
 	describe('processLetter', () => {

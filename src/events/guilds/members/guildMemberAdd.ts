@@ -1,9 +1,9 @@
-import { GuildSettings } from '@lib/database';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { MessageLogsEnum } from '@utils/constants';
-import { floatPromise } from '@utils/util';
+import { GuildSettings } from '#lib/database';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { MessageLogsEnum } from '#utils/constants';
+import { floatPromise } from '#utils/util';
 import { GuildMember, MessageEmbed, Permissions } from 'discord.js';
 import { Event } from 'klasa';
 

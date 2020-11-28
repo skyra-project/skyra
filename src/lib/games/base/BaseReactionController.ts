@@ -1,5 +1,5 @@
-import { LLRCData } from '@utils/LongLivingReactionCollector';
-import { cast, resolveEmoji } from '@utils/util';
+import { LLRCData } from '#utils/LongLivingReactionCollector';
+import { cast, resolveEmoji } from '#utils/util';
 import { BaseController } from './BaseController';
 import { BaseReactionGame } from './BaseReactionGame';
 

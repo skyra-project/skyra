@@ -1,7 +1,7 @@
-import { GuildSettings } from '@lib/database';
-import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { LLRCData } from '#utils/LongLivingReactionCollector';
 import { ApplyOptions } from '@skyra/decorators';
-import { LLRCData } from '@utils/LongLivingReactionCollector';
 import { TextChannel } from 'discord.js';
 import { Event, EventOptions } from 'klasa';
 

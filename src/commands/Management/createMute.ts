@@ -1,11 +1,11 @@
-import { GuildSettings } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Emojis } from '#utils/constants';
+import { resolveEmoji } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { Emojis } from '@utils/constants';
-import { resolveEmoji } from '@utils/util';
 import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({

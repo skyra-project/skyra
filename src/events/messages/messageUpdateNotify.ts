@@ -1,12 +1,12 @@
-import { GuildSettings } from '@lib/database';
-import { SkyraEmbed } from '@lib/discord';
-import { GuildMessage } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { SkyraEmbed } from '#lib/discord';
+import { GuildMessage } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { MessageLogsEnum } from '#utils/constants';
+import { escapeMarkdown } from '#utils/External/escapeMarkdown';
 import { ApplyOptions } from '@skyra/decorators';
-import { MessageLogsEnum } from '@utils/constants';
-import { escapeMarkdown } from '@utils/External/escapeMarkdown';
 import { diffWordsWithSpace } from 'diff';
 import { Event, EventOptions, KlasaMessage } from 'klasa';
 

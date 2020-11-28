@@ -1,8 +1,8 @@
-import { PartialResponseValue, ResponseType } from '@lib/database';
-import { Events } from '@lib/types/Enums';
-import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '@root/config';
-import { Mime } from '@utils/constants';
-import { fetch, FetchResultTypes } from '@utils/util';
+import { PartialResponseValue, ResponseType } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { CLIENT_ID, DEV, ENABLE_INFLUX, TOKENS } from '#root/config';
+import { Mime } from '#utils/constants';
+import { fetch, FetchResultTypes } from '#utils/util';
 import { blueBright, green, red } from 'colorette';
 import { Task } from 'klasa';
 

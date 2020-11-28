@@ -1,10 +1,10 @@
-import { GuildSettings } from '@lib/database';
-import { filter, map } from '@lib/misc';
-import { CustomGet } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { MessageLogsEnum } from '@utils/constants';
+import { GuildSettings } from '#lib/database';
+import { filter, map } from '#lib/misc';
+import { CustomGet } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { MessageLogsEnum } from '#utils/constants';
 import { Guild, MessageEmbed, User } from 'discord.js';
 import { Event, Language } from 'klasa';
 

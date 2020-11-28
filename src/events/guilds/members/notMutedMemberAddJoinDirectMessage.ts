@@ -1,7 +1,7 @@
-import { GuildSettings } from '@lib/database';
-import { Events } from '@lib/types/Enums';
+import { GuildSettings } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { resolveOnErrorCodes } from '@utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Guild, GuildMember, User } from 'discord.js';
 import { Event, EventOptions, Language } from 'klasa';

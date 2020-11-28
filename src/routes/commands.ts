@@ -1,8 +1,8 @@
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { ratelimit } from '#utils/util';
 import { isFunction, isPrimitive } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { ratelimit } from '@utils/util';
 import { Route, RouteOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<RouteOptions>({ route: 'commands' })

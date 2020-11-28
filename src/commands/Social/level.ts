@@ -1,9 +1,9 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { cdnFolder } from '#utils/constants';
+import { fetchAvatar } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { cdnFolder } from '@utils/constants';
-import { fetchAvatar } from '@utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import { User } from 'discord.js';

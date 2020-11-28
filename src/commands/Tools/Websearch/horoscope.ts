@@ -1,11 +1,11 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { Emojis } from '#utils/constants';
+import { fetchSaelem, getHoroscope } from '#utils/Saelem';
+import { createPick } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Days, Sunsigns } from '@skyra/saelem';
-import { Emojis } from '@utils/constants';
-import { fetchSaelem, getHoroscope } from '@utils/Saelem';
-import { createPick } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage, Language } from 'klasa';
 

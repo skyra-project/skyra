@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { validateChannelAccess } from '@utils/util';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { validateChannelAccess } from '#utils/util';
 import { GuildChannel } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 

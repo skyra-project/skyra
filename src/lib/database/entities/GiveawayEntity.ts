@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/explicit-member-accessibility */
-import { GiveawayManager } from '@lib/structures/managers/GiveawayManager';
-import { Colors } from '@lib/types/constants/Constants';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { CLIENT_ID } from '@root/config';
-import { Time } from '@utils/constants';
-import { api } from '@utils/Models/Api';
-import { fetchReactionUsers, resolveEmoji } from '@utils/util';
+import { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
+import { Colors } from '#lib/types/constants/Constants';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { CLIENT_ID } from '#root/config';
+import { Time } from '#utils/constants';
+import { api } from '#utils/Models/Api';
+import { fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';

@@ -1,5 +1,5 @@
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Collection } from '@discordjs/collection';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { Message } from 'discord.js';
 import { levenshtein } from './External/levenshtein';

@@ -1,9 +1,9 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { exec } from '#utils/exec';
+import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
-import { exec } from '@utils/exec';
-import { fetch, FetchMethods, FetchResultTypes } from '@utils/util';
 import { MessageAttachment } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

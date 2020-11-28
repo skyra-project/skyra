@@ -1,10 +1,10 @@
-import { DbSet } from '@lib/database';
-import { SkyraEmbed } from '@lib/discord';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraEmbed } from '#lib/discord';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { cast } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { cast } from '@utils/util';
 import { Role } from 'discord.js';
 import { CommandOptions } from 'klasa';
 

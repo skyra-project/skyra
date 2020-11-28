@@ -1,5 +1,5 @@
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { codeBlock } from '@sapphire/utilities';
 import { KlasaMessage } from 'klasa';
 import { fetch, FetchMethods, FetchResultTypes } from './util';

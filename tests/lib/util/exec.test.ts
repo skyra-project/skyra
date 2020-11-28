@@ -1,4 +1,4 @@
-import { exec } from '@utils/exec';
+import { exec } from '#utils/exec';
 import { platform } from 'os';
 
 const windows = platform() === 'win32';

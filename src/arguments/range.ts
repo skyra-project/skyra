@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { parseRange } from '@utils/util';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { parseRange } from '#utils/util';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {

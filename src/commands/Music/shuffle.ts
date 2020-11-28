@@ -1,8 +1,8 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { GuildMessage } from '@lib/types/Discord';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { MusicCommand } from '#lib/structures/MusicCommand';
+import { GuildMessage } from '#lib/types/Discord';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { requireDj, requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
-import { requireDj, requireQueueNotEmpty } from '@utils/Music/Decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.ShuffleDescription)

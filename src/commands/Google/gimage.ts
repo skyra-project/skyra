@@ -1,13 +1,13 @@
-import { DbSet } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors } from '#utils/constants';
+import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '#utils/Google';
+import { IMAGE_EXTENSION, pickRandom } from '#utils/util';
 import { parseURL } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { CustomSearchType, GoogleCSEImageData, GoogleResponseCodes, handleNotOK, queryGoogleCustomSearchAPI } from '@utils/Google';
-import { IMAGE_EXTENSION, pickRandom } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommandOptions>({

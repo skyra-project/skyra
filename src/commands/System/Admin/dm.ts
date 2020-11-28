@@ -1,6 +1,6 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageOptions, User } from 'discord.js';
 import { CommandStore, KlasaMessage } from 'klasa';
 

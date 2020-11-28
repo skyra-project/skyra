@@ -1,9 +1,9 @@
-import { GuildSettings } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { announcementCheck } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
-import { announcementCheck } from '@utils/util';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 15,

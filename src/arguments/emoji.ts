@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { resolveEmoji } from '@utils/util';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { resolveEmoji } from '#utils/util';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {

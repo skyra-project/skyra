@@ -1,9 +1,9 @@
-import { GuildSettings } from '@lib/database';
-import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
-import { GuildMessage } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { getContent } from '@utils/util';
+import { GuildSettings } from '#lib/database';
+import { HardPunishment, ModerationMonitor } from '#lib/structures/ModerationMonitor';
+import { GuildMessage } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { getContent } from '#utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
 import { Language } from 'klasa';
 

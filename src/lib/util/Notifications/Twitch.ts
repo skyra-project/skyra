@@ -4,10 +4,10 @@ import {
 	TwitchHelixResponse,
 	TwitchHelixUserFollowsResult,
 	TwitchHelixUsersSearchResult
-} from '@lib/types/definitions/Twitch';
-import { TOKENS, TWITCH_CALLBACK } from '@root/config';
-import { Mime, Time } from '@utils/constants';
-import { enumerable, fetch, FetchMethods, FetchResultTypes } from '@utils/util';
+} from '#lib/types/definitions/Twitch';
+import { TOKENS, TWITCH_CALLBACK } from '#root/config';
+import { Mime, Time } from '#utils/constants';
+import { enumerable, fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { createHmac } from 'crypto';
 import { RateLimitManager } from 'klasa';
 

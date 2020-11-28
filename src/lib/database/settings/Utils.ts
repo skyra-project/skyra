@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { GuildEntity } from '../entities/GuildEntity';
 import type { ISchemaValue } from './base/ISchemaValue';
 import type { SchemaGroup } from './schema/SchemaGroup';

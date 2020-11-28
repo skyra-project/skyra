@@ -1,15 +1,15 @@
-import { Queue } from '@lib/audio';
-import { DbSet } from '@lib/database';
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types/Discord';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Queue } from '#lib/audio';
+import { DbSet } from '#lib/database';
+import { MusicCommand } from '#lib/structures/MusicCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types/Discord';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors, ZeroWidthSpace } from '#utils/constants';
+import { requireQueueNotEmpty } from '#utils/Music/Decorators';
+import { pickRandom, showSeconds } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
 import { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors, ZeroWidthSpace } from '@utils/constants';
-import { requireQueueNotEmpty } from '@utils/Music/Decorators';
-import { pickRandom, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 import { Language } from 'klasa';
 

@@ -1,10 +1,10 @@
-import { QueueEntry } from '@lib/audio';
-import { map, prependIfNotNull, take } from '@lib/misc';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types/Discord';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { QueueEntry } from '#lib/audio';
+import { map, prependIfNotNull, take } from '#lib/misc';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types/Discord';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
-import { requireQueueNotEmpty } from '@utils/Music/Decorators';
 import { serialize } from 'binarytf';
 
 export const maximumExportQueueSize = 100;

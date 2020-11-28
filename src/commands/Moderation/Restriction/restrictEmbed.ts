@@ -1,12 +1,12 @@
-import { GuildSettings } from '@lib/database';
-import { ModerationCommand, ModerationCommandOptions } from '@lib/structures/ModerationCommand';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildSettings } from '#lib/database';
+import { ModerationCommand, ModerationCommandOptions } from '#lib/structures/ModerationCommand';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { ModerationSetupRestriction } from '#utils/Security/ModerationActions';
+import { getImage } from '#utils/util';
 import { ArgumentTypes } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { ModerationSetupRestriction } from '@utils/Security/ModerationActions';
-import { getImage } from '@utils/util';
 import { Role } from 'discord.js';
 
 @ApplyOptions<ModerationCommandOptions>({

@@ -1,7 +1,7 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { resolveEmoji } from '#utils/util';
 import { Awaited } from '@sapphire/utilities';
-import { resolveEmoji } from '@utils/util';
 
 export default class UserSerializer extends Serializer<string> {
 	public parse(value: string, context: SerializerUpdateContext) {

@@ -1,9 +1,9 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { CanvasColors } from '@lib/types/constants/Constants';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { CanvasColors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { socialFolder } from '#utils/constants';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { socialFolder } from '@utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { remove as removeConfusables } from 'confusables';

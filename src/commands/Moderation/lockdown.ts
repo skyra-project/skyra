@@ -1,9 +1,9 @@
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { PreciseTimeout } from '#utils/PreciseTimeout';
 import { ApplyOptions } from '@skyra/decorators';
-import { PreciseTimeout } from '@utils/PreciseTimeout';
 import { Permissions, TextChannel } from 'discord.js';
 import { Language } from 'klasa';
 

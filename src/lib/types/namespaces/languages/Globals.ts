@@ -1,4 +1,4 @@
-import { T } from '@lib/types';
+import { T } from '#lib/types';
 
 export const Yes = T<string>('globalYes');
 export const No = T<string>('globalNo');

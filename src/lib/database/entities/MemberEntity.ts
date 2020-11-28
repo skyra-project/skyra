@@ -1,4 +1,4 @@
-import { kBigIntTransformer } from '@utils/util';
+import { kBigIntTransformer } from '#utils/util';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('member', { schema: 'public' })

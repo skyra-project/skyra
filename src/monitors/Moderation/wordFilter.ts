@@ -1,11 +1,11 @@
-import { DbSet, GuildSettings } from '@lib/database';
-import { SkyraEmbed } from '@lib/discord';
-import { HardPunishment, ModerationMonitor } from '@lib/structures/ModerationMonitor';
-import { GuildMessage } from '@lib/types';
-import { Colors } from '@lib/types/constants/Constants';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet, GuildSettings } from '#lib/database';
+import { SkyraEmbed } from '#lib/discord';
+import { HardPunishment, ModerationMonitor } from '#lib/structures/ModerationMonitor';
+import { GuildMessage } from '#lib/types';
+import { Colors } from '#lib/types/constants/Constants';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { floatPromise, getContent } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';
-import { floatPromise, getContent } from '@utils/util';
 import { remove as removeConfusables } from 'confusables';
 import { TextChannel } from 'discord.js';
 import { Language } from 'klasa';

@@ -1,9 +1,9 @@
-import { DbSet, GuildSettings } from '@lib/database';
-import { Events } from '@lib/types/Enums';
+import { DbSet, GuildSettings } from '#lib/database';
+import { Events } from '#lib/types/Enums';
+import { Time } from '#utils/constants';
+import { api } from '#utils/Models/Api';
+import { resolveOnErrorCodes } from '#utils/util';
 import { DiscordSnowflake } from '@sapphire/snowflake';
-import { Time } from '@utils/constants';
-import { api } from '@utils/Models/Api';
-import { resolveOnErrorCodes } from '@utils/util';
 import { GatewayChannelDeleteDispatch, GatewayDispatchEvents, RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Event, EventStore } from 'klasa';
 

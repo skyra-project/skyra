@@ -1,4 +1,4 @@
-import { NAME } from '@root/config';
+import { NAME } from '#root/config';
 import { BaseController } from './BaseController';
 
 export abstract class BaseBotController<T> extends BaseController<T> {

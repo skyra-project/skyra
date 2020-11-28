@@ -1,4 +1,4 @@
-import English from '@root/languages/en-US';
+import English from '#root/languages/en-US';
 import { Client } from 'klasa';
 import { createLanguageStore } from './MockLanguageStore';
 

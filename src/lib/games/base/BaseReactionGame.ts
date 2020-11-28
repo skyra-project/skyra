@@ -1,7 +1,7 @@
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { pickRandom } from '@utils/util';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { pickRandom } from '#utils/util';
 import type { Message } from 'discord.js';
 import type { BaseController } from './BaseController';
 import { BaseGame } from './BaseGame';

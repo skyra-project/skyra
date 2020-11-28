@@ -1,4 +1,4 @@
-import { Events } from '@lib/types/Enums';
+import { Events } from '#lib/types/Enums';
 import { ApplyOptions } from '@skyra/decorators';
 import { magenta } from 'colorette';
 import { Event, EventOptions } from 'klasa';

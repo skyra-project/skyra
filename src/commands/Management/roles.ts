@@ -1,13 +1,13 @@
-import { DbSet, GuildSettings } from '@lib/database';
-import { RichDisplayCommand, RichDisplayCommandOptions } from '@lib/structures/RichDisplayCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet, GuildSettings } from '#lib/database';
+import { RichDisplayCommand, RichDisplayCommandOptions } from '#lib/structures/RichDisplayCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors } from '#utils/constants';
+import { FuzzySearch } from '#utils/FuzzySearch';
+import { pickRandom } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { FuzzySearch } from '@utils/FuzzySearch';
-import { pickRandom } from '@utils/util';
 import { MessageEmbed, Role } from 'discord.js';
 
 @ApplyOptions<RichDisplayCommandOptions>({

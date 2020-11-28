@@ -1,4 +1,4 @@
-import { ENABLE_LAVALINK } from '@root/config';
+import { ENABLE_LAVALINK } from '#root/config';
 import { Node, NodeOptions, NodeSend } from '@skyra/audio';
 import Redis from 'ioredis';
 import { QueueStore } from './QueueStore';

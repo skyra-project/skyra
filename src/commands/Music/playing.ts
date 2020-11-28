@@ -1,10 +1,10 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { GuildMessage } from '@lib/types/Discord';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { MusicCommand } from '#lib/structures/MusicCommand';
+import { GuildMessage } from '#lib/types/Discord';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { requireMusicPlaying } from '#utils/Music/Decorators';
+import { IMAGE_EXTENSION, showSeconds } from '#utils/util';
 import { TrackInfo } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
-import { requireMusicPlaying } from '@utils/Music/Decorators';
-import { IMAGE_EXTENSION, showSeconds } from '@utils/util';
 import { MessageEmbed } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({

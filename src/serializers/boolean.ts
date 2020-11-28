@@ -1,5 +1,5 @@
-import { Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { Serializer, SerializerUpdateContext } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { AliasPieceOptions } from 'klasa';

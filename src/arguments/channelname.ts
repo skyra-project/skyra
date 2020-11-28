@@ -1,6 +1,6 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { FuzzySearch } from '@utils/FuzzySearch';
-import { validateChannelAccess } from '@utils/util';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { FuzzySearch } from '#utils/FuzzySearch';
+import { validateChannelAccess } from '#utils/util';
 import { Guild, GuildChannel, User } from 'discord.js';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 

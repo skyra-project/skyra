@@ -1,4 +1,4 @@
-import { CLIENT_ID } from '@root/config';
+import { CLIENT_ID } from '#root/config';
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class V17MigrateModeratorNonNull1596269328762 implements MigrationInterface {

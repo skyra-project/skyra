@@ -1,4 +1,4 @@
-import { CLIENT_ID } from '@root/config';
+import { CLIENT_ID } from '#root/config';
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity('client', { schema: 'public' })

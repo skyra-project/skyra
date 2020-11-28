@@ -1,4 +1,4 @@
-import { FT, T } from '@lib/types';
+import { FT, T } from '#lib/types';
 
 export const PoweredByWeebSh = T<string>('systemPoweredByWeebsh');
 export const ParseError = T<string>('systemParseError');

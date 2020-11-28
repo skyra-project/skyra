@@ -1,4 +1,4 @@
-import { fetchAvatar } from '@utils/util';
+import { fetchAvatar } from '#utils/util';
 import { Image } from 'canvas';
 import { Argument, KlasaMessage, Possible } from 'klasa';
 

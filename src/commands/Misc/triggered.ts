@@ -1,7 +1,7 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { assetsFolder } from '@utils/constants';
-import { fetchAvatar, streamToBuffer } from '@utils/util';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { assetsFolder } from '#utils/constants';
+import { fetchAvatar, streamToBuffer } from '#utils/util';
 import { Image, loadImage } from 'canvas';
 import { Canvas, rgba } from 'canvas-constructor';
 import { User } from 'discord.js';

@@ -19,7 +19,7 @@ import { LongLivingReactionCollector } from './util/LongLivingReactionCollector'
 import { Twitch } from './util/Notifications/Twitch';
 
 // Import all configuration
-import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '@root/config';
+import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
 
 // Import all extensions and schemas
 import './extensions';
@@ -29,9 +29,9 @@ import './setup/PermissionsLevels';
 import './setup/Canvas';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
-import { AnalyticsData } from '@utils/Tracking/Analytics/structures/AnalyticsData';
-import { QueueClient } from '@lib/audio';
-import { GuildSettings, SettingsManager } from '@lib/database';
+import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
+import { QueueClient } from '#lib/audio';
+import { GuildSettings, SettingsManager } from '#lib/database';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
 
 export class SkyraClient extends KlasaClient {

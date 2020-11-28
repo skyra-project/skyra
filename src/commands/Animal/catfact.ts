@@ -1,7 +1,7 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { assetsFolder } from '@utils/constants';
+import { DbSet } from '#lib/database';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { assetsFolder } from '#utils/constants';
 import { MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
 import { CommandStore, KlasaMessage } from 'klasa';

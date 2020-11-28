@@ -1,8 +1,8 @@
-import { GuildEntity, GuildSettings } from '@lib/database';
-import type { SkyraCommand } from '@lib/structures/SkyraCommand';
-import type { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { GuildEntity, GuildSettings } from '#lib/database';
+import type { SkyraCommand } from '#lib/structures/SkyraCommand';
+import type { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { isNullish } from '@sapphire/utilities';
 import { Inhibitor, KlasaMessage } from 'klasa';
 

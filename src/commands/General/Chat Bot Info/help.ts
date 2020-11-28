@@ -1,12 +1,12 @@
-import { DbSet } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors } from '#utils/constants';
+import { LanguageHelp, LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
+import { pickRandom } from '#utils/util';
 import { isFunction, isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { LanguageHelp, LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
-import { pickRandom } from '@utils/util';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { Command, KlasaMessage, Language } from 'klasa';
 

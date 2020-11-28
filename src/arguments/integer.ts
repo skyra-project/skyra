@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { Argument, ArgumentOptions, KlasaMessage, Possible } from 'klasa';
 

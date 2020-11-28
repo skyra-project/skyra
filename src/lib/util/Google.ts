@@ -1,7 +1,7 @@
-import { CustomGet } from '@lib/types';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { TOKENS } from '@root/config';
+import { CustomGet } from '#lib/types';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { TOKENS } from '#root/config';
 import { Client } from 'discord.js';
 import { KlasaMessage } from 'klasa';
 import { fetch, FetchResultTypes } from './util';

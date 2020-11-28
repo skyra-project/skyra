@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { isNumber } from '@sapphire/utilities';
 import { Duration } from '@sapphire/time-utilities';
 import { Argument, KlasaMessage, Possible } from 'klasa';

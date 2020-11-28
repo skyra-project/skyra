@@ -1,5 +1,5 @@
-import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '@lib/database';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { CommandAutoDelete, Serializer, SerializerUpdateContext } from '#lib/database';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<CommandAutoDelete> {

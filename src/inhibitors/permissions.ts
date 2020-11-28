@@ -1,4 +1,4 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Command, Inhibitor, KlasaMessage } from 'klasa';
 
 export default class extends Inhibitor {

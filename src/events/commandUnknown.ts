@@ -1,8 +1,8 @@
-import { GuildSettings } from '@lib/database';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { CommandHandler } from '@lib/types/definitions/Internals';
-import { Events, PermissionLevels } from '@lib/types/Enums';
-import { cast, floatPromise } from '@utils/util';
+import { GuildSettings } from '#lib/database';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { CommandHandler } from '#lib/types/definitions/Internals';
+import { Events, PermissionLevels } from '#lib/types/Enums';
+import { cast, floatPromise } from '#utils/util';
 import { Command, Event, KlasaMessage, Stopwatch } from 'klasa';
 
 export default class extends Event {

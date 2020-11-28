@@ -1,5 +1,5 @@
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { FuzzySearch } from '@utils/FuzzySearch';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { FuzzySearch } from '#utils/FuzzySearch';
 import { Argument, Command, KlasaMessage, Possible } from 'klasa';
 
 export default class extends Argument {

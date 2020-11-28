@@ -1,8 +1,8 @@
-import { Events, Schedules } from '@lib/types/Enums';
-import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '@root/config';
+import { Events, Schedules } from '#lib/types/Enums';
+import { DEV, ENABLE_INFLUX, ENABLE_LAVALINK, VERSION } from '#root/config';
+import { Slotmachine } from '#utils/Games/Slotmachine';
+import { WheelOfFortune } from '#utils/Games/WheelOfFortune';
 import { ApplyOptions } from '@skyra/decorators';
-import { Slotmachine } from '@utils/Games/Slotmachine';
-import { WheelOfFortune } from '@utils/Games/WheelOfFortune';
 import { blue, green, magenta, magentaBright, red, white } from 'colorette';
 import { Event, EventOptions } from 'klasa';
 

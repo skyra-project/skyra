@@ -1,6 +1,6 @@
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { assetsFolder } from '@utils/constants';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { assetsFolder } from '#utils/constants';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';

@@ -1,5 +1,5 @@
-import { ApiRequest, UserAuthObject } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
+import { ApiRequest, UserAuthObject } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
 import { ApplyOptions } from '@skyra/decorators';
 import { Middleware, MiddlewareOptions, Route, Util } from 'klasa-dashboard-hooks';
 

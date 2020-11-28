@@ -1,15 +1,15 @@
-import { MusicCommand } from '@lib/structures/MusicCommand';
-import { GuildMessage } from '@lib/types/Discord';
-import { Events } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { ApplyOptions } from '@skyra/decorators';
+import { MusicCommand } from '#lib/structures/MusicCommand';
+import { GuildMessage } from '#lib/types/Discord';
+import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import {
 	requireDj,
 	requireMusicPlaying,
 	requireSameVoiceChannel,
 	requireSkyraInVoiceChannel,
 	requireUserInVoiceChannel
-} from '@utils/Music/Decorators';
+} from '#utils/Music/Decorators';
+import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: (language) => language.get(LanguageKeys.Commands.Music.PauseDescription)

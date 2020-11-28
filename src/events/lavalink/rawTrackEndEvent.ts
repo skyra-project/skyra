@@ -1,4 +1,4 @@
-import { Events } from '@lib/types/Enums';
+import { Events } from '#lib/types/Enums';
 import { IncomingEventTrackEndPayload } from '@skyra/audio';
 import { ApplyOptions } from '@skyra/decorators';
 import { Event, EventOptions } from 'klasa';

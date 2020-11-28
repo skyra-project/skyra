@@ -1,8 +1,8 @@
-import { ApiRequest } from '@lib/structures/api/ApiRequest';
-import { ApiResponse } from '@lib/structures/api/ApiResponse';
-import { DOMAIN } from '@root/config';
+import { ApiRequest } from '#lib/structures/api/ApiRequest';
+import { ApiResponse } from '#lib/structures/api/ApiResponse';
+import { DOMAIN } from '#root/config';
+import { Mime } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
-import { Mime } from '@utils/constants';
 import { Middleware, MiddlewareOptions } from 'klasa-dashboard-hooks';
 
 @ApplyOptions<MiddlewareOptions>({ priority: 10 })

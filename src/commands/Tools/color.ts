@@ -1,7 +1,7 @@
-import { RGB } from '@lib/structures/color';
-import { SkyraCommand } from '@lib/structures/SkyraCommand';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
-import { hexConcat, luminance, parse } from '@utils/Color';
+import { RGB } from '#lib/structures/color';
+import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { hexConcat, luminance, parse } from '#utils/Color';
 import { Canvas, rgb } from 'canvas-constructor';
 import { CommandStore, KlasaMessage } from 'klasa';
 

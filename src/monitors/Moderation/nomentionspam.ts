@@ -1,7 +1,7 @@
-import { GuildSettings } from '@lib/database';
-import { isNullishOrZero } from '@lib/misc';
-import { GuildMessage } from '@lib/types';
-import { Events, PermissionLevels } from '@lib/types/Enums';
+import { GuildSettings } from '#lib/database';
+import { isNullishOrZero } from '#lib/misc';
+import { GuildMessage } from '#lib/types';
+import { Events, PermissionLevels } from '#lib/types/Enums';
 import { Monitor } from 'klasa';
 
 export default class extends Monitor {

@@ -1,5 +1,5 @@
-import { FT, T } from '@lib/types';
-import { LanguageHelpDisplayOptions } from '@utils/LanguageHelp';
+import { FT, T } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import { Guild, GuildMember, User } from 'discord.js';
 
 export const WikipediaNotfound = T<string>('commandWikipediaNotfound');

@@ -1,14 +1,14 @@
-import { DbSet, GuildSettings, ReactionRole } from '@lib/database';
-import { SkyraCommand, SkyraCommandOptions } from '@lib/structures/SkyraCommand';
-import { UserRichDisplay } from '@lib/structures/UserRichDisplay';
-import { GuildMessage } from '@lib/types';
-import { PermissionLevels } from '@lib/types/Enums';
-import { LanguageKeys } from '@lib/types/namespaces/LanguageKeys';
+import { DbSet, GuildSettings, ReactionRole } from '#lib/database';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
+import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
+import { GuildMessage } from '#lib/types';
+import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
+import { BrandingColors } from '#utils/constants';
+import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
+import { displayEmoji, pickRandom, resolveEmoji } from '#utils/util';
 import { chunk } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { BrandingColors } from '@utils/constants';
-import { LongLivingReactionCollector } from '@utils/LongLivingReactionCollector';
-import { displayEmoji, pickRandom, resolveEmoji } from '@utils/util';
 import { Guild, MessageEmbed, Role, TextChannel } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({

@@ -1,4 +1,4 @@
-import { client } from '@mocks/MockInstances';
+import { client } from '#mocks/MockInstances';
 
 afterAll(() => {
 	client.destroy();

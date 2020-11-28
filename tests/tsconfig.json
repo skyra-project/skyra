@@ -9,7 +9,7 @@
 		"paths": {
 			"#utils/*": ["../src/lib/util/*"],
 			"#lib/*": ["../src/lib/*"],
-			"@mocks/*": ["./mocks/*"],
+			"#mocks/*": ["./mocks/*"],
 			"#root/*": ["../src/*"]
 		}
 	},

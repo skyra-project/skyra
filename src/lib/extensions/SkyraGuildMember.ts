@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
 import { GuildEntity, GuildSettings } from '#lib/database';
+import { hasAtLeastOneKeyInMap } from '#lib/misc';
 import { GatewayGuildMemberUpdateDispatch } from 'discord-api-types/v6';
 import { Permissions, Structures, VoiceChannel } from 'discord.js';
 
@@ -61,18 +62,18 @@ export class SkyraGuildMember extends Structures.get('GuildMember') {
 	}
 
 	private checkDj(settings: GuildEntity) {
-		const roleID = settings[GuildSettings.Roles.Dj];
-		return roleID ? this.roles.cache.has(roleID) : this.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
+		const roles = settings[GuildSettings.Roles.Dj];
+		return roles.length === 0 ? this.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES) : hasAtLeastOneKeyInMap(this.roles.cache, roles);
 	}
 
 	private checkModerator(settings: GuildEntity) {
-		const roleID = settings[GuildSettings.Roles.Moderator];
-		return roleID ? this.roles.cache.has(roleID) : this.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
+		const roles = settings[GuildSettings.Roles.Moderator];
+		return roles.length === 0 ? this.permissions.has(Permissions.FLAGS.BAN_MEMBERS) : hasAtLeastOneKeyInMap(this.roles.cache, roles);
 	}
 
 	private checkAdministrator(settings: GuildEntity) {
-		const roleID = settings[GuildSettings.Roles.Admin];
-		return roleID ? this.roles.cache.has(roleID) : this.permissions.has(Permissions.FLAGS.MANAGE_GUILD);
+		const roles = settings[GuildSettings.Roles.Admin];
+		return roles.length === 0 ? this.permissions.has(Permissions.FLAGS.MANAGE_GUILD) : hasAtLeastOneKeyInMap(this.roles.cache, roles);
 	}
 }
 

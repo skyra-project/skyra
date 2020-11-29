@@ -229,8 +229,8 @@ export class GuildEntity extends BaseEntity {
 	public reactionRoles: ReactionRole[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesAdmin, type: 'role' })
-	@Column('varchar', { name: 'roles.admin', nullable: true, length: 19 })
-	public rolesAdmin?: string | null;
+	@Column('varchar', { name: 'roles.admin', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public rolesAdmin: string[] = [];
 
 	@Column('jsonb', { name: 'roles.auto', default: () => "'[]'::JSONB" })
 	public rolesAuto: RolesAuto[] = [];
@@ -240,8 +240,8 @@ export class GuildEntity extends BaseEntity {
 	public rolesInitial?: string | null;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesModerator, type: 'role' })
-	@Column('varchar', { name: 'roles.moderator', nullable: true, length: 19 })
-	public rolesModerator?: string | null;
+	@Column('varchar', { name: 'roles.moderator', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public rolesModerator: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesMuted, type: 'role' })
 	@Column('varchar', { name: 'roles.muted', nullable: true, length: 19 })
@@ -276,8 +276,8 @@ export class GuildEntity extends BaseEntity {
 	public rolesRemoveInitial = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesDj, type: 'role' })
-	@Column('varchar', { name: 'roles.dj', nullable: true, length: 19 })
-	public rolesDj?: string | null;
+	@Column('varchar', { name: 'roles.dj', length: 19, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
+	public rolesDj: string[] = [];
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.RolesSubscriber, type: 'role' })
 	@Column('varchar', { name: 'roles.subscriber', nullable: true, length: 19 })

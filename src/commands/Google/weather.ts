@@ -133,7 +133,7 @@ export default class extends SkyraCommand {
 
 			.toBufferAsync();
 
-		return message.channel.sendFile(attachment, `${geoCodeLocation}.png`);
+		return message.channel.send(attachment, { files: [{ attachment, name: `${geoCodeLocation}.png` }] });
 	}
 
 	public timePicker(icon: string) {

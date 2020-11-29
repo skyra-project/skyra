@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		const userAvatar = await fetchAvatar(user);
 		const image = this.generateImage(userAvatar);
 
-		return message.channel.sendFile(image.toBuffer(), 'we-do-not-do-that-here.png');
+		return message.channel.send(image.toBuffer(), { files: [{ attachment: image.toBuffer(), name: 'we-do-not-do-that-here.png' }] });
 	}
 
 	public async init() {

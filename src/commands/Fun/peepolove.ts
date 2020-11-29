@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			.printImage(this.handsImage, 0, 0, 512, 512)
 			.toBufferAsync();
 
-		return message.channel.sendFile(buffer, 'peepoLove.png');
+		return message.channel.send(buffer, { files: [{ attachment: buffer, name: 'peepoLove.png' }] });
 	}
 
 	public async init() {

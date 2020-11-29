@@ -24,11 +24,9 @@ export default class extends SkyraCommand {
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.channel.sendFile(
-			Buffer.from(data),
-			`${name}-${Date.now()}.squeue`,
-			await message.fetchLocale(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name })
-		);
+		return message.channel.send(await message.fetchLocale(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
+			files: [{ attachment: Buffer.from(data), name: `${name}-${Date.now()}.squeue` }]
+		});
 	}
 
 	private serializeCurrent(entry: QueueEntry | null): string | null {

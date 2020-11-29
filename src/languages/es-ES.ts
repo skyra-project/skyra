@@ -1936,10 +1936,10 @@ export default class extends Language {
 				"No, the guild's owner cannot be banned.",
 				'This action can be optionally timed to create a temporary ban.'
 			],
-			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete Spamming all channels, for 24 hours.'],
+			examples: ['@Pete', '@Pete Spamming all channels.', '@Pete 24h Spamming all channels'],
 			multiline: true
 		},
-		commandDehoistDescription: 'Shoot everyone with the dehoist-inator 3000',
+		commandDehoistDescription: 'Shoot everyone with the Dehoistinator 3000',
 		commandDehoistExtended: {
 			extendedHelp: [
 				'The act of hoisting involves adding special characters in front of your nickname in order to appear higher in the members list.',
@@ -2172,7 +2172,7 @@ export default class extends Language {
 				"No, the guild's owner cannot be silenced.",
 				'This action can be optionally timed to create a temporary voice mute.'
 			],
-			examples: ['@Pete', '@Pete Singing too loud', '@Pete Literally sang hear rape, for 24 hours.'],
+			examples: ['@Pete', '@Pete Singing too loud', '@Pete 24h Literally sang ear rape'],
 			multiline: true
 		},
 		commandVoiceKickDescription: 'Hit somebody with the 👢 for singing so bad and loud.',

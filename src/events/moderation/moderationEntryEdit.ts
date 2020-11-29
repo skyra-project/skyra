@@ -9,7 +9,7 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 	public run(old: ModerationEntity, entry: ModerationEntity) {
-		return Promise.all([this.cancelTask(old, entry), this.send(old, entry), this.scheduleDuration(old, entry)]);
+		return Promise.all([this.cancelTask(old, entry), this.sendMessage(old, entry), this.scheduleDuration(old, entry)]);
 	}
 
 	private async cancelTask(old: ModerationEntity, entry: ModerationEntity) {
@@ -17,7 +17,7 @@ export default class extends Event {
 		if ((!old.invalidated && entry.invalidated) || (old.duration !== null && entry.duration === null)) await entry.task?.delete();
 	}
 
-	private async send(old: ModerationEntity, entry: ModerationEntity) {
+	private async sendMessage(old: ModerationEntity, entry: ModerationEntity) {
 		// Handle invalidation
 		if (!old.invalidated && entry.invalidated) return;
 

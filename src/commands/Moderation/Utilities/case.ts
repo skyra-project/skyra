@@ -19,7 +19,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: GuildMessage, [index]: [number | 'latest']) {
 		const modlog = index === 'latest' ? (await message.guild.moderation.fetch()).last() : await message.guild.moderation.fetch(index);
-		if (modlog) return message.sendEmbed(await modlog.prepareEmbed());
+		if (modlog) return message.send(await modlog.prepareEmbed());
 		throw await message.fetchLocale(LanguageKeys.Commands.Moderation.ReasonNotExists);
 	}
 }

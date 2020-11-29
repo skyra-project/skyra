@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 			embed.spliceFields(0, 0, { name: embedTitles.fieldEffectTitle, value: abilityDetails.isFieldAbility, inline: false });
 		}
 
-		return message.sendEmbed(embed);
+		return message.send(embed);
 	}
 
 	private async fetchAPI(language: Language, ability: string) {

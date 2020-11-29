@@ -144,7 +144,7 @@ export default class extends SkyraCommand {
 		const tag = tags.find((command) => command.id === tagName);
 		return tag
 			? tag.embed
-				? message.sendEmbed(new MessageEmbed().setDescription(tag.content).setColor(tag.color))
+				? message.send(new MessageEmbed().setDescription(tag.content).setColor(tag.color))
 				: message.send(tag.content)
 			: null;
 	}

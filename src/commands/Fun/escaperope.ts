@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 		if (message.deletable) await message.nuke().catch(() => null);
 		const language = await message.fetchLanguage();
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(CdnUrls.EscapeRopeGif)

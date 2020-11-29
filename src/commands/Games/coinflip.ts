@@ -62,7 +62,7 @@ export default class extends SkyraCommand {
 		settings.money += won ? wager : -wager;
 		await settings.save();
 
-		return message.sendEmbed(
+		return message.send(
 			(await this.buildEmbed(message, result))
 				.setTitle(language.get(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(

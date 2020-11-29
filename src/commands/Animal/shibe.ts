@@ -16,7 +16,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const urls = await fetch<[string]>('https://shibe.online/api/shibes?count=1', FetchResultTypes.JSON);
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(urls[0])

@@ -21,7 +21,7 @@ const kMaximum = 100000;
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const url = `https://thiswaifudoesnotexist.net/example-${Math.floor(Math.random() * kMaximum)}.jpg`;
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setTitle('→')
 				.setURL(url)

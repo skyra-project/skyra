@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		const language = await message.fetchLanguage();
 
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
-			await message.sendEmbed(
+			await message.send(
 				new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
 			await message.guild.members.fetch();

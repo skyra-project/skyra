@@ -17,7 +17,7 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [query]: [string]) {
 		const searchEngine = this.parseSearchEngine(message.flagArgs);
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(

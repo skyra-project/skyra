@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 		const titles = language.get(LanguageKeys.Commands.Twitch.TwitchTitles);
 		const affiliateStatus = this.parseAffiliateProgram(language, channel.broadcaster_type);
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(this.client.twitch.BRANDING_COLOUR)
 				.setAuthor(channel.display_name, CdnUrls.TwitchLogo, `https://twitch.tv/${channel.login}`)

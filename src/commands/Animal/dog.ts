@@ -18,7 +18,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const [color, image] = await Promise.all([DbSet.fetchColor(message), this.fetchImage()]);
 
-		return message.sendEmbed(new MessageEmbed().setColor(color).setImage(image).setTimestamp());
+		return message.send(new MessageEmbed().setColor(color).setImage(image).setTimestamp());
 	}
 
 	private async fetchImage() {

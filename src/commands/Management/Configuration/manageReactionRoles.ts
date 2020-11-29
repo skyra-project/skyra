@@ -56,7 +56,7 @@ export default class extends SkyraCommand {
 			throw language.get(LanguageKeys.Commands.Management.ManageReactionRolesShowEmpty);
 		}
 
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

@@ -17,7 +17,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const language = await message.fetchLanguage();
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setTitle(language.get(LanguageKeys.Commands.System.SupportEmbedTitle, { username: message.author.username }))
 				.setDescription(language.get(LanguageKeys.Commands.System.SupportEmbedDescription))

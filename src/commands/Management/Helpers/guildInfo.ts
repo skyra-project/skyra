@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild.ownerID);
-		return message.sendEmbed(
+		return message.send(
 			new SkyraEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setThumbnail(message.guild.iconURL()!)

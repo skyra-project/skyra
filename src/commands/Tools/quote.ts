@@ -45,7 +45,7 @@ export default class extends SkyraCommand {
 		if (content)
 			embed.setDescription(`[${await message.fetchLocale(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
-		return message.sendEmbed(embed);
+		return message.send(embed);
 	}
 
 	private async getFromUrl(message: GuildMessage, url: string) {

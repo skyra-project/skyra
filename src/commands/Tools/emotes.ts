@@ -20,7 +20,7 @@ import { Language } from 'klasa';
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage) {
 		const language = await message.fetchLanguage();
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

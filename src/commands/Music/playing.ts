@@ -24,7 +24,7 @@ export default class extends MusicCommand {
 
 		const track = await audio.player.node.decode(entry.track);
 		const embed = await this.getMessageEmbed(message, track);
-		return message.sendEmbed(embed);
+		return message.send(embed);
 	}
 
 	private async getMessageEmbed(message: GuildMessage, track: TrackInfo): Promise<MessageEmbed> {

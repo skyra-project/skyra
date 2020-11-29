@@ -62,7 +62,7 @@ export default class extends Event {
 						const embedData = this.transformTextToObject(data, game);
 
 						// Construct a message embed and send it.
-						floatPromise(this, channel.sendEmbed(this.buildEmbed(embedData, language)));
+						floatPromise(this, channel.send(this.buildEmbed(embedData, language)));
 					} else {
 						const message = this.transformTextToString(subscription.message, data, language, game);
 						floatPromise(this, channel.send(message));

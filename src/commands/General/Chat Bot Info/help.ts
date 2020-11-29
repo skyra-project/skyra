@@ -80,7 +80,7 @@ export default class extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
-		if (command) return message.sendEmbed(await this.buildCommandHelp(message, language, command));
+		if (command) return message.send(await this.buildCommandHelp(message, language, command));
 
 		const prefix = (await this.client.fetchPrefix(message)) as string;
 

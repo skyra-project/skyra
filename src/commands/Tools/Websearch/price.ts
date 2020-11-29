@@ -22,13 +22,13 @@ import { Language } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
 		const language = await message.fetchLanguage();
-		await message.sendEmbed(
+		await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchAPI(language, fromCurrency, toCurrencies);
 
-		return message.sendEmbed(await this.buildEmbed(message, language, result, fromCurrency, amount));
+		return message.send(await this.buildEmbed(message, language, result, fromCurrency, amount));
 	}
 
 	private async fetchAPI(language: Language, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {

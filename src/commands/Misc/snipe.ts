@@ -32,6 +32,6 @@ export default class extends SkyraCommand {
 		const image = getImage(sniped);
 		if (image !== null) embed.setImage(image);
 
-		return message.sendEmbed(embed);
+		return message.send(embed);
 	}
 }

@@ -137,7 +137,7 @@ export default class extends SkyraCommand {
 		);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed({ description: pickRandom(await message.fetchLocale(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
@@ -146,7 +146,7 @@ export default class extends SkyraCommand {
 
 	@requiredPermissions(['EMBED_LINKS'])
 	public async show(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(

@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 			embed.setImage(image.query.pages[image.query.pageids[0]].thumbnail.source);
 		}
 
-		return message.sendEmbed(embed);
+		return message.send(embed);
 	}
 
 	private async fetchText(input: string, language: Language) {

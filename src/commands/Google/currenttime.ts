@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 		);
 
 		const titles = language.get(LanguageKeys.Commands.Google.CurrentTimeTitles, { dst: dstEnabled });
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setTitle(`:flag_${timeData.countryCode.toLowerCase()}: ${formattedAddress}`)

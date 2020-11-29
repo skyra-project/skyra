@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		const embedTranslations = language.get(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
 			availableInGen8: language.get(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(`${embedTranslations.ITEM} - ${toTitleCase(itemDetails.name)}`, CdnUrls.Pokedex)

@@ -282,7 +282,7 @@ export default class extends SkyraCommand {
 	public async show(message: GuildMessage, [streamer]: [Streamer?]) {
 		const [guildSubscriptions, language] = await message.guild.readSettings((settings) => [settings[this.#kSettingsKey], settings.getLanguage()]);
 		// Create the response message.
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

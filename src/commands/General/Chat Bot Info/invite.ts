@@ -18,10 +18,10 @@ import { KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [noperms]: ['noperms' | undefined]) {
 		if (noperms === 'noperms' || Reflect.has(message.flagArgs, 'nopermissions')) {
-			return message.sendEmbed(await this.getEmbed(message, { permissions: false }));
+			return message.send(await this.getEmbed(message, { permissions: false }));
 		}
 
-		return message.sendEmbed(await this.getEmbed(message, { permissions: true }));
+		return message.send(await this.getEmbed(message, { permissions: true }));
 	}
 
 	public async init() {

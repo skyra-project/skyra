@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(b10.value)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))

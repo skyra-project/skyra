@@ -44,6 +44,6 @@ export default class extends SkyraCommand {
 			.setTitle(language.get(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
 			.setDescription(list.join('\n'));
 
-		return message.sendMessage({ embed });
+		return message.send({ embed });
 	}
 }

@@ -7,10 +7,10 @@ import { Event } from 'klasa';
 
 export default class extends Event {
 	public run(entry: ModerationEntity) {
-		return Promise.all([this.sendMessage(entry), this.scheduleDuration(entry)]);
+		return Promise.all([this.send(entry), this.scheduleDuration(entry)]);
 	}
 
-	private async sendMessage(entry: ModerationEntity) {
+	private async send(entry: ModerationEntity) {
 		const channel = await entry.fetchChannel();
 		if (channel === null || !channel.postable || !channel.embedable) return;
 

@@ -124,7 +124,7 @@ export default class extends RichDisplayCommand {
 		if (unmanageable.length) output.push(language.get(LanguageKeys.Commands.Management.RolesNotManageable, { roles: unmanageable.join('`, `') }));
 		if (removedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesRemoved, { roles: removedRoles.join('`, `') }));
 		if (addedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesAdded, { roles: addedRoles.join('`, `') }));
-		return message.sendMessage(output.join('\n'));
+		return message.send(output.join('\n'));
 	}
 
 	private async list(message: GuildMessage, publicRoles: readonly string[]) {

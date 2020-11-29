@@ -67,7 +67,7 @@ export default class extends SkyraCommand {
 			return output;
 		});
 
-		return message.sendMessage(output.join('\n'), { code: 'http' });
+		return message.send(output.join('\n'), { code: 'http' });
 	}
 
 	public async add(message: GuildMessage, [role, points]: [Role, number]) {

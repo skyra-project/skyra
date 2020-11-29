@@ -47,13 +47,11 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: KlasaMessage) {
-		await message.sendMessage('Capturing HEAP Snapshot. This may take a while...');
+		await message.send('Capturing HEAP Snapshot. This may take a while...');
 
 		// Capture the snapshot (this freezes the entire VM)
 		const filename = writeHeapSnapshot();
 
-		return message.sendMessage(
-			`Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`
-		);
+		return message.send(`Captured in \`${filename}\`, check! Remember, do NOT share this with anybody, it may contain a lot of sensitive data.`);
 	}
 }

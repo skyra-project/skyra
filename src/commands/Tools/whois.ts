@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 		const member = await message.guild.members.fetch(user.id).catch(() => null);
 		const language = await message.fetchLanguage();
 
-		return message.sendMessage(member ? this.member(language, member) : this.user(language, user));
+		return message.send(member ? this.member(language, member) : this.user(language, user));
 	}
 
 	private user(language: Language, user: User) {

@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 			julietUsername: secondUser.username,
 			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
 		});
-		return message.sendMessage([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
+		return message.send([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
 	}
 
 	/** Initialize the light and dark theme templates and the heart icon */

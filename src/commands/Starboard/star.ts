@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 			return this.random(message, [member]);
 		}
 
-		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
+		return message.send(starredMessage.content, starredMessage.embeds[0]);
 	}
 
 	public async top(message: GuildMessage, [member, timespan]: [GuildMember?, number?]) {

@@ -46,7 +46,7 @@ export class SkyraMessage extends Structures.get('Message') {
 			options = undefined;
 		}
 
-		const msg = (await this.sendMessage(content, options as MessageOptions)) as Message;
+		const msg = (await this.send(content, options as MessageOptions)) as Message;
 		msg.nuke(typeof timer === 'number' ? timer : 10000).catch((error) => this.client.emit(Events.ApiError, error));
 		return msg;
 	}

@@ -65,7 +65,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			}
 
 			if (options.content) {
-				return message.sendMessage(
+				return message.send(
 					`${options.content}${
 						options.content && options.attachments ? `\n\n\n=============\n${options.attachments}` : options.attachments
 					}`,

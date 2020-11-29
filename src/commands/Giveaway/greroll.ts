@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 					title: title!
 			  })
 			: language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: title! });
-		return message.sendMessage(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
+		return message.send(content, { allowedMentions: { users: [...new Set([message.author.id, ...(winners || [])])], roles: [] } });
 	}
 
 	private async resolveMessage(message: GuildMessage, rawTarget: GuildMessage | undefined, language: Language) {

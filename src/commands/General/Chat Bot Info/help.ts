@@ -75,7 +75,7 @@ export default class extends SkyraCommand {
 				);
 			}
 
-			return message.sendMessage(commandCategories);
+			return message.send(commandCategories);
 		}
 
 		// Handle case for a single command
@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 			message.guild &&
 			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
-			const response = await message.sendMessage(
+			const response = await message.send(
 				language.get(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
 				new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 			);

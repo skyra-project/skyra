@@ -45,7 +45,7 @@ export abstract class WeebCommand extends SkyraCommand {
 		const language = await message.guild.fetchLanguage();
 		const { url } = await this.fetch(language, query);
 
-		return message.sendMessage(
+		return message.send(
 			Boolean(this.usage.parsedUsage.length)
 				? language.get(this.responseName as ComplexKey, { user: params![0].username })
 				: language.get(this.responseName as SimpleKey),

@@ -5,10 +5,9 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]) {
-		await channel.sendMessage(
-			tracks.length === 1 ? await this.getSingleTrackContent(channel, tracks) : await this.getPlayListContent(channel, tracks),
-			{ allowedMentions: { users: [], roles: [] } }
-		);
+		await channel.send(tracks.length === 1 ? await this.getSingleTrackContent(channel, tracks) : await this.getPlayListContent(channel, tracks), {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 
 	private async getSingleTrackContent(channel: MessageAcknowledgeable, tracks: readonly QueueEntry[]): Promise<string> {

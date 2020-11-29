@@ -1,4 +1,5 @@
 import { GuildEntity, GuildSettings } from '#lib/database';
+import { hasAtLeastOneKeyInMap } from '#lib/misc';
 import { HardPunishment, ModerationEvent } from '#lib/structures/ModerationEvent';
 import { SelfModeratorBitField } from '#lib/structures/SelfModeratorBitField';
 import { KeyOfType } from '#lib/types';
@@ -101,7 +102,7 @@ export default class extends ModerationEvent<ArgumentType, unknown, number> {
 	}
 
 	private async hasPermissions(member: GuildMember) {
-		const modRole = await member.guild.readSettings(GuildSettings.Roles.Moderator);
-		return modRole ? member.roles.cache.has(modRole) : member.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
+		const roles = await member.guild.readSettings(GuildSettings.Roles.Moderator);
+		return roles.length === 0 ? member.permissions.has(Permissions.FLAGS.BAN_MEMBERS) : hasAtLeastOneKeyInMap(member.roles.cache, roles);
 	}
 }

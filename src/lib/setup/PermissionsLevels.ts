@@ -1,4 +1,5 @@
 import { GuildSettings } from '#lib/database';
+import { hasAtLeastOneKeyInMap } from '#lib/misc';
 import { PermissionLevels } from '#lib/types/Enums';
 import { Permissions } from 'discord.js';
 import { KlasaClient } from 'klasa';
@@ -9,8 +10,11 @@ export default KlasaClient.defaultPermissionLevels
 		async (message) =>
 			message.member
 				? message.guild!.readSettings((settings) => {
-						const id = settings[GuildSettings.Roles.Moderator];
-						return id ? message.member!.roles.cache.has(id) : message.member!.permissions.has(Permissions.FLAGS.BAN_MEMBERS);
+						const roles = settings[GuildSettings.Roles.Moderator];
+
+						return roles.length === 0
+							? message.member!.permissions.has(Permissions.FLAGS.BAN_MEMBERS)
+							: hasAtLeastOneKeyInMap(message.member!.roles.cache, roles);
 				  })
 				: false,
 		{ fetch: true }
@@ -20,8 +24,11 @@ export default KlasaClient.defaultPermissionLevels
 		async (message) =>
 			message.member
 				? message.guild!.readSettings((settings) => {
-						const id = settings[GuildSettings.Roles.Admin];
-						return id ? message.member!.roles.cache.has(id) : message.member!.permissions.has(Permissions.FLAGS.MANAGE_GUILD);
+						const roles = settings[GuildSettings.Roles.Admin];
+
+						return roles.length === 0
+							? message.member!.permissions.has(Permissions.FLAGS.MANAGE_GUILD)
+							: hasAtLeastOneKeyInMap(message.member!.roles.cache, roles);
 				  })
 				: false,
 		{ fetch: true }

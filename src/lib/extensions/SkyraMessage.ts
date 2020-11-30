@@ -3,7 +3,7 @@ import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { sleep } from '#utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
+import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel, APIMessage } from 'discord.js';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
@@ -49,6 +49,11 @@ export class SkyraMessage extends Structures.get('Message') {
 		const msg = (await this.send(content, options as MessageOptions)) as Message;
 		msg.nuke(typeof timer === 'number' ? timer : 10000).catch((error) => this.client.emit(Events.ApiError, error));
 		return msg;
+	}
+
+	public async sendLocale(key, args = [], options = {}) {
+		if (!Array.isArray(args)) [options, args] = [args, []];
+		return this.send(APIMessage.transformOptions(await this.fetchLocale(key), undefined, options));
 	}
 
 	public async nuke(time = 0): Promise<Message> {

@@ -1,4 +1,6 @@
-import { Message, Structures, TextChannel, Permissions } from 'discord.js';
+/* eslint-disable @typescript-eslint/unified-signatures */
+import { CustomFunctionGet, CustomGet } from '#lib/types';
+import { Message, Structures, TextChannel, Permissions, APIMessage, MessageOptions, MessageAdditions, SplitOptions } from 'discord.js';
 
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
 
@@ -21,6 +23,40 @@ export class SkyraTextChannel extends Structures.get('TextChannel') {
 	public get sniped() {
 		const current = snipes.get(this);
 		return typeof current === 'undefined' ? null : current.message;
+	}
+
+	public sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
+	public sendLocale<K extends string, TReturn>(
+		key: CustomGet<K, TReturn>,
+		options?: (MessageOptions & { split?: false }) | MessageAdditions
+	): Promise<Message>;
+
+	public sendLocale<K extends string, TReturn>(
+		key: CustomGet<K, TReturn>,
+		options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+	): Promise<Message[]>;
+
+	public sendLocale<K extends string, TArgs, TReturn>(
+		key: CustomFunctionGet<K, TArgs, TReturn>,
+		localeArgs: [TArgs],
+		options?: MessageOptions | MessageAdditions
+	): Promise<Message>;
+
+	public sendLocale<K extends string, TArgs, TReturn>(
+		key: CustomFunctionGet<K, TArgs, TReturn>,
+		localeArgs: [TArgs],
+		options?: (MessageOptions & { split?: false }) | MessageAdditions
+	): Promise<Message>;
+
+	public sendLocale<K extends string, TArgs, TReturn>(
+		key: CustomFunctionGet<K, TArgs, TReturn>,
+		localeArgs: [TArgs],
+		options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+	): Promise<Message[]>;
+
+	public async sendLocale(key: string, args: any = [], options: any = {}) {
+		if (!Array.isArray(args)) [options, args] = [args, []];
+		return this.send(APIMessage.transformOptions(await this.fetchLocale(key, ...args), undefined, options));
 	}
 
 	public get attachable() {
@@ -48,6 +84,34 @@ export interface SnipedMessage {
 declare module 'discord.js' {
 	export interface TextChannel {
 		sniped: Message | null;
+		readonly attachable: boolean;
+		readonly embedable: boolean;
+		readonly postable: boolean;
+		readonly readable: boolean;
+		sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
+		sendLocale<K extends string, TReturn>(
+			key: CustomGet<K, TReturn>,
+			options?: (MessageOptions & { split?: false }) | MessageAdditions
+		): Promise<Message>;
+		sendLocale<K extends string, TReturn>(
+			key: CustomGet<K, TReturn>,
+			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+		): Promise<Message[]>;
+		sendLocale<K extends string, TArgs, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			localeArgs: [TArgs],
+			options?: MessageOptions | MessageAdditions
+		): Promise<Message>;
+		sendLocale<K extends string, TArgs, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			localeArgs: [TArgs],
+			options?: (MessageOptions & { split?: false }) | MessageAdditions
+		): Promise<Message>;
+		sendLocale<K extends string, TArgs, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			localeArgs: [TArgs],
+			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+		): Promise<Message[]>;
 		toString(): string;
 	}
 }

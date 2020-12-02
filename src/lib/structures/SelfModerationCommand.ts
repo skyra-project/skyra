@@ -206,7 +206,7 @@ export abstract class SelfModerationCommand extends Command {
 					thresholdDurationText: adder?.duration
 						? duration(adder.duration)
 						: i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
-				})
+				}).join('\n')
 			)
 		);
 	}

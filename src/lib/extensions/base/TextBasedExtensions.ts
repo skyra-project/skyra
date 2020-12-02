@@ -1,5 +1,5 @@
 import { CustomFunctionGet, CustomGet, NonNullObject } from '#lib/types';
-import { Constructable, Message, MessageAdditions, MessageOptions, PartialTextBasedChannelFields, SplitOptions } from 'discord.js';
+import { APIMessage, Constructable, Message, MessageAdditions, MessageOptions, PartialTextBasedChannelFields, SplitOptions } from 'discord.js';
 import { Language } from 'klasa';
 
 export interface ISendable {

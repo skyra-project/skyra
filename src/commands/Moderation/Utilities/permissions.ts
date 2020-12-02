@@ -39,11 +39,11 @@ export default class extends SkyraCommand {
 			}
 		}
 
-		const embed = new MessageEmbed()
-			.setColor(await DbSet.fetchColor(message))
-			.setTitle(language.get(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
-			.setDescription(list.join('\n'));
-
-		return message.send({ embed });
+		return message.send(
+			new MessageEmbed()
+				.setColor(await DbSet.fetchColor(message))
+				.setTitle(language.get(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
+				.setDescription(list.join('\n'))
+		);
 	}
 }

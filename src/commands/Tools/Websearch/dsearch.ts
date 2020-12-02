@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 			embed.addField(await message.fetchLocale(LanguageKeys.Commands.Tools.DuckDuckGoLookalso), body.RelatedTopics[0].Text);
 		}
 
-		return message.send({ embed });
+		return message.send(embed);
 	}
 }
 

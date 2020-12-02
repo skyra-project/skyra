@@ -1,15 +1,24 @@
-import type { CustomFunctionGet, CustomGet } from '#lib/types';
+/* eslint-disable @typescript-eslint/class-literal-property-style */
 import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { sleep } from '#utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel, APIMessage } from 'discord.js';
+import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
+import { Language } from 'klasa';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
-export class SkyraMessage extends Structures.get('Message') {
+export class SkyraMessage extends TextBasedExtension(Structures.get('Message')) {
+	public async fetchLanguage() {
+		const languageKey = await this.client.fetchLanguage(this);
+		const language = this.client.languages.get(languageKey);
+		if (language) return language;
+		throw new Error(`The language '${language}' is not available.`);
+	}
+
 	public async prompt(content: string, time = 30000) {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
@@ -49,11 +58,6 @@ export class SkyraMessage extends Structures.get('Message') {
 		const msg = (await this.send(content, options as MessageOptions)) as Message;
 		msg.nuke(typeof timer === 'number' ? timer : 10000).catch((error) => this.client.emit(Events.ApiError, error));
 		return msg;
-	}
-
-	public async sendLocale(key, args = [], options = {}) {
-		if (!Array.isArray(args)) [options, args] = [args, []];
-		return this.send(APIMessage.transformOptions(await this.fetchLocale(key), undefined, options));
 	}
 
 	public async nuke(time = 0): Promise<Message> {
@@ -98,15 +102,14 @@ declare module 'discord.js' {
 		max?: number;
 	}
 
-	interface Message {
+	interface Message extends TextBasedExtensions {
+		fetchLanguage(): Promise<Language>;
 		prompt(content: string, time?: number): Promise<Message>;
 		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		alert(content: string, timer?: number): Promise<Message>;
 		alert(content: string, options?: number | MessageOptions, timer?: number): Promise<Message>;
 		nuke(time?: number): Promise<Message>;
-		fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-		fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
 	}
 }
 

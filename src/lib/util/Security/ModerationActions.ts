@@ -3,7 +3,6 @@ import { isNullish, Nullish } from '#lib/misc';
 import { ModerationManagerCreateData } from '#lib/structures/managers/ModerationManager';
 import { KeyOfType } from '#lib/types';
 import { Events } from '#lib/types/Enums';
-import { ModerationAction } from '#lib/types/Languages';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
@@ -223,6 +222,22 @@ const kRoleChannelOverwriteOptions = new Map<RoleDataKey, RolePermissionOverwrit
 		}
 	]
 ]);
+
+export interface ModerationAction {
+	addRole: string;
+	mute: string;
+	ban: string;
+	kick: string;
+	softban: string;
+	vkick: string;
+	vmute: string;
+	restrictedReact: string;
+	restrictedEmbed: string;
+	restrictedAttachment: string;
+	restrictedVoice: string;
+	setNickname: string;
+	removeRole: string;
+}
 
 export class ModerationActions {
 	public guild: Guild;

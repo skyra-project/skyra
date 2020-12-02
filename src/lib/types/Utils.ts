@@ -12,7 +12,9 @@ export function FT<TArgs, TReturn>(k: string): CustomFunctionGet<string, TArgs, 
 	return k as CustomFunctionGet<string, TArgs, TReturn>;
 }
 
-export type AnyObject = Record<PropertyKey, unknown> | {};
+export interface NonNullObject {}
+
+export type AnyObject = Record<PropertyKey, unknown> | NonNullObject;
 
 export type KeyOfType<T, V> = {
 	[P in keyof T]: T[P] extends V ? P : never;
@@ -20,7 +22,7 @@ export type KeyOfType<T, V> = {
 	keyof T;
 
 export type Mutable<T> = {
-	-readonly [P in keyof T]: T[P] extends Array<unknown> | AnyObject | {} ? Mutable<T[P]> : T[P];
+	-readonly [P in keyof T]: T[P] extends Array<unknown> | AnyObject | NonNullObject ? Mutable<T[P]> : T[P];
 };
 
 export type StrictRequired<T> = {

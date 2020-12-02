@@ -1,30 +1,8 @@
-import { Message, Permissions, Structures, TextChannel } from 'discord.js';
+import { Permissions, Structures } from 'discord.js';
 import { Language } from 'klasa';
 import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
 
-const snipes = new WeakMap<TextChannel, SnipedMessage>();
-
-export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextChannel')) {
-	public set sniped(value: Message | null) {
-		const previous = snipes.get(this);
-		if (typeof previous !== 'undefined') this.client.clearTimeout(previous.timeout);
-
-		if (value === null) {
-			snipes.delete(this);
-		} else {
-			const next: SnipedMessage = {
-				message: value,
-				timeout: this.client.setTimeout(() => snipes.delete(this), 15000)
-			};
-			snipes.set(this, next);
-		}
-	}
-
-	public get sniped() {
-		const current = snipes.get(this);
-		return typeof current === 'undefined' ? null : current.message;
-	}
-
+export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsChannel')) {
 	public async fetchLanguage() {
 		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild });
 		const language = this.client.languages.get(languageKey);
@@ -49,15 +27,9 @@ export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextCha
 	}
 }
 
-export interface SnipedMessage {
-	message: Message;
-	timeout: NodeJS.Timeout;
-}
-
 declare module 'discord.js' {
-	export interface TextChannel extends TextBasedExtensions {
+	export interface NewsChannel extends TextBasedExtensions {
 		fetchLanguage(): Promise<Language>;
-		sniped: Message | null;
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;
@@ -66,4 +38,4 @@ declare module 'discord.js' {
 	}
 }
 
-Structures.extend('TextChannel', () => SkyraTextChannel);
+Structures.extend('NewsChannel', () => SkyraNewsChannel);

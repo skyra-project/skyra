@@ -20,7 +20,7 @@ const mapCurrency = (currency: CurrencyData) => `${currency.name} (${currency.sy
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [countryName]: [string]) {
 		const language = await message.fetchLanguage();
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

@@ -5,7 +5,7 @@ import { pickRandom } from '#utils/util';
 
 export default class extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, previous: number, next: number) {
-		await channel.sendMessage(next > 200 ? await this.getExtremeVolume(channel, next) : await this.getRegularVolume(channel, previous, next));
+		await channel.send(next > 200 ? await this.getExtremeVolume(channel, next) : await this.getRegularVolume(channel, previous, next));
 	}
 
 	private async getExtremeVolume(channel: MessageAcknowledgeable, volume: number): Promise<string> {

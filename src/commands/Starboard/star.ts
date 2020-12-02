@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 			return this.random(message, [member]);
 		}
 
-		return message.sendMessage(starredMessage.content, starredMessage.embeds[0]);
+		return message.send(starredMessage.content, starredMessage.embeds[0]);
 	}
 
 	public async top(message: GuildMessage, [member, timespan]: [GuildMember?, number?]) {
@@ -123,7 +123,7 @@ export default class extends SkyraCommand {
 		const topThreeMessages = topMessages.sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 		const topThreeReceivers = [...topReceivers].sort((a, b) => (a[1] > b[1] ? -1 : 1)).slice(0, 3);
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(Colors.Amber)
 				.addField(

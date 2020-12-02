@@ -54,7 +54,7 @@ export default class extends SkyraCommand {
 		const index = Math.min(COLORS.length - 1, warnings + mutes + kicks + bans);
 		const language = await message.fetchLanguage();
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
@@ -88,7 +88,7 @@ export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: GuildMessage, [target = message.author]: [User]) {
 		const language = await message.fetchLanguage();
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

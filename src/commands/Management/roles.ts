@@ -124,7 +124,7 @@ export default class extends RichDisplayCommand {
 		if (unmanageable.length) output.push(language.get(LanguageKeys.Commands.Management.RolesNotManageable, { roles: unmanageable.join('`, `') }));
 		if (removedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesRemoved, { roles: removedRoles.join('`, `') }));
 		if (addedRoles.length) output.push(language.get(LanguageKeys.Commands.Management.RolesAdded, { roles: addedRoles.join('`, `') }));
-		return message.sendMessage(output.join('\n'));
+		return message.send(output.join('\n'));
 	}
 
 	private async list(message: GuildMessage, publicRoles: readonly string[]) {
@@ -159,7 +159,7 @@ export default class extends RichDisplayCommand {
 		const pages = Math.ceil(roles.length / 10);
 		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);

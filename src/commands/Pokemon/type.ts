@@ -59,7 +59,7 @@ const kPokemonTypes = new Set([
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [types]: [Types[]]) {
 		const language = await message.fetchLanguage();
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const typeMatchups = await this.fetchAPI(types, language);

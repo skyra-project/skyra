@@ -117,14 +117,14 @@ export default class extends SkyraCommand {
 
 					// Delete the previous message, and if stopped, send stop.
 					floatPromise(this, gameMessage.nuke());
-					if (!verification) return message.channel.postable ? message.sendLocale('commandHungerGamesStop') : undefined;
+					if (!verification) return message.channel.postable ? message.sendLocale(LanguageKeys.Commands.Games.HungerGamesStop) : undefined;
 				}
 				if (game.bloodbath) game.bloodbath = false;
 				else game.sun = !game.sun;
 			}
 
 			// The match finished with one remaining player
-			return message.sendLocale('commandHungerGamesWinner', [{ winner: game.tributes.values().next().value }]);
+			return message.sendLocale(LanguageKeys.Commands.Games.HungerGamesWinner, [{ winner: game.tributes.values().next().value }]);
 		} finally {
 			game.llrc.end();
 		}

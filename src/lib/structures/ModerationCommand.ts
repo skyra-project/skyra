@@ -124,7 +124,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			}
 
 			// Else send the message as usual.
-			return message.sendMessage(output.join('\n'));
+			return message.send(output.join('\n'));
 		}
 
 		return null;

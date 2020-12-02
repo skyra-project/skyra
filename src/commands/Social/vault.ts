@@ -53,7 +53,7 @@ export default class Vault extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.sendEmbed(await this.buildEmbed(message, language, money, vault, coins, true));
+		return message.send(await this.buildEmbed(message, language, money, vault, coins, true));
 	}
 
 	public async dep(...args: ArgumentTypes<Vault['deposit']>) {
@@ -80,7 +80,7 @@ export default class Vault extends SkyraCommand {
 			return { money: newMoney, vault: newVault };
 		});
 
-		return message.sendEmbed(await this.buildEmbed(message, language, money, vault, coins));
+		return message.send(await this.buildEmbed(message, language, money, vault, coins));
 	}
 
 	public async with(...args: ArgumentTypes<Vault['withdraw']>) {
@@ -91,7 +91,7 @@ export default class Vault extends SkyraCommand {
 		const { users } = await DbSet.connect();
 		const language = await message.fetchLanguage();
 		const settings = await users.ensureProfile(message.author.id);
-		return message.sendEmbed(await this.buildEmbed(message, language, settings.money, settings.profile.vault));
+		return message.send(await this.buildEmbed(message, language, settings.money, settings.profile.vault));
 	}
 
 	private updateBalance(money: number, vault: number, settings: UserEntity) {

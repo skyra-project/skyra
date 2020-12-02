@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 			return this.acceptPayment(message, language, user, money);
 		});
 
-		return message.sendMessage(response);
+		return message.send(response);
 	}
 
 	private acceptPayment(message: GuildMessage, language: Language, user: User, money: number) {

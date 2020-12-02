@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 
 		const { position } = list.get(message.author.id) || { position: list.size + 1 };
 		const page = await this.generatePage(message, list, index - 1, position);
-		return message.sendMessage(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
+		return message.send(`${titles[type]}\n${page.join('\n')}`, { code: 'asciidoc' });
 	}
 
 	public async generatePage(message: GuildMessage, list: Collection<string, LeaderboardUser>, index: number, position: number) {

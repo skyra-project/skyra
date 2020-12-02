@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage) {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setTitle(await message.fetchLocale(LanguageKeys.Commands.Animal.CatfactTitle))

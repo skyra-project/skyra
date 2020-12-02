@@ -11,16 +11,22 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 	switch (options.sendAs) {
 		case 'file': {
 			if (message.channel.attachable) {
-				return message.channel.sendFile(
-					Buffer.from(options.content ? options.content : options.result!),
-					options.targetId ? `${options.targetId}.txt` : 'output.txt',
+				return message.channel.send(
 					await message.fetchLocale(
 						options.time !== undefined && options.footer !== undefined
 							? LanguageKeys.System.ExceededLengthOutputFileWithTypeAndTime
 							: LanguageKeys.System.ExceededLengthOutputFile,
 						{ time: options.time, type: options.footer }
-					)
-				);
+					),
+					{
+						files: [
+							{
+								attachment: Buffer.from(options.content ? options.content : options.result!),
+								name: options.targetId ? `${options.targetId}.txt` : 'output.txt'
+							}
+						]
+					}
+				) as Promise<KlasaMessage>;
 			}
 
 			await getTypeOutput(message, options);
@@ -65,7 +71,7 @@ export async function handleMessage<ED extends ExtraDataPartial>(
 			}
 
 			if (options.content) {
-				return message.sendMessage(
+				return message.send(
 					`${options.content}${
 						options.content && options.attachments ? `\n\n\n=============\n${options.attachments}` : options.attachments
 					}`,

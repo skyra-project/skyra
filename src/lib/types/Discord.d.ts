@@ -1,4 +1,4 @@
-import type { DMChannel, Guild, GuildMember, NewsChannel, PartialSendAliases, TextChannel } from 'discord.js';
+import type { DMChannel, Guild, GuildMember, NewsChannel, TextChannel } from 'discord.js';
 import type { KlasaMessage } from 'klasa';
 
 export interface GuildMessage extends KlasaMessage {
@@ -13,6 +13,4 @@ export interface DMMessage extends KlasaMessage {
 	readonly member: null;
 }
 
-export interface MessageAcknowledgeable extends PartialSendAliases {
-	readonly guild: Guild;
-}
+export type MessageAcknowledgeable = TextChannel | GuildMessage;

@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 	}
 
 	private generator(input: string, i18n: Language) {
-		const prefixes = cast<EightBallLanguage>(i18n.language.command8ballQuestions || this.client.languages.default.language.command8ballQuestions);
+		const prefixes = cast<EightBallLanguage>(i18n.get(LanguageKeys.Commands.Fun.EightballQuestions));
 
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) return pickRandom(i18n.get(LanguageKeys.Commands.Fun.Resolve8BallQuestionKey(key)));

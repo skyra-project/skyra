@@ -26,9 +26,8 @@ export default class extends SkyraCommand {
 		const [attachment, amount] = await new WheelOfFortune(message, wager, settings).run();
 		const titles = await message.fetchLocale(LanguageKeys.Commands.Games.WheelOfFortuneTitles);
 
-		return message.sendMessage(
-			[`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'),
-			{ files: [{ attachment, name: 'wof.png' }] }
-		);
+		return message.send([`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'), {
+			files: [{ attachment, name: 'wof.png' }]
+		});
 	}
 }

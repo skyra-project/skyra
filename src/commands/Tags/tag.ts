@@ -144,15 +144,15 @@ export default class extends SkyraCommand {
 		const tag = tags.find((command) => command.id === tagName);
 		return tag
 			? tag.embed
-				? message.sendEmbed(new MessageEmbed().setDescription(tag.content).setColor(tag.color))
-				: message.sendMessage(tag.content)
+				? message.send(new MessageEmbed().setDescription(tag.content).setColor(tag.color))
+				: message.send(tag.content)
 			: null;
 	}
 
 	public async source(message: GuildMessage, [tagName]: [string]) {
 		const tags = await message.guild.readSettings(GuildSettings.CustomCommands);
 		const tag = tags.find((command) => command.id === tagName);
-		return tag ? message.sendMessage(codeBlock('md', tag.content)) : null;
+		return tag ? message.send(codeBlock('md', tag.content)) : null;
 	}
 
 	private createTag(message: GuildMessage, id: string, content: string): CustomCommand {

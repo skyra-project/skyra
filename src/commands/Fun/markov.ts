@@ -43,12 +43,12 @@ export default class extends SkyraCommand {
 		const language = await message.fetchLanguage();
 
 		// Send loading message
-		await message.sendEmbed(
+		await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Process the chain
-		return message.sendEmbed(
+		return message.send(
 			await this.kProcess(message, language, await this.retrieveMarkov(language, username, channnel ?? (message.channel as TextChannel)))
 		);
 	}

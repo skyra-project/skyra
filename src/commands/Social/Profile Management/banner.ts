@@ -180,7 +180,7 @@ export default class extends SkyraCommand {
 
 	private async runDisplay(message: GuildMessage, language: Language, display: UserRichDisplay | null) {
 		if (display !== null) {
-			const response = await message.sendEmbed(
+			const response = await message.send(
 				new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 			);
 			await display.start(response, message.author.id);

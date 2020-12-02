@@ -36,7 +36,7 @@ const kPokemonGenerations = new Set(['1', '2', '3', '4', '5', '6', '7', '8']);
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const language = await message.fetchLanguage();
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

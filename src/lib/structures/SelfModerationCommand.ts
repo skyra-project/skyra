@@ -5,6 +5,7 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import type { KeyOfType } from '#lib/types/Utils';
 import { Command, CommandOptions, CommandStore, Duration, Language } from 'klasa';
 import { SelfModeratorBitField, SelfModeratorHardActionFlags } from './SelfModeratorBitField';
+import { codeBlock } from '@sapphire/utilities';
 
 export enum AKeys {
 	Enable,
@@ -188,21 +189,25 @@ export abstract class SelfModerationCommand extends Command {
 		const i18n = language.get.bind(language);
 		const duration = language.duration.bind(language);
 		const [yes, no] = [i18n(LanguageKeys.Resolvers.BoolEnabled), i18n(LanguageKeys.Resolvers.BoolDisabled)];
-		return message.sendCode(
-			'prolog',
-			i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
-				kEnabled: enabled ? yes : no,
-				kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
-				kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
-				kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
-				kHardAction: i18n(SelfModerationCommand.displayHardAction(hardAction)),
-				hardActionDurationText:
-					hardActionDuration === null
-						? i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
-						: duration(hardActionDuration),
-				thresholdMaximumText: adder?.maximum ? adder.maximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
-				thresholdDurationText: adder?.duration ? duration(adder.duration) : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
-			})
+		return message.send(
+			codeBlock(
+				'prolog',
+				i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShow, {
+					kEnabled: enabled ? yes : no,
+					kAlert: SelfModerationCommand.has(softAction, ASKeys.Alert) ? yes : no,
+					kLog: SelfModerationCommand.has(softAction, ASKeys.Log) ? yes : no,
+					kDelete: SelfModerationCommand.has(softAction, ASKeys.Delete) ? yes : no,
+					kHardAction: i18n(SelfModerationCommand.displayHardAction(hardAction)),
+					hardActionDurationText:
+						hardActionDuration === null
+							? i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowDurationPermanent)
+							: duration(hardActionDuration),
+					thresholdMaximumText: adder?.maximum ? adder.maximum : i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset),
+					thresholdDurationText: adder?.duration
+						? duration(adder.duration)
+						: i18n(LanguageKeys.Commands.Moderation.AutomaticParameterShowUnset)
+				}).join('\n')
+			)
 		);
 	}
 

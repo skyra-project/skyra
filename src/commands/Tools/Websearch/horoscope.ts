@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 			mood,
 			rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`
 		});
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setDescription(prediction)

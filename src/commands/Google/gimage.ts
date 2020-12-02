@@ -31,9 +31,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [query]: [string]) {
 		const language = await message.fetchLanguage();
 		const [response, { items }] = await Promise.all([
-			message.sendEmbed(
-				new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-			),
+			message.send(new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)),
 			queryGoogleCustomSearchAPI<CustomSearchType.Image>(message, CustomSearchType.Image, query)
 		]);
 

@@ -21,7 +21,7 @@ export default class extends MusicCommand {
 		const listeners = voiceChannel?.listeners.length ?? 0;
 		if (listeners >= 4) {
 			const response = force ? await this.canSkipWithForce(message, voiceChannel!) : await this.canSkipWithoutForce(message, audio, listeners);
-			if (response !== null) return message.sendMessage(response);
+			if (response !== null) return message.send(response);
 		}
 
 		const track = await audio.getCurrentTrack();

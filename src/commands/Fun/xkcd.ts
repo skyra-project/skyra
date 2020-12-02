@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
 			throw language.get(LanguageKeys.Commands.Fun.XkcdNotfound);
 		});
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(comic.img)

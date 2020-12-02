@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 				extSettings!.reputations === 1
 					? language.get(LanguageKeys.Commands.Social.Reputation, { count: extSettings!.reputations })
 					: language.get(LanguageKeys.Commands.Social.ReputationPlural, { count: extSettings!.reputations });
-			return message.sendMessage(
+			return message.send(
 				message.author === user
 					? language.get(LanguageKeys.Commands.Social.ReputationsSelf, { points: selfSettings.reputations })
 					: language.get(LanguageKeys.Commands.Social.Reputations, { user: user.username, points: reputationPoints })

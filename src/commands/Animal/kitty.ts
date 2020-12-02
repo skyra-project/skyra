@@ -24,6 +24,6 @@ export default class extends SkyraCommand {
 		} catch {
 			embed.setImage('https://wallpapercave.com/wp/wp3021105.jpg');
 		}
-		return message.sendEmbed(embed);
+		return message.send(embed);
 	}
 }

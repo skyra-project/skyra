@@ -36,7 +36,7 @@ export default class extends SkyraCommand {
 		const language = await message.fetchLanguage();
 		// TODO(VladFrangu): Apparently make a `message.loading(language)` kind of thing,
 		// since we repeat this over and over, but was out of #1301's scope.
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

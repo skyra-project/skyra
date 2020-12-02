@@ -23,7 +23,7 @@ export default class extends SkyraCommand {
 	private handsImage: Image = null!;
 
 	public async run(message: KlasaMessage, [imageBuffer]: [Image]) {
-		const buffer = await new Canvas(512, 512)
+		const attachment = await new Canvas(512, 512)
 			.printImage(this.bodyImage, 0, 0, 512, 512)
 			.translate(135, 410)
 			.rotate(radians(-45))
@@ -32,7 +32,7 @@ export default class extends SkyraCommand {
 			.printImage(this.handsImage, 0, 0, 512, 512)
 			.toBufferAsync();
 
-		return message.channel.sendFile(buffer, 'peepoLove.png');
+		return message.channel.send({ files: [{ attachment, name: 'peepoLove.png' }] });
 	}
 
 	public async init() {

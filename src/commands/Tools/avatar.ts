@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		const sizeFlag = Reflect.get(message.flagArgs, 'size');
 		const size = sizeFlag ? this.resolveSize(sizeFlag) : 2048;
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setAuthor(user.tag, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setColor(await DbSet.fetchColor(message))

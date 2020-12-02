@@ -64,7 +64,7 @@ export default class extends SkyraCommand {
 					: shuffle([data.correct_answer, ...data.incorrect_answers].map((ans) => decode(ans)));
 			const correctAnswer = decode(data.correct_answer);
 
-			await message.sendEmbed(this.buildQuestionEmbed(language, data, possibleAnswers));
+			await message.send(this.buildQuestionEmbed(language, data, possibleAnswers));
 			const filter = (msg: KlasaMessage) => {
 				const num = Number(msg.content);
 				return Number.isInteger(num) && num > 0 && num <= possibleAnswers.length;

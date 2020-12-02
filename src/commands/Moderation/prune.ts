@@ -197,7 +197,7 @@ export default class extends SkyraCommand {
 			const language = await message.fetchLanguage();
 
 			// Send the message to the prune logs channel.
-			await channel.sendMessage('', {
+			await channel.send('', {
 				embed: new MessageEmbed()
 					.setAuthor(
 						`${message.author.tag} (${message.author.id})`,

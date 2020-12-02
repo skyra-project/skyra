@@ -25,7 +25,7 @@ export default class extends RichDisplayCommand {
 	public async character(message: GuildMessage, [name]: [string]) {
 		const language = await message.fetchLanguage();
 
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
@@ -39,7 +39,7 @@ export default class extends RichDisplayCommand {
 	public async item(message: GuildMessage, [item]: [string]) {
 		const language = await message.fetchLanguage();
 
-		const response = await message.sendEmbed(
+		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 

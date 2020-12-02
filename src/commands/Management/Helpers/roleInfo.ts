@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 					.join('\n')
 			: language.get(LanguageKeys.Commands.Management.RoleInfoNoPermissions);
 
-		return message.sendEmbed(
+		return message.send(
 			new MessageEmbed()
 				.setColor(role.color || BrandingColors.Secondary)
 				.setTitle(`${role.name} [${role.id}]`)

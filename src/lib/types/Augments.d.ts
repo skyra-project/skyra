@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/unified-signatures */
 import type { NP, Queue, QueueClient, QueueClientOptions, QueueEntry } from '#lib/audio';
 import type { SettingsManager } from '#lib/database';
-import { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
+import type { GuildMemberFetchQueue } from '#lib/discord/GuildMemberFetchQueue';
 import type { InviteStore } from '#lib/structures/InviteStore';
 import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
@@ -79,33 +79,6 @@ declare module 'discord.js' {
 		emit(event: Events.ResourceAnalyticsSync): boolean;
 		emit(event: Events.TwitchStreamHookedAnalytics, status: AnalyticsSchema.TwitchStreamStatus): boolean;
 		emit(event: string | symbol, ...args: any[]): boolean;
-	}
-
-	interface PartialSendAliases {
-		sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
-		sendLocale<K extends string, TReturn>(
-			key: CustomGet<K, TReturn>,
-			options?: (MessageOptions & { split?: false }) | MessageAdditions
-		): Promise<Message>;
-		sendLocale<K extends string, TReturn>(
-			key: CustomGet<K, TReturn>,
-			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-		): Promise<Message[]>;
-		sendLocale<K extends string, TArgs, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			localeArgs: [TArgs],
-			options?: MessageOptions | MessageAdditions
-		): Promise<Message>;
-		sendLocale<K extends string, TArgs, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			localeArgs: [TArgs],
-			options?: (MessageOptions & { split?: false }) | MessageAdditions
-		): Promise<Message>;
-		sendLocale<K extends string, TArgs, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			localeArgs: [TArgs],
-			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-		): Promise<Message[]>;
 	}
 }
 

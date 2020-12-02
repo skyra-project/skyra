@@ -21,9 +21,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
 		const userAvatar = await fetchAvatar(user);
-		const image = this.generateImage(userAvatar);
+		const attachment = await this.generateImage(userAvatar);
 
-		return message.channel.sendFile(image.toBuffer(), 'we-do-not-do-that-here.png');
+		return message.channel.send({ files: [{ attachment, name: 'we-do-not-do-that-here.png' }] });
 	}
 
 	public async init() {
@@ -36,6 +36,7 @@ export default class extends SkyraCommand {
 			.save()
 			.translate(316, 115)
 			.rotate(radians(10))
-			.printCircularImage(avatar, 0, 0, 65);
+			.printCircularImage(avatar, 0, 0, 65)
+			.toBufferAsync();
 	}
 }

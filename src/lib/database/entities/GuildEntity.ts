@@ -162,9 +162,13 @@ export class GuildEntity extends BaseEntity {
 	@Column('boolean', { name: 'events.memberRemove', default: false })
 	public eventsMemberRemove = false;
 
-	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberNameUpdate })
-	@Column('boolean', { name: 'events.memberNameUpdate', default: false })
-	public eventsMemberNameUpdate = false;
+	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberNickNameUpdate })
+	@Column('boolean', { name: 'events.member-nickname-update', default: false })
+	public eventsMemberNickNameUpdate = false;
+
+	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberUserNameUpdate })
+	@Column('boolean', { name: 'events.member-username-update', default: false })
+	public eventsMemberUserNameUpdate = false;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.EventsMemberRoleUpdate })
 	@Column('boolean', { name: 'events.memberRoleUpdate', default: false })

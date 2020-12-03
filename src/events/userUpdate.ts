@@ -25,7 +25,7 @@ export default class extends Event {
 
 	private async processGuild(guild: Guild, user: User, previous: string, next: string) {
 		const [enabled, language] = await guild.readSettings((settings) => [
-			settings[GuildSettings.Events.MemberNicknameUpdate],
+			settings[GuildSettings.Events.MemberUserNameUpdate],
 			settings.getLanguage()
 		]);
 

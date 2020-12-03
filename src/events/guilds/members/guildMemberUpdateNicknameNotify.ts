@@ -11,7 +11,7 @@ import { Event, EventOptions, Language } from 'klasa';
 export default class extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
 		const [enabled, language] = await next.guild.readSettings((settings) => [
-			settings[GuildSettings.Events.MemberNicknameUpdate],
+			settings[GuildSettings.Events.MemberNickNameUpdate],
 			settings.getLanguage()
 		]);
 		// Retrieve whether or not nickname logs should be sent from Guild Settings and

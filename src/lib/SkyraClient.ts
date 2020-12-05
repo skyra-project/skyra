@@ -134,7 +134,7 @@ export class SkyraClient extends KlasaClient {
 	 * @param message The message that gives context.
 	 */
 	public fetchLanguage(message: KlasaMessage) {
-		if (!message.guild) return Promise.resolve(this.options.language ?? 'en-US');
+		if (!message.guild) return null;
 		return message.guild.readSettings(GuildSettings.Language);
 	}
 }

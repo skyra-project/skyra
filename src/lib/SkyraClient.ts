@@ -33,6 +33,7 @@ import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsDat
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
+import { In17nHandler } from './structures/In17nHandler';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -101,6 +102,9 @@ export class SkyraClient extends KlasaClient {
 	@enumerable(false)
 	public twitch: Twitch = new Twitch();
 
+	@enumerable(false)
+	public i18n: In17nHandler = new In17nHandler(this);
+
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
@@ -117,6 +121,7 @@ export class SkyraClient extends KlasaClient {
 
 	public async login(token?: string) {
 		await this.schedules.init();
+		await this.i18n.init();
 		return super.login(token);
 	}
 

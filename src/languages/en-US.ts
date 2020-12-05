@@ -1,50 +1,4 @@
 /* eslint-disable @typescript-eslint/no-invalid-this, @typescript-eslint/member-ordering */
-import { VERSION } from '#root/config';
-import { Emojis } from '#utils/constants';
-import { CATEGORIES } from '#utils/Games/TriviaManager';
-import { random } from '#utils/util';
-import { DurationFormatter, TimeTypes } from '@sapphire/time-utilities';
-import { codeBlock, inlineCodeBlock, toTitleCase } from '@sapphire/utilities';
-import { Language, LanguageKeys, Timestamp, version as klasaVersion } from 'klasa';
-
-const LOADING = Emojis.Loading;
-const SHINY = Emojis.Shiny;
-const GREENTICK = Emojis.GreenTick;
-const REDCROSS = Emojis.RedCross;
-
-const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
-
-const duration = new DurationFormatter({
-	[TimeTypes.Year]: {
-		1: 'year',
-		DEFAULT: 'years'
-	},
-	[TimeTypes.Month]: {
-		1: 'month',
-		DEFAULT: 'months'
-	},
-	[TimeTypes.Week]: {
-		1: 'week',
-		DEFAULT: 'weeks'
-	},
-	[TimeTypes.Day]: {
-		1: 'day',
-		DEFAULT: 'days'
-	},
-	[TimeTypes.Hour]: {
-		1: 'hour',
-		DEFAULT: 'hours'
-	},
-	[TimeTypes.Minute]: {
-		1: 'minute',
-		DEFAULT: 'minutes'
-	},
-	[TimeTypes.Second]: {
-		1: 'second',
-		DEFAULT: 'seconds'
-	}
-});
-
 export default class extends Language {
 	public PERMISSIONS = {
 		ADMINISTRATOR: 'Administrator',
@@ -3907,8 +3861,7 @@ export default class extends Language {
 				`• **Guilds**: ${stats.guilds}`,
 				`• **Channels**: ${stats.channels}`,
 				`• **Discord.js**: ${stats.version}`,
-				`• **Node.js**: ${stats.nodeJs}`,
-				`• **Klasa**: ${klasaVersion}`
+				`• **Node.js**: ${stats.nodeJs}`
 			],
 			uptime: [
 				`• **Host**: ${this.duration(uptime.host, 2)}`,

@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import { Colors } from '#lib/types/constants/Constants';
-import { DEV } from '#root/config';
+import { CATEGORIES as TRVIA_CATEGORIES } from '#utils/Games/TriviaManager';
+import { VERSION as SKYRA_VERSION, DEV } from '#root/config';
+import { LanguageFormatters } from '#lib/types/Languages';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
+import i18next from 'i18next';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
@@ -288,6 +291,42 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 	nms: {
 		everyone: 5,
 		role: 2
+	},
+	i18n: {
+		defaultMissingKey: 'missingKey',
+		defaultNS: 'global',
+		i18next: {
+			preload: ['en-US'],
+			load: 'all',
+			fallbackLng: 'en-US',
+			initImmediate: false,
+			interpolation: {
+				escapeValue: false,
+				defaultVariables: {
+					eLoading: Emojis.Loading,
+					eShiny: Emojis.Shiny,
+					eGreenTick: Emojis.GreenTick,
+					eRedCross: Emojis.RedCross,
+					triviaCategories: Object.keys(TRVIA_CATEGORIES).join(', '),
+					skyraVersion: SKYRA_VERSION
+				},
+				format: (value: unknown, format?: string) => {
+					switch (format as LanguageFormatters) {
+						case LanguageFormatters.AndList: {
+							return list(value as string[], i18next.t('global:and'));
+						}
+						case LanguageFormatters.OrList: {
+							return list(value as string[], i18next.t('global:or'));
+						}
+						case LanguageFormatters.Permissions: {
+							return i18next.t(`permissions:${value}`);
+						}
+						default:
+							return value as string;
+					}
+				}
+			}
+		}
 	}
 };
 

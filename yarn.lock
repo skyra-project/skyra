@@ -3893,9 +3893,9 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   dependencies:
     node-fetch "^2.6.0"
 
-klasa@skyra-project/klasa#settings:
+klasa@skyra-project/klasa#feat/i18next:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/e0020fb8fa6b09f31c30ad8fae63cdea0d67224f"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/3c5468bfc50de9dcf250707def577302dd9068d0"
   dependencies:
     fs-nextra "^0.5.1"
 

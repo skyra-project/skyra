@@ -17,6 +17,7 @@ import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
 import type { InitOptions } from 'i18next';
 import type { i18nextFsBackend } from 'i18next-fs-backend';
+import type { In17nHandler } from '#lib/structures/In17nHandler';
 
 declare module 'discord.js' {
 	interface Client {
@@ -31,6 +32,7 @@ declare module 'discord.js' {
 		readonly schedules: ScheduleManager;
 		readonly settings: SettingsManager;
 		readonly twitch: Twitch;
+		readonly i18n: In17nHandler;
 		readonly version: string;
 		readonly webhookDatabase: Webhook | null;
 		readonly webhookError: Webhook;

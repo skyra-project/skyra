@@ -23,6 +23,20 @@ export interface ModerationAction {
 	removeRole: string;
 }
 
+export const enum LanguageFormatters {
+	AndList = 'andList',
+	OrList = 'orList',
+	Permissions = 'permissions',
+	HumanLevels = 'humanLevels',
+	Duration = 'duration',
+	Ordinal = 'ordinal',
+	GroupDigits = 'groupDigits',
+	CodeBlock = 'codeBlock',
+	InlineCodeblock = 'inlineCodeBlock',
+	ToTitleCase = 'toTitleCase',
+	Random = 'random'
+}
+
 declare module 'klasa' {
 	export interface LanguageKeys {
 		default: (params: { key: string }) => string;

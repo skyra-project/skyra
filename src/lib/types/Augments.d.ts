@@ -12,11 +12,11 @@ import type { LongLivingReactionCollector } from '#utils/LongLivingReactionColle
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
-import type { PermissionString } from 'discord.js';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
-import type { CustomFunctionGet, CustomGet } from './Utils';
+import type { InitOptions } from 'i18next';
+import type { i18nextFsBackend } from 'i18next-fs-backend';
 
 declare module 'discord.js' {
 	interface Client {
@@ -93,18 +93,32 @@ declare module 'klasa' {
 		schedule?: {
 			interval: number;
 		};
-	}
-
-	interface Language {
-		PERMISSIONS: Record<PermissionString, string>;
-		HUMAN_LEVELS: Record<'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH', string>;
-		duration(time: number, precision?: number): string;
-		ordinal(cardinal: number): string;
-		list(values: readonly string[], conjunction: string): string;
-		groupDigits(number: number): string;
-
-		get<K extends string, TReturn>(value: CustomGet<K, TReturn>): TReturn;
-		get<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): TReturn;
+		i18n?: {
+			defaultName?: string;
+			/**
+			 * The options passed to `backend` in `i18next.init`.
+			 */
+			backend?: i18nextFsBackend.i18nextFsBackendOptions;
+			/**
+			 * The options passed to `i18next.init`.
+			 */
+			i18next?: InitOptions;
+			/**
+			 * The directory in which "i18next-fs-backend" should search for files.
+			 * Defaulted to "<rootDirectory>/languages".
+			 */
+			defaultLanguageDirectory?: string;
+			/**
+			 * The default value to be used if a specific language key isnt found.
+			 * Defaulted to "default:default".
+			 */
+			defaultMissingKey?: string;
+			/**
+			 * The default NS that is prefixed to all keys that dont specify it.
+			 * Defaulted to "default".
+			 */
+			defaultNS?: string;
+		};
 	}
 
 	interface PieceDefaults {

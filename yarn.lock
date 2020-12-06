@@ -855,10 +855,10 @@
   resolved "https://registry.yarnpkg.com/@skyra/decorators/-/decorators-3.0.0.tgz#eaa4287c07dd4eaaa2ebd8ec590c538b5379a659"
   integrity sha512-C0ooDOLzjtm4Iu0U4KxTIPEE2PNCN8rcTEpHphIFxxxQ5xZleu5ecX70KrPxXjmLKF/h3JUaDVt08KBeZwiC2Q==
 
-"@skyra/saelem@^2.0.4":
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-2.0.4.tgz#6652154fd90866a2d2faa73d7864423a721851e8"
-  integrity sha512-C6xRnu/iVJAhmVtO1whP8+N11qLjshwx9zvwHhTfZ2CVCTkPE9SxV3p7kdw+BB7bVmFztpT+26JcusKr8Rtj6Q==
+"@skyra/saelem@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@skyra/saelem/-/saelem-3.0.0.tgz#11b2ab5e70448f818c00aa1323dcefdfd652ad0c"
+  integrity sha512-ui/kvhk/qnDNAHrGK1Dw1/RgKG/IZXSAwusVXSvWgMEY6DJwNqRInPMkGE1xyozJlIxkzhE0td+JnosQtvac2Q==
   dependencies:
     graphql "^15.4.0"
 

@@ -2,9 +2,9 @@
 // Import all dependencies
 import { container } from 'tsyringe';
 import { DashboardClient } from 'klasa-dashboard-hooks';
-import { KlasaClient, KlasaClientOptions, KlasaMessage } from 'klasa';
+import { KlasaClient, KlasaClientOptions } from 'klasa';
 import { mergeDefault } from '@sapphire/utilities';
-import { Webhook } from 'discord.js';
+import { Message, Webhook } from 'discord.js';
 
 // Import all structures
 import { GiveawayManager } from './structures/managers/GiveawayManager';
@@ -129,7 +129,7 @@ export class SkyraClient extends KlasaClient {
 	 * Retrieves the prefix for the guild.
 	 * @param message The message that gives context.
 	 */
-	public fetchPrefix(message: KlasaMessage) {
+	public fetchPrefix(message: Message) {
 		if (!message.guild) return this.options.prefix;
 		return message.guild.readSettings(GuildSettings.Prefix);
 	}
@@ -138,9 +138,8 @@ export class SkyraClient extends KlasaClient {
 	 * Retrieves the language key for the message.
 	 * @param message The message that gives context.
 	 */
-	public fetchLanguage(message: KlasaMessage) {
-		if (!message.guild) return null;
-		return message.guild.readSettings(GuildSettings.Language);
+	public async fetchLanguage(message: Message) {
+		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
 	}
 }
 

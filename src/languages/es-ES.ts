@@ -495,8 +495,8 @@ export default class extends Language {
 		settingsPrefix:
 			'A prefix is an affix that is added in front of the word, in this case, the message. It allows bots to distinguish between a regular message and a command.',
 		settingsLanguage: 'The language I will use for your server. It may not be available in the language you want.',
-		settingsDisablenaturalprefix: 'Whether or not I should listen for my natural prefix, `Skyra,`',
-		settingsDisabledcommands:
+		settingsDisableNaturalPrefix: 'Whether or not I should listen for my natural prefix, `Skyra,`',
+		settingsDisabledCommands:
 			'The disabled commands, core commands may not be disabled, and moderators will override this. All commands must be in lower case.',
 		settingsChannelsAnnouncements:
 			'The channel for announcements, in pair with the key `roles.subscriber`, they are required for the announce command.',
@@ -522,11 +522,11 @@ export default class extends Language {
 		settingsChannelsIgnoreMessageEdit: 'Channels I should ignore when checking for edited messags to log.',
 		settingsChannelsIgnoreReactionAdd: 'Channels I should ignore when checking for added reactions.',
 		settingsChannelsIgnoreAll: 'Channels I should ignore for all types of logging.',
-		settingsDisabledchannels:
+		settingsDisabledChannels:
 			'A list of channels for disabled commands, for example, setting up a channel called general will forbid all users from using my commands there. Moderators+ override this purposedly to allow them to moderate without switching channels.',
-		settingsEventsBanadd: 'This event posts anonymous moderation logs when a user gets banned. You must set up `channels.moderation-logs`.',
-		settingsEventsBanremove: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
-		settingsEventsMemberadd: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',
+		settingsEventsBanAdd: 'This event posts anonymous moderation logs when a user gets banned. You must set up `channels.moderation-logs`.',
+		settingsEventsBanRemove: 'This event posts anonymous moderation logs when a user gets unbanned. You must set up `channels.moderation-logs`.',
+		settingsEventsMemberAdd: 'This event posts member logs when a user joins. They will be posted in `channels.member-logs`.',
 		settingsEventsMemberNickNameUpdate: 'Whether member nickname updates should be logged or not.',
 		settingsEventsMemberUserNameUpdate: 'Whether member username updates should be logged or not.',
 		settingsEventsMemberroleupdate: 'Whether memner role changes should be logged or not.',
@@ -3565,8 +3565,7 @@ export default class extends Language {
 		commandTimeNotScheduled: 'This task is not scheduled.',
 		commandTimeAborted: ({ title }) => `Successfully aborted the schedule for ${title}`,
 		commandTimeScheduled: ({ title, user, time }) =>
-			`${GREENTICK} Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${
-				user.id
+			`${GREENTICK} Successfully scheduled a moderation action type **${title}** for the user ${user.tag} (${user.id
 			}) with a duration of ${this.duration(time)}`,
 
 		/**
@@ -4778,18 +4777,18 @@ export default class extends Language {
 			thresholdMaximumText,
 			thresholdDurationText
 		}) => [
-			`Enabled      : ${kEnabled}`,
-			'Action',
-			` - Alert     : ${kAlert}`,
-			` - Log       : ${kLog}`,
-			` - Delete    : ${kDelete}`,
-			'Punishment',
-			` - Type      : ${kHardAction}`,
-			` - Duration  : ${hardActionDurationText}`,
-			'Threshold',
-			` - Maximum   : ${thresholdMaximumText}`,
-			` - Duration  : ${thresholdDurationText}`
-		],
+				`Enabled      : ${kEnabled}`,
+				'Action',
+				` - Alert     : ${kAlert}`,
+				` - Log       : ${kLog}`,
+				` - Delete    : ${kDelete}`,
+				'Punishment',
+				` - Type      : ${kHardAction}`,
+				` - Duration  : ${hardActionDurationText}`,
+				'Threshold',
+				` - Maximum   : ${thresholdMaximumText}`,
+				` - Duration  : ${thresholdDurationText}`
+			],
 		selfModerationCommandShowDurationPermanent: 'Permanent',
 		selfModerationCommandShowUnset: 'Unset',
 		selfModerationSoftActionAlert: 'Alert',
@@ -4896,9 +4895,9 @@ export default class extends Language {
 		systemCannotAccessChannel: 'Lo siento, pero no tienes permiso para ver ese canal.',
 		systemExceededLengthOutput: ({ output }) => `**Salida**:${output}`,
 		systemExceededLengthOutputWithTypeAndTime: ({ output, time, type }) => `**Salida**:${output}\n**Type**:${type}\n${time}`,
-		systemExceededLengthOutputConsole: ({}) => `Enviado el resultado a la consola.`,
+		systemExceededLengthOutputConsole: ({ }) => `Enviado el resultado a la consola.`,
 		systemExceededLengthOutputConsoleWithTypeAndTime: ({ time, type }) => `Enviado el resultado a la consola.\n**Type**:${type}\n${time}`,
-		systemExceededLengthOutputFile: ({}) => `Enviado el resultado como un archivo.`,
+		systemExceededLengthOutputFile: ({ }) => `Enviado el resultado como un archivo.`,
 		systemExceededLengthOutputFileWithTypeAndTime: ({ time, type }) => `Enviado el resultado como un archivo.\n**Type**:${type}\n${time}`,
 		systemExceededLengthOutputHastebin: ({ url }) => `Enviado el resultado a hastebin: ${url}`,
 		systemExceededLengthOutputHastebinWithTypeAndTime: ({ url, time, type }) =>

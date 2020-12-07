@@ -1,0 +1,73 @@
+{
+	"command8ballDescription": "Skyra will read the Holy Bible to find the correct answer for your question.",
+	"command8ballExtended": {
+		"extendedHelp": "This command provides you a random question based on your questions' type. Be careful, it may be too smart.",
+		"explainedUsage": [["question", "The Holy Question"]],
+		"examples": ["Why did the chicken cross the road?"]
+	},
+	"commandChoiceDescription": "Eeny, meeny, miny, moe, catch a tiger by the toe...",
+	"commandChoiceExtended": {
+		"extendedHelp": "I have an existencial doubt... should I wash the dishes or throw them through the window? The search continues. List me items separated by comma and I will choose one them. On a side note, I am not responsible of what happens next.",
+		"explainedUsage": [["words", "A list of words separated by comma."]],
+		"examples": ["Should Wash the dishes, Throw the dishes out the window", "Cat, Dog"]
+	},
+	"commandChangemymindDescription": "Skyra is the best, change my mind.",
+	"commandChangemymindExtended": {
+		"extendedHelp": "I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.",
+		"explainedUsage": [["text", "The phrase you want."]],
+		"examples": ["Skyra is the best bot in this server"]
+	},
+	"commandDiceDescription": "Roll the dice using d20 syntax.",
+	"commandDiceExtended": {
+		"extendedHelp": "The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once. However, you can change the amount of rolls for the dice, and this command will \"roll\" (get a random number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will return 10 as output.",
+		"examples": ["370d24", "100d6", "6"]
+	},
+	"commandEscaperopeDescription": "Use the escape rope from Pokemon.",
+	"commandEscaperopeExtended": {
+		"extendedHelp": "**Skyra** used **Escape Rope**."
+	},
+	"commandHowToFlirtDescription": "Captain America, you do not know how to flirt.",
+	"commandHowToFlirtExtended": {
+		"extendedHelp": "Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain America, I can guarantee that you'll get him.",
+		"explainedUsage": [["user", "The user to flirt with."]],
+		"examples": ["Skyra"]
+	},
+	"commandLoveDescription": "Lovemeter, online!",
+	"commandLoveExtended": {
+		"extendedHelp": "Hey! Wanna check the lovemeter? I know it's a ridiculous machine, but many humans love it! Don't be shy and try it!",
+		"explainedUsage": [["user", "The user to rate."]],
+		"examples": ["Skyra"]
+	},
+	"commandMarkovDescription": "Generate a Markov Chain from the text channel.",
+	"commandMarkovExtended": {
+		"extendedHelp": "A Markov chain is a stocha... what? Okay, something something a probability theory made by a Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random message given the content of the messages in the channel."
+	},
+	"commandNorrisDescription": "Enjoy your day reading Chuck Norris's jokes.",
+	"commandNorrisExtended": {
+		"extendedHelp": "Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone? Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io and retrieves a fact (do not assume they're false, not in front of him) so you can read it"
+	},
+	"commandRateDescription": "Let bots have opinions and rate somebody.",
+	"commandRateExtended": {
+		"extendedHelp": "Just because I am a bot doesn't mean I cannot rate you properly. I can grade you with a random number generator to ease the process. Okay okay, it's not fair, but I mean... I can also give you a 💯.",
+		"explainedUsage": [["user", "The user to rate."]],
+		"examples": ["Skyra", "me"]
+	},
+	"commandXkcdDescription": "Read comics from XKCD.",
+	"commandXkcdExtended": {
+		"extendedHelp": "**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
+		"explainedUsage": [["query", "Either the number of the comic, or a title to search for."]],
+		"examples": ["1091", "Curiosity"]
+	},
+	"commandPunDescription": "Shows you a random pun.",
+	"commandPunExtended": {
+		"extendedHelp": [
+			"A steak pun is a rare medium well done.",
+			"Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
+		],
+		"multiline": true
+	},
+	"commandWakandaDescription": "Helpful descriptions? We don't do that here",
+	"commandWakandaExtended": {
+		"extendedHelp": "Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."
+	}
+}

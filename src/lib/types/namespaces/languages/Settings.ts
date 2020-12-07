@@ -2,8 +2,8 @@ import { T } from '#lib/types';
 
 export const Prefix = T<string>('settingsPrefix');
 export const Language = T<string>('settingsLanguage');
-export const DisabledCommands = T<string>('settingsDisabledcommands');
-export const DisableNaturalPrefix = T<string>('settingsDisablenaturalprefix');
+export const DisabledCommands = T<string>('settingsDisabledCommands');
+export const DisableNaturalPrefix = T<string>('settingsDisableNaturalPrefix');
 export const ChannelsAnnouncements = T<string>('settingsChannelsAnnouncements');
 export const ChannelsFarewell = T<string>('settingsChannelsFarewell');
 export const ChannelsGreeting = T<string>('settingsChannelsGreeting');
@@ -20,10 +20,10 @@ export const ChannelsIgnoreMessageDelete = T<string>('settingsChannelsIgnoreMess
 export const ChannelsIgnoreMessageEdit = T<string>('settingsChannelsIgnoreMessageEdit');
 export const ChannelsIgnoreReactionAdd = T<string>('settingsChannelsIgnoreReactionAdd');
 export const ChannelsIgnoreAll = T<string>('settingsChannelsIgnoreAll');
-export const DisabledChannels = T<string>('settingsDisabledchannels');
-export const EventsBanAdd = T<string>('settingsEventsBanadd');
-export const EventsBanRemove = T<string>('settingsEventsBanremove');
-export const EventsMemberAdd = T<string>('settingsEventsMemberadd');
+export const DisabledChannels = T<string>('settingsDisabledChannels');
+export const EventsBanAdd = T<string>('settingsEventsBanAdd');
+export const EventsBanRemove = T<string>('settingsEventsBanRemove');
+export const EventsMemberAdd = T<string>('settingsEventsMemberAdd');
 export const EventsMemberNickNameUpdate = T<string>('settingsEventsMemberNickNameUpdate');
 export const EventsMemberUserNameUpdate = T<string>('settingsEventsMemberUserNameUpdate');
 export const EventsMemberRoleUpdate = T<string>('settingsEventsMemberroleupdate');

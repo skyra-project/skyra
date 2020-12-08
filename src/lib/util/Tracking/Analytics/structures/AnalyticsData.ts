@@ -1,6 +1,6 @@
 import { ENABLE_INFLUX, INFLUX_OPTIONS, INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET } from '#root/config';
 import { enumerable } from '#utils/util';
-import { InfluxDB, QueryApi, WriteApi, WritePrecision } from '@influxdata/influxdb-client';
+import { InfluxDB, QueryApi, WriteApi } from '@influxdata/influxdb-client';
 
 export class AnalyticsData {
 	@enumerable(false)
@@ -12,7 +12,7 @@ export class AnalyticsData {
 	public messageCount = 0;
 
 	public constructor() {
-		this.writeApi = this.influx!.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, WritePrecision.s);
+		this.writeApi = this.influx!.getWriteApi(INFLUX_ORG, INFLUX_ORG_ANALYTICS_BUCKET, 's');
 		this.queryApi = this.influx!.getQueryApi(INFLUX_ORG);
 	}
 }

@@ -72,7 +72,7 @@ export default class extends Route {
 			if (value === null) return [entry.property, entry.default];
 
 			const ctx = { ...context, entry };
-			const result = await (entry.array || Array.isArray(value) ? this.validateArray(value, ctx) : entry.serializer.isValid(value as any, ctx));
+			const result = await (entry.array ? this.validateArray(value, ctx) : entry.serializer.isValid(value as any, ctx));
 			if (!result) throw 'The value is not valid.';
 
 			return [entry.property, value] as const;

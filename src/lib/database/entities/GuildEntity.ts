@@ -66,7 +66,7 @@ export class GuildEntity extends BaseEntity {
 	@Column('varchar', { name: 'disabledCommands', length: 32, array: true, default: () => 'ARRAY[]::VARCHAR[]' })
 	public disabledCommands: string[] = [];
 
-	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'customcommand' })
+	@ConfigurableKey({ dashboardOnly: true, description: LanguageKeys.Settings.DashboardOnlyKey, type: 'customcommand', array: true })
 	@Column('jsonb', { name: 'custom-commands', default: () => "'[]'::JSONB" })
 	public customCommands: CustomCommand[] = [];
 

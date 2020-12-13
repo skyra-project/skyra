@@ -24,7 +24,6 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 		const type = options.type?.toLowerCase() ?? hydrateType(column.options.type!);
 		const df = options.default ?? getDefault(column.options, array, minimum);
 		const dashboardOnly = options.dashboardOnly ?? false;
-		const dashboardArray = options.dashboardArray ?? false;
 		const value = new SchemaKey({
 			target: target.constructor,
 			property: property as keyof GuildEntity,
@@ -36,8 +35,7 @@ export function ConfigurableKey(options: ConfigurableKeyOptions): PropertyDecora
 			minimum,
 			name,
 			type,
-			dashboardOnly,
-			dashboardArray
+			dashboardOnly
 		});
 
 		configurableKeys.set(property as keyof GuildEntity, value);
@@ -146,6 +144,6 @@ function hydrateType(type: ColumnType) {
 	}
 }
 
-type OptionalKeys = 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array' | 'default' | 'dashboardOnly' | 'dashboardArray';
+type OptionalKeys = 'name' | 'type' | 'inclusive' | 'maximum' | 'minimum' | 'array' | 'default' | 'dashboardOnly';
 type ConfigurableKeyOptions = Omit<ConfigurableKeyValueOptions, 'target' | 'property' | OptionalKeys> &
 	Partial<Pick<ConfigurableKeyValueOptions, OptionalKeys>>;

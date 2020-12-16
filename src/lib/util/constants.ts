@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { LanguageFormatters } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
+import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { CATEGORIES as TRVIA_CATEGORIES } from '#utils/Games/TriviaManager';
-import { VERSION as SKYRA_VERSION, DEV } from '#root/config';
-import { LanguageFormatters } from '#lib/types/Languages';
+import i18next, { FormatFunction } from 'i18next';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
-import i18next from 'i18next';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
@@ -303,23 +303,54 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 			interpolation: {
 				escapeValue: false,
 				defaultVariables: {
-					eLoading: Emojis.Loading,
-					eShiny: Emojis.Shiny,
-					eGreenTick: Emojis.GreenTick,
-					eRedCross: Emojis.RedCross,
-					triviaCategories: Object.keys(TRVIA_CATEGORIES).join(', '),
-					skyraVersion: SKYRA_VERSION
+					TRIVIA_CATEGORIES: Object.keys(TRVIA_CATEGORIES).join(', '),
+					VERSION: SKYRA_VERSION,
+					LOADING: Emojis.Loading,
+					SHINY: Emojis.Shiny,
+					GREENTICK: Emojis.GreenTick,
+					REDCROSS: Emojis.RedCross,
+					ADMINISTRATOR: 'ADMINISTRATOR',
+					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
+					MANAGE_GUILD: 'MANAGE_GUILD',
+					MANAGE_ROLES: 'MANAGE_ROLES',
+					MANAGE_CHANNELS: 'MANAGE_CHANNELS',
+					KICK_MEMBERS: 'KICK_MEMBERS',
+					BAN_MEMBERS: 'BAN_MEMBERS',
+					CREATE_INSTANT_INVITE: 'CREATE_INSTANT_INVITE',
+					CHANGE_NICKNAME: 'CHANGE_NICKNAME',
+					MANAGE_NICKNAMES: 'MANAGE_NICKNAMES',
+					MANAGE_EMOJIS: 'MANAGE_EMOJIS',
+					MANAGE_WEBHOOKS: 'MANAGE_WEBHOOKS',
+					VIEW_CHANNEL: 'VIEW_CHANNEL',
+					SEND_MESSAGES: 'SEND_MESSAGES',
+					SEND_TTS_MESSAGES: 'SEND_TTS_MESSAGES',
+					MANAGE_MESSAGES: 'MANAGE_MESSAGES',
+					EMBED_LINKS: 'EMBED_LINKS',
+					ATTACH_FILES: 'ATTACH_FILES',
+					READ_MESSAGE_HISTORY: 'READ_MESSAGE_HISTORY',
+					MENTION_EVERYONE: 'MENTION_EVERYONE',
+					USE_EXTERNAL_EMOJIS: 'USE_EXTERNAL_EMOJIS',
+					ADD_REACTIONS: 'ADD_REACTIONS',
+					CONNECT: 'CONNECT',
+					SPEAK: 'SPEAK',
+					STREAM: 'STREAM',
+					MUTE_MEMBERS: 'MUTE_MEMBERS',
+					DEAFEN_MEMBERS: 'DEAFEN_MEMBERS',
+					MOVE_MEMBERS: 'MOVE_MEMBERS',
+					USE_VAD: 'USE_VAD',
+					PRIORITY_SPEAKER: 'PRIORITY_SPEAKER',
+					VIEW_GUILD_INSIGHTS: 'VIEW_GUILD_INSIGHTS'
 				},
-				format: (value: unknown, format?: string) => {
+				format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
 					switch (format as LanguageFormatters) {
 						case LanguageFormatters.AndList: {
-							return list(value as string[], i18next.t('global:and'));
+							return list(value as string[], i18next.t('global:and', { ...options, lng: language }));
 						}
 						case LanguageFormatters.OrList: {
-							return list(value as string[], i18next.t('global:or'));
+							return list(value as string[], i18next.t('global:or', { ...options, lng: language }));
 						}
 						case LanguageFormatters.Permissions: {
-							return i18next.t(`permissions:${value}`);
+							return i18next.t(`permissions:${value}`, { ...options, lng: language });
 						}
 						default:
 							return value as string;

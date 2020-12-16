@@ -7,3 +7,17 @@ export const enum CdnUrls {
 	TwitchLogo = 'https://cdn.skyra.pw/skyra-assets/twitch_logo.png',
 	Pokedex = 'https://cdn.skyra.pw/skyra-assets/pokedex.png'
 }
+
+export const enum LanguageFormatters {
+	AndList = 'andList',
+	OrList = 'orList',
+	Permissions = 'permissions',
+	HumanLevels = 'humanLevels',
+	Duration = 'duration',
+	Ordinal = 'ordinal',
+	GroupDigits = 'groupDigits',
+	CodeBlock = 'codeBlock',
+	InlineCodeblock = 'inlineCodeBlock',
+	ToTitleCase = 'toTitleCase',
+	Random = 'random'
+}

@@ -1,0 +1,22 @@
+{
+	"commandYarnDescription": "Responds with information on a NodeJS package using the Yarn package registry",
+	"commandYarnExtended": {
+		"extendedHelp": "This is for NodeJS developers who want to quickly find information on a package published to [npm](https://npmjs.com)",
+		"explainedUsage": [["package", "The name of the package to search for, has to be an exact match"]],
+		"examples": ["@skyra/char", "@skyra/saelem", "@skyra/eslint-config"]
+	},
+	"commandYarnNoPackage": "{{REDCROSS}} I am sorry, but you have to give me the name of a package to look up.",
+	"commandYarnUnpublishedPackage": "What a silly developer who made {{pkg}}! They unpublished it!",
+	"commandYarnPackageNotFound": "I'm sorry, but I could not find any package by the name of `{{pkg}}` in the registry.",
+	"commandYarnEmbedDescriptionAuthor": "❯ Author: {{author}}",
+	"commandYarnEmbedDescriptionMaintainers": "❯ Maintainers: ",
+	"commandYarnEmbedDescriptionLatestVersion": "❯ Latest version: **{{latestVersionNumber}}**",
+	"commandYarnEmbedDescriptionLicense": "❯ License: **{{license}}**",
+	"commandYarnEmbedDescriptionMainFile": "❯ Main File: **{{mainFile}}**",
+	"commandYarnEmbedDescriptionDateCreated": "❯ Date Created: **{{dateCreated}}**",
+	"commandYarnEmbedDescriptionDateModified": "❯ Date Modified: **{{dateModified}}**",
+	"commandYarnEmbedDescriptionDeprecated": "❯ Deprecation Notice: **{{deprecated}}**",
+	"commandYarnEmbedDescriptionDependenciesLabel": "__*Dependencies:*__",
+	"commandYarnEmbedDescriptionDependenciesNoDeps": "No dependencies {{GREENTICK}}!",
+	"commandYarnEmbedMoreText": "more..."
+}

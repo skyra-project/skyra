@@ -31,13 +31,13 @@
 	"commandBannerPrompt": "Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.",
 	"commandToggleDarkModeEnabled": "{{GREENTICK}} Successfully enabled the dark mode.",
 	"commandToggleDarkModeDisabled": "{{GREENTICK}} Successfully disabled the dark mode.",
-	"commandDailyTime": "Next dailies are available in {{time | duration}}",
+	"commandDailyTime": "Next dailies are available in {{time, duration}}",
 	"commandDailyTimeSuccess": "Yay! You earned {{amount}}{{SHINY}}! Next dailies in: 12 hours.",
 	"commandDailyGrace": [
 		"Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.",
-		"Remaining time: {{remaining | duration}}"
+		"Remaining time: {{remaining, duration}}"
 	],
-	"commandDailyGraceAccepted": "Successfully claimed {{amount}}{{SHINY}}! Next dailies in: {{remaining | duration}}",
+	"commandDailyGraceAccepted": "Successfully claimed {{amount}}{{SHINY}}! Next dailies in: {{remaining, duration}}",
 	"commandDailyGraceDenied": "Got it! Come back soon!",
 	"commandDailyCollect": "Collect dailies",
 	"commandLevel": {
@@ -89,12 +89,12 @@
 	"commandRemindmeCreateNoDuration": "You must tell me what you want me to remind you and when.",
 	"commandRemindmeCreateNoDescription": "Something, you did not tell me what.",
 	"commandRemindmeDeleteNoId": "You must give a valid ID, you can get them using the `list` sub-command.",
-	"commandRemindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{task.time.getTime() - Date.now() | duration}}** has been successfully deleted.",
+	"commandRemindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{task.time.getTime() - Date.now(), duration}}** has been successfully deleted.",
 	"commandRemindmeListEmpty": "You do not have any active reminder",
 	"commandRemindmeShowFooter": "ID: {{id}} | Ends at:",
 	"commandRemindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",
 	"commandRemindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
-	"commandReputationTime": "You can give a reputation point in {{remaining | duration}}",
+	"commandReputationTime": "You can give a reputation point in {{remaining, duration}}",
 	"commandReputationUsable": "You can give a reputation point now.",
 	"commandReputationUserNotfound": "You must mention a user to give a reputation point.",
 	"commandReputationSelf": "You cannot give a reputation point to yourself.",

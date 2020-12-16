@@ -60,5 +60,55 @@
 	"commandStatsDescription": "Provides some details about the bot and stats.",
 	"commandStatsExtended": {
 		"extendedHelp": "This should be very obvious..."
-	}
+	},
+	"commandEvalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
+	"commandEvalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
+	"commandStatsTitles": {
+		"stats": "Statistics",
+		"uptime": "Uptime",
+		"serverUsage": "Server Usage"
+	},
+	"commandStatsFields": {
+		"stats": [
+			"• **Users**: {{stats.users}}",
+			"• **Guilds**: {{stats.guilds}}",
+			"• **Channels**: {{stats.channels}}",
+			"• **Discord.js**: {{stats.version}}",
+			"• **Node.js**: {{stats.nodeJs}}"
+		],
+		"uptime": [
+			"• **Host**: {{uptime.host, duration}}",
+			"• **Total**: {{uptime.total, duration}}",
+			"• **Client**: {{uptime.client, duration}}"
+		],
+		"serverUsage": [
+			"• **CPU Load**: {{usage.cpuLoad}}",
+			"• **Heap**: {{usage.ramUsed}} (Total: {{usage.ramTotal}})"
+		]
+	},
+	"commandBlocklistDescription": "Block or allow users and guilds from using my functionalities.",
+	"commandBlocklistSaveSuccess": "{{GREENTICK}} Successfully updated blocked users and/or guilds",
+	"commandBlocklistResetSuccess": "{{GREENTICK}} Successfully reset blocked users and guilds",
+	"commandUnload": "{{GREENTICK}} Unloaded {{type}}: {{name}}",
+	"commandUnloadDescription": "Unloads the klasa piece.",
+	"commandTransferError": "{{REDCROSS}} That file has been transferred already or never existed.",
+	"commandTransferSuccess": "{{GREENTICK}} Successfully transferred {{type}}: {{name}}",
+	"commandTransferFailed": "Transfer of {{type}}: {{name}} to Client has failed. Please check your Console.",
+	"commandTransferDescription": "Transfers a core piece to its respective folder",
+	"commandReload": "{{GREENTICK}} Reloaded {{type}}: {{name}}. (Took: {{time}})",
+	"commandReloadFailed": "{{REDCROSS}} Failed to reload {{type}}: {{name}}. Please check your Console.",
+	"commandReloadAll": "{{GREENTICK}} Reloaded all {{type}}. (Took: {{time}})",
+	"commandReloadEverything": "{{GREENTICK}} Reloaded everything. (Took: {{time}})",
+	"commandReloadDescription": "Reloads a klasa piece, or all pieces of a klasa store.",
+	"commandReboot": "{{LOADING}} Rebooting...",
+	"commandRebootDescription": "Reboots the bot.",
+	"commandEnable": "+ Successfully enabled {{type}}: {{name}}",
+	"commandEnableDescription": "Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.",
+	"commandDisable": "+ Successfully disabled {{type}}: {{name}}",
+	"commandDisableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.",
+	"commandDisableWarn": "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
+	"commandLoad": "{{GREENTICK}} Successfully loaded {{type}}: {{name}}. (Took: {{time}})",
+	"commandLoadFail": "The file does not exist, or an error occurred while loading your file. Please check your console.",
+	"commandLoadError": "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason:${codeBlock('js', error)}",
+	"commandLoadDescription": "Load a piece from your bot."
 }

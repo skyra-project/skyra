@@ -35,5 +35,11 @@
 	"resolverMinmaxMinInclusive": "{{name}} must be greater than {{min}} inclusively.",
 	"resolverMinmaxMinExclusive": "{{name}} must be greater than {{min}} exclusively.",
 	"resolverMinmaxMaxInclusive": "{{name}} must be less than {{max}} inclusively",
-	"resolverMinmaxMaxExclusive": "{{name}} must be less than {{max}} exclusively."
+	"resolverMinmaxMaxExclusive": "{{name}} must be less than {{max}} exclusively.",
+	"resolverInvalidChannelName": "{{name}} must be a valid channel name, id, or tag.",
+	"resolverInvalidRoleName": "{{name}} must be a valid role name, id, or mention.",
+	"resolverInvalidUsername": "{{name}} must be a valid user name, id, or mention.",
+	"resolverChannelNotInGuild": "I am sorry, but that command can only be ran in a server.",
+	"resolverChannelNotInGuildSubcommand": "{{REDCROSS}} I am sorry, but the subcommand `{{subcommand}}` for the command `{{command}}` can only be used in a server.",
+	"resolverMembernameUserLeftDuringPrompt": "User left during prompt."
 }

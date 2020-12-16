@@ -46,9 +46,9 @@
 	"giveawayTime": "A giveaway must last at least 10 seconds.",
 	"giveawayTimeTooLong": "Hey! That's an incredibly long time to keep track of!",
 	"giveawayEndsAt": "Ends at:",
-	"giveawayDuration": "This giveaway ends in **{{time | duration}}**! React to this message with 🎉 to join.",
+	"giveawayDuration": "This giveaway ends in **{{time, duration}}**! React to this message with 🎉 to join.",
 	"giveawayTitle": "🎉 **GIVEAWAY** 🎉",
-	"giveawayLastchance": "**LAST CHANCE**! Remaining time: **{{time | duration}}**. React to this message with 🎉 to join.",
+	"giveawayLastchance": "**LAST CHANCE**! Remaining time: **{{time, duration}}**. React to this message with 🎉 to join.",
 	"giveawayLastchanceTitle": "🎉 **LAST CHANCE GIVEAWAY** 🎉",
 	"giveawayEnded": "Winner: {{winners}}",
 	"giveawayEndedPlural": "Winners: {{winners}}",
@@ -57,5 +57,5 @@
 	"giveawayEndedTitle": "🎉 **GIVEAWAY ENDED** 🎉",
 	"giveawayEndedMessage": "Congratulations {{winners | joinAnd}}! You won the giveaway **{{title}}**",
 	"giveawayEndedMessageNoWinner": "The giveaway **{{title}}** ended without enough participants.",
-	"giveawayScheduled": "The giveaway will start in {{scheduledTime | duration}}."
+	"giveawayScheduled": "The giveaway will start in {{scheduledTime, duration}}."
 }

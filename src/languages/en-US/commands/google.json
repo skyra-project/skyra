@@ -1,0 +1,55 @@
+{
+	"commandCurrentTimeDescription": "Gets the current time in any location on the world",
+	"commandCurrentTimeExtended": {
+		"extendedHelp": [
+			"This command uses Google Maps to get the coordinates of the place.",
+			"Once this command has the coordinates, it queries TimezoneDB to get the time data."
+		],
+		"explainedUsage": [["location", "The locality, governing, country or continent to check the time for."]],
+		"examples": ["Antarctica", "Arizona"],
+		"multiline": true
+	},
+	"commandCurrentTimeLocationNotFound": "I am sorry, but I could not find time data for that location.",
+	"commandCurrentTimeTitles": {
+		"currentTime": "Current Time",
+		"currentDate": "Current Date",
+		"country": "Country",
+		"gmsOffset": "GMT Offset",
+		"dst": "**DST**: {{dst}}"
+	},
+	"commandCurrentTimeDst": "Does not observe DST right now",
+	"commandCurrentTimeNoDst": "Observes DST right now",
+	"commandGsearchDescription": "Find your favourite things on Google",
+	"commandGsearchExtended": {
+		"extendedHelp": "This command queries the powerful Google Search engine to find websites for your query. For images please use the `gimage` command.",
+		"explainedUsage": [["query", "The thing you want to find on Google"]],
+		"examples": ["Discord", "Skyra"]
+	},
+	"commandGimageDescription": "Find your favourite images on Google",
+	"commandGimageExtended": {
+		"extendedHelp": "This command queries the powerful Google Search engine to find images for your query. For regular web results please use the `gsearch` command.",
+		"explainedUsage": [["query", "The image you want to find on Google"]],
+		"examples": ["Discord", "Skyra"],
+		"reminder": "This command has been marked as NSFW because it is unavoidable that when you query explicit content, you will get explicit results."
+	},
+	"commandLmgtfyDescription": "Annoy another user by sending them a LMGTFY (Let Me Google That For You) link.",
+	"commandLmgtfyExtended": {
+		"explainedUsage": [["query", "The query to google"]]
+	},
+	"commandWeatherDescription": "Check the weather status in a location.",
+	"commandWeatherExtended": {
+		"extendedHelp": [
+			"This command uses Google Maps to get the coordinates of the place.",
+			"Once this command got the coordinates, it queries DarkSky to retrieve information about the weather."
+		],
+		"explainedUsage": [["city", "The locality, governing, country or continent to check the weather from."]],
+		"examples": ["Antarctica", "Arizona"],
+		"reminder": "Temperature is in **Celsius** by default. Use the --imperial or --fahrenheit flag to view it in **Fahrenheit**.",
+		"multiline": true
+	},
+	"googleErrorZeroResults": "Your request returned no results.",
+	"googleErrorRequestDenied": "The GeoCode API Request was denied.",
+	"googleErrorInvalidRequest": "Invalid request.",
+	"googleErrorOverQueryLimit": "Query Limit exceeded. Try again tomorrow.",
+	"googleErrorUnknown": "I am sorry, but I failed to get a result from Google."
+}

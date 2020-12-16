@@ -133,7 +133,7 @@
 	"commandRemoveDenied": "{{REDCROSS}} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.",
 	"commandRemoveSuccess": "{{GREENTICK}} Removed the song **{{title}** requested by <@{{requester}}}}}>.",
 	"commandSeekDescription": "Change the player time for the current song.",
-	"commandSeekSuccess": "{{GREENTICK}} Successfully changed the time! Now at {{this.duration(time)}}}!",
+	"commandSeekSuccess": "{{GREENTICK}} Successfully changed the time! Now at {{time, duration}}}!",
 	"commandResumeDescription": "Resumes the current song.",
 	"commandResumeSuccess": "▶ Resumed.",
 	"commandShuffleDescription": "Randomize the order of the songs in the queue.",

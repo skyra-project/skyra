@@ -62,7 +62,7 @@
 	"commandManageCommandAutoDeleteRequiredDuration": "You must specify an amount of seconds for the command to be automatically deleted.",
 	"commandManageCommandAutoDeleteShowEmpty": "There are no command autodelete configured right now.",
 	"commandManageCommandAutoDeleteShow": "All command autodeletes configured:{{codeblock}}",
-	"commandManageCommandAutoDeleteAdd": "{{GREENTICK}} Success! All successful commands in {{channel}} will be deleted after {{time | duration}}!",
+	"commandManageCommandAutoDeleteAdd": "{{GREENTICK}} Success! All successful commands in {{channel}} will be deleted after {{time, duration}}!",
 	"commandManageCommandAutoDeleteRemove": "{{GREENTICK}} Success! Commands will not be automatically deleted in {{channel}} anymore!",
 	"commandManageCommandAutoDeleteRemoveNotset": "{{REDCROSS}} The channel {{channel}} was not configured to automatically delete messages!",
 	"commandManageCommandAutoDeleteReset": "All the command autodeletes have been reset.",

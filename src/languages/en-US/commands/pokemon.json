@@ -1,0 +1,147 @@
+{
+	"commandAbilityDescription": "Gets data for any given Pokémon ability using my Pokémon dataset.",
+	"commandAbilityExtended": {
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
+		"explainedUsage": [["ability", "The ability for which you want to find data"]],
+		"examples": ["multiscale", "pressure"]
+	},
+	"commandAbilityEmbedTitles": {
+		"authorTitle": "Ability",
+		"fieldEffectTitle": "Effect outside of battle"
+	},
+	"commandAbilityQueryFail": "I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?",
+	"commandFlavorsDescription": "Gets the dex entries across various games for a Pokémon.",
+	"commandFlavorsExtended": {
+		"extendedHelp": ["Uses a fuzzy search to also match against near-matches.", "You can provide a flag of `--shiny` to get the shiny sprite."],
+		"explainedUsage": [["pokemon", "The Pokémon for which you want to get flavour texts"]],
+		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
+		"multiline": true
+	},
+	"commandFlavorsQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"commandItemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
+	"commandItemExtended": {
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
+		"explainedUsage": [["item", "The item for which you want to find data"]],
+		"examples": ["life orb", "choice specs"]
+	},
+	"commandItemEmbedData": {
+		"ITEM": "Item",
+		"generationIntroduced": "Generation introduced",
+		"availableInGeneration8Title": "Available in generation 8",
+		"availableInGeneration8Data": "{{availableInGen8}}"
+	},
+	"commandItemQueryFail": "I am sorry, but that query failed. Are you sure `{{item}}` is actually a item in Pokémon?",
+	"commandLearnDescription": "Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.",
+	"commandLearnExtended": {
+		"extendedHelp": [
+			"Uses a fuzzy search to also match against near-matches.",
+			"Moves split on every ", " (comma space) and you can provide as many moves as you wish.",
+			"You can provide a flag of `--shiny` to get the shiny sprite."
+		],
+		"explainedUsage": [
+			["generation", "(Optional), The generation for which to check the data"],
+			["pokemon", "The Pokémon whose learnset you want to check"],
+			["move", "The move(s) you want to check for"]
+		],
+		"examples": ["7 dragonite dragon dance", "pikachu thunder bolt", "pikachu thunder bolt --shiny", "pikachu thunder bolt, thunder"],
+		"multiline": true
+	},
+	"commandLearnMethodTypes": {
+		"levelUpMoves": "by level up at level {{level}}",
+		"eventMoves": "through an event",
+		"tutorMoves": "from a move tutor",
+		"eggMoves": "as an eggmove",
+		"virtualTransferMoves": "by transfering from virtual console games",
+		"tmMoves": "by using a technical machine or technical record",
+		"dreamworldMoves": "through a Dream World capture"
+	},
+	"commandLearnInvalidGeneration": "I am sorry, but {{generation}} is not a supported Pokémon Generation",
+	"commandLearnMethod": "In generation {{generation}} {{pokemon}} __**can**__ learn **{{move}}** {{method}}",
+	"commandLearnQueryFailed": "I am sorry, but that query failed. Are you sure you `${toTitleCase(pokemon)}` is actually a Pokémon and {{moves}} are actually moves?",
+	"commandLearnCannotLearn": "Looks like ${toTitleCase(pokemon)} cannot learn {{moves}}",
+	"commandLearnTitle": "Learnset data for ${toTitleCase(pokemon)} in generation {{generation}}",
+	"commandMoveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
+	"commandMoveExtended": {
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
+		"explainedUsage": [["move", "The move for which you want to find data"]],
+		"examples": ["dragon dance", "GMax Wildfire", "Genesis Supernova"],
+		"reminder": [
+			"Z-Move power may be shown for Generation 8 moves because it is calculated with a conversion table.",
+			"If Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands",
+			"Z-Moves are **NOT** in Generation 8."
+		],
+		"multiline": true
+	},
+	"commandMoveEmbedData": {
+		"move": "Move",
+		"types": "Type",
+		"basePower": "Base Power",
+		"pp": "PP",
+		"category": "Category",
+		"accuracy": "Accuracy",
+		"priority": "Priority",
+		"target": "Target",
+		"contestCondition": "Contest Condition",
+		"zCrystal": "Z-Crystal",
+		"gmaxPokemon": "G-MAX Pokémon",
+		"availableInGeneration8Title": "Available in Generation 8",
+		"availableInGeneration8Data": "{{availableInGen8}}",
+		"none": "None",
+		"maxMovePower": "Base power as MAX move (Dynamax)",
+		"zMovePower": "Base power as Z-Move (Z-Crystal)",
+		"fieldMoveEffectTitle": "Effect outside of battle"
+	},
+	"commandMoveQueryFail": "I am sorry, but that query failed. Are you sure `{{move}}` is actually a move in Pokémon?",
+	"commandPokedexDescription": "Gets data for any given Pokémon using my Pokémon dataset.",
+	"commandPokedexExtended": {
+		"extendedHelp": ["Uses a fuzzy search to also match against near-matches.", "You can provide a flag of `--shiny` to get the shiny sprite."],
+		"explainedUsage": [["pokemon", "The Pokémon for which you want to find data"]],
+		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
+		"reminder": [
+			"If there are any \"Other forme(s)\" on the optional fourth page, those can be requested as well.",
+			"Cosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex."
+		],
+		"multiline": true
+	},
+	"commandPokedexEmbedData": {
+		"types": "Type(s)",
+		"abilities": "Abilities",
+		"genderRatio": "Gender Ratio",
+		"smogonTier": "Smogon Tier",
+		"uknownSmogonTier": "Unknown / Alt form",
+		"height": "Height",
+		"weight": "Weight",
+		"eggGroups": "Egg group(s)",
+		"evolutionaryLine": "Evolutionary line",
+		"baseStats": "Base stats",
+		"baseStatsTotal": "BST",
+		"flavourText": "Pokdex entry",
+		"otherFormesTitle": "Other forme(s)",
+		"cosmeticFormesTitle": "Cosmetic Formes",
+		"otherFormesList": "{{otherFormes, listAnd}}",
+		"cosmeticFormesList": "{{cosmeticFormes, listAnd}}"
+	},
+	"commandPokedexQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"commandTypeDescription": "Gives the type matchups for one or two Pokémon types",
+	"commandTypeExtended": {
+		"extendedHelp": "Types have to be exact matches to pokemon types (upper/lowercase can be ignored)",
+		"explainedUsage": [["type", "The type(s) to look up"]],
+		"examples": ["dragon", "fire flying"]
+	},
+	"commandTypeEmbedData": {
+		"offensive": "Offensive",
+		"defensive": "Defensive",
+		"superEffectiveAgainst": "Supereffective against",
+		"dealsNormalDamageTo": "Deals normal damage to",
+		"doesNotAffect": "Doesn't affect",
+		"notVeryEffectiveAgainst": "Not very effective against",
+		"vulnerableTo": "Vulnerable to",
+		"takesNormalDamageFrom": "Takes normal damage from",
+		"resists": "Resists",
+		"notAffectedBy": "Not affected by",
+		"typeEffectivenessFor": "Type effectiveness for {{types, listAnd}}"
+	},
+	"commandTypeTooManyTypes": "I am sorry, but you can get the matchup for at most 2 types",
+	"commandTypeNotAType": "{{type}} is not a valid Pokémon type",
+	"commandTypeQueryFail": "I am sorry, but that query failed. Are you sure {{types}} are actually types in Pokémon?"
+}

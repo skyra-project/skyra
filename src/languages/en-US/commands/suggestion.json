@@ -1,0 +1,54 @@
+{
+	"commandSuggestDescription": "Posts a suggestion for the server.",
+	"commandSuggestExtended": {
+		"extendedHelp": "Posts a suggestion to the server's suggestion channel, if configured.",
+		"explainedUsage": [["suggestion", "Your suggestion"]],
+		"examples": ["Let's make a music channel!"],
+		"reminder": "You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command."
+	},
+	"commandSuggestNoSetup": "I'm sorry {{username}}, but a suggestions channel hasn't been set up.",
+	"commandSuggestNoSetupAsk": "I'm sorry {{username}}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?",
+	"commandSuggestNoSetupAbort": "Alright then. Aborted creating a new suggestion.",
+	"commandSuggestNopermissions": "I'm sorry {{username}}, but the administrators didn't give me permission to send messages in {{channel}}!",
+	"commandSuggestChannelPrompt": "Please mention the channel you want to set as the suggestions channel.",
+	"commandSuggestTitle": "Suggestion #{{id}}",
+	"commandSuggestSuccess": "Thank you for your suggestion! It has been successfully posted to {{channel}}!",
+	"commandResolveSuggestionDescription": "Set the suggestion's status.",
+	"commandResolveSuggestionExtended": {
+		"extendedHelp": "This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.",
+		"examples": [
+			"1 accept Thank you for your suggestion!",
+			"1 a Thank you for your suggestion!",
+			"1 consider Hmm... we may do this, but it's really low priority",
+			"1 c Hmm... we may do this, but it's really low priority",
+			"1 deny There is no way this is going to happen.",
+			"1 d There is no way this is going to happen."
+		],
+		"reminder": [
+			"Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.",
+			"Furthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags."
+		],
+		"multiline": true
+	},
+	"commandResolveSuggestionInvalidId": "{{REDCROSS}} That's not a valid suggestion ID!",
+	"commandResolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
+	"commandResolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",
+	"commandResolveSuggestionDefaultComment": "No comment was provided.",
+	"commandResolveSuggestionAuthorAdmin": "An administrator",
+	"commandResolveSuggestionAuthorModerator": "A moderator",
+	"commandResolveSuggestionActions": {
+		"accept": "{{author}} accepted this suggestion:",
+		"consider": "{{author}} considered this suggestion:",
+		"deny": "{{author}} denied this suggestion:"
+	},
+	"commandResolveSuggestionActionsDms": {
+		"accept": "{{author}} accepted this suggestion in {{guild}}:",
+		"consider": "{{author}} considered this suggestion in {{guild}}:",
+		"deny": "{{author}} denied this suggestion in {{guild}}:"
+	},
+	"commandResolveSuggestionDmFail": "{{REDCROSS}} I wasn't able to send the author a DM. Are their DMs closed?",
+	"commandResolveSuggestionSuccess": "{{GREENTICK}} Successfully {{actionText}} suggestion `{{id}}`!",
+	"commandResolveSuggestionSuccessAcceptedText": "accepted",
+	"commandResolveSuggestionSuccessDeniedText": "denied",
+	"commandResolveSuggestionSuccessConsideredText": "considered"
+}

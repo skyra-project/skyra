@@ -67,7 +67,7 @@ export default class extends Language {
 		}
 	}
 
-	public list(values: readonly string[], conjunction: "or' | 'and') {
+	public list(values: readonly string[], conjunction: "or" | 'and') {
 		switch (values.length) {
 			case 0:
 				return '';
@@ -97,36 +97,22 @@ export default class extends Language {
 
 		default: "{{key}} has not been localized for en-US yet.",
 		defaultLanguage: "Default Language",
-		globalYes: "Yes",
-		globalNo: "No",
-		globalNone: "None",
-		globalIs: "is",
-		globalAnd: "and",
-		globalOr: "or",
-		globalUnknown: "Unknown",
-		settingGatewayKeyNoext: "The key "{{key}}" does not exist in the data schema.",
-		settingGatewayChooseKey: "You cannot edit a settings group, pick any of the following: "{{keys}}"",
+		settingGatewayKeyNoext: "The key {{key}} does not exist in the data schema.",
+		settingGatewayChooseKey: "You cannot edit a settings group, pick any of the following: {{keys}}",
 		settingGatewayUnconfigurableFolder: "This settings group does not have any configurable sub-key.",
-		settingGatewayUnconfigurableKey: "The settings key "{{key}}" has been marked as non-configurable by the bot owner.",
-		settingGatewayMissingValue: "The value "{{value}}" cannot be removed from the key "{{path}}" because it does not exist.",
-		settingGatewayDuplicateValue: "The value "{{value}}" cannot be added to the key "{{path}}" because it was already set.",
-		settingGatewayInvalidFilteredValue: "The settings key "{{path}}" does not accept the value "{{value}}".",
+		settingGatewayUnconfigurableKey: "The settings key {{key}} has been marked as non-configurable by the bot owner.",
+		settingGatewayMissingValue: "The value {{value}} cannot be removed from the key {{path}} because it does not exist.",
+		settingGatewayDuplicateValue: "The value {{value}} cannot be added to the key {{path}} because it was already set.",
+		settingGatewayInvalidFilteredValue: "The settings key {{path}} does not accept the value {{value}}.",
 		reactionhandlerPrompt: "Which page would you like to jump to?",
-		// used for help command
-		systemHelpTitles: {
-			explainedUsage: "⚙ | ***Explained usage***",
-			possibleFormats: "🔢 | ***Possible formats***",
-			examples: "🔗 | ***Examples***",
-			reminders: "⏰ | ***Reminder***'
-		},
 		commandmessageMissing: "Missing one or more required arguments after end of input.",
 		commandmessageMissingRequired: "{{name}} is a required argument.",
 		commandmessageMissingOptionals: "Missing a required option: ({{possibles}})",
 		commandmessageNomatch: "Your option didn't match any of the possibilities: ({{possibles}})",
 		monitorCommandHandlerReprompt:
-			`{{tag}} | **{{name}}** | You have **{{time}}** seconds to respond to this prompt with a valid argument. Type **{{cancelOptions}}** to abort this prompt.",
+			`{{tag}} | **{{name}}** | You have **{{time}}** seconds to respond to this prompt with a valid argument. Type **{{cancelOptions}}** to abort this prompt.`,
 		monitorCommandHandlerRepeatingReprompt:
-			`{{tag}} | **{{name}}** is a repeating argument | You have **{{time}}** seconds to respond to this prompt with additional valid arguments. Type **{{cancelOptions}}** to cancel this prompt.",
+			`{{tag}} | **{{name}}** is a repeating argument | You have **{{time}}** seconds to respond to this prompt with additional valid arguments. Type **{{cancelOptions}}** to cancel this prompt.`,
 		monitorCommandHandlerAborted: "Aborted",
 		inhibitorCooldown: "You have just used this command. You can use this command again in {{remaining}}.",
 		inhibitorMissingBotPerms: "I don't have sufficient permissions! I'm missing: {{missing}}",
@@ -138,7 +124,7 @@ export default class extends Language {
 		inhibitorRuninNone: "The {{name}} command is not configured to run in any channel.",
 		inhibitorDisabledGuild: "This command has been disabled by an admin in this guild!",
 		inhibitorDisabledGlobal:
-			'This command has been globally disabled by the bot owners. Want to know why and find out when it will be back? Join the official Skyra server: <https://join.skyra.pw>",
+			'This command has been globally disabled by the bot owners. Want to know why and find out when it will be back? Join the official Skyra server: <https://join.skyra.pw>',
 		commandBlocklistDescription: "Block or allow users and guilds from using my functionalities.",
 		commandBlocklistSaveSuccess: "{{GREENTICK}} Successfully updated blocked users and/or guilds",
 		commandBlocklistResetSuccess: "{{GREENTICK}} Successfully reset blocked users and guilds",
@@ -164,14 +150,14 @@ export default class extends Language {
 		commandHelpDm: "📥 | The list of commands you have access to has been sent to your DMs.",
 		commandHelpNodm: "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
 		commandHelpAllFlag:
-			`Displaying one category per page. Have issues with the embed? Run `{{prefix}}help --all` for a full list in DMs.",
+			"Displaying one category per page. Have issues with the embed? Run `{{prefix}}help --all` for a full list in DMs.",
 		commandHelpCommandCount: "{{count}} command",
 		commandHelpCommandCount_plural: "{{count}} commands",
 		commandEnable: "+ Successfully enabled {{type}}: {{name}}",
 		commandEnableDescription: "Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.",
 		commandDisable: "+ Successfully disabled {{type}}: {{name}}",
 		commandDisableDescription:
-			'Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.",
+			'Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.',
 		commandDisableWarn: "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
 		commandConfNoKey: "You must provide a key",
 		commandConfNoValue: "You must provide a value",
@@ -192,7 +178,7 @@ export default class extends Language {
 		textPromptAbortOptions: ["abort", "stop", "cancel"],
 		commandLoad: "{{GREENTICK}} Successfully loaded {{type}}: {{name}}. (Took: {{time}})",
 		commandLoadFail: "The file does not exist, or an error occurred while loading your file. Please check your console.",
-		commandLoadError: "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason:${codeBlock('js", error)}",
+		commandLoadError: "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason:${codeBlock('js', error)}",
 		commandLoadDescription: "Load a piece from your bot.",
 
 		/**
@@ -208,10 +194,10 @@ export default class extends Language {
 		commandRolesetDescription: "Manage unique role sets.",
 		commandRolesetExtended: {
 			extendedHelp: [
-				'A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles `Africa", "America", "Asia", and `Europe", and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:",
-				'",
-				'- When somebody claims a role via the `Skyra, roles`.",
-				'- When somebody claims a role via reaction roles.",
+				'A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named "region" could have the roles `Africa", "America", "Asia", and `Europe", and members will only be able to have one of them. This is like a kind of "rule" that is applied in the three following situations:',
+				'',
+				'- When somebody claims a role via the `Skyra, roles`.',
+				'- When somebody claims a role via reaction roles.',
 				'- When somebody receives a role either manually or from another bot.'
 			],
 			explainedUsage: [
@@ -222,13 +208,13 @@ export default class extends Language {
 				["auto", "Adds or removes a roleset."]
 			],
 			examples: [
-				'add regions America",
-				'add regions Africa America Asia Europe",
-				'remove regions America",
-				'reset",
-				'reset regions",
-				'list",
-				'regions America",
+				'add regions America',
+				'add regions Africa America Asia Europe',
+				'remove regions America',
+				'reset',
+				'reset regions',
+				'list',
+				'regions America',
 				'regions Africa America Asia Europe'
 			],
 			reminder: "This command can add and/or remove multiple roles at the same time.",
@@ -341,8 +327,8 @@ export default class extends Language {
 		commandIneedhealingDescription: "*Genji's voice* I NEED HEALING!",
 		commandIneedhealingExtended: {
 			extendedHelp: [
-				'Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES!",
-				'You know it, it's a cool cyborg ninja that looks like a XBOX and is always yelling "I NEED HEALING" loudly during the entire match.",
+				'Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES!',
+				'You know it, it\'s a cool cyborg ninja that looks like a XBOX and is always yelling "I NEED HEALING" loudly during the entire match.',
 				"Well, don't expect so much, this command actually shows a medic with some tool in your chest."
 			],
 			explainedUsage: [["healer", "The healer you need to heal you."]],
@@ -364,7 +350,7 @@ export default class extends Language {
 		commandShipDescription: "Ships 2 members",
 		commandShipExtended: {
 			extendedHelp: [
-				'This commands generates a ship name between two users and creates more love in the world.",
+				'This commands generates a ship name between two users and creates more love in the world.',
 				'Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.'
 			],
 			explainedUsage: [
@@ -377,7 +363,7 @@ export default class extends Language {
 		},
 		commandShipData: ({
 			title: "**Shipping `{{romeoUsername}}` and `{{julietUsername}}`**",
-			description: "I call it... {{shipName}}`
+			description: "I call it... {{shipName}}"
 		}),
 		commandChaseDescription: "Get in here!",
 		commandChaseExtended: {
@@ -388,7 +374,7 @@ export default class extends Language {
 		commandShindeiruDescription: "Omae wa mou shindeiru.",
 		commandShindeiruExtended: {
 			extendedHelp: [
-				'"You are already dead" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star.",
+				'"You are already dead" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star.',
 				'This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with "nani?" (what?).'
 			],
 			explainedUsage: [["user", "The person you're telling that phrase to."]],
@@ -1212,8 +1198,7 @@ export default class extends Language {
 		 * #################################
 		 */
 
-		inhibitorSpam:
-			`Can we move to {{channel}} please? This command might be too spammy and can ruin other people's conversations.",
+		inhibitorSpam: `Can we move to {{channel}} please? This command might be too spammy and can ruin other people's conversations.`,
 
 		/**
 		 * #################################
@@ -1344,7 +1329,6 @@ export default class extends Language {
 
 		resolverDateSuffix: " seconds",
 		resolverPositiveAmount: "You must give me a positive number.",
-		systemPoweredByWeebsh: "Powered by weeb.sh",
 		prefixReminder: "The prefix in this guild is set to: `{{prefix}}`",
 
 		unexpectedIssue: "An unexpected error popped up! Safely aborting this command...",
@@ -1356,40 +1340,6 @@ export default class extends Language {
 		commandSuccess: "Successfully executed the command.",
 		commandToskyra: "Why... I thought you loved me! 💔",
 		commandUserself: "Why would you do that to yourself?",
-
-		systemParseError: "{{REDCROSS}} I failed to process the data I was given, sorry~!",
-		systemHighestRole: "This role's hierarchy position is higher or equal than me, I am not able to grant it to anyone.",
-		systemChannelNotPostable: "I am not allowed to send messages to this channel.",
-		systemFetchbansFail: "Failed to fetch bans. Do I have the **{{this.PERMISSIONS.BAN_MEMBERS}}** permission?",
-		systemLoading: [
-			`{{LOADING}} Watching hamsters run...",
-			`{{LOADING}} Finding people at hide-and-seek...",
-			`{{LOADING}} Trying to figure out this command...",
-			`{{LOADING}} Fetching data from the cloud...",
-			`{{LOADING}} Calibrating lenses...",
-			`{{LOADING}} Playing rock, paper, scissors...",
-			`{{LOADING}} Tuning in to the right frequencies...",
-			`{{LOADING}} Reticulating splines...`
-		],
-		systemError: "Something bad happened! Please try again, or if the issue keeps happening join the support server (hint: use `Skyra, support`)",
-		systemDatabaseError: "I wasn't able get that in my database! Please try again, or if the issue keeps happening join the support server (hint: use `Skyra, support`)",
-		systemDiscordAborterror: "I had a small network error when messaging Discord, please run this command again!",
-		systemMessageNotFound: "I am sorry, but either you wrote the message ID incorrectly, or it got deleted.",
-		systemNotenoughParameters: "I am sorry, but you did not provide enough parameters...",
-		systemQueryFail: "I am sorry, but the application could not resolve your request. Are you sure you wrote the name correctly?",
-		systemNoResults: "I wasn't able to find any results for that query",
-		systemCannotAccessChannel: "I am sorry, but you do not have permission to see that channel.",
-		systemExceededLengthOutput: "**Output**:{{output}}",
-		systemExceededLengthOutputWithTypeAndTime: "**Output**:{{output}}\n**Type**:{{type}}\n{{time}}",
-		systemExceededLengthOutputConsole: "Sent the result to console.",
-		systemExceededLengthOutputConsoleWithTypeAndTime: "Sent the result to console.\n**Type**:{{type}}\n{{time}}",
-		systemExceededLengthOutputFile: "Sent the result as a file.",
-		systemExceededLengthOutputFileWithTypeAndTime: "Sent the result as a file.\n**Type**:{{type}}\n{{time}}",
-		systemExceededLengthOutputHastebin: "Sent the result to hastebin: {{url}}",
-		systemExceededLengthOutputHastebinWithTypeAndTime: "Sent the result to hastebin: {{url}}\n**Type**:{{type}}\n{{time}}",
-		systemExceededLengthChooseOutput: "Choose one of the following options: ${this.list(output, "or')}",
-		systemExternalServerError: "The external service we use could not process our message. Please try again later.",
-		systemPokedexExternalResource: "External Resources",
 		jumpTo: "Jump to Message ►",
 
 		resolverInvalidChannelName: "{{name}} must be a valid channel name, id, or tag.",

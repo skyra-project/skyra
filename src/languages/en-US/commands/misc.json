@@ -1,0 +1,39 @@
+{
+	"commandRandRedditRequiredReddit": "You must give the name of a reddit.",
+	"commandRandRedditInvalidArgument": "{{REDCROSS}} The name you gave was not a valid name for a subreddit.",
+	"commandRandRedditBanned": "This reddit is banned and should not be used.",
+	"commandRandRedditFail": "I failed to retrieve data, are you sure you wrote the reddit correctly?",
+	"commandRandRedditAllNsfw": "Nothing could be posted as all retrieved posts are NSFW.",
+	"commandRandRedditAllNsfl": "Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.",
+	"commandRandRedditMessage": "**{{title}}** submitted by {{author}}\n{{url}}",
+	"commandRandRedditErrorPrivate": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as private.",
+	"commandRandRedditErrorQuarantined": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as quarantined.",
+	"commandRandRedditErrorNotFound": "{{REDCROSS}} No data could be downloaded as the subreddit does not exist.",
+	"commandRandRedditErrorBanned": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as banned.",
+	"commandRedditUserComplexityLevels": ["very low", "low", "medium", "high", "very high", "very high"],
+	"commandRedditUserInvalidUser": "`{{user}}` is not a valid Reddit username",
+	"commandRedditUserQueryFailed": "Couldn't find any data for that reddit user",
+	"commandRedditUserTitles": {
+		"linkKarma": "Link Karma",
+		"commentKarma": "Comment Karma",
+		"totalComments": "Total Comments",
+		"totalSubmissions": "Total Submissions",
+		"commentControversiality": "Comment Controversiality",
+		"textComplexity": "Text Complexity",
+		"top5Subreddits": "Top 5 Subreddits",
+		"bySubmissions": "by submission",
+		"byComments": "by comments",
+		"bestComment": "Best Comment",
+		"worstComment": "Worst Comment"
+	},
+	"commandRedditUserData": {
+		"overviewFor": "Overview for /u/{{user}}",
+		"permalink": "Permalink",
+		"dataAvailableFor": "Data is available for the past 1000 comments and submissions (Reddit API limitation)",
+		"joinedReddit": "Joined Reddit {{timestamp}}"
+	},
+	"commandSnipeEmpty": "There are no sniped messages in this channel.",
+	"commandSnipeTitle": "Sniped Message",
+	"commandUpvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
+	"commandVaporwaveOutput": "Here is your converted message:\n{{str}}"
+}

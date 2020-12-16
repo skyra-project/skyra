@@ -1,0 +1,425 @@
+{
+	"commandAvatarNone": "The user does not have an avatar set.",
+	"commandColor": ["HEX: **{{hex}}**", "RGB: **{{rgb}}**", "HSL: **{{hsl}}**"],
+	"commandEmojiCustom": [
+		"→ {{Emoji ::| inlineCodeBlock}} **{{emoji}}**",
+		"→ {{Type  ::| inlineCodeBlock}} **Custom**",
+		"→ {{ID    ::| inlineCodeBlock}} **{{id}}**"
+	],
+	"commandEmojiTwemoji": [
+		"→ {{Emoji ::| inlineCodeBlock}} `{{emoji}}`",
+		"→ {{Type  ::| inlineCodeBlock}} **Twemoji**",
+		"→ {{ID    ::| inlineCodeBlock}} **{{id}}**"
+	],
+	"commandEmojiInvalid": "The argument you provided is not a valid emoji.",
+	"commandEmojiTooLarge": "'{{emoji}}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?",
+	"commandCountryDescription": "Shows information about a country.",
+	"commandCountryExtended": {
+		"extendedHelp": "This command uses https://restcountries.eu to get information on the provided country.",
+		"explainedUsage": [["country", "The name of the country."]],
+		"examples": ["United Kingdom"]
+	},
+	"commandCountryTitles": {
+		"OVERVIEW": "Overview",
+		"LANGUAGES": "Languages",
+		"OTHER": "Other"
+	},
+	"commandCountryFields": {
+		"overview": {
+			"officialName": "Official Name",
+			"capital": "Capital",
+			"population": "Population"
+		},
+		"other": {
+			"demonym": "Demonym",
+			"area": "Area",
+			"currencies": "Currencies"
+		}
+	},
+	"commandEshopDescription": "Request information for any American Nintendo Digital Store",
+	"commandEshopExtended": {
+		"extendedHelp": "This command queries Nintendo of America to show data for the game you request.",
+		"explainedUsage": [["query", "The name of the game you're looking for."]],
+		"examples": ["Breath of the Wild", "Pokemon", "Splatoon"]
+	},
+	"commandEshopNotInDatabase": "None available",
+	"commandEshopTitles": {
+		"price": "Price",
+		"availability": "Availability",
+		"releaseDate": "Release Date",
+		"numberOfPlayers": "Number of Players",
+		"platform": "Platform",
+		"categories": "Categories",
+		"noCategories": "This game has not been sorted into any categories",
+		"nsuid": "NSUID",
+		"esrb": "ESRB"
+	},
+	"commandEshopPricePaid": "${{price}} USD",
+	"commandEshopPriceFree": "Free",
+	"commandHoroscopeDescription": "Get your latest horoscope",
+	"commandHoroscopeExtended": {
+		"extendedHelp": "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
+		"explainedUsage": [
+			["sunsign", "The sun sign you want to get the horoscope for"],
+			[
+				"today|tomorrow|yesterday",
+				"(Optional, defaults to \"today\") If you want to get the horoscope of yesterday or tomorrow you can specify that."
+			]
+		],
+		"examples": ["pisces", "virgo tomorrow", "gemini yesterday", "aries today"]
+	},
+	"commandHoroscopeInvalidSunsign": "{{sign}} is an invalid sun sign, maybe try {{maybe}}",
+	"commandHoroscopeTitles": {
+		"dailyHoroscope": "Daily horoscope for {{sign}}",
+		"metadataTitle": "Metadata",
+		"metadata": ["**Intensity:** {{intensity}}", "**Keywords:** {{keywords | listAnd}}", "**Mood:** {{mood}}", "**Rating:** {{rating}}"]
+	},
+	"commandIgdbDescription": "Searches IGDB (Internet Game Database) for your favourite games",
+	"commandIgdbExtended": {
+		"extendedHelp": "This command queries the IGDB API to show data on your favourite games.",
+		"explainedUsage": [["query", "The name of the game"]],
+		"examples": ["Breath of the Wild", "Borderlands 3"]
+	},
+	"commandIgdbTitles": {
+		"userScore": "User score",
+		"ageRating": "Age rating(s)",
+		"releaseDate": "Release date",
+		"genres": "Genre(s)",
+		"developers": "Developer(s)",
+		"platform": "Platform(s)"
+	},
+	"commandIgdbData": {
+		"noDevelopers": "Developer(s) unknown",
+		"noPlatforms": "Platform(s) unknown",
+		"noReleaseDate": "Release date unknown",
+		"noRating": "No user rating",
+		"noSummary": "No game summary available",
+		"noGenres": "No known genres",
+		"noAgeRatings": "No age ratings available"
+	},
+	"commandItunesDescription": "Searches iTunes API for music tracks",
+	"commandItunesExtended": {
+		"extendedHelp": "This command queries the Apple iTunes API to show data on a music you request.",
+		"explainedUsage": [["query", "The name of the song"]],
+		"examples": ["Apocalyptica feat. Brent Smith", "You're Gonna Go Far, Kid"]
+	},
+	"commandItunesTitles": {
+		"artist": "Artist",
+		"collection": "Collection",
+		"collectionPrice": "Collection price (USD)",
+		"trackPrice": "Track price (USD)",
+		"trackReleaseDate": "Track Release Date",
+		"numberOfTracksInCollection": "# Tracks in collection",
+		"primaryGenre": "Primary genre",
+		"preview": "Preview",
+		"previewLabel": "Click here"
+	},
+	"commandLmgtfyClick": "Click me to search",
+	"commandMoviesDescription": "Searches TheMovieDatabase for any movie",
+	"commandMoviesExtended": {
+		"extendedHelp": [
+			"This command queries TheMovieDatabase API for data on your favourite movies",
+			"Tip: You can use the 'y:' filter to narrow your results by year. Example: \"star wars y:1977\"."
+		],
+		"explainedUsage": [["query", "The name of the movie"]],
+		"examples": ["Ocean's Eleven y:2001", "Star Wars Revenge of the Sith", "Spirited Away"],
+		"multiline": true
+	},
+	"commandMoviesTitles": {
+		"runtime": "Runtime",
+		"userScore": "User score",
+		"status": "Status",
+		"releaseDate": "Release date",
+		"imdbPage": "IMDB Page",
+		"homePage": "Home Page",
+		"collection": "Collection",
+		"genres": "Genres"
+	},
+	"commandMoviesData": {
+		"variableRuntime": "Variable",
+		"movieInProduction": "Movie in production",
+		"linkClickHere": "Click here",
+		"none": "None",
+		"notPartOfCollection": "Not part of a collection",
+		"noGenres": "None on TheMovieDB"
+	},
+	"commandShowsDescription": "Searches The Movie Database for any show",
+	"commandShowsExtended": {
+		"extendedHelp": "This command queries TheMovieDatabase for data on your favorite shows",
+		"explainedUsage": [["query", "The name of the show"]],
+		"examples": ["Final Space", "Gravity Falls", "Rick and Morty"]
+	},
+	"commandShowsTitles": {
+		"episodeRuntime": "Episode runtime",
+		"userScore": "User score",
+		"status": "Status",
+		"firstAirDate": "First air date",
+		"genres": "Genres"
+	},
+	"commandShowsData": {
+		"variableRuntime": "Variable",
+		"unknownUserScore": "No user score",
+		"noGenres": "None on TheMovieDB"
+	},
+	"commandPriceCurrency": "**{{fromAmount}}** {{fromCurrency}} is worth {{worths | listAnd}}.",
+	"commandPriceCurrencyNotFound": "There was an error, please make sure you specified an appropriate coin and currency.",
+	"commandQuoteMessage": "It is very weird, but said message does not have a content nor a image.",
+	"commandRolesListEmpty": "This server does not have a role listed as a public role.",
+	"commandRolesAbort": "I looked far and wide, but I seem to not have found what you were looking for. Please run `{{prefix}}roles` for the full list!",
+	"commandRolesListTitle": "List of public roles",
+	"commandRolesAdded": "The following roles have been added to your profile: `{{roles}}`",
+	"commandRolesRemoved": "The following roles have been removed from your profile: `{{roles}}`",
+	"commandRolesNotPublic": "The following roles are not public: `{{roles}}`",
+	"commandRolesNotManageable": "The following roles cannot be given by me due to their hierarchy role position: `{{roles}}`",
+	"commandRolesAuditlog": "Authorized: Public Role Management | 'Roles' Command.",
+	"commandDuckDuckGoNotfound": "I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.",
+	"commandDuckDuckGoLookalso": "Related to this topic:",
+	"commandUrbanNotFound": "I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?",
+	"commandUrbanIndexNotfound": "You may want to try a lower page number.",
+	"systemTextTruncated": "{{definition}}... [continue reading]({{url}})",
+	"commandWhoisMemberTitles": {
+		"joined": "Joined",
+		"createdAt": "Created At"
+	},
+	"commandWhoisMemberFields": {
+		"joinedWithTimestamp": "${timestamp.displayUTC(member.joinedTimestamp!)}\n${this.duration(Date.now() - member.joinedTimestamp!, 2)} ago",
+		"joinedUnknown": "Unknown",
+		"createdAt": "${timestamp.displayUTC(member.user.createdAt)}\n${this.duration(Date.now() - member.user.createdTimestamp, 2)} ago",
+		"footer": "ID: {{member.id}}"
+	},
+	"commandWhoisMemberRoles": "Role [1]",
+	"commandWhoisMemberRoles_plural": "Roles [{{count}}]",
+	"commandWhoisMemberPermissions": "Key Permissions",
+	"commandWhoisMemberPermissionsAll": "All Permissions",
+	"commandWhoisUserTitles": {
+		"createdAt": "Created At"
+	},
+	"commandWhoisUserFields": {
+		"createdAt": "${timestamp.displayUTC(user.createdAt)}\n${this.duration(Date.now() - user.createdTimestamp, 2)} ago",
+		"footer": "ID: {{user.id}}"
+	},
+	"commandFollowage": "{{user}} has been following {{channel}} for ${this.duration(time, 2)}.",
+	"commandFollowageMissingEntries": "Either the user or the channel do not exist. Make sure you wrote their names correctly.",
+	"commandFollowageNotFollowing": "That user is not following the specified channel.",
+	"commandTwitchNoEntries": "There are no entries. Are you sure you wrote the user name correctly?",
+	"commandTwitchTitles": {
+		"followers": "Followers",
+		"views": "Views",
+		"clickToVisit": "Click to go to streamer's channel",
+		"partner": "Partner"
+	},
+	"commandTwitchPartnershipWithoutAffiliate": "This channel is not part of the Twitch affiliate program.",
+	"commandTwitchAffiliateStatus": {
+		"affiliated": "This is an affiliated channel.",
+		"partnered": "This is a partnered channel."
+	},
+	"commandTwitchCreatedAt": "Created At:",
+	"commandTwitchSubscriptionRequiredStreamer": "{{REDCROSS}} You must specify which streamer you want to subscribe to.",
+	"commandTwitchSubscriptionStreamerNotFound": "{{REDCROSS}} Sorry, I could not find the streamer. Are you sure you wrote their name correctly?",
+	"commandTwitchSubscriptionRequiredChannel": "{{REDCROSS}} You must tell me where do you want the messages to be sent.",
+	"commandTwitchSubscriptionRequiredStatus": "{{REDCROSS}} You must tell me which type of notification do you want, the options are \"online\" and \"offline\".",
+	"commandTwitchSubscriptionStatusValues": ["online", "offline"],
+	"commandTwitchSubscriptionInvalidStatus": "{{REDCROSS}} Woah there! I expected \"online\" or \"offline\", but I cannot understand what you gave me instead.",
+	"commandTwitchSubscriptionRequiredContent": "{{REDCROSS}} Mhmm, I wonder what you want me to send when the user goes live or something. Can you give me a hint please?",
+	"commandTwitchSubscriptionAddDuplicated": "{{REDCROSS}} You're already subscribed to that streamer in this channel for that status.",
+	"commandTwitchSubscriptionAddSuccessOffline": "{{GREENTICK}} Success! Whenever {{name}} goes offline, I will post a new message in {{channel}}.",
+	"commandTwitchSubscriptionAddSuccessLive": "{{GREENTICK}} Success! Whenever {{name}} goes live, I will post a new message in {{channel}}.",
+	"commandTwitchSubscriptionRemoveStreamerNotSubscribed": "{{REDCROSS}} I'm sorry, you cannot unsubscribe from a channel you're not subscribed to. Please subscribe to be able to unsubscribe.",
+	"commandTwitchSubscriptionRemoveEntryNotExists": "{{REDCROSS}} I'm sorry; while you're subscribed to this user, their subscriptions are not posted in that channel.",
+	"commandTwitchSubscriptionRemoveSuccessOffline": "{{GREENTICK}} Success! I will not longer post messages to {{channel}} whenever {{name}} goes offline.",
+	"commandTwitchSubscriptionRemoveSuccessLive": "{{GREENTICK}} Success! I will not longer post messages to {{channel}} whenever {{name}} goes live.",
+	"commandTwitchSubscriptionResetEmpty": "{{REDCROSS}} You were not subscribed to any streamer, mission abort!",
+	"commandTwitchSubscriptionResetSuccess": "{{GREENTICK}} Success! {{count}} subscription has been removed from this server.",
+	"commandTwitchSubscriptionResetSuccess_plural": "{{GREENTICK}} Success! {{count}} subscriptions have been removed from this server.",
+	"commandTwitchSubscriptionResetStreamerNotSubscribed": "{{REDCROSS}} You were not subscribed to this streamer. Are you sure you specified the right one?",
+	"commandTwitchSubscriptionResetChannelSuccess": "{{GREENTICK}} Success! Removed {{count}} subscription from the streamer {{name}}.",
+	"commandTwitchSubscriptionResetChannelSuccess_plural": "{{GREENTICK}} Success! Removed {{count}} subscriptions from the streamer {{name}}.",
+	"commandTwitchSubscriptionShowStreamerNotSubscribed": "{{REDCROSS}} You wanted to see all subscriptions from this streamer, but there are none!",
+	"commandTwitchSubscriptionShowStatus": ["Online", "Offline"],
+	"commandTwitchSubscriptionShowEmpty": "{{REDCROSS}} There are no subscriptions, who will be the first?",
+	"commandTwitchSubscriptionShowUnknownUser": "Unknown",
+	"commandWikipediaNotfound": "I am sorry, I could not find something that could match your input in Wikipedia.",
+	"commandYoutubeNotfound": "I am sorry, I could not find something that could match your input in YouTube.",
+	"commandYoutubeIndexNotfound": "You may want to try a lower page number, because I am unable to find something at this index.",
+	"commandDefineDescription": "Check the definition of a word.",
+	"commandDefineExtended": {
+		"extendedHelp": "What does \"heel\" mean?",
+		"explainedUsage": [["Word", "The word or phrase you want to get the definition from."]],
+		"examples": ["heel"]
+	},
+	"commandDefineNotfound": "I could not find a definition for this word.",
+	"commandDefinePronounciation": "Pronunciation",
+	"commandDefineUnknown": "Unknown",
+	"commandAvatarDescription": "View somebody's avatar in full size.",
+	"commandAvatarExtended": {
+		"extendedHelp": "As this command's name says, it shows somebody's avatar.",
+		"explainedUsage": [["user", "(Optional) A user mention. Defaults to the author if the input is invalid or not given."]],
+		"reminder": "Use the --size flag to change the avatar's size."
+	},
+	"commandColorDescription": "Display some awesome colours.",
+	"commandColorExtended": {
+		"extendedHelp": "The color command displays a set of colours with nearest tones given a difference between 1 and 255..",
+		"explainedUsage": [["color", "A color resolvable."]],
+		"possibleFormats": [
+			["HEX", "#dfdfdf"],
+			["RGB", "rgb(200, 200, 200)"],
+			["HSL", "hsl(350, 100, 100)"],
+			["B10", "14671839"]
+		],
+		"examples": ["#dfdfdf >25", "rgb(200, 130, 75)"]
+	},
+	"commandContentDescription": "Get messages' raw content.",
+	"commandContentExtended": {
+		"extendedHelp": "Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting",
+		"explainedUsage": [
+			["channel", "(optional) The channel in which the message is to get the content from"],
+			["message", "ID of the message to get the raw content for"]
+		]
+	},
+	"commandEmojiDescription": "Get info on an emoji.",
+	"commandEmojiExtended": {
+		"extendedHelp": "I'll give you the emoji name, whether it is a custom emoji or not, the emoji ID and a large image preview of the emoji.",
+		"explainedUsage": [["emoji", "The emoji to get information about"]],
+		"reminder": "It doesn't matter whether I share a server with a custom emoji or not!"
+	},
+	"commandEmotesDescription": "Shows all custom emotes available on this server",
+	"commandEmotesExtended": {
+		"extendedHelp": "The list of emotes is split per 50 emotes"
+	},
+	"commandEmotesTitle": "Emotes in",
+	"commandPriceDescription": "Convert between currencies with this command.",
+	"commandPriceExtended": {
+		"extendedHelp": "Convert between any two currencies, even if they are cryptocurrencies.",
+		"explainedUsage": [
+			["from", "The currency to convert from"],
+			["to", "The currency to convert to"],
+			["amount", "The amount to convert, will default to 1"]
+		],
+		"examples": ["EUR USD", "USD EUR 5", "USD BAT 10"]
+	},
+	"commandQuoteDescription": "Quote another person's message.",
+	"commandQuoteExtended": {
+		"extendedHelp": "Quotes also include the message's image, if any",
+		"explainedUsage": [
+			["channel", "(optional) The channel in which the message is to quote"],
+			["message", "ID of the message to quote"]
+		]
+	},
+	"commandRolesDescription": "List, claim or unclaim public roles in this server.",
+	"commandRolesExtended": {
+		"extendedHelp": [
+			"Public roles are roles that are available for everyone.",
+			"An administrator must configure them with the configuration command."
+		],
+		"explainedUsage": [["roles", "The list of roles to claim or unclaim. Leave this empty to get a list of available roles."]],
+		"reminder": [
+			"When claiming or unclaiming roles you can provide a single or multiple role(s).",
+			"To claim multiple roles, you must separate them by a comma, for example `red,green`.",
+			"You can specify which roles you want by providing the role ID, name, or a sub-section of the name.",
+			"",
+			"Administrators can add public roles using `Skyra, conf set roles.public ExamplePublicRole`."
+		],
+		"examples": ["", "Designer,Programmer", "Designer"],
+		"multiline": true
+	},
+	"commandDuckDuckGoDescription": "Search the Internet with DuckDuckGo.",
+	"commandDuckDuckGoExtended": {
+		"extendedHelp": "This uses the alternative search enginge DuckDuckGo to search the web",
+		"reminder": "If you want to search google use `Skyra, google`"
+	},
+	"commandPollDescription": "Simplifies reaction-based polls.",
+	"commandPollExtended": {
+		"extendedHelp": "Separate your options using commas.",
+		"examples": ["Make an anime channel, Make a gaming channel, Make a serious-discussion channel"]
+	},
+	"commandPollReactionLimit": "Please don't add emojis while I am reacting!",
+	"commandVoteDescription": "Simplified reaction-based vote.",
+	"commandVoteExtended": {
+		"examples": ["Should I implement the #anime channel?"]
+	},
+	"commandTopInvitesDescription": "Shows the top 10 most used invites for this server",
+	"commandTopInvitesExtended": {
+		"extendedHelp": "Use this to get some server insights if your server doesn't have access to Discord's official server insights."
+	},
+	"commandTopInvitesNoInvites": "There are no invites, or none of them have been used!",
+	"commandTopInvitesTop10InvitesFor": "Top 10 invites for {{guild}}",
+	"commandTopInvitesEmbedData": {
+		"channel": "Channel",
+		"link": "Link",
+		"createdAt": "Date Created",
+		"createdAtUnknown": "Creation date unknown",
+		"expiresIn": "Expires in",
+		"neverExpress": "Never",
+		"temporary": "Temporary invite",
+		"uses": "Uses"
+	},
+	"commandUrbanDescription": "Check the definition of a word on UrbanDictionary.",
+	"commandUrbanExtended": {
+		"extendedHelp": "What does \"spam\" mean?",
+		"explainedUsage": [
+			["Word", "The word or phrase you want to get the definition from."],
+			["Page", "Defaults to 1, the page you wish to read."]
+		],
+		"examples": ["spam"]
+	},
+	"commandWhoisDescription": "Who are you?",
+	"commandWhoisExtended": {
+		"extendedHelp": "Gets information on any server member. Also known as `userinfo` in many other bots."
+	},
+	"commandFollowageDescription": "Check how long a Twitch user has been following a channel.",
+	"commandFollowageExtended": {
+		"extendedHelp": "Just... that.",
+		"examples": ["dallas cohhcarnage"]
+	},
+	"commandTwitchDescription": "Check the information about a Twitch profile.",
+	"commandTwitchExtended": {
+		"extendedHelp": "Really, just that.",
+		"examples": ["riotgames"]
+	},
+	"commandTwitchSubscriptionDescription": "Manage the subscriptions for your server.",
+	"commandTwitchSubscriptionExtended": {
+		"extendedHelp": [
+			"Manage the subscriptions for this server.",
+			"__Online Notifications__",
+			"For content, the best way is writing `--embed`, the notifications will then show up in MessageEmbeds with all available data.",
+			"Alternatively you can set your own content and it will post as a regular message.",
+			"This content can contain some parameters that will be replaced with Twitch data:",
+			"- `%TITLE%` for the stream's title",
+			"- `%VIEWER_COUNT%` for the amount of current viewers,",
+			"- `%GAME_NAME%` for the title being streamed",
+			"- `%GAME_ID%` for the game's ID as seen by Twitch",
+			"- `%LANGUAGE%` for the language the stream is in",
+			"- `%USER_ID%` for the streamer's ID as seen by Twitch",
+			"- and `%USER_NAME%` for the Streamer's twitch username.",
+			"",
+			"__Offline Notifications__",
+			"For offline events none of the variables above are available and you'll have to write your own content.",
+			"You can still use the `--embed` flag for the notification to show in a nice Twitch-purple MessageEmbed."
+		],
+		"explainedUsage": [
+			["streamer", "The Twitch username of the streamer to get notifications for."],
+			["channel", "A Discord channel where to post the notifications in."],
+			["status", "The status that the Twitch streamer should get for an notification, one of online or offline."],
+			["content", "The message to send in Discord chat. Refer to extended help above for more information."]
+		],
+		"examples": [
+			"add favna #twitch online --embed",
+			"add favna #twitch online %USER_NAME% went live | %TITLE%",
+			"remove kyranet #twitch online",
+			"reset kyranet",
+			"reset",
+			"show kyranet",
+			"show"
+		],
+		"multiline": true
+	},
+	"commandWikipediaDescription": "Search something through Wikipedia.",
+	"commandWikipediaExtended": {
+		"extendedHelp": "In NSFW channels I will also add the page image. This restriction is in place because Wikipedia has NSFW images for NSFW pages as they have to be accurate (i.e. diseases or human body parts).",
+		"reminder": "Most Wikipedia page titles are case sensitive. Some celeberties will have lowercase redirects, but not many."
+	},
+	"commandYoutubeDescription": "Search something through YouTube.",
+	"commandYoutubeExtended": {
+		"extendedHelp": "If I have the {{PERMISSIONS.MANAGE_MESSAGES}} {{PERMISSIONS.ADD_REACTIONS}} permissions then I will provide the option to navigate through the top 10 results."
+	}
+}

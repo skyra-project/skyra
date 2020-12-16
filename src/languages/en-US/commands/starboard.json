@@ -1,0 +1,16 @@
+{
+	"commandStarNostars": "There is no starred message.",
+	"commandStarNoChannel": "I'm sorry, but a starboard channel hasn't been set up.",
+	"commandStarStats": "Starboard Stats",
+	"commandStarMessages": "{{count}} message",
+	"commandStarMessages_plural": "{{count}} messages",
+	"commandStars": "{{count}} star",
+	"commandStars_plural": "{{count}} stars",
+	"commandStarStatsDescription": "{{messages}} starred with a total of {{stars}}",
+	"commandStarTopstarred": "Top Starred Posts",
+	"commandStarTopstarredDescription": "{{medal}}: {{id}} ({{count}} star)",
+	"commandStarTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} stars)",
+	"commandStarTopreceivers": "Top Star Receivers",
+	"commandStarTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} star)",
+	"commandStarTopreceiversDescription_plural": "${medal}: <@${id}> ({{count}} stars)"
+}

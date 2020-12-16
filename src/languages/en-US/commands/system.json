@@ -1,0 +1,64 @@
+{
+	"commandDmDescription": "Sends a Direct Message.",
+	"commandDmExtended": {
+		"extendedHelp": "The DM command is reserved for bot owners, and it's only used for very certain purposes, such as replying feedback messages sent by users.",
+		"reminder": "Reserved for bot owners for replying purposes."
+	},
+	"commandEvalDescription": "Evaluates arbitrary Javascript.",
+	"commandEvalExtended": {
+		"extendedHelp": [
+			"The eval command evaluates code as-in, any error thrown from it will be handled.",
+			"It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.",
+			"The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.",
+			"The --output and --output-to flag accept either `file`, `log`, `haste` or `hastebin`.",
+			"The --delete flag makes the command delete the message that executed the message after evaluation.",
+			"The --silent flag will make it output nothing.",
+			"The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.",
+			"The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword",
+			"The --showHidden flag will enable the showHidden option in util.inspect.",
+			"The --lang and --language flags allow different syntax highlight for the output.",
+			"The --json flag converts the output to json",
+			"The --no-timeout flag disables the timeout",
+			"If the output is too large, it'll send the output as a file, or in the console if the bot does not have the {{PERMISSIONS.ATTACH_FILES}} permission."
+		],
+		"examples": ["msg.author.username;", "1 + 1;"],
+		"reminder": "Reserved for bot owners.",
+		"multiline": true
+	},
+	"commandExecDescription": "Execute Order 66.",
+	"commandExecExtended": {
+		"extendedHelp": "You better not know about this."
+	},
+	"commandSetAvatarDescription": "Set Skyra's avatar.",
+	"commandSetAvatarExtended": {
+		"extendedHelp": "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.",
+		"reminder": "Reserved for bot owners."
+	},
+	"commandDonateDescription": "Get information about how to donate to keep Skyra alive longer.",
+	"commandDonateExtended": {
+		"extendedHelp": [
+			"Skyra Project started on 24th October 2016, if you are reading this, you are",
+			"using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.",
+			"",
+			"However, not everything is free and we need your help to keep Skyra alive.",
+			"We will be very thankful if you help us.",
+			"We have been working on a lot of things, and Skyra is precious to us. Take care of her ❤",
+			"",
+			"Do you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
+		],
+		"multiline": true
+	},
+	"commandEchoDescription": "Make Skyra send a message to this (or another) channel.",
+	"commandEchoExtended": {
+		"extendedHelp": "This should be very obvious...",
+		"reminder": "Reserved for bot owners."
+	},
+	"commandFeedbackDescription": "Send a feedback message to the bot's feedback channel.",
+	"commandFeedbackExtended": {
+		"extendedHelp": "This command sends a message to a feedback channel which the bot's owners can read. You'll get a reply from me in your DMs when one of the owners has an update for you."
+	},
+	"commandStatsDescription": "Provides some details about the bot and stats.",
+	"commandStatsExtended": {
+		"extendedHelp": "This should be very obvious..."
+	}
+}

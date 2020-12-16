@@ -1,0 +1,577 @@
+{
+	"commandNickSet": "Changed the nickname to **{{nickname}}**.",
+	"commandNickCleared": "Nickname cleared.",
+	"commandPermissionNodesHigher": "{{REDCROSS}} You cannot modify nor preview the permission nodes for this target.",
+	"commandPermissionNodesInvalidType": "{{REDCROSS}} Invalid type, expected either of `allow` or `deny`.",
+	"commandPermissionNodesAdd": "{{GREENTICK}} Successfully added the command to the permission node.",
+	"commandPermissionNodesNodeNotExists": "{{REDCROSS}} The selected permission node does not exist.",
+	"commandPermissionNodesCommandNotExists": "{{REDCROSS}} The selected command does not exist in the permision node.",
+	"commandPermissionNodesRemove": "{{GREENTICK}} Successfully removed the command from the permission node.",
+	"commandPermissionNodesReset": "{{GREENTICK}} Successfully removed all commands from the permission node.",
+	"commandPermissionNodesShowName": "Permissions for: __{{name}}__",
+	"commandPermissionNodesShowAllow": "**Allow**: {{allow}}",
+	"commandPermissionNodesShowDeny": "**Deny**: {{deny}}",
+	"commandTriggersNotype": "You need to insert a trigger type (**alias**|**reaction**)",
+	"commandTriggersNooutput": "You need to insert the trigger output.",
+	"commandTriggersInvalidreaction": "This reaction does not seem valid for me, either it is not valid unicode or I do not have access to it.",
+	"commandTriggersInvalidalias": "There is no command like this.",
+	"commandTriggersRemoveNottaken": "There is no trigger with this input.",
+	"commandTriggersRemove": "Successfully removed this trigger.",
+	"commandTriggersAddTaken": "There is already a trigger with this input.",
+	"commandTriggersAdd": "Successfully added the trigger.",
+	"commandTriggersListEmpty": "The trigger list for this guild is empty.",
+	"commandGuildInfoTitles": {
+		"CHANNELS": "Channels",
+		"MEMBERS": "Members",
+		"OTHER": "Other"
+	},
+	"commandGuildInfoRoles": "**Roles**\n\n{{roles}}",
+	"commandGuildInfoNoroles": "Roles? Where? There is no other than the `@everyone` role!",
+	"commandGuildInfoChannels": [
+		"• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.",
+		"• AFK: {{afkChannelText}}"
+	],
+	"commandGuildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **${afkTime / 60}**min",
+	"commandGuildInfoMembers": ["• **{{count}}** members", "• Owner: **{{owner.tag}}**", "  (ID: **{{owner.id}}**)"],
+	"commandGuildInfoOther": [
+		"• Roles: **{{size}}**",
+		"• Region: **{{region}}**",
+		"• Created at: **${timestamp.displayUTC(createdAt)}** (UTC - YYYY/MM/DD)",
+		"• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**"
+	],
+	"commandRoleInfoTitles": { "PERMISSIONS": "Permissions" },
+	"commandRoleInfoData": [
+		"ID: **{{role.id}}**",
+		"Name: **{{role.name}}**",
+		"Color: **{{role.hexColor}}**",
+		"Hoisted: **{{hoisted}}**",
+		"Position: **{{role.rawPosition}}**",
+		"Mentionable: **{{mentionable}}**"
+	],
+	"commandRoleInfoAll": "All Permissions granted.",
+	"commandRoleInfoNoPermissions": "Permissions not granted.",
+	"commandFilterUndefinedWord": "You must write what you want me to filter.",
+	"commandFilterAlreadyFiltered": "This word is already filtered.",
+	"commandFilterNotFiltered": "This word is not filtered.",
+	"commandFilterAdded": "{{GREENTICK}} Success! Added the word {{word}} to the filter.",
+	"commandFilterRemoved": "{{GREENTICK}} Success! Removed the word {{word}} from the filter.",
+	"commandFilterReset": "{{GREENTICK}} Success! The filter has been reset.",
+	"commandFilterShowEmpty": "The list of filtered words is empty!",
+	"commandFilterShow": "Filtered words in this server: {{words}}",
+	"commandManageCommandAutoDeleteTextChannel": "You must input a valid text channel, people cannot use commands in a voice or a category channel!",
+	"commandManageCommandAutoDeleteRequiredDuration": "You must specify an amount of seconds for the command to be automatically deleted.",
+	"commandManageCommandAutoDeleteShowEmpty": "There are no command autodelete configured right now.",
+	"commandManageCommandAutoDeleteShow": "All command autodeletes configured:{{codeblock}}",
+	"commandManageCommandAutoDeleteAdd": "{{GREENTICK}} Success! All successful commands in {{channel}} will be deleted after {{time | duration}}!",
+	"commandManageCommandAutoDeleteRemove": "{{GREENTICK}} Success! Commands will not be automatically deleted in {{channel}} anymore!",
+	"commandManageCommandAutoDeleteRemoveNotset": "{{REDCROSS}} The channel {{channel}} was not configured to automatically delete messages!",
+	"commandManageCommandAutoDeleteReset": "All the command autodeletes have been reset.",
+	"commandManageCommandChannelTextChannel": "You must input a valid text channel, people cannot use commands in a voice or a category channel!",
+	"commandManageCommandChannelRequiredCommand": "You must specify what command do you want to add or remove from the channel's filter.",
+	"commandManageCommandChannelShow": "List of disabled commands in {{channel}}: {{commands}}",
+	"commandManageCommandChannelShowEmpty": "The list of disabled commands for the specified channel is empty!",
+	"commandManageCommandChannelAddAlreadyset": "The command you are trying to disable is already disabled!",
+	"commandManageCommandChannelAdd": "Successfully disabled the command {{command}} for the channel {{channel}}!",
+	"commandManageCommandChannelRemoveNotset": "The command you are trying to enable was not disabled for {{channel}}.",
+	"commandManageCommandChannelRemove": "Successfully enabled the command {{command}} for the channel {{channel}}!",
+	"commandManageCommandChannelResetEmpty": "This channel had no disabled command, so I decided to do nothing.",
+	"commandManageCommandChannelReset": "Successfully enabled all disabled commands in {{channel}}, enjoy!",
+	"commandManageReactionRolesShowEmpty": "There are no reaction roles set up in this server.",
+	"commandManageReactionRolesAddChannel": "{{GREENTICK}} Success! I will now give the role when people react with {{emoji}} to any message from {{channel}}!",
+	"commandManageReactionRolesAddPrompt": "Listening now! Please react to a message and I will bind the reaction with the role!",
+	"commandManageReactionRolesAddMissing": "I waited, but you did not seem to have reacted to a message.",
+	"commandManageReactionRolesAdd": "{{GREENTICK}} Success! I will now give the role when people react with {{emoji}} at {{url}}!",
+	"commandManageReactionRolesRemoveNotExists": "The reaction role you specified does not exist.",
+	"commandManageReactionRolesRemove": "{{GREENTICK}} Success! I will not longer give the role when people react with {{emoji}} at {{url}}!",
+	"commandManageReactionRolesResetEmpty": "There were no reaction roles set up.",
+	"commandManageReactionRolesReset": "{{GREENTICK}} Successfully removed all reaction roles.",
+	"commandSetStarboardEmojiSet": "Successfully set a new emoji for the next star messages: {{emoji}}",
+	"configurationTextChannelRequired": "The selected channel is not a valid text channel, try again with another.",
+	"configurationEquals": "Successfully configured: no changes were made.",
+	"commandSetIgnoreChannelsSet": "Ignoring all command input from {{channel}} now.",
+	"commandSetIgnoreChannelsRemoved": "Listening all command input from {{channel}} now.",
+	"commandSetImageLogsSet": "Successfully set the image logs channel to {{channel}}.",
+	"commandSetMemberLogsSet": "Successfully set the member logs channel to {{channel}}.",
+	"commandSetMessageLogsSet": "Successfully set the message logs channel to {{channel}}.",
+	"commandSetModLogsSet": "Successfully set the mod logs channel to {{channel}}.",
+	"commandSetPrefixSet": "Successfully set the prefix to {{prefix}}. Use {{prefix}}setPrefix <prefix> to change it again.",
+	"commandStickyRolesRequiredUser": "A user target is required for this command to work.",
+	"commandStickyRolesRequiredRole": "A role name is required when adding or removing a role.",
+	"commandStickyRolesNotExists": "The user {{user}} does not have any sticky roles or does not have the specified one.",
+	"commandStickyRolesReset": "Successfully removed all sticky roles from {{user}}.",
+	"commandStickyRolesRemove": "Successfully removed the specified role from {{user}}.",
+	"commandStickyRolesAddExists": "The user {{user}} already had the specified role as sticky.",
+	"commandStickyRolesAdd": "Successfully added the specified role as sticky to {{user}}.",
+	"commandStickyRolesShowEmpty": "There are no sticky roles to show.",
+	"commandStickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles}}.",
+	"commandCreateMuteDescription": "Prepare the mute system.",
+	"commandCreateMuteExtended": {
+		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the guild settings. This command also modifies all channels (where possible) permissions and disables the permission **{{this.PERMISSIONS.SEND_MESSAGES}}** in text channels and **{{PERMISSIONS.CONNECT}}** in voice channels for said role."
+	},
+	"commandNickDescription": "Change Skyra's nickname for this server.",
+	"commandNickExtended": {
+		"extendedHelp": "This command allows you to change Skyra's nickname easily for the server.",
+		"reminder": "This command requires the **{{this.PERMISSIONS.CHANGE_NICKNAME}}** permission. Make sure Skyra has it.",
+		"explainedUsage": [["nick", "The new nickname. If you don't put any, it'll reset it instead."]],
+		"examples": ["SkyNET", "Assistant", ""]
+	},
+	"commandPermissionNodesDescription": "Configure the permission nodes for this server.",
+	"commandPermissionNodesExtended": {
+		"extendedHelp": [
+			"Permission nodes are per-user and per-role overrides. They are used when the built-in permissions system is not enough.",
+			"For example, in some servers they want to give a staff role the permissions to use mute and warn, but not ban and others (reserved to moderators), and only warn is available for the configurable staff-level permission, so you can tell me to allow the mute command for the staff role now."
+		],
+		"explainedUsage": [
+			["action", "Either `add`, `remove`, `reset`, or `show`. Defaults to `show`."],
+			["target", "Either a role name or a user name, allowing IDs and mentions for either."],
+			["type", "Either `allow` or `deny`. This is ignored when `action` is not `add` nor `remove`."],
+			["command", "The name of the command to allow or deny. This is ignored when `action` is not `add` nor `remove`."]
+		],
+		"examples": ["add staff allow warn", "add moderators deny ban", "remove staff allow warn", "reset staff", "show staff"],
+		"reminder": "The server owner cannot have any actions, nor the `everyone` role can have allowed commands.",
+		"multiline": true
+	},
+	"commandTriggersDescription": "Set custom triggers for your guild!.",
+	"commandTriggersExtended": {
+		"extendedHelp": [
+			"This command allows administrators to go further with the personalization of Skyra in the guild!.",
+			"A trigger is a piece that can active other functions.",
+			"For example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.",
+			"When this happens, the alias system executes and tries to find an entry that matches with the input."
+		],
+		"reminder": "This command requires the **{{this.PERMISSIONS.ADD_REACTIONS}}** permission so it can test reactions. Make sure Skyra has it.",
+		"explainedUsage": [
+			["list", "List all current triggers."],
+			["add <type> <input> <output>", "Add a new trigger given a type, input and output."],
+			["remove <type> <input>", "Remove a trigger given the type and input."]
+		],
+		"examples": ["", "list", "add reaction \"good night\" 🌛", "remove reaction \"good night\""],
+		"multiline": true
+	},
+	"commandManagecommandautodeleteDescription": "Manage per-channel autodelete timer.",
+	"commandManagecommandautodeleteExtended": {
+		"extendedHelp": "This command manages this guild's per-channel command autodelete timer, it serves well to leave a channel clean from commands.",
+		"explainedUsage": [
+			["show", "Show the autodelete timer for all channels."],
+			["add [channel] <command>", "Add an autodelete timer for the specified channel."],
+			["remove [channel]", "Remove the autotimer from the specified channel."],
+			["reset", "Clear all autodelete timers."]
+		],
+		"reminder": "The channel argument is optional, defaulting to the message's channel, but it uses fuzzy search when possible.",
+		"examples": ["show", "add #general 4s", "remove #general", "reset"]
+	},
+	"commandManageCommandChannelDescription": "Manage per-channel command blacklist.",
+	"commandManageCommandChannelExtended": {
+		"extendedHelp": "This command manages this guild's per-channel command blacklist, it serves well to disable certain commands you do not want to be used in certain channels (to disable a command globally, use the `disabledCommands` settings key to disable in all channels.",
+		"explainedUsage": [
+			["show [channel]", "Show the command blacklist for the selected channel."],
+			["add [channel] <command>", "Add a command to the specified channel's command blacklist."],
+			["remove [channel] <command>", "Remove a command to the specified channel's command blacklist."],
+			["reset [channel]", "Clear the command blacklist for the specified channel."]
+		],
+		"reminder": "The channel argument is optional, but it uses fuzzy search when possible.",
+		"examples": ["show", "add #general profile", "remove #general profile", "reset #general"]
+	},
+	"commandManageReactionRolesDescription": "Manage the reaction roles for this server.",
+	"commandManageReactionRolesExtended": {
+		"extendedHelp": [
+			"Seamlessly set up reaction roles in your server! When adding reaction roles, I listen to your reactions for 5 minutes and I bind the first reaction from you alongside the channel and the message, with the specified role.",
+			"Otherwise, if a channel is specified, a prompt will not be created, and the reaction role will be bound to all of the channel's messages.",
+			"",
+			"The best way to add new reaction roles is by using `add @role`. If you prefer not binding the reaction to a specific message then use `add @role #channel emoji`"
+		],
+		"explainedUsage": [
+			["show", "Retrieve the list of all reaction roles."],
+			["add <role>", "Adds a reaction role binding the first reacted message since the execution with the role."],
+			["remove <role> <message>", "Removes a reaction role, use `show` to get a list of them."],
+			["reset", "Removes all reaction roles."]
+		],
+		"multiline": true,
+		"examples": ["show", "add @role", "add @role #channel emoji", "remove @role 123456789012345678", "reset"]
+	},
+	"commandSetIgnoreChannelsDescription": "Set a channel to the ignore channel list.",
+	"commandSetIgnoreChannelsExtended": {
+		"extendedHelp": [
+			"This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators can use Skyra's commands.",
+			"Unlike removing the **{{this.PERMISSIONS.SEND_MESSAGES}}** permission, Skyra is still able to send (and therefore execute commands) messages, which allows moderators to use moderation commands in the channel.",
+			"Use this if you want to ban any command usage from the bot in a specific channel."
+		],
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"reminder": "You cannot set the same channel twice, instead, Skyra will remove it.",
+		"examples": ["#general", "here"],
+		"multiline": true
+	},
+	"commandSetImageLogsDescription": "Set the image logs channel.",
+	"commandSetImageLogsExtended": {
+		"extendedHelp": [
+			"This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with the attachment re-uploaded.",
+			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra."
+		],
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"examples": ["#image-logs", "here"],
+		"multiline": true
+	},
+	"commandSetMemberLogsDescription": "Set the member logs channel.",
+	"commandSetMemberLogsExtended": {
+		"extendedHelp": [
+			"This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: \"Member Join\" and \"Member Leave\".",
+			"If a muted user joins, it will send a special \"Muted Member Join\" event.",
+			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra.",
+			"You also need to individually set the \"events\" you want to listen: `events.memberAdd` and `events.memberRemove`.",
+			"For roles, you would enable `events.memberNicknameChange` and/or `events.memberRoleUpdate` via the `config` command."
+		],
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"examples": ["#member-logs", "here"],
+		"multiline": true
+	},
+	"commandSetMessageLogsDescription": "Set the message logs channel.",
+	"commandSetMessageLogsExtended": {
+		"extendedHelp": [
+			"This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: \"Message Delete\", \"Message Edit\", and \"Message Prune\".",
+			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra.",
+			"You also need to individually set the \"events\" you want to listen: `events.messageDelete` and `events.messageEdit` via the `config` command."
+		],
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"reminder": "Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{this.PERMISSIONS.VIEW_AUDIT_LOG}}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.",
+		"examples": ["#message-logs", "here"],
+		"multiline": true
+	},
+	"commandSetmodlogsDescription": "Set the mod logs channel.",
+	"commandSetmodlogsExtended": {
+		"extendedHelp": [
+			"This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with \"claimable\" reasons and moderators.",
+			"This channel is not a must and you can always retrieve specific modlogs with the `case` command.",
+			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra.",
+			"For auto-detection, you need to individually set the \"events\" you want to listen: `events.banAdd`, `events.banRemove` via the `config` command."
+		],
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"reminder": "Due to Discord limitations, the auto-detection does not detect kicks. You need to use the `kick` command if you want to document them as a formal moderation log case.",
+		"examples": ["#mod-logs", "here"],
+		"multiline": true
+	},
+	"commandSetprefixDescription": "Set Skyra's prefix.",
+	"commandSetprefixExtended": {
+		"extendedHelp": [
+			"This command helps you setting up Skyra's prefix. A prefix is an affix that is added in front of the word, in this case, the message.",
+			"It allows bots to distinguish between a regular message and a command. By nature, the prefix between should be different to avoid conflicts.",
+			"If you forget Skyra's prefix, simply mention her with nothing else and she will tell you the current prefix.",
+			"Alternatively, you can prefix the commands with her name and a comma (for example `Skyra, ping`)."
+		],
+		"explainedUsage": [["prefix", "The prefix to set. Default one in Skyra is `{{DEFAULT_PREFIX}}`."]],
+		"reminder": "Your prefix should only contain characters everyone can write and type.",
+		"examples": ["&", "="],
+		"multiline": true
+	},
+	"commandSetrolechannelDescription": "Set the role channel for role reactions.",
+	"commandSetrolechannelExtended": {
+		"extendedHelp": "This command sets up the role channel to lock the reactions to, it is a requirement to set up before setting up the **role message**, and if none is given, the role reactions module will not run.",
+		"explainedUsage": [
+			[
+				"channel",
+				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
+			]
+		],
+		"reminder": "You cannot set the same channel twice, instead, Skyra will remove it.",
+		"examples": ["#roles", "here"]
+	},
+	"commandSetrolemessageDescription": "Set the role message for role reactions.",
+	"commandSetrolemessageExtended": {
+		"extendedHelp": [
+			"This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first.",
+			"If none is given, Skyra will listen to any reaction in the channel.",
+			"Additionally, Skyra requires **{{this.PERMISSIONS.READ_MESSAGE_HISTORY}}** in order to fetch the message for validation."
+		],
+		"explainedUsage": [["message", "An ID, they are 17-18 characters long and numeric."]],
+		"reminder": "You must execute this command in the role channel.",
+		"examples": ["434096799847022598"],
+		"multiline": true
+	},
+	"commandSetStarboardEmojiDescription": "Set the emoji reaction for starboard.",
+	"commandSetStarboardEmojiExtended": {
+		"extendedHelp": "This command sets up the starboard emoji for the starboard, which is, by default, ⭐. Once this is changed, Skyra will ignore any star and will count users who reacted to said emoji.",
+		"explainedUsage": [["emoji", "The emoji to set."]],
+		"reminder": "Use this wisely, not everyone expects the starboard to listen to a custom emoji.",
+		"examples": ["⭐"]
+	},
+	"commandRoleInfoDescription": "Check the information for a role.",
+	"commandRoleInfoExtended": {
+		"extendedHelp": [
+			"The roleinfo command displays information for a role, such as its id, name, color, whether it's hoisted (displays separately) or not, it's role hierarchy position, whether it's mentionable or not, how many members have said role, and its permissions.",
+			"It sends an embedded message with the color of the role."
+		],
+		"explainedUsage": [["role", "The role name, partial name, mention or id."]],
+		"examples": ["Administrator", "Moderator", ""],
+		"multiline": true
+	},
+	"commandGuildInfoDescription": "Check the information of the guild!.",
+	"commandGuildInfoExtended": {
+		"extendedHelp": [
+			"The serverinfo command displays information for the guild the message got sent.",
+			"It shows the amount of channels, with the count for each category, the amount of members (given from the API), the owner with their user id, the amount of roles, region, creation date, verification level... between others."
+		],
+		"multiline": true
+	},
+	"commandStickyRolesDescription": "Manage sticky roles for users.",
+	"commandStickyRolesExtended": {
+		"extendedHelp":
+			"The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when you leave, and are applied back as soon as they join.",
+		"explainedUsage": [
+			["action", "Either you want to check the sticky roles, add one, remove one, or remove all of them."],
+			["user", "The user target for all the actions."],
+			["role", "The role to add or remove."]
+		],
+		"examples": ["add Skyra Goddess", "show Skyra", "remove Skyra Goddess", "reset Skyra"],
+		"reminder": "The member's roles will not be modified by this command, you need to add or remove them."
+	},
+	"commandAttachmentsModeDescription": "Manage this guild's flags for the attachments filter.",
+	"commandAttachmentsModeExtended": {
+		"extendedHelp": ["The attachmentsMode command manages the behavior of the attachments system."],
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		],
+		"multiline": true
+	},
+	"commandCapitalsModeDescription": "Manage this guild's flags for the caps filter.",
+	"commandCapitalsModeExtended": {
+		"extendedHelp": [
+			"The capitalsMode command manages the behavior of the caps system.",
+			"The minimum amount of characters before filtering can be set with `Skyra, settings set selfmod.capitals.minimum <number>`.",
+			"The percentage of uppercase letters can be set with `Skyra, settings set selfmod.capitals.maximum <number>`."
+		],
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		],
+		"multiline": true
+	},
+	"commandFilterDescription": "Manage this guild's word blacklist.",
+	"commandFilterExtended": {
+		"extendedHelp": [
+			"The filter command manages the word blacklist for this server and must have a filter mode set up, check `Skyra, help filterMode`.",
+			"Skyra's word filter can find matches even with special characters or spaces between the letters of a blacklisted word, as well as it filters duplicated characters for enhanced filtering."
+		],
+		"multiline": true
+	},
+	"commandFilterModeDescription": "Manage this server's word filter modes.",
+	"commandFilterModeExtended": {
+		"extendedHelp": "The filterMode command manages the behavior of the word filter system. Run `Skyra, help filter` for how to add words.",
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		]
+	},
+	"commandInviteModeDescription": "Manage the behavior for the invite link filter.",
+	"commandInviteModeExtended": {
+		"extendedHelp": "The inviteMode command manages the behavior of the word filter system.",
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		]
+	},
+	"commandLinkModeDescription": "Manage the behavior for the link filter.",
+	"commandLinkModeExtended": {
+		"extendedHelp": "The linkMode command manages the behavior of the link system.",
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		]
+	},
+	"commandMessageModeDescription": "Manage the behavior for the message filter system.",
+	"commandMessageModeExtended": {
+		"extendedHelp": "The messageMode command manages the behavior of the message filter system.",
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		]
+	},
+	"commandNewlineModeDescription": "Manage the behavior for the new line filter system.",
+	"commandNewlineModeExtended": {
+		"extendedHelp": [
+			"The newLineMode command manages the behavior of the new line filter system.",
+			"The maximum amount of lines allowed can be set with `Skyra, settings set selfmod.newlines.maximum <number>`"
+		],
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		],
+		"multiline": true
+	},
+	"commandReactionModeDescription": "Manage the behavior for the reaction filter system.",
+	"commandReactionModeExtended": {
+		"extendedHelp": "The reactionMode command manages the behavior of the reaction filter system.",
+		"explainedUsage": [
+			["Enable", "Enable the sub-system."],
+			["Disable", "Disable the sub-system"],
+			["Action Alert", "Toggle message alerts in the channel."],
+			["Action Log", "Toggle message logs in the moderation logs channel."],
+			["Action Delete", "Toggle message deletions."],
+			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
+			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
+			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
+		],
+		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
+		"examples": [
+			"enable",
+			"disable",
+			"action alert",
+			"punishment ban",
+			"punishment mute",
+			"punishment-duration 1m",
+			"threshold-maximum 5",
+			"threshold-duration 30s"
+		]
+	}
+}

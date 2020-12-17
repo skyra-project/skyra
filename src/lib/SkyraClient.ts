@@ -139,6 +139,7 @@ export class SkyraClient extends KlasaClient {
 	 * @param message The message that gives context.
 	 */
 	public async fetchLanguage(message: Message) {
+		// TODO: Use Redis to cache guild language
 		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
 	}
 }

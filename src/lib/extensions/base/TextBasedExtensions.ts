@@ -1,85 +1,61 @@
-import { CustomFunctionGet, CustomGet, NonNullObject } from '#lib/types';
+import { NonNullObject } from '#lib/types';
 import { APIMessage, Constructable, Message, MessageAdditions, MessageOptions, PartialTextBasedChannelFields, SplitOptions } from 'discord.js';
-import { Language } from 'klasa';
+import { StringMap, TFunction, TOptions } from 'i18next';
 
 export interface ISendable {
 	send: PartialTextBasedChannelFields['send'];
-	fetchLanguage(): Promise<Language>;
+	fetchLanguage(): Promise<string>;
+	fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
+	fetchT(): Promise<TFunction>;
 }
 
 export function TextBasedExtension<Base extends NonNullObject>(Ctor: Constructable<Base & ISendable>) {
 	// @ts-expect-error: Dumb TypeScript error
 	return class extends Ctor {
-		public async fetchLocale(key: string, ...localeArgs: readonly unknown[]) {
-			const language = await this.fetchLanguage();
-			// @ts-expect-error: Some weird type error here
-			return language.get(key as any, ...localeArgs);
-		}
-
-		public sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
-		public sendLocale<K extends string, TReturn>(
-			key: CustomGet<K, TReturn>,
-			options?: (MessageOptions & { split?: false }) | MessageAdditions
+		public sendTranslated(
+			key: string,
+			values?: readonly unknown[],
+			options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
 		): Promise<Message>;
 
-		public sendLocale<K extends string, TReturn>(
-			key: CustomGet<K, TReturn>,
-			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
+		public sendTranslated(
+			key: string,
+			values?: readonly unknown[],
+			options?: MessageOptions & { split: true | SplitOptions }
 		): Promise<Message[]>;
 
-		public sendLocale<K extends string, TArgs, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			localeArgs: [TArgs],
-			options?: MessageOptions | MessageAdditions
-		): Promise<Message>;
-
-		public sendLocale<K extends string, TArgs, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			localeArgs: [TArgs],
-			options?: (MessageOptions & { split?: false }) | MessageAdditions
-		): Promise<Message>;
-
-		public sendLocale<K extends string, TArgs, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			localeArgs: [TArgs],
-			options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-		): Promise<Message[]>;
-
-		public async sendLocale(key: string, args: any = [], options: any = {}) {
-			if (!Array.isArray(args)) [options, args] = [args, []];
-			// @ts-expect-error: Some weird type error here
-			return this.send(APIMessage.transformOptions(await this.fetchLocale(key, ...args), undefined, options)) as Promise<any>;
+		public sendTranslated(key: string, options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
+		public sendTranslated(key: string, options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+		public async sendTranslated(
+			key: string,
+			valuesOrOptions?: readonly unknown[] | MessageOptions | MessageAdditions,
+			rawOptions?: MessageOptions
+		): Promise<Message | Message[]> {
+			const [values, options]: [readonly unknown[], MessageOptions] =
+				typeof valuesOrOptions === 'undefined' || Array.isArray(valuesOrOptions)
+					? [valuesOrOptions ?? [], rawOptions ?? {}]
+					: [[], valuesOrOptions as MessageOptions];
+			// @ts-expect-error Will be fixed with Sapphire. Just let it be for now.
+			const content = await this.fetchLanguageKey(key, ...values);
+			return this.send(APIMessage.transformOptions(content, undefined, options));
 		}
 	};
 }
 
 export interface TextBasedExtensions {
-	fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-	fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
-	sendLocale<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: MessageOptions | MessageAdditions): Promise<Message>;
-	sendLocale<K extends string, TReturn>(
-		key: CustomGet<K, TReturn>,
-		// eslint-disable-next-line @typescript-eslint/unified-signatures
-		options?: (MessageOptions & { split?: false }) | MessageAdditions
+	sendTranslated(
+		key: string,
+		values?: readonly unknown[],
+		options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
 	): Promise<Message>;
-	sendLocale<K extends string, TReturn>(
-		key: CustomGet<K, TReturn>,
-		options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-	): Promise<Message[]>;
-	sendLocale<K extends string, TArgs, TReturn>(
-		key: CustomFunctionGet<K, TArgs, TReturn>,
-		localeArgs: [TArgs],
-		options?: MessageOptions | MessageAdditions
-	): Promise<Message>;
-	sendLocale<K extends string, TArgs, TReturn>(
-		key: CustomFunctionGet<K, TArgs, TReturn>,
-		localeArgs: [TArgs],
-		// eslint-disable-next-line @typescript-eslint/unified-signatures
-		options?: (MessageOptions & { split?: false }) | MessageAdditions
-	): Promise<Message>;
-	sendLocale<K extends string, TArgs, TReturn>(
-		key: CustomFunctionGet<K, TArgs, TReturn>,
-		localeArgs: [TArgs],
-		options?: (MessageOptions & { split: true | SplitOptions }) | MessageAdditions
-	): Promise<Message[]>;
+
+	sendTranslated(key: string, values?: readonly unknown[], options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+
+	sendTranslated(key: string, options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
+	sendTranslated(key: string, options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+	sendTranslated(
+		key: string,
+		valuesOrOptions?: readonly unknown[] | MessageOptions | MessageAdditions,
+		rawOptions?: MessageOptions
+	): Promise<Message | Message[]>;
 }

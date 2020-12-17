@@ -35,7 +35,8 @@
 	"commandLearnExtended": {
 		"extendedHelp": [
 			"Uses a fuzzy search to also match against near-matches.",
-			"Moves split on every ", " (comma space) and you can provide as many moves as you wish.",
+			"Moves split on every ",
+			" (comma space) and you can provide as many moves as you wish.",
 			"You can provide a flag of `--shiny` to get the shiny sprite."
 		],
 		"explainedUsage": [
@@ -57,9 +58,9 @@
 	},
 	"commandLearnInvalidGeneration": "I am sorry, but {{generation}} is not a supported Pokémon Generation",
 	"commandLearnMethod": "In generation {{generation}} {{pokemon}} __**can**__ learn **{{move}}** {{method}}",
-	"commandLearnQueryFailed": "I am sorry, but that query failed. Are you sure you `${toTitleCase(pokemon)}` is actually a Pokémon and {{moves}} are actually moves?",
-	"commandLearnCannotLearn": "Looks like ${toTitleCase(pokemon)} cannot learn {{moves}}",
-	"commandLearnTitle": "Learnset data for ${toTitleCase(pokemon)} in generation {{generation}}",
+	"commandLearnQueryFailed": "I am sorry, but that query failed. Are you sure you `{{pokemon, toTitleCase}}` is actually a Pokémon and {{moves}} are actually moves?",
+	"commandLearnCannotLearn": "Looks like {{pokemon, toTitleCase}} cannot learn {{moves}}",
+	"commandLearnTitle": "Learnset data for {{pokemon, toTitleCase}} in generation {{generation}}",
 	"commandMoveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
 	"commandMoveExtended": {
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
@@ -118,8 +119,8 @@
 		"flavourText": "Pokdex entry",
 		"otherFormesTitle": "Other forme(s)",
 		"cosmeticFormesTitle": "Cosmetic Formes",
-		"otherFormesList": "{{otherFormes, listAnd}}",
-		"cosmeticFormesList": "{{cosmeticFormes, listAnd}}"
+		"otherFormesList": "{{otherFormes, andList}}",
+		"cosmeticFormesList": "{{cosmeticFormes, andList}}"
 	},
 	"commandPokedexQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
 	"commandTypeDescription": "Gives the type matchups for one or two Pokémon types",
@@ -139,7 +140,7 @@
 		"takesNormalDamageFrom": "Takes normal damage from",
 		"resists": "Resists",
 		"notAffectedBy": "Not affected by",
-		"typeEffectivenessFor": "Type effectiveness for {{types, listAnd}}"
+		"typeEffectivenessFor": "Type effectiveness for {{types, andList}}"
 	},
 	"commandTypeTooManyTypes": "I am sorry, but you can get the matchup for at most 2 types",
 	"commandTypeNotAType": "{{type}} is not a valid Pokémon type",

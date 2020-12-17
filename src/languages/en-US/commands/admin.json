@@ -1,7 +1,7 @@
 {
 	"commandConfNoKey": "You must provide a key",
 	"commandConfNoValue": "You must provide a value",
-	"commandConfGuarded": "${toTitleCase(name)} may not be disabled.",
+	"commandConfGuarded": "{{name, toTitleCase}} may not be disabled.",
 	"commandConfUpdated": "Successfully updated the key **{{key}}**: `{{response}}`",
 	"commandConfKeyNotArray": "This key is not array type. Use the action 'reset' instead.",
 	"commandConfGetNoExt": "The key **{{key}}** does not seem to exist.",
@@ -53,7 +53,7 @@
 	"commandRolesetResetGroup": "{{GREENTICK}} Successfully removed the roleset `{{name}}` from this server.",
 	"commandRolesetUpdated": "The {{name}} unique role set has been updated.",
 	"commandRolesetNoRolesets": "You have no rolesets.",
-	"commandConfMenuNopermissions": "I need the {{this.PERMISSIONS.ADD_REACTIONS}} and {{this.PERMISSIONS.MANAGE_MESSAGES}} permissions to be able to run the menu.",
+	"commandConfMenuNopermissions": "I need the {{ADD_REACTIONS, permissions}} and {{MANAGE_MESSAGES, permissions}} permissions to be able to run the menu.",
 	"commandConfMenuRenderAtFolder": "Currently at: 📁 {{path}}",
 	"commandConfMenuRenderAtPiece": "Currently at: ⚙️ {{path}}",
 	"commandConfMenuRenderNokeys": "There are no configurable keys for this folder",

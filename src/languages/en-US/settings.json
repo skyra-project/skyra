@@ -49,7 +49,7 @@
 	"settingsNoMentionSpamEnabled": "Whether or not I should have the ban hammer ready for mention spammers.",
 	"settingsNoMentionSpamMentionsallowed": "The minimum amount of \"points\" a user must accumulate before landing the hammer. A user mention will count as 1 point, a role mention as 2 points, and an everyone/here mention as 5 points.",
 	"settingsNoMentionSpamTimeperiod": "The amount of time in seconds in which the mention bucket should refresh. For example, if this is set to `8` and you mentioned two users 7 seconds apart, the bucket would run from start with the accumulated amount of points.",
-	"settingsRolesAdmin": "The administrator roles. Administrators have access to all moderation and management commands. Defaults to anyone with the ${this.PERMISSIONS.MANAGE_GUILD} permission.",
+	"settingsRolesAdmin": "The administrator roles. Administrators have access to all moderation and management commands. Defaults to anyone with the {{MANAGE_GUILD, permissions}} permission.",
 	"settingsRolesDj": "The DJ roles for this server. DJs have more advanced control over Skyra's music commands.",
 	"settingsRolesInitial": "The initial role, if configured, I will give it to users as soon as they join.",
 	"settingsRolesModerator": "The moderator roles. Moderators have access to almost all moderation commands. Defaults to anyone who can ban members.",

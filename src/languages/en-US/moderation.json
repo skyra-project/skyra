@@ -86,7 +86,7 @@
 	"restrictionNotConfigured": "The restriction role must be configured for this action to happen",
 	"muteNotInMember": "The muted role is not set in the member.",
 	"muteLowHierarchy": "I cannot mute a user which higher role hierarchy than me.",
-	"muteCannotManageRoles": "I must have **{{this.PERMISSIONS.MANAGE_ROLES}}** permissions to be able to mute.",
+	"muteCannotManageRoles": "I must have **{{MANAGE_ROLES, permissions}}** permissions to be able to mute.",
 	"muteNotExists": "The specified user is not muted.",
 	"moderationLogAppealed": "{{REDCROSS}} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.",
 	"moderationLogExpiresIn": "\n❯ **Expires In**: {{duration, duration}}",

@@ -76,15 +76,8 @@
 			"• **Discord.js**: {{stats.version}}",
 			"• **Node.js**: {{stats.nodeJs}}"
 		],
-		"uptime": [
-			"• **Host**: {{uptime.host, duration}}",
-			"• **Total**: {{uptime.total, duration}}",
-			"• **Client**: {{uptime.client, duration}}"
-		],
-		"serverUsage": [
-			"• **CPU Load**: {{usage.cpuLoad}}",
-			"• **Heap**: {{usage.ramUsed}} (Total: {{usage.ramTotal}})"
-		]
+		"uptime": ["• **Host**: {{uptime.host, duration}}", "• **Total**: {{uptime.total, duration}}", "• **Client**: {{uptime.client, duration}}"],
+		"serverUsage": ["• **CPU Load**: {{usage.cpuLoad}}", "• **Heap**: {{usage.ramUsed}} (Total: {{usage.ramTotal}})"]
 	},
 	"commandBlocklistDescription": "Block or allow users and guilds from using my functionalities.",
 	"commandBlocklistSaveSuccess": "{{GREENTICK}} Successfully updated blocked users and/or guilds",
@@ -109,6 +102,6 @@
 	"commandDisableWarn": "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
 	"commandLoad": "{{GREENTICK}} Successfully loaded {{type}}: {{name}}. (Took: {{time}})",
 	"commandLoadFail": "The file does not exist, or an error occurred while loading your file. Please check your console.",
-	"commandLoadError": "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason:${codeBlock('js', error)}",
+	"commandLoadError": "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason: {{error, jsCodeBlock}}",
 	"commandLoadDescription": "Load a piece from your bot."
 }

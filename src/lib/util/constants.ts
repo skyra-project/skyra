@@ -3,6 +3,8 @@ import { LanguageFormatters } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { CATEGORIES as TRVIA_CATEGORIES } from '#utils/Games/TriviaManager';
+import { list } from '#utils/Language/list';
+import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import i18next, { FormatFunction } from 'i18next';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
@@ -351,6 +353,12 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 						}
 						case LanguageFormatters.Permissions: {
 							return i18next.t(`permissions:${value}`, { ...options, lng: language });
+						}
+						case LanguageFormatters.ToTitleCase: {
+							return toTitleCase(value);
+						}
+						case LanguageFormatters.JsCodeBlock: {
+							return codeBlock('js', value);
 						}
 						default:
 							return value as string;

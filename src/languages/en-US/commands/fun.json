@@ -70,7 +70,7 @@
 	"commandWakandaExtended": {
 		"extendedHelp": "Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."
 	},
-	"command8ballOutput": "🎱 Question by ${author}: *${question}*\n${response}",
+	"command8ballOutput": "🎱 Question by {{author}}: *{{question}}*\n{{response}}",
 	"command8ballQuestions": {
 		"When": "when",
 		"What": "what",

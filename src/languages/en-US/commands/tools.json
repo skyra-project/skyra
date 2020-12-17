@@ -72,7 +72,7 @@
 	"commandHoroscopeTitles": {
 		"dailyHoroscope": "Daily horoscope for {{sign}}",
 		"metadataTitle": "Metadata",
-		"metadata": ["**Intensity:** {{intensity}}", "**Keywords:** {{keywords | listAnd}}", "**Mood:** {{mood}}", "**Rating:** {{rating}}"]
+		"metadata": ["**Intensity:** {{intensity}}", "**Keywords:** {{keywords, andList}}", "**Mood:** {{mood}}", "**Rating:** {{rating}}"]
 	},
 	"commandIgdbDescription": "Searches IGDB (Internet Game Database) for your favourite games",
 	"commandIgdbExtended": {
@@ -161,7 +161,7 @@
 		"unknownUserScore": "No user score",
 		"noGenres": "None on TheMovieDB"
 	},
-	"commandPriceCurrency": "**{{fromAmount}}** {{fromCurrency}} is worth {{worths | listAnd}}.",
+	"commandPriceCurrency": "**{{fromAmount}}** {{fromCurrency}} is worth {{worths, andList}}.",
 	"commandPriceCurrencyNotFound": "There was an error, please make sure you specified an appropriate coin and currency.",
 	"commandQuoteMessage": "It is very weird, but said message does not have a content nor a image.",
 	"commandRolesListEmpty": "This server does not have a role listed as a public role.",

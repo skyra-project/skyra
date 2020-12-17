@@ -12,7 +12,7 @@
 	"commandStarTopstarredDescription_plural": "{{medal}}: {{id}} ({{count}} stars)",
 	"commandStarTopreceivers": "Top Star Receivers",
 	"commandStarTopreceiversDescription": "{{medal}}: <@{{id}}> ({{count}} star)",
-	"commandStarTopreceiversDescription_plural": "${medal}: <@${id}> ({{count}} stars)",
+	"commandStarTopreceiversDescription_plural": "{{medal}}: <@{{id}}> ({{count}} stars)",
 	"commandStarDescription": "Get a random starred message from the database or the star leaderboard.",
 	"commandStarExtended": {
 		"extendedHelp": "This command shows a random starred message or the starboard usage and leaderboard for this server."

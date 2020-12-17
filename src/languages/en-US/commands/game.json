@@ -359,7 +359,7 @@
 	"commandGamesPromptTimeout": "I am sorry, but the challengee did not reply on time.",
 	"commandGamesPromptDeny": "I am sorry, but the challengee refused to play.",
 	"commandGamesTimeout": "**The match concluded in a draw due to lack of a response (60 seconds)**",
-	"commandC4Prompt": "Dear ${challengee}, you have been challenged by {{challenger}} in a Connect-Four match. Reply with **yes** to accept!",
+	"commandC4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect-Four match. Reply with **yes** to accept!",
 	"commandC4Start": "Let's play! Turn for: **{{player}}**.",
 	"commandC4GameColumnFull": "This column is full. Please try another. ",
 	"commandC4GameWin": "{{user}} (red) won!",
@@ -393,8 +393,8 @@
 	"commandCoinFlipNoguessTitle": "You flipped a coin.",
 	"commandCoinFlipWinDescription": "The coin was flipped, and it showed {{result}}. You got it right!",
 	"commandCoinFlipWinDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You guessed correctly and won {{wager}} {{SHINY}}!",
-	"commandCoinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess corectly.",
-	"commandCoinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed ${result}. You didn't guess corectly and lost {{wager}} {{SHINY}}.",
+	"commandCoinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
+	"commandCoinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You didn't guess correctly and lost {{wager}} {{SHINY}}.",
 	"commandCoinFlipNoguessDescription": "The coin was flipped, and it showed {{result}}.",
 	"commandHigherLowerDescription": "Play a game of Higher/Lower",
 	"commandHigherLowerExtended": {
@@ -513,8 +513,8 @@
 		"accountVault": "Account Vault"
 	},
 	"commandVaultInvalidCoins": "I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!",
-	"commandVaultNotEnoughMoney": "I am sorry, but you do not have enough money to make that deposit! Your current money balance is ${money} {{SHINY}}",
-	"commandVaultNotEnoughInVault": "I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is ${vault} {{SHINY}}",
+	"commandVaultNotEnoughMoney": "I am sorry, but you do not have enough money to make that deposit! Your current money balance is {{money}} {{SHINY}}",
+	"commandVaultNotEnoughInVault": "I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is {{vault}} {{SHINY}}",
 	"commandWheelOfFortuneDescription": "Gamble your shinies by spinning a wheel of fortune",
 	"commandWheelOfFortuneExtended": {
 		"extendedHelp": "You can lose 0.1, 0.2, 0.3 or 0.5 times your input or win 1.2, 1.5, 1.7 or 2.4 times your input"
@@ -525,6 +525,6 @@
 	},
 	"commandWheelOfFortuneCanvasTextWon": "You won",
 	"commandWheelOfFortuneCanvasTextLost": "You lost",
-	"gamesNotEnoughMoney": "I am sorry, but you do not have enough money to pay your bet! Your current account balance is ${money} {{SHINY}}",
+	"gamesNotEnoughMoney": "I am sorry, but you do not have enough money to pay your bet! Your current account balance is {{money}} {{SHINY}}",
 	"gamesCannotHaveNegativeMoney": "You cannot have a negative amount of {{SHINY}}s"
 }

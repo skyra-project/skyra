@@ -27,10 +27,7 @@
 	},
 	"commandGuildInfoRoles": "**Roles**\n\n{{roles}}",
 	"commandGuildInfoNoroles": "Roles? Where? There is no other than the `@everyone` role!",
-	"commandGuildInfoChannels": [
-		"• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.",
-		"• AFK: {{afkChannelText}}"
-	],
+	"commandGuildInfoChannels": ["• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.", "• AFK: {{afkChannelText}}"],
 	"commandGuildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **${afkTime / 60}**min",
 	"commandGuildInfoMembers": ["• **{{count}}** members", "• Owner: **{{owner.tag}}**", "  (ID: **{{owner.id}}**)"],
 	"commandGuildInfoOther": [
@@ -106,12 +103,12 @@
 	"commandStickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles}}.",
 	"commandCreateMuteDescription": "Prepare the mute system.",
 	"commandCreateMuteExtended": {
-		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the guild settings. This command also modifies all channels (where possible) permissions and disables the permission **{{this.PERMISSIONS.SEND_MESSAGES}}** in text channels and **{{PERMISSIONS.CONNECT}}** in voice channels for said role."
+		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the guild settings. This command also modifies all channels (where possible) permissions and disables the permission **{{SEND_MESSAGES, permissions}}** in text channels and **{{PERMISSIONS.CONNECT}}** in voice channels for said role."
 	},
 	"commandNickDescription": "Change Skyra's nickname for this server.",
 	"commandNickExtended": {
 		"extendedHelp": "This command allows you to change Skyra's nickname easily for the server.",
-		"reminder": "This command requires the **{{this.PERMISSIONS.CHANGE_NICKNAME}}** permission. Make sure Skyra has it.",
+		"reminder": "This command requires the **{{CHANGE_NICKNAME, permissions}}** permission. Make sure Skyra has it.",
 		"explainedUsage": [["nick", "The new nickname. If you don't put any, it'll reset it instead."]],
 		"examples": ["SkyNET", "Assistant", ""]
 	},
@@ -139,7 +136,7 @@
 			"For example, the aliases are triggers that get executed when the command does not exist in bot, triggering the unknown command event.",
 			"When this happens, the alias system executes and tries to find an entry that matches with the input."
 		],
-		"reminder": "This command requires the **{{this.PERMISSIONS.ADD_REACTIONS}}** permission so it can test reactions. Make sure Skyra has it.",
+		"reminder": "This command requires the **{{ADD_REACTIONS, permissions}}** permission so it can test reactions. Make sure Skyra has it.",
 		"explainedUsage": [
 			["list", "List all current triggers."],
 			["add <type> <input> <output>", "Add a new trigger given a type, input and output."],
@@ -193,7 +190,7 @@
 	"commandSetIgnoreChannelsExtended": {
 		"extendedHelp": [
 			"This command helps you setting up ignored channels. An ignored channel is a channel where nobody but moderators can use Skyra's commands.",
-			"Unlike removing the **{{this.PERMISSIONS.SEND_MESSAGES}}** permission, Skyra is still able to send (and therefore execute commands) messages, which allows moderators to use moderation commands in the channel.",
+			"Unlike removing the **{{SEND_MESSAGES, permissions}}** permission, Skyra is still able to send (and therefore execute commands) messages, which allows moderators to use moderation commands in the channel.",
 			"Use this if you want to ban any command usage from the bot in a specific channel."
 		],
 		"explainedUsage": [
@@ -210,7 +207,7 @@
 	"commandSetImageLogsExtended": {
 		"extendedHelp": [
 			"This command helps you setting up the image log channel. Whenever a member sends an image attachment, it will send an embed message with the attachment re-uploaded.",
-			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra."
+			"All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra."
 		],
 		"explainedUsage": [
 			[
@@ -226,7 +223,7 @@
 		"extendedHelp": [
 			"This command helps you setting up the member log channel. A member log channel only sends two kinds of logs: \"Member Join\" and \"Member Leave\".",
 			"If a muted user joins, it will send a special \"Muted Member Join\" event.",
-			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra.",
+			"All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.",
 			"You also need to individually set the \"events\" you want to listen: `events.memberAdd` and `events.memberRemove`.",
 			"For roles, you would enable `events.memberNicknameChange` and/or `events.memberRoleUpdate` via the `config` command."
 		],
@@ -243,7 +240,7 @@
 	"commandSetMessageLogsExtended": {
 		"extendedHelp": [
 			"This command helps you setting up the message log channel. A message log channel only sends three kinds of logs: \"Message Delete\", \"Message Edit\", and \"Message Prune\".",
-			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra.",
+			"All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.",
 			"You also need to individually set the \"events\" you want to listen: `events.messageDelete` and `events.messageEdit` via the `config` command."
 		],
 		"explainedUsage": [
@@ -252,7 +249,7 @@
 				"A TextChannel. You can either put the name of the channel, tag it, or type in \"here\" to select the channel the message was sent."
 			]
 		],
-		"reminder": "Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{this.PERMISSIONS.VIEW_AUDIT_LOG}}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.",
+		"reminder": "Due to Discord limitations, Skyra cannot know who deleted a message. The only way to know is by fetching audit logs, requiring the permission **{{VIEW_AUDIT_LOG, permissions}}** which access is limited in the majority of guilds and the amount of times I can fetch them in a period of time.",
 		"examples": ["#message-logs", "here"],
 		"multiline": true
 	},
@@ -261,7 +258,7 @@
 		"extendedHelp": [
 			"This command helps you setting up the mod log channel. A mod log channel only sends case reports indexed by a number case and with \"claimable\" reasons and moderators.",
 			"This channel is not a must and you can always retrieve specific modlogs with the `case` command.",
-			"All messages are in embeds so you will need to enable the permission **{{this.PERMISSIONS.EMBED_LINKS}}** for Skyra.",
+			"All messages are in embeds so you will need to enable the permission **{{EMBED_LINKS, permissions}}** for Skyra.",
 			"For auto-detection, you need to individually set the \"events\" you want to listen: `events.banAdd`, `events.banRemove` via the `config` command."
 		],
 		"explainedUsage": [
@@ -304,7 +301,7 @@
 		"extendedHelp": [
 			"This command sets up the role message to lock the reactions to, it requires a **role channel** to be set up first.",
 			"If none is given, Skyra will listen to any reaction in the channel.",
-			"Additionally, Skyra requires **{{this.PERMISSIONS.READ_MESSAGE_HISTORY}}** in order to fetch the message for validation."
+			"Additionally, Skyra requires **{{READ_MESSAGE_HISTORY, permissions}}** in order to fetch the message for validation."
 		],
 		"explainedUsage": [["message", "An ID, they are 17-18 characters long and numeric."]],
 		"reminder": "You must execute this command in the role channel.",
@@ -338,8 +335,7 @@
 	},
 	"commandStickyRolesDescription": "Manage sticky roles for users.",
 	"commandStickyRolesExtended": {
-		"extendedHelp":
-			"The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when you leave, and are applied back as soon as they join.",
+		"extendedHelp": "The stickyRoles command allows you to manage per-member's sticky roles, they are roles that are kept even when you leave, and are applied back as soon as they join.",
 		"explainedUsage": [
 			["action", "Either you want to check the sticky roles, add one, remove one, or remove all of them."],
 			["user", "The user target for all the actions."],
@@ -359,7 +355,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -390,7 +389,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -425,7 +427,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -451,7 +456,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -477,7 +485,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -503,7 +514,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -532,7 +546,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",
@@ -559,7 +576,10 @@
 			["Action Delete", "Toggle message deletions."],
 			["Punishment", "The moderation action to take, takes any of `none`, `warn`, `kick`, `mute`, `softban`, or `ban`."],
 			["Punishment-Duration", "The duration for the punishment, only applicable to `mute` and `ban`. Takes a duration."],
-			["Threshold-Maximum", "The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."],
+			[
+				"Threshold-Maximum",
+				"The amount of infractions that can be done within `Threshold-Duration` before taking action, instantly if unset. Takes a number."
+			],
 			["Threshold-Duration", "The time in which infractions will accumulate before taking action, instantly if unset. Takes a duration."]
 		],
 		"reminder": "`Action Log` requires `channel.moderation-logs` to be set up.",

@@ -16,7 +16,7 @@ export const enum LanguageFormatters {
 	Duration = 'duration',
 	Ordinal = 'ordinal',
 	GroupDigits = 'groupDigits',
-	CodeBlock = 'codeBlock',
+	JsCodeBlock = 'jsCodeBlock',
 	InlineCodeblock = 'inlineCodeBlock',
 	ToTitleCase = 'toTitleCase',
 	Random = 'random'

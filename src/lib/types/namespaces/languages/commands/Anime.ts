@@ -1,24 +1,24 @@
 import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
-export const AnimeDescription = T<string>('commandAnimeDescription');
-export const AnimeExtended = T<LanguageHelpDisplayOptions>('commandAnimeExtended');
-export const MangaDescription = T<string>('commandMangaDescription');
-export const MangaExtended = T<LanguageHelpDisplayOptions>('commandMangaExtended');
-export const WaifuDescription = T<string>('commandWaifuDescription');
-export const WaifuExtended = T<LanguageHelpDisplayOptions>('commandWaifuExtended');
+export const AnimeDescription = T<string>('commands/anime:animeDescription');
+export const AnimeExtended = T<LanguageHelpDisplayOptions>('commands/anime:animeExtended');
+export const MangaDescription = T<string>('commands/anime:mangaDescription');
+export const MangaExtended = T<LanguageHelpDisplayOptions>('commands/anime:mangaExtended');
+export const WaifuDescription = T<string>('commands/anime:waifuDescription');
+export const WaifuExtended = T<LanguageHelpDisplayOptions>('commands/anime:waifuExtended');
 export const AnimeTypes = T<{
 	tv: string;
 	movie: string;
 	ova: string;
 	special: string;
 	[index: string]: string;
-}>('commandAnimeTypes');
-export const AnimeInvalidChoice = T<string>('commandAnimeInvalidChoice');
+}>('commands/anime:animeTypes');
+export const AnimeInvalidChoice = T<string>('commands/anime:animeInvalidChoice');
 export const AnimeOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
-	'commandAnimeOutputDescription'
+	'commands/anime:animeOutputDescription'
 );
-export const AnimeNoSynopsis = T<string>('commandAnimeNoSynopsis');
+export const AnimeNoSynopsis = T<string>('commands/anime:animeNoSynopsis');
 export const AnimeEmbedData = T<{
 	type: string;
 	score: string;
@@ -28,9 +28,9 @@ export const AnimeEmbedData = T<{
 	firstAirDate: string;
 	watchIt: string;
 	stillAiring: string;
-}>('commandAnimeEmbedData');
+}>('commands/anime:animeEmbedData');
 export const MangaOutputDescription = FT<{ englishTitle: string; japaneseTitle: string; canonicalTitle: string; synopsis: string }, string>(
-	'commandMangaOutputDescription'
+	'commands/anime:mangaOutputDescription'
 );
 export const MangaEmbedData = T<{
 	type: string;
@@ -39,7 +39,7 @@ export const MangaEmbedData = T<{
 	firstPublishDate: string;
 	readIt: string;
 	none: string;
-}>('commandMangaEmbedData');
+}>('commands/anime:mangaEmbedData');
 export const MangaTypes = T<{
 	manga: string;
 	novel: string;
@@ -47,5 +47,5 @@ export const MangaTypes = T<{
 	oneShot: string;
 	special: string;
 	[index: string]: string;
-}>('commandMangaTypes');
-export const WaifuFooter = T<string>('commandWaifuFooter');
+}>('commands/anime:mangaTypes');
+export const WaifuFooter = T<string>('commands/anime:waifuFooter');

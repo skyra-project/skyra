@@ -1,51 +1,59 @@
 import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
-export const FollowageDescription = T<string>('commandFollowageDescription');
-export const FollowageExtended = T<LanguageHelpDisplayOptions>('commandFollowageExtended');
-export const TwitchDescription = T<string>('commandTwitchDescription');
-export const TwitchExtended = T<LanguageHelpDisplayOptions>('commandTwitchExtended');
-export const TwitchSubscriptionDescription = T<string>('commandTwitchSubscriptionDescription');
-export const TwitchSubscriptionExtended = T<LanguageHelpDisplayOptions>('commandTwitchSubscriptionExtended');
-export const Followage = FT<{ user: string; channel: string; time: number }, string>('commandFollowage');
-export const FollowageMissingEntries = T<string>('commandFollowageMissingEntries');
-export const FollowageNotFollowing = T<string>('commandFollowageNotFollowing');
-export const TwitchNoEntries = T<string>('commandTwitchNoEntries');
+export const FollowageDescription = T<string>('commands/twitch:followageDescription');
+export const FollowageExtended = T<LanguageHelpDisplayOptions>('commands/twitch:followageExtended');
+export const TwitchDescription = T<string>('commands/twitch:twitchDescription');
+export const TwitchExtended = T<LanguageHelpDisplayOptions>('commands/twitch:twitchExtended');
+export const TwitchSubscriptionDescription = T<string>('commands/twitch:twitchSubscriptionDescription');
+export const TwitchSubscriptionExtended = T<LanguageHelpDisplayOptions>('commands/twitch:twitchSubscriptionExtended');
+export const Followage = FT<{ user: string; channel: string; time: number }, string>('commands/twitch:followage');
+export const FollowageMissingEntries = T<string>('commands/twitch:followageMissingEntries');
+export const FollowageNotFollowing = T<string>('commands/twitch:followageNotFollowing');
+export const TwitchNoEntries = T<string>('commands/twitch:twitchNoEntries');
 export const TwitchTitles = T<{
 	followers: string;
 	views: string;
 	clickToVisit: string;
 	partner: string;
-}>('commandTwitchTitles');
-export const TwitchPartnershipWithoutAffiliate = T<string>('commandTwitchPartnershipWithoutAffiliate');
+}>('commands/twitch:twitchTitles');
+export const TwitchPartnershipWithoutAffiliate = T<string>('commands/twitch:twitchPartnershipWithoutAffiliate');
 export const TwitchAffiliateStatus = T<{
 	affiliated: string;
 	partnered: string;
-}>('commandTwitchAffiliateStatus');
-export const TwitchCreatedAt = T<string>('commandTwitchCreatedAt');
-export const TwitchSubscriptionRequiredStreamer = T<string>('commandTwitchSubscriptionRequiredStreamer');
-export const TwitchSubscriptionStreamerNotFound = T<string>('commandTwitchSubscriptionStreamerNotFound');
-export const TwitchSubscriptionRequiredChannel = T<string>('commandTwitchSubscriptionRequiredChannel');
-export const TwitchSubscriptionRequiredStatus = T<string>('commandTwitchSubscriptionRequiredStatus');
-export const TwitchSubscriptionStatusValues = T<[string, string]>('commandTwitchSubscriptionStatusValues');
-export const TwitchSubscriptionInvalidStatus = T<string>('commandTwitchSubscriptionInvalidStatus');
-export const TwitchSubscriptionRequiredContent = T<string>('commandTwitchSubscriptionRequiredContent');
-export const TwitchSubscriptionAddDuplicated = T<string>('commandTwitchSubscriptionAddDuplicated');
-export const TwitchSubscriptionAddSuccessOffline = FT<{ name: string; channel: string }, string>('commandTwitchSubscriptionAddSuccessOffline');
-export const TwitchSubscriptionAddSuccessLive = FT<{ name: string; channel: string }, string>('commandTwitchSubscriptionAddSuccessLive');
-export const TwitchSubscriptionRemoveStreamerNotSubscribed = T<string>('commandTwitchSubscriptionRemoveStreamerNotSubscribed');
-export const TwitchSubscriptionRemoveEntryNotExists = T<string>('commandTwitchSubscriptionRemoveEntryNotExists');
-export const TwitchSubscriptionRemoveSuccessOffline = FT<{ name: string; channel: string }, string>('commandTwitchSubscriptionRemoveSuccessOffline');
-export const TwitchSubscriptionRemoveSuccessLive = FT<{ name: string; channel: string }, string>('commandTwitchSubscriptionRemoveSuccessLive');
-export const TwitchSubscriptionResetEmpty = T<string>('commandTwitchSubscriptionResetEmpty');
-export const TwitchSubscriptionResetSuccess = FT<{ count: number }, string>('commandTwitchSubscriptionResetSuccess');
-export const TwitchSubscriptionResetSuccessPlural = FT<{ count: number }, string>('commandTwitchSubscriptionResetSuccessPlural');
-export const TwitchSubscriptionResetStreamerNotSubscribed = T<string>('commandTwitchSubscriptionResetStreamerNotSubscribed');
-export const TwitchSubscriptionResetChannelSuccess = FT<{ name: string; count: number }, string>('commandTwitchSubscriptionResetChannelSuccess');
-export const TwitchSubscriptionResetChannelSuccessPlural = FT<{ name: string; count: number }, string>(
-	'commandTwitchSubscriptionResetChannelSuccessPlural'
+}>('commands/twitch:twitchAffiliateStatus');
+export const TwitchCreatedAt = T<string>('commands/twitch:twitchCreatedAt');
+export const TwitchSubscriptionRequiredStreamer = T<string>('commands/twitch:twitchSubscriptionRequiredStreamer');
+export const TwitchSubscriptionStreamerNotFound = T<string>('commands/twitch:twitchSubscriptionStreamerNotFound');
+export const TwitchSubscriptionRequiredChannel = T<string>('commands/twitch:twitchSubscriptionRequiredChannel');
+export const TwitchSubscriptionRequiredStatus = T<string>('commands/twitch:twitchSubscriptionRequiredStatus');
+export const TwitchSubscriptionStatusValues = T<[string, string]>('commands/twitch:twitchSubscriptionStatusValues');
+export const TwitchSubscriptionInvalidStatus = T<string>('commands/twitch:twitchSubscriptionInvalidStatus');
+export const TwitchSubscriptionRequiredContent = T<string>('commands/twitch:twitchSubscriptionRequiredContent');
+export const TwitchSubscriptionAddDuplicated = T<string>('commands/twitch:twitchSubscriptionAddDuplicated');
+export const TwitchSubscriptionAddSuccessOffline = FT<{ name: string; channel: string }, string>(
+	'commands/twitch:twitchSubscriptionAddSuccessOffline'
 );
-export const TwitchSubscriptionShowStreamerNotSubscribed = T<string>('commandTwitchSubscriptionShowStreamerNotSubscribed');
-export const TwitchSubscriptionShowStatus = T<[string, string]>('commandTwitchSubscriptionShowStatus');
-export const TwitchSubscriptionShowEmpty = T<string>('commandTwitchSubscriptionShowEmpty');
-export const TwitchSubscriptionShowUnknownUser = T<string>('commandTwitchSubscriptionShowUnknownUser');
+export const TwitchSubscriptionAddSuccessLive = FT<{ name: string; channel: string }, string>('commands/twitch:twitchSubscriptionAddSuccessLive');
+export const TwitchSubscriptionRemoveStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionRemoveStreamerNotSubscribed');
+export const TwitchSubscriptionRemoveEntryNotExists = T<string>('commands/twitch:twitchSubscriptionRemoveEntryNotExists');
+export const TwitchSubscriptionRemoveSuccessOffline = FT<{ name: string; channel: string }, string>(
+	'commands/twitch:twitchSubscriptionRemoveSuccessOffline'
+);
+export const TwitchSubscriptionRemoveSuccessLive = FT<{ name: string; channel: string }, string>(
+	'commands/twitch:twitchSubscriptionRemoveSuccessLive'
+);
+export const TwitchSubscriptionResetEmpty = T<string>('commands/twitch:twitchSubscriptionResetEmpty');
+export const TwitchSubscriptionResetSuccess = FT<{ count: number }, string>('commands/twitch:twitchSubscriptionResetSuccess');
+export const TwitchSubscriptionResetSuccessPlural = FT<{ count: number }, string>('commands/twitch:twitchSubscriptionResetSuccessPlural');
+export const TwitchSubscriptionResetStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionResetStreamerNotSubscribed');
+export const TwitchSubscriptionResetChannelSuccess = FT<{ name: string; count: number }, string>(
+	'commands/twitch:twitchSubscriptionResetChannelSuccess'
+);
+export const TwitchSubscriptionResetChannelSuccessPlural = FT<{ name: string; count: number }, string>(
+	'commands/twitch:twitchSubscriptionResetChannelSuccessPlural'
+);
+export const TwitchSubscriptionShowStreamerNotSubscribed = T<string>('commands/twitch:twitchSubscriptionShowStreamerNotSubscribed');
+export const TwitchSubscriptionShowStatus = T<[string, string]>('commands/twitch:twitchSubscriptionShowStatus');
+export const TwitchSubscriptionShowEmpty = T<string>('commands/twitch:twitchSubscriptionShowEmpty');
+export const TwitchSubscriptionShowUnknownUser = T<string>('commands/twitch:twitchSubscriptionShowUnknownUser');

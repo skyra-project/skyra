@@ -1,6 +1,6 @@
 {
-	"commandBrawlstarsDescription": "Get data on a player or club from Supercell's newest game, Brawl Stars.",
-	"commandBrawlstarsExtended": {
+	"brawlstarsDescription": "Get data on a player or club from Supercell's newest game, Brawl Stars.",
+	"brawlstarsExtended": {
 		"extendedHelp": "Use this command with --save to save your player/club tag.",
 		"explainedUsage": [
 			["category", "The category of data to get: **club** to get data on a club, or **player** to get data on a player (default)."],
@@ -8,14 +8,14 @@
 		],
 		"examples": ["player #RJQLQ999", "club #228JVRQC9"]
 	},
-	"commandBrawlstarsPlayerEmbedTitles": {
+	"brawlstarsPlayerEmbedTitles": {
 		"trophies": "Trophies",
 		"events": "Events",
 		"exp": "Experience",
 		"gamesModes": "Game Modes",
 		"other": "Other"
 	},
-	"commandBrawlstarsPlayerEmbedFields": {
+	"brawlstarsPlayerEmbedFields": {
 		"total": "Total",
 		"personalBest": "Personal Best",
 		"events": "Events",
@@ -28,7 +28,7 @@
 		"club": "Club",
 		"brawlersUnlocked": "Brawlers Unlocked"
 	},
-	"commandBrawlstarsClubEmbedTitles": {
+	"brawlstarsClubEmbedTitles": {
 		"totalTrophies": "Total Trophies",
 		"averageTrophies": "Average Trophies",
 		"requiredTrophies": "Required Trophies",
@@ -37,11 +37,11 @@
 		"top5Members": "Top 5 Members",
 		"president": "President"
 	},
-	"commandBrawlstarsClubEmbedFields": {
+	"brawlstarsClubEmbedFields": {
 		"noPresident": "No President"
 	},
-	"commandClashofclansDescription": "Get data on a player or clan in the popular mobile game Clash of Clans",
-	"commandClashofclansExtended": {
+	"clashofclansDescription": "Get data on a player or clan in the popular mobile game Clash of Clans",
+	"clashofclansExtended": {
 		"extendedHelp": "The request for clans will try to return multiple possible responses.",
 		"explainedUsage": [
 			["category", "The category of data to get: **clan** to get data on a clan or **player** to get data on a player."],
@@ -49,7 +49,7 @@
 		],
 		"examples": ["player #8GQPJG2CL", "clan Hog Raiders Swe"]
 	},
-	"commandClashofclansPlayerEmbedTitles": {
+	"clashofclansPlayerEmbedTitles": {
 		"xpLevel": "XP level",
 		"builderHallLevel": "Builder Hall level",
 		"townhallLevel": "Town Hall level",
@@ -71,7 +71,7 @@
 		"noClan": "This player is not in a clan",
 		"noLeague": "This user is not in any league"
 	},
-	"commandClashofclansClanEmbedTitles": {
+	"clashofclansClanEmbedTitles": {
 		"clanLevel": "Clan level",
 		"clanPoints": "Clan points",
 		"clanVersusPoints": "Clan versus points",
@@ -93,14 +93,14 @@
 			"unknown": "Unknown"
 		}
 	},
-	"commandBrawlStarsInvalidPlayerTag": "I am sorry, \"{{playertag}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
-	"commandBrawlStarsClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
-	"commandBrawlStarsPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
-	"commandClashofclansInvalidPlayerTag": "I am sorry, \"{{playertag}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
-	"commandClashOfClansClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
-	"commandClashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
-	"commandFFXIVDescription": "Queries the Final Fantasy 14 API for game data",
-	"commandFFXIVExtended": {
+	"brawlStarsInvalidPlayerTag": "I am sorry, \"{{playertag}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
+	"brawlStarsClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
+	"brawlStarsPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
+	"clashofclansInvalidPlayerTag": "I am sorry, \"{{playertag}}\" is not a valid Clash of Clans player tag. Player tags have to start with a \"#\" followed by the ID.",
+	"clashOfClansClansQueryFail": "I am sorry, but I was unable to get data on the clan \"{{clan}}\".",
+	"clashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
+	"FFXIVDescription": "Queries the Final Fantasy 14 API for game data",
+	"FFXIVExtended": {
 		"extendedHelp": [
 			"This command allows you to character and item data for FFXIV.",
 			"For item a wildcard search is performed so if your term is in the middle of the name it can still match."
@@ -112,7 +112,7 @@
 		"examples": ["character Laytlan Ardevon", "Laytlan Ardevon", "item potion"],
 		"multiline": true
 	},
-	"commandFFXIVCharacterFields": {
+	"FFXIVCharacterFields": {
 		"serverAndDc": "Server - Datacenter",
 		"tribe": "Tribe",
 		"characterGender": "Character gender",
@@ -133,17 +133,17 @@
 		"dohClasses": "***__Disciple of the Hand jobs__***:",
 		"dolClasses": "***__Disciple of the Land jobs__***:"
 	},
-	"commandFFXIVItemFields": {
+	"FFXIVItemFields": {
 		"kind": "Kind",
 		"category": "Category",
 		"levelEquip": "Level equippable",
 		"none": "None"
 	},
-	"commandFFXIVNoCharacterFound": "{{REDCROSS}} I am sorry, but I was unable to find a character with that name.",
-	"commandFFXIVInvalidServer": "{{REDCROSS}} I am sorry, but an invalid server name was passed.",
-	"commandFFXIVNoItemFound": "{{REDCROSS}} I am sorry, but I was unable to find an item with that query.",
-	"commandFortniteDescription": "Gets player statistics for a Fortnite player",
-	"commandFortniteExtended": {
+	"FFXIVNoCharacterFound": "{{REDCROSS}} I am sorry, but I was unable to find a character with that name.",
+	"FFXIVInvalidServer": "{{REDCROSS}} I am sorry, but an invalid server name was passed.",
+	"FFXIVNoItemFound": "{{REDCROSS}} I am sorry, but I was unable to find an item with that query.",
+	"fortniteDescription": "Gets player statistics for a Fortnite player",
+	"fortniteExtended": {
 		"extendedHelp": "This command retrieves statistics for any Fortnite player that plays on PC, Xbox or Playstation",
 		"explainedUsage": [
 			["platform", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbox\", or \"psn\"."],
@@ -151,15 +151,15 @@
 		],
 		"examples": ["ninja", "pc ninja", "xbox TTV R1xbox", "psn TTV IllusionOG"]
 	},
-	"commandFortniteNoUser": "I am sorry, but I was unable to find a user with that name.\nAre you sure that they play on the provided platform? (PC [default], Xbox or PSN are supported)",
-	"commandFortniteEmbedTitle": "Fortnite player statistics for {{epicUserHandle}}",
-	"commandFortniteEmbedSectionTitles": {
+	"fortniteNoUser": "I am sorry, but I was unable to find a user with that name.\nAre you sure that they play on the provided platform? (PC [default], Xbox or PSN are supported)",
+	"fortniteEmbedTitle": "Fortnite player statistics for {{epicUserHandle}}",
+	"fortniteEmbedSectionTitles": {
 		"lifetimeStats": "**_Lifetime Stats_**",
 		"solos": "**_Solos_**",
 		"duos": "**_Duos_**",
 		"squads": "**_Squads_**"
 	},
-	"commandFortniteEmbedStats": {
+	"fortniteEmbedStats": {
 		"wins": "Wins: **\"{{winCount}}\"**",
 		"kills": "Kills: **\"{{killCount}}\"**",
 		"kdr": "KDR: **\"{{kdrCount}}%\"**",
@@ -172,8 +172,8 @@
 		"top12s": "Top 12s: **\"{{top12Count}}\"**",
 		"top25s": "Top 25s: **\"{{top25Count}}\"**"
 	},
-	"commandOverwatchDescription": "Gets player statistics for an Overwatch player",
-	"commandOverwatchExtended": {
+	"overwatchDescription": "Gets player statistics for an Overwatch player",
+	"overwatchExtended": {
 		"extendedHelp": [
 			"This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.",
 			"By default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform to \"xbl\" or \"psn\" respectively."
@@ -186,11 +186,11 @@
 		"reminder": "**Player names are case sensitive!**",
 		"multiline": true
 	},
-	"commandOverwatchInvalidPlayerName": "\"{{playerTag}}\" is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \"bame#1784\".\nFor Xbox and Playstation it just has to be their username.",
-	"commandOverwatchQueryFail": "Failed to get data for \"{{player}}\", are you sure they play on \"{{platform}}\"?\nAlso make sure to get the casing right, names are case sensitive.",
-	"commandOverwatchNoStats": "I found a player with the tag \"{{player}}\" but no stats were available for them.",
-	"commandOverwatchNoAverage": "Not enough data to determine average.",
-	"commandOverwatchEmbedDataStats": {
+	"overwatchInvalidPlayerName": "\"{{playerTag}}\" is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \"bame#1784\".\nFor Xbox and Playstation it just has to be their username.",
+	"overwatchQueryFail": "Failed to get data for \"{{player}}\", are you sure they play on \"{{platform}}\"?\nAlso make sure to get the casing right, names are case sensitive.",
+	"overwatchNoStats": "I found a player with the tag \"{{player}}\" but no stats were available for them.",
+	"overwatchNoAverage": "Not enough data to determine average.",
+	"overwatchEmbedDataStats": {
 		"finalBlows": "**Final blows:** {{finalBlows, groupDigits}}",
 		"deaths": "**Deaths:** {{deaths, groupDigits}}",
 		"damageDealt": "**Damage dealt:** {{damageDone, groupDigits}}",
@@ -203,8 +203,8 @@
 		"silverMedals": "**Silver medals earned:** {{silverMedals, groupDigits}}",
 		"bronzeMedals": "**Bronze medals earned:** {{bronzeMedals, groupDigits}}"
 	},
-	"commandOverwatchEmbedDataTopHero": "**{{name, toTitleCase}}** ({{playTime}})",
-	"commandOverwatchEmbedData": {
+	"overwatchEmbedDataTopHero": "**{{name, toTitleCase}}** ({{playTime}})",
+	"overwatchEmbedData": {
 		"title": "Click here for more details on overwatchtracker.com",
 		"ratingsTitle": "Ratings",
 		"author": "Overwatch Player Statistics for {{authorName}}",

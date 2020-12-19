@@ -2,29 +2,29 @@ import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import { Guild, GuildMember, User } from 'discord.js';
 
-export const WikipediaNotfound = T<string>('commandWikipediaNotfound');
-export const YoutubeNotfound = T<string>('commandYoutubeNotfound');
-export const YoutubeIndexNotfound = T<string>('commandYoutubeIndexNotfound');
-export const DefineDescription = T<string>('commandDefineDescription');
-export const DefineExtended = T<LanguageHelpDisplayOptions>('commandDefineExtended');
-export const DefineNotfound = T<string>('commandDefineNotfound');
-export const DefinePronounciation = T<string>('commandDefinePronounciation');
-export const DefineUnknown = T<string>('commandDefineUnknown');
-export const AvatarDescription = T<string>('commandAvatarDescription');
-export const AvatarExtended = T<LanguageHelpDisplayOptions>('commandAvatarExtended');
-export const ColorDescription = T<string>('commandColorDescription');
-export const ColorExtended = T<LanguageHelpDisplayOptions>('commandColorExtended');
-export const ContentDescription = T<string>('commandContentDescription');
-export const ContentExtended = T<LanguageHelpDisplayOptions>('commandContentExtended');
-export const EmojiDescription = T<string>('commandEmojiDescription');
-export const EmojiExtended = T<LanguageHelpDisplayOptions>('commandEmojiExtended');
-export const CountryDescription = T<string>('commandCountryDescription');
-export const CountryExtended = T<LanguageHelpDisplayOptions>('commandCountryExtended');
+export const WikipediaNotfound = T<string>('commands/tools:wikipediaNotfound');
+export const YoutubeNotfound = T<string>('commands/tools:youtubeNotfound');
+export const YoutubeIndexNotfound = T<string>('commands/tools:youtubeIndexNotfound');
+export const DefineDescription = T<string>('commands/tools:defineDescription');
+export const DefineExtended = T<LanguageHelpDisplayOptions>('commands/tools:defineExtended');
+export const DefineNotfound = T<string>('commands/tools:defineNotfound');
+export const DefinePronounciation = T<string>('commands/tools:definePronounciation');
+export const DefineUnknown = T<string>('commands/tools:defineUnknown');
+export const AvatarDescription = T<string>('commands/tools:avatarDescription');
+export const AvatarExtended = T<LanguageHelpDisplayOptions>('commands/tools:avatarExtended');
+export const ColorDescription = T<string>('commands/tools:colorDescription');
+export const ColorExtended = T<LanguageHelpDisplayOptions>('commands/tools:colorExtended');
+export const ContentDescription = T<string>('commands/tools:contentDescription');
+export const ContentExtended = T<LanguageHelpDisplayOptions>('commands/tools:contentExtended');
+export const EmojiDescription = T<string>('commands/tools:emojiDescription');
+export const EmojiExtended = T<LanguageHelpDisplayOptions>('commands/tools:emojiExtended');
+export const CountryDescription = T<string>('commands/tools:countryDescription');
+export const CountryExtended = T<LanguageHelpDisplayOptions>('commands/tools:countryExtended');
 export const CountryTitles = T<{
 	OVERVIEW: string;
 	LANGUAGES: string;
 	OTHER: string;
-}>('commandCountryTitles');
+}>('commands/tools:countryTitles');
 export const CountryFields = T<{
 	overview: {
 		officialName: string;
@@ -36,10 +36,10 @@ export const CountryFields = T<{
 		area: string;
 		currencies: string;
 	};
-}>('commandCountryFields');
-export const EshopDescription = T<string>('commandEshopDescription');
-export const EshopExtended = T<LanguageHelpDisplayOptions>('commandEshopExtended');
-export const EshopNotInDatabase = T<string>('commandEshopNotInDatabase');
+}>('commands/tools:countryFields');
+export const EshopDescription = T<string>('commands/tools:eshopDescription');
+export const EshopExtended = T<LanguageHelpDisplayOptions>('commands/tools:eshopExtended');
+export const EshopNotInDatabase = T<string>('commands/tools:eshopNotInDatabase');
 export const EshopTitles = T<{
 	price: string;
 	availability: string;
@@ -50,12 +50,12 @@ export const EshopTitles = T<{
 	noCategories: string;
 	nsuid: 'NSUID';
 	esrb: 'ESRB';
-}>('commandEshopTitles');
-export const EshopPricePaid = FT<{ price: number }, string>('commandEshopPricePaid');
-export const EshopPriceFree = T<string>('commandEshopPriceFree');
-export const HoroscopeDescription = T<string>('commandHoroscopeDescription');
-export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commandHoroscopeExtended');
-export const HoroscopeInvalidSunsign = FT<{ sign: string; maybe: string }, string>('commandHoroscopeInvalidSunsign');
+}>('commands/tools:eshopTitles');
+export const EshopPricePaid = FT<{ price: number }, string>('commands/tools:eshopPricePaid');
+export const EshopPriceFree = T<string>('commands/tools:eshopPriceFree');
+export const HoroscopeDescription = T<string>('commands/tools:horoscopeDescription');
+export const HoroscopeExtended = T<LanguageHelpDisplayOptions>('commands/tools:horoscopeExtended');
+export const HoroscopeInvalidSunsign = FT<{ sign: string; maybe: string }, string>('commands/tools:horoscopeInvalidSunsign');
 export const HoroscopeTitles = FT<
 	{
 		sign: string;
@@ -69,9 +69,9 @@ export const HoroscopeTitles = FT<
 		metadataTitle: string;
 		metadata: readonly string[];
 	}
->('commandHoroscopeTitles');
-export const IgdbDescription = T<string>('commandIgdbDescription');
-export const IgdbExtended = T<LanguageHelpDisplayOptions>('commandIgdbExtended');
+>('commands/tools:horoscopeTitles');
+export const IgdbDescription = T<string>('commands/tools:igdbDescription');
+export const IgdbExtended = T<LanguageHelpDisplayOptions>('commands/tools:igdbExtended');
 export const IgdbTitles = T<{
 	userScore: string;
 	ageRating: string;
@@ -79,7 +79,7 @@ export const IgdbTitles = T<{
 	genres: string;
 	developers: string;
 	platform: string;
-}>('commandIgdbTitles');
+}>('commands/tools:igdbTitles');
 export const IgdbData = T<{
 	noDevelopers: string;
 	noPlatforms: string;
@@ -88,9 +88,9 @@ export const IgdbData = T<{
 	noSummary: string;
 	noAgeRatings: string;
 	noGenres: string;
-}>('commandIgdbData');
-export const ItunesDescription = T<string>('commandItunesDescription');
-export const ItunesExtended = T<LanguageHelpDisplayOptions>('commandItunesExtended');
+}>('commands/tools:igdbData');
+export const ItunesDescription = T<string>('commands/tools:itunesDescription');
+export const ItunesExtended = T<LanguageHelpDisplayOptions>('commands/tools:itunesExtended');
 export const ItunesTitles = T<{
 	artist: string;
 	collection: string;
@@ -101,9 +101,9 @@ export const ItunesTitles = T<{
 	primaryGenre: string;
 	preview: string;
 	previewLabel: string;
-}>('commandItunesTitles');
-export const MoviesDescription = T<string>('commandMoviesDescription');
-export const MoviesExtended = T<LanguageHelpDisplayOptions>('commandMoviesExtended');
+}>('commands/tools:itunesTitles');
+export const MoviesDescription = T<string>('commands/tools:moviesDescription');
+export const MoviesExtended = T<LanguageHelpDisplayOptions>('commands/tools:moviesExtended');
 export const MoviesTitles = T<{
 	runtime: string;
 	userScore: string;
@@ -113,7 +113,7 @@ export const MoviesTitles = T<{
 	homePage: string;
 	collection: string;
 	genres: string;
-}>('commandMoviesTitles');
+}>('commands/tools:moviesTitles');
 export const MoviesData = T<{
 	variableRuntime: string;
 	movieInProduction: string;
@@ -121,36 +121,36 @@ export const MoviesData = T<{
 	none: string;
 	notPartOfCollection: string;
 	noGenres: string;
-}>('commandMoviesData');
-export const ShowsDescription = T<string>('commandShowsDescription');
-export const ShowsExtended = T<LanguageHelpDisplayOptions>('commandShowsExtended');
+}>('commands/tools:moviesData');
+export const ShowsDescription = T<string>('commands/tools:showsDescription');
+export const ShowsExtended = T<LanguageHelpDisplayOptions>('commands/tools:showsExtended');
 export const ShowsTitles = T<{
 	episodeRuntime: string;
 	userScore: string;
 	status: string;
 	firstAirDate: string;
 	genres: string;
-}>('commandShowsTitles');
+}>('commands/tools:showsTitles');
 export const ShowsData = T<{
 	variableRuntime: string;
 	unknownUserScore: string;
 	noGenres: string;
-}>('commandShowsData');
-export const DuckDuckGoDescription = T<string>('commandDuckDuckGoDescription');
-export const DuckDuckGoExtended = T<LanguageHelpDisplayOptions>('commandDuckDuckGoExtended');
-export const PriceDescription = T<string>('commandPriceDescription');
-export const PriceExtended = T<LanguageHelpDisplayOptions>('commandPriceExtended');
-export const QuoteDescription = T<string>('commandQuoteDescription');
-export const QuoteExtended = T<LanguageHelpDisplayOptions>('commandQuoteExtended');
-export const PollDescription = T<string>('commandPollDescription');
-export const PollExtended = T<LanguageHelpDisplayOptions>('commandPollExtended');
-export const PollReactionLimit = T<string>('commandPollReactionLimit');
-export const VoteDescription = T<string>('commandVoteDescription');
-export const VoteExtended = T<LanguageHelpDisplayOptions>('commandVoteExtended');
-export const TopInvitesDescription = T<string>('commandTopInvitesDescription');
-export const TopInvitesExtended = T<LanguageHelpDisplayOptions>('commandTopInvitesExtended');
-export const TopInvitesNoInvites = T<string>('commandTopInvitesNoInvites');
-export const TopInvitesTop10InvitesFor = FT<{ guild: Guild }, string>('commandTopInvitesTop10InvitesFor');
+}>('commands/tools:showsData');
+export const DuckDuckGoDescription = T<string>('commands/tools:duckDuckGoDescription');
+export const DuckDuckGoExtended = T<LanguageHelpDisplayOptions>('commands/tools:duckDuckGoExtended');
+export const PriceDescription = T<string>('commands/tools:priceDescription');
+export const PriceExtended = T<LanguageHelpDisplayOptions>('commands/tools:priceExtended');
+export const QuoteDescription = T<string>('commands/tools:quoteDescription');
+export const QuoteExtended = T<LanguageHelpDisplayOptions>('commands/tools:quoteExtended');
+export const PollDescription = T<string>('commands/tools:pollDescription');
+export const PollExtended = T<LanguageHelpDisplayOptions>('commands/tools:pollExtended');
+export const PollReactionLimit = T<string>('commands/tools:pollReactionLimit');
+export const VoteDescription = T<string>('commands/tools:voteDescription');
+export const VoteExtended = T<LanguageHelpDisplayOptions>('commands/tools:voteExtended');
+export const TopInvitesDescription = T<string>('commands/tools:topInvitesDescription');
+export const TopInvitesExtended = T<LanguageHelpDisplayOptions>('commands/tools:topInvitesExtended');
+export const TopInvitesNoInvites = T<string>('commands/tools:topInvitesNoInvites');
+export const TopInvitesTop10InvitesFor = FT<{ guild: Guild }, string>('commands/tools:topInvitesTop10InvitesFor');
 export const TopInvitesEmbedData = T<{
 	channel: string;
 	link: string;
@@ -160,31 +160,31 @@ export const TopInvitesEmbedData = T<{
 	neverExpress: string;
 	temporary: string;
 	uses: string;
-}>('commandTopInvitesEmbedData');
-export const UrbanDescription = T<string>('commandUrbanDescription');
-export const UrbanExtended = T<LanguageHelpDisplayOptions>('commandUrbanExtended');
-export const WhoisDescription = T<string>('commandWhoisDescription');
-export const WhoisExtended = T<LanguageHelpDisplayOptions>('commandWhoisExtended');
-export const AvatarNone = T<string>('commandAvatarNone');
-export const Color = FT<{ hex: string; rgb: string; hsl: string }, string[]>('commandColor');
-export const EmojiCustom = FT<{ emoji: string; id: string }, string[]>('commandEmojiCustom');
-export const EmojiTwemoji = FT<{ emoji: string; id: string }, string[]>('commandEmojiTwemoji');
-export const EmojiInvalid = T<string>('commandEmojiInvalid');
-export const EmojiTooLarge = FT<{ emoji: string }, string>('commandEmojiTooLarge');
-export const EmotesDescription = T<string>('commandEmotesDescription');
-export const EmotesExtended = T<LanguageHelpDisplayOptions>('commandEmotesExtended');
-export const EmotesTitle = T<string>('commandEmotesTitle');
-export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commandPriceCurrency');
-export const PriceCurrencyNotFound = T<string>('commandPriceCurrencyNotFound');
-export const QuoteMessage = T<string>('commandQuoteMessage');
-export const DuckDuckGoNotfound = T<string>('commandDuckDuckGoNotfound');
-export const DuckDuckGoLookalso = T<string>('commandDuckDuckGoLookalso');
-export const UrbanNotFound = T<string>('commandUrbanNotFound');
-export const UrbanIndexNotfound = T<string>('commandUrbanIndexNotfound');
+}>('commands/tools:topInvitesEmbedData');
+export const UrbanDescription = T<string>('commands/tools:urbanDescription');
+export const UrbanExtended = T<LanguageHelpDisplayOptions>('commands/tools:urbanExtended');
+export const WhoisDescription = T<string>('commands/tools:whoisDescription');
+export const WhoisExtended = T<LanguageHelpDisplayOptions>('commands/tools:whoisExtended');
+export const AvatarNone = T<string>('commands/tools:avatarNone');
+export const Color = FT<{ hex: string; rgb: string; hsl: string }, string[]>('commands/tools:color');
+export const EmojiCustom = FT<{ emoji: string; id: string }, string[]>('commands/tools:emojiCustom');
+export const EmojiTwemoji = FT<{ emoji: string; id: string }, string[]>('commands/tools:emojiTwemoji');
+export const EmojiInvalid = T<string>('commands/tools:emojiInvalid');
+export const EmojiTooLarge = FT<{ emoji: string }, string>('commands/tools:emojiTooLarge');
+export const EmotesDescription = T<string>('commands/tools:emotesDescription');
+export const EmotesExtended = T<LanguageHelpDisplayOptions>('commands/tools:emotesExtended');
+export const EmotesTitle = T<string>('commands/tools:emotesTitle');
+export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commands/tools:priceCurrency');
+export const PriceCurrencyNotFound = T<string>('commands/tools:priceCurrencyNotFound');
+export const QuoteMessage = T<string>('commands/tools:quoteMessage');
+export const DuckDuckGoNotfound = T<string>('commands/tools:duckDuckGoNotfound');
+export const DuckDuckGoLookalso = T<string>('commands/tools:duckDuckGoLookalso');
+export const UrbanNotFound = T<string>('commands/tools:urbanNotFound');
+export const UrbanIndexNotfound = T<string>('commands/tools:urbanIndexNotfound');
 export const WhoisMemberTitles = T<{
 	joined: string;
 	createdAt: string;
-}>('commandWhoisMemberTitles');
+}>('commands/tools:whoisMemberTitles');
 export const WhoisMemberFields = FT<
 	{
 		member: GuildMember;
@@ -195,14 +195,14 @@ export const WhoisMemberFields = FT<
 		createdAt: string;
 		footer: string;
 	}
->('commandWhoisMemberFields');
-export const WhoisMemberRoles = FT<{ count: number }, string>('commandWhoisMemberRoles');
-export const WhoisMemberRolesPlural = FT<{ count: number }, string>('commandWhoisMemberRolesPlural');
-export const WhoisMemberPermissions = T<string>('commandWhoisMemberPermissions');
-export const WhoisMemberPermissionsAll = T<string>('commandWhoisMemberPermissionsAll');
+>('commands/tools:whoisMemberFields');
+export const WhoisMemberRoles = FT<{ count: number }, string>('commands/tools:whoisMemberRoles');
+export const WhoisMemberRolesPlural = FT<{ count: number }, string>('commands/tools:whoisMemberRolesPlural');
+export const WhoisMemberPermissions = T<string>('commands/tools:whoisMemberPermissions');
+export const WhoisMemberPermissionsAll = T<string>('commands/tools:whoisMemberPermissionsAll');
 export const WhoisUserTitles = T<{
 	createdAt: string;
-}>('commandWhoisUserTitles');
+}>('commands/tools:whoisUserTitles');
 export const WhoisUserFields = FT<
 	{
 		user: User;
@@ -211,8 +211,8 @@ export const WhoisUserFields = FT<
 		createdAt: string;
 		footer: string;
 	}
->('commandWhoisUserFields');
-export const WikipediaDescription = T<string>('commandWikipediaDescription');
-export const WikipediaExtended = T<LanguageHelpDisplayOptions>('commandWikipediaExtended');
-export const YoutubeDescription = T<string>('commandYoutubeDescription');
-export const YoutubeExtended = T<LanguageHelpDisplayOptions>('commandYoutubeExtended');
+>('commands/tools:whoisUserFields');
+export const WikipediaDescription = T<string>('commands/tools:wikipediaDescription');
+export const WikipediaExtended = T<LanguageHelpDisplayOptions>('commands/tools:wikipediaExtended');
+export const YoutubeDescription = T<string>('commands/tools:youtubeDescription');
+export const YoutubeExtended = T<LanguageHelpDisplayOptions>('commands/tools:youtubeExtended');

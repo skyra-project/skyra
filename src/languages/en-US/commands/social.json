@@ -1,115 +1,115 @@
 {
-	"commandAutoRolePointsRequired": "You must input a valid amount of points.",
-	"commandAutoRoleUpdateConfigured": "This role is already configured as an autorole. Use the remove type instead.",
-	"commandAutoRoleUpdateUnconfigured": "This role is not configured as an autorole. Use the add type instead.",
-	"commandAutoRoleUpdate": "Updated autorole: {{role.name}} ({{role.id}}). Points required: {{points}} (before: {{before}})",
-	"commandAutoRoleRemove": "Removed the autorole: {{role.name}} ({{role.id}}), which required {{before}} points.",
-	"commandAutoRoleAdd": "Added new autorole: {{role.name}} ({{role.id}}). Points required: {{points}}",
-	"commandAutoRoleListEmpty": "There is no role configured as an autorole in this server.",
-	"commandAutoRoleUnknownRole": "Unknown role: {{role}}",
-	"commandBalance": "The user {{user}} has a total of {{amount}}{{SHINY}}",
-	"commandBalanceSelf": "You have a total of {{amount}}{{SHINY}}",
-	"commandBalanceBots": "I think they have 5 gears as much, bots don't have {{SHINY}}",
-	"commandSocialMemberNotexists": "{{REDCROSS}} The member is not in this server, and is not in my database either.",
-	"commandSocialAdd": "{{GREENTICK}} Successfully added {{count}} point to {{user}}. Current amount: {{amount}}.",
-	"commandSocialAdd_plural": "{{GREENTICK}} Successfully added {{count}} points to {{user}}. Current amount: {{amount}}.",
-	"commandSocialRemove": "{{GREENTICK}} Successfully removed {{count}} point from {{user}}. Current amount: {{amount}}.",
-	"commandSocialRemove_plural": "{{GREENTICK}} Successfully removed {{count}} points from {{user}}. Current amount: {{amount}}.",
-	"commandSocialUnchanged": "{{REDCROSS}} The user {{user}} already had the given amount of points, no update was needed.",
-	"commandSocialReset": "{{GREENTICK}} The user {{user}} got his points removed.",
-	"commandBannerMissing": "You must specify a banner id to {{type}}.",
-	"commandBannerNotexists": "This banner id does not exist. Please check `{{prefix}}banner list` for a list of banners you can buy.",
-	"commandBannerUserlistEmpty": "You did not buy a banner yet. Check `{{prefix}}banner list` for a list of banners you can buy.",
-	"commandBannerResetDefault": "You are already using the default banner.",
-	"commandBannerReset": "Your banner has been reset to the default.",
-	"commandBannerSetNotBought": "You did not buy this banner yet.",
-	"commandBannerSet": "|`✅`| **Success**. You have set your banner to: __{{banner}}__",
-	"commandBannerBought": "You already have this banner, you may want to use `{{prefix}}banner set {{banner}}` to make it visible in your profile.",
-	"commandBannerMoney": "You do not have enough money to buy this banner. You have {{money}}{{SHINY}}, the banner costs {{cost}}{{SHINY}}",
-	"commandBannerPaymentCancelled": "|`❌`| The payment has been cancelled.",
-	"commandBannerBuy": "|`✅`| **Success**. You have bought the banner: __{{banner}}__",
-	"commandBannerPrompt": "Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.",
-	"commandToggleDarkModeEnabled": "{{GREENTICK}} Successfully enabled the dark mode.",
-	"commandToggleDarkModeDisabled": "{{GREENTICK}} Successfully disabled the dark mode.",
-	"commandDailyTime": "Next dailies are available in {{time, duration}}",
-	"commandDailyTimeSuccess": "Yay! You earned {{amount}}{{SHINY}}! Next dailies in: 12 hours.",
-	"commandDailyGrace": [
+	"autoRolePointsRequired": "You must input a valid amount of points.",
+	"autoRoleUpdateConfigured": "This role is already configured as an autorole. Use the remove type instead.",
+	"autoRoleUpdateUnconfigured": "This role is not configured as an autorole. Use the add type instead.",
+	"autoRoleUpdate": "Updated autorole: {{role.name}} ({{role.id}}). Points required: {{points}} (before: {{before}})",
+	"autoRoleRemove": "Removed the autorole: {{role.name}} ({{role.id}}), which required {{before}} points.",
+	"autoRoleAdd": "Added new autorole: {{role.name}} ({{role.id}}). Points required: {{points}}",
+	"autoRoleListEmpty": "There is no role configured as an autorole in this server.",
+	"autoRoleUnknownRole": "Unknown role: {{role}}",
+	"balance": "The user {{user}} has a total of {{amount}}{{SHINY}}",
+	"balanceSelf": "You have a total of {{amount}}{{SHINY}}",
+	"balanceBots": "I think they have 5 gears as much, bots don't have {{SHINY}}",
+	"socialMemberNotexists": "{{REDCROSS}} The member is not in this server, and is not in my database either.",
+	"socialAdd": "{{GREENTICK}} Successfully added {{count}} point to {{user}}. Current amount: {{amount}}.",
+	"socialAdd_plural": "{{GREENTICK}} Successfully added {{count}} points to {{user}}. Current amount: {{amount}}.",
+	"socialRemove": "{{GREENTICK}} Successfully removed {{count}} point from {{user}}. Current amount: {{amount}}.",
+	"socialRemove_plural": "{{GREENTICK}} Successfully removed {{count}} points from {{user}}. Current amount: {{amount}}.",
+	"socialUnchanged": "{{REDCROSS}} The user {{user}} already had the given amount of points, no update was needed.",
+	"socialReset": "{{GREENTICK}} The user {{user}} got his points removed.",
+	"bannerMissing": "You must specify a banner id to {{type}}.",
+	"bannerNotexists": "This banner id does not exist. Please check `{{prefix}}banner list` for a list of banners you can buy.",
+	"bannerUserlistEmpty": "You did not buy a banner yet. Check `{{prefix}}banner list` for a list of banners you can buy.",
+	"bannerResetDefault": "You are already using the default banner.",
+	"bannerReset": "Your banner has been reset to the default.",
+	"bannerSetNotBought": "You did not buy this banner yet.",
+	"bannerSet": "|`✅`| **Success**. You have set your banner to: __{{banner}}__",
+	"bannerBought": "You already have this banner, you may want to use `{{prefix}}banner set {{banner}}` to make it visible in your profile.",
+	"bannerMoney": "You do not have enough money to buy this banner. You have {{money}}{{SHINY}}, the banner costs {{cost}}{{SHINY}}",
+	"bannerPaymentCancelled": "|`❌`| The payment has been cancelled.",
+	"bannerBuy": "|`✅`| **Success**. You have bought the banner: __{{banner}}__",
+	"bannerPrompt": "Reply to this message choosing an option:\n`all` to check a list of all available banners.\n`user` to check a list of all bought banners.",
+	"toggleDarkModeEnabled": "{{GREENTICK}} Successfully enabled the dark mode.",
+	"toggleDarkModeDisabled": "{{GREENTICK}} Successfully disabled the dark mode.",
+	"dailyTime": "Next dailies are available in {{time, duration}}",
+	"dailyTimeSuccess": "Yay! You earned {{amount}}{{SHINY}}! Next dailies in: 12 hours.",
+	"dailyGrace": [
 		"Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.",
 		"Remaining time: {{remaining, duration}}"
 	],
-	"commandDailyGraceAccepted": "Successfully claimed {{amount}}{{SHINY}}! Next dailies in: {{remaining, duration}}",
-	"commandDailyGraceDenied": "Got it! Come back soon!",
-	"commandDailyCollect": "Collect dailies",
-	"commandLevel": {
+	"dailyGraceAccepted": "Successfully claimed {{amount}}{{SHINY}}! Next dailies in: {{remaining, duration}}",
+	"dailyGraceDenied": "Got it! Come back soon!",
+	"dailyCollect": "Collect dailies",
+	"level": {
 		"level": "Level",
 		"experience": "Experience",
 		"nextIn": "Next level in"
 	},
-	"commandDivorceSelf": "I am sorry, but you cannot divorce yourself.",
-	"commandDivorceNotTaken": "Who would you divorce? You are not even taken!",
-	"commandDivorcePrompt": "Ooh... that sounds quite bad 💔... are you 100% sure about this?",
-	"commandDivorceCancel": "Oh lord. I am very glad you will continue with your partner!",
-	"commandDivorceDm": "Pardon... but... do you remember {{user}}? They decided to break up with you 💔!",
-	"commandDivorceSuccess": "Successful divorce 💔... You are no longer married to {{user}}!",
-	"commandMarryWith": "Dear, how could you forget it... You are currently married to {{users, andList}}!",
-	"commandMarryNotTaken": "Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?",
-	"commandMarrySkyra": "I am sorry, I know you love me, but I am already taken by a brave man I love 💞!",
-	"commandMarryAelia": "In your dreams. She is my sister, I am not letting somebody harm her!",
-	"commandMarryBots": "Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!",
-	"commandMarrySelf": "No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔",
-	"commandMarryAuthorTaken": "You are already married. Is your love big enough for two people? <@{{author.id}}>, reply with **yes** to confirm!",
-	"commandMarryAuthorMultipleCancel": "Cancelling. Your commitment to {{user}} is admirable.",
-	"commandMarryTaken": "This user is already married to someone. Would you like to join their harem?",
-	"commandMarryTaken_plural": "This user is already married to {{spousesCount}} people. Would you like to join their harem?",
-	"commandMarryAlreadyMarried": "You are already married with {{user}}, did you forget it?",
-	"commandMarryAuthorTooMany": "{{REDCROSS}} You are married to too many people, your maximum is {{limit}}!",
-	"commandMarryTargetTooMany": "{{REDCROSS}} The user you are trying to marry to is already married to too many people, their maximum is {{limit}}!",
-	"commandMarryMultipleCancel": "Cancelling. Don't worry, you'll find someone you don't have to share!",
-	"commandMarryPetition": "Fresh pair of eyes! {{author.username}} is proposing to {{user.username}}! 💞 <@{{user.id}}>, reply with **yes** to accept!",
-	"commandMarryNoreply": "The user did not reply on time... Maybe it was a hard decision?",
-	"commandMarryDenied": "O-oh... The user rejected your proposal! 💔",
-	"commandMarryAccepted": "Congratulations dear {{author}}! You're now officially married with {{user}}! ❤",
-	"commandMylevel": "The user {{user}} has a total of {{points}} points.{{next}}",
-	"commandMylevelSelf": "You have a total of {{points}} points.{{next}}",
-	"commandMylevelNext": "Points for next rank: **{{remaining}}** (at {{next}} points).",
-	"commandPayMissingMoney": "I am sorry, but you need {{needed}}{{SHINY}} and you have {{has}}{{SHINY}}",
-	"commandPayPrompt": "You are about to pay {{user}} {{amount}}{{SHINY}}, are you sure you want to proceed?",
-	"commandPayPromptAccept": "Payment accepted, {{amount}}{{SHINY}} has been sent to {{user}}'s profile.",
-	"commandPayPromptDeny": "Payment denied.",
-	"commandPaySelf": "If I taxed this, you would lose money, therefore, do not try to pay yourself.",
-	"commandSocialPayBot": "Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.",
-	"commandProfile": {
+	"divorceSelf": "I am sorry, but you cannot divorce yourself.",
+	"divorceNotTaken": "Who would you divorce? You are not even taken!",
+	"divorcePrompt": "Ooh... that sounds quite bad 💔... are you 100% sure about this?",
+	"divorceCancel": "Oh lord. I am very glad you will continue with your partner!",
+	"divorceDm": "Pardon... but... do you remember {{user}}? They decided to break up with you 💔!",
+	"divorceSuccess": "Successful divorce 💔... You are no longer married to {{user}}!",
+	"marryWith": "Dear, how could you forget it... You are currently married to {{users, andList}}!",
+	"marryNotTaken": "Uh... I am sorry, but I am not aware of you being married... have you tried proposing to somebody?",
+	"marrySkyra": "I am sorry, I know you love me, but I am already taken by a brave man I love 💞!",
+	"marryAelia": "In your dreams. She is my sister, I am not letting somebody harm her!",
+	"marryBots": "Oh no! You should not be marrying bots! They still do not understand what true love is, and they are not warm!",
+	"marrySelf": "No! This is not how this works! You cannot marry yourself, who would you spend your life with? 💔",
+	"marryAuthorTaken": "You are already married. Is your love big enough for two people? <@{{author.id}}>, reply with **yes** to confirm!",
+	"marryAuthorMultipleCancel": "Cancelling. Your commitment to {{user}} is admirable.",
+	"marryTaken": "This user is already married to someone. Would you like to join their harem?",
+	"marryTaken_plural": "This user is already married to {{spousesCount}} people. Would you like to join their harem?",
+	"marryAlreadyMarried": "You are already married with {{user}}, did you forget it?",
+	"marryAuthorTooMany": "{{REDCROSS}} You are married to too many people, your maximum is {{limit}}!",
+	"marryTargetTooMany": "{{REDCROSS}} The user you are trying to marry to is already married to too many people, their maximum is {{limit}}!",
+	"marryMultipleCancel": "Cancelling. Don't worry, you'll find someone you don't have to share!",
+	"marryPetition": "Fresh pair of eyes! {{author.username}} is proposing to {{user.username}}! 💞 <@{{user.id}}>, reply with **yes** to accept!",
+	"marryNoreply": "The user did not reply on time... Maybe it was a hard decision?",
+	"marryDenied": "O-oh... The user rejected your proposal! 💔",
+	"marryAccepted": "Congratulations dear {{author}}! You're now officially married with {{user}}! ❤",
+	"mylevel": "The user {{user}} has a total of {{points}} points.{{next}}",
+	"mylevelSelf": "You have a total of {{points}} points.{{next}}",
+	"mylevelNext": "Points for next rank: **{{remaining}}** (at {{next}} points).",
+	"payMissingMoney": "I am sorry, but you need {{needed}}{{SHINY}} and you have {{has}}{{SHINY}}",
+	"payPrompt": "You are about to pay {{user}} {{amount}}{{SHINY}}, are you sure you want to proceed?",
+	"payPromptAccept": "Payment accepted, {{amount}}{{SHINY}} has been sent to {{user}}'s profile.",
+	"payPromptDeny": "Payment denied.",
+	"paySelf": "If I taxed this, you would lose money, therefore, do not try to pay yourself.",
+	"socialPayBot": "Oh, sorry, but money is meaningless for bots, I am pretty sure a human would take advantage of it better.",
+	"profile": {
 		"globalRank": "Global Rank",
 		"credits": "Credits | Vault",
 		"reputation": "Reputation",
 		"experience": "Experience",
 		"level": "Level"
 	},
-	"commandRemindmeCreate": "A reminder with ID `{{id}}` has been created.",
-	"commandRemindmeCreateNoDuration": "You must tell me what you want me to remind you and when.",
-	"commandRemindmeCreateNoDescription": "Something, you did not tell me what.",
-	"commandRemindmeDeleteNoId": "You must give a valid ID, you can get them using the `list` sub-command.",
-	"commandRemindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{task.time.getTime() - Date.now(), duration}}** has been successfully deleted.",
-	"commandRemindmeListEmpty": "You do not have any active reminder",
-	"commandRemindmeShowFooter": "ID: {{id}} | Ends at:",
-	"commandRemindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",
-	"commandRemindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
-	"commandReputationTime": "You can give a reputation point in {{remaining, duration}}",
-	"commandReputationUsable": "You can give a reputation point now.",
-	"commandReputationUserNotfound": "You must mention a user to give a reputation point.",
-	"commandReputationSelf": "You cannot give a reputation point to yourself.",
-	"commandReputationBots": "You cannot give a reputation point to bots.",
-	"commandReputationGive": "You have given a reputation point to **{{user}}**!",
-	"commandReputationsBots": "Bots cannot have reputation points...",
-	"commandReputationsSelf": "You have a total of {{points}} reputation points.",
-	"commandReputation": "{{count}} reputation point",
-	"commandReputation_plural": "{{count}} reputation points",
-	"commandReputations": "The user {{user}} has a total of {{points}}.",
-	"commandRequireRole": "I am sorry, but you must provide a role for this command.",
-	"commandScoreboardPosition": "Your placing position is: {{position}}",
-	"commandSetColor": "Color changed to {{color}}",
-	"commandSocialDescription": "Configure this guild's member points.",
-	"commandSocialExtended": {
+	"remindmeCreate": "A reminder with ID `{{id}}` has been created.",
+	"remindmeCreateNoDuration": "You must tell me what you want me to remind you and when.",
+	"remindmeCreateNoDescription": "Something, you did not tell me what.",
+	"remindmeDeleteNoId": "You must give a valid ID, you can get them using the `list` sub-command.",
+	"remindmeDelete": "The reminder with ID `{{ id }}` and with a remaining time of **{{task.time.getTime() - Date.now(), duration}}** has been successfully deleted.",
+	"remindmeListEmpty": "You do not have any active reminder",
+	"remindmeShowFooter": "ID: {{id}} | Ends at:",
+	"remindmeInvalidId": "I am sorry, but the ID provided does not seem to be valid.",
+	"remindmeNotfound": "I cannot find something here. The reminder either never existed or it ended.",
+	"reputationTime": "You can give a reputation point in {{remaining, duration}}",
+	"reputationUsable": "You can give a reputation point now.",
+	"reputationUserNotfound": "You must mention a user to give a reputation point.",
+	"reputationSelf": "You cannot give a reputation point to yourself.",
+	"reputationBots": "You cannot give a reputation point to bots.",
+	"reputationGive": "You have given a reputation point to **{{user}}**!",
+	"reputationsBots": "Bots cannot have reputation points...",
+	"reputationsSelf": "You have a total of {{points}} reputation points.",
+	"reputation": "{{count}} reputation point",
+	"reputation_plural": "{{count}} reputation points",
+	"reputations": "The user {{user}} has a total of {{points}}.",
+	"requireRole": "I am sorry, but you must provide a role for this command.",
+	"scoreboardPosition": "Your placing position is: {{position}}",
+	"setColor": "Color changed to {{color}}",
+	"socialDescription": "Configure this guild's member points.",
+	"socialExtended": {
 		"extendedHelp": "This command allows for updating other members' points.",
 		"explainedUsage": [
 			["set <user> <amount>", "Sets an amount of points to the user."],
@@ -119,8 +119,8 @@
 		],
 		"examples": ["set @kyra 40000", "add @kyra 2400", "remove @kyra 3000", "reset @kyra"]
 	},
-	"commandBannerDescription": "Configure the banner for your profile.",
-	"commandBannerExtended": {
+	"bannerDescription": "Configure the banner for your profile.",
+	"bannerExtended": {
 		"extendedHelp": "Banners are vertical in Skyra, they decorate your profile card.",
 		"explainedUsage": [
 			["list", "(Default) Lists all available banners."],
@@ -130,12 +130,12 @@
 		],
 		"examples": ["list", "buy 0w1p06", "set 0w1p06", "reset"]
 	},
-	"commandToggleDarkModeDescription": "Toggle between light and dark templates for your profile and rank cards.",
-	"commandToggleDarkModeExtended": {
+	"toggleDarkModeDescription": "Toggle between light and dark templates for your profile and rank cards.",
+	"toggleDarkModeExtended": {
 		"extendedHelp": "This command lets you toggle the template used to generate your profile."
 	},
-	"commandAutoRoleDescription": "List or configure the autoroles for a guild.",
-	"commandAutoRoleExtended": {
+	"autoRoleDescription": "List or configure the autoroles for a guild.",
+	"autoRoleExtended": {
 		"extendedHelp": [
 			"Autoroles are roles that are available for everyone, and automatically given when they reach a configured",
 			"amount of (local) points, an administrator must configure them through a setting command.",
@@ -151,12 +151,12 @@
 		"examples": ["list", "add 'Trusted Member' 20000", "update 'Trusted Member' 15000", "remove 'Trusted Member'"],
 		"multiline": true
 	},
-	"commandBalanceDescription": "Check your current balance.",
-	"commandBalanceExtended": {
+	"balanceDescription": "Check your current balance.",
+	"balanceExtended": {
 		"extendedHelp": "The balance command retrieves your amount of {{SHINY}}."
 	},
-	"commandDailyDescription": "Get your semi-daily {{SHINY}}'s.",
-	"commandDailyExtended": {
+	"dailyDescription": "Get your semi-daily {{SHINY}}'s.",
+	"dailyExtended": {
 		"extendedHelp": "Shiiiiny!",
 		"reminder": [
 			"Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.",
@@ -165,8 +165,8 @@
 		],
 		"multiline": true
 	},
-	"commandLeaderboardDescription": "Check the leaderboards.",
-	"commandLeaderboardExtended": {
+	"leaderboardDescription": "Check the leaderboards.",
+	"leaderboardExtended": {
 		"extendedHelp": [
 			"The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.",
 			"The leaderboards refresh every 10 minutes."
@@ -175,32 +175,32 @@
 		"multiline": true
 	},
 	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results}} Total",
-	"commandLevelDescription": "Check your global level.",
-	"commandLevelExtended": {
+	"levelDescription": "Check your global level.",
+	"levelExtended": {
 		"extendedHelp": "How much until the next level?",
 		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]]
 	},
-	"commandDivorceDescription": "Break up with your couple!",
-	"commandDivorceExtended": {
+	"divorceDescription": "Break up with your couple!",
+	"divorceExtended": {
 		"extendedHelp": "Sniff... This command is used to break up with your couple, hopefully in this virtual world, you are allowed to marry the user again."
 	},
-	"commandMarryDescription": "Marry somebody!",
-	"commandMarryExtended": {
+	"marryDescription": "Marry somebody!",
+	"marryExtended": {
 		"extendedHelp": "Marry your waifu!",
 		"explainedUsage": [["user", "(Optional) The user to marry with. If not given, the command will tell you who are you married with."]],
 		"examples": ["", "@love"]
 	},
-	"commandMarriedDescription": "Check who you are married with.",
-	"commandMarriedExtended": {
+	"marriedDescription": "Check who you are married with.",
+	"marriedExtended": {
 		"extendedHelp": "This command will tell you who are you married with."
 	},
-	"commandMylevelDescription": "Check your local level.",
-	"commandMylevelExtended": {
+	"mylevelDescription": "Check your local level.",
+	"mylevelExtended": {
 		"extendedHelp": "How much until next auto role? How many points do I have in this guild?",
 		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]]
 	},
-	"commandPayDescription": "Pay somebody with your {{SHINY}}'s.",
-	"commandPayExtended": {
+	"payDescription": "Pay somebody with your {{SHINY}}'s.",
+	"payExtended": {
 		"extendedHelp": "Businessmen! Today is payday!",
 		"explainedUsage": [
 			["money", "Amount of {{SHINY}} to pay, you must have the amount you are going to pay."],
@@ -208,8 +208,8 @@
 		],
 		"examples": ["200 @kyra"]
 	},
-	"commandProfileDescription": "Check your user profile.",
-	"commandProfileExtended": {
+	"profileDescription": "Check your user profile.",
+	"profileExtended": {
 		"extendedHelp": [
 			"This command sends a card image with some of your user profile such as your global rank, experience...",
 			"Additionally, you are able to customize your colours with the 'setColor' command."
@@ -217,8 +217,8 @@
 		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]],
 		"multiline": true
 	},
-	"commandRemindmeDescription": "Manage your reminders.",
-	"commandRemindmeExtended": {
+	"remindmeDescription": "Manage your reminders.",
+	"remindmeExtended": {
 		"extendedHelp": "This command allows you to set, delete and list reminders.",
 		"explainedUsage": [
 			["action", "The action, one of `list`, `show`, `delete`, or `create`/`me`. Defaults to `list`."],
@@ -227,8 +227,8 @@
 		],
 		"examples": ["me 6h to fix this command.", "list", "show 1234", "delete 1234"]
 	},
-	"commandReputationDescription": "Give somebody a reputation point.",
-	"commandReputationExtended": {
+	"reputationDescription": "Give somebody a reputation point.",
+	"reputationExtended": {
 		"extendedHelp": [
 			"This guy is so helpful... I'll give him a reputation point!",
 			"Additionally, you can check how many reputation points a user has by writing 'check' before the mention."
@@ -241,8 +241,8 @@
 		"examples": ["check @kyra", "check", "@kyra", "check \"User With Spaces\"", "\"User With Spaces\""],
 		"multiline": true
 	},
-	"commandSetColorDescription": "Change your user profile's color.",
-	"commandSetColorExtended": {
+	"setColorDescription": "Change your user profile's color.",
+	"setColorExtended": {
 		"extendedHelp": "The setColor command sets a color for your profile.",
 		"explainedUsage": [["color", "A color resolvable."]],
 		"possibleFormats": [

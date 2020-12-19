@@ -1,150 +1,150 @@
 {
-	"commandWblushDescription": "Blush with a weeb picture!",
-	"commandWblushExtended": {
+	"wblushDescription": "Blush with a weeb picture!",
+	"wblushExtended": {
 		"extendedHelp": "Blush with a random weeb image!"
 	},
-	"commandWcryDescription": "Cry to somebody with a weeb picture!",
-	"commandWcryExtended": {
+	"wcryDescription": "Cry to somebody with a weeb picture!",
+	"wcryExtended": {
 		"extendedHelp": "Cry with a random weeb image!",
 		"explainedUsage": [["user", "The user to cry to."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWcuddleDescription": "Cuddle somebody with a weeb picture!",
-	"commandWcuddleExtended": {
+	"wcuddleDescription": "Cuddle somebody with a weeb picture!",
+	"wcuddleExtended": {
 		"extendedHelp": "Unlike the original cuddle command, this one displays random weeb images, enjoy!",
 		"explainedUsage": [["user", "The user to cuddle with."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWdanceDescription": "Dance with a weeb picture!",
-	"commandWdanceExtended": {
+	"wdanceDescription": "Dance with a weeb picture!",
+	"wdanceExtended": {
 		"extendedHelp": "Dance with a random weeb image!"
 	},
-	"commandWhugDescription": "Hug somebody with a weeb picture!",
-	"commandWhugExtended": {
+	"whugDescription": "Hug somebody with a weeb picture!",
+	"whugExtended": {
 		"extendedHelp": "Unlike the original hug command, this one displays random weeb images, enjoy!",
 		"explainedUsage": [["user", "The user to give the hug."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWkissDescription": "Kiss somebody with a weeb picture!",
-	"commandWkissExtended": {
+	"wkissDescription": "Kiss somebody with a weeb picture!",
+	"wkissExtended": {
 		"extendedHelp": "Kiss somebody with a random weeb image!",
 		"explainedUsage": [["user", "The user to give the kiss to."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWlickDescription": "Lick somebody with a weeb picture!",
-	"commandWlickExtended": {
+	"wlickDescription": "Lick somebody with a weeb picture!",
+	"wlickExtended": {
 		"extendedHelp": "Lick somebody with a random weeb image!",
 		"explainedUsage": [["user", "The user to lick."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWnomDescription": "Nom nom with a 🍞!",
-	"commandWnomExtended": {
+	"wnomDescription": "Nom nom with a 🍞!",
+	"wnomExtended": {
 		"extendedHelp": "Nom nom nom! Wha~... I'm busy eating!"
 	},
-	"commandWnekoDescription": "Human kittens!",
-	"commandWnekoExtended": {
+	"wnekoDescription": "Human kittens!",
+	"wnekoExtended": {
 		"extendedHelp": "Unlike the original kitten command, this one displays random weeb images, the difference is that they're weebs... and humans, enjoy!"
 	},
-	"commandWpatDescription": "Pats somebody's head!",
-	"commandWpatExtended": {
+	"wpatDescription": "Pats somebody's head!",
+	"wpatExtended": {
 		"extendedHelp": "Pat somebody's head with a random weeb image!",
 		"explainedUsage": [["user", "The user to pat with."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWpoutDescription": "I feel somebody... mad",
-	"commandWpoutExtended": {
+	"wpoutDescription": "I feel somebody... mad",
+	"wpoutExtended": {
 		"extendedHelp": "Show your expression with a random weeb image!"
 	},
-	"commandWslapDescription": "Slap somebody with a weeb picture!",
-	"commandWslapExtended": {
+	"wslapDescription": "Slap somebody with a weeb picture!",
+	"wslapExtended": {
 		"extendedHelp": "Unlike the original slap command, this one displays random weeb images, enjoy!",
 		"explainedUsage": [["user", "The user to slap."]],
 		"examples": ["@Pete"]
 	},
-	"commandWsmugDescription": "Smug",
-	"commandWsmugExtended": {
+	"wsmugDescription": "Smug",
+	"wsmugExtended": {
 		"extendedHelp": "Just an anime smug face!"
 	},
-	"commandWstareDescription": "*Stares*",
-	"commandWstareExtended": {
+	"wstareDescription": "*Stares*",
+	"wstareExtended": {
 		"extendedHelp": "*Still stares at you*",
 		"explainedUsage": [["user", "The user to stare at."]],
 		"examples": ["@Pete"]
 	},
-	"commandWtickleDescription": "Give tickles to somebody with a weeb picture!",
-	"commandWtickleExtended": {
+	"wtickleDescription": "Give tickles to somebody with a weeb picture!",
+	"wtickleExtended": {
 		"extendedHelp": "Tickle somebody!",
 		"explainedUsage": [["user", "The user to tickle."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWeebUnavailableError": "I am sorry, but the source of all my weeb images is not available at the moment. Please try again later!",
-	"commandWeebUnexpectedError": "Weird! I encountered an error I should have never received!",
-	"commandWbangDescription": "Bang 💥🔫!",
-	"commandWbangExtended": {
+	"weebUnavailableError": "I am sorry, but the source of all my weeb images is not available at the moment. Please try again later!",
+	"weebUnexpectedError": "Weird! I encountered an error I should have never received!",
+	"wbangDescription": "Bang 💥🔫!",
+	"wbangExtended": {
 		"extendedHelp": "Shoot a user with a random weeb image!",
 		"explainedUsage": [["user", "The user to shoot."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWbangheadDescription": "STAHP! I'm banging my head here!",
-	"commandWbangheadExtended": {
+	"wbangheadDescription": "STAHP! I'm banging my head here!",
+	"wbangheadExtended": {
 		"extendedHelp": "Bang your head with a random weeb image!"
 	},
-	"commandWbiteDescription": "*nom nom* you are delicious!",
-	"commandWbiteExtended": {
+	"wbiteDescription": "*nom nom* you are delicious!",
+	"wbiteExtended": {
 		"extendedHelp": "Bite a user with a random weeb image!",
 		"explainedUsage": [["user", "The user to bite."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWgreetDescription": "Say hi! to another user",
-	"commandWgreetExtended": {
+	"wgreetDescription": "Say hi! to another user",
+	"wgreetExtended": {
 		"extendedHelp": "Greet a user with a random weeb image!",
 		"explainedUsage": [["user", "The user to greet."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWlewdDescription": "Lewds! Lewds! Lewds!",
-	"commandWlewdExtended": {
+	"wlewdDescription": "Lewds! Lewds! Lewds!",
+	"wlewdExtended": {
 		"extendedHelp": "Random lewd weeb image!"
 	},
-	"commandWpunchDescription": "*pow* 👊👊",
-	"commandWpunchExtended": {
+	"wpunchDescription": "*pow* 👊👊",
+	"wpunchExtended": {
 		"extendedHelp": "Punch that annoying user with a random weeb image!",
 		"explainedUsage": [["user", "The user to punch."]],
 		"examples": ["@Skyra"]
 	},
-	"commandWsleepyDescription": "I'm so sleeeeepy... *yawn*",
-	"commandWsleepyExtended": {
+	"wsleepyDescription": "I'm so sleeeeepy... *yawn*",
+	"wsleepyExtended": {
 		"extendedHelp": "Show how sleepy you are with a random weeb image!"
 	},
-	"commandWsmileDescription": "Huh, because I'm happy. Clap along if you feel like a room without a roof",
-	"commandWsmileExtended": {
+	"wsmileDescription": "Huh, because I'm happy. Clap along if you feel like a room without a roof",
+	"wsmileExtended": {
 		"extendedHelp": "Show just how happy you are with a random weeb image!"
 	},
-	"commandWthumbsupDescription": "Raise your thumb into the air in a magnificent show of approval",
-	"commandWthumbsupExtended": {
+	"wthumbsupDescription": "Raise your thumb into the air in a magnificent show of approval",
+	"wthumbsupExtended": {
 		"extendedHelp": "Raise your thumb with a random weeb image!"
 	},
-	"commandWbang": "Hey {{user}}... bang!",
-	"commandWbanghead": "Head bang in progress!",
-	"commandWbite": "Biting {{user}}!",
-	"commandWblush": "You made them blush! 😊",
-	"commandWcry": "Dear {{user}}, did you make them cry? 💔",
-	"commandWcuddle": "Here is a cuddle for you, {{user}} 💞",
-	"commandWdance": "Dancing! 💃",
-	"commandWgreet": "Hello there {{user}}!",
-	"commandWhug": "Here is a nice hug for you, {{user}} ❤",
-	"commandWkiss": "Here is a kiss for you, {{user}} 💜",
-	"commandWlewd": "Too lewd for my tastes!",
-	"commandWlick": "Licking {{user}} 👅",
-	"commandWnom": "Nom, nom, nom! 😊",
-	"commandWneko": "Nya! 🐱",
-	"commandWpat": "Gently pats {{user}}'s head ❤",
-	"commandWpout": "Uh?",
-	"commandWpunch": "Punching {{user}}!",
-	"commandWslap": "Slapping {{user}}!",
-	"commandWsleepy": "Falling asleep...",
-	"commandWsmile": "Showing a radiant smile!",
-	"commandWsmug": "There's a smug face!",
-	"commandWstare": "Dear {{user}}, somebody is staring at you 👀",
-	"commandWthumbsup": "You have their thumbs up!",
-	"commandWtickle": "Tickles for you, {{user}}!"
+	"wbang": "Hey {{user}}... bang!",
+	"wbanghead": "Head bang in progress!",
+	"wbite": "Biting {{user}}!",
+	"wblush": "You made them blush! 😊",
+	"wcry": "Dear {{user}}, did you make them cry? 💔",
+	"wcuddle": "Here is a cuddle for you, {{user}} 💞",
+	"wdance": "Dancing! 💃",
+	"wgreet": "Hello there {{user}}!",
+	"whug": "Here is a nice hug for you, {{user}} ❤",
+	"wkiss": "Here is a kiss for you, {{user}} 💜",
+	"wlewd": "Too lewd for my tastes!",
+	"wlick": "Licking {{user}} 👅",
+	"wnom": "Nom, nom, nom! 😊",
+	"wneko": "Nya! 🐱",
+	"wpat": "Gently pats {{user}}'s head ❤",
+	"wpout": "Uh?",
+	"wpunch": "Punching {{user}}!",
+	"wslap": "Slapping {{user}}!",
+	"wsleepy": "Falling asleep...",
+	"wsmile": "Showing a radiant smile!",
+	"wsmug": "There's a smug face!",
+	"wstare": "Dear {{user}}, somebody is staring at you 👀",
+	"wthumbsup": "You have their thumbs up!",
+	"wtickle": "Tickles for you, {{user}}!"
 }

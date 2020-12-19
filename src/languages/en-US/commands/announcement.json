@@ -1,6 +1,10 @@
 {
-	"commandAnnouncementDescription": "Send new announcements, mentioning the announcement role.",
-	"commandAnnouncementExtended": {
+	"announcement": "**New announcement for** {{role}}",
+	"announcementCancelled": "Cancelled the message.",
+	"announcementDescription": "Send new announcements, mentioning the announcement role.",
+	"announcementEmbedMentions": "{{header}}:",
+	"announcementEmbedMentionsWithMentions": "{{header}}, and mentioning: {{mentions}}:",
+	"announcementExtended": {
 		"extendedHelp": [
 			"This command requires an announcement channel (**channels.announcement** in the configuration command) which tells Skyra where she should post the announcement messages.",
 			"",
@@ -12,26 +16,21 @@
 		],
 		"explainedUsage": [["announcement", "The announcement text to post."]],
 		"examples": ["I am glad to announce that we have a bot able to safely send announcements for our subscribers!"],
-		"reminder":
-			"If you want to edit the message you send in an announcement, just edit the message you used to have Skyra send that announcement. Skyra will then edit the message she sent previously. She can do this up to 15 minutes after the initial announcement, so be sure to not wait long!",
+		"reminder": "If you want to edit the message you send in an announcement, just edit the message you used to have Skyra send that announcement. Skyra will then edit the message she sent previously. She can do this up to 15 minutes after the initial announcement, so be sure to not wait long!",
 		"multiline": true
 	},
-	"commandSubscribeDescription": "Subscribe to this server's announcements.",
-	"commandSubscribeExtended": {
+	"announcementPrompt": "This will be the message sent in the announcement channel. Are you OK with this?",
+	"announcementSuccess": "Successfully posted a new announcement.",
+	"subscribeDescription": "Subscribe to this server's announcements.",
+	"subscribeExtended": {
 		"extendedHelp": "This command serves the purpose of **giving** you the subscriber role, which must be configured by the server's administrators. When a moderator or administrator use the **announcement** command, you will be mentioned. This feature is meant to replace everyone/here tags and mention only the interested users."
 	},
-	"commandUnsubscribeDescription": "Unsubscribe from this server's announcements.",
-	"commandUnsubscribeExtended": {
+	"subscribeNoChannel": "This server does not have a configured announcement channel.",
+	"subscribeNoRole": "This server does not have a configured announcement role.",
+	"subscribeSuccess": "Successfully granted the role: **{{role}}**",
+	"unsubscribeDescription": "Unsubscribe from this server's announcements.",
+	"unsubscribeExtended": {
 		"extendedHelp": "This command serves the purpose of **removing** you the subscriber role, which must be configured by the server's administrators. When a moderator or administrator use the **announcement** command, you will **not longer** be mentioned. This feature is meant to replace everyone/here tags and mention only the interested users."
 	},
-	"commandSubscribeNoRole": "This server does not have a configured announcement role.",
-	"commandSubscribeSuccess": "Successfully granted the role: **{{role}}**",
-	"commandUnsubscribeSuccess": "Successfully removed the role: **{{role}}**",
-	"commandSubscribeNoChannel": "This server does not have a configured announcement channel.",
-	"commandAnnouncement": "**New announcement for** {{role}}",
-	"commandAnnouncementSuccess": "Successfully posted a new announcement.",
-	"commandAnnouncementCancelled": "Cancelled the message.",
-	"commandAnnouncementPrompt": "This will be the message sent in the announcement channel. Are you OK with this?",
-	"commandAnnouncementEmbedMentions": "{{header}}:",
-	"commandAnnouncementEmbedMentionsWithMentions": "{{header}}, and mentioning: {{mentions}}:"
+	"unsubscribeSuccess": "Successfully removed the role: **{{role}}**"
 }

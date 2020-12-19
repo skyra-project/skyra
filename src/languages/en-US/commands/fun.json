@@ -1,77 +1,77 @@
 {
-	"command8ballDescription": "Skyra will read the Holy Bible to find the correct answer for your question.",
-	"command8ballExtended": {
+	"8ballDescription": "Skyra will read the Holy Bible to find the correct answer for your question.",
+	"8ballExtended": {
 		"extendedHelp": "This command provides you a random question based on your questions' type. Be careful, it may be too smart.",
 		"explainedUsage": [["question", "The Holy Question"]],
 		"examples": ["Why did the chicken cross the road?"]
 	},
-	"commandChoiceDescription": "Eeny, meeny, miny, moe, catch a tiger by the toe...",
-	"commandChoiceExtended": {
+	"choiceDescription": "Eeny, meeny, miny, moe, catch a tiger by the toe...",
+	"choiceExtended": {
 		"extendedHelp": "I have an existencial doubt... should I wash the dishes or throw them through the window? The search continues. List me items separated by comma and I will choose one them. On a side note, I am not responsible of what happens next.",
 		"explainedUsage": [["words", "A list of words separated by comma."]],
 		"examples": ["Should Wash the dishes, Throw the dishes out the window", "Cat, Dog"]
 	},
-	"commandChangemymindDescription": "Skyra is the best, change my mind.",
-	"commandChangemymindExtended": {
+	"changemymindDescription": "Skyra is the best, change my mind.",
+	"changemymindExtended": {
 		"extendedHelp": "I still think I'm the best, change my mind. I make a photo with your avatar and some text in some paper.",
 		"explainedUsage": [["text", "The phrase you want."]],
 		"examples": ["Skyra is the best bot in this server"]
 	},
-	"commandDiceDescription": "Roll the dice using d20 syntax.",
-	"commandDiceExtended": {
+	"diceDescription": "Roll the dice using d20 syntax.",
+	"diceExtended": {
 		"extendedHelp": "The mechanics of this command are easy. You have a dice, then you roll it __x__ times, but the dice can also be configured to have __y__ sides. By default, this command rolls a dice with 6 sides once. However, you can change the amount of rolls for the dice, and this command will \"roll\" (get a random number between 1 and the amount of sides). For example, rolling a dice with 6 sides 3 times will leave a random sequence of three random numbers between 1 and 6, for example: 3, 1, 6; And this command will return 10 as output.",
 		"examples": ["370d24", "100d6", "6"]
 	},
-	"commandEscaperopeDescription": "Use the escape rope from Pokemon.",
-	"commandEscaperopeExtended": {
+	"escaperopeDescription": "Use the escape rope from Pokemon.",
+	"escaperopeExtended": {
 		"extendedHelp": "**Skyra** used **Escape Rope**."
 	},
-	"commandHowToFlirtDescription": "Captain America, you do not know how to flirt.",
-	"commandHowToFlirtExtended": {
+	"howToFlirtDescription": "Captain America, you do not know how to flirt.",
+	"howToFlirtExtended": {
 		"extendedHelp": "Let me show you how to effectively flirt with somebody using the Tony Stark's style for Captain America, I can guarantee that you'll get him.",
 		"explainedUsage": [["user", "The user to flirt with."]],
 		"examples": ["Skyra"]
 	},
-	"commandLoveDescription": "Lovemeter, online!",
-	"commandLoveExtended": {
+	"loveDescription": "Lovemeter, online!",
+	"loveExtended": {
 		"extendedHelp": "Hey! Wanna check the lovemeter? I know it's a ridiculous machine, but many humans love it! Don't be shy and try it!",
 		"explainedUsage": [["user", "The user to rate."]],
 		"examples": ["Skyra"]
 	},
-	"commandMarkovDescription": "Generate a Markov Chain from the text channel.",
-	"commandMarkovExtended": {
+	"markovDescription": "Generate a Markov Chain from the text channel.",
+	"markovExtended": {
 		"extendedHelp": "A Markov chain is a stocha... what? Okay, something something a probability theory made by a Russian mathematician, check Wikipedia for more information. **In short**: I will generate a random message given the content of the messages in the channel."
 	},
-	"commandNorrisDescription": "Enjoy your day reading Chuck Norris's jokes.",
-	"commandNorrisExtended": {
+	"norrisDescription": "Enjoy your day reading Chuck Norris's jokes.",
+	"norrisExtended": {
 		"extendedHelp": "Did you know that Chuck norris does **not** call the wrong number, but you **answer** the wrong phone? Woah, mindblow. He also threw a carton of milk and created the Milky Way. This command queries chucknorris.io and retrieves a fact (do not assume they're false, not in front of him) so you can read it"
 	},
-	"commandRateDescription": "Let bots have opinions and rate somebody.",
-	"commandRateExtended": {
+	"rateDescription": "Let bots have opinions and rate somebody.",
+	"rateExtended": {
 		"extendedHelp": "Just because I am a bot doesn't mean I cannot rate you properly. I can grade you with a random number generator to ease the process. Okay okay, it's not fair, but I mean... I can also give you a 💯.",
 		"explainedUsage": [["user", "The user to rate."]],
 		"examples": ["Skyra", "me"]
 	},
-	"commandXkcdDescription": "Read comics from XKCD.",
-	"commandXkcdExtended": {
+	"xkcdDescription": "Read comics from XKCD.",
+	"xkcdExtended": {
 		"extendedHelp": "**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
 		"explainedUsage": [["query", "Either the number of the comic, or a title to search for."]],
 		"examples": ["1091", "Curiosity"]
 	},
-	"commandPunDescription": "Shows you a random pun.",
-	"commandPunExtended": {
+	"punDescription": "Shows you a random pun.",
+	"punExtended": {
 		"extendedHelp": [
 			"A steak pun is a rare medium well done.",
 			"Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
 		],
 		"multiline": true
 	},
-	"commandWakandaDescription": "Helpful descriptions? We don't do that here",
-	"commandWakandaExtended": {
+	"wakandaDescription": "Helpful descriptions? We don't do that here",
+	"wakandaExtended": {
 		"extendedHelp": "Creates an image macro using the [We Don't Do That Here Meme](https://knowyourmeme.com/memes/we-dont-do-that-here) using the given user."
 	},
-	"command8ballOutput": "🎱 Question by {{author}}: *{{question}}*\n{{response}}",
-	"command8ballQuestions": {
+	"8ballOutput": "🎱 Question by {{author}}: *{{question}}*\n{{response}}",
+	"8ballQuestions": {
 		"When": "when",
 		"What": "what",
 		"HowMuch": "how much",
@@ -79,9 +79,9 @@
 		"Why": "why",
 		"Who": "who"
 	},
-	"command8ballWhen": ["Soon™", "Maybe tomorrow.", "Maybe next year...", "Right now.", "In a few months."],
-	"command8ballWhat": ["A plane.", "What? Ask again.", "A gift.", "Nothing.", "A ring.", "I do not know, maybe something."],
-	"command8ballHowMuch": [
+	"8ballWhen": ["Soon™", "Maybe tomorrow.", "Maybe next year...", "Right now.", "In a few months."],
+	"8ballWhat": ["A plane.", "What? Ask again.", "A gift.", "Nothing.", "A ring.", "I do not know, maybe something."],
+	"8ballHowMuch": [
 		"A lot.",
 		"A bit.",
 		"A few.",
@@ -94,7 +94,7 @@
 		"Infinity.",
 		"1010 liters."
 	],
-	"command8ballHowMany": [
+	"8ballHowMany": [
 		"A lot.",
 		"A bit.",
 		"A few.",
@@ -107,7 +107,7 @@
 		"Infinity",
 		"1010."
 	],
-	"command8ballWhy": [
+	"8ballWhy": [
 		"Maybe genetics.",
 		"Because somebody decided it.",
 		"For the glory of satan, of course!",
@@ -119,7 +119,7 @@
 		"To get to the other side.",
 		"It says so in the Bible."
 	],
-	"command8ballWho": [
+	"8ballWho": [
 		"A human.",
 		"A robot.",
 		"An airplane.",
@@ -129,7 +129,7 @@
 		"I have no clue, is it material?",
 		"That is not logical."
 	],
-	"command8ballElse": [
+	"8ballElse": [
 		"Most likely.",
 		"Nope.",
 		"YES!",
@@ -151,27 +151,26 @@
 		"Yes – definitely.",
 		"You may rely on it."
 	],
-	"commandCatfactTitle": "Cat Fact",
-	"commandChoiceOutput": "🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* {{user}}, I choose:{{word | codeBlock}}",
-	"commandChoiceMissing": "Please write at least two options separated by comma.",
-	"commandChoiceDuplicates": "Why would I accept duplicated words? \"{{words}}\".",
-	"commandDiceOutput": "You rolled the dice! You got: **{{result}}**",
-	"commandDiceRollsError": "Amount of rolls must be a number between 1 and 1024.",
-	"commandDiceSidesError": "Amount of sides must be a number between 3 and 1024.",
-	"commandEscaperopeOutput": "**{{user}}** used **Escape Rope**",
-	"commandLoveLess45": "Try again next time...",
-	"commandLoveLess75": "Good enough!",
-	"commandLoveLess100": "Good match!",
-	"commandLove100": "Perfect match!",
-	"commandLoveItself": "You are a special creature and you should love yourself more than anyone <3",
-	"commandLoveResult": "Result",
-	"commandMarkovTimer": "Processed in {{timer}}.",
-	"commandMarkovNoMessages": "The channel or user has no messages.",
-	"commandNorrisOutput": "Chuck Norris",
-	"commandRateOutput": "**{{author}}**, I would give **{{userToRate}}** a **{{rate}}**/100 {{emoji}}",
-	"commandRateMyself": [". I love myself a lot 😊", "myself"],
-	"commandRateOwners": [". I love my developers a lot 🥰", "my developers"],
-	"commandPunError": "Something went wrong. Try again later.",
-	"commandXkcdComics": "There are only {{amount}} comics.",
-	"commandXkcdNotfound": "I have searched far and wide, but I got no luck finding this comic, try again later or try another!"
+	"choiceOutput": "🕺 *Eeny, meeny, miny, moe, catch a tiger by the toe...* {{user}}, I choose:{{word | codeBlock}}",
+	"choiceMissing": "Please write at least two options separated by comma.",
+	"choiceDuplicates": "Why would I accept duplicated words? \"{{words}}\".",
+	"diceOutput": "You rolled the dice! You got: **{{result}}**",
+	"diceRollsError": "Amount of rolls must be a number between 1 and 1024.",
+	"diceSidesError": "Amount of sides must be a number between 3 and 1024.",
+	"escaperopeOutput": "**{{user}}** used **Escape Rope**",
+	"loveLess45": "Try again next time...",
+	"loveLess75": "Good enough!",
+	"loveLess100": "Good match!",
+	"love100": "Perfect match!",
+	"loveItself": "You are a special creature and you should love yourself more than anyone <3",
+	"loveResult": "Result",
+	"markovTimer": "Processed in {{timer}}.",
+	"markovNoMessages": "The channel or user has no messages.",
+	"norrisOutput": "Chuck Norris",
+	"rateOutput": "**{{author}}**, I would give **{{userToRate}}** a **{{rate}}**/100 {{emoji}}",
+	"rateMyself": [". I love myself a lot 😊", "myself"],
+	"rateOwners": [". I love my developers a lot 🥰", "my developers"],
+	"punError": "Something went wrong. Try again later.",
+	"xkcdComics": "There are only {{amount}} comics.",
+	"xkcdNotfound": "I have searched far and wide, but I got no luck finding this comic, try again later or try another!"
 }

@@ -1,38 +1,38 @@
 {
-	"commandAbilityDescription": "Gets data for any given Pokémon ability using my Pokémon dataset.",
-	"commandAbilityExtended": {
+	"abilityDescription": "Gets data for any given Pokémon ability using my Pokémon dataset.",
+	"abilityExtended": {
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
 		"explainedUsage": [["ability", "The ability for which you want to find data"]],
 		"examples": ["multiscale", "pressure"]
 	},
-	"commandAbilityEmbedTitles": {
+	"abilityEmbedTitles": {
 		"authorTitle": "Ability",
 		"fieldEffectTitle": "Effect outside of battle"
 	},
-	"commandAbilityQueryFail": "I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?",
-	"commandFlavorsDescription": "Gets the dex entries across various games for a Pokémon.",
-	"commandFlavorsExtended": {
+	"abilityQueryFail": "I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?",
+	"flavorsDescription": "Gets the dex entries across various games for a Pokémon.",
+	"flavorsExtended": {
 		"extendedHelp": ["Uses a fuzzy search to also match against near-matches.", "You can provide a flag of `--shiny` to get the shiny sprite."],
 		"explainedUsage": [["pokemon", "The Pokémon for which you want to get flavour texts"]],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
 		"multiline": true
 	},
-	"commandFlavorsQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
-	"commandItemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
-	"commandItemExtended": {
+	"flavorsQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"itemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
+	"itemExtended": {
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
 		"explainedUsage": [["item", "The item for which you want to find data"]],
 		"examples": ["life orb", "choice specs"]
 	},
-	"commandItemEmbedData": {
+	"itemEmbedData": {
 		"ITEM": "Item",
 		"generationIntroduced": "Generation introduced",
 		"availableInGeneration8Title": "Available in generation 8",
 		"availableInGeneration8Data": "{{availableInGen8}}"
 	},
-	"commandItemQueryFail": "I am sorry, but that query failed. Are you sure `{{item}}` is actually a item in Pokémon?",
-	"commandLearnDescription": "Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.",
-	"commandLearnExtended": {
+	"itemQueryFail": "I am sorry, but that query failed. Are you sure `{{item}}` is actually a item in Pokémon?",
+	"learnDescription": "Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.",
+	"learnExtended": {
 		"extendedHelp": [
 			"Uses a fuzzy search to also match against near-matches.",
 			"Moves split on every ",
@@ -47,7 +47,7 @@
 		"examples": ["7 dragonite dragon dance", "pikachu thunder bolt", "pikachu thunder bolt --shiny", "pikachu thunder bolt, thunder"],
 		"multiline": true
 	},
-	"commandLearnMethodTypes": {
+	"learnMethodTypes": {
 		"levelUpMoves": "by level up at level {{level}}",
 		"eventMoves": "through an event",
 		"tutorMoves": "from a move tutor",
@@ -56,13 +56,13 @@
 		"tmMoves": "by using a technical machine or technical record",
 		"dreamworldMoves": "through a Dream World capture"
 	},
-	"commandLearnInvalidGeneration": "I am sorry, but {{generation}} is not a supported Pokémon Generation",
-	"commandLearnMethod": "In generation {{generation}} {{pokemon}} __**can**__ learn **{{move}}** {{method}}",
-	"commandLearnQueryFailed": "I am sorry, but that query failed. Are you sure you `{{pokemon, toTitleCase}}` is actually a Pokémon and {{moves}} are actually moves?",
-	"commandLearnCannotLearn": "Looks like {{pokemon, toTitleCase}} cannot learn {{moves}}",
-	"commandLearnTitle": "Learnset data for {{pokemon, toTitleCase}} in generation {{generation}}",
-	"commandMoveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
-	"commandMoveExtended": {
+	"learnInvalidGeneration": "I am sorry, but {{generation}} is not a supported Pokémon Generation",
+	"learnMethod": "In generation {{generation}} {{pokemon}} __**can**__ learn **{{move}}** {{method}}",
+	"learnQueryFailed": "I am sorry, but that query failed. Are you sure you `{{pokemon, toTitleCase}}` is actually a Pokémon and {{moves}} are actually moves?",
+	"learnCannotLearn": "Looks like {{pokemon, toTitleCase}} cannot learn {{moves}}",
+	"learnTitle": "Learnset data for {{pokemon, toTitleCase}} in generation {{generation}}",
+	"moveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
+	"moveExtended": {
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
 		"explainedUsage": [["move", "The move for which you want to find data"]],
 		"examples": ["dragon dance", "GMax Wildfire", "Genesis Supernova"],
@@ -73,7 +73,7 @@
 		],
 		"multiline": true
 	},
-	"commandMoveEmbedData": {
+	"moveEmbedData": {
 		"move": "Move",
 		"types": "Type",
 		"basePower": "Base Power",
@@ -92,9 +92,9 @@
 		"zMovePower": "Base power as Z-Move (Z-Crystal)",
 		"fieldMoveEffectTitle": "Effect outside of battle"
 	},
-	"commandMoveQueryFail": "I am sorry, but that query failed. Are you sure `{{move}}` is actually a move in Pokémon?",
-	"commandPokedexDescription": "Gets data for any given Pokémon using my Pokémon dataset.",
-	"commandPokedexExtended": {
+	"moveQueryFail": "I am sorry, but that query failed. Are you sure `{{move}}` is actually a move in Pokémon?",
+	"pokedexDescription": "Gets data for any given Pokémon using my Pokémon dataset.",
+	"pokedexExtended": {
 		"extendedHelp": ["Uses a fuzzy search to also match against near-matches.", "You can provide a flag of `--shiny` to get the shiny sprite."],
 		"explainedUsage": [["pokemon", "The Pokémon for which you want to find data"]],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
@@ -104,7 +104,7 @@
 		],
 		"multiline": true
 	},
-	"commandPokedexEmbedData": {
+	"pokedexEmbedData": {
 		"types": "Type(s)",
 		"abilities": "Abilities",
 		"genderRatio": "Gender Ratio",
@@ -122,14 +122,14 @@
 		"otherFormesList": "{{otherFormes, andList}}",
 		"cosmeticFormesList": "{{cosmeticFormes, andList}}"
 	},
-	"commandPokedexQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
-	"commandTypeDescription": "Gives the type matchups for one or two Pokémon types",
-	"commandTypeExtended": {
+	"pokedexQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
+	"typeDescription": "Gives the type matchups for one or two Pokémon types",
+	"typeExtended": {
 		"extendedHelp": "Types have to be exact matches to pokemon types (upper/lowercase can be ignored)",
 		"explainedUsage": [["type", "The type(s) to look up"]],
 		"examples": ["dragon", "fire flying"]
 	},
-	"commandTypeEmbedData": {
+	"typeEmbedData": {
 		"offensive": "Offensive",
 		"defensive": "Defensive",
 		"superEffectiveAgainst": "Supereffective against",
@@ -142,7 +142,7 @@
 		"notAffectedBy": "Not affected by",
 		"typeEffectivenessFor": "Type effectiveness for {{types, andList}}"
 	},
-	"commandTypeTooManyTypes": "I am sorry, but you can get the matchup for at most 2 types",
-	"commandTypeNotAType": "{{type}} is not a valid Pokémon type",
-	"commandTypeQueryFail": "I am sorry, but that query failed. Are you sure {{types}} are actually types in Pokémon?"
+	"typeTooManyTypes": "I am sorry, but you can get the matchup for at most 2 types",
+	"typeNotAType": "{{type}} is not a valid Pokémon type",
+	"typeQueryFail": "I am sorry, but that query failed. Are you sure {{types}} are actually types in Pokémon?"
 }

@@ -1,6 +1,6 @@
 {
-	"commandGiveawayDescription": "Start a new giveaway.",
-	"commandGiveawayExtended": {
+	"giveawayDescription": "Start a new giveaway.",
+	"giveawayExtended": {
 		"extendedHelp": [
 			"This command is designed to manage giveaways. You can start them with this command by giving it the time and a title.",
 			"",
@@ -17,8 +17,8 @@
 		"examples": ["6h A hug from Skyra.", "60m 5w A mysterious Steam game", "1d Free Discord Nitro! --winners=2w"],
 		"multiline": true
 	},
-	"commandGiveawayRerollDescription": "Re-roll the winners from a giveaway.",
-	"commandGiveawayRerollExtended": {
+	"giveawayRerollDescription": "Re-roll the winners from a giveaway.",
+	"giveawayRerollExtended": {
 		"extendedHelp": "This command is designed to re-roll finished giveaways. Please check `Skyra, help gstart` for more information about creating one.",
 		"explainedUsage": [
 			["winners", "The amount of winners to pick."],
@@ -26,8 +26,8 @@
 		],
 		"examples": ["", "633939404745998346", "5", "5 633939404745998346"]
 	},
-	"commandGiveawayScheduleDescription": "Schedule a giveaway to start at a certain time.",
-	"commandGiveawayScheduleExtended": {
+	"giveawayScheduleDescription": "Schedule a giveaway to start at a certain time.",
+	"giveawayScheduleExtended": {
 		"extendedHelp": [
 			"This command prepares a giveaway to start at a certain time if you do not wish to start it immediately.",
 			"You can pass a flag of `--winners=X`, wherein X is a number, to allow multiple people to win this giveaway.",
@@ -42,20 +42,5 @@
 		"examples": ["30m 6h A hug from Skyra."],
 		"multiline": true
 	},
-	"commandGiveawayRerollInvalid": "The message ID does not exist or there is no finished giveaway.",
-	"giveawayTime": "A giveaway must last at least 10 seconds.",
-	"giveawayTimeTooLong": "Hey! That's an incredibly long time to keep track of!",
-	"giveawayEndsAt": "Ends at:",
-	"giveawayDuration": "This giveaway ends in **{{time, duration}}**! React to this message with 🎉 to join.",
-	"giveawayTitle": "🎉 **GIVEAWAY** 🎉",
-	"giveawayLastchance": "**LAST CHANCE**! Remaining time: **{{time, duration}}**. React to this message with 🎉 to join.",
-	"giveawayLastchanceTitle": "🎉 **LAST CHANCE GIVEAWAY** 🎉",
-	"giveawayEnded": "Winner: {{winners}}",
-	"giveawayEndedPlural": "Winners: {{winners}}",
-	"giveawayEndedNoWinner": "No winner...",
-	"giveawayEndedAt": "Ended at:",
-	"giveawayEndedTitle": "🎉 **GIVEAWAY ENDED** 🎉",
-	"giveawayEndedMessage": "Congratulations {{winners | joinAnd}}! You won the giveaway **{{title}}**",
-	"giveawayEndedMessageNoWinner": "The giveaway **{{title}}** ended without enough participants.",
-	"giveawayScheduled": "The giveaway will start in {{scheduledTime, duration}}."
+	"giveawayRerollInvalid": "The message ID does not exist or there is no finished giveaway."
 }

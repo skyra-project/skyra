@@ -1,20 +1,20 @@
 {
-	"commandSuggestDescription": "Posts a suggestion for the server.",
-	"commandSuggestExtended": {
+	"suggestDescription": "Posts a suggestion for the server.",
+	"suggestExtended": {
 		"extendedHelp": "Posts a suggestion to the server's suggestion channel, if configured.",
 		"explainedUsage": [["suggestion", "Your suggestion"]],
 		"examples": ["Let's make a music channel!"],
 		"reminder": "You need to have a suggestions channel setup for this command to work. If you are an administrator, you will be given the chance to do so upon invoking the command."
 	},
-	"commandSuggestNoSetup": "I'm sorry {{username}}, but a suggestions channel hasn't been set up.",
-	"commandSuggestNoSetupAsk": "I'm sorry {{username}}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?",
-	"commandSuggestNoSetupAbort": "Alright then. Aborted creating a new suggestion.",
-	"commandSuggestNopermissions": "I'm sorry {{username}}, but the administrators didn't give me permission to send messages in {{channel}}!",
-	"commandSuggestChannelPrompt": "Please mention the channel you want to set as the suggestions channel.",
-	"commandSuggestTitle": "Suggestion #{{id}}",
-	"commandSuggestSuccess": "Thank you for your suggestion! It has been successfully posted to {{channel}}!",
-	"commandResolveSuggestionDescription": "Set the suggestion's status.",
-	"commandResolveSuggestionExtended": {
+	"suggestNoSetup": "I'm sorry {{username}}, but a suggestions channel hasn't been set up.",
+	"suggestNoSetupAsk": "I'm sorry {{username}}, but a suggestions channel hasn't been set up. Would you like to set up a channel now?",
+	"suggestNoSetupAbort": "Alright then. Aborted creating a new suggestion.",
+	"suggestNopermissions": "I'm sorry {{username}}, but the administrators didn't give me permission to send messages in {{channel}}!",
+	"suggestChannelPrompt": "Please mention the channel you want to set as the suggestions channel.",
+	"suggestTitle": "Suggestion #{{id}}",
+	"suggestSuccess": "Thank you for your suggestion! It has been successfully posted to {{channel}}!",
+	"resolveSuggestionDescription": "Set the suggestion's status.",
+	"resolveSuggestionExtended": {
 		"extendedHelp": "This command allows you to update a suggestion's status, marking it either as accepted, considered or denied.",
 		"examples": [
 			"1 accept Thank you for your suggestion!",
@@ -30,25 +30,25 @@
 		],
 		"multiline": true
 	},
-	"commandResolveSuggestionInvalidId": "{{REDCROSS}} That's not a valid suggestion ID!",
-	"commandResolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
-	"commandResolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",
-	"commandResolveSuggestionDefaultComment": "No comment was provided.",
-	"commandResolveSuggestionAuthorAdmin": "An administrator",
-	"commandResolveSuggestionAuthorModerator": "A moderator",
-	"commandResolveSuggestionActions": {
+	"resolveSuggestionInvalidId": "{{REDCROSS}} That's not a valid suggestion ID!",
+	"resolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",
+	"resolveSuggestionIdNotFound": "{{REDCROSS}} Couldn't find a suggestion with that ID",
+	"resolveSuggestionDefaultComment": "No comment was provided.",
+	"resolveSuggestionAuthorAdmin": "An administrator",
+	"resolveSuggestionAuthorModerator": "A moderator",
+	"resolveSuggestionActions": {
 		"accept": "{{author}} accepted this suggestion:",
 		"consider": "{{author}} considered this suggestion:",
 		"deny": "{{author}} denied this suggestion:"
 	},
-	"commandResolveSuggestionActionsDms": {
+	"resolveSuggestionActionsDms": {
 		"accept": "{{author}} accepted this suggestion in {{guild}}:",
 		"consider": "{{author}} considered this suggestion in {{guild}}:",
 		"deny": "{{author}} denied this suggestion in {{guild}}:"
 	},
-	"commandResolveSuggestionDmFail": "{{REDCROSS}} I wasn't able to send the author a DM. Are their DMs closed?",
-	"commandResolveSuggestionSuccess": "{{GREENTICK}} Successfully {{actionText}} suggestion `{{id}}`!",
-	"commandResolveSuggestionSuccessAcceptedText": "accepted",
-	"commandResolveSuggestionSuccessDeniedText": "denied",
-	"commandResolveSuggestionSuccessConsideredText": "considered"
+	"resolveSuggestionDmFail": "{{REDCROSS}} I wasn't able to send the author a DM. Are their DMs closed?",
+	"resolveSuggestionSuccess": "{{GREENTICK}} Successfully {{actionText}} suggestion `{{id}}`!",
+	"resolveSuggestionSuccessAcceptedText": "accepted",
+	"resolveSuggestionSuccessDeniedText": "denied",
+	"resolveSuggestionSuccessConsideredText": "considered"
 }

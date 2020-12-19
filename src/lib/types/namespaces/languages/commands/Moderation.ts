@@ -19,8 +19,8 @@ export interface ModerationAction {
 	removeRole: string;
 }
 
-export const HistoryDescription = T<string>('commandHistoryDescription');
-export const HistoryExtended = T<LanguageHelpDisplayOptions>('commandHistoryExtended');
+export const HistoryDescription = T<string>('commands/moderation:historyDescription');
+export const HistoryExtended = T<LanguageHelpDisplayOptions>('commands/moderation:historyExtended');
 export const HistoryFooterNew = FT<
 	{
 		warnings: number;
@@ -33,89 +33,89 @@ export const HistoryFooterNew = FT<
 		bansText: string;
 	},
 	string
->('commandHistoryFooterNew');
-export const HistoryFooterWarning = FT<{ count: number }, string>('commandHistoryFooterWarning');
-export const HistoryFooterWarningPlural = FT<{ count: number }, string>('commandHistoryFooterWarningPlural');
-export const HistoryFooterMutes = FT<{ count: number }, string>('commandHistoryFooterMutes');
-export const HistoryFooterMutesPlural = FT<{ count: number }, string>('commandHistoryFooterMutesPlural');
-export const HistoryFooterKicks = FT<{ count: number }, string>('commandHistoryFooterKicks');
-export const HistoryFooterKicksPlural = FT<{ count: number }, string>('commandHistoryFooterKicksPlural');
-export const HistoryFooterBans = FT<{ count: number }, string>('commandHistoryFooterBans');
-export const HistoryFooterBansPlural = FT<{ count: number }, string>('commandHistoryFooterBansPlural');
-export const ModerationsDescription = T<string>('commandModerationsDescription');
-export const ModerationsExtended = T<LanguageHelpDisplayOptions>('commandModerationsExtended');
-export const ModerationsEmpty = T<string>('commandModerationsEmpty');
-export const ModerationsAmount = FT<{ count: number }, string>('commandModerationsAmount');
-export const ModerationsAmountPlural = FT<{ count: number }, string>('commandModerationsAmountPlural');
-export const MutesDescription = T<string>('commandMutesDescription');
-export const MutesExtended = T<LanguageHelpDisplayOptions>('commandMutesExtended');
-export const WarningsDescription = T<string>('commandWarningsDescription');
-export const WarningsExtended = T<LanguageHelpDisplayOptions>('commandWarningsExtended');
-export const MuteDescription = T<string>('commandMuteDescription');
-export const MuteExtended = T<LanguageHelpDisplayOptions>('commandMuteExtended');
-export const PruneDescription = T<string>('commandPruneDescription');
-export const PruneExtended = T<LanguageHelpDisplayOptions>('commandPruneExtended');
-export const CaseDescription = T<string>('commandCaseDescription');
-export const CaseExtended = T<string>('commandCaseExtended');
-export const PermissionsDescription = T<string>('commandPermissionsDescription');
-export const PermissionsExtended = T<string>('commandPermissionsExtended');
-export const FlowDescription = T<string>('commandFlowDescription');
-export const FlowExtended = T<string>('commandFlowExtended');
-export const ReasonDescription = T<string>('commandReasonDescription');
-export const ReasonExtended = T<LanguageHelpDisplayOptions>('commandReasonExtended');
-export const RestrictAttachmentDescription = T<string>('commandRestrictAttachmentDescription');
-export const RestrictAttachmentExtended = T<LanguageHelpDisplayOptions>('commandRestrictAttachmentExtended');
-export const RestrictEmbedDescription = T<string>('commandRestrictEmbedDescription');
-export const RestrictEmbedExtended = T<LanguageHelpDisplayOptions>('commandRestrictEmbedExtended');
-export const RestrictEmojiDescription = T<string>('commandRestrictEmojiDescription');
-export const RestrictEmojiExtended = T<LanguageHelpDisplayOptions>('commandRestrictEmojiExtended');
-export const RestrictReactionDescription = T<string>('commandRestrictReactionDescription');
-export const RestrictReactionExtended = T<LanguageHelpDisplayOptions>('commandRestrictReactionExtended');
-export const RestrictVoiceDescription = T<string>('commandRestrictVoiceDescription');
-export const RestrictVoiceExtended = T<LanguageHelpDisplayOptions>('commandRestrictVoiceExtended');
-export const SoftBanDescription = T<string>('commandSoftBanDescription');
-export const SoftBanExtended = T<LanguageHelpDisplayOptions>('commandSoftBanExtended');
-export const ToggleModerationDmDescription = T<string>('commandToggleModerationDmDescription');
-export const ToggleModerationDmExtended = T<LanguageHelpDisplayOptions>('commandToggleModerationDmExtended');
-export const UnbanDescription = T<string>('commandUnbanDescription');
-export const UnbanExtended = T<LanguageHelpDisplayOptions>('commandUnbanExtended');
-export const UnmuteDescription = T<string>('commandUnmuteDescription');
-export const UnmuteExtended = T<LanguageHelpDisplayOptions>('commandUnmuteExtended');
-export const UnrestrictAttachmentDescription = T<string>('commandUnrestrictAttachmentDescription');
-export const UnrestrictAttachmentExtended = T<LanguageHelpDisplayOptions>('commandUnrestrictAttachmentExtended');
-export const UnrestrictEmbedDescription = T<string>('commandUnrestrictEmbedDescription');
-export const UnrestrictEmbedExtended = T<LanguageHelpDisplayOptions>('commandUnrestrictEmbedExtended');
-export const UnrestrictEmojiDescription = T<string>('commandUnrestrictEmojiDescription');
-export const UnrestrictEmojiExtended = T<LanguageHelpDisplayOptions>('commandUnrestrictEmojiExtended');
-export const UnrestrictReactionDescription = T<string>('commandUnrestrictReactionDescription');
-export const UnrestrictReactionExtended = T<LanguageHelpDisplayOptions>('commandUnrestrictReactionExtended');
-export const UnrestrictVoiceDescription = T<string>('commandUnrestrictVoiceDescription');
-export const UnrestrictVoiceExtended = T<LanguageHelpDisplayOptions>('commandUnrestrictVoiceExtended');
-export const UnwarnDescription = T<string>('commandUnwarnDescription');
-export const UnwarnExtended = T<LanguageHelpDisplayOptions>('commandUnwarnExtended');
-export const VmuteDescription = T<string>('commandVmuteDescription');
-export const VmuteExtended = T<LanguageHelpDisplayOptions>('commandVmuteExtended');
-export const VoiceKickDescription = T<string>('commandVoiceKickDescription');
-export const VoiceKickExtended = T<LanguageHelpDisplayOptions>('commandVoiceKickExtended');
-export const VunmuteDescription = T<string>('commandVunmuteDescription');
-export const VunmuteExtended = T<LanguageHelpDisplayOptions>('commandVunmuteExtended');
-export const WarnDescription = T<string>('commandWarnDescription');
-export const WarnExtended = T<LanguageHelpDisplayOptions>('commandWarnExtended');
-export const Flow = FT<{ amount: number }, string>('commandFlow');
-export const TimeTimed = T<string>('commandTimeTimed');
-export const TimeUndefinedTime = T<string>('commandTimeUndefinedTime');
-export const TimeUnsupportedType = T<string>('commandTimeUnsupportedType');
-export const TimeNotScheduled = T<string>('commandTimeNotScheduled');
-export const TimeAborted = FT<{ title: string }, string>('commandTimeAborted');
-export const TimeScheduled = FT<{ title: string; user: User; time: number }, string>('commandTimeScheduled');
-export const SlowmodeSet = FT<{ cooldown: number }, string>('commandSlowmodeSet');
-export const SlowmodeReset = T<string>('commandSlowmodeReset');
-export const SlowmodeTooLong = T<string>('commandSlowmodeTooLong');
-export const TimeDescription = T<string>('commandTimeDescription');
-export const TimeExtended = T<LanguageHelpDisplayOptions>('commandTimeExtended');
-export const BanNotBannable = T<string>('commandBanNotBannable');
-export const DehoistStarting = FT<{ count: number }, string>('commandDehoistStarting');
-export const DehoistProgress = FT<{ count: number; percentage: number }, string>('commandDehoistProgress');
+>('commands/moderation:historyFooterNew');
+export const HistoryFooterWarning = FT<{ count: number }, string>('commands/moderation:historyFooterWarning');
+export const HistoryFooterWarningPlural = FT<{ count: number }, string>('commands/moderation:historyFooterWarningPlural');
+export const HistoryFooterMutes = FT<{ count: number }, string>('commands/moderation:historyFooterMutes');
+export const HistoryFooterMutesPlural = FT<{ count: number }, string>('commands/moderation:historyFooterMutesPlural');
+export const HistoryFooterKicks = FT<{ count: number }, string>('commands/moderation:historyFooterKicks');
+export const HistoryFooterKicksPlural = FT<{ count: number }, string>('commands/moderation:historyFooterKicksPlural');
+export const HistoryFooterBans = FT<{ count: number }, string>('commands/moderation:historyFooterBans');
+export const HistoryFooterBansPlural = FT<{ count: number }, string>('commands/moderation:historyFooterBansPlural');
+export const ModerationsDescription = T<string>('commands/moderation:moderationsDescription');
+export const ModerationsExtended = T<LanguageHelpDisplayOptions>('commands/moderation:moderationsExtended');
+export const ModerationsEmpty = T<string>('commands/moderation:moderationsEmpty');
+export const ModerationsAmount = FT<{ count: number }, string>('commands/moderation:moderationsAmount');
+export const ModerationsAmountPlural = FT<{ count: number }, string>('commands/moderation:moderationsAmountPlural');
+export const MutesDescription = T<string>('commands/moderation:mutesDescription');
+export const MutesExtended = T<LanguageHelpDisplayOptions>('commands/moderation:mutesExtended');
+export const WarningsDescription = T<string>('commands/moderation:warningsDescription');
+export const WarningsExtended = T<LanguageHelpDisplayOptions>('commands/moderation:warningsExtended');
+export const MuteDescription = T<string>('commands/moderation:muteDescription');
+export const MuteExtended = T<LanguageHelpDisplayOptions>('commands/moderation:muteExtended');
+export const PruneDescription = T<string>('commands/moderation:pruneDescription');
+export const PruneExtended = T<LanguageHelpDisplayOptions>('commands/moderation:pruneExtended');
+export const CaseDescription = T<string>('commands/moderation:caseDescription');
+export const CaseExtended = T<string>('commands/moderation:caseExtended');
+export const PermissionsDescription = T<string>('commands/moderation:permissionsDescription');
+export const PermissionsExtended = T<string>('commands/moderation:permissionsExtended');
+export const FlowDescription = T<string>('commands/moderation:flowDescription');
+export const FlowExtended = T<string>('commands/moderation:flowExtended');
+export const ReasonDescription = T<string>('commands/moderation:reasonDescription');
+export const ReasonExtended = T<LanguageHelpDisplayOptions>('commands/moderation:reasonExtended');
+export const RestrictAttachmentDescription = T<string>('commands/moderation:restrictAttachmentDescription');
+export const RestrictAttachmentExtended = T<LanguageHelpDisplayOptions>('commands/moderation:restrictAttachmentExtended');
+export const RestrictEmbedDescription = T<string>('commands/moderation:restrictEmbedDescription');
+export const RestrictEmbedExtended = T<LanguageHelpDisplayOptions>('commands/moderation:restrictEmbedExtended');
+export const RestrictEmojiDescription = T<string>('commands/moderation:restrictEmojiDescription');
+export const RestrictEmojiExtended = T<LanguageHelpDisplayOptions>('commands/moderation:restrictEmojiExtended');
+export const RestrictReactionDescription = T<string>('commands/moderation:restrictReactionDescription');
+export const RestrictReactionExtended = T<LanguageHelpDisplayOptions>('commands/moderation:restrictReactionExtended');
+export const RestrictVoiceDescription = T<string>('commands/moderation:restrictVoiceDescription');
+export const RestrictVoiceExtended = T<LanguageHelpDisplayOptions>('commands/moderation:restrictVoiceExtended');
+export const SoftBanDescription = T<string>('commands/moderation:softBanDescription');
+export const SoftBanExtended = T<LanguageHelpDisplayOptions>('commands/moderation:softBanExtended');
+export const ToggleModerationDmDescription = T<string>('commands/moderation:toggleModerationDmDescription');
+export const ToggleModerationDmExtended = T<LanguageHelpDisplayOptions>('commands/moderation:toggleModerationDmExtended');
+export const UnbanDescription = T<string>('commands/moderation:unbanDescription');
+export const UnbanExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unbanExtended');
+export const UnmuteDescription = T<string>('commands/moderation:unmuteDescription');
+export const UnmuteExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unmuteExtended');
+export const UnrestrictAttachmentDescription = T<string>('commands/moderation:unrestrictAttachmentDescription');
+export const UnrestrictAttachmentExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unrestrictAttachmentExtended');
+export const UnrestrictEmbedDescription = T<string>('commands/moderation:unrestrictEmbedDescription');
+export const UnrestrictEmbedExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unrestrictEmbedExtended');
+export const UnrestrictEmojiDescription = T<string>('commands/moderation:unrestrictEmojiDescription');
+export const UnrestrictEmojiExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unrestrictEmojiExtended');
+export const UnrestrictReactionDescription = T<string>('commands/moderation:unrestrictReactionDescription');
+export const UnrestrictReactionExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unrestrictReactionExtended');
+export const UnrestrictVoiceDescription = T<string>('commands/moderation:unrestrictVoiceDescription');
+export const UnrestrictVoiceExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unrestrictVoiceExtended');
+export const UnwarnDescription = T<string>('commands/moderation:unwarnDescription');
+export const UnwarnExtended = T<LanguageHelpDisplayOptions>('commands/moderation:unwarnExtended');
+export const VmuteDescription = T<string>('commands/moderation:vmuteDescription');
+export const VmuteExtended = T<LanguageHelpDisplayOptions>('commands/moderation:vmuteExtended');
+export const VoiceKickDescription = T<string>('commands/moderation:voiceKickDescription');
+export const VoiceKickExtended = T<LanguageHelpDisplayOptions>('commands/moderation:voiceKickExtended');
+export const VunmuteDescription = T<string>('commands/moderation:vunmuteDescription');
+export const VunmuteExtended = T<LanguageHelpDisplayOptions>('commands/moderation:vunmuteExtended');
+export const WarnDescription = T<string>('commands/moderation:warnDescription');
+export const WarnExtended = T<LanguageHelpDisplayOptions>('commands/moderation:warnExtended');
+export const Flow = FT<{ amount: number }, string>('commands/moderation:flow');
+export const TimeTimed = T<string>('commands/moderation:timeTimed');
+export const TimeUndefinedTime = T<string>('commands/moderation:timeUndefinedTime');
+export const TimeUnsupportedType = T<string>('commands/moderation:timeUnsupportedType');
+export const TimeNotScheduled = T<string>('commands/moderation:timeNotScheduled');
+export const TimeAborted = FT<{ title: string }, string>('commands/moderation:timeAborted');
+export const TimeScheduled = FT<{ title: string; user: User; time: number }, string>('commands/moderation:timeScheduled');
+export const SlowmodeSet = FT<{ cooldown: number }, string>('commands/moderation:slowmodeSet');
+export const SlowmodeReset = T<string>('commands/moderation:slowmodeReset');
+export const SlowmodeTooLong = T<string>('commands/moderation:slowmodeTooLong');
+export const TimeDescription = T<string>('commands/moderation:timeDescription');
+export const TimeExtended = T<LanguageHelpDisplayOptions>('commands/moderation:timeExtended');
+export const BanNotBannable = T<string>('commands/moderation:banNotBannable');
+export const DehoistStarting = FT<{ count: number }, string>('commands/moderation:dehoistStarting');
+export const DehoistProgress = FT<{ count: number; percentage: number }, string>('commands/moderation:dehoistProgress');
 export const DehoistEmbed = FT<
 	{
 		users: number;
@@ -132,51 +132,53 @@ export const DehoistEmbed = FT<
 		descriptionMultipleMembers: string;
 		fieldErrorTitle: string;
 	}
->('commandDehoistEmbed');
-export const KickNotKickable = T<string>('commandKickNotKickable');
-export const LockdownLock = FT<{ channel: string }, string>('commandLockdownLock');
-export const LockdownLocking = FT<{ channel: string }, string>('commandLockdownLocking');
-export const LockdownLocked = FT<{ channel: string }, string>('commandLockdownLocked');
-export const LockdownUnlocked = FT<{ channel: string }, string>('commandLockdownUnlocked');
-export const LockdownOpen = FT<{ channel: string }, string>('commandLockdownOpen');
-export const MuteLowlevel = T<string>('commandMuteLowlevel');
-export const MuteConfigureCancelled = T<string>('commandMuteConfigureCancelled');
-export const MuteConfigure = T<string>('commandMuteConfigure');
-export const MuteConfigureToomanyRoles = T<string>('commandMuteConfigureToomanyRoles');
-export const MuteMuted = T<string>('commandMuteMuted');
-export const MuteUserNotMuted = T<string>('commandMuteUserNotMuted');
-export const MuteUnconfigured = T<string>('commandMuteUnconfigured');
-export const MutecreateMissingPermission = T<string>('commandMutecreateMissingPermission');
-export const RestrictLowlevel = T<string>('commandRestrictLowlevel');
-export const PruneInvalid = T<string>('commandPruneInvalid');
-export const PruneAlert = FT<{ count: number; total: number }, string>('commandPruneAlert');
-export const PruneAlertPlural = FT<{ count: number; total: number }, string>('commandPruneAlertPlural');
-export const PruneInvalidPosition = T<string>('commandPruneInvalidPosition');
-export const PruneInvalidFilter = T<string>('commandPruneInvalidFilter');
-export const PruneNoDeletes = T<string>('commandPruneNoDeletes');
-export const PruneLogHeader = T<string>('commandPruneLogHeader');
-export const PruneLogMessage = FT<{ channel: string; author: string; count: number }, string>('commandPruneLogMessage');
-export const PruneLogMessagePlural = FT<{ channel: string; author: string; count: number }, string>('commandPruneLogMessagePlural');
-export const ReasonMissingCase = T<string>('commandReasonMissingCase');
-export const ReasonNotExists = T<string>('commandReasonNotExists');
-export const ReasonUpdated = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>('commandReasonUpdated');
-export const ReasonUpdatedPlural = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>('commandReasonUpdatedPlural');
-export const ToggleModerationDmToggledEnabled = T<string>('commandToggleModerationDmToggledEnabled');
-export const ToggleModerationDmToggledDisabled = T<string>('commandToggleModerationDmToggledDisabled');
-export const UnbanMissingPermission = T<string>('commandUnbanMissingPermission');
-export const UnmuteMissingPermission = T<string>('commandUnmuteMissingPermission');
-export const VmuteMissingPermission = T<string>('commandVmuteMissingPermission');
-export const VmuteUserNotMuted = T<string>('commandVmuteUserNotMuted');
-export const WarnDm = FT<{ moderator: string; guild: string; reason: string }, string>('commandWarnDm');
-export const WarnMessage = FT<{ user: User; log: number }, string>('commandWarnMessage');
+>('commands/moderation:dehoistEmbed');
+export const KickNotKickable = T<string>('commands/moderation:kickNotKickable');
+export const LockdownLock = FT<{ channel: string }, string>('commands/moderation:lockdownLock');
+export const LockdownLocking = FT<{ channel: string }, string>('commands/moderation:lockdownLocking');
+export const LockdownLocked = FT<{ channel: string }, string>('commands/moderation:lockdownLocked');
+export const LockdownUnlocked = FT<{ channel: string }, string>('commands/moderation:lockdownUnlocked');
+export const LockdownOpen = FT<{ channel: string }, string>('commands/moderation:lockdownOpen');
+export const MuteLowlevel = T<string>('commands/moderation:muteLowlevel');
+export const MuteConfigureCancelled = T<string>('commands/moderation:muteConfigureCancelled');
+export const MuteConfigure = T<string>('commands/moderation:muteConfigure');
+export const MuteConfigureToomanyRoles = T<string>('commands/moderation:muteConfigureToomanyRoles');
+export const MuteMuted = T<string>('commands/moderation:muteMuted');
+export const MuteUserNotMuted = T<string>('commands/moderation:muteUserNotMuted');
+export const MuteUnconfigured = T<string>('commands/moderation:muteUnconfigured');
+export const MutecreateMissingPermission = T<string>('commands/moderation:mutecreateMissingPermission');
+export const RestrictLowlevel = T<string>('commands/moderation:restrictLowlevel');
+export const PruneInvalid = T<string>('commands/moderation:pruneInvalid');
+export const PruneAlert = FT<{ count: number; total: number }, string>('commands/moderation:pruneAlert');
+export const PruneAlertPlural = FT<{ count: number; total: number }, string>('commands/moderation:pruneAlertPlural');
+export const PruneInvalidPosition = T<string>('commands/moderation:pruneInvalidPosition');
+export const PruneInvalidFilter = T<string>('commands/moderation:pruneInvalidFilter');
+export const PruneNoDeletes = T<string>('commands/moderation:pruneNoDeletes');
+export const PruneLogHeader = T<string>('commands/moderation:pruneLogHeader');
+export const PruneLogMessage = FT<{ channel: string; author: string; count: number }, string>('commands/moderation:pruneLogMessage');
+export const PruneLogMessagePlural = FT<{ channel: string; author: string; count: number }, string>('commands/moderation:pruneLogMessagePlural');
+export const ReasonMissingCase = T<string>('commands/moderation:reasonMissingCase');
+export const ReasonNotExists = T<string>('commands/moderation:reasonNotExists');
+export const ReasonUpdated = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>('commands/moderation:reasonUpdated');
+export const ReasonUpdatedPlural = FT<{ entries: readonly number[]; newReason: string; count: number }, string[]>(
+	'commands/moderation:reasonUpdatedPlural'
+);
+export const ToggleModerationDmToggledEnabled = T<string>('commands/moderation:toggleModerationDmToggledEnabled');
+export const ToggleModerationDmToggledDisabled = T<string>('commands/moderation:toggleModerationDmToggledDisabled');
+export const UnbanMissingPermission = T<string>('commands/moderation:unbanMissingPermission');
+export const UnmuteMissingPermission = T<string>('commands/moderation:unmuteMissingPermission');
+export const VmuteMissingPermission = T<string>('commands/moderation:vmuteMissingPermission');
+export const VmuteUserNotMuted = T<string>('commands/moderation:vmuteUserNotMuted');
+export const WarnDm = FT<{ moderator: string; guild: string; reason: string }, string>('commands/moderation:warnDm');
+export const WarnMessage = FT<{ user: User; log: number }, string>('commands/moderation:warnMessage');
 export const ModerationOutput = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
-	'commandModerationOutput'
+	'commands/moderation:moderationOutput'
 );
 export const ModerationOutputPlural = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
-	'commandModerationOutputPlural'
+	'commands/moderation:moderationOutputPlural'
 );
 export const ModerationOutputWithReason = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
-	'commandModerationOutputWithReason'
+	'commands/moderation:moderationOutputWithReason'
 );
 export const ModerationCaseNotExists = FT<{ count: number }, string>('moderation:caseNotExists');
 export const ModerationLogAppealed = T<string>('moderation:logAppealed');
@@ -192,43 +194,43 @@ export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderati
 export const ModerationLogFooter = FT<{ caseID: number }, string>('moderation:logFooter');
 export const ModerationTimed = FT<{ remaining: number }, string>('errors:modlogTimed');
 export const ModerationOutputWithReasonPlural = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
-	'commandModerationOutputWithReasonPlural'
+	'commands/moderation:moderationOutputWithReasonPlural'
 );
-export const ModerationFailed = FT<{ users: string; count: number }, string>('commandModerationFailed');
-export const ModerationFailedPlural = FT<{ users: string; count: number }, string>('commandModerationFailedPlural');
-export const ModerationDmFooter = T<string>('commandModerationDmFooter');
+export const ModerationFailed = FT<{ users: string; count: number }, string>('commands/moderation:moderationFailed');
+export const ModerationFailedPlural = FT<{ users: string; count: number }, string>('commands/moderation:moderationFailedPlural');
+export const ModerationDmFooter = T<string>('commands/moderation:moderationDmFooter');
 export const ModerationDmDescription = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
-	'commandModerationDmDescription'
+	'commands/moderation:moderationDmDescription'
 );
 export const ModerationDmDescriptionWithReason = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
-	'commandModerationDmDescriptionWithReason'
+	'commands/moderation:moderationDmDescriptionWithReason'
 );
 export const ModerationDmDescriptionWithDuration = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
-	'commandModerationDmDescriptionWithDuration'
+	'commands/moderation:moderationDmDescriptionWithDuration'
 );
 export const ModerationDmDescriptionWithReasonWithDuration = FT<
 	{ guild: string; title: string; reason: string | null; duration: number | null },
 	string[]
->('commandModerationDmDescriptionWithReasonWithDuration');
-export const ModerationDays = T<string>('commandModerationDays');
-export const Permissions = FT<{ username: string; id: string }, string>('commandPermissions');
-export const PermissionsAll = T<string>('commandPermissionsAll');
-export const SlowmodeDescription = T<string>('commandSlowmodeDescription');
-export const SlowmodeExtended = T<LanguageHelpDisplayOptions>('commandSlowmodeExtended');
-export const SetNicknameDescription = T<string>('commandSetNicknameDescription');
-export const SetNicknameExtended = T<LanguageHelpDisplayOptions>('commandSetNicknameExtended');
-export const AddRoleDescription = T<string>('commandAddRoleDescription');
-export const AddRoleExtended = T<LanguageHelpDisplayOptions>('commandAddRoleExtended');
-export const RemoveroleDescription = T<string>('commandRemoveroleDescription');
-export const RemoveroleExtended = T<LanguageHelpDisplayOptions>('commandRemoveroleExtended');
-export const BanDescription = T<string>('commandBanDescription');
-export const BanExtended = T<LanguageHelpDisplayOptions>('commandBanExtended');
-export const DehoistDescription = T<string>('commandDehoistDescription');
-export const DehoistExtended = T<LanguageHelpDisplayOptions>('commandDehoistExtended');
-export const KickDescription = T<string>('commandKickDescription');
-export const KickExtended = T<LanguageHelpDisplayOptions>('commandKickExtended');
-export const LockdownDescription = T<string>('commandLockdownDescription');
-export const LockdownExtended = T<LanguageHelpDisplayOptions>('commandLockdownExtended');
+>('commands/moderation:moderationDmDescriptionWithReasonWithDuration');
+export const ModerationDays = T<string>('commands/moderation:moderationDays');
+export const Permissions = FT<{ username: string; id: string }, string>('commands/moderation:permissions');
+export const PermissionsAll = T<string>('commands/moderation:permissionsAll');
+export const SlowmodeDescription = T<string>('commands/moderation:slowmodeDescription');
+export const SlowmodeExtended = T<LanguageHelpDisplayOptions>('commands/moderation:slowmodeExtended');
+export const SetNicknameDescription = T<string>('commands/moderation:setNicknameDescription');
+export const SetNicknameExtended = T<LanguageHelpDisplayOptions>('commands/moderation:setNicknameExtended');
+export const AddRoleDescription = T<string>('commands/moderation:addRoleDescription');
+export const AddRoleExtended = T<LanguageHelpDisplayOptions>('commands/moderation:addRoleExtended');
+export const RemoveroleDescription = T<string>('commands/moderation:removeroleDescription');
+export const RemoveroleExtended = T<LanguageHelpDisplayOptions>('commands/moderation:removeroleExtended');
+export const BanDescription = T<string>('commands/moderation:banDescription');
+export const BanExtended = T<LanguageHelpDisplayOptions>('commands/moderation:banExtended');
+export const DehoistDescription = T<string>('commands/moderation:dehoistDescription');
+export const DehoistExtended = T<LanguageHelpDisplayOptions>('commands/moderation:dehoistExtended');
+export const KickDescription = T<string>('commands/moderation:kickDescription');
+export const KickExtended = T<LanguageHelpDisplayOptions>('commands/moderation:kickExtended');
+export const LockdownDescription = T<string>('commands/moderation:lockdownDescription');
+export const LockdownExtended = T<LanguageHelpDisplayOptions>('commands/moderation:lockdownExtended');
 export const MuteCannotManageRoles = T<string>('moderation:muteCannotManageRoles');
 export const MuteLowHierarchy = T<string>('moderation:muteLowHierarchy');
 export const MuteNotConfigured = T<string>('moderation:muteNotConfigured');

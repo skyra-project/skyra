@@ -1,5 +1,5 @@
 import { Message, Permissions, Structures, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { StringMap, TFunction, TOptions } from 'i18next';
 import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
 
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
@@ -25,11 +25,19 @@ export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextCha
 		return typeof current === 'undefined' ? null : current.message;
 	}
 
-	public async fetchLanguage() {
-		const languageKey = await this.client.fetchLanguage({ channel: this, guild: this.guild });
-		const language = this.client.languages.get(languageKey);
+	public fetchLanguage(): Promise<string> {
+		// @ts-expect-error This is an incomplete Message, but the data is sufficient.
+		return this.client.i18n.resolveNameFromMessage({ channel: this, guild: this.guild });
+	}
+
+	public async fetchT() {
+		const language = this.client.i18n.languages.get(await this.fetchLanguage());
 		if (language) return language;
 		throw new Error(`The language '${language}' is not available.`);
+	}
+
+	public async fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string> {
+		return this.client.i18n.resolveValue(await this.fetchLanguage(), key, replace, options);
 	}
 
 	public get attachable() {
@@ -56,7 +64,9 @@ export interface SnipedMessage {
 
 declare module 'discord.js' {
 	export interface TextChannel extends TextBasedExtensions {
-		fetchLanguage(): Promise<Language>;
+		fetchLanguage(): Promise<string>;
+		fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
+		fetchT(): Promise<TFunction>;
 		sniped: Message | null;
 		readonly attachable: boolean;
 		readonly embedable: boolean;

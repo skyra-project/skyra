@@ -3,11 +3,10 @@ import { GuildEntity, SettingsCollectionCallback } from '#lib/database';
 import { ModerationManager } from '#lib/structures/managers/ModerationManager';
 import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
-import { CustomFunctionGet, CustomGet } from '#lib/types';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
-import { Guild, Structures } from 'discord.js';
-import type { Language } from 'klasa';
+import { Structures } from 'discord.js';
+import { StringMap, TFunction, TOptions } from 'i18next';
 
 export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);
@@ -19,15 +18,19 @@ export class SkyraGuild extends Structures.get('Guild') {
 		return this.client.audio.queues!.get(this.id);
 	}
 
-	public fetchLanguage(this: Guild): Promise<Language> {
-		return this.readSettings((entity) => this.client.languages.get(entity.language)!);
+	public fetchLanguage(): Promise<string> {
+		// @ts-expect-error This is an incomplete Message, but the data is sufficient.
+		return this.client.i18n.resolveNameFromMessage({ guild: this });
 	}
 
-	public fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-	public fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
-	public async fetchLocale(value: any, args?: any) {
-		const language = await this.fetchLanguage();
-		return language.get(value, args);
+	public async fetchT() {
+		const language = this.client.i18n.languages.get(await this.fetchLanguage());
+		if (language) return language;
+		throw new Error(`The language '${language}' is not available.`);
+	}
+
+	public async fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string> {
+		return this.client.i18n.resolveValue(await this.fetchLanguage(), key, replace, options);
 	}
 
 	public readSettings(...args: readonly [any]): Promise<any> {
@@ -48,7 +51,10 @@ declare module 'discord.js' {
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly stickyRoles: StickyRoleManager;
-		fetchLanguage(): Promise<Language>;
+
+		fetchLanguage(): Promise<string>;
+		fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
+		fetchT(): Promise<TFunction>;
 
 		readSettings<K1 extends keyof T>(paths: readonly [K1]): Promise<[T[K1]]>;
 		readSettings<K1 extends keyof T, K2 extends keyof T>(paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;
@@ -154,9 +160,6 @@ declare module 'discord.js' {
 		): Promise<void>;
 		writeSettings<K extends keyof T>(pairs: readonly [K, T[K]][]): Promise<void>;
 		writeSettings<R>(cb: SettingsCollectionCallback<T, R>): Promise<R>;
-
-		fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-		fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
 
 		_patch(data: GatewayGuildCreateDispatch['d'] & { shardID: number }): void;
 	}

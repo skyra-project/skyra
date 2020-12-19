@@ -21,3 +21,8 @@ export const enum LanguageFormatters {
 	ToTitleCase = 'toTitleCase',
 	Random = 'random'
 }
+
+export const enum SupportedLanguages {
+	EnUs = 'en-US',
+	EsEs = 'es-ES'
+}

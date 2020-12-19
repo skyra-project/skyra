@@ -66,7 +66,9 @@ export default class extends SkyraCommand {
 		}
 
 		page.push('');
-		page.push(language.get(LanguageKeys.FuzzySearch.Page, { page: index + 1, pageCount, results: listSize.toLocaleString() }));
+		page.push(
+			language.get(LanguageKeys.Commands.Social.LeaderboardListifyPage, { page: index + 1, pageCount, results: listSize.toLocaleString() })
+		);
 		page.push(language.get(LanguageKeys.Misc.CommandScoreboardPosition, { position }));
 
 		return page;

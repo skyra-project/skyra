@@ -1,9 +1,9 @@
 import { T } from '#lib/types';
 
-export const Yes = T<string>('globalYes');
-export const No = T<string>('globalNo');
-export const None = T<string>('globalNone');
-export const Is = T<string>('globalIs');
-export const And = T<string>('globalAnd');
-export const Or = T<string>('globalOr');
-export const Unknown = T<string>('globalUnknown');
+export const Yes = T<string>('global:yes');
+export const No = T<string>('global:no');
+export const None = T<string>('global:none');
+export const Is = T<string>('global:is');
+export const And = T<string>('global:and');
+export const Or = T<string>('global:or');
+export const Unknown = T<string>('global:unknown');

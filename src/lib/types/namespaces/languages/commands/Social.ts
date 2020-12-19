@@ -64,6 +64,7 @@ export const DivorcePrompt = T<string>('commandDivorcePrompt');
 export const DivorceSuccess = FT<{ user: string }, string>('commandDivorceSuccess');
 export const LeaderboardDescription = T<string>('commandLeaderboardDescription');
 export const LeaderboardExtended = T<LanguageHelpDisplayOptions>('commandLeaderboardExtended');
+export const LeaderboardListifyPage = FT<{ page: number; pageCount: number; results: string }, string>('commands/social:leaderboardListifyPage');
 export const Level = T<LevelTitles>('commandLevel');
 export const LevelDescription = T<string>('commandLevelDescription');
 export const LevelExtended = T<LanguageHelpDisplayOptions>('commandLevelExtended');

@@ -103,5 +103,7 @@
 	"commandLoad": "{{GREENTICK}} Successfully loaded {{type}}: {{name}}. (Took: {{time}})",
 	"commandLoadFail": "The file does not exist, or an error occurred while loading your file. Please check your console.",
 	"commandLoadError": "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason: {{error, jsCodeBlock}}",
-	"commandLoadDescription": "Load a piece from your bot."
+	"commandLoadDescription": "Load a piece from your bot.",
+	"commandDmNotSent": "I cannot send you a message in DMs, did you block me?",
+	"commandDmSent": "I have sent you the message in DMs."
 }

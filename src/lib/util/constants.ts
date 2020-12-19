@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { LanguageFormatters } from '#lib/types/Constants';
+import { LanguageFormatters, SupportedLanguages } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import { CATEGORIES as TRVIA_CATEGORIES } from '#utils/Games/TriviaManager';
@@ -8,6 +8,8 @@ import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import i18next, { FormatFunction } from 'i18next';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
+import * as enUsFormatters from '#root/languages/en-US/constants';
+import * as esEsFormatters from '#root/languages/es-ES/constants';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
@@ -359,6 +361,25 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 						}
 						case LanguageFormatters.JsCodeBlock: {
 							return codeBlock('js', value);
+						}
+						case LanguageFormatters.GroupDigits: {
+							return (value as number).toLocaleString(language, { useGrouping: true });
+						}
+						case LanguageFormatters.Ordinal: {
+							switch (language as SupportedLanguages) {
+								case SupportedLanguages.EnUs:
+									return enUsFormatters.ordinal(value);
+								case SupportedLanguages.EsEs:
+									return esEsFormatters.ordinal(value);
+							}
+						}
+						case LanguageFormatters.Duration: {
+							switch (language as SupportedLanguages) {
+								case SupportedLanguages.EnUs:
+									return enUsFormatters.duration.format(value, options?.precision);
+								case SupportedLanguages.EsEs:
+									return esEsFormatters.duration.format(value, options?.precision);
+							}
 						}
 						default:
 							return value as string;

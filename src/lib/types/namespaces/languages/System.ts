@@ -1,39 +1,39 @@
 import { FT, T } from '#lib/types';
 
-export const PoweredByWeebSh = T<string>('systemPoweredByWeebsh');
-export const ParseError = T<string>('systemParseError');
-export const HighestRole = T<string>('systemHighestRole');
-export const ChannelNotPostable = T<string>('systemChannelNotPostable');
-export const FetchBansFail = T<string>('systemFetchbansFail');
-export const Loading = T<readonly string[]>('systemLoading');
-export const Error = T<string>('systemError');
-export const DatabaseError = T<string>('systemDatabaseError');
-export const DiscordAbortError = T<string>('systemDiscordAborterror');
-export const QueryFail = T<string>('systemQueryFail');
-export const NoResults = T<string>('systemNoResults');
-export const MessageNotFound = T<string>('systemMessageNotFound');
-export const NotEnoughParameters = T<string>('systemNotenoughParameters');
-export const CannotAccessChannel = T<string>('systemCannotAccessChannel');
-export const ExceededLengthOutput = FT<{ output: string; time?: string; type?: string }, string>('systemExceededLengthOutput');
+export const PoweredByWeebSh = T<string>('system:poweredByWeebSh');
+export const ParseError = T<string>('system:parseError');
+export const HighestRole = T<string>('system:highestRole');
+export const ChannelNotPostable = T<string>('system:channelNotPostable');
+export const FetchBansFail = T<string>('system:fetchBansFail');
+export const Loading = T<readonly string[]>('system:loading');
+export const Error = T<string>('system:error');
+export const DatabaseError = T<string>('system:databaseError');
+export const DiscordAbortError = T<string>('system:discordAbortError');
+export const QueryFail = T<string>('system:queryFail');
+export const NoResults = T<string>('system:noResults');
+export const MessageNotFound = T<string>('system:messageNotFound');
+export const NotEnoughParameters = T<string>('system:notEnoughParameters');
+export const CannotAccessChannel = T<string>('system:cannotAccessChannel');
+export const ExceededLengthOutput = FT<{ output: string; time?: string; type?: string }, string>('system:exceededLengthOutput');
 export const ExceededLengthOutputWithTypeAndTime = FT<{ output: string; time?: string; type?: string }, string>(
-	'systemExceededLengthOutputWithTypeAndTime'
+	'system:exceededLengthOutputWithTypeAndTime'
 );
-export const ExceededLengthOutputConsole = FT<{ time?: string; type?: string }, string>('systemExceededLengthOutputConsole');
+export const ExceededLengthOutputConsole = FT<{ time?: string; type?: string }, string>('system:exceededLengthOutputConsole');
 export const ExceededLengthOutputConsoleWithTypeAndTime = FT<{ time?: string; type?: string }, string>(
-	'systemExceededLengthOutputConsoleWithTypeAndTime'
+	'system:exceededLengthOutputConsoleWithTypeAndTime'
 );
-export const ExceededLengthOutputFile = FT<{ time?: string; type?: string }, string>('systemExceededLengthOutputFile');
-export const ExceededLengthOutputFileWithTypeAndTime = FT<{ time?: string; type?: string }, string>('systemExceededLengthOutputFileWithTypeAndTime');
-export const ExceededLengthOutputHastebin = FT<{ url: string; time?: string; type?: string }, string>('systemExceededLengthOutputHastebin');
+export const ExceededLengthOutputFile = FT<{ time?: string; type?: string }, string>('system:exceededLengthOutputFile');
+export const ExceededLengthOutputFileWithTypeAndTime = FT<{ time?: string; type?: string }, string>('system:exceededLengthOutputFileWithTypeAndTime');
+export const ExceededLengthOutputHastebin = FT<{ url: string; time?: string; type?: string }, string>('system:exceededLengthOutputHastebin');
 export const ExceededLengthOutputHastebinWithTypeAndTime = FT<{ url: string; time?: string; type?: string }, string>(
-	'systemExceededLengthOutputHastebinWithTypeAndTime'
+	'system:exceededLengthOutputHastebinWithTypeAndTime'
 );
-export const ExceededLengthChooseOutput = FT<{ output: string[] }, string>('systemExceededLengthChooseOutput');
-export const ExternalServerError = T<string>('systemExternalServerError');
-export const PokedexExternalResource = T<string>('systemPokedexExternalResource');
+export const ExceededLengthChooseOutput = FT<{ output: string[] }, string>('system:exceededLengthChooseOutput');
+export const ExternalServerError = T<string>('system:externalServerError');
+export const PokedexExternalResource = T<string>('system:pokedexExternalResource');
 export const HelpTitles = T<{
 	explainedUsage: string;
 	possibleFormats: string;
 	examples: string;
 	reminders: string;
-}>('systemHelpTitles');
+}>('system:helpTitles');

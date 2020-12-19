@@ -118,7 +118,7 @@ export default class extends SkyraCommand {
 	}
 
 	@requiresGuildContext((message: KlasaMessage) =>
-		message.sendLocale(LanguageKeys.Resolvers.ChannelNotInGuildSubcommand, [{ command: message.command!.name, subcommand: 'list' }])
+		message.sendLocale(LanguageKeys.Resolvers.ChannelNotInGuildSubCommand, [{ command: message.command!.name, subcommand: 'list' }])
 	)
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {

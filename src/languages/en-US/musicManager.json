@@ -1,0 +1,13 @@
+{
+	"musicManagerFetchLoadFailed": "I'm sorry but I couldn't load this song! Maybe try other song!",
+	"musicManagerFetchNoArguments": "I need you to give me the name of a song!",
+	"musicManagerFetchNoMatches": "I'm sorry but I wasn't able to find the track!",
+	"musicManagerImportQueueError": "{{REDCROSS}} Sorry, but I'm having issues trying to import that playlist. Are you sure it's from my own DJ deck?",
+	"musicManagerImportQueueNotFound": "{{REDCROSS}} I need a queue to import!",
+	"musicManagerPlayNoSongs": "There are no songs left in the queue!",
+	"musicManagerPlayPlaying": "The deck's spinning, can't you hear it?",
+	"musicManagerSetvolumeLoud": "I'll be honest, an airplane's nacelle would be less noisy than this!",
+	"musicManagerSetvolumeSilent": "Woah, you can just leave the voice channel if you want silence!",
+	"musicManagerStuck": "{{LOADING}} Hold on, I got a little problem, I'll be back in: {{milliseconds, duration}}!",
+	"musicManagerTooManySongs": "{{REDCROSS}} Woah there, you are adding more songs than allowed!"
+}

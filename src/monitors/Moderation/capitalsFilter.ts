@@ -63,7 +63,7 @@ export default class extends ModerationMonitor {
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.CapsfilterFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.CapsFilterFooter)}`)
 			.setTimestamp();
 	}
 }

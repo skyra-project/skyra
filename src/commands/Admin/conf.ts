@@ -23,7 +23,7 @@ import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decor
 		'key',
 		async (arg, _possible, message, [action]: string[]) => {
 			if (['show', 'menu'].includes(action) || arg) return arg || '';
-			throw await message.fetchLocale(LanguageKeys.Commands.Admin.ConfNoKey);
+			throw await message.fetchLanguageKey(LanguageKeys.Commands.Admin.ConfNoKey);
 		}
 	],
 	[

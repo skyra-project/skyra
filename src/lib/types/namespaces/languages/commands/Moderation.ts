@@ -182,16 +182,16 @@ export const ModerationCaseNotExists = FT<{ count: number }, string>('moderation
 export const ModerationCaseNotExistsPlural = FT<{ count: number }, string>('ModerationCaseNotExistsPlural');
 export const ModerationLogAppealed = T<string>('moderationLogAppealed');
 export const ModerationLogDescription = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>('moderationLogDescription');
-export const GuildBansEmpty = T<string>('guildBansEmpty');
-export const GuildBansNotFound = T<string>('guildBansNotFound');
-export const GuildMemberNotVoicechannel = T<string>('guildMemberNotVoicechannel');
-export const GuildMuteNotFound = T<string>('guildMuteNotFound');
-export const GuildSettingsChannelsMod = T<string>('guildSettingsChannelsMod');
-export const GuildSettingsRolesRestricted = FT<{ prefix: string; path: string }, string>('guildSettingsRolesRestricted');
-export const GuildWarnNotFound = T<string>('guildWarnNotFound');
+export const GuildBansEmpty = T<string>('errors:guildBansEmpty');
+export const GuildBansNotFound = T<string>('errors:guildBansNotFound');
+export const GuildMemberNotVoicechannel = T<string>('errors:guildMemberNotVoicechannel');
+export const GuildMuteNotFound = T<string>('errors:guildMuteNotFound');
+export const GuildSettingsChannelsMod = T<string>('settings:guildChannelsMod');
+export const GuildSettingsRolesRestricted = FT<{ prefix: string; path: string }, string>('settings:guildRolesRestricted');
+export const GuildWarnNotFound = T<string>('errors:guildWarnNotFound');
 export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderationLogExpiresIn');
 export const ModerationLogFooter = FT<{ caseID: number }, string>('moderationLogFooter');
-export const ModerationTimed = FT<{ remaining: number }, string>('modlogTimed');
+export const ModerationTimed = FT<{ remaining: number }, string>('errors:modlogTimed');
 export const ModerationOutputWithReasonPlural = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
 	'commandModerationOutputWithReasonPlural'
 );
@@ -310,3 +310,8 @@ export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ 
 	'actionSharedRoleSetupAskMultipleChannelsMultiplePermissions'
 );
 export const ActionRequiredMember = T<string>('actionRequiredMember');
+export const RoleHigherSkyra = T<string>('moderation:roleHigherSkyra');
+export const ScoreboardPosition = FT<{ position: number }, string>('moderation:scoreboardPosition');
+export const Success = T<string>('moderation:success');
+export const ToSkyra = T<string>('moderation:toSkyra');
+export const UserSelf = T<string>('moderation:userSelf');

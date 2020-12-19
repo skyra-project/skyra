@@ -1,4 +1,4 @@
-import { DurationFormatter, TimeTypes, Timestamp } from '@sapphire/time-utilities';
+import { DurationFormatter, Timestamp, TimeTypes } from '@sapphire/time-utilities';
 
 export const timestamp = new Timestamp('YYYY/MM/DD [at] HH:mm:ss');
 
@@ -32,3 +32,23 @@ export const duration = new DurationFormatter({
 		DEFAULT: 'seconds'
 	}
 });
+
+export const ordinal = (cardinal: number) => {
+	const cent = cardinal % 100;
+	const dec = cardinal % 10;
+
+	if (cent >= 10 && cent <= 20) {
+		return `${cardinal}th`;
+	}
+
+	switch (dec) {
+		case 1:
+			return `${cardinal}st`;
+		case 2:
+			return `${cardinal}nd`;
+		case 3:
+			return `${cardinal}rd`;
+		default:
+			return `${cardinal}th`;
+	}
+};

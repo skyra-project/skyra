@@ -1,7 +1,7 @@
 import { T } from '#lib/types';
 
-export const InvalidId = T<string>('serializerCustomCommandInvalidId');
-export const InvalidEmbed = T<string>('serializerCustomCommandInvalidEmbed');
-export const InvalidColor = T<string>('serializerCustomCommandInvalidColor');
-export const InvalidContent = T<string>('serializerCustomCommandInvalidContent');
-export const InvalidArgs = T<string>('serializerCustomCommandInvalidArgs');
+export const InvalidId = T<string>('serializers:customCommandInvalidId');
+export const InvalidEmbed = T<string>('serializers:customCommandInvalidEmbed');
+export const InvalidColor = T<string>('serializers:customCommandInvalidColor');
+export const InvalidContent = T<string>('serializers:customCommandInvalidContent');
+export const InvalidArgs = T<string>('serializers:customCommandInvalidArgs');

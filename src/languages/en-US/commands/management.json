@@ -34,7 +34,7 @@
 		"• Roles: **{{size}}**",
 		"• Region: **{{region}}**",
 		"• Created at: **${timestamp.displayUTC(createdAt)}** (UTC - YYYY/MM/DD)",
-		"• Verification Level: **${this.HUMAN_LEVELS[verificationLevel]}**"
+		"• Verification Level: **{{verificationLevel, humanLevels}}**"
 	],
 	"commandRoleInfoTitles": { "PERMISSIONS": "Permissions" },
 	"commandRoleInfoData": [

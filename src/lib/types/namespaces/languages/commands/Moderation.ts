@@ -178,10 +178,9 @@ export const ModerationOutputPlural = FT<{ count: number; range: string | number
 export const ModerationOutputWithReason = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
 	'commandModerationOutputWithReason'
 );
-export const ModerationCaseNotExists = FT<{ count: number }, string>('moderationCaseNotExists');
-export const ModerationCaseNotExistsPlural = FT<{ count: number }, string>('ModerationCaseNotExistsPlural');
-export const ModerationLogAppealed = T<string>('moderationLogAppealed');
-export const ModerationLogDescription = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>('moderationLogDescription');
+export const ModerationCaseNotExists = FT<{ count: number }, string>('moderation:caseNotExists');
+export const ModerationLogAppealed = T<string>('moderation:logAppealed');
+export const ModerationLogDescription = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>('moderation:logDescription');
 export const GuildBansEmpty = T<string>('errors:guildBansEmpty');
 export const GuildBansNotFound = T<string>('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T<string>('errors:guildMemberNotVoicechannel');
@@ -189,8 +188,8 @@ export const GuildMuteNotFound = T<string>('errors:guildMuteNotFound');
 export const GuildSettingsChannelsMod = T<string>('settings:guildChannelsMod');
 export const GuildSettingsRolesRestricted = FT<{ prefix: string; path: string }, string>('settings:guildRolesRestricted');
 export const GuildWarnNotFound = T<string>('errors:guildWarnNotFound');
-export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderationLogExpiresIn');
-export const ModerationLogFooter = FT<{ caseID: number }, string>('moderationLogFooter');
+export const ModerationLogExpiresIn = FT<{ duration: number }, string>('moderation:logExpiresIn');
+export const ModerationLogFooter = FT<{ caseID: number }, string>('moderation:logFooter');
 export const ModerationTimed = FT<{ remaining: number }, string>('errors:modlogTimed');
 export const ModerationOutputWithReasonPlural = FT<{ count: number; range: string | number; users: string; reason: string | null }, string>(
 	'commandModerationOutputWithReasonPlural'
@@ -230,26 +229,26 @@ export const KickDescription = T<string>('commandKickDescription');
 export const KickExtended = T<LanguageHelpDisplayOptions>('commandKickExtended');
 export const LockdownDescription = T<string>('commandLockdownDescription');
 export const LockdownExtended = T<LanguageHelpDisplayOptions>('commandLockdownExtended');
-export const MuteCannotManageRoles = T<string>('muteCannotManageRoles');
-export const MuteLowHierarchy = T<string>('muteLowHierarchy');
-export const MuteNotConfigured = T<string>('muteNotConfigured');
-export const MuteNotExists = T<string>('muteNotExists');
-export const MuteNotInMember = T<string>('muteNotInMember');
-export const AutomaticParameterInvalidMissingAction = FT<{ name: string }, string>('selfModerationCommandInvalidMissingAction');
-export const AutomaticParameterInvalidMissingArguments = FT<{ name: string }, string>('selfModerationCommandInvalidMissingArguments');
-export const AutomaticParameterInvalidSoftaction = FT<{ name: string }, string>('selfModerationCommandInvalidSoftaction');
-export const AutomaticParameterInvalidHardaction = FT<{ name: string }, string>('selfModerationCommandInvalidHardaction');
-export const AutomaticParameterEnabled = T<string>('selfModerationCommandEnabled');
-export const AutomaticParameterDisabled = T<string>('selfModerationCommandDisabled');
-export const AutomaticParameterSoftAction = T<string>('selfModerationCommandSoftAction');
-export const AutomaticParameterSoftActionWithValue = FT<{ value: string }, string>('selfModerationCommandSoftActionWithValue');
-export const AutomaticParameterHardAction = FT<{ value: string }, string>('selfModerationCommandHardAction');
-export const AutomaticParameterHardActionDuration = T<string>('selfModerationCommandHardActionDuration');
-export const AutomaticParameterHardActionDurationWithValue = FT<{ value: number }, string>('selfModerationCommandHardActionDurationWithValue');
-export const AutomaticParameterThresholdMaximum = T<string>('selfModerationCommandThresholdMaximum');
-export const AutomaticParameterThresholdMaximumWithValue = FT<{ value: number }, string>('selfModerationCommandThresholdMaximumWithValue');
-export const AutomaticParameterThresholdDuration = T<string>('selfModerationCommandThresholdDuration');
-export const AutomaticParameterThresholdDurationWithValue = FT<{ value: number }, string>('selfModerationCommandThresholdDurationWithValue');
+export const MuteCannotManageRoles = T<string>('moderation:muteCannotManageRoles');
+export const MuteLowHierarchy = T<string>('moderation:muteLowHierarchy');
+export const MuteNotConfigured = T<string>('moderation:muteNotConfigured');
+export const MuteNotExists = T<string>('moderation:muteNotExists');
+export const MuteNotInMember = T<string>('moderation:muteNotInMember');
+export const AutomaticParameterInvalidMissingAction = FT<{ name: string }, string>('selfModeration:commandInvalidMissingAction');
+export const AutomaticParameterInvalidMissingArguments = FT<{ name: string }, string>('selfModeration:commandInvalidMissingArguments');
+export const AutomaticParameterInvalidSoftaction = FT<{ name: string }, string>('selfModeration:commandInvalidSoftaction');
+export const AutomaticParameterInvalidHardaction = FT<{ name: string }, string>('selfModeration:commandInvalidHardaction');
+export const AutomaticParameterEnabled = T<string>('selfModeration:commandEnabled');
+export const AutomaticParameterDisabled = T<string>('selfModeration:commandDisabled');
+export const AutomaticParameterSoftAction = T<string>('selfModeration:commandSoftAction');
+export const AutomaticParameterSoftActionWithValue = FT<{ value: string }, string>('selfModeration:commandSoftActionWithValue');
+export const AutomaticParameterHardAction = FT<{ value: string }, string>('selfModeration:commandHardAction');
+export const AutomaticParameterHardActionDuration = T<string>('selfModeration:commandHardActionDuration');
+export const AutomaticParameterHardActionDurationWithValue = FT<{ value: number }, string>('selfModeration:commandHardActionDurationWithValue');
+export const AutomaticParameterThresholdMaximum = T<string>('selfModeration:commandThresholdMaximum');
+export const AutomaticParameterThresholdMaximumWithValue = FT<{ value: number }, string>('selfModeration:commandThresholdMaximumWithValue');
+export const AutomaticParameterThresholdDuration = T<string>('selfModeration:commandThresholdDuration');
+export const AutomaticParameterThresholdDurationWithValue = FT<{ value: number }, string>('selfModeration:commandThresholdDurationWithValue');
 export const AutomaticParameterShow = FT<
 	{
 		kEnabled: string;
@@ -262,54 +261,54 @@ export const AutomaticParameterShow = FT<
 		thresholdDurationText: string;
 	},
 	readonly string[]
->('selfModerationCommandShow');
-export const AutomaticParameterShowDurationPermanent = T<string>('selfModerationCommandShowDurationPermanent');
-export const AutomaticParameterShowUnset = T<string>('selfModerationCommandShowUnset');
-export const AutomaticValueSoftActionAlert = T<string>('selfModerationSoftActionAlert');
-export const AutomaticValueSoftActionLog = T<string>('selfModerationSoftActionLog');
-export const AutomaticValueSoftActionDelete = T<string>('selfModerationSoftActionDelete');
-export const AutomaticValueHardActionBan = T<string>('selfModerationHardActionBan');
-export const AutomaticValueHardActionKick = T<string>('selfModerationHardActionKick');
-export const AutomaticValueHardActionMute = T<string>('selfModerationHardActionMute');
-export const AutomaticValueHardActionSoftban = T<string>('selfModerationHardActionSoftban');
-export const AutomaticValueHardActionWarning = T<string>('selfModerationHardActionWarning');
-export const AutomaticValueHardActionNone = T<string>('selfModerationHardActionNone');
-export const AutomaticValueEnabled = T<string>('selfModerationEnabled');
-export const AutomaticValueDisabled = T<string>('selfModerationDisabled');
-export const AutomaticValueMaximumTooShort = FT<{ minimum: number; value: number }, string>('selfModerationMaximumTooShort');
-export const AutomaticValueMaximumTooLong = FT<{ maximum: number; value: number }, string>('selfModerationMaximumTooLong');
-export const AutomaticValueDurationTooShort = FT<{ minimum: number; value: number }, string>('selfModerationDurationTooShort');
-export const AutomaticValueDurationTooLong = FT<{ maximum: number; value: number }, string>('selfModerationDurationTooLong');
-export const moderationActions = T<ModerationAction>('moderationActions');
-export const ActionApplyReason = FT<{ action: string; reason: string }, string>('actionApplyReason');
-export const ActionApplyNoReason = FT<{ action: string }, string>('actionApplyNoReason');
-export const ActionRevokeReason = FT<{ action: string; reason: string }, string>('actionRevokeReason');
-export const ActionRevokeNoReason = FT<{ action: string }, string>('actionRevokeNoReason');
-export const ActionSoftbanReason = FT<{ reason: string }, string>('actionSoftbanReason');
-export const ActionUnSoftbanReason = FT<{ reason: string }, string>('actionUnSoftbanReason');
-export const ActionSoftbanNoReason = T<string>('actionSoftbanNoReason');
-export const ActionUnSoftbanNoReason = T<string>('actionUnSoftbanNoReason');
-export const ActionSetNicknameSet = FT<{ reason: string }, string>('actionSetNicknameSet');
-export const ActionSetNicknameRemoved = FT<{ reason: string }, string>('actionSetNicknameRemoved');
-export const ActionSetNicknameNoReasonSet = T<string>('actionSetNicknameNoReasonSet');
-export const ActionSetNicknameNoReasonRemoved = T<string>('actionSetNicknameNoReasonRemoved');
-export const ActionSetupMuteExists = T<string>('actionSetupMuteExists');
-export const ActionSetupRestrictionExists = T<string>('actionSetupRestrictionExists');
-export const ActionSetupTooManyRoles = T<string>('actionSetupTooManyRoles');
-export const ActionSharedRoleSetupExisting = T<string>('actionSharedRoleSetupExisting');
-export const ActionSharedRoleSetupExistingName = T<string>('actionSharedRoleSetupExistingName');
-export const ActionSharedRoleSetupNew = T<string>('actionSharedRoleSetupNew');
-export const ActionSharedRoleSetupAsk = FT<{ role: string; channels: number; permissions: string }, string>('actionSharedRoleSetupAsk');
+>('selfModeration:commandShow');
+export const AutomaticParameterShowDurationPermanent = T<string>('selfModeration:commandShowDurationPermanent');
+export const AutomaticParameterShowUnset = T<string>('selfModeration:commandShowUnset');
+export const AutomaticValueSoftActionAlert = T<string>('selfModeration:softActionAlert');
+export const AutomaticValueSoftActionLog = T<string>('selfModeration:softActionLog');
+export const AutomaticValueSoftActionDelete = T<string>('selfModeration:softActionDelete');
+export const AutomaticValueHardActionBan = T<string>('selfModeration:hardActionBan');
+export const AutomaticValueHardActionKick = T<string>('selfModeration:hardActionKick');
+export const AutomaticValueHardActionMute = T<string>('selfModeration:hardActionMute');
+export const AutomaticValueHardActionSoftban = T<string>('selfModeration:hardActionSoftban');
+export const AutomaticValueHardActionWarning = T<string>('selfModeration:hardActionWarning');
+export const AutomaticValueHardActionNone = T<string>('selfModeration:hardActionNone');
+export const AutomaticValueEnabled = T<string>('selfModeration:enabled');
+export const AutomaticValueDisabled = T<string>('selfModeration:disabled');
+export const AutomaticValueMaximumTooShort = FT<{ minimum: number; value: number }, string>('selfModeration:maximumTooShort');
+export const AutomaticValueMaximumTooLong = FT<{ maximum: number; value: number }, string>('selfModeration:maximumTooLong');
+export const AutomaticValueDurationTooShort = FT<{ minimum: number; value: number }, string>('selfModeration:durationTooShort');
+export const AutomaticValueDurationTooLong = FT<{ maximum: number; value: number }, string>('selfModeration:durationTooLong');
+export const moderationActions = T<ModerationAction>('moderationActions:actions');
+export const ActionApplyReason = FT<{ action: string; reason: string }, string>('moderationActions:applyReason');
+export const ActionApplyNoReason = FT<{ action: string }, string>('moderationActions:applyNoReason');
+export const ActionRevokeReason = FT<{ action: string; reason: string }, string>('moderationActions:revokeReason');
+export const ActionRevokeNoReason = FT<{ action: string }, string>('moderationActions:revokeNoReason');
+export const ActionSoftbanReason = FT<{ reason: string }, string>('moderationActions:softbanReason');
+export const ActionUnSoftbanReason = FT<{ reason: string }, string>('moderationActions:unSoftbanReason');
+export const ActionSoftbanNoReason = T<string>('moderationActions:softbanNoReason');
+export const ActionUnSoftbanNoReason = T<string>('moderationActions:unSoftbanNoReason');
+export const ActionSetNicknameSet = FT<{ reason: string }, string>('moderationActions:setNicknameSet');
+export const ActionSetNicknameRemoved = FT<{ reason: string }, string>('moderationActions:setNicknameRemoved');
+export const ActionSetNicknameNoReasonSet = T<string>('moderationActions:setNicknameNoReasonSet');
+export const ActionSetNicknameNoReasonRemoved = T<string>('moderationActions:setNicknameNoReasonRemoved');
+export const ActionSetupMuteExists = T<string>('moderationActions:setupMuteExists');
+export const ActionSetupRestrictionExists = T<string>('moderationActions:setupRestrictionExists');
+export const ActionSetupTooManyRoles = T<string>('moderationActions:setupTooManyRoles');
+export const ActionSharedRoleSetupExisting = T<string>('moderationActions:sharedRoleSetupExisting');
+export const ActionSharedRoleSetupExistingName = T<string>('moderationActions:sharedRoleSetupExistingName');
+export const ActionSharedRoleSetupNew = T<string>('moderationActions:sharedRoleSetupNew');
+export const ActionSharedRoleSetupAsk = FT<{ role: string; channels: number; permissions: string }, string>('moderationActions:sharedRoleSetupAsk');
 export const ActionSharedRoleSetupAskMultipleChannels = FT<{ role: string; channels: number; permissions: string }, string>(
-	'actionSharedRoleSetupAskMultipleChannels'
+	'moderationActions:sharedRoleSetupAskMultipleChannels'
 );
 export const ActionSharedRoleSetupAskMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
-	'actionSharedRoleSetupAskMultiplePermissions'
+	'moderationActions:sharedRoleSetupAskMultiplePermissions'
 );
 export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ role: string; channels: number; permissions: string }, string>(
-	'actionSharedRoleSetupAskMultipleChannelsMultiplePermissions'
+	'moderationActions:sharedRoleSetupAskMultipleChannelsMultiplePermissions'
 );
-export const ActionRequiredMember = T<string>('actionRequiredMember');
+export const ActionRequiredMember = T<string>('moderationActions:requiredMember');
 export const RoleHigherSkyra = T<string>('moderation:roleHigherSkyra');
 export const ScoreboardPosition = FT<{ position: number }, string>('moderation:scoreboardPosition');
 export const Success = T<string>('moderation:success');

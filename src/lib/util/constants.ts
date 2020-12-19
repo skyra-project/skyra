@@ -2,14 +2,14 @@
 import { LanguageFormatters, SupportedLanguages } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
+import * as enUsFormatters from '#root/languages/en-US/constants';
+import * as esEsFormatters from '#root/languages/es-ES/constants';
 import { CATEGORIES as TRVIA_CATEGORIES } from '#utils/Games/TriviaManager';
 import { list } from '#utils/Language/list';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import i18next, { FormatFunction } from 'i18next';
 import { KlasaClientOptions } from 'klasa';
 import { join } from 'path';
-import * as enUsFormatters from '#root/languages/en-US/constants';
-import * as esEsFormatters from '#root/languages/es-ES/constants';
 
 export const rootFolder = join(__dirname, '..', '..', '..');
 export const assetsFolder = join(rootFolder, 'assets');
@@ -313,6 +313,7 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 					SHINY: Emojis.Shiny,
 					GREENTICK: Emojis.GreenTick,
 					REDCROSS: Emojis.RedCross,
+					/* Permissions */
 					ADMINISTRATOR: 'ADMINISTRATOR',
 					VIEW_AUDIT_LOG: 'VIEW_AUDIT_LOG',
 					MANAGE_GUILD: 'MANAGE_GUILD',
@@ -355,6 +356,9 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 						}
 						case LanguageFormatters.Permissions: {
 							return i18next.t(`permissions:${value}`, { ...options, lng: language });
+						}
+						case LanguageFormatters.HumanLevels: {
+							return i18next.t(`humanLevels:${value}`, { ...options, lng: language });
 						}
 						case LanguageFormatters.ToTitleCase: {
 							return toTitleCase(value);

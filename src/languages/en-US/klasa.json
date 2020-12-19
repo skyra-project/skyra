@@ -1,8 +1,8 @@
 {
-	"commandmessageMissing": "Missing one or more required arguments after end of input.",
-	"commandmessageMissingOptionals": "Missing a required option: ({{possibles}})",
-	"commandmessageMissingRequired": "{{name}} is a required argument.",
-	"commandmessageNomatch": "Your option didn't match any of the possibilities: ({{possibles}})",
+	"commandMessageMissing": "Missing one or more required arguments after end of input.",
+	"commandMessageMissingOptionals": "Missing a required option: ({{possibles}})",
+	"commandMessageMissingRequired": "{{name}} is a required argument.",
+	"commandMessageNoMatch": "Your option didn't match any of the possibilities: ({{possibles}})",
 	"messagePromptTimeout": "The prompt has timed out.",
 	"monitorCommandHandlerAborted": "Aborted",
 	"monitorCommandHandlerRepeatingReprompt": "{{tag}} | **{{name}}** is a repeating argument | You have **{{time}}** seconds to respond to this prompt with additional valid arguments. Type **{{cancelOptions}}** to cancel this prompt.",

@@ -329,7 +329,7 @@ export class ModerationEntity extends BaseEntity {
 			language.get(
 				this.reason
 					? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
-					: LanguageKeys.Commands.Moderation.ModerationLogDescriptionNoReason,
+					: LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithoutReason,
 				{
 					data: descriptionData
 				}

@@ -188,8 +188,8 @@ export const ModerationLogDescriptionTypeAndUser = FT<{ data: Moderation.Moderat
 export const ModerationLogDescriptionWithReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
 	'moderation:logDescriptionWithReason'
 );
-export const ModerationLogDescriptionNoReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
-	'moderation:logDescriptionNoReason'
+export const ModerationLogDescriptionWithoutReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
+	'moderation:logDescriptionWithoutReason'
 );
 export const GuildBansEmpty = T<string>('errors:guildBansEmpty');
 export const GuildBansNotFound = T<string>('errors:guildBansNotFound');

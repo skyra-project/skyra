@@ -28,12 +28,12 @@
 	"guildInfoRoles": "**Roles**\n\n{{roles}}",
 	"guildInfoNoroles": "Roles? Where? There is no other than the `@everyone` role!",
 	"guildInfoChannels": ["• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.", "• AFK: {{afkChannelText}}"],
-	"guildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **${afkTime / 60}**min",
+	"guildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **{{afkTime}}**min",
 	"guildInfoMembers": ["• **{{count}}** members", "• Owner: **{{owner.tag}}**", "  (ID: **{{owner.id}}**)"],
 	"guildInfoOther": [
 		"• Roles: **{{size}}**",
 		"• Region: **{{region}}**",
-		"• Created at: **${timestamp.displayUTC(createdAt)}** (UTC - YYYY/MM/DD)",
+		"• Created at: **{{createdAt, timestamp}}** (UTC - YYYY/MM/DD)",
 		"• Verification Level: **{{verificationLevel, humanLevels}}**"
 	],
 	"roleInfoTitles": { "PERMISSIONS": "Permissions" },

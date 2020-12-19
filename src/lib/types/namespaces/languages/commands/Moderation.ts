@@ -182,7 +182,15 @@ export const ModerationOutputWithReason = FT<{ count: number; range: string | nu
 );
 export const ModerationCaseNotExists = FT<{ count: number }, string>('moderation:caseNotExists');
 export const ModerationLogAppealed = T<string>('moderation:logAppealed');
-export const ModerationLogDescription = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>('moderation:logDescription');
+export const ModerationLogDescriptionTypeAndUser = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
+	'moderation:logDescriptionTypeAndUser'
+);
+export const ModerationLogDescriptionWithReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
+	'moderation:logDescriptionWithReason'
+);
+export const ModerationLogDescriptionNoReason = FT<{ data: Moderation.ModerationManagerDescriptionData }, string>(
+	'moderation:logDescriptionNoReason'
+);
 export const GuildBansEmpty = T<string>('errors:guildBansEmpty');
 export const GuildBansNotFound = T<string>('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T<string>('errors:guildMemberNotVoicechannel');

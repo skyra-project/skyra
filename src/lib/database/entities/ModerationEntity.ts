@@ -311,18 +311,30 @@ export class ModerationEntity extends BaseEntity {
 		const formattedDuration = this.duration
 			? language.get(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration })
 			: '';
-		const description = language.get(LanguageKeys.Commands.Moderation.ModerationLogDescription, {
-			data: {
-				type: this.title,
-				userName: user.username,
-				userDiscriminator: user.discriminator,
-				userID: this.userID,
-				reason: this.reason!,
-				prefix,
-				caseID: this.caseID,
-				formattedDuration
-			}
-		});
+		const descriptionData: Moderation.ModerationManagerDescriptionData = {
+			type: this.title,
+			userName: user.username,
+			userDiscriminator: user.discriminator,
+			userID: this.userID,
+			reason: this.reason,
+			prefix,
+			caseID: this.caseID,
+			formattedDuration
+		};
+
+		const description = [
+			...language.get(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, {
+				data: descriptionData
+			}),
+			language.get(
+				this.reason
+					? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
+					: LanguageKeys.Commands.Moderation.ModerationLogDescriptionNoReason,
+				{
+					data: descriptionData
+				}
+			)
+		];
 
 		const embed = new MessageEmbed()
 			.setColor(this.color)

@@ -286,10 +286,10 @@
 		"extendedHelp": "Gets information on any server member. Also known as `userinfo` in many other bots."
 	},
 	"whoisMemberFields": {
-		"createdAt": "${timestamp.displayUTC(member.user.createdAt)}\n${this.duration(Date.now() - member.user.createdTimestamp, 2)} ago",
+		"createdAt": "{{member.user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} ago",
 		"footer": "ID: {{member.id}}",
 		"joinedUnknown": "Unknown",
-		"joinedWithTimestamp": "${timestamp.displayUTC(member.joinedTimestamp!)}\n${this.duration(Date.now() - member.joinedTimestamp!, 2)} ago"
+		"joinedWithTimestamp": "{{member.joinedTimestamp, timestamp}}\n{{joinedTimestampOffset, duration}} ago"
 	},
 	"whoisMemberPermissions": "Key Permissions",
 	"whoisMemberPermissionsAll": "All Permissions",
@@ -300,7 +300,7 @@
 		"joined": "Joined"
 	},
 	"whoisUserFields": {
-		"createdAt": "${timestamp.displayUTC(user.createdAt)}\n${this.duration(Date.now() - user.createdTimestamp, 2)} ago",
+		"createdAt": "{{user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} ago",
 		"footer": "ID: {{user.id}}"
 	},
 	"whoisUserTitles": {

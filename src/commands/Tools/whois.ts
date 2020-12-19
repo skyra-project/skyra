@@ -47,7 +47,10 @@ export default class extends SkyraCommand {
 
 	private user(language: Language, user: User) {
 		const titles = language.get(LanguageKeys.Commands.Tools.WhoisUserTitles);
-		const fields = language.get(LanguageKeys.Commands.Tools.WhoisUserFields, { user });
+		const fields = language.get(LanguageKeys.Commands.Tools.WhoisUserFields, {
+			user,
+			createdTimestampOffset: Date.now() - user.createdTimestamp
+		});
 
 		return new SkyraEmbed()
 			.setColor(Colors.White)
@@ -60,7 +63,11 @@ export default class extends SkyraCommand {
 
 	private member(language: Language, member: GuildMember) {
 		const titles = language.get(LanguageKeys.Commands.Tools.WhoisMemberTitles);
-		const fields = language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, { member });
+		const fields = language.get(LanguageKeys.Commands.Tools.WhoisMemberFields, {
+			member,
+			createdTimestampOffset: Date.now() - member.user.createdTimestamp,
+			joinedTimestampOffset: Date.now() - member.joinedTimestamp!
+		});
 
 		const embed = new SkyraEmbed()
 			.setColor(member.displayColor || Colors.White)

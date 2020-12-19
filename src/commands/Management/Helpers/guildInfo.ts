@@ -55,7 +55,7 @@ export default class extends SkyraCommand {
 						afkChannelText: message.guild.afkChannelID
 							? language.get(LanguageKeys.Commands.Management.GuildInfoChannelsAfkChannelText, {
 									afkChannel: message.guild.afkChannelID,
-									afkTime: message.guild.afkTimeout
+									afkTime: message.guild.afkTimeout / 60
 							  })
 							: `**${language.get(LanguageKeys.Globals.None)}**`
 					}),

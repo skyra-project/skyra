@@ -188,6 +188,8 @@ export const WhoisMemberTitles = T<{
 export const WhoisMemberFields = FT<
 	{
 		member: GuildMember;
+		createdTimestampOffset: number;
+		joinedTimestampOffset: number;
 	},
 	{
 		joinedUnknown: string;
@@ -206,6 +208,7 @@ export const WhoisUserTitles = T<{
 export const WhoisUserFields = FT<
 	{
 		user: User;
+		createdTimestampOffset: number;
 	},
 	{
 		createdAt: string;

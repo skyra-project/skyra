@@ -380,9 +380,17 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 						case LanguageFormatters.Duration: {
 							switch (language as SupportedLanguages) {
 								case SupportedLanguages.EnUs:
-									return enUsFormatters.duration.format(value, options?.precision);
+									return enUsFormatters.duration.format(value, options?.precision ?? 2);
 								case SupportedLanguages.EsEs:
-									return esEsFormatters.duration.format(value, options?.precision);
+									return esEsFormatters.duration.format(value, options?.precision ?? 2);
+							}
+						}
+						case LanguageFormatters.Timestamp: {
+							switch (language as SupportedLanguages) {
+								case SupportedLanguages.EnUs:
+									return enUsFormatters.timestamp.displayUTC(value);
+								case SupportedLanguages.EsEs:
+									return esEsFormatters.timestamp.displayUTC(value);
 							}
 						}
 						default:

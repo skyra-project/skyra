@@ -1,5 +1,5 @@
 {
-	"followage": "{{user}} has been following {{channel}} for ${this.duration(time, 2)}.",
+	"followage": "{{user}} has been following {{channel}} for {{time, duration}}.",
 	"followageMissingEntries": "Either the user or the channel do not exist. Make sure you wrote their names correctly.",
 	"followageNotFollowing": "That user is not following the specified channel.",
 	"twitchNoEntries": "There are no entries. Are you sure you wrote the user name correctly?",

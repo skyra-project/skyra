@@ -10,16 +10,17 @@ export const enum CdnUrls {
 
 export const enum LanguageFormatters {
 	AndList = 'andList',
+	Duration = 'duration',
+	GroupDigits = 'groupDigits',
+	HumanLevels = 'humanLevels',
+	InlineCodeblock = 'inlineCodeBlock',
+	JsCodeBlock = 'jsCodeBlock',
+	Ordinal = 'ordinal',
 	OrList = 'orList',
 	Permissions = 'permissions',
-	HumanLevels = 'humanLevels',
-	Duration = 'duration',
-	Ordinal = 'ordinal',
-	GroupDigits = 'groupDigits',
-	JsCodeBlock = 'jsCodeBlock',
-	InlineCodeblock = 'inlineCodeBlock',
-	ToTitleCase = 'toTitleCase',
-	Random = 'random'
+	Random = 'random',
+	Timestamp = 'timestamp',
+	ToTitleCase = 'toTitleCase'
 }
 
 export const enum SupportedLanguages {

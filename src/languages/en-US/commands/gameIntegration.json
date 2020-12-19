@@ -197,7 +197,7 @@
 		"healing": "**Healing:** {{healing, groupDigits}}",
 		"objectiveKills": "**Objective kills:** {{objectiveKills, groupDigits}}",
 		"soloKills": "**Solo kills:** {{soloKills, groupDigits}}",
-		"playTime": "**Playtime:** ${this.duration(playTime, 2)}",
+		"playTime": "**Playtime:** {{playTime, duration}}",
 		"gamesWon": "**Games won:** {{gamesWon, groupDigits}}",
 		"goldenMedals": "**Gold medals earned:** {{goldenMedals, groupDigits}}",
 		"silverMedals": "**Silver medals earned:** {{silverMedals, groupDigits}}",

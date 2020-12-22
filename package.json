@@ -104,7 +104,7 @@
 		"@sapphire/eslint-config": "^1.1.0",
 		"@sapphire/prettier-config": "^1.0.2",
 		"@sapphire/ts-config": "^1.0.3",
-		"@skyra/saelem": "^3.0.0",
+		"@skyra/saelem": "^3.0.1",
 		"@types/backoff": "^2.5.1",
 		"@types/diff": "^4.0.2",
 		"@types/he": "^1.1.1",

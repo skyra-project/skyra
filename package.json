@@ -13,8 +13,7 @@
 		"#lib/structures/color": "./dist/lib/structures/color/index.js",
 		"#lib/types": "./dist/lib/types/index.js",
 		"#root/*": "./dist/*.js",
-		"#utils/*": "./dist/lib/util/*.js",
-		"#utils/debounce": "./dist/lib/util/debounce/index.js"
+		"#utils/*": "./dist/lib/util/*.js"
 	},
 	"scripts": {
 		"pm2:delete": "pm2 delete Skyra",
@@ -60,14 +59,14 @@
 		"@influxdata/influxdb-client": "^1.9.0",
 		"@influxdata/influxdb-client-apis": "^1.9.0",
 		"@klasa/async-queue": "^0.0.1",
-		"@sapphire/snowflake": "^1.2.0",
-		"@sapphire/time-utilities": "^1.2.0",
-		"@sapphire/type": "^1.1.0",
-		"@sapphire/utilities": "^1.1.1",
+		"@sapphire/snowflake": "^1.2.1",
+		"@sapphire/time-utilities": "^1.2.1",
+		"@sapphire/type": "^1.1.1",
+		"@sapphire/utilities": "^1.2.0",
 		"@sentry/integrations": "^5.29.2",
 		"@sentry/node": "^5.29.2",
 		"@skyra/ai": "^1.0.2",
-		"@skyra/audio": "^1.0.1",
+		"@skyra/audio": "^1.0.2",
 		"@skyra/char": "^1.0.1",
 		"@skyra/decorators": "^3.0.0",
 		"async-rwlock": "^1.1.1",
@@ -102,7 +101,8 @@
 		"@commitlint/config-conventional": "^11.0.0",
 		"@favware/graphql-pokemon": "^5.0.0",
 		"@playlyfe/gql": "^2.6.2",
-		"@sapphire/eslint-config": "^1.0.4",
+		"@sapphire/eslint-config": "^1.1.0",
+		"@sapphire/prettier-config": "^1.0.2",
 		"@sapphire/ts-config": "^1.0.3",
 		"@skyra/saelem": "^3.0.0",
 		"@types/backoff": "^2.5.1",
@@ -115,10 +115,10 @@
 		"@types/node-fetch": "^2.5.7",
 		"@types/pg": "^7.14.7",
 		"@types/ws": "^7.4.0",
-		"@typescript-eslint/eslint-plugin": "^4.10.0",
-		"@typescript-eslint/parser": "^4.10.0",
+		"@typescript-eslint/eslint-plugin": "^4.11.0",
+		"@typescript-eslint/parser": "^4.11.0",
 		"cz-conventional-changelog": "^3.3.0",
-		"discord-api-types": "^0.11.1",
+		"discord-api-types": "^0.11.2",
 		"eslint": "^7.16.0",
 		"eslint-config-prettier": "^7.1.0",
 		"eslint-plugin-prettier": "^3.3.0",
@@ -169,5 +169,6 @@
 		"commitizen": {
 			"path": "./node_modules/cz-conventional-changelog"
 		}
-	}
+	},
+	"prettier": "@sapphire/prettier-config"
 }

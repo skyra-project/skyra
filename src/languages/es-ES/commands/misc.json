@@ -1,0 +1,301 @@
+{
+	"randRedditRequiredReddit": "You must give the name of a reddit.",
+	"randRedditInvalidArgument": "{{REDCROSS}} The name you gave was not a valid name for a subreddit.",
+	"randRedditBanned": "This reddit is banned and should not be used.",
+	"randRedditFail": "I failed to retrieve data, are you sure you wrote the reddit correctly?",
+	"randRedditAllNsfw": "Nothing could be posted as all retrieved posts are NSFW.",
+	"randRedditAllNsfl": "Nothing could be posted as all retrieved posts are NSFL. You do not want to see that.",
+	"randRedditMessage": "**{{title}}** submitted by {{author}}\n{{url}}",
+	"randRedditErrorPrivate": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as private.",
+	"randRedditErrorQuarantined": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as quarantined.",
+	"randRedditErrorNotFound": "{{REDCROSS}} No data could be downloaded as the subreddit does not exist.",
+	"randRedditErrorBanned": "{{REDCROSS}} No data could be downloaded as the subreddit is marked as banned.",
+	"redditUserComplexityLevels": [
+		"very low",
+		"low",
+		"medium",
+		"high",
+		"very high",
+		"very high"
+	],
+	"redditUserInvalidUser": "`{{user}}` is not a valid Reddit username",
+	"redditUserQueryFailed": "Couldn't find any data for that reddit user",
+	"redditUserTitles": {
+		"linkKarma": "Link Karma",
+		"commentKarma": "Comment Karma",
+		"totalComments": "Total Comments",
+		"totalSubmissions": "Total Submissions",
+		"commentControversiality": "Comment Controversiality",
+		"textComplexity": "Text Complexity",
+		"top5Subreddits": "Top 5 Subreddits",
+		"bySubmissions": "by submission",
+		"byComments": "by comments",
+		"bestComment": "Best Comment",
+		"worstComment": "Worst Comment"
+	},
+	"redditUserData": {
+		"overviewFor": "Overview for /u/{{user}}",
+		"permalink": "Permalink",
+		"dataAvailableFor": "Data is available for the past 1000 comments and submissions (Reddit API limitation)",
+		"joinedReddit": "Joined Reddit {{timestamp}}"
+	},
+	"snipeEmpty": "There are no sniped messages in this channel.",
+	"snipeTitle": "Sniped Message",
+	"upvoteMessage": "Upvote me on **https://top.gg/bot/266624760782258186**, **https://botsfordiscord.com/bot/266624760782258186**, or **https://botlist.space/bot/266624760782258186** for free shinies! Remember, you can vote every 24 hours.",
+	"vaporwaveOutput": "Here is your converted message:\n{{str}}",
+	"cuddleDescription": "Cuddle somebody!",
+	"cuddleExtended": {
+		"extendedHelp": "Do you know something that I envy from humans? The warm feeling when somebody cuddles you. It's so cute ❤! I can imagine and draw a image of you cuddling somebody in the bed, I hope you like it!",
+		"explainedUsage": [
+			[
+				"user",
+				"The user to cuddle with."
+			]
+		],
+		"examples": [
+			"Skyra"
+		]
+	},
+	"deletthisDescription": "*Sees offensive post* DELETTHIS!",
+	"deletthisExtended": {
+		"extendedHelp": "I see it! I see the hammer directly from your hand going directly to the user you want! Unless... unless it's me! If you try to tell me this, I'm going to take the MJOLNIR! Same if you do with my creator!",
+		"explainedUsage": [
+			[
+				"user",
+				"The user that should start deleting his post."
+			]
+		],
+		"examples": [
+			"John Doe"
+		]
+	},
+	"fDescription": "Press F to pay respects.",
+	"fExtended": {
+		"extendedHelp": "This command generates an image... to pay respects reacting with 🇫. This command also makes Skyra react the image if she has permissions to react messages.",
+		"explainedUsage": [
+			[
+				"user",
+				"The user to pray respects to."
+			]
+		],
+		"examples": [
+			"John Doe",
+			"Jake"
+		]
+	},
+	"goodnightDescription": "Give somebody a nice Good Night!",
+	"goodnightExtended": {
+		"extendedHelp": "Let me draw you giving a goodnight kiss to the person who is going to sleep! Who doesn't like goodnight kisses?",
+		"explainedUsage": [
+			[
+				"user",
+				"The user to give the goodnight kiss."
+			]
+		],
+		"examples": [
+			"Jake",
+			"DefinitivelyNotSleeping"
+		]
+	},
+	"goofytimeDescription": "It's Goofy time!",
+	"goofytimeExtended": {
+		"extendedHelp": "IT'S GOOFY TIME! *Screams loudly in the background* NO, DAD! NO! This is a command based on the Goofy Time meme, what else would it be?",
+		"explainedUsage": [
+			[
+				"user",
+				"The user who will say IT'S GOOFY TIME!"
+			]
+		],
+		"examples": [
+			"TotallyNotADaddy"
+		]
+	},
+	"hugDescription": "Hugs!",
+	"hugExtended": {
+		"extendedHelp": "What would be two people in the middle of the snow with coats and hugging each other? Wait! I get it! Mention somebody you want to hug with, and I'll try my best to draw it in a canvas!",
+		"explainedUsage": [
+			[
+				"user",
+				"The user to hug with."
+			]
+		],
+		"examples": [
+			"Bear"
+		]
+	},
+	"ineedhealingDescription": "*Genji's voice* I NEED HEALING!",
+	"ineedhealingExtended": {
+		"extendedHelp": [
+			"Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES!",
+			"You know it, it's a cool cyborg ninja that looks like a XBOX and is always yelling \"I NEED HEALING\" loudly during the entire match.",
+			"Well, don't expect so much, this command actually shows a medic with some tool in your chest."
+		],
+		"explainedUsage": [
+			[
+				"healer",
+				"The healer you need to heal you."
+			]
+		],
+		"examples": [
+			"Mercy"
+		],
+		"multiline": true
+	},
+	"randRedditDescription": "Retrieve a random Reddit post.",
+	"randRedditExtended": {
+		"extendedHelp": "This is actually something like a Russian Roulette, you can get a good meme, but you can also get a terrible meme.",
+		"explainedUsage": [
+			[
+				"reddit",
+				"The reddit to look at."
+			]
+		],
+		"examples": [
+			"discordapp"
+		]
+	},
+	"redditUserDescription": "Retrieve statistics for a Reddit user.",
+	"redditUserExtended": {
+		"extendedHelp": "Gets statistics of any given Reddit user",
+		"explainedUsage": [
+			[
+				"user",
+				"The reddit user to look at."
+			]
+		],
+		"examples": [
+			"GloriousGe0rge"
+		]
+	},
+	"shipDescription": "Ships 2 members",
+	"shipExtended": {
+		"extendedHelp": [
+			"This commands generates a ship name between two users and creates more love in the world.",
+			"Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member."
+		],
+		"explainedUsage": [
+			[
+				"firstUser",
+				"The first user to ship"
+			],
+			[
+				"secondUser",
+				"The second user to ship"
+			]
+		],
+		"examples": [
+			"romeo juliet"
+		],
+		"reminder": "If I cannot find either given user then I will pick someone randomly.",
+		"multiline": true
+	},
+	"shipData": {
+		"title": "**Shipping `{{romeoUsername}}` and `{{julietUsername}}`**",
+		"description": "I call it... {{shipName}}"
+	},
+	"chaseDescription": "Get in here!",
+	"chaseExtended": {
+		"extendedHelp": "Do you love chasing? Start chasing people now for free! Just mention or write their ID and done!",
+		"explainedUsage": [
+			[
+				"pinger",
+				"The user who you want to chase."
+			]
+		],
+		"examples": [
+			"IAmInnocent"
+		]
+	},
+	"shindeiruDescription": "Omae wa mou shindeiru.",
+	"shindeiruExtended": {
+		"extendedHelp": [
+			"\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star.",
+			"This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?)."
+		],
+		"explainedUsage": [
+			[
+				"user",
+				"The person you're telling that phrase to."
+			]
+		],
+		"examples": [
+			"Jack"
+		],
+		"multiline": true
+	},
+	"peepoloveDescription": "Generates a peepoLove image from a users' avatar.",
+	"peepoloveExtended": {
+		"extendedHelp": "Allows you to generate a peepoLove image from a user's avatar.",
+		"explainedUsage": [
+			[
+				"user",
+				"The user that peepo should hug."
+			]
+		],
+		"examples": [
+			"Joe"
+		],
+		"reminder": "Custom image support has been temporarily disabled"
+	},
+	"slapDescription": "Slap another user using the Batman & Robin Meme.",
+	"slapExtended": {
+		"extendedHelp": "The hell are you saying? *Slaps*. This meme is based on a comic from Batman and Robin.",
+		"explainedUsage": [
+			[
+				"user",
+				"The user you wish to slap."
+			]
+		],
+		"examples": [
+			"Jake"
+		],
+		"reminder": "You try to slap me and I'll slap you instead."
+	},
+	"snipeDescription": "Retrieve the last deleted message from a channel",
+	"snipeExtended": {
+		"extendedHelp": "This just sends the last deleted message from this channel, somebody is misbehaving? This will catch them."
+	},
+	"thesearchDescription": "Are we the only one in the universe, this man on earth probably knows.",
+	"thesearchExtended": {
+		"extendedHelp": "One man on Earth probably knows if there is intelligent life, ask and you shall receive an answer.",
+		"explainedUsage": [
+			[
+				"answer",
+				"The sentence that will reveal the truth."
+			]
+		],
+		"examples": [
+			"Your waifu is not real."
+		]
+	},
+	"triggeredDescription": "I am getting TRIGGERED!",
+	"triggeredExtended": {
+		"extendedHelp": "What? My commands are not userfriendly enough?! (╯°□°）╯︵ ┻━┻. This command generates a GIF image your avatar wiggling fast, with a TRIGGERED footer, probably going faster than I thought, I don't know.",
+		"explainedUsage": [
+			[
+				"user",
+				"The user that is triggered."
+			]
+		],
+		"examples": [
+			"kyra"
+		]
+	},
+	"upvoteDescription": "Get a link to upvote Skyra in **Bots For Discord**",
+	"upvoteExtended": {
+		"extendedHelp": "Bots For Discord is a website where you can find amazing bots for your website. If you really love me, you can help me a lot by upvoting me every 24 hours, so more users will be able to find me!"
+	},
+	"vaporwaveDescription": "Vapowave characters!",
+	"vaporwaveExtended": {
+		"extendedHelp": "Well, what can I tell you? This command turns your messages into unicode monospaced characters. That is, what humans call 'Ａ Ｅ Ｓ Ｔ Ｈ Ｅ Ｔ Ｉ Ｃ'. I wonder what it means...",
+		"explainedUsage": [
+			[
+				"phrase",
+				"The phrase to convert"
+			]
+		],
+		"examples": [
+			"A E S T H E T I C"
+		]
+	}
+}

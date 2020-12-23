@@ -1,0 +1,131 @@
+{
+	"dmDescription": "",
+	"dmExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"evalDescription": "",
+	"evalExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"execDescription": "",
+	"execExtended": {
+		"extendedHelp": ""
+	},
+	"setAvatarDescription": "",
+	"setAvatarExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"donateDescription": "",
+	"donateExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"echoDescription": "",
+	"echoExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"feedbackDescription": "",
+	"feedbackExtended": {
+		"extendedHelp": ""
+	},
+	"statsDescription": "",
+	"statsExtended": {
+		"extendedHelp": ""
+	},
+	"evalTimeout": "",
+	"evalError": "",
+	"statsTitles": {
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
+	},
+	"statsFields": {
+		"stats": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"uptime": [
+			"",
+			"",
+			""
+		],
+		"serverUsage": [
+			"",
+			""
+		]
+	},
+	"blocklistDescription": "",
+	"blocklistResetSuccess": "",
+	"blocklistSaveSuccess": "",
+	"disable": "",
+	"disableDescription": "",
+	"disableExtended": {
+		"extendedHelp": ""
+	},
+	"disableWarn": "",
+	"dmNotSent": "",
+	"dmSent": "",
+	"enable": "",
+	"enableDescription": "",
+	"enableExtended": {
+		"extendedHelp": ""
+	},
+	"load": "",
+	"loadDescription": "",
+	"loadExtended": {
+		"extendedHelp": ""
+	},
+	"loadError": "",
+	"loadFail": "",
+	"reboot": "",
+	"rebootDescription": "",
+	"reload": "",
+	"reloadAll": "",
+	"reloadDescription": "",
+	"reloadExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"reloadEverything": "",
+	"reloadFailed": "",
+	"unload": "",
+	"unloadDescription": "",
+	"unloadExtended": {
+		"extendedHelp": ""
+	}
+}

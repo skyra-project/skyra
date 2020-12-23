@@ -1,0 +1,61 @@
+{
+	"suggestDescription": "",
+	"suggestExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"suggestNoSetup": "",
+	"suggestNoSetupAsk": "",
+	"suggestNoSetupAbort": "",
+	"suggestNopermissions": "",
+	"suggestChannelPrompt": "",
+	"suggestTitle": "",
+	"suggestSuccess": "",
+	"resolveSuggestionDescription": "",
+	"resolveSuggestionExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": [
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"resolveSuggestionInvalidId": "",
+	"resolveSuggestionMessageNotFound": "",
+	"resolveSuggestionIdNotFound": "",
+	"resolveSuggestionDefaultComment": "",
+	"resolveSuggestionAuthorAdmin": "",
+	"resolveSuggestionAuthorModerator": "",
+	"resolveSuggestionActions": {
+		"accept": "",
+		"consider": "",
+		"deny": ""
+	},
+	"resolveSuggestionActionsDms": {
+		"accept": "",
+		"consider": "",
+		"deny": ""
+	},
+	"resolveSuggestionDmFail": "",
+	"resolveSuggestionSuccess": "",
+	"resolveSuggestionSuccessAcceptedText": "",
+	"resolveSuggestionSuccessDeniedText": "",
+	"resolveSuggestionSuccessConsideredText": ""
+}

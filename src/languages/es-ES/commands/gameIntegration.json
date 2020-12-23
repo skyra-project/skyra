@@ -1,0 +1,272 @@
+{
+	"brawlstarsDescription": "",
+	"brawlstarsExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"brawlstarsPlayerEmbedTitles": {
+		"trophies": "",
+		"events": "",
+		"exp": "",
+		"gamesModes": "",
+		"other": ""
+	},
+	"brawlstarsPlayerEmbedFields": {
+		"total": "",
+		"personalBest": "",
+		"events": "",
+		"roboRumble": "",
+		"qualifiedForChamps": "",
+		"experienceLevel": "",
+		"victories3v3": "",
+		"victoriesSolo": "",
+		"victoriesDuo": "",
+		"club": "",
+		"brawlersUnlocked": ""
+	},
+	"brawlstarsClubEmbedTitles": {
+		"totalTrophies": "",
+		"averageTrophies": "",
+		"requiredTrophies": "",
+		"members": "",
+		"type": "",
+		"top5Members": "",
+		"president": ""
+	},
+	"brawlstarsClubEmbedFields": {
+		"noPresident": ""
+	},
+	"clashofclansDescription": "",
+	"clashofclansExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"clashofclansPlayerEmbedTitles": {
+		"xpLevel": "",
+		"builderHallLevel": "",
+		"townhallLevel": "",
+		"townhallWeaponLevel": "",
+		"trophies": "",
+		"bestTrophies": "",
+		"warStars": "",
+		"attackWins": "",
+		"defenseWins": "",
+		"amountOfAchievements": "",
+		"versusTrophies": "",
+		"bestVersusTrophies": "",
+		"versusBattleWins": "",
+		"clanRole": "",
+		"clanName": "",
+		"leagueName": "",
+		"noTownhallWeaponLevel": "",
+		"noRole": "",
+		"noClan": "",
+		"noLeague": ""
+	},
+	"clashofclansClanEmbedTitles": {
+		"clanLevel": "",
+		"clanPoints": "",
+		"clanVersusPoints": "",
+		"amountOfMembers": "",
+		"description": "",
+		"locationName": "",
+		"warFrequency": "",
+		"warWinStreak": "",
+		"warWins": "",
+		"warTies": "",
+		"warLosses": "",
+		"warLogPublic": "",
+		"unknown": "",
+		"warFrequencyDescr": {
+			"moreThanOncePerWeek": "",
+			"always": "",
+			"lessThanOncePerWeek": "",
+			"oncePerWeek": "",
+			"unknown": ""
+		}
+	},
+	"brawlStarsInvalidPlayerTag": "",
+	"brawlStarsClansQueryFail": "",
+	"brawlStarsPlayersQueryFail": "",
+	"clashofclansInvalidPlayerTag": "",
+	"clashOfClansClansQueryFail": "",
+	"clashofclansPlayersQueryFail": "",
+	"FFXIVDescription": "",
+	"FFXIVExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"FFXIVCharacterFields": {
+		"serverAndDc": "",
+		"tribe": "",
+		"characterGender": "",
+		"nameday": "",
+		"guardian": "",
+		"cityState": "",
+		"grandCompany": "",
+		"rank": "",
+		"none": "",
+		"male": "",
+		"female": "",
+		"dowDomClasses": "",
+		"tank": "",
+		"healer": "",
+		"meleeDps": "",
+		"physicalRangedDps": "",
+		"magicalRangedDps": "",
+		"dohClasses": "",
+		"dolClasses": ""
+	},
+	"FFXIVItemFields": {
+		"kind": "",
+		"category": "",
+		"levelEquip": "",
+		"none": ""
+	},
+	"FFXIVNoCharacterFound": "",
+	"FFXIVInvalidServer": "",
+	"FFXIVNoItemFound": "",
+	"fortniteDescription": "",
+	"fortniteExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"fortniteNoUser": "",
+	"fortniteEmbedTitle": "",
+	"fortniteEmbedSectionTitles": {
+		"lifetimeStats": "",
+		"solos": "",
+		"duos": "",
+		"squads": ""
+	},
+	"fortniteEmbedStats": {
+		"wins": "",
+		"kills": "",
+		"kdr": "",
+		"matchesPlayed": "",
+		"top1s": "",
+		"top3s": "",
+		"top5s": "",
+		"top6s": "",
+		"top10s": "",
+		"top12s": "",
+		"top25s": ""
+	},
+	"overwatchDescription": "",
+	"overwatchExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"overwatchInvalidPlayerName": "",
+	"overwatchQueryFail": "",
+	"overwatchNoStats": "",
+	"overwatchNoAverage": "",
+	"overwatchEmbedDataStats": {
+		"finalBlows": "",
+		"deaths": "",
+		"damageDealt": "",
+		"healing": "",
+		"objectiveKills": "",
+		"soloKills": "",
+		"playTime": "",
+		"gamesWon": "",
+		"goldenMedals": "",
+		"silverMedals": "",
+		"bronzeMedals": ""
+	},
+	"overwatchEmbedDataTopHero": "",
+	"overwatchEmbedData": {
+		"title": "",
+		"ratingsTitle": "",
+		"author": "",
+		"playerLevel": "",
+		"prestigeLevel": "",
+		"totalGamesWon": "",
+		"noGamesWon": "",
+		"headers": {
+			"account": "",
+			"quickplay": "",
+			"competitive": "",
+			"topHeroesQuickplay": "",
+			"topHeroesCompetitive": ""
+		}
+	}
+}

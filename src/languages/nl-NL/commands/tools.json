@@ -1,0 +1,462 @@
+{
+	"avatarDescription": "",
+	"avatarExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
+	},
+	"avatarNone": "",
+	"color": [
+		"",
+		"",
+		""
+	],
+	"colorDescription": "",
+	"colorExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"possibleFormats": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	},
+	"contentDescription": "",
+	"contentExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	},
+	"countryDescription": "",
+	"countryExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"countryFields": {
+		"other": {
+			"area": "",
+			"currencies": "",
+			"demonym": ""
+		},
+		"overview": {
+			"capital": "",
+			"officialName": "",
+			"population": ""
+		}
+	},
+	"countryTitles": {
+		"LANGUAGES": "",
+		"OTHER": "",
+		"OVERVIEW": ""
+	},
+	"defineDescription": "",
+	"defineExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"defineNotfound": "",
+	"definePronounciation": "",
+	"defineUnknown": "",
+	"duckDuckGoDescription": "",
+	"duckDuckGoExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"duckDuckGoLookalso": "",
+	"duckDuckGoNotfound": "",
+	"emojiCustom": [
+		"",
+		"",
+		""
+	],
+	"emojiDescription": "",
+	"emojiExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
+	},
+	"emojiInvalid": "",
+	"emojiTooLarge": "",
+	"emojiTwemoji": [
+		"",
+		"",
+		""
+	],
+	"emotesDescription": "",
+	"emotesExtended": {
+		"extendedHelp": ""
+	},
+	"emotesTitle": "",
+	"eshopDescription": "",
+	"eshopExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"eshopNotInDatabase": "",
+	"eshopPriceFree": "",
+	"eshopPricePaid": "",
+	"eshopTitles": {
+		"availability": "",
+		"categories": "",
+		"esrb": "",
+		"noCategories": "",
+		"nsuid": "",
+		"numberOfPlayers": "",
+		"platform": "",
+		"price": "",
+		"releaseDate": ""
+	},
+	"horoscopeDescription": "",
+	"horoscopeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"horoscopeInvalidSunsign": "",
+	"horoscopeTitles": {
+		"dailyHoroscope": "",
+		"metadata": [
+			"",
+			"",
+			"",
+			""
+		],
+		"metadataTitle": ""
+	},
+	"igdbData": {
+		"noAgeRatings": "",
+		"noDevelopers": "",
+		"noGenres": "",
+		"noPlatforms": "",
+		"noRating": "",
+		"noReleaseDate": "",
+		"noSummary": ""
+	},
+	"igdbDescription": "",
+	"igdbExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"igdbTitles": {
+		"ageRating": "",
+		"developers": "",
+		"genres": "",
+		"platform": "",
+		"releaseDate": "",
+		"userScore": ""
+	},
+	"itunesDescription": "",
+	"itunesExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"itunesTitles": {
+		"artist": "",
+		"collection": "",
+		"collectionPrice": "",
+		"numberOfTracksInCollection": "",
+		"preview": "",
+		"previewLabel": "",
+		"primaryGenre": "",
+		"trackPrice": "",
+		"trackReleaseDate": ""
+	},
+	"lmgtfyClick": "",
+	"moviesData": {
+		"linkClickHere": "",
+		"movieInProduction": "",
+		"noGenres": "",
+		"none": "",
+		"notPartOfCollection": "",
+		"variableRuntime": ""
+	},
+	"moviesDescription": "",
+	"moviesExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"moviesTitles": {
+		"collection": "",
+		"genres": "",
+		"homePage": "",
+		"imdbPage": "",
+		"releaseDate": "",
+		"runtime": "",
+		"status": "",
+		"userScore": ""
+	},
+	"pollDescription": "",
+	"pollExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"pollReactionLimit": "",
+	"priceCurrency": "",
+	"priceCurrencyNotFound": "",
+	"priceDescription": "",
+	"priceExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"quoteDescription": "",
+	"quoteExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	},
+	"quoteMessage": "",
+	"rolesAbort": "",
+	"rolesAdded": "",
+	"rolesAuditlog": "",
+	"rolesListEmpty": "",
+	"rolesListTitle": "",
+	"rolesNotManageable": "",
+	"rolesNotPublic": "",
+	"rolesRemoved": "",
+	"showsData": {
+		"noGenres": "",
+		"unknownUserScore": "",
+		"variableRuntime": ""
+	},
+	"showsDescription": "",
+	"showsExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"showsTitles": {
+		"episodeRuntime": "",
+		"firstAirDate": "",
+		"genres": "",
+		"status": "",
+		"userScore": ""
+	},
+	"systemTextTruncated": "",
+	"topInvitesDescription": "",
+	"topInvitesEmbedData": {
+		"channel": "",
+		"createdAt": "",
+		"createdAtUnknown": "",
+		"expiresIn": "",
+		"link": "",
+		"neverExpress": "",
+		"temporary": "",
+		"uses": ""
+	},
+	"topInvitesExtended": {
+		"extendedHelp": ""
+	},
+	"topInvitesNoInvites": "",
+	"topInvitesTop10InvitesFor": "",
+	"urbanDescription": "",
+	"urbanExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"urbanIndexNotfound": "",
+	"urbanNotFound": "",
+	"voteDescription": "",
+	"voteExtended": {
+		"examples": [
+			""
+		]
+	},
+	"whoisDescription": "",
+	"whoisExtended": {
+		"extendedHelp": ""
+	},
+	"whoisMemberFields": {
+		"createdAt": "",
+		"footer": "",
+		"joinedUnknown": "",
+		"joinedWithTimestamp": ""
+	},
+	"whoisMemberPermissions": "",
+	"whoisMemberPermissionsAll": "",
+	"whoisMemberRoles": "",
+	"whoisMemberRoles_plural": "",
+	"whoisMemberTitles": {
+		"createdAt": "",
+		"joined": ""
+	},
+	"whoisUserFields": {
+		"createdAt": "",
+		"footer": ""
+	},
+	"whoisUserTitles": {
+		"createdAt": ""
+	},
+	"wikipediaDescription": "",
+	"wikipediaExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
+	"wikipediaNotfound": "",
+	"youtubeDescription": "",
+	"youtubeExtended": {
+		"extendedHelp": ""
+	},
+	"youtubeIndexNotfound": "",
+	"youtubeNotfound": ""
+}

@@ -1,0 +1,251 @@
+{
+	"8ballDescription": "",
+	"8ballExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"choiceDescription": "",
+	"choiceExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"changemymindDescription": "",
+	"changemymindExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"diceDescription": "",
+	"diceExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
+	"escaperopeDescription": "",
+	"escaperopeExtended": {
+		"extendedHelp": ""
+	},
+	"howToFlirtDescription": "",
+	"howToFlirtExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"loveDescription": "",
+	"loveExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"markovDescription": "",
+	"markovExtended": {
+		"extendedHelp": ""
+	},
+	"norrisDescription": "",
+	"norrisExtended": {
+		"extendedHelp": ""
+	},
+	"rateDescription": "",
+	"rateExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"xkcdDescription": "",
+	"xkcdExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"punDescription": "",
+	"punExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"wakandaDescription": "",
+	"wakandaExtended": {
+		"extendedHelp": ""
+	},
+	"8ballOutput": "",
+	"8ballQuestions": {
+		"When": "",
+		"What": "",
+		"HowMuch": "",
+		"HowMany": "",
+		"Why": "",
+		"Who": ""
+	},
+	"8ballWhen": [
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"8ballWhat": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"8ballHowMuch": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"8ballHowMany": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"8ballWhy": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"8ballWho": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"8ballElse": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"choiceOutput": "",
+	"choiceMissing": "",
+	"choiceDuplicates": "",
+	"diceOutput": "",
+	"diceRollsError": "",
+	"diceSidesError": "",
+	"escaperopeOutput": "",
+	"loveLess45": "",
+	"loveLess75": "",
+	"loveLess100": "",
+	"love100": "",
+	"loveItself": "",
+	"loveResult": "",
+	"markovTimer": "",
+	"markovNoMessages": "",
+	"norrisOutput": "",
+	"rateOutput": "",
+	"rateMyself": [
+		"",
+		""
+	],
+	"rateOwners": [
+		"",
+		""
+	],
+	"punError": "",
+	"xkcdComics": "",
+	"xkcdNotfound": ""
+}

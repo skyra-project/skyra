@@ -1,0 +1,92 @@
+{
+	"currentTimeDescription": "",
+	"currentTimeExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"currentTimeLocationNotFound": "",
+	"currentTimeTitles": {
+		"currentTime": "",
+		"currentDate": "",
+		"country": "",
+		"gmsOffset": "",
+		"dst": ""
+	},
+	"currentTimeDst": "",
+	"currentTimeNoDst": "",
+	"gsearchDescription": "",
+	"gsearchExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"gimageDescription": "",
+	"gimageExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
+	},
+	"lmgtfyDescription": "",
+	"lmgtfyExtended": {
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"weatherDescription": "",
+	"weatherExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"errorZeroResults": "",
+	"errorRequestDenied": "",
+	"errorInvalidRequest": "",
+	"errorOverQueryLimit": "",
+	"errorUnknown": ""
+}

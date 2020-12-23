@@ -1,0 +1,12 @@
+{
+	"channelNotReadable": "I am sorry, but I need the permissions **{{VIEW_CHANNEL, permissions}}** and **{{READ_MESSAGE_HISTORY, permissions}}**",
+	"guildBansEmpty": "There are no bans registered in this server.",
+	"guildBansNotFound": "I tried and failed to find this user from the ban list. Are you certain this user is banned?",
+	"guildMemberNotVoicechannel": "I cannot execute this action in a member that is not connected to a voice channel.",
+	"guildMuteNotFound": "I failed to fetch the modlog that sets this user as muted. Either you did not mute this user or all the mutes are appealed.",
+	"guildWarnNotFound": "I failed to fetch the modlog for appealing. Either it does not exist, is not type of warning, or it is appealed.",
+	"modlogTimed": "This moderation log is already timed. Expires in {{remaining, duration}}",
+	"unexpectedIssue": "An unexpected error popped up! Safely aborting this command...",
+	"userNotExistent": "This user does not exist. Are you sure you used a valid user ID?",
+	"userNotInGuild": "This user is not in this server."
+}

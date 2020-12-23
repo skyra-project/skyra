@@ -1,0 +1,49 @@
+{
+	"added": "Successfully added a new tag: **{{name}}** with a content of:\n{{content}}",
+	"contentRequired": "You must provide a content for this tag.",
+	"description": "Manage this guilds' tags.",
+	"edited": "Successfully edited the tag **{{name}}** with a content of:\n{{content}}",
+	"exists": "The tag '{{tag}}' already exists.",
+	"extended": {
+		"extendedHelp": [
+			"Tags, also known as custom commands, can give you a chunk of text stored under a specific name.",
+			"For example after adding a tag with `Skyra, tag add rule1 <your first rule>` you can use it with `Skyra, rule1` or `Skyra, tag rule1`",
+			"When adding tags you can customize the final look by adding flags to the tag content (these won't show up in the tag itself!):",
+			"❯ Add `--embed` to have Skyra send the tag embedded.",
+			"The content will be in the description, so you can use all the markdown you wish. for example, adding [masked links](https://skyra.pw).",
+			"❯ Add `--color=<a color>` or `--colour=<a colour>` to have Skyra colourize the embed. Does nothing unless also specifying `--embed`.",
+			"Colours can be RGB, HSL, HEX or Decimal."
+		],
+		"explainedUsage": [
+			[
+				"action",
+				"The action to perform: `add` to add new tags, `remove` to delete a tag, `edit` to edit a tag, `source` to get the source of a tag, `list` to list all known tags, or `show` to show a tag."
+			],
+			[
+				"tag",
+				"The tag's name."
+			],
+			[
+				"contents",
+				"Required for the actions `add` and `edit`, specifies the content for the tag."
+			]
+		],
+		"examples": [
+			"add rule1 Respect other users. Harassment, hatespeech, etc... will not be tolerated.",
+			"add rule1 --embed --color=#1E88E5 Respect other users. Harassment, hatespeech, etc... will not be tolerated.",
+			"edit rule1 Just be respectful with the others.",
+			"rule1",
+			"source rule1",
+			"remove rule1",
+			"list"
+		],
+		"multiline": true
+	},
+	"listEmpty": "The tag list for this server is empty.",
+	"nameNotAllowed": "A tag name may not have a grave accent nor invisible characters.",
+	"nameTooLong": "A tag name must be 50 or less characters long.",
+	"notexists": "The tag '{{tag}}' does not exist.",
+	"permissionlevel": "You must be a staff member, moderator, or admin, to be able to manage tags.",
+	"removed": "Successfully removed the tag **{{name}}**.",
+	"reset": "All tags have been successfully removed from this server."
+}

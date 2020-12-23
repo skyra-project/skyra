@@ -1,0 +1,131 @@
+{
+	"dmDescription": "Sends a Direct Message.",
+	"dmExtended": {
+		"extendedHelp": "The DM command is reserved for bot owners, and it's only used for very certain purposes, such as replying feedback messages sent by users.",
+		"reminder": "Reserved for bot owners for replying purposes."
+	},
+	"evalDescription": "Evaluates arbitrary Javascript.",
+	"evalExtended": {
+		"extendedHelp": [
+			"The eval command evaluates code as-in, any error thrown from it will be handled.",
+			"It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.",
+			"The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.",
+			"The --output and --output-to flag accept either `file`, `log`, `haste` or `hastebin`.",
+			"The --delete flag makes the command delete the message that executed the message after evaluation.",
+			"The --silent flag will make it output nothing.",
+			"The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.",
+			"The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword",
+			"The --showHidden flag will enable the showHidden option in util.inspect.",
+			"The --lang and --language flags allow different syntax highlight for the output.",
+			"The --json flag converts the output to json",
+			"The --no-timeout flag disables the timeout",
+			"If the output is too large, it'll send the output as a file, or in the console if the bot does not have the {{PERMISSIONS.ATTACH_FILES}} permission."
+		],
+		"examples": [
+			"msg.author.username;",
+			"1 + 1;"
+		],
+		"reminder": "Reserved for bot owners.",
+		"multiline": true
+	},
+	"execDescription": "Execute Order 66.",
+	"execExtended": {
+		"extendedHelp": "You better not know about this."
+	},
+	"setAvatarDescription": "Set Skyra's avatar.",
+	"setAvatarExtended": {
+		"extendedHelp": "This command changes Skyra's avatar. You can send a URL or upload an image attachment to the channel.",
+		"reminder": "Reserved for bot owners."
+	},
+	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
+	"donateExtended": {
+		"extendedHelp": [
+			"Skyra Project started on 24th October 2016, if you are reading this, you are",
+			"using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.",
+			"",
+			"However, not everything is free and we need your help to keep Skyra alive.",
+			"We will be very thankful if you help us.",
+			"We have been working on a lot of things, and Skyra is precious to us. Take care of her ❤",
+			"",
+			"Do you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
+		],
+		"multiline": true
+	},
+	"echoDescription": "Make Skyra send a message to this (or another) channel.",
+	"echoExtended": {
+		"extendedHelp": "This should be very obvious...",
+		"reminder": "Reserved for bot owners."
+	},
+	"feedbackDescription": "Send a feedback message to the bot's feedback channel.",
+	"feedbackExtended": {
+		"extendedHelp": "This command sends a message to a feedback channel which the bot's owners can read. You'll get a reply from me in your DMs when one of the owners has an update for you."
+	},
+	"statsDescription": "Provides some details about the bot and stats.",
+	"statsExtended": {
+		"extendedHelp": "This should be very obvious..."
+	},
+	"evalTimeout": "TIMEOUT: Took longer than {{seconds}} seconds.",
+	"evalError": "**Error**:{{output}}\n**Type**:{{type}}\n{{time}}",
+	"statsTitles": {
+		"stats": "Statistics",
+		"uptime": "Uptime",
+		"serverUsage": "Server Usage"
+	},
+	"statsFields": {
+		"stats": [
+			"• **Users**: {{stats.users}}",
+			"• **Guilds**: {{stats.guilds}}",
+			"• **Channels**: {{stats.channels}}",
+			"• **Discord.js**: {{stats.version}}",
+			"• **Node.js**: {{stats.nodeJs}}"
+		],
+		"uptime": [
+			"• **Host**: {{uptime.host, duration}}",
+			"• **Total**: {{uptime.total, duration}}",
+			"• **Client**: {{uptime.client, duration}}"
+		],
+		"serverUsage": [
+			"• **CPU Load**: {{usage.cpuLoad}}",
+			"• **Heap**: {{usage.ramUsed}} (Total: {{usage.ramTotal}})"
+		]
+	},
+	"blocklistDescription": "Block or allow users and guilds from using my functionalities.",
+	"blocklistResetSuccess": "{{GREENTICK}} Successfully reset blocked users and guilds",
+	"blocklistSaveSuccess": "{{GREENTICK}} Successfully updated blocked users and/or guilds",
+	"disable": "+ Successfully disabled {{type}}: {{name}}",
+	"disableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.",
+	"disableExtended": {
+		"extendedHelp": "Disable a piece that was previously enabled"
+	},
+	"disableWarn": "You probably don't want to disable that, since you wouldn't be able to run any command to enable it again",
+	"dmNotSent": "I cannot send you a message in DMs, did you block me?",
+	"dmSent": "I have sent you the message in DMs.",
+	"enable": "+ Successfully enabled {{type}}: {{name}}",
+	"enableDescription": "Re-enables or temporarily enables a command/inhibitor/monitor/finalizer. Default state restored on reboot.",
+	"enableExtended": {
+		"extendedHelp": "Enables a piece that was previously disabled"
+	},
+	"load": "{{GREENTICK}} Successfully loaded {{type}}: {{name}}. (Took: {{time}})",
+	"loadDescription": "Load a piece from your bot.",
+	"loadExtended": {
+		"extendedHelp": "Loads a piece when needed"
+	},
+	"loadError": "{{REDCROSS}} Failed to load {{type}}: {{name}}. Reason: {{error, jsCodeBlock}}",
+	"loadFail": "The file does not exist, or an error occurred while loading your file. Please check your console.",
+	"reboot": "{{LOADING}} Rebooting...",
+	"rebootDescription": "Reboots the bot.",
+	"reload": "{{GREENTICK}} Reloaded {{type}}: {{name}}. (Took: {{time}})",
+	"reloadAll": "{{GREENTICK}} Reloaded all {{type}}. (Took: {{time}})",
+	"reloadDescription": "Reloads a klasa piece, or all pieces of a klasa store.",
+	"reloadExtended": {
+		"extendedHelp": "Hot-reloads a piece.",
+		"reminder": "Be careful with potentially duplicate names as you can easily trigger reloading all pieces!"
+	},
+	"reloadEverything": "{{GREENTICK}} Reloaded everything. (Took: {{time}})",
+	"reloadFailed": "{{REDCROSS}} Failed to reload {{type}}: {{name}}. Please check your Console.",
+	"unload": "{{GREENTICK}} Unloaded {{type}}: {{name}}",
+	"unloadDescription": "Unloads the klasa piece.",
+	"unloadExtended": {
+		"extendedHelp": "Unloads a piece when needed"
+	}
+}

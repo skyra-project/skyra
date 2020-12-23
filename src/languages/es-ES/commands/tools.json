@@ -1,0 +1,462 @@
+{
+	"avatarDescription": "View somebody's avatar in full size.",
+	"avatarExtended": {
+		"extendedHelp": "As this command's name says, it shows somebody's avatar.",
+		"explainedUsage": [
+			[
+				"user",
+				"(Optional) A user mention. Defaults to the author if the input is invalid or not given."
+			]
+		],
+		"reminder": "Use the --size flag to change the avatar's size."
+	},
+	"avatarNone": "The user does not have an avatar set.",
+	"color": [
+		"HEX: **{{hex}}**",
+		"RGB: **{{rgb}}**",
+		"HSL: **{{hsl}}**"
+	],
+	"colorDescription": "Display some awesome colours.",
+	"colorExtended": {
+		"extendedHelp": "The color command displays a set of colours with nearest tones given a difference between 1 and 255..",
+		"explainedUsage": [
+			[
+				"color",
+				"A color resolvable."
+			]
+		],
+		"examples": [
+			"#dfdfdf >25",
+			"rgb(200, 130, 75)"
+		],
+		"possibleFormats": [
+			[
+				"HEX",
+				"#dfdfdf"
+			],
+			[
+				"RGB",
+				"rgb(200, 200, 200)"
+			],
+			[
+				"HSL",
+				"hsl(350, 100, 100)"
+			],
+			[
+				"B10",
+				"14671839"
+			]
+		]
+	},
+	"contentDescription": "Get messages' raw content.",
+	"contentExtended": {
+		"extendedHelp": "Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting",
+		"explainedUsage": [
+			[
+				"channel",
+				"(optional) The channel in which the message is to get the content from"
+			],
+			[
+				"message",
+				"ID of the message to get the raw content for"
+			]
+		]
+	},
+	"countryDescription": "Shows information about a country.",
+	"countryExtended": {
+		"extendedHelp": "This command uses https://restcountries.eu to get information on the provided country.",
+		"explainedUsage": [
+			[
+				"country",
+				"The name of the country."
+			]
+		],
+		"examples": [
+			"United Kingdom"
+		]
+	},
+	"countryFields": {
+		"other": {
+			"area": "Area",
+			"currencies": "Currencies",
+			"demonym": "Demonym"
+		},
+		"overview": {
+			"capital": "Capital",
+			"officialName": "Official Name",
+			"population": "Population"
+		}
+	},
+	"countryTitles": {
+		"LANGUAGES": "Languages",
+		"OTHER": "Other",
+		"OVERVIEW": "Overview"
+	},
+	"defineDescription": "Check the definition of a word.",
+	"defineExtended": {
+		"extendedHelp": "What does \"heel\" mean?",
+		"explainedUsage": [
+			[
+				"Word",
+				"The word or phrase you want to get the definition from."
+			]
+		],
+		"examples": [
+			"heel"
+		]
+	},
+	"defineNotfound": "I could not find a definition for this word.",
+	"definePronounciation": "Pronunciation",
+	"defineUnknown": "Unknown",
+	"duckDuckGoDescription": "Search the Internet with DuckDuckGo.",
+	"duckDuckGoExtended": {
+		"extendedHelp": "This uses the alternative search enginge DuckDuckGo to search the web",
+		"reminder": "If you want to search google use `Skyra, google`"
+	},
+	"duckDuckGoLookalso": "Related to this topic:",
+	"duckDuckGoNotfound": "I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.",
+	"emojiCustom": [
+		"→ {{Emoji ::| inlineCodeBlock}} **{{emoji}}**",
+		"→ {{Type  ::| inlineCodeBlock}} **Custom**",
+		"→ {{ID    ::| inlineCodeBlock}} **{{id}}**"
+	],
+	"emojiDescription": "Get info on an emoji.",
+	"emojiExtended": {
+		"extendedHelp": "I'll give you the emoji name, whether it is a custom emoji or not, the emoji ID and a large image preview of the emoji.",
+		"explainedUsage": [
+			[
+				"emoji",
+				"The emoji to get information about"
+			]
+		],
+		"reminder": "It doesn't matter whether I share a server with a custom emoji or not!"
+	},
+	"emojiInvalid": "The argument you provided is not a valid emoji.",
+	"emojiTooLarge": "'{{emoji}}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?",
+	"emojiTwemoji": [
+		"→ {{Emoji ::| inlineCodeBlock}} `{{emoji}}`",
+		"→ {{Type  ::| inlineCodeBlock}} **Twemoji**",
+		"→ {{ID    ::| inlineCodeBlock}} **{{id}}**"
+	],
+	"emotesDescription": "Shows all custom emotes available on this server",
+	"emotesExtended": {
+		"extendedHelp": "The list of emotes is split per 50 emotes"
+	},
+	"emotesTitle": "Emotes in",
+	"eshopDescription": "Request information for any American Nintendo Digital Store",
+	"eshopExtended": {
+		"extendedHelp": "This command queries Nintendo of America to show data for the game you request.",
+		"explainedUsage": [
+			[
+				"query",
+				"The name of the game you're looking for."
+			]
+		],
+		"examples": [
+			"Breath of the Wild",
+			"Pokemon",
+			"Splatoon"
+		]
+	},
+	"eshopNotInDatabase": "None available",
+	"eshopPriceFree": "Free",
+	"eshopPricePaid": "${{price}} USD",
+	"eshopTitles": {
+		"availability": "Availability",
+		"categories": "Categories",
+		"esrb": "ESRB",
+		"noCategories": "This game has not been sorted into any categories",
+		"nsuid": "NSUID",
+		"numberOfPlayers": "Number of Players",
+		"platform": "Platform",
+		"price": "Price",
+		"releaseDate": "Release Date"
+	},
+	"horoscopeDescription": "Get your latest horoscope",
+	"horoscopeExtended": {
+		"extendedHelp": "Gets the horoscope for a given sun sign from Kelli Fox's The Astrologer.",
+		"explainedUsage": [
+			[
+				"sunsign",
+				"The sun sign you want to get the horoscope for"
+			],
+			[
+				"today|tomorrow|yesterday",
+				"(Optional, defaults to \"today\") If you want to get the horoscope of yesterday or tomorrow you can specify that."
+			]
+		],
+		"examples": [
+			"pisces",
+			"virgo tomorrow",
+			"gemini yesterday",
+			"aries today"
+		]
+	},
+	"horoscopeInvalidSunsign": "{{sign}} is an invalid sun sign, maybe try {{maybe}}",
+	"horoscopeTitles": {
+		"dailyHoroscope": "Daily horoscope for {{sign}}",
+		"metadata": [
+			"**Intensity:** {{intensity}}",
+			"**Keywords:** {{keywords, andList}}",
+			"**Mood:** {{mood}}",
+			"**Rating:** {{rating}}"
+		],
+		"metadataTitle": "Metadata"
+	},
+	"igdbData": {
+		"noAgeRatings": "No age ratings available",
+		"noDevelopers": "Developer(s) unknown",
+		"noGenres": "No known genres",
+		"noPlatforms": "Platform(s) unknown",
+		"noRating": "No user rating",
+		"noReleaseDate": "Release date unknown",
+		"noSummary": "No game summary available"
+	},
+	"igdbDescription": "Searches IGDB (Internet Game Database) for your favourite games",
+	"igdbExtended": {
+		"extendedHelp": "This command queries the IGDB API to show data on your favourite games.",
+		"explainedUsage": [
+			[
+				"query",
+				"The name of the game"
+			]
+		],
+		"examples": [
+			"Breath of the Wild",
+			"Borderlands 3"
+		]
+	},
+	"igdbTitles": {
+		"ageRating": "Age rating(s)",
+		"developers": "Developer(s)",
+		"genres": "Genre(s)",
+		"platform": "Platform(s)",
+		"releaseDate": "Release date",
+		"userScore": "User score"
+	},
+	"itunesDescription": "Searches iTunes API for music tracks",
+	"itunesExtended": {
+		"extendedHelp": "This command queries the Apple iTunes API to show data on a music you request.",
+		"explainedUsage": [
+			[
+				"query",
+				"The name of the song"
+			]
+		],
+		"examples": [
+			"Apocalyptica feat. Brent Smith",
+			"You're Gonna Go Far, Kid"
+		]
+	},
+	"itunesTitles": {
+		"artist": "Artist",
+		"collection": "Collection",
+		"collectionPrice": "Collection price (USD)",
+		"numberOfTracksInCollection": "# Tracks in collection",
+		"preview": "Preview",
+		"previewLabel": "Click here",
+		"primaryGenre": "Primary genre",
+		"trackPrice": "Track price (USD)",
+		"trackReleaseDate": "Track Release Date"
+	},
+	"lmgtfyClick": "Click me to search",
+	"moviesData": {
+		"linkClickHere": "Click here",
+		"movieInProduction": "Movie in production",
+		"noGenres": "None on TheMovieDB",
+		"none": "None",
+		"notPartOfCollection": "Not part of a collection",
+		"variableRuntime": "Variable"
+	},
+	"moviesDescription": "Searches TheMovieDatabase for any movie",
+	"moviesExtended": {
+		"extendedHelp": [
+			"This command queries TheMovieDatabase API for data on your favourite movies",
+			"Tip: You can use the 'y:' filter to narrow your results by year. Example: \"star wars y:1977\"."
+		],
+		"explainedUsage": [
+			[
+				"query",
+				"The name of the movie"
+			]
+		],
+		"examples": [
+			"Ocean's Eleven y:2001",
+			"Star Wars Revenge of the Sith",
+			"Spirited Away"
+		],
+		"multiline": true
+	},
+	"moviesTitles": {
+		"collection": "Collection",
+		"genres": "Genres",
+		"homePage": "Home Page",
+		"imdbPage": "IMDB Page",
+		"releaseDate": "Release date",
+		"runtime": "Runtime",
+		"status": "Status",
+		"userScore": "User score"
+	},
+	"pollDescription": "Simplifies reaction-based polls.",
+	"pollExtended": {
+		"extendedHelp": "Separate your options using commas.",
+		"examples": [
+			"Make an anime channel, Make a gaming channel, Make a serious-discussion channel"
+		]
+	},
+	"pollReactionLimit": "Please don't add emojis while I am reacting!",
+	"priceCurrency": "**{{fromAmount}}** {{fromCurrency}} is worth {{worths, andList}}.",
+	"priceCurrencyNotFound": "There was an error, please make sure you specified an appropriate coin and currency.",
+	"priceDescription": "Convert between currencies with this command.",
+	"priceExtended": {
+		"extendedHelp": "Convert between any two currencies, even if they are cryptocurrencies.",
+		"explainedUsage": [
+			[
+				"from",
+				"The currency to convert from"
+			],
+			[
+				"to",
+				"The currency to convert to"
+			],
+			[
+				"amount",
+				"The amount to convert, will default to 1"
+			]
+		],
+		"examples": [
+			"EUR USD",
+			"USD EUR 5",
+			"USD BAT 10"
+		]
+	},
+	"quoteDescription": "Quote another person's message.",
+	"quoteExtended": {
+		"extendedHelp": "Quotes also include the message's image, if any",
+		"explainedUsage": [
+			[
+				"channel",
+				"(optional) The channel in which the message is to quote"
+			],
+			[
+				"message",
+				"ID of the message to quote"
+			]
+		]
+	},
+	"quoteMessage": "It is very weird, but said message does not have a content nor a image.",
+	"rolesAbort": "I looked far and wide, but I seem to not have found what you were looking for. Please run `{{prefix}}roles` for the full list!",
+	"rolesAdded": "The following roles have been added to your profile: `{{roles}}`",
+	"rolesAuditlog": "Authorized: Public Role Management | 'Roles' Command.",
+	"rolesListEmpty": "This server does not have a role listed as a public role.",
+	"rolesListTitle": "List of public roles",
+	"rolesNotManageable": "The following roles cannot be given by me due to their hierarchy role position: `{{roles}}`",
+	"rolesNotPublic": "The following roles are not public: `{{roles}}`",
+	"rolesRemoved": "The following roles have been removed from your profile: `{{roles}}`",
+	"showsData": {
+		"noGenres": "None on TheMovieDB",
+		"unknownUserScore": "No user score",
+		"variableRuntime": "Variable"
+	},
+	"showsDescription": "Searches The Movie Database for any show",
+	"showsExtended": {
+		"extendedHelp": "This command queries TheMovieDatabase for data on your favorite shows",
+		"explainedUsage": [
+			[
+				"query",
+				"The name of the show"
+			]
+		],
+		"examples": [
+			"Final Space",
+			"Gravity Falls",
+			"Rick and Morty"
+		]
+	},
+	"showsTitles": {
+		"episodeRuntime": "Episode runtime",
+		"firstAirDate": "First air date",
+		"genres": "Genres",
+		"status": "Status",
+		"userScore": "User score"
+	},
+	"systemTextTruncated": "{{definition}}... [continue reading]({{url}})",
+	"topInvitesDescription": "Shows the top 10 most used invites for this server",
+	"topInvitesEmbedData": {
+		"channel": "Channel",
+		"createdAt": "Date Created",
+		"createdAtUnknown": "Creation date unknown",
+		"expiresIn": "Expires in",
+		"link": "Link",
+		"neverExpress": "Never",
+		"temporary": "Temporary invite",
+		"uses": "Uses"
+	},
+	"topInvitesExtended": {
+		"extendedHelp": "Use this to get some server insights if your server doesn't have access to Discord's official server insights."
+	},
+	"topInvitesNoInvites": "There are no invites, or none of them have been used!",
+	"topInvitesTop10InvitesFor": "Top 10 invites for {{guild}}",
+	"urbanDescription": "Check the definition of a word on UrbanDictionary.",
+	"urbanExtended": {
+		"extendedHelp": "What does \"spam\" mean?",
+		"explainedUsage": [
+			[
+				"Word",
+				"The word or phrase you want to get the definition from."
+			],
+			[
+				"Page",
+				"Defaults to 1, the page you wish to read."
+			]
+		],
+		"examples": [
+			"spam"
+		]
+	},
+	"urbanIndexNotfound": "You may want to try a lower page number.",
+	"urbanNotFound": "I am sorry, the word you are looking for does not seem to be defined in UrbanDictionary. Try another word?",
+	"voteDescription": "Simplified reaction-based vote.",
+	"voteExtended": {
+		"examples": [
+			"Should I implement the #anime channel?"
+		]
+	},
+	"whoisDescription": "Who are you?",
+	"whoisExtended": {
+		"extendedHelp": "Gets information on any server member. Also known as `userinfo` in many other bots."
+	},
+	"whoisMemberFields": {
+		"createdAt": "{{member.user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} ago",
+		"footer": "ID: {{member.id}}",
+		"joinedUnknown": "Unknown",
+		"joinedWithTimestamp": "{{member.joinedTimestamp, timestamp}}\n{{joinedTimestampOffset, duration}} ago"
+	},
+	"whoisMemberPermissions": "Key Permissions",
+	"whoisMemberPermissionsAll": "All Permissions",
+	"whoisMemberRoles": "Role [1]",
+	"whoisMemberRoles_plural": "Roles [{{count}}]",
+	"whoisMemberTitles": {
+		"createdAt": "Created At",
+		"joined": "Joined"
+	},
+	"whoisUserFields": {
+		"createdAt": "{{user.createdAt, timestamp}}\n{{createdTimestampOffset, duration}} ago",
+		"footer": "ID: {{user.id}}"
+	},
+	"whoisUserTitles": {
+		"createdAt": "Created At"
+	},
+	"wikipediaDescription": "Search something through Wikipedia.",
+	"wikipediaExtended": {
+		"extendedHelp": "In NSFW channels I will also add the page image. This restriction is in place because Wikipedia has NSFW images for NSFW pages as they have to be accurate (i.e. diseases or human body parts).",
+		"reminder": "Most Wikipedia page titles are case sensitive. Some celeberties will have lowercase redirects, but not many."
+	},
+	"wikipediaNotfound": "I am sorry, I could not find something that could match your input in Wikipedia.",
+	"youtubeDescription": "Search something through YouTube.",
+	"youtubeExtended": {
+		"extendedHelp": "If I have the {{PERMISSIONS.MANAGE_MESSAGES}} {{PERMISSIONS.ADD_REACTIONS}} permissions then I will provide the option to navigate through the top 10 results."
+	},
+	"youtubeIndexNotfound": "You may want to try a lower page number, because I am unable to find something at this index.",
+	"youtubeNotfound": "I am sorry, I could not find something that could match your input in YouTube."
+}

@@ -1,0 +1,186 @@
+{
+	"addDescription": "Adds a song the the queue.",
+	"addExtended": {
+		"extendedHelp": [
+			"Add songs to the playing queue and prepare for musical enjoyment!",
+			"I can play music from YouTube, Bandcamp, SoundCloud, Twitch, or Vimeo.",
+			"",
+			"- To play from YouTube either give me something to search for, a video link, or a playlist link.",
+			"- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.",
+			"- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.",
+			"- To play a previously exported queue, include `--import` and attach the queue file to your message or give me a URL to it."
+		],
+		"explainedUsage": [
+			[
+				"song",
+				"The song to queue. Can be either a URL or a video/song title."
+			]
+		],
+		"examples": [
+			"The Pokémon Theme song",
+			"https://youtu.be/fJ9rUzIMcZQ",
+			"--sc Imagine Dragons Believer",
+			"https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix",
+			"https://vimeo.com/channels/music/239029778",
+			"https://thedisappointed.bandcamp.com/album/escapism-2",
+			"https://cdn.discordapp.com/attachments/642137151626018818/746716958627725402/Skyra_Development_Suite-1598101595077.squeue",
+			"--import https://cdn.skyra.pw/favsongs.squeue"
+		],
+		"multiline": true
+	},
+	"addPlaylist": "{{GREENTICK}} Added {{songs}} to the queue 🎶",
+	"addPlaylistSongs": "**{{count}}** song",
+	"addPlaylistSongsPlural": "**{{count}}** songs",
+	"addSong": "{{GREENTICK}} Added **{{title}}** to the queue 🎶",
+	"clearDescription": "Clears the queue list.",
+	"clearDenied": "{{REDCROSS}} You can't execute this command when there are over 4 members! You must be a dee-jay or a moderator!",
+	"clearSuccess": "{{REDCROSS}}  Pruned {{count}} song.",
+	"clearSuccessPlural": "{{REDCROSS}}  Pruned {{count}} songs.",
+	"exportQueueDescription": "Exports your queue to a `.squeue` file.",
+	"exportQueueExtended": {
+		"extendedHelp": [
+			"Have a queue you liked and want to replay later? Or maybe you want to send your friends what you're listening right now",
+			"Use \"exportqueue\" and I'll pack the music in your queue into a neat file you can either save or share with your friends!",
+			"When you want to play it back, just use it with `play`, `add` or `importqueue`!"
+		],
+		"reminder": "If your queue is longer than 100 songs, I will only include the first 100, to prevent abuse of my systems",
+		"multiline": true
+	},
+	"exportQueueSuccess": "{{GREENTICK}} Here's the current queue for {{guildName}}!",
+	"importQueueDescription": "Imports a queue saved as a `.squeue` file.",
+	"importQueueExtended": {
+		"extendedHelp": [
+			"Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?",
+			"With `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!"
+		],
+		"reminder": "You can either give me a link to the `.squeue` file, or attach it to your message!",
+		"multiline": true
+	},
+	"joinDescription": "Joins the message author's voice channel.",
+	"joinNoMember": "{{REDCROSS}} I'm sorry, but Discord did not give me the information I need, so I don't know which voice channel you're connected to...",
+	"joinNoVoicechannel": "{{REDCROSS}} You are not connected in a voice channel.",
+	"joinSuccess": "{{GREENTICK}} Successfully joined the voice channel {{channel}}",
+	"joinVoiceDifferent": "{{REDCROSS}} I think you confused the channels! Earth to Moon, we are in another voice channel!",
+	"joinVoiceFull": "{{REDCROSS}} I cannot join your voice channel, it's full... kick somebody or make room for me!",
+	"joinVoiceNoConnect": "{{REDCROSS}} I do not have enough permissions to connect to your voice channel. I am missing the **{{CONNECT, permissions}}** permission.",
+	"joinVoiceNoSpeak": "{{REDCROSS}} I can connect... but not speak. Please turn on this permission so I can emit music.",
+	"joinVoiceSame": "{{REDCROSS}} Turn on your volume! I am playing music there!",
+	"joinFailed": "{{REDCROSS}} I could not join your voice channel because there is something wrong with my music player. Please join the support server by using \"@Skyra support\" and alert my developers.",
+	"leaveDescription": "Leaves the voice channel.",
+	"leaveExtended": {
+		"extendedHelp": [
+			"Use this command to make me leave the current voice channel.",
+			"By default I will leave the channel, forget about the currently playing song, but leave the queue intact.",
+			"This means that if you use `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.",
+			"",
+			"This default behavior can be modified with flags:",
+			"`--removeall` or `--ra` to follow the default behavior as well clear the queue, next time you want me to start playing you will have build a new queue"
+		],
+		"examples": [
+			"leave",
+			"leave --removeall",
+			"leave --ra",
+			"leave --soft"
+		],
+		"multiline": true
+	},
+	"leaveSuccess": "{{GREENTICK}} Successfully left the voice channel {{channel}}",
+	"pauseDescription": "Pauses the current song.",
+	"pauseSuccess": "{{GREENTICK}} Paused",
+	"playDescription": "Let me be your DJ and play you some tunes!",
+	"playExtended": {
+		"extendedHelp": [
+			"Queue some music and allow me to start jamming out to your enjoyment.",
+			"When using this command I will automatically join your voice channel and start playing the first song in my queue.",
+			"I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, Mixer, or a queue someone else exported earlier",
+			"- To play from YouTube either give me something to search, a video link, or a playlist link.",
+			"- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.",
+			"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VOD's.",
+			"- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.",
+			"- To play from a previously-exported queue, include `--import` and attach it to your message or give me a URL to it"
+		],
+		"explainedUsage": [
+			[
+				"song",
+				"The song to play. Can be either a URL or a video/song title."
+			]
+		],
+		"examples": [
+			"The Pokémon Theme song",
+			"https://youtu.be/fJ9rUzIMcZQ",
+			"--sc Imagine Dragons Believer",
+			"https://soundcloud.com/vladkurt/imagine-dragons-beliver-vladkurt-remix",
+			"https://vimeo.com/channels/music/239029778",
+			"https://mixer.com/Ninja",
+			"https://thedisappointed.bandcamp.com/album/escapism-2",
+			"--import https://cdn.skyra.pw/favsongs.squeue"
+		],
+		"reminder": "Before you can use this command you should join a voice channel!",
+		"multiline": true
+	},
+	"playEnd": "It looks like the queue ended here. I hope you enjoyed the session!",
+	"playNext": "🎧 Playing: **{{title}}** as requested by: **{{requester}}**",
+	"playQueuePaused": "There was a track going on! Playing it back! Now playing: {{song}}!",
+	"playQueuePlaying": "{{REDCROSS}} Hey! The disk is already spinning!",
+	"playQueueEmpty": "The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!",
+	"playingDescription": "Get information from the current song.",
+	"playingDuration": "**Duration**: {{duration}}",
+	"playingQueueEmpty": "{{REDCROSS}} Are you speaking to me? Because my deck is empty...",
+	"playingQueueNotPlaying": "{{REDCROSS}} I think you're listening to background noise, I'm not playing anything.",
+	"repeatDescription": "Toggle repeating the current song.",
+	"repeatSuccessEnabled": "This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!",
+	"repeatSuccessDisabled": "I was actually getting tired of this too, but I didn't want to say anything.",
+	"queueDescription": "Check the queue list.",
+	"queueLast": "There are no more songs! After the one playing is over, the session will end!",
+	"queueTitle": "Music queue for {{guildname}}",
+	"queueLine": "**[\"{{position}\"]** │ \"{{duration}\" │ [{{title}}]({{url}}) │ Requester: **{{requester}}**.",
+	"queueNowplaying": "[{{title}}]({{url}})\nRequester: **{{requester}}**",
+	"queueNowplayingLiveStream": "Live Stream",
+	"queueNowplayingTimeRemaining": "🕰 Time remaining: {{timeRemaining}}.",
+	"queueNowplayingTitle": "Now Playing:",
+	"queueTotalTitle": "Total songs:",
+	"queueTotal": "{{songs}} in the queue, with a total duration of {{remainingTime}}",
+	"queueEmpty": "looks like nothing is playing right now and the queue is empty, why don't you start the disc?",
+	"queueDashboardInfo": "Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/{{guild.id}})",
+	"removeDescription": "Remove a song from the queue list.",
+	"removeIndexInvalid": "I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.",
+	"removeIndexOutOfBounds": "maybe time happened too fast for you, there are {{songs}} in the queue!",
+	"removeDenied": "{{REDCROSS}} Let's play it nicely, don't remove other's songs if you're not a moderator nor a deejay.",
+	"removeSuccess": "{{GREENTICK}} Removed the song **{{title}}** requested by <@{{requester}}>.",
+	"seekDescription": "Change the player time for the current song.",
+	"seekSuccess": "{{GREENTICK}} Successfully changed the time! Now at {{time, duration}}!",
+	"resumeDescription": "Resumes the current song.",
+	"resumeSuccess": "▶ Resumed.",
+	"shuffleDescription": "Randomize the order of the songs in the queue.",
+	"shuffleSuccess": "{{GREENTICK} Successfully randomized {{amount}} songs.",
+	"skipDescription": "Skip the current song.",
+	"skipPermissions": "{{REDCROSS}} You can't execute this command, you must be a DJ or a Moderator.",
+	"skipVotesVoted": "{{REDCROSS}} You have already voted.",
+	"skipVotesTotal": "🔸 | Votes: {{amount} of {{needed}}",
+	"skipSuccess": "⏭ Skipped **{{title}}**.",
+	"playingTimeDescription": "Check how much time is left for the song to end.",
+	"playingTimeQueueEmpty": "Are you speaking to me? Because my deck is empty...",
+	"promoteDescription": "Promote a song to the front of the queue",
+	"promoteExtended": {
+		"explainedUsage": [
+			[
+				"number",
+				"The index in the queue to promote to the front. Use `Skyra, queue` to find the index of a song"
+			]
+		],
+		"examples": [
+			"5"
+		],
+		"reminder": "This command requires that you are a DJ or a Moderator to use it"
+	},
+	"promoteSuccess": "{{GREENTICK} Successfully promoted **{{title}}** (<{{url}}>) to the top of the queue",
+	"volumeDescription": "Manage the volume for current song.",
+	"volumeSuccess": "📢 Volume: {{volume}}%",
+	"volumeChanged": "{{emoji} Volume set to: {{volume}}%",
+	"volumeChangedExtreme": "{{emoji} {{text}} set to: {{volume}}%",
+	"volumeChangedTexts": [
+		"**EXTREME VOLUME**",
+		"**AIRPLANE NACELLE-LIKE VOLUME**",
+		"**FALCON HEAVY LAUNCH-LIKE VOLUME**"
+	]
+}

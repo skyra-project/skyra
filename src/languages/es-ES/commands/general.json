@@ -1,0 +1,54 @@
+{
+	"helpAllFlag": "Displaying one category per page. Have issues with the embed? Run `{{prefix}}help --all` for a full list in DMs.",
+	"helpCommandCount": "{{count}} command",
+	"helpCommandCount_plural": "{{count}} commands",
+	"helpData": {
+		"extended": "🔍 | ***Extended Help***\n{{extendedHelp}}",
+		"footer": "Command help for {{footerName}}",
+		"title": "{{titleDescription}}",
+		"usage": "📝 | ***Command Usage***\n`{{usage}}`\n"
+	},
+	"helpDescription": "Display help for a command.",
+	"helpDm": "📥 | The list of commands you have access to has been sent to your DMs.",
+	"helpNodm": "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
+	"helpNoExtended": "No extended help available.",
+	"infoBody": [
+		"Skyra {{VERSION}} is a multi-purpose Discord Bot designed to run the majority of tasks with a great performance and constant 24/7 uptime.",
+		"She is built on top of Klasa, a 'plug-and-play' framework built on top of the Discord.js library.",
+		"",
+		"Skyra features:",
+		"• Advanced Moderation with temporary actions included",
+		"• Announcement management",
+		"• Fully configurable",
+		"• Message logs, member logs, and mod logs",
+		"• Multilingual",
+		"• Profiles and levels, with leaderboards and social management",
+		"• Role management",
+		"• Weeb commands (+10)!",
+		"• A full PokéDex with all data you will need",
+		"And more!"
+	],
+	"infoDescription": "Provides some information about this bot.",
+	"inviteDescription": "Shows the invite link to add Skyra to your server.",
+	"inviteExtended": {
+		"extendedHelp": "If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms`, or `--nopermissions` to the command.",
+		"examples": [
+			"",
+			"noperms",
+			"--noperms",
+			"--nopermissions"
+		]
+	},
+	"invitePermissionInviteText": "Invite Skyra to your server",
+	"invitePermissionsDescription": "Don't be afraid to uncheck some permissions, I will let you know if you're trying to run a command without permissions.",
+	"invitePermissionSupportServerText": "Join Support Server",
+	"ping": "{{LOADING}} Ping?",
+	"pingDescription": "Runs a connection test to Discord.",
+	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)",
+	"supportDescription": "Show support instructions",
+	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
+	"supportEmbedTitle": "Looking for help, {{username}}?",
+	"supportExtended": {
+		"extendedHelp": "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
+	}
+}

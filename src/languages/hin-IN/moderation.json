@@ -1,0 +1,24 @@
+{
+	"caseNotExists": "",
+	"caseNotExists_plural": "",
+	"logAppealed": "",
+	"logDescriptionTypeAndUser": [
+		"",
+		""
+	],
+	"logDescriptionWithReason": "",
+	"logDescriptionWithoutReason": "",
+	"logExpiresIn": "",
+	"logFooter": "",
+	"muteCannotManageRoles": "",
+	"muteLowHierarchy": "",
+	"muteNotConfigured": "",
+	"muteNotExists": "",
+	"muteNotInMember": "",
+	"restrictionNotConfigured": "",
+	"roleHigher": "",
+	"roleHigherSkyra": "",
+	"success": "",
+	"toSkyra": "",
+	"userSelf": ""
+}

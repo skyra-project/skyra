@@ -1,0 +1,43 @@
+{
+	"announcement": "",
+	"announcementCancelled": "",
+	"announcementDescription": "",
+	"announcementEmbedMentions": "",
+	"announcementEmbedMentionsWithMentions": "",
+	"announcementExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"announcementPrompt": "",
+	"announcementSuccess": "",
+	"subscribeDescription": "",
+	"subscribeExtended": {
+		"extendedHelp": ""
+	},
+	"subscribeNoChannel": "",
+	"subscribeNoRole": "",
+	"subscribeSuccess": "",
+	"unsubscribeDescription": "",
+	"unsubscribeExtended": {
+		"extendedHelp": ""
+	},
+	"unsubscribeSuccess": ""
+}

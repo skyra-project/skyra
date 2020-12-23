@@ -1,0 +1,21 @@
+{
+	"cooldown": "You have just used this command. You can use this command again in {{remaining}}.",
+	"disabledGlobal": "This command has been globally disabled by the bot owners. Want to know why and find out when it will be back? Join the official Skyra server: <https://join.skyra.pw>",
+	"disabledGuild": "This command has been disabled by an admin in this guild!",
+	"missingBotPerms": "I don't have sufficient permissions! I'm missing: {{missing}}",
+	"musicBothVoiceChannel": "{{REDCROSS}} Hey! It looks like you're not in the same voice channel as me! Please come join me!",
+	"musicBotVoiceChannel": "{{REDCROSS}} I am afraid I need to be in a voice channel to operate this command, please show me the way!",
+	"musicDjMember": "{{REDCROSS}} I believe this is something only a moderator or a deejay of this session is supposed to do!",
+	"musicNothingPlaying": "{{REDCROSS}} Looks like nothing is playing right now, how about you start the party 🎉?",
+	"musicNotPlaying": "{{REDCROSS}} Hmm, doesn't look like I'm playing anything right now.",
+	"musicPaused": "{{REDCROSS}} The queue's playing and the session is still up 'till the night ends!",
+	"musicQueueEmpty": "{{REDCROSS}} The queue's empty! The session will start as soon as we have some songs queued.",
+	"musicUserVoiceChannel": "{{REDCROSS}} Hey, I need you to join a voice channel before I can run this command!",
+	"nsfw": "You may not use NSFW commands in this channel!",
+	"permissions": "You do not have permission to use this command!",
+	"requiredSettings_plural": "The guild is missing the **{{settings}}** guild settings and thus the command cannot run.",
+	"requiredSettings": "The guild is missing the **{{settings}}** guild setting and thus the command cannot run.",
+	"runin": "This command is only available in {{type}} channels.",
+	"runinNone": "The {{name}} command is not configured to run in any channel.",
+	"spam": "Can we move to {{channel}} please? This command might be too spammy and can ruin other people's conversations."
+}

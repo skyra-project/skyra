@@ -704,42 +704,42 @@
     parse-glob "3.0.4"
     promise-retry "1.1.1"
 
-"@sapphire/eslint-config@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-1.1.0.tgz#9c5eb2d2161def04a3af299b09cad4566e01bcab"
-  integrity sha512-9FHKkDs8NJxibgqT/HLV7ktrVC+3bwzrj+ae1Pi65uFq9xEMwXRVOfrTPQPlF7WKE8B+dmnDCMgwJkndOwS5hw==
-
-"@sapphire/prettier-config@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@sapphire/prettier-config/-/prettier-config-1.0.2.tgz#b656e806c6088dce70427b527070324c31838be2"
-  integrity sha512-OGIt0oDKk6UAZfWt+OH1kYfmFJkUbDZtzgsObssfAP8L93pkB56Wm2y+HFAv1RmLBHJQOxO99ngTyIsLN2bWzA==
-
-"@sapphire/snowflake@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-1.2.1.tgz#8dc5e9ae1f0c41f1d306ae58d4ef4ca41b822104"
-  integrity sha512-5HZAZAPh8Jd7G8rDwJ3b/PHFt+bsJzY3pZ8rE+OhkYBWSlDeNmNRwtMT8DCh7GtiFfevxdw85LB6c3fN0Sbu4A==
-
-"@sapphire/time-utilities@^1.2.1":
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.2.1.tgz#6ffa9af8256a9c193c2a9dd0932a75165497fb9c"
-  integrity sha512-EG0Vc5AwMZsIVZmFUJYphEpq0ldFHRRqmy0RqJJeVWr8nviJ2bcvOmZ+TmIYXbvU9R9giTbl9C6z0F++9JAeeA==
-  dependencies:
-    "@sapphire/utilities" "^1.2.0"
-
-"@sapphire/ts-config@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@sapphire/ts-config/-/ts-config-1.0.3.tgz#e923ca8b04a1f759961cee309ed8f64880bfa9a1"
-  integrity sha512-Id//WIO0zAj07TqO8wkr9IboQwzW/ZKuTP2BA2UlnmnJ4j3ShkKazRa2m3p6FWpnlUbDf2GN8In1lYc+GXTvNQ==
-
-"@sapphire/type@^1.1.1":
+"@sapphire/eslint-config@^1.1.1":
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.1.tgz#f9da91e00006a3a48baaad46a895ad3253ef71e1"
-  integrity sha512-uKW8kNJz6xKnZKUynaN7Q6h8fq+YBdE/7y6fIGL4h5VYrPZioBhmBxmRxvN+ZXzvOX36K8BHe6PfgptFWI1GIg==
+  resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-1.1.1.tgz#4526dc4f1ef256957caaac0240d6ba1284cc01d1"
+  integrity sha512-/nOxMp0Q8N6qcnAkK3XiZR8AZfIfyq4PAtBXCDrNhPzheaHZxX85ocVVo3nsCrI2wUuwkE5Ep0Qt6g6j2kROIQ==
 
-"@sapphire/utilities@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.2.0.tgz#a4056df4a2eb994dd55b80ee412c17db59635e2c"
-  integrity sha512-Ji7w87jGE0blTFHIYc4G2GWLhAYfuzGLCHIG/Rso2y4G2ASTDQggXE2DuB2jKiaoyD4ulAfL3dd/Kmt1ISHp3Q==
+"@sapphire/prettier-config@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@sapphire/prettier-config/-/prettier-config-1.0.4.tgz#c95d8ef00c6a4441ca42f9a4b72abb1a33013580"
+  integrity sha512-KQz5jyRU7IH523UOcnQvScobY13wnPUlGYoGaccon4naaraXniGunVVgQFpY+Zyrqn3DjlQavsMUki0sYbEc6w==
+
+"@sapphire/snowflake@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/snowflake/-/snowflake-1.2.2.tgz#f9460ca795ea9045a2efd6d76946c87a45e1c31b"
+  integrity sha512-LBOdnJtvSYzsimCDFprP8bhTYleruxXHh9PlUEK144T0t/HWhHikKcKfRxPfgKi/wcUXBKytfeuWF6qBHOaxvg==
+
+"@sapphire/time-utilities@^1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/time-utilities/-/time-utilities-1.2.2.tgz#436fa4a647c25dd3010bfa2ad2149fa5bcfa4768"
+  integrity sha512-3YXc7uDvMOobRXqzBydG+K77ZO28jjpl/WXEHIk0S8N87mlJp8dyyokH9//tPZXK4gGf9vT7CVHunBu7sJ12EQ==
+  dependencies:
+    "@sapphire/utilities" "^1.3.0"
+
+"@sapphire/ts-config@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/ts-config/-/ts-config-1.1.0.tgz#b4dc337d98f9cfc086a2e6e0ab545af0a5bfa90e"
+  integrity sha512-EQbQr461Ahn8tR/zWaOkciorFoq49dHpPpVY257EckUDGeRJ9Nwgpo9IfN2hnPjlnMqxbSV8awvLnwaLcEl4iQ==
+
+"@sapphire/type@^1.1.2":
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.2.tgz#a86e59c53764425ba5c682c0e77a0db5e2f0fc24"
+  integrity sha512-POONQUiiupl8DbgIbdM2Ip4WuDgV0l20MIYJLbXKhh86gox5GSrqNT1u4LSbWS95GCq0r7WZqFOYwwzTki++Pw==
+
+"@sapphire/utilities@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.3.0.tgz#3f02fe2d30e3a2866049704c9246e2cccd50b261"
+  integrity sha512-FehDDQYSOPpuTDHas0VcNbm9coaWxGOO2ZE+iX8OUyLs79oaLMX3o1HIw5Ab0cSqs88y79aAKpldk2dFj4nD9w==
 
 "@sentry/core@5.29.2":
   version "5.29.2"
@@ -935,10 +935,10 @@
   dependencies:
     i18next "^19.7.0"
 
-"@types/ioredis@^4.17.9":
-  version "4.17.9"
-  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.17.9.tgz#b11e4768a40ce6ae8d0c8b1266feb98e9dbfd999"
-  integrity sha512-YVLcCDQXaQRMK6Lut2f7KaiU2sV2dEN57AmZTtcZW/TXYv3wKwZTV87oUaA/IAI1Xk4s+d+kXLlCJkGAycfpHw==
+"@types/ioredis@^4.17.10":
+  version "4.17.10"
+  resolved "https://registry.yarnpkg.com/@types/ioredis/-/ioredis-4.17.10.tgz#63a99d9655b4f41682e627812ac1cbb2c0668ffa"
+  integrity sha512-1K6BE5oAuu+j8g0mMGDxFvEpbveI3w6aGtcaG3MgszofIGb5ms5xx7m+pgKiXb80c9kuwIaJMiNEeVOWZV3UiQ==
   dependencies:
     "@types/node" "*"
 
@@ -992,10 +992,10 @@
     "@types/node" "*"
     form-data "^3.0.0"
 
-"@types/node@*", "@types/node@^14.14.14":
-  version "14.14.14"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.14.tgz#f7fd5f3cc8521301119f63910f0fb965c7d761ae"
-  integrity sha512-UHnOPWVWV1z+VV8k6L1HhG7UbGBgIdghqF3l9Ny9ApPghbjICXkUJSd/b9gOgQfjM1r+37cipdw/HJ3F6ICEnQ==
+"@types/node@*", "@types/node@^14.14.16":
+  version "14.14.16"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.14.16.tgz#3cc351f8d48101deadfed4c9e4f116048d437b4b"
+  integrity sha512-naXYePhweTi+BMv11TgioE2/FXU4fSl29HAH1ffxVciNsH3rYXjNP2yM8wqmSm7jS20gM8TIklKiTen+1iVncw==
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.0"

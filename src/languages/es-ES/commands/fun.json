@@ -1,251 +1,251 @@
 {
-	"8ballDescription": "",
+	"8ballDescription": "Skyra leerá la Santa Biblia para encontrar la respuesta correcta para tu pregunta.",
 	"8ballExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Este comando te proporciona una pregunta aleatoria basada en el tipo de tus preguntas. Ten cuidado, puede ser demasiado inteligente.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"pregunta",
+				"La Sagrada Pregunta"
 			]
 		],
 		"examples": [
-			""
+			"¿Por qué cruzó la carretera el pollo?"
 		]
 	},
-	"choiceDescription": "",
+	"choiceDescription": "Pito pito, gorgorito, ¿dónde vas tú tan bonito?...",
 	"choiceExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Tengo una duda existencial... ¿debo lavar los platos o tirarlos por la ventana? La búsqueda continúa. Liste los elementos separados por coma y elegiré uno. Postdata, no soy responsable de lo que sucede después.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"palabras",
+				"Una lista de palabras separadas por coma."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Lavar los platos, Lanzar los platos a la ventana",
+			"Gato, Perro"
 		]
 	},
-	"changemymindDescription": "",
+	"changemymindDescription": "Skyra es la mejor, convénceme de lo contrario.",
 	"changemymindExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Sigo pensando que soy la mejor, convénceme de lo opuesto. Hago una foto con tu avatar y un poco de texto en un cartel.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"texto",
+				"La frase que desea."
 			]
 		],
 		"examples": [
-			""
+			"Skyra es el mejor bot de este servidor"
 		]
 	},
-	"diceDescription": "",
+	"diceDescription": "Lanza los dados usando la sintaxis d20.",
 	"diceExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Las mecánicas de este comando son fáciles. Tienes un dado, luego lo tiras __x__ veces, pero los dados también pueden configurarse para tener __y__ lados. Por defecto, este comando tira un dado con 6 lados una vez. Sin embargo, puedes cambiar la cantidad de tiradas para los dados, y este comando \"tirará\" (obtener un número aleatorio entre 1 y la cantidad de lados). Por ejemplo, tirar un dado con 6 lados 3 veces dejará una secuencia aleatoria de tres números aleatorios entre 1 y 6, por ejemplo: 3, 1, 6; lo cual hará que este comando devuelva 10 como salida.",
 		"examples": [
 			"",
 			"",
 			""
 		]
 	},
-	"escaperopeDescription": "",
+	"escaperopeDescription": "Usa la Cuerda Huida de Pokemon.",
 	"escaperopeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "**Skyra** utilizó **Cuerda Huida**."
 	},
-	"howToFlirtDescription": "",
+	"howToFlirtDescription": "Capitán América, usted no sabe cómo coquetear.",
 	"howToFlirtExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Déjenme mostrarles cómo coquetear eficazmente con alguien utilizando el estilo de Tony Stark para el Capitán América, puedo garantizarle que lo conseguirá.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"usuario",
+				"El usuario con el que coquetear."
 			]
 		],
 		"examples": [
 			""
 		]
 	},
-	"loveDescription": "",
+	"loveDescription": "Medidor de amor, ¡en línea!",
 	"loveExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "¡Hola! ¿Quieres probar el medidor de amor? Sé que es una máquina ridícula, ¡pero a muchos humanos les encanta! ¡No seas tímido y pruébalo!",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"usuario",
+				"El usuario a calificar."
 			]
 		],
 		"examples": [
-			""
+			"Skyra"
 		]
 	},
-	"markovDescription": "",
+	"markovDescription": "Genera una cadena de Markov desde el canal de texto.",
 	"markovExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Una cadena Markov es una co... ¿qué? Vale, algo que una teoría de probabilidad hecha por un matemático ruso, comprueba Wikipedia para más información. **En resumen**: Generaré un mensaje aleatorio dado el contenido de los mensajes en el canal."
 	},
-	"norrisDescription": "",
+	"norrisDescription": "Disfruta tu día leyendo las bromas de Chuck Norris.",
 	"norrisExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "¿Sabías que Chuck norris **no** llama al número equivocado, sino que tú **respondes** al teléfono equivocado? Ostras, ¡mi cabeza explotó! También lanzó un cartón de leche y creó la Vía Láctea. Este comando consulta chucknorris.io y recupera un hecho (no asuma que son falsos, no delante de él) así que puedes leerlo"
 	},
-	"rateDescription": "",
+	"rateDescription": "Deja que los robots tengan opiniones y valore a alguien.",
 	"rateExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Sólo porque soy un robot no significa que no pueda calificarte correctamente. Yo puedo calificarte con un generador de números aleatorios para facilitar el proceso. ¡Vaaale! No es justo, pero también quiero decir... también puedo darte 💯.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"usuario",
+				"El usuario a calificar."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Skyra",
+			"yo"
 		]
 	},
-	"xkcdDescription": "",
+	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "**xkcd** es un archivo de cómics repleto de matemáticas, ciencias, sarcasmo e idiomas. Si usted no proporciona ningún argumento, obtendré un cómic aleatorio de xkcd. Si en cambio, usted proporciona un número, yo le mostraré el cómic con dicho número. Pero si proporcionas un título/texto/tema, buscaré un cómic que coincida con tu entrada y lo mostraré. Por ejemplo, `Skyra, xkcd Curiosity` mostrará el cómic número 1091.",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"consulta",
+				"O bien el número del cómic o bien un título para buscar."
 			]
 		],
 		"examples": [
-			"",
-			""
+			"1091",
+			"Curiosidad"
 		]
 	},
-	"punDescription": "",
+	"punDescription": "The muestra un chiste aleatorio.",
 	"punExtended": {
 		"extendedHelp": [
-			"",
-			""
+			"¡Ahí va!\n\n👮‍♂️ Ha cometido un crimen matemático.\n🙍‍♂️ Pues lo asumo.\n👮‍♂️ Pues lo arresto.",
+			"Obtén tus dosis diarias de chistes de padres con icanhazdadjoke.com y reír de las sabiendas ingeniosas."
 		],
-		"multiline": ""
+		"multiline": true
 	},
-	"wakandaDescription": "",
+	"wakandaDescription": "¿Descripciones útiles? No hacemos eso aquí",
 	"wakandaExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Genera una imagen usando la plantilla [No Hacemos Eso Aquí](https://knowyourmeme.com/memes/we-dont-do-that-here) con el usuario dado."
 	},
-	"8ballOutput": "",
+	"8ballOutput": "🎱 Pregunta de {{author}}: *{{question}}*\n{{response}}",
 	"8ballQuestions": {
-		"When": "",
-		"What": "",
-		"HowMuch": "",
-		"HowMany": "",
-		"Why": "",
-		"Who": ""
+		"When": "cuándo",
+		"What": "qué",
+		"HowMuch": "cuánto",
+		"HowMany": "cuántos",
+		"Why": "por qué",
+		"Who": "quién"
 	},
 	"8ballWhen": [
-		"",
-		"",
-		"",
-		"",
-		""
+		"Pronto™",
+		"Tal vez mañana.",
+		"Tal vez el año que viene...",
+		"Ahora mismo.",
+		"En unos pocos meses."
 	],
 	"8ballWhat": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Un avión.",
+		"¿Qué? Pregunte de nuevo.",
+		"Un regalo.",
+		"Nada.",
+		"Un anillo.",
+		"No sé, tal vez algo."
 	],
 	"8ballHowMuch": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Mucho.",
+		"Un poco.",
+		"Un poco.",
+		"Pregúntame mañana.",
+		"No lo sé, pregúntele a un físico.",
+		"Nada.",
+		"Dentro de {{10 | random}} y {{1000 | random}}L.",
+		"{{10 | random}}e{{1000 | random}}L.",
+		"2 o 3 litros, no me recuerdo.",
+		"Infinito.",
+		"1010 litros."
 	],
 	"8ballHowMany": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Mucho.",
+		"Un poco.",
+		"Un poco.",
+		"Pregúntame mañana.",
+		"No lo sé, pregúntele a un físico.",
+		"Nada.",
+		"Entre {{10 | random}} y {{1000 | random}}.",
+		"{{10 | random}}e{{1000 | random}}.",
+		"2 o 3 litros, no me recuerdo.",
+		"Infinito",
+		"1010."
 	],
 	"8ballWhy": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Tal vez la genética.",
+		"Porque alguien lo decidió.",
+		"¡Por la gloria de Satán, por supuesto!",
+		"No sé, tal vez sea el destino.",
+		"Porque así lo dije.",
+		"No tengo ni idea.",
+		"Pregunte al dueño de este servidor.",
+		"Pregunta de nuevo.",
+		"Para llegar al otro lado.",
+		"Así lo dice en la Biblia."
 	],
 	"8ballWho": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Un ser humano.",
+		"Un robot.",
+		"Un avión.",
+		"Un ave.",
+		"Una composición del carbono.",
+		"Un puñado de ceros y otros.",
+		"No tengo ni idea de ello, ¿es material?",
+		"Eso no es lógico."
 	],
 	"8ballElse": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
+		"Muy probablemente.",
+		"Para nada.",
+		"¡SÍ!",
+		"Tal vez.",
+		"Como yo lo veo, sí",
+		"Pregúntame mañana.",
+		"No lo sé, pregúntele a un físico.",
+		"Mejor no decírtelo ahora.",
+		"No cuentes con ello.",
+		"Eso es cierto.",
+		"Es decididamente así.",
+		"Mis fuentes dicen que no.",
+		"Las perspectivas no son buenas.",
+		"Las perspectivas son buenas.",
+		"Respuesta confusa, intenta otra vez.",
+		"Las señales indican que si.",
+		"Lo dudo mucho.",
+		"Sin duda alguna.",
+		"Sí, sin duda alguna.",
+		"Puedes confiar en ello."
 	],
-	"choiceOutput": "",
-	"choiceMissing": "",
-	"choiceDuplicates": "",
-	"diceOutput": "",
-	"diceRollsError": "",
-	"diceSidesError": "",
-	"escaperopeOutput": "",
-	"loveLess45": "",
-	"loveLess75": "",
-	"loveLess100": "",
-	"love100": "",
-	"loveItself": "",
-	"loveResult": "",
-	"markovTimer": "",
-	"markovNoMessages": "",
-	"norrisOutput": "",
-	"rateOutput": "",
+	"choiceOutput": "🕺 *Pito pito, gorgorito, ¿dónde vas tú tan bonito?...* {{user}}, yo elijo:{{word | codeBlock}}",
+	"choiceMissing": "Por favor, escriba al menos dos opciones separadas por coma.",
+	"choiceDuplicates": "¿Por qué aceptaría palabras duplicadas? \"{{words}}\".",
+	"diceOutput": "¡Has tirado los dados! Has obtenido: **{{result}}**",
+	"diceRollsError": "Cantidad de lanzamientos debe ser un número entre 1 y 1024.",
+	"diceSidesError": "Cantidad de lados debe ser un número entre 3 y 1024.",
+	"escaperopeOutput": "**{{user}}** utilizó **Cuerda Huida**",
+	"loveLess45": "Inténtalo de nuevo la próxima vez...",
+	"loveLess75": "¡Suficientemente bueno!",
+	"loveLess100": "¡Buena pareja!",
+	"love100": "¡Pareja perfecta!",
+	"loveItself": "Eres una persona especial y te deberías amar más que a nadie más en este mundo <3",
+	"loveResult": "Resultado",
+	"markovTimer": "Procesado en {{timer}}.",
+	"markovNoMessages": "El canal o usuario no tiene mensajes.",
+	"norrisOutput": "Chuck Norris",
+	"rateOutput": "**{{author}}**, le daría a **{{userToRate}}** un **{{rate}}**/100 {{emoji}}",
 	"rateMyself": [
-		"",
-		""
+		". Me amo un montón 😊",
+		"yo mismo"
 	],
 	"rateOwners": [
-		"",
-		""
+		". Me encanta mucho a mis desarrolladores 🥰",
+		"mis desarrolladores"
 	],
-	"punError": "",
-	"xkcdComics": "",
-	"xkcdNotfound": ""
+	"punError": "Se ha producido un error. Por favor, inténtelo más tarde.",
+	"xkcdComics": "Solo hay {{amount}} cómics.",
+	"xkcdNotfound": "He buscado mucho, pero no tuve suerte en encontrar este cómic, ¡intente de nuevo más tarde o pruebe otro!"
 }

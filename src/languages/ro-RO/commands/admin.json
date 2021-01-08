@@ -1,0 +1,86 @@
+{
+	"confNoKey": "Trebuie să furnizați o cheie",
+	"confNoValue": "Trebuie să furnizați o valoare",
+	"confGuarded": "{{name, toTitleCase}} nu poate fi dezactivat(ă).",
+	"confUpdated": "S-a actualizat cu succes cheia **{{key}}**: `{{response}}`",
+	"confKeyNotArray": "Această cheie nu este o listă. Utilizați în schimb acțiunea \"reset\".",
+	"confGetNoExt": "Cheia **{{key}}** nu pare să existe.",
+	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",
+	"confReset": "",
+	"confNochange": "Cheia **{{key}}** are deja această valoare.",
+	"confServerDescription": "",
+	"confServer": "",
+	"confUserDescription": "",
+	"confDashboardOnlyKey": "",
+	"confUser": "",
+	"confSettingNotSet": "",
+	"rolesetDescription": "",
+	"rolesetExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"rolesetCreated": "",
+	"rolesetAdded": "",
+	"rolesetInvalidName": "",
+	"rolesetRemoved": "",
+	"rolesetResetEmpty": "",
+	"rolesetResetAll": "",
+	"rolesetResetNotExists": "",
+	"rolesetResetGroup": "",
+	"rolesetUpdated": "",
+	"rolesetNoRolesets": "",
+	"confMenuNopermissions": "",
+	"confMenuRenderAtFolder": "",
+	"confMenuRenderAtPiece": "",
+	"confMenuRenderNokeys": "",
+	"confMenuRenderSelect": "",
+	"confMenuRenderTctitle": "",
+	"confMenuRenderUpdate": "",
+	"confMenuRenderRemove": "",
+	"confMenuRenderReset": "",
+	"confMenuRenderUndo": "",
+	"confMenuRenderCvalue": "",
+	"confMenuRenderBack": "",
+	"confMenuInvalidKey": "",
+	"confMenuInvalidAction": "",
+	"confMenuSaved": ""
+}

@@ -1,32 +1,32 @@
 {
-	"catfactDescription": "",
+	"catfactDescription": "Permítanme que les diga un hecho gatuno misterioso.",
 	"catfactExtended": {
 		"extendedHelp": [
-			"",
-			""
+			"Sabes que los gatos son muy curiosos, ¿verdad? ¡Tienen un montón de hechos curiosos y divertidos!",
+			"Este comando consulta catfact.ninja y muestra un hecho para que puedas leerlo."
 		]
 	},
-	"catfactTitle": "",
-	"dogDescription": "",
+	"catfactTitle": "Hecho Gatuno",
+	"dogDescription": "¡Perritos lindos! ❤",
 	"dogExtended": {
 		"extendedHelp": [
-			"",
-			""
+			"¿Sabes **tú** cuán lindos son los perros? ¡Son tan hermosos!",
+			"¡Este comando usa [dog.ceo](https://dog.ceo) para mostrar fotos de los perritos más monos!"
 		]
 	},
-	"foxDescription": "",
+	"foxDescription": "¡Permítame mostrarte una imagen de un zorro!",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Este comando da una imagen aleatoria de [randomfox.ca](https://randomfox.ca/)"
 	},
-	"kittyDescription": "",
+	"kittyDescription": "¡GATITOS!",
 	"kittyExtended": {
 		"extendedHelp": [
-			"",
-			""
+			"¿Sabes **tú** cuán lindos son los gatos? ¡Son tan hermosos!",
+			"¡Este comando usa [cataas.com](https://cataas.com) para mostrar fotos de los gatitos más monos!"
 		]
 	},
-	"shibeDescription": "",
+	"shibeDescription": "¡Shibas monos!",
 	"shibeExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Todo el mundo ama a los shibas, ¡y yo también! Son tan adorables ❤."
 	}
 }

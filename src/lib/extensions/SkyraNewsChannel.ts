@@ -1,23 +1,6 @@
 import { Permissions, Structures } from 'discord.js';
-import { StringMap, TFunction, TOptions } from 'i18next';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
 
-export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsChannel')) {
-	public fetchLanguage(): Promise<string> {
-		// @ts-expect-error This is an incomplete Message, but the data is sufficient.
-		return this.client.i18n.resolveNameFromMessage({ channel: this, guild: this.guild });
-	}
-
-	public async fetchT() {
-		const language = this.client.i18n.languages.get(await this.fetchLanguage());
-		if (language) return language;
-		throw new Error(`The language '${language}' is not available.`);
-	}
-
-	public async fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string> {
-		return this.client.i18n.resolveValue(await this.fetchLanguage(), key, replace, options);
-	}
-
+export class SkyraNewsChannel extends Structures.get('NewsChannel') {
 	public get attachable() {
 		return this.postable && this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.ATTACH_FILES, false);
 	}
@@ -36,10 +19,7 @@ export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsCha
 }
 
 declare module 'discord.js' {
-	export interface NewsChannel extends TextBasedExtensions {
-		fetchLanguage(): Promise<string>;
-		fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
-		fetchT(): Promise<TFunction>;
+	export interface NewsChannel {
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;

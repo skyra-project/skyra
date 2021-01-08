@@ -6,7 +6,6 @@ import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Structures } from 'discord.js';
-import { StringMap, TFunction, TOptions } from 'i18next';
 
 export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);
@@ -18,19 +17,10 @@ export class SkyraGuild extends Structures.get('Guild') {
 		return this.client.audio.queues!.get(this.id);
 	}
 
-	public fetchLanguage(): Promise<string> {
-		// @ts-expect-error This is an incomplete Message, but the data is sufficient.
-		return this.client.i18n.resolveNameFromMessage({ guild: this });
-	}
-
 	public async fetchT() {
 		const language = this.client.i18n.languages.get(await this.fetchLanguage());
 		if (language) return language;
 		throw new Error(`The language '${language}' is not available.`);
-	}
-
-	public async fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string> {
-		return this.client.i18n.resolveValue(await this.fetchLanguage(), key, replace, options);
 	}
 
 	public readSettings(...args: readonly [any]): Promise<any> {
@@ -51,10 +41,6 @@ declare module 'discord.js' {
 		readonly starboard: StarboardManager;
 		readonly moderation: ModerationManager;
 		readonly stickyRoles: StickyRoleManager;
-
-		fetchLanguage(): Promise<string>;
-		fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
-		fetchT(): Promise<TFunction>;
 
 		readSettings<K1 extends keyof T>(paths: readonly [K1]): Promise<[T[K1]]>;
 		readSettings<K1 extends keyof T, K2 extends keyof T>(paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;

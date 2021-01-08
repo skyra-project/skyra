@@ -36,7 +36,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['commands', 'cmd', 'cmds'],
-	description: (language) => language.get(LanguageKeys.Commands.General.HelpDescription),
+	description: LanguageKeys.Commands.General.HelpDescription,
 	guarded: true,
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
@@ -59,9 +59,8 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	// TODO: Use new i18next format
 	public async run(message: KlasaMessage, [commandOrPage]: [SkyraCommand | number | undefined]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		if (message.flagArgs.categories || message.flagArgs.cat) {
 			const commandsByCategory = await this._fetchCommands(message);
@@ -70,7 +69,7 @@ export default class extends SkyraCommand {
 			for (const [category, commands] of commandsByCategory) {
 				const line = String(++i).padStart(2, '0');
 				commandCategories.push(
-					`\`${line}.\` **${category}** → ${language.get(
+					`\`${line}.\` **${category}** → ${t(
 						commands.length === 1 ? LanguageKeys.Commands.General.HelpCommandCount : LanguageKeys.Commands.General.HelpCommandCountPlural,
 						{ count: commands.length }
 					)}`
@@ -82,7 +81,7 @@ export default class extends SkyraCommand {
 
 		// Handle case for a single command
 		const command = typeof commandOrPage === 'object' ? commandOrPage : null;
-		if (command) return message.send(await this.buildCommandHelp(message, language, command));
+		if (command) return message.send(await this.buildCommandHelp(message, t, command));
 
 		const prefix = (await this.client.fetchPrefix(message)) as string;
 
@@ -92,10 +91,13 @@ export default class extends SkyraCommand {
 			(message.channel as TextChannel).permissionsFor(this.client.user!)!.has(PERMISSIONS_RICHDISPLAY)
 		) {
 			const response = await message.send(
-				language.get(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
-				new MessageEmbed({ description: pickRandom(language.get(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
+				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
+				new MessageEmbed({
+					description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }) as string[]),
+					color: BrandingColors.Secondary
+				})
 			);
-			const display = await this.buildDisplay(message, language, prefix);
+			const display = await this.buildDisplay(message, t, prefix);
 
 			// Extract start page and sanitize it
 			const page = isNumber(commandOrPage) ? commandOrPage - 1 : null;
@@ -105,10 +107,10 @@ export default class extends SkyraCommand {
 		}
 
 		try {
-			const response = await message.author.send(await this.buildHelp(message, language, prefix), { split: { char: '\n' } });
-			return message.channel.type === 'dm' ? response : await message.sendLocale(LanguageKeys.Commands.General.HelpDm);
+			const response = await message.author.send(await this.buildHelp(message, t, prefix), { split: { char: '\n' } });
+			return message.channel.type === 'dm' ? response : await message.sendTranslated(LanguageKeys.Commands.General.HelpDm);
 		} catch {
-			return message.channel.type === 'dm' ? null : message.sendLocale(LanguageKeys.Commands.General.HelpNodm);
+			return message.channel.type === 'dm' ? null : message.sendTranslated(LanguageKeys.Commands.General.HelpNodm);
 		}
 	}
 
@@ -123,7 +125,6 @@ export default class extends SkyraCommand {
 		return helpMessage.join('\n');
 	}
 
-	// TODO: Use new i18next format
 	private async buildDisplay(message: KlasaMessage, language: TFunction, prefix: string) {
 		const commandsByCategory = await this._fetchCommands(message);
 
@@ -139,9 +140,13 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	// TODO: Use new i18next format
 	private async buildCommandHelp(message: KlasaMessage, language: TFunction, command: SkyraCommand) {
-		const builderData = language.get(LanguageKeys.System.HelpTitles);
+		const builderData = language(LanguageKeys.System.HelpTitles, { returnObjects: true }) as {
+			explainedUsage: string;
+			possibleFormats: string;
+			examples: string;
+			reminders: string;
+		};
 
 		const builder = new LanguageHelp()
 			.setExplainedUsage(builderData.explainedUsage)
@@ -153,12 +158,17 @@ export default class extends SkyraCommand {
 
 		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
-		const data = language.get(LanguageKeys.Commands.General.HelpData, {
+		const data = language(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
 			titleDescription: isFunction(command.description) ? command.description(language) : command.description,
 			usage: command.usage.fullUsage(message),
 			extendedHelp
-		});
+		}) as {
+			title: string;
+			usage: string;
+			extended: string;
+			footer: string;
+		};
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))

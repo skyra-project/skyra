@@ -21,9 +21,6 @@ import { Twitch } from './util/Notifications/Twitch';
 // Import all configuration
 import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR, WEBHOOK_FEEDBACK } from '#root/config';
 
-// Import all i18next extensions and schemas
-import '@sapphire/plugin-i18next/register-discordjs';
-
 // Import all extensions and schemas
 import './extensions';
 

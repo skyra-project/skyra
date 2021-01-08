@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
-import { Structures } from 'discord.js';
+import { Structures, Message } from 'discord.js';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
-export class SkyraDMChannel extends Structures.get('DMChannel') {
+export class SkyraDMChannel extends TextBasedExtension(Structures.get('DMChannel')) {
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(({ channel: this, guild: null } as unknown) as Message);
+		return lang ?? this.client.i18n.options?.defaultName ?? 'en-US';
+	}
+
 	public get attachable() {
 		return true;
 	}
@@ -20,7 +26,8 @@ export class SkyraDMChannel extends Structures.get('DMChannel') {
 }
 
 declare module 'discord.js' {
-	export interface DMChannel {
+	export interface DMChannel extends TextBasedExtensions {
+		fetchLanguage(): Promise<string>;
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;

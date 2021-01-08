@@ -1,8 +1,14 @@
 import { Message, Permissions, Structures, TextChannel } from 'discord.js';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 const snipes = new WeakMap<TextChannel, SnipedMessage>();
 
-export class SkyraTextChannel extends Structures.get('TextChannel') {
+export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextChannel')) {
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(({ channel: this, guild: this.guild } as unknown) as Message);
+		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
+	}
+
 	public set sniped(value: Message | null) {
 		const previous = snipes.get(this);
 		if (typeof previous !== 'undefined') this.client.clearTimeout(previous.timeout);
@@ -46,7 +52,8 @@ export interface SnipedMessage {
 }
 
 declare module 'discord.js' {
-	export interface TextChannel {
+	export interface TextChannel extends TextBasedExtensions {
+		fetchLanguage(): Promise<string>;
 		sniped: Message | null;
 		readonly attachable: boolean;
 		readonly embedable: boolean;

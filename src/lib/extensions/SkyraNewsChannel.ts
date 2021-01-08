@@ -1,6 +1,12 @@
-import { Permissions, Structures } from 'discord.js';
+import { Message, Permissions, Structures } from 'discord.js';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
-export class SkyraNewsChannel extends Structures.get('NewsChannel') {
+export class SkyraNewsChannel extends TextBasedExtension(Structures.get('NewsChannel')) {
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(({ channel: this, guild: this.guild } as unknown) as Message);
+		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
+	}
+
 	public get attachable() {
 		return this.postable && this.permissionsFor(this.guild.me!)!.has(Permissions.FLAGS.ATTACH_FILES, false);
 	}
@@ -19,7 +25,8 @@ export class SkyraNewsChannel extends Structures.get('NewsChannel') {
 }
 
 declare module 'discord.js' {
-	export interface NewsChannel {
+	export interface NewsChannel extends TextBasedExtensions {
+		fetchLanguage(): Promise<string>;
 		readonly attachable: boolean;
 		readonly embedable: boolean;
 		readonly postable: boolean;

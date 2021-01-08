@@ -1,31 +1,31 @@
 {
 	"yarnDescription": "",
 	"yarnExtended": {
-		"extendedHelp": "",
+		"extendedHelp": "Esto es para desarrolladores de NodeJS que quieren encontrar rápidamente información sobre un paquete publicado en [npm](https://npmjs.com)",
 		"explainedUsage": [
 			[
-				"",
-				""
+				"paquete",
+				"El nombre del paquete a buscar, tiene que ser una coincidencia exacta"
 			]
 		],
 		"examples": [
-			"",
-			"",
-			""
+			"@skyra/char",
+			"@skyra/saelem",
+			"@skyra/eslint-config"
 		]
 	},
-	"yarnEmbedDescriptionAuthor": "",
-	"yarnEmbedDescriptionDateCreated": "",
-	"yarnEmbedDescriptionDateModified": "",
-	"yarnEmbedDescriptionDependenciesLabel": "",
-	"yarnEmbedDescriptionDependenciesNoDeps": "",
-	"yarnEmbedDescriptionDeprecated": "",
-	"yarnEmbedDescriptionLatestVersion": "",
-	"yarnEmbedDescriptionLicense": "",
-	"yarnEmbedDescriptionMainFile": "",
-	"yarnEmbedDescriptionMaintainers": "",
-	"yarnEmbedMoreText": "",
-	"yarnNoPackage": "",
-	"yarnPackageNotFound": "",
-	"yarnUnpublishedPackage": ""
+	"yarnEmbedDescriptionAuthor": "❯ Autor: {{author}}",
+	"yarnEmbedDescriptionDateCreated": "❯ Fecha de creación: **{{dateCreated}}**",
+	"yarnEmbedDescriptionDateModified": "❯ Fecha de modificación **{{dateModified}}**",
+	"yarnEmbedDescriptionDependenciesLabel": "__*Dependencias:*__",
+	"yarnEmbedDescriptionDependenciesNoDeps": "¡No hay dependencias {{GREENTICK}}!",
+	"yarnEmbedDescriptionDeprecated": "❯ Aviso de desaprobación: **{{deprecated}}**",
+	"yarnEmbedDescriptionLatestVersion": "❯ Última versión: **{{latestVersionNumber}}**",
+	"yarnEmbedDescriptionLicense": "❯ Licencia: **{{license}}**",
+	"yarnEmbedDescriptionMainFile": "❯ Archivo principal: **{{mainFile}}**",
+	"yarnEmbedDescriptionMaintainers": "❯ Mantenedores: ",
+	"yarnEmbedMoreText": "más...",
+	"yarnNoPackage": "{{REDCROSS}} Lo siento, pero tienes que darme el nombre de un paquete para buscar.",
+	"yarnPackageNotFound": "Lo siento, pero no he podido encontrar ningún paquete con el nombre de `{{pkg}}` en el registro.",
+	"yarnUnpublishedPackage": "¡Qué desarrollador tonto que hizo {{pkg}}! ¡Han despublicado su paquete!"
 }

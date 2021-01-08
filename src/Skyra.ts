@@ -1,8 +1,6 @@
 import '#utils/initClean';
 import 'reflect-metadata';
 
-import '@sapphire/plugin-i18next/register-discordjs';
-
 import { DbSet } from '#lib/database';
 import { SkyraClient } from '#lib/SkyraClient';
 import { TOKENS } from '#root/config';

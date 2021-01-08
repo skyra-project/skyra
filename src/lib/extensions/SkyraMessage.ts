@@ -2,15 +2,45 @@
 import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { sleep } from '#utils/sleep';
+import { I18nextMessageImplementation } from '@sapphire/plugin-i18next';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
-import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
-import {} from '@sapphire/plugin-i18next';
+import {
+	Message,
+	MessageAdditions,
+	MessageExtendablesAskOptions,
+	MessageOptions,
+	Permissions,
+	SplitOptions,
+	Structures,
+	TextChannel
+} from 'discord.js';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
 export class SkyraMessage extends Structures.get('Message') {
+	public sendTranslated(
+		key: string,
+		values?: readonly unknown[],
+		options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
+	): Promise<Message>;
+
+	public sendTranslated(key: string, values?: readonly unknown[], options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+	public sendTranslated(key: string, options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
+	public sendTranslated(key: string, options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
+	public async sendTranslated(
+		key: string,
+		valuesOrOptions?: readonly unknown[] | MessageOptions | MessageAdditions,
+		rawOptions?: MessageOptions
+	): Promise<Message | Message[]> {
+		const [values, options]: [readonly unknown[], MessageOptions] =
+			valuesOrOptions === undefined || Array.isArray(valuesOrOptions)
+				? [valuesOrOptions ?? [], rawOptions ?? {}]
+				: [[], valuesOrOptions as MessageOptions];
+		return this.send(await this.resolveKey(key, ...values), options);
+	}
+
 	public async prompt(content: string, time = 30000) {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
@@ -95,6 +125,27 @@ declare module 'discord.js' {
 	}
 
 	interface Message {
+		sendTranslated(
+			key: string,
+			values?: readonly unknown[],
+			options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
+		): Promise<I18nextMessageImplementation>;
+		sendTranslated(
+			key: string,
+			values?: readonly unknown[],
+			options?: MessageOptions & { split: true | SplitOptions }
+		): Promise<I18nextMessageImplementation[]>;
+		sendTranslated(
+			key: string,
+			options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
+		): Promise<I18nextMessageImplementation>;
+		sendTranslated(key: string, options?: MessageOptions & { split: true | SplitOptions }): Promise<I18nextMessageImplementation[]>;
+		sendTranslated(
+			key: string,
+			valuesOrOptions?: readonly unknown[] | MessageOptions | MessageAdditions,
+			rawOptions?: MessageOptions
+		): Promise<I18nextMessageImplementation | I18nextMessageImplementation[]>;
+
 		prompt(content: string, time?: number): Promise<Message>;
 		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;

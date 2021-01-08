@@ -1,0 +1,111 @@
+{
+	"followage": "",
+	"followageMissingEntries": "",
+	"followageNotFollowing": "",
+	"twitchNoEntries": "",
+	"twitchTitles": {
+		"followers": "",
+		"views": "",
+		"clickToVisit": "",
+		"partner": ""
+	},
+	"twitchPartnershipWithoutAffiliate": "",
+	"twitchAffiliateStatus": {
+		"affiliated": "",
+		"partnered": ""
+	},
+	"twitchCreatedAt": "",
+	"twitchSubscriptionRequiredStreamer": "",
+	"twitchSubscriptionStreamerNotFound": "",
+	"twitchSubscriptionRequiredChannel": "",
+	"twitchSubscriptionRequiredStatus": "",
+	"twitchSubscriptionStatusValues": [
+		"",
+		""
+	],
+	"twitchSubscriptionInvalidStatus": "",
+	"twitchSubscriptionRequiredContent": "",
+	"twitchSubscriptionAddDuplicated": "",
+	"twitchSubscriptionAddSuccessOffline": "",
+	"twitchSubscriptionAddSuccessLive": "",
+	"twitchSubscriptionRemoveStreamerNotSubscribed": "",
+	"twitchSubscriptionRemoveEntryNotExists": "",
+	"twitchSubscriptionRemoveSuccessOffline": "",
+	"twitchSubscriptionRemoveSuccessLive": "",
+	"twitchSubscriptionResetEmpty": "",
+	"twitchSubscriptionResetSuccess": "",
+	"twitchSubscriptionResetSuccess_plural": "",
+	"twitchSubscriptionResetStreamerNotSubscribed": "",
+	"twitchSubscriptionResetChannelSuccess": "",
+	"twitchSubscriptionResetChannelSuccess_plural": "",
+	"twitchSubscriptionShowStreamerNotSubscribed": "",
+	"twitchSubscriptionShowStatus": [
+		"",
+		""
+	],
+	"twitchSubscriptionShowEmpty": "",
+	"twitchSubscriptionShowUnknownUser": "",
+	"followageDescription": "",
+	"followageExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"twitchDescription": "",
+	"twitchExtended": {
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
+	},
+	"twitchSubscriptionDescription": "",
+	"twitchSubscriptionExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	}
+}

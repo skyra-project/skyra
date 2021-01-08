@@ -1,1 +1,11 @@
-{}
+{
+	"and": "y",
+	"default": "La clave {{key}} aún no ha sido traducido para es-ES.",
+	"defaultLanguage": "Idioma predeterminado",
+	"is": "es",
+	"no": "No",
+	"none": "Ninguno",
+	"or": "o",
+	"unknown": "desconocido",
+	"yes": "Sí"
+}

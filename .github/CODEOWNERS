@@ -21,18 +21,3 @@
 /.yarnclean @favna
 /jest.config.js @favna
 /pm2.ecosystem.yml @favna
-
-# Just Quantum
-/src/commands/GameIntegration/ffxiv.ts @quantumlytangled
-/src/commands/Twitch/ @quantumlytangled
-/src/events/analytics/ @quantumlytangled
-/src/events/twitch/ @quantumlytangled
-/src/lib/orm/migrations/1594757329224-V13_MigrateAnalytics.ts @quantumlytangled
-/src/lib/types/definitions/Twitch.d.ts @quantumlytangled
-/src/lib/util/GameIntegration/FFXIVTypings.d.ts @quantumlytangled
-/src/lib/util/GameIntegration/FFXIVUtils.ts @quantumlytangled
-/src/lib/util/Notifications/ @quantumlytangled
-/src/lib/util/Tracking/ @quantumlytangled
-/src/monitors/analytics/ @quantumlytangled
-/src/routes/twitch/twitchStreamChange.ts @quantumlytangled
-/src/tasks/syncResourceAnalytics.ts @quantumlytangled

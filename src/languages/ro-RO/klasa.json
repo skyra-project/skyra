@@ -1,0 +1,16 @@
+{
+	"commandMessageMissing": "",
+	"commandMessageMissingOptionals": "",
+	"commandMessageMissingRequired": "",
+	"commandMessageNoMatch": "",
+	"messagePromptTimeout": "",
+	"monitorCommandHandlerAborted": "",
+	"monitorCommandHandlerRepeatingReprompt": "",
+	"monitorCommandHandlerReprompt": "",
+	"reactionhandlerPrompt": "",
+	"textPromptAbortOptions": [
+		"",
+		"",
+		""
+	]
+}

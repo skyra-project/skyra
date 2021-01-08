@@ -1,0 +1,186 @@
+{
+	"addDescription": "",
+	"addExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"addPlaylist": "",
+	"addPlaylistSongs": "",
+	"addPlaylistSongsPlural": "",
+	"addSong": "",
+	"clearDescription": "",
+	"clearDenied": "",
+	"clearSuccess": "",
+	"clearSuccessPlural": "",
+	"exportQueueDescription": "",
+	"exportQueueExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"exportQueueSuccess": "",
+	"importQueueDescription": "",
+	"importQueueExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"joinDescription": "",
+	"joinNoMember": "",
+	"joinNoVoicechannel": "",
+	"joinSuccess": "",
+	"joinVoiceDifferent": "",
+	"joinVoiceFull": "",
+	"joinVoiceNoConnect": "",
+	"joinVoiceNoSpeak": "",
+	"joinVoiceSame": "",
+	"joinFailed": "",
+	"leaveDescription": "",
+	"leaveExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"leaveSuccess": "",
+	"pauseDescription": "",
+	"pauseSuccess": "",
+	"playDescription": "",
+	"playExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"playEnd": "",
+	"playNext": "",
+	"playQueuePaused": "",
+	"playQueuePlaying": "",
+	"playQueueEmpty": "",
+	"playingDescription": "",
+	"playingDuration": "",
+	"playingQueueEmpty": "",
+	"playingQueueNotPlaying": "",
+	"repeatDescription": "",
+	"repeatSuccessEnabled": "",
+	"repeatSuccessDisabled": "",
+	"queueDescription": "",
+	"queueLast": "",
+	"queueTitle": "",
+	"queueLine": "",
+	"queueNowplaying": "",
+	"queueNowplayingLiveStream": "",
+	"queueNowplayingTimeRemaining": "",
+	"queueNowplayingTitle": "",
+	"queueTotalTitle": "",
+	"queueTotal": "",
+	"queueEmpty": "",
+	"queueDashboardInfo": "",
+	"removeDescription": "",
+	"removeIndexInvalid": "",
+	"removeIndexOutOfBounds": "",
+	"removeDenied": "",
+	"removeSuccess": "",
+	"seekDescription": "",
+	"seekSuccess": "",
+	"resumeDescription": "",
+	"resumeSuccess": "",
+	"shuffleDescription": "",
+	"shuffleSuccess": "",
+	"skipDescription": "",
+	"skipPermissions": "",
+	"skipVotesVoted": "",
+	"skipVotesTotal": "",
+	"skipSuccess": "",
+	"playingTimeDescription": "",
+	"playingTimeQueueEmpty": "",
+	"promoteDescription": "",
+	"promoteExtended": {
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
+	},
+	"promoteSuccess": "",
+	"volumeDescription": "",
+	"volumeSuccess": "",
+	"volumeChanged": "",
+	"volumeChangedExtreme": "",
+	"volumeChangedTexts": [
+		"",
+		"",
+		""
+	]
+}

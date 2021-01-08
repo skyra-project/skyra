@@ -398,7 +398,7 @@
 		"{1}, {2}, {3} и {4} выслеживают и убивают {5T}.",
 		"{1}, {2} и {3} выслеживают и убивают {4T}.",
 		"{1} и {2} выслеживают и убивают {3T}.",
-		"",
+		"{1} выслеживает и убивает {2T}.",
 		"",
 		"",
 		""
@@ -427,13 +427,13 @@
 	"higherLowerLose": {
 		"description": "",
 		"footer": "",
-		"title": ""
+		"title": "Вы проиграли!"
 	},
 	"higherLowerNewround": "",
 	"higherLowerWin": {
 		"description": "",
 		"footer": "",
-		"title": ""
+		"title": "Вы выиграли!"
 	},
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {

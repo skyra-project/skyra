@@ -7,7 +7,7 @@
 		]
 	},
 	"catfactTitle": "",
-	"dogDescription": "",
+	"dogDescription": "Милые собачки! ❤",
 	"dogExtended": {
 		"extendedHelp": [
 			"",
@@ -16,9 +16,9 @@
 	},
 	"foxDescription": "",
 	"foxExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Эта команда выдаёт случайное изображение с [randomfox.ca](https://randomfox.ca/)"
 	},
-	"kittyDescription": "",
+	"kittyDescription": "КОТЯТА!",
 	"kittyExtended": {
 		"extendedHelp": [
 			"",

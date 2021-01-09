@@ -1,41 +1,41 @@
 {
-	"c4Description": "",
+	"c4Description": "किसी के साथ कनेक्ट-फोर खेलें |",
 	"c4Extended": {
 		"extendedHelp": [
-			"",
-			""
+			"यह खेल PC पर सबसे अच्छे से खेला जाता है |",
+			"कनेक्ट-फोर एक खेल है जिसे दो लोग एक समय पर खेल सकते हैं | खिलाड़ी सबसे पहले एक रंग चुनते हैं और बारी बारी से रंगीन गोले एक सात कॉलम और छह पंक्तियों वाली ग्रिड पर रखते हैं |"
 		],
-		"multiline": ""
+		"multiline": true
 	},
-	"c4GameColumnFull": "",
-	"c4GameDraw": "",
-	"c4GameNext": "",
-	"c4GameNextTurn0": "",
-	"c4GameWin": "",
-	"c4GameWinTurn0": "",
-	"c4Prompt": "",
-	"c4Start": "",
-	"cannotHaveNegativeMoney": "",
+	"c4GameColumnFull": "यह कॉलम भर चुका है | कृपया फिर से प्रयास करें | ",
+	"c4GameDraw": "यह मुकाबला **बराबरी** का था |",
+	"c4GameNext": "बारी है: {{user}} (लाल) |",
+	"c4GameNextTurn0": "बारी है: {{user}} (नीला) |",
+	"c4GameWin": "{{user}} (लाल) की जीत हुई !",
+	"c4GameWinTurn0": "{{user}} (नीला) की जीत हुई !",
+	"c4Prompt": "प्रिय {{challengee}}}, {{{{challenger}} ने आपको कनेक्ट-फोर मुकाबले कि चुनौती दी है | उत्तर में **हाँ** लिखें चुनौती स्वीकार करने के लिए !",
+	"c4Start": "खेल शुरू किया जाए ! बारी है: **{{player}}** |",
+	"cannotHaveNegativeMoney": "आपके पास {{SHINY}} ऋणात्मक संख्या में नहीं हो सकती",
 	"coinFlipCoinnames": [
-		"",
-		""
+		"चित्त",
+		"पट्ट"
 	],
-	"coinFlipDescription": "",
+	"coinFlipDescription": "सिक्का उछालें !",
 	"coinFlipExtended": {
 		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
+			"सिक्का उछालें | यदि आपका अनुमान सही हुआ, तो बाजी की रक़म दुगनी हो जायेगी |",
+			"यदि आपका अनुमान गलत हुआ तो आप बाजी हार जायेंगे |",
+			"आप बिना किसी रक़म के भी सिक्का उछाल सकते हैं, जिसमे पैसे नहीं लगते, परन्तु आपको इनाम भी नहीं मिलेगा |",
+			"अब सिक्के उछालना शुरू कीजिये |"
 		],
 		"examples": [
-			"",
-			""
+			"चित्त ५०",
+			"पट्ट २००"
 		],
-		"multiline": ""
+		"multiline": true
 	},
-	"coinFlipInvalidCoinname": "",
-	"coinFlipLoseDescription": "",
+	"coinFlipInvalidCoinname": "सुनिए, {{arg}} सिक्के का चेहरा नहीं है!",
+	"coinFlipLoseDescription": "सिक्का उछाला गया, और {{result}} आया | आपका अनुमान सही नहीं था |",
 	"coinFlipLoseDescriptionWithWager": "",
 	"coinFlipLoseTitle": "",
 	"coinFlipNoguessDescription": "",

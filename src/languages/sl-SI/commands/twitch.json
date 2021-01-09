@@ -7,14 +7,14 @@
 		"followers": "",
 		"views": "",
 		"clickToVisit": "",
-		"partner": ""
+		"partner": "Partner"
 	},
 	"twitchPartnershipWithoutAffiliate": "",
 	"twitchAffiliateStatus": {
 		"affiliated": "",
 		"partnered": ""
 	},
-	"twitchCreatedAt": "",
+	"twitchCreatedAt": "Ustvarjeno ob:",
 	"twitchSubscriptionRequiredStreamer": "",
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionRequiredChannel": "",
@@ -44,7 +44,7 @@
 		""
 	],
 	"twitchSubscriptionShowEmpty": "",
-	"twitchSubscriptionShowUnknownUser": "",
+	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",
 	"followageExtended": {
 		"extendedHelp": "",
@@ -56,7 +56,7 @@
 	"twitchExtended": {
 		"extendedHelp": "",
 		"examples": [
-			""
+			"riotgames"
 		]
 	},
 	"twitchSubscriptionDescription": "",
@@ -67,7 +67,7 @@
 			"",
 			"",
 			"",
-			"",
+			"- `%TITLE%` za naslov pretoka",
 			"",
 			"",
 			"",
@@ -98,14 +98,14 @@
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"add favna #twitch online --embed",
+			"add favna #twitch online %USER_NAME% je šel v živo | %TITLE%",
+			"remove kyranet #twitch online",
+			"reset kyranet",
+			"reset",
+			"show kyranet",
+			"show"
 		],
-		"multiline": ""
+		"multiline": true
 	}
 }

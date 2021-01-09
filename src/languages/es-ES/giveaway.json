@@ -6,8 +6,6 @@
 	"giveawayTitle": "🎉 **SORTEO** 🎉",
 	"giveawayLastchance": "¡**ÚLTIMA OPORTUNIDAD**! Tiempo restante: **{{time, duration}}**. Reacciona a este mensaje con 🎉 para unirse.",
 	"giveawayLastchanceTitle": "🎉 **ÚLTIMA OPORTUNIDAD PARA EL SORTEO** 🎉",
-	"giveawayEnded": "Ganador: {{winners}}",
-	"giveawayEndedPlural": "Ganadores: {{winners}}",
 	"giveawayEndedNoWinner": "No hay ganador...",
 	"giveawayEndedAt": "Finalizado en:",
 	"giveawayEndedTitle": "🎉 **SORTEO TERMINADO** 🎉",

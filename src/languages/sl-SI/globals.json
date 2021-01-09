@@ -1,1 +1,11 @@
-{}
+{
+	"and": "in",
+	"default": "{{key}} še ni lokaliziran za sl-SI.",
+	"defaultLanguage": "Prevzeti Jezik",
+	"is": "je",
+	"no": "Ne",
+	"none": "Nič",
+	"or": "ali",
+	"unknown": "neznano",
+	"yes": "Da"
+}

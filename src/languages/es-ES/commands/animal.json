@@ -2,7 +2,7 @@
 	"catfactDescription": "Permítanme que les diga un hecho gatuno misterioso.",
 	"catfactExtended": {
 		"extendedHelp": [
-			"Sabes que los gatos son muy curiosos, ¿verdad? ¡Tienen un montón de hechos curiosos y divertidos!",
+			"",
 			"Este comando consulta catfact.ninja y muestra un hecho para que puedas leerlo."
 		]
 	},
@@ -16,7 +16,7 @@
 	},
 	"foxDescription": "¡Permítame mostrarte una imagen de un zorro!",
 	"foxExtended": {
-		"extendedHelp": "Este comando da una imagen aleatoria de [randomfox.ca](https://randomfox.ca/)"
+		"extendedHelp": ""
 	},
 	"kittyDescription": "¡GATITOS!",
 	"kittyExtended": {
@@ -27,6 +27,6 @@
 	},
 	"shibeDescription": "¡Shibas monos!",
 	"shibeExtended": {
-		"extendedHelp": "Todo el mundo ama a los shibas, ¡y yo también! Son tan adorables ❤."
+		"extendedHelp": ""
 	}
 }

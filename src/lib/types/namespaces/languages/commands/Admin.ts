@@ -29,6 +29,7 @@ export const ConfNoValue = T<string>('commands/admin:confNoValue');
 export const ConfReset = FT<{ key: string; value: string }, string>('commands/admin:confReset');
 export const Conf = FT<{ key: string; list: string }, string>('commands/admin:confServer');
 export const ConfDescription = T<string>('commands/admin:confServerDescription');
+export const ConfExtended = T<LanguageHelpDisplayOptions>('commands/admin:confServerExtendedHelp');
 export const ConfSettingNotSet = T<string>('commands/admin:confSettingNotSet');
 export const ConfUpdated = FT<{ key: string; response: string }, string>('commands/admin:confUpdated');
 export const ConfUser = FT<{ key: string; list: string }, string>('commands/admin:confUser');

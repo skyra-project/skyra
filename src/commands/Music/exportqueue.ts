@@ -12,8 +12,8 @@ export const maximumExportQueueSize = 100;
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['eq'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Music.ExportQueueDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.ExportQueueExtended),
+	description: LanguageKeys.Commands.Music.ExportQueueDescription,
+	extendedHelp: LanguageKeys.Commands.Music.ExportQueueExtended,
 	requiredGuildPermissions: ['ATTACH_FILES'],
 	runIn: ['text']
 })
@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		const head = await audio.getCurrentTrack().then((v) => this.serializeCurrent(v));
 		const data = await audio.tracks().then((tracks) => this.serializeQueue(tracks, head));
 
-		return message.channel.send(await message.fetchLocale(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
+		return message.channel.send(await message.resolveKey(LanguageKeys.Commands.Music.ExportQueueSuccess, { guildName: name }), {
 			files: [{ attachment: Buffer.from(data), name: `${name}-${Date.now()}.squeue` }]
 		});
 	}

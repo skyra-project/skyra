@@ -21,7 +21,7 @@ export default class extends Event {
 		if (!channel) return;
 
 		// Send the message and automatically delete it once the threshold is reached.
-		const response = await channel.sendLocale(LanguageKeys.MusicManager.Stuck, [{ milliseconds: payload.thresholdMs }]);
+		const response = await channel.sendTranslated(LanguageKeys.MusicManager.Stuck, [{ milliseconds: payload.thresholdMs }]);
 		await response.nuke(payload.thresholdMs);
 	}
 }

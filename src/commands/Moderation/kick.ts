@@ -8,8 +8,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['k'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.KickDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.KickExtended),
+	description: LanguageKeys.Commands.Moderation.KickDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.KickExtended,
 	requiredGuildPermissions: ['KICK_MEMBERS'],
 	requiredMember: true
 })

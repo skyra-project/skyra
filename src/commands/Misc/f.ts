@@ -13,8 +13,8 @@ import { join } from 'path';
 	aliases: ['pray'],
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Misc.FDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.FExtended),
+	description: LanguageKeys.Commands.Misc.FDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.FExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[user:username]'

@@ -12,8 +12,8 @@ import { Command } from 'klasa';
 	bucket: 2,
 	cooldown: 10,
 	permissionLevel: PermissionLevels.Administrator,
-	description: (language) => language.get(LanguageKeys.Commands.Management.PermissionNodesDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.PermissionNodesExtended),
+	description: LanguageKeys.Commands.Management.PermissionNodesDescription,
+	extendedHelp: LanguageKeys.Commands.Management.PermissionNodesExtended,
 	subcommands: true,
 	runIn: ['text'],
 	usage: '<add|remove|reset|show:default> <role:rolename{2}|user:membername> (type:type) (command:command)',
@@ -32,73 +32,76 @@ import { Command } from 'klasa';
 		async (arg, _possible, message, [action]) => {
 			if (action === 'reset' || action === 'show') return undefined;
 			if (/allow|deny/i.test(arg)) return arg.toLowerCase();
-			throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesInvalidType);
+			throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesInvalidType);
 		}
 	]
 ])
 export default class extends SkyraCommand {
 	public async add(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
-		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.add(target, command.name, action);
 			return settings.getLanguage();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesAdd));
+		return message.send(t(LanguageKeys.Commands.Management.PermissionNodesAdd));
 	}
 
 	public async remove(message: GuildMessage, [target, action, command]: [Role | GuildMember, PermissionNodeAction, Command]) {
-		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.remove(target, command.name, action);
 			return settings.getLanguage();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesRemove));
+		return message.send(t(LanguageKeys.Commands.Management.PermissionNodesRemove));
 	}
 
 	public async reset(message: GuildMessage, [target]: [Role | GuildMember]) {
-		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
 
-		const language = await message.guild.writeSettings((settings) => {
+		const t = await message.guild.writeSettings((settings) => {
 			settings.permissionNodes.reset(target);
 			return settings.getLanguage();
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.PermissionNodesReset));
+		return message.send(t(LanguageKeys.Commands.Management.PermissionNodesReset));
 	}
 
 	public async show(message: GuildMessage, [target]: [Role | GuildMember]) {
-		if (!this.checkPermissions(message, target)) throw await message.fetchLocale(LanguageKeys.Commands.Management.PermissionNodesHigher);
+		if (!this.checkPermissions(message, target)) throw await message.resolveKey(LanguageKeys.Commands.Management.PermissionNodesHigher);
 		const isRole = target instanceof Role;
 		const key = isRole ? GuildSettings.Permissions.Roles : GuildSettings.Permissions.Users;
 
-		const [nodes, language] = await message.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
+		const [nodes, t] = await message.guild.readSettings((settings) => [settings[key], settings.getLanguage()]);
 		const node = nodes.find((n) => n.id === target.id);
-		if (typeof node === 'undefined') throw language.get(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
+		if (typeof node === 'undefined') throw t(LanguageKeys.Commands.Management.PermissionNodesNodeNotExists);
 
 		return message.send([
-			language.get(LanguageKeys.Commands.Management.PermissionNodesShowName, {
+			t(LanguageKeys.Commands.Management.PermissionNodesShowName, {
 				name: isRole ? (target as Role).name : (target as GuildMember).displayName
 			}),
-			language.get(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
+			t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
 				allow: node.allow.length
-					? language.list(
+					? t.list(
 							node.allow.map((command) => `\`${command}\``),
-							language.get(LanguageKeys.Globals.And)
+							t(LanguageKeys.Globals.And)
 					  )
-					: language.get(LanguageKeys.Globals.None)
+					: t(LanguageKeys.Globals.None)
 			}),
-			language.get(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
-				deny: node.deny.length
-					? language.list(
-							node.deny.map((command) => `\`${command}\``),
-							language.get(LanguageKeys.Globals.And)
-					  )
-					: language.get(LanguageKeys.Globals.None)
-			})
+			node.deny.length
+				? t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, { deny: node.deny.map((command) => `\`${command}\``) })
+				: t(LanguageKeys.Commands.Management.PermissionNodesShowDenyNone)
+			// t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
+			// 	deny: node.deny.length
+			// 		? t.list(
+			// 				node.deny.map((command) => `\`${command}\``),
+			// 				t(LanguageKeys.Globals.And)
+			// 		  )
+			// 		: t(LanguageKeys.Globals.None)
+			// })
 		]);
 	}
 

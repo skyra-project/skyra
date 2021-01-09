@@ -68,14 +68,14 @@ export default class extends Monitor {
 
 		await message.member!.roles.add(role);
 
-		const [shouldAchieve, achievementMessage, language] = await message.guild.readSettings((settings) => [
+		const [shouldAchieve, achievementMessage, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Social.Achieve],
 			settings[GuildSettings.Social.AchieveMessage],
 			settings.getLanguage()
 		]);
 		if (shouldAchieve && message.channel.postable) {
 			await message.channel.send(
-				this.getMessage(message.member!, role, achievementMessage || language.get(LanguageKeys.Monitors.SocialAchievement), points)
+				this.getMessage(message.member!, role, achievementMessage || t(LanguageKeys.Monitors.SocialAchievement), points)
 			);
 		}
 	}

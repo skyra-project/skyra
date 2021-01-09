@@ -12,7 +12,7 @@ export default class extends Inhibitor {
 	public async run(message: KlasaMessage, command: SkyraCommand) {
 		if (!command.spam || !message.guild) return;
 
-		const [channelID, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Channels.Spam], settings.getLanguage()]);
+		const [channelID, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Channels.Spam], settings.getLanguage()]);
 		if (!channelID) return;
 
 		if (channelID === message.channel.id) return;
@@ -27,7 +27,7 @@ export default class extends Inhibitor {
 		try {
 			this.ratelimit.acquire(message.channel.id).drip();
 		} catch {
-			throw language.get(LanguageKeys.Inhibitors.Spam, { channel: channel.toString() });
+			throw t(LanguageKeys.Inhibitors.Spam, { channel: channel.toString() });
 		}
 	}
 }

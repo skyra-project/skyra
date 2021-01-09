@@ -10,7 +10,7 @@
 	"permissionNodesReset": "{{GREENTICK}} Successfully removed all commands from the permission node.",
 	"permissionNodesShowName": "Permissions for: __{{name}}__",
 	"permissionNodesShowAllow": "**Allow**: {{allow}}",
-	"permissionNodesShowDeny": "**Deny**: {{deny}}",
+	"permissionNodesShowDeny": "**Deny**: {{deny, andList}}",
 	"triggersNotype": "You need to insert a trigger type (**alias**|**reaction**)",
 	"triggersNooutput": "You need to insert the trigger output.",
 	"triggersInvalidreaction": "This reaction does not seem valid for me, either it is not valid unicode or I do not have access to it.",

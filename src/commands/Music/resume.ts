@@ -6,7 +6,7 @@ import { requireMusicPaused, requireSameVoiceChannel, requireSkyraInVoiceChannel
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.ResumeDescription)
+	description: LanguageKeys.Commands.Music.ResumeDescription
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

@@ -5,8 +5,8 @@ import { CommandStore, KlasaMessage } from 'klasa';
 export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
-			description: (language) => language.get(LanguageKeys.Commands.System.DonateDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.DonateExtended),
+			description: LanguageKeys.Commands.System.DonateDescription,
+			extendedHelp: LanguageKeys.Commands.System.DonateExtended,
 			guarded: true
 		});
 	}

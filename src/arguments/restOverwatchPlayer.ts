@@ -12,7 +12,7 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<string> {
-		if (!arg) throw await message.fetchLocale(LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlayerName, { playerTag: arg });
+		if (!arg) throw await message.resolveKey(LanguageKeys.Commands.GameIntegration.OverwatchInvalidPlayerName, { playerTag: arg });
 		// eslint-disable-next-line dot-notation
 		const {
 			args,

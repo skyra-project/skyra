@@ -26,7 +26,7 @@ export default class extends Event {
 			ignoreChannels,
 			ignoreReactionAdd,
 			ignoreAllEvents,
-			language
+			t
 		] = await data.guild.readSettings((settings) => [
 			settings[GuildSettings.Selfmod.Reactions.WhiteList],
 			settings[GuildSettings.Channels.ReactionLogs],
@@ -64,12 +64,12 @@ export default class extends Event {
 					[
 						`**Emoji**: ${data.emoji.name}${data.emoji.id === null ? '' : ` [${data.emoji.id}]`}`,
 						`**Channel**: ${data.channel}`,
-						`**Message**: [${language.get(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
+						`**Message**: [${t(LanguageKeys.Misc.JumpTo)}](https://discord.com/channels/${data.guild.id}/${data.channel.id}/${
 							data.messageID
 						})`
 					].join('\n')
 				)
-				.setFooter(`${language.get(LanguageKeys.Events.Reaction)} • ${data.channel.name}`)
+				.setFooter(`${t(LanguageKeys.Events.Reaction)} • ${data.channel.name}`)
 				.setTimestamp()
 		);
 	}

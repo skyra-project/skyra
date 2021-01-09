@@ -8,11 +8,12 @@ import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '#utils/util';
+import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
-import { constants, Language } from 'klasa';
-import { Timestamp } from '@sapphire/time-utilities';
+import { TFunction } from 'i18next';
+import { constants } from 'klasa';
 
 const enum Position {
 	Before,
@@ -34,8 +35,8 @@ const enum Filter {
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['purge', 'nuke', 'sweep'],
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.PruneDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.PruneExtended),
+	description: LanguageKeys.Commands.Moderation.PruneDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.PruneExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	flagSupport: true,
 	requiredPermissions: ['MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS'],
@@ -79,20 +80,20 @@ export default class extends SkyraCommand {
 		this.createCustomResolver('filter', async (argument, _possible, message) => {
 			if (!argument) return undefined;
 			const filter = this.kCommandPruneFilters[argument.toLowerCase()];
-			if (typeof filter === 'undefined') throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
+			if (typeof filter === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidFilter);
 			return filter;
 		})
 			.createCustomResolver('position', async (argument, _possible, message) => {
 				if (!argument) return null;
 				const position = this.kCommandPrunePositions[argument.toLowerCase()];
-				if (typeof position === 'undefined') throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
+				if (typeof position === 'undefined') throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalidPosition);
 				return position;
 			})
 			.createCustomResolver('message', async (argument, possible, message, [, , position]: string[]) => {
 				if (position === null) return message;
 
 				const fetched = this.kMessageRegExp.test(argument) ? await message.channel.messages.fetch(argument).catch(() => null) : null;
-				if (fetched === null) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
+				if (fetched === null) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: possible.name });
 				return fetched;
 			});
 	}
@@ -107,7 +108,7 @@ export default class extends SkyraCommand {
 		// For example `prune 642748845687570444` (invalid ID) or `prune u` (invalid filter)
 		// are invalid command usages and therefore, for the sake of protection, Skyra should
 		// not execute an erroneous command.
-		if (message.args.length > 4) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneInvalid);
+		if (message.args.length > 4) throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneInvalid);
 
 		const position = this.resolvePosition(rawPosition);
 		const filter = this.resolveFilter(rawFilter);
@@ -122,7 +123,7 @@ export default class extends SkyraCommand {
 		// Filter the messages by their age
 		const now = Date.now();
 		const filtered = messages.filter((m) => now - m.createdTimestamp < 1209600000);
-		if (filtered.size === 0) throw await message.fetchLocale(LanguageKeys.Commands.Moderation.PruneNoDeletes);
+		if (filtered.size === 0) throw await message.resolveKey(LanguageKeys.Commands.Moderation.PruneNoDeletes);
 
 		// Perform a bulk delete, throw if it returns unknown message.
 		const filteredKeys = this.resolveKeys([...filtered.keys()], position, limit);
@@ -135,13 +136,10 @@ export default class extends SkyraCommand {
 		return Reflect.has(message.flagArgs, 'silent')
 			? null
 			: message.alert(
-					await message.fetchLocale(
-						filteredKeys.length === 1 ? LanguageKeys.Commands.Moderation.PruneAlert : LanguageKeys.Commands.Moderation.PruneAlertPlural,
-						{
-							count: filteredKeys.length,
-							total: limit
-						}
-					)
+					await message.resolveKey(LanguageKeys.Commands.Moderation.PruneAlert, {
+						count: filteredKeys.length,
+						total: limit
+					})
 			  );
 	}
 
@@ -194,7 +192,7 @@ export default class extends SkyraCommand {
 			// Filter the messages collection by the deleted messages, so no extras are added.
 			messages = messages.filter((_, key) => rawMessages.includes(key));
 
-			const language = await message.fetchLanguage();
+			const t = await message.fetchT();
 
 			// Send the message to the prune logs channel.
 			await channel.send('', {
@@ -204,26 +202,21 @@ export default class extends SkyraCommand {
 						message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 					)
 					.setDescription(
-						language.get(
-							messages.size === 1
-								? LanguageKeys.Commands.Moderation.PruneLogMessage
-								: LanguageKeys.Commands.Moderation.PruneLogMessagePlural,
-							{
-								channel: (message.channel as TextChannel).toString(),
-								author: message.author.toString(),
-								count: messages.size
-							}
-						)
+						t(LanguageKeys.Commands.Moderation.PruneLogMessage, {
+							channel: (message.channel as TextChannel).toString(),
+							author: message.author.toString(),
+							count: messages.size
+						})
 					)
 					.setColor(this.kColor)
 					.setTimestamp(),
-				files: [this.generateAttachment(language, messages)]
+				files: [this.generateAttachment(t, messages)]
 			});
 		}
 	}
 
-	private generateAttachment(language: Language, messages: Collection<string, GuildMessage>) {
-		const header = language.get(LanguageKeys.Commands.Moderation.PruneLogHeader);
+	private generateAttachment(t: TFunction, messages: Collection<string, GuildMessage>) {
+		const header = t(LanguageKeys.Commands.Moderation.PruneLogHeader);
 		const processed = messages
 			.map((message) => this.formatMessage(message))
 			.reverse()

@@ -1,25 +1,23 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { exec } from '#utils/exec';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageAttachment } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['execute'],
+	description: LanguageKeys.Commands.System.ExecDescription,
+	extendedHelp: LanguageKeys.Commands.System.ExecExtended,
+	guarded: true,
+	permissionLevel: PermissionLevels.BotOwner,
+	usage: '<expression:string>',
+	flagSupport: true
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['execute'],
-			description: (language) => language.get(LanguageKeys.Commands.System.ExecDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.ExecExtended),
-			guarded: true,
-			permissionLevel: PermissionLevels.BotOwner,
-			usage: '<expression:string>',
-			flagSupport: true
-		});
-	}
-
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const result = await exec(input, { timeout: Reflect.has(message.flagArgs, 'timeout') ? Number(message.flagArgs.timeout) : 60000 }).catch(
 			(error) => ({

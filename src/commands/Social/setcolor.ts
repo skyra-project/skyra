@@ -11,8 +11,8 @@ export default class extends SkyraCommand {
 			aliases: ['setcolour'],
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Social.SetColorDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.SetColorExtended),
+			description: LanguageKeys.Commands.Social.SetColorDescription,
+			extendedHelp: LanguageKeys.Commands.Social.SetColorExtended,
 			requiredPermissions: ['EMBED_LINKS'],
 			spam: true,
 			usage: '<color:string>'
@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 			new MessageEmbed()
 				.setColor(b10.value)
 				.setAuthor(message.author.tag, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(await message.fetchLocale(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }))
+				.setDescription(await message.resolveKey(LanguageKeys.Commands.Social.SetColor, { color: hex.toString() }))
 		);
 	}
 }

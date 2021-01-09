@@ -1,4 +1,5 @@
 import { FT, T } from '#lib/types';
+import type { Message, TextChannel } from 'discord.js';
 
 export const GuildMemberAdd = T<string>('events:guildMemberAdd');
 export const GuildMemberAddMute = T<string>('events:guildMemberAddMute');
@@ -24,8 +25,8 @@ export const GuildMemberNoUpdate = T<string>('events:guildMemberNoUpdate');
 export const GuildMemberAddedRoles = FT<{ addedRoles: string; count: number }, string>('events:guildMemberAddedRoles');
 export const GuildMemberRemovedRoles = FT<{ removedRoles: string; count: number }, string>('events:guildMemberRemovedRoles');
 export const RoleUpdate = T<string>('events:roleUpdate');
-export const MessageUpdate = T<string>('events:messageUpdate');
-export const MessageDelete = T<string>('events:messageDelete');
+export const MessageUpdate = FT<{ message: Message }, string>('events:messageUpdate');
+export const MessageDelete = FT<{ channel: TextChannel }, string>('events:messageDelete');
 export const Reaction = T<string>('events:reaction');
 export const Command = FT<{ command: string }, string>('events:command');
 export const ErrorWtf = T<string>('events:errorWtf');

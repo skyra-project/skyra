@@ -199,7 +199,6 @@ export const WhoisMemberFields = FT<
 	}
 >('commands/tools:whoisMemberFields');
 export const WhoisMemberRoles = FT<{ count: number }, string>('commands/tools:whoisMemberRoles');
-export const WhoisMemberRolesPlural = FT<{ count: number }, string>('commands/tools:whoisMemberRolesPlural');
 export const WhoisMemberPermissions = T<string>('commands/tools:whoisMemberPermissions');
 export const WhoisMemberPermissionsAll = T<string>('commands/tools:whoisMemberPermissionsAll');
 export const WhoisUserTitles = T<{

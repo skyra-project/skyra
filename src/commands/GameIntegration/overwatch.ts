@@ -12,13 +12,13 @@ import { Timestamp } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['ow'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.GameIntegration.OverwatchDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.GameIntegration.OverwatchExtended),
+	description: LanguageKeys.Commands.GameIntegration.OverwatchDescription,
+	extendedHelp: LanguageKeys.Commands.GameIntegration.OverwatchExtended,
 	usage: '<xbl|psn|pc:default> <player:...overwatchplayer>',
 	usageDelim: ' '
 })
@@ -26,30 +26,30 @@ export default class extends RichDisplayCommand {
 	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
 
 	public async run(message: GuildMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const overwatchData = await this.fetchAPI(language, player, platform);
+		const overwatchData = await this.fetchAPI(t, player, platform);
 
-		if (overwatchData.error) throw language.get(LanguageKeys.System.QueryFail);
+		if (overwatchData.error) throw t(LanguageKeys.System.QueryFail);
 		if (!overwatchData.competitiveStats.topHeroes || !overwatchData.quickPlayStats.topHeroes) {
-			throw language.get(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
+			throw t(LanguageKeys.Commands.GameIntegration.OverwatchNoStats, { player: this.decodePlayerName(player) });
 		}
 
-		const display = await this.buildDisplay(message, language, overwatchData, player, platform);
+		const display = await this.buildDisplay(message, t, overwatchData, player, platform);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
 	/** Queries the Overwatch API for data on a player with platform */
-	private async fetchAPI(language: Language, player: string, platform: PlatformUnion) {
+	private async fetchAPI(t: TFunction, player: string, platform: PlatformUnion) {
 		try {
 			return await fetch<OverwatchDataSet>(`https://ow-api.com/v1/stats/${platform}/global/${player}/complete`, FetchResultTypes.JSON);
 		} catch {
-			throw language.get(LanguageKeys.Commands.GameIntegration.OverwatchQueryFail, {
+			throw t(LanguageKeys.Commands.GameIntegration.OverwatchQueryFail, {
 				player: this.decodePlayerName(player),
 				platform
 			});
@@ -57,7 +57,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Builds a UserRichDisplay for presenting Overwatch data */
-	private async buildDisplay(message: GuildMessage, language: Language, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
+	private async buildDisplay(message: GuildMessage, t: TFunction, overwatchData: OverwatchDataSet, player: string, platform: PlatformUnion) {
 		const ratings = Array.from(
 			this.ratingsToCollection(
 				overwatchData.ratings ?? [],
@@ -65,16 +65,17 @@ export default class extends RichDisplayCommand {
 				(r) => r
 			)
 				.mapValues((rating) => {
-					return `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? language.groupDigits(rating.level) : rating.level}`;
+					return `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? t.groupDigits(rating.level) : rating.level}`;
 				})
 				.values()
 		).join('\n');
 
-		const embedData = language.get(LanguageKeys.Commands.GameIntegration.OverwatchEmbedData, {
+		const embedData = t(LanguageKeys.Commands.GameIntegration.OverwatchEmbedData, {
 			authorName: overwatchData.name,
 			playerLevel: overwatchData.level,
 			prestigeLevel: overwatchData.level + overwatchData.prestige * 100,
-			totalGamesWon: overwatchData.gamesWon
+			totalGamesWon: overwatchData.gamesWon,
+			returnObjects: true
 		});
 
 		return new UserRichDisplay(
@@ -95,12 +96,12 @@ export default class extends RichDisplayCommand {
 							overwatchData.gamesWon ? embedData.totalGamesWon : embedData.noGamesWon
 						].join('\n')
 					)
-					.addField(embedData.ratingsTitle, ratings || language.get(LanguageKeys.Globals.None))
+					.addField(embedData.ratingsTitle, ratings || t(LanguageKeys.Globals.None))
 			)
-			.addPage((embed) => embed.setDescription(this.extractStats(language, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractStats(language, overwatchData, 'competitiveStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractTopHeroes(language, overwatchData, 'quickPlayStats', embedData)))
-			.addPage((embed) => embed.setDescription(this.extractTopHeroes(language, overwatchData, 'competitiveStats', embedData)));
+			.addPage((embed) => embed.setDescription(this.extractStats(t, overwatchData, 'quickPlayStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractStats(t, overwatchData, 'competitiveStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractTopHeroes(t, overwatchData, 'quickPlayStats', embedData)))
+			.addPage((embed) => embed.setDescription(this.extractTopHeroes(t, overwatchData, 'competitiveStats', embedData)));
 	}
 
 	/**
@@ -138,7 +139,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Extracts statistics from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private extractStats(language: Language, overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, embedData: OverwatchEmbedDataReturn) {
+	private extractStats(t: TFunction, overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, embedData: OverwatchEmbedDataReturn) {
 		const {
 			careerStats: {
 				allHeroes: {
@@ -152,7 +153,7 @@ export default class extends RichDisplayCommand {
 		} = overwatchData[type];
 
 		const timePlayedMilliseconds = Number(timePlayed.split(':')[0]) * Time.Hour + Number(timePlayed.split(':')[1]) * Time.Minute;
-		const statsData = language.get(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
+		const statsData = t(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
 			finalBlows,
 			deaths,
 			damageDone,
@@ -163,7 +164,8 @@ export default class extends RichDisplayCommand {
 			gamesWon,
 			goldenMedals: medalsGold,
 			silverMedals: medalsSilver,
-			bronzeMedals: medalsBronze
+			bronzeMedals: medalsBronze,
+			returnObjects: true
 		});
 
 		return [
@@ -183,18 +185,13 @@ export default class extends RichDisplayCommand {
 	}
 
 	/** Extracts top heroes from overwatchData for either competitive play or quickplay and returns it in a format valid for `MessageEmbed` description */
-	private extractTopHeroes(
-		language: Language,
-		overwatchData: OverwatchDataSet,
-		type: OverwatchStatsTypeUnion,
-		embedData: OverwatchEmbedDataReturn
-	) {
+	private extractTopHeroes(t: TFunction, overwatchData: OverwatchDataSet, type: OverwatchStatsTypeUnion, embedData: OverwatchEmbedDataReturn) {
 		const topHeroes = this.getTopHeroes(overwatchData, type);
 
 		return [
 			embedData.headers[type === 'competitiveStats' ? 'topHeroesCompetitive' : 'topHeroesQuickplay'],
 			...topHeroes.map((topHero) =>
-				language.get(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataTopHero, {
+				t(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataTopHero, {
 					name: topHero.hero,
 					playTime: this.kPlayTimestamp.display(topHero.time)
 				})

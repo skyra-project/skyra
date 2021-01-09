@@ -3,7 +3,7 @@ import type { ISchemaValue } from '#lib/database/settings/base/ISchemaValue';
 import { isNullish } from '#lib/misc';
 import Collection from '@discordjs/collection';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
-import type { Language } from 'klasa';
+import type { TFunction } from 'i18next';
 import type { SchemaKey } from './SchemaKey';
 
 export type NonEmptyArray<T> = [T, ...T[]];
@@ -62,7 +62,7 @@ export class SchemaGroup extends Collection<string, ISchemaValue> implements ISc
 		return this.getPathArray(key.split('.') as NonEmptyArray<string>);
 	}
 
-	public display(settings: GuildEntity, language: Language) {
+	public display(settings: GuildEntity, language: TFunction) {
 		const folders: string[] = [];
 		const sections = new Map<string, string[]>();
 		let longest = 0;

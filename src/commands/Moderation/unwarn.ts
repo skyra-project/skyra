@@ -8,13 +8,13 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uw', 'unwarning'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.UnwarnDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.UnwarnExtended),
+	description: LanguageKeys.Commands.Moderation.UnwarnDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.UnwarnExtended,
 	usage: '<case:number> [reason:...string]'
 })
 export default class extends ModerationCommand {
 	public async run(message: GuildMessage, [caseID, reason]: [number, string]) {
-		const [autoDelete, messageDisplay, reasonDisplay, language] = await message.guild.readSettings((settings) => [
+		const [autoDelete, messageDisplay, reasonDisplay, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Messages.ModerationAutoDelete],
 			settings[GuildSettings.Messages.ModerationMessageDisplay],
 			settings[GuildSettings.Messages.ModerationReasonDisplay],
@@ -23,7 +23,7 @@ export default class extends ModerationCommand {
 
 		const modlog = await message.guild.moderation.fetch(caseID);
 		if (!modlog || !modlog.isType(Moderation.TypeCodes.Warning)) {
-			throw language.get(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
+			throw t(LanguageKeys.Commands.Moderation.GuildWarnNotFound);
 		}
 
 		const user = await modlog.fetchUser();
@@ -37,7 +37,7 @@ export default class extends ModerationCommand {
 		if (messageDisplay) {
 			const originalReason = reasonDisplay ? unwarnLog.reason : null;
 			return message.send(
-				language.get(
+				t(
 					originalReason ? LanguageKeys.Commands.Moderation.ModerationOutputWithReason : LanguageKeys.Commands.Moderation.ModerationOutput,
 
 					{
@@ -47,7 +47,7 @@ export default class extends ModerationCommand {
 						reason: originalReason
 					}
 				)
-			) as Promise<GuildMessage>;
+			);
 		}
 
 		return null;

@@ -6,6 +6,7 @@ import type { InviteStore } from '#lib/structures/InviteStore';
 import type { GiveawayManager } from '#lib/structures/managers/GiveawayManager';
 import type { ScheduleManager } from '#lib/structures/managers/ScheduleManager';
 import type { WebsocketHandler } from '#lib/websocket/WebsocketHandler';
+import type { O } from '#utils/constants';
 import type { ConnectFourManager } from '#utils/Games/ConnectFourManager';
 import type { Leaderboard } from '#utils/Leaderboard';
 import type { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector';
@@ -13,9 +14,12 @@ import type { Twitch } from '#utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
 import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
+import { Primitive } from '@sapphire/utilities';
+import 'i18next';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
+import type { CustomFunctionGet, CustomGet } from './Utils';
 
 declare module 'discord.js' {
 	interface Client {
@@ -118,4 +122,27 @@ declare module 'klasa-dashboard-hooks' {
 		user_id: string;
 		expires: number;
 	}
+}
+
+declare module 'i18next' {
+	export interface TFunction {
+		<K extends string, TReturn>(key: CustomGet<K, TReturn>, options: TContextAwareFunctionOptions<TReturn>): TReturn;
+		<K extends string, TReturn>(key: CustomGet<K, TReturn>, defaultValue: TReturn, options: TContextAwareFunctionOptions<TReturn>): TReturn;
+		<K extends string, TArgs extends O, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			options: TContextAwareArgsFunctionOptions<TReturn, TArgs>
+		): TReturn;
+		<K extends string, TArgs extends O, TReturn>(
+			key: CustomFunctionGet<K, TArgs, TReturn>,
+			defaultValue: TReturn,
+			options: TContextAwareArgsFunctionOptions<TReturn, TArgs>
+		): TReturn;
+	}
+
+	export type TContextAwareFunctionOptions<TReturn> = TReturn extends readonly any[] | Primitive
+		? TOptionsBase | string | undefined
+		: TOptionsBase & { returnObjects: true };
+	export type TContextAwareArgsFunctionOptions<TReturn, TArgs extends O> = TReturn extends readonly any[] | Primitive
+		? TOptions<TArgs>
+		: TOptions<TArgs> & { returnObjects: true };
 }

@@ -11,13 +11,14 @@ import { sleep } from '#utils/sleep';
 import { cleanMentions, floatPromise } from '#utils/util';
 import { chunk, isFunction } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['hunger-games', 'hg'],
 	cooldown: 0,
-	description: (language) => language.get(LanguageKeys.Commands.Games.HungerGamesDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.HungerGamesExtended),
+	description: LanguageKeys.Commands.Games.HungerGamesDescription,
+	extendedHelp: LanguageKeys.Commands.Games.HungerGamesExtended,
 	requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 	runIn: ['text'],
 	usage: '[user:string{,50}] [...]',
@@ -39,16 +40,15 @@ export default class extends SkyraCommand {
 				if (author && !tributes.includes(author.username)) tributes.push(author.username);
 			}
 		} else if (tributes.length === 0) {
-			const [prefix, language] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
-
-			throw language.get(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
+			const [prefix, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+			throw t(LanguageKeys.Commands.Games.GamesNoPlayers, { prefix });
 		}
 
 		const filtered = new Set(tributes);
-		const language = await message.fetchLanguage();
-		if (filtered.size !== tributes.length) throw language.get(LanguageKeys.Commands.Games.GamesRepeat);
-		if (this.playing.has(message.channel.id)) throw language.get(LanguageKeys.Commands.Games.GamesProgress);
-		if (filtered.size < 4 || filtered.size > 48) throw language.get(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
+		const t = await message.fetchT();
+		if (filtered.size !== tributes.length) throw t(LanguageKeys.Commands.Games.GamesRepeat);
+		if (this.playing.has(message.channel.id)) throw t(LanguageKeys.Commands.Games.GamesProgress);
+		if (filtered.size < 4 || filtered.size > 48) throw t(LanguageKeys.Commands.Games.GamesTooManyOrFew, { min: 4, max: 48 });
 		this.playing.add(message.channel.id);
 
 		let resolve: ((value: boolean) => void) | null = null;
@@ -89,8 +89,8 @@ export default class extends SkyraCommand {
 					: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, language.get(events).map(HungerGamesUsage.create));
-				const texts = this.buildTexts(language, game, results, deaths);
+				const { results, deaths } = this.makeResultEvents(game, t(events, { returnObjects: true }).map(HungerGamesUsage.create));
+				const texts = this.buildTexts(t, game, results, deaths);
 
 				// Ask for the user to proceed:
 				for (const text of texts) {
@@ -117,14 +117,14 @@ export default class extends SkyraCommand {
 
 					// Delete the previous message, and if stopped, send stop.
 					floatPromise(this, gameMessage.nuke());
-					if (!verification) return message.channel.postable ? message.sendLocale(LanguageKeys.Commands.Games.HungerGamesStop) : undefined;
+					if (!verification) return message.channel.postable ? message.send(t(LanguageKeys.Commands.Games.HungerGamesStop)) : undefined;
 				}
 				if (game.bloodbath) game.bloodbath = false;
 				else game.sun = !game.sun;
 			}
 
 			// The match finished with one remaining player
-			return message.sendLocale(LanguageKeys.Commands.Games.HungerGamesWinner, [{ winner: game.tributes.values().next().value }]);
+			return message.send(t(LanguageKeys.Commands.Games.HungerGamesWinner, { winner: game.tributes.values().next().value }));
 		} finally {
 			game.llrc.end();
 		}
@@ -165,23 +165,18 @@ export default class extends SkyraCommand {
 		}
 	}
 
-	private buildTexts(language: Language, game: HungerGamesGame, results: string[], deaths: string[]) {
+	private buildTexts(t: TFunction, game: HungerGamesGame, results: string[], deaths: string[]) {
 		const headerKey = game.bloodbath
 			? LanguageKeys.Commands.Games.HungerGamesResultHeaderBloodbath
 			: game.sun
 			? LanguageKeys.Commands.Games.HungerGamesResultHeaderSun
 			: LanguageKeys.Commands.Games.HungerGamesResultHeaderMoon;
 
-		const header = language.get(headerKey, { game });
+		const header = t(headerKey, { game });
 		const death = deaths.length
-			? `${language.get(
-					deaths.length === 1
-						? LanguageKeys.Commands.Games.HungerGamesResultDeaths
-						: LanguageKeys.Commands.Games.HungerGamesResultDeathsPlural,
-					{ deaths: deaths.length }
-			  )}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
+			? `${t(LanguageKeys.Commands.Games.HungerGamesResultDeaths, { deaths: deaths.length })}\n\n${deaths.map((d) => `- ${d}`).join('\n')}`
 			: '';
-		const proceed = language.get(LanguageKeys.Commands.Games.HungerGamesResultProceed);
+		const proceed = t(LanguageKeys.Commands.Games.HungerGamesResultProceed);
 		const panels = chunk(results, 5);
 
 		const texts = panels.map((panel) => `__**${header}:**__\n\n${panel.map((text) => `- ${text}`).join('\n')}\n\n_${proceed}_`);

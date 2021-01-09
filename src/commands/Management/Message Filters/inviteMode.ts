@@ -1,14 +1,14 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { SelfModerationCommand } from '#lib/structures/SelfModerationCommand';
+import { SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { KeyOfType } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['invites-mode', 'inv-mode'],
-	description: (language) => language.get(LanguageKeys.Commands.Management.InviteModeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.InviteModeExtended)
+	description: LanguageKeys.Commands.Management.InviteModeDescription,
+	extendedHelp: LanguageKeys.Commands.Management.InviteModeExtended
 })
 export default class extends SelfModerationCommand {
 	protected $adder: AdderKey = 'invites';

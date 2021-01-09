@@ -1,7 +1,7 @@
 import { FT, T } from '#lib/types';
 
-export const Cooldown = FT<{ remaining: string }, string>('inhibitors:cooldown');
-export const MissingBotPerms = FT<{ missing: string }, string>('inhibitors:missingBotPerms');
+export const Cooldown = FT<{ remaining: number }, string>('inhibitors:cooldown');
+export const MissingBotPerms = FT<{ missing: string[] }, string>('inhibitors:missingBotPerms');
 export const Nsfw = T<string>('inhibitors:nsfw');
 export const Permissions = T<string>('inhibitors:permissions');
 export const RequiredSettings = FT<{ settings: string; count: number }, string>('inhibitors:requiredSettings');

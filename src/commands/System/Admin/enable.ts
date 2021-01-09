@@ -5,8 +5,8 @@ import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage, Piece } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.System.EnableDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.EnableExtended),
+	description: LanguageKeys.Commands.System.EnableDescription,
+	extendedHelp: LanguageKeys.Commands.System.EnableExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<Piece:piece>'
@@ -19,6 +19,6 @@ export default class extends SkyraCommand {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').enable();
 			`);
 		}
-		return message.sendLocale(LanguageKeys.Commands.System.Enable, [{ type: piece.type, name: piece.name }], { code: 'diff' });
+		return message.sendTranslated(LanguageKeys.Commands.System.Enable, [{ type: piece.type, name: piece.name }], { code: 'diff' });
 	}
 }

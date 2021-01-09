@@ -4,11 +4,11 @@ import { displayEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<ReactionRole> {
-	public parse(_: string, context: SerializerUpdateContext) {
-		return this.error(context.language.get(LanguageKeys.Serializers.Unsupported));
+	public parse(_: string, { t }: SerializerUpdateContext) {
+		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(value: ReactionRole, context: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(value: ReactionRole, { t }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(value) &&
 			Object.keys(value).length === 4 &&
@@ -19,12 +19,12 @@ export default class UserSerializer extends Serializer<ReactionRole> {
 		)
 			return true;
 
-		throw context.language.get(LanguageKeys.Serializers.ReactionRoleInvalid);
+		throw t(LanguageKeys.Serializers.ReactionRoleInvalid);
 	}
 
-	public stringify(value: ReactionRole, { language, entity: { guild } }: SerializerUpdateContext) {
+	public stringify(value: ReactionRole, { t, guild }: SerializerUpdateContext) {
 		const emoji = displayEmoji(value.emoji);
-		const role = guild.roles.cache.get(value.role)?.name ?? language.get(LanguageKeys.Misc.UnknownRole);
+		const role = guild.roles.cache.get(value.role)?.name ?? t(LanguageKeys.Misc.UnknownRole);
 		const url = `https://discord.com/channels/${guild.id}/${value.channel}/${value.message}`;
 		return `${emoji} | ${url} -> ${role}`;
 	}

@@ -1,10 +1,12 @@
 import { GuildSettings } from '#lib/database';
 import { Events } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { resolveOnErrorCodes } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Guild, GuildMember, User } from 'discord.js';
-import { Event, EventOptions, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event, EventOptions } from 'klasa';
 
 const enum Matches {
 	Guild = '%GUILD%',
@@ -32,7 +34,7 @@ export default class extends Event {
 		);
 	}
 
-	private transformMessage(str: string, language: Language, guild: Guild, user: User) {
+	private transformMessage(str: string, t: TFunction, guild: Guild, user: User) {
 		return str.replace(this.kTransformMessageRegExp, (match) => {
 			switch (match) {
 				case Matches.Member:
@@ -44,7 +46,7 @@ export default class extends Event {
 				case Matches.Guild:
 					return guild.name;
 				case Matches.Position:
-					return language.ordinal(guild.memberCount);
+					return t(LanguageKeys.Globals.OrdinalValue, { value: guild.memberCount });
 				case Matches.MemberCount:
 					return guild.memberCount.toString();
 				default:

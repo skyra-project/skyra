@@ -12,8 +12,8 @@ export default class extends SkyraCommand {
 			aliases: ['stats', 'sts'],
 			bucket: 2,
 			cooldown: 15,
-			description: (language) => language.get(LanguageKeys.Commands.System.StatsDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.StatsExtended),
+			description: LanguageKeys.Commands.System.StatsDescription,
+			extendedHelp: LanguageKeys.Commands.System.StatsExtended,
 			requiredPermissions: ['EMBED_LINKS']
 		});
 	}

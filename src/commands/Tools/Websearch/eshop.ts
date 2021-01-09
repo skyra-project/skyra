@@ -11,35 +11,35 @@ import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { Language } from 'klasa';
 import { stringify } from 'querystring';
+import { TFunction } from 'i18next';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.EshopDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.EshopExtended),
+	description: LanguageKeys.Commands.Tools.EshopDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.EshopExtended,
 	usage: '<gameName:string>'
 })
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: GuildMessage, [gameName]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { results: entries } = await this.fetchAPI(language, gameName);
-		if (!entries.length) throw language.get(LanguageKeys.System.QueryFail);
+		const { results: entries } = await this.fetchAPI(t, gameName);
+		if (!entries.length) throw t(LanguageKeys.System.QueryFail);
 
-		const display = await this.buildDisplay(message, language, entries[0].hits);
+		const display = await this.buildDisplay(message, t, entries[0].hits);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, gameName: string) {
+	private async fetchAPI(t: TFunction, gameName: string) {
 		try {
 			return fetch<EshopResult>(
 				API_URL,
@@ -68,24 +68,24 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, language: Language, entries: EShopHit[]) {
-		const titles = language.get(LanguageKeys.Commands.Tools.EshopTitles);
+	private async buildDisplay(message: GuildMessage, t: TFunction, entries: EShopHit[]) {
+		const titles = t(LanguageKeys.Commands.Tools.EshopTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {
 			const description = cutText(decode(game.description).replace(/\s\n {2,}/g, ' '), 750);
 			const price = game.msrp
 				? game.msrp > 0
-					? language.get(LanguageKeys.Commands.Tools.EshopPricePaid, { price: game.msrp })
-					: language.get(LanguageKeys.Commands.Tools.EshopPriceFree)
+					? t(LanguageKeys.Commands.Tools.EshopPricePaid, { price: game.msrp })
+					: t(LanguageKeys.Commands.Tools.EshopPriceFree)
 				: 'TBD';
 			const esrbText = game.esrb
 				? [`**${game.esrb}**`, game.esrbDescriptors && game.esrbDescriptors.length ? ` - ${game.esrbDescriptors.join(', ')}` : ''].join('')
-				: language.get(LanguageKeys.Commands.Tools.EshopNotInDatabase);
+				: t(LanguageKeys.Commands.Tools.EshopNotInDatabase);
 
 			display.addPage((embed: MessageEmbed) =>
 				embed

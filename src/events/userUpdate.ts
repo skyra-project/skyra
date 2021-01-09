@@ -6,7 +6,8 @@ import { Events } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '#utils/constants';
 import { Guild, MessageEmbed, User } from 'discord.js';
-import { Event, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(previous: User, user: User) {
@@ -37,18 +38,18 @@ export default class extends Event {
 		}
 	}
 
-	private getNameDescription(i18n: Language, previousName: string | null, nextName: string | null) {
+	private getNameDescription(t: TFunction, previousName: string | null, nextName: string | null) {
 		const previous = previousName === null ? LanguageKeys.Events.NameUpdatePreviousWasNotSet : LanguageKeys.Events.NameUpdatePreviousWasSet;
 		const next = nextName === null ? LanguageKeys.Events.NameUpdateNextWasNotSet : LanguageKeys.Events.NameUpdateNextWasSet;
-		return [i18n.get(previous, { previousName }), i18n.get(next, { nextName })].join('\n');
+		return [t(previous, { previousName }), t(next, { nextName })].join('\n');
 	}
 
-	private buildEmbed(user: User, i18n: Language, description: string, footerKey: CustomGet<string, string>) {
+	private buildEmbed(user: User, t: TFunction, description: string, footerKey: CustomGet<string, string>) {
 		return new MessageEmbed()
 			.setColor(Colors.Yellow)
 			.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
-			.setFooter(i18n.get(footerKey))
+			.setFooter(t(footerKey))
 			.setTimestamp();
 	}
 }

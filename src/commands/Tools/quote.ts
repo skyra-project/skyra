@@ -13,8 +13,8 @@ const MESSAGE_LINK_REGEXP = /^\/channels\/(\d{17,18})\/(\d{17,18})\/(\d{17,18})$
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.QuoteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.QuoteExtended),
+	description: LanguageKeys.Commands.Tools.QuoteDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.QuoteExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[channel:textchannelname] (message:message)',
 	usageDelim: ' '
@@ -26,11 +26,11 @@ export default class extends SkyraCommand {
 			const messageUrl = await this.getFromUrl(message as GuildMessage, arg);
 			if (messageUrl) return messageUrl;
 
-			if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
-			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
+			if (!isTextBasedChannel(channel)) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+			if (!arg || !SNOWFLAKE_REGEXP.test(arg)) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidMessage, { name: 'Message' });
 			const m = await (channel as TextChannel).messages.fetch(arg).catch(() => null);
 			if (m) return m;
-			throw await message.fetchLocale(LanguageKeys.System.MessageNotFound);
+			throw await message.resolveKey(LanguageKeys.System.MessageNotFound);
 		});
 	}
 
@@ -42,8 +42,7 @@ export default class extends SkyraCommand {
 			.setTimestamp(remoteMessage.createdAt);
 
 		const content = getContent(remoteMessage);
-		if (content)
-			embed.setDescription(`[${await message.fetchLocale(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
+		if (content) embed.setDescription(`[${await message.resolveKey(LanguageKeys.Misc.JumpTo)}](${remoteMessage.url})\n${cutText(content, 1800)}`);
 
 		return message.send(embed);
 	}
@@ -68,10 +67,10 @@ export default class extends SkyraCommand {
 
 		const channel = guild.channels.cache.get(_channel);
 		if (!channel) return null;
-		if (!(channel instanceof TextChannel)) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
-		if (!channel.readable) throw await message.fetchLocale(LanguageKeys.System.MessageNotFound);
+		if (!(channel instanceof TextChannel)) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannel, { name: 'Channel' });
+		if (!channel.readable) throw await message.resolveKey(LanguageKeys.System.MessageNotFound);
 		if (!channel.permissionsFor(message.author)?.has(Permissions.FLAGS.VIEW_CHANNEL))
-			throw await message.fetchLocale(LanguageKeys.System.CannotAccessChannel);
+			throw await message.resolveKey(LanguageKeys.System.CannotAccessChannel);
 
 		return channel.messages.fetch(_message);
 	}

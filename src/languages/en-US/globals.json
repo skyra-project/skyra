@@ -7,5 +7,7 @@
 	"none": "None",
 	"or": "or",
 	"unknown": "unknown",
-	"yes": "Yes"
+	"yes": "Yes",
+	"ordinalValue": "{{value, ordinal}}",
+	"durationValue": "{{value, duration}}"
 }

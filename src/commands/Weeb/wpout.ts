@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Weeb.PoutDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Weeb.PoutExtended),
+	description: LanguageKeys.Commands.Weeb.PoutDescription,
+	extendedHelp: LanguageKeys.Commands.Weeb.PoutExtended,
 	queryType: 'pout',
 	responseName: LanguageKeys.Commands.Weeb.Pout
 })

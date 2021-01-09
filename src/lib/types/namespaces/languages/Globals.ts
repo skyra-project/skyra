@@ -1,9 +1,11 @@
-import { T } from '#lib/types';
+import { FT, T } from '#lib/types';
 
-export const Yes = T<string>('global:yes');
-export const No = T<string>('global:no');
-export const None = T<string>('global:none');
-export const Is = T<string>('global:is');
-export const And = T<string>('global:and');
-export const Or = T<string>('global:or');
-export const Unknown = T<string>('global:unknown');
+export const Yes = T<string>('globals:yes');
+export const No = T<string>('globals:no');
+export const None = T<string>('globals:none');
+export const Is = T<string>('globals:is');
+export const And = T<string>('globals:and');
+export const Or = T<string>('globals:or');
+export const Unknown = T<string>('globals:unknown');
+export const OrdinalValue = FT<{ value: string }, string>('globals:ordinalValue');
+export const DurationValue = FT<{ value: number }, string>('globals:durationValue');

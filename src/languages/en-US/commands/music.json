@@ -28,6 +28,10 @@
 	"addPlaylistSongsPlural": "**{{count}}** songs",
 	"addSong": "{{GREENTICK}} Added **{{title}}** to the queue 🎶",
 	"clearDescription": "Clears the queue list.",
+	"clearExtended": {
+		"extendedHelp": "Clears the current queue to get a fresh start.",
+		"reminder": "Before you can use this command there has to be a queue to clear and you have to be a DJ or a moderator!"
+	},
 	"clearDenied": "{{REDCROSS}} You can't execute this command when there are over 4 members! You must be a DJ or a moderator!",
 	"clearSuccess": "{{REDCROSS}}  Pruned {{count}} song.",
 	"clearSuccessPlural": "{{REDCROSS}}  Pruned {{count}} songs.",
@@ -52,6 +56,10 @@
 		"multiline": true
 	},
 	"joinDescription": "Joins the message author's voice channel.",
+	"joinExtended": {
+		"extendedHelp": "If you only want me to join your channel but not start playing music you can use this command.",
+		"reminder": "Before you can use this command you should join a voice channel!"
+	},
 	"joinNoMember": "{{REDCROSS}} I'm sorry, but Discord did not give me the information I need, so I don't know which voice channel you're connected to...",
 	"joinNoVoicechannel": "{{REDCROSS}} You are not connected in a voice channel.",
 	"joinSuccess": "{{GREENTICK}} Successfully joined the voice channel {{channel}}",
@@ -76,6 +84,10 @@
 	},
 	"leaveSuccess": "{{GREENTICK}} Successfully left the voice channel {{channel}}",
 	"pauseDescription": "Pauses the current song.",
+	"pauseExtended": {
+		"extendedHelp": "Pauses the currently playing song. You can resume by using the `resume` command.",
+		"reminder": "Before you can use this command you need to be in the same voice channel as Skyra, you need to be a moderator or DJ, and some music needs to be playing!"
+	},
 	"pauseSuccess": "{{GREENTICK}} Paused",
 	"playDescription": "Let me be your DJ and play you some tunes!",
 	"playExtended": {
@@ -109,13 +121,25 @@
 	"playQueuePlaying": "{{REDCROSS}} Hey! The disk is already spinning!",
 	"playQueueEmpty": "The session is over, add some songs to the queue, you can for example do `Skyra, add Imperial March`, and... *dumbrolls*!",
 	"playingDescription": "Get information from the current song.",
+	"playingExtended": {
+		"extendedHelp": "Want to know what the current song is playing? Use this command instead of external services.",
+		"reminder": "Before you can use this command some music should be playing!"
+	},
 	"playingDuration": "**Duration**: {{duration}}",
 	"playingQueueEmpty": "{{REDCROSS}} Are you speaking to me? Because my deck is empty...",
 	"playingQueueNotPlaying": "{{REDCROSS}} I think you're listening to background noise, I'm not playing anything.",
 	"repeatDescription": "Toggle repeating the current song.",
+	"repeatExtended": {
+		"extendedHelp": "",
+		"reminder": "Before"
+	},
 	"repeatSuccessEnabled": "This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!",
 	"repeatSuccessDisabled": "I was actually getting tired of this too, but I didn't want to say anything.",
 	"queueDescription": "Check the queue list.",
+	"queueExtended": {
+		"extendedHelp": "Shows the current music queue, as well as what is currently playing and the progress of the current song.",
+		"reminder": "Before you can use this command there should be any queue at all to show!"
+	},
 	"queueLast": "There are no more songs! After the one playing is over, the session will end!",
 	"queueTitle": "Music queue for {{guildname}}",
 	"queueLine": "**[\"{{position}\"]** │ \"{{duration}\" │ [{{title}}]({{url}}) │ Requester: **{{requester}}**.",
@@ -128,6 +152,10 @@
 	"queueEmpty": "looks like nothing is playing right now and the queue is empty, why don't you start the disc?",
 	"queueDashboardInfo": "Did you know that you can also manage your music using a fancy webapp? [Click here to go there](https://skyra.pw/music/{{guild.id}})",
 	"removeDescription": "Remove a song from the queue list.",
+	"removeExtended": {
+		"extendedHelp": "Removes a song from the queue using the index of the queue. You can find the index of a song using the `queue` command.",
+		"reminder": "Before you can use this command there has to be a queue to remove a song from!"
+	},
 	"removeIndexInvalid": "I'm good with maths, unlike my sister, but I need you to give me a number equal or bigger than 1.",
 	"removeIndexOutOfBounds": "maybe time happened too fast for you, there are {{songs}} in the queue!",
 	"removeDenied": "{{REDCROSS}} Let's play it nicely, don't remove other's songs if you're not a moderator nor a DJ.",
@@ -152,7 +180,11 @@
 		"reminder": "This command requires that you are a DJ or a Moderator to use it"
 	},
 	"promoteSuccess": "{{GREENTICK} Successfully promoted **{{title}}** (<{{url}}>) to the top of the queue",
-	"volumeDescription": "Manage the volume for current song.",
+	"volumeDescription": "Manage the volume for the music queue.",
+	"volumeExtended": {
+		"extendedHelp": "Should be enough self explanatory",
+		"examples": ["85", "100", "125"]
+	},
 	"volumeSuccess": "📢 Volume: {{volume}}%",
 	"volumeChanged": "{{emoji} Volume set to: {{volume}}%",
 	"volumeChangedExtreme": "{{emoji} {{text}} set to: {{volume}}%",

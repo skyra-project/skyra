@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
-			description: (language) => language.get(LanguageKeys.Commands.Social.MylevelDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.MylevelExtended),
+			description: LanguageKeys.Commands.Social.MylevelDescription,
+			extendedHelp: LanguageKeys.Commands.Social.MylevelExtended,
 			runIn: ['text'],
 			usage: '[user:username]'
 		});

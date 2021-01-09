@@ -7,8 +7,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['darkmode', 'toggledarktheme', 'darktheme'],
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Social.ToggleDarkModeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ToggleDarkModeExtended)
+	description: LanguageKeys.Commands.Social.ToggleDarkModeDescription,
+	extendedHelp: LanguageKeys.Commands.Social.ToggleDarkModeExtended
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, []: []) {
@@ -20,7 +20,7 @@ export default class extends SkyraCommand {
 			return user.save();
 		});
 
-		return message.sendLocale(
+		return message.sendTranslated(
 			updated.profile.darkTheme ? LanguageKeys.Commands.Social.ToggleDarkModeEnabled : LanguageKeys.Commands.Social.ToggleDarkModeDisabled
 		);
 	}

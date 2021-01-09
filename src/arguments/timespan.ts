@@ -8,7 +8,7 @@ export default class extends Argument {
 		const duration = new Duration(arg);
 
 		if (duration.offset <= 0 || !isNumber(duration.fromNow.getTime())) {
-			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidDuration, { name: possible.name });
+			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidDuration, { name: possible.name });
 		}
 
 		const { min, max } = possible;

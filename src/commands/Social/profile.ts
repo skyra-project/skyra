@@ -17,8 +17,8 @@ const BADGES_FOLDER = join(cdnFolder, 'skyra-assets', 'badges');
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Social.ProfileDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.ProfileExtended),
+	description: LanguageKeys.Commands.Social.ProfileDescription,
+	extendedHelp: LanguageKeys.Commands.Social.ProfileExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[local|global] [user:username]',
@@ -52,7 +52,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = await message.fetchLocale(LanguageKeys.Commands.Social.Profile);
+		const title = await message.resolveKey(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));

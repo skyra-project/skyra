@@ -223,7 +223,7 @@ export class GiveawayEntity extends BaseEntity {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
-					? language.get(this.#winners.length === 1 ? LanguageKeys.Giveaway.Ended : LanguageKeys.Giveaway.EndedPlural, {
+					? language.get(LanguageKeys.Giveaway.Ended, {
 							winners: language.list(
 								this.#winners.map((winner) => `<@${winner}>`),
 								language.get(LanguageKeys.Globals.And)

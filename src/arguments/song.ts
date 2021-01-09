@@ -11,7 +11,7 @@ import { Argument, Possible } from 'klasa';
 export default class extends Argument {
 	public async run(arg: string, _: Possible, message: GuildMessage): Promise<string[]> {
 		const remaining = await this.getUserRemainingEntries(message);
-		if (remaining === 0) throw await message.fetchLocale(LanguageKeys.MusicManager.TooManySongs);
+		if (remaining === 0) throw await message.resolveKey(LanguageKeys.MusicManager.TooManySongs);
 
 		const tracks = arg
 			? (await this.handleURL(message, remaining, arg)) ??
@@ -21,7 +21,7 @@ export default class extends Argument {
 			  await this.handleAttachments(message, remaining);
 
 		if (tracks === null || tracks.length === 0) {
-			throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
+			throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoMatches);
 		}
 
 		return tracks;
@@ -46,7 +46,7 @@ export default class extends Argument {
 	 */
 	private async handleAttachments(message: GuildMessage, remaining: number) {
 		if (message.attachments.size === 0) {
-			throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoArguments);
+			throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoArguments);
 		}
 
 		const { url } = message.attachments.first()!;
@@ -65,7 +65,7 @@ export default class extends Argument {
 			const tracks = deserialize<string[]>(binary);
 			return await message.guild.audio.player.node.decode(tracks);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueError);
+			throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 
@@ -78,7 +78,7 @@ export default class extends Argument {
 		try {
 			return await fetch(url, FetchResultTypes.Buffer);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueNotFound);
+			throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueNotFound);
 		}
 	}
 
@@ -151,10 +151,10 @@ export default class extends Argument {
 			const response = await message.guild.audio.player.node.load(search);
 
 			// No matches: throw.
-			if (response.loadType === LoadType.NoMatches) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchNoMatches);
+			if (response.loadType === LoadType.NoMatches) throw await message.resolveKey(LanguageKeys.MusicManager.FetchNoMatches);
 
 			// Load failed: throw.
-			if (response.loadType === LoadType.LoadFailed) throw await message.fetchLocale(LanguageKeys.MusicManager.FetchLoadFailed);
+			if (response.loadType === LoadType.LoadFailed) throw await message.resolveKey(LanguageKeys.MusicManager.FetchLoadFailed);
 
 			// Loaded playlist: filter all tracks.
 			if (response.loadType === LoadType.PlaylistLoaded) return this.filter(message, remainingUserEntries, response.tracks);

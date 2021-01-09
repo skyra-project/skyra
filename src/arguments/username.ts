@@ -12,14 +12,14 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage): Promise<User> {
-		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 		if (!message.guild) return this.user.run(arg, possible, message);
 		const resUser = await this.resolveUser(message, arg);
 		if (resUser) return resUser;
 
 		const result = await this.fetchMember(arg, message);
 		if (result) return message.guild.members.add(result).user;
-		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
+		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUsername, { name: possible.name });
 	}
 
 	private async resolveUser(message: KlasaMessage, query: string) {
@@ -29,7 +29,7 @@ export default class extends Argument {
 		try {
 			return await this.client.users.fetch(result[1]);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.Misc.UserNotExistent);
+			throw await message.resolveKey(LanguageKeys.Misc.UserNotExistent);
 		}
 	}
 

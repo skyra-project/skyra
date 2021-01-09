@@ -37,6 +37,7 @@ function sortCommandsAlphabetically(_: Command[], __: Command[], firstCategory: 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['commands', 'cmd', 'cmds'],
 	description: LanguageKeys.Commands.General.HelpDescription,
+	extendedHelp: LanguageKeys.Commands.General.HelpExtended,
 	guarded: true,
 	usage: '(Command:command|page:integer|category:category)',
 	flagSupport: true
@@ -69,10 +70,7 @@ export default class extends SkyraCommand {
 			for (const [category, commands] of commandsByCategory) {
 				const line = String(++i).padStart(2, '0');
 				commandCategories.push(
-					`\`${line}.\` **${category}** → ${t(
-						commands.length === 1 ? LanguageKeys.Commands.General.HelpCommandCount : LanguageKeys.Commands.General.HelpCommandCountPlural,
-						{ count: commands.length }
-					)}`
+					`\`${line}.\` **${category}** → ${t(LanguageKeys.Commands.General.HelpCommandCount, { count: commands.length })}`
 				);
 			}
 
@@ -154,13 +152,13 @@ export default class extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = isFunction(command.extendedHelp) ? (command.extendedHelp(language) as ExtendedHelpData) : command.extendedHelp;
+		const extendedHelpData = language(command.extendedHelp, { returnObjects: true }) as ExtendedHelpData;
 
 		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
 		const data = language(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
-			titleDescription: isFunction(command.description) ? command.description(language) : command.description,
+			titleDescription: language(command.description),
 			usage: command.usage.fullUsage(message),
 			extendedHelp
 		}) as {
@@ -179,7 +177,7 @@ export default class extends SkyraCommand {
 	}
 
 	private formatCommand(language: TFunction, prefix: string, richDisplay: boolean, command: SkyraCommand) {
-		const description = isFunction(command.description) ? command.description(language) : command.description;
+		const description = isFunction(command.description) ? command.description(language) : language(command.description);
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 

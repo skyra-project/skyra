@@ -108,6 +108,7 @@ export class SkyraClient extends KlasaClient {
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
+		// @ts-ignore Shut the fuck up TS
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
 			const guild = this.guilds.cache.get(guildID);
@@ -138,7 +139,6 @@ export class SkyraClient extends KlasaClient {
 	 * @param message The message that gives context.
 	 */
 	public async fetchLanguage(message: Message) {
-		// TODO: Use Redis to cache guild language
 		return message.guild ? message.guild.readSettings(GuildSettings.Language) : 'en-US';
 	}
 }

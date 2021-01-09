@@ -307,10 +307,8 @@ export class ModerationEntity extends BaseEntity {
 
 		const [user, moderator] = await Promise.all([this.fetchUser(), this.fetchModerator()]);
 
-		const [prefix, language] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
-		const formattedDuration = this.duration
-			? language.get(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration })
-			: '';
+		const [prefix, t] = await manager.guild.readSettings((settings) => [settings[GuildSettings.Prefix], settings.getLanguage()]);
+		const formattedDuration = this.duration ? t(LanguageKeys.Commands.Moderation.ModerationLogExpiresIn, { duration: this.duration }) : '';
 		const descriptionData: Moderation.ModerationManagerDescriptionData = {
 			type: this.title,
 			userName: user.username,
@@ -323,10 +321,10 @@ export class ModerationEntity extends BaseEntity {
 		};
 
 		const description = [
-			...language.get(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, {
+			...t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, {
 				data: descriptionData
 			}),
-			language.get(
+			t(
 				this.reason
 					? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
 					: LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithoutReason,
@@ -341,7 +339,7 @@ export class ModerationEntity extends BaseEntity {
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setDescription(description)
 			.setFooter(
-				language.get(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
+				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 			)
 			.setTimestamp(this.createdTimestamp);

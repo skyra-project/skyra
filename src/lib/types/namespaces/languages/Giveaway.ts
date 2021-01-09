@@ -8,7 +8,6 @@ export const Title = T<string>('giveaway:title');
 export const Lastchance = FT<{ time: number }, string>('giveaway:lastchance');
 export const LastchanceTitle = T<string>('giveaway:lastchanceTitle');
 export const Ended = FT<{ winners: string; count: number }, string>('giveaway:ended');
-export const EndedPlural = FT<{ winners: string; count: number }, string>('giveaway:endedPlural');
 export const EndedNoWinner = T<string>('giveaway:endedNoWinner');
 export const EndedAt = T<string>('giveaway:endedAt');
 export const EndedTitle = T<string>('giveaway:endedTitle');

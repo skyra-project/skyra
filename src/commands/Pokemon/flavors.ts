@@ -10,35 +10,35 @@ import { DexDetails } from '@favware/graphql-pokemon';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['flavor', 'flavour', 'flavours'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Pokemon.FlavorsDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Pokemon.FlavorsExtended),
+	description: LanguageKeys.Commands.Pokemon.FlavorsDescription,
+	extendedHelp: LanguageKeys.Commands.Pokemon.FlavorsExtended,
 	usage: '<pokemon:str>',
 	flagSupport: true
 })
 export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const pokemonData = await this.fetchAPI(language, pokemon.toLowerCase());
+		const pokemonData = await this.fetchAPI(t, pokemon.toLowerCase());
 
 		await this.buildDisplay(message, pokemonData).start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, pokemon: string) {
+	private async fetchAPI(t: TFunction, pokemon: string) {
 		try {
 			const { data } = await fetchGraphQLPokemon<'getPokemonDetailsByFuzzy'>(getPokemonFlavorTextsByFuzzy, { pokemon });
 			return data.getPokemonDetailsByFuzzy;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
+			throw t(LanguageKeys.Commands.Pokemon.FlavorsQueryFail, { pokemon });
 		}
 	}
 

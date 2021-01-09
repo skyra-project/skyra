@@ -2,14 +2,14 @@ import { Serializer, SerializerUpdateContext } from '#lib/database';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class UserSerializer extends Serializer<string> {
-	public async parse(value: string, context: SerializerUpdateContext) {
+	public async parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const id = Serializer.regex.userOrMember.exec(value);
 		const user = id ? await this.client.users.fetch(id[1]).catch(() => null) : null;
 		if (user) return this.ok(user.id);
-		return this.error(context.language.get(LanguageKeys.Resolvers.InvalidUser, { name: context.entry.name }));
+		return this.error(t(LanguageKeys.Resolvers.InvalidUser, { name: entry.name }));
 	}
 
-	public async isValid(value: string, context: SerializerUpdateContext): Promise<boolean> {
+	public async isValid(value: string, { t, entry }: SerializerUpdateContext): Promise<boolean> {
 		try {
 			// If it's not a valid snowflake, throw
 			if (!Serializer.regex.snowflake.test(value)) throw undefined;
@@ -18,7 +18,7 @@ export default class UserSerializer extends Serializer<string> {
 			await this.client.users.fetch(value);
 			return true;
 		} catch {
-			throw context.language.get(LanguageKeys.Resolvers.InvalidUser, { name: context.entry.name });
+			throw t(LanguageKeys.Resolvers.InvalidUser, { name: entry.name });
 		}
 	}
 

@@ -7,7 +7,7 @@ import { floatPromise } from '#utils/util';
 import { codeBlock, cutText } from '@sapphire/utilities';
 import { getCode, isUpper } from '@skyra/char';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationCapitals;
@@ -47,23 +47,23 @@ export default class extends ModerationMonitor {
 		return percentage >= maximumCapitals ? 1 : null;
 	}
 
-	protected async onDelete(message: GuildMessage, language: Language, value: number) {
+	protected async onDelete(message: GuildMessage, t: TFunction, value: number) {
 		floatPromise(this, message.nuke());
 		if (value > 25 && (await DbSet.fetchModerationDirectMessageEnabled(message.author.id))) {
-			await message.author.send(language.get(LanguageKeys.Monitors.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) }));
+			await message.author.send(t(LanguageKeys.Monitors.CapsFilterDm, { message: codeBlock('md', cutText(message.content, 1900)) }));
 		}
 	}
 
-	protected onAlert(message: GuildMessage, language: Language) {
-		return message.alert(language.get(LanguageKeys.Monitors.CapsFilter, { user: message.author.toString() }));
+	protected onAlert(message: GuildMessage, t: TFunction) {
+		return message.alert(t(LanguageKeys.Monitors.CapsFilter, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: GuildMessage, language: Language) {
+	protected onLogMessage(message: GuildMessage, t: TFunction) {
 		return new MessageEmbed()
 			.setDescription(message.content)
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.CapsFilterFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.CapsFilterFooter)}`)
 			.setTimestamp();
 	}
 }

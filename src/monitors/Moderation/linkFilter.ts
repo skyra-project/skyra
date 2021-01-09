@@ -5,7 +5,7 @@ import { Colors } from '#lib/types/constants/Constants';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 export default class extends ModerationMonitor {
 	protected readonly reasonLanguageKey = LanguageKeys.Monitors.ModerationLinks;
@@ -45,15 +45,15 @@ export default class extends ModerationMonitor {
 		return message.nuke();
 	}
 
-	protected onAlert(message: GuildMessage, language: Language) {
-		return message.alert(language.get(LanguageKeys.Monitors.LinkMissing, { user: message.author.toString() }));
+	protected onAlert(message: GuildMessage, t: TFunction) {
+		return message.alert(t(LanguageKeys.Monitors.LinkMissing, { user: message.author.toString() }));
 	}
 
-	protected onLogMessage(message: GuildMessage, language: Language) {
+	protected onLogMessage(message: GuildMessage, t: TFunction) {
 		return new MessageEmbed()
 			.setColor(Colors.Red)
 			.setAuthor(`${message.author.tag} (${message.author.id})`, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setFooter(`#${(message.channel as TextChannel).name} | ${language.get(LanguageKeys.Monitors.LinkFooter)}`)
+			.setFooter(`#${(message.channel as TextChannel).name} | ${t(LanguageKeys.Monitors.LinkFooter)}`)
 			.setTimestamp();
 	}
 }

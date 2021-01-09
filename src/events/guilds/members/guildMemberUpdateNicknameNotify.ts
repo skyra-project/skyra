@@ -5,12 +5,13 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, MessageEmbed } from 'discord.js';
-import { Event, EventOptions, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildMemberUpdate })
 export default class extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
-		const [enabled, language] = await next.guild.readSettings((settings) => [
+		const [enabled, t] = await next.guild.readSettings((settings) => [
 			settings[GuildSettings.Events.MemberNickNameUpdate],
 			settings.getLanguage()
 		]);
@@ -27,19 +28,19 @@ export default class extends Event {
 				new MessageEmbed()
 					.setColor(Colors.Yellow)
 					.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-					.setDescription(this.getNameDescription(language, prevNickname, nextNickname))
-					.setFooter(language.get(LanguageKeys.Events.NicknameUpdate))
+					.setDescription(this.getNameDescription(t, prevNickname, nextNickname))
+					.setFooter(t(LanguageKeys.Events.NicknameUpdate))
 					.setTimestamp()
 			);
 		}
 	}
 
-	private getNameDescription(i18n: Language, previousName: string | null, nextName: string | null) {
+	private getNameDescription(t: TFunction, previousName: string | null, nextName: string | null) {
 		return [
-			i18n.get(previousName === null ? LanguageKeys.Events.NameUpdatePreviousWasNotSet : LanguageKeys.Events.NameUpdatePreviousWasSet, {
+			t(previousName === null ? LanguageKeys.Events.NameUpdatePreviousWasNotSet : LanguageKeys.Events.NameUpdatePreviousWasSet, {
 				previousName
 			}),
-			i18n.get(nextName === null ? LanguageKeys.Events.NameUpdateNextWasNotSet : LanguageKeys.Events.NameUpdateNextWasSet, { nextName })
+			t(nextName === null ? LanguageKeys.Events.NameUpdateNextWasNotSet : LanguageKeys.Events.NameUpdateNextWasSet, { nextName })
 		].join('\n');
 	}
 }

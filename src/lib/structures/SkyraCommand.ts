@@ -1,10 +1,11 @@
+import { CustomGet } from '#lib/types';
+import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import { PermissionResolvable, Permissions } from 'discord.js';
-import { TFunction } from 'i18next';
 import { Command, CommandOptions, CommandStore, KlasaMessage } from 'klasa';
 
 export abstract class SkyraCommand extends Command {
-	public description: string | ((language: TFunction) => string);
-	public extendedHelp: string | ((language: TFunction) => Record<string, unknown>);
+	public description: CustomGet<string, string>;
+	public extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
 
 	public spam: boolean;
 	public requiredGuildPermissions: Permissions;
@@ -35,8 +36,8 @@ export abstract class SkyraCommand extends Command {
 }
 
 export interface SkyraCommandOptions extends CommandOptions {
-	description: string | ((language: TFunction) => string);
-	extendedHelp: string | ((language: TFunction) => Record<string, unknown>);
+	description: CustomGet<string, string>;
+	extendedHelp: CustomGet<string, LanguageHelpDisplayOptions>;
 	spam?: boolean;
 	requiredGuildPermissions?: PermissionResolvable;
 }

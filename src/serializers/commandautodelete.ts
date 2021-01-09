@@ -3,15 +3,15 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<CommandAutoDelete> {
-	public parse(value: string, context: SerializerUpdateContext) {
+	public parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const [command, rawDuration] = value.split(' ');
 		if (!command) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidPiece, { name: context.entry.name, piece: 'command' }));
+			return this.error(t(LanguageKeys.Resolvers.InvalidPiece, { name: entry.name, piece: 'command' }));
 		}
 
 		const duration = Number(rawDuration);
 		if (!Number.isSafeInteger(duration) || duration < 0) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidDuration, { name: context.entry.name }));
+			return this.error(t(LanguageKeys.Resolvers.InvalidDuration, { name: entry.name }));
 		}
 
 		return this.ok([command, duration] as const);
@@ -27,8 +27,8 @@ export default class UserSerializer extends Serializer<CommandAutoDelete> {
 		);
 	}
 
-	public stringify(value: CommandAutoDelete, context: SerializerUpdateContext): string {
-		return `[${value[0]} -> ${context.language.duration(value[1], 2)}]`;
+	public stringify(value: CommandAutoDelete, { t }: SerializerUpdateContext): string {
+		return `[${value[0]} -> ${t(LanguageKeys.Globals.DurationValue, { value: value[1] })}]`;
 	}
 
 	public equals(left: CommandAutoDelete, right: CommandAutoDelete): boolean {

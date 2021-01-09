@@ -2,19 +2,19 @@ import { NotificationsStreamsTwitchStreamer, NotificationsStreamTwitch, Serializ
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class UserSerializer extends Serializer<NotificationsStreamTwitch> {
-	public parse(_: string, context: SerializerUpdateContext) {
-		return this.error(context.language.get(LanguageKeys.Serializers.Unsupported));
+	public parse(_: string, { t }: SerializerUpdateContext) {
+		return this.error(t(LanguageKeys.Serializers.Unsupported));
 	}
 
-	public isValid(data: NotificationsStreamTwitch, { language }: SerializerUpdateContext) {
+	public isValid(data: NotificationsStreamTwitch, { t }: SerializerUpdateContext) {
 		// Validate that data is a tuple [string, x[]].
 		if (!Array.isArray(data) || data.length !== 2 || typeof data[0] !== 'string' || !Array.isArray(data[1])) {
-			return Promise.reject(language.get(LanguageKeys.Serializers.TwitchSubscriptionInvalid));
+			return Promise.reject(t(LanguageKeys.Serializers.TwitchSubscriptionInvalid));
 		}
 
 		// Validate that all entries from the second index in the tuple are indeed correct values.
 		if (data[1].some((streamer) => !this.validateStreamer(streamer))) {
-			return Promise.reject(language.get(LanguageKeys.Serializers.TwitchSubscriptionInvalidStreamer));
+			return Promise.reject(t(LanguageKeys.Serializers.TwitchSubscriptionInvalidStreamer));
 		}
 
 		// Return without further modifications

@@ -6,8 +6,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vm'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.VmuteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.VmuteExtended),
+	description: LanguageKeys.Commands.Moderation.VmuteDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.VmuteExtended,
 	optionalDuration: true,
 	requiredMember: true,
 	requiredGuildPermissions: ['MUTE_MEMBERS']

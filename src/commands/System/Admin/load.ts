@@ -8,8 +8,8 @@ import { join } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['l'],
-	description: (language) => language.get(LanguageKeys.Commands.System.LoadDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.LoadExtended),
+	description: LanguageKeys.Commands.System.LoadDescription,
+	extendedHelp: LanguageKeys.Commands.System.LoadExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '[core] <Store:store> <path:...string>',
@@ -19,12 +19,13 @@ export default class extends SkyraCommand {
 	private regExp = /\\\\?|\//g;
 
 	public async run(message: KlasaMessage, [core, store, path]: ['core', Store<any, any>, string]) {
+		const t = await message.fetchT();
 		const splitPath = (path.endsWith('.js') ? path : `${path}.js`).split(this.regExp);
 		const timer = new Stopwatch();
 		const piece = await (core ? this.tryEach(store, splitPath) : store.load(store.userDirectory, splitPath));
 
 		try {
-			if (!piece) throw await message.fetchLocale(LanguageKeys.Commands.System.LoadFail);
+			if (!piece) throw t(LanguageKeys.Commands.System.LoadFail);
 			await piece.init();
 			if (this.client.shard) {
 				await this.client.shard.broadcastEval(`
@@ -34,10 +35,10 @@ export default class extends SkyraCommand {
 					}
 				`);
 			}
-			return message.sendLocale(LanguageKeys.Commands.System.Load, [{ time: timer.stop(), type: store.name, name: piece.name }]);
+			return message.send(t(LanguageKeys.Commands.System.Load, { time: timer.stop().toString(), type: store.name, name: piece.name }));
 		} catch (error) {
 			timer.stop();
-			throw await message.fetchLocale(LanguageKeys.Commands.System.LoadError, {
+			throw t(LanguageKeys.Commands.System.LoadError, {
 				type: store.name,
 				name: piece ? piece.name : splitPath.join('/'),
 				error

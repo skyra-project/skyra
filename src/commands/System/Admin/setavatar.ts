@@ -6,8 +6,8 @@ import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.System.SetAvatarDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.SetAvatarExtended),
+	description: LanguageKeys.Commands.System.SetAvatarDescription,
+	extendedHelp: LanguageKeys.Commands.System.SetAvatarExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '(attachment:attachment)'
@@ -22,7 +22,7 @@ import { KlasaMessage } from 'klasa';
 			}
 			const url = ((res) => res.protocol && IMAGE_EXTENSION.test(res.pathname) && res.hostname && res.href)(new URL(arg));
 			if (url) return fetch(url, FetchResultTypes.Buffer);
-			throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidUrl, { name: possible.name });
+			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidUrl, { name: possible.name });
 		}
 	]
 ])

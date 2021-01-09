@@ -5,7 +5,8 @@ import { PostStreamBodyData } from '#root/routes/twitch/twitchStreamChange';
 import { TWITCH_REPLACEABLES_MATCHES, TWITCH_REPLACEABLES_REGEX } from '#utils/Notifications/Twitch';
 import { floatPromise } from '#utils/util';
 import { MessageEmbed, TextChannel } from 'discord.js';
-import { Event, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event } from 'klasa';
 
 export default class extends Event {
 	public async run(data: PostStreamBodyData, response: ApiResponse) {
@@ -21,7 +22,7 @@ export default class extends Event {
 			if (typeof guild === 'undefined') continue;
 
 			// Synchronize the settings, then retrieve to all of its subscriptions
-			const [allSubscriptions, language] = await guild.readSettings((settings) => [
+			const [allSubscriptions, t] = await guild.readSettings((settings) => [
 				settings[GuildSettings.Notifications.Stream.Twitch.Streamers],
 				settings.getLanguage()
 			]);
@@ -44,7 +45,7 @@ export default class extends Event {
 					const message = this.transformText(subscription.message, data);
 
 					if (subscription.embed) {
-						floatPromise(this, channel.send(this.buildEmbed(message, language)));
+						floatPromise(this, channel.send(this.buildEmbed(message, t)));
 					} else {
 						floatPromise(this, channel.send(message));
 					}
@@ -68,11 +69,11 @@ export default class extends Event {
 		});
 	}
 
-	private buildEmbed(message: string, i18n: Language) {
+	private buildEmbed(message: string, t: TFunction) {
 		return new MessageEmbed()
 			.setColor(this.client.twitch.BRANDING_COLOUR)
 			.setDescription(message)
-			.setFooter(i18n.get(LanguageKeys.Notifications.TwitchEmbedFooter))
+			.setFooter(t(LanguageKeys.Notifications.TwitchEmbedFooter))
 			.setTimestamp();
 	}
 }

@@ -9,7 +9,7 @@ import { fetchReactionUsers, getImage } from '#utils/util';
 import { cutText, debounce } from '@sapphire/utilities';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed, TextChannel } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
 export const kColors = [
@@ -228,7 +228,7 @@ export class StarboardEntity extends BaseEntity {
 	/**
 	 * The embed for the message
 	 */
-	private getEmbed(language: Language) {
+	private getEmbed(t: TFunction) {
 		if (this.#starMessage?.embeds.length) {
 			return this.#starMessage.embeds[0].setColor(this.color);
 		}
@@ -237,7 +237,7 @@ export class StarboardEntity extends BaseEntity {
 		return new MessageEmbed()
 			.setAuthor(message.author.username, message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 			.setColor(this.color)
-			.setDescription(this.getContent(language))
+			.setDescription(this.getContent(t))
 			.setTimestamp(message.createdAt)
 			.setImage(getImage(message)!);
 	}
@@ -245,8 +245,8 @@ export class StarboardEntity extends BaseEntity {
 	/**
 	 * The text
 	 */
-	private getContent(language: Language) {
-		const url = `[${language.get(LanguageKeys.Misc.JumpTo)}](${this.#message.url})`;
+	private getContent(t: TFunction) {
+		const url = `[${t(LanguageKeys.Misc.JumpTo)}](${this.#message.url})`;
 		return `${url}\n${cutText(this.#message.content, 1800)}`;
 	}
 
@@ -254,7 +254,7 @@ export class StarboardEntity extends BaseEntity {
 	 * Edits the message or sends a new one if it does not exist, includes full error handling
 	 */
 	private async updateStarMessage(): Promise<void> {
-		const [minimum, channelID, language] = await this.#message.guild.readSettings((settings) => [
+		const [minimum, channelID, t] = await this.#message.guild.readSettings((settings) => [
 			settings[GuildSettings.Starboard.Minimum],
 			settings[GuildSettings.Starboard.Channel],
 			settings.getLanguage()
@@ -265,7 +265,7 @@ export class StarboardEntity extends BaseEntity {
 		const content = `${this.emoji} **${this.stars}** ${this.#message.channel as TextChannel}`;
 		if (this.#starMessage) {
 			try {
-				await this.#starMessage.edit(content, this.getEmbed(language));
+				await this.#starMessage.edit(content, this.getEmbed(t));
 			} catch (error) {
 				if (!(error instanceof DiscordAPIError) || !(error instanceof HTTPError)) return;
 
@@ -280,7 +280,7 @@ export class StarboardEntity extends BaseEntity {
 		if (!channel) return;
 
 		const promise = channel
-			.send(content, this.getEmbed(language))
+			.send(content, this.getEmbed(t))
 			.then((message) => {
 				this.#starMessage = message as GuildMessage;
 				this.starMessageID = message.id;

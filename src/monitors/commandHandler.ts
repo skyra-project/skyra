@@ -35,7 +35,7 @@ export default class extends Monitor {
 		const prefix = await this.client.fetchPrefix(message);
 		if (!prefix) return;
 
-		return message.sendLocale(LanguageKeys.Misc.PrefixReminder, [{ prefix: prefix.length ? prefix : PREFIX }], {
+		return message.sendTranslated(LanguageKeys.Misc.PrefixReminder, [{ prefix: prefix.length ? prefix : PREFIX }], {
 			allowedMentions: { users: [message.author.id], roles: [] }
 		});
 	}

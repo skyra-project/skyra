@@ -17,8 +17,8 @@ type DurationDisplay = (time: number) => string;
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.HistoryDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.HistoryExtended),
+	description: LanguageKeys.Commands.Moderation.HistoryDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.HistoryExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	runIn: ['text'],
 	usage: '<details|overview:default> [user:username]',
@@ -52,34 +52,22 @@ export default class extends SkyraCommand {
 		}
 
 		const index = Math.min(COLORS.length - 1, warnings + mutes + kicks + bans);
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		return message.send(
 			new MessageEmbed()
 				.setColor(COLORS[index])
 				.setAuthor(target.username, target.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setFooter(
-					language.get(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
+					t(LanguageKeys.Commands.Moderation.HistoryFooterNew, {
 						warnings,
 						mutes,
 						kicks,
 						bans,
-						warningsText:
-							warnings === 1
-								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings })
-								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterWarningPlural, { count: warnings }),
-						mutesText:
-							mutes === 1
-								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes })
-								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterMutesPlural, { count: mutes }),
-						kicksText:
-							kicks === 1
-								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks })
-								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterKicksPlural, { count: kicks }),
-						bansText:
-							bans === 1
-								? language.get(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
-								: language.get(LanguageKeys.Commands.Moderation.HistoryFooterBansPlural, { count: bans })
+						warningsText: t(LanguageKeys.Commands.Moderation.HistoryFooterWarning, { count: warnings }),
+						mutesText: t(LanguageKeys.Commands.Moderation.HistoryFooterMutes, { count: mutes }),
+						kicksText: t(LanguageKeys.Commands.Moderation.HistoryFooterKicks, { count: kicks }),
+						bansText: t(LanguageKeys.Commands.Moderation.HistoryFooterBans, { count: bans })
 					})
 				)
 		);
@@ -87,33 +75,26 @@ export default class extends SkyraCommand {
 
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async details(message: GuildMessage, [target = message.author]: [User]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = (await message.guild.moderation.fetch(target.id)).filter((log) => !log.invalidated && !log.appealType);
-		if (!entries.size) throw language.get(LanguageKeys.Commands.Moderation.ModerationsEmpty);
+		if (!entries.size) throw t(LanguageKeys.Commands.Moderation.ModerationsEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setTitle(
-					language.get(
-						entries.size === 1
-							? LanguageKeys.Commands.Moderation.ModerationsAmount
-							: LanguageKeys.Commands.Moderation.ModerationsAmountPlural,
-						{ count: entries.size }
-					)
-				)
+				.setTitle(t(LanguageKeys.Commands.Moderation.ModerationsAmount, { count: entries.size }))
 		);
 
 		// Fetch usernames
 		const usernames = await this.fetchAllModerators(entries);
 
 		// Set up the formatter
-		const durationDisplay = language.duration.bind(language);
+		const durationDisplay = t.duration.bind(t);
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPage((template: MessageEmbed) => {

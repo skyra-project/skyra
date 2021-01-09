@@ -89,7 +89,6 @@ export const HungerGamesResultHeaderBloodbath = FT<{ game: HungerGamesGame }, st
 export const HungerGamesResultHeaderSun = FT<{ game: HungerGamesGame }, string>('commands/game:hungerGamesResultHeaderSun');
 export const HungerGamesResultHeaderMoon = FT<{ game: HungerGamesGame }, string>('commands/game:hungerGamesResultHeaderMoon');
 export const HungerGamesResultDeaths = FT<{ deaths: number }, string>('commands/game:hungerGamesResultDeaths');
-export const HungerGamesResultDeathsPlural = FT<{ deaths: number }, string>('commands/game:hungerGamesResultDeathsPlural');
 export const HungerGamesResultProceed = T<string>('commands/game:hungerGamesResultProceed');
 export const HungerGamesStop = T<string>('commands/game:hungerGamesStop');
 export const HungerGamesWinner = FT<{ winner: string }, string>('commands/game:hungerGamesWinner');

@@ -17,7 +17,7 @@ export default class extends Event {
 
 		// If the error was a string (message from Skyra to not fire inhibitors), send it:
 		if (typeof error === 'string') {
-			return message.alert(await message.fetchLocale(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }), {
+			return message.alert(await message.resolveKey(LanguageKeys.Events.ErrorString, { mention: message.author.toString(), message: error }), {
 				allowedMentions: { users: [message.author.id], roles: [] }
 			});
 		}
@@ -25,7 +25,7 @@ export default class extends Event {
 		// If the error was an AbortError, tell the user to re-try:
 		if (error.name === 'AbortError') {
 			this.client.emit(Events.Warn, `${this.getWarnError(message)} (${message.author.id}) | ${error.constructor.name}`);
-			return message.alert(await message.fetchLocale(LanguageKeys.System.DiscordAbortError));
+			return message.alert(await message.resolveKey(LanguageKeys.System.DiscordAbortError));
 		}
 
 		// Extract useful information about the DiscordAPIError
@@ -45,7 +45,7 @@ export default class extends Event {
 			await message.alert(
 				this.client.options.owners.includes(message.author.id)
 					? codeBlock('js', error.stack!)
-					: await message.fetchLocale(LanguageKeys.Events.ErrorWtf)
+					: await message.resolveKey(LanguageKeys.Events.ErrorWtf)
 			);
 		} catch (err) {
 			this.client.emit(Events.ApiError, err);

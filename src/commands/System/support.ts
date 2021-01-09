@@ -8,8 +8,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['support-server', 'server'],
-			description: (language) => language.get(LanguageKeys.Commands.System.SupportDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.SupportExtended),
+			description: LanguageKeys.Commands.System.SupportDescription,
+			extendedHelp: LanguageKeys.Commands.System.SupportExtended,
 			guarded: true,
 			requiredPermissions: ['EMBED_LINKS']
 		});

@@ -10,7 +10,7 @@ import { Event, EventOptions } from 'klasa';
 @ApplyOptions<EventOptions>({ event: Events.NotMutedMemberAdd })
 export default class extends Event {
 	public async run(member: GuildMember) {
-		const [enabled, language] = await member.guild.readSettings((settings) => [settings[GuildSettings.Events.MemberAdd], settings.getLanguage()]);
+		const [enabled, t] = await member.guild.readSettings((settings) => [settings[GuildSettings.Events.MemberAdd], settings.getLanguage()]);
 		if (!enabled) return;
 
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, member.guild, () =>
@@ -18,12 +18,12 @@ export default class extends Event {
 				.setColor(Colors.Green)
 				.setAuthor(`${member.user.tag} (${member.user.id})`, member.user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 				.setDescription(
-					language.get(LanguageKeys.Events.GuildMemberAddDescription, {
+					t(LanguageKeys.Events.GuildMemberAddDescription, {
 						mention: member.toString(),
 						time: Date.now() - member.user.createdTimestamp
 					})
 				)
-				.setFooter(language.get(LanguageKeys.Events.GuildMemberAdd))
+				.setFooter(t(LanguageKeys.Events.GuildMemberAdd))
 				.setTimestamp()
 		);
 	}

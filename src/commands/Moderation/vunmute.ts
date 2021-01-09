@@ -6,8 +6,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['uvm', 'vum', 'unvmute'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.VunmuteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.VunmuteExtended),
+	description: LanguageKeys.Commands.Moderation.VunmuteDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.VunmuteExtended,
 	requiredMember: true,
 	requiredPermissions: ['MUTE_MEMBERS']
 })

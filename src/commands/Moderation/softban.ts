@@ -9,8 +9,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['sb'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.SoftBanDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.SoftBanExtended),
+	description: LanguageKeys.Commands.Moderation.SoftBanDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.SoftBanExtended,
 	requiredMember: false,
 	requiredPermissions: ['BAN_MEMBERS']
 })
@@ -45,7 +45,7 @@ export default class extends ModerationCommand {
 	}
 
 	private async getDays(message: GuildMessage) {
-		const regex = new RegExp(await message.fetchLocale(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
+		const regex = new RegExp(await message.resolveKey(LanguageKeys.Commands.Moderation.ModerationDays), 'i');
 		for (const [key, value] of Object.entries(message.flagArgs)) {
 			if (regex.test(key)) {
 				const parsed = Number(value);

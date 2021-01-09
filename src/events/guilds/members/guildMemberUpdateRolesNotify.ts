@@ -5,15 +5,13 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { MessageLogsEnum } from '#utils/constants';
 import { ApplyOptions } from '@skyra/decorators';
 import { GuildMember, MessageEmbed } from 'discord.js';
-import { Event, EventOptions, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { Event, EventOptions } from 'klasa';
 
 @ApplyOptions<EventOptions>({ event: Events.GuildMemberUpdate })
 export default class extends Event {
 	public async run(previous: GuildMember, next: GuildMember) {
-		const [enabled, language] = await next.guild.readSettings((settings) => [
-			settings[GuildSettings.Events.MemberRoleUpdate],
-			settings.getLanguage()
-		]);
+		const [enabled, t] = await next.guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRoleUpdate], settings.getLanguage()]);
 
 		if (!enabled) return;
 
@@ -43,31 +41,25 @@ export default class extends Event {
 			new MessageEmbed()
 				.setColor(Colors.Yellow)
 				.setAuthor(`${user.tag} (${user.id})`, user.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-				.setDescription(this.getRoleDescription(language, addedRoles, removedRoles) || language.get(LanguageKeys.Events.GuildMemberNoUpdate))
-				.setFooter(language.get(LanguageKeys.Events.RoleUpdate))
+				.setDescription(this.getRoleDescription(t, addedRoles, removedRoles) || t(LanguageKeys.Events.GuildMemberNoUpdate))
+				.setFooter(t(LanguageKeys.Events.RoleUpdate))
 				.setTimestamp()
 		);
 	}
 
-	private getRoleDescription(i18n: Language, addedRoles: string[], removedRoles: string[]) {
+	private getRoleDescription(t: TFunction, addedRoles: string[], removedRoles: string[]) {
 		const description = [];
 		if (addedRoles.length) {
 			description.push(
-				i18n.get(addedRoles.length === 1 ? LanguageKeys.Events.GuildMemberAddedRoles : LanguageKeys.Events.GuildMemberAddedRolesPlural, {
-					addedRoles: i18n.list(addedRoles, i18n.get(LanguageKeys.Globals.And))
+				t(LanguageKeys.Events.GuildMemberAddedRoles, {
+					addedRoles,
+					count: addedRoles.length
 				})
 			);
 		}
 
 		if (removedRoles.length) {
-			description.push(
-				i18n.get(
-					removedRoles.length === 1 ? LanguageKeys.Events.GuildMemberRemovedRoles : LanguageKeys.Events.GuildMemberRemovedRolesPlural,
-					{
-						removedRoles: i18n.list(removedRoles, i18n.get(LanguageKeys.Globals.And))
-					}
-				)
-			);
+			description.push(t(LanguageKeys.Events.GuildMemberRemovedRoles, { removedRoles, count: removedRoles.length }));
 		}
 
 		return description.join('\n');

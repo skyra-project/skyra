@@ -15,7 +15,7 @@ export default class extends Event {
 	public async run(old: KlasaMessage, message: GuildMessage) {
 		if (!message.guild || old.content === message.content || message.author.bot) return;
 
-		const [enabled, ignoredChannels, ignoredEdits, ignoredAll, language] = await message.guild.readSettings((settings) => [
+		const [enabled, ignoredChannels, ignoredEdits, ignoredAll, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Events.MessageEdit],
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.MessageEdit],
@@ -41,7 +41,7 @@ export default class extends Event {
 						.map((result) => (result.added ? `**${result.value}**` : result.removed ? `~~${result.value}~~` : result.value))
 						.join(' ')
 				)
-				.setFooter(`${language.get(LanguageKeys.Events.MessageUpdate)} | ${message.channel.name}`)
+				.setFooter(t(LanguageKeys.Events.MessageUpdate, { message }))
 				.setTimestamp()
 		);
 	}

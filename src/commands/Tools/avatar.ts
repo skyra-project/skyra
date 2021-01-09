@@ -10,8 +10,8 @@ const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['a', 'av', 'ava'],
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.AvatarDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.AvatarExtended),
+	description: LanguageKeys.Commands.Tools.AvatarDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.AvatarExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[user:username]',
 	flagSupport: true

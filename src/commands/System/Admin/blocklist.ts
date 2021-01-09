@@ -12,7 +12,7 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['blacklist'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Admin.BlocklistDescription),
+	description: LanguageKeys.Commands.Admin.BlocklistDescription,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<show|reset|remove|set:default> (user:optionalUser|guild:optionalGuild) [...]',
@@ -77,7 +77,7 @@ export default class extends SkyraCommand {
 
 		await clientEntity.save();
 
-		return message.sendLocale(LanguageKeys.Commands.Admin.BlocklistResetSuccess);
+		return message.sendTranslated(LanguageKeys.Commands.Admin.BlocklistResetSuccess);
 	}
 
 	public async remove(message: KlasaMessage, usersAndGuilds: User[] | Guild[]) {
@@ -98,7 +98,7 @@ export default class extends SkyraCommand {
 
 		await clientEntity.save();
 
-		return message.sendLocale(LanguageKeys.Commands.Admin.BlocklistSaveSuccess);
+		return message.sendTranslated(LanguageKeys.Commands.Admin.BlocklistSaveSuccess);
 	}
 
 	public async set(message: KlasaMessage, usersAndGuilds: User[] | Guild[]) {
@@ -123,6 +123,6 @@ export default class extends SkyraCommand {
 
 		await clientEntity.save();
 
-		return message.sendLocale(LanguageKeys.Commands.Admin.BlocklistSaveSuccess);
+		return message.sendTranslated(LanguageKeys.Commands.Admin.BlocklistSaveSuccess);
 	}
 }

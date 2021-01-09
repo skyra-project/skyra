@@ -11,7 +11,7 @@ import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 const API_URL = 'https://api.igdb.com/v4/games';
 
@@ -25,8 +25,8 @@ function isIgdbCompany(company: unknown): company is Company {
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.IgdbDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.IgdbExtended),
+	description: LanguageKeys.Commands.Tools.IgdbDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.IgdbExtended,
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
@@ -58,20 +58,20 @@ export default class extends RichDisplayCommand {
 	].join('; ');
 
 	public async run(message: GuildMessage, [game]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const entries = await this.fetchAPI(language, game);
-		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
+		const entries = await this.fetchAPI(t, game);
+		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(message, language, entries);
+		const display = await this.buildDisplay(message, t, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, game: string) {
+	private async fetchAPI(t: TFunction, game: string) {
 		try {
 			return await fetch<Game[]>(
 				API_URL,
@@ -86,13 +86,13 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, language: Language, entries: Game[]) {
-		const titles = language.get(LanguageKeys.Commands.Tools.IgdbTitles);
-		const fieldsData = language.get(LanguageKeys.Commands.Tools.IgdbData);
+	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
+		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
+		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

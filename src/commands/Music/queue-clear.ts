@@ -6,7 +6,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['qc', 'clear'],
-	description: (language) => language.get(LanguageKeys.Commands.Music.ClearDescription)
+	description: LanguageKeys.Commands.Music.ClearDescription,
+	extendedHelp: LanguageKeys.Commands.Music.ClearExtended
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()
@@ -15,6 +16,6 @@ export default class extends MusicCommand {
 		const { audio } = message.guild;
 		const count = await audio.count();
 		await audio.clearTracks();
-		return message.sendLocale(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
+		return message.sendTranslated(LanguageKeys.Commands.Music.ClearSuccess, [{ count }]);
 	}
 }

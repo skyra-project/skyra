@@ -9,6 +9,9 @@
 	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
 	"confNochange": "The value for **{{key}}** was already that value.",
 	"confServerDescription": "Define per-server settings.",
+	"confServerExtended": {
+		"extendedHelp": "Allows you to configure Skyra from Discord, as a quick alternative to the web dashboard (<https://skyra.pw>)."
+	},
 	"confServer": "**Server Setting {{key}}**\n{{list}}",
 	"confUserDescription": "Define per-user settings.",
 	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
@@ -43,10 +46,10 @@
 		"reminder": "This command can add and/or remove multiple roles at the same time.",
 		"multiline": true
 	},
-	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles}}",
+	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, list}}",
 	"rolesetAdded": "The {{name}} unique role set now has the following roles as well: {{roles}}.",
 	"rolesetInvalidName": "You can not remove the {{name}} unique role set because it does not exist.",
-	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles}}",
+	"rolesetRemoved": "The {{name}} unique role set will no longer include the following roles: {{roles, list}}",
 	"rolesetResetEmpty": "{{REDCROSS}} There are no rolesets configured in this groupo.",
 	"rolesetResetAll": "{{GREENTICK}} Successfully removed all rolesets.",
 	"rolesetResetNotExists": "{{REDCROSS}} The roleset `{{name}}` does not exist in this server.",

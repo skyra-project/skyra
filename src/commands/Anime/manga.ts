@@ -11,36 +11,36 @@ import { cutText } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
 import { stringify } from 'querystring';
+import { TFunction } from 'i18next';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Anime.MangaDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Anime.MangaExtended),
+	description: LanguageKeys.Commands.Anime.MangaDescription,
+	extendedHelp: LanguageKeys.Commands.Anime.MangaExtended,
 	usage: '<mangaName:string>'
 })
 export default class extends RichDisplayCommand {
 	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: GuildMessage, [mangaName]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { hits: entries } = await this.fetchAPI(language, mangaName);
-		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
+		const { hits: entries } = await this.fetchAPI(t, mangaName);
+		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(entries, language, message);
+		const display = await this.buildDisplay(entries, t, message);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, mangaName: string) {
+	private async fetchAPI(t: TFunction, mangaName: string) {
 		try {
 			return fetch<Kitsu.KitsuResult>(
 				API_URL,
@@ -62,12 +62,12 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(entries: Kitsu.KitsuHit[], language: Language, message: GuildMessage) {
-		const embedData = language.get(LanguageKeys.Commands.Anime.MangaEmbedData);
+	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
+		const embedData = t(LanguageKeys.Commands.Anime.MangaEmbedData, { returnObjects: true });
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -94,22 +94,22 @@ export default class extends RichDisplayCommand {
 				entry.titles.en || entry.titles.en_us,
 				entry.titles.ja_jp,
 				entry.canonicalTitle
-			].map((title) => title || language.get(LanguageKeys.Globals.None));
+			].map((title) => title || t(LanguageKeys.Globals.None));
 
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setTitle(title)
 					.setURL(mangaURL)
 					.setDescription(
-						language.get(LanguageKeys.Commands.Anime.MangaOutputDescription, {
+						t(LanguageKeys.Commands.Anime.MangaOutputDescription, {
 							englishTitle,
 							japaneseTitle,
 							canonicalTitle,
-							synopsis: synopsis ?? language.get(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
+							synopsis: synopsis ?? t(LanguageKeys.Commands.Anime.AnimeNoSynopsis)
 						})
 					)
 					.setThumbnail(entry.posterImage?.original || '')
-					.addField(embedData.type, language.get(LanguageKeys.Commands.Anime.MangaTypes)[type.toUpperCase()] || type, true)
+					.addField(embedData.type, t(LanguageKeys.Commands.Anime.MangaTypes, { returnObjects: true })[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
 					.addField(embedData.firstPublishDate, this.kTimestamp.display(entry.startDate * 1000), true)

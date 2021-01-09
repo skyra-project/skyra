@@ -53,7 +53,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		const processed = [] as Array<{ log: ModerationEntity; target: User }>;
 		const errored = [] as Array<{ error: Error | string; target: User }>;
 
-		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason, language] = await message.guild.readSettings((settings) => [
+		const [shouldAutoDelete, shouldDisplayMessage, shouldDisplayReason, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Messages.ModerationAutoDelete],
 			settings[GuildSettings.Messages.ModerationMessageDisplay],
 			settings[GuildSettings.Messages.ModerationReasonDisplay],
@@ -64,7 +64,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		for (const target of new Set(targets)) {
 			try {
 				const handled = { ...handledRaw, target, preHandled };
-				await this.checkModeratable(message, language, handled);
+				await this.checkModeratable(message, t, handled);
 				const log = await this.handle(message, handled);
 				processed.push({ log, target });
 			} catch (error) {
@@ -92,17 +92,13 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const users = sorted.map(({ target }) => `\`${target.tag}\``);
 				const range = cases.length === 1 ? cases[0] : `${cases[0]}..${cases[cases.length - 1]}`;
 				const langKey = logReason
-					? cases.length === 1
-						? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
-						: LanguageKeys.Commands.Moderation.ModerationOutputWithReasonPlural
-					: cases.length === 1
-					? LanguageKeys.Commands.Moderation.ModerationOutput
-					: LanguageKeys.Commands.Moderation.ModerationOutputPlural;
+					? LanguageKeys.Commands.Moderation.ModerationOutputWithReason
+					: LanguageKeys.Commands.Moderation.ModerationOutput;
 				output.push(
-					language.get(langKey, {
+					t(langKey, {
 						count: cases.length,
 						range,
-						users: language.list(users, language.get(LanguageKeys.Globals.And)),
+						users: t.list(users, t(LanguageKeys.Globals.And)),
 						reason: logReason
 					})
 				);
@@ -111,15 +107,10 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 			if (errored.length) {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
-					language.get(
-						users.length === 1
-							? LanguageKeys.Commands.Moderation.ModerationFailed
-							: LanguageKeys.Commands.Moderation.ModerationFailedPlural,
-						{
-							users: language.list(users, language.get(LanguageKeys.Globals.And)),
-							count: users.length
-						}
-					)
+					t(LanguageKeys.Commands.Moderation.ModerationFailed, {
+						users: t.list(users, t(LanguageKeys.Globals.And)),
+						count: users.length
+					})
 				);
 			}
 

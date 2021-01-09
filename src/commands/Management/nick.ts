@@ -1,27 +1,24 @@
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { CommandStore } from 'klasa';
+import { ApplyOptions } from '@skyra/decorators';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['nickname'],
+	cooldown: 30,
+	description: LanguageKeys.Commands.Management.NickDescription,
+	extendedHelp: LanguageKeys.Commands.Management.NickExtended,
+	permissionLevel: PermissionLevels.Moderator,
+	requiredPermissions: ['CHANGE_NICKNAME'],
+	runIn: ['text'],
+	usage: '[nick:string{,32}]'
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['nickname'],
-			cooldown: 30,
-			description: (language) => language.get(LanguageKeys.Commands.Management.NickDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.NickExtended),
-			permissionLevel: PermissionLevels.Moderator,
-			requiredPermissions: ['CHANGE_NICKNAME'],
-			runIn: ['text'],
-			usage: '[nick:string{,32}]'
-		});
-	}
-
 	public async run(message: GuildMessage, [nickname = '']: [string?]) {
 		await message.guild.me!.setNickname(nickname);
 		return nickname
-			? message.alert(await message.fetchLocale(LanguageKeys.Commands.Management.NickSet, { nickname }))
-			: message.alert(await message.fetchLocale(LanguageKeys.Commands.Management.NickCleared));
+			? message.alert(await message.resolveKey(LanguageKeys.Commands.Management.NickSet, { nickname }))
+			: message.alert(await message.resolveKey(LanguageKeys.Commands.Management.NickCleared));
 	}
 }

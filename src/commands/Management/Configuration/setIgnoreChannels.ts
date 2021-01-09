@@ -12,8 +12,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Management.SetIgnoreChannelsDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.SetIgnoreChannelsExtended),
+			description: LanguageKeys.Commands.Management.SetIgnoreChannelsDescription,
+			extendedHelp: LanguageKeys.Commands.Management.SetIgnoreChannelsExtended,
 			permissionLevel: PermissionLevels.Administrator,
 			runIn: ['text'],
 			usage: '<here|channel:textchannelname>'
@@ -22,9 +22,9 @@ export default class extends SkyraCommand {
 
 	public async run(message: GuildMessage, [channel]: [TextChannel | 'here']) {
 		if (channel === 'here') channel = message.channel as TextChannel;
-		else if (!isTextBasedChannel(channel)) throw await message.fetchLocale(LanguageKeys.Misc.ConfigurationTextChannelRequired);
+		else if (!isTextBasedChannel(channel)) throw await message.resolveKey(LanguageKeys.Misc.ConfigurationTextChannelRequired);
 
-		const [language, oldLength, newLength] = await message.guild.writeSettings((settings) => {
+		const [t, oldLength, newLength] = await message.guild.writeSettings((settings) => {
 			const ignoredChannels = settings[GuildSettings.DisabledChannels];
 			const oldLength = ignoredChannels.length;
 
@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		});
 
 		return message.send(
-			language.get(
+			t(
 				oldLength < newLength
 					? LanguageKeys.Commands.Management.SetIgnoreChannelsSet
 					: LanguageKeys.Commands.Management.SetIgnoreChannelsRemoved,

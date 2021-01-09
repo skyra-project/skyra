@@ -13,8 +13,8 @@ import { join } from 'path';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Misc.ChaseDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.ChaseExtended),
+	description: LanguageKeys.Commands.Misc.ChaseDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.ChaseExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'

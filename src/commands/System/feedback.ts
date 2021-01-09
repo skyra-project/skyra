@@ -6,8 +6,8 @@ import { KlasaMessage } from 'klasa';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 20,
-	description: (language) => language.get(LanguageKeys.Commands.System.FeedbackDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.FeedbackExtended),
+	description: LanguageKeys.Commands.System.FeedbackDescription,
+	extendedHelp: LanguageKeys.Commands.System.FeedbackExtended,
 	guarded: true,
 	usage: '<message:string{8,1900}>'
 })

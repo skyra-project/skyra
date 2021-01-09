@@ -7,22 +7,22 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Fun.PunDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Fun.PunExtended),
+	description: LanguageKeys.Commands.Fun.PunDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.PunExtended,
 	spam: true
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
-		const language = await message.fetchLanguage();
-
-		const { joke } = await fetch<PunResultOk>('https://icanhazdadjoke.com/', {
-			headers: {
-				Accept: Mime.Types.ApplicationJson
-			}
-		}).catch(() => {
-			throw language.get(LanguageKeys.Commands.Fun.PunError);
-		});
-		return message.send(joke);
+		try {
+			const { joke } = await fetch<PunResultOk>('https://icanhazdadjoke.com/', {
+				headers: {
+					Accept: Mime.Types.ApplicationJson
+				}
+			});
+			return message.send(joke);
+		} catch {
+			throw await message.resolveKey(LanguageKeys.Commands.Fun.PunError);
+		}
 	}
 }
 

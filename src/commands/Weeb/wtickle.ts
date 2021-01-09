@@ -3,8 +3,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Weeb.TickleDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Weeb.TickleExtended),
+	description: LanguageKeys.Commands.Weeb.TickleDescription,
+	extendedHelp: LanguageKeys.Commands.Weeb.TickleExtended,
 	queryType: 'tickle',
 	responseName: LanguageKeys.Commands.Weeb.Tickle,
 	usage: '<user:username>'

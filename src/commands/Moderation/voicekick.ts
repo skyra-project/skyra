@@ -6,8 +6,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['vk'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.VoiceKickDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.VoiceKickExtended),
+	description: LanguageKeys.Commands.Moderation.VoiceKickDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.VoiceKickExtended,
 	requiredMember: true,
 	requiredPermissions: ['MANAGE_CHANNELS', 'MOVE_MEMBERS']
 })

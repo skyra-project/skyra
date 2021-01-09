@@ -1,31 +1,30 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { assetsFolder } from '#utils/constants';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { readFile } from 'fs/promises';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { join } from 'path';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['kittenfact'],
+	cooldown: 10,
+	description: LanguageKeys.Commands.Animal.CatfactDescription,
+	extendedHelp: LanguageKeys.Commands.Animal.CatfactExtended,
+	requiredPermissions: ['EMBED_LINKS'],
+	spam: true
+})
 export default class extends SkyraCommand {
 	private facts: readonly string[] = [];
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['kittenfact'],
-			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Animal.CatfactDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Animal.CatfactExtended),
-			requiredPermissions: ['EMBED_LINKS'],
-			spam: true
-		});
-	}
 
 	public async run(message: KlasaMessage) {
 		const fact = this.facts[Math.floor(Math.random() * this.facts.length)];
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(await message.fetchLocale(LanguageKeys.Commands.Animal.CatfactTitle))
+				.setTitle(await message.resolveKey(LanguageKeys.Commands.Animal.CatfactTitle))
 				.setDescription(fact)
 		);
 	}

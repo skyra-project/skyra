@@ -49,21 +49,26 @@ export function TextBasedExtension<Base extends NonNullObject>(Ctor: Constructab
 
 export interface TextBasedExtensions {
 	fetchT(): Promise<TFunction>;
-	resolveKey(key: string, ...values: readonly any[]): Promise<string>;
 
-	fetchLocale<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-	fetchLocale<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
-	sendTranslated(
-		key: string,
-		values?: readonly unknown[],
+	resolveKey<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+	resolveKey<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
+
+	sendTranslated<K extends string, TArgs, TReturn>(
+		key: CustomFunctionGet<K, TArgs, TReturn>,
+		values: [TArgs],
 		options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
 	): Promise<Message>;
-	sendTranslated(key: string, values?: readonly unknown[], options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
-	sendTranslated(key: string, options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions): Promise<Message>;
-	sendTranslated(key: string, options?: MessageOptions & { split: true | SplitOptions }): Promise<Message[]>;
-	sendTranslated(
-		key: string,
-		valuesOrOptions?: readonly unknown[] | MessageOptions | MessageAdditions,
-		rawOptions?: MessageOptions
-	): Promise<Message | Message[]>;
+	sendTranslated<K extends string, TArgs, TReturn>(
+		key: CustomFunctionGet<K, TArgs, TReturn>,
+		values: [TArgs],
+		options?: MessageOptions & { split: true | SplitOptions }
+	): Promise<Message[]>;
+	sendTranslated<K extends string, TReturn>(
+		key: CustomGet<K, TReturn>,
+		options?: MessageOptions | (MessageOptions & { split?: false }) | MessageAdditions
+	): Promise<Message>;
+	sendTranslated<K extends string, TReturn>(
+		key: CustomGet<K, TReturn>,
+		options?: MessageOptions & { split: true | SplitOptions }
+	): Promise<Message[]>;
 }

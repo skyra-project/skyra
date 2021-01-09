@@ -15,7 +15,6 @@ export const CommandHandlerReprompt = FT<{ tag: string; name: string; time: stri
 );
 export const InviteFilterAlert = FT<{ user: string }, string>('monitors:inviteFilterAlert');
 export const InviteFilterLog = FT<{ links: readonly string[]; count: number }, string>('monitors:inviteFilterLog');
-export const InviteFilterLogPlural = FT<{ links: readonly string[]; count: number }, string>('monitors:inviteFilterLogPlural');
 export const InviteFooter = T<string>('monitors:inviteLink');
 export const LinkFooter = T<string>('monitors:link');
 export const LinkMissing = FT<{ user: string }, string>('monitors:nolink');

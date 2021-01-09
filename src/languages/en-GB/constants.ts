@@ -1,6 +1,6 @@
 import { DurationFormatter, Timestamp, TimeTypes } from '@sapphire/time-utilities';
 
-export const timestamp = new Timestamp('MM/DD/YYYY [at] hh:mm:ss A');
+export const timestamp = new Timestamp('DD/MM/YYYY [at] HH:mm:ss');
 
 export const duration = new DurationFormatter({
 	[TimeTypes.Year]: {

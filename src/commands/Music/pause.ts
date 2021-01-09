@@ -12,7 +12,8 @@ import {
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: (language) => language.get(LanguageKeys.Commands.Music.PauseDescription)
+	description: LanguageKeys.Commands.Music.PauseDescription,
+	extendedHelp: LanguageKeys.Commands.Music.PauseExtended
 })
 export default class extends MusicCommand {
 	@requireUserInVoiceChannel()

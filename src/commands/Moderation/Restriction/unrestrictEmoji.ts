@@ -7,8 +7,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['un-restrict-external-emoji', 'unrestricted-emoji', 'unrestricted-external-emoji', 'uree', 'unrestrict-emojis'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended),
+	description: LanguageKeys.Commands.Moderation.UnrestrictEmojiDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.UnrestrictEmojiExtended,
 	requiredGuildPermissions: ['MANAGE_ROLES']
 })
 export default class extends ModerationCommand {
@@ -17,7 +17,7 @@ export default class extends ModerationCommand {
 	public async inhibit(message: GuildMessage) {
 		// If the command run is not this one (potentially help command) or the guild is null, return with no error.
 		if (message.command !== this || message.guild === null) return false;
-		const [id, prefix, language] = await message.guild.readSettings((settings) => [
+		const [id, prefix, t] = await message.guild.readSettings((settings) => [
 			settings[this.kPath],
 			settings[GuildSettings.Prefix],
 			settings.getLanguage()
@@ -25,7 +25,7 @@ export default class extends ModerationCommand {
 
 		if (id && message.guild.roles.cache.has(id)) return false;
 
-		throw language.get(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
+		throw t(LanguageKeys.Commands.Moderation.GuildSettingsRolesRestricted, {
 			prefix,
 			path: this.kPath
 		});

@@ -16,8 +16,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['ttt'],
 			cooldown: 10,
-			description: (language) => language.get(LanguageKeys.Commands.Games.TicTacToeDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Games.TicTacToeExtended),
+			description: LanguageKeys.Commands.Games.TicTacToeDescription,
+			extendedHelp: LanguageKeys.Commands.Games.TicTacToeExtended,
 			requiredPermissions: ['ADD_REACTIONS', 'READ_MESSAGE_HISTORY'],
 			runIn: ['text'],
 			usage: '<user:username>'
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 	}
 
 	public async run(message: GuildMessage, [user]: [User]) {
-		if (this.channels.has(message.channel.id)) throw await message.fetchLocale(LanguageKeys.Commands.Games.GamesProgress);
+		if (this.channels.has(message.channel.id)) throw await message.resolveKey(LanguageKeys.Commands.Games.GamesProgress);
 		const player1 = this.getAuthorController(message);
 		const player2 = await this.getTargetController(message, user);
 
@@ -48,18 +48,18 @@ export default class extends SkyraCommand {
 	private async getTargetController(message: GuildMessage, user: User) {
 		if (user.id === CLIENT_ID) return new TicTacToeBotController();
 
-		const language = await message.fetchLanguage();
-		if (user.bot) throw language.get(LanguageKeys.Commands.Games.GamesBot);
-		if (user.id === message.author.id) throw language.get(LanguageKeys.Commands.Games.GamesSelf);
+		const t = await message.fetchT();
+		if (user.bot) throw t(LanguageKeys.Commands.Games.GamesBot);
+		if (user.id === message.author.id) throw t(LanguageKeys.Commands.Games.GamesSelf);
 
 		const [response] = await this.prompt.createPrompt(message, { target: user }).run(
-			language.get(LanguageKeys.Commands.Games.TicTacToePrompt, {
+			t(LanguageKeys.Commands.Games.TicTacToePrompt, {
 				challenger: message.author.toString(),
 				challengee: user.toString()
 			})
 		);
 
 		if (response) return new TicTacToeHumanController(user.username, user.id);
-		throw language.get(LanguageKeys.Commands.Games.GamesPromptDeny);
+		throw t(LanguageKeys.Commands.Games.GamesPromptDeny);
 	}
 }

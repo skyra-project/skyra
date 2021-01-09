@@ -12,19 +12,19 @@ import { Event, EventOptions } from 'klasa';
 @ApplyOptions<EventOptions>({ event: Events.RawMemberRemove })
 export default class extends Event {
 	public async run(guild: Guild, { user }: GatewayGuildMemberRemoveDispatch['d']) {
-		const [enabled, language] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);
+		const [enabled, t] = await guild.readSettings((settings) => [settings[GuildSettings.Events.MemberRemove], settings.getLanguage()]);
 		if (!enabled) return;
 
 		const member = guild.members.cache.get(user.id);
 		const isModerationAction = await this.isModerationAction(guild, user);
 
 		const footer = isModerationAction.kicked
-			? language.get(LanguageKeys.Events.GuildMemberKicked)
+			? t(LanguageKeys.Events.GuildMemberKicked)
 			: isModerationAction.banned
-			? language.get(LanguageKeys.Events.GuildMemberBanned)
+			? t(LanguageKeys.Events.GuildMemberBanned)
 			: isModerationAction.softbanned
-			? language.get(LanguageKeys.Events.GuildMemberSoftBanned)
-			: language.get(LanguageKeys.Events.GuildMemberRemove);
+			? t(LanguageKeys.Events.GuildMemberSoftBanned)
+			: t(LanguageKeys.Events.GuildMemberRemove);
 
 		const time = this.processJoinedTimestamp(member);
 		this.client.emit(Events.GuildMessageLog, MessageLogsEnum.Member, guild, () =>
@@ -32,13 +32,10 @@ export default class extends Event {
 				.setColor(Colors.Red)
 				.setAuthor(`${user.username}#${user.discriminator} (${user.id})`, getDisplayAvatar(user.id, user))
 				.setDescription(
-					language.get(
-						time === -1 ? LanguageKeys.Events.GuildMemberRemoveDescription : LanguageKeys.Events.GuildMemberRemoveDescriptionWithJoinedAt,
-						{
-							mention: `<@${user.id}>`,
-							time
-						}
-					)
+					t(time === -1 ? LanguageKeys.Events.GuildMemberRemoveDescription : LanguageKeys.Events.GuildMemberRemoveDescriptionWithJoinedAt, {
+						mention: `<@${user.id}>`,
+						time
+					})
 				)
 				.setFooter(footer)
 				.setTimestamp()

@@ -3,15 +3,15 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<RolesAuto> {
-	public parse(value: string, context: SerializerUpdateContext) {
+	public parse(value: string, { t, guild }: SerializerUpdateContext) {
 		const [id, rawPoints] = value.split(' ');
-		if (!id || !context.guild.roles.cache.has(id)) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidRole, { name: 'role' }));
+		if (!id || !guild.roles.cache.has(id)) {
+			return this.error(t(LanguageKeys.Resolvers.InvalidRole, { name: 'role' }));
 		}
 
 		const points = Number(rawPoints);
 		if (!Number.isSafeInteger(points)) {
-			return this.error(context.language.get(LanguageKeys.Resolvers.InvalidInt, { name: 'points' }));
+			return this.error(t(LanguageKeys.Resolvers.InvalidInt, { name: 'points' }));
 		}
 
 		return this.ok({ id, points });

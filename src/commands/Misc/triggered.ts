@@ -23,8 +23,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 30,
-			description: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.Misc.TriggeredExtended),
+			description: LanguageKeys.Commands.Misc.TriggeredDescription,
+			extendedHelp: LanguageKeys.Commands.Misc.TriggeredExtended,
 			requiredPermissions: ['ATTACH_FILES'],
 			spam: true,
 			usage: '[user:username]'

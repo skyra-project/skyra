@@ -8,50 +8,50 @@ import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.ItunesDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.ItunesExtended),
+	description: LanguageKeys.Commands.Tools.ItunesDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.ItunesExtended,
 	usage: '<song:str>'
 })
 export default class extends RichDisplayCommand {
 	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 
 	public async run(message: GuildMessage, [song]: [string]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
-		const { results: entries } = await this.fetchAPI(language, song);
-		if (!entries.length) throw language.get(LanguageKeys.System.NoResults);
+		const { results: entries } = await this.fetchAPI(t, song);
+		if (!entries.length) throw t(LanguageKeys.System.NoResults);
 
-		const display = await this.buildDisplay(message, language, entries);
+		const display = await this.buildDisplay(message, t, entries);
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async fetchAPI(language: Language, song: string) {
+	private async fetchAPI(t: TFunction, song: string) {
 		try {
 			const url = new URL('https://itunes.apple.com/search');
 			url.searchParams.append('country', 'US');
 			url.searchParams.append('entity', 'song');
 			url.searchParams.append('explicit', 'no');
-			url.searchParams.append('lang', language.name.toLowerCase());
+			url.searchParams.append('lang', t.name.toLowerCase());
 			url.searchParams.append('limit', '10');
 			url.searchParams.append('media', 'music');
 			url.searchParams.append('term', song);
 
 			return await fetch<AppleItunesResult>(url, FetchResultTypes.JSON);
 		} catch {
-			throw language.get(LanguageKeys.System.QueryFail);
+			throw t(LanguageKeys.System.QueryFail);
 		}
 	}
 
-	private async buildDisplay(message: GuildMessage, language: Language, entries: ItunesData[]) {
-		const titles = language.get(LanguageKeys.Commands.Tools.ItunesTitles);
+	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
+		const titles = t(LanguageKeys.Commands.Tools.ItunesTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {

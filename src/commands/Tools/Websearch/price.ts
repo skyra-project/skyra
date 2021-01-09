@@ -8,30 +8,28 @@ import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
 import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['currency', 'money', 'exchange'],
 	cooldown: 15,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.PriceDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.PriceExtended),
+	description: LanguageKeys.Commands.Tools.PriceDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.PriceExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	usage: '[amount:number] <from:string> <to:string> [...]',
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
-		const language = await message.fetchLanguage();
-		await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
-		);
+		const t = await message.fetchT();
+		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
-		const result = await this.fetchAPI(language, fromCurrency, toCurrencies);
+		const result = await this.fetchAPI(t, fromCurrency, toCurrencies);
 
-		return message.send(await this.buildEmbed(message, language, result, fromCurrency, amount));
+		return message.send(await this.buildEmbed(message, t, result, fromCurrency, amount));
 	}
 
-	private async fetchAPI(language: Language, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
+	private async fetchAPI(t: TFunction, fromCurrency: string, toCurrency: string[]): Promise<CryptoCompareResultOk> {
 		try {
 			const url = new URL('https://min-api.cryptocompare.com/data/price');
 			url.searchParams.append('fsym', fromCurrency.toUpperCase());
@@ -49,11 +47,11 @@ export default class extends SkyraCommand {
 			if (Reflect.has(body, 'Message')) throw undefined; // Error is handled in the catch
 			return body as CryptoCompareResultOk;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
+			throw t(LanguageKeys.Commands.Tools.PriceCurrencyNotFound);
 		}
 	}
 
-	private async buildEmbed(message: GuildMessage, language: Language, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
+	private async buildEmbed(message: GuildMessage, t: TFunction, result: CryptoCompareResultOk, fromCurrency: string, fromAmount: number) {
 		const worths: string[] = [];
 		for (const [currency, toAmount] of Object.entries(result)) {
 			worths.push(`**${roundNumber(fromAmount * toAmount, 2)}** ${currency}`);
@@ -61,7 +59,7 @@ export default class extends SkyraCommand {
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
-			.setDescription(language.get(LanguageKeys.Commands.Tools.PriceCurrency, { fromCurrency, fromAmount, worths }))
+			.setDescription(t(LanguageKeys.Commands.Tools.PriceCurrency, { fromCurrency, fromAmount, worths }))
 			.setTimestamp();
 	}
 }

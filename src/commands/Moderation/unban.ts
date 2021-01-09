@@ -9,8 +9,8 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ub'],
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.UnbanDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.UnbanExtended),
+	description: LanguageKeys.Commands.Moderation.UnbanDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.UnbanExtended,
 	requiredMember: false,
 	requiredPermissions: ['BAN_MEMBERS']
 })
@@ -23,12 +23,12 @@ export default class extends ModerationCommand {
 
 		// If the fetch failed, throw an error saying that the fetch failed:
 		if (bans === null) {
-			throw await message.fetchLocale(LanguageKeys.System.FetchBansFail);
+			throw await message.resolveKey(LanguageKeys.System.FetchBansFail);
 		}
 
 		// If there were no bans, throw an error saying that the ban list is empty:
 		if (bans.length === 0) {
-			throw await message.fetchLocale(LanguageKeys.Commands.Moderation.GuildBansEmpty);
+			throw await message.resolveKey(LanguageKeys.Commands.Moderation.GuildBansEmpty);
 		}
 
 		return {

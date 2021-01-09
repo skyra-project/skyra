@@ -4,6 +4,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 
 export default class extends AudioEvent {
 	public async run(channel: MessageAcknowledgeable, repeating: boolean) {
-		await channel.sendLocale(repeating ? LanguageKeys.Commands.Music.RepeatSuccessEnabled : LanguageKeys.Commands.Music.RepeatSuccessDisabled);
+		await channel.sendTranslated(
+			repeating ? LanguageKeys.Commands.Music.RepeatSuccessEnabled : LanguageKeys.Commands.Music.RepeatSuccessDisabled
+		);
 	}
 }

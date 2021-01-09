@@ -9,8 +9,8 @@ export default class extends SkyraCommand {
 	public constructor(store: CommandStore, file: string[], directory: string) {
 		super(store, file, directory, {
 			aliases: ['talk'],
-			description: (language) => language.get(LanguageKeys.Commands.System.EchoDescription),
-			extendedHelp: (language) => language.get(LanguageKeys.Commands.System.EchoExtended),
+			description: LanguageKeys.Commands.System.EchoDescription,
+			extendedHelp: LanguageKeys.Commands.System.EchoExtended,
 			guarded: true,
 			permissionLevel: PermissionLevels.BotOwner,
 			runIn: ['text'],

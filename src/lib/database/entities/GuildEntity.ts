@@ -1,5 +1,4 @@
 import { ConfigurableKey, configurableKeys } from '#lib/database/settings/ConfigurableKey';
-import { isNullish } from '#lib/misc';
 import { SkyraClient } from '#lib/SkyraClient';
 import { AnyObject } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
@@ -7,7 +6,8 @@ import { PREFIX } from '#root/config';
 import { Time } from '#utils/constants';
 import { create } from '#utils/Security/RegexCreator';
 import { arrayStrictEquals } from '@sapphire/utilities';
-import { Language, RateLimitManager } from 'klasa';
+import { TFunction } from 'i18next';
+import { RateLimitManager } from 'klasa';
 import { container } from 'tsyringe';
 import { AfterInsert, AfterLoad, AfterRemove, AfterUpdate, BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 import { AdderManager } from '../settings/structures/AdderManager';
@@ -736,10 +736,8 @@ export class GuildEntity extends BaseEntity {
 	/**
 	 * Gets the [[Language]] for this entity.
 	 */
-	public getLanguage(): Language {
-		const language = this.client.languages.get(this.language);
-		if (isNullish(language)) throw new Error(`${this.language} does not exist.`);
-		return language;
+	public getLanguage(): TFunction {
+		return this.client.i18n.fetchT(this.language);
 	}
 
 	/**

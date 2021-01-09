@@ -31,13 +31,9 @@ export default class extends Inhibitor {
 		}
 
 		if (missing.length) {
-			const language = await message.fetchLanguage();
-			const permissions = language.PERMISSIONS;
-			throw language.get(LanguageKeys.Inhibitors.MissingBotPerms, {
-				missing: language.list(
-					missing.map((permission) => permissions[permission]),
-					language.get(LanguageKeys.Globals.And)
-				)
+			const t = await message.fetchT();
+			throw t(LanguageKeys.Inhibitors.MissingBotPerms, {
+				missing: missing.map((permission) => t(`permissions:${permission}`))
 			});
 		}
 	}

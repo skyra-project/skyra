@@ -4,20 +4,20 @@ import { resolveEmoji } from '#utils/util';
 import { Awaited, isObject } from '@sapphire/utilities';
 
 export default class UserSerializer extends Serializer<TriggerIncludes> {
-	public parse(value: string, context: SerializerUpdateContext) {
+	public parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const values = value.split(' ');
-		if (values.length !== 3) return this.error(context.language.get(LanguageKeys.Serializers.TriggerIncludeInvalid));
+		if (values.length !== 3) return this.error(t(LanguageKeys.Serializers.TriggerIncludeInvalid));
 
 		const [action, input, output] = values;
-		if (action !== 'react') return this.error(context.language.get(LanguageKeys.Serializers.TriggerIncludeInvalidAction));
+		if (action !== 'react') return this.error(t(LanguageKeys.Serializers.TriggerIncludeInvalidAction));
 
 		const resolved = resolveEmoji(output);
-		if (resolved === null) return this.error(context.language.get(LanguageKeys.Resolvers.InvalidEmoji, { name: context.entry.name }));
+		if (resolved === null) return this.error(t(LanguageKeys.Resolvers.InvalidEmoji, { name: entry.name }));
 
 		return this.ok({ action: action as 'react', input, output: resolved });
 	}
 
-	public isValid(data: TriggerIncludes, { language }: SerializerUpdateContext): Awaited<boolean> {
+	public isValid(data: TriggerIncludes, { t }: SerializerUpdateContext): Awaited<boolean> {
 		if (
 			isObject(data) &&
 			Object.keys(data).length === 3 &&
@@ -27,7 +27,7 @@ export default class UserSerializer extends Serializer<TriggerIncludes> {
 		)
 			return true;
 
-		throw language.get(LanguageKeys.Serializers.TriggerIncludeInvalid);
+		throw t(LanguageKeys.Serializers.TriggerIncludeInvalid);
 	}
 
 	public equals(left: TriggerIncludes, right: TriggerIncludes): boolean {

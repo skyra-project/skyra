@@ -13,7 +13,7 @@ import { Event, EventOptions } from 'klasa';
 @ApplyOptions<EventOptions>({ event: Events.GuildMessageDelete })
 export default class extends Event {
 	public async run(message: GuildMessage) {
-		const [enabled, ignoredChannels, ignoredDeletes, ignoredAll, language] = await message.guild.readSettings((settings) => [
+		const [enabled, ignoredChannels, ignoredDeletes, ignoredAll, t] = await message.guild.readSettings((settings) => [
 			settings[GuildSettings.Events.MessageDelete],
 			settings[GuildSettings.Messages.IgnoreChannels],
 			settings[GuildSettings.Channels.Ignore.MessageDelete],
@@ -35,7 +35,7 @@ export default class extends Event {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(cutText(getContent(message) || '', 1900))
-				.setFooter(`${language.get(LanguageKeys.Events.MessageDelete)} • ${channel.name}`)
+				.setFooter(t(LanguageKeys.Events.MessageDelete, { channel }))
 				.setImage(getImage(message)!)
 				.setTimestamp()
 		);

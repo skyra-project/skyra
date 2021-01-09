@@ -8,7 +8,7 @@ export default class extends AudioEvent {
 		const requester = await this.client.users.fetch(entry.author).then((data) => data.username);
 		const { title } = entry.info;
 
-		await channel.sendLocale(LanguageKeys.Commands.Music.PlayNext, [{ title, requester }], {
+		await channel.sendTranslated(LanguageKeys.Commands.Music.PlayNext, [{ title, requester }], {
 			allowedMentions: { users: [], roles: [] }
 		});
 	}

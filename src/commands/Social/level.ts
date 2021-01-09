@@ -16,8 +16,8 @@ const THEMES_FOLDER = join(cdnFolder, 'skyra-assets', 'banners');
 	aliases: ['lvl', 'rank'],
 	bucket: 2,
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Social.LevelDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Social.LevelExtended),
+	description: LanguageKeys.Commands.Social.LevelDescription,
+	extendedHelp: LanguageKeys.Commands.Social.LevelExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '[local|global] [user:username]',
@@ -47,7 +47,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = await message.fetchLocale(LanguageKeys.Commands.Social.Level);
+		const title = await message.resolveKey(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)
 				// Draw the background

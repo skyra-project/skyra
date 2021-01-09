@@ -1,14 +1,14 @@
 import { AdderKey, GuildEntity, GuildSettings } from '#lib/database';
 import { SelfModerationCommand } from '#lib/structures/SelfModerationCommand';
+import { SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { KeyOfType } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	aliases: ['link-mode', 'lmode', 'linkfilter', 'extlinks', 'externallinks'],
-	description: (language) => language.get(LanguageKeys.Commands.Management.LinkModeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.LinkModeExtended)
+	description: LanguageKeys.Commands.Management.LinkModeDescription,
+	extendedHelp: LanguageKeys.Commands.Management.LinkModeExtended
 })
 export default class extends SelfModerationCommand {
 	protected $adder: AdderKey = 'links';

@@ -10,8 +10,8 @@ import type Moderations from './moderations';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.WarningsDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.WarningsExtended),
+	description: LanguageKeys.Commands.Moderation.WarningsDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.WarningsExtended,
 	permissionLevel: PermissionLevels.Moderator,
 	requiredPermissions: ['EMBED_LINKS', 'MANAGE_MESSAGES'],
 	runIn: ['text'],

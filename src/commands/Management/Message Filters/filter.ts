@@ -1,16 +1,15 @@
 import { GuildSettings } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
-import { CommandOptions } from 'klasa';
 
-@ApplyOptions<CommandOptions>({
+@ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 5,
-	description: (language) => language.get(LanguageKeys.Commands.Management.FilterDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.FilterExtended),
+	description: LanguageKeys.Commands.Management.FilterDescription,
+	extendedHelp: LanguageKeys.Commands.Management.FilterExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	subcommands: true,
@@ -23,51 +22,51 @@ import { CommandOptions } from 'klasa';
 		async (arg, _, message, [type]) => {
 			if (type === 'reset' || type === 'show') return undefined;
 			if (arg) return arg.toLowerCase();
-			throw await message.fetchLocale(LanguageKeys.Commands.Management.FilterUndefinedWord);
+			throw await message.resolveKey(LanguageKeys.Commands.Management.FilterUndefinedWord);
 		}
 	]
 ])
 export default class extends SkyraCommand {
 	public async add(message: GuildMessage, [word]: [string]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			// Check if the word is not filtered:
 			const words = settings[GuildSettings.Selfmod.Filter.Raw];
 			const regex = settings.wordFilterRegExp;
 			if (words.includes(word) || (regex && regex.test(word))) {
-				throw language.get(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
+				throw t(LanguageKeys.Commands.Management.FilterAlreadyFiltered);
 			}
 
 			// Add the word to the list:
 			words.push(word);
 
 			// Return language for re-use:
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.FilterAdded, { word }));
+		return message.send(t(LanguageKeys.Commands.Management.FilterAdded, { word }));
 	}
 
 	public async remove(message: GuildMessage, [word]: [string]) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			// Check if the word is not filtered:
 			const words = settings[GuildSettings.Selfmod.Filter.Raw];
 			const index = words.indexOf(word);
 			if (index === -1) {
-				throw language.get(LanguageKeys.Commands.Management.FilterNotFiltered);
+				throw t(LanguageKeys.Commands.Management.FilterNotFiltered);
 			}
 
 			// Remove the word from the list:
 			words.splice(index, 1);
 
 			// Return language for re-use:
-			return language;
+			return t;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.FilterRemoved, { word }));
+		return message.send(t(LanguageKeys.Commands.Management.FilterRemoved, { word }));
 	}
 
 	public async reset(message: GuildMessage) {
@@ -81,13 +80,13 @@ export default class extends SkyraCommand {
 			return language;
 		});
 
-		return message.send(language.get(LanguageKeys.Commands.Management.FilterReset));
+		return message.send(language(LanguageKeys.Commands.Management.FilterReset));
 	}
 
 	public async show(message: GuildMessage) {
-		const raw = await message.guild.readSettings(GuildSettings.Selfmod.Filter.Raw);
+		const [raw, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Selfmod.Filter.Raw], settings.getLanguage()]);
 		return raw.length
-			? message.sendLocale(LanguageKeys.Commands.Management.FilterShow, [{ words: `\`${raw.join('`, `')}\`` }])
-			: message.sendLocale(LanguageKeys.Commands.Management.FilterShowEmpty);
+			? message.send(t(LanguageKeys.Commands.Management.FilterShow, { words: `\`${raw.join('`, `')}\`` }))
+			: message.send(t(LanguageKeys.Commands.Management.FilterShowEmpty));
 	}
 }

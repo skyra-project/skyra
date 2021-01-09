@@ -13,8 +13,8 @@ const requiredChannelPermissions = ['SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'VI
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Suggestions.SuggestDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Suggestions.SuggestExtended),
+	description: LanguageKeys.Commands.Suggestions.SuggestDescription,
+	extendedHelp: LanguageKeys.Commands.Suggestions.SuggestExtended,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
 	usage: '<suggestion:string>',
@@ -35,21 +35,21 @@ export default class extends SkyraCommand {
 		if (globalSuggestion) {
 			suggestionsChannel = this.client.webhookFeedback!;
 		} else {
-			const [suggestionsChannelID, language] = await guild.readSettings((settings) => [
+			const [suggestionsChannelID, t] = await guild.readSettings((settings) => [
 				settings[GuildSettings.Suggestions.SuggestionsChannel],
 				settings.getLanguage()
 			]);
 
 			suggestionsChannel = this.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
 			if (!suggestionsChannel?.postable) {
-				throw language.get(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
+				throw t(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
 					username: message.author.username,
 					channel: (message.channel as TextChannel).toString()
 				});
 			}
 		}
 
-		const [[upvoteEmoji, downvoteEmoji, language], [suggestions, currentSuggestionId]] = await Promise.all([
+		const [[upvoteEmoji, downvoteEmoji, t], [suggestions, currentSuggestionId]] = await Promise.all([
 			guild.readSettings(
 				(settings) =>
 					[
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 					`${message.author.tag} (${message.author.id})`,
 					message.author.displayAvatarURL({ format: 'png', size: 128, dynamic: true })
 				)
-				.setTitle(language.get(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
+				.setTitle(t(LanguageKeys.Commands.Suggestions.SuggestTitle, { id: currentSuggestionId + 1 }))
 				.setDescription(suggestion)
 		);
 
@@ -87,7 +87,7 @@ export default class extends SkyraCommand {
 		}
 
 		return message.send(
-			language.get(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
+			t(LanguageKeys.Commands.Suggestions.SuggestSuccess, {
 				channel: globalSuggestion ? 'Skyra Lounge' : suggestionsChannel.toString()
 			})
 		);
@@ -103,19 +103,19 @@ export default class extends SkyraCommand {
 
 	private async setChannel(message: GuildMessage) {
 		// If the user doesn't have the rights to change guild configuration, do not proceed
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const manageable = await message.hasAtLeastPermissionLevel(PermissionLevels.Administrator);
 		if (!manageable) {
-			await message.send(language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username }));
+			await message.send(t(LanguageKeys.Commands.Suggestions.SuggestNoSetup, { username: message.author.username }));
 			return true;
 		}
 
 		// Ask the user if they want to setup a channel
 		const setup = await message.ask({
-			content: language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetupAsk, { username: message.author.username })
+			content: t(LanguageKeys.Commands.Suggestions.SuggestNoSetupAsk, { username: message.author.username })
 		});
 		if (!setup) {
-			await message.send(language.get(LanguageKeys.Commands.Suggestions.SuggestNoSetupAbort));
+			await message.send(t(LanguageKeys.Commands.Suggestions.SuggestNoSetupAbort));
 			return true;
 		}
 
@@ -126,30 +126,26 @@ export default class extends SkyraCommand {
 				limit: 1,
 				time: 30000
 			})
-			.run<TextChannel[] | string[]>(language.get(LanguageKeys.Commands.Suggestions.SuggestChannelPrompt));
+			.run<TextChannel[] | string[]>(t(LanguageKeys.Commands.Suggestions.SuggestChannelPrompt));
 
 		channel = (typeof channel === 'string' ? message.channel : channel) as TextChannel;
 
 		if (!channel || channel.guild.id !== message.guild.id) {
-			await message.send(language.get(LanguageKeys.Resolvers.InvalidChannelName, { name: channel.name }));
+			await message.send(t(LanguageKeys.Resolvers.InvalidChannelName, { name: channel.name }));
 			return true;
 		}
 
 		const missingPermissions = await this.missingBotPermissions(message);
 
 		if (missingPermissions.length) {
-			const permissions = language.PERMISSIONS;
-			throw language.get(LanguageKeys.Inhibitors.MissingBotPerms, {
-				missing: language.list(
-					missingPermissions.map((permission) => permissions[permission]),
-					language.get(LanguageKeys.Globals.And)
-				)
+			throw t(LanguageKeys.Inhibitors.MissingBotPerms, {
+				missing: missingPermissions.map((permission) => t(`permissions:${permission}`))
 			});
 		}
 
 		// Update settings
 		await message.guild.writeSettings([[GuildSettings.Suggestions.SuggestionsChannel, channel.id]]);
-		await message.send(language.get(LanguageKeys.Commands.Admin.ConfMenuSaved));
+		await message.send(t(LanguageKeys.Commands.Admin.ConfMenuSaved));
 
 		return true;
 	}

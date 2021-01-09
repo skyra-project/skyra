@@ -9,6 +9,8 @@ export default class extends AudioEvent {
 			channel.guild.audio.player.node.decode(entry.track).then((data) => data.title),
 			this.client.users.fetch(entry.author).then((data) => data.username)
 		]);
-		await channel.sendLocale(LanguageKeys.Commands.Music.RemoveSuccess, [{ title, requester }], { allowedMentions: { users: [], roles: [] } });
+		await channel.sendTranslated(LanguageKeys.Commands.Music.RemoveSuccess, [{ title, requester }], {
+			allowedMentions: { users: [], roles: [] }
+		});
 	}
 }

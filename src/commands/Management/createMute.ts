@@ -10,8 +10,8 @@ import { Permissions, Role } from 'discord.js';
 
 @ApplyOptions<SkyraCommandOptions>({
 	cooldown: 150,
-	description: (language) => language.get(LanguageKeys.Commands.Management.CreateMuteDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.CreateMuteExtended),
+	description: LanguageKeys.Commands.Management.CreateMuteDescription,
+	extendedHelp: LanguageKeys.Commands.Management.CreateMuteExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredGuildPermissions: [Permissions.FLAGS.MANAGE_CHANNELS, Permissions.FLAGS.MANAGE_ROLES],
 	runIn: ['text']
@@ -21,26 +21,26 @@ export default class extends SkyraCommand {
 	private rolePrompt = this.definePrompt('<role:rolename>');
 
 	public async run(message: GuildMessage) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
-		if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
+		if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExisting))) {
 			const [role] = (await this.rolePrompt
 				.createPrompt(message, { time: 30000, limit: 1 })
-				.run(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
+				.run(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupExistingName))) as [Role];
 
 			await message.guild.writeSettings([[GuildSettings.Roles.Muted, role.id]]);
 			if (message.reactable) return message.react(resolveEmoji(Emojis.GreenTick)!);
-			return message.sendLocale(LanguageKeys.Commands.Admin.ConfUpdated, [
-				{
+			return message.send(
+				t(LanguageKeys.Commands.Admin.ConfUpdated, {
 					key: GuildSettings.Roles.Muted,
 					response: role.name
-				}
-			]);
-		} else if (await message.ask(language.get(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
+				})
+			);
+		} else if (await message.ask(t(LanguageKeys.Commands.Moderation.ActionSharedRoleSetupNew))) {
 			await message.guild.security.actions.muteSetup(message);
-			await message.sendLocale(LanguageKeys.Misc.CommandSuccess);
+			await message.send(t(LanguageKeys.Commands.Moderation.Success));
 		} else {
-			await message.sendLocale(LanguageKeys.Monitors.CommandHandlerAborted);
+			await message.send(t(LanguageKeys.Monitors.CommandHandlerAborted));
 		}
 
 		return null;

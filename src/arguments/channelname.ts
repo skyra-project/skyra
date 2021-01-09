@@ -17,8 +17,8 @@ export default class extends Argument {
 	}
 
 	public async run(arg: string, possible: Possible, message: KlasaMessage, filter?: (entry: GuildChannel) => boolean): Promise<GuildChannel> {
-		if (!arg) throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
-		if (!message.guild) throw await message.fetchLocale(LanguageKeys.Resolvers.ChannelNotInGuild);
+		if (!arg) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
+		if (!message.guild) throw await message.resolveKey(LanguageKeys.Resolvers.ChannelNotInGuild);
 		filter = this.getFilter(message.author, filter);
 
 		const resChannel = this.resolveChannel(arg, message.guild);
@@ -30,7 +30,7 @@ export default class extends Argument {
 			possible.min || undefined
 		);
 		if (result) return result[1];
-		throw await message.fetchLocale(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
+		throw await message.resolveKey(LanguageKeys.Resolvers.InvalidChannelName, { name: possible.name });
 	}
 
 	private getFilter(author: User, filter?: (entry: GuildChannel) => boolean) {

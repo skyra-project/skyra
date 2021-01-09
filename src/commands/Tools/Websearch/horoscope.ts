@@ -7,7 +7,8 @@ import { createPick } from '#utils/util';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { Days, Sunsigns } from '@skyra/saelem';
 import { MessageEmbed } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 
 const kSunSigns = new Set([
 	'capricorn',
@@ -28,8 +29,8 @@ const kRandomSunSign = createPick([...kSunSigns]);
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['saelem'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.HoroscopeDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.HoroscopeExtended),
+	description: LanguageKeys.Commands.Tools.HoroscopeDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.HoroscopeExtended,
 	requiredGuildPermissions: ['EMBED_LINKS'],
 	usage: '<sunsign:sunsign> [tomorrow|yesterday|today:default]',
 	usageDelim: ' '
@@ -41,16 +42,16 @@ const kRandomSunSign = createPick([...kSunSigns]);
 			const lowerCasedArgument = arg.toLowerCase();
 			if (kSunSigns.has(lowerCasedArgument)) return lowerCasedArgument;
 
-			throw await message.fetchLocale(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
+			throw await message.resolveKey(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: arg, maybe: kRandomSunSign() });
 		}
 	]
 ])
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [sign, day]: [Sunsigns, Days]) {
-		const language = await message.fetchLanguage();
-		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(language, sign, day);
+		const t = await message.fetchT();
+		const { date, intensity, keywords, mood, prediction, rating } = await this.fetchAPI(t, sign, day);
 
-		const titles = language.get(LanguageKeys.Commands.Tools.HoroscopeTitles, {
+		const titles = t(LanguageKeys.Commands.Tools.HoroscopeTitles, {
 			sign,
 			intensity,
 			keywords,
@@ -67,12 +68,12 @@ export default class extends SkyraCommand {
 		);
 	}
 
-	private async fetchAPI(language: Language, sunsign: Sunsigns, day: Days) {
+	private async fetchAPI(t: TFunction, sunsign: Sunsigns, day: Days) {
 		try {
 			const { data } = await fetchSaelem<'getHoroscope'>(getHoroscope, { sunsign, day });
 			return data.getHoroscope;
 		} catch {
-			throw language.get(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
+			throw t(LanguageKeys.Commands.Tools.HoroscopeInvalidSunsign, { sign: sunsign, maybe: kRandomSunSign() });
 		}
 	}
 }

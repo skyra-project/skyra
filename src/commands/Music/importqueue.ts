@@ -14,8 +14,8 @@ import { maximumExportQueueSize } from './exportqueue';
 @ApplyOptions<MusicCommand.Options>({
 	aliases: ['iq'],
 	cooldown: 30,
-	description: (language) => language.get(LanguageKeys.Commands.Music.ImportQueueDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Music.ImportQueueExtended),
+	description: LanguageKeys.Commands.Music.ImportQueueDescription,
+	extendedHelp: LanguageKeys.Commands.Music.ImportQueueExtended,
 	usage: '<queue:squeue>',
 	flagSupport: true
 })
@@ -23,7 +23,7 @@ import { maximumExportQueueSize } from './exportqueue';
 	[
 		'squeue',
 		async (arg, possible, message) => {
-			if (!arg && message.attachments.size === 0) throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueNotFound);
+			if (!arg && message.attachments.size === 0) throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueNotFound);
 			return message.attachments.first()?.url ?? message.client.arguments.get('url')!.run(arg, possible, message);
 		}
 	]
@@ -38,7 +38,7 @@ export default class extends MusicCommand {
 
 		// Add the tracks
 		const added = await audio.add(...tracks);
-		if (added === 0) throw await message.fetchLocale(LanguageKeys.MusicManager.TooManySongs);
+		if (added === 0) throw await message.resolveKey(LanguageKeys.MusicManager.TooManySongs);
 
 		this.client.emit(Events.MusicAddNotify, message, tracks);
 	}
@@ -48,7 +48,7 @@ export default class extends MusicCommand {
 			const raw = await fetch(url, FetchResultTypes.Buffer);
 			return deserialize<string[]>(raw);
 		} catch {
-			throw await message.fetchLocale(LanguageKeys.MusicManager.ImportQueueError);
+			throw await message.resolveKey(LanguageKeys.MusicManager.ImportQueueError);
 		}
 	}
 

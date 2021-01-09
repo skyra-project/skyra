@@ -93,7 +93,7 @@ export default class extends Route {
 		const context: PartialSerializerUpdateContext = {
 			entity,
 			guild,
-			language: entity.getLanguage()
+			t: entity.getLanguage()
 		};
 
 		const errors: string[] = [];

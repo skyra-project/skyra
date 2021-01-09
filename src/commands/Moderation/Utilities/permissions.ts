@@ -12,8 +12,8 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.PermissionsDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.PermissionsExtended),
+	description: LanguageKeys.Commands.Moderation.PermissionsDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.PermissionsExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredPermissions: ['EMBED_LINKS'],
 	runIn: ['text'],
@@ -21,28 +21,28 @@ const PERMISSION_FLAGS = Object.keys(Permissions.FLAGS) as PermissionString[];
 })
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [user = message.author]: [User]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
-		if (!user) throw language.get(LanguageKeys.Misc.UserNotExistent);
+		if (!user) throw t(LanguageKeys.Misc.UserNotExistent);
 		const member = await message.guild.members.fetch(user.id).catch(() => {
-			throw language.get(LanguageKeys.Misc.UserNotInGuild);
+			throw t(LanguageKeys.Misc.UserNotInGuild);
 		});
 
 		const { permissions } = member;
 		const list = [ZeroWidthSpace];
 
 		if (permissions.has(Permissions.FLAGS.ADMINISTRATOR)) {
-			list.push(language.get(LanguageKeys.Commands.Moderation.PermissionsAll));
+			list.push(t(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
-				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${language.PERMISSIONS[flag] || flag}`);
+				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${t.PERMISSIONS[flag] || flag}`);
 			}
 		}
 
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))
-				.setTitle(language.get(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
+				.setTitle(t(LanguageKeys.Commands.Moderation.Permissions, { username: user.tag, id: user.id }))
 				.setDescription(list.join('\n'))
 		);
 	}

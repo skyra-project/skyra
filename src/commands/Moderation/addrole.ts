@@ -9,8 +9,8 @@ import { Role, User } from 'discord.js';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['ar'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.AddRoleDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.AddRoleExtended),
+	description: LanguageKeys.Commands.Moderation.AddRoleDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.AddRoleExtended,
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],

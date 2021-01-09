@@ -9,8 +9,8 @@ import { Role, User } from 'discord.js';
 @ApplyOptions<ModerationCommandOptions>({
 	aliases: ['rro'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Moderation.RemoveroleDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Moderation.RemoveroleExtended),
+	description: LanguageKeys.Commands.Moderation.RemoveroleDescription,
+	extendedHelp: LanguageKeys.Commands.Moderation.RemoveroleExtended,
 	requiredMember: true,
 	optionalDuration: true,
 	requiredGuildPermissions: ['MANAGE_ROLES'],

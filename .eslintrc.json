@@ -9,7 +9,8 @@
 		{
 			"files": ["src/commands/**/*.ts", "jest.config.ts"],
 			"rules": {
-				"@typescript-eslint/require-await": 0
+				"@typescript-eslint/require-await": 0,
+				"@typescript-eslint/no-base-to-string": 0
 			}
 		}
 	]

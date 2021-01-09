@@ -8,8 +8,8 @@ import { Role, User } from 'discord.js';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Management.StickyRolesDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Management.StickyRolesExtended),
+	description: LanguageKeys.Commands.Management.StickyRolesDescription,
+	extendedHelp: LanguageKeys.Commands.Management.StickyRolesExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	requiredGuildPermissions: ['MANAGE_ROLES'],
 	runIn: ['text'],
@@ -21,7 +21,7 @@ import { Role, User } from 'discord.js';
 	[
 		'username',
 		async (arg, possible, msg) => {
-			if (!arg) throw await msg.fetchLocale(LanguageKeys.Commands.Management.StickyRolesRequiredUser);
+			if (!arg) throw await msg.resolveKey(LanguageKeys.Commands.Management.StickyRolesRequiredUser);
 			return msg.client.arguments.get('username')!.run(arg, possible, msg);
 		}
 	],
@@ -29,7 +29,7 @@ import { Role, User } from 'discord.js';
 		'rolename',
 		async (arg, possible, msg, [action]) => {
 			if (action === 'reset' || action === 'show') return undefined;
-			if (!arg) throw await msg.fetchLocale(LanguageKeys.Commands.Management.StickyRolesRequiredRole);
+			if (!arg) throw await msg.resolveKey(LanguageKeys.Commands.Management.StickyRolesRequiredRole);
 			return msg.client.arguments.get('rolename')!.run(arg, possible, msg);
 		}
 	]
@@ -37,39 +37,39 @@ import { Role, User } from 'discord.js';
 export default class extends SkyraCommand {
 	public async reset(message: GuildMessage, [user]: [User]) {
 		const roles = await message.guild.stickyRoles.fetch(user.id);
-		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
+		if (!roles.length) throw await message.resolveKey(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
 		await message.guild.stickyRoles.clear(user.id);
-		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesReset, [{ user: user.username }]);
+		return message.sendTranslated(LanguageKeys.Commands.Management.StickyRolesReset, [{ user: user.username }]);
 	}
 
 	public async remove(message: GuildMessage, [user, role]: [User, Role]) {
 		const roles = await message.guild.stickyRoles.fetch(user.id);
-		if (!roles.length) throw await message.fetchLocale(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
+		if (!roles.length) throw await message.resolveKey(LanguageKeys.Commands.Management.StickyRolesNotExists, { user: user.username });
 
 		await message.guild.stickyRoles.remove(user.id, role.id);
-		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesRemove, [{ user: user.username }]);
+		return message.sendTranslated(LanguageKeys.Commands.Management.StickyRolesRemove, [{ user: user.username }]);
 	}
 
 	public async add(message: GuildMessage, [user, role]: [User, Role]) {
 		await message.guild.stickyRoles.add(user.id, role.id);
-		return message.sendLocale(LanguageKeys.Commands.Management.StickyRolesAdd, [{ user: user.username }]);
+		return message.sendTranslated(LanguageKeys.Commands.Management.StickyRolesAdd, [{ user: user.username }]);
 	}
 
 	public async show(message: GuildMessage, [user]: [User]) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 
 		const sticky = await message.guild.stickyRoles.fetch(user.id);
-		if (!sticky.length) throw language.get(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
+		if (!sticky.length) throw t(LanguageKeys.Commands.Management.StickyRolesShowEmpty);
 
 		const roles = message.guild.roles.cache;
 		const names = sticky.map((role) => roles.get(role)!.name);
 		return message.send(
-			language.get(LanguageKeys.Commands.Management.StickyRolesShowSingle, {
+			t(LanguageKeys.Commands.Management.StickyRolesShowSingle, {
 				user: user.username,
-				roles: language.list(
+				roles: t.list(
 					names.map((name) => `\`${name}\``),
-					language.get(LanguageKeys.Globals.And)
+					t(LanguageKeys.Globals.And)
 				)
 			})
 		);

@@ -128,7 +128,7 @@ export class SchemaKey<K extends keyof GuildEntity = keyof GuildEntity> implemen
 		const context: SerializerUpdateContext = {
 			entity: settings,
 			guild: settings.guild,
-			language,
+			t: language,
 			entry: this
 		};
 

@@ -8,22 +8,22 @@ import { pickRandom } from '#utils/util';
 import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import type { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['topinvs'],
 	cooldown: 10,
-	description: (language) => language.get(LanguageKeys.Commands.Tools.TopInvitesDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Tools.TopInvitesExtended),
+	description: LanguageKeys.Commands.Tools.TopInvitesDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.TopInvitesExtended,
 	requiredGuildPermissions: ['MANAGE_GUILD']
 })
 export default class extends RichDisplayCommand {
 	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
 
 	public async run(message: GuildMessage) {
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(language.get(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild.fetchInvites();
@@ -32,21 +32,21 @@ export default class extends RichDisplayCommand {
 			.sort((a, b) => b.uses! - a.uses!)
 			.first(10) as NonNullableInvite[];
 
-		if (topTen.length === 0) throw language.get(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
+		if (topTen.length === 0) throw t(LanguageKeys.Commands.Tools.TopInvitesNoInvites);
 
-		const display = await this.buildDisplay(message, language, topTen);
+		const display = await this.buildDisplay(message, t, topTen);
 
 		await display.start(response, message.author.id);
 		return response;
 	}
 
-	private async buildDisplay(message: GuildMessage, language: Language, invites: NonNullableInvite[]) {
+	private async buildDisplay(message: GuildMessage, t: TFunction, invites: NonNullableInvite[]) {
 		const display = new UserRichDisplay(
 			new MessageEmbed()
-				.setTitle(language.get(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
+				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedData = language.get(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
+		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData, { returnObjects: true });
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) =>
@@ -62,7 +62,7 @@ export default class extends RichDisplayCommand {
 						].join('\n')
 					)
 					.addField(embedData.createdAt, this.resolveCreationDate(invite.createdTimestamp, embedData.createdAtUnknown), true)
-					.addField(embedData.expiresIn, this.resolveExpiryDate(language, invite.expiresTimestamp, embedData.neverExpress), true)
+					.addField(embedData.expiresIn, this.resolveExpiryDate(t, invite.expiresTimestamp, embedData.neverExpress), true)
 			);
 		}
 
@@ -74,8 +74,8 @@ export default class extends RichDisplayCommand {
 		return uses;
 	}
 
-	private resolveExpiryDate(language: Language, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
-		if (expiresTimestamp !== null && expiresTimestamp > 0) return language.duration(expiresTimestamp - Date.now(), 2);
+	private resolveExpiryDate(t: TFunction, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
+		if (expiresTimestamp !== null && expiresTimestamp > 0) return t.duration(expiresTimestamp - Date.now(), 2);
 		return fallback;
 	}
 

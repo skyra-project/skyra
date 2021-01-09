@@ -14,8 +14,8 @@ import { KlasaMessage } from 'klasa';
 const kMaximum = 100000;
 
 @ApplyOptions<SkyraCommandOptions>({
-	description: (language) => language.get(LanguageKeys.Commands.Anime.WaifuDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.Anime.WaifuExtended),
+	description: LanguageKeys.Commands.Anime.WaifuDescription,
+	extendedHelp: LanguageKeys.Commands.Anime.WaifuExtended,
 	requiredPermissions: ['EMBED_LINKS']
 })
 export default class extends SkyraCommand {
@@ -27,7 +27,7 @@ export default class extends SkyraCommand {
 				.setURL(url)
 				.setColor(await DbSet.fetchColor(message))
 				.setImage(url)
-				.setFooter(await message.fetchLocale(LanguageKeys.Commands.Anime.WaifuFooter))
+				.setFooter(await message.resolveKey(LanguageKeys.Commands.Anime.WaifuFooter))
 				.setTimestamp()
 		);
 	}

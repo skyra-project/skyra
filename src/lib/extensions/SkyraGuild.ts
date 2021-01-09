@@ -5,8 +5,8 @@ import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
-import { Structures } from 'discord.js';
-import { StringMap, TFunction, TOptions } from 'i18next';
+import { Message, Structures } from 'discord.js';
+import { TFunction } from 'i18next';
 
 export class SkyraGuild extends Structures.get('Guild') {
 	public readonly security: GuildSecurity = new GuildSecurity(this);
@@ -18,19 +18,17 @@ export class SkyraGuild extends Structures.get('Guild') {
 		return this.client.audio.queues!.get(this.id);
 	}
 
-	public fetchLanguage(): Promise<string> {
-		// @ts-expect-error This is an incomplete Message, but the data is sufficient.
-		return this.client.i18n.resolveNameFromMessage({ guild: this });
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(({ guild: this, channel: null } as unknown) as Message);
+		return lang ?? this.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 
-	public async fetchT() {
-		const language = this.client.i18n.languages.get(await this.fetchLanguage());
-		if (language) return language;
-		throw new Error(`The language '${language}' is not available.`);
+	public async fetchT(): Promise<TFunction> {
+		return this.client.i18n.fetchT(await this.fetchLanguage());
 	}
 
-	public async fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string> {
-		return this.client.i18n.resolveValue(await this.fetchLanguage(), key, replace, options);
+	public async resolveKey(key: string, ...values: readonly any[]): Promise<string> {
+		return this.client.i18n.fetchLocale(await this.fetchLanguage(), key, ...values);
 	}
 
 	public readSettings(...args: readonly [any]): Promise<any> {
@@ -53,8 +51,8 @@ declare module 'discord.js' {
 		readonly stickyRoles: StickyRoleManager;
 
 		fetchLanguage(): Promise<string>;
-		fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
 		fetchT(): Promise<TFunction>;
+		resolveKey(key: string, ...values: readonly any[]): Promise<string>;
 
 		readSettings<K1 extends keyof T>(paths: readonly [K1]): Promise<[T[K1]]>;
 		readSettings<K1 extends keyof T, K2 extends keyof T>(paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;

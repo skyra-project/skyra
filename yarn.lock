@@ -709,6 +709,14 @@
   resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-1.1.2.tgz#f251a06893e86f1c7403512aff33710b91b27905"
   integrity sha512-+4rACw64/CBg3JawaEGyOxjG0Igma3SSP51kfqXY9jv0VO/JfeCdA5iIQKOHtyphhVYXTc5BclAeyFdsi6p9LQ==
 
+"@sapphire/plugin-i18next@sapphire-project/plugins#build-i18next":
+  version "0.0.1"
+  resolved "https://codeload.github.com/sapphire-project/plugins/tar.gz/c8a20d615c648a2e9d880d22f00c7af5f7df08af"
+  dependencies:
+    "@sapphire/utilities" "^1.3.0"
+    i18next "^19.8.4"
+    i18next-fs-backend "^1.0.7"
+
 "@sapphire/prettier-config@^1.0.5":
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/@sapphire/prettier-config/-/prettier-config-1.0.5.tgz#fd2a91c79dbc0327bd78655dc9ce1a5d65ac5490"
@@ -736,7 +744,7 @@
   resolved "https://registry.yarnpkg.com/@sapphire/type/-/type-1.1.3.tgz#14bd34461785fae5161c046689b65094b2caa44a"
   integrity sha512-gs5RlTjVpzfZQeX1T6b0O9lAuAMwNLLxMypeXPBNY9C1MHpF+bXc3raooat/bCcLhESsogKZZke0CC6gJxK59w==
 
-"@sapphire/utilities@^1.3.1":
+"@sapphire/utilities@^1.3.0", "@sapphire/utilities@^1.3.1":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@sapphire/utilities/-/utilities-1.3.1.tgz#32f2af73b0ac0131bad579439ce33fb7d5c1e624"
   integrity sha512-4HBXS2q3le89rDgjN6r+wPi5T+s1Dd1iGo+OUwSo8rEM7Fp7ukZwdYwDz5cWQ0FWlC3VIHBtdoMosafuX1UfKQ==

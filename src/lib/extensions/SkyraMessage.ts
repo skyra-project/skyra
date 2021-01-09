@@ -4,33 +4,23 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { sleep } from '#utils/sleep';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Message, MessageExtendablesAskOptions, MessageOptions, Permissions, Structures, TextChannel } from 'discord.js';
-import { StringMap, TFunction, TOptions } from 'i18next';
-import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtensions';
+import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 const OPTIONS = { time: 30000, max: 1 };
 const REACTIONS = { YES: '🇾', NO: '🇳' };
 const REG_ACCEPT = /^y|yes?|yeah?$/i;
 
 export class SkyraMessage extends TextBasedExtension(Structures.get('Message')) {
-	public fetchLanguage(): Promise<string> {
-		return this.client.i18n.resolveNameFromMessage(this);
-	}
-
-	public async fetchT() {
-		const language = this.client.i18n.languages.get(await this.fetchLanguage());
-		if (language) return language;
-		throw new Error(`The language '${language}' is not available.`);
-	}
-
-	public async fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string> {
-		return this.client.i18n.resolveValue(await this.fetchLanguage(), key, replace, options);
+	public async fetchLanguage() {
+		const lang: string = await this.client.fetchLanguage(this);
+		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 
 	public async prompt(content: string, time = 30000) {
 		const message = await this.channel.send(content);
 		const responses = await this.channel.awaitMessages((msg) => msg.author === this.author, { time, max: 1 });
 		message.nuke().catch((error) => this.client.emit(Events.ApiError, error));
-		if (responses.size === 0) throw await this.fetchLanguageKey(LanguageKeys.Misc.MessagePromptTimeout);
+		if (responses.size === 0) throw await this.resolveKey(LanguageKeys.Misc.MessagePromptTimeout);
 		return responses.first()!;
 	}
 
@@ -111,8 +101,6 @@ declare module 'discord.js' {
 
 	interface Message extends TextBasedExtensions {
 		fetchLanguage(): Promise<string>;
-		fetchLanguageKey(key: string, replace?: Record<string, unknown>, options?: TOptions<StringMap>): Promise<string>;
-		fetchT(): Promise<TFunction>;
 		prompt(content: string, time?: number): Promise<Message>;
 		ask(options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;
 		ask(content: string, options?: MessageOptions, promptOptions?: MessageExtendablesAskOptions): Promise<boolean>;

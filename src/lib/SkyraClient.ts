@@ -33,7 +33,7 @@ import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsDat
 import { QueueClient } from '#lib/audio';
 import { GuildSettings, SettingsManager } from '#lib/database';
 import { GuildMemberFetchQueue } from './discord/GuildMemberFetchQueue';
-import { In17nHandler } from './structures/In17nHandler';
+import { I18nextHandler } from '@sapphire/plugin-i18next';
 
 export class SkyraClient extends KlasaClient {
 	/**
@@ -103,12 +103,11 @@ export class SkyraClient extends KlasaClient {
 	public twitch: Twitch = new Twitch();
 
 	@enumerable(false)
-	public i18n: In17nHandler = new In17nHandler(this);
+	public i18n: I18nextHandler = new I18nextHandler(this.options.i18n);
 
 	public websocket = new WebsocketHandler(this);
 
 	public constructor() {
-		// @ts-expect-error 2589 https://github.com/microsoft/TypeScript/issues/34933
 		super(mergeDefault(clientOptions, CLIENT_OPTIONS) as KlasaClientOptions);
 		this.audio = new QueueClient(this.options.audio, (guildID, packet) => {
 			const guild = this.guilds.cache.get(guildID);

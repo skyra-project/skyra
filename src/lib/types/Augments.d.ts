@@ -12,12 +12,10 @@ import type { LongLivingReactionCollector } from '#utils/LongLivingReactionColle
 import type { Twitch } from '#utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
+import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
 import type { Events } from './Enums';
-import type { InitOptions } from 'i18next';
-import type { i18nextFsBackend } from 'i18next-fs-backend';
-import type { In17nHandler } from '#lib/structures/In17nHandler';
 
 declare module 'discord.js' {
 	interface Client {
@@ -32,7 +30,7 @@ declare module 'discord.js' {
 		readonly schedules: ScheduleManager;
 		readonly settings: SettingsManager;
 		readonly twitch: Twitch;
-		readonly i18n: In17nHandler;
+		readonly i18n: I18nextHandler;
 		readonly version: string;
 		readonly webhookDatabase: Webhook | null;
 		readonly webhookError: Webhook;
@@ -97,32 +95,7 @@ declare module 'klasa' {
 		schedule?: {
 			interval: number;
 		};
-		i18n?: {
-			defaultName?: string;
-			/**
-			 * The options passed to `backend` in `i18next.init`.
-			 */
-			backend?: i18nextFsBackend.i18nextFsBackendOptions;
-			/**
-			 * The options passed to `i18next.init`.
-			 */
-			i18next?: InitOptions;
-			/**
-			 * The directory in which "i18next-fs-backend" should search for files.
-			 * Defaulted to "<rootDirectory>/languages".
-			 */
-			defaultLanguageDirectory?: string;
-			/**
-			 * The default value to be used if a specific language key isnt found.
-			 * Defaulted to "default:default".
-			 */
-			defaultMissingKey?: string;
-			/**
-			 * The default NS that is prefixed to all keys that dont specify it.
-			 * Defaulted to "default".
-			 */
-			defaultNS?: string;
-		};
+		i18n?: I18nOptions;
 	}
 
 	interface PieceDefaults {

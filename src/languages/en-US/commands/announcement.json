@@ -3,7 +3,7 @@
 	"announcementCancelled": "Cancelled the message.",
 	"announcementDescription": "Send new announcements, mentioning the announcement role.",
 	"announcementEmbedMentions": "{{header}}:",
-	"announcementEmbedMentionsWithMentions": "{{header}}, and mentioning: {{mentions}}:",
+	"announcementEmbedMentionsWithMentions": "{{header}}, and mentioning: {{mentions, andList}}:",
 	"announcementExtended": {
 		"extendedHelp": [
 			"This command requires an announcement channel (**channels.announcement** in the configuration command) which tells Skyra where she should post the announcement messages.",

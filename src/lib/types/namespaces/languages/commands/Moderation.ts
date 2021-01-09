@@ -181,7 +181,6 @@ export const ModerationLogDescriptionWithoutReason = FT<{ data: Moderation.Moder
 export const GuildBansEmpty = T<string>('errors:guildBansEmpty');
 export const GuildBansNotFound = T<string>('errors:guildBansNotFound');
 export const GuildMemberNotVoicechannel = T<string>('errors:guildMemberNotVoicechannel');
-export const GuildMuteNotFound = T<string>('errors:guildMuteNotFound');
 export const GuildSettingsChannelsMod = T<string>('settings:guildChannelsMod');
 export const GuildSettingsRolesRestricted = FT<{ prefix: string; path: string }, string>('settings:guildRolesRestricted');
 export const GuildWarnNotFound = T<string>('errors:guildWarnNotFound');

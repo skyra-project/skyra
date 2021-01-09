@@ -1,0 +1,219 @@
+{
+	"abilityDescription": "",
+	"abilityExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"abilityEmbedTitles": {
+		"authorTitle": "",
+		"fieldEffectTitle": ""
+	},
+	"abilityQueryFail": "",
+	"flavorsDescription": "",
+	"flavorsExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"flavorsQueryFail": "",
+	"itemDescription": "",
+	"itemExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"itemEmbedData": {
+		"ITEM": "",
+		"generationIntroduced": "",
+		"availableInGeneration8Title": "",
+		"availableInGeneration8Data": ""
+	},
+	"itemQueryFail": "",
+	"learnDescription": "",
+	"learnExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"learnMethodTypes": {
+		"levelUpMoves": "",
+		"eventMoves": "",
+		"tutorMoves": "",
+		"eggMoves": "",
+		"virtualTransferMoves": "",
+		"tmMoves": "",
+		"dreamworldMoves": ""
+	},
+	"learnInvalidGeneration": "",
+	"learnMethod": "",
+	"learnQueryFailed": "",
+	"learnCannotLearn": "",
+	"learnTitle": "",
+	"moveDescription": "",
+	"moveExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": [
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"moveEmbedData": {
+		"move": "",
+		"types": "",
+		"basePower": "",
+		"pp": "",
+		"category": "",
+		"accuracy": "",
+		"priority": "",
+		"target": "",
+		"contestCondition": "",
+		"zCrystal": "",
+		"gmaxPokemon": "",
+		"availableInGeneration8Title": "",
+		"availableInGeneration8Data": "",
+		"none": "",
+		"maxMovePower": "",
+		"zMovePower": "",
+		"fieldMoveEffectTitle": ""
+	},
+	"moveQueryFail": "",
+	"pokedexDescription": "",
+	"pokedexExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": [
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"pokedexEmbedData": {
+		"types": "",
+		"abilities": "",
+		"genderRatio": "",
+		"smogonTier": "",
+		"uknownSmogonTier": "",
+		"height": "",
+		"weight": "",
+		"eggGroups": "",
+		"evolutionaryLine": "",
+		"baseStats": "",
+		"baseStatsTotal": "",
+		"flavourText": "",
+		"otherFormesTitle": "",
+		"cosmeticFormesTitle": "",
+		"otherFormesList": "",
+		"cosmeticFormesList": ""
+	},
+	"pokedexQueryFail": "",
+	"typeDescription": "",
+	"typeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"typeEmbedData": {
+		"offensive": "",
+		"defensive": "",
+		"superEffectiveAgainst": "",
+		"dealsNormalDamageTo": "",
+		"doesNotAffect": "",
+		"notVeryEffectiveAgainst": "",
+		"vulnerableTo": "",
+		"takesNormalDamageFrom": "",
+		"resists": "",
+		"notAffectedBy": "",
+		"typeEffectivenessFor": ""
+	},
+	"typeTooManyTypes": "",
+	"typeNotAType": "",
+	"typeQueryFail": ""
+}

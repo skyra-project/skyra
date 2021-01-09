@@ -37,7 +37,7 @@
 	"coinFlipInvalidCoinname": "",
 	"coinFlipLoseDescription": "",
 	"coinFlipLoseDescriptionWithWager": "",
-	"coinFlipLoseTitle": "",
+	"coinFlipLoseTitle": "Вы проиграли.",
 	"coinFlipNoguessDescription": "",
 	"coinFlipNoguessTitle": "",
 	"coinFlipWinDescription": "",
@@ -102,7 +102,7 @@
 		"",
 		"",
 		"",
-		"",
+		"{1} бросает нож в грудь {2T}.",
 		"",
 		"",
 		"",
@@ -445,14 +445,14 @@
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
 	"hungerGamesResultHeaderBloodbath": "",
-	"hungerGamesResultHeaderMoon": "",
-	"hungerGamesResultHeaderSun": "",
+	"hungerGamesResultHeaderMoon": "Ночь {{game.turn}}",
+	"hungerGamesResultHeaderSun": "День {{game.turn}}",
 	"hungerGamesResultProceed": "",
 	"hungerGamesStop": "",
 	"hungerGamesWinner": "",
 	"notEnoughMoney": "",
-	"slotmachineCanvasTextLost": "",
-	"slotmachineCanvasTextWon": "",
+	"slotmachineCanvasTextLost": "Вы проиграли",
+	"slotmachineCanvasTextWon": "Вы выиграли",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
 		"explainedUsage": [
@@ -492,7 +492,7 @@
 		"extendedHelp": [
 			"",
 			"",
-			""
+			"**Категории**: {{TRIVIA_CATEGORIES}}"
 		],
 		"explainedUsage": [
 			[
@@ -555,8 +555,8 @@
 	"vaultInvalidCoins": "",
 	"vaultNotEnoughInVault": "",
 	"vaultNotEnoughMoney": "",
-	"wheelOfFortuneCanvasTextLost": "",
-	"wheelOfFortuneCanvasTextWon": "",
+	"wheelOfFortuneCanvasTextLost": "Вы проиграли",
+	"wheelOfFortuneCanvasTextWon": "Вы выиграли",
 	"wheelOfFortuneDescription": "",
 	"wheelOfFortuneExtended": {
 		"extendedHelp": ""

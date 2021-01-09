@@ -1,5 +1,5 @@
-import nock = require('nock');
-import { getQuestion, QuestionDifficulty, QuestionType } from '#utils/Games/TriviaManager';
+import nock from 'nock';
+import { getQuestion, QuestionDifficulty, QuestionType, CATEGORIES } from '#utils/Games/TriviaManager';
 
 describe('TriviaManager', () => {
 	// eslint-disable-next-line @typescript-eslint/init-declarations
@@ -31,7 +31,7 @@ describe('TriviaManager', () => {
 	});
 
 	test('getQuestion', async () => {
-		const data = await getQuestion(9, QuestionDifficulty.Easy, QuestionType.Boolean);
+		const data = await getQuestion(CATEGORIES.general, QuestionDifficulty.Easy, QuestionType.Boolean);
 		expect(data.category).toBe('General Knowledge');
 		expect(data.difficulty).toBe(QuestionDifficulty.Easy);
 		expect(data.type).toBe(QuestionType.Boolean);

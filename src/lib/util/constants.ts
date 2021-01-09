@@ -4,7 +4,7 @@ import { Colors } from '#lib/types/constants/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
 import * as enUsFormatters from '#root/languages/en-US/constants';
 import * as esEsFormatters from '#root/languages/es-ES/constants';
-import { CATEGORIES as TRVIA_CATEGORIES } from '#utils/Games/TriviaManager';
+import { CATEGORIES as TRIVIA_CATEGORIES } from '#utils/Games/TriviaManager';
 import { list } from '#utils/Language/list';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import i18next, { FormatFunction } from 'i18next';
@@ -307,7 +307,7 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 			interpolation: {
 				escapeValue: false,
 				defaultVariables: {
-					TRIVIA_CATEGORIES: Object.keys(TRVIA_CATEGORIES).join(', '),
+					TRIVIA_CATEGORIES: Object.keys(TRIVIA_CATEGORIES ?? {}).join(', '),
 					VERSION: SKYRA_VERSION,
 					LOADING: Emojis.Loading,
 					SHINY: Emojis.Shiny,

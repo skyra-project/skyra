@@ -2,6 +2,7 @@ import { client } from '#mocks/MockInstances';
 import { Mime, Time } from '#utils/constants';
 import * as utils from '#utils/util';
 import Collection from '@discordjs/collection';
+import type { DeepPartial } from '@sapphire/utilities';
 import { Image } from 'canvas';
 import {
 	CategoryChannel,
@@ -19,9 +20,8 @@ import { createReadStream } from 'fs';
 import { readFile } from 'fs/promises';
 import { mockRandom, resetMockRandom } from 'jest-mock-random';
 import { KlasaMessage } from 'klasa';
+import nock from 'nock';
 import { resolve } from 'path';
-import { DeepPartial } from 'typeorm';
-import nock = require('nock');
 
 describe('Utils', () => {
 	describe('IMAGE_EXTENSION', () => {

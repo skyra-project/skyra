@@ -9,6 +9,10 @@
 		"usage": ""
 	},
 	"helpDescription": "",
+	"helpExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"helpDm": "",
 	"helpNodm": "",
 	"helpNoExtended": "",
@@ -29,6 +33,9 @@
 		""
 	],
 	"infoDescription": "",
+	"infoExtended": {
+		"extendedHelp": ""
+	},
 	"inviteDescription": "",
 	"inviteExtended": {
 		"extendedHelp": "",
@@ -44,6 +51,9 @@
 	"invitePermissionSupportServerText": "",
 	"ping": "",
 	"pingDescription": "",
+	"pingExtended": {
+		"extendedHelp": ""
+	},
 	"pingPong": "",
 	"supportDescription": "",
 	"supportEmbedDescription": "",

@@ -40,7 +40,7 @@
 		"extendedHelp": [
 			"A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:",
 			"",
-			"- When somebody claims a role via the `roles` command.",
+			"",
 			"- When somebody claims a role via reaction roles.",
 			"- When somebody receives a role either manually or from another bot."
 		],

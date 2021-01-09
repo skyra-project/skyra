@@ -1,0 +1,380 @@
+{
+	"autoRolePointsRequired": "",
+	"autoRoleUpdateConfigured": "",
+	"autoRoleUpdateUnconfigured": "",
+	"autoRoleUpdate": "",
+	"autoRoleRemove": "",
+	"autoRoleAdd": "",
+	"autoRoleListEmpty": "",
+	"autoRoleUnknownRole": "",
+	"balance": "",
+	"balanceSelf": "",
+	"balanceBots": "",
+	"socialMemberNotexists": "",
+	"socialAdd": "",
+	"socialAdd_plural": "",
+	"socialRemove": "",
+	"socialRemove_plural": "",
+	"socialUnchanged": "",
+	"socialReset": "",
+	"bannerMissing": "",
+	"bannerNotexists": "",
+	"bannerUserlistEmpty": "",
+	"bannerResetDefault": "",
+	"bannerReset": "",
+	"bannerSetNotBought": "",
+	"bannerSet": "",
+	"bannerBought": "",
+	"bannerMoney": "",
+	"bannerPaymentCancelled": "",
+	"bannerBuy": "",
+	"bannerPrompt": "",
+	"toggleDarkModeEnabled": "",
+	"toggleDarkModeDisabled": "",
+	"dailyTime": "",
+	"dailyTimeSuccess": "",
+	"dailyGrace": [
+		"",
+		""
+	],
+	"dailyGraceAccepted": "",
+	"dailyGraceDenied": "",
+	"dailyCollect": "",
+	"level": {
+		"level": "",
+		"experience": "",
+		"nextIn": ""
+	},
+	"divorceSelf": "",
+	"divorceNotTaken": "",
+	"divorcePrompt": "",
+	"divorceCancel": "",
+	"divorceDm": "",
+	"divorceSuccess": "",
+	"marryWith": "",
+	"marryNotTaken": "",
+	"marrySkyra": "",
+	"marryAelia": "",
+	"marryBots": "",
+	"marrySelf": "",
+	"marryAuthorTaken": "",
+	"marryAuthorMultipleCancel": "",
+	"marryTaken": "",
+	"marryTaken_plural": "",
+	"marryAlreadyMarried": "",
+	"marryAuthorTooMany": "",
+	"marryTargetTooMany": "",
+	"marryMultipleCancel": "",
+	"marryPetition": "",
+	"marryNoreply": "",
+	"marryDenied": "",
+	"marryAccepted": "",
+	"mylevel": "",
+	"mylevelSelf": "",
+	"mylevelNext": "",
+	"payMissingMoney": "",
+	"payPrompt": "",
+	"payPromptAccept": "",
+	"payPromptDeny": "",
+	"paySelf": "",
+	"socialPayBot": "",
+	"profile": {
+		"globalRank": "",
+		"credits": "",
+		"reputation": "",
+		"experience": "",
+		"level": ""
+	},
+	"remindmeCreate": "",
+	"remindmeCreateNoDuration": "",
+	"remindmeCreateNoDescription": "",
+	"remindmeDeleteNoId": "",
+	"remindmeDelete": "",
+	"remindmeListEmpty": "",
+	"remindmeShowFooter": "",
+	"remindmeInvalidId": "",
+	"remindmeNotfound": "",
+	"reputationTime": "",
+	"reputationUsable": "",
+	"reputationUserNotfound": "",
+	"reputationSelf": "",
+	"reputationBots": "",
+	"reputationGive": "",
+	"reputationsBots": "",
+	"reputationsSelf": "",
+	"reputation": "",
+	"reputation_plural": "",
+	"reputations": "",
+	"requireRole": "",
+	"scoreboardPosition": "",
+	"setColor": "",
+	"socialDescription": "",
+	"socialExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"bannerDescription": "",
+	"bannerExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"toggleDarkModeDescription": "",
+	"toggleDarkModeExtended": {
+		"extendedHelp": ""
+	},
+	"autoRoleDescription": "",
+	"autoRoleExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"balanceDescription": "",
+	"balanceExtended": {
+		"extendedHelp": ""
+	},
+	"dailyDescription": "",
+	"dailyExtended": {
+		"extendedHelp": "",
+		"reminder": [
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"leaderboardDescription": "",
+	"leaderboardExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"reminder": "",
+		"multiline": ""
+	},
+	"leaderboardListifyPage": "",
+	"levelDescription": "",
+	"levelExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"divorceDescription": "",
+	"divorceExtended": {
+		"extendedHelp": ""
+	},
+	"marryDescription": "",
+	"marryExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
+	},
+	"marriedDescription": "",
+	"marriedExtended": {
+		"extendedHelp": ""
+	},
+	"mylevelDescription": "",
+	"mylevelExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
+	},
+	"payDescription": "",
+	"payExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
+	},
+	"profileDescription": "",
+	"profileExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"multiline": ""
+	},
+	"remindmeDescription": "",
+	"remindmeExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
+	},
+	"reputationDescription": "",
+	"reputationExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"reminder": "",
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"setColorDescription": "",
+	"setColorExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"possibleFormats": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		]
+	}
+}

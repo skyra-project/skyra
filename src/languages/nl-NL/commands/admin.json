@@ -40,7 +40,7 @@
 		"extendedHelp": [
 			"Een rol groep is een set van rollen die Skyra identificeert als uniek voor alle leden in de server. Bijvoorbeeld een rol groep genaamd `regio` kan de rollen `Afrika`, `Amerika`, `Azië` en `Europa` bevatten, en leden zullen er maar één van kunnen hebben. Dit is als een soort \"regel\" die wordt toegepast in de drie volgende situaties:",
 			"",
-			"- Wanneer iemand een rol claimt via de `Skyra, rollen`.",
+			"",
 			"- Wanneer iemand een rol opeist via reactie rollen.",
 			"- Wanneer iemand een rol handmatig of van een andere bot ontvangt."
 		],

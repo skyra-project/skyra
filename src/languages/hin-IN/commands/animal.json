@@ -2,7 +2,7 @@
 	"catfactDescription": "मैं आपको एक रहस्यमय बिल्ली तथ्य बताता हूं।",
 	"catfactExtended": {
 		"extendedHelp": [
-			"क्या **आप** जानते है कि बिल्लियाँ बहुत उत्सुक हैं, है ना? उनके पास निश्चित रूप से बहुत सारे मजेदार और अजीब तथ्य हैं।",
+			"",
 			""
 		]
 	},
@@ -16,7 +16,7 @@
 	},
 	"foxDescription": "",
 	"foxExtended": {
-		"extendedHelp": "यह आदेश [randomfox.ca](https://randomfox.ca/) में से एक क्रम रहित छवि देता है।"
+		"extendedHelp": ""
 	},
 	"kittyDescription": "",
 	"kittyExtended": {

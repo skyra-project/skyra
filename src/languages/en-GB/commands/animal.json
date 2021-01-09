@@ -2,7 +2,7 @@
 	"catfactDescription": "Let me tell you a mysterious cat fact.",
 	"catfactExtended": {
 		"extendedHelp": [
-			"You know cats are very curious, right? They certainly have a lot of fun and weird facts.",
+			"",
 			"This command queries catfact.ninja and retrieves a fact so you can read it."
 		]
 	},
@@ -16,7 +16,7 @@
 	},
 	"foxDescription": "Let me show you an image of a fox!",
 	"foxExtended": {
-		"extendedHelp": "This command gives a random image from [randomfox.ca](https://randomfox.ca/)."
+		"extendedHelp": ""
 	},
 	"kittyDescription": "KITTENS!",
 	"kittyExtended": {
@@ -27,6 +27,6 @@
 	},
 	"shibeDescription": "Cute shibas!",
 	"shibeExtended": {
-		"extendedHelp": "Everyone loves shibas, I shall love them as well! They're so adorable! ❤"
+		"extendedHelp": ""
 	}
 }

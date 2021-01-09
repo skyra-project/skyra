@@ -89,9 +89,6 @@
 			""
 		]
 	},
-	"blocklistDescription": "",
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
 	"disable": "",
 	"disableDescription": "",
 	"disableExtended": {
@@ -114,6 +111,10 @@
 	"loadFail": "",
 	"reboot": "",
 	"rebootDescription": "",
+	"rebootExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"reload": "",
 	"reloadAll": "",
 	"reloadDescription": "",
@@ -127,5 +128,6 @@
 	"unloadDescription": "",
 	"unloadExtended": {
 		"extendedHelp": ""
-	}
+	},
+	"unloadWarn": ""
 }

@@ -23,7 +23,7 @@
 	"yarnEmbedDescriptionLatestVersion": "❯ Última versión: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ Licencia: **{{license}}**",
 	"yarnEmbedDescriptionMainFile": "❯ Archivo principal: **{{mainFile}}**",
-	"yarnEmbedDescriptionMaintainers": "❯ Mantenedores: ",
+	"yarnEmbedDescriptionMaintainers": "",
 	"yarnEmbedMoreText": "más...",
 	"yarnNoPackage": "{{REDCROSS}} Lo siento, pero tienes que darme el nombre de un paquete para buscar.",
 	"yarnPackageNotFound": "Lo siento, pero no he podido encontrar ningún paquete con el nombre de `{{pkg}}` en el registro.",

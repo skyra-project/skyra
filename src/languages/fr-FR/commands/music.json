@@ -33,6 +33,10 @@
 	"addPlaylistSongsPlural": "",
 	"addSong": "",
 	"clearDescription": "",
+	"clearExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"clearDenied": "",
 	"clearSuccess": "",
 	"clearSuccessPlural": "",
@@ -57,6 +61,10 @@
 		"multiline": ""
 	},
 	"joinDescription": "",
+	"joinExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"joinNoMember": "",
 	"joinNoVoicechannel": "",
 	"joinSuccess": "",
@@ -86,6 +94,10 @@
 	},
 	"leaveSuccess": "",
 	"pauseDescription": "",
+	"pauseExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"pauseSuccess": "",
 	"playDescription": "",
 	"playExtended": {
@@ -124,13 +136,25 @@
 	"playQueuePlaying": "",
 	"playQueueEmpty": "",
 	"playingDescription": "",
+	"playingExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"playingDuration": "",
 	"playingQueueEmpty": "",
 	"playingQueueNotPlaying": "",
 	"repeatDescription": "",
+	"repeatExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"repeatSuccessEnabled": "",
 	"repeatSuccessDisabled": "",
 	"queueDescription": "",
+	"queueExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"queueLast": "",
 	"queueTitle": "",
 	"queueLine": "",
@@ -143,17 +167,43 @@
 	"queueEmpty": "",
 	"queueDashboardInfo": "",
 	"removeDescription": "",
+	"removeExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"removeIndexInvalid": "",
 	"removeIndexOutOfBounds": "",
 	"removeDenied": "",
 	"removeSuccess": "",
 	"seekDescription": "",
+	"seekExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"seekSuccess": "",
 	"resumeDescription": "",
+	"resumeExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"resumeSuccess": "",
 	"shuffleDescription": "",
+	"shuffleExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"shuffleSuccess": "",
 	"skipDescription": "",
+	"skipExtended": {
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"reminder": ""
+	},
 	"skipPermissions": "",
 	"skipVotesVoted": "",
 	"skipVotesTotal": "",
@@ -175,6 +225,14 @@
 	},
 	"promoteSuccess": "",
 	"volumeDescription": "",
+	"volumeExtended": {
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
+	},
 	"volumeSuccess": "",
 	"volumeChanged": "",
 	"volumeChangedExtreme": "",

@@ -1,4 +1,10 @@
 {
+	"blocklistDescription": "",
+	"blocklistExtended": {
+		"extendedHelp": ""
+	},
+	"blocklistResetSuccess": "",
+	"blocklistSaveSuccess": "",
 	"confNoKey": "You must provide a key",
 	"confNoValue": "You must provide a value",
 	"confGuarded": "{{name, toTitleCase}} may not be disabled.",
@@ -9,11 +15,26 @@
 	"confReset": "The key **{{key}}** has been reset to: `{{value}}`",
 	"confNochange": "The value for **{{key}}** was already that value.",
 	"confServerDescription": "Define per-server settings.",
+	"confServerExtended": {
+		"extendedHelp": ""
+	},
 	"confServer": "**Server Setting {{key}}**\n{{list}}",
 	"confUserDescription": "Define per-user settings.",
 	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
 	"confUser": "",
 	"confSettingNotSet": "",
+	"heapSnapshotDescription": "",
+	"heapSnapshotExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
 	"rolesetDescription": "",
 	"rolesetExtended": {
 		"extendedHelp": [
@@ -82,5 +103,9 @@
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": ""
+	"confMenuSaved": "",
+	"updateDescription": "",
+	"updateExtended": {
+		"extendedHelp": ""
+	}
 }

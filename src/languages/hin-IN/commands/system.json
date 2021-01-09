@@ -72,6 +72,10 @@
 	"loadFail": "",
 	"reboot": "",
 	"rebootDescription": "",
+	"rebootExtended": {
+		"extendedHelp": "",
+		"reminder": ""
+	},
 	"reload": "",
 	"reloadAll": "",
 	"reloadDescription": "",
@@ -85,5 +89,6 @@
 	"unloadDescription": "",
 	"unloadExtended": {
 		"extendedHelp": ""
-	}
+	},
+	"unloadWarn": ""
 }

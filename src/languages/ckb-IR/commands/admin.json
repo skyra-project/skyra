@@ -1,4 +1,10 @@
 {
+	"blocklistDescription": "",
+	"blocklistExtended": {
+		"extendedHelp": ""
+	},
+	"blocklistResetSuccess": "",
+	"blocklistSaveSuccess": "",
 	"confNoKey": "",
 	"confNoValue": "",
 	"confGuarded": "",
@@ -9,11 +15,26 @@
 	"confReset": "",
 	"confNochange": "",
 	"confServerDescription": "",
+	"confServerExtended": {
+		"extendedHelp": ""
+	},
 	"confServer": "",
 	"confUserDescription": "",
 	"confDashboardOnlyKey": "",
 	"confUser": "",
 	"confSettingNotSet": "",
+	"heapSnapshotDescription": "",
+	"heapSnapshotExtended": {
+		"extendedHelp": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
+	},
 	"rolesetDescription": "",
 	"rolesetExtended": {
 		"extendedHelp": [
@@ -82,5 +103,9 @@
 	"confMenuRenderBack": "",
 	"confMenuInvalidKey": "",
 	"confMenuInvalidAction": "",
-	"confMenuSaved": ""
+	"confMenuSaved": "",
+	"updateDescription": "",
+	"updateExtended": {
+		"extendedHelp": ""
+	}
 }

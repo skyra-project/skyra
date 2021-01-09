@@ -3,7 +3,7 @@
 	"announcementCancelled": "El mensaje ha sido cancelado.",
 	"announcementDescription": "Envía nuevos anuncios, mencionando el rol de anuncio.",
 	"announcementEmbedMentions": "{{header}}:",
-	"announcementEmbedMentionsWithMentions": "{{header}}, y mencionando: {{mentions}}:",
+	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
 		"extendedHelp": [
 			"Este comando requiere un canal de anuncios (**channels.announcement** en el comando de configuración) que le indique a Skyra dónde debe publicar los mensajes de anuncio.",

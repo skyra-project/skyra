@@ -8,11 +8,7 @@
 		"title": "{{titleDescription}}",
 		"usage": "📝 | ***Command Usage***\n`{{usage}}`\n"
 	},
-	"helpDescription": "Displays all commands or the description of one.",
-	"helpExtended": {
-		"extendedHelp": "The help command shows a paginated list of all commands by their categories, or the extended information of a command if specified.\n\nIf you use `--categories` or `--cat`, you can get the list of all categories and the amount of commands each one of them have.",
-		"reminder": "The help command **only** shows the commands you can use. For the full list, please visit <https://skyra.pw/commands>."
-	},
+	"helpDescription": "Display help for a command.",
 	"helpDm": "📥 | The list of commands you have access to has been sent to your DMs.",
 	"helpNodm": "{{REDCROSS}} | You have DMs disabled so I couldn't send you the list of commands.",
 	"helpNoExtended": "No extended help available.",
@@ -32,10 +28,7 @@
 		"• A full PokéDex with all data you will need",
 		"And more!"
 	],
-	"infoDescription": "Provides some information about me.",
-	"infoExtended": {
-		"extendedHelp": "Just... that :P"
-	},
+	"infoDescription": "Provides some information about this bot.",
 	"inviteDescription": "Shows the invite link to add Skyra to your server.",
 	"inviteExtended": {
 		"extendedHelp": "If you would like to get a link where Skyra will not ask for any permissions add either `noperms`, `--noperms`, or `--nopermissions` to the command.",
@@ -46,9 +39,6 @@
 	"invitePermissionSupportServerText": "Join Support Server",
 	"ping": "{{LOADING}} Ping?",
 	"pingDescription": "Runs a connection test to Discord.",
-	"pingExtended": {
-		"extendedHelp": "Pong!"
-	},
 	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)",
 	"supportDescription": "Show support instructions",
 	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",

@@ -79,9 +79,6 @@
 		"uptime": ["• **Host**: {{uptime.host, duration}}", "• **Total**: {{uptime.total, duration}}", "• **Client**: {{uptime.client, duration}}"],
 		"serverUsage": ["• **CPU Load**: {{usage.cpuLoad}}", "• **Heap**: {{usage.ramUsed}} (Total: {{usage.ramTotal}})"]
 	},
-	"blocklistDescription": "Block or allow users and guilds from using my functionalities.",
-	"blocklistResetSuccess": "{{GREENTICK}} Successfully reset blocked users and guilds",
-	"blocklistSaveSuccess": "{{GREENTICK}} Successfully updated blocked users and/or guilds",
 	"disable": "+ Successfully disabled {{type}}: {{name}}",
 	"disableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.",
 	"disableExtended": {
@@ -104,6 +101,10 @@
 	"loadFail": "The file does not exist, or an error occurred while loading your file. Please check your console.",
 	"reboot": "{{LOADING}} Rebooting...",
 	"rebootDescription": "Reboots the bot.",
+	"rebootExtended": {
+		"extendedHelp": "The bot goes boom, then the bot goes revive.",
+		"reminder": "Only owners can use this command"
+	},
 	"reload": "{{GREENTICK}} Reloaded {{type}}: {{name}}. (Took: {{time}})",
 	"reloadAll": "{{GREENTICK}} Reloaded all {{type}}. (Took: {{time}})",
 	"reloadDescription": "Reloads a klasa piece, or all pieces of a klasa store.",
@@ -117,5 +118,6 @@
 	"unloadDescription": "Unloads the klasa piece.",
 	"unloadExtended": {
 		"extendedHelp": "Unloads a piece when needed"
-	}
+	},
+	"unloadWarn": "You probably don't want to unload that, since you wouldn't be able to run any command to enable it again"
 }

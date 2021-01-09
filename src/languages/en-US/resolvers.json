@@ -31,7 +31,7 @@
 	"invalidUrl": "{{name}} must be a valid url.",
 	"invalidUser": "{{name}} must be a mention or valid user id.",
 	"invalidUsername": "{{name}} must be a valid user name, id, or mention.",
-	"invalidWager": "I am sorry, but {{bet}} {{SHINY}} is an invalid amount to bet. You can bet one of {{validAmounts}}",
+	"invalidWager": "I am sorry, but {{bet}} {{SHINY}} is an invalid amount to bet. You can bet one of {{validAmounts, orList}}",
 	"memberNameUserLeftDuringPrompt": "User left during prompt.",
 	"minmaxBothExclusive": "{{name}} must be between {{min}} and {{max}} exclusively.",
 	"minmaxBothInclusive": "{{name}} must be between {{min}} and {{max}} inclusively.",

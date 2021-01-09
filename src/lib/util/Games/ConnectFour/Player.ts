@@ -32,7 +32,7 @@ export abstract class Player {
 			: next!.color === PlayerColor.Blue
 			? LanguageKeys.Commands.Games.C4GameNextTurn0
 			: LanguageKeys.Commands.Games.C4GameNext;
-		this.game.content = this.game.language.get(languageKey, {
+		this.game.content = this.game.t(languageKey, {
 			user: next!.name
 		});
 	}

@@ -4,7 +4,7 @@ import { CommandStore } from 'klasa';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
 export abstract class RichDisplayCommand extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions = {}) {
+	public constructor(store: CommandStore, file: string[], directory: string, options: SkyraCommandOptions) {
 		super(store, file, directory, {
 			// Merge in all given options
 			...options,

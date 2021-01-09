@@ -55,13 +55,13 @@ export default class extends RichDisplayCommand {
 		} catch {
 			throw t(LanguageKeys.Commands.Pokemon.LearnQueryFailed, {
 				pokemon,
-				moves: t.list(moves, t(LanguageKeys.Globals.And))
+				moves
 			});
 		}
 	}
 
-	private parseMove(language: TFunction, pokemon: string, generation: number, move: string, method: string) {
-		return language(LanguageKeys.Commands.Pokemon.LearnMethod, { generation, pokemon, move, method });
+	private parseMove(t: TFunction, pokemon: string, generation: number, move: string, method: string) {
+		return t(LanguageKeys.Commands.Pokemon.LearnMethod, { generation, pokemon, move, method });
 	}
 
 	private buildDisplay(message: GuildMessage, learnsetData: LearnsetEntry, generation: number, moves: string[], t: TFunction) {
@@ -82,7 +82,7 @@ export default class extends RichDisplayCommand {
 				embed.setDescription(
 					t(LanguageKeys.Commands.Pokemon.LearnCannotLearn, {
 						pokemon: learnsetData.species,
-						moves: t.list(moves, t(LanguageKeys.Globals.Or))
+						moves
 					})
 				)
 			);

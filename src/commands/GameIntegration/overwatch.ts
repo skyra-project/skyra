@@ -65,7 +65,9 @@ export default class extends RichDisplayCommand {
 				(r) => r
 			)
 				.mapValues((rating) => {
-					return `**${toTitleCase(rating.role)}:** ${typeof rating.level === 'number' ? t.groupDigits(rating.level) : rating.level}`;
+					return `**${toTitleCase(rating.role)}:** ${
+						typeof rating.level === 'number' ? t(LanguageKeys.Globals.GroupDigitsValue, { value: rating.level }) : rating.level
+					}`;
 				})
 				.values()
 		).join('\n');

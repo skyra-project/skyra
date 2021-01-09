@@ -38,9 +38,9 @@ export default class extends ModerationCommand {
 		if (preHandled) preHandled.unlock();
 	}
 
-	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
-		const member = await super.checkModeratable(message, language, context);
-		if (member && !member.bannable) throw language.get(LanguageKeys.Commands.Moderation.BanNotBannable);
+	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand<Moderation.Unlock>['checkModeratable']>) {
+		const member = await super.checkModeratable(message, t, context);
+		if (member && !member.bannable) throw t(LanguageKeys.Commands.Moderation.BanNotBannable);
 		return member;
 	}
 

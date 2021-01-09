@@ -349,10 +349,10 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 				format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
 					switch (format as LanguageFormatters) {
 						case LanguageFormatters.AndList: {
-							return list(value as string[], i18next.t('global:and', { ...options, lng: language }));
+							return list(value as string[], i18next.t('globals:and', { ...options, lng: language }));
 						}
 						case LanguageFormatters.OrList: {
-							return list(value as string[], i18next.t('global:or', { ...options, lng: language }));
+							return list(value as string[], i18next.t('globals:or', { ...options, lng: language }));
 						}
 						case LanguageFormatters.Permissions: {
 							return i18next.t(`permissions:${value}`, { ...options, lng: language });

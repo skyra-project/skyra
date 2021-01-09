@@ -130,8 +130,8 @@
 	"playingQueueNotPlaying": "{{REDCROSS}} I think you're listening to background noise, I'm not playing anything.",
 	"repeatDescription": "Toggle repeating the current song.",
 	"repeatExtended": {
-		"extendedHelp": "",
-		"reminder": "Before"
+		"extendedHelp": "If you really love the current song you can repeat it into infinity.",
+		"reminder": "Before you can use this command you need to be in the same voice channel as Skyra, and some music needs to be playing!"
 	},
 	"repeatSuccessEnabled": "This is your JAM isn't it? Don't you worry, we will repeat this on and on and on!",
 	"repeatSuccessDisabled": "I was actually getting tired of this too, but I didn't want to say anything.",
@@ -161,12 +161,29 @@
 	"removeDenied": "{{REDCROSS}} Let's play it nicely, don't remove other's songs if you're not a moderator nor a DJ.",
 	"removeSuccess": "{{GREENTICK}} Removed the song **{{title}}** requested by <@{{requester}}>.",
 	"seekDescription": "Change the player time for the current song.",
+	"seekExtended": {
+		"extendedHelp": "With this command you can jump to a specific position in the song.",
+		"reminder": "Before you can use this command you need to be a moderator or DJ, and some music needs to be playing!"
+	},
 	"seekSuccess": "{{GREENTICK}} Successfully changed the time! Now at {{time, duration}}!",
 	"resumeDescription": "Resumes the current song.",
+	"resumeExtended": {
+		"extendedHelp": "Used the `pause` command and want to resume the song? Then use this command.",
+		"reminder": "Before you can use this command you need to be in the same voice channel as Skyra, and the current song needs to be paused!"
+	},
 	"resumeSuccess": "▶ Resumed.",
 	"shuffleDescription": "Randomize the order of the songs in the queue.",
+	"shuffleExtended": {
+		"extendedHelp": "If you want to be in for a surprise you should *not* use the queue command after this so you'll be surprised about what plays next ;)",
+		"reminder": "Before you can use this command you need to be a moderator or DJ, and there has to be a queue of songs to shuffle!"
+	},
 	"shuffleSuccess": "{{GREENTICK} Successfully randomized {{amount}} songs.",
 	"skipDescription": "Skip the current song.",
+	"skipExtended": {
+		"extendedHelp": "Someone put a crappy song in the queue? Yeet it from the existance with this command. If there are more than 4 listeners in the channel (excluding Skyra) then a vote will be started before the song is skipped.",
+		"explainedUsage": [["force", "DJs and moderators can force the skip (bypass the vote) by adding force to the command."]],
+		"reminder": "Before you can use this command you need to be in the same channel as Skyra and there has to be a current song (paused or playing)!"
+	},
 	"skipPermissions": "{{REDCROSS}} You can't execute this command, you must be a DJ or a Moderator.",
 	"skipVotesVoted": "{{REDCROSS}} You have already voted.",
 	"skipVotesTotal": "🔸 | Votes: {{amount} of {{needed}}",

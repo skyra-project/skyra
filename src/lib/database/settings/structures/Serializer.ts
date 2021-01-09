@@ -76,11 +76,7 @@ export abstract class Serializer<T> extends AliasPiece {
 	 * @param entry The schema entry that manages the key
 	 * @param language The language that is used for this context
 	 */
-	protected minOrMax(
-		value: T,
-		length: number,
-		{ entry: { minimum, maximum, inclusive, name }, t: language }: SerializerUpdateContext
-	): SerializerResult<T> {
+	protected minOrMax(value: T, length: number, { entry: { minimum, maximum, inclusive, name }, t }: SerializerUpdateContext): SerializerResult<T> {
 		if (minimum !== null && maximum !== null) {
 			if ((length >= minimum && length <= maximum && inclusive) || (length > minimum && length < maximum && !inclusive)) {
 				return this.ok(value);
@@ -88,7 +84,7 @@ export abstract class Serializer<T> extends AliasPiece {
 
 			if (minimum === maximum) {
 				return this.error(
-					language(inclusive ? LanguageKeys.Resolvers.MinmaxExactlyInclusive : LanguageKeys.Resolvers.MinmaxExactlyExclusive, {
+					t(inclusive ? LanguageKeys.Resolvers.MinmaxExactlyInclusive : LanguageKeys.Resolvers.MinmaxExactlyExclusive, {
 						name,
 						min: minimum
 					})
@@ -96,7 +92,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				language(inclusive ? LanguageKeys.Resolvers.MinmaxBothInclusive : LanguageKeys.Resolvers.MinmaxBothExclusive, {
+				t(inclusive ? LanguageKeys.Resolvers.MinmaxBothInclusive : LanguageKeys.Resolvers.MinmaxBothExclusive, {
 					name,
 					min: minimum,
 					max: maximum
@@ -110,7 +106,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				language(inclusive ? LanguageKeys.Resolvers.MinmaxMinInclusive : LanguageKeys.Resolvers.MinmaxMinExclusive, {
+				t(inclusive ? LanguageKeys.Resolvers.MinmaxMinInclusive : LanguageKeys.Resolvers.MinmaxMinExclusive, {
 					name,
 					min: minimum
 				})
@@ -123,7 +119,7 @@ export abstract class Serializer<T> extends AliasPiece {
 			}
 
 			return this.error(
-				language(inclusive ? LanguageKeys.Resolvers.MinmaxMaxInclusive : LanguageKeys.Resolvers.MinmaxMaxExclusive, {
+				t(inclusive ? LanguageKeys.Resolvers.MinmaxMaxInclusive : LanguageKeys.Resolvers.MinmaxMaxExclusive, {
 					name,
 					max: maximum
 				})

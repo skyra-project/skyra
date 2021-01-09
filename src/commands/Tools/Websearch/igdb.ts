@@ -7,8 +7,8 @@ import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '#utils/External/IgdbTypes';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
+import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
@@ -91,8 +91,8 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
-		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
-		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
+		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles, { returnObjects: true });
+		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData, { returnObjects: true });
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

@@ -79,7 +79,11 @@ export default class extends RichDisplayCommand {
 					.setThumbnail(`https://image.tmdb.org/t/p/original${movie.poster_path}`)
 					.setDescription(cutText(movie.overview, 750))
 					// TODO: i18next formatters in ternaries?
-					.addField(titles.runtime, movie.runtime ? t.duration(movie.runtime * 60 * 1000) : fieldsData.movieInProduction, true)
+					.addField(
+						titles.runtime,
+						movie.runtime ? t(LanguageKeys.Globals.DurationValue, { value: movie.runtime * 60 * 1000 }) : fieldsData.movieInProduction,
+						true
+					)
 					.addField(titles.userScore, movie.vote_average ? movie.vote_average : fieldsData.movieInProduction, true)
 					.addField(titles.status, movie.status, true)
 					.addField(titles.releaseDate, this.releaseDateTimestamp.displayUTC(movie.release_date), true)

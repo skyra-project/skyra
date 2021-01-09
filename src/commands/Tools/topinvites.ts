@@ -75,7 +75,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private resolveExpiryDate(t: TFunction, expiresTimestamp: Invite['expiresTimestamp'], fallback: string) {
-		if (expiresTimestamp !== null && expiresTimestamp > 0) return t.duration(expiresTimestamp - Date.now(), 2);
+		if (expiresTimestamp !== null && expiresTimestamp > 0) return t(LanguageKeys.Globals.DurationValue, { value: expiresTimestamp - Date.now() });
 		return fallback;
 	}
 

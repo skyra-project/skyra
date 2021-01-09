@@ -70,17 +70,17 @@ export default class extends SkyraCommand {
 	}
 
 	public async reset(message: GuildMessage) {
-		const language = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+		const t = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 
 			// Set an empty array:
 			settings[GuildSettings.Selfmod.Filter.Raw].length = 0;
 
 			// Return language for re-use:
-			return language;
+			return t;
 		});
 
-		return message.send(language(LanguageKeys.Commands.Management.FilterReset));
+		return message.send(t(LanguageKeys.Commands.Management.FilterReset));
 	}
 
 	public async show(message: GuildMessage) {

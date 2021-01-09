@@ -90,8 +90,12 @@ export default class extends SkyraCommand {
 
 		const author = await this.getAuthor(message, shouldHideAuthor, t);
 
-		const actions = t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author });
-		const DMActions = t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, { author, guild: message.guild.name });
+		const actions = t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActions, { author, returnObjects: true });
+		const DMActions = t(LanguageKeys.Commands.Suggestions.ResolveSuggestionActionsDms, {
+			author,
+			guild: message.guild.name,
+			returnObjects: true
+		});
 
 		switch (action) {
 			case 'a':
@@ -115,7 +119,7 @@ export default class extends SkyraCommand {
 			try {
 				await suggestionData.author!.send(messageContent, { embed: newEmbed });
 			} catch {
-				await message.channel.send(t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
+				await message.channel.send(t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail)!);
 			}
 		}
 

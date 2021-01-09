@@ -9,6 +9,7 @@ import { VoiceChannel } from 'discord.js';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.SkipDescription,
+	extendedHelp: LanguageKeys.Commands.Music.SkipExtended,
 	usage: '[force]'
 })
 export default class extends MusicCommand {

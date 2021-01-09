@@ -15,7 +15,7 @@ import { KlasaMessage, Piece } from 'klasa';
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [piece]: [Piece]) {
 		if ((piece.type === 'event' && piece.name === 'message') || (piece.type === 'monitor' && piece.name === 'commandHandler')) {
-			return message.sendTranslated('commandUnloadWarn');
+			return message.sendTranslated(LanguageKeys.Commands.System.UnloadWarn);
 		}
 		piece.unload();
 		if (this.client.shard) {
@@ -23,6 +23,6 @@ export default class extends SkyraCommand {
 				if (String(this.options.shards) !== '${this.client.options.shards}') this.${piece.store}.get('${piece.name}').unload();
 			`);
 		}
-		return message.sendTranslated('commandUnload', [{ type: piece.type, name: piece.name }]);
+		return message.sendTranslated(LanguageKeys.Commands.System.Unload, [{ type: piece.type, name: piece.name }]);
 	}
 }

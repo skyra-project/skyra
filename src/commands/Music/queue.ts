@@ -91,9 +91,9 @@ export default class extends MusicCommand {
 		return response.edit(undefined, queueDisplay.template);
 	}
 
-	private async generateTrackField(message: GuildMessage, language: TFunction, position: number, entry: DecodedQueueEntry) {
-		const username = await this.fetchRequesterName(message, language, entry.author);
-		return language(LanguageKeys.Commands.Music.QueueLine, {
+	private async generateTrackField(message: GuildMessage, t: TFunction, position: number, entry: DecodedQueueEntry) {
+		const username = await this.fetchRequesterName(message, t, entry.author);
+		return t(LanguageKeys.Commands.Music.QueueLine, {
 			position: position + 1,
 			duration: showSeconds(entry.data.length),
 			title: entry.data.title,
@@ -112,7 +112,7 @@ export default class extends MusicCommand {
 		return accumulator;
 	}
 
-	private async fetchRequesterName(message: GuildMessage, language: TFunction, userID: string): Promise<string> {
+	private async fetchRequesterName(message: GuildMessage, t: TFunction, userID: string): Promise<string> {
 		try {
 			return (await message.guild.members.fetch(userID)).displayName;
 		} catch {}
@@ -121,7 +121,7 @@ export default class extends MusicCommand {
 			return (await this.client.users.fetch(userID)).username;
 		} catch {}
 
-		return language(LanguageKeys.Misc.UnknownUser);
+		return t(LanguageKeys.Misc.UnknownUser);
 	}
 
 	private async getTrackInformation(audio: Queue): Promise<readonly DecodedQueueEntry[]> {

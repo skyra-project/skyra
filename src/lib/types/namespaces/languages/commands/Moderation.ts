@@ -303,7 +303,6 @@ export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ 
 );
 export const ActionRequiredMember = T<string>('moderationActions:requiredMember');
 export const RoleHigherSkyra = T<string>('moderation:roleHigherSkyra');
-export const ScoreboardPosition = FT<{ position: number }, string>('moderation:scoreboardPosition');
 export const Success = T<string>('moderation:success');
 export const ToSkyra = T<string>('moderation:toSkyra');
 export const UserSelf = T<string>('moderation:userSelf');

@@ -44,7 +44,7 @@ export default class extends RichDisplayCommand {
 		const usernames = await (target ? this.fetchAllModerators(entries) : this.fetchAllUsers(entries));
 
 		// Set up the formatter
-		const durationDisplay = t.duration.bind(t);
+		const durationDisplay = (value: number) => t(LanguageKeys.Globals.DurationValue, { value });
 		const displayName = action === 'all';
 		const format = target
 			? this.displayModerationLogFromModerators.bind(this, usernames, durationDisplay, displayName)

@@ -33,6 +33,7 @@ export default class extends SkyraCommand {
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild.ownerID);
+
 		return message.send(
 			new SkyraEmbed()
 				.setColor(await DbSet.fetchColor(message))
@@ -57,7 +58,7 @@ export default class extends SkyraCommand {
 				.addField(
 					serverInfoTitles.MEMBERS,
 					t(LanguageKeys.Commands.Management.GuildInfoMembers, {
-						count: message.guild.memberCount.toLocaleString(t.name),
+						memberCount: message.guild.memberCount.toLocaleString(t.name),
 						owner
 					}),
 					true

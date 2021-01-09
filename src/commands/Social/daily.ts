@@ -59,7 +59,7 @@ export default class extends SkyraCommand {
 		});
 	}
 
-	private async claimDaily(message: KlasaMessage, language: TFunction, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
+	private async claimDaily(message: KlasaMessage, t: TFunction, connection: DbSet, settings: UserEntity, nextTime: number, remind: boolean) {
 		const money = this.calculateDailies(message, await connection.clients.ensure(), settings);
 
 		settings.money += money;
@@ -69,7 +69,7 @@ export default class extends SkyraCommand {
 		if (remind) {
 			await this.client.schedules.add(Schedules.Reminder, nextTime, {
 				data: {
-					content: language(LanguageKeys.Commands.Social.DailyCollect),
+					content: t(LanguageKeys.Commands.Social.DailyCollect),
 					user: message.author.id
 				}
 			});

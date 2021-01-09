@@ -90,7 +90,7 @@ export default class extends SkyraCommand {
 						'',
 						author ? t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionAuthor, { author }) : undefined,
 						`${t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers)}: **${cutText(
-							t.list(maintainers, t(LanguageKeys.Globals.And)),
+							t(LanguageKeys.Globals.AndListValue, { value: maintainers }),
 							500
 						)}**`,
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLatestVersion, { latestVersionNumber }),
@@ -102,7 +102,7 @@ export default class extends SkyraCommand {
 						'',
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesLabel),
 						dependencies && dependencies.length
-							? t.list(dependencies, t(LanguageKeys.Globals.And))
+							? t(LanguageKeys.Globals.AndListValue, { value: dependencies })
 							: t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesNoDeps)
 					]
 						.filter((part) => part !== undefined)

@@ -181,7 +181,10 @@ export default class extends SkyraCommand {
 	private async runDisplay(message: GuildMessage, t: TFunction, display: UserRichDisplay | null) {
 		if (display !== null) {
 			const response = await message.send(
-				new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
+				new MessageEmbed({
+					description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })),
+					color: BrandingColors.Secondary
+				})
 			);
 			await display.start(response, message.author.id);
 			return response;

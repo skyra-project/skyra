@@ -51,7 +51,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
-		const titles = t(LanguageKeys.Commands.Tools.ItunesTitles);
+		const titles = t(LanguageKeys.Commands.Tools.ItunesTitles, { returnObjects: true });
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {

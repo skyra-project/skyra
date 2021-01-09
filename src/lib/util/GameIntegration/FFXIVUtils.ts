@@ -3,7 +3,7 @@ import { TOKENS } from '#root/config';
 import { Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes } from '#utils/util';
 import { toTitleCase } from '@sapphire/utilities';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { FFXIV } from './FFXIVTypings';
 
 export const FFXIVServers = [
@@ -85,7 +85,7 @@ const FFXIV_HEADERS = {
 	'Content-Type': Mime.Types.ApplicationJson
 };
 
-export async function getCharacterDetails(i18n: Language, id: number) {
+export async function getCharacterDetails(t: TFunction, id: number) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/${id}`);
 		url.searchParams.append('extended', '1');
@@ -121,17 +121,17 @@ export async function getCharacterDetails(i18n: Language, id: number) {
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
+		throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 	}
 }
 
-export async function searchCharacter(i18n: Language, name: string, server?: string) {
+export async function searchCharacter(t: TFunction, name: string, server?: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/character/search`);
 		url.searchParams.append('name', name);
 		if (server) {
 			if (FFXIVServers.includes(server.toLowerCase())) url.searchParams.append('server', toTitleCase(server));
-			else throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer);
+			else throw t(LanguageKeys.Commands.GameIntegration.FFXIVInvalidServer);
 		}
 
 		return await fetch<FFXIV.SearchResponse<FFXIV.CharacterSearchResult>>(
@@ -144,11 +144,11 @@ export async function searchCharacter(i18n: Language, name: string, server?: str
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
+		throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoCharacterFound);
 	}
 }
 
-export async function searchItem(i18n: Language, item: string) {
+export async function searchItem(t: TFunction, item: string) {
 	try {
 		const url = new URL(`${FFXIV_BASE_URL}/search`);
 
@@ -181,7 +181,7 @@ export async function searchItem(i18n: Language, item: string) {
 			FetchResultTypes.JSON
 		);
 	} catch {
-		throw i18n.get(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
+		throw t(LanguageKeys.Commands.GameIntegration.FFXIVNoItemFound);
 	}
 }
 

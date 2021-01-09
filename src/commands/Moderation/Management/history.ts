@@ -94,7 +94,7 @@ export default class extends SkyraCommand {
 		const usernames = await this.fetchAllModerators(entries);
 
 		// Set up the formatter
-		const durationDisplay = t.duration.bind(t);
+		const durationDisplay = (value: number) => t(LanguageKeys.Globals.DurationValue, { value });
 
 		for (const page of chunk([...entries.values()], 10)) {
 			display.addPage((template: MessageEmbed) => {

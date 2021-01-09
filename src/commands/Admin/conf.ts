@@ -39,7 +39,7 @@ import { ApplyOptions, CreateResolvers, requiredPermissions } from '@skyra/decor
 export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async menu(message: GuildMessage) {
-		return new SettingsMenu(message, await message.fetchLanguage()).init();
+		return new SettingsMenu(message, await message.fetchT()).init();
 	}
 
 	public async show(message: GuildMessage, [key]: [string]) {

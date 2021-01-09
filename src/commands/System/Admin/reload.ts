@@ -7,8 +7,8 @@ import { KlasaMessage, Piece, Stopwatch, Store } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['r'],
-	description: (language) => language.get(LanguageKeys.Commands.System.ReloadDescription),
-	extendedHelp: (language) => language.get(LanguageKeys.Commands.System.ReloadExtended),
+	description: LanguageKeys.Commands.System.ReloadDescription,
+	extendedHelp: LanguageKeys.Commands.System.ReloadExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<Store:store|Piece:piece|everything:default>'

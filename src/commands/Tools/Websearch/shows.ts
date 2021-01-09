@@ -7,8 +7,8 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { cutText } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
+import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
@@ -80,7 +80,9 @@ export default class extends RichDisplayCommand {
 					.setDescription(cutText(show.overview, 750))
 					.addField(
 						titles.episodeRuntime,
-						show.episode_run_time.length ? `${t.duration(show.episode_run_time[0] * 60 * 1000)}` : fieldsData.variableRuntime,
+						show.episode_run_time.length
+							? `${t(LanguageKeys.Globals.DurationValue, { value: show.episode_run_time[0] * 60 * 1000 })}`
+							: fieldsData.variableRuntime,
 						true
 					)
 					.addField(titles.userScore, show.vote_average ? show.vote_average : fieldsData.unknownUserScore, true)

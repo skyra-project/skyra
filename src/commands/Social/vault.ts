@@ -104,7 +104,7 @@ export default class Vault extends SkyraCommand {
 	private async buildEmbed(message: KlasaMessage, t: TFunction, money: number, vault: number, coins?: number, hasDeposited = false) {
 		const { accountMoney, accountVault, depositedDescription, withdrewDescription, showDescription } = t(
 			LanguageKeys.Commands.Social.VaultEmbedData,
-			{ coins }
+			{ coins, returnObjects: true }
 		);
 
 		const description = coins ? (hasDeposited ? depositedDescription : withdrewDescription) : showDescription;

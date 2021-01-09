@@ -13,9 +13,9 @@ export function isSchemaKey(groupOrKey: ISchemaValue): groupOrKey is SchemaKey {
 }
 
 export async function set(settings: GuildEntity, key: SchemaKey, value: string) {
-	const language = settings.getLanguage();
+	const t = settings.getLanguage();
 
-	const parsed = await key.parse(settings, language, value);
+	const parsed = await key.parse(settings, t, value);
 	if (key.array) {
 		const values = Reflect.get(settings, key.property) as any[];
 		const { serializer } = key;
@@ -26,30 +26,30 @@ export async function set(settings: GuildEntity, key: SchemaKey, value: string) 
 		const value = Reflect.get(settings, key.property);
 		const { serializer } = key;
 		if (serializer.equals(value, parsed)) {
-			throw language.get(LanguageKeys.Settings.Gateway.DuplicateValue, {
+			throw t(LanguageKeys.Settings.Gateway.DuplicateValue, {
 				path: key.name,
-				value: key.stringify(settings, language, parsed)
+				value: key.stringify(settings, t, parsed)
 			});
 		}
 
 		Reflect.set(settings, key.property, parsed);
 	}
 
-	return language;
+	return t;
 }
 
 export async function remove(settings: GuildEntity, key: SchemaKey, value: string) {
-	const language = settings.getLanguage();
+	const t = settings.getLanguage();
 
-	const parsed = await key.parse(settings, language, value);
+	const parsed = await key.parse(settings, t, value);
 	if (key.array) {
 		const values = Reflect.get(settings, key.property) as any[];
 		const { serializer } = key;
 		const index = values.findIndex((value) => serializer.equals(value, parsed));
 		if (index === -1) {
-			throw language.get(LanguageKeys.Settings.Gateway.MissingValue, {
+			throw t(LanguageKeys.Settings.Gateway.MissingValue, {
 				path: key.name,
-				value: key.stringify(settings, language, parsed)
+				value: key.stringify(settings, t, parsed)
 			});
 		}
 
@@ -58,7 +58,7 @@ export async function remove(settings: GuildEntity, key: SchemaKey, value: strin
 		Reflect.set(settings, key.property, key.default);
 	}
 
-	return language;
+	return t;
 }
 
 export function reset(settings: GuildEntity, key: SchemaKey) {

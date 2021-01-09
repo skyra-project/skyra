@@ -26,7 +26,7 @@ export default class extends SkyraCommand {
 			: role.permissions.toArray().length > 0
 			? role.permissions
 					.toArray()
-					.map((key) => `+ **${t.PERMISSIONS[key]}**`)
+					.map((key) => `+ **${t(`permissions:${key}`, key)}**`)
 					.join('\n')
 			: t(LanguageKeys.Commands.Management.RoleInfoNoPermissions);
 

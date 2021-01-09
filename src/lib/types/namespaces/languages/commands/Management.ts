@@ -28,7 +28,7 @@ export const GuildInfoChannelsAfkChannelText = FT<{ afkChannel: string; afkTime:
 );
 export const GuildInfoDescription = T<string>('commands/management:guildInfoDescription');
 export const GuildInfoExtended = T<LanguageHelpDisplayOptions>('commands/management:guildInfoExtended');
-export const GuildInfoMembers = FT<{ count: string; owner: User }, string[]>('commands/management:guildInfoMembers');
+export const GuildInfoMembers = FT<{ memberCount: string; owner: User }, string[]>('commands/management:guildInfoMembers');
 export const GuildInfoNoroles = T<string>('commands/management:guildInfoNoroles');
 export const GuildInfoOther = FT<
 	{ size: number; region: string; createdAt: number; verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' },

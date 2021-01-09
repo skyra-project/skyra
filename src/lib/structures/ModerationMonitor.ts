@@ -88,60 +88,58 @@ export abstract class ModerationMonitor<T = unknown> extends Monitor {
 		}
 	}
 
-	protected async onWarning(message: GuildMessage, language: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onWarning(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.warning({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: maximum === 0 ? language(this.reasonLanguageKey) : language(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration
 			})
 		);
 	}
 
-	protected async onKick(message: GuildMessage, language: TFunction, points: number, maximum: number) {
+	protected async onKick(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.kick({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: maximum === 0 ? language(this.reasonLanguageKey) : language(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 			})
 		);
 	}
 
-	protected async onMute(message: GuildMessage, language: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onMute(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.mute({
 				userID: message.author.id,
 				moderatorID: CLIENT_ID,
-				reason: maximum === 0 ? language(this.reasonLanguageKey) : language(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+				reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 				duration
 			})
 		);
 	}
 
-	protected async onSoftBan(message: GuildMessage, language: TFunction, points: number, maximum: number) {
+	protected async onSoftBan(message: GuildMessage, t: TFunction, points: number, maximum: number) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.softBan(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason:
-						maximum === 0 ? language(this.reasonLanguageKey) : language(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
+					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum })
 				},
 				1
 			)
 		);
 	}
 
-	protected async onBan(message: GuildMessage, language: TFunction, points: number, maximum: number, duration: number | null) {
+	protected async onBan(message: GuildMessage, t: TFunction, points: number, maximum: number, duration: number | null) {
 		await this.createActionAndSend(message, () =>
 			message.guild.security.actions.ban(
 				{
 					userID: message.author.id,
 					moderatorID: CLIENT_ID,
-					reason:
-						maximum === 0 ? language(this.reasonLanguageKey) : language(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
+					reason: maximum === 0 ? t(this.reasonLanguageKey) : t(this.reasonLanguageKeyWithMaximum, { amount: points, maximum }),
 					duration
 				},
 				0

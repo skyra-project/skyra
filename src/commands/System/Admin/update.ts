@@ -1,5 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { PermissionLevels } from '#lib/types/Enums';
+import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { Emojis, rootFolder } from '#utils/constants';
 import { exec } from '#utils/exec';
 import { sleep } from '#utils/sleep';
@@ -11,7 +12,8 @@ import { resolve } from 'path';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['pull'],
-	description: 'Update the bot',
+	description: LanguageKeys.Commands.Admin.UpdateDescription,
+	extendedHelp: LanguageKeys.Commands.Admin.UpdateExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '[branch:string]',

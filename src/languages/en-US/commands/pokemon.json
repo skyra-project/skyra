@@ -58,8 +58,8 @@
 	},
 	"learnInvalidGeneration": "I am sorry, but {{generation}} is not a supported Pokémon Generation",
 	"learnMethod": "In generation {{generation}} {{pokemon}} __**can**__ learn **{{move}}** {{method}}",
-	"learnQueryFailed": "I am sorry, but that query failed. Are you sure you `{{pokemon, toTitleCase}}` is actually a Pokémon and {{moves}} are actually moves?",
-	"learnCannotLearn": "Looks like {{pokemon, toTitleCase}} cannot learn {{moves}}",
+	"learnQueryFailed": "I am sorry, but that query failed. Are you sure you `{{pokemon, toTitleCase}}` is actually a Pokémon and {{moves, andList}} are actually moves?",
+	"learnCannotLearn": "Looks like {{pokemon, toTitleCase}} cannot learn {{moves, orList}}",
 	"learnTitle": "Learnset data for {{pokemon, toTitleCase}} in generation {{generation}}",
 	"moveDescription": "Gets data for any given Pokémon move using my Pokémon dataset",
 	"moveExtended": {

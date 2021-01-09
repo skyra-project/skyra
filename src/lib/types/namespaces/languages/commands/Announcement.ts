@@ -5,7 +5,7 @@ export const Announcement = FT<{ role: string }, string>('commands/announcement:
 export const AnnouncementCancelled = T<string>('commands/announcement:announcementCancelled');
 export const AnnouncementDescription = T<string>('commands/announcement:announcementDescription');
 export const AnnouncementEmbedMentions = FT<{ header: string }, string>('commands/announcement:announcementEmbedMentions');
-export const AnnouncementEmbedMentionsWithMentions = FT<{ header: string; mentions: string }, string>(
+export const AnnouncementEmbedMentionsWithMentions = FT<{ header: string; mentions: string[] }, string>(
 	'commands/announcement:announcementEmbedMentionsWithMentions'
 );
 export const AnnouncementExtended = T<LanguageHelpDisplayOptions>('commands/announcement:announcementExtended');

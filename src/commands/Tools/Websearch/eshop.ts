@@ -6,13 +6,13 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { cutText, toTitleCase } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
+import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { decode } from 'he';
-import { stringify } from 'querystring';
 import { TFunction } from 'i18next';
+import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queries`;
 
@@ -73,7 +73,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: EShopHit[]) {
-		const titles = t(LanguageKeys.Commands.Tools.EshopTitles);
+		const titles = t(LanguageKeys.Commands.Tools.EshopTitles, { returnObjects: true });
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

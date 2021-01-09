@@ -14,7 +14,7 @@
 	"yarnEmbedDescriptionLatestVersion": "❯ Latest version: **{{latestVersionNumber}}**",
 	"yarnEmbedDescriptionLicense": "❯ License: **{{license}}**",
 	"yarnEmbedDescriptionMainFile": "❯ Main File: **{{mainFile}}**",
-	"yarnEmbedDescriptionMaintainers": "❯ Maintainers: ",
+	"yarnEmbedDescriptionMaintainers": "❯ Maintainers: **{{{maintainers, andList}}**",
 	"yarnEmbedMoreText": "more...",
 	"yarnNoPackage": "{{REDCROSS}} I am sorry, but you have to give me the name of a package to look up.",
 	"yarnPackageNotFound": "I'm sorry, but I could not find any package by the name of `{{pkg}}` in the registry.",

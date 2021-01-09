@@ -67,10 +67,7 @@ export default class extends SkyraCommand {
 		return message.send(
 			t(LanguageKeys.Commands.Management.StickyRolesShowSingle, {
 				user: user.username,
-				roles: t.list(
-					names.map((name) => `\`${name}\``),
-					t(LanguageKeys.Globals.And)
-				)
+				roles: names.map((name) => `\`${name}\``)
 			})
 		);
 	}

@@ -41,7 +41,7 @@ export default class extends SkyraCommand {
 						`**${titles.currentTime}**: ${timeData.formatted.split(' ')[1]}`,
 						`**${titles.currentDate}**: ${timeData.formatted.split(' ')[0]}`,
 						`**${titles.country}**: ${timeData.countryName}`,
-						`**${titles.gmsOffset}**: ${t.duration(timeData.gmtOffset * 1000)}`,
+						`**${titles.gmsOffset}**: ${t(LanguageKeys.Globals.DurationValue, { value: timeData.gmtOffset * 1000 })}`,
 						`${titles.dst}`
 					].join('\n')
 				)

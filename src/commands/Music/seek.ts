@@ -7,6 +7,7 @@ import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
 	description: LanguageKeys.Commands.Music.SeekDescription,
+	extendedHelp: LanguageKeys.Commands.Music.SeekExtended,
 	usage: '<position:timespan>'
 })
 export default class extends MusicCommand {

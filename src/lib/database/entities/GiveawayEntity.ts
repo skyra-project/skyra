@@ -9,7 +9,7 @@ import { api } from '#utils/Models/Api';
 import { fetchReactionUsers, resolveEmoji } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
-import { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
 import { BaseEntity, Check, Column, Entity, PrimaryColumn } from 'typeorm';
 
@@ -181,23 +181,23 @@ export class GiveawayEntity extends BaseEntity {
 		const { state, guild } = this;
 		if (!guild) return;
 
-		const language = await guild.fetchLanguage();
+		const t = await guild.fetchT();
 		if (state === States.Finished) {
 			this.#winners = await this.pickWinners();
-			await this.announceWinners(language);
+			await this.announceWinners(t);
 			await this.finish();
 		} else {
 			this.#refreshAt = this.calculateNextRefresh();
 		}
-		const content = GiveawayEntity.getContent(state, language);
-		const embed = this.getEmbed(state, language);
+		const content = GiveawayEntity.getContent(state, t);
+		const embed = this.getEmbed(state, t);
 		return { content, embed };
 	}
 
-	private async announceWinners(language: Language) {
+	private async announceWinners(t: TFunction) {
 		const content = this.#winners
-			? language.get(LanguageKeys.Giveaway.EndedMessage, { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
-			: language.get(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: this.title });
+			? t(LanguageKeys.Giveaway.EndedMessage, { title: this.title, winners: this.#winners.map((winner) => `<@${winner}>`) })
+			: t(LanguageKeys.Giveaway.EndedMessageNoWinner, { title: this.title });
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
@@ -207,9 +207,9 @@ export class GiveawayEntity extends BaseEntity {
 		}
 	}
 
-	private getEmbed(state: States, language: Language) {
-		const description = this.getDescription(state, language);
-		const footer = GiveawayEntity.getFooter(state, language);
+	private getEmbed(state: States, t: TFunction) {
+		const description = this.getDescription(state, t);
+		const footer = GiveawayEntity.getFooter(state, t);
 		return new MessageEmbed()
 			.setColor(GiveawayEntity.getColor(state))
 			.setTitle(this.title)
@@ -219,22 +219,19 @@ export class GiveawayEntity extends BaseEntity {
 			.toJSON();
 	}
 
-	private getDescription(state: States, language: Language) {
+	private getDescription(state: States, t: TFunction) {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
-					? language.get(LanguageKeys.Giveaway.Ended, {
-							winners: language.list(
-								this.#winners.map((winner) => `<@${winner}>`),
-								language.get(LanguageKeys.Globals.And)
-							),
+					? t(LanguageKeys.Giveaway.Ended, {
+							winners: this.#winners.map((winner) => `<@${winner}>`),
 							count: this.#winners.length
 					  })
-					: language.get(LanguageKeys.Giveaway.EndedNoWinner);
+					: t(LanguageKeys.Giveaway.EndedNoWinner);
 			case States.LastChance:
-				return language.get(LanguageKeys.Giveaway.Lastchance, { time: this.remaining });
+				return t(LanguageKeys.Giveaway.Lastchance, { time: this.remaining });
 			default:
-				return language.get(LanguageKeys.Giveaway.Duration, { time: this.remaining });
+				return t(LanguageKeys.Giveaway.Duration, { time: this.remaining });
 		}
 	}
 
@@ -277,14 +274,14 @@ export class GiveawayEntity extends BaseEntity {
 		}
 	}
 
-	private static getContent(state: States, language: Language) {
+	private static getContent(state: States, t: TFunction) {
 		switch (state) {
 			case States.Finished:
-				return language.get(LanguageKeys.Giveaway.EndedTitle);
+				return t(LanguageKeys.Giveaway.EndedTitle);
 			case States.LastChance:
-				return language.get(LanguageKeys.Giveaway.LastchanceTitle);
+				return t(LanguageKeys.Giveaway.LastchanceTitle);
 			default:
-				return language.get(LanguageKeys.Giveaway.Title);
+				return t(LanguageKeys.Giveaway.Title);
 		}
 	}
 
@@ -299,7 +296,7 @@ export class GiveawayEntity extends BaseEntity {
 		}
 	}
 
-	private static getFooter(state: States, language: Language) {
-		return state === States.Running ? language.get(LanguageKeys.Giveaway.EndsAt) : language.get(LanguageKeys.Giveaway.EndedAt);
+	private static getFooter(state: States, t: TFunction) {
+		return state === States.Running ? t(LanguageKeys.Giveaway.EndsAt) : t(LanguageKeys.Giveaway.EndedAt);
 	}
 }

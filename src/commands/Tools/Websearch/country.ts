@@ -42,8 +42,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, t: TFunction, countries: CountryResultOk) {
-		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
-		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
+		const titles = t(LanguageKeys.Commands.Tools.CountryTitles, { returnObjects: true });
+		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields, { returnObjects: true });
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const country of countries) {

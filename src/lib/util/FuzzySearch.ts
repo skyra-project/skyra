@@ -70,17 +70,17 @@ export class FuzzySearch<K extends string, V> {
 		if (results.length === 1) return results[0];
 		if (results.length > 10) results.length = 10;
 
-		const language = await message.fetchLanguage();
+		const t = await message.fetchT();
 		const { content: n } = await message.prompt(
-			language.get(LanguageKeys.FuzzySearch.Matches, {
+			t(LanguageKeys.FuzzySearch.Matches, {
 				matches: results.length - 1,
 				codeblock: codeBlock('http', results.map(([id, result], i) => `${i} : [ ${id.padEnd(18, ' ')} ] ${this.kAccess(result)}`).join('\n'))
 			})
 		);
-		if (n.toLowerCase() === 'abort') throw language.get(LanguageKeys.FuzzySearch.Aborted);
+		if (n.toLowerCase() === 'abort') throw t(LanguageKeys.FuzzySearch.Aborted);
 		const parsed = Number(n);
-		if (!Number.isSafeInteger(parsed)) throw language.get(LanguageKeys.FuzzySearch.InvalidNumber);
-		if (parsed < 0 || parsed >= results.length) throw language.get(LanguageKeys.FuzzySearch.InvalidIndex);
+		if (!Number.isSafeInteger(parsed)) throw t(LanguageKeys.FuzzySearch.InvalidNumber);
+		if (parsed < 0 || parsed >= results.length) throw t(LanguageKeys.FuzzySearch.InvalidIndex);
 		return results[parsed];
 	}
 }

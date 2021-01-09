@@ -1,34 +1,33 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { roundNumber } from '@sapphire/utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, version } from 'discord.js';
-import { CommandStore, KlasaMessage } from 'klasa';
+import { KlasaMessage } from 'klasa';
 import { cpus, uptime } from 'os';
 
+@ApplyOptions<SkyraCommandOptions>({
+	aliases: ['stats', 'sts'],
+	bucket: 2,
+	cooldown: 15,
+	description: LanguageKeys.Commands.System.StatsDescription,
+	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
+	requiredPermissions: ['EMBED_LINKS']
+})
 export default class extends SkyraCommand {
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			aliases: ['stats', 'sts'],
-			bucket: 2,
-			cooldown: 15,
-			description: LanguageKeys.Commands.System.StatsDescription,
-			extendedHelp: LanguageKeys.Commands.System.StatsExtended,
-			requiredPermissions: ['EMBED_LINKS']
-		});
-	}
-
 	public async run(message: KlasaMessage) {
 		return message.send(await this.buildEmbed(message));
 	}
 
 	private async buildEmbed(message: KlasaMessage) {
-		const language = await message.fetchLanguage();
-		const titles = language.get(LanguageKeys.Commands.System.StatsTitles);
-		const fields = language.get(LanguageKeys.Commands.System.StatsFields, {
+		const t = await message.fetchT();
+		const titles = t(LanguageKeys.Commands.System.StatsTitles, { returnObjects: true });
+		const fields = t(LanguageKeys.Commands.System.StatsFields, {
 			stats: this.generalStatistics,
 			uptime: this.uptimeStatistics,
-			usage: this.usageStatistics
+			usage: this.usageStatistics,
+			returnObjects: true
 		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

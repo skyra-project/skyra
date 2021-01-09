@@ -6,7 +6,7 @@ import { roundNumber } from '@sapphire/utilities';
 import { Image, loadImage } from 'canvas';
 import { Canvas } from 'canvas-constructor';
 import { Message } from 'discord.js';
-import type { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import { join } from 'path';
 
 const enum Arrows {
@@ -82,15 +82,15 @@ export class WheelOfFortune {
 		const lost = this.winnings < 0;
 		const final = this.settings.money + this.winnings;
 
-		const language = await this.message.fetchLanguage();
+		const t = await this.message.fetchT();
 		if (lost && final < 0) {
-			throw language.get(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+			throw t(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 		}
 
 		this.settings.money += this.winnings;
 		await this.settings.save();
 
-		return [await this.render(this.settings.profile!.darkTheme, language), final] as const;
+		return [await this.render(this.settings.profile!.darkTheme, t), final] as const;
 	}
 
 	/** The boost */
@@ -116,7 +116,7 @@ export class WheelOfFortune {
 		);
 	}
 
-	private async render(darkTheme: boolean, lang: Language): Promise<Buffer> {
+	private async render(darkTheme: boolean, t: TFunction): Promise<Buffer> {
 		const playerHasWon = this.winnings > 0;
 
 		const { x: arrowX, y: arrowY } = kArrows.get(WheelOfFortune.kMultipliers[this.spin])!;
@@ -129,9 +129,7 @@ export class WheelOfFortune {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				lang.get(
-					playerHasWon ? LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextWon : LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextLost
-				),
+				t(playerHasWon ? LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextWon : LanguageKeys.Commands.Games.WheelOfFortuneCanvasTextLost),
 				280,
 				60
 			)

@@ -138,8 +138,8 @@ export default class extends SkyraCommand {
 		return display;
 	}
 
-	private async buildCommandHelp(message: KlasaMessage, language: TFunction, command: SkyraCommand) {
-		const builderData = language(LanguageKeys.System.HelpTitles, { returnObjects: true }) as {
+	private async buildCommandHelp(message: KlasaMessage, t: TFunction, command: SkyraCommand) {
+		const builderData = t(LanguageKeys.System.HelpTitles, { returnObjects: true }) as {
 			explainedUsage: string;
 			possibleFormats: string;
 			examples: string;
@@ -152,13 +152,13 @@ export default class extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = language(command.extendedHelp, { returnObjects: true }) as ExtendedHelpData;
+		const extendedHelpData = t(command.extendedHelp, { returnObjects: true }) as ExtendedHelpData;
 
 		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
 
-		const data = language(LanguageKeys.Commands.General.HelpData, {
+		const data = t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
-			titleDescription: language(command.description),
+			titleDescription: t(command.description),
 			usage: command.usage.fullUsage(message),
 			extendedHelp
 		}) as {
@@ -176,8 +176,8 @@ export default class extends SkyraCommand {
 			.setDescription([data.usage, data.extended].join('\n'));
 	}
 
-	private formatCommand(language: TFunction, prefix: string, richDisplay: boolean, command: SkyraCommand) {
-		const description = isFunction(command.description) ? command.description(language) : language(command.description);
+	private formatCommand(t: TFunction, prefix: string, richDisplay: boolean, command: SkyraCommand) {
+		const description = isFunction(command.description) ? command.description(t) : t(command.description);
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 

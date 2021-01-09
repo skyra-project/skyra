@@ -85,23 +85,18 @@ export default class extends SkyraCommand {
 			}),
 			t(LanguageKeys.Commands.Management.PermissionNodesShowAllow, {
 				allow: node.allow.length
-					? t.list(
-							node.allow.map((command) => `\`${command}\``),
-							t(LanguageKeys.Globals.And)
-					  )
+					? t(LanguageKeys.Globals.AndListValue, {
+							value: node.allow.map((command) => `\`${command}\``)
+					  })
 					: t(LanguageKeys.Globals.None)
 			}),
-			node.deny.length
-				? t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, { deny: node.deny.map((command) => `\`${command}\``) })
-				: t(LanguageKeys.Commands.Management.PermissionNodesShowDenyNone)
-			// t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
-			// 	deny: node.deny.length
-			// 		? t.list(
-			// 				node.deny.map((command) => `\`${command}\``),
-			// 				t(LanguageKeys.Globals.And)
-			// 		  )
-			// 		: t(LanguageKeys.Globals.None)
-			// })
+			t(LanguageKeys.Commands.Management.PermissionNodesShowDeny, {
+				deny: node.deny.length
+					? t(LanguageKeys.Globals.AndListValue, {
+							value: node.deny.map((command) => `\`${command}\``)
+					  })
+					: t(LanguageKeys.Globals.None)
+			})
 		]);
 	}
 

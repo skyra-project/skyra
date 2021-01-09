@@ -9,5 +9,8 @@
 	"unknown": "unknown",
 	"yes": "Yes",
 	"ordinalValue": "{{value, ordinal}}",
-	"durationValue": "{{value, duration}}"
+	"durationValue": "{{value, duration}}",
+	"groupDigitsValue": "{{value, groupDigits}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}"
 }

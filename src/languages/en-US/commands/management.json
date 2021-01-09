@@ -100,7 +100,7 @@
 	"stickyRolesAddExists": "The user {{user}} already had the specified role as sticky.",
 	"stickyRolesAdd": "Successfully added the specified role as sticky to {{user}}.",
 	"stickyRolesShowEmpty": "There are no sticky roles to show.",
-	"stickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles}}.",
+	"stickyRolesShowSingle": "Sticky Role(s) for **{{user}}**: {{roles, andList}}.",
 	"createMuteDescription": "Prepare the mute system.",
 	"createMuteExtended": {
 		"extendedHelp": "This command prepares the mute system by creating a role called `muted`, and configuring it to the guild settings. This command also modifies all channels (where possible) permissions and disables the permission **{{SEND_MESSAGES, permissions}}** in text channels and **{{PERMISSIONS.CONNECT}}** in voice channels for said role."

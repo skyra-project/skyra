@@ -5,14 +5,15 @@ import { LongLivingReactionCollector } from '#utils/LongLivingReactionCollector'
 import { floatPromise, pickRandom } from '#utils/util';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { DiscordAPIError, Permissions, TextChannel } from 'discord.js';
-import { KlasaMessage, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { KlasaMessage } from 'klasa';
 import { Board } from './Board';
 import { Player, PlayerColor } from './Player';
 
 export class Game {
 	public readonly board: Board;
 	public message: KlasaMessage;
-	public language: Language;
+	public t: TFunction = null!;
 	public players: readonly [Player | null, Player | null];
 	public winner: Player | null;
 	public llrc: LongLivingReactionCollector | null;
@@ -24,7 +25,6 @@ export class Game {
 	public constructor(message: KlasaMessage) {
 		this.board = new Board();
 		this.message = message;
-		this.language = message.client.languages.default;
 		this.players = [null, null];
 		this.winner = null;
 		this.llrc = null;
@@ -66,10 +66,10 @@ export class Game {
 	}
 
 	public async run() {
-		this.language = await this.message.fetchLanguage();
-		this.message = await this.message.send(pickRandom(this.language.get(LanguageKeys.System.Loading)));
+		this.t = await this.message.fetchT();
+		this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading)));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
-		this.content = this.language.get(
+		this.content = this.t(
 			this.next!.color === PlayerColor.Blue ? LanguageKeys.Commands.Games.C4GameNextTurn0 : LanguageKeys.Commands.Games.C4GameNext,
 			{
 				user: this.next!.name
@@ -99,8 +99,7 @@ export class Game {
 				error instanceof DiscordAPIError &&
 				(error.code === RESTJSONErrorCodes.UnknownChannel || error.code === RESTJSONErrorCodes.UnknownMessage)
 			) {
-				if (error.code !== RESTJSONErrorCodes.UnknownChannel)
-					await this.message.alert(this.language.get(LanguageKeys.Commands.Games.C4GameDraw));
+				if (error.code !== RESTJSONErrorCodes.UnknownChannel) await this.message.alert(this.t(LanguageKeys.Commands.Games.C4GameDraw));
 				this.stop();
 			} else {
 				this.message.client.emit(Events.Wtf, error);

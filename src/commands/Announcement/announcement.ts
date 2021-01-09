@@ -84,7 +84,7 @@ export default class extends SkyraCommand {
 							mentions.length
 								? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 										header,
-										mentions: t.list(mentions, t(LanguageKeys.Globals.And))
+										mentions
 								  })
 								: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 										header
@@ -100,7 +100,7 @@ export default class extends SkyraCommand {
 								mentions.length
 									? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 											header,
-											mentions: t.list(mentions, t(LanguageKeys.Globals.And))
+											mentions
 									  })
 									: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 											header
@@ -121,7 +121,7 @@ export default class extends SkyraCommand {
 						mentions.length
 							? t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentionsWithMentions, {
 									header,
-									mentions: t.list(mentions, t(LanguageKeys.Globals.And))
+									mentions
 							  })
 							: t(LanguageKeys.Commands.Announcement.AnnouncementEmbedMentions, {
 									header

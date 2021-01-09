@@ -56,7 +56,8 @@ export default class extends SkyraCommand {
 			intensity,
 			keywords,
 			mood,
-			rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`
+			rating: `${Emojis.Star.repeat(rating)}${Emojis.StarEmpty.repeat(5 - rating)}`,
+			returnObjects: true
 		});
 		return message.send(
 			new MessageEmbed()

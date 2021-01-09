@@ -7,7 +7,8 @@ import { ModerationActionsSendOptions } from '#utils/Security/ModerationActions'
 import { cast, floatPromise } from '#utils/util';
 import { isNullOrUndefined } from '@sapphire/utilities';
 import { User } from 'discord.js';
-import { CommandStore, Language } from 'klasa';
+import { TFunction } from 'i18next';
+import { CommandStore } from 'klasa';
 import { DbSet } from '../database/structures/DbSet';
 import { SkyraCommand, SkyraCommandOptions } from './SkyraCommand';
 
@@ -98,7 +99,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 					t(langKey, {
 						count: cases.length,
 						range,
-						users: t.list(users, t(LanguageKeys.Globals.And)),
+						users,
 						reason: logReason
 					})
 				);
@@ -108,7 +109,7 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 				const users = errored.map(({ error, target }) => `- ${target.tag} → ${typeof error === 'string' ? error : error.message}`);
 				output.push(
 					t(LanguageKeys.Commands.Moderation.ModerationFailed, {
-						users: t.list(users, t(LanguageKeys.Globals.And)),
+						users,
 						count: users.length
 					})
 				);
@@ -131,24 +132,24 @@ export abstract class ModerationCommand<T = unknown> extends SkyraCommand {
 		return null;
 	}
 
-	protected async checkModeratable(message: GuildMessage, language: Language, context: HandledCommandContext<T>) {
+	protected async checkModeratable(message: GuildMessage, t: TFunction, context: HandledCommandContext<T>) {
 		if (context.target.id === message.author.id) {
-			throw language.get(LanguageKeys.Misc.CommandUserself);
+			throw t(LanguageKeys.Commands.Moderation.UserSelf);
 		}
 
 		if (context.target.id === CLIENT_ID) {
-			throw language.get(LanguageKeys.Misc.CommandToskyra);
+			throw t(LanguageKeys.Commands.Moderation.ToSkyra);
 		}
 
 		const member = await message.guild.members.fetch(context.target.id).catch(() => {
-			if (this.requiredMember) throw language.get(LanguageKeys.Misc.UserNotInGuild);
+			if (this.requiredMember) throw t(LanguageKeys.Misc.UserNotInGuild);
 			return null;
 		});
 
 		if (member) {
 			const targetHighestRolePosition = member.roles.highest.position;
-			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) throw language.get(LanguageKeys.Misc.CommandRoleHigherSkyra);
-			if (targetHighestRolePosition >= message.member.roles.highest.position) throw language.get(LanguageKeys.Misc.CommandRoleHigher);
+			if (targetHighestRolePosition >= message.guild.me!.roles.highest.position) throw t(LanguageKeys.Commands.Moderation.RoleHigherSkyra);
+			if (targetHighestRolePosition >= message.member.roles.highest.position) throw t(LanguageKeys.Misc.CommandRoleHigher);
 		}
 
 		return member;

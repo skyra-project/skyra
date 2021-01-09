@@ -48,14 +48,14 @@ export default class extends SkyraCommand {
 		if (!content) throw await message.resolveKey(LanguageKeys.Commands.Tags.TagContentRequired);
 
 		const t = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+			const t = settings.getLanguage();
 
 			if (settings[GuildSettings.CustomCommands].some((command) => command.id === id))
-				throw language(LanguageKeys.Commands.Tags.TagExists, { tag: id });
+				throw t(LanguageKeys.Commands.Tags.TagExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].push(this.createTag(message, id, content));
 
-			return language;
+			return t;
 		});
 
 		return message.send(t(LanguageKeys.Commands.Tags.TagAdded, { name: id, content: cutText(content, 1850) }));
@@ -66,14 +66,14 @@ export default class extends SkyraCommand {
 	})
 	public async remove(message: GuildMessage, [id]: [string]) {
 		const t = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+			const t = settings.getLanguage();
 
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
-			if (tagIndex === -1) throw language(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
+			if (tagIndex === -1) throw t(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1);
 
-			return language;
+			return t;
 		});
 
 		return message.send(t(LanguageKeys.Commands.Tags.TagRemoved, { name: id }));
@@ -97,14 +97,14 @@ export default class extends SkyraCommand {
 		if (!content) throw await message.resolveKey(LanguageKeys.Commands.Tags.TagContentRequired);
 
 		const t = await message.guild.writeSettings((settings) => {
-			const language = settings.getLanguage();
+			const t = settings.getLanguage();
 
 			const tagIndex = settings[GuildSettings.CustomCommands].findIndex((command) => command.id === id);
-			if (tagIndex === -1) throw language(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
+			if (tagIndex === -1) throw t(LanguageKeys.Commands.Tags.TagNotExists, { tag: id });
 
 			settings[GuildSettings.CustomCommands].splice(tagIndex, 1, this.createTag(message, id, content));
 
-			return language;
+			return t;
 		});
 
 		return message.send(t(LanguageKeys.Commands.Tags.TagEdited, { name: id, content: cutText(content, 1000) }));

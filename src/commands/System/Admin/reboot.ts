@@ -7,6 +7,7 @@ import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.System.RebootDescription,
+	extendedHelp: LanguageKeys.Commands.System.RebootExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner
 })

@@ -94,7 +94,7 @@ export default class extends RichDisplayCommand {
 						cutText(
 							[
 								`/r/${bestComment.subreddit} ❯ **${bestComment.score}**`,
-								`${t.duration(Date.now() - bestComment.created * 1000, 3)} ago`,
+								`${t(LanguageKeys.Globals.DurationValue, { value: Date.now() - bestComment.created * 1000 })} ago`,
 								`[${fieldsData.permalink}](https://reddit.com${bestComment.permalink})`,
 								decode(bestComment.body)
 							].join('\n'),
@@ -106,7 +106,7 @@ export default class extends RichDisplayCommand {
 						cutText(
 							[
 								`/r/${worstComment.subreddit} ❯ **${worstComment.score}**`,
-								`${t.duration(Date.now() - worstComment.created * 1000, 3)} ago`,
+								`${t(LanguageKeys.Globals.DurationValue, { value: Date.now() - worstComment.created * 1000 })} ago`,
 								`[${fieldsData.permalink}](https://reddit.com${worstComment.permalink})`,
 								decode(worstComment.body)
 							].join('\n'),

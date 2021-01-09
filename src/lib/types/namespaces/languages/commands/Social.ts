@@ -132,6 +132,7 @@ export const ReputationUserNotfound = T<string>('commands/social:reputationUserN
 export const SetColor = FT<{ color: string }, string>('commands/social:setColor');
 export const SetColorDescription = T<string>('commands/social:setColorDescription');
 export const SetColorExtended = T<LanguageHelpDisplayOptions>('commands/social:setColorExtended');
+export const ScoreboardPosition = FT<{ position: number }, string>('commands/social:scoreboardPosition');
 export const SocialAdd = FT<{ user: string; amount: number; count: number }, string>('commands/social:socialAdd');
 export const SocialDescription = T<string>('commands/social:socialDescription');
 export const SocialExtended = T<LanguageHelpDisplayOptions>('commands/social:socialExtended');

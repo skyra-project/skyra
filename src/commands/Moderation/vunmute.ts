@@ -24,9 +24,9 @@ export default class extends ModerationCommand {
 		);
 	}
 
-	public async checkModeratable(...[message, language, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
-		const member = await super.checkModeratable(message, language, context);
-		if (member && !member.voice.serverMute) throw language.get(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
+	public async checkModeratable(...[message, t, context]: ArgumentTypes<ModerationCommand['checkModeratable']>) {
+		const member = await super.checkModeratable(message, t, context);
+		if (member && !member.voice.serverMute) throw t(LanguageKeys.Commands.Moderation.VmuteUserNotMuted);
 		return member;
 	}
 }

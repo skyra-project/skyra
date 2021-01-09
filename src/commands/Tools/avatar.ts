@@ -18,8 +18,7 @@ const VALID_SIZES = [32, 64, 128, 256, 512, 1024, 2048];
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [user = message.author]: [User]) {
-		const language = await message.fetchLanguage();
-		if (!user.avatar) throw language.get(LanguageKeys.Commands.Tools.AvatarNone);
+		if (!user.avatar) throw await message.resolveKey(LanguageKeys.Commands.Tools.AvatarNone);
 
 		const sizeFlag = Reflect.get(message.flagArgs, 'size');
 		const size = sizeFlag ? this.resolveSize(sizeFlag) : 2048;

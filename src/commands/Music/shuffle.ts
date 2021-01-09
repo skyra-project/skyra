@@ -5,7 +5,8 @@ import { requireDj, requireQueueNotEmpty } from '#utils/Music/Decorators';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<MusicCommand.Options>({
-	description: LanguageKeys.Commands.Music.ShuffleDescription
+	description: LanguageKeys.Commands.Music.ShuffleDescription,
+	extendedHelp: LanguageKeys.Commands.Music.ShuffleExtended
 })
 export default class extends MusicCommand {
 	@requireQueueNotEmpty()

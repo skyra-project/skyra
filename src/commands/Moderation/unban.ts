@@ -55,11 +55,11 @@ export default class extends ModerationCommand {
 	}
 
 	public checkModeratable(
-		...[message, language, { preHandled, target, ...context }]: ArgumentTypes<
+		...[message, t, { preHandled, target, ...context }]: ArgumentTypes<
 			ModerationCommand<Moderation.Unlock & { bans: string[] }>['checkModeratable']
 		>
 	) {
-		if (!preHandled.bans.includes(target.id)) throw language.get(LanguageKeys.Commands.Moderation.GuildBansNotFound);
-		return super.checkModeratable(message, language, { preHandled, target, ...context });
+		if (!preHandled.bans.includes(target.id)) throw t(LanguageKeys.Commands.Moderation.GuildBansNotFound);
+		return super.checkModeratable(message, t, { preHandled, target, ...context });
 	}
 }

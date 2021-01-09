@@ -1,5 +1,5 @@
 import type { Client, Message } from 'discord.js';
-import type { Language } from 'klasa';
+import { TFunction } from 'i18next';
 import type { BaseController } from './BaseController';
 
 export const enum GameTurn {
@@ -15,14 +15,13 @@ export const enum GameStatus {
 
 export abstract class BaseGame<T> {
 	public message: Message;
-	public language: Language;
+	public t: TFunction = null!;
 	public readonly playerA: BaseController<T>;
 	public readonly playerB: BaseController<T>;
 	public turn: GameTurn;
 
 	public constructor(message: Message, playerA: BaseController<T>, playerB: BaseController<T>, turn = BaseGame.getTurn()) {
 		this.message = message;
-		this.language = message.client.languages.default;
 		this.playerA = playerA.setTurn(GameTurn.PlayerA).setGame(this);
 		this.playerB = playerB.setTurn(GameTurn.PlayerB).setGame(this);
 		this.turn = turn;
@@ -40,7 +39,7 @@ export abstract class BaseGame<T> {
 
 	public async run() {
 		await this.onStart();
-		this.language = await this.message.fetchLanguage();
+		this.t = await this.message.fetchT();
 
 		while (true) {
 			// Read player's move:

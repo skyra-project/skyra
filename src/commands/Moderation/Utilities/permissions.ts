@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 			list.push(t(LanguageKeys.Commands.Moderation.PermissionsAll));
 		} else {
 			for (const flag of PERMISSION_FLAGS) {
-				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${t.PERMISSIONS[flag] || flag}`);
+				list.push(`${permissions.has(flag) ? '🔹' : '🔸'} ${t(`permissions:${flag}`, flag)}`);
 			}
 		}
 

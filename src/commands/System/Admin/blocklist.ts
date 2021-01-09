@@ -13,6 +13,7 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['blacklist'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Admin.BlocklistDescription,
+	extendedHelp: LanguageKeys.Commands.Admin.BlocklistExtended,
 	guarded: true,
 	permissionLevel: PermissionLevels.BotOwner,
 	usage: '<show|reset|remove|set:default> (user:optionalUser|guild:optionalGuild) [...]',

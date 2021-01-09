@@ -2,6 +2,7 @@ import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
 export const BlocklistDescription = T<string>('commands/admin:blocklistDescription');
+export const BlocklistExtended = T<LanguageHelpDisplayOptions>('commands/admin:blocklistExtended');
 export const BlocklistResetSuccess = T<string>('commands/admin:blocklistResetSuccess');
 export const BlocklistSaveSuccess = T<string>('commands/admin:blocklistSaveSuccess');
 export const ConfGet = FT<{ key: string; value: string }, string>('commands/admin:confGet');
@@ -35,6 +36,8 @@ export const ConfUpdated = FT<{ key: string; response: string }, string>('comman
 export const ConfUser = FT<{ key: string; list: string }, string>('commands/admin:confUser');
 export const ConfUserDescription = T<string>('commands/admin:confUserDescription');
 export const ConfDashboardOnlyKey = FT<{ key: string }, string>('commands/admin:confDashboardOnlyKey');
+export const HeapSnapshotDescription = T<string>('commands/system:heapSnapshotDescription');
+export const HeapSnapshotExtended = T<LanguageHelpDisplayOptions>('commands/system:heapSnapshotExtended');
 export const RoleSetAdded = FT<{ name: string; roles: string }, string>('commands/admin:rolesetAdded');
 export const RoleSetCreated = FT<{ name: string; roles: string }, string>('commands/admin:rolesetCreated');
 export const RoleSetDescription = T<string>('commands/admin:rolesetDescription');
@@ -47,3 +50,5 @@ export const RoleSetResetEmpty = T<string>('commands/admin:rolesetResetEmpty');
 export const RoleSetResetGroup = FT<{ name: string }, string>('commands/admin:rolesetResetGroup');
 export const RoleSetResetNotExists = FT<{ name: string }, string>('commands/admin:rolesetResetNotExists');
 export const RoleSetUpdated = FT<{ name: string }, string>('commands/admin:rolesetUpdated');
+export const UpdateDescription = T<string>('commands/admin:updateDescription');
+export const UpdateExtended = T<LanguageHelpDisplayOptions>('commands/admin:updateExtended');

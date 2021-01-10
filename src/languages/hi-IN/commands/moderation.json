@@ -94,28 +94,10 @@
 	"moderationFailed": "",
 	"moderationFailed_plural": "",
 	"moderationDmFooter": "",
-	"moderationDmDescription": [
-		"",
-		"",
-		""
-	],
-	"moderationDmDescriptionWithReason": [
-		"",
-		"",
-		""
-	],
-	"moderationDmDescriptionWithDuration": [
-		"",
-		"",
-		"",
-		""
-	],
-	"moderationDmDescriptionWithReasonWithDuration": [
-		"",
-		"",
-		"",
-		""
-	],
+	"moderationDmDescription": "",
+	"moderationDmDescriptionWithReason": "",
+	"moderationDmDescriptionWithDuration": "",
+	"moderationDmDescriptionWithReasonWithDuration": "",
 	"moderationDays": "",
 	"historyDescription": "",
 	"historyExtended": {

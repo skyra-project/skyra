@@ -224,7 +224,7 @@
 		"Sí, sin duda alguna.",
 		"Puedes confiar en ello."
 	],
-	"choiceOutput": "🕺 *Pito pito, gorgorito, ¿dónde vas tú tan bonito?...* {{user}}, yo elijo:{{word | codeBlock}}",
+	"choiceOutput": "",
 	"choiceMissing": "Por favor, escriba al menos dos opciones separadas por coma.",
 	"choiceDuplicates": "¿Por qué aceptaría palabras duplicadas? \"{{words}}\".",
 	"diceOutput": "¡Has tirado los dados! Has obtenido: **{{result}}**",

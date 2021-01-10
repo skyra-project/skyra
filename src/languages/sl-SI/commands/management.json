@@ -27,33 +27,14 @@
 	},
 	"guildInfoRoles": "",
 	"guildInfoNoroles": "",
-	"guildInfoChannels": [
-		"",
-		""
-	],
+	"guildInfoChannels": "",
 	"guildInfoChannelsAfkChannelText": "",
-	"guildInfoMembers": [
-		"",
-		"",
-		""
-	],
-	"guildInfoOther": [
-		"",
-		"",
-		"",
-		""
-	],
+	"guildInfoMembers": "",
+	"guildInfoOther": "",
 	"roleInfoTitles": {
 		"PERMISSIONS": ""
 	},
-	"roleInfoData": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
+	"roleInfoData": "",
 	"roleInfoAll": "",
 	"roleInfoNoPermissions": "",
 	"filterUndefinedWord": "",

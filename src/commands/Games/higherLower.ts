@@ -89,8 +89,7 @@ export default class extends SkyraCommand {
 			// Send the embed
 			const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerEmbed, {
 				turn: game.turn,
-				number: game.number,
-				returnObjects: true
+				number: game.number
 			});
 			await game.response.edit(
 				null,
@@ -154,8 +153,7 @@ export default class extends SkyraCommand {
 	private async win(game: HigherLowerGameData, message: GuildMessage, settings: UserEntity) {
 		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerWin, {
 			potentials: this.calculateWinnings(game.wager, game.turn),
-			number: game.number,
-			returnObjects: true
+			number: game.number
 		});
 		await game.response.edit(
 			null,
@@ -200,8 +198,7 @@ export default class extends SkyraCommand {
 
 		const { title: TITLE, description: DESCRIPTION, footer: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerLose, {
 			number: game.number,
-			losses,
-			returnObjects: true
+			losses
 		});
 		await game.response.edit(
 			null,
@@ -226,8 +223,7 @@ export default class extends SkyraCommand {
 		if (game.canceledByChoice && game.turn === 1) {
 			// Say bye!
 			const { title: TITLE, description: DESCRIPTION } = game.t(LanguageKeys.Commands.Games.HigherLowerCancel, {
-				username: message.author.username,
-				returnObjects: true
+				username: message.author.username
 			});
 
 			await game.response.edit(
@@ -248,11 +244,8 @@ export default class extends SkyraCommand {
 		settings.money += winnings;
 		await settings.save();
 
-		const { title: TITLE } = game.t(LanguageKeys.Commands.Games.HigherLowerWin, { potentials: 0, number: 0, returnObjects: true });
-		const { description: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerCancel, {
-			username: message.author.username,
-			returnObjects: true
-		});
+		const { title: TITLE } = game.t(LanguageKeys.Commands.Games.HigherLowerWin, { potentials: 0, number: 0 });
+		const { description: FOOTER } = game.t(LanguageKeys.Commands.Games.HigherLowerCancel, { username: message.author.username });
 
 		// Let the user know we're done!
 		await game.response.edit(

@@ -22,12 +22,11 @@ export default class UserCommand extends SkyraCommand {
 
 	private async buildEmbed(message: KlasaMessage) {
 		const t = await message.fetchT();
-		const titles = t(LanguageKeys.Commands.System.StatsTitles, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.System.StatsTitles);
 		const fields = t(LanguageKeys.Commands.System.StatsFields, {
 			stats: this.generalStatistics,
 			uptime: this.uptimeStatistics,
-			usage: this.usageStatistics,
-			returnObjects: true
+			usage: this.usageStatistics
 		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

@@ -112,8 +112,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, t: TFunction, player: BrawlStars.Player) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles, { returnObjects: true });
-		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
+		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) ?? (await DbSet.fetchColor(message)))
@@ -165,8 +165,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildClubEmbed(message: KlasaMessage, t: TFunction, club: BrawlStars.Club) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles, { returnObjects: true });
-		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
+		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>

@@ -37,7 +37,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [generation = 8, pokemon, moves]: [number, string, string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const movesList = moves.split(', ');
@@ -90,7 +90,7 @@ export default class extends RichDisplayCommand {
 
 		for (const [methodName, methodData] of learnableMethods) {
 			const method = methodData.map((move) => {
-				const methodTypes = t(LanguageKeys.Commands.Pokemon.LearnMethodTypes, { level: move.level, returnObjects: true });
+				const methodTypes = t(LanguageKeys.Commands.Pokemon.LearnMethodTypes, { level: move.level });
 				return this.parseMove(t, learnsetData.species, move.generation!, move.name!, methodTypes[methodName]);
 			});
 

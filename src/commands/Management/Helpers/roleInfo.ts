@@ -18,7 +18,7 @@ import { MessageEmbed, Permissions, Role } from 'discord.js';
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [role = message.member.roles.highest]: [Role?]) {
 		const t = await message.fetchT();
-		const roleInfoTitles = t(LanguageKeys.Commands.Management.RoleInfoTitles, { returnObjects: true });
+		const roleInfoTitles = t(LanguageKeys.Commands.Management.RoleInfoTitles);
 
 		const permissions = role.permissions.has(Permissions.FLAGS.ADMINISTRATOR)
 			? t(LanguageKeys.Commands.Management.RoleInfoAll)
@@ -37,8 +37,7 @@ export default class extends SkyraCommand {
 					t(LanguageKeys.Commands.Management.RoleInfoData, {
 						role,
 						hoisted: t(role.hoist ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No),
-						mentionable: t(role.mentionable ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No),
-						returnObjects: true
+						mentionable: t(role.mentionable ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No)
 					})
 				)
 				.addField(roleInfoTitles.PERMISSIONS, permissions)

@@ -14,7 +14,6 @@ import type { Twitch } from '#utils/Notifications/Twitch';
 import type { AnalyticsSchema } from '#utils/Tracking/Analytics/AnalyticsSchema';
 import type { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';
 import type { I18nextHandler, I18nOptions } from '@sapphire/plugin-i18next';
-import { Primitive } from '@sapphire/utilities';
 import 'i18next';
 import type { PoolConfig } from 'pg';
 import type { MessageAcknowledgeable } from './Discord';
@@ -129,23 +128,13 @@ declare module 'i18next' {
 		lng: string;
 		ns?: string;
 
-		<K extends string, TReturn>(key: CustomGet<K, TReturn>, options: TContextAwareFunctionOptions<TReturn>): TReturn;
-		<K extends string, TReturn>(key: CustomGet<K, TReturn>, defaultValue: TReturn, options: TContextAwareFunctionOptions<TReturn>): TReturn;
-		<K extends string, TArgs extends O, TReturn>(
-			key: CustomFunctionGet<K, TArgs, TReturn>,
-			options: TContextAwareArgsFunctionOptions<TReturn, TArgs>
-		): TReturn;
+		<K extends string, TReturn>(key: CustomGet<K, TReturn>, options?: TOptionsBase | string): TReturn;
+		<K extends string, TReturn>(key: CustomGet<K, TReturn>, defaultValue: TReturn, options?: TOptionsBase | string): TReturn;
+		<K extends string, TArgs extends O, TReturn>(key: CustomFunctionGet<K, TArgs, TReturn>, options?: TOptions<TArgs>): TReturn;
 		<K extends string, TArgs extends O, TReturn>(
 			key: CustomFunctionGet<K, TArgs, TReturn>,
 			defaultValue: TReturn,
-			options: TContextAwareArgsFunctionOptions<TReturn, TArgs>
+			options?: TOptions<TArgs>
 		): TReturn;
 	}
-
-	export type TContextAwareFunctionOptions<TReturn> = TReturn extends Primitive
-		? TOptionsBase | string | undefined
-		: TOptionsBase & { returnObjects: true };
-	export type TContextAwareArgsFunctionOptions<TReturn, TArgs extends O> = TReturn extends Primitive
-		? TOptions<TArgs>
-		: TOptions<TArgs> & { returnObjects: true };
 }

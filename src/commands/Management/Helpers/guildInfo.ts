@@ -28,7 +28,7 @@ export default class extends SkyraCommand {
 		}
 
 		const t = await message.fetchT();
-		const serverInfoTitles = t(LanguageKeys.Commands.Management.GuildInfoTitles, { returnObjects: true });
+		const serverInfoTitles = t(LanguageKeys.Commands.Management.GuildInfoTitles);
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild.ownerID);

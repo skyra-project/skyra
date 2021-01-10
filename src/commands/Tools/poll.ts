@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		if (options.length < 2 || options.length > 20) throw t(LanguageKeys.Resolvers.MinmaxBothInclusive, { name: 'options', min: 2, max: 20 });
 
 		const emojis = (options.length > 10 ? ALPHABET_OPTS : NUMBER_OPTS).slice(0, options.length);
-		const loadingMsg = await message.send(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })));
+		const loadingMsg = await message.send(pickRandom(t(LanguageKeys.System.Loading)));
 
 		for (const emoji of emojis) {
 			if (loadingMsg.reactions.cache.size === 20) throw t(LanguageKeys.Commands.Tools.PollReactionLimit);

@@ -51,7 +51,7 @@ export default class extends RichDisplayCommand {
 		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { items: clanData } = await this.fetchAPI<ClashOfClansFetchCategories.CLANS>(t, clan, ClashOfClansFetchCategories.CLANS);
@@ -98,7 +98,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildPlayerEmbed(message: GuildMessage, t: TFunction, player: ClashOfClans.Player) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.ClashofclansPlayerEmbedTitles, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.GameIntegration.ClashofclansPlayerEmbedTitles);
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -136,7 +136,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
-			const titles = t(LanguageKeys.Commands.GameIntegration.ClashofclansClanEmbedTitles, { returnObjects: true });
+			const titles = t(LanguageKeys.Commands.GameIntegration.ClashofclansClanEmbedTitles);
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)

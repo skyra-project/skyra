@@ -49,9 +49,7 @@ export class SettingsMenu {
 
 	public async init(): Promise<void> {
 		this.response = (await this.message.send(
-			new MessageEmbed()
-				.setColor(BrandingColors.Secondary)
-				.setDescription(pickRandom(this.t(LanguageKeys.System.Loading, { returnObjects: true })))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(this.t(LanguageKeys.System.Loading)))
 		)) as GuildMessage;
 		await this.response.react(EMOJIS.STOP);
 		this.llrc = new LongLivingReactionCollector(this.message.client).setListener(this.onReaction.bind(this)).setEndListener(this.stop.bind(this));

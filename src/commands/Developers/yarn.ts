@@ -34,7 +34,7 @@ export default class extends SkyraCommand {
 		// TODO(VladFrangu): Apparently make a `message.loading(t)` kind of thing,
 		// since we repeat this over and over, but was out of #1301's scope.
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const result = await this.fetchApi(t, pkg);

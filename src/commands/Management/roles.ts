@@ -160,7 +160,7 @@ export default class extends RichDisplayCommand {
 		for (let i = 0; i < pages; i++) display.addPage((template: MessageEmbed) => template.setDescription(roles.slice(i * 10, i * 10 + 10)));
 
 		const response = await message.send(
-			new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })), color: BrandingColors.Secondary })
+			new MessageEmbed({ description: pickRandom(t(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
 		);
 		await display.start(response, message.author.id);
 		return response;

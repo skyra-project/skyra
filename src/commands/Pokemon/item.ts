@@ -23,8 +23,7 @@ export default class extends SkyraCommand {
 		const itemDetails = await this.fetchAPI(t, item.toLowerCase());
 
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.ItemEmbedData, {
-			availableInGen8: t(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes),
-			returnObjects: true
+			availableInGen8: t(itemDetails.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
 		return message.send(
 			new MessageEmbed()

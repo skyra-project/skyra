@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 					: LanguageKeys.Commands.Games.HungerGamesNight;
 
 				// Main logic of the game
-				const { results, deaths } = this.makeResultEvents(game, t(events, { returnObjects: true }).map(HungerGamesUsage.create));
+				const { results, deaths } = this.makeResultEvents(game, t(events).map(HungerGamesUsage.create));
 				const texts = this.buildTexts(t, game, results, deaths);
 
 				// Ask for the user to proceed:

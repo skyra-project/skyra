@@ -27,7 +27,7 @@ export default class UserRoute extends Route {
 			category: command.category,
 			cooldown: command.cooldown,
 			description: t(command.description),
-			extendedHelp: t(command.extendedHelp, { returnObjects: true }),
+			extendedHelp: t(command.extendedHelp),
 			guarded: command.guarded,
 			guildOnly: !command.runIn.includes('dm'),
 			name: command.name,

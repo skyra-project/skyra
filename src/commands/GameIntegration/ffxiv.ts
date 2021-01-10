@@ -26,7 +26,7 @@ export default class extends RichDisplayCommand {
 		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const characterDetails = await this.fetchCharacter(t, name, Reflect.get(message.flagArgs, 'server'));
@@ -40,7 +40,7 @@ export default class extends RichDisplayCommand {
 		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const itemDetails = await this.fetchItems(t, item);
@@ -78,7 +78,7 @@ export default class extends RichDisplayCommand {
 			tankClassValues
 		} = this.parseCharacterClasses(character.ClassJobs);
 
-		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVCharacterFields);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -140,7 +140,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildItemDisplay(message: GuildMessage, t: TFunction, items: FFXIV.ItemSearchResult[]) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.GameIntegration.FFXIVItemFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const item of items) {

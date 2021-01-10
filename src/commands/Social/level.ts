@@ -48,7 +48,7 @@ export default class extends SkyraCommand {
 		]);
 
 		const t = await message.fetchT();
-		const title = t(LanguageKeys.Commands.Social.Level, { returnObjects: true });
+		const title = t(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)
 				// Draw the background

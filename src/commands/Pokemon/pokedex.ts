@@ -35,7 +35,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), t);
 
@@ -157,8 +157,7 @@ export default class extends RichDisplayCommand {
 		const evoChain = this.getEvoChain(pokeDetails);
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.PokedexEmbedData, {
 			otherFormes: pokeDetails.otherFormes ?? [],
-			cosmeticFormes: pokeDetails.cosmeticFormes ?? [],
-			returnObjects: true
+			cosmeticFormes: pokeDetails.cosmeticFormes ?? []
 		});
 
 		if (pokeDetails.num <= 0) return this.parseCAPPokemon({ message, pokeDetails, abilities, baseStats, evoChain, embedTranslations });

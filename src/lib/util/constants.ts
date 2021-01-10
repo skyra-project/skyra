@@ -2,7 +2,7 @@
 import { LanguageFormatters } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
-import { getHandler } from '#root/languages/index';
+import { getHandler, handlers } from '#root/languages/index';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#utils/Games/TriviaManager';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import i18next, { FormatFunction } from 'i18next';
@@ -298,7 +298,10 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 		defaultMissingKey: 'missingKey',
 		defaultNS: 'global',
 		i18next: {
-			preload: ['en-US'],
+			preload: [...handlers.keys()],
+			returnObjects: true,
+			returnEmptyString: false,
+			returnNull: false,
 			load: 'all',
 			fallbackLng: 'en-US',
 			initImmediate: false,

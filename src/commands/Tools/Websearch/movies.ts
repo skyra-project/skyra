@@ -24,7 +24,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [movie, year]: [string, string?]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(t, movie, year);
@@ -61,8 +61,8 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, movies: Tmdb.TmdbMovieList['results']) {
-		const titles = t(LanguageKeys.Commands.Tools.MoviesTitles, { returnObjects: true });
-		const fieldsData = t(LanguageKeys.Commands.Tools.MoviesData, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Tools.MoviesTitles);
+		const fieldsData = t(LanguageKeys.Commands.Tools.MoviesData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		const movieData = await Promise.all(movies.map((movie) => this.fetchMovieData(t, movie.id)));

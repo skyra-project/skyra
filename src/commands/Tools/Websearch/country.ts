@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [countryName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const countries = await this.fetchAPI(t, countryName);
@@ -42,8 +42,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildDisplay(message: KlasaMessage, t: TFunction, countries: CountryResultOk) {
-		const titles = t(LanguageKeys.Commands.Tools.CountryTitles, { returnObjects: true });
-		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Tools.CountryTitles);
+		const fieldsData = t(LanguageKeys.Commands.Tools.CountryFields);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const country of countries) {

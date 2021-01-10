@@ -24,7 +24,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const fortniteUser = await this.fetchAPI(t, user, platform);
@@ -62,7 +62,7 @@ export default class extends RichDisplayCommand {
 				.setURL(encodeURI(`https://fortnitetracker.com/profile/${platformName}/${epicUserHandle}`))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedSectionTitles = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles, { returnObjects: true });
+		const embedSectionTitles = t(LanguageKeys.Commands.GameIntegration.FortniteEmbedSectionTitles);
 
 		display.addPage((embed) => {
 			const lts = lifeTimeStats.map((stat) => ({ ...stat, key: stat.key.toLowerCase() }));
@@ -77,8 +77,7 @@ export default class extends RichDisplayCommand {
 				top6Count: lts.find((el) => el.key === 'top 6s')!.value,
 				top10Count: lts.find((el) => el.key === 'top 10')!.value,
 				top12Count: lts.find((el) => el.key === 'top 12s')!.value,
-				top25Count: lts.find((el) => el.key === 'top 25s')!.value,
-				returnObjects: true
+				top25Count: lts.find((el) => el.key === 'top 25s')!.value
 			});
 			return embed.setDescription(
 				[
@@ -110,8 +109,7 @@ export default class extends RichDisplayCommand {
 					top6Count: p2.top6.value,
 					top10Count: p2.top10.value,
 					top12Count: p2.top12.value,
-					top25Count: p2.top25.value,
-					returnObjects: true
+					top25Count: p2.top25.value
 				});
 				return embed.setDescription(
 					[
@@ -145,8 +143,7 @@ export default class extends RichDisplayCommand {
 					top6Count: p10.top6.value,
 					top10Count: p10.top10.value,
 					top12Count: p10.top12.value,
-					top25Count: p10.top25.value,
-					returnObjects: true
+					top25Count: p10.top25.value
 				});
 				return embed.setDescription(
 					[
@@ -180,8 +177,7 @@ export default class extends RichDisplayCommand {
 					top6Count: p9.top6.value,
 					top10Count: p9.top10.value,
 					top12Count: p9.top12.value,
-					top25Count: p9.top25.value,
-					returnObjects: true
+					top25Count: p9.top25.value
 				});
 				return embed.setDescription(
 					[

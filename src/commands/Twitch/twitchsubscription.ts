@@ -263,7 +263,7 @@ export default class extends SkyraCommand {
 		const guildSubscriptions = await message.guild.readSettings((settings) => settings[this.#kSettingsKey]);
 		// Create the response message.
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		// Fetch the content.

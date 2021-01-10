@@ -932,7 +932,7 @@ export class ModerationActions {
 
 	private async getReason(action: keyof ModerationAction, reason: string | null, revoke = false) {
 		const t = await this.guild.fetchT();
-		const actions = t(LanguageKeys.Commands.Moderation.moderationActions, { returnObjects: true });
+		const actions = t(LanguageKeys.Commands.Moderation.moderationActions);
 		if (!reason)
 			return revoke
 				? t(LanguageKeys.Commands.Moderation.ActionRevokeNoReason, { action: actions[action] })

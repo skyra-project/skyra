@@ -20,7 +20,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const invites = await message.guild.fetchInvites();
@@ -43,7 +43,7 @@ export default class extends RichDisplayCommand {
 				.setTitle(t(LanguageKeys.Commands.Tools.TopInvitesTop10InvitesFor, { guild: message.guild }))
 				.setColor(await DbSet.fetchColor(message))
 		);
-		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData, { returnObjects: true });
+		const embedData = t(LanguageKeys.Commands.Tools.TopInvitesEmbedData);
 
 		for (const invite of invites) {
 			display.addPage((embed: MessageEmbed) =>

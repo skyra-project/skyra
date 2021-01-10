@@ -25,7 +25,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [animeName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const { hits: entries } = await this.fetchAPI(t, animeName);
@@ -64,7 +64,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(entries: Kitsu.KitsuHit[], t: TFunction, message: GuildMessage) {
-		const embedData = t(LanguageKeys.Commands.Anime.AnimeEmbedData, { returnObjects: true });
+		const embedData = t(LanguageKeys.Commands.Anime.AnimeEmbedData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message))).setFooterSuffix(' - © kitsu.io');
 
 		for (const entry of entries) {
@@ -106,7 +106,7 @@ export default class extends RichDisplayCommand {
 						})
 					)
 					.setThumbnail(entry.posterImage?.original ?? '')
-					.addField(embedData.type, t(LanguageKeys.Commands.Anime.AnimeTypes, { returnObjects: true })[type.toUpperCase()] || type, true)
+					.addField(embedData.type, t(LanguageKeys.Commands.Anime.AnimeTypes)[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
 					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)

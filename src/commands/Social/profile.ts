@@ -53,7 +53,7 @@ export default class extends SkyraCommand {
 		]);
 
 		const t = await message.fetchT();
-		const title = t(LanguageKeys.Commands.Social.Profile, { returnObjects: true });
+		const title = t(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));

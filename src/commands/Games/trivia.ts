@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })));
+			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse
@@ -99,7 +99,7 @@ export default class extends SkyraCommand {
 	}
 
 	public buildQuestionEmbed(t: TFunction, data: QuestionData, possibleAnswers: string[]) {
-		const titles = t(LanguageKeys.Commands.Games.TriviaEmbedTitles, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Games.TriviaEmbedTitles);
 		const questionDisplay = possibleAnswers.map((possible, i) => `${i + 1}. ${possible}`);
 		return new MessageEmbed()
 			.setAuthor(titles.trivia)

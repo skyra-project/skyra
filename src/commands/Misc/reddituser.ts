@@ -33,7 +33,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [user]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const [about, comments, posts] = await this.fetchData(user, t);
@@ -52,11 +52,10 @@ export default class extends RichDisplayCommand {
 		posts: Reddit.PostDataElement[],
 		t: TFunction
 	) {
-		const titles = t(LanguageKeys.Commands.Misc.RedditUserTitles, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Misc.RedditUserTitles);
 		const fieldsData = t(LanguageKeys.Commands.Misc.RedditUserData, {
 			user: about.name,
-			timestamp: about.created * 1000,
-			returnObjects: true
+			timestamp: about.created * 1000
 		});
 		const [bestComment] = comments;
 		const worstComment = comments[comments.length - 1];

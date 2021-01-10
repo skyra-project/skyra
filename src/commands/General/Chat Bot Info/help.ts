@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 			const response = await message.send(
 				t(LanguageKeys.Commands.General.HelpAllFlag, { prefix }),
 				new MessageEmbed({
-					description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }) as string[]),
+					description: pickRandom(t(LanguageKeys.System.Loading) as string[]),
 					color: BrandingColors.Secondary
 				})
 			);
@@ -137,7 +137,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildCommandHelp(message: KlasaMessage, t: TFunction, command: SkyraCommand) {
-		const builderData = t(LanguageKeys.System.HelpTitles, { returnObjects: true });
+		const builderData = t(LanguageKeys.System.HelpTitles);
 
 		const builder = new LanguageHelp()
 			.setExplainedUsage(builderData.explainedUsage)
@@ -145,15 +145,14 @@ export default class extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = t(command.extendedHelp, { returnObjects: true });
+		const extendedHelpData = t(command.extendedHelp);
 		const extendedHelp = builder.display(command.name, extendedHelpData);
 
 		const data = t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
 			titleDescription: t(command.description),
 			usage: command.usage.fullUsage(message),
-			extendedHelp,
-			returnObjects: true
+			extendedHelp
 		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

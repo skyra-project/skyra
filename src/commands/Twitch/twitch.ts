@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 
 		const { total: followersTotal } = await this.client.twitch.fetchUserFollowage('', channel.id);
 
-		const titles = t(LanguageKeys.Commands.Twitch.TwitchTitles, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Twitch.TwitchTitles);
 		const affiliateStatus = this.parseAffiliateProgram(t, channel.broadcaster_type);
 
 		return message.send(
@@ -39,7 +39,7 @@ export default class extends SkyraCommand {
 	}
 
 	private parseAffiliateProgram(t: TFunction, type: 'affiliate' | 'partner' | '') {
-		const options = t(LanguageKeys.Commands.Twitch.TwitchAffiliateStatus, { returnObjects: true });
+		const options = t(LanguageKeys.Commands.Twitch.TwitchAffiliateStatus);
 		switch (type) {
 			case 'affiliate':
 				return options.affiliated;

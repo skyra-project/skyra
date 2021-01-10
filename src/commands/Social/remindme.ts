@@ -143,7 +143,7 @@ export default class extends SkyraCommand {
 
 		const response = await message.send(
 			new MessageEmbed({
-				description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })),
+				description: pickRandom(t(LanguageKeys.System.Loading)),
 				color: BrandingColors.Secondary
 			})
 		);

@@ -28,7 +28,7 @@ const enum CoinType {
 			if (!arg) return null;
 			const t = await message.fetchT();
 			const lArg = arg.toLowerCase();
-			const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true }).findIndex((coin) => coin.toLowerCase() === lArg);
+			const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lArg);
 			if (face === -1) throw t(LanguageKeys.Commands.Games.CoinFlipInvalidCoinname, { arg });
 			return face;
 		}
@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 							? LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager
 							: LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager,
 						{
-							result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true })[result],
+							result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result],
 							wager
 						}
 					)
@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 				.setTitle(t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
 					t(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
-						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true })[result]
+						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
 					})
 				)
 		);
@@ -103,7 +103,7 @@ export default class extends SkyraCommand {
 				.setTitle(t(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
 				.setDescription(
 					t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
-						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true })[result]
+						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
 					})
 				)
 		);

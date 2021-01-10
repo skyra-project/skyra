@@ -60,7 +60,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [types]: [Types[]]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const typeMatchups = await this.fetchAPI(types, t);
 
@@ -101,7 +101,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, types: Types[], typeMatchups: TypeMatchups, t: TFunction) {
-		const embedTranslations = t(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types, returnObjects: true });
+		const embedTranslations = t(LanguageKeys.Commands.Pokemon.TypeEmbedData, { types });
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [
 			`[Bulbapedia](${parseBulbapediaURL(`https://bulbapedia.bulbagarden.net/wiki/${types[0]}_(type)`)} )`,

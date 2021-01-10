@@ -26,7 +26,7 @@ export default class extends RichDisplayCommand {
 		const t = await message.fetchT();
 
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const overwatchData = await this.fetchAPI(t, player, platform);
@@ -73,8 +73,7 @@ export default class extends RichDisplayCommand {
 			authorName: overwatchData.name,
 			playerLevel: overwatchData.level,
 			prestigeLevel: overwatchData.level + overwatchData.prestige * 100,
-			totalGamesWon: overwatchData.gamesWon,
-			returnObjects: true
+			totalGamesWon: overwatchData.gamesWon
 		});
 
 		return new UserRichDisplay(
@@ -163,8 +162,7 @@ export default class extends RichDisplayCommand {
 			gamesWon,
 			goldenMedals: medalsGold,
 			silverMedals: medalsSilver,
-			bronzeMedals: medalsBronze,
-			returnObjects: true
+			bronzeMedals: medalsBronze
 		});
 
 		return [

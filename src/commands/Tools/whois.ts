@@ -46,12 +46,8 @@ export default class extends SkyraCommand {
 	}
 
 	private user(t: TFunction, user: User) {
-		const titles = t(LanguageKeys.Commands.Tools.WhoisUserTitles, { returnObjects: true });
-		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, {
-			user,
-			createdTimestampOffset: Date.now() - user.createdTimestamp,
-			returnObjects: true
-		});
+		const titles = t(LanguageKeys.Commands.Tools.WhoisUserTitles);
+		const fields = t(LanguageKeys.Commands.Tools.WhoisUserFields, { user, createdTimestampOffset: Date.now() - user.createdTimestamp });
 
 		return new SkyraEmbed()
 			.setColor(Colors.White)
@@ -63,14 +59,11 @@ export default class extends SkyraCommand {
 	}
 
 	private member(t: TFunction, member: GuildMember) {
-		const titles = t(LanguageKeys.Commands.Tools.WhoisMemberTitles, {
-			returnObjects: true
-		});
+		const titles = t(LanguageKeys.Commands.Tools.WhoisMemberTitles);
 		const fields = t(LanguageKeys.Commands.Tools.WhoisMemberFields, {
 			member,
 			createdTimestampOffset: Date.now() - member.user.createdTimestamp,
-			joinedTimestampOffset: Date.now() - member.joinedTimestamp!,
-			returnObjects: true
+			joinedTimestampOffset: Date.now() - member.joinedTimestamp!
 		});
 
 		const embed = new SkyraEmbed()

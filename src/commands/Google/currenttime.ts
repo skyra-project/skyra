@@ -31,7 +31,7 @@ export default class extends SkyraCommand {
 			Number(timeData.dst) === 0 ? LanguageKeys.Commands.Google.CurrentTimeDst : LanguageKeys.Commands.Google.CurrentTimeNoDst
 		);
 
-		const titles = t(LanguageKeys.Commands.Google.CurrentTimeTitles, { dst: dstEnabled, returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Google.CurrentTimeTitles, { dst: dstEnabled });
 		return message.send(
 			new MessageEmbed()
 				.setColor(await DbSet.fetchColor(message))

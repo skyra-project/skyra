@@ -26,7 +26,7 @@ export default class extends MusicCommand {
 
 		// Send the loading message
 		const response = await message.send(
-			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })))
+			new MessageEmbed().setColor(BrandingColors.Secondary).setDescription(pickRandom(t(LanguageKeys.System.Loading)))
 		);
 
 		// Generate the pages with 5 songs each

@@ -21,7 +21,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage, [ability]: [string]) {
 		const t = await message.fetchT();
 		const abilityDetails = await this.fetchAPI(t, ability.toLowerCase());
-		const embedTitles = t(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles, { returnObjects: true });
+		const embedTitles = t(LanguageKeys.Commands.Pokemon.AbilityEmbedTitles);
 
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))

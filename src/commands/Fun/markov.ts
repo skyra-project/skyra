@@ -39,9 +39,7 @@ export default class extends SkyraCommand {
 		const t = await message.fetchT();
 
 		// Send loading message
-		await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
-		);
+		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 		// Process the chain
 		return message.send(await this.kProcess(message, t, await this.retrieveMarkov(t, username, channnel ?? (message.channel as TextChannel))));

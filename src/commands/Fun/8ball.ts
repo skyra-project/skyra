@@ -30,14 +30,14 @@ export default class extends SkyraCommand {
 	}
 
 	private generator(input: string, t: TFunction) {
-		const prefixes = t(LanguageKeys.Commands.Fun.EightballQuestions, { returnObjects: true });
+		const prefixes = t(LanguageKeys.Commands.Fun.EightballQuestions);
 
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) {
-				return pickRandom(t(LanguageKeys.Commands.Fun.Resolve8BallQuestionKey(key), { returnObjects: true }));
+				return pickRandom(t(LanguageKeys.Commands.Fun.Resolve8BallQuestionKey(key)));
 			}
 		}
-		return pickRandom(t(LanguageKeys.Commands.Fun.EightballElse, { returnObjects: true }));
+		return pickRandom(t(LanguageKeys.Commands.Fun.EightballElse));
 	}
 
 	private check(prefix: string, input: string) {

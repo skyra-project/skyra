@@ -71,8 +71,7 @@ export default class extends SkyraCommand {
 		const data = t(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
-			shipName: this.getShipName([...firstUser.username], [...secondUser.username]),
-			returnObjects: true
+			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
 		});
 		return message.send([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
 	}

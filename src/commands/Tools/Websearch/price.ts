@@ -22,9 +22,7 @@ import { TFunction } from 'i18next';
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [amount = 1, fromCurrency, ...toCurrencies]: [number, string, string]) {
 		const t = await message.fetchT();
-		await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
-		);
+		await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 
 		const result = await this.fetchAPI(t, fromCurrency, toCurrencies);
 

@@ -58,7 +58,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [game]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 
 		const entries = await this.fetchAPI(t, game);
@@ -89,8 +89,8 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: Game[]) {
-		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles, { returnObjects: true });
-		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData, { returnObjects: true });
+		const titles = t(LanguageKeys.Commands.Tools.IgdbTitles);
+		const fieldsData = t(LanguageKeys.Commands.Tools.IgdbData);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const game of entries) {

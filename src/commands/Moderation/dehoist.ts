@@ -28,11 +28,7 @@ export default class extends SkyraCommand {
 		const t = await message.fetchT();
 
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
-			await message.send(
-				new MessageEmbed()
-					.setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })))
-					.setColor(BrandingColors.Secondary)
-			);
+			await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
 			await message.guild.members.fetch();
 		}
 
@@ -91,8 +87,7 @@ export default class extends SkyraCommand {
 			dehoistedMemberCount: dehoistedMembers,
 			dehoistedWithErrorsCount: dehoistedMembers - erroredChanges.length,
 			errored: erroredChanges.length,
-			users: message.guild.members.cache.size,
-			returnObjects: true
+			users: message.guild.members.cache.size
 		});
 		const embed = new MessageEmbed().setColor(await DbSet.fetchColor(message)).setTitle(embedLanguage.title);
 

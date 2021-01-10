@@ -67,7 +67,7 @@ export class Game {
 
 	public async run() {
 		this.t = await this.message.fetchT();
-		this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading, { returnObjects: true })));
+		this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading)));
 		for (const reaction of ConnectFourConstants.Reactions) await this.message.react(reaction);
 		this.content = this.t(
 			this.next!.color === PlayerColor.Blue ? LanguageKeys.Commands.Games.C4GameNextTurn0 : LanguageKeys.Commands.Games.C4GameNext,

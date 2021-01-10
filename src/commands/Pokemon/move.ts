@@ -23,7 +23,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [move]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 		);
 		const moveData = await this.fetchAPI(move.toLowerCase(), t);
 
@@ -43,8 +43,7 @@ export default class extends RichDisplayCommand {
 
 	private async buildDisplay(message: GuildMessage, moveData: MoveEntry, t: TFunction) {
 		const embedTranslations = t(LanguageKeys.Commands.Pokemon.MoveEmbedData, {
-			availableInGen8: t(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes),
-			returnObjects: true
+			availableInGen8: t(moveData.isNonstandard === 'Past' ? LanguageKeys.Globals.No : LanguageKeys.Globals.Yes)
 		});
 		const externalResources = t(LanguageKeys.System.PokedexExternalResource);
 		const externalSources = [

@@ -195,7 +195,7 @@
 		"silverMedals": "**Silver medals earned:** {{silverMedals, groupDigits}}",
 		"bronzeMedals": "**Bronze medals earned:** {{bronzeMedals, groupDigits}}"
 	},
-	"overwatchEmbedDataTopHero": "**{{name, toTitleCase}}** ({{playTime}})",
+	"overwatchEmbedDataTopHero": "**{{name, toTitleCase}}** ({{playTime, duration}})",
 	"overwatchEmbedData": {
 		"title": "Click here for more details on overwatchtracker.com",
 		"ratingsTitle": "Ratings",

@@ -8,5 +8,9 @@
 	"monitorCommandHandlerRepeatingReprompt": "",
 	"monitorCommandHandlerReprompt": "",
 	"reactionhandlerPrompt": "",
-	"textPromptAbortOptions": ["", "", ""]
+	"textPromptAbortOptions": [
+		"",
+		"",
+		""
+	]
 }

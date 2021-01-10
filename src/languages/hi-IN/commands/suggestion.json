@@ -2,15 +2,8 @@
 	"suggestDescription": "",
 	"suggestExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		],
+		"explainedUsage": [["", ""]],
+		"examples": [""],
 		"reminder": ""
 	},
 	"suggestNoSetup": "",
@@ -23,18 +16,8 @@
 	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
 		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"reminder": [
-			"",
-			""
-		],
+		"examples": ["", "", "", "", "", ""],
+		"reminder": ["", ""],
 		"multiline": ""
 	},
 	"resolveSuggestionInvalidId": "",

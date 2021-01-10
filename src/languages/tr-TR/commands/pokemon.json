@@ -2,16 +2,8 @@
 	"abilityDescription": "",
 	"abilityExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
 	},
 	"abilityEmbedTitles": {
 		"authorTitle": "",
@@ -20,37 +12,17 @@
 	"abilityQueryFail": "",
 	"flavorsDescription": "",
 	"flavorsExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""],
 		"multiline": ""
 	},
 	"flavorsQueryFail": "",
 	"itemDescription": "",
 	"itemExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
 	},
 	"itemEmbedData": {
 		"ITEM": "",
@@ -61,32 +33,13 @@
 	"itemQueryFail": "",
 	"learnDescription": "",
 	"learnExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", ""],
 		"multiline": ""
 	},
 	"learnMethodTypes": {
@@ -106,22 +59,9 @@
 	"moveDescription": "",
 	"moveExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		],
-		"reminder": [
-			"",
-			"",
-			""
-		],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""],
+		"reminder": ["", "", ""],
 		"multiline": ""
 	},
 	"moveEmbedData": {
@@ -146,25 +86,10 @@
 	"moveQueryFail": "",
 	"pokedexDescription": "",
 	"pokedexExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		],
-		"reminder": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""],
+		"reminder": ["", ""],
 		"multiline": ""
 	},
 	"pokedexEmbedData": {
@@ -189,16 +114,8 @@
 	"typeDescription": "",
 	"typeExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
 	},
 	"typeEmbedData": {
 		"offensive": "",

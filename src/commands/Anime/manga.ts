@@ -7,12 +7,12 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { cutText } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
+import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import { stringify } from 'querystring';
 import { TFunction } from 'i18next';
+import { stringify } from 'querystring';
 
 const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production_media/query`;
 

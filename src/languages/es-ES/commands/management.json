@@ -99,865 +99,311 @@
 	"nickExtended": {
 		"extendedHelp": "",
 		"reminder": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""]
 	},
 	"permissionNodesDescription": "",
 	"permissionNodesExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", "", ""],
 		"reminder": "",
 		"multiline": ""
 	},
 	"triggersDescription": "",
 	"triggersExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", ""],
 		"reminder": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", ""],
 		"multiline": ""
 	},
 	"managecommandautodeleteDescription": "",
 	"managecommandautodeleteExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", ""]
 	},
 	"manageCommandChannelDescription": "",
 	"manageCommandChannelExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", ""]
 	},
 	"manageReactionRolesDescription": "",
 	"manageReactionRolesExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"multiline": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", "", ""]
 	},
 	"setIgnoreChannelsDescription": "",
 	"setIgnoreChannelsExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"extendedHelp": ["", "", ""],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			"",
-			""
-		],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"setImageLogsDescription": "",
 	"setImageLogsExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"setMemberLogsDescription": "",
 	"setMemberLogsExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"setMessageLogsDescription": "",
 	"setMessageLogsExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"extendedHelp": ["", "", ""],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			"",
-			""
-		],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"setmodlogsDescription": "",
 	"setmodlogsExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"extendedHelp": ["", "", "", ""],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			"",
-			""
-		],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"setprefixDescription": "",
 	"setprefixExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"extendedHelp": ["", "", "", ""],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			"",
-			""
-		],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"setrolechannelDescription": "",
 	"setrolechannelExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			"",
-			""
-		]
+		"examples": ["", ""]
 	},
 	"setrolemessageDescription": "",
 	"setrolemessageExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"extendedHelp": ["", "", ""],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			""
-		],
+		"examples": [""],
 		"multiline": ""
 	},
 	"setStarboardEmojiDescription": "",
 	"setStarboardEmojiExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"reminder": "",
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"roleInfoDescription": "",
 	"roleInfoExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""],
 		"multiline": ""
 	},
 	"guildInfoDescription": "",
 	"guildInfoExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"multiline": ""
 	},
 	"stickyRolesDescription": "",
 	"stickyRolesExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", ""],
 		"reminder": ""
 	},
 	"attachmentsModeDescription": "",
 	"attachmentsModeExtended": {
-		"extendedHelp": [
-			""
-		],
+		"extendedHelp": [""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"multiline": ""
 	},
 	"capitalsModeDescription": "",
 	"capitalsModeExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"multiline": ""
 	},
 	"filterDescription": "",
 	"filterExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"multiline": ""
 	},
 	"filterModeDescription": "",
 	"filterModeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", "", "", "", "", ""]
 	},
 	"inviteModeDescription": "",
 	"inviteModeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", "", "", "", "", ""]
 	},
 	"linkModeDescription": "",
 	"linkModeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", "", "", "", "", ""]
 	},
 	"messageModeDescription": "",
 	"messageModeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", "", "", "", "", ""]
 	},
 	"newlineModeDescription": "",
 	"newlineModeExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"multiline": ""
 	},
 	"reactionModeDescription": "",
 	"reactionModeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"reminder": "",
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", "", "", "", "", ""]
 	},
 	"rolesDescription": "",
 	"rolesExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"reminder": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"examples": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["", ""]],
+		"reminder": ["", "", "", "", ""],
+		"examples": ["", "", ""],
 		"multiline": ""
 	}
 }

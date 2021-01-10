@@ -24,12 +24,7 @@
 	"inviteDescription": "",
 	"inviteExtended": {
 		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", ""]
 	},
 	"invitePermissionInviteText": "",
 	"invitePermissionsDescription": "",

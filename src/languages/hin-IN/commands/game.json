@@ -16,10 +16,7 @@
 	"c4Prompt": "प्रिय {{challengee}}}, {{{{challenger}} ने आपको कनेक्ट-फोर मुकाबले कि चुनौती दी है | उत्तर में **हाँ** लिखें चुनौती स्वीकार करने के लिए !",
 	"c4Start": "खेल शुरू किया जाए ! बारी है: **{{player}}** |",
 	"cannotHaveNegativeMoney": "आपके पास {{SHINY}} ऋणात्मक संख्या में नहीं हो सकती",
-	"coinFlipCoinnames": [
-		"चित्त",
-		"पट्ट"
-	],
+	"coinFlipCoinnames": ["चित्त", "पट्ट"],
 	"coinFlipDescription": "सिक्का उछालें !",
 	"coinFlipExtended": {
 		"extendedHelp": [
@@ -28,10 +25,7 @@
 			"आप बिना किसी रक़म के भी सिक्का उछाल सकते हैं, जिसमे पैसे नहीं लगते, परन्तु आपको इनाम भी नहीं मिलेगा |",
 			"अब सिक्के उछालना शुरू कीजिये |"
 		],
-		"examples": [
-			"चित्त ५०",
-			"पट्ट २००"
-		],
+		"examples": ["चित्त ५०", "पट्ट २००"],
 		"multiline": true
 	},
 	"coinFlipInvalidCoinname": "सुनिए, {{arg}} सिक्के का चेहरा नहीं है!",
@@ -415,12 +409,7 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", ""],
 		"multiline": ""
 	},
 	"higherLowerLoading": "",
@@ -438,9 +427,7 @@
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"extendedHelp": "",
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -455,12 +442,7 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -473,10 +455,7 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"multiline": ""
 	},
 	"ticTacToePrompt": "",
@@ -489,34 +468,14 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", ""],
 		"multiline": ""
 	},
 	"triviaIncorrect": "",

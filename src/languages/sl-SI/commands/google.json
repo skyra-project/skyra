@@ -1,20 +1,9 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"location",
-				""
-			]
-		],
-		"examples": [
-			"Antarktika",
-			"Arizona"
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["location", ""]],
+		"examples": ["Antarktika", "Arizona"],
 		"multiline": true
 	},
 	"currentTimeLocationNotFound": "",
@@ -30,58 +19,26 @@
 	"gsearchDescription": "",
 	"gsearchExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["Discord", "Skyra"]
 	},
 	"gimageDescription": "",
 	"gimageExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"Discord",
-			"Skyra"
-		],
+		"explainedUsage": [["", ""]],
+		"examples": ["Discord", "Skyra"],
 		"reminder": ""
 	},
 	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
-		"explainedUsage": [
-			[
-				"query",
-				""
-			]
-		]
+		"explainedUsage": [["query", ""]]
 	},
 	"lmgtfyClick": "",
 	"weatherDescription": "",
 	"weatherExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"city",
-				""
-			]
-		],
-		"examples": [
-			"Antarktika",
-			"Arizona"
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["city", ""]],
+		"examples": ["Antarktika", "Arizona"],
 		"reminder": "",
 		"multiline": true
 	},

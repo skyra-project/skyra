@@ -1,18 +1,12 @@
 {
 	"catfactDescription": "मैं आपको एक रहस्यमय बिल्ली तथ्य बताता हूं।",
 	"catfactExtended": {
-		"extendedHelp": [
-			"",
-			""
-		]
+		"extendedHelp": ["", ""]
 	},
 	"catfactTitle": "बिल्लियों के तथ्य",
 	"dogDescription": "प्यारे कुत्ते! ❤",
 	"dogExtended": {
-		"extendedHelp": [
-			"क्या **आप** जानते है कुत्ते कितने प्यारे होते है? वे बहुत सुंदर है!",
-			""
-		]
+		"extendedHelp": ["क्या **आप** जानते है कुत्ते कितने प्यारे होते है? वे बहुत सुंदर है!", ""]
 	},
 	"foxDescription": "",
 	"foxExtended": {
@@ -20,10 +14,7 @@
 	},
 	"kittyDescription": "",
 	"kittyExtended": {
-		"extendedHelp": [
-			"",
-			""
-		]
+		"extendedHelp": ["", ""]
 	},
 	"shibeDescription": "",
 	"shibeExtended": {

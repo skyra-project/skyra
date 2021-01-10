@@ -5,24 +5,9 @@
 	"announcementEmbedMentions": "",
 	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", "", ""],
+		"explainedUsage": [["", ""]],
+		"examples": [""],
 		"reminder": "",
 		"multiline": ""
 	},

@@ -8,9 +8,5 @@
 	"monitorCommandHandlerRepeatingReprompt": "{{tag}} | **{{name}}** es un argumento repetitivo | Tienes **{{time}}** segundos para responder a este prompt con argumentos válidos adicionales. Escribe **{{cancelOptions}}** para cancelar esta petición.",
 	"monitorCommandHandlerReprompt": "{{tag}} | **{{name}}** | Tienes **{{time}}** segundos para responder a este mensaje con un argumento válido. Escribe **{{cancelOptions}}** para abortar esta petición.",
 	"reactionhandlerPrompt": "¿A qué página le gustaría saltar?",
-	"textPromptAbortOptions": [
-		"abortar",
-		"cancelar",
-		"parar"
-	]
+	"textPromptAbortOptions": ["abortar", "cancelar", "parar"]
 }

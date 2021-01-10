@@ -1,10 +1,7 @@
 {
 	"c4Description": "",
 	"c4Extended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"multiline": ""
 	},
 	"c4GameColumnFull": "",
@@ -16,22 +13,11 @@
 	"c4Prompt": "",
 	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
-	"coinFlipCoinnames": [
-		"",
-		""
-	],
+	"coinFlipCoinnames": ["", ""],
 	"coinFlipDescription": "",
 	"coinFlipExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
-		"examples": [
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", ""],
+		"examples": ["", ""],
 		"multiline": ""
 	},
 	"coinFlipInvalidCoinname": "",
@@ -415,12 +401,7 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", ""],
 		"multiline": ""
 	},
 	"higherLowerLoading": "",
@@ -438,9 +419,7 @@
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"extendedHelp": "",
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -455,12 +434,7 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -473,10 +447,7 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"multiline": ""
 	},
 	"ticTacToePrompt": "",
@@ -489,34 +460,14 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", ""],
 		"multiline": ""
 	},
 	"triviaIncorrect": "",

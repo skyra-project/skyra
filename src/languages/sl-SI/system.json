@@ -23,16 +23,7 @@
 	},
 	"highestRole": "",
 	"jumpTo": "Skoči do Sporočila ►",
-	"loading": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
+	"loading": ["", "", "", "", "", "", "", ""],
 	"messageNotFound": "",
 	"noResults": "",
 	"notEnoughParameters": "",

@@ -25,15 +25,7 @@
 	"confSettingNotSet": "Not Set",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"extendedHelp": ["", "", "", "", "", "", ""]
 	},
 	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
@@ -45,37 +37,13 @@
 			"- When somebody receives a role either manually or from another bot."
 		],
 		"explainedUsage": [
-			[
-				"add",
-				"Create a new roleset or add a role to an existing one."
-			],
-			[
-				"remove",
-				"Remove a role from an existing roleset."
-			],
-			[
-				"reset",
-				"Removes all roles from a roleset or, if not specified, all existing rolesets."
-			],
-			[
-				"list",
-				"Lists all rolesets."
-			],
-			[
-				"",
-				""
-			]
+			["add", "Create a new roleset or add a role to an existing one."],
+			["remove", "Remove a role from an existing roleset."],
+			["reset", "Removes all roles from a roleset or, if not specified, all existing rolesets."],
+			["list", "Lists all rolesets."],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"reminder": "",
 		"multiline": ""
 	},

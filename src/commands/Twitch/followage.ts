@@ -2,8 +2,8 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
-import type { KlasaMessage } from 'klasa';
 import type { TFunction } from 'i18next';
+import type { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
 	description: LanguageKeys.Commands.Twitch.FollowageDescription,

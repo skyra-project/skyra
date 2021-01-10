@@ -8,9 +8,5 @@
 	"monitorCommandHandlerRepeatingReprompt": "",
 	"monitorCommandHandlerReprompt": "",
 	"reactionhandlerPrompt": "На какую страницу вы хотели бы перейти?",
-	"textPromptAbortOptions": [
-		"",
-		"",
-		""
-	]
+	"textPromptAbortOptions": ["", "", ""]
 }

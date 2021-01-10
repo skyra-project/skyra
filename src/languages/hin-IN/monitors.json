@@ -27,10 +27,7 @@
 	"newlinesWithMaximum": "",
 	"nms": "",
 	"nmsAlert": "",
-	"nmsMessage": [
-		"",
-		""
-	],
+	"nmsMessage": ["", ""],
 	"nmsModlog": "",
 	"nolink": "",
 	"reactionFilterFooter": "",

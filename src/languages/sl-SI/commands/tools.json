@@ -2,78 +2,36 @@
 	"avatarDescription": "",
 	"avatarExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"reminder": ""
 	},
 	"avatarNone": "",
-	"color": [
-		"",
-		"",
-		""
-	],
+	"color": ["", "", ""],
 	"colorDescription": "",
 	"colorExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""],
 		"possibleFormats": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		]
 	},
 	"contentDescription": "",
 	"contentExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""]
 		]
 	},
 	"countryDescription": "",
 	"countryExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": [""]
 	},
 	"countryFields": {
 		"other": {
@@ -95,15 +53,8 @@
 	"defineDescription": "",
 	"defineExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": [""]
 	},
 	"defineNotfound": "",
 	"definePronounciation": "",
@@ -119,21 +70,12 @@
 	"emojiDescription": "",
 	"emojiExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"reminder": ""
 	},
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
-	"emojiTwemoji": [
-		"",
-		"",
-		""
-	],
+	"emojiTwemoji": ["", "", ""],
 	"emotesDescription": "",
 	"emotesExtended": {
 		"extendedHelp": ""
@@ -142,17 +84,8 @@
 	"eshopDescription": "",
 	"eshopExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""]
 	},
 	"eshopNotInDatabase": "",
 	"eshopPriceFree": "",
@@ -172,31 +105,15 @@
 	"horoscopeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", "", ""]
 	},
 	"horoscopeInvalidSunsign": "",
 	"horoscopeTitles": {
 		"dailyHoroscope": "",
-		"metadata": [
-			"",
-			"",
-			"",
-			""
-		],
+		"metadata": ["", "", "", ""],
 		"metadataTitle": ""
 	},
 	"igdbData": {
@@ -211,16 +128,8 @@
 	"igdbDescription": "",
 	"igdbExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
 	},
 	"igdbTitles": {
 		"ageRating": "",
@@ -233,16 +142,8 @@
 	"itunesDescription": "",
 	"itunesExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
 	},
 	"itunesTitles": {
 		"artist": "",
@@ -265,21 +166,9 @@
 	},
 	"moviesDescription": "",
 	"moviesExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""],
 		"multiline": ""
 	},
 	"moviesTitles": {
@@ -295,9 +184,7 @@
 	"pollDescription": "",
 	"pollExtended": {
 		"extendedHelp": "",
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"pollReactionLimit": "",
 	"priceCurrency": "",
@@ -306,37 +193,18 @@
 	"priceExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", ""]
 	},
 	"quoteDescription": "",
 	"quoteExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""]
 		]
 	},
 	"quoteMessage": "",
@@ -356,17 +224,8 @@
 	"showsDescription": "",
 	"showsExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""]
 	},
 	"showsTitles": {
 		"episodeRuntime": "",
@@ -396,26 +255,16 @@
 	"urbanExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"urbanIndexNotfound": "",
 	"urbanNotFound": "",
 	"voteDescription": "",
 	"voteExtended": {
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"whoisDescription": "",
 	"whoisExtended": {

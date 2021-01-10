@@ -1,10 +1,7 @@
 {
 	"catfactDescription": "Permítanme que les diga un hecho gatuno misterioso.",
 	"catfactExtended": {
-		"extendedHelp": [
-			"",
-			"Este comando consulta catfact.ninja y muestra un hecho para que puedas leerlo."
-		]
+		"extendedHelp": ["", "Este comando consulta catfact.ninja y muestra un hecho para que puedas leerlo."]
 	},
 	"catfactTitle": "Hecho Gatuno",
 	"dogDescription": "¡Perritos lindos! ❤",

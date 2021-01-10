@@ -19,10 +19,7 @@
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionRequiredChannel": "",
 	"twitchSubscriptionRequiredStatus": "",
-	"twitchSubscriptionStatusValues": [
-		"",
-		""
-	],
+	"twitchSubscriptionStatusValues": ["", ""],
 	"twitchSubscriptionInvalidStatus": "",
 	"twitchSubscriptionRequiredContent": "",
 	"twitchSubscriptionAddDuplicated": "",
@@ -39,63 +36,27 @@
 	"twitchSubscriptionResetChannelSuccess": "",
 	"twitchSubscriptionResetChannelSuccess_plural": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
-	"twitchSubscriptionShowStatus": [
-		"",
-		""
-	],
+	"twitchSubscriptionShowStatus": ["", ""],
 	"twitchSubscriptionShowEmpty": "",
 	"twitchSubscriptionShowUnknownUser": "Neznano",
 	"followageDescription": "",
 	"followageExtended": {
 		"extendedHelp": "",
-		"examples": [
-			""
-		]
+		"examples": [""]
 	},
 	"twitchDescription": "",
 	"twitchExtended": {
 		"extendedHelp": "",
-		"examples": [
-			"riotgames"
-		]
+		"examples": ["riotgames"]
 	},
 	"twitchSubscriptionDescription": "",
 	"twitchSubscriptionExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"- `%TITLE%` za naslov pretoka",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", "- `%TITLE%` za naslov pretoka", "", "", "", "", "", "", "", "", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
 		"examples": [
 			"add favna #twitch online --embed",

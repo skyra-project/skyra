@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
-import { Structures, Message } from 'discord.js';
+import { Message, Structures } from 'discord.js';
 import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 export class SkyraDMChannel extends TextBasedExtension(Structures.get('DMChannel')) {

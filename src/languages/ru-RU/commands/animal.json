@@ -1,18 +1,12 @@
 {
 	"catfactDescription": "",
 	"catfactExtended": {
-		"extendedHelp": [
-			"",
-			""
-		]
+		"extendedHelp": ["", ""]
 	},
 	"catfactTitle": "Факт о кошках",
 	"dogDescription": "Милые собачки! ❤",
 	"dogExtended": {
-		"extendedHelp": [
-			"",
-			""
-		]
+		"extendedHelp": ["", ""]
 	},
 	"foxDescription": "Позвольте мне показать вам изображение лисицы!",
 	"foxExtended": {
@@ -20,10 +14,7 @@
 	},
 	"kittyDescription": "КОТЯТА!",
 	"kittyExtended": {
-		"extendedHelp": [
-			"",
-			""
-		]
+		"extendedHelp": ["", ""]
 	},
 	"shibeDescription": "",
 	"shibeExtended": {

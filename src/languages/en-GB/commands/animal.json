@@ -1,10 +1,7 @@
 {
 	"catfactDescription": "Let me tell you a mysterious cat fact.",
 	"catfactExtended": {
-		"extendedHelp": [
-			"",
-			"This command queries catfact.ninja and retrieves a fact so you can read it."
-		]
+		"extendedHelp": ["", "This command queries catfact.ninja and retrieves a fact so you can read it."]
 	},
 	"catfactTitle": "Cat Fact",
 	"dogDescription": "Cute doggos! ❤",

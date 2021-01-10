@@ -1,31 +1,9 @@
 {
 	"addDescription": "",
 	"addExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", "", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"multiline": ""
 	},
 	"addPlaylist": "",
@@ -42,21 +20,14 @@
 	"clearSuccessPlural": "",
 	"exportQueueDescription": "",
 	"exportQueueExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", ""],
 		"reminder": "",
 		"multiline": ""
 	},
 	"exportQueueSuccess": "",
 	"importQueueDescription": "",
 	"importQueueExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": ["", ""],
 		"reminder": "",
 		"multiline": ""
 	},
@@ -76,20 +47,8 @@
 	"joinFailed": "",
 	"leaveDescription": "",
 	"leaveExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", ""],
+		"examples": ["", "", "", ""],
 		"multiline": ""
 	},
 	"leaveSuccess": "",
@@ -101,32 +60,9 @@
 	"pauseSuccess": "",
 	"playDescription": "",
 	"playExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", "", "", ""],
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"reminder": "",
 		"multiline": ""
 	},
@@ -196,12 +132,7 @@
 	"skipDescription": "",
 	"skipExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
+		"explainedUsage": [["", ""]],
 		"reminder": ""
 	},
 	"skipPermissions": "",
@@ -212,33 +143,18 @@
 	"playingTimeQueueEmpty": "",
 	"promoteDescription": "",
 	"promoteExtended": {
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		],
+		"explainedUsage": [["", ""]],
+		"examples": [""],
 		"reminder": ""
 	},
 	"promoteSuccess": "",
 	"volumeDescription": "",
 	"volumeExtended": {
 		"extendedHelp": "",
-		"examples": [
-			"",
-			"",
-			""
-		]
+		"examples": ["", "", ""]
 	},
 	"volumeSuccess": "",
 	"volumeChanged": "",
 	"volumeChangedExtreme": "",
-	"volumeChangedTexts": [
-		"",
-		"",
-		""
-	]
+	"volumeChangedTexts": ["", "", ""]
 }

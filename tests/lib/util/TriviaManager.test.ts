@@ -1,5 +1,5 @@
+import { CATEGORIES, getQuestion, QuestionDifficulty, QuestionType } from '#utils/Games/TriviaManager';
 import nock from 'nock';
-import { getQuestion, QuestionDifficulty, QuestionType, CATEGORIES } from '#utils/Games/TriviaManager';
 
 describe('TriviaManager', () => {
 	// eslint-disable-next-line @typescript-eslint/init-declarations

@@ -23,16 +23,7 @@
 	},
 	"highestRole": "",
 	"jumpTo": "",
-	"loading": [
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		"",
-		""
-	],
+	"loading": ["", "", "", "", "", "", "", ""],
 	"messageNotFound": "",
 	"noResults": "",
 	"notEnoughParameters": "",

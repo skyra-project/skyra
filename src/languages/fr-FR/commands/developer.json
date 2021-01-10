@@ -2,17 +2,8 @@
 	"yarnDescription": "",
 	"yarnExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", "", ""]
 	},
 	"yarnEmbedDescriptionAuthor": "",
 	"yarnEmbedDescriptionDateCreated": "",

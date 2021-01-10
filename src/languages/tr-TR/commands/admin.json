@@ -25,57 +25,19 @@
 	"confSettingNotSet": "Ayarlanmamış",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		]
+		"extendedHelp": ["", "", "", "", "", "", ""]
 	},
 	"rolesetDescription": "",
 	"rolesetExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", ""],
 		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""],
+			["", ""]
 		],
-		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"examples": ["", "", "", "", "", "", "", ""],
 		"reminder": "",
 		"multiline": ""
 	},

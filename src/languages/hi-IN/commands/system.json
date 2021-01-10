@@ -6,25 +6,8 @@
 	},
 	"evalDescription": "",
 	"evalExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"examples": [
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", "", "", "", "", "", "", "", ""],
+		"examples": ["", ""],
 		"reminder": "",
 		"multiline": ""
 	},
@@ -39,16 +22,7 @@
 	},
 	"donateDescription": "",
 	"donateExtended": {
-		"extendedHelp": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
-		],
+		"extendedHelp": ["", "", "", "", "", "", "", ""],
 		"multiline": ""
 	},
 	"echoDescription": "",
@@ -72,22 +46,9 @@
 		"serverUsage": ""
 	},
 	"statsFields": {
-		"stats": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"uptime": [
-			"",
-			"",
-			""
-		],
-		"serverUsage": [
-			"",
-			""
-		]
+		"stats": ["", "", "", "", ""],
+		"uptime": ["", "", ""],
+		"serverUsage": ["", ""]
 	},
 	"disable": "",
 	"disableDescription": "",

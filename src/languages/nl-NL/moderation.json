@@ -2,10 +2,7 @@
 	"caseNotExists": "",
 	"caseNotExists_plural": "",
 	"logAppealed": "",
-	"logDescriptionTypeAndUser": [
-		"",
-		""
-	],
+	"logDescriptionTypeAndUser": ["", ""],
 	"logDescriptionWithReason": "",
 	"logDescriptionWithoutReason": "",
 	"logExpiresIn": "",

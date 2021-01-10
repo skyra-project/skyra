@@ -14,15 +14,8 @@
 			"",
 			"Además, puedes configurar Skyra para que envíe el anuncio como un mensaje incrustado estableciendo la opción **messages.announcement-embed** en el comando de configuración. Al enviar el mensaje como un incrustado puedes excluir las menciones de cualquier usuario, @here o @everyone proporcionando la bandera `--excludeMencions` al anuncio."
 		],
-		"explainedUsage": [
-			[
-				"anuncio",
-				"El texto del anuncio a publicar."
-			]
-		],
-		"examples": [
-			"¡Me complace anunciar que tenemos un bot capaz de enviar anuncios seguros para nuestros suscriptores!"
-		],
+		"explainedUsage": [["anuncio", "El texto del anuncio a publicar."]],
+		"examples": ["¡Me complace anunciar que tenemos un bot capaz de enviar anuncios seguros para nuestros suscriptores!"],
 		"reminder": "Si quieres editar el mensaje que enviaste en un anuncio, edita el mensaje que usaste para que Skyra envíe ese anuncio. Skyra editará el mensaje que envió anteriormente. Puedes hacer esto hasta 15 minutos después del anuncio inicial, ¡así que asegúrese de no esperar mucho tiempo!",
 		"multiline": ""
 	},

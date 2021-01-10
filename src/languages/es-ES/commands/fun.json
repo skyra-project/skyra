@@ -2,51 +2,25 @@
 	"8ballDescription": "Skyra leerá la Santa Biblia para encontrar la respuesta correcta para tu pregunta.",
 	"8ballExtended": {
 		"extendedHelp": "Este comando te proporciona una pregunta aleatoria basada en el tipo de tus preguntas. Ten cuidado, puede ser demasiado inteligente.",
-		"explainedUsage": [
-			[
-				"pregunta",
-				"La Sagrada Pregunta"
-			]
-		],
-		"examples": [
-			"¿Por qué cruzó la carretera el pollo?"
-		]
+		"explainedUsage": [["pregunta", "La Sagrada Pregunta"]],
+		"examples": ["¿Por qué cruzó la carretera el pollo?"]
 	},
 	"choiceDescription": "Pito pito, gorgorito, ¿dónde vas tú tan bonito?...",
 	"choiceExtended": {
 		"extendedHelp": "Tengo una duda existencial... ¿debo lavar los platos o tirarlos por la ventana? La búsqueda continúa. Liste los elementos separados por coma y elegiré uno. Postdata, no soy responsable de lo que sucede después.",
-		"explainedUsage": [
-			[
-				"palabras",
-				"Una lista de palabras separadas por coma."
-			]
-		],
-		"examples": [
-			"Lavar los platos, Lanzar los platos a la ventana",
-			"Gato, Perro"
-		]
+		"explainedUsage": [["palabras", "Una lista de palabras separadas por coma."]],
+		"examples": ["Lavar los platos, Lanzar los platos a la ventana", "Gato, Perro"]
 	},
 	"changemymindDescription": "Skyra es la mejor, convénceme de lo contrario.",
 	"changemymindExtended": {
 		"extendedHelp": "Sigo pensando que soy la mejor, convénceme de lo opuesto. Hago una foto con tu avatar y un poco de texto en un cartel.",
-		"explainedUsage": [
-			[
-				"texto",
-				"La frase que desea."
-			]
-		],
-		"examples": [
-			"Skyra es el mejor bot de este servidor"
-		]
+		"explainedUsage": [["texto", "La frase que desea."]],
+		"examples": ["Skyra es el mejor bot de este servidor"]
 	},
 	"diceDescription": "Lanza los dados usando la sintaxis d20.",
 	"diceExtended": {
 		"extendedHelp": "Las mecánicas de este comando son fáciles. Tienes un dado, luego lo tiras __x__ veces, pero los dados también pueden configurarse para tener __y__ lados. Por defecto, este comando tira un dado con 6 lados una vez. Sin embargo, puedes cambiar la cantidad de tiradas para los dados, y este comando \"tirará\" (obtener un número aleatorio entre 1 y la cantidad de lados). Por ejemplo, tirar un dado con 6 lados 3 veces dejará una secuencia aleatoria de tres números aleatorios entre 1 y 6, por ejemplo: 3, 1, 6; lo cual hará que este comando devuelva 10 como salida.",
-		"examples": [
-			"370d24",
-			"100d6",
-			""
-		]
+		"examples": ["370d24", "100d6", ""]
 	},
 	"escaperopeDescription": "Usa la Cuerda Huida de Pokemon.",
 	"escaperopeExtended": {
@@ -55,28 +29,14 @@
 	"howToFlirtDescription": "Capitán América, usted no sabe cómo coquetear.",
 	"howToFlirtExtended": {
 		"extendedHelp": "Déjenme mostrarles cómo coquetear eficazmente con alguien utilizando el estilo de Tony Stark para el Capitán América, puedo garantizarle que lo conseguirá.",
-		"explainedUsage": [
-			[
-				"usuario",
-				"El usuario con el que coquetear."
-			]
-		],
-		"examples": [
-			""
-		]
+		"explainedUsage": [["usuario", "El usuario con el que coquetear."]],
+		"examples": [""]
 	},
 	"loveDescription": "Medidor de amor, ¡en línea!",
 	"loveExtended": {
 		"extendedHelp": "¡Hola! ¿Quieres probar el medidor de amor? Sé que es una máquina ridícula, ¡pero a muchos humanos les encanta! ¡No seas tímido y pruébalo!",
-		"explainedUsage": [
-			[
-				"usuario",
-				"El usuario a calificar."
-			]
-		],
-		"examples": [
-			"Skyra"
-		]
+		"explainedUsage": [["usuario", "El usuario a calificar."]],
+		"examples": ["Skyra"]
 	},
 	"markovDescription": "Genera una cadena de Markov desde el canal de texto.",
 	"markovExtended": {
@@ -89,16 +49,8 @@
 	"rateDescription": "Deja que los robots tengan opiniones y valore a alguien.",
 	"rateExtended": {
 		"extendedHelp": "Sólo porque soy un robot no significa que no pueda calificarte correctamente. Yo puedo calificarte con un generador de números aleatorios para facilitar el proceso. ¡Vaaale! No es justo, pero también quiero decir... también puedo darte 💯.",
-		"explainedUsage": [
-			[
-				"usuario",
-				"El usuario a calificar."
-			]
-		],
-		"examples": [
-			"Skyra",
-			"yo"
-		]
+		"explainedUsage": [["usuario", "El usuario a calificar."]],
+		"examples": ["Skyra", "yo"]
 	},
 	"shindeiruDescription": "",
 	"shindeiruExtended": {
@@ -107,16 +59,8 @@
 	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {
 		"extendedHelp": "**xkcd** es un archivo de cómics repleto de matemáticas, ciencias, sarcasmo e idiomas. Si usted no proporciona ningún argumento, obtendré un cómic aleatorio de xkcd. Si en cambio, usted proporciona un número, yo le mostraré el cómic con dicho número. Pero si proporcionas un título/texto/tema, buscaré un cómic que coincida con tu entrada y lo mostraré. Por ejemplo, `Skyra, xkcd Curiosity` mostrará el cómic número 1091.",
-		"explainedUsage": [
-			[
-				"consulta",
-				"O bien el número del cómic o bien un título para buscar."
-			]
-		],
-		"examples": [
-			"1091",
-			"Curiosidad"
-		]
+		"explainedUsage": [["consulta", "O bien el número del cómic o bien un título para buscar."]],
+		"examples": ["1091", "Curiosidad"]
 	},
 	"punDescription": "The muestra un chiste aleatorio.",
 	"punExtended": {
@@ -139,21 +83,8 @@
 		"Why": "por qué",
 		"Who": "quién"
 	},
-	"8ballWhen": [
-		"Pronto™",
-		"Tal vez mañana.",
-		"Tal vez el año que viene...",
-		"Ahora mismo.",
-		"En unos pocos meses."
-	],
-	"8ballWhat": [
-		"Un avión.",
-		"¿Qué? Pregunte de nuevo.",
-		"Un regalo.",
-		"Nada.",
-		"Un anillo.",
-		"No sé, tal vez algo."
-	],
+	"8ballWhen": ["Pronto™", "Tal vez mañana.", "Tal vez el año que viene...", "Ahora mismo.", "En unos pocos meses."],
+	"8ballWhat": ["Un avión.", "¿Qué? Pregunte de nuevo.", "Un regalo.", "Nada.", "Un anillo.", "No sé, tal vez algo."],
 	"8ballHowMuch": [
 		"Mucho.",
 		"Un poco.",
@@ -241,14 +172,8 @@
 	"markovNoMessages": "El canal o usuario no tiene mensajes.",
 	"norrisOutput": "Chuck Norris",
 	"rateOutput": "**{{author}}**, le daría a **{{userToRate}}** un **{{rate}}**/100 {{emoji}}",
-	"rateMyself": [
-		". Me amo un montón 😊",
-		"yo mismo"
-	],
-	"rateOwners": [
-		". Me encanta mucho a mis desarrolladores 🥰",
-		"mis desarrolladores"
-	],
+	"rateMyself": [". Me amo un montón 😊", "yo mismo"],
+	"rateOwners": [". Me encanta mucho a mis desarrolladores 🥰", "mis desarrolladores"],
 	"punError": "Se ha producido un error. Por favor, inténtelo más tarde.",
 	"xkcdComics": "Solo hay {{amount}} cómics.",
 	"xkcdNotfound": "He buscado mucho, pero no tuve suerte en encontrar este cómic, ¡intente de nuevo más tarde o pruebe otro!"

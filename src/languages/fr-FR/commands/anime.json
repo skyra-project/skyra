@@ -2,29 +2,14 @@
 	"animeDescription": "",
 	"animeExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": [""]
 	},
 	"mangaDescription": "",
 	"mangaExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		]
+		"explainedUsage": [["", ""]],
+		"examples": ["", ""]
 	},
 	"waifuDescription": "",
 	"waifuExtended": {

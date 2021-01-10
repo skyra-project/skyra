@@ -25,6 +25,7 @@ export const LmgtfyDescription = T<string>('commands/google:lmgtfyDescription');
 export const LmgtfyExtended = T<LanguageHelpDisplayOptions>('commands/google:lmgtfyExtended');
 export const MessagesErrorInvalidRequest = T<string>('commands/google:errorInvalidRequest');
 export const MessagesErrorOverQueryLimit = T<string>('commands/google:errorOverQueryLimit');
+export const MessagesErrorPermissionDenied = T<string>('commands/google:errorPermissionDenied');
 export const MessagesErrorRequestDenied = T<string>('commands/google:errorRequestDenied');
 export const MessagesErrorUnknown = T<string>('commands/google:errorUnknown');
 export const MessagesErrorZeroResults = T<string>('commands/google:errorZeroResults');

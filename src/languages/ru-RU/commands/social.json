@@ -33,10 +33,7 @@
 	"toggleDarkModeDisabled": "",
 	"dailyTime": "",
 	"dailyTimeSuccess": "",
-	"dailyGrace": [
-		"",
-		"Оставшееся время: {{remaining, duration}}"
-	],
+	"dailyGrace": "",
 	"dailyGraceAccepted": "",
 	"dailyGraceDenied": "",
 	"dailyCollect": "",
@@ -218,10 +215,7 @@
 	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
+		"extendedHelp": "",
 		"reminder": "",
 		"multiline": ""
 	},

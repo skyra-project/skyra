@@ -64,11 +64,7 @@
 	},
 	"punDescription": "Shows you a random pun.",
 	"punExtended": {
-		"extendedHelp": [
-			"A steak pun is a rare medium well done.",
-			"Get your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
-		],
-		"multiline": true
+		"extendedHelp": "A steak pun is a rare medium well done.\nGet your daily doses of dad jokes from icanhazdadjoke.com and laugh at witty wisecracks."
 	},
 	"wakandaDescription": "Helpful descriptions? We don't do that here",
 	"wakandaExtended": {

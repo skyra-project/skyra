@@ -2,8 +2,17 @@
 	"yarnDescription": "Responde con información sobre un paquete NodeJS usando el registro de paquetes Yarn",
 	"yarnExtended": {
 		"extendedHelp": "Esto es para desarrolladores de NodeJS que quieren encontrar rápidamente información sobre un paquete publicado en [npm](https://npmjs.com)",
-		"explainedUsage": [["paquete", "El nombre del paquete a buscar, tiene que ser una coincidencia exacta"]],
-		"examples": ["@skyra/char", "@skyra/saelem", "@skyra/eslint-config"]
+		"explainedUsage": [
+			[
+				"paquete",
+				"El nombre del paquete a buscar, tiene que ser una coincidencia exacta"
+			]
+		],
+		"examples": [
+			"@skyra/char",
+			"@skyra/saelem",
+			"@skyra/eslint-config"
+		]
 	},
 	"yarnEmbedDescriptionAuthor": "❯ Autor: {{author}}",
 	"yarnEmbedDescriptionDateCreated": "❯ Fecha de creación: **{{dateCreated}}**",

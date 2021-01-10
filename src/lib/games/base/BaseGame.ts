@@ -38,8 +38,8 @@ export abstract class BaseGame<T> {
 	}
 
 	public async run() {
-		await this.onStart();
 		this.t = await this.message.fetchT();
+		await this.onStart();
 
 		while (true) {
 			// Read player's move:

@@ -129,5 +129,9 @@
 	"unloadExtended": {
 		"extendedHelp": ""
 	},
-	"unloadWarn": ""
+	"unloadWarn": "",
+	"supportDescription": "",
+	"supportExtended": {
+		"extendedHelp": ""
+	}
 }

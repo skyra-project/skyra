@@ -5,24 +5,24 @@
 	},
 	"blocklistResetSuccess": "",
 	"blocklistSaveSuccess": "",
-	"confNoKey": "",
-	"confNoValue": "",
-	"confGuarded": "",
-	"confUpdated": "",
-	"confKeyNotArray": "",
-	"confGetNoExt": "",
-	"confGet": "",
-	"confReset": "",
-	"confNochange": "",
-	"confServerDescription": "",
+	"confNoKey": "Je moet een key opgeven",
+	"confNoValue": "Een waarde is vereist",
+	"confGuarded": "{{name, toTitleCase}} mag niet worden gedeactiveerd.",
+	"confUpdated": "**{{key}}** is succesvol bijgewerkt: `{{response}}`",
+	"confKeyNotArray": "De waarde is niet van type lijst. Gebruik in plaats daarvan de 'reset' actie.",
+	"confGetNoExt": "De sleutel **{{key}}** lijkt niet te bestaan.",
+	"confGet": "De waarde voor **{{key}}** is: `{{value}}`",
+	"confReset": "**{{key}}** is gereset naar: `{{value}}`",
+	"confNochange": "De waarde voor **{{key}}** is hetzelfde gebleven.",
+	"confServerDescription": "Definieer instellingen per server.",
 	"confServerExtended": {
 		"extendedHelp": ""
 	},
-	"confServer": "",
-	"confUserDescription": "",
-	"confDashboardOnlyKey": "",
-	"confUser": "",
-	"confSettingNotSet": "",
+	"confServer": "**Server Instelling {{key}}**\n{{list}}",
+	"confUserDescription": "Definieer instellingen per gebruiker.",
+	"confDashboardOnlyKey": "`{{key}}` kan alleen worden geconfigureerd via het web dashboard (<https://skyra.pw>)",
+	"confUser": "**Gebruiker Instelling {{key}}**\n{{list}}",
+	"confSettingNotSet": "Niet ingesteld",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": [
@@ -35,48 +35,48 @@
 			""
 		]
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Beheer unieke rolesets.",
 	"rolesetExtended": {
 		"extendedHelp": [
+			"Een rol groep is een set van rollen die Skyra identificeert als uniek voor alle leden in de server. Bijvoorbeeld een rol groep genaamd `regio` kan de rollen `Afrika`, `Amerika`, `Azië` en `Europa` bevatten, en leden zullen er maar één van kunnen hebben. Dit is als een soort \"regel\" die wordt toegepast in de drie volgende situaties:",
 			"",
 			"",
-			"",
-			"",
-			""
+			"- Wanneer iemand een rol opeist via reactie rollen.",
+			"- Wanneer iemand een rol handmatig of van een andere bot ontvangt."
 		],
 		"explainedUsage": [
 			[
-				"",
-				""
+				"toevoegen",
+				"Maak een nieuwe rol groep of voeg een bestaande toe."
 			],
 			[
-				"",
-				""
+				"verwijderen",
+				"Een rol van een bestaande rol groep verwijderen."
 			],
 			[
-				"",
-				""
+				"reset",
+				"Verwijder alle rollen van een rol groep of, wanneer niet gespecificeerd, alle bestaande rol groepen."
 			],
 			[
-				"",
-				""
+				"lijst",
+				"Geeft alle rollen weer."
 			],
 			[
-				"",
-				""
+				"automatisch",
+				"Voeg rol groep to of verwijder een rol groep."
 			]
 		],
 		"examples": [
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			"",
-			""
+			"add regions Amerika",
+			"add regions Afrika Amerika Azië Europa",
+			"remove regions Amerika",
+			"reset",
+			"reset regions",
+			"lijst",
+			"regions Amerika",
+			"regions Afrika Amerika Azië Europe"
 		],
-		"reminder": "",
+		"reminder": "Dit commando kan meerdere rollen tegelijkertijd toevoegen en/of verwijderen.",
 		"multiline": ""
 	},
 	"rolesetCreated": "",

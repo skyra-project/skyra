@@ -12,7 +12,7 @@
 	"confKeyNotArray": "Această cheie nu este o listă. Utilizați în schimb acțiunea \"reset\".",
 	"confGetNoExt": "Cheia **{{key}}** nu pare să existe.",
 	"confGet": "Valoarea cheii **{{key}}** este: `{{value}}`",
-	"confReset": "",
+	"confReset": "Cheia **{{key}}** a fost resetată la: `{{value}}`",
 	"confNochange": "Cheia **{{key}}** are deja această valoare.",
 	"confServerDescription": "",
 	"confServerExtended": {

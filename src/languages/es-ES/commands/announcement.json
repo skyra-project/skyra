@@ -1,5 +1,5 @@
 {
-	"announcement": "**Nuevo anuncio para** {{role}}",
+	"announcementHeader": "",
 	"announcementCancelled": "El mensaje ha sido cancelado.",
 	"announcementDescription": "Envía nuevos anuncios, mencionando el rol de anuncio.",
 	"announcementEmbedMentions": "{{header}}:",

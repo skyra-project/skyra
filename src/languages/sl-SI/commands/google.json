@@ -7,22 +7,22 @@
 		],
 		"explainedUsage": [
 			[
-				"",
+				"location",
 				""
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Antarktika",
+			"Arizona"
 		],
-		"multiline": ""
+		"multiline": true
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
-		"currentTime": "",
-		"currentDate": "",
-		"country": "",
-		"gmsOffset": "",
+		"currentTime": "Trenutni Čas",
+		"currentDate": "Trenutni Datum",
+		"country": "Država",
+		"gmsOffset": "GMT Odmik",
 		"dst": ""
 	},
 	"currentTimeDst": "",
@@ -37,8 +37,8 @@
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Discord",
+			"Skyra"
 		]
 	},
 	"gimageDescription": "",
@@ -51,8 +51,8 @@
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Discord",
+			"Skyra"
 		],
 		"reminder": ""
 	},
@@ -60,7 +60,7 @@
 	"lmgtfyExtended": {
 		"explainedUsage": [
 			[
-				"",
+				"query",
 				""
 			]
 		]
@@ -73,16 +73,16 @@
 		],
 		"explainedUsage": [
 			[
-				"",
+				"city",
 				""
 			]
 		],
 		"examples": [
-			"",
-			""
+			"Antarktika",
+			"Arizona"
 		],
 		"reminder": "",
-		"multiline": ""
+		"multiline": true
 	},
 	"errorZeroResults": "",
 	"errorRequestDenied": "",

@@ -22,7 +22,7 @@
 	"confUserDescription": "Define per-user settings.",
 	"confDashboardOnlyKey": "`{{key}}` can only be configured through the web dashboard (<https://skyra.pw>)",
 	"confUser": "",
-	"confSettingNotSet": "",
+	"confSettingNotSet": "Not Set",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
 		"extendedHelp": [
@@ -35,31 +35,31 @@
 			""
 		]
 	},
-	"rolesetDescription": "",
+	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
 		"extendedHelp": [
+			"A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:",
 			"",
 			"",
-			"",
-			"",
-			""
+			"- When somebody claims a role via reaction roles.",
+			"- When somebody receives a role either manually or from another bot."
 		],
 		"explainedUsage": [
 			[
-				"",
-				""
+				"add",
+				"Create a new roleset or add a role to an existing one."
 			],
 			[
-				"",
-				""
+				"remove",
+				"Remove a role from an existing roleset."
 			],
 			[
-				"",
-				""
+				"reset",
+				"Removes all roles from a roleset or, if not specified, all existing rolesets."
 			],
 			[
-				"",
-				""
+				"list",
+				"Lists all rolesets."
 			],
 			[
 				"",

@@ -43,5 +43,5 @@
 	"maximumTooShort": "{{REDCROSS}} El valor ({{value}}) era demasiado corto, esperaba al menos {{minimum}}.",
 	"softActionAlert": "Notificación",
 	"softActionDelete": "Borrar",
-	"softActionLog": ""
+	"softActionLog": "Informe"
 }

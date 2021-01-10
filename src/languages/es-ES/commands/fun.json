@@ -100,6 +100,10 @@
 			"yo"
 		]
 	},
+	"shindeiruDescription": "",
+	"shindeiruExtended": {
+		"extendedHelp": ""
+	},
 	"xkcdDescription": "Lee comics de XKCD.",
 	"xkcdExtended": {
 		"extendedHelp": "**xkcd** es un archivo de cómics repleto de matemáticas, ciencias, sarcasmo e idiomas. Si usted no proporciona ningún argumento, obtendré un cómic aleatorio de xkcd. Si en cambio, usted proporciona un número, yo le mostraré el cómic con dicho número. Pero si proporcionas un título/texto/tema, buscaré un cómic que coincida con tu entrada y lo mostraré. Por ejemplo, `Skyra, xkcd Curiosity` mostrará el cómic número 1091.",
@@ -157,8 +161,8 @@
 		"Pregúntame mañana.",
 		"No lo sé, pregúntele a un físico.",
 		"Nada.",
-		"Dentro de {{10 | random}} y {{1000 | random}}L.",
-		"{{10 | random}}e{{1000 | random}}L.",
+		"",
+		"",
 		"2 o 3 litros, no me recuerdo.",
 		"Infinito.",
 		"1010 litros."
@@ -170,8 +174,8 @@
 		"Pregúntame mañana.",
 		"No lo sé, pregúntele a un físico.",
 		"Nada.",
-		"Entre {{10 | random}} y {{1000 | random}}.",
-		"{{10 | random}}e{{1000 | random}}.",
+		"",
+		"",
 		"2 o 3 litros, no me recuerdo.",
 		"Infinito",
 		"1010."

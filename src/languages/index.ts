@@ -10,7 +10,5 @@ export const handlers = new Map<string, Handler>([
 ]);
 
 export function getHandler(name: string): Handler {
-	const handler = handlers.get(name);
-	if (handler === undefined) throw new Error(`There is no available handler for ${name}.`);
-	return handler;
+	return handlers.get(name) ?? handlers.get('en-US')!;
 }

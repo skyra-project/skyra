@@ -51,24 +51,7 @@
 	},
 	"twitchSubscriptionDescription": "Manage the subscriptions for your server.",
 	"twitchSubscriptionExtended": {
-		"extendedHelp": [
-			"Manage the subscriptions for this server.",
-			"__Online Notifications__",
-			"For content, the best way is writing `--embed`, the notifications will then show up in MessageEmbeds with all available data.",
-			"Alternatively you can set your own content and it will post as a regular message.",
-			"This content can contain some parameters that will be replaced with Twitch data:",
-			"- `%TITLE%` for the stream's title",
-			"- `%VIEWER_COUNT%` for the amount of current viewers,",
-			"- `%GAME_NAME%` for the title being streamed",
-			"- `%GAME_ID%` for the game's ID as seen by Twitch",
-			"- `%LANGUAGE%` for the language the stream is in",
-			"- `%USER_ID%` for the streamer's ID as seen by Twitch",
-			"- and `%USER_NAME%` for the Streamer's twitch username.",
-			"",
-			"__Offline Notifications__",
-			"For offline events none of the variables above are available and you'll have to write your own content.",
-			"You can still use the `--embed` flag for the notification to show in a nice Twitch-purple MessageEmbed."
-		],
+		"extendedHelp": "Manage the subscriptions for this server.\n__Online Notifications__\nFor content, the best way is writing `--embed`, the notifications will then show up in MessageEmbeds with all available data.\nAlternatively you can set your own content and it will post as a regular message.\nThis content can contain some parameters that will be replaced with Twitch data:\n- `%TITLE%` for the stream's title\n- `%VIEWER_COUNT%` for the amount of current viewers,\n- `%GAME_NAME%` for the title being streamed\n- `%GAME_ID%` for the game's ID as seen by Twitch\n- `%LANGUAGE%` for the language the stream is in\n- `%USER_ID%` for the streamer's ID as seen by Twitch\n- and `%USER_NAME%` for the Streamer's twitch username.\n\n__Offline Notifications__\nFor offline events none of the variables above are available and you'll have to write your own content.\nYou can still use the `--embed` flag for the notification to show in a nice Twitch-purple MessageEmbed.",
 		"explainedUsage": [
 			["streamer", "The Twitch username of the streamer to get notifications for."],
 			["channel", "A Discord channel where to post the notifications in."],
@@ -83,7 +66,6 @@
 			"reset",
 			"show kyranet",
 			"show"
-		],
-		"multiline": true
+		]
 	}
 }

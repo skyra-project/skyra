@@ -7,7 +7,6 @@ import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { AgeRatingRatingEnum, Company, Game } from '#utils/External/IgdbTypes';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText, isNumber, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -30,7 +29,6 @@ function isIgdbCompany(company: unknown): company is Company {
 	usage: '<game:str>'
 })
 export default class extends RichDisplayCommand {
-	private readonly releaseDateTimestamp = new Timestamp('MMMM d YYYY');
 	private readonly urlRegex = /https?:/i;
 	private readonly igdbRequestHeaders = {
 		'Content-Type': Mime.Types.TextPlain,
@@ -110,7 +108,7 @@ export default class extends RichDisplayCommand {
 							'',
 							`**${titles.userScore}**: ${userRating}`,
 							`**${titles.ageRating}**: ${this.resolveAgeRating(game.age_ratings, fieldsData.noAgeRatings)}`,
-							`**${titles.releaseDate}**: ${this.resolveReleaseDate(game.release_dates, fieldsData.noReleaseDate)}`,
+							`**${titles.releaseDate}**: ${this.resolveReleaseDate(t, game.release_dates, fieldsData.noReleaseDate)}`,
 							`**${titles.genres}**: ${this.resolveGenres(game.genres, fieldsData.noGenres)}`,
 							`**${titles.developers}**: ${this.resolveDevelopers(game.involved_companies, fieldsData.noDevelopers)}`,
 							`**${titles.platform}**: ${this.resolvePlatforms(game.platforms, fieldsData.noPlatforms)}`
@@ -157,9 +155,9 @@ export default class extends RichDisplayCommand {
 			.join(', ');
 	}
 
-	private resolveReleaseDate(releaseDates: Game['release_dates'], fallback: string) {
+	private resolveReleaseDate(t: TFunction, releaseDates: Game['release_dates'], fallback: string) {
 		if (!releaseDates || releaseDates.length === 0 || isArrayOfNumbers(releaseDates) || !releaseDates[0].date) return fallback;
-		return this.releaseDateTimestamp.displayUTC(releaseDates[0].date * 1000);
+		return t(LanguageKeys.Globals.TimeDateValue, { value: releaseDates[0].date * 1000 });
 	}
 
 	private resolvePlatforms(platforms: Game['platforms'], fallback: string) {

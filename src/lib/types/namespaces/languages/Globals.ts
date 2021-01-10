@@ -10,5 +10,7 @@ export const Unknown = T<string>('globals:unknown');
 export const OrdinalValue = FT<{ value: string }, string>('globals:ordinalValue');
 export const DurationValue = FT<{ value: number }, string>('globals:durationValue');
 export const GroupDigitsValue = FT<{ value: number }, string>('globals:groupDigitsValue');
+export const TimeDateValue = FT<{ value: number }, string>('globals:timeDateValue');
+export const TimeFullValue = FT<{ value: number }, string>('globals:timeFullValue');
 export const AndListValue = FT<{ value: string[] }, string>('globals:andListValue');
 export const OrListValue = FT<{ value: string[] }, string>('globals:orListValue');

@@ -2,7 +2,6 @@ import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { fetch, FetchResultTypes } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
@@ -17,8 +16,6 @@ import { KlasaMessage } from 'klasa';
 	usage: '[query:string]'
 })
 export default class extends SkyraCommand {
-	private readonly timestamp = new Timestamp('MMMM, dddd dd YYYY');
-
 	public async run(message: KlasaMessage, [input]: [string]) {
 		const query = typeof input === 'undefined' ? null : /^\d+$/.test(input) ? Number(input) : input;
 		const t = await message.fetchT();
@@ -33,14 +30,14 @@ export default class extends SkyraCommand {
 				.setImage(comic.img)
 				.setTitle(comic.title)
 				.setURL(`https://xkcd.com/${comicNumber}/`)
-				.setFooter(`XKCD | ${comic.num} | ${this.getTime(comic.year, comic.month, comic.day)}`)
+				.setFooter(`XKCD | ${comic.num}`)
 				.setDescription(comic.alt)
-				.setTimestamp()
+				.setTimestamp(this.getTime(comic.year, comic.month, comic.day))
 		);
 	}
 
 	private getTime(year: string, month: string, day: string) {
-		return this.timestamp.display(new Date(Number(year), Number(month) - 1, Number(day)));
+		return new Date(Number(year), Number(month) - 1, Number(day));
 	}
 
 	private async getNumber(query: string | number | null, t: TFunction) {

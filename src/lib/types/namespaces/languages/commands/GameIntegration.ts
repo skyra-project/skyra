@@ -191,7 +191,7 @@ export const OverwatchEmbedDataStats = FT<
 		bronzeMedals: string;
 	}
 >('commands/gameIntegration:overwatchEmbedDataStats');
-export const OverwatchEmbedDataTopHero = FT<{ name: string; playTime: string }, string>('commands/gameIntegration:overwatchEmbedDataTopHero');
+export const OverwatchEmbedDataTopHero = FT<{ name: string; playTime: number }, string>('commands/gameIntegration:overwatchEmbedDataTopHero');
 export const OverwatchEmbedData = FT<
 	{
 		authorName: string;

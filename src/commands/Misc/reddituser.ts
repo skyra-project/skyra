@@ -6,7 +6,6 @@ import { Reddit } from '#lib/types/definitions/Reddit';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText, roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
@@ -21,7 +20,6 @@ import { TFunction } from 'i18next';
 	usage: '<user:user>'
 })
 export default class extends RichDisplayCommand {
-	private joinedRedditTimestamp = new Timestamp('MMMM d YYYY');
 	private usernameRegex = /^(?:\/?u\/)?[A-Za-z0-9_-]*$/;
 
 	public async init() {
@@ -57,7 +55,7 @@ export default class extends RichDisplayCommand {
 		const titles = t(LanguageKeys.Commands.Misc.RedditUserTitles, { returnObjects: true });
 		const fieldsData = t(LanguageKeys.Commands.Misc.RedditUserData, {
 			user: about.name,
-			timestamp: this.joinedRedditTimestamp.displayUTC(about.created * 1000),
+			timestamp: about.created * 1000,
 			returnObjects: true
 		});
 		const [bestComment] = comments;

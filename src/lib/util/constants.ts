@@ -373,6 +373,9 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 						case LanguageFormatters.Duration: {
 							return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
 						}
+						case LanguageFormatters.TimeDate:
+							return getHandler(language!).timeDate.format(value as number);
+						case LanguageFormatters.TimeFull:
 						case LanguageFormatters.Timestamp: {
 							return getHandler(language!).timeFull.format(value as number);
 						}

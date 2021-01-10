@@ -5,7 +5,6 @@ import { GuildMessage } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors, Emojis } from '#utils/constants';
 import { pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Invite, MessageEmbed } from 'discord.js';
 import type { TFunction } from 'i18next';
@@ -18,8 +17,6 @@ import type { TFunction } from 'i18next';
 	requiredGuildPermissions: ['MANAGE_GUILD']
 })
 export default class extends RichDisplayCommand {
-	private inviteTimestamp = new Timestamp('YYYY/MM/DD HH:mm');
-
 	public async run(message: GuildMessage) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -61,7 +58,7 @@ export default class extends RichDisplayCommand {
 							`**${embedData.temporary}**: ${invite.temporary ? Emojis.GreenTick : Emojis.RedCross}`
 						].join('\n')
 					)
-					.addField(embedData.createdAt, this.resolveCreationDate(invite.createdTimestamp, embedData.createdAtUnknown), true)
+					.addField(embedData.createdAt, this.resolveCreationDate(t, invite.createdTimestamp, embedData.createdAtUnknown), true)
 					.addField(embedData.expiresIn, this.resolveExpiryDate(t, invite.expiresTimestamp, embedData.neverExpress), true)
 			);
 		}
@@ -79,8 +76,8 @@ export default class extends RichDisplayCommand {
 		return fallback;
 	}
 
-	private resolveCreationDate(createdTimestamp: Invite['createdTimestamp'], fallback: string) {
-		if (createdTimestamp !== null) return this.inviteTimestamp.display(createdTimestamp);
+	private resolveCreationDate(t: TFunction, createdTimestamp: Invite['createdTimestamp'], fallback: string) {
+		if (createdTimestamp !== null) return t(LanguageKeys.Globals.TimeFullValue, { value: createdTimestamp });
 		return fallback;
 	}
 }

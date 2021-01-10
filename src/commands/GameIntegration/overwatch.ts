@@ -8,7 +8,6 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { OverwatchEmbedDataReturn } from '#lib/types/namespaces/languages/commands/GameIntegration';
 import { BrandingColors, Time } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Collection, MessageEmbed } from 'discord.js';
@@ -23,8 +22,6 @@ import { TFunction } from 'i18next';
 	usageDelim: ' '
 })
 export default class extends RichDisplayCommand {
-	private readonly kPlayTimestamp = new Timestamp('H [hours] - m [minutes]');
-
 	public async run(message: GuildMessage, [platform = 'pc', player]: [PlatformUnion, string]) {
 		const t = await message.fetchT();
 
@@ -195,7 +192,7 @@ export default class extends RichDisplayCommand {
 			...topHeroes.map((topHero) =>
 				t(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataTopHero, {
 					name: topHero.hero,
-					playTime: this.kPlayTimestamp.display(topHero.time)
+					playTime: topHero.time
 				})
 			)
 		].join('\n');

@@ -6,7 +6,6 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText, toTitleCase } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -23,8 +22,6 @@ const API_URL = `https://${TOKENS.NINTENDO_ID}-dsn.algolia.net/1/indexes/*/queri
 	usage: '<gameName:string>'
 })
 export default class extends RichDisplayCommand {
-	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-
 	public async run(message: GuildMessage, [gameName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -97,7 +94,9 @@ export default class extends RichDisplayCommand {
 					.addField(titles.availability, game.availability[0], true)
 					.addField(
 						titles.releaseDate,
-						game.releaseDateMask === 'TBD' ? game.releaseDateMask : this.releaseDateTimestamp.displayUTC(game.releaseDateMask),
+						game.releaseDateMask === 'TBD'
+							? game.releaseDateMask
+							: t(LanguageKeys.Globals.TimeDateValue, { value: new Date(game.releaseDateMask).getTime() }),
 						true
 					)
 					.addField(titles.numberOfPlayers, toTitleCase(game.players), true)

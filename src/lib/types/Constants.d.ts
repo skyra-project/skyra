@@ -19,6 +19,8 @@ export const enum LanguageFormatters {
 	OrList = 'orList',
 	Permissions = 'permissions',
 	Random = 'random',
+	TimeDate = 'timeDate',
+	TimeFull = 'timeFull',
 	Timestamp = 'timestamp',
 	ToTitleCase = 'toTitleCase'
 }

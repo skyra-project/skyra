@@ -7,7 +7,6 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -23,8 +22,6 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 	usage: '<animeName:string>'
 })
 export default class extends RichDisplayCommand {
-	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
-
 	public async run(message: GuildMessage, [animeName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -114,7 +111,7 @@ export default class extends RichDisplayCommand {
 					.addField(embedData.episodes, entry.episodeCount ? entry.episodeCount : embedData.stillAiring, true)
 					.addField(embedData.episodeLength, t(LanguageKeys.Globals.DurationValue, { value: entry.episodeLength * 60 * 1000 }), true)
 					.addField(embedData.ageRating, entry.ageRating, true)
-					.addField(embedData.firstAirDate, this.kTimestamp.display(entry.startDate * 1000), true)
+					.addField(embedData.firstAirDate, t(LanguageKeys.Globals.TimeDateValue, { value: entry.startDate * 1000 }), true)
 					.addField(embedData.watchIt, `**[${title}](${animeURL})**`)
 			);
 		}

@@ -32,7 +32,7 @@ export const RandRedditMessage = FT<{ title: string; author: string; url: string
 export const RandRedditRequiredReddit = T<string>('commands/misc:randRedditRequiredReddit');
 export const RedditUserComplexityLevels = T<string[]>('commands/misc:redditUserComplexityLevels');
 export const RedditUserData = FT<
-	{ user: string; timestamp: string },
+	{ user: string; timestamp: number },
 	{ overviewFor: string; permalink: string; dataAvailableFor: string; joinedReddit: string }
 >('commands/misc:redditUserData');
 export const RedditUserDescription = T<string>('commands/misc:redditUserDescription');

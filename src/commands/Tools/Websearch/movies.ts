@@ -7,7 +7,6 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -22,8 +21,6 @@ import { TFunction } from 'i18next';
 	usageDelim: 'y:'
 })
 export default class extends RichDisplayCommand {
-	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-
 	public async run(message: GuildMessage, [movie, year]: [string, string?]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -86,7 +83,13 @@ export default class extends RichDisplayCommand {
 					)
 					.addField(titles.userScore, movie.vote_average ? movie.vote_average : fieldsData.movieInProduction, true)
 					.addField(titles.status, movie.status, true)
-					.addField(titles.releaseDate, this.releaseDateTimestamp.displayUTC(movie.release_date), true)
+					.addField(
+						titles.releaseDate,
+						movie.release_date
+							? t(LanguageKeys.Globals.TimeDateValue, { value: new Date(movie.release_date).getTime() })
+							: t(LanguageKeys.Globals.Unknown),
+						true
+					)
 					.addField(
 						titles.imdbPage,
 						movie.imdb_id ? `[${fieldsData.linkClickHere}](http://www.imdb.com/title/${movie.imdb_id})` : fieldsData.none,

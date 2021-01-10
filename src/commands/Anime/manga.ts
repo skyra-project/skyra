@@ -7,7 +7,6 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { TOKENS } from '#root/config';
 import { BrandingColors, Mime } from '#utils/constants';
 import { fetch, FetchMethods, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -23,8 +22,6 @@ const API_URL = `https://${TOKENS.KITSU_ID}-dsn.algolia.net/1/indexes/production
 	usage: '<mangaName:string>'
 })
 export default class extends RichDisplayCommand {
-	private readonly kTimestamp = new Timestamp('MMMM d YYYY');
-
 	public async run(message: GuildMessage, [mangaName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -112,7 +109,7 @@ export default class extends RichDisplayCommand {
 					.addField(embedData.type, t(LanguageKeys.Commands.Anime.MangaTypes, { returnObjects: true })[type.toUpperCase()] || type, true)
 					.addField(embedData.score, score, true)
 					.addField(embedData.ageRating, entry.ageRating ? entry.ageRating : embedData.none, true)
-					.addField(embedData.firstPublishDate, this.kTimestamp.display(entry.startDate * 1000), true)
+					.addField(embedData.firstPublishDate, t(LanguageKeys.Globals.TimeDateValue, { value: entry.startDate * 1000 }), true)
 					.addField(embedData.readIt, `**[${title}](${mangaURL})**`)
 			);
 		}

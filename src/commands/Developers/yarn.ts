@@ -5,7 +5,6 @@ import { YarnPkg } from '#lib/types/definitions/Yarnpkg';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { cleanMentions, fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -30,9 +29,6 @@ import { KlasaMessage } from 'klasa';
 	]
 ])
 export default class extends SkyraCommand {
-	// eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-	#dateTimestamp = new Timestamp('YYYY-MM-DD');
-
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const t = await message.fetchT();
 		// TODO(VladFrangu): Apparently make a `message.loading(t)` kind of thing,
@@ -65,8 +61,12 @@ export default class extends SkyraCommand {
 			: null;
 
 		const author = this.parseAuthor(result.author);
-		const dateCreated = result.time ? this.#dateTimestamp.displayUTC(result.time.created) : t(LanguageKeys.Globals.Unknown);
-		const dateModified = result.time ? this.#dateTimestamp.displayUTC(result.time.modified) : t(LanguageKeys.Globals.Unknown);
+		const dateCreated = result.time
+			? t(LanguageKeys.Globals.TimeDateValue, { value: new Date(result.time.created).getTime() })
+			: t(LanguageKeys.Globals.Unknown);
+		const dateModified = result.time
+			? t(LanguageKeys.Globals.TimeDateValue, { value: new Date(result.time.modified).getTime() })
+			: t(LanguageKeys.Globals.Unknown);
 
 		const { deprecated } = latestVersion;
 		const description = cutText(result.description ?? '', 1000);
@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 						description,
 						'',
 						author ? t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionAuthor, { author }) : undefined,
-						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers, { value: maintainers }),
+						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers, { maintainers }),
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLatestVersion, { latestVersionNumber }),
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLicense, { license }),
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMainFile, { mainFile }),

@@ -157,7 +157,7 @@
 		"extendedHelp": "The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.\nThe leaderboards refresh every 10 minutes.",
 		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds."
 	},
-	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results}} Total",
+	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, groupDigits}} Total",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {
 		"extendedHelp": "How much until the next level?",

@@ -5,7 +5,6 @@ import { Schedules } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
@@ -103,8 +102,6 @@ interface ReminderScheduledTask extends ScheduleEntity {
 	]
 ])
 export default class extends SkyraCommand {
-	private readonly kTimestamp = new Timestamp('YYYY/MM/DD HH:mm:ss');
-
 	public async create(message: KlasaMessage, [duration, description]: [number, string]) {
 		const task = await this.client.schedules.add(Schedules.Reminder, Date.now() + duration, {
 			catchUp: true,
@@ -131,13 +128,19 @@ export default class extends SkyraCommand {
 				.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
 		);
 
+		const t = await message.fetchT();
 		const pages = chunk(
-			tasks.map((task) => `\`${task.id}\` - \`${this.kTimestamp.display(task.time)}\` - ${cutText(task.data.content as string, 40)}`),
+			tasks.map(
+				(task) =>
+					`\`${task.id}\` - \`${t(LanguageKeys.Globals.TimeFullValue, { value: task.time })}\` - ${cutText(
+						task.data.content as string,
+						40
+					)}`
+			),
 			10
 		);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
-		const t = await message.fetchT();
 		const response = await message.send(
 			new MessageEmbed({
 				description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })),

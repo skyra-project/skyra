@@ -8,7 +8,6 @@ import { CLIENT_ID } from '#root/config';
 import { Moderation } from '#utils/constants';
 import { urlRegex } from '#utils/Links/UrlRegex';
 import { cleanMentions, floatPromise } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { RESTJSONErrorCodes } from 'discord-api-types/v6';
 import { Collection, EmbedField, Guild, Message, MessageAttachment, MessageEmbed, TextChannel, User } from 'discord.js';
@@ -45,7 +44,6 @@ const enum Filter {
 	usageDelim: ' '
 })
 export default class extends SkyraCommand {
-	private readonly timestamp = new Timestamp('YYYY/MM/DD hh:mm:ss');
 	private readonly kColor = Moderation.metadata.get(Moderation.TypeCodes.Prune)!.color;
 	private readonly kMessageRegExp = constants.MENTION_REGEX.snowflake;
 	private readonly kInviteRegExp = /(?:discord\.(?:gg|io|me|plus|link)|invite\.(?:gg|ink)|discord(?:app)?\.com\/invite)\/(?:[\w-]{2,})/i;
@@ -218,25 +216,25 @@ export default class extends SkyraCommand {
 	private generateAttachment(t: TFunction, messages: Collection<string, GuildMessage>) {
 		const header = t(LanguageKeys.Commands.Moderation.PruneLogHeader);
 		const processed = messages
-			.map((message) => this.formatMessage(message))
+			.map((message) => this.formatMessage(t, message))
 			.reverse()
 			.join('\n\n');
 		const buffer = Buffer.from(`${header}\n\n${processed}`);
 		return new MessageAttachment(buffer, 'prune.txt');
 	}
 
-	private formatMessage(message: GuildMessage) {
-		const header = this.formatHeader(message);
+	private formatMessage(t: TFunction, message: GuildMessage) {
+		const header = this.formatHeader(t, message);
 		const content = this.formatContents(message);
 		return `${header}\n${content}`;
 	}
 
-	private formatHeader(message: GuildMessage) {
-		return `${this.formatTimestamp(message.createdTimestamp)} ${message.system ? 'SYSTEM' : this.formatAuthor(message.author)}`;
+	private formatHeader(t: TFunction, message: GuildMessage) {
+		return `${this.formatTimestamp(t, message.createdTimestamp)} ${message.system ? 'SYSTEM' : this.formatAuthor(message.author)}`;
 	}
 
-	private formatTimestamp(timestamp: number) {
-		return `[${this.timestamp.displayUTC(timestamp)}]`;
+	private formatTimestamp(t: TFunction, timestamp: number) {
+		return `[${t(LanguageKeys.Globals.TimeFullValue, { value: timestamp })}]`;
 	}
 
 	private formatAuthor(author: User) {

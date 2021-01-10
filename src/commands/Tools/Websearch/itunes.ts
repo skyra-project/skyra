@@ -5,7 +5,6 @@ import { GuildMessage } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
 import { fetch, FetchResultTypes, pickRandom } from '#utils/util';
-import { Timestamp } from '@sapphire/time-utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
@@ -17,8 +16,6 @@ import { TFunction } from 'i18next';
 	usage: '<song:str>'
 })
 export default class extends RichDisplayCommand {
-	private releaseDateTimestamp = new Timestamp('MMMM d YYYY');
-
 	public async run(message: GuildMessage, [song]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
@@ -64,7 +61,7 @@ export default class extends RichDisplayCommand {
 					.addField(titles.collection, `[${song.collectionName}](${song.collectionViewUrl})`, true)
 					.addField(titles.collectionPrice, `$${song.collectionPrice}`, true)
 					.addField(titles.trackPrice, `$${song.trackPrice}`, true)
-					.addField(titles.trackReleaseDate, this.releaseDateTimestamp.displayUTC(song.releaseDate), true)
+					.addField(titles.trackReleaseDate, t(LanguageKeys.Globals.TimeDateValue, { value: new Date(song.releaseDate).getTime() }), true)
 					.addField(titles.numberOfTracksInCollection, song.trackCount, true)
 					.addField(titles.primaryGenre, song.primaryGenreName, true)
 					.addField(titles.preview, `[${titles.previewLabel}](${song.previewUrl})`, true)

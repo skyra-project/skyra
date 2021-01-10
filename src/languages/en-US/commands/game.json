@@ -494,29 +494,6 @@
 	"triviaInvalidCategory": "Invalid category: Please use `Skyra, help trivia` for a list of categories.",
 	"triviaNoAnswer": "Looks like nobody got it! The right answer was **{{correctAnswer}}**.",
 	"triviaWinner": "We have a winner! {{winner}} had a right answer with **{{correctAnswer}}**!",
-	"vaultDescription": "Store your {{SHINY}}'s securily in a vault so you cannot accidentally spend them gambling.",
-	"vaultEmbedData": {
-		"accountMoney": "Account Money",
-		"accountVault": "Account Vault",
-		"depositedDescription": "Deposited {{coins}} {{SHINY}} from your account balance into your vault.",
-		"showDescription": "Your current account and vault balance are:",
-		"withdrewDescription": "Withdrew {{coins}} {{SHINY}} from your vault."
-	},
-	"vaultExtended": {
-		"extendedHelp": [
-			"This is for the greedy spenders among us that tend to play a bit too much at the slot machine or spin the wheel of fortune.",
-			"You need to actively withdraw {{SHINY}}'s from your vault before they can be spend gambling."
-		],
-		"explainedUsage": [
-			["action", "The action to perform: **withdraw** to withdraw from your vault or **deposit** to deposit into your vault."],
-			["money", "The amount of {{SHINY}}'s to withdraw or deposit."]
-		],
-		"examples": ["deposit 10000.", "withdraw 10000."],
-		"multiline": true
-	},
-	"vaultInvalidCoins": "I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!",
-	"vaultNotEnoughInVault": "I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is {{vault}} {{SHINY}}",
-	"vaultNotEnoughMoney": "I am sorry, but you do not have enough money to make that deposit! Your current money balance is {{money}} {{SHINY}}",
 	"wheelOfFortuneCanvasTextLost": "You lost",
 	"wheelOfFortuneCanvasTextWon": "You won",
 	"wheelOfFortuneDescription": "Gamble your shinies by spinning a wheel of fortune",

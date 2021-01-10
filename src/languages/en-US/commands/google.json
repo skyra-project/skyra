@@ -36,6 +36,7 @@
 	"lmgtfyExtended": {
 		"explainedUsage": [["query", "The query to google"]]
 	},
+	"lmgtfyClick": "Click me to search",
 	"weatherDescription": "Check the weather status in a location.",
 	"weatherExtended": {
 		"extendedHelp": [

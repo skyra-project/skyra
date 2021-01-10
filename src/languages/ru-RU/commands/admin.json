@@ -80,7 +80,7 @@
 		"multiline": true
 	},
 	"rolesetCreated": "",
-	"rolesetAdded": "У уникальная роли {{name}} теперь также есть следующие роли: {{roles}}.",
+	"rolesetAdded": "",
 	"rolesetInvalidName": "Вы не можете удалить набор уникальных {{name}} ролей, так как он не существует.",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} В этой группе отсутствуют роли.",

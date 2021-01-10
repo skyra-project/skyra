@@ -2,8 +2,15 @@
 	"suggestDescription": "",
 	"suggestExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
 		"reminder": ""
 	},
 	"suggestNoSetup": "",
@@ -16,9 +23,15 @@
 	"resolveSuggestionDescription": "",
 	"resolveSuggestionExtended": {
 		"extendedHelp": "",
-		"examples": ["", "", "", "", "", ""],
-		"reminder": ["", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"resolveSuggestionInvalidId": "",
 	"resolveSuggestionMessageNotFound": "",

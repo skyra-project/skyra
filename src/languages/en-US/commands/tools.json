@@ -66,7 +66,7 @@
 	},
 	"duckDuckGoLookalso": "Related to this topic:",
 	"duckDuckGoNotfound": "I am sorry, but DuckDuckGo API returned a blank response. Try again with different keywords.",
-	"emojiCustom": "→ {{Emoji ::| inlineCodeBlock}} **{{emoji}}**\n→ {{Type  ::| inlineCodeBlock}} **Custom**\n→ {{ID    ::| inlineCodeBlock}} **{{id}}**",
+	"emojiCustom": "→ `Emoji ::` **{{emoji}}**\n→ `Type  ::` **Custom**\n→ `ID    ::` **{{id}}**",
 	"emojiDescription": "Get info on an emoji.",
 	"emojiExtended": {
 		"extendedHelp": "I'll give you the emoji name, whether it is a custom emoji or not, the emoji ID and a large image preview of the emoji.",

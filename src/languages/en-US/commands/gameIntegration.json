@@ -101,16 +101,12 @@
 	"clashofclansPlayersQueryFail": "I am sorry, but I was unable to get data on the player with player tag \"{{playertag}}\".",
 	"FFXIVDescription": "Queries the Final Fantasy 14 API for game data",
 	"FFXIVExtended": {
-		"extendedHelp": [
-			"This command allows you to character and item data for FFXIV.",
-			"For item a wildcard search is performed so if your term is in the middle of the name it can still match."
-		],
+		"extendedHelp": "This command allows you to character and item data for FFXIV.\nFor item a wildcard search is performed so if your term is in the middle of the name it can still match.",
 		"explainedUsage": [
 			["search type", "(optional, defaults to \"character\") \"character\" or \"item\""],
 			["query", "The player or thing to search."]
 		],
-		"examples": ["character Laytlan Ardevon", "Laytlan Ardevon", "item potion"],
-		"multiline": true
+		"examples": ["character Laytlan Ardevon", "Laytlan Ardevon", "item potion"]
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "Server - Datacenter",
@@ -174,17 +170,13 @@
 	},
 	"overwatchDescription": "Gets player statistics for an Overwatch player",
 	"overwatchExtended": {
-		"extendedHelp": [
-			"This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.",
-			"By default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform to \"xbl\" or \"psn\" respectively."
-		],
+		"extendedHelp": "This command retrieves statistics for any Overwatch player that plays on PC, Xbox or Playstation.\nBy default it will look at PC players, if you want to check for Xbox or Playstation players then set the platform to \"xbl\" or \"psn\" respectively.",
 		"explainedUsage": [
 			["platform", "(optional, defaults to \"pc\") Platform the player plays on, one of \"pc\", \"xbl\", or \"psn\""],
 			["player", "For PC the full blizzard tag, for console the username. Case sensitive!"]
 		],
 		"examples": ["bame#1784", "xbl Dorus NL gamer", "psn decoda_24"],
-		"reminder": "**Player names are case sensitive!**",
-		"multiline": true
+		"reminder": "**Player names are case sensitive!**"
 	},
 	"overwatchInvalidPlayerName": "\"{{playerTag}}\" is an invalid player name\nFor PC it has to be their full Blizzard BattleTag, for example \"bame#1784\".\nFor Xbox and Playstation it just has to be their username.",
 	"overwatchQueryFail": "Failed to get data for \"{{player}}\", are you sure they play on \"{{platform}}\"?\nAlso make sure to get the casing right, names are case sensitive.",

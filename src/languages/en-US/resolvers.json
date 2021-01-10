@@ -18,7 +18,7 @@
 	"invalidInt": "{{name}} must be an integer.",
 	"invalidInvite": "{{name}} must be a valid invite link.",
 	"invalidLiteral": "Your option did not match the only possibility: {{name}}",
-	"invalidLanguage": "{{name}} must be a valid and supported language.\n**Hint**: the following are supported: {{possibles, andList}}",
+	"invalidLanguage": "{{name}} must be a valid and supported language.\n**Hint**: the following are supported: {{possibles, andList}}.\nFurthermore, you can add more (or improve the existing ones) at <https://translation.skyra.pw>!",
 	"invalidMember": "{{name}} must be a mention or valid user id.",
 	"invalidMessage": "{{name}} must be a valid message id.",
 	"invalidPiece": "{{name}} must be a valid {{piece}} name.",

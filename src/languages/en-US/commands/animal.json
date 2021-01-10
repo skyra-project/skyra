@@ -1,7 +1,7 @@
 {
 	"catfactDescription": "Let me tell you a mysterious cat fact.",
 	"catfactExtended": {
-		"extendedHelp": "You know cats are very curious, right? They certainly have a lot of fun and weird facts.\nThis command queries catfact.ninja and retrieves a fact so you can read it."
+		"extendedHelp": "You know cats are very curious, right? They certainly have a lot of fun and weird facts.\nWith this command you will get a random fact."
 	},
 	"catfactTitle": "Cat Fact",
 	"dogDescription": "Cute doggos! ❤",

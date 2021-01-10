@@ -251,5 +251,7 @@
 			["HSL", "hsl(350, 100, 100)"],
 			["B10", "14671839"]
 		]
-	}
+	},
+	"vaultDescription": "Store your {{SHINY}}'s securely in a vault so you cannot accidentally spend them gambling.",
+	"vaultExtended": "This is for the greedy spenders among us that tend to play a bit too much at the slot machine or spin the wheel of fortune.\nYou need to actively withdraw {{SHINY}}'s from your vault before they can be spend gambling."
 }

@@ -709,6 +709,13 @@
   resolved "https://registry.yarnpkg.com/@sapphire/eslint-config/-/eslint-config-2.0.0.tgz#33d07dfe37b583010fbc32c555e2ae5e9ff4de68"
   integrity sha512-f/tNgR9nP8Tjb0MdQ9OjKnbSfTQGJFWGlX1dUb+o0vW3uwx0J2IBXBslCn1rsuz1mzp7XsVzj2jSxyASBugyUQ==
 
+"@sapphire/pieces@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/pieces/-/pieces-1.1.0.tgz#ec82ea79fc3c87bd4c712cb4c8021b5663eb49b8"
+  integrity sha512-/XmIkHGHi4ycit/+dvY5ZwWLY/z10k5aXxRT8WbHtqDpc5yyhG7zR1U6fqKD9VNU8Ii1hqB2eEzWNeAvlTnwyw==
+  dependencies:
+    "@discordjs/collection" "^0.1.6"
+
 "@sapphire/plugin-i18next@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@sapphire/plugin-i18next/-/plugin-i18next-1.0.0.tgz#e8abd64970e6dee2ae484b752cf61895d981c662"

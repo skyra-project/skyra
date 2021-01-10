@@ -67,10 +67,12 @@ export default class extends SkyraCommand {
 			.toBufferAsync();
 
 		// Return the lovely message
-		const data = await message.resolveKey(LanguageKeys.Commands.Misc.ShipData, {
+		const t = await message.fetchT();
+		const data = t(LanguageKeys.Commands.Misc.ShipData, {
 			romeoUsername: firstUser.username,
 			julietUsername: secondUser.username,
-			shipName: this.getShipName([...firstUser.username], [...secondUser.username])
+			shipName: this.getShipName([...firstUser.username], [...secondUser.username]),
+			returnObjects: true
 		});
 		return message.send([data.title, data.description].join('\n'), { files: [{ attachment, name: 'ship.png' }] });
 	}

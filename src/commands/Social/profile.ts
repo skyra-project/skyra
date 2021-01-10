@@ -52,7 +52,8 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = await message.resolveKey(LanguageKeys.Commands.Social.Profile);
+		const t = await message.fetchT();
+		const title = t(LanguageKeys.Commands.Social.Profile, { returnObjects: true });
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));

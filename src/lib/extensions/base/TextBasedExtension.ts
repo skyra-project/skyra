@@ -1,4 +1,5 @@
 import { CustomFunctionGet, CustomGet, NonNullObject } from '#lib/types';
+import { Primitive } from '@sapphire/utilities';
 import { Client, Constructable, Message, MessageAdditions, MessageOptions, PartialTextBasedChannelFields, SplitOptions } from 'discord.js';
 import { TFunction } from 'i18next';
 
@@ -51,7 +52,10 @@ export interface TextBasedExtensions {
 	fetchT(): Promise<TFunction>;
 
 	resolveKey<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
-	resolveKey<K extends string, TArgs, TReturn>(value: CustomFunctionGet<K, TArgs, TReturn>, args: TArgs): Promise<TReturn>;
+	resolveKey<K extends string, TArgs, TReturn>(
+		value: CustomFunctionGet<K, TArgs, TReturn>,
+		args: TArgs
+	): Promise<TReturn extends Primitive | any[] ? TReturn : never>;
 
 	sendTranslated<K extends string, TArgs, TReturn>(
 		key: CustomFunctionGet<K, TArgs, TReturn>,

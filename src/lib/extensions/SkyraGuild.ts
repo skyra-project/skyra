@@ -3,7 +3,9 @@ import { GuildEntity, SettingsCollectionCallback } from '#lib/database';
 import { ModerationManager } from '#lib/structures/managers/ModerationManager';
 import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
+import { CustomFunctionGet, CustomGet } from '#lib/types';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
+import { Primitive } from '@sapphire/utilities';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Message, Structures } from 'discord.js';
 import { TFunction } from 'i18next';
@@ -52,7 +54,11 @@ declare module 'discord.js' {
 
 		fetchLanguage(): Promise<string>;
 		fetchT(): Promise<TFunction>;
-		resolveKey(key: string, ...values: readonly any[]): Promise<string>;
+		resolveKey<K extends string, TReturn>(value: CustomGet<K, TReturn>): Promise<TReturn>;
+		resolveKey<K extends string, TArgs, TReturn>(
+			value: CustomFunctionGet<K, TArgs, TReturn>,
+			args: TArgs
+		): Promise<TReturn extends Primitive | any[] ? TReturn : never>;
 
 		readSettings<K1 extends keyof T>(paths: readonly [K1]): Promise<[T[K1]]>;
 		readSettings<K1 extends keyof T, K2 extends keyof T>(paths: readonly [K1, K2]): Promise<[T[K1], T[K2]]>;

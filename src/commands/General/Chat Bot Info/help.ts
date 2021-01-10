@@ -3,15 +3,13 @@ import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand'
 import { UserRichDisplay } from '#lib/structures/UserRichDisplay';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
-import { LanguageHelp, LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
+import { LanguageHelp } from '#utils/LanguageHelp';
 import { pickRandom } from '#utils/util';
-import { isFunction, isNumber, noop } from '@sapphire/utilities';
+import { isNumber, noop } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { Collection, MessageEmbed, Permissions, TextChannel } from 'discord.js';
 import { TFunction } from 'i18next';
 import { Command, KlasaMessage } from 'klasa';
-
-type ExtendedHelpData = string | LanguageHelpDisplayOptions;
 
 const PERMISSIONS_RICHDISPLAY = new Permissions([
 	Permissions.FLAGS.MANAGE_MESSAGES,
@@ -139,12 +137,7 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildCommandHelp(message: KlasaMessage, t: TFunction, command: SkyraCommand) {
-		const builderData = t(LanguageKeys.System.HelpTitles, { returnObjects: true }) as {
-			explainedUsage: string;
-			possibleFormats: string;
-			examples: string;
-			reminders: string;
-		};
+		const builderData = t(LanguageKeys.System.HelpTitles, { returnObjects: true });
 
 		const builder = new LanguageHelp()
 			.setExplainedUsage(builderData.explainedUsage)
@@ -152,21 +145,16 @@ export default class extends SkyraCommand {
 			.setPossibleFormats(builderData.possibleFormats)
 			.setReminder(builderData.reminders);
 
-		const extendedHelpData = t(command.extendedHelp, { returnObjects: true }) as ExtendedHelpData;
-
-		const extendedHelp = typeof extendedHelpData === 'string' ? extendedHelpData : builder.display(command.name, extendedHelpData);
+		const extendedHelpData = t(command.extendedHelp, { returnObjects: true });
+		const extendedHelp = builder.display(command.name, extendedHelpData);
 
 		const data = t(LanguageKeys.Commands.General.HelpData, {
 			footerName: command.name,
 			titleDescription: t(command.description),
 			usage: command.usage.fullUsage(message),
-			extendedHelp
-		}) as {
-			title: string;
-			usage: string;
-			extended: string;
-			footer: string;
-		};
+			extendedHelp,
+			returnObjects: true
+		});
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setAuthor(this.client.user!.username, this.client.user!.displayAvatarURL({ size: 128, format: 'png' }))
@@ -177,7 +165,7 @@ export default class extends SkyraCommand {
 	}
 
 	private formatCommand(t: TFunction, prefix: string, richDisplay: boolean, command: SkyraCommand) {
-		const description = isFunction(command.description) ? command.description(t) : t(command.description);
+		const description = t(command.description);
 		return richDisplay ? `• ${prefix}${command.name} → ${description}` : `• **${prefix}${command.name}** → ${description}`;
 	}
 

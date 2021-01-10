@@ -59,6 +59,7 @@
 		"@influxdata/influxdb-client": "^1.9.0",
 		"@influxdata/influxdb-client-apis": "^1.9.0",
 		"@klasa/async-queue": "^0.0.1",
+		"@sapphire/pieces": "^1.1.0",
 		"@sapphire/plugin-i18next": "^1.0.0",
 		"@sapphire/snowflake": "^1.2.3",
 		"@sapphire/time-utilities": "^1.2.3",

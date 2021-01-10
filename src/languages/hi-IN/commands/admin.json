@@ -80,7 +80,7 @@
 		"multiline": true
 	},
 	"rolesetCreated": "",
-	"rolesetAdded": "{{name}} इस विशिष्ट किरदार संच में अब दिए गए किरदार शामिल है: {{roles}}।",
+	"rolesetAdded": "",
 	"rolesetInvalidName": "आप {{name}} विशिष्ट संच को नहीं निकाल सकते क्योंकि यह संच मौजूद नहीं है।",
 	"rolesetRemoved": "",
 	"rolesetResetEmpty": "{{REDCROSS}} इस समूह में कोई किरदार संच परिभाषित नहीं है।",

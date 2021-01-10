@@ -1,18 +1,12 @@
 {
 	"catfactDescription": "Let me tell you a mysterious cat fact.",
 	"catfactExtended": {
-		"extendedHelp": [
-			"You know cats are very curious, right? They certainly have a lot of fun and weird facts.",
-			"This command queries catfact.ninja and retrieves a fact so you can read it."
-		]
+		"extendedHelp": "You know cats are very curious, right? They certainly have a lot of fun and weird facts.\nThis command queries catfact.ninja and retrieves a fact so you can read it."
 	},
 	"catfactTitle": "Cat Fact",
 	"dogDescription": "Cute doggos! ❤",
 	"dogExtended": {
-		"extendedHelp": [
-			"Do **you** know how cute dogs are? They are so beautiful!",
-			"This command uses [dog.ceo](https://dog.ceo) to show pictures of the cuttest doggos!"
-		]
+		"extendedHelp": "Do **you** know how cute dogs are? They are so beautiful!\nThis command uses [dog.ceo](https://dog.ceo) to show pictures of the cuttest doggos!"
 	},
 	"foxDescription": "Let me show you an image of a fox!",
 	"foxExtended": {
@@ -20,10 +14,7 @@
 	},
 	"kittyDescription": "KITTENS!",
 	"kittyExtended": {
-		"extendedHelp": [
-			"Do **you** know how cute are kittens? They are so beautiful!",
-			"This command uses [cataas.com](https://cataas.com/) to show pictures of the cuttest cats!"
-		]
+		"extendedHelp": "Do **you** know how cute are kittens? They are so beautiful!\nThis command uses [cataas.com](https://cataas.com/) to show pictures of the cuttest cats!"
 	},
 	"shibeDescription": "Cute shibas!",
 	"shibeExtended": {

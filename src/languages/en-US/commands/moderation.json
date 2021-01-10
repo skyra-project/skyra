@@ -105,21 +105,13 @@
 	"moderationsAmount_plural": "There are {{count}} entries.",
 	"mutesDescription": "List all mutes from this guild or from a user.",
 	"mutesExtended": {
-		"extendedHelp": [
-			"This command shows either all mutes filed in this guild, or all mutes filed in this guild for a specific user.",
-			"This command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly."
-		],
-		"examples": ["", "@Pete"],
-		"multiline": true
+		"extendedHelp": "This command shows either all mutes filed in this guild, or all mutes filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
+		"examples": ["", "@Pete"]
 	},
 	"warningsDescription": "List all warnings from this guild or from a user.",
 	"warningsExtended": {
-		"extendedHelp": [
-			"This command shows either all warnings filed in this guild, or all warnings filed in this guild for a specific user.",
-			"This command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly."
-		],
-		"examples": ["", "@Pete"],
-		"multiline": true
+		"extendedHelp": "This command shows either all warnings filed in this guild, or all warnings filed in this guild for a specific user.\nThis command uses a reaction-based menu and requires the permission **{{MANAGE_MESSAGES, permissions}}** to execute correctly.",
+		"examples": ["", "@Pete"]
 	},
 	"slowmodeDescription": "Set the channel's slowmode value in seconds.",
 	"slowmodeExtended": {
@@ -129,22 +121,13 @@
 	},
 	"banDescription": "Hit somebody with the ban hammer.",
 	"banExtended": {
-		"extendedHelp": [
-			"This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.",
-			"No, the guild's owner cannot be banned.",
-			"This action can be optionally timed to create a temporary ban."
-		],
-		"examples": ["@Pete", "@Pete Spamming all channels.", "@Pete 24h Spamming all channels"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the guild's owner cannot be banned.\nThis action can be optionally timed to create a temporary ban.",
+		"examples": ["@Pete", "@Pete Spamming all channels.", "@Pete 24h Spamming all channels"]
 	},
 	"dehoistDescription": "Shoot everyone with the Dehoistinator 3000",
 	"dehoistExtended": {
-		"extendedHelp": [
-			"The act of hoisting involves adding special characters in front of your nickname in order to appear higher in the members list.",
-			"This command replaces any member's nickname that includes those special characters with a special character that drags them to the bottom of the list."
-		],
-		"reminder": "This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be dehoisted.",
-		"multiline": true
+		"extendedHelp": "The act of hoisting involves adding special characters in front of your nickname in order to appear higher in the members list.\nThis command replaces any member's nickname that includes those special characters with a special character that drags them to the bottom of the list.",
+		"reminder": "This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be dehoisted."
 	},
 	"kickDescription": "Hit somebody with the 👢.",
 	"kickExtended": {
@@ -153,58 +136,32 @@
 	},
 	"lockdownDescription": "Close the gates for this channel!",
 	"lockdownExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_CHANNELS, permissions}}** in order to be able to manage the permissions for a channel.",
-			"This command removes the permission **{{SEND_MESSAGES, permissions}}** to the `@everyone` role so nobody but the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can send messages.",
-			"Optionally, you can pass time as second argument."
-		],
-		"examples": ["", "#general", "#general 5m"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_CHANNELS, permissions}}** in order to be able to manage the permissions for a channel.\nThis command removes the permission **{{SEND_MESSAGES, permissions}}** to the `@everyone` role so nobody but the members with roles that have their own overrides (besides administrators, who bypass channel overrides) can send messages.\nOptionally, you can pass time as second argument.",
+		"examples": ["", "#general", "#general 5m"]
 	},
 	"muteDescription": "Mute a user in all text and voice channels.",
 	"muteExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner cannot be muted.",
-			"This action can be optionally timed to create a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.",
-			"The muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back."
-		],
-		"examples": ["@Alphonse", "@Alphonse Spamming all channels", "@Alphonse 24h Spamming all channels"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be muted.\nThis action can be optionally timed to create a temporary mute. This action saves a member's roles temporarily and will be granted to the user after the unmute.\nThe muted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"examples": ["@Alphonse", "@Alphonse Spamming all channels", "@Alphonse 24h Spamming all channels"]
 	},
 	"setNicknameDescription": "Change the nickname of a user.",
 	"setNicknameExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner nickname cannot be changed."
-		],
-		"examples": ["@Pete peeehteeerrr", "@ꓑ𝗲੮ẻ Pete Unmentionable name"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_NICKNAMES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner nickname cannot be changed.",
+		"examples": ["@Pete peeehteeerrr", "@ꓑ𝗲੮ẻ Pete Unmentionable name"]
 	},
 	"addRoleDescription": "Adds a role to a user.",
 	"addRoleExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner roles cannot be changed."
-		],
-		"examples": ["@John member", "@John member Make John a member"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner roles cannot be changed.",
+		"examples": ["@John member", "@John member Make John a member"]
 	},
 	"removeroleDescription": "Removes a role from a user",
 	"removeroleExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner roles cannot be changed."
-		],
-		"examples": ["@Paula member", "@Paula member Remove member permissions from Paula"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner roles cannot be changed.",
+		"examples": ["@Paula member", "@Paula member Remove member permissions from Paula"]
 	},
 	"pruneDescription": "Prunes a certain amount of messages w/o filter.",
 	"pruneExtended": {
-		"extendedHelp": [
-			"This command deletes the given amount of messages given a filter within the last 100 messages sent in the channel the command has been run.",
-			"Optionally, you can add `--silent` to tell Skyra not to send a response message."
-		],
+		"extendedHelp": "This command deletes the given amount of messages given a filter within the last 100 messages sent in the channel the command has been run.\nOptionally, you can add `--silent` to tell Skyra not to send a response message.",
 		"explainedUsage": [
 			["Messages", "The amount of messages to prune."],
 			["Filter", "The filter to apply."],
@@ -221,8 +178,7 @@
 			["(Position) After", "Deletes all messages after the given message."]
 		],
 		"examples": ["50 me", "75 @kyra", "20 bots", "60 humans before 629992398700675082"],
-		"reminder": "Due to a Discord limitation, bots cannot delete messages older than 14 days.",
-		"multiline": true
+		"reminder": "Due to a Discord limitation, bots cannot delete messages older than 14 days."
 	},
 	"caseDescription": "Get the information from a case by its index.",
 	"caseExtended": {
@@ -241,83 +197,39 @@
 	},
 	"reasonDescription": "Edit the reason field from a moderation log case.",
 	"reasonExtended": {
-		"extendedHelp": [
-			"This command allows moderation log case management, it allows moderators to update the reason.",
-			"If you want to modify multiple cases at once you provide a range.",
-			"For example `1..3` for the `<range>` will edit cases 1, 2, and 3.",
-			"Alternatively you can also give ranges with commas:",
-			"`1,3..6` will result in cases 1, 3, 4, 5, and 6",
-			"`1,2,3` will result in cases 1, 2, and 3"
-		],
-		"examples": ["420 Spamming all channels", "419..421 Bad memes", "1..3,4,7..9 Posting NSFW", "latest Woops, I did a mistake!"],
-		"multiline": true
+		"extendedHelp": "This command allows moderation log case management, it allows moderators to update the reason.\nIf you want to modify multiple cases at once you provide a range.\nFor example `1..3` for the `<range>` will edit cases 1, 2, and 3.\nAlternatively you can also give ranges with commas:\n`1,3..6` will result in cases 1, 3, 4, 5, and 6\n`1,2,3` will result in cases 1, 2, and 3",
+		"examples": ["420 Spamming all channels", "419..421 Bad memes", "1..3,4,7..9 Posting NSFW", "latest Woops, I did a mistake!"]
 	},
 	"restrictAttachmentDescription": "Restrict a user from sending attachments in all channels.",
 	"restrictAttachmentExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner cannot be restricted.",
-			"This action can be optionally timed to create a temporary restriction.",
-			"The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back."
-		],
-		"examples": ["@Pete", "@Pete Sending weird images", "@Pete 24h Sending NSFW images"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"examples": ["@Pete", "@Pete Sending weird images", "@Pete 24h Sending NSFW images"]
 	},
 	"restrictEmbedDescription": "Restrict a user from attaching embeds in all channels.",
 	"restrictEmbedExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner cannot be restricted.",
-			"This action can be optionally timed to create a temporary restriction.",
-			"The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back."
-		],
-		"examples": ["@Pete", "@Pete Sending weird links", "@Pete 24h Posted a spam link"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"examples": ["@Pete", "@Pete Sending weird links", "@Pete 24h Posted a spam link"]
 	},
 	"restrictEmojiDescription": "Restrict a user from using external emojis in all channels.",
 	"restrictEmojiExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner cannot be restricted.",
-			"This action can be optionally timed to create a temporary restriction.",
-			"The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back."
-		],
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
 		"examples": ["@Pete", "@Pete Spamming external emojis", "@Pete 24h Posted cringe"],
-		"reminder": "This will only prevent the usage of external emojis and so will have no effect for non-nitro users, your own server's emojis and regular build in twemojis can still be used by members with this role.",
-		"multiline": true
+		"reminder": "This will only prevent the usage of external emojis and so will have no effect for non-nitro users, your own server's emojis and regular build in twemojis can still be used by members with this role."
 	},
 	"restrictReactionDescription": "Restrict a user from reacting to messages in all channels.",
 	"restrictReactionExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner cannot be restricted.",
-			"This action can be optionally timed to create a temporary restriction.",
-			"The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back."
-		],
-		"examples": ["@Pete", "@Pete Spamming reactions", "@Pete 24h Posting weird reactions"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"examples": ["@Pete", "@Pete Spamming reactions", "@Pete 24h Posting weird reactions"]
 	},
 	"restrictVoiceDescription": "Restrict a user from joining any voice channel.",
 	"restrictVoiceExtended": {
-		"extendedHelp": [
-			"This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.",
-			"No, the guild's owner cannot be restricted.",
-			"This action can be optionally timed to create a temporary restriction.",
-			"The restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back."
-		],
-		"examples": ["@Pete", "@Pete Earraping in general voice channels", "@Pete 24h Making weird noises"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MANAGE_ROLES, permissions}}**, and only members with lower role hierarchy position can be managed by me.\nNo, the guild's owner cannot be restricted.\nThis action can be optionally timed to create a temporary restriction.\nThe restricted role is **sticky**, if the user tries to remove it by rejoining the guild, it will be added back.",
+		"examples": ["@Pete", "@Pete Earraping in general voice channels", "@Pete 24h Making weird noises"]
 	},
 	"softBanDescription": "Hit somebody with the ban hammer, destroying all their messages for some days, and unban it.",
 	"softBanExtended": {
-		"extendedHelp": [
-			"This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.",
-			"No, the guild's owner cannot be banned.",
-			"The ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.",
-			"The user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages."
-		],
-		"examples": ["@Pete", "@Pete Spamming all channels", "@Pete 7 All messages sent in 7 are gone now, YEE HAH!"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{BAN_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be banned by me.\nNo, the guild's owner cannot be banned.\nThe ban feature from Discord has a feature that allows the moderator to remove all messages from all channels that have been sent in the last 'x' days, being a number between 0 (no days) and 7.\nThe user gets unbanned right after the ban, so it is like a kick, but that can prune many many messages.",
+		"examples": ["@Pete", "@Pete Spamming all channels", "@Pete 7 All messages sent in 7 are gone now, YEE HAH!"]
 	},
 	"toggleModerationDmDescription": "Toggle moderation DMs.",
 	"toggleModerationDmExtended": {
@@ -365,41 +277,22 @@
 	},
 	"vmuteDescription": "Throw somebody's microphone out the window.",
 	"vmuteExtended": {
-		"extendedHelp": [
-			"This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be silenced by me.",
-			"No, the guild's owner cannot be silenced.",
-			"This action can be optionally timed to create a temporary voice mute."
-		],
-		"examples": ["@Pete", "@Pete Singing too loud", "@Pete 24h Literally sang ear rape"],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be silenced by me.\nNo, the guild's owner cannot be silenced.\nThis action can be optionally timed to create a temporary voice mute.",
+		"examples": ["@Pete", "@Pete Singing too loud", "@Pete 24h Literally sang ear rape"]
 	},
 	"voiceKickDescription": "Hit somebody with the 👢 for singing so bad and loud.",
 	"voiceKickExtended": {
-		"extendedHelp": [
-			"This command requires the permissions **{{MANAGE_CHANNELS, permissions}}** to create a temporary (hidden) voice channel, and **{{MOVE_MEMBERS, permissions}}** to move the user to the temporary channel.",
-			"After this, the channel is quickly deleted, making the user leave the voice channel.",
-			"For scared moderators, this command has almost no impact in the average user, as the channel is created in a way only me and the selected user can see and join, then quickly deleted."
-		],
-		"examples": ["@Pete", "@Pete Spamming all channels"],
-		"multiline": true
+		"extendedHelp": "This command requires the permissions **{{MANAGE_CHANNELS, permissions}}** to create a temporary (hidden) voice channel, and **{{MOVE_MEMBERS, permissions}}** to move the user to the temporary channel.\nAfter this, the channel is quickly deleted, making the user leave the voice channel.\nFor scared moderators, this command has almost no impact in the average user, as the channel is created in a way only me and the selected user can see and join, then quickly deleted.",
+		"examples": ["@Pete", "@Pete Spamming all channels"]
 	},
 	"vunmuteDescription": "Get somebody's microphone back so they can talk.",
 	"vunmuteExtended": {
-		"extendedHelp": [
-			"This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be un-silenced by me.",
-			"No, the guild's owner cannot be un-silenced."
-		],
-		"examples": ["@Pete", "@Pete Appealed his times signing hear rape."],
-		"multiline": true
+		"extendedHelp": "This command requires **{{MUTE_MEMBERS, permissions}}**, and only members with lower role hierarchy position can be un-silenced by me.\nNo, the guild's owner cannot be un-silenced.",
+		"examples": ["@Pete", "@Pete Appealed his times signing hear rape."]
 	},
 	"warnDescription": "File a warning to somebody.",
 	"warnExtended": {
-		"extendedHelp": [
-			"This command files a warning to a user.",
-			"This kind of warning is meant to be **formal warnings**, as they will be shown in the 'warnings' command.",
-			"It is a good practise to do an informal warning before using this command."
-		],
-		"examples": ["@Pete Attempted to mention everyone."],
-		"multiline": true
+		"extendedHelp": "This command files a warning to a user.\nThis kind of warning is meant to be **formal warnings**, as they will be shown in the 'warnings' command.\nIt is a good practise to do an informal warning before using this command.",
+		"examples": ["@Pete Attempted to mention everyone."]
 	}
 }

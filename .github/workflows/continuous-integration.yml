@@ -23,11 +23,8 @@ jobs:
         if: github.event_name == 'pull_request'
         id: pr_get_commit_message
         run: echo ::set-output name=pr_commit_message::$(git log --format=%B -n 1 HEAD^2)
-      - name: Resolve commit message
-        id: get_commit_message
-        run: echo ::set-output name=resolved_commit_message::$( [ -z "${{ steps.pr_get_commit_message.outputs.pr_commit_message }}" ] && echo ${{ steps.push_get_commit_message.outputs.push_commit_message }} || echo ${{ steps.pr_get_commit_message.outputs.pr_commit_message }} )
     outputs:
-      commit_message: ${{ steps.get_commit_message.outputs.resolved_commit_message }}
+      commit_message: $( [ -z "${{ steps.pr_get_commit_message.outputs.pr_commit_message }}" ] && echo ${{ steps.push_get_commit_message.outputs.push_commit_message }} || echo ${{ steps.pr_get_commit_message.outputs.pr_commit_message }} )
 
   Linting:
     name: Linting

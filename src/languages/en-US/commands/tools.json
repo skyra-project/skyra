@@ -9,7 +9,7 @@
 	"color": ["HEX: **{{hex}}**", "RGB: **{{rgb}}**", "HSL: **{{hsl}}**"],
 	"colorDescription": "Display some awesome colours.",
 	"colorExtended": {
-		"extendedHelp": "The color command displays a set of colours with nearest tones given a difference between 1 and 255..",
+		"extendedHelp": "The color command displays a set of colours with nearest tones given a difference between 1 and 255.",
 		"explainedUsage": [["color", "A color resolvable."]],
 		"examples": ["#dfdfdf >25", "rgb(200, 130, 75)"],
 		"possibleFormats": [
@@ -21,10 +21,10 @@
 	},
 	"contentDescription": "Get messages' raw content.",
 	"contentExtended": {
-		"extendedHelp": "Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting",
+		"extendedHelp": "Raw content will help you better copy-paste message content as you will not have to reproduce all the formatting.",
 		"explainedUsage": [
-			["channel", "(optional) The channel in which the message is to get the content from"],
-			["message", "ID of the message to get the raw content for"]
+			["channel", "(optional) The channel in which the message is to get the content from."],
+			["message", "ID of the message to get the raw content for."]
 		]
 	},
 	"countryDescription": "Shows information about a country.",

@@ -6,7 +6,7 @@
 		"reminder": "Use the --size flag to change the avatar's size."
 	},
 	"avatarNone": "The user does not have an avatar set.",
-	"color": ["HEX: **{{hex}}**", "RGB: **{{rgb}}**", "HSL: **{{hsl}}**"],
+	"color": "HEX: **{{hex}}**\nRGB: **{{rgb}}**\nHSL: **{{hsl}}**",
 	"colorDescription": "Display some awesome colours.",
 	"colorExtended": {
 		"extendedHelp": "The color command displays a set of colours with nearest tones given a difference between 1 and 255.",
@@ -75,11 +75,7 @@
 	},
 	"emojiInvalid": "The argument you provided is not a valid emoji.",
 	"emojiTooLarge": "'{{emoji}}' is so heavy the hamsters couldn't keep with its size. Maybe try one that is smaller?",
-	"emojiTwemoji": [
-		"→ {{Emoji ::| inlineCodeBlock}} `{{emoji}}`",
-		"→ {{Type  ::| inlineCodeBlock}} **Twemoji**",
-		"→ {{ID    ::| inlineCodeBlock}} **{{id}}**"
-	],
+	"emojiTwemoji": "→ `Emoji ::` `{{emoji}}`\n→ `Type  ::` **Twemoji**\n→ `ID    ::` **{{id}}**",
 	"emotesDescription": "Shows all custom emotes available on this server",
 	"emotesExtended": {
 		"extendedHelp": "The list of emotes is split per 50 emotes"

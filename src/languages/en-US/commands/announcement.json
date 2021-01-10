@@ -1,5 +1,5 @@
 {
-	"announcement": "**New announcement for** {{role}}",
+	"announcementHeader": "**New announcement for** {{role}}",
 	"announcementCancelled": "Cancelled the message.",
 	"announcementDescription": "Send new announcements, mentioning the announcement role.",
 	"announcementEmbedMentions": "{{header}}:",

@@ -45,6 +45,11 @@ export default class extends SkyraCommand {
 		return message.send(await this.kProcess(message, t, await this.retrieveMarkov(t, username, channnel ?? (message.channel as TextChannel))));
 	}
 
+	public async init() {
+		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
+		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
+	}
+
 	private async processRelease(message: GuildMessage, _: TFunction, markov: Markov) {
 		return new MessageEmbed().setDescription(cutText(markov.process(), 2000)).setColor(await DbSet.fetchColor(message));
 	}
@@ -108,10 +113,5 @@ export default class extends SkyraCommand {
 		return filtered.length > 0
 			? filtered[Math.floor(Math.random() * filtered.length)]
 			: iteratorAt(wordBank.keys(), Math.floor(Math.random() * wordBank.size))!;
-	}
-
-	public async init() {
-		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
-		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 }

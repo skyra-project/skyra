@@ -46,7 +46,7 @@ export default class extends SkyraCommand {
 			if (remaining > GRACE_PERIOD) return message.send(t(LanguageKeys.Commands.Social.DailyTime, { time: remaining }));
 
 			// It's been 11-12 hours, ask for the user if they want to claim the grace period
-			const accepted = await message.ask(t(LanguageKeys.Commands.Social.DailyGrace, { remaining }).join('\n'));
+			const accepted = await message.ask(t(LanguageKeys.Commands.Social.DailyGrace, { remaining }));
 			if (!accepted) return message.send(t(LanguageKeys.Commands.Social.DailyGraceDenied));
 
 			// The user accepted the grace period

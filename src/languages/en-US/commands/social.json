@@ -33,10 +33,7 @@
 	"toggleDarkModeDisabled": "{{GREENTICK}} Successfully disabled the dark mode.",
 	"dailyTime": "Next dailies are available in {{time, duration}}",
 	"dailyTimeSuccess": "Yay! You earned {{amount}}{{SHINY}}! Next dailies in: 12 hours.",
-	"dailyGrace": [
-		"Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.",
-		"Remaining time: {{remaining, duration}}"
-	],
+	"dailyGrace": "Would you like to claim the dailies early? The remaining time will be added up to a normal 12h wait period.\nRemaining time: {{remaining, duration}}",
 	"dailyGraceAccepted": "Successfully claimed {{amount}}{{SHINY}}! Next dailies in: {{remaining, duration}}",
 	"dailyGraceDenied": "Got it! Come back soon!",
 	"dailyCollect": "Collect dailies",
@@ -167,10 +164,7 @@
 	},
 	"leaderboardDescription": "Check the leaderboards.",
 	"leaderboardExtended": {
-		"extendedHelp": [
-			"The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.",
-			"The leaderboards refresh every 10 minutes."
-		],
+		"extendedHelp": "The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.\nThe leaderboards refresh every 10 minutes.",
 		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds.",
 		"multiline": true
 	},

@@ -72,7 +72,7 @@ export default class extends SkyraCommand {
 							? LanguageKeys.Commands.Games.CoinFlipWinDescriptionWithWager
 							: LanguageKeys.Commands.Games.CoinFlipLoseDescriptionWithWager,
 						{
-							result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result],
+							result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true })[result],
 							wager
 						}
 					)
@@ -89,7 +89,7 @@ export default class extends SkyraCommand {
 				.setTitle(t(won ? LanguageKeys.Commands.Games.CoinFlipWinTitle : LanguageKeys.Commands.Games.CoinFlipLoseTitle))
 				.setDescription(
 					t(won ? LanguageKeys.Commands.Games.CoinFlipWinDescription : LanguageKeys.Commands.Games.CoinFlipLoseDescription, {
-						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
+						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true })[result]
 					})
 				)
 		);
@@ -103,7 +103,7 @@ export default class extends SkyraCommand {
 				.setTitle(t(LanguageKeys.Commands.Games.CoinFlipNoGuessTitle))
 				.setDescription(
 					t(LanguageKeys.Commands.Games.CoinFlipNoGuessDescription, {
-						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames)[result]
+						result: t(LanguageKeys.Commands.Games.CoinFlipCoinNames, { returnObjects: true })[result]
 					})
 				)
 		);

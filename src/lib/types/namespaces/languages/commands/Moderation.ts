@@ -189,18 +189,18 @@ export const ModerationLogFooter = FT<{ caseID: number }, string>('moderation:lo
 export const ModerationTimed = FT<{ remaining: number }, string>('errors:modlogTimed');
 export const ModerationFailed = FT<{ users: string; count: number }, string>('commands/moderation:moderationFailed');
 export const ModerationDmFooter = T<string>('commands/moderation:moderationDmFooter');
-export const ModerationDmDescription = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+export const ModerationDmDescription = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string>(
 	'commands/moderation:moderationDmDescription'
 );
-export const ModerationDmDescriptionWithReason = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+export const ModerationDmDescriptionWithReason = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string>(
 	'commands/moderation:moderationDmDescriptionWithReason'
 );
-export const ModerationDmDescriptionWithDuration = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string[]>(
+export const ModerationDmDescriptionWithDuration = FT<{ guild: string; title: string; reason: string | null; duration: number | null }, string>(
 	'commands/moderation:moderationDmDescriptionWithDuration'
 );
 export const ModerationDmDescriptionWithReasonWithDuration = FT<
 	{ guild: string; title: string; reason: string | null; duration: number | null },
-	string[]
+	string
 >('commands/moderation:moderationDmDescriptionWithReasonWithDuration');
 export const ModerationDays = T<string>('commands/moderation:moderationDays');
 export const Permissions = FT<{ username: string; id: string }, string>('commands/moderation:permissions');

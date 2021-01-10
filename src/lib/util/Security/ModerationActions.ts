@@ -730,7 +730,7 @@ export class ModerationActions {
 			title: entry.title,
 			reason: entry.reason,
 			duration: entry.duration
-		}).join('\n');
+		});
 		const embed = new MessageEmbed().setDescription(description).setFooter(t(LanguageKeys.Commands.Moderation.ModerationDmFooter));
 
 		if (sendOptions.moderator) {

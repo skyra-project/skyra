@@ -76,20 +76,10 @@
 	"moderationFailed": "{{REDCROSS}} Failed to moderate user:\n{{users, andList}}",
 	"moderationFailed_plural": "{{REDCROSS}} Failed to moderate users:\n{{users, andList}}",
 	"moderationDmFooter": "To disable moderation DMs, write `toggleModerationDM`.",
-	"moderationDmDescription": ["**❯ Server**: {{guild}}", "**❯ Type**: {{title}}", "**❯ Reason**: None specified"],
-	"moderationDmDescriptionWithReason": ["**❯ Server**: {{guild}}", "**❯ Type**: {{title}}", "**❯ Reason**: {{reason}}"],
-	"moderationDmDescriptionWithDuration": [
-		"**❯ Server**: {{guild}}",
-		"**❯ Type**: {{title}}",
-		"**❯ Duration**: {{duration, duration}}",
-		"**❯ Reason**: None specified"
-	],
-	"moderationDmDescriptionWithReasonWithDuration": [
-		"**❯ Server**: {{guild}}",
-		"**❯ Type**: {{title}}",
-		"**❯ Duration**: {{duration, duration}}",
-		"**❯ Reason**: {{reason}}"
-	],
+	"moderationDmDescription": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Reason**: None specified",
+	"moderationDmDescriptionWithReason": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Reason**: {{reason}}",
+	"moderationDmDescriptionWithDuration": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Duration**: {{duration, duration}}\n**❯ Reason**: None specified",
+	"moderationDmDescriptionWithReasonWithDuration": "**❯ Server**: {{guild}}\n**❯ Type**: {{title}}\n**❯ Duration**: {{duration, duration}}\n**❯ Reason**: {{reason}}",
 	"moderationDays": "days?",
 	"historyDescription": "Display the count of moderation cases from this guild or from a user.",
 	"historyExtended": {

@@ -10,7 +10,7 @@ export default class ShinyWager extends Argument {
 		const number = Number(arg) as ArrayValues<typeof ShinyWager.kValidBetAmounts>;
 		if (!Number.isInteger(number)) throw await message.resolveKey(LanguageKeys.Resolvers.InvalidInt, { name: possible.name });
 		if (!ShinyWager.kValidBetAmounts.includes(number)) {
-			throw message.resolveKey(LanguageKeys.Resolvers.InvalidWager, {
+			throw await message.resolveKey(LanguageKeys.Resolvers.InvalidWager, {
 				bet: number,
 				validAmounts: ShinyWager.kValidBetAmounts.map((a) => a.toString())
 			});

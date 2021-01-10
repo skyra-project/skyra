@@ -11,11 +11,7 @@
 		"reminder": ""
 	},
 	"avatarNone": "",
-	"color": [
-		"",
-		"",
-		""
-	],
+	"color": "",
 	"colorDescription": "",
 	"colorExtended": {
 		"extendedHelp": "",
@@ -129,11 +125,7 @@
 	},
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
-	"emojiTwemoji": [
-		"",
-		"",
-		""
-	],
+	"emojiTwemoji": "",
 	"emotesDescription": "",
 	"emotesExtended": {
 		"extendedHelp": ""

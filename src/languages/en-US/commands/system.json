@@ -6,24 +6,9 @@
 	},
 	"evalDescription": "Evaluates arbitrary Javascript.",
 	"evalExtended": {
-		"extendedHelp": [
-			"The eval command evaluates code as-in, any error thrown from it will be handled.",
-			"It also uses the flags feature. Write --silent, --depth=number or --async to customize the output.",
-			"The --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.",
-			"The --output and --output-to flag accept either `file`, `log`, `haste` or `hastebin`.",
-			"The --delete flag makes the command delete the message that executed the message after evaluation.",
-			"The --silent flag will make it output nothing.",
-			"The --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.",
-			"The --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword",
-			"The --showHidden flag will enable the showHidden option in util.inspect.",
-			"The --lang and --language flags allow different syntax highlight for the output.",
-			"The --json flag converts the output to json",
-			"The --no-timeout flag disables the timeout",
-			"If the output is too large, it'll send the output as a file, or in the console if the bot does not have the {{PERMISSIONS.ATTACH_FILES}} permission."
-		],
+		"extendedHelp": "The eval command evaluates code as-in, any error thrown from it will be handled.\nIt also uses the flags feature. Write --silent, --depth=number or --async to customize the output.\nThe --wait flag changes the time the eval will run. Defaults to 10 seconds. Accepts time in milliseconds.\nThe --output and --output-to flag accept either `file`, `log`, `haste` or `hastebin`.\nThe --delete flag makes the command delete the message that executed the message after evaluation.\nThe --silent flag will make it output nothing.\nThe --depth flag accepts a number, for example, --depth=2, to customize util.inspect's depth.\nThe --async flag will wrap the code into an async function where you can enjoy the use of await, however, if you want to return something, you will need the return keyword\nThe --showHidden flag will enable the showHidden option in util.inspect.\nThe --lang and --language flags allow different syntax highlight for the output.\nThe --json flag converts the output to json\nThe --no-timeout flag disables the timeout\nIf the output is too large, it'll send the output as a file, or in the console if the bot does not have the {{PERMISSIONS.ATTACH_FILES}} permission.",
 		"examples": ["msg.author.username;", "1 + 1;"],
-		"reminder": "Reserved for bot owners.",
-		"multiline": true
+		"reminder": "Reserved for bot owners."
 	},
 	"execDescription": "Execute Order 66.",
 	"execExtended": {
@@ -36,17 +21,7 @@
 	},
 	"donateDescription": "Get information about how to donate to keep Skyra alive longer.",
 	"donateExtended": {
-		"extendedHelp": [
-			"Skyra Project started on 24th October 2016, if you are reading this, you are",
-			"using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.",
-			"",
-			"However, not everything is free and we need your help to keep Skyra alive.",
-			"We will be very thankful if you help us.",
-			"We have been working on a lot of things, and Skyra is precious to us. Take care of her ❤",
-			"",
-			"Do you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
-		],
-		"multiline": true
+		"extendedHelp": "Skyra Project started on 24th October 2016, if you are reading this, you are using version {{VERSION}}. The development team improves a lot in every iteration of Skyra.\n\nHowever, not everything is free and we need your help to keep Skyra alive.\nWe will be very thankful if you help us.\nWe have been working on a lot of things, and Skyra is precious to us. Take care of her ❤\n\nDo you want to support this amazing project? Feel free to do so! https://donate.skyra.pw/patreon or https://donate.skyra.pw/kofi"
 	},
 	"echoDescription": "Make Skyra send a message to this (or another) channel.",
 	"echoExtended": {

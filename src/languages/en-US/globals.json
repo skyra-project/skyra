@@ -11,6 +11,8 @@
 	"ordinalValue": "{{value, ordinal}}",
 	"durationValue": "{{value, duration}}",
 	"groupDigitsValue": "{{value, groupDigits}}",
+	"timeDateValue": "{{value, timeDate}}",
+	"timeFullValue": "{{value, timeFull}}",
 	"andListValue": "{{value, andList}}",
 	"orListValue": "{{value, orList}}"
 }

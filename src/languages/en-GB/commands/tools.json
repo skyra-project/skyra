@@ -11,11 +11,7 @@
 		"reminder": "Use the --size flag to change the avatar's size."
 	},
 	"avatarNone": "That user has not set an avatar.",
-	"color": [
-		"HEX: **{{hex}}**",
-		"RGB: **{{rgb}}**",
-		"HSL: **{{hsl}}**"
-	],
+	"color": "",
 	"colorDescription": "Displays some awesome colours.",
 	"colorExtended": {
 		"extendedHelp": "",
@@ -129,11 +125,7 @@
 	},
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
-	"emojiTwemoji": [
-		"",
-		"",
-		""
-	],
+	"emojiTwemoji": "",
 	"emotesDescription": "",
 	"emotesExtended": {
 		"extendedHelp": ""

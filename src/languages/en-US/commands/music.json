@@ -1,15 +1,7 @@
 {
 	"addDescription": "Adds a song the the queue.",
 	"addExtended": {
-		"extendedHelp": [
-			"Add songs to the playing queue and prepare for musical enjoyment!",
-			"I can play music from YouTube, Bandcamp, SoundCloud, Twitch, or Vimeo.",
-			"",
-			"- To play from YouTube either give me something to search for, a video link, or a playlist link.",
-			"- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.",
-			"- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.",
-			"- To play a previously exported queue, include `--import` and attach the queue file to your message or give me a URL to it."
-		],
+		"extendedHelp": "Add songs to the playing queue and prepare for musical enjoyment!\nI can play music from YouTube, Bandcamp, SoundCloud, Twitch, or Vimeo.\n\n- To play from YouTube either give me something to search for, a video link, or a playlist link.\n- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.\n- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.\n- To play a previously exported queue, include `--import` and attach the queue file to your message or give me a URL to it.",
 		"explainedUsage": [["song", "The song to queue. Can be either a URL or a video/song title."]],
 		"examples": [
 			"The Pokémon Theme song",
@@ -20,8 +12,7 @@
 			"https://thedisappointed.bandcamp.com/album/escapism-2",
 			"https://cdn.discordapp.com/attachments/642137151626018818/746716958627725402/Skyra_Development_Suite-1598101595077.squeue",
 			"--import https://cdn.skyra.pw/favsongs.squeue"
-		],
-		"multiline": true
+		]
 	},
 	"addPlaylist": "{{GREENTICK}} Added {{songs}} to the queue 🎶",
 	"addPlaylistSongs": "**{{count}}** song",
@@ -37,23 +28,14 @@
 	"clearSuccessPlural": "{{REDCROSS}}  Pruned {{count}} songs.",
 	"exportQueueDescription": "Exports your queue to a `.squeue` file.",
 	"exportQueueExtended": {
-		"extendedHelp": [
-			"Have a queue you liked and want to replay later? Or maybe you want to send your friends what you're listening right now",
-			"Use \"exportqueue\" and I'll pack the music in your queue into a neat file you can either save or share with your friends!",
-			"When you want to play it back, just use it with `play`, `add` or `importqueue`!"
-		],
-		"reminder": "If your queue is longer than 100 songs, I will only include the first 100, to prevent abuse of my systems",
-		"multiline": true
+		"extendedHelp": "Have a queue you liked and want to replay later? Or maybe you want to send your friends what you're listening right now\nUse \"exportqueue\" and I'll pack the music in your queue into a neat file you can either save or share with your friends!\nWhen you want to play it back, just use it with `play`, `add` or `importqueue`!",
+		"reminder": "If your queue is longer than 100 songs, I will only include the first 100, to prevent abuse of my systems"
 	},
 	"exportQueueSuccess": "{{GREENTICK}} Here's the current queue for {{guildName}}!",
 	"importQueueDescription": "Imports a queue saved as a `.squeue` file.",
 	"importQueueExtended": {
-		"extendedHelp": [
-			"Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?",
-			"With `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!"
-		],
-		"reminder": "You can either give me a link to the `.squeue` file, or attach it to your message!",
-		"multiline": true
+		"extendedHelp": "Did a friend send you a queue? Or maybe you want to play a queue you saved earlier?\nWith `importqueue`, I can load the queue for you, and then you can jam to your favorite tracks!",
+		"reminder": "You can either give me a link to the `.squeue` file, or attach it to your message!"
 	},
 	"joinDescription": "Joins the message author's voice channel.",
 	"joinExtended": {
@@ -71,16 +53,8 @@
 	"joinFailed": "{{REDCROSS}} I could not join your voice channel because there is something wrong with my music player. Please join the support server by using \"@Skyra support\" and alert my developers.",
 	"leaveDescription": "Leaves the voice channel.",
 	"leaveExtended": {
-		"extendedHelp": [
-			"Use this command to make me leave the current voice channel.",
-			"By default I will leave the channel, forget about the currently playing song, but leave the queue intact.",
-			"This means that if you use `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.",
-			"",
-			"This default behavior can be modified with flags:",
-			"`--removeall` or `--ra` to follow the default behavior as well clear the queue, next time you want me to start playing you will have build a new queue"
-		],
-		"examples": ["leave", "leave --removeall", "leave --ra", "leave --soft"],
-		"multiline": true
+		"extendedHelp": "Use this command to make me leave the current voice channel.\nBy default I will leave the channel, forget about the currently playing song, but leave the queue intact.\nThis means that if you use `Skyra, play` after the leave command, I will continue playing with the first song that was on the queue before I left.\n\nThis default behavior can be modified with flags:\n`--removeall` or `--ra` to follow the default behavior as well clear the queue, next time you want me to start playing you will have build a new queue",
+		"examples": ["leave", "leave --removeall", "leave --ra", "leave --soft"]
 	},
 	"leaveSuccess": "{{GREENTICK}} Successfully left the voice channel {{channel}}",
 	"pauseDescription": "Pauses the current song.",
@@ -91,16 +65,7 @@
 	"pauseSuccess": "{{GREENTICK}} Paused",
 	"playDescription": "Let me be your DJ and play you some tunes!",
 	"playExtended": {
-		"extendedHelp": [
-			"Queue some music and allow me to start jamming out to your enjoyment.",
-			"When using this command I will automatically join your voice channel and start playing the first song in my queue.",
-			"I can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, Mixer, or a queue someone else exported earlier",
-			"- To play from YouTube either give me something to search, a video link, or a playlist link.",
-			"- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.",
-			"- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VOD's.",
-			"- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.",
-			"- To play from a previously-exported queue, include `--import` and attach it to your message or give me a URL to it"
-		],
+		"extendedHelp": "Queue some music and allow me to start jamming out to your enjoyment.\nWhen using this command I will automatically join your voice channel and start playing the first song in my queue.\nI can play from YouTube, Bandcamp, SoundCloud, Twitch, Vimeo, Mixer, or a queue someone else exported earlier\n- To play from YouTube either give me something to search, a video link, or a playlist link.\n- To play from SoundCloud give me a SoundCloud link, or if you want me to search include either `--sc` or `--soundcloud` in your message.\n- To play from Mixer give me the URL of a Mixer streamer, I'm sorry but I cannot (yet) play Mixer VOD's.\n- To play from Bandcamp, Twitch, or Vimeo just give me a URL to a video or playlist on those sources.\n- To play from a previously-exported queue, include `--import` and attach it to your message or give me a URL to it",
 		"explainedUsage": [["song", "The song to play. Can be either a URL or a video/song title."]],
 		"examples": [
 			"The Pokémon Theme song",
@@ -112,8 +77,7 @@
 			"https://thedisappointed.bandcamp.com/album/escapism-2",
 			"--import https://cdn.skyra.pw/favsongs.squeue"
 		],
-		"reminder": "Before you can use this command you should join a voice channel!",
-		"multiline": true
+		"reminder": "Before you can use this command you should join a voice channel!"
 	},
 	"playEnd": "It looks like the queue ended here. I hope you enjoyed the session!",
 	"playNext": "🎧 Playing: **{{title}}** as requested by: **{{requester}}**",

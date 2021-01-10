@@ -25,25 +25,11 @@
 	"confSettingNotSet": "Not Set",
 	"heapSnapshotDescription": "Creates a heapdump for finding memory leaks.",
 	"heapSnapshotExtended": {
-		"extendedHelp": [
-			"The heapsnapshot command is very useful for bots that have memory issues, it uses the heapdump library",
-			"which freezes the entire process for a moment to analize all elements from the process' HEAP, NEVER share",
-			"heapsnapshot files with anybody, as everything your bot holds is included in that file.\n\nTo open heapsnapshot",
-			"files, open Google Chrome, open Developer Tools, go to the tab Memory, and in Profiles, click on the buttom \"load\".",
-			"Finally, open the profile and you will be given a table of all objects in your process, have fun!\n\nP.S:",
-			"heapsnapshot files are as big as the amount of RAM you use, in big bots, the snapshots can freeze the bot",
-			"much longer and the files can be much heavier."
-		]
+		"extendedHelp": "The heapsnapshot command is very useful for bots that have memory issues, it uses the heapdump library which freezes the entire process for a moment to analize all elements from the process' HEAP, NEVER share heapsnapshot files with anybody, as everything your bot holds is included in that file.\n\nTo open heapsnapshot files, open Google Chrome, open Developer Tools, go to the tab Memory, and in Profiles, click on the buttom \"load\". Finally, open the profile and you will be given a table of all objects in your process, have fun!\n\nP.S: heapsnapshot files are as big as the amount of RAM you use, in big bots, the snapshots can freeze the bot much longer and the files can be much heavier."
 	},
 	"rolesetDescription": "Manage unique role sets.",
 	"rolesetExtended": {
-		"extendedHelp": [
-			"A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:",
-			"",
-			"- When somebody claims a role via the `roles` command.",
-			"- When somebody claims a role via reaction roles.",
-			"- When somebody receives a role either manually or from another bot."
-		],
+		"extendedHelp": "A role set is a group of roles Skyra identifies as unique for all members in the server, i.e. a roleset named `region` could have the roles `Africa`, `America`, `Asia`, and `Europe`, and members will only be able to have one of them. This is like a kind of \"rule\" that is applied in the three following situations:\n\n- When somebody claims a role via the `roles` command.\n- When somebody claims a role via reaction roles.\n- When somebody receives a role either manually or from another bot.",
 		"explainedUsage": [
 			["add", "Create a new roleset or add a role to an existing one."],
 			["remove", "Remove a role from an existing roleset."],
@@ -61,8 +47,7 @@
 			"regions America",
 			"regions Africa America Asia Europe"
 		],
-		"reminder": "This command can add and/or remove multiple roles at the same time.",
-		"multiline": true
+		"reminder": "This command can add and/or remove multiple roles at the same time."
 	},
 	"rolesetCreated": "The {{name}} unique role set has been created with the following roles: {{roles, andList}}",
 	"rolesetAdded": "The {{name}} unique role set now has the following roles as well: {{roles, andList}}.",

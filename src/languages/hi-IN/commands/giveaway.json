@@ -1,35 +1,71 @@
 {
 	"giveawayDescription": "",
 	"giveawayExtended": {
-		"extendedHelp": ["", "", "", "", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"giveawayRerollDescription": "",
 	"giveawayRerollExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"giveawayScheduleDescription": "",
 	"giveawayScheduleExtended": {
-		"extendedHelp": ["", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": [""],
-		"multiline": ""
+		"examples": [
+			""
+		]
 	},
 	"giveawayRerollInvalid": ""
 }

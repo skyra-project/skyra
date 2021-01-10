@@ -15,11 +15,23 @@
 	"timeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"banNotBannable": "",
 	"dehoistStarting": "",
@@ -59,8 +71,14 @@
 	"pruneLogMessage_plural": "",
 	"reasonMissingCase": "",
 	"reasonNotExists": "",
-	"reasonUpdated": ["", ""],
-	"reasonUpdated_plural": ["", ""],
+	"reasonUpdated": [
+		"",
+		""
+	],
+	"reasonUpdated_plural": [
+		"",
+		""
+	],
 	"toggleModerationDmToggledEnabled": "",
 	"toggleModerationDmToggledDisabled": "",
 	"unbanMissingPermission": "",
@@ -84,7 +102,10 @@
 	"historyDescription": "",
 	"historyExtended": {
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"historyFooterNew": "",
 	"historyFooterWarning": "",
@@ -98,103 +119,184 @@
 	"moderationsDescription": "",
 	"moderationsExtended": {
 		"extendedHelp": "",
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"moderationsEmpty": "",
 	"moderationsAmount": "",
 	"moderationsAmount_plural": "",
 	"mutesDescription": "",
 	"mutesExtended": {
-		"extendedHelp": ["", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"warningsDescription": "",
 	"warningsExtended": {
-		"extendedHelp": ["", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"slowmodeDescription": "",
 	"slowmodeExtended": {
 		"extendedHelp": "",
-		"examples": ["", "", ""],
+		"examples": [
+			"",
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"banDescription": "",
 	"banExtended": {
-		"extendedHelp": ["", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"dehoistDescription": "",
 	"dehoistExtended": {
-		"extendedHelp": ["", ""],
-		"reminder": "",
-		"multiline": ""
+		"extendedHelp": "",
+		"reminder": ""
 	},
 	"kickDescription": "",
 	"kickExtended": {
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"lockdownDescription": "",
 	"lockdownExtended": {
-		"extendedHelp": ["", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"muteDescription": "",
 	"muteExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"setNicknameDescription": "",
 	"setNicknameExtended": {
-		"extendedHelp": ["", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"addRoleDescription": "",
 	"addRoleExtended": {
-		"extendedHelp": ["", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"removeroleDescription": "",
 	"removeroleExtended": {
-		"extendedHelp": ["", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"pruneDescription": "",
 	"pruneExtended": {
-		"extendedHelp": ["", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""],
-		"reminder": "",
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"caseDescription": "",
 	"caseExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"permissionsDescription": "",
 	"permissionsExtended": {
@@ -203,50 +305,77 @@
 	"flowDescription": "",
 	"flowExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"reasonDescription": "",
 	"reasonExtended": {
-		"extendedHelp": ["", "", "", "", "", ""],
-		"examples": ["", "", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"restrictAttachmentDescription": "",
 	"restrictAttachmentExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"restrictEmbedDescription": "",
 	"restrictEmbedExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"restrictEmojiDescription": "",
 	"restrictEmojiExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"reminder": "",
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"restrictReactionDescription": "",
 	"restrictReactionExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"restrictVoiceDescription": "",
 	"restrictVoiceExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"softBanDescription": "",
 	"softBanExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"toggleModerationDmDescription": "",
 	"toggleModerationDmExtended": {
@@ -255,65 +384,92 @@
 	"unbanDescription": "",
 	"unbanExtended": {
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"unmuteDescription": "",
 	"unmuteExtended": {
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"unrestrictAttachmentDescription": "",
 	"unrestrictAttachmentExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"unrestrictEmbedDescription": "",
 	"unrestrictEmbedExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"unrestrictEmojiDescription": "",
 	"unrestrictEmojiExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"unrestrictReactionDescription": "",
 	"unrestrictReactionExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"unrestrictVoiceDescription": "",
 	"unrestrictVoiceExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"unwarnDescription": "",
 	"unwarnExtended": {
 		"extendedHelp": "",
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"vmuteDescription": "",
 	"vmuteExtended": {
-		"extendedHelp": ["", "", ""],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"voiceKickDescription": "",
 	"voiceKickExtended": {
-		"extendedHelp": ["", "", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"vunmuteDescription": "",
 	"vunmuteExtended": {
-		"extendedHelp": ["", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"warnDescription": "",
 	"warnExtended": {
-		"extendedHelp": ["", "", ""],
-		"examples": [""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			""
+		]
 	}
 }

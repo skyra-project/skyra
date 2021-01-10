@@ -25,21 +25,44 @@
 	"confSettingNotSet": "Ayarlanmamış",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
-		"extendedHelp": ["", "", "", "", "", "", ""]
+		"extendedHelp": ""
 	},
 	"rolesetDescription": "",
 	"rolesetExtended": {
-		"extendedHelp": ["", "", "", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", "", "", "", "", ""],
-		"reminder": "",
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",

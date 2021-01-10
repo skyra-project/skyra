@@ -3,10 +3,19 @@
 	"brawlstarsExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"brawlstarsPlayerEmbedTitles": {
 		"trophies": "",
@@ -44,10 +53,19 @@
 	"clashofclansExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""]
+		"examples": [
+			"",
+			""
+		]
 	},
 	"clashofclansPlayerEmbedTitles": {
 		"xpLevel": "",
@@ -101,13 +119,22 @@
 	"clashofclansPlayersQueryFail": "",
 	"FFXIVDescription": "",
 	"FFXIVExtended": {
-		"extendedHelp": ["", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"FFXIVCharacterFields": {
 		"serverAndDc": "",
@@ -143,10 +170,21 @@
 	"fortniteExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"fortniteNoUser": "",
 	"fortniteEmbedTitle": "",
@@ -171,14 +209,23 @@
 	},
 	"overwatchDescription": "",
 	"overwatchExtended": {
-		"extendedHelp": ["", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
-		"reminder": "",
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"overwatchInvalidPlayerName": "",
 	"overwatchQueryFail": "",

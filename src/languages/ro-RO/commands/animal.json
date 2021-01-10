@@ -1,12 +1,12 @@
 {
 	"catfactDescription": "",
 	"catfactExtended": {
-		"extendedHelp": ["", ""]
+		"extendedHelp": ""
 	},
 	"catfactTitle": "",
 	"dogDescription": "",
 	"dogExtended": {
-		"extendedHelp": ["", ""]
+		"extendedHelp": ""
 	},
 	"foxDescription": "",
 	"foxExtended": {
@@ -14,7 +14,7 @@
 	},
 	"kittyDescription": "",
 	"kittyExtended": {
-		"extendedHelp": ["", ""]
+		"extendedHelp": ""
 	},
 	"shibeDescription": "",
 	"shibeExtended": {

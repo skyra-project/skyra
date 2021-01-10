@@ -1,8 +1,28 @@
 {
 	"boolDisabled": "",
 	"boolEnabled": "",
-	"boolFalseOptions": ["", "", "", "", "", "", "", "", ""],
-	"boolTrueOptions": ["", "", "", "", "", "", "", "", ""],
+	"boolFalseOptions": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
+	"boolTrueOptions": [
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		"",
+		""
+	],
 	"channelNotInGuild": "",
 	"channelNotInGuildSubCommand": "",
 	"dateSuffix": "",

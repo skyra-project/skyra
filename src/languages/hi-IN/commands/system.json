@@ -6,10 +6,12 @@
 	},
 	"evalDescription": "",
 	"evalExtended": {
-		"extendedHelp": ["", "", "", "", "", "", "", "", "", "", "", "", ""],
-		"examples": ["", ""],
-		"reminder": "",
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"execDescription": "",
 	"execExtended": {
@@ -22,8 +24,7 @@
 	},
 	"donateDescription": "",
 	"donateExtended": {
-		"extendedHelp": ["", "", "", "", "", "", "", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
 	"echoDescription": "",
 	"echoExtended": {
@@ -46,9 +47,22 @@
 		"serverUsage": ""
 	},
 	"statsFields": {
-		"stats": ["", "", "", "", ""],
-		"uptime": ["", "", ""],
-		"serverUsage": ["", ""]
+		"stats": [
+			"",
+			"",
+			"",
+			"",
+			""
+		],
+		"uptime": [
+			"",
+			"",
+			""
+		],
+		"serverUsage": [
+			"",
+			""
+		]
 	},
 	"disable": "",
 	"disableDescription": "",

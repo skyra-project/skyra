@@ -1,37 +1,75 @@
 {
-	"avatarDescription": "",
+	"avatarDescription": "View somebody's avatar at full size.",
 	"avatarExtended": {
-		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"reminder": ""
+		"extendedHelp": "As this command's name says, it shows somebody's avatar.",
+		"explainedUsage": [
+			[
+				"user",
+				"(Optional) A user mention. Defaults to the author if the input is invalid or not given."
+			]
+		],
+		"reminder": "Use the --size flag to change the avatar's size."
 	},
-	"avatarNone": "",
-	"color": ["", "", ""],
-	"colorDescription": "",
+	"avatarNone": "That user has not set an avatar.",
+	"color": "",
+	"colorDescription": "Displays some awesome colours.",
 	"colorExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
+		"explainedUsage": [
+			[
+				"colour",
+				"A colour resolvable."
+			]
+		],
+		"examples": [
+			"#dfdfdf >25",
+			"rgb(200, 130, 75)"
+		],
 		"possibleFormats": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"HEX",
+				"#dfdfdf"
+			],
+			[
+				"RGB",
+				"rgb(200, 200, 200)"
+			],
+			[
+				"HSL",
+				"hsl(350, 100, 100)"
+			],
+			[
+				"B10",
+				"14671839"
+			]
 		]
 	},
-	"contentDescription": "",
+	"contentDescription": "Get a message's raw content.",
 	"contentExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"channel",
+				""
+			],
+			[
+				"message",
+				""
+			]
 		]
 	},
 	"countryDescription": "",
 	"countryExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"countryFields": {
 		"other": {
@@ -53,8 +91,15 @@
 	"defineDescription": "",
 	"defineExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"defineNotfound": "",
 	"definePronounciation": "",
@@ -70,12 +115,17 @@
 	"emojiDescription": "",
 	"emojiExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"reminder": ""
 	},
 	"emojiInvalid": "",
 	"emojiTooLarge": "",
-	"emojiTwemoji": ["", "", ""],
+	"emojiTwemoji": "",
 	"emotesDescription": "",
 	"emotesExtended": {
 		"extendedHelp": ""
@@ -84,8 +134,17 @@
 	"eshopDescription": "",
 	"eshopExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"eshopNotInDatabase": "",
 	"eshopPriceFree": "",
@@ -105,15 +164,31 @@
 	"horoscopeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"horoscopeInvalidSunsign": "",
 	"horoscopeTitles": {
 		"dailyHoroscope": "",
-		"metadata": ["", "", "", ""],
+		"metadata": [
+			"",
+			"",
+			"",
+			""
+		],
 		"metadataTitle": ""
 	},
 	"igdbData": {
@@ -128,8 +203,16 @@
 	"igdbDescription": "",
 	"igdbExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"igdbTitles": {
 		"ageRating": "",
@@ -142,8 +225,16 @@
 	"itunesDescription": "",
 	"itunesExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"itunesTitles": {
 		"artist": "",
@@ -166,10 +257,18 @@
 	},
 	"moviesDescription": "",
 	"moviesExtended": {
-		"extendedHelp": ["", ""],
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"moviesTitles": {
 		"collection": "",
@@ -184,7 +283,9 @@
 	"pollDescription": "",
 	"pollExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"pollReactionLimit": "",
 	"priceCurrency": "",
@@ -193,18 +294,37 @@
 	"priceExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""]
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"quoteDescription": "",
 	"quoteExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		]
 	},
 	"quoteMessage": "",
@@ -224,8 +344,17 @@
 	"showsDescription": "",
 	"showsExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", "", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"showsTitles": {
 		"episodeRuntime": "",
@@ -255,16 +384,26 @@
 	"urbanExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"urbanIndexNotfound": "",
 	"urbanNotFound": "",
 	"voteDescription": "",
 	"voteExtended": {
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"whoisDescription": "",
 	"whoisExtended": {

@@ -5,19 +5,17 @@
 	"announcementEmbedMentions": "{{header}}:",
 	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
-		"extendedHelp": [
-			"Este comando requiere un canal de anuncios (**channels.announcement** en el comando de configuración) que le indique a Skyra dónde debe publicar los mensajes de anuncio.",
-			"",
-			"La pregunta es: ¿es necesario este comando? Bueno, nada te impide hacer sus anuncios por su cuenta, sin embargo, hay muchas personas que odian ser mencionadas con @everyone o @here.",
-			"",
-			"Para evitar esto, Skyra te da la opción de crear un rol de suscriptor, que es inmencionable (para evitar que la gente mencione el rol), y una vez que ejecutes este comando, Skyra establecerá el rol para ser mencionable, mandará el mensaje y modificará el rol de vuelta a inmencionable.",
-			"",
-			"Además, puedes configurar Skyra para que envíe el anuncio como un mensaje incrustado estableciendo la opción **messages.announcement-embed** en el comando de configuración. Al enviar el mensaje como un incrustado puedes excluir las menciones de cualquier usuario, @here o @everyone proporcionando la bandera `--excludeMencions` al anuncio."
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"anuncio",
+				"El texto del anuncio a publicar."
+			]
 		],
-		"explainedUsage": [["anuncio", "El texto del anuncio a publicar."]],
-		"examples": ["¡Me complace anunciar que tenemos un bot capaz de enviar anuncios seguros para nuestros suscriptores!"],
-		"reminder": "Si quieres editar el mensaje que enviaste en un anuncio, edita el mensaje que usaste para que Skyra envíe ese anuncio. Skyra editará el mensaje que envió anteriormente. Puedes hacer esto hasta 15 minutos después del anuncio inicial, ¡así que asegúrese de no esperar mucho tiempo!",
-		"multiline": ""
+		"examples": [
+			"¡Me complace anunciar que tenemos un bot capaz de enviar anuncios seguros para nuestros suscriptores!"
+		],
+		"reminder": "Si quieres editar el mensaje que enviaste en un anuncio, edita el mensaje que usaste para que Skyra envíe ese anuncio. Skyra editará el mensaje que envió anteriormente. Puedes hacer esto hasta 15 minutos después del anuncio inicial, ¡así que asegúrese de no esperar mucho tiempo!"
 	},
 	"announcementPrompt": "Este será el mensaje enviado en el canal de anuncios. ¿Está de acuerdo con esto?",
 	"announcementSuccess": "Se ha publicado un nuevo anuncio con éxito.",

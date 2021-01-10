@@ -109,23 +109,57 @@
 	"socialExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"bannerDescription": "",
 	"bannerExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"toggleDarkModeDescription": "",
 	"toggleDarkModeExtended": {
@@ -133,16 +167,32 @@
 	},
 	"autoRoleDescription": "",
 	"autoRoleExtended": {
-		"extendedHelp": ["", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
 		"reminder": "",
-		"examples": ["", "", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"balanceDescription": "",
 	"balanceExtended": {
@@ -151,20 +201,23 @@
 	"dailyDescription": "",
 	"dailyExtended": {
 		"extendedHelp": "",
-		"reminder": ["", "", ""],
-		"multiline": ""
+		"reminder": ""
 	},
 	"leaderboardDescription": "",
 	"leaderboardExtended": {
 		"extendedHelp": "",
-		"reminder": "",
-		"multiline": ""
+		"reminder": ""
 	},
 	"leaderboardListifyPage": "",
 	"levelDescription": "",
 	"levelExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"divorceDescription": "",
 	"divorceExtended": {
@@ -173,8 +226,16 @@
 	"marryDescription": "",
 	"marryExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"marriedDescription": "Проверьте, с кем вы состоите в браке.",
 	"marriedExtended": {
@@ -183,53 +244,112 @@
 	"mylevelDescription": "",
 	"mylevelExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"payDescription": "",
 	"payExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"profileDescription": "",
 	"profileExtended": {
-		"extendedHelp": ["", ""],
-		"explainedUsage": [["", ""]],
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"remindmeDescription": "",
 	"remindmeExtended": {
 		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", ""]
+		"examples": [
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"reputationDescription": "",
 	"reputationExtended": {
-		"extendedHelp": ["", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
 		"reminder": "",
-		"examples": ["", "", "", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"setColorDescription": "",
 	"setColorExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"possibleFormats": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		]
 	},
 	"vaultDescription": "",
@@ -241,13 +361,21 @@
 		"withdrewDescription": ""
 	},
 	"vaultExtended": {
-		"extendedHelp": ["", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			""
+		]
 	},
 	"vaultInvalidCoins": "",
 	"vaultNotEnoughInVault": "",

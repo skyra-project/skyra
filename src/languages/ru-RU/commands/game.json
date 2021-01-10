@@ -1,8 +1,7 @@
 {
 	"c4Description": "",
 	"c4Extended": {
-		"extendedHelp": ["В эту игру лучше всего играть на ПК.", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
 	"c4GameColumnFull": "",
 	"c4GameDraw": "",
@@ -13,12 +12,17 @@
 	"c4Prompt": "",
 	"c4Start": "",
 	"cannotHaveNegativeMoney": "",
-	"coinFlipCoinnames": ["", ""],
+	"coinFlipCoinnames": [
+		"",
+		""
+	],
 	"coinFlipDescription": "Подбросьте монетку!",
 	"coinFlipExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"",
+			""
+		]
 	},
 	"coinFlipInvalidCoinname": "",
 	"coinFlipLoseDescription": "",
@@ -401,8 +405,7 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -419,7 +422,9 @@
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -434,7 +439,12 @@
 	"slotmachineCanvasTextWon": "Вы выиграли",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -447,8 +457,7 @@
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ["", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
 	"ticTacToePrompt": "",
 	"ticTacToeTurn": "",
@@ -460,15 +469,30 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
-		"extendedHelp": ["", "", "**Категории**: {{TRIVIA_CATEGORIES}}"],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"triviaIncorrect": "",
 	"triviaInvalidCategory": "",

@@ -1,29 +1,33 @@
 {
-	"c4Description": "",
+	"c4Description": "Play Connect Four with somebody.",
 	"c4Extended": {
-		"extendedHelp": ["", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
-	"c4GameColumnFull": "",
-	"c4GameDraw": "",
-	"c4GameNext": "",
-	"c4GameNextTurn0": "",
-	"c4GameWin": "",
-	"c4GameWinTurn0": "",
-	"c4Prompt": "",
-	"c4Start": "",
+	"c4GameColumnFull": "This column is full. Please try another. ",
+	"c4GameDraw": "This match concluded in a **draw**!",
+	"c4GameNext": "Turn for: {{user}} (red).",
+	"c4GameNextTurn0": "Turn for: {{user}} (blue).",
+	"c4GameWin": "{{user}} (red) won!",
+	"c4GameWinTurn0": "{{user}} (blue) won!",
+	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect Four match. Reply with **yes** to accept!",
+	"c4Start": "Let's play! Turn for: **{{player}}**.",
 	"cannotHaveNegativeMoney": "",
-	"coinFlipCoinnames": ["", ""],
-	"coinFlipDescription": "",
+	"coinFlipCoinnames": [
+		"Heads",
+		"Tails"
+	],
+	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"examples": [
+			"heads 50",
+			"tails 200"
+		]
 	},
-	"coinFlipInvalidCoinname": "",
-	"coinFlipLoseDescription": "",
-	"coinFlipLoseDescriptionWithWager": "",
-	"coinFlipLoseTitle": "",
+	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
+	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
+	"coinFlipLoseDescriptionWithWager": "The coin was flipped, and it showed {{result}}. You didn't guess correctly and lost {{wager}} {{SHINY}}.",
+	"coinFlipLoseTitle": "You lost.",
 	"coinFlipNoguessDescription": "",
 	"coinFlipNoguessTitle": "",
 	"coinFlipWinDescription": "",
@@ -401,8 +405,7 @@
 		"title": ""
 	},
 	"higherLowerExtended": {
-		"extendedHelp": ["", "", "", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
 	"higherLowerLoading": "",
 	"higherLowerLose": {
@@ -419,7 +422,9 @@
 	"hungerGamesDescription": "",
 	"hungerGamesExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"hungerGamesResultDeaths": "",
 	"hungerGamesResultDeathsPlural": "",
@@ -434,7 +439,12 @@
 	"slotmachineCanvasTextWon": "",
 	"slotmachineDescription": "",
 	"slotmachineExtended": {
-		"explainedUsage": [["", ""]],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
 		"extendedHelp": "",
 		"reminder": ""
 	},
@@ -444,13 +454,12 @@
 		"new": "",
 		"previous": ""
 	},
-	"ticTacToeDescription": "",
+	"ticTacToeDescription": "Play noughts and crosses with somebody.",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
-		"extendedHelp": ["", ""],
-		"multiline": ""
+		"extendedHelp": ""
 	},
-	"ticTacToePrompt": "",
+	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a noughts and crosses match. Reply with **yes** to accept!",
 	"ticTacToeTurn": "",
 	"ticTacToeWinner": "",
 	"triviaActiveGame": "",
@@ -460,15 +469,30 @@
 		"trivia": ""
 	},
 	"triviaExtended": {
-		"extendedHelp": ["", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			""
+		]
 	},
 	"triviaIncorrect": "",
 	"triviaInvalidCategory": "",

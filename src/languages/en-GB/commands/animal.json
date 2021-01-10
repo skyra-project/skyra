@@ -1,15 +1,12 @@
 {
 	"catfactDescription": "Let me tell you a mysterious cat fact.",
 	"catfactExtended": {
-		"extendedHelp": ["", "This command queries catfact.ninja and retrieves a fact so you can read it."]
+		"extendedHelp": ""
 	},
 	"catfactTitle": "Cat Fact",
 	"dogDescription": "Cute doggos! ❤",
 	"dogExtended": {
-		"extendedHelp": [
-			"Do you know how cute dogs are? They are so beautiful!",
-			"This command uses [dog.ceo](https://dog.ceo) to show pictures of the cuttest doggos!"
-		]
+		"extendedHelp": ""
 	},
 	"foxDescription": "Let me show you an image of a fox!",
 	"foxExtended": {
@@ -17,10 +14,7 @@
 	},
 	"kittyDescription": "KITTENS!",
 	"kittyExtended": {
-		"extendedHelp": [
-			"Do you know how cute kittens are? They are so beautiful!",
-			"This command uses [cataas.com](https://cataas.com/) to show pictures of the cuttest cats!"
-		]
+		"extendedHelp": ""
 	},
 	"shibeDescription": "Cute shibas!",
 	"shibeExtended": {

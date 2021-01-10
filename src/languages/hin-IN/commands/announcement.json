@@ -5,11 +5,17 @@
 	"announcementEmbedMentions": "",
 	"announcementEmbedMentionsWithMentions": "",
 	"announcementExtended": {
-		"extendedHelp": ["", "", "", "", "", "", ""],
-		"explainedUsage": [["", ""]],
-		"examples": [""],
-		"reminder": "",
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
+		"reminder": ""
 	},
 	"announcementPrompt": "",
 	"announcementSuccess": "",

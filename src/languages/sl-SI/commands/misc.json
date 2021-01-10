@@ -10,7 +10,14 @@
 	"randRedditErrorQuarantined": "",
 	"randRedditErrorNotFound": "",
 	"randRedditErrorBanned": "",
-	"redditUserComplexityLevels": ["zelo nizko", "nizko", "srednje", "visoko", "zelo visoko", "zelo visoko"],
+	"redditUserComplexityLevels": [
+		"zelo nizko",
+		"nizko",
+		"srednje",
+		"visoko",
+		"zelo visoko",
+		"zelo visoko"
+	],
 	"redditUserInvalidUser": "`{{user}}` ni veljavno Reddit uporabniško ime",
 	"redditUserQueryFailed": "",
 	"redditUserTitles": {
@@ -39,68 +46,139 @@
 	"cuddleDescription": "",
 	"cuddleExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["uporabnik", ""]],
-		"examples": ["Skyra"]
+		"explainedUsage": [
+			[
+				"uporabnik",
+				""
+			]
+		],
+		"examples": [
+			"Skyra"
+		]
 	},
 	"deletthisDescription": "",
 	"deletthisExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["uporabnik", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"uporabnik",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"fDescription": "",
 	"fExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"goodnightDescription": "",
 	"goodnightExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"goofytimeDescription": "",
 	"goofytimeExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"hugDescription": "",
 	"hugExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"ineedhealingDescription": "",
 	"ineedhealingExtended": {
-		"extendedHelp": ["", "", ""],
-		"explainedUsage": [["", ""]],
-		"examples": [""],
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"randRedditDescription": "",
 	"randRedditExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"redditUserDescription": "",
 	"redditUserExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"shipDescription": "",
 	"shipExtended": {
-		"extendedHelp": ["", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": [""],
-		"reminder": "",
-		"multiline": ""
+		"examples": [
+			""
+		],
+		"reminder": ""
 	},
 	"shipData": {
 		"title": "",
@@ -109,28 +187,55 @@
 	"chaseDescription": "",
 	"chaseExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"shindeiruDescription": "",
 	"shindeiruExtended": {
-		"extendedHelp": ["", ""],
-		"explainedUsage": [["", ""]],
-		"examples": [""],
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"peepoloveDescription": "",
 	"peepoloveExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
 		"reminder": ""
 	},
 	"slapDescription": "",
 	"slapExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		],
 		"reminder": ""
 	},
 	"snipeDescription": "",
@@ -140,14 +245,28 @@
 	"thesearchDescription": "",
 	"thesearchExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"triggeredDescription": "",
 	"triggeredExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	},
 	"upvoteDescription": "",
 	"upvoteExtended": {
@@ -156,7 +275,14 @@
 	"vaporwaveDescription": "",
 	"vaporwaveExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": [""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			""
+		]
 	}
 }

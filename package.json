@@ -13,6 +13,7 @@
 		"#lib/structures/color": "./dist/lib/structures/color/index.js",
 		"#lib/types": "./dist/lib/types/index.js",
 		"#root/*": "./dist/*.js",
+		"#languages": "./dist/languages/index.js",
 		"#utils/*": "./dist/lib/util/*.js"
 	},
 	"scripts": {

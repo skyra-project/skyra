@@ -1,11 +1,9 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import { LanguageFormatters, SupportedLanguages } from '#lib/types/Constants';
+import { LanguageFormatters } from '#lib/types/Constants';
 import { Colors } from '#lib/types/constants/Constants';
 import { DEV, VERSION as SKYRA_VERSION } from '#root/config';
-import * as enUsFormatters from '#root/languages/en-US/constants';
-import * as esEsFormatters from '#root/languages/es-ES/constants';
+import { getHandler } from '#root/languages/index';
 import { CATEGORIES as TRIVIA_CATEGORIES } from '#utils/Games/TriviaManager';
-import { list } from '#utils/Language/list';
 import { codeBlock, toTitleCase } from '@sapphire/utilities';
 import i18next, { FormatFunction } from 'i18next';
 import { KlasaClientOptions } from 'klasa';
@@ -349,10 +347,10 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 				format: (...[value, format, language, options]: Parameters<FormatFunction>) => {
 					switch (format as LanguageFormatters) {
 						case LanguageFormatters.AndList: {
-							return list(value as string[], i18next.t('globals:and', { ...options, lng: language }));
+							return getHandler(language!).listAnd.format(value as string[]);
 						}
 						case LanguageFormatters.OrList: {
-							return list(value as string[], i18next.t('globals:or', { ...options, lng: language }));
+							return getHandler(language!).listOr.format(value as string[]);
 						}
 						case LanguageFormatters.Permissions: {
 							return i18next.t(`permissions:${value}`, { ...options, lng: language });
@@ -367,31 +365,16 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 							return codeBlock('js', value);
 						}
 						case LanguageFormatters.GroupDigits: {
-							return (value as number).toLocaleString(language, { useGrouping: true });
+							return getHandler(language!).number.format(value as number);
 						}
 						case LanguageFormatters.Ordinal: {
-							switch (language as SupportedLanguages) {
-								case SupportedLanguages.EnUs:
-									return enUsFormatters.ordinal(value);
-								case SupportedLanguages.EsEs:
-									return esEsFormatters.ordinal(value);
-							}
+							return getHandler(language!).ordinal(value as number);
 						}
 						case LanguageFormatters.Duration: {
-							switch (language as SupportedLanguages) {
-								case SupportedLanguages.EnUs:
-									return enUsFormatters.duration.format(value, options?.precision ?? 2);
-								case SupportedLanguages.EsEs:
-									return esEsFormatters.duration.format(value, options?.precision ?? 2);
-							}
+							return getHandler(language!).duration.format(value as number, options?.precision ?? 2);
 						}
 						case LanguageFormatters.Timestamp: {
-							switch (language as SupportedLanguages) {
-								case SupportedLanguages.EnUs:
-									return enUsFormatters.timestamp.displayUTC(value);
-								case SupportedLanguages.EsEs:
-									return esEsFormatters.timestamp.displayUTC(value);
-							}
+							return getHandler(language!).timeFull.format(value as number);
 						}
 						default:
 							return value as string;

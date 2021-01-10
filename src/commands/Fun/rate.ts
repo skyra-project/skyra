@@ -28,10 +28,10 @@ export default class extends SkyraCommand {
 
 		if (this.botRegex.test(user)) {
 			rate = 100;
-			[ratewaifu, user] = t(LanguageKeys.Commands.Fun.RateMyself);
+			[ratewaifu, user] = t(LanguageKeys.Commands.Fun.RateMyself, { returnObjects: true });
 		} else if (this.devRegex.test(user)) {
 			rate = 101;
-			[ratewaifu, user] = t(LanguageKeys.Commands.Fun.RateMyOwners);
+			[ratewaifu, user] = t(LanguageKeys.Commands.Fun.RateMyOwners, { returnObjects: true });
 		} else {
 			user = /^(myself|me)$/i.test(user) ? message.author.username : user.replace(/\bmy\b/g, 'your');
 

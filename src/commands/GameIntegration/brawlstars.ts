@@ -114,7 +114,6 @@ export default class extends SkyraCommand {
 	private async buildPlayerEmbed(message: KlasaMessage, t: TFunction, player: BrawlStars.Player) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles, { returnObjects: true });
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields, { returnObjects: true });
-		const languageString = t.name;
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) ?? (await DbSet.fetchColor(message)))
@@ -123,16 +122,16 @@ export default class extends SkyraCommand {
 			.addField(
 				titles.trophies,
 				[
-					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${player.trophies.toLocaleString(languageString)}`,
-					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${player.highestTrophies.toLocaleString(languageString)}`
+					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${player.trophies.toLocaleString(t.lng)}`,
+					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${player.highestTrophies.toLocaleString(t.lng)}`
 				].join('\n')
 			)
 			.addField(
 				titles.exp,
 				[
-					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${player.expPoints.toLocaleString(languageString)})`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${player.powerPlayPoints?.toLocaleString(languageString) || 0}`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${player.highestPowerPlayPoints?.toLocaleString(languageString) || 0}`
+					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${player.expPoints.toLocaleString(t.lng)})`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${player.powerPlayPoints?.toLocaleString(t.lng) ?? 0}`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${player.highestPowerPlayPoints?.toLocaleString(t.lng) ?? 0}`
 				].join('\n')
 			)
 			.addField(
@@ -147,9 +146,9 @@ export default class extends SkyraCommand {
 			.addField(
 				titles.gamesModes,
 				[
-					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${player['3vs3Victories'].toLocaleString(languageString)}`,
-					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${player.soloVictories.toLocaleString(languageString)}`,
-					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${player.duoVictories.toLocaleString(languageString)}`
+					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${player['3vs3Victories'].toLocaleString(t.lng)}`,
+					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${player.soloVictories.toLocaleString(t.lng)}`,
+					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${player.duoVictories.toLocaleString(t.lng)}`
 				].join('\n')
 			)
 			.addField(
@@ -168,11 +167,10 @@ export default class extends SkyraCommand {
 	private async buildClubEmbed(message: KlasaMessage, t: TFunction, club: BrawlStars.Club) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles, { returnObjects: true });
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields, { returnObjects: true });
-		const languageString = t.name;
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
-			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${member.trophies.toLocaleString(languageString)})`;
+			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${member.trophies.toLocaleString(t.lng)})`;
 		const president = club.members.find((member) => member.role === 'president');
 
 		const embed = new MessageEmbed()

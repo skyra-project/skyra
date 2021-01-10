@@ -126,6 +126,9 @@ declare module 'klasa-dashboard-hooks' {
 
 declare module 'i18next' {
 	export interface TFunction {
+		lng: string;
+		ns?: string;
+
 		<K extends string, TReturn>(key: CustomGet<K, TReturn>, options: TContextAwareFunctionOptions<TReturn>): TReturn;
 		<K extends string, TReturn>(key: CustomGet<K, TReturn>, defaultValue: TReturn, options: TContextAwareFunctionOptions<TReturn>): TReturn;
 		<K extends string, TArgs extends O, TReturn>(

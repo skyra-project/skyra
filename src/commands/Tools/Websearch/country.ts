@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 						[
 							`${fieldsData.overview.officialName}: ${country.altSpellings[2] ?? country.name}`,
 							`${fieldsData.overview.capital}: ${country.capital}`,
-							`${fieldsData.overview.population}: ${country.population.toLocaleString(t.name)}`
+							`${fieldsData.overview.population}: ${country.population.toLocaleString(t.lng)}`
 						].join('\n')
 					)
 					.addField(titles.LANGUAGES, country.languages.map(mapNativeName).join('\n'))
@@ -65,7 +65,7 @@ export default class extends SkyraCommand {
 						titles.OTHER,
 						[
 							`${fieldsData.other.demonym}: ${country.demonym}`,
-							country.area ? `${fieldsData.other.area}: ${country.area.toLocaleString(t.name)} km${SuperScriptTwo}` : null,
+							country.area ? `${fieldsData.other.area}: ${country.area.toLocaleString(t.lng)} km${SuperScriptTwo}` : null,
 							`${fieldsData.other.currencies}: ${country.currencies.map(mapCurrency).join(', ')}`
 						]
 							.filter(Boolean)

@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 				.addField(
 					serverInfoTitles.MEMBERS,
 					t(LanguageKeys.Commands.Management.GuildInfoMembers, {
-						memberCount: message.guild.memberCount.toLocaleString(t.name),
+						memberCount: message.guild.memberCount.toLocaleString(t.lng),
 						owner
 					}),
 					true

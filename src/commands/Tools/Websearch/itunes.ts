@@ -39,7 +39,7 @@ export default class extends RichDisplayCommand {
 			url.searchParams.append('country', 'US');
 			url.searchParams.append('entity', 'song');
 			url.searchParams.append('explicit', 'no');
-			url.searchParams.append('lang', t.name.toLowerCase());
+			url.searchParams.append('lang', t.lng.toLowerCase());
 			url.searchParams.append('limit', '10');
 			url.searchParams.append('media', 'music');
 			url.searchParams.append('term', song);

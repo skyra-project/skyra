@@ -24,8 +24,3 @@ export const enum LanguageFormatters {
 	Timestamp = 'timestamp',
 	ToTitleCase = 'toTitleCase'
 }
-
-export const enum SupportedLanguages {
-	EnUs = 'en-US',
-	EsEs = 'es-ES'
-}

@@ -5,14 +5,30 @@
 	"edited": "",
 	"exists": "",
 	"extended": {
-		"extendedHelp": ["", "", "", "", "", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", "", "", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	},
 	"listEmpty": "",
 	"nameNotAllowed": "",

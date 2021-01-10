@@ -1,10 +1,17 @@
 {
 	"currentTimeDescription": "",
 	"currentTimeExtended": {
-		"extendedHelp": ["", ""],
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"currentTimeLocationNotFound": "",
 	"currentTimeTitles": {
@@ -19,28 +26,56 @@
 	"gsearchDescription": "",
 	"gsearchExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		]
 	},
 	"gimageDescription": "",
 	"gimageExtended": {
 		"extendedHelp": "",
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
 		"reminder": ""
 	},
 	"lmgtfyDescription": "",
 	"lmgtfyExtended": {
-		"explainedUsage": [["", ""]]
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		]
 	},
 	"lmgtfyClick": "",
 	"weatherDescription": "",
 	"weatherExtended": {
-		"extendedHelp": ["", ""],
-		"explainedUsage": [["", ""]],
-		"examples": ["", ""],
-		"reminder": "",
-		"multiline": ""
+		"extendedHelp": "",
+		"explainedUsage": [
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"reminder": ""
 	},
 	"errorZeroResults": "",
 	"errorRequestDenied": "",

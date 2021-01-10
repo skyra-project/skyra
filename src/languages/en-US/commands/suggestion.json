@@ -24,11 +24,7 @@
 			"1 deny There is no way this is going to happen.",
 			"1 d There is no way this is going to happen."
 		],
-		"reminder": [
-			"Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.",
-			"Furthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags."
-		],
-		"multiline": true
+		"reminder": "Suggestions also can be configured to DM the author regarding the status of their suggestion, with the `suggestions.on-action.dm` setting.\nFurthermore, in case you wish to preserve anonymity, you can hide your name using the `suggestions.on-action` setting, which can be overridden with the `--hide-author` and `--show-author` flags."
 	},
 	"resolveSuggestionInvalidId": "{{REDCROSS}} That's not a valid suggestion ID!",
 	"resolveSuggestionMessageNotFound": "{{REDCROSS}} I was not able to retrieve the suggestion as its message has been deleted.",

@@ -1,11 +1,7 @@
 {
 	"c4Description": "Play Connect-Four with somebody.",
 	"c4Extended": {
-		"extendedHelp": [
-			"This game is best played on PC.",
-			"Connect Four is a two-player connection game in which the players first choose a color and then take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid."
-		],
-		"multiline": true
+		"extendedHelp": "This game is best played on PC.\nConnect Four is a two-player connection game in which the players first choose a color and then take turns dropping colored discs from the top into a seven-column, six-row vertically suspended grid."
 	},
 	"c4GameColumnFull": "This column is full. Please try another. ",
 	"c4GameDraw": "This match concluded in a **draw**!",
@@ -19,14 +15,8 @@
 	"coinFlipCoinnames": ["Heads", "Tails"],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {
-		"extendedHelp": [
-			"Flip a coin. If you guess the side that shows up, you get back your wager, doubled.",
-			"If you don't, you lose your wager.",
-			"You can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.",
-			"Now get those coins flippin'."
-		],
-		"examples": ["heads 50", "tails 200"],
-		"multiline": true
+		"extendedHelp": "Flip a coin. If you guess the side that shows up, you get back your wager, doubled.\nIf you don't, you lose your wager.\nYou can also run a cashless flip, which doesn't cost anything, but also doesn't reward you with anything.\nNow get those coins flippin'.",
+		"examples": ["heads 50", "tails 200"]
 	},
 	"coinFlipInvalidCoinname": "Excuse me, but {{arg}} is not a coin face!",
 	"coinFlipLoseDescription": "The coin was flipped, and it showed {{result}}. You didn't guess correctly.",
@@ -409,13 +399,7 @@
 		"title": "Higher or Lower? | Turn {{turn}}"
 	},
 	"higherLowerExtended": {
-		"extendedHelp": [
-			"Higher/Lower is a game of luck.",
-			"I will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis.",
-			"Your winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 emoji.",
-			"Be warned though! The further you go, the more chances you have to lose the winnings."
-		],
-		"multiline": true
+		"extendedHelp": "Higher/Lower is a game of luck.\nI will pick a number and you'll have to guess if the next number I pick will be **higher** or **lower** than the current one, using the ⬆ or ⬇ emojis.\nYour winnings increase as you progress through the rounds, and you can cashout any time by pressing the 💰 emoji.\nBe warned though! The further you go, the more chances you have to lose the winnings."
 	},
 	"higherLowerLoading": "{{LOADING}} Starting a new game of Higher/Lower.",
 	"higherLowerLose": {
@@ -460,11 +444,7 @@
 	"ticTacToeDescription": "Play Tic-Tac-Toe with somebody.",
 	"ticTacToeDraw": "This match concluded in a **draw**!\n{{board}}",
 	"ticTacToeExtended": {
-		"extendedHelp": [
-			"Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid.",
-			"The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game."
-		],
-		"multiline": true
+		"extendedHelp": "Tic-tac-toe (also known as noughts and crosses or Xs and Os) is a paper-and-pencil game for two players, X and O, who take turns marking the spaces in a 3×3 grid.\nThe player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game."
 	},
 	"ticTacToePrompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Tic-Tac-Toe match. Reply with **yes** to accept!",
 	"ticTacToeTurn": "({{icon}}) Turn for {{player}}!\n{{board}}",
@@ -476,19 +456,14 @@
 		"trivia": "Trivia"
 	},
 	"triviaExtended": {
-		"extendedHelp": [
-			"Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)",
-			"",
-			"**Categories**: {{TRIVIA_CATEGORIES}}"
-		],
+		"extendedHelp": "Answer questions of trivia here, with categories ranging from books to mythology! (powered by OpenTDB)\n\n**Categories**: {{TRIVIA_CATEGORIES}}",
 		"explainedUsage": [
 			["category", "The category questions are asked from."],
 			["type", "The type of question asked: can be boolean (true/false) or multiple choice."],
 			["difficulty", "The difficulty level of the questions asked."],
 			["duration", "The amount of time you get to answer."]
 		],
-		"examples": ["trivia history.", "trivia books multiple easy.", "trivia videogames 45."],
-		"multiline": true
+		"examples": ["trivia history.", "trivia books multiple easy.", "trivia videogames 45."]
 	},
 	"triviaIncorrect": "I am sorry, but **{{attempt}}** is not the correct answer. Better luck next time!",
 	"triviaInvalidCategory": "Invalid category: Please use `Skyra, help trivia` for a list of categories.",

@@ -88,5 +88,6 @@
 	"errorRequestDenied": "",
 	"errorInvalidRequest": "",
 	"errorOverQueryLimit": "",
+	"errorPermissionDenied": "",
 	"errorUnknown": ""
 }

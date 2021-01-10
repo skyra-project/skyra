@@ -523,38 +523,6 @@
 	"triviaInvalidCategory": "",
 	"triviaNoAnswer": "",
 	"triviaWinner": "",
-	"vaultDescription": "",
-	"vaultEmbedData": {
-		"accountMoney": "",
-		"accountVault": "",
-		"depositedDescription": "",
-		"showDescription": "",
-		"withdrewDescription": ""
-	},
-	"vaultExtended": {
-		"extendedHelp": [
-			"",
-			""
-		],
-		"explainedUsage": [
-			[
-				"",
-				""
-			],
-			[
-				"",
-				""
-			]
-		],
-		"examples": [
-			"",
-			""
-		],
-		"multiline": ""
-	},
-	"vaultInvalidCoins": "",
-	"vaultNotEnoughInVault": "",
-	"vaultNotEnoughMoney": "",
 	"wheelOfFortuneCanvasTextLost": "Вы проиграли",
 	"wheelOfFortuneCanvasTextWon": "Вы выиграли",
 	"wheelOfFortuneDescription": "",

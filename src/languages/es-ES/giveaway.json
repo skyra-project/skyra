@@ -1,15 +1,1 @@
-{
-	"giveawayTime": "El sorteo debe durar al menos 10 segundos.",
-	"giveawayTimeTooLong": "¡Hola! ¡Eso es un tiempo increíblemente largo para seguir el rastro!",
-	"giveawayEndsAt": "Termina en:",
-	"giveawayDuration": "¡Este sorteo termina en **{{time, duration}}**! Reacciona a este mensaje con 🎉 para unirse.",
-	"giveawayTitle": "🎉 **SORTEO** 🎉",
-	"giveawayLastchance": "¡**ÚLTIMA OPORTUNIDAD**! Tiempo restante: **{{time, duration}}**. Reacciona a este mensaje con 🎉 para unirse.",
-	"giveawayLastchanceTitle": "🎉 **ÚLTIMA OPORTUNIDAD PARA EL SORTEO** 🎉",
-	"giveawayEndedNoWinner": "No hay ganador...",
-	"giveawayEndedAt": "Finalizado en:",
-	"giveawayEndedTitle": "🎉 **SORTEO TERMINADO** 🎉",
-	"giveawayEndedMessage": "¡Felicidades {{winners | joinAnd}}! Habéis ganado el sorteo **{{title}}**",
-	"giveawayEndedMessageNoWinner": "El sorteo **{{title}}** terminó sin suficientes participantes.",
-	"giveawayScheduled": "El sorteo comenzará en {{scheduledTime, duration}}."
-}
+{}

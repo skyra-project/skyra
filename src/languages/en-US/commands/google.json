@@ -51,5 +51,6 @@
 	"errorRequestDenied": "The GeoCode API Request was denied.",
 	"errorInvalidRequest": "Invalid request.",
 	"errorOverQueryLimit": "Query Limit exceeded. Try again tomorrow.",
+	"errorPermissionDenied": "Google denied my permission to this resource, please contact the developers regarding this in the official support server at <https://join.skyra.pw>",
 	"errorUnknown": "I am sorry, but I failed to get a result from Google."
 }

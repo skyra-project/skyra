@@ -5,8 +5,8 @@ import { Schedules } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors, Time } from '#utils/constants';
 import { pickRandom } from '#utils/util';
-import { chunk, cutText } from '@sapphire/utilities';
 import { Timestamp } from '@sapphire/time-utilities';
+import { chunk, cutText } from '@sapphire/utilities';
 import { ApplyOptions, CreateResolvers, requiredPermissions, requiresGuildContext } from '@skyra/decorators';
 import { MessageEmbed } from 'discord.js';
 import { KlasaMessage } from 'klasa';
@@ -137,8 +137,12 @@ export default class extends SkyraCommand {
 		);
 		for (const page of pages) display.addPage((template: MessageEmbed) => template.setDescription(page.join('\n')));
 
+		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed({ description: pickRandom(await message.resolveKey(LanguageKeys.System.Loading)), color: BrandingColors.Secondary })
+			new MessageEmbed({
+				description: pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })),
+				color: BrandingColors.Secondary
+			})
 		);
 		await display.start(response, message.author.id);
 		return response;

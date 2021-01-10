@@ -27,7 +27,7 @@ export abstract class BaseReactionGame<T> extends BaseGame<T> {
 
 	protected async onStart(): Promise<unknown> {
 		try {
-			this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading)));
+			this.message = await this.message.send(pickRandom(this.t(LanguageKeys.System.Loading, { returnObjects: true })));
 			for (const reaction of this.reactions) await this.message.react(reaction);
 		} catch {
 			await this.message.sendTranslated(LanguageKeys.Misc.UnexpectedIssue).catch((error) => this.client.emit(Events.ApiError, error));

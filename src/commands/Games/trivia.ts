@@ -57,7 +57,7 @@ export default class extends SkyraCommand {
 		this.#channels.add(message.channel.id);
 
 		try {
-			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
+			await message.send(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })));
 			const data = await getQuestion(category, difficulty, questionType);
 			const possibleAnswers =
 				questionType === QuestionType.Boolean || questionType === QuestionType.TrueFalse

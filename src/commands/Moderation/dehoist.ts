@@ -28,7 +28,11 @@ export default class extends SkyraCommand {
 		const t = await message.fetchT();
 
 		if (message.guild.members.cache.size !== message.guild.memberCount) {
-			await message.send(new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary));
+			await message.send(
+				new MessageEmbed()
+					.setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })))
+					.setColor(BrandingColors.Secondary)
+			);
 			await message.guild.members.fetch();
 		}
 

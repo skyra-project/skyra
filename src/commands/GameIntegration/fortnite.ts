@@ -24,7 +24,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [platform, user]: [platform, string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
 		);
 
 		const fortniteUser = await this.fetchAPI(t, user, platform);

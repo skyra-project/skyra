@@ -28,7 +28,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [gameName]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
 		);
 
 		const { results: entries } = await this.fetchAPI(t, gameName);

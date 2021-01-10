@@ -58,7 +58,7 @@ export default class extends SkyraCommand {
 
 		const t = await message.fetchT();
 		if (promises.length) {
-			await message.send(pickRandom(t(LanguageKeys.System.Loading)));
+			await message.send(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true })));
 			await Promise.all(promises);
 		}
 		for (const value of retrievedPage) {

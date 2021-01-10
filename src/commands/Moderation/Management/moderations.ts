@@ -25,7 +25,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [action, target]: ['mutes' | 'warnings' | 'warns' | 'all', User?]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
 		);
 		const entries = (await (target ? message.guild.moderation.fetch(target.id) : message.guild.moderation.fetch())).filter(
 			this.getFilter(action, target)

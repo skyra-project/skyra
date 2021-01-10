@@ -27,22 +27,21 @@ export default class extends SkyraCommand {
 		const { hex, hsl, rgb } = parse(input);
 
 		const attachment = await this.showColor(rgb, diff);
-		return message.sendTranslated(
-			LanguageKeys.Commands.Tools.Color,
-			[
-				{
-					hex: hex.toString(),
-					rgb: rgb.toString(),
-					hsl: hsl.toString()
-				}
-			],
+		const t = await message.fetchT();
+		return message.send(
+			t(LanguageKeys.Commands.Tools.Color, {
+				hex: hex.toString(),
+				rgb: rgb.toString(),
+				hsl: hsl.toString(),
+				joinArrays: '\n'
+			}),
 			{
 				files: [{ attachment, name: 'color.png' }]
 			}
 		);
 	}
 
-	public async showColor(color: RGB, diff: number) {
+	public showColor(color: RGB, diff: number) {
 		const red = color.r;
 		const green = color.g;
 		const blue = color.b;

@@ -35,7 +35,7 @@ export default class extends RichDisplayCommand {
 	public async run(message: GuildMessage, [pokemon]: [string]) {
 		const t = await message.fetchT();
 		const response = await message.send(
-			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
+			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
 		);
 		const pokeDetails = await this.fetchAPI(pokemon.toLowerCase(), t);
 

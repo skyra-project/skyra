@@ -25,8 +25,7 @@ import { CLIENT_OPTIONS, ENABLE_INFLUX, VERSION, WEBHOOK_DATABASE, WEBHOOK_ERROR
 import './extensions';
 
 // Import setup files
-import './setup/PermissionsLevels';
-import './setup/Canvas';
+import './setup';
 import { InviteStore } from './structures/InviteStore';
 import { WebsocketHandler } from './websocket/WebsocketHandler';
 import { AnalyticsData } from '#utils/Tracking/Analytics/structures/AnalyticsData';

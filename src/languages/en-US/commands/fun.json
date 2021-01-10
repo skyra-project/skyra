@@ -52,6 +52,10 @@
 		"explainedUsage": [["user", "The user to rate."]],
 		"examples": ["Skyra", "me"]
 	},
+	"shindeiruDescription": "Omae wa mou shindeiru.",
+	"shindeiruExtended": {
+		"extendedHelp": "\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star. This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?)."
+	},
 	"xkcdDescription": "Read comics from XKCD.",
 	"xkcdExtended": {
 		"extendedHelp": "**xkcd** is an archive for nerd comics filled with math, science, sarcasm and languages. If you don't provide any argument, I will get a random comic from xkcd. If you provide a number, I will retrieve the comic with said number. But if you provide a title/text/topic, I will fetch a comic that matches with your input and display it. For example, `Skyra, xkcd Curiosity` will show the comic number 1091.",
@@ -88,8 +92,8 @@
 		"Ask me tomorrow.",
 		"I do not know, ask a physicist.",
 		"Nothing.",
-		"Within {{10 | random}} and {{1000 | random}}L.",
-		"{{10 | random}}e{{1000 | random}}L.",
+		"Within 10 and 1000L.",
+		"10e1000L.",
 		"2 or 3 liters, I don't remember.",
 		"Infinity.",
 		"1010 liters."
@@ -101,8 +105,8 @@
 		"Ask me tomorrow.",
 		"I don't know, ask a physicist.",
 		"Nothing.",
-		"Within {{10 | random}} and {{1000 | random}}.",
-		"{{10 | random}}e{{1000 | random}}.",
+		"Within 10 and 1000.",
+		"10e1000.",
 		"2 or 3, I do not remember.",
 		"Infinity",
 		"1010."

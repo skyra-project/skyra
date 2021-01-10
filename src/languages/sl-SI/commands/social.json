@@ -378,5 +378,35 @@
 		]
 	},
 	"vaultDescription": "",
-	"vaultExtended": ""
+	"vaultEmbedData": {
+		"accountMoney": "",
+		"accountVault": "",
+		"depositedDescription": "",
+		"showDescription": "",
+		"withdrewDescription": ""
+	},
+	"vaultExtended": {
+		"extendedHelp": [
+			"",
+			""
+		],
+		"explainedUsage": [
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
+		],
+		"examples": [
+			"",
+			""
+		],
+		"multiline": ""
+	},
+	"vaultInvalidCoins": "",
+	"vaultNotEnoughInVault": "",
+	"vaultNotEnoughMoney": ""
 }

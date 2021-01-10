@@ -119,5 +119,9 @@
 	"unloadExtended": {
 		"extendedHelp": "Unloads a piece when needed"
 	},
-	"unloadWarn": "You probably don't want to unload that, since you wouldn't be able to run any command to enable it again"
+	"unloadWarn": "You probably don't want to unload that, since you wouldn't be able to run any command to enable it again",
+	"supportDescription": "Show support instructions",
+	"supportExtended": {
+		"extendedHelp": "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
+	}
 }

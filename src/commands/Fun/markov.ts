@@ -1,5 +1,5 @@
 import { DbSet } from '#lib/database';
-import { SkyraCommand } from '#lib/structures/SkyraCommand';
+import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import type { GuildMessage } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { DEV } from '#root/config';
@@ -8,13 +8,23 @@ import { Markov, WordBank } from '#utils/External/markov';
 import { getAllContent, iteratorAt, pickRandom } from '#utils/util';
 import Collection from '@discordjs/collection';
 import { cutText } from '@sapphire/utilities';
+import { ApplyOptions } from '@skyra/decorators';
 import { Message, MessageEmbed, TextChannel, User } from 'discord.js';
 import { TFunction } from 'i18next';
-import { CommandStore, Stopwatch } from 'klasa';
+import { Stopwatch } from 'klasa';
 
 const kCodeA = 'A'.charCodeAt(0);
 const kCodeZ = 'Z'.charCodeAt(0);
 
+@ApplyOptions<SkyraCommandOptions>({
+	bucket: 2,
+	cooldown: 10,
+	description: LanguageKeys.Commands.Fun.MarkovDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
+	runIn: ['text'],
+	requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
+	usage: '[channel:textchannelname{2}] [user:username]'
+})
 export default class extends SkyraCommand {
 	private readonly kMessageHundredsLimit = 10;
 	private readonly kInternalCache = new WeakMap<TextChannel, Markov>();
@@ -22,23 +32,8 @@ export default class extends SkyraCommand {
 	private readonly kInternalMessageCacheTTL = 120000;
 	private readonly kInternalUserCache = new Map<string, Markov>();
 	private readonly kInternalCacheTTL = 60000;
-	private readonly kBoundUseUpperCase: (wordBank: WordBank) => string;
-	private readonly kProcess: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
-
-	public constructor(store: CommandStore, file: string[], directory: string) {
-		super(store, file, directory, {
-			bucket: 2,
-			cooldown: 10,
-			description: LanguageKeys.Commands.Fun.MarkovDescription,
-			extendedHelp: LanguageKeys.Commands.Fun.MarkovExtended,
-			runIn: ['text'],
-			requiredPermissions: ['EMBED_LINKS', 'READ_MESSAGE_HISTORY'],
-			usage: '[channel:textchannelname{2}] [user:username]'
-		});
-
-		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
-		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
-	}
+	private kBoundUseUpperCase!: (wordBank: WordBank) => string;
+	private kProcess!: (message: GuildMessage, language: TFunction, markov: Markov) => Promise<MessageEmbed>;
 
 	public async run(message: GuildMessage, [channnel, username]: [TextChannel?, User?]) {
 		const t = await message.fetchT();
@@ -113,5 +108,10 @@ export default class extends SkyraCommand {
 		return filtered.length > 0
 			? filtered[Math.floor(Math.random() * filtered.length)]
 			: iteratorAt(wordBank.keys(), Math.floor(Math.random() * wordBank.size))!;
+	}
+
+	public async init() {
+		this.kBoundUseUpperCase = this.useUpperCase.bind(this);
+		this.kProcess = DEV ? this.processDevelopment.bind(this) : this.processRelease.bind(this);
 	}
 }

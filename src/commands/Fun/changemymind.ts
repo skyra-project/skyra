@@ -13,8 +13,8 @@ import { join } from 'path';
 	aliases: ['cmm'],
 	bucket: 2,
 	cooldown: 10,
-	description: LanguageKeys.Commands.Fun.ChangemymindDescription,
-	extendedHelp: LanguageKeys.Commands.Fun.ChangemymindExtended,
+	description: LanguageKeys.Commands.Fun.ChangeMyMindDescription,
+	extendedHelp: LanguageKeys.Commands.Fun.ChangeMyMindExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<text:string{1,50}>'

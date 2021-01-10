@@ -1,7 +1,7 @@
 import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
-export const Announcement = FT<{ role: string }, string>('commands/announcement:announcement');
+export const AnnouncementHeader = FT<{ role: string }, string>('commands/announcement:announcement');
 export const AnnouncementCancelled = T<string>('commands/announcement:announcementCancelled');
 export const AnnouncementDescription = T<string>('commands/announcement:announcementDescription');
 export const AnnouncementEmbedMentions = FT<{ header: string }, string>('commands/announcement:announcementEmbedMentions');

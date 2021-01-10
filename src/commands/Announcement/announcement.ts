@@ -40,7 +40,7 @@ export default class extends SkyraCommand {
 		if (!channel.postable) throw t(LanguageKeys.System.ChannelNotPostable);
 
 		const role = await announcementCheck(message);
-		const header = t(LanguageKeys.Commands.Announcement.Announcement, { role: role.toString() });
+		const header = t(LanguageKeys.Commands.Announcement.AnnouncementHeader, { role: role.toString() });
 
 		if (await this.ask(message, t, header, announcement)) {
 			await this.send(message, t, embedEnabled, channel, role, header, announcement);

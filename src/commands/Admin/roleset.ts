@@ -65,10 +65,7 @@ export default class extends SkyraCommand {
 		return message.send(
 			t(created ? LanguageKeys.Commands.Admin.RoleSetCreated : LanguageKeys.Commands.Admin.RoleSetAdded, {
 				name,
-				roles: t(
-					roleSets.map((role) => role.name),
-					t(LanguageKeys.Globals.And)
-				)
+				roles: roleSets.map((role) => role.name)
 			})
 		);
 	}
@@ -89,10 +86,7 @@ export default class extends SkyraCommand {
 		return message.send(
 			t(LanguageKeys.Commands.Admin.RoleSetRemoved, {
 				name,
-				roles: t(
-					roles.map((role) => role.name),
-					t(LanguageKeys.Globals.And)
-				)
+				roles: roles.map((role) => role.name)
 			})
 		);
 	}
@@ -151,7 +145,7 @@ export default class extends SkyraCommand {
 	public async list(message: GuildMessage) {
 		// Get all rolesets from settings
 		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
-		if (!allRolesets.length) return message.sendTranslated(LanguageKeys.Commands.Admin.RoleSetNoRolesets);
+		if (!allRolesets.length) throw message.resolveKey(LanguageKeys.Commands.Admin.RoleSetNoRolesets);
 		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild.roles.cache.get(id)!.name).join(', ')}`);
 		return message.send(list);
 	}

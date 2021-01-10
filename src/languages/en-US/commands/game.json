@@ -15,7 +15,7 @@
 	"c4GameWinTurn0": "{{user}} (blue) won!",
 	"c4Prompt": "Dear {{challengee}}, you have been challenged by {{challenger}} in a Connect-Four match. Reply with **yes** to accept!",
 	"c4Start": "Let's play! Turn for: **{{player}}**.",
-	"cannotHaveNegativeMoney": "You cannot have a negative amount of {{SHINY}}s",
+	"cannotHaveNegativeMoney": "You cannot have a negative amount of {{SHINY}}s.",
 	"coinFlipCoinnames": ["Heads", "Tails"],
 	"coinFlipDescription": "Flip a coin!",
 	"coinFlipExtended": {

@@ -27,10 +27,7 @@
 	"newlinesWithMaximum": "[Auto-Moderation] Triggered newline filter, reached {{amount}} out of {{maximum}} infractions.",
 	"nms": "[NOMENTIONSPAM]",
 	"nmsAlert": "Be careful mentioning any more, as you are about to be banned for exceeding this server's mention threshold.",
-	"nmsMessage": [
-		"The banhammer has landed and now the user {{user.tag}} with id {{user.id}} is banned for mention spam.",
-		"Do not worry! I'm here to help you! 😄"
-	],
+	"nmsMessage": "The banhammer has landed and now the user {{user.tag}} with id {{user.id}} is banned for mention spam.\nDo not worry! I'm here to help you! 😄",
 	"nmsModlog": "[NOMENTIONSPAM] Automatic: Mention Spam threshold exceeded.\nThreshold: {{threshold}}.",
 	"nolink": "{{REDCROSS}} Hey {{user}}, you are not allowed to post links here!",
 	"reactionFilterFooter": "Filtered Reaction",

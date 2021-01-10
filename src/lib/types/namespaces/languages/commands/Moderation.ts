@@ -252,7 +252,7 @@ export const AutomaticParameterShow = FT<
 		thresholdMaximumText: string | number;
 		thresholdDurationText: string;
 	},
-	readonly string[]
+	string
 >('selfModeration:commandShow');
 export const AutomaticParameterShowDurationPermanent = T<string>('selfModeration:commandShowDurationPermanent');
 export const AutomaticParameterShowUnset = T<string>('selfModeration:commandShowUnset');

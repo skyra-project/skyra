@@ -1,13 +1,9 @@
 {
 	"currentTimeDescription": "Gets the current time in any location on the world",
 	"currentTimeExtended": {
-		"extendedHelp": [
-			"This command uses Google Maps to get the coordinates of the place.",
-			"Once this command has the coordinates, it queries TimezoneDB to get the time data."
-		],
+		"extendedHelp": "This command uses Google Maps to get the coordinates of the place.\nOnce this command has the coordinates, it queries TimezoneDB to get the time data.",
 		"explainedUsage": [["location", "The locality, governing, country or continent to check the time for."]],
-		"examples": ["Antarctica", "Arizona"],
-		"multiline": true
+		"examples": ["Antarctica", "Arizona"]
 	},
 	"currentTimeLocationNotFound": "I am sorry, but I could not find time data for that location.",
 	"currentTimeTitles": {
@@ -39,14 +35,10 @@
 	"lmgtfyClick": "Click me to search",
 	"weatherDescription": "Check the weather status in a location.",
 	"weatherExtended": {
-		"extendedHelp": [
-			"This command uses Google Maps to get the coordinates of the place.",
-			"Once this command got the coordinates, it queries DarkSky to retrieve information about the weather."
-		],
+		"extendedHelp": "This command uses Google Maps to get the coordinates of the place.\nOnce this command got the coordinates, it queries DarkSky to retrieve information about the weather.",
 		"explainedUsage": [["city", "The locality, governing, country or continent to check the weather from."]],
 		"examples": ["Antarctica", "Arizona"],
-		"reminder": "Temperature is in **Celsius** by default. Use the --imperial or --fahrenheit flag to view it in **Fahrenheit**.",
-		"multiline": true
+		"reminder": "Temperature is in **Celsius** by default. Use the --imperial or --fahrenheit flag to view it in **Fahrenheit**."
 	},
 	"errorZeroResults": "Your request returned no results.",
 	"errorRequestDenied": "The GeoCode API Request was denied.",

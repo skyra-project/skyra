@@ -133,11 +133,7 @@
 	},
 	"autoRoleDescription": "List or configure the autoroles for a guild.",
 	"autoRoleExtended": {
-		"extendedHelp": [
-			"Autoroles are roles that are available for everyone, and automatically given when they reach a configured",
-			"amount of (local) points, an administrator must configure them through a setting command.",
-			"Note that if the role name has spaces in the name you need to put `'quotes'` around the name!"
-		],
+		"extendedHelp": "Autoroles are roles that are available for everyone, and automatically given when they reach a configured amount of (local) points, an administrator must configure them through a setting command.\nNote that if the role name has spaces in the name you need to put `'quotes'` around the name!",
 		"explainedUsage": [
 			["list", "Lists all the current autoroles."],
 			["add <role> <amount>", "Add a new autorole."],
@@ -145,8 +141,7 @@
 			["update <role> <amount>", "Change the required amount of points for an existing autorole."]
 		],
 		"reminder": "The current system grants a random amount of points between 4 and 8 points, for each post with a 1 minute cooldown.",
-		"examples": ["list", "add 'Trusted Member' 20000", "update 'Trusted Member' 15000", "remove 'Trusted Member'"],
-		"multiline": true
+		"examples": ["list", "add 'Trusted Member' 20000", "update 'Trusted Member' 15000", "remove 'Trusted Member'"]
 	},
 	"balanceDescription": "Check your current balance.",
 	"balanceExtended": {
@@ -155,18 +150,12 @@
 	"dailyDescription": "Get your semi-daily {{SHINY}}'s.",
 	"dailyExtended": {
 		"extendedHelp": "Shiiiiny!",
-		"reminder": [
-			"Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.",
-			"You can claim dailies once every 12 hours.",
-			"If you use the --reminder flag, I will remind you when it's time to collect dailies again."
-		],
-		"multiline": true
+		"reminder": "Skyra uses a virtual currency called Shiny, and it is used to buy stuff such as banners or bet it on slotmachines.\nYou can claim dailies once every 12 hours.\nIf you use the --reminder flag, I will remind you when it's time to collect dailies again."
 	},
 	"leaderboardDescription": "Check the leaderboards.",
 	"leaderboardExtended": {
 		"extendedHelp": "The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.\nThe leaderboards refresh every 10 minutes.",
-		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds.",
-		"multiline": true
+		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds."
 	},
 	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results}} Total",
 	"levelDescription": "Check your global level.",
@@ -204,12 +193,8 @@
 	},
 	"profileDescription": "Check your user profile.",
 	"profileExtended": {
-		"extendedHelp": [
-			"This command sends a card image with some of your user profile such as your global rank, experience...",
-			"Additionally, you are able to customize your colours with the 'setColor' command."
-		],
-		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]],
-		"multiline": true
+		"extendedHelp": "This command sends a card image with some of your user profile such as your global rank, experience...\nAdditionally, you are able to customize your colours with the 'setColor' command.",
+		"explainedUsage": [["user", "(Optional) The user's profile to show. Defaults to the message's author!."]]
 	},
 	"remindmeDescription": "Manage your reminders.",
 	"remindmeExtended": {
@@ -223,17 +208,13 @@
 	},
 	"reputationDescription": "Give somebody a reputation point.",
 	"reputationExtended": {
-		"extendedHelp": [
-			"This guy is so helpful... I'll give him a reputation point!",
-			"Additionally, you can check how many reputation points a user has by writing 'check' before the mention."
-		],
+		"extendedHelp": "This guy is so helpful... I'll give him a reputation point!\nAdditionally, you can check how many reputation points a user has by writing 'check' before the mention.",
 		"explainedUsage": [
 			["check", "(Optional) Whether you want to check somebody (or yours) amount of reputation."],
 			["user", "The user to give a reputation point."]
 		],
 		"reminder": "You can give a reputation point once every 24 hours.",
-		"examples": ["check @kyra", "check", "@kyra", "check \"User With Spaces\"", "\"User With Spaces\""],
-		"multiline": true
+		"examples": ["check @kyra", "check", "@kyra", "check \"User With Spaces\"", "\"User With Spaces\""]
 	},
 	"setColorDescription": "Change your user profile's color.",
 	"setColorExtended": {
@@ -255,16 +236,12 @@
 		"withdrewDescription": "Withdrew {{coins}} {{SHINY}} from your vault."
 	},
 	"vaultExtended": {
-		"extendedHelp": [
-			"This is for the greedy spenders among us that tend to play a bit too much at the slot machine or spin the wheel of fortune.",
-			"You need to actively withdraw {{SHINY}}'s from your vault before they can be spend gambling."
-		],
+		"extendedHelp": "This is for the greedy spenders among us that tend to play a bit too much at the slot machine or spin the wheel of fortune.\nYou need to actively withdraw {{SHINY}}'s from your vault before they can be spend gambling.",
 		"explainedUsage": [
 			["action", "The action to perform: **withdraw** to withdraw from your vault or **deposit** to deposit into your vault."],
 			["money", "The amount of {{SHINY}}'s to withdraw or deposit."]
 		],
-		"examples": ["deposit 10000.", "withdraw 10000."],
-		"multiline": true
+		"examples": ["deposit 10000.", "withdraw 10000."]
 	},
 	"vaultInvalidCoins": "I am sorry, but that is an invalid amount of coins. Be sure it is a positive number!",
 	"vaultNotEnoughInVault": "I am sorry, but you do not have enough money in your vault to make that withdrawal! Your current vault balance is {{vault}} {{SHINY}}",

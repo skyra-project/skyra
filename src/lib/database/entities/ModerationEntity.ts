@@ -320,24 +320,20 @@ export class ModerationEntity extends BaseEntity {
 			formattedDuration
 		};
 
-		const description = [
-			...t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, {
+		const body = t(LanguageKeys.Commands.Moderation.ModerationLogDescriptionTypeAndUser, { data: descriptionData });
+		const reason = t(
+			this.reason
+				? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
+				: LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithoutReason,
+			{
 				data: descriptionData
-			}),
-			t(
-				this.reason
-					? LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithReason
-					: LanguageKeys.Commands.Moderation.ModerationLogDescriptionWithoutReason,
-				{
-					data: descriptionData
-				}
-			)
-		];
+			}
+		);
 
 		const embed = new MessageEmbed()
 			.setColor(this.color)
 			.setAuthor(moderator.tag, moderator.displayAvatarURL({ size: 128, format: 'png', dynamic: true }))
-			.setDescription(description)
+			.setDescription(body + reason)
 			.setFooter(
 				t(LanguageKeys.Commands.Moderation.ModerationLogFooter, { caseID: this.caseID }),
 				this.#client.user!.displayAvatarURL({ size: 128, format: 'png', dynamic: true })

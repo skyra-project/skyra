@@ -12,10 +12,9 @@
 	"abilityQueryFail": "I am sorry, but that query failed. Are you sure `{{ability}}` is actually an ability in Pokémon?",
 	"flavorsDescription": "Gets the dex entries across various games for a Pokémon.",
 	"flavorsExtended": {
-		"extendedHelp": ["Uses a fuzzy search to also match against near-matches.", "You can provide a flag of `--shiny` to get the shiny sprite."],
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
 		"explainedUsage": [["pokemon", "The Pokémon for which you want to get flavour texts"]],
-		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
-		"multiline": true
+		"examples": ["dragonite", "pikachu", "pikachu --shiny"]
 	},
 	"flavorsQueryFail": "I am sorry, but that query failed. Are you sure `{{pokemon}}` is actually a Pokémon?",
 	"itemDescription": "Gets data for any given Pokémon item using my Pokémon dataset.",
@@ -33,19 +32,13 @@
 	"itemQueryFail": "I am sorry, but that query failed. Are you sure `{{item}}` is actually a item in Pokémon?",
 	"learnDescription": "Retrieves whether a given Pokémon can learn one or more given moves using my Pokémon dataset.",
 	"learnExtended": {
-		"extendedHelp": [
-			"Uses a fuzzy search to also match against near-matches.",
-			"Moves split on every ",
-			" (comma space) and you can provide as many moves as you wish.",
-			"You can provide a flag of `--shiny` to get the shiny sprite."
-		],
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches. Moves split on every `;` (comma space) and you can provide as many moves as you wish.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
 		"explainedUsage": [
 			["generation", "(Optional), The generation for which to check the data"],
 			["pokemon", "The Pokémon whose learnset you want to check"],
 			["move", "The move(s) you want to check for"]
 		],
-		"examples": ["7 dragonite dragon dance", "pikachu thunder bolt", "pikachu thunder bolt --shiny", "pikachu thunder bolt, thunder"],
-		"multiline": true
+		"examples": ["7 dragonite dragon dance", "pikachu thunder bolt", "pikachu thunder bolt --shiny", "pikachu thunder bolt, thunder"]
 	},
 	"learnMethodTypes": {
 		"levelUpMoves": "by level up at level {{level}}",
@@ -66,12 +59,7 @@
 		"extendedHelp": "Uses a fuzzy search to also match against near-matches.",
 		"explainedUsage": [["move", "The move for which you want to find data"]],
 		"examples": ["dragon dance", "GMax Wildfire", "Genesis Supernova"],
-		"reminder": [
-			"Z-Move power may be shown for Generation 8 moves because it is calculated with a conversion table.",
-			"If Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands",
-			"Z-Moves are **NOT** in Generation 8."
-		],
-		"multiline": true
+		"reminder": "Z-Move power may be shown for Generation 8 moves because it is calculated with a conversion table.\nIf Pokémon ever returns Z-Moves to the game this would be their theoretical power, however as it stands\nZ-Moves are **NOT** in Generation 8."
 	},
 	"moveEmbedData": {
 		"move": "Move",
@@ -95,14 +83,10 @@
 	"moveQueryFail": "I am sorry, but that query failed. Are you sure `{{move}}` is actually a move in Pokémon?",
 	"pokedexDescription": "Gets data for any given Pokémon using my Pokémon dataset.",
 	"pokedexExtended": {
-		"extendedHelp": ["Uses a fuzzy search to also match against near-matches.", "You can provide a flag of `--shiny` to get the shiny sprite."],
+		"extendedHelp": "Uses a fuzzy search to also match against near-matches.\nYou can provide a flag of `--shiny` to get the shiny sprite.",
 		"explainedUsage": [["pokemon", "The Pokémon for which you want to find data"]],
 		"examples": ["dragonite", "pikachu", "pikachu --shiny"],
-		"reminder": [
-			"If there are any \"Other forme(s)\" on the optional fourth page, those can be requested as well.",
-			"Cosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex."
-		],
-		"multiline": true
+		"reminder": "If there are any \"Other forme(s)\" on the optional fourth page, those can be requested as well.\nCosmetic Formes on that page list purely cosmetic changes and these do not have seperate entries in the Pokédex."
 	},
 	"pokedexEmbedData": {
 		"types": "Type(s)",

@@ -173,13 +173,9 @@
 	},
 	"moviesDescription": "Searches TheMovieDatabase for any movie",
 	"moviesExtended": {
-		"extendedHelp": [
-			"This command queries TheMovieDatabase API for data on your favourite movies",
-			"Tip: You can use the 'y:' filter to narrow your results by year. Example: \"star wars y:1977\"."
-		],
+		"extendedHelp": "This command queries TheMovieDatabase API for data on your favourite movies.\nTip: You can use the 'y:' filter to narrow your results by year. Example: \"star wars y:1977\".",
 		"explainedUsage": [["query", "The name of the movie"]],
-		"examples": ["Ocean's Eleven y:2001", "Star Wars Revenge of the Sith", "Spirited Away"],
-		"multiline": true
+		"examples": ["Ocean's Eleven y:2001", "Star Wars Revenge of the Sith", "Spirited Away"]
 	},
 	"moviesTitles": {
 		"collection": "Collection",

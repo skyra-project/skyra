@@ -14,7 +14,7 @@ export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		const t = await message.fetchT();
 		try {
-			const extended = (t(this.extendedHelp, { returnObjects: true }).extendedHelp as string[]).join('\n');
+			const extended = t(this.extendedHelp, { returnObjects: true }).extendedHelp!;
 			const response = await message.author.send(extended);
 			return message.channel.type === 'text' ? await message.alert(t(LanguageKeys.Commands.System.DmSent)) : response;
 		} catch {

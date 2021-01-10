@@ -2,7 +2,7 @@
 	"caseNotExists": "{{REDCROSS}} I am sorry, but the selected moderation log case does not exist.",
 	"caseNotExists_plural": "{{REDCROSS}} I am sorry, but none of the selected moderation logs cases exist.",
 	"logAppealed": "{{REDCROSS}} I am sorry, but the selected moderation log has expired or cannot be cannot be made temporary.",
-	"logDescriptionTypeAndUser": ["❯ **Type**: {{data.type}}", "❯ **User:** {{data.userName}}#{{data.userDiscriminator}} ({{data.userID}})"],
+	"logDescriptionTypeAndUser": "❯ **Type**: {{data.type}}\n❯ **User:** {{data.userName}}#{{data.userDiscriminator}} ({{data.userID}})",
 	"logDescriptionWithReason": "❯ **Reason:** {{data.reason}}{{data.formattedDuration}}",
 	"logDescriptionWithoutReason": "❯ **Reason:** Please use `{{data.prefix}}reason {{data.caseID}} <reason>` to set the reason.{{data.formattedDuration}}",
 	"logExpiresIn": "\n❯ **Expires In**: {{duration, duration}}",

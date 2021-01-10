@@ -74,14 +74,9 @@
 	},
 	"ineedhealingDescription": "*Genji's voice* I NEED HEALING!",
 	"ineedhealingExtended": {
-		"extendedHelp": [
-			"Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES!",
-			"You know it, it's a cool cyborg ninja that looks like a XBOX and is always yelling \"I NEED HEALING\" loudly during the entire match.",
-			"Well, don't expect so much, this command actually shows a medic with some tool in your chest."
-		],
+		"extendedHelp": "Do you know the worst nightmare for every single healer in Overwatch, specially for Mercy? YES!\nYou know it, it's a cool cyborg ninja that looks like a XBOX and is always yelling \"I NEED HEALING\" loudly during the entire match.\nWell, don't expect so much, this command actually shows a medic with some tool in your chest.",
 		"explainedUsage": [["healer", "The healer you need to heal you."]],
-		"examples": ["Mercy"],
-		"multiline": true
+		"examples": ["Mercy"]
 	},
 	"randRedditDescription": "Retrieve a random Reddit post.",
 	"randRedditExtended": {
@@ -97,17 +92,13 @@
 	},
 	"shipDescription": "Ships 2 members",
 	"shipExtended": {
-		"extendedHelp": [
-			"This commands generates a ship name between two users and creates more love in the world.",
-			"Users are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member."
-		],
+		"extendedHelp": "This commands generates a ship name between two users and creates more love in the world.\nUsers are optional, you can provide none, just one or both users. For any non-provided users I will pick a random guild member.",
 		"explainedUsage": [
 			["firstUser", "The first user to ship"],
 			["secondUser", "The second user to ship"]
 		],
 		"examples": ["romeo juliet"],
-		"reminder": "If I cannot find either given user then I will pick someone randomly.",
-		"multiline": true
+		"reminder": "If I cannot find either given user then I will pick someone randomly."
 	},
 	"shipData": {
 		"title": "**Shipping `{{romeoUsername}}` and `{{julietUsername}}`**",
@@ -121,13 +112,9 @@
 	},
 	"shindeiruDescription": "Omae wa mou shindeiru.",
 	"shindeiruExtended": {
-		"extendedHelp": [
-			"\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star.",
-			"This shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?)."
-		],
+		"extendedHelp": "\"You are already dead\" Japanese: お前はもう死んでいる; Omae Wa Mou Shindeiru, is an expression from the manga and anime series Fist of the North Star.\nThis shows a comic strip of the character pronouncing the aforementioned words, which makes the opponent reply with \"nani?\" (what?).",
 		"explainedUsage": [["user", "The person you're telling that phrase to."]],
-		"examples": ["Jack"],
-		"multiline": true
+		"examples": ["Jack"]
 	},
 	"peepoloveDescription": "Generates a peepoLove image from a users' avatar.",
 	"peepoloveExtended": {

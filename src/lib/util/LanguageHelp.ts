@@ -30,7 +30,7 @@ export class LanguageHelp {
 
 		// Extended help
 		if (extendedHelp) {
-			output.push(LanguageHelp.resolveMultilineString(extendedHelp, options.multiline ?? false), '');
+			output.push(extendedHelp, '');
 		}
 
 		// Explained usage
@@ -52,27 +52,17 @@ export class LanguageHelp {
 
 		// Reminder
 		if (reminder) {
-			output.push(this.reminder!, LanguageHelp.resolveMultilineString(reminder, options.multiline ?? false));
+			output.push(this.reminder!, reminder);
 		}
 
 		return output.join('\n');
 	}
-
-	public static resolveMultilineString(str: string | string[], multiline: boolean): string {
-		return Array.isArray(str)
-			? LanguageHelp.resolveMultilineString(str.join(multiline ? '\n' : ' '), multiline)
-			: str
-					.split('\n')
-					.map((line) => line.trim())
-					.join(multiline ? '\n' : ' ');
-	}
 }
 
 export interface LanguageHelpDisplayOptions {
-	extendedHelp?: string[] | string;
-	explainedUsage?: Array<[string, string]>;
-	possibleFormats?: Array<[string, string]>;
+	extendedHelp?: string;
+	explainedUsage?: [string, string][];
+	possibleFormats?: [string, string][];
 	examples?: string[];
-	reminder?: string[] | string;
-	multiline?: boolean;
+	reminder?: string;
 }

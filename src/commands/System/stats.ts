@@ -5,7 +5,7 @@ import { roundNumber } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, version } from 'discord.js';
 import { KlasaMessage } from 'klasa';
-import { cpus, uptime } from 'os';
+import { CpuInfo, cpus, uptime } from 'os';
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['stats', 'sts'],
@@ -15,7 +15,7 @@ import { cpus, uptime } from 'os';
 	extendedHelp: LanguageKeys.Commands.System.StatsExtended,
 	requiredPermissions: ['EMBED_LINKS']
 })
-export default class extends SkyraCommand {
+export default class UserCommand extends SkyraCommand {
 	public async run(message: KlasaMessage) {
 		return message.send(await this.buildEmbed(message));
 	}
@@ -57,10 +57,14 @@ export default class extends SkyraCommand {
 	private get usageStatistics(): StatsUsage {
 		const usage = process.memoryUsage();
 		return {
-			cpuLoad: cpus().map(({ times }) => roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100),
+			cpuLoad: cpus().map(UserCommand.formatCpuInfo.bind(null)).join(' | '),
 			ramTotal: `${Math.round(100 * (usage.heapTotal / 1048576)) / 100}MB`,
 			ramUsed: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
 		};
+	}
+
+	private static formatCpuInfo({ times }: CpuInfo) {
+		return `${roundNumber(((times.user + times.nice + times.sys + times.irq) / times.idle) * 10000) / 100}%`;
 	}
 }
 
@@ -79,7 +83,7 @@ export interface StatsUptime {
 }
 
 export interface StatsUsage {
-	cpuLoad: number[];
+	cpuLoad: string;
 	ramTotal: string;
 	ramUsed: string;
 }

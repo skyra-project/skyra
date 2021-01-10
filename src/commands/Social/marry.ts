@@ -115,7 +115,7 @@ export default class extends RichDisplayCommand {
 			settings.spouses = (settings.spouses ?? []).concat(await users.ensure(targetID));
 			await settings.save();
 
-			return message.send(t(LanguageKeys.Commands.Social.MarryAccepted, [{ author, user }]));
+			return message.send(t(LanguageKeys.Commands.Social.MarryAccepted, { author, user }));
 		});
 	}
 }

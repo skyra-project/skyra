@@ -54,7 +54,7 @@ export async function queryGoogleCustomSearchAPI<T extends CustomSearchType>(mes
 
 		return await fetch<GoogleSearchResult<T>>(url, FetchResultTypes.JSON);
 	} catch (err) {
-		const { error } = err as GoogleResultError;
+		const { error } = err.toJSON() as GoogleResultError;
 		throw await message.resolveKey(handleNotOK(error.status, message.client));
 	}
 }

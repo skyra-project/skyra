@@ -1,6 +1,6 @@
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { cast, pickRandom } from '#utils/util';
+import { pickRandom } from '#utils/util';
 import { codeBlock } from '@sapphire/utilities';
 import { ApplyOptions } from '@skyra/decorators';
 import { TFunction } from 'i18next';
@@ -30,7 +30,7 @@ export default class extends SkyraCommand {
 	}
 
 	private generator(input: string, t: TFunction) {
-		const prefixes = cast<EightBallLanguage>(t(LanguageKeys.Commands.Fun.EightballQuestions));
+		const prefixes = t(LanguageKeys.Commands.Fun.EightballQuestions, { returnObjects: true });
 
 		for (const key of QUESTION_KEYS) {
 			if (this.check(prefixes[key], input)) {

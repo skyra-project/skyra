@@ -10,8 +10,8 @@ import { AliasPieceOptions } from 'klasa';
 export default class UserSerializer extends Serializer<boolean> {
 	public parse(value: string, { t, entry }: SerializerUpdateContext) {
 		const boolean = value.toLowerCase();
-		if (t(LanguageKeys.Resolvers.BoolTrueOptions).includes(boolean)) return this.ok(true);
-		if (t(LanguageKeys.Resolvers.BoolFalseOptions).includes(boolean)) return this.ok(false);
+		if (t(LanguageKeys.Resolvers.BoolTrueOptions, { returnObjects: true }).includes(boolean)) return this.ok(true);
+		if (t(LanguageKeys.Resolvers.BoolFalseOptions, { returnObjects: true }).includes(boolean)) return this.ok(false);
 		return this.error(t(LanguageKeys.Resolvers.InvalidBool, { name: entry.name }));
 	}
 

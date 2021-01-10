@@ -3,7 +3,6 @@ import { GuildMessage } from '#lib/types';
 import { PermissionLevels } from '#lib/types/Enums';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { BrandingColors } from '#utils/constants';
-import { cast } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { MessageEmbed, Permissions, Role } from 'discord.js';
 
@@ -19,7 +18,7 @@ import { MessageEmbed, Permissions, Role } from 'discord.js';
 export default class extends SkyraCommand {
 	public async run(message: GuildMessage, [role = message.member.roles.highest]: [Role?]) {
 		const t = await message.fetchT();
-		const roleInfoTitles = cast<RoleInfoTitles>(t(LanguageKeys.Commands.Management.RoleInfoTitles));
+		const roleInfoTitles = t(LanguageKeys.Commands.Management.RoleInfoTitles, { returnObjects: true });
 
 		const permissions = role.permissions.has(Permissions.FLAGS.ADMINISTRATOR)
 			? t(LanguageKeys.Commands.Management.RoleInfoAll)
@@ -40,13 +39,9 @@ export default class extends SkyraCommand {
 						hoisted: t(role.hoist ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No),
 						mentionable: t(role.mentionable ? LanguageKeys.Globals.Yes : LanguageKeys.Globals.No),
 						returnObjects: true
-					}).join('\n')
+					})
 				)
 				.addField(roleInfoTitles.PERMISSIONS, permissions)
 		);
 	}
-}
-
-interface RoleInfoTitles {
-	PERMISSIONS: string;
 }

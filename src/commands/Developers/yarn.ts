@@ -35,7 +35,7 @@ export default class extends SkyraCommand {
 
 	public async run(message: KlasaMessage, [pkg]: [string]) {
 		const t = await message.fetchT();
-		// TODO(VladFrangu): Apparently make a `message.loading(language)` kind of thing,
+		// TODO(VladFrangu): Apparently make a `message.loading(t)` kind of thing,
 		// since we repeat this over and over, but was out of #1301's scope.
 		const response = await message.send(
 			new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading, { returnObjects: true }))).setColor(BrandingColors.Secondary)
@@ -89,10 +89,7 @@ export default class extends SkyraCommand {
 						description,
 						'',
 						author ? t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionAuthor, { author }) : undefined,
-						`${t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers)}: **${cutText(
-							t(LanguageKeys.Globals.AndListValue, { value: maintainers }),
-							500
-						)}**`,
+						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMaintainers, { value: maintainers }),
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLatestVersion, { latestVersionNumber }),
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionLicense, { license }),
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionMainFile, { mainFile }),
@@ -101,7 +98,7 @@ export default class extends SkyraCommand {
 						deprecated ? t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDeprecated, { deprecated }) : undefined,
 						'',
 						t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesLabel),
-						dependencies && dependencies.length
+						dependencies?.length
 							? t(LanguageKeys.Globals.AndListValue, { value: dependencies })
 							: t(LanguageKeys.Commands.Developers.YarnEmbedDescriptionDependenciesNoDeps)
 					]

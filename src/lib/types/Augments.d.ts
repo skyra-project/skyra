@@ -142,10 +142,10 @@ declare module 'i18next' {
 		): TReturn;
 	}
 
-	export type TContextAwareFunctionOptions<TReturn> = TReturn extends readonly any[] | Primitive
+	export type TContextAwareFunctionOptions<TReturn> = TReturn extends Primitive
 		? TOptionsBase | string | undefined
 		: TOptionsBase & { returnObjects: true };
-	export type TContextAwareArgsFunctionOptions<TReturn, TArgs extends O> = TReturn extends readonly any[] | Primitive
+	export type TContextAwareArgsFunctionOptions<TReturn, TArgs extends O> = TReturn extends Primitive
 		? TOptions<TArgs>
 		: TOptions<TArgs> & { returnObjects: true };
 }

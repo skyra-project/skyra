@@ -27,24 +27,12 @@
 	},
 	"guildInfoRoles": "**Roles**\n\n{{roles}}",
 	"guildInfoNoroles": "Roles? Where? There is no other than the `@everyone` role!",
-	"guildInfoChannels": ["• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.", "• AFK: {{afkChannelText}}"],
+	"guildInfoChannels": "• **{{text}}** Text, **{{voice}}** Voice, **{{categories}}** categories.\n• AFK: {{afkChannelText}}",
 	"guildInfoChannelsAfkChannelText": "**<#{{afkChannel}}>** after **{{afkTime}}**min",
-	"guildInfoMembers": ["• **{{count}}** members", "• Owner: **{{owner.tag}}**", "  (ID: **{{owner.id}}**)"],
-	"guildInfoOther": [
-		"• Roles: **{{size}}**",
-		"• Region: **{{region}}**",
-		"• Created at: **{{createdAt, timestamp}}** (UTC - YYYY/MM/DD)",
-		"• Verification Level: **{{verificationLevel, humanLevels}}**"
-	],
+	"guildInfoMembers": "• **{{memberCount}}** member(s)\n• Owner: **{{owner.tag}}**\n  (ID: **{{owner.id}}**)",
+	"guildInfoOther": "• Roles: **{{size}}**\n• Region: **{{region}}**\n• Created at: **{{createdAt, timestamp}}**\n• Verification Level: **{{verificationLevel, humanLevels}}**",
 	"roleInfoTitles": { "PERMISSIONS": "Permissions" },
-	"roleInfoData": [
-		"ID: **{{role.id}}**",
-		"Name: **{{role.name}}**",
-		"Color: **{{role.hexColor}}**",
-		"Hoisted: **{{hoisted}}**",
-		"Position: **{{role.rawPosition}}**",
-		"Mentionable: **{{mentionable}}**"
-	],
+	"roleInfoData": "ID: **{{role.id}}**\nName: **{{role.name}}**\nColor: **{{role.hexColor}}**\nHoisted: **{{hoisted}}**\nPosition: **{{role.rawPosition}}**\nMentionable: **{{mentionable}}**",
 	"roleInfoAll": "All Permissions granted.",
 	"roleInfoNoPermissions": "Permissions not granted.",
 	"filterUndefinedWord": "You must write what you want me to filter.",

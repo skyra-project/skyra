@@ -7,7 +7,7 @@ import { CLIENT_ID } from '#root/config';
 import { Time } from '#utils/constants';
 import { api } from '#utils/Models/Api';
 import { fetchReactionUsers, resolveEmoji } from '#utils/util';
-import { RESTJSONErrorCodes } from 'discord-api-types/v6';
+import { APIEmbed, RESTJSONErrorCodes, RESTPatchAPIChannelMessageJSONBody } from 'discord-api-types/v6';
 import { Client, DiscordAPIError, HTTPError, MessageEmbed } from 'discord.js';
 import { TFunction } from 'i18next';
 import { FetchError } from 'node-fetch';
@@ -161,11 +161,14 @@ export class GiveawayEntity extends BaseEntity {
 		// Skip early if it's already rendering
 		if (this.#paused) return this;
 
+		const data = await this.getData();
+		if (data === null) return this.finish();
+
 		try {
 			await api(this.#client)
 				.channels(this.channelID)
 				.messages(this.messageID!)
-				.patch({ data: await this.getData() });
+				.patch({ data });
 		} catch (error) {
 			if (error instanceof DiscordAPIError && kGiveawayBlockListEditErrors.includes(error.code)) {
 				await this.finish();
@@ -177,9 +180,9 @@ export class GiveawayEntity extends BaseEntity {
 		return this;
 	}
 
-	private async getData() {
+	private async getData(): Promise<RESTPatchAPIChannelMessageJSONBody | null> {
 		const { state, guild } = this;
-		if (!guild) return;
+		if (!guild) return null;
 
 		const t = await guild.fetchT();
 		if (state === States.Finished) {
@@ -207,19 +210,17 @@ export class GiveawayEntity extends BaseEntity {
 		}
 	}
 
-	private getEmbed(state: States, t: TFunction) {
-		const description = this.getDescription(state, t);
-		const footer = GiveawayEntity.getFooter(state, t);
+	private getEmbed(state: States, t: TFunction): APIEmbed {
 		return new MessageEmbed()
 			.setColor(GiveawayEntity.getColor(state))
 			.setTitle(this.title)
-			.setDescription(description)
-			.setFooter(footer)
+			.setDescription(this.getDescription(state, t))
+			.setFooter(GiveawayEntity.getFooter(state, t))
 			.setTimestamp(this.endsAt)
 			.toJSON();
 	}
 
-	private getDescription(state: States, t: TFunction) {
+	private getDescription(state: States, t: TFunction): string {
 		switch (state) {
 			case States.Finished:
 				return this.#winners?.length
@@ -274,7 +275,7 @@ export class GiveawayEntity extends BaseEntity {
 		}
 	}
 
-	private static getContent(state: States, t: TFunction) {
+	private static getContent(state: States, t: TFunction): string {
 		switch (state) {
 			case States.Finished:
 				return t(LanguageKeys.Giveaway.EndedTitle);

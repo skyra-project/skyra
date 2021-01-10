@@ -20,7 +20,7 @@ export const FilterReset = T<string>('commands/management:filterReset');
 export const FilterShow = FT<{ words: string }, string>('commands/management:filterShow');
 export const FilterShowEmpty = T<string>('commands/management:filterShowEmpty');
 export const FilterUndefinedWord = T<string>('commands/management:filterUndefinedWord');
-export const GuildInfoChannels = FT<{ text: number; voice: number; categories: number; afkChannelText: string }, string[]>(
+export const GuildInfoChannels = FT<{ text: number; voice: number; categories: number; afkChannelText: string }, string>(
 	'commands/management:guildInfoChannels'
 );
 export const GuildInfoChannelsAfkChannelText = FT<{ afkChannel: string; afkTime: number }, string>(
@@ -28,11 +28,11 @@ export const GuildInfoChannelsAfkChannelText = FT<{ afkChannel: string; afkTime:
 );
 export const GuildInfoDescription = T<string>('commands/management:guildInfoDescription');
 export const GuildInfoExtended = T<LanguageHelpDisplayOptions>('commands/management:guildInfoExtended');
-export const GuildInfoMembers = FT<{ memberCount: string; owner: User }, string[]>('commands/management:guildInfoMembers');
+export const GuildInfoMembers = FT<{ memberCount: string; owner: User }, string>('commands/management:guildInfoMembers');
 export const GuildInfoNoroles = T<string>('commands/management:guildInfoNoroles');
 export const GuildInfoOther = FT<
 	{ size: number; region: string; createdAt: number; verificationLevel: 'NONE' | 'LOW' | 'MEDIUM' | 'HIGH' | 'VERY_HIGH' },
-	string[]
+	string
 >('commands/management:guildInfoOther');
 export const GuildInfoRoles = FT<{ roles: string }, string>('commands/management:guildInfoRoles');
 export const GuildInfoTitles = T<Record<string, string>>('commands/management:guildInfoTitles');
@@ -96,7 +96,7 @@ export const PermissionNodesShowName = FT<{ name: string }, string>('commands/ma
 export const ReactionModeDescription = T<string>('commands/management:reactionModeDescription');
 export const ReactionModeExtended = T<LanguageHelpDisplayOptions>('commands/management:reactionModeExtended');
 export const RoleInfoAll = T<string>('commands/management:roleInfoAll');
-export const RoleInfoData = FT<{ role: Role; hoisted: string; mentionable: string }, string[]>('commands/management:roleInfoData');
+export const RoleInfoData = FT<{ role: Role; hoisted: string; mentionable: string }, string>('commands/management:roleInfoData');
 export const RoleInfoDescription = T<string>('commands/management:roleInfoDescription');
 export const RoleInfoExtended = T<LanguageHelpDisplayOptions>('commands/management:roleInfoExtended');
 export const RoleInfoNoPermissions = T<string>('commands/management:roleInfoNoPermissions');

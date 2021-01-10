@@ -11,7 +11,7 @@
 	"endedNoWinner": "No winner...",
 	"endedAt": "Ended at:",
 	"endedTitle": "🎉 **GIVEAWAY ENDED** 🎉",
-	"endedMessage": "Congratulations {{winners | andJoin}}! You won the giveaway **{{title}}**",
+	"endedMessage": "Congratulations {{winners, andJoin}}! You won the giveaway **{{title}}**",
 	"endedMessageNoWinner": "The giveaway **{{title}}** ended without enough participants.",
 	"scheduled": "The giveaway will start in {{scheduledTime, duration}}."
 }

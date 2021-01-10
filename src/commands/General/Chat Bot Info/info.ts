@@ -12,7 +12,6 @@ import { KlasaMessage } from 'klasa';
 })
 export default class extends SkyraCommand {
 	public async run(message: KlasaMessage) {
-		const content = (await message.resolveKey(LanguageKeys.Commands.General.InfoBody)).join('\n');
-		return message.send(content);
+		return message.send(await message.resolveKey(LanguageKeys.Commands.General.InfoBody));
 	}
 }

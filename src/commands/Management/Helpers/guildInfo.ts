@@ -3,7 +3,6 @@ import { SkyraEmbed } from '#lib/discord';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { GuildMessage } from '#lib/types';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { cast } from '#utils/util';
 import { ApplyOptions } from '@skyra/decorators';
 import { Role } from 'discord.js';
 
@@ -29,7 +28,7 @@ export default class extends SkyraCommand {
 		}
 
 		const t = await message.fetchT();
-		const serverInfoTitles = cast<ServerInfoTitles>(t(LanguageKeys.Commands.Management.GuildInfoTitles));
+		const serverInfoTitles = t(LanguageKeys.Commands.Management.GuildInfoTitles, { returnObjects: true });
 		const roles = [...message.guild.roles.cache.values()].sort(SORT);
 		roles.pop();
 		const owner = await this.client.users.fetch(message.guild.ownerID);
@@ -40,6 +39,14 @@ export default class extends SkyraCommand {
 				.setThumbnail(message.guild.iconURL()!)
 				.setTitle(`${message.guild.name} [${message.guild.id}]`)
 				.splitFields(t(LanguageKeys.Commands.Tools.WhoisMemberRoles, { count: roles.length }), roles.join(' '))
+				.addField(
+					serverInfoTitles.MEMBERS,
+					t(LanguageKeys.Commands.Management.GuildInfoMembers, {
+						memberCount: message.guild.memberCount.toLocaleString(t.lng),
+						owner
+					}),
+					true
+				)
 				.addField(
 					serverInfoTitles.CHANNELS,
 					t(LanguageKeys.Commands.Management.GuildInfoChannels, {
@@ -56,29 +63,14 @@ export default class extends SkyraCommand {
 					true
 				)
 				.addField(
-					serverInfoTitles.MEMBERS,
-					t(LanguageKeys.Commands.Management.GuildInfoMembers, {
-						memberCount: message.guild.memberCount.toLocaleString(t.lng),
-						owner
-					}),
-					true
-				)
-				.addField(
 					serverInfoTitles.OTHER,
 					t(LanguageKeys.Commands.Management.GuildInfoOther, {
 						size: message.guild.roles.cache.size,
 						region: message.guild.region,
 						createdAt: message.guild.createdTimestamp,
 						verificationLevel: message.guild.verificationLevel
-					}),
-					true
+					})
 				)
 		);
 	}
-}
-
-interface ServerInfoTitles {
-	CHANNELS: string;
-	MEMBERS: string;
-	OTHER: string;
 }

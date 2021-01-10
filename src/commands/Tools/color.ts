@@ -32,8 +32,7 @@ export default class extends SkyraCommand {
 			t(LanguageKeys.Commands.Tools.Color, {
 				hex: hex.toString(),
 				rgb: rgb.toString(),
-				hsl: hsl.toString(),
-				joinArrays: '\n'
+				hsl: hsl.toString()
 			}),
 			{
 				files: [{ attachment, name: 'color.png' }]

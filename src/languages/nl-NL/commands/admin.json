@@ -25,23 +25,32 @@
 	"confSettingNotSet": "Niet ingesteld",
 	"heapSnapshotDescription": "",
 	"heapSnapshotExtended": {
-		"extendedHelp": ["", "", "", "", "", "", ""]
+		"extendedHelp": ""
 	},
 	"rolesetDescription": "Beheer unieke rolesets.",
 	"rolesetExtended": {
-		"extendedHelp": [
-			"Een rol groep is een set van rollen die Skyra identificeert als uniek voor alle leden in de server. Bijvoorbeeld een rol groep genaamd `regio` kan de rollen `Afrika`, `Amerika`, `Azië` en `Europa` bevatten, en leden zullen er maar één van kunnen hebben. Dit is als een soort \"regel\" die wordt toegepast in de drie volgende situaties:",
-			"",
-			"",
-			"- Wanneer iemand een rol opeist via reactie rollen.",
-			"- Wanneer iemand een rol handmatig of van een andere bot ontvangt."
-		],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["toevoegen", "Maak een nieuwe rol groep of voeg een bestaande toe."],
-			["verwijderen", "Een rol van een bestaande rol groep verwijderen."],
-			["reset", "Verwijder alle rollen van een rol groep of, wanneer niet gespecificeerd, alle bestaande rol groepen."],
-			["lijst", "Geeft alle rollen weer."],
-			["automatisch", "Voeg rol groep to of verwijder een rol groep."]
+			[
+				"toevoegen",
+				"Maak een nieuwe rol groep of voeg een bestaande toe."
+			],
+			[
+				"verwijderen",
+				"Een rol van een bestaande rol groep verwijderen."
+			],
+			[
+				"reset",
+				"Verwijder alle rollen van een rol groep of, wanneer niet gespecificeerd, alle bestaande rol groepen."
+			],
+			[
+				"lijst",
+				"Geeft alle rollen weer."
+			],
+			[
+				"automatisch",
+				"Voeg rol groep to of verwijder een rol groep."
+			]
 		],
 		"examples": [
 			"add regions Amerika",
@@ -53,8 +62,7 @@
 			"regions Amerika",
 			"regions Afrika Amerika Azië Europe"
 		],
-		"reminder": "Dit commando kan meerdere rollen tegelijkertijd toevoegen en/of verwijderen.",
-		"multiline": ""
+		"reminder": "Dit commando kan meerdere rollen tegelijkertijd toevoegen en/of verwijderen."
 	},
 	"rolesetCreated": "",
 	"rolesetAdded": "",

@@ -1,10 +1,10 @@
 {
 	"blocklistDescription": "",
 	"blocklistExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Blokkeer gebruikers die mij misbruiken om in de toekomst mij verder te misbruiken, stoute, stoute mensen!"
 	},
-	"blocklistResetSuccess": "",
-	"blocklistSaveSuccess": "",
+	"blocklistResetSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol gereset",
+	"blocklistSaveSuccess": "{{GREENTICK}} Geblokkeerde gebruikers en gildes succesvol geüpdate",
 	"confNoKey": "Je moet een key opgeven",
 	"confNoValue": "Een waarde is vereist",
 	"confGuarded": "{{name, toTitleCase}} mag niet worden gedeactiveerd.",
@@ -16,14 +16,14 @@
 	"confNochange": "De waarde voor **{{key}}** is hetzelfde gebleven.",
 	"confServerDescription": "Definieer instellingen per server.",
 	"confServerExtended": {
-		"extendedHelp": ""
+		"extendedHelp": "Maakt het mogelijk om Skyra te configureren in Discord, als een snel alternatief voor het web dashboard (<https://skyra.pw>)."
 	},
 	"confServer": "**Server Instelling {{key}}**\n{{list}}",
 	"confUserDescription": "Definieer instellingen per gebruiker.",
 	"confDashboardOnlyKey": "`{{key}}` kan alleen worden geconfigureerd via het web dashboard (<https://skyra.pw>)",
 	"confUser": "**Gebruiker Instelling {{key}}**\n{{list}}",
 	"confSettingNotSet": "Niet ingesteld",
-	"heapSnapshotDescription": "",
+	"heapSnapshotDescription": "Maakt een heapdump voor het vinden van geheugenlekken.",
 	"heapSnapshotExtended": {
 		"extendedHelp": ""
 	},
@@ -73,7 +73,7 @@
 	"rolesetResetNotExists": "",
 	"rolesetResetGroup": "",
 	"rolesetUpdated": "",
-	"rolesetNoRolesets": "",
+	"rolesetNoRolesets": "Je hebt geen rolesets.",
 	"confMenuNopermissions": "",
 	"confMenuRenderAtFolder": "",
 	"confMenuRenderAtPiece": "",

@@ -19,7 +19,10 @@
 	"twitchSubscriptionStreamerNotFound": "",
 	"twitchSubscriptionRequiredChannel": "",
 	"twitchSubscriptionRequiredStatus": "",
-	"twitchSubscriptionStatusValues": ["", ""],
+	"twitchSubscriptionStatusValues": [
+		"",
+		""
+	],
 	"twitchSubscriptionInvalidStatus": "",
 	"twitchSubscriptionRequiredContent": "",
 	"twitchSubscriptionAddDuplicated": "",
@@ -36,29 +39,55 @@
 	"twitchSubscriptionResetChannelSuccess": "",
 	"twitchSubscriptionResetChannelSuccess_plural": "",
 	"twitchSubscriptionShowStreamerNotSubscribed": "",
-	"twitchSubscriptionShowStatus": ["", ""],
+	"twitchSubscriptionShowStatus": [
+		"",
+		""
+	],
 	"twitchSubscriptionShowEmpty": "",
 	"twitchSubscriptionShowUnknownUser": "",
 	"followageDescription": "",
 	"followageExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"twitchDescription": "",
 	"twitchExtended": {
 		"extendedHelp": "",
-		"examples": [""]
+		"examples": [
+			""
+		]
 	},
 	"twitchSubscriptionDescription": "",
 	"twitchSubscriptionExtended": {
-		"extendedHelp": ["", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""],
+		"extendedHelp": "",
 		"explainedUsage": [
-			["", ""],
-			["", ""],
-			["", ""],
-			["", ""]
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			],
+			[
+				"",
+				""
+			]
 		],
-		"examples": ["", "", "", "", "", "", ""],
-		"multiline": ""
+		"examples": [
+			"",
+			"",
+			"",
+			"",
+			"",
+			"",
+			""
+		]
 	}
 }

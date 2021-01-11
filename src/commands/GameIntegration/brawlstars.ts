@@ -11,7 +11,7 @@ import { KlasaMessage, Language } from 'klasa';
 
 const kTagRegex = /#[A-Z0-9]{3,}/;
 
-const kTotalBrawlers = 38; // this will need updating
+const kTotalBrawlers = 43; // this will need updating
 const kMaxMembers = 100;
 
 const kRoboRumbleLevels = [

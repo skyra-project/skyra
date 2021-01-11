@@ -47,22 +47,9 @@
 		"serverUsage": ""
 	},
 	"statsFields": {
-		"stats": [
-			"",
-			"",
-			"",
-			"",
-			""
-		],
-		"uptime": [
-			"",
-			"",
-			""
-		],
-		"serverUsage": [
-			"",
-			""
-		]
+		"stats": "",
+		"uptime": "",
+		"serverUsage": ""
 	},
 	"disable": "",
 	"disableDescription": "",

@@ -437,10 +437,6 @@
 	},
 	"slotmachinesLoss": "**You rolled:**\n{{roll}}\n**Mission failed!**\nWe'll get em next time!",
 	"slotmachinesWin": "**You rolled:**\n{{roll}}\n**Congratulations!**\nYou won {{winnings}}{{SHINY}}!",
-	"slotmachineTitles": {
-		"new": "New",
-		"previous": "Previous"
-	},
 	"ticTacToeDescription": "Play Tic-Tac-Toe with somebody.",
 	"ticTacToeDraw": "This match concluded in a **draw**!\n{{board}}",
 	"ticTacToeExtended": {
@@ -475,8 +471,5 @@
 	"wheelOfFortuneExtended": {
 		"extendedHelp": "You can lose 0.1, 0.2, 0.3 or 0.5 times your input or win 1.2, 1.5, 1.7 or 2.4 times your input"
 	},
-	"wheelOfFortuneTitles": {
-		"new": "New",
-		"previous": "Previous"
-	}
+	"balanceDifference": "**Previous**: {{previous, number}} {{SHINY}}\n**New**: {{next, number}} {{SHINY}}"
 }

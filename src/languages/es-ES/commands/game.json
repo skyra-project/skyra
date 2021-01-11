@@ -504,8 +504,5 @@
 	"wheelOfFortuneExtended": {
 		"extendedHelp": ""
 	},
-	"wheelOfFortuneTitles": {
-		"new": "",
-		"previous": ""
-	}
+	"balanceDifference": "**Antes**: {{previous, number}} {{SHINY}}\n**Después**: {{next, number}} {{SHINY}}"
 }

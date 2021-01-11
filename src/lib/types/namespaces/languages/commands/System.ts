@@ -55,9 +55,9 @@ export const StatsFields = FT<
 		usage: StatsUsage;
 	},
 	{
-		stats: string[];
-		uptime: string[];
-		serverUsage: string[];
+		stats: string;
+		uptime: string;
+		serverUsage: string;
 	}
 >('commands/system:statsFields');
 export const SupportDescription = T<string>('commands/system:supportDescription');

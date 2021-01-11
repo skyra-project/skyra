@@ -37,10 +37,10 @@ export default class UserCommand extends SkyraCommand {
 
 	private get generalStatistics(): StatsGeneral {
 		return {
-			channels: this.client.channels.cache.size.toLocaleString(),
-			guilds: this.client.guilds.cache.size.toLocaleString(),
+			channels: this.client.channels.cache.size,
+			guilds: this.client.guilds.cache.size,
 			nodeJs: process.version,
-			users: this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0).toLocaleString(),
+			users: this.client.guilds.cache.reduce((a, b) => a + b.memberCount, 0),
 			version: `v${version}`
 		};
 	}
@@ -57,8 +57,8 @@ export default class UserCommand extends SkyraCommand {
 		const usage = process.memoryUsage();
 		return {
 			cpuLoad: cpus().map(UserCommand.formatCpuInfo.bind(null)).join(' | '),
-			ramTotal: `${Math.round(100 * (usage.heapTotal / 1048576)) / 100}MB`,
-			ramUsed: `${Math.round(100 * (usage.heapUsed / 1048576)) / 100}MB`
+			ramTotal: usage.heapTotal / 1048576,
+			ramUsed: usage.heapUsed / 1048576
 		};
 	}
 
@@ -68,10 +68,10 @@ export default class UserCommand extends SkyraCommand {
 }
 
 export interface StatsGeneral {
-	channels: string;
-	guilds: string;
+	channels: number;
+	guilds: number;
 	nodeJs: string;
-	users: string;
+	users: number;
 	version: string;
 }
 
@@ -83,6 +83,6 @@ export interface StatsUptime {
 
 export interface StatsUsage {
 	cpuLoad: string;
-	ramTotal: string;
-	ramUsed: string;
+	ramTotal: number;
+	ramUsed: number;
 }

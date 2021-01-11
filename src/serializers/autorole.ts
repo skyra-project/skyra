@@ -21,8 +21,8 @@ export default class UserSerializer extends Serializer<RolesAuto> {
 		return isObject(value) && Object.keys(value).length === 2 && typeof value.id === 'string' && typeof value.points === 'number';
 	}
 
-	public stringify(value: RolesAuto): string {
-		return `[${value.id} -> ${value.points.toLocaleString()}]`;
+	public stringify(value: RolesAuto, { t }: SerializerUpdateContext): string {
+		return `[${value.id} -> ${t(LanguageKeys.Globals.GroupDigitsValue, { value: value.points })}]`;
 	}
 
 	public equals(left: RolesAuto, right: RolesAuto): boolean {

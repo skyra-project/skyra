@@ -114,6 +114,7 @@ export default class extends SkyraCommand {
 	private async buildPlayerEmbed(message: KlasaMessage, t: TFunction, player: BrawlStars.Player) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedFields);
+		const digitFormat = (value: number) => t(LanguageKeys.Globals.GroupDigitsValue, { value });
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) ?? (await DbSet.fetchColor(message)))
@@ -122,16 +123,16 @@ export default class extends SkyraCommand {
 			.addField(
 				titles.trophies,
 				[
-					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${player.trophies.toLocaleString(t.lng)}`,
-					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${player.highestTrophies.toLocaleString(t.lng)}`
+					`${BrawlStarsEmojis.Trophy} **${fields.total}**: ${digitFormat(player.trophies)}`,
+					`${BrawlStarsEmojis.Trophy} **${fields.personalBest}**: ${digitFormat(player.highestTrophies)}`
 				].join('\n')
 			)
 			.addField(
 				titles.exp,
 				[
-					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${player.expPoints.toLocaleString(t.lng)})`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${player.powerPlayPoints?.toLocaleString(t.lng) ?? 0}`,
-					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${player.highestPowerPlayPoints?.toLocaleString(t.lng) ?? 0}`
+					`${BrawlStarsEmojis.Exp} **${fields.experienceLevel}**: ${player.expLevel} (${digitFormat(player.expPoints)})`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.total}**: ${digitFormat(player.powerPlayPoints ?? 0)}`,
+					`${BrawlStarsEmojis.PowerPlay} **${fields.personalBest}**: ${digitFormat(player.highestPowerPlayPoints ?? 0)}`
 				].join('\n')
 			)
 			.addField(
@@ -146,9 +147,9 @@ export default class extends SkyraCommand {
 			.addField(
 				titles.gamesModes,
 				[
-					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${player['3vs3Victories'].toLocaleString(t.lng)}`,
-					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${player.soloVictories.toLocaleString(t.lng)}`,
-					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${player.duoVictories.toLocaleString(t.lng)}`
+					`${BrawlStarsEmojis.GemGrab} **${fields.victories3v3}**: ${digitFormat(player['3vs3Victories'])}`,
+					`${BrawlStarsEmojis.SoloShowdown} **${fields.victoriesSolo}**: ${digitFormat(player.soloVictories)}`,
+					`${BrawlStarsEmojis.DuoShowdown} **${fields.victoriesDuo}**: ${digitFormat(player.duoVictories)}`
 				].join('\n')
 			)
 			.addField(
@@ -167,19 +168,20 @@ export default class extends SkyraCommand {
 	private async buildClubEmbed(message: KlasaMessage, t: TFunction, club: BrawlStars.Club) {
 		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedTitles);
 		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedFields);
+		const digitFormat = (value: number) => t(LanguageKeys.Globals.GroupDigitsValue, { value });
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>
-			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${member.trophies.toLocaleString(t.lng)})`;
+			`${i + 1}. ${member.name} (${BrawlStarsEmojis.Trophy} ${digitFormat(member.trophies)})`;
 		const president = club.members.find((member) => member.role === 'president');
 
 		const embed = new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
 			.setTitle(`${club.name} - ${club.tag}`)
 			.setURL(`https://brawlstats.com/club/${club.tag.substr(1)}`)
-			.addField(titles.totalTrophies, `${BrawlStarsEmojis.Trophy} ${club.trophies.toLocaleString()}`)
-			.addField(titles.averageTrophies, `${BrawlStarsEmojis.Trophy} ${averageTrophies.toLocaleString()}`)
-			.addField(titles.requiredTrophies, `${BrawlStarsEmojis.Trophy} ${club.requiredTrophies.toLocaleString()}+`)
+			.addField(titles.totalTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(club.trophies)}`)
+			.addField(titles.averageTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(averageTrophies)}`)
+			.addField(titles.requiredTrophies, `${BrawlStarsEmojis.Trophy} ${digitFormat(club.requiredTrophies)}+`)
 			.addField(titles.members, `${club.members.length} / ${kMaxMembers}`)
 			.addField(titles.type, club.type)
 			.addField(titles.president, president?.name || fields.noPresident)

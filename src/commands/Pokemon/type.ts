@@ -75,7 +75,7 @@ export default class extends RichDisplayCommand {
 			return data.getTypeMatchup;
 		} catch {
 			throw t(LanguageKeys.Commands.Pokemon.TypeQueryFail, {
-				types: types.map((val) => `\`${val}\``).join(` ${t(LanguageKeys.Globals.And)} `)
+				types: types.map((val) => `\`${val}\``)
 			});
 		}
 	}

@@ -5,6 +5,7 @@ import { StarboardManager } from '#lib/structures/managers/StarboardManager';
 import { StickyRoleManager } from '#lib/structures/managers/StickyRoleManager';
 import { CustomFunctionGet, CustomGet } from '#lib/types';
 import { GuildSecurity } from '#utils/Security/GuildSecurity';
+import { cast } from '#utils/util';
 import { Primitive } from '@sapphire/utilities';
 import type { GatewayGuildCreateDispatch } from 'discord-api-types/v6';
 import { Message, Structures } from 'discord.js';
@@ -21,7 +22,9 @@ export class SkyraGuild extends Structures.get('Guild') {
 	}
 
 	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(({ guild: this, channel: null } as unknown) as Message);
+		const lang: string = await this.client.fetchLanguage(
+			cast<Message>({ guild: this, channel: null })
+		);
 		return lang ?? this.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 

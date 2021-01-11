@@ -1,10 +1,13 @@
 /* eslint-disable @typescript-eslint/class-literal-property-style */
+import { cast } from '#utils/util';
 import { Message, Structures } from 'discord.js';
 import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
 export class SkyraDMChannel extends TextBasedExtension(Structures.get('DMChannel')) {
 	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(({ channel: this, guild: null } as unknown) as Message);
+		const lang: string = await this.client.fetchLanguage(
+			cast<Message>({ channel: this, guild: null })
+		);
 		return lang ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 

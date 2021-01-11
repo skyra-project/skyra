@@ -1,16 +1,16 @@
 import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
-export const BrawlstarsDescription = T<string>('commands/gameIntegration:brawlstarsDescription');
-export const BrawlstarsExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:brawlstarsExtended');
-export const BrawlstarsPlayerEmbedTitles = T<{
+export const BrawlStarsDescription = T<string>('commands/gameIntegration:brawlstarsDescription');
+export const BrawlStarsExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:brawlstarsExtended');
+export const BrawlStarsPlayerEmbedTitles = T<{
 	trophies: string;
 	exp: string;
 	events: string;
 	gamesModes: string;
 	other: string;
 }>('commands/gameIntegration:brawlstarsPlayerEmbedTitles');
-export const BrawlstarsPlayerEmbedFields = T<{
+export const BrawlStarsPlayerEmbedFields = T<{
 	total: string;
 	personalBest: string;
 	experienceLevel: string;
@@ -23,7 +23,7 @@ export const BrawlstarsPlayerEmbedFields = T<{
 	club: string;
 	brawlersUnlocked: string;
 }>('commands/gameIntegration:brawlstarsPlayerEmbedFields');
-export const BrawlstarsClubEmbedTitles = T<{
+export const BrawlStarsClubEmbedTitles = T<{
 	totalTrophies: string;
 	averageTrophies: string;
 	requiredTrophies: string;
@@ -32,12 +32,12 @@ export const BrawlstarsClubEmbedTitles = T<{
 	top5Members: string;
 	president: string;
 }>('commands/gameIntegration:brawlstarsClubEmbedTitles');
-export const BrawlstarsClubEmbedFields = T<{
+export const BrawlStarsClubEmbedFields = T<{
 	noPresident: string;
 }>('commands/gameIntegration:brawlstarsClubEmbedFields');
-export const ClashofclansDescription = T<string>('commands/gameIntegration:clashofclansDescription');
-export const ClashofclansExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:clashofclansExtended');
-export const ClashofclansPlayerEmbedTitles = T<{
+export const ClashOfClansDescription = T<string>('commands/gameIntegration:clashofclansDescription');
+export const ClashOfClansExtended = T<LanguageHelpDisplayOptions>('commands/gameIntegration:clashofclansExtended');
+export const ClashOfClansPlayerEmbedTitles = T<{
 	xpLevel: string;
 	builderHallLevel: string;
 	townhallLevel: string;
@@ -59,7 +59,7 @@ export const ClashofclansPlayerEmbedTitles = T<{
 	noClan: string;
 	noLeague: string;
 }>('commands/gameIntegration:clashofclansPlayerEmbedTitles');
-export const ClashofclansClanEmbedTitles = T<{
+export const ClashOfClansClanEmbedTitles = T<{
 	clanLevel: string;
 	clanPoints: string;
 	clanVersusPoints: string;

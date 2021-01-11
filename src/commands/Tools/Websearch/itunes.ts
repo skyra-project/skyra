@@ -11,8 +11,8 @@ import { TFunction } from 'i18next';
 
 @ApplyOptions<RichDisplayCommandOptions>({
 	cooldown: 10,
-	description: LanguageKeys.Commands.Tools.ItunesDescription,
-	extendedHelp: LanguageKeys.Commands.Tools.ItunesExtended,
+	description: LanguageKeys.Commands.Tools.ITunesDescription,
+	extendedHelp: LanguageKeys.Commands.Tools.ITunesExtended,
 	usage: '<song:str>'
 })
 export default class extends RichDisplayCommand {
@@ -48,7 +48,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildDisplay(message: GuildMessage, t: TFunction, entries: ItunesData[]) {
-		const titles = t(LanguageKeys.Commands.Tools.ItunesTitles);
+		const titles = t(LanguageKeys.Commands.Tools.ITunesTitles);
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const song of entries) {

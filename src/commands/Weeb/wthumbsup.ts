@@ -3,9 +3,9 @@ import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
 import { ApplyOptions } from '@skyra/decorators';
 
 @ApplyOptions<WeebCommandOptions>({
-	description: LanguageKeys.Commands.Weeb.ThumbsupDescription,
-	extendedHelp: LanguageKeys.Commands.Weeb.ThumbsupExtended,
+	description: LanguageKeys.Commands.Weeb.ThumbsUpDescription,
+	extendedHelp: LanguageKeys.Commands.Weeb.ThumbsUpExtended,
 	queryType: 'thumbsup',
-	responseName: LanguageKeys.Commands.Weeb.Thumbsup
+	responseName: LanguageKeys.Commands.Weeb.ThumbsUp
 })
 export default class extends WeebCommand {}

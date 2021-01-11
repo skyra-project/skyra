@@ -22,7 +22,7 @@ export default class extends SkyraCommand {
 
 		const comicNumber = await this.getNumber(query, t);
 		const comic = await fetch<XkcdResultOk>(`https://xkcd.com/${comicNumber}/info.0.json`, FetchResultTypes.JSON).catch(() => {
-			throw t(LanguageKeys.Commands.Fun.XkcdNotfound);
+			throw t(LanguageKeys.Commands.Fun.XkcdNotFound);
 		});
 		return message.send(
 			new MessageEmbed()

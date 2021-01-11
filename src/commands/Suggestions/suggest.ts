@@ -42,7 +42,7 @@ export default class extends SkyraCommand {
 
 			suggestionsChannel = this.client.channels.cache.get(suggestionsChannelID ?? '') as TextChannel | undefined;
 			if (!suggestionsChannel?.postable) {
-				throw t(LanguageKeys.Commands.Suggestions.SuggestNopermissions, {
+				throw t(LanguageKeys.Commands.Suggestions.SuggestNoPermissions, {
 					username: message.author.username,
 					channel: (message.channel as TextChannel).toString()
 				});

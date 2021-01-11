@@ -128,5 +128,5 @@
 	},
 	"typeTooManyTypes": "I am sorry, but you can get the matchup for at most 2 types",
 	"typeNotAType": "{{type}} is not a valid Pokémon type",
-	"typeQueryFail": "I am sorry, but that query failed. Are you sure {{types}} are actually types in Pokémon?"
+	"typeQueryFail": "I am sorry, but that query failed. Are you sure {{types, andList}} are actually types in Pokémon?"
 }

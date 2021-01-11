@@ -42,12 +42,12 @@ const enum SuggestionsColors {
 
 			// Validate the suggestion number
 			const id = Number(arg);
-			if (!Number.isInteger(id) || id < 1) throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidId);
+			if (!Number.isInteger(id) || id < 1) throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionInvalidID);
 
 			// Retrieve the suggestion data
 			const { suggestions } = await DbSet.connect();
 			const suggestionData = await suggestions.findOne({ id, guildID: message.guild!.id });
-			if (!suggestionData) throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionIdNotFound);
+			if (!suggestionData) throw t(LanguageKeys.Commands.Suggestions.ResolveSuggestionIDNotFound);
 
 			const channel = message.client.channels.cache.get(channelID) as TextChannel;
 			const suggestionMessage = await resolveOnErrorCodes(channel.messages.fetch(suggestionData.messageID), RESTJSONErrorCodes.UnknownMessage);
@@ -115,7 +115,7 @@ export default class extends SkyraCommand {
 			try {
 				await suggestionData.author!.send(messageContent, { embed: newEmbed });
 			} catch {
-				await message.channel.send(t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail)!);
+				await message.channel.send(t(LanguageKeys.Commands.Suggestions.ResolveSuggestionDmFail));
 			}
 		}
 

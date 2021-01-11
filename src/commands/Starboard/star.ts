@@ -131,9 +131,9 @@ export default class extends SkyraCommand {
 					})
 				)
 				.addField(
-					t(LanguageKeys.Commands.Starboard.StarTopstarred),
+					t(LanguageKeys.Commands.Starboard.StarTopStarred),
 					topThreeMessages.map(([mID, stars], index) =>
-						t(LanguageKeys.Commands.Starboard.StarTopstarredDescription, {
+						t(LanguageKeys.Commands.Starboard.StarTopStarredDescription, {
 							medal: MEDALS[index],
 							id: mID,
 							count: stars
@@ -141,9 +141,9 @@ export default class extends SkyraCommand {
 					)
 				)
 				.addField(
-					t(LanguageKeys.Commands.Starboard.StarTopreceivers),
+					t(LanguageKeys.Commands.Starboard.StarTopReceivers),
 					topThreeReceivers.map(([uID, stars], index) =>
-						t(LanguageKeys.Commands.Starboard.StarTopreceiversDescription, {
+						t(LanguageKeys.Commands.Starboard.StarTopReceiversDescription, {
 							medal: MEDALS[index],
 							id: uID,
 							count: stars

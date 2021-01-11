@@ -37,7 +37,7 @@ export default class extends SkyraCommand {
 			if (log.invalidated || log.appealType) continue;
 			switch (log.typeVariation) {
 				case Moderation.TypeVariation.Ban:
-				case Moderation.TypeVariation.Softban:
+				case Moderation.TypeVariation.SoftBan:
 					++bans;
 					break;
 				case Moderation.TypeVariation.Mute:

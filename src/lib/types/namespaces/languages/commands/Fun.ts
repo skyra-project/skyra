@@ -62,7 +62,7 @@ export const WakandaExtended = T<LanguageHelpDisplayOptions>('commands/fun:wakan
 export const XkcdComics = FT<{ amount: number }, string>('commands/fun:xkcdComics');
 export const XkcdDescription = T<string>('commands/fun:xkcdDescription');
 export const XkcdExtended = T<LanguageHelpDisplayOptions>('commands/fun:xkcdExtended');
-export const XkcdNotfound = T<string>('commands/fun:xkcdNotfound');
+export const XkcdNotFound = T<string>('commands/fun:xkcdNotfound');
 
 export const Resolve8BallQuestionKey = (key: keyof EightBallLanguage): CustomGet<string, readonly string[]> => {
 	switch (key) {

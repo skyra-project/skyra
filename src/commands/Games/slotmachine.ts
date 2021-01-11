@@ -10,8 +10,8 @@ import { KlasaMessage } from 'klasa';
 	aliases: ['slot', 'slots', 'slotmachines'],
 	bucket: 2,
 	cooldown: 7,
-	description: LanguageKeys.Commands.Games.SlotmachineDescription,
-	extendedHelp: LanguageKeys.Commands.Games.SlotmachineExtended,
+	description: LanguageKeys.Commands.Games.SlotMachineDescription,
+	extendedHelp: LanguageKeys.Commands.Games.SlotMachineExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	usage: '<wager:wager>'
 })
@@ -25,7 +25,7 @@ export default class extends SkyraCommand {
 		}
 
 		const [attachment, amount] = await new Slotmachine(message, wager, settings).run();
-		const titles = await message.resolveKey(LanguageKeys.Commands.Games.SlotmachineTitles);
+		const titles = await message.resolveKey(LanguageKeys.Commands.Games.SlotMachineTitles);
 
 		return message.send([`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'), {
 			files: [{ attachment, name: 'slots.png' }]

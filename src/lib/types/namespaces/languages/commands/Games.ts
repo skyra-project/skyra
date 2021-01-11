@@ -26,7 +26,7 @@ export const C4GameNext = FT<{ user: string }, string>('commands/game:c4GameNext
 export const C4GameNextTurn0 = FT<{ user: string }, string>('commands/game:c4GameNextTurn0');
 export const CoinFlipDescription = T<string>('commands/game:coinFlipDescription');
 export const CoinFlipExtended = T<LanguageHelpDisplayOptions>('commands/game:coinFlipExtended');
-export const CoinFlipInvalidCoinname = FT<{ arg: string }, string>('commands/game:coinFlipInvalidCoinname');
+export const CoinFlipInvalidCoinName = FT<{ arg: string }, string>('commands/game:coinFlipInvalidCoinname');
 export const CoinFlipCoinNames = T<string[]>('commands/game:coinFlipCoinnames');
 export const CoinFlipWinTitle = T<string>('commands/game:coinFlipWinTitle');
 export const CoinFlipLoseTitle = T<string>('commands/game:coinFlipLoseTitle');
@@ -39,7 +39,7 @@ export const CoinFlipNoGuessDescription = FT<{ result: string }, string>('comman
 export const HigherLowerDescription = T<string>('commands/game:higherLowerDescription');
 export const HigherLowerExtended = T<LanguageHelpDisplayOptions>('commands/game:higherLowerExtended');
 export const HigherLowerLoading = T<string>('commands/game:higherLowerLoading');
-export const HigherLowerNewround = T<string>('commands/game:higherLowerNewround');
+export const HigherLowerNewRound = T<string>('commands/game:higherLowerNewround');
 export const HigherLowerEmbed = FT<
 	{
 		turn: number;
@@ -95,16 +95,16 @@ export const HungerGamesWinner = FT<{ winner: string }, string>('commands/game:h
 export const HungerGamesBloodbath = T<readonly string[]>('commands/game:hgBloodbath');
 export const HungerGamesDay = T<readonly string[]>('commands/game:hgDay');
 export const HungerGamesNight = T<readonly string[]>('commands/game:hgNight');
-export const SlotmachineDescription = T<string>('commands/game:slotmachineDescription');
-export const SlotmachineExtended = T<LanguageHelpDisplayOptions>('commands/game:slotmachineExtended');
-export const SlotmachinesWin = FT<{ roll: string; winnings: number }, string>('commands/game:slotmachinesWin');
-export const SlotmachinesLoss = FT<{ roll: string }, string>('commands/game:slotmachinesLoss');
-export const SlotmachineTitles = T<{
+export const SlotMachineDescription = T<string>('commands/game:slotmachineDescription');
+export const SlotMachineExtended = T<LanguageHelpDisplayOptions>('commands/game:slotmachineExtended');
+export const SlotMachineWin = FT<{ roll: string; winnings: number }, string>('commands/game:slotmachinesWin');
+export const SlotMachineLoss = FT<{ roll: string }, string>('commands/game:slotmachinesLoss');
+export const SlotMachineTitles = T<{
 	previous: string;
 	new: string;
 }>('commands/game:slotmachineTitles');
-export const SlotmachineCanvasTextWon = T<string>('commands/game:slotmachineCanvasTextWon');
-export const SlotmachineCanvasTextLost = T<string>('commands/game:slotmachineCanvasTextLost');
+export const SlotMachineCanvasTextWon = T<string>('commands/game:slotmachineCanvasTextWon');
+export const SlotMachineCanvasTextLost = T<string>('commands/game:slotmachineCanvasTextLost');
 export const TicTacToeDescription = T<string>('commands/game:ticTacToeDescription');
 export const TicTacToeExtended = T<LanguageHelpDisplayOptions>('commands/game:ticTacToeExtended');
 export const WheelOfFortuneDescription = T<string>('commands/game:wheelOfFortuneDescription');

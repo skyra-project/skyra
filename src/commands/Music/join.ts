@@ -19,7 +19,7 @@ export default class extends MusicCommand {
 		const { channel } = message.member.voice;
 
 		// If the member is not in a voice channel then throw
-		if (!channel) throw await message.resolveKey(LanguageKeys.Commands.Music.JoinNoVoicechannel);
+		if (!channel) throw await message.resolveKey(LanguageKeys.Commands.Music.JoinNoVoiceChannel);
 
 		const { audio } = message.guild;
 

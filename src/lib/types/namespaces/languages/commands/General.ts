@@ -20,7 +20,7 @@ export const HelpData = FT<
 	}
 >('commands/general:helpData');
 export const HelpDm = T<string>('commands/general:helpDm');
-export const HelpNodm = T<string>('commands/general:helpNodm');
+export const HelpNoDm = T<string>('commands/general:helpNodm');
 export const HelpNoExtended = T<LanguageHelpDisplayOptions>('commands/general:helpNoExtended');
 export const InfoBody = T<string>('commands/general:infoBody');
 export const InfoDescription = T<string>('commands/general:infoDescription');

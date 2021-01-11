@@ -113,7 +113,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 			if (type === AKeys.SoftAction) {
 				const softAction = kSoftActions.get(arg.toLowerCase());
 				if (typeof softAction === 'undefined') {
-					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftaction, { name: this.name });
+					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidSoftAction, { name: this.name });
 				}
 
 				const previousSoftAction = await message.guild!.readSettings(this.keySoftAction);
@@ -123,7 +123,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 			if (type === AKeys.HardAction) {
 				const hardAction = kHardActions.get(arg.toLowerCase());
 				if (typeof hardAction === 'undefined') {
-					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardaction, { name: this.name });
+					throw await message.resolveKey(LanguageKeys.Commands.Moderation.AutomaticParameterInvalidHardAction, { name: this.name });
 				}
 
 				return hardAction;
@@ -282,7 +282,7 @@ export abstract class SelfModerationCommand extends SkyraCommand {
 			case SelfModeratorHardActionFlags.Mute:
 				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionMute;
 			case SelfModeratorHardActionFlags.SoftBan:
-				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionSoftban;
+				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionSoftBan;
 			case SelfModeratorHardActionFlags.Warning:
 				return LanguageKeys.Commands.Moderation.AutomaticValueHardActionWarning;
 			default:

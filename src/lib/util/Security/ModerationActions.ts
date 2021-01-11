@@ -421,7 +421,7 @@ export class ModerationActions {
 	}
 
 	public async softBan(rawOptions: ModerationActionOptions, days: number, sendOptions?: ModerationActionsSendOptions) {
-		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.Softban);
+		const options = ModerationActions.fillOptions(rawOptions, Moderation.TypeCodes.SoftBan);
 		const moderationLog = this.guild.moderation.create(options);
 		await this.sendDM(moderationLog, sendOptions);
 
@@ -432,16 +432,16 @@ export class ModerationActions {
 			.put({
 				query: { 'delete-message-days': days },
 				reason: moderationLog.reason
-					? t(LanguageKeys.Commands.Moderation.ActionSoftbanReason, { reason: moderationLog.reason! })
-					: t(LanguageKeys.Commands.Moderation.ActionSoftbanNoReason)
+					? t(LanguageKeys.Commands.Moderation.ActionSoftBanReason, { reason: moderationLog.reason! })
+					: t(LanguageKeys.Commands.Moderation.ActionSoftBanNoReason)
 			});
 		await api(this.guild.client)
 			.guilds(this.guild.id)
 			.bans(options.userID)
 			.delete({
 				reason: moderationLog.reason
-					? t(LanguageKeys.Commands.Moderation.ActionUnSoftbanReason, { reason: moderationLog.reason! })
-					: t(LanguageKeys.Commands.Moderation.ActionUnSoftbanNoReason)
+					? t(LanguageKeys.Commands.Moderation.ActionUnSoftBanReason, { reason: moderationLog.reason! })
+					: t(LanguageKeys.Commands.Moderation.ActionUnSoftBanNoReason)
 			});
 		return (await moderationLog.create())!;
 	}
@@ -932,7 +932,7 @@ export class ModerationActions {
 
 	private async getReason(action: keyof ModerationAction, reason: string | null, revoke = false) {
 		const t = await this.guild.fetchT();
-		const actions = t(LanguageKeys.Commands.Moderation.moderationActions);
+		const actions = t(LanguageKeys.Commands.Moderation.Actions);
 		if (!reason)
 			return revoke
 				? t(LanguageKeys.Commands.Moderation.ActionRevokeNoReason, { action: actions[action] })

@@ -24,7 +24,7 @@ export default class extends SkyraCommand {
 		const image = Reflect.get(message.channel, 'nsfw') ? await this.fetchImage(input) : undefined;
 
 		if (text.query.pageids[0] === '-1') {
-			throw t(LanguageKeys.Commands.Tools.WikipediaNotfound);
+			throw t(LanguageKeys.Commands.Tools.WikipediaNotFound);
 		}
 
 		const pageInformation = text.query.pages[text.query.pageids[0]];

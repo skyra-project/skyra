@@ -12,7 +12,7 @@ import { TFunction } from 'i18next';
 import { KlasaMessage } from 'klasa';
 
 @ApplyOptions<SkyraCommandOptions>({
-	aliases: ['npm', 'npm-package', 'yarn-package'],
+	aliases: ['npm', 'npm-package', 'yarn-package', 'pnpm', 'pnpm-package'],
 	cooldown: 10,
 	description: LanguageKeys.Commands.Developers.YarnDescription,
 	extendedHelp: LanguageKeys.Commands.Developers.YarnExtended,

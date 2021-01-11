@@ -47,8 +47,7 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const t = await message.fetchT();
-		const title = t(LanguageKeys.Commands.Social.Level);
+		const title = await message.resolveKey(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)
 				// Draw the background

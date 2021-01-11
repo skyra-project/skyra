@@ -129,7 +129,7 @@ export class Slotmachine {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				lang(playerHasWon ? LanguageKeys.Commands.Games.SlotmachineCanvasTextWon : LanguageKeys.Commands.Games.SlotmachineCanvasTextLost),
+				lang(playerHasWon ? LanguageKeys.Commands.Games.SlotMachineCanvasTextWon : LanguageKeys.Commands.Games.SlotMachineCanvasTextLost),
 				280,
 				60
 			)

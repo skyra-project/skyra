@@ -13,8 +13,8 @@ import { join } from 'path';
 	aliases: ['night'],
 	bucket: 2,
 	cooldown: 30,
-	description: LanguageKeys.Commands.Misc.GoodnightDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.GoodnightExtended,
+	description: LanguageKeys.Commands.Misc.GoodNightDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.GoodNightExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'

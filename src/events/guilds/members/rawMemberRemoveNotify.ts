@@ -58,7 +58,7 @@ export default class extends Event {
 		return {
 			kicked: latestLogForUser.isType(Moderation.TypeCodes.Kick),
 			banned: latestLogForUser.isType(Moderation.TypeCodes.Ban),
-			softbanned: latestLogForUser.isType(Moderation.TypeCodes.Softban)
+			softbanned: latestLogForUser.isType(Moderation.TypeCodes.SoftBan)
 		};
 	}
 

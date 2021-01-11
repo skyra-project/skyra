@@ -174,7 +174,7 @@ export default class extends SkyraCommand {
 				await this.cashout(message, game, settings);
 				break;
 			case HigherLowerReactions.Ok:
-				await game.response.edit(game.t(LanguageKeys.Commands.Games.HigherLowerNewround), { embed: null });
+				await game.response.edit(game.t(LanguageKeys.Commands.Games.HigherLowerNewRound), { embed: null });
 				break;
 			case HigherLowerReactions.Cancel:
 				await this.end(game, message, settings, true);

@@ -8,8 +8,8 @@ import { ApplyOptions } from '@skyra/decorators';
 @ApplyOptions<SkyraCommandOptions>({
 	bucket: 2,
 	cooldown: 10,
-	description: LanguageKeys.Commands.Management.SetprefixDescription,
-	extendedHelp: LanguageKeys.Commands.Management.SetprefixExtended,
+	description: LanguageKeys.Commands.Management.SetPrefixDescription,
+	extendedHelp: LanguageKeys.Commands.Management.SetPrefixExtended,
 	permissionLevel: PermissionLevels.Administrator,
 	runIn: ['text'],
 	usage: '<prefix:string{1,10}>',

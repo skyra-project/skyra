@@ -2,13 +2,13 @@ import { FT, T } from '#lib/types';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 import { Guild, GuildMember, User } from 'discord.js';
 
-export const WikipediaNotfound = T<string>('commands/tools:wikipediaNotfound');
-export const YoutubeNotfound = T<string>('commands/tools:youtubeNotfound');
-export const YoutubeIndexNotfound = T<string>('commands/tools:youtubeIndexNotfound');
+export const WikipediaNotFound = T<string>('commands/tools:wikipediaNotfound');
+export const YouTubeNotFound = T<string>('commands/tools:youtubeNotfound');
+export const YouTubeIndexNotFound = T<string>('commands/tools:youtubeIndexNotfound');
 export const DefineDescription = T<string>('commands/tools:defineDescription');
 export const DefineExtended = T<LanguageHelpDisplayOptions>('commands/tools:defineExtended');
-export const DefineNotfound = T<string>('commands/tools:defineNotfound');
-export const DefinePronounciation = T<string>('commands/tools:definePronounciation');
+export const DefineNotFound = T<string>('commands/tools:defineNotfound');
+export const DefinePronunciation = T<string>('commands/tools:definePronounciation');
 export const DefineUnknown = T<string>('commands/tools:defineUnknown');
 export const AvatarDescription = T<string>('commands/tools:avatarDescription');
 export const AvatarExtended = T<LanguageHelpDisplayOptions>('commands/tools:avatarExtended');
@@ -89,9 +89,9 @@ export const IgdbData = T<{
 	noAgeRatings: string;
 	noGenres: string;
 }>('commands/tools:igdbData');
-export const ItunesDescription = T<string>('commands/tools:itunesDescription');
-export const ItunesExtended = T<LanguageHelpDisplayOptions>('commands/tools:itunesExtended');
-export const ItunesTitles = T<{
+export const ITunesDescription = T<string>('commands/tools:itunesDescription');
+export const ITunesExtended = T<LanguageHelpDisplayOptions>('commands/tools:itunesExtended');
+export const ITunesTitles = T<{
 	artist: string;
 	collection: string;
 	collectionPrice: string;
@@ -177,10 +177,10 @@ export const EmotesTitle = T<string>('commands/tools:emotesTitle');
 export const PriceCurrency = FT<{ fromCurrency: string; fromAmount: number; worths: string[] }, string>('commands/tools:priceCurrency');
 export const PriceCurrencyNotFound = T<string>('commands/tools:priceCurrencyNotFound');
 export const QuoteMessage = T<string>('commands/tools:quoteMessage');
-export const DuckDuckGoNotfound = T<string>('commands/tools:duckDuckGoNotfound');
-export const DuckDuckGoLookalso = T<string>('commands/tools:duckDuckGoLookalso');
+export const DuckDuckGoNotFound = T<string>('commands/tools:duckDuckGoNotfound');
+export const DuckDuckGoLookAlso = T<string>('commands/tools:duckDuckGoLookalso');
 export const UrbanNotFound = T<string>('commands/tools:urbanNotFound');
-export const UrbanIndexNotfound = T<string>('commands/tools:urbanIndexNotfound');
+export const UrbanIndexNotFound = T<string>('commands/tools:urbanIndexNotfound');
 export const WhoisMemberTitles = T<{
 	joined: string;
 	createdAt: string;

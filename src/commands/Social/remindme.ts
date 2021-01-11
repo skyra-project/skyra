@@ -29,8 +29,8 @@ interface ReminderScheduledTask extends ScheduleEntity {
 	bucket: 2,
 	subcommands: true,
 	cooldown: 30,
-	description: LanguageKeys.Commands.Social.RemindmeDescription,
-	extendedHelp: LanguageKeys.Commands.Social.RemindmeExtended,
+	description: LanguageKeys.Commands.Social.RemindMeDescription,
+	extendedHelp: LanguageKeys.Commands.Social.RemindMeExtended,
 	usage: '<action:action> (value:idOrDuration) (description:description)',
 	usageDelim: ' '
 })
@@ -76,17 +76,17 @@ interface ReminderScheduledTask extends ScheduleEntity {
 					return undefined;
 				case Actions.Show:
 				case Actions.Delete: {
-					if (!arg) throw t(LanguageKeys.Commands.Social.RemindmeDeleteNoId);
+					if (!arg) throw t(LanguageKeys.Commands.Social.RemindMeDeleteNoID);
 					const id: number = await message.client.arguments.get('integer')!.run(arg, possible, message);
 					for (const task of message.client.schedules.queue) {
 						if (task.id !== id) continue;
 						if (task.taskID !== Schedules.Reminder || !task.data || task.data.user !== message.author.id) break;
 						return task;
 					}
-					throw t(LanguageKeys.Commands.Social.RemindmeNotfound);
+					throw t(LanguageKeys.Commands.Social.RemindMeNotfound);
 				}
 				case Actions.Create: {
-					if (!arg) throw t(LanguageKeys.Commands.Social.RemindmeCreateNoDuration);
+					if (!arg) throw t(LanguageKeys.Commands.Social.RemindMeCreateNoDuration);
 					return message.client.arguments.get('timespan')!.run(arg, { ...possible, min: Time.Minute }, message);
 				}
 			}
@@ -96,7 +96,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 		'description',
 		(arg, possible, message, [action]: Actions[]) => {
 			if (action !== Actions.Create) return undefined;
-			if (!arg) return message.resolveKey(LanguageKeys.Commands.Social.RemindmeCreateNoDescription);
+			if (!arg) return message.resolveKey(LanguageKeys.Commands.Social.RemindMeCreateNoDescription);
 			return message.client.arguments.get('...string')!.run(arg, { ...possible, max: 1024 }, message);
 		}
 	]
@@ -111,7 +111,7 @@ export default class extends SkyraCommand {
 			}
 		});
 
-		return message.sendTranslated(LanguageKeys.Commands.Social.RemindmeCreate, [{ id: task.id.toString() }]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeCreate, [{ id: task.id.toString() }]);
 	}
 
 	@requiresGuildContext((message: KlasaMessage) =>
@@ -120,7 +120,7 @@ export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: KlasaMessage) {
 		const tasks = this.client.schedules.queue.filter((task) => task.data && task.data.user === message.author.id);
-		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindmeListEmpty);
+		if (!tasks.length) return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeListEmpty);
 
 		const display = new UserRichDisplay(
 			new MessageEmbed()
@@ -161,7 +161,7 @@ export default class extends SkyraCommand {
 					message.author.displayAvatarURL({ size: 128, format: 'png', dynamic: true })
 				)
 				.setDescription(task.data.content)
-				.setFooter(await message.resolveKey(LanguageKeys.Commands.Social.RemindmeShowFooter, { id: task.id }))
+				.setFooter(await message.resolveKey(LanguageKeys.Commands.Social.RemindMeShowFooter, { id: task.id }))
 				.setTimestamp(task.time)
 		);
 	}
@@ -169,6 +169,6 @@ export default class extends SkyraCommand {
 	public async delete(message: KlasaMessage, [task]: [ReminderScheduledTask]) {
 		const { id } = task;
 		await task.delete();
-		return message.sendTranslated(LanguageKeys.Commands.Social.RemindmeDelete, [{ task, id }]);
+		return message.sendTranslated(LanguageKeys.Commands.Social.RemindMeDelete, [{ task, id }]);
 	}
 }

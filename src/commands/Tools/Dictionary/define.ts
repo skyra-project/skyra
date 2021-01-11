@@ -36,7 +36,7 @@ export default class extends RichDisplayCommand {
 	private async buildDisplay(results: OwlbotResultOk, message: GuildMessage, t: TFunction) {
 		const template = new MessageEmbed().setTitle(toTitleCase(results.word)).setColor(await DbSet.fetchColor(message));
 
-		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronounciation), results.pronunciation, true);
+		if (results.pronunciation) template.addField(t(LanguageKeys.Commands.Tools.DefinePronunciation), results.pronunciation, true);
 
 		const display = new UserRichDisplay(template).setFooterSuffix(' - Powered by Owlbot');
 
@@ -65,7 +65,7 @@ export default class extends RichDisplayCommand {
 				FetchResultTypes.JSON
 			);
 		} catch {
-			throw t(LanguageKeys.Commands.Tools.DefineNotfound);
+			throw t(LanguageKeys.Commands.Tools.DefineNotFound);
 		}
 	}
 

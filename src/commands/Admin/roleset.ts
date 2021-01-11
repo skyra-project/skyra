@@ -145,7 +145,7 @@ export default class extends SkyraCommand {
 	public async list(message: GuildMessage) {
 		// Get all rolesets from settings
 		const allRolesets = await message.guild.readSettings(GuildSettings.Roles.UniqueRoleSets);
-		if (!allRolesets.length) throw message.resolveKey(LanguageKeys.Commands.Admin.RoleSetNoRolesets);
+		if (!allRolesets.length) throw message.resolveKey(LanguageKeys.Commands.Admin.RoleSetNoRoleSets);
 		const list = allRolesets.map((set) => `💠 **${set.name}**: ${set.roles.map((id) => message.guild.roles.cache.get(id)!.name).join(', ')}`);
 		return message.send(list);
 	}

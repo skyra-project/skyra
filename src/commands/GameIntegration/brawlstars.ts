@@ -50,8 +50,8 @@ export interface BrawlStarsGIData {
 
 @ApplyOptions<SkyraCommandOptions>({
 	aliases: ['bs'],
-	description: LanguageKeys.Commands.GameIntegration.BrawlstarsDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlstarsExtended,
+	description: LanguageKeys.Commands.GameIntegration.BrawlStarsDescription,
+	extendedHelp: LanguageKeys.Commands.GameIntegration.BrawlStarsExtended,
 	subcommands: true,
 	flagSupport: true,
 	usage: '<club|player:default> [tag:tag]',
@@ -112,8 +112,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildPlayerEmbed(message: KlasaMessage, t: TFunction, player: BrawlStars.Player) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedTitles);
-		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsPlayerEmbedFields);
+		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedTitles);
+		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsPlayerEmbedFields);
 
 		return new MessageEmbed()
 			.setColor(player.nameColor?.substr(4) ?? (await DbSet.fetchColor(message)))
@@ -165,8 +165,8 @@ export default class extends SkyraCommand {
 	}
 
 	private async buildClubEmbed(message: KlasaMessage, t: TFunction, club: BrawlStars.Club) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedTitles);
-		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlstarsClubEmbedFields);
+		const titles = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedTitles);
+		const fields = t(LanguageKeys.Commands.GameIntegration.BrawlStarsClubEmbedFields);
 
 		const averageTrophies = Math.round(club.trophies / club.members.length);
 		const mapMembers = (member: BrawlStars.ClubMember, i: number) =>

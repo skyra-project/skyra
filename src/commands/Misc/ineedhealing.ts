@@ -13,8 +13,8 @@ import { join } from 'path';
 	aliases: ['heal', 'healing'],
 	bucket: 2,
 	cooldown: 30,
-	description: LanguageKeys.Commands.Misc.IneedhealingDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.IneedhealingExtended,
+	description: LanguageKeys.Commands.Misc.INeedHealingDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.INeedHealingExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'

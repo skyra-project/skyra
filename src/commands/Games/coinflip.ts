@@ -29,7 +29,7 @@ const enum CoinType {
 			const t = await message.fetchT();
 			const lArg = arg.toLowerCase();
 			const face = t(LanguageKeys.Commands.Games.CoinFlipCoinNames).findIndex((coin) => coin.toLowerCase() === lArg);
-			if (face === -1) throw t(LanguageKeys.Commands.Games.CoinFlipInvalidCoinname, { arg });
+			if (face === -1) throw t(LanguageKeys.Commands.Games.CoinFlipInvalidCoinName, { arg });
 			return face;
 		}
 	],

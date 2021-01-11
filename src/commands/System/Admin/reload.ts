@@ -14,7 +14,7 @@ import { KlasaMessage, Piece, Stopwatch, Store } from 'klasa';
 	usage: '<Store:store|Piece:piece|everything:default>'
 })
 export default class extends SkyraCommand {
-	public async run(message: KlasaMessage, [piece]: [Piece | 'everything']) {
+	public async run(message: KlasaMessage, [piece]: [Piece | Store<string, any> | 'everything']) {
 		const t = await message.fetchT();
 
 		if (piece === 'everything') return this.everything(message, t);

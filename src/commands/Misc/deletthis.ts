@@ -14,8 +14,8 @@ import { join } from 'path';
 	aliases: ['deletethis'],
 	bucket: 2,
 	cooldown: 30,
-	description: LanguageKeys.Commands.Misc.DeletthisDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.DeletthisExtended,
+	description: LanguageKeys.Commands.Misc.DeletThisDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.DeletThisExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'

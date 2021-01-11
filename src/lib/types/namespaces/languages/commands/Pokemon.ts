@@ -85,7 +85,7 @@ export const TypeEmbedData = FT<
 >('commands/pokemon:typeEmbedData');
 export const TypeTooManyTypes = T<string>('commands/pokemon:typeTooManyTypes');
 export const TypeNotAType = FT<{ type: string }, string>('commands/pokemon:typeNotAType');
-export const TypeQueryFail = FT<{ types: string }, string>('commands/pokemon:typeQueryFail');
+export const TypeQueryFail = FT<{ types: string[] }, string>('commands/pokemon:typeQueryFail');
 
 export interface PokedexEmbedDataReturn {
 	types: string;

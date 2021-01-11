@@ -17,14 +17,14 @@ export default class extends Event {
 		const lock = message.guild.moderation.createLock();
 		try {
 			await message.guild.members
-				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Monitors.NmsFooter) })
+				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Monitors.NoMentionSpamFooter) })
 				.catch((error) => this.client.emit(Events.ApiError, error));
 			await message.channel
-				.sendTranslated(LanguageKeys.Monitors.NmsMessage, [{ user: message.author }])
+				.sendTranslated(LanguageKeys.Monitors.NoMentionSpamMessage, [{ user: message.author }])
 				.catch((error) => this.client.emit(Events.ApiError, error));
 			nms.delete(message.author.id);
 
-			const reason = t(LanguageKeys.Monitors.NmsModlog, { threshold });
+			const reason = t(LanguageKeys.Monitors.NoMentionSpamModlog, { threshold });
 			await message.guild.moderation
 				.create({
 					userID: message.author.id,

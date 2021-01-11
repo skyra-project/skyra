@@ -230,7 +230,7 @@ export class GiveawayEntity extends BaseEntity {
 					  })
 					: t(LanguageKeys.Giveaway.EndedNoWinner);
 			case States.LastChance:
-				return t(LanguageKeys.Giveaway.Lastchance, { time: this.remaining });
+				return t(LanguageKeys.Giveaway.LastChance, { time: this.remaining });
 			default:
 				return t(LanguageKeys.Giveaway.Duration, { time: this.remaining });
 		}
@@ -280,7 +280,7 @@ export class GiveawayEntity extends BaseEntity {
 			case States.Finished:
 				return t(LanguageKeys.Giveaway.EndedTitle);
 			case States.LastChance:
-				return t(LanguageKeys.Giveaway.LastchanceTitle);
+				return t(LanguageKeys.Giveaway.LastChanceTitle);
 			default:
 				return t(LanguageKeys.Giveaway.Title);
 		}

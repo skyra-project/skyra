@@ -13,8 +13,8 @@ import { join } from 'path';
 	aliases: ['goof', 'goofy', 'daddy', 'goofie', 'goofietime'],
 	bucket: 2,
 	cooldown: 30,
-	description: LanguageKeys.Commands.Misc.GoofytimeDescription,
-	extendedHelp: LanguageKeys.Commands.Misc.GoofytimeExtended,
+	description: LanguageKeys.Commands.Misc.GoofyTimeDescription,
+	extendedHelp: LanguageKeys.Commands.Misc.GoofyTimeExtended,
 	requiredPermissions: ['ATTACH_FILES'],
 	spam: true,
 	usage: '<user:username>'

@@ -10,8 +10,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			bucket: 2,
 			cooldown: 15,
-			description: LanguageKeys.Commands.Social.MylevelDescription,
-			extendedHelp: LanguageKeys.Commands.Social.MylevelExtended,
+			description: LanguageKeys.Commands.Social.MyLevelDescription,
+			extendedHelp: LanguageKeys.Commands.Social.MyLevelExtended,
 			runIn: ['text'],
 			usage: '[user:username]'
 		});
@@ -26,15 +26,15 @@ export default class extends SkyraCommand {
 		const [roles, t] = await message.guild.readSettings((settings) => [settings[GuildSettings.Roles.Auto], settings.getLanguage()]);
 		const nextRole = this.getLatestRole(memberPoints, roles);
 		const title = nextRole
-			? `\n${t(LanguageKeys.Commands.Social.MylevelNext, {
+			? `\n${t(LanguageKeys.Commands.Social.MyLevelNext, {
 					remaining: nextRole.points - memberPoints,
 					next: nextRole.points
 			  })}`
 			: '';
 
 		return user.id === message.author.id
-			? message.send(t(LanguageKeys.Commands.Social.MylevelSelf, { points: memberPoints, next: title }))
-			: message.send(t(LanguageKeys.Commands.Social.Mylevel, { points: memberPoints, next: title, user: user.username }));
+			? message.send(t(LanguageKeys.Commands.Social.MyLevelSelf, { points: memberPoints, next: title }))
+			: message.send(t(LanguageKeys.Commands.Social.MyLevel, { points: memberPoints, next: title, user: user.username }));
 	}
 
 	public getLatestRole(points: number, autoroles: readonly RolesAuto[]) {

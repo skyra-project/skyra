@@ -121,7 +121,7 @@ export default class extends SkyraCommand {
 			if (!arg) throw await message.resolveKey(LanguageKeys.Commands.Social.BannerMissing, type);
 			const banner = this.banners.get(arg);
 			if (banner) return banner;
-			throw await message.resolveKey(LanguageKeys.Commands.Social.BannerNotexists, {
+			throw await message.resolveKey(LanguageKeys.Commands.Social.BannerNotExists, {
 				prefix: await message.guild!.readSettings(GuildSettings.Prefix)
 			});
 		});
@@ -181,10 +181,7 @@ export default class extends SkyraCommand {
 	private async runDisplay(message: GuildMessage, t: TFunction, display: UserRichDisplay | null) {
 		if (display !== null) {
 			const response = await message.send(
-				new MessageEmbed({
-					description: pickRandom(t(LanguageKeys.System.Loading)),
-					color: BrandingColors.Secondary
-				})
+				new MessageEmbed().setDescription(pickRandom(t(LanguageKeys.System.Loading))).setColor(BrandingColors.Secondary)
 			);
 			await display.start(response, message.author.id);
 			return response;

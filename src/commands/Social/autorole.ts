@@ -44,8 +44,8 @@ export default class extends SkyraCommand {
 	}
 
 	public async show(message: GuildMessage) {
-		const output = await message.guild.writeSettings(async (settings) => {
-			const t = await message.fetchT();
+		const output = await message.guild.writeSettings((settings) => {
+			const t = settings.getLanguage();
 			const autoRoles = settings[GuildSettings.Roles.Auto];
 
 			if (!autoRoles.length) throw t(LanguageKeys.Commands.Social.AutoRoleListEmpty);

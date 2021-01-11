@@ -218,7 +218,7 @@ export class ModerationEntity extends BaseEntity {
 
 		const before = Date.now() - Time.Minute;
 		const type = this.typeVariation;
-		const checkSoftban = type === Moderation.TypeVariation.Ban;
+		const checkSoftBan = type === Moderation.TypeVariation.Ban;
 		for (const entry of this.#manager.values()) {
 			// If it's not the same user target or if it's at least 1 minute old, skip
 			if (this.userID !== entry.userID || before > entry.createdTimestamp) continue;
@@ -227,7 +227,7 @@ export class ModerationEntity extends BaseEntity {
 			if (type === entry.typeVariation) return false;
 
 			// If this log is a ban or an unban, but the user was softbanned recently, abort
-			if (checkSoftban && entry.type === Moderation.TypeCodes.Softban) return false;
+			if (checkSoftBan && entry.type === Moderation.TypeCodes.SoftBan) return false;
 		}
 
 		// For all other cases, it should send

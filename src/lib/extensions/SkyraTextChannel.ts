@@ -1,3 +1,4 @@
+import { cast } from '#utils/util';
 import { Message, Permissions, Structures, TextChannel } from 'discord.js';
 import { TextBasedExtension, TextBasedExtensions } from './base/TextBasedExtension';
 
@@ -5,7 +6,9 @@ const snipes = new WeakMap<TextChannel, SnipedMessage>();
 
 export class SkyraTextChannel extends TextBasedExtension(Structures.get('TextChannel')) {
 	public async fetchLanguage() {
-		const lang: string = await this.client.fetchLanguage(({ channel: this, guild: this.guild } as unknown) as Message);
+		const lang: string = await this.client.fetchLanguage(
+			cast<Message>({ channel: this, guild: this.guild })
+		);
 		return lang ?? this.guild?.preferredLocale ?? this.client.i18n.options?.defaultName ?? 'en-US';
 	}
 

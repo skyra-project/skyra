@@ -102,7 +102,7 @@ export default class extends RichDisplayCommand {
 			const answer = await askYesNo(channel, user, t(LanguageKeys.Commands.Social.MarryPetition, { author, user }));
 			switch (answer) {
 				case YesNoAnswer.Timeout:
-					return message.send(t(LanguageKeys.Commands.Social.MarryNoreply));
+					return message.send(t(LanguageKeys.Commands.Social.MarryNoReply));
 				case YesNoAnswer.ImplicitNo:
 					return message.send(t(LanguageKeys.Commands.Social.MarryDenied));
 				case YesNoAnswer.Yes:

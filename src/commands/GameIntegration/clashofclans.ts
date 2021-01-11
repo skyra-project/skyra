@@ -23,8 +23,8 @@ const kFilterSpecialCharacters = /[^A-Z0-9]+/gi;
 @ApplyOptions<RichDisplayCommandOptions>({
 	aliases: ['coc'],
 	cooldown: 10,
-	description: LanguageKeys.Commands.GameIntegration.ClashofclansDescription,
-	extendedHelp: LanguageKeys.Commands.GameIntegration.ClashofclansExtended,
+	description: LanguageKeys.Commands.GameIntegration.ClashOfClansDescription,
+	extendedHelp: LanguageKeys.Commands.GameIntegration.ClashOfClansExtended,
 	subcommands: true,
 	usage: '<player|clan:default> <query:tagOrName>',
 	usageDelim: ' '
@@ -98,7 +98,7 @@ export default class extends RichDisplayCommand {
 	}
 
 	private async buildPlayerEmbed(message: GuildMessage, t: TFunction, player: ClashOfClans.Player) {
-		const titles = t(LanguageKeys.Commands.GameIntegration.ClashofclansPlayerEmbedTitles);
+		const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansPlayerEmbedTitles);
 
 		return new MessageEmbed()
 			.setColor(await DbSet.fetchColor(message))
@@ -136,7 +136,7 @@ export default class extends RichDisplayCommand {
 		const display = new UserRichDisplay(new MessageEmbed().setColor(await DbSet.fetchColor(message)));
 
 		for (const clan of clans) {
-			const titles = t(LanguageKeys.Commands.GameIntegration.ClashofclansClanEmbedTitles);
+			const titles = t(LanguageKeys.Commands.GameIntegration.ClashOfClansClanEmbedTitles);
 			display.addPage((embed: MessageEmbed) =>
 				embed
 					.setThumbnail(clan.badgeUrls.large)

@@ -1,6 +1,6 @@
 {
-	"boolDisabled": "",
-	"boolEnabled": "",
+	"boolDisabled": "Uitgeschakeld",
+	"boolEnabled": "Ingeschakeld",
 	"boolFalseOptions": [
 		"",
 		"",

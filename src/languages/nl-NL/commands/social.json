@@ -82,6 +82,7 @@
 		"experience": "",
 		"level": ""
 	},
+	"profileMoney": "",
 	"remindmeCreate": "",
 	"remindmeCreateNoDuration": "",
 	"remindmeCreateNoDescription": "",
@@ -102,7 +103,7 @@
 	"reputation": "",
 	"reputation_plural": "",
 	"reputations": "",
-	"requireRole": "",
+	"autoRoleRequireRole": "",
 	"scoreboardPosition": "",
 	"setColor": "",
 	"socialDescription": "",

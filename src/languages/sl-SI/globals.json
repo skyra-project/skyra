@@ -10,7 +10,6 @@
 	"yes": "Da",
 	"ordinalValue": "{{value, ordinal}}",
 	"durationValue": "{{value, duration}}",
-	"groupDigitsValue": "{{value, groupDigits}}",
 	"andListValue": "{{value, andList}}",
 	"orListValue": "{{value, orList}}"
 }

@@ -102,7 +102,7 @@
 	"reputation": "",
 	"reputation_plural": "",
 	"reputations": "",
-	"requireRole": "",
+	"autoRoleRequireRole": "",
 	"scoreboardPosition": "",
 	"setColor": "Цвет изменён на {{color}}",
 	"socialDescription": "",

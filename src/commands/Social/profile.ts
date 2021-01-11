@@ -52,7 +52,8 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = await message.resolveKey(LanguageKeys.Commands.Social.Profile);
+		const t = await message.fetchT();
+		const title = t(LanguageKeys.Commands.Social.Profile);
 		const canvas = new Canvas(settings.profile.publicBadges.length ? 700 : 640, 391);
 		if (settings.profile.publicBadges.length) {
 			const badges = await Promise.all(settings.profile.publicBadges.map((name) => loadImage(join(BADGES_FOLDER, `${name}.png`))));
@@ -98,16 +99,16 @@ export default class extends SkyraCommand {
 				.setTextAlign('right')
 				.setTextFont('25px RobotoLight')
 				.printText(rank.toString(), 594, 276)
-				.printText(`${settings.money} | ${settings.profile.vault}`, 594, 229)
-				.printText(settings.reputations.toString(), 594, 181)
-				.printText(points.toString(), 594, 346)
+				.printText(t(LanguageKeys.Commands.Social.ProfileMoney, { money: settings.money, vault: settings.profile.vault }), 594, 229)
+				.printText(t(LanguageKeys.Globals.NumberCompactValue, { value: settings.reputations }), 594, 181)
+				.printText(t(LanguageKeys.Globals.NumberValue, { value: points }), 594, 346)
 
 				// Level
 				.setTextAlign('center')
 				.setTextFont('30px RobotoLight')
 				.printText(title.level, 576, 58)
 				.setTextFont('40px RobotoRegular')
-				.printText(level.toString(), 576, 100)
+				.printText(t(LanguageKeys.Globals.NumberValue, { value: level }), 576, 100)
 
 				// Avatar
 				.printCircularImage(imgAvatarSRC, 103, 103, 71)

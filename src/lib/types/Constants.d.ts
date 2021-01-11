@@ -11,7 +11,8 @@ export const enum CdnUrls {
 export const enum LanguageFormatters {
 	AndList = 'andList',
 	Duration = 'duration',
-	GroupDigits = 'groupDigits',
+	Number = 'number',
+	NumberCompact = 'numberCompact',
 	HumanLevels = 'humanLevels',
 	InlineCodeblock = 'inlineCodeBlock',
 	JsCodeBlock = 'jsCodeBlock',

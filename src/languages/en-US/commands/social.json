@@ -7,8 +7,8 @@
 	"autoRoleAdd": "Added new autorole: {{role.name}} ({{role.id}}). Points required: {{points}}",
 	"autoRoleListEmpty": "There is no role configured as an autorole in this server.",
 	"autoRoleUnknownRole": "Unknown role: {{role}}",
-	"balance": "The user {{user}} has a total of {{amount, groupDigits}}{{SHINY}}",
-	"balanceSelf": "You have a total of {{amount, groupDigits}}{{SHINY}}",
+	"balance": "The user {{user}} has a total of {{amount, number}}{{SHINY}}",
+	"balanceSelf": "You have a total of {{amount, number}}{{SHINY}}",
 	"balanceBots": "I think they have 5 gears as much, bots don't have {{SHINY}}",
 	"socialMemberNotexists": "{{REDCROSS}} The member is not in this server, and is not in my database either.",
 	"socialAdd": "{{GREENTICK}} Successfully added {{count}} point to {{user}}. Current amount: {{amount}}.",
@@ -82,6 +82,7 @@
 		"experience": "Experience",
 		"level": "Level"
 	},
+	"profileMoney": "{{money, numberCompact}} | {{vault, numberCompact}}",
 	"remindmeCreate": "A reminder with ID `{{id}}` has been created.",
 	"remindmeCreateNoDuration": "You must tell me what you want me to remind you and when.",
 	"remindmeCreateNoDescription": "Something, you did not tell me what.",
@@ -102,7 +103,7 @@
 	"reputation": "{{count}} reputation point",
 	"reputation_plural": "{{count}} reputation points",
 	"reputations": "The user {{user}} has a total of {{points}}.",
-	"requireRole": "I am sorry, but you must provide a role for this command.",
+	"autoRoleRequireRole": "I am sorry, but you must provide a role for this command.",
 	"scoreboardPosition": "Your placing position is: {{position}}",
 	"setColor": "Color changed to {{color}}",
 	"socialDescription": "Configure this guild's member points.",
@@ -157,7 +158,7 @@
 		"extendedHelp": "The leaderboard command shows a list of users sorted by their local or global amount of points, by default, when using no arguments, it will show the local leaderboard.\nThe leaderboards refresh every 10 minutes.",
 		"reminder": "\"Local\" leaderboards refer to the guild's top list. \"Global\" refers to all scores from all guilds."
 	},
-	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, groupDigits}} Total",
+	"leaderboardListifyPage": "Page {{page}} / {{pageCount}} | {{results, number}} Total",
 	"levelDescription": "Check your global level.",
 	"levelExtended": {
 		"extendedHelp": "How much until the next level?",

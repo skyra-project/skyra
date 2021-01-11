@@ -83,7 +83,7 @@ interface ReminderScheduledTask extends ScheduleEntity {
 						if (task.taskID !== Schedules.Reminder || !task.data || task.data.user !== message.author.id) break;
 						return task;
 					}
-					throw t(LanguageKeys.Commands.Social.RemindMeNotfound);
+					throw t(LanguageKeys.Commands.Social.RemindMeNotFound);
 				}
 				case Actions.Create: {
 					if (!arg) throw t(LanguageKeys.Commands.Social.RemindMeCreateNoDuration);

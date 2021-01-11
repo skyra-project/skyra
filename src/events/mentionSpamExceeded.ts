@@ -24,7 +24,7 @@ export default class extends Event {
 				.catch((error) => this.client.emit(Events.ApiError, error));
 			nms.delete(message.author.id);
 
-			const reason = t(LanguageKeys.Monitors.NoMentionSpamModlog, { threshold });
+			const reason = t(LanguageKeys.Monitors.NoMentionSpamModerationLog, { threshold });
 			await message.guild.moderation
 				.create({
 					userID: message.author.id,

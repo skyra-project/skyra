@@ -450,10 +450,6 @@
 	},
 	"slotmachinesLoss": "",
 	"slotmachinesWin": "",
-	"slotmachineTitles": {
-		"new": "",
-		"previous": ""
-	},
 	"ticTacToeDescription": "Play noughts and crosses with somebody.",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {
@@ -504,8 +500,5 @@
 	"wheelOfFortuneExtended": {
 		"extendedHelp": ""
 	},
-	"wheelOfFortuneTitles": {
-		"new": "",
-		"previous": ""
-	}
+	"balanceDifference": ""
 }

@@ -196,7 +196,7 @@
 		"",
 		"",
 		"",
-		""
+		"Это нелогично."
 	],
 	"8ballElse": [
 		"Скорее всего.",
@@ -232,7 +232,7 @@
 	"loveLess100": "",
 	"love100": "",
 	"loveItself": "",
-	"loveResult": "",
+	"loveResult": "Результат",
 	"markovTimer": "",
 	"markovNoMessages": "",
 	"norrisOutput": "",

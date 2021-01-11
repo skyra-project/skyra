@@ -450,10 +450,6 @@
 	},
 	"slotmachinesLoss": "",
 	"slotmachinesWin": "",
-	"slotmachineTitles": {
-		"new": "",
-		"previous": ""
-	},
 	"ticTacToeDescription": "",
 	"ticTacToeDraw": "",
 	"ticTacToeExtended": {

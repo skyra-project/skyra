@@ -2,6 +2,7 @@ import { FT, T } from '#lib/types';
 import { HungerGamesGame } from '#root/commands/Games/hungergames';
 import { LanguageHelpDisplayOptions } from '#utils/LanguageHelp';
 
+export const BalanceDifference = FT<{ previous: string; next: string }, string>('commands/game:balanceDifference');
 export const GamesSkyra = T<string>('commands/game:gamesSkyra');
 export const GamesBot = T<string>('commands/game:gamesBot');
 export const GamesSelf = T<string>('commands/game:gamesSelf');
@@ -99,10 +100,6 @@ export const SlotMachineDescription = T<string>('commands/game:slotmachineDescri
 export const SlotMachineExtended = T<LanguageHelpDisplayOptions>('commands/game:slotmachineExtended');
 export const SlotMachineWin = FT<{ roll: string; winnings: number }, string>('commands/game:slotmachinesWin');
 export const SlotMachineLoss = FT<{ roll: string }, string>('commands/game:slotmachinesLoss');
-export const SlotMachineTitles = T<{
-	previous: string;
-	new: string;
-}>('commands/game:slotmachineTitles');
 export const SlotMachineCanvasTextWon = T<string>('commands/game:slotmachineCanvasTextWon');
 export const SlotMachineCanvasTextLost = T<string>('commands/game:slotmachineCanvasTextLost');
 export const TicTacToeDescription = T<string>('commands/game:ticTacToeDescription');
@@ -111,10 +108,6 @@ export const WheelOfFortuneDescription = T<string>('commands/game:wheelOfFortune
 export const WheelOfFortuneExtended = T<LanguageHelpDisplayOptions>('commands/game:wheelOfFortuneExtended');
 export const WheelOfFortuneCanvasTextWon = T<string>('commands/game:wheelOfFortuneCanvasTextWon');
 export const WheelOfFortuneCanvasTextLost = T<string>('commands/game:wheelOfFortuneCanvasTextLost');
-export const WheelOfFortuneTitles = T<{
-	previous: string;
-	new: string;
-}>('commands/game:wheelOfFortuneTitles');
 export const TicTacToePrompt = FT<{ challenger: string; challengee: string }, string>('commands/game:ticTacToePrompt');
 export const TicTacToeTurn = FT<{ icon: string; player: string; board: string }, string>('commands/game:ticTacToeTurn');
 export const TicTacToeWinner = FT<{ winner: string; board: string }, string>('commands/game:ticTacToeWinner');

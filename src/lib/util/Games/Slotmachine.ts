@@ -111,7 +111,7 @@ export class Slotmachine {
 		return [await this.render(rolls, this.settings.profile!.darkTheme, lang), amount] as [Buffer, number];
 	}
 
-	private async render(rolls: readonly Icons[], darkTheme: boolean, lang: TFunction) {
+	private async render(rolls: readonly Icons[], darkTheme: boolean, t: TFunction) {
 		const playerHasWon = this.winnings > 0;
 
 		const canvas = new Canvas(300, 150)
@@ -129,11 +129,15 @@ export class Slotmachine {
 			.setTextFont('30px RobotoLight')
 			.setTextAlign('right')
 			.printText(
-				lang(playerHasWon ? LanguageKeys.Commands.Games.SlotMachineCanvasTextWon : LanguageKeys.Commands.Games.SlotMachineCanvasTextLost),
+				t(playerHasWon ? LanguageKeys.Commands.Games.SlotMachineCanvasTextWon : LanguageKeys.Commands.Games.SlotMachineCanvasTextLost),
 				280,
 				60
 			)
-			.printText(playerHasWon ? (this.winnings - this.bet).toString() : (this.winnings + this.bet).toString(), 230, 100)
+			.printText(
+				t(LanguageKeys.Globals.NumberCompactValue, { value: playerHasWon ? this.winnings - this.bet : this.winnings + this.bet }),
+				230,
+				100
+			)
 			.printImage(Slotmachine.images.SHINY!, 240, 68, 38, 39)
 			.restore();
 

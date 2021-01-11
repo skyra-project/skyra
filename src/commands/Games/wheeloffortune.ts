@@ -1,7 +1,6 @@
 import { DbSet } from '#lib/database';
 import { SkyraCommand, SkyraCommandOptions } from '#lib/structures/SkyraCommand';
 import { LanguageKeys } from '#lib/types/namespaces/LanguageKeys';
-import { Emojis } from '#utils/constants';
 import { WheelOfFortune } from '#utils/Games/WheelOfFortune';
 import { ApplyOptions } from '@skyra/decorators';
 import { KlasaMessage } from 'klasa';
@@ -25,9 +24,7 @@ export default class extends SkyraCommand {
 		}
 
 		const [attachment, amount] = await new WheelOfFortune(message, wager, settings).run();
-		const titles = t(LanguageKeys.Commands.Games.WheelOfFortuneTitles);
-
-		return message.send([`**${titles.previous}:** ${balance} ${Emojis.Shiny}`, `**${titles.new}:** ${amount} ${Emojis.Shiny}`].join('\n'), {
+		return message.send(t(LanguageKeys.Commands.Games.BalanceDifference, { previous: balance, next: amount }), {
 			files: [{ attachment, name: 'wof.png' }]
 		});
 	}

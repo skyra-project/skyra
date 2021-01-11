@@ -6,7 +6,8 @@ import { ExtendedHandler as EsEsHandler } from './es-ES/constants';
 export const handlers = new Map<string, Handler>([
 	['en-US', new EnUsHandler()],
 	['en-GB', new EnGbHandler()],
-	['es-ES', new EsEsHandler()]
+	['es-ES', new EsEsHandler()],
+	['nl-NL', new EsEsHandler()]
 ]);
 
 export function getHandler(name: string): Handler {

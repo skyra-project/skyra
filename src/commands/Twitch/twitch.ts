@@ -32,8 +32,8 @@ export default class extends SkyraCommand {
 				.setURL(`https://twitch.tv/${channel.login}`)
 				.setDescription(channel.description)
 				.setThumbnail(channel.profile_image_url)
-				.addField(titles.followers, t(LanguageKeys.Globals.GroupDigitsValue, { value: followersTotal }), true)
-				.addField(titles.views, t(LanguageKeys.Globals.GroupDigitsValue, { value: channel.view_count }), true)
+				.addField(titles.followers, t(LanguageKeys.Globals.NumberValue, { value: followersTotal }), true)
+				.addField(titles.views, t(LanguageKeys.Globals.NumberValue, { value: channel.view_count }), true)
 				.addField(titles.partner, affiliateStatus ? affiliateStatus : t(LanguageKeys.Commands.Twitch.TwitchPartnershipWithoutAffiliate))
 		);
 	}

@@ -22,7 +22,7 @@ export default class UserSerializer extends Serializer<RolesAuto> {
 	}
 
 	public stringify(value: RolesAuto, { t }: SerializerUpdateContext): string {
-		return `[${value.id} -> ${t(LanguageKeys.Globals.GroupDigitsValue, { value: value.points })}]`;
+		return `[${value.id} -> ${t(LanguageKeys.Globals.NumberValue, { value: value.points })}]`;
 	}
 
 	public equals(left: RolesAuto, right: RolesAuto): boolean {

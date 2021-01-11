@@ -367,8 +367,11 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 						case LanguageFormatters.JsCodeBlock: {
 							return codeBlock('js', value);
 						}
-						case LanguageFormatters.GroupDigits: {
+						case LanguageFormatters.Number: {
 							return getHandler(language!).number.format(value as number);
+						}
+						case LanguageFormatters.NumberCompact: {
+							return getHandler(language!).numberCompact.format(value as number);
 						}
 						case LanguageFormatters.Ordinal: {
 							return getHandler(language!).ordinal(value as number);

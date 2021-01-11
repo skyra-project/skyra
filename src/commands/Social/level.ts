@@ -47,7 +47,8 @@ export default class extends SkyraCommand {
 			fetchAvatar(user, 256)
 		]);
 
-		const title = await message.resolveKey(LanguageKeys.Commands.Social.Level);
+		const t = await message.fetchT();
+		const title = t(LanguageKeys.Commands.Social.Level);
 		return (
 			new Canvas(640, 174)
 				// Draw the background
@@ -71,15 +72,15 @@ export default class extends SkyraCommand {
 
 				// Draw the information
 				.setTextAlign('right')
-				.printText(points.toString(), 606, 73)
-				.printText((nextLevel - points).toString(), 606, 131)
+				.printText(t(LanguageKeys.Globals.NumberCompactValue, { value: points }), 606, 73)
+				.printText(t(LanguageKeys.Globals.NumberValue, { value: nextLevel - points }), 606, 131)
 
 				// Draw the level
 				.setTextAlign('center')
 				.setTextFont('35px RobotoLight')
 				.printText(title.level, 268, 73)
 				.setTextFont('45px RobotoRegular')
-				.printText(level.toString(), 268, 128)
+				.printText(t(LanguageKeys.Globals.NumberValue, { value: level }), 268, 128)
 
 				// Draw the avatar
 				.save()

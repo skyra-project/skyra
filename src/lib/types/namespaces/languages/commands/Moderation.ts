@@ -301,6 +301,7 @@ export const ActionSharedRoleSetupAskMultipleChannelsMultiplePermissions = FT<{ 
 	'moderationActions:sharedRoleSetupAskMultipleChannelsMultiplePermissions'
 );
 export const ActionRequiredMember = T<string>('moderationActions:requiredMember');
+export const RoleHigher = T<string>('moderation:roleHigher');
 export const RoleHigherSkyra = T<string>('moderation:roleHigherSkyra');
 export const Success = T<string>('moderation:success');
 export const ToSkyra = T<string>('moderation:toSkyra');

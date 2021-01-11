@@ -1,1 +1,19 @@
-{}
+{
+	"and": "en",
+	"default": "{{key}} is nog niet gelokaliseerd voor nl-NL.",
+	"defaultLanguage": "Standaard taal",
+	"is": "is",
+	"no": "Nee",
+	"none": "Geen",
+	"or": "of",
+	"unknown": "onbekend",
+	"yes": "Ja",
+	"ordinalValue": "{{value, ordinal}}",
+	"durationValue": "{{value, duration}}",
+	"numberValue": "{{value, number}}",
+	"numberCompactValue": "{{value, numberCompact}}",
+	"timeDateValue": "{{value, timeDate}}",
+	"timeFullValue": "{{value, timeFull}}",
+	"andListValue": "{{value, andList}}",
+	"orListValue": "{{value, orList}}"
+}

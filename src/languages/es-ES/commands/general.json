@@ -34,12 +34,12 @@
 	"invitePermissionInviteText": "",
 	"invitePermissionsDescription": "",
 	"invitePermissionSupportServerText": "",
-	"ping": "Ping...",
+	"ping": "",
 	"pingDescription": "",
 	"pingExtended": {
 		"extendedHelp": ""
 	},
-	"pingPong": "Pong! (Ida y vuelta: {{diff}}ms. Latido: {{ping}}ms.)",
+	"pingPong": "",
 	"supportDescription": "",
 	"supportEmbedDescription": "",
 	"supportEmbedTitle": "",

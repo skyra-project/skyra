@@ -44,9 +44,9 @@
 		"serverUsage": "Server Usage"
 	},
 	"statsFields": {
-		"stats": "• **Users**: {{stats.users, groupDigits}}\n• **Guilds**: {{stats.guilds, groupDigits}}\n• **Channels**: {{stats.channels, groupDigits}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
+		"stats": "• **Users**: {{stats.users, number}}\n• **Guilds**: {{stats.guilds, number}}\n• **Channels**: {{stats.channels, number}}\n• **Discord.js**: {{stats.version}}\n• **Node.js**: {{stats.nodeJs}}",
 		"uptime": "• **Host**: {{uptime.host, duration}}\n• **Total**: {{uptime.total, duration}}\n• **Client**: {{uptime.client, duration}}",
-		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, groupDigits}}MB (Total: {{usage.ramTotal, groupDigits}}MB)"
+		"serverUsage": "• **CPU Load**: {{usage.cpuLoad}}\n• **Heap**: {{usage.ramUsed, number}}MB (Total: {{usage.ramTotal, number}}MB)"
 	},
 	"disable": "+ Successfully disabled {{type}}: {{name}}",
 	"disableDescription": "Re-disables or temporarily disables a command/inhibitor/monitor/finalizer/event. Default state restored on reboot.",

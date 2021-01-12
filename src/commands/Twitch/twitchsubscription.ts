@@ -156,7 +156,7 @@ export default class extends SkyraCommand {
 			status === NotificationsStreamsTwitchEventStatus.Offline
 				? LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessOffline
 				: LanguageKeys.Commands.Twitch.TwitchSubscriptionAddSuccessLive,
-			[{ name: streamer.display_name, channel: channel.name }]
+			[{ name: streamer.display_name, channel: channel.toString() }]
 		);
 	}
 
@@ -195,7 +195,7 @@ export default class extends SkyraCommand {
 			status === NotificationsStreamsTwitchEventStatus.Offline
 				? LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessOffline
 				: LanguageKeys.Commands.Twitch.TwitchSubscriptionRemoveSuccessLive,
-			[{ name: streamer.display_name, channel: channel.name }]
+			[{ name: streamer.display_name, channel: channel.toString() }]
 		);
 	}
 

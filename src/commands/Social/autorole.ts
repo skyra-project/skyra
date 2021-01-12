@@ -95,7 +95,7 @@ export default class extends SkyraCommand {
 			const roleIndex = roles.findIndex((entry) => entry.id === role.id);
 
 			if (roleIndex === -1) {
-				throw t(LanguageKeys.Commands.Social.AutoRoleUpdateConfigured);
+				throw t(LanguageKeys.Commands.Social.AutoRoleUpdateUnconfigured);
 			}
 
 			const roleEntry = roles[roleIndex];

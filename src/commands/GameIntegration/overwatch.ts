@@ -150,7 +150,8 @@ export default class extends RichDisplayCommand {
 			awards: { medalsBronze, medalsSilver, medalsGold }
 		} = overwatchData[type];
 
-		const timePlayedMilliseconds = Number(timePlayed.split(':')[0]) * Time.Hour + Number(timePlayed.split(':')[1]) * Time.Minute;
+		const [hours, minutes] = timePlayed.split(':');
+		const timePlayedMilliseconds = Number(hours) * Time.Hour + Number(minutes) * Time.Minute;
 		const statsData = t(LanguageKeys.Commands.GameIntegration.OverwatchEmbedDataStats, {
 			finalBlows,
 			deaths,

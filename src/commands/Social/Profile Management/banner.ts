@@ -50,8 +50,6 @@ export default class extends SkyraCommand {
 		const accepted = await this.prompt(message, banner);
 		if (!accepted) throw t(LanguageKeys.Commands.Social.BannerPaymentCancelled);
 
-		if (author.money < banner.price) throw t(LanguageKeys.Commands.Social.BannerMoney, { money: author.money, cost: banner.price });
-
 		await getManager().transaction(async (em) => {
 			const existingBannerAuthor = await em.findOne(UserEntity, banner.author);
 			if (existingBannerAuthor) {

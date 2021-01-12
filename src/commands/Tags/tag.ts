@@ -113,9 +113,10 @@ export default class extends SkyraCommand {
 	@requiredPermissions(['ADD_REACTIONS', 'EMBED_LINKS', 'MANAGE_MESSAGES', 'READ_MESSAGE_HISTORY'])
 	public async list(message: GuildMessage) {
 		// Get tags, prefix, and language
-		const [[tags, prefix], t] = await Promise.all([
-			message.guild.readSettings([GuildSettings.CustomCommands, GuildSettings.Prefix]),
-			message.fetchT()
+		const [tags, prefix, t] = await message.guild.readSettings((settings) => [
+			settings[GuildSettings.CustomCommands],
+			settings[GuildSettings.Prefix],
+			settings.getLanguage()
 		]);
 		if (!tags.length) throw t(LanguageKeys.Commands.Tags.TagListEmpty);
 

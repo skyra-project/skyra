@@ -102,13 +102,13 @@ export class Slotmachine {
 		const winnings = this.winnings * (await this.fetchBoost()) - this.bet;
 		const amount = lost ? this.settings.money - this.bet : this.settings.money + winnings;
 
-		const lang = await this.message.fetchT();
-		if (amount < 0) throw lang(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
+		const t = await this.message.fetchT();
+		if (amount < 0) throw t(LanguageKeys.Commands.Games.GamesCannotHaveNegativeMoney);
 
 		this.settings.money += lost ? -this.bet : winnings;
 		await this.settings.save();
 
-		return [await this.render(rolls, this.settings.profile!.darkTheme, lang), amount] as [Buffer, number];
+		return [await this.render(rolls, this.settings.profile!.darkTheme, t), amount] as [Buffer, number];
 	}
 
 	private async render(rolls: readonly Icons[], darkTheme: boolean, t: TFunction) {

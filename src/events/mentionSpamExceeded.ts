@@ -20,7 +20,7 @@ export default class extends Event {
 				.ban(message.author.id, { days: 0, reason: t(LanguageKeys.Monitors.NoMentionSpamFooter) })
 				.catch((error) => this.client.emit(Events.ApiError, error));
 			await message.channel
-				.sendTranslated(LanguageKeys.Monitors.NoMentionSpamMessage, [{ user: message.author }])
+				.send(t(LanguageKeys.Monitors.NoMentionSpamMessage, [{ user: message.author }]))
 				.catch((error) => this.client.emit(Events.ApiError, error));
 			nms.delete(message.author.id);
 

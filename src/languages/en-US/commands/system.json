@@ -90,6 +90,8 @@
 	},
 	"unloadWarn": "You probably don't want to unload that, since you wouldn't be able to run any command to enable it again",
 	"supportDescription": "Show support instructions",
+	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
+	"supportEmbedTitle": "Looking for help, {{username}}?",
 	"supportExtended": {
 		"extendedHelp": "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
 	}

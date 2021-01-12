@@ -115,5 +115,8 @@
 	"suggestionsEmojisUpvote": "The upvote emoji Skyra reacts with on every suggestion.",
 	"suggestionsOnActionDm": "If this setting is enabled, Skyra will DM the suggestion's author every time it is updated.",
 	"suggestionsOnActionHideAuthor": "This setting allows you to update suggestions anonymously. It will substitute the updater's name with either `An administrator` or `A moderator`, according to their permission level.",
-	"suggestionsOnActionRepost": "If this setting is enabled, Skyra will repost the suggestion's message every time it is updated. If it is disabled, it will edit the original message."
+	"suggestionsOnActionRepost": "If this setting is enabled, Skyra will repost the suggestion's message every time it is updated. If it is disabled, it will edit the original message.",
+	"validationChooseKey": "You cannot configure a group, please pick one of the following keys: {{keys, andList}}.",
+	"validationMissingValue": "The value ``{{value}}`` was not set in the key **{{path}}**.",
+	"validationDuplicatedValue": "The value ``{{value}}`` was already set in the key **{{path}}**."
 }

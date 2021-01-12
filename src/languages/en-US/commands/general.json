@@ -34,11 +34,5 @@
 	"pingExtended": {
 		"extendedHelp": "Pong!"
 	},
-	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)",
-	"supportDescription": "Show support instructions",
-	"supportEmbedDescription": "Then you should probably join [Skyra's Lounge](https://join.skyra.pw)! There, you can receive support by the developers and other members of the community!",
-	"supportEmbedTitle": "Looking for help, {{username}}?",
-	"supportExtended": {
-		"extendedHelp": "This command gives you a link to *Skyra's Lounge*, the best place for everything related to me."
-	}
+	"pingPong": "Pong! (Roundtrip took: {{diff}}ms. Heartbeat: {{ping}}ms.)"
 }

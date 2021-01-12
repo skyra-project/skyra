@@ -159,10 +159,11 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		}
 	},
 	i18n: {
-		i18next: {
+		i18next: (_, languages: string[]) => ({
 			returnEmptyString: false,
-			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' })
-		},
+			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
+			supportedLngs: languages
+		}),
 		defaultMissingKey: 'globals:default'
 	}
 };

@@ -162,7 +162,9 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 		i18next: (_, languages: string[]) => ({
 			returnEmptyString: false,
 			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' }),
-			supportedLngs: languages
+			supportedLngs: languages,
+			lng: 'en-US',
+			defaultNS: 'globals'
 		}),
 		defaultMissingKey: 'globals:default'
 	}

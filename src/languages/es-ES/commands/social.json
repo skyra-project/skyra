@@ -82,7 +82,7 @@
 		"experience": "",
 		"level": ""
 	},
-	"profileMoney": "{{money, numberCompact}} | {{vault, numberCompact}}",
+	"profileMoney": "",
 	"remindmeCreate": "",
 	"remindmeCreateNoDuration": "",
 	"remindmeCreateNoDescription": "",

@@ -177,7 +177,6 @@ export const WEBHOOK_DATABASE: Partial<APIWebhook> | null = null;
 
 export const TOKENS = {
 	// #region secrets
-	BLIZZARD_KEY: '',
 	BOT_TOKEN: '',
 	BOTLIST_SPACE_KEY: '',
 	BOTS_FOR_DISCORD_KEY: '',
@@ -211,7 +210,6 @@ export const TOKENS = {
 	WEBHOOK_B4D: '',
 	WEBHOOK_TOPGG: '',
 	WEEB_SH_KEY: '',
-	WOLFRAM_KEY: '',
 	XIVAPI_KEY: ''
 	// #endregion
 };

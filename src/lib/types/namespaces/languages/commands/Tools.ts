@@ -216,5 +216,5 @@ export const WhoisUserFields = FT<
 >('commands/tools:whoisUserFields');
 export const WikipediaDescription = T<string>('commands/tools:wikipediaDescription');
 export const WikipediaExtended = T<LanguageHelpDisplayOptions>('commands/tools:wikipediaExtended');
-export const YoutubeDescription = T<string>('commands/tools:youtubeDescription');
-export const YoutubeExtended = T<LanguageHelpDisplayOptions>('commands/tools:youtubeExtended');
+export const YouTubeDescription = T<string>('commands/tools:youtubeDescription');
+export const YouTubeExtended = T<LanguageHelpDisplayOptions>('commands/tools:youtubeExtended');

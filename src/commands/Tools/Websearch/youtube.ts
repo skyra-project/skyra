@@ -21,8 +21,8 @@ export default class extends SkyraCommand {
 		super(store, file, directory, {
 			aliases: ['yt'],
 			cooldown: 15,
-			description: LanguageKeys.Commands.Tools.YoutubeDescription,
-			extendedHelp: LanguageKeys.Commands.Tools.YoutubeExtended,
+			description: LanguageKeys.Commands.Tools.YouTubeDescription,
+			extendedHelp: LanguageKeys.Commands.Tools.YouTubeExtended,
 			usage: '<query:string>'
 		});
 	}

@@ -55,7 +55,7 @@ export class GuildEntity extends BaseEntity {
 	public prefix = PREFIX;
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.Language, type: 'language' })
-	@Column('varchar', { name: 'language', length: 5, default: 'en-US' })
+	@Column('varchar', { name: 'language', default: 'en-US' })
 	public language = 'en-US';
 
 	@ConfigurableKey({ description: LanguageKeys.Settings.DisableNaturalPrefix })

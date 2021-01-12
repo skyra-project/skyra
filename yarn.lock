@@ -716,10 +716,10 @@
   dependencies:
     "@discordjs/collection" "^0.1.6"
 
-"@sapphire/plugin-i18next@^1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@sapphire/plugin-i18next/-/plugin-i18next-1.1.0.tgz#2881318803234a927a36c8d3f05a2fbbeee97938"
-  integrity sha512-5qCOLLgXqn+pBWdHYz4U3Ge6vBLNJiBwI2WyQVolBkRIwlgfZklWbe/vtAYnQ1POTSLdccMNsuk+MMpL24XRNA==
+"@sapphire/plugin-i18next@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@sapphire/plugin-i18next/-/plugin-i18next-1.2.0.tgz#a6d43d080e6dfa9aeed9d064c3daf6937db5467f"
+  integrity sha512-4FwU4kAkZvLnnWzL7k00rKUQ2SsWcNuoZ2YhFhx0qp6mFjo1Pa0gogFFSS7eP2cqIZyQ3wBP0QFgehezxKo39Q==
   dependencies:
     "@sapphire/utilities" "^1.3.1"
     i18next "^19.8.4"
@@ -3901,9 +3901,9 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
   dependencies:
     node-fetch "^2.6.1"
 
-klasa@skyra-project/klasa#feat/i18next:
+klasa@skyra-project/klasa#settings:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/5ecede5e697469f687d17d0da5fe34ebb5233020"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/8ab2e1bb4197ef9888f3b3089e96c1c81e354e25"
   dependencies:
     fs-nextra "^0.5.1"
 

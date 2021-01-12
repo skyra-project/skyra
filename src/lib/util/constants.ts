@@ -295,9 +295,10 @@ export const clientOptions: Partial<KlasaClientOptions> = {
 		role: 2
 	},
 	i18n: {
-		defaultMissingKey: 'missingKey',
-		defaultNS: 'global',
+		defaultMissingKey: 'default',
+		defaultNS: 'globals',
 		i18next: (_: string[], languages: string[]) => ({
+			debug: DEV,
 			supportedLngs: languages,
 			preload: languages,
 			returnObjects: true,

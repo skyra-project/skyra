@@ -3903,7 +3903,7 @@ klasa-dashboard-hooks@skyra-project/klasa-dashboard-hooks#master:
 
 klasa@skyra-project/klasa#feat/i18next:
   version "0.5.0-dev"
-  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/9f28ba5e8f728571e40be1f7e0fe3091f07b2cd3"
+  resolved "https://codeload.github.com/skyra-project/klasa/tar.gz/5ecede5e697469f687d17d0da5fe34ebb5233020"
   dependencies:
     fs-nextra "^0.5.1"
 

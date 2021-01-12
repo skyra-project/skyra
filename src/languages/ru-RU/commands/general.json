@@ -39,11 +39,5 @@
 	"pingExtended": {
 		"extendedHelp": ""
 	},
-	"pingPong": "",
-	"supportDescription": "",
-	"supportEmbedDescription": "",
-	"supportEmbedTitle": "",
-	"supportExtended": {
-		"extendedHelp": ""
-	}
+	"pingPong": ""
 }

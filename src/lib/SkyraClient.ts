@@ -119,8 +119,8 @@ export class SkyraClient extends KlasaClient {
 	}
 
 	public async login(token?: string) {
-		await this.schedules.init();
 		await this.i18n.init();
+		await this.schedules.init();
 		return super.login(token);
 	}
 

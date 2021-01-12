@@ -157,13 +157,6 @@ export const CLIENT_OPTIONS: KlasaClientOptions = {
 			IncomingMessage: ApiRequest,
 			ServerResponse: ApiResponse
 		}
-	},
-	i18n: {
-		i18next: {
-			returnEmptyString: false,
-			overloadTranslationOptionHandler: (args) => ({ defaultValue: args[1] ?? 'globals:default' })
-		},
-		defaultMissingKey: 'globals:default'
 	}
 };
 

@@ -93,6 +93,8 @@
 	},
 	"unloadWarn": "",
 	"supportDescription": "",
+	"supportEmbedDescription": "",
+	"supportEmbedTitle": "",
 	"supportExtended": {
 		"extendedHelp": ""
 	}
